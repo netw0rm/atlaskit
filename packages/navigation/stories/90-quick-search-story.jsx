@@ -45,6 +45,7 @@ storiesOf(`${name}/QuickSearch`, module)
         avatarUrl={getPersonAvatarUrl('owkenobi')}
         mentionName="BenKen"
         name="Obi Wan Kenobi"
+        presenceState="online"
       />
       <PersonResult
         key="2"
@@ -102,47 +103,63 @@ storiesOf(`${name}/QuickSearch`, module)
       </AkNavigationItemGroup>
     </div>
   ))
-  .add('Search Results', () => withRootTheme(
-    <AkSearchResults
-      results={[
-        {
-          title: 'Obi Wan\'s Conversations',
-          items: [
-            {
-              resultId: '1',
-              type: 'person',
-              avatarUrl: getPersonAvatarUrl('qgjinn'),
-              mentionName: 'MasterQ',
-              name: 'Qui-Gon Jinn',
-              presenceMessage: 'On-call',
-              presenceState: 'offline',
-            },
-            {
-              resultId: '2',
-              type: 'person',
-              avatarUrl: getPersonAvatarUrl('lskywalker'),
-              mentionName: 'lskywalker',
-              name: 'Luke Skywalker',
-              presenceState: 'online',
-            },
-            {
-              resultId: '3',
-              type: 'room',
-              avatarUrl: getRoomAvatarUrl(5),
-              name: 'Jedi Council [archived]',
-              privacy: 'private',
-            },
-            {
-              resultId: '4',
-              type: 'room',
-              avatarUrl: getRoomAvatarUrl(6),
-              name: 'Jawa Movie Night',
-              privacy: 'public',
-              topic: 'Centaxdays at 8pm',
-            },
-          ],
-        },
-      ]}
-    />
-  ))
+  .add('Search Results', () => {
+    const items = [
+      {
+        resultId: '1',
+        type: 'person',
+        avatarUrl: getPersonAvatarUrl('qgjinn'),
+        mentionName: 'MasterQ',
+        name: 'Qui-Gon Jinn',
+        presenceMessage: 'On-call',
+        presenceState: 'offline',
+      },
+      {
+        resultId: '2',
+        type: 'person',
+        avatarUrl: getPersonAvatarUrl('lskywalker'),
+        mentionName: 'lskywalker',
+        name: 'Luke Skywalker',
+        presenceState: 'online',
+      },
+      {
+        resultId: '3',
+        type: 'room',
+        avatarUrl: getRoomAvatarUrl(5),
+        name: 'Jedi Council [archived]',
+        privacy: 'private',
+      },
+      {
+        resultId: '4',
+        type: 'room',
+        avatarUrl: getRoomAvatarUrl(6),
+        name: 'Jawa Movie Night',
+        privacy: 'public',
+        topic: 'Centaxdays at 8pm',
+      },
+    ];
+    const results = [
+      {
+        title: 'Obi Wan\'s Rooms',
+        items: [items[2], items[3]],
+      },
+      {
+        title: '1 on Wan chats',
+        items: [items[0], items[1]],
+      },
+    ];
+    const resultsNoTitle = [{
+      title: '',
+      items,
+    }];
+    return withRootTheme(
+      <div>
+        <h3>Results with two groups with titles</h3>
+        <AkSearchResults results={results} />
+
+        <h3>Results with one group and no title</h3>
+        <AkSearchResults results={resultsNoTitle} />
+      </div>
+    );
+  })
 ;

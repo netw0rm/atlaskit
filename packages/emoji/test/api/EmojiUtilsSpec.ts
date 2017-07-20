@@ -41,7 +41,8 @@ describe('EmojiUtils', () => {
               width: 43,
               xIndex: 6,
               yIndex: 23,
-            }
+            },
+            searchable: true
           },
         ],
         representation: {
@@ -53,6 +54,7 @@ describe('EmojiUtils', () => {
           xIndex: 3,
           yIndex: 32,
         },
+        searchable: true
       };
       const spriteSheet = {
         url: spriteRef,
@@ -108,6 +110,7 @@ describe('EmojiUtils', () => {
               height: 666,
               width: 666,
             },
+            searchable: true,
           },
         ],
         representation: {
@@ -115,6 +118,7 @@ describe('EmojiUtils', () => {
           height: 64,
           width: 64,
         },
+        searchable: true
       };
       const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],
@@ -150,7 +154,8 @@ describe('EmojiUtils', () => {
           ':-D',
           '=D'
         ],
-        shortName: ':smiley:'
+        shortName: ':smiley:',
+        searchable: true
       };
       const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],

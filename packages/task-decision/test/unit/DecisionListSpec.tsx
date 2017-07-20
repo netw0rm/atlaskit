@@ -28,7 +28,7 @@ describe('<DecisionList/>', () => {
     const component = mount(
       <DecisionList/>
     );
-    expect(component.find('ul').length).to.equal(0);
+    expect(component.find('ol').length).to.equal(0);
     expect(component.find('li').length).to.equal(0);
     expect(component.find(DecisionItem).length).to.equal(0);
   });

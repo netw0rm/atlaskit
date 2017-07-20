@@ -16,6 +16,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":grinning:"
     },
     {
@@ -39,6 +40,7 @@
         ":-D",
         "=D"
       ],
+      "searchable": true,
       "shortName": ":smiley:"
     },
     {
@@ -57,6 +59,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":smile:"
     },
     {
@@ -75,6 +78,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":grin:"
     },
     {
@@ -99,6 +103,7 @@
         ">:-)",
         ">=)"
       ],
+      "searchable": true,
       "shortName": ":laughing:"
     },
     {
@@ -125,29 +130,8 @@
         "':-D",
         "'=D"
       ],
+      "searchable": true,
       "shortName": ":sweat_smile:"
-    },
-    {
-      "id": "1f602",
-      "name": "face with tears of joy",
-      "fallback": "😂",
-      "type": "STANDARD",
-      "category": "PEOPLE",
-      "order": 7,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
-        "x": 204,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 6,
-        "yIndex": 0
-      },
-      "ascii": [
-        ":')",
-        ":'-)"
-      ],
-      "shortName": ":joy:"
     },
     {
       "id": "1f62e",
@@ -171,6 +155,7 @@
         "O_O",
         ">:O"
       ],
+      "searchable": true,
       "shortName": ":open_mouth:"
     },
     {
@@ -197,6 +182,7 @@
             "xIndex": 23,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsup::skin-tone-2:"
         },
         {
@@ -215,6 +201,7 @@
             "xIndex": 24,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsup::skin-tone-3:"
         },
         {
@@ -233,6 +220,7 @@
             "xIndex": 25,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsup::skin-tone-4:"
         },
         {
@@ -251,6 +239,7 @@
             "xIndex": 26,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsup::skin-tone-5:"
         },
         {
@@ -269,6 +258,7 @@
             "xIndex": 27,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsup::skin-tone-6:"
         }
       ],
@@ -284,6 +274,7 @@
       "ascii": [
         "(y)"
       ],
+      "searchable": true,
       "shortName": ":thumbsup:"
     },
     {
@@ -310,6 +301,7 @@
             "xIndex": 29,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsdown::skin-tone-2:"
         },
         {
@@ -328,6 +320,7 @@
             "xIndex": 30,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsdown::skin-tone-3:"
         },
         {
@@ -346,6 +339,7 @@
             "xIndex": 31,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsdown::skin-tone-4:"
         },
         {
@@ -364,6 +358,7 @@
             "xIndex": 32,
             "yIndex": 3
           },
+          "searchable": true,
           "shortName": ":thumbsdown::skin-tone-5:"
         },
         {
@@ -382,6 +377,7 @@
             "xIndex": 0,
             "yIndex": 4
           },
+          "searchable": true,
           "shortName": ":thumbsdown::skin-tone-6:"
         }
       ],
@@ -394,7 +390,124 @@
         "xIndex": 28,
         "yIndex": 3
       },
+      "searchable": true,
       "shortName": ":thumbsdown:"
+    },
+    {
+      "id": "1f46e",
+      "name": "police officer",
+      "fallback": "👮",
+      "type": "STANDARD",
+      "category": "PEOPLE",
+      "order": 391,
+      "skinVariations": [
+        {
+          "id": "1f46e-1f3fb",
+          "name": "police officer: light skin tone",
+          "fallback": "👮🏻",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 392,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 952,
+            "y": 374,
+            "height": 32,
+            "width": 32,
+            "xIndex": 28,
+            "yIndex": 11
+          },
+          "searchable": false,
+          "shortName": ":police_officer::skin-tone-2:"
+        },
+        {
+          "id": "1f46e-1f3fc",
+          "name": "police officer: medium-light skin tone",
+          "fallback": "👮🏼",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 393,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 986,
+            "y": 374,
+            "height": 32,
+            "width": 32,
+            "xIndex": 29,
+            "yIndex": 11
+          },
+          "searchable": false,
+          "shortName": ":police_officer::skin-tone-3:"
+        },
+        {
+          "id": "1f46e-1f3fd",
+          "name": "police officer: medium skin tone",
+          "fallback": "👮🏽",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 394,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1020,
+            "y": 374,
+            "height": 32,
+            "width": 32,
+            "xIndex": 30,
+            "yIndex": 11
+          },
+          "searchable": false,
+          "shortName": ":police_officer::skin-tone-4:"
+        },
+        {
+          "id": "1f46e-1f3fe",
+          "name": "police officer: medium-dark skin tone",
+          "fallback": "👮🏾",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 395,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1054,
+            "y": 374,
+            "height": 32,
+            "width": 32,
+            "xIndex": 31,
+            "yIndex": 11
+          },
+          "searchable": false,
+          "shortName": ":police_officer::skin-tone-5:"
+        },
+        {
+          "id": "1f46e-1f3ff",
+          "name": "police officer: dark skin tone",
+          "fallback": "👮🏿",
+          "type": "STANDARD",
+          "category": "PEOPLE",
+          "order": 396,
+          "representation": {
+            "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+            "x": 1088,
+            "y": 374,
+            "height": 32,
+            "width": 32,
+            "xIndex": 32,
+            "yIndex": 11
+          },
+          "searchable": false,
+          "shortName": ":police_officer::skin-tone-6:"
+        }
+      ],
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/people.png",
+        "x": 918,
+        "y": 374,
+        "height": 32,
+        "width": 32,
+        "xIndex": 27,
+        "yIndex": 11
+      },
+      "searchable": false,
+      "shortName": ":police_officer:"
     },
     {
       "id": "1f436",
@@ -412,6 +525,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":dog:"
     },
     {
@@ -430,6 +544,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":cat:"
     },
     {
@@ -448,6 +563,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":mouse:"
     },
     {
@@ -466,6 +582,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":hamster:"
     },
     {
@@ -484,6 +601,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":rabbit:"
     },
     {
@@ -502,6 +620,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":fox:"
     },
     {
@@ -520,6 +639,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":bear:"
     },
     {
@@ -538,6 +658,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":panda_face:"
     },
     {
@@ -556,6 +677,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":koala:"
     },
     {
@@ -574,6 +696,7 @@
         "xIndex": 9,
         "yIndex": 9
       },
+      "searchable": true,
       "shortName": ":boom:"
     },
     {
@@ -592,6 +715,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":green_apple:"
     },
     {
@@ -610,6 +734,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":apple:"
     },
     {
@@ -628,6 +753,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":pear:"
     },
     {
@@ -646,6 +772,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":tangerine:"
     },
     {
@@ -664,6 +791,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":lemon:"
     },
     {
@@ -682,6 +810,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":banana:"
     },
     {
@@ -700,6 +829,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":watermelon:"
     },
     {
@@ -718,6 +848,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":grapes:"
     },
     {
@@ -736,6 +867,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":strawberry:"
     },
     {
@@ -754,6 +886,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":melon:"
     },
     {
@@ -772,6 +905,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":soccer:"
     },
     {
@@ -790,6 +924,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":basketball:"
     },
     {
@@ -808,6 +943,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":football:"
     },
     {
@@ -826,6 +962,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":baseball:"
     },
     {
@@ -844,6 +981,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":tennis:"
     },
     {
@@ -862,6 +1000,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":volleyball:"
     },
     {
@@ -880,6 +1019,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":rugby_football:"
     },
     {
@@ -898,6 +1038,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":8ball:"
     },
     {
@@ -916,6 +1057,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":ping_pong:"
     },
     {
@@ -934,6 +1076,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":badminton:"
     },
     {
@@ -952,6 +1095,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":red_car:"
     },
     {
@@ -970,6 +1114,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":taxi:"
     },
     {
@@ -988,6 +1133,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":blue_car:"
     },
     {
@@ -1006,6 +1152,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":bus:"
     },
     {
@@ -1024,6 +1171,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":trolleybus:"
     },
     {
@@ -1042,6 +1190,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":race_car:"
     },
     {
@@ -1060,6 +1209,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":police_car:"
     },
     {
@@ -1078,6 +1228,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":ambulance:"
     },
     {
@@ -1096,6 +1247,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":fire_engine:"
     },
     {
@@ -1114,6 +1266,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":minibus:"
     },
     {
@@ -1132,6 +1285,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":watch:"
     },
     {
@@ -1150,6 +1304,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":iphone:"
     },
     {
@@ -1168,6 +1323,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":calling:"
     },
     {
@@ -1186,6 +1342,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":computer:"
     },
     {
@@ -1204,6 +1361,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":keyboard:"
     },
     {
@@ -1222,6 +1380,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":desktop:"
     },
     {
@@ -1240,6 +1399,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":printer:"
     },
     {
@@ -1258,6 +1418,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":mouse_three_button:"
     },
     {
@@ -1276,6 +1437,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":trackball:"
     },
     {
@@ -1294,6 +1456,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":joystick:"
     },
     {
@@ -1315,6 +1478,7 @@
       "ascii": [
         "<3"
       ],
+      "searchable": true,
       "shortName": ":heart:"
     },
     {
@@ -1333,6 +1497,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":yellow_heart:"
     },
     {
@@ -1351,6 +1516,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":green_heart:"
     },
     {
@@ -1369,6 +1535,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":blue_heart:"
     },
     {
@@ -1387,6 +1554,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":purple_heart:"
     },
     {
@@ -1405,6 +1573,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":black_heart:"
     },
     {
@@ -1426,6 +1595,7 @@
       "ascii": [
         "</3"
       ],
+      "searchable": true,
       "shortName": ":broken_heart:"
     },
     {
@@ -1444,6 +1614,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":heart_exclamation:"
     },
     {
@@ -1462,6 +1633,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":two_hearts:"
     },
     {
@@ -1480,6 +1652,7 @@
         "xIndex": 9,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":revolving_hearts:"
     },
     {
@@ -1498,6 +1671,7 @@
         "xIndex": 0,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_white:"
     },
     {
@@ -1516,6 +1690,7 @@
         "xIndex": 1,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_black:"
     },
     {
@@ -1534,6 +1709,7 @@
         "xIndex": 2,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":checkered_flag:"
     },
     {
@@ -1552,6 +1728,7 @@
         "xIndex": 3,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":triangular_flag_on_post:"
     },
     {
@@ -1570,6 +1747,7 @@
         "xIndex": 4,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":rainbow_flag:"
     },
     {
@@ -1588,6 +1766,7 @@
         "xIndex": 5,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_af:"
     },
     {
@@ -1606,6 +1785,7 @@
         "xIndex": 6,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_ax:"
     },
     {
@@ -1624,6 +1804,7 @@
         "xIndex": 7,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_al:"
     },
     {
@@ -1642,6 +1823,7 @@
         "xIndex": 8,
         "yIndex": 0
       },
+      "searchable": true,
       "shortName": ":flag_dz:"
     },
     {
@@ -1660,6 +1842,7 @@
         "xIndex": 5,
         "yIndex": 3
       },
+      "searchable": true,
       "shortName": ":flag_cg:"
     }
   ],

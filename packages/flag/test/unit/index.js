@@ -13,17 +13,10 @@ import { Action } from '../../src/styled/Actions';
 import ExpanderInternal from '../../src/styled/Expander';
 
 describe(name, () => {
-  let flagCount = 0;
-
   // Helper function to generate <Flag /> with base props
   function generateFlag(extraProps) {
     return (
-      <Flag
-        icon={<div />}
-        key={flagCount++}
-        title="Flag"
-        {...extraProps}
-      />
+      <Flag icon={<div />} title="Flag" {...extraProps} />
     );
   }
 
@@ -152,7 +145,7 @@ describe(name, () => {
           it('should pass appearance value on to styled sub-components', () => {
             flag.setState({ isExpanded: true });
             flag.setProps({
-              actions: [{ content: 'Hello!' }],
+              actions: [{ content: 'Hello!', onClick: () => {} }],
               description: 'Hi there',
             });
 
@@ -265,14 +258,12 @@ describe(name, () => {
       const spy = sinon.spy();
       const wrapper = mount(
         <FlagGroup onDismissed={spy}>
-          {
-            generateFlag({
-              id: 'a',
-              isDismissAllowed: true,
-              onDismissed: spy,
-            })
-          }
-          { generateFlag({ id: 'b' }) }
+          {generateFlag({
+            id: 'a',
+            isDismissAllowed: true,
+            onDismissed: spy,
+          })}
+          {generateFlag({ id: 'b' })}
         </FlagGroup>
       );
       wrapper.find(DismissButton).simulate('click');

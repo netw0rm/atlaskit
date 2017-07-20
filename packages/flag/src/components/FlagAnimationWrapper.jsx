@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import Wrapper from '../styled/Wrapper';
+import type { ChildrenType } from '../types';
+
+type Props = {
+  children: ChildrenType,
+};
 
 export default class FlagAnimationWrapper extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-  }
-
+  props: Props; // eslint-disable-line react/sort-comp
   state = {
     isEntering: false,
     isLeaving: false,

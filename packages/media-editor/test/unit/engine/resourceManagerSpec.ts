@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {ResourceManager} from '../../../src/engine/resourceManager';
 import {expect} from 'chai';
 

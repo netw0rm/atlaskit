@@ -1050,6 +1050,97 @@ System.out.println("There are " + count + " values >= 5");`
           }
         }
       }
+    },
+    {
+      type: 'decisionList',
+      content: [
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: '',
+            state: 'DECIDED'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'Hello world'
+            },
+            {
+              type: 'hardBreak'
+            },
+            {
+              type: 'text',
+              text: 'This is a decision '
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':wink:',
+                id: '1f609',
+                text: '😉'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: '0',
+                text: '@Carolyn',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'was',
+              marks: [
+                {
+                  type: 'strong'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'here',
+              marks: [
+                {
+                  type: 'em'
+                },
+                {
+                  type: 'underline'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: '.'
+            }
+          ]
+        },
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: '',
+            state: 'DECIDED'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'decision 2'
+            }
+          ]
+        }
+      ]
     }
   ]
 };

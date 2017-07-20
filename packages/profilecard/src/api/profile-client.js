@@ -49,7 +49,7 @@ const buildUserQuery = (cloudId, userId) => ({
       fullName,
       nickname,
       email,
-      meta: position,
+      meta: title,
       location,
       companyName,
       avatarUrl(size: 100),

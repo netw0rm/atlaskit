@@ -22,6 +22,9 @@ storiesOf(`${name}/NestedNavigation`, module)
   .add('inline-dialog in nested navigation', () => (
     <NestedNavigationWithInlineDialog />
   ))
+  .add('tooltip in nested navigation', () => (
+    <BasicNestedNavigation withtootips />
+  ))
   .add('nested navigation with drawers', () => (
     <NestedNavigationWithDrawers />
   )

@@ -23,7 +23,6 @@ export const spriteEmoji: EmojiDescription = {
     height: 72,
     width: 72,
   },
-  searchable: true,
 };
 
 export const imageEmoji: EmojiDescription = {
@@ -38,7 +37,6 @@ export const imageEmoji: EmojiDescription = {
     width: 24,
     height: 24,
   },
-  searchable: true,
 };
 
 declare var require: {
@@ -76,6 +74,5 @@ export const generateSkinVariation = (base: EmojiDescription, idx: number): Emoj
       width: 24,
       height: 24,
     },
-    searchable: true,
   };
 };

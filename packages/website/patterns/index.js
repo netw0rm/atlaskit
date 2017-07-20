@@ -11,6 +11,8 @@ import PatternExample from './PatternExample';
 import patternExampleSrc from '!raw-loader!./PatternExample';
 import NavThemedExample from './NavThemedExample';
 import navThemedExampleSrc from '!raw-loader!./NavThemedExample';
+import FocusedTaskExample from './FocusedTaskExample';
+import navFocusedTaskExample from '!raw-loader!./FocusedTaskExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const examples = [
@@ -57,6 +59,14 @@ const examples = [
     title: 'Complex Navigation',
     Component: NavComplexExample,
     src: navComplexExampleSrc,
+    type: 'navTakeover',
+    mainComponent: 'navigation',
+    usedComponents: ['navigation'],
+  },
+  {
+    title: 'Focused Task',
+    Component: FocusedTaskExample,
+    src: navFocusedTaskExample,
     type: 'navTakeover',
     mainComponent: 'navigation',
     usedComponents: ['navigation'],

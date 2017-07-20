@@ -29,7 +29,8 @@
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
-    "Craig P"
+    "Craig P",
+    "Oscar W"
   ],
   "license": "Apache-2.0",
   "peerDependencies": {

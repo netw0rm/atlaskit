@@ -15,7 +15,9 @@ const defaultProps = {
   defaultSelectedRadio: 'everyone',
   heading: 'Who should have access?',
   defaultAccess: (
-    <p><strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.</p>
+    <p>
+      <strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.
+    </p>
   ),
   learnMoreLinkText: 'Learn more',
   notifyUsers: 'Notify these users',
@@ -47,7 +49,9 @@ const defaultProps = {
       { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
       { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
     ]),
-  onComplete: () => {},
+  onComplete: () => {
+    console.log('GrantAccessToUsers onComplete called');
+  },
 };
 
 storiesOf('GrantAccess')
@@ -115,7 +119,7 @@ storiesOf('GrantAccess')
           analyticsId="growth.happy"
           changeUsers
           defaultSelectedRadio="everyone"
-          onComplete={() => Promise.reject(true)}
+          grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject, 1500))}
         />
       )
   );

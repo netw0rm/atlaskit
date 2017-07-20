@@ -69,6 +69,7 @@ export class GrantAccessBase extends Component {
     spinnerActive: this.props.spinnerActive,
     continueButtonDisabled: this.props.continueButtonDisabled,
     failedToGrantAccess: false,
+    showSkipLink: false,
     selectItems: [{ items: [] }],
   };
 
@@ -84,6 +85,10 @@ export class GrantAccessBase extends Component {
         },
       ],
     });
+  };
+
+  handleSkipClick = () => {
+    this.props.onComplete();
   };
 
   handleContinueClick = () => {
@@ -105,13 +110,12 @@ export class GrantAccessBase extends Component {
 
     // TODO: Pass list of users from dropdown to grantAccessToUsers callback
     Promise.resolve(grantAccessToUsers(this.state.selectedRadio)).then(onComplete).catch(() => {
-      setTimeout(() => {
-        this.setState({
-          continueButtonDisabled: false,
-          spinnerActive: false,
-          failedToGrantAccess: true,
-        });
-      }, 1500);
+      this.setState({
+        continueButtonDisabled: false,
+        spinnerActive: false,
+        failedToGrantAccess: true,
+        showSkipLink: true,
+      });
     });
   };
 
@@ -195,6 +199,15 @@ export class GrantAccessBase extends Component {
             >
               <FormattedMessage id={i18n`continue-button`} />
             </Button>
+            {this.state.showSkipLink
+              ? <Button
+                onClick={this.handleSkipClick}
+                appearance="link"
+                isDisabled={this.state.continueButtonDisabled}
+              >
+                <FormattedMessage id={i18n`skip-link`} />
+              </Button>
+              : null}
           </StartTrialFooter>
         }
       >

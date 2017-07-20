@@ -5,6 +5,7 @@ import type { TypeId,
   State,
   DraggableDimension,
   DroppableDimension,
+  DroppableId,
   DimensionState,
   DragImpact,
   DragState,
@@ -20,6 +21,8 @@ import { isContainerScrollIgnored } from '../feature-detection';
 import { add, subtract, negate } from './position';
 import getDragImpact from './get-drag-impact';
 import getDiffToJumpToNextIndex from './get-diff-to-jump-to-next-index';
+import isInsideDroppable from './is-inside-droppable';
+import getDroppableOver from './get-droppable-over';
 
 const noDimensions: DimensionState = {
   request: null,
@@ -85,15 +88,17 @@ const move = (state: State, page: Position, shouldAnimate?: boolean = false): St
   const point: Position = add(withoutDroppableScroll.center, negate(scrollDiff));
 
   const impact: DragImpact = getDragImpact(
-      withoutDroppableScroll.center,
-      point,
-      current.id,
-      state.dimension.draggable,
-      state.dimension.droppable,
-    );
+    withoutDroppableScroll.center,
+    point,
+    current.id,
+    state.dimension.draggable,
+    state.dimension.droppable,
+  );
 
   const drag: DragState = {
-    initial, impact, current,
+    initial,
+    impact,
+    current,
   };
 
   return {

@@ -39,7 +39,6 @@ export type CompleteLiftAction = {|
     type: TypeId,
     page: Position,
     center: Position,
-    parentScroll: Position,
   |}
 |}
 
@@ -47,7 +46,6 @@ const completeLift = (id: DraggableId,
   type: TypeId,
   page: Position,
   center: Position,
-  parentScroll: Position,
   ): CompleteLiftAction => ({
     type: 'COMPLETE_LIFT',
     payload: {
@@ -55,7 +53,6 @@ const completeLift = (id: DraggableId,
       type,
       page,
       center,
-      parentScroll,
     },
   });
 
@@ -288,7 +285,6 @@ export const lift = (id: DraggableId,
   type: TypeId,
   page: Position,
   center: Position,
-  parentScroll: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   (() => {
     const state: State = getState();
@@ -327,7 +323,7 @@ export const lift = (id: DraggableId,
       if (newState.phase !== 'COLLECTING_DIMENSIONS') {
         return;
       }
-      dispatch(completeLift(id, type, page, center, parentScroll));
+      dispatch(completeLift(id, type, page, center));
     });
   });
 };

@@ -103,7 +103,7 @@ export default class Draggable extends Component {
     const page: Position = add(point, windowScroll);
     const center: Position = add(getCenterPosition(ref), windowScroll);
 
-    lift(draggableId, type, page, center, /*parentScroll*/);
+    lift(draggableId, type, page, center);
   }
 
   onKeyLift = () => {

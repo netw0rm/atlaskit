@@ -67,4 +67,77 @@ describe('MentionList', () => {
         expect(mentionList.mentionsCount()).to.equal(mentionDataSize);
       });
   });
+
+  it('should retain a deliberate selection across changing list of mentions', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => {
+      return component.find(MentionItem).length === mentionDataSize;
+    };
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        const mentionList = component.instance() as MentionList;
+
+        // select item 3 in the mention list
+        mentionList.selectIndex(2);
+
+        const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
+
+        return waitUntil(thirdItemSelected)
+          .then(() => {
+
+            // remove the first item from the mentions array and set the new mentions
+            const reducedMentionsList = mentions.slice(1);
+            component.setProps({
+              mentions: reducedMentionsList
+            });
+
+            const reducedListOfItemsShow = () => {
+              return component.find(MentionItem).length === reducedMentionsList.length;
+            };
+
+            return waitUntil(reducedListOfItemsShow)
+              .then(() => {
+                // ensure item 2 is now selected
+                const secondItemSelected = () => isMentionItemSelected(component, reducedMentionsList[1].id);
+
+                return waitUntil(secondItemSelected);
+            });
+        });
+      });
+  });
+
+  it('should select first item for each changing set of mentions if no deliberate selection is made', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => {
+      return component.find(MentionItem).length === mentionDataSize;
+    };
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        const firstItemSelected = () => isMentionItemSelected(component, mentions[0].id);
+        return waitUntil(firstItemSelected)
+          .then(() => {
+            // move the first item to the third position in a new list.
+            // Note that I've also removed a single item from the list so I can differentiate when the new mentions are shown using length
+            const reducedMentionsList = [ ...mentions.slice(1, 3), mentions[0], ...mentions.slice(4) ];
+
+            component.setProps({
+              mentions: reducedMentionsList
+            });
+
+            const reducedListOfItemsShow = () => {
+              return component.find(MentionItem).length === reducedMentionsList.length;
+            };
+
+            return waitUntil(reducedListOfItemsShow)
+              .then(() => {
+                // ensure item 0 is still selected
+                const newfirstItemSelected = () => isMentionItemSelected(component, reducedMentionsList[0].id);
+                return waitUntil(newfirstItemSelected);
+            });
+          });
+      });
+
+  });
 });

@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {ColorWithAlpha} from '../../../../src/common';
 import {DefaultDrawingArea, OutputSize} from '../../../../src/engine/components/drawingArea';
 import {expect} from 'chai';

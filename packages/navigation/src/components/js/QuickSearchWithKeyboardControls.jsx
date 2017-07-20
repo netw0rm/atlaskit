@@ -61,7 +61,6 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
 export const withKeyboardControls = QuickSearchComp => (
   class WithKeyboardControls extends Component {
     static propTypes = {
-      onResultClick: AkQuickSearch.propTypes.onResultClick,
       onResultMouseEnter: AkQuickSearch.propTypes.onResultMouseEnter,
       onResultMouseLeave: AkQuickSearch.propTypes.onResultMouseLeave,
       onSearchBlur: AkQuickSearch.propTypes.onSearchBlur,
@@ -140,10 +139,14 @@ export const withKeyboardControls = QuickSearchComp => (
       } else if (event.key === 'Enter' && this.state.selectedItemId) {
         event.preventDefault(); // Don't fire submit event from input
         const itemData = getItemById(this.flatResults, this.state.selectedItemId);
-        this.props.onResultClick({
-          resultId: itemData.resultId,
-          type: itemData.type,
-        });
+        if (itemData.href) {
+          window.location.assign(itemData.href);
+        } else if (itemData.onClick) {
+          itemData.onClick({
+            resultId: itemData.resultId,
+            type: itemData.type,
+          });
+        }
       }
     };
 

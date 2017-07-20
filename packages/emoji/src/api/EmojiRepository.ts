@@ -149,16 +149,11 @@ export default class EmojiRepository {
     this.emojis = emojis;
 
     this.initMaps();
-    this.fullSearch = new Search('id');
-    this.fullSearch.tokenizer = Tokenizer;
-    this.fullSearch.searchIndex = new UnorderedSearchIndex();
-    this.fullSearch.addIndex('name');
-    this.fullSearch.addIndex('shortName');
-    this.fullSearch.addDocuments(emojis);
+    this.initSearchIndex();
   }
 
   /**
-   * Returns all available emoji.
+   * Returns all available (and searchable) emoji.
    */
   all(): EmojiSearchResult {
     return this.search();
@@ -167,7 +162,7 @@ export default class EmojiRepository {
   /**
    * Text search of emoji shortName and name field for suitable matches.
    *
-   * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.
+   * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
@@ -179,7 +174,7 @@ export default class EmojiRepository {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
       }
     } else {
-      filteredEmoji = this.emojis;
+      filteredEmoji = this.getAllSearchableEmojis();
     }
 
     filteredEmoji = applySearchOptions(filteredEmoji, options);
@@ -218,6 +213,7 @@ export default class EmojiRepository {
     if (emoji.category !== customCategory) {
       throw new Error(`Emoji is not a custom emoji, but from category ${emoji.category}`);
     }
+
     this.emojis = [
       ...this.emojis,
       emoji,
@@ -253,6 +249,20 @@ export default class EmojiRepository {
     this.emojis.forEach(emoji => {
       this.addToMaps(emoji);
     });
+  }
+
+  private initSearchIndex(): void {
+    this.fullSearch = new Search('id');
+    this.fullSearch.tokenizer = Tokenizer;
+    this.fullSearch.searchIndex = new UnorderedSearchIndex();
+    this.fullSearch.addIndex('name');
+    this.fullSearch.addIndex('shortName');
+
+    this.fullSearch.addDocuments(this.getAllSearchableEmojis());
+  }
+
+  private getAllSearchableEmojis(): EmojiDescription[] {
+    return this.emojis.filter(emojiDescription => emojiDescription.searchable);
   }
 
   private addToMaps(emoji: EmojiDescription): void {

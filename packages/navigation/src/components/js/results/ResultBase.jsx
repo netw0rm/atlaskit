@@ -12,11 +12,12 @@ import { AkNavigationItem } from '../../../../src';
 export default class ResultBase extends PureComponent {
   static propTypes = {
     caption: PropTypes.string,
+    href: PropTypes.string,
     icon: PropTypes.node,
     isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool.isRequired,
     isTabbingDisabled: PropTypes.bool,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     onMouseEnter: PropTypes.func.isRequired,
     onMouseLeave: PropTypes.func.isRequired,
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -29,6 +30,7 @@ export default class ResultBase extends PureComponent {
     isHoverStylesDisabled: false,
     isSelected: false,
     isTabbingDisabled: false,
+    onClick: () => {},
   }
 
   handleClick = () => this.props.onClick({
@@ -44,6 +46,7 @@ export default class ResultBase extends PureComponent {
   render() {
     const {
       caption,
+      href,
       icon,
       isHoverStylesDisabled,
       isSelected,
@@ -57,6 +60,7 @@ export default class ResultBase extends PureComponent {
     return (
       <AkNavigationItem
         caption={caption}
+        href={href}
         icon={icon}
         isSelected={isSelected}
         isHoverStylesDisabled={isHoverStylesDisabled}

@@ -83,6 +83,9 @@ export default class MultiSelect extends PureComponent {
     position: PropTypes.string,
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Set whether the dropdown should flip its position when there is not enough
+    room in its default position. */
+    shouldFlip: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
      * inside the autocomplete field */
     shouldAllowCreateItem: PropTypes.bool,
@@ -93,6 +96,7 @@ export default class MultiSelect extends PureComponent {
     createNewItemLabel: 'New item',
     defaultSelected: [],
     shouldFocus: false,
+    shouldFlip: true,
     isRequired: false,
     items: [],
     label: '',
@@ -181,6 +185,7 @@ export default class MultiSelect extends PureComponent {
       shouldAllowCreateItem,
       shouldFitContainer,
       shouldFocus,
+      shouldFlip,
     } = this.props;
     const { filterValue, isOpen, items, selectedItems } = this.state;
 
@@ -212,6 +217,7 @@ export default class MultiSelect extends PureComponent {
         shouldAllowCreateItem={shouldAllowCreateItem}
         shouldFitContainer={shouldFitContainer}
         shouldFocus={shouldFocus}
+        shouldFlip={shouldFlip}
       />
     );
   }

@@ -26,6 +26,7 @@ import {
     defaultMediaApiToken,
     evilburnsEmoji,
     fetchSiteEmojiUrl,
+    filterToSearchable,
     grinEmoji,
     mediaEmoji,
     mediaEmojiImagePath,
@@ -78,8 +79,8 @@ const defaultApiConfig: EmojiResourceConfig = {
   providers: [provider1],
 };
 
-const providerData1 = standardEmojis;
-const providerData2 = atlassianEmojis;
+const providerData1 = filterToSearchable(standardEmojis);
+const providerData2 = filterToSearchable(atlassianEmojis);
 const providerServiceData1 = standardServiceEmojis;
 const providerServiceData2 = atlassianServiceEmojis;
 

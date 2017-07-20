@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import DecisionItem from './DecisionItem';
+import TaskItem from './TaskItem';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
 }
 
 export interface Props {
-  children?: Array<DecisionItem> | DecisionItem;
+  children?: Array<TaskItem> | TaskItem;
 }
 
 // tslint:disable-next-line:variable-name
@@ -18,7 +18,7 @@ const ListWrapper = styled.ol`
   padding-left: 0;
 `;
 
-export default class DecisionList extends PureComponent<Props,{}> {
+export default class TaskList extends PureComponent<Props,{}> {
   render() {
     const { children } = this.props;
 

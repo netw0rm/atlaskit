@@ -13,6 +13,7 @@ export interface FilmstripNavigatorProps {
   onDrop?: (event: DragEvent) => void;
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
+
 }
 
 function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
@@ -119,7 +120,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     return (
       <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}>
         {showLeft ? leftArrow : undefined}
-        <FilmStripListWrapper className="filmtrip-list-wrapper">
+        <FilmStripListWrapper>
           <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
             {items}
           </FilmStripList>

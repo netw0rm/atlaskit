@@ -71,6 +71,7 @@ export class GrantAccessBase extends Component {
     failedToGrantAccess: false,
     showSkipLink: false,
     selectItems: [{ items: [] }],
+    selectedUsers: [],
   };
 
   componentDidMount = async () => {
@@ -92,11 +93,9 @@ export class GrantAccessBase extends Component {
   };
 
   handleContinueClick = () => {
-    const { grantAccessToUsers, onComplete } = this.props;
-    if (
-      this.state.selectedRadio === 'specificUsers' &&
-      this.userSelect.state.selectedItems.length === 0
-    ) {
+    const { grantAccessToUsers, onComplete, usersOption } = this.props;
+    const { selectedRadio, selectedUsers } = this.state;
+    if (selectedRadio === usersOption && selectedUsers.length === 0) {
       this.setState({
         userSelectIsInvalid: true,
       });
@@ -108,15 +107,18 @@ export class GrantAccessBase extends Component {
       failedToGrantAccess: false,
     });
 
-    // TODO: Pass list of users from dropdown to grantAccessToUsers callback
-    Promise.resolve(grantAccessToUsers(this.state.selectedRadio)).then(onComplete).catch(() => {
-      this.setState({
-        continueButtonDisabled: false,
-        spinnerActive: false,
-        failedToGrantAccess: true,
-        showSkipLink: true,
+    Promise.resolve(
+      grantAccessToUsers(selectedRadio, selectedRadio === usersOption ? selectedUsers : null)
+    )
+      .then(onComplete)
+      .catch(() => {
+        this.setState({
+          continueButtonDisabled: false,
+          spinnerActive: false,
+          failedToGrantAccess: true,
+          showSkipLink: true,
+        });
       });
-    });
   };
 
   handleLearnMoreClick = () => {
@@ -151,15 +153,10 @@ export class GrantAccessBase extends Component {
   };
 
   handleUserSelectChange = (evt) => {
-    if (evt.items.length === 0) {
-      this.setState({
-        userSelectIsInvalid: true,
-      });
-    } else {
-      this.setState({
-        userSelectIsInvalid: false,
-      });
-    }
+    this.setState({
+      userSelectIsInvalid: evt.items.length === 0,
+      selectedUsers: evt.items.map(user => ({ name: user.value })),
+    });
   };
 
   createUserItem = (key, presence, disabled = false) => ({

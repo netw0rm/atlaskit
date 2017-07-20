@@ -49,6 +49,11 @@ const defaultProps = {
       { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
       { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
     ]),
+
+  grantAccessToUsers: async (...args) => {
+    console.log('grantAccessToUsers', ...args);
+  },
+
   onComplete: () => {
     console.log('GrantAccessToUsers onComplete called');
   },
@@ -119,7 +124,10 @@ storiesOf('GrantAccess')
           analyticsId="growth.happy"
           changeUsers
           defaultSelectedRadio="everyone"
-          grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+          grantAccessToUsers={() => {
+            console.log('grantAccessToUsers', ...arguments);
+            return new Promise((_, reject) => setTimeout(reject, 1500));
+          }}
         />
       )
   );

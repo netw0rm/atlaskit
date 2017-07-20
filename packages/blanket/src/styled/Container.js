@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  akColorN900,
-  akZIndexBlanket,
-} from '@atlaskit/util-shared-styles';
+import { akColorN900, akZIndexBlanket } from '@atlaskit/util-shared-styles';
 
 export const getOpacity = ({ isTinted }) => (isTinted ? 0.5 : 0);
 export const getPointerEvents = ({ canClickThrough }) => (canClickThrough
@@ -10,8 +7,12 @@ export const getPointerEvents = ({ canClickThrough }) => (canClickThrough
   : 'initial'
 );
 
+const ThemeColor = {
+  background: akColorN900,
+};
+
 export default styled.div`
-  background: ${akColorN900};
+  background: ${ThemeColor.background};
   bottom: 0;
   left: 0;
   opacity: ${getOpacity};

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-range",
-  "version": "2.0.0",
+  "version": "2.4.0",
   "config": {
     "access": "public"
   },
@@ -13,8 +13,9 @@
     "name": "Field Range"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-range",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/field-range; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"

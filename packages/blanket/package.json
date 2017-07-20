@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "2.0.5",
+  "version": "2.4.0",
   "config": {
     "access": "public"
   },
@@ -13,8 +13,9 @@
     "name": "Blanket"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/blanket",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/blanket; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"

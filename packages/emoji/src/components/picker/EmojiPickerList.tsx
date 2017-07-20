@@ -18,6 +18,7 @@ import {
 } from './EmojiPickerVirtualItems';
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
+import { EmojiContext } from '../common/internal-types';
 
 const categoryClassname = 'emoji-category';
 
@@ -102,6 +103,21 @@ class CategoryTracker {
 }
 
 export default class EmojiPickerVirtualList extends PureComponent<Props, State> {
+  static contextTypes = {
+    emoji: React.PropTypes.object
+  };
+
+  static childContextTypes = {
+    emoji: React.PropTypes.object
+  };
+
+  static defaultProps = {
+    onEmojiSelected: () => {},
+    onEmojiActive: () => {},
+    onCategoryActivated: () => {},
+    onSearch: () => {},
+  };
+
   private idSuffix = uid();
   private allEmojiGroups: EmojiGroup[];
   private activeCategory: string | undefined | null;
@@ -110,12 +126,7 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
   private categoryDebounce: number;
   private lastScrollTop: number;
 
-  static defaultProps = {
-    onEmojiSelected: () => {},
-    onEmojiActive: () => {},
-    onCategoryActivated: () => {},
-    onSearch: () => {},
-  };
+  context: EmojiContext;
 
   constructor(props) {
     super(props);
@@ -135,6 +146,15 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
     this.buildVirtualItems(props, this.state);
   }
 
+  getChildContext(): EmojiContext {
+    const { emoji } = this.context;
+    return {
+      emoji: {
+        ...emoji,
+      }
+    };
+  }
+
   componentWillReceiveProps = (nextProps: Props) => {
     if (nextProps.selectedCategory && nextProps.selectedCategory !== this.props.selectedCategory) {
       this.reveal(nextProps.selectedCategory);
@@ -145,6 +165,7 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
     if (this.props.emojis !== nextProps.emojis ||
       this.props.selectedTone !== nextProps.selectedTone ||
       this.props.loading !== nextProps.loading ||
+      this.props.showUploadOption !== nextProps.showUploadOption ||
       this.props.query !== nextProps.query) {
         if (!nextProps.query) {
           // Only refresh if no query

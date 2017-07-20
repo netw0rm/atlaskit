@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tabs",
-  "version": "2.0.0",
+  "version": "2.4.0",
   "config": {
     "access": "public"
   },
@@ -13,8 +13,9 @@
     "name": "Tabs"
   },
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish-with-babel/single @atlaskit/tabs",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/tabs; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"

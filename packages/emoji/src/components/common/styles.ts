@@ -214,17 +214,15 @@ export const emojiPreview = style({
     },
 
     [`.${buttons}`]: {
-      flex: 0,
-      // textAlign: 'right',
-      alignSelf: 'flex-end',
-      margin: '5px',
+      flex: 1,
+      textAlign: 'right',
+      margin: '6px',
     },
-
 
     [`.${toneSelectorContainer}`]: {
       flex: 1,
       textAlign: 'right',
-      margin: '5px',
+      margin: '6px',
     },
 
     [`.${withToneSelector} .${previewText}`]: {

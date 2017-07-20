@@ -6,7 +6,6 @@ import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 import { customCategory } from '../constants';
-import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 
@@ -202,7 +201,6 @@ export default class EmojiRepository {
    * Returns the first matching emoji matching the id, or null if none found.
    */
   findById(id: string): OptionalEmojiDescription {
-    debug('findById', id, this.idMap);
     return findByKey(this.idMap, id);
   }
 

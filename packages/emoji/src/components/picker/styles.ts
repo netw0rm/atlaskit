@@ -126,6 +126,8 @@ export const emojiPickerList = style({
   display: 'flex',
   flexDirection: 'column',
   flex: '1 1 auto',
+  // To force Firefox/IE/Edge to shrink the list, if necessary (e.g. when upload panel in place)
+  height: '0',
 });
 
 // react-virtualized enables focus style by default - turn it off

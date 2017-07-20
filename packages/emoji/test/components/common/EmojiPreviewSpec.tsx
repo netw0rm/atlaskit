@@ -7,9 +7,10 @@ import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
 import Emoji from '../../../src/components/common/Emoji';
 import EmojiButton from '../../../src/components/common/EmojiButton';
-import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+// import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../src/types';
-import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../TestData';
+import { imageEmoji, generateSkinVariation } from '../../TestData';
+// import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../TestData';
 
 const baseEmoji = imageEmoji;
 
@@ -146,15 +147,15 @@ describe('<EmojiPreview />', () => {
       expect(wrapper.state('selectingTone')).to.equal(false);
     });
 
-    it('should render placeholder for unloaded media emoji', () => {
-      const wrapper = shallow(<EmojiPreview
-        emoji={mediaEmoji}
-      />);
+    // it('should render placeholder for unloaded media emoji', () => {
+    //   const wrapper = shallow(<EmojiPreview
+    //     emoji={mediaEmoji}
+    //   />);
 
-      const placeholders = wrapper.find(EmojiPlaceholder);
-      expect(placeholders.length).to.equal(1);
-      const props = placeholders.get(0).props;
-      expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
-    });
+    //   const placeholders = wrapper.find(EmojiPlaceholder);
+    //   expect(placeholders.length).to.equal(1);
+    //   const props = placeholders.get(0).props;
+    //   expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+    // });
   });
 });

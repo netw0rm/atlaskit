@@ -3,12 +3,10 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import Emoji from '../../components/common/Emoji';
 import EmojiButton from '../../components/common/EmojiButton';
-import EmojiPlaceholder from '../../components/common/EmojiPlaceholder';
+import CachingEmoji from '../../components/common/CachingEmoji';
 import ToneSelector from './ToneSelector';
 import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
-import { isEmojiLoaded } from '../../type-helpers';
 
 export interface Props {
   emoji?: EmojiDescription;
@@ -100,23 +98,10 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       [styles.previewSingleLine]: !emoji.name,
     });
 
-    let emojiComponent;
-
-    if (isEmojiLoaded(emoji)) {
-      emojiComponent = (
-        <Emoji emoji={emoji} />
-      );
-    } else {
-      const { shortName } = emoji;
-      emojiComponent = (
-        <EmojiPlaceholder shortName={shortName} size={32} />
-      );
-    }
-
     return (
       <div className={previewClasses}>
         <span className={styles.previewImg}>
-          {emojiComponent}
+          <CachingEmoji emoji={emoji} />
         </span>
         <div className={previewTextClasses}>
           <span className={styles.name}>{emoji.name}</span>

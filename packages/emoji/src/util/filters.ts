@@ -9,7 +9,7 @@ const byShortName = (emojis: EmojiDescription[], shortName: string): EmojiDescri
 const toneEmoji = (emojis: EmojiDescription[]) =>
   byShortName(emojis, toneEmojiShortName);
 
-export const getToneEmoji = (provider: EmojiProvider): Promise<OptionalEmojiDescription> =>
+export const getToneEmoji = (provider: EmojiProvider): OptionalEmojiDescription | Promise<OptionalEmojiDescription> =>
   provider.findByShortName(toneEmojiShortName);
 
 export default {

@@ -11,6 +11,15 @@ const paddingOpen = (() => {
   return `${paddingTop}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
 })();
 
+const paddingClosed = (() => {
+  const paddingTop = gridSize;
+  const paddingLeft = layout.padding.side + (gridSize / 2);
+  const paddingRight = layout.padding.side + (gridSize / 2);
+  const paddingBottom = gridSize;
+
+  return `${paddingTop}px ${paddingLeft}px ${paddingBottom}px ${paddingRight}px`;
+})();
+
 const ContainerHeaderWrapper = styled.div`
   padding: ${paddingOpen};
 
@@ -19,6 +28,7 @@ const ContainerHeaderWrapper = styled.div`
     display: flex;
     justify-content: center;
     flex-shrink: 0;
+    padding: ${paddingClosed};
   `}
 `;
 

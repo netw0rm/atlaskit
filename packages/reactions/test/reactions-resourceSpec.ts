@@ -119,56 +119,56 @@ describe('@atlaskit/reactions/reactions-provider', () => {
     expect(smileyId, 'smiley').to.not.eq(undefined);
   });
 
-  describe('getReactions', () => {
-    beforeEach(() => {
-      fetchMock.mock({
-        options: {
-          method: 'POST'
-        },
-        matcher: 'end:reactions/view',
-        response: fetchGetReactions()
-      });
-    });
+  // describe.skip('getReactions', () => {
+  //   beforeEach(() => {
+  //     fetchMock.mock({
+  //       options: {
+  //         method: 'POST'
+  //       },
+  //       matcher: 'end:reactions/view',
+  //       response: fetchGetReactions()
+  //     });
+  //   });
 
-    const reactionsProvider = new ReactionsResource({baseUrl});
-    it('should return reaction data', () => {
-      return reactionsProvider.getReactions([{ari, containerAri}])
-        .then(reactions => {
-          expect(reactions).to.deep.equal(fetchGetReactions());
-        });
-    });
+  //   const reactionsProvider = new ReactionsResource({baseUrl});
+  //   it('should return reaction data', () => {
+  //     return reactionsProvider.getReactions([{ari, containerAri}])
+  //       .then(reactions => {
+  //         expect(reactions).to.deep.equal(fetchGetReactions());
+  //       });
+  //   });
 
-    it('should set cached reactions', () => {
-      return reactionsProvider.getReactions([{ari, containerAri}])
-        .then(reactions => {
-          expect(Object.keys((reactionsProvider as any).cachedReactions).length).to.equal(1);
-        });
-    });
+  //   it('should set cached reactions', () => {
+  //     return reactionsProvider.getReactions([{ari, containerAri}])
+  //       .then(reactions => {
+  //         expect(Object.keys((reactionsProvider as any).cachedReactions).length).to.equal(1);
+  //       });
+  //   });
 
-    it('should not overwrite cache for excluded aris', () => {
-      populateCache(reactionsProvider);
-      const anotherAri = 'another:ari:123';
-      const anotherAriData = [
-        {
-          ari: anotherAri,
-          containerAri: containerAri,
-          emojiId: 'grinning',
-          count: 1,
-          reacted: false
-        }
-      ];
+  //   it('should not overwrite cache for excluded aris', () => {
+  //     populateCache(reactionsProvider);
+  //     const anotherAri = 'another:ari:123';
+  //     const anotherAriData = [
+  //       {
+  //         ari: anotherAri,
+  //         containerAri: containerAri,
+  //         emojiId: 'grinning',
+  //         count: 1,
+  //         reacted: false
+  //       }
+  //     ];
 
-      const anotherCacheKey = reactionsProvider.objectReactionKey(containerAri, anotherAri);
-      (reactionsProvider as any).cachedReactions[anotherCacheKey] = anotherAriData;
+  //     const anotherCacheKey = reactionsProvider.objectReactionKey(containerAri, anotherAri);
+  //     (reactionsProvider as any).cachedReactions[anotherCacheKey] = anotherAriData;
 
-      return reactionsProvider.getReactions([{ari, containerAri}])
-        .then(reactions => {
-          expect((reactionsProvider as any).cachedReactions).not.to.deep.equal(reactions);
-          expect((reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKey(containerAri, ari)]).to.deep.equal(reactions[ari]);
-          expect((reactionsProvider as any).cachedReactions[anotherCacheKey]).to.deep.equal(anotherAriData);
-        });
-    });
-  });
+  //     return reactionsProvider.getReactions([{ari, containerAri}])
+  //       .then(reactions => {
+  //         expect((reactionsProvider as any).cachedReactions).not.to.deep.equal(reactions);
+  //         expect((reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKey(containerAri, ari)]).to.deep.equal(reactions[ari]);
+  //         expect((reactionsProvider as any).cachedReactions[anotherCacheKey]).to.deep.equal(anotherAriData);
+  //       });
+  //   });
+  // });
 
   describe('addReaction', () => {
     const reactionsProvider = new ReactionsResource({baseUrl});

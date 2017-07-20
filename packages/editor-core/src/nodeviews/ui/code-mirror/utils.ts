@@ -15,7 +15,7 @@ const languages: any[] = [{
       weightage: 2
     }, {
       words:
-        ' true false null do if in for new try var case else enum this void with break catch class super throw while yield Iterator ' +
+        ' require true false null do if in for new try var case else enum this void with break catch class super throw while yield Iterator ' +
         'export import public return static switch default extends finally package private continue function interface protected ' +
         'implements parseFloat parseInt Object Function Boolean Error Number Math Date String Array Uint16Array Uint32Array' +
         'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl require Set Map WeakSet WeakMap module Symbol Proxy Reflect ' +
@@ -23,7 +23,8 @@ const languages: any[] = [{
       weightage: 1
     }, {
       words:
-        ' final system print println IOException BufferedWriter jdbc throws ',
+        'short package default double public try this switch continue throw goto new module requires exports do String class ' +
+        ' final system print println IOException BufferedWriter jdbc throws end except ',
       weightage: -2,
     }]
   }, {
@@ -45,7 +46,7 @@ const languages: any[] = [{
       weightage: 1
     }, {
       words:
-        ' isNaN getElementById typeof isNaN render React ReactDOM ',
+        ' isNaN getElementById typeof isNaN render React ReactDOM except and ',
       weightage: -2,
     }]
   }, {
@@ -55,46 +56,47 @@ const languages: any[] = [{
       words:
         ' elsif BEGIN END puts putc nil printf __ENCODING__ __END__ __FILE__ __LINE__ begin end undef HEREDOC INDENTED_HEREDOC ' +
         'INDENTED_HEREDOC EXPECTED __callee__ block_given __dir__ __method__ at_exit attr_accessor callcc gsub ' +
-        'NIL gets readline sprintf ',
+        'NIL gets readline sprintf get ',
       weightage: 3
     }, {
       words:
-        ' def lambda retry alias module next self ensure defined Rational TRUE FALSE caller caller_locations abort autoload ' +
-        'local_variables fork global_variables chomp chop sleep spawn srand sub syscall warn ',
+        ' lambda retry alias module next ensure defined Rational TRUE FALSE caller caller_locations abort autoload ' +
+        'local_variables fork global_variables chomp chop sleep spawn srand sub syscall warn do raise unless until when then use map ',
       weightage: 2
     }, {
       words:
-        ' and break case class do print else false for if in not or redo rescue return super then unless until when while yield ' +
+        ' def require and break self case class print else false for if in not or redo rescue return super while yield trap untrace_var ' +
         'require include attr_reader attr_writer true nil Array Complex Float Hash Integer String binding catch  eval exec exit ' +
-        'exit fail format iterator load loop open p proc raise rand readlines require require_relative select set_trace_func system ' +
-        'test throw trace_var trap untrace_var ',
+        'exit fail format iterator load loop open p proc rand readlines require require_relative select set_trace_func system ' +
+        'test throw trace_var ',
       weightage: 1
     }, {
       words:
-        ' None del elif ',
+        ' None del elif float try import ',
       weightage: -2
     }]
   }, {
     name: 'python',
     categories: [{
       words:
-        ' None del elif pass except isinstance startswith endswith len divmod tuple ',
+        ' None del elif pass except isinstance startswith endswith len divmod tuple False True ',
       weightage: 3,
     }, {
       words:
-        ' yield global print def not as from with assert exec raise lambda staticmethod isinstance classmethod enumerate execfile ' +
-        'unichr callable xrange getattr hasattr frozenset delattr __import__ NotImplemented setattr dict memoryview repr bytearray ',
+        ' yield global def not as from with assert exec raise lambda staticmethod isinstance classmethod enumerate execfile ' +
+        'unichr callable xrange getattr hasattr frozenset delattr __import__ __name__ NotImplemented setattr dict memoryview repr bytearray ' +
+        'range ',
       weightage: 2,
     }, {
       words:
         ' is in float and while or else if continue finally try return import break class for abs input open all int ord str any eval ' +
-        'pow sum basestring issubclass print super bin file iter property bool filter len range type list raw_input format locals reduce ' +
+        'pow sum basestring issubclass print super bin file iter property bool filter len type list raw_input format locals reduce ' +
         'unicode chr long reload vars map cmp globals max reversed zip compile round complex hash min set help next hex object slice dir ' +
-        'id oct sorted False True Ellipsis Exception',
+        'id oct sorted Ellipsis Exception self ',
       weightage: 1,
     }, {
       words:
-        ' elsif puts nil begin defined self undef printf extends React react ',
+        ' elsif puts nil begin defined undef printf extends React react end ',
       weightage: -2,
     }]
   }, {
@@ -147,7 +149,7 @@ export const detectLanguage = (text): string | undefined => {
     if (contentRegex && contentRegex.test(text)) {
       score += 2;
     }
-    // console.log('score:', name, score)
+    // console.log(`${name}: ${score}`)
     if (score > maxScore) {
       maxScore = score;
       selectedLang = name;

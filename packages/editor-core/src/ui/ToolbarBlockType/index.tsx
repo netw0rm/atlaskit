@@ -5,7 +5,6 @@ import ToolbarButton from '../ToolbarButton';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
-import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
 import { ButtonContent, ExpandIconWrapper } from './styles';
@@ -127,8 +126,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         content: blockType.title,
         value: blockType,
         isActive: (currentBlockType === blockType),
-        tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-        tooltipPosition: 'right',
       });
     });
     return [{

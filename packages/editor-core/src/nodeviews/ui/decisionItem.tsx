@@ -1,37 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import styled from 'styled-components';
 import {
   EditorView,
   Node as PMNode,
   NodeView
 } from '../../prosemirror';
-import {
-  akBorderRadius,
-  akGridSizeUnitless,
-  akColorN20,
-} from '@atlaskit/util-shared-styles';
-import DecisionIcon from '@atlaskit/icon/glyph/decision';
 
-// tslint:disable-next-line:variable-name
-const Wrapper = styled.div`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
-  margin: ${akGridSizeUnitless / 2}px 0;
-  padding: ${akGridSizeUnitless}px;
-`;
-
-// tslint:disable-next-line:variable-name
-const ContentWrapper = styled.div`
-  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
-`;
-
-// tslint:disable-next-line:variable-name
-const IconWrapper = styled.span`
-  height: 24px;
-  width: 24px;
-  position: absolute;
-`;
+import { DecisionItem } from '@atlaskit/task-decision';
 
 type getPosHandler = () => number;
 
@@ -61,12 +36,7 @@ class Decision implements NodeView {
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <Wrapper>
-        <IconWrapper>
-          <DecisionIcon label="Decision" />
-        </IconWrapper>
-        <ContentWrapper innerRef={this.handleRef} />
-      </Wrapper>,
+      <DecisionItem contentRef={this.handleRef}/>,
       this.domRef
     );
   }

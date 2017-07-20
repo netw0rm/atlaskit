@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import {stub} from 'sinon';
 import {isWhiteSpace, isClose, getDirection, getGroupStartIndices, createSpansForCharacters, createSpansForGroups,

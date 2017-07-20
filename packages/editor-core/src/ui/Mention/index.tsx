@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ResourcedMention } from '@atlaskit/mention';
+import MentionWithProfilecardProvider from './mention-with-profilecard-provider';
+
 import { MentionEventHandlers } from '../Renderer';
+import { ProfilecardProvider } from './types';
 import {
   default as ProviderFactory,
   WithProviders
@@ -15,7 +17,9 @@ export interface MentionProps {
   accessLevel?: string;
 }
 
-const noop = () => {};
+export interface MentionState {
+  profilecardProvider: ProfilecardProvider | null;
+}
 
 export default class Mention extends PureComponent<MentionProps, {}> {
   private providerFactory: ProviderFactory;
@@ -34,22 +38,26 @@ export default class Mention extends PureComponent<MentionProps, {}> {
   }
 
   private renderWithProvider = (providers) => {
-    const { eventHandlers, id, text, accessLevel } = this.props;
-    const actionHandlers = {};
+    const {
+      accessLevel,
+      eventHandlers,
+      id,
+      text,
+    } = this.props;
 
-    if (eventHandlers) {
-      ['onClick', 'onMouseEnter', 'onMouseLeave'].forEach(handler => {
-        actionHandlers[handler] = eventHandlers[handler] || noop;
-      });
-    }
+    const {
+      mentionProvider,
+      profilecardProvider,
+    } = providers;
 
     return (
-      <ResourcedMention
+      <MentionWithProfilecardProvider
         id={id}
         text={text}
         accessLevel={accessLevel}
-        mentionProvider={providers.mentionProvider}
-        {...actionHandlers}
+        eventHandlers={eventHandlers}
+        mentionProvider={mentionProvider}
+        profilecardProvider={profilecardProvider}
       />
     );
   }
@@ -57,7 +65,7 @@ export default class Mention extends PureComponent<MentionProps, {}> {
   render() {
     return (
       <WithProviders
-        providers={['mentionProvider']}
+        providers={['mentionProvider', 'profilecardProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />

@@ -113,7 +113,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   componentDidMount() {
     const { maxHeight } = this.props;
     if (maxHeight) {
-      this.addBorderBottom();
+      this.addBorders();
     }
   }
 
@@ -123,14 +123,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleSpinnerComplete() {}
 
-  private addBorderBottom = () => {
+  private addBorders = () => {
     const { maxHeight } = this.props;
     if (maxHeight) {
       let { maxHeightStyle } = this.state;
       if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}` };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
       } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: null };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
       this.setState({ maxHeightStyle });
     }
@@ -250,8 +250,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}
-          onPaste={this.addBorderBottom}
-          onKeyDown={this.addBorderBottom}
+          onPaste={this.addBorders}
+          onKeyDown={this.addBorders}
         >
           <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
             {this.props.children}

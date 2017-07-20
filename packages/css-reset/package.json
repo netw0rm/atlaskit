@@ -8,7 +8,8 @@
   "main": "dist/bundle.css",
   "scripts": {
     "prepublish": "lessc src/index.less dist/bundle.css",
-    "storybook": "../../build/bin/storybook.single.sh"
+    "storybook": "../../build/bin/storybook.single.sh",
+    "eslint": "../../build/bin/lint.eslint.sh"
   },
   "files": [
     "dist"

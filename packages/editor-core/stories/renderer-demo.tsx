@@ -1,11 +1,29 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
-import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
+import {
+  emoji as emojiData,
+  profilecard as profilecardUtils,
+} from '@atlaskit/util-data-test';
+
+import {
+  StoryBookTokenProvider,
+  defaultClientId,
+  defaultServiceHost,
+} from '@atlaskit/media-test-helpers';
+
 import ProviderFactory from '../src/providerFactory';
-import Renderer from '../src/ui/Renderer';
 import { document } from './story-data';
+import Renderer from '../src/ui/Renderer';
+
+import {
+  AkProfileClient,
+  modifyResponse,
+} from '../src/utils/profilecard';
+
+const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
+// tslint:disable-next-line:variable-name
+const MockProfileClient = getMockProfileClientUtil(AkProfileClient, modifyResponse);
 
 const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention) {
@@ -23,10 +41,33 @@ const mediaProvider = Promise.resolve({
 
 const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
 
+const profilecardProvider = Promise.resolve({
+  cloudId: 'DUMMY-CLOUDID',
+  resourceClient: new MockProfileClient({
+    cacheSize: 10,
+    cacheMaxAge: 5000,
+  }),
+  getActions: (id: string) => {
+    const actions = [
+      {
+        label: 'Mention',
+        callback: action('profile-card:mention'),
+      },
+      {
+        label: 'Message',
+        callback: action('profile-card:message'),
+      },
+    ];
+
+    return (id === '1') ? actions : actions.slice(0, 1);
+  },
+});
+
 const providerFactory = new ProviderFactory();
 providerFactory.setProvider('mentionProvider', mentionProvider);
 providerFactory.setProvider('mediaProvider', mediaProvider);
 providerFactory.setProvider('emojiProvider', emojiProvider);
+providerFactory.setProvider('profilecardProvider', profilecardProvider);
 
 const eventHandlers = {
   mention: {

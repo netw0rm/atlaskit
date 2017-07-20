@@ -357,4 +357,8 @@ describe('@atlaskit/editor-bitbucket/focus', () => {
     hasFocusStub.restore();
     spy.restore();
   });
+
+  it('should have a maxHeight peoperty set on Chrome', () => {
+    expect(editorWrapper.find('Chrome').prop('maxHeight')).to.equal(480);
+  });
 });

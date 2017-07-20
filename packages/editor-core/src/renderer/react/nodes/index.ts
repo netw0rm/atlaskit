@@ -5,6 +5,8 @@ import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
+import DecisionItem from './decisionItem';
+import DecisionList from './decisionList';
 import Doc from './doc';
 import Emoji from './emoji';
 import HardBreak from './hardBreak';
@@ -24,6 +26,8 @@ export const nodeToReact = {
   'blockquote': Blockquote,
   'bulletList': BulletList,
   'codeBlock': CodeBlock,
+  'decisionItem': DecisionItem,
+  'decisionList': DecisionList,
   'doc': Doc,
   'emoji': Emoji,
   'hardBreak': HardBreak,
@@ -137,6 +141,8 @@ export {
   Blockquote,
   BulletList,
   CodeBlock,
+  DecisionItem,
+  DecisionList,
   Doc,
   Emoji,
   HardBreak,

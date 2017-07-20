@@ -2,17 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Avatar from '@atlaskit/avatar';
-import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
-import WorldIcon from '@atlaskit/icon/glyph/world';
 
-import PrivacyIconOuter from '../../styled/PrivacyIconOuter';
 import ResultBase from './ResultBase';
-
-const privacyIcons = {
-  none: null,
-  private: <LockFilledIcon label="Private group" size="small" />,
-  public: <WorldIcon label="Public group" size="small" />,
-};
 
 const noOp = () => {};
 
@@ -23,6 +14,7 @@ const noOp = () => {};
 
 export default class RoomResult extends PureComponent {
   static propTypes = {
+    href: PropTypes.string,
     avatarUrl: PropTypes.string,
     isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
@@ -47,22 +39,17 @@ export default class RoomResult extends PureComponent {
     privacy: 'none',
   }
 
-  getPrivacyIcon = key => (
-    privacyIcons[key]
-      ? <PrivacyIconOuter>{privacyIcons[key]}</PrivacyIconOuter>
-      : null
-  );
-
   getAvatar = () => (
     <Avatar
       src={this.props.avatarUrl}
       appearance="square"
-      icon={this.getPrivacyIcon(this.props.privacy)}
+      status={this.props.privacy.toLowerCase() === 'private' ? 'locked' : null}
     />
   )
 
   render() {
     const {
+      href,
       isHoverStylesDisabled,
       isSelected,
       isTabbingDisabled,
@@ -76,6 +63,7 @@ export default class RoomResult extends PureComponent {
     } = this.props;
     return (
       <ResultBase
+        href={href}
         icon={this.getAvatar()}
         isHoverStylesDisabled={isHoverStylesDisabled}
         isSelected={isSelected}

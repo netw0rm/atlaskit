@@ -444,6 +444,24 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         }
         break;
       }
+      case 'decisionList': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'decisionItem': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
     }
   }
 

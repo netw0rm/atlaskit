@@ -89,6 +89,8 @@ export default class StatelessSelect extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     /** Sets whether the droplist should flip its position when there is not enough space. */
     shouldFlip: PropTypes.bool,
+    /** Set the max height of the dropdown list in pixels. */
+    maxHeight: PropTypes.number,
   }
 
   static defaultProps = {
@@ -447,8 +449,8 @@ export default class StatelessSelect extends PureComponent {
       selectedItem,
       shouldFitContainer,
       shouldFlip,
+      maxHeight,
     } = this.props;
-
     // disabled because all of the accessibility is handled manually
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
@@ -475,6 +477,7 @@ export default class StatelessSelect extends PureComponent {
           position={position}
           shouldFitContainer={droplistShouldFitContainer}
           shouldFlip={shouldFlip}
+          maxHeight={maxHeight}
           trigger={
             <FieldBase
               appearance={mapAppearanceToFieldBase([appearance])}

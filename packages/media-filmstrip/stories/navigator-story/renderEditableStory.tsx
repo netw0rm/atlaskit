@@ -41,6 +41,7 @@ export interface NavigatorStoryProps {
 
 export interface NavigatorStoryState {
   index: number;
+  goToIndex: number;
   widthType: 'auto' | 'number';
   width: number;
   children: JSX.Element[];
@@ -50,6 +51,7 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
 
   state: NavigatorStoryState = {
     index: 0,
+    goToIndex: Math.floor(cards.length / 2),
     widthType: 'auto',
     width: 300,
     children: cards
@@ -59,12 +61,16 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
     this.setState({index: 0});
   }
 
-  handleGoToMiddle = () => {
-    this.setState(({children}) => ({index: Math.floor(children.length / 2)}));
-  }
-
   handleGoToLast = () => {
     this.setState(({children}) => ({index: children.length - 1}));
+  }
+
+  handleGoToIndex = () => {
+    this.setState(({goToIndex}) => ({index: goToIndex}));
+  }
+
+  handleChangeGoToIndex = goToIndex => {
+    this.setState({goToIndex});
   }
 
   handleChangeWidthType = event => {
@@ -95,14 +101,16 @@ export class NavigatorStory extends React.Component<NavigatorStoryProps, Navigat
   }
 
   renderControls() {
-    const {widthType, width, children} = this.state;
+    const {goToIndex, widthType, width, children} = this.state;
     return (
       <div>
 
         <ControlLabel>Go to: </ControlLabel>
         <Button onClick={this.handleGoToFirst}>First</Button>
-        <Button onClick={this.handleGoToMiddle}>Middle</Button>
         <Button onClick={this.handleGoToLast}>Last</Button>
+        <br/>
+        <Button onClick={this.handleGoToIndex}>Go to:</Button>
+        <Slider value={goToIndex} min={0} max={children.length - 1} step={1} onChange={this.handleChangeGoToIndex} />
 
         <RadioGroup
           label="Width"

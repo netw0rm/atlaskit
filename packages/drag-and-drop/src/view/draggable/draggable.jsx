@@ -109,8 +109,10 @@ export default class Draggable extends Component {
   onKeyLift = () => {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
+    const { ref } = this.state;
 
-    const center: Position = getCenterPosition(this.state.ref);
+    const windowScroll: Position = getWindowScrollPosition();
+    const center: Position = add(getCenterPosition(ref), windowScroll);
 
     // using center position as selection
     lift(draggableId, type, center, center);
@@ -200,7 +202,7 @@ export default class Draggable extends Component {
         zIndex: isDropAnimating ? zIndexOptions.dropAnimating : zIndexOptions.dragging,
         width,
         height,
-        transform: movementStyle.transform,
+        transform: movementStyle.transform ? `${movementStyle.transform}` : null,
         // TEMP: make little movements a bit smoother
       };
       return style;
@@ -231,7 +233,6 @@ export default class Draggable extends Component {
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
     ): Provided => {
-      console.log('isSomethingElseDragging', isSomethingElseDragging);
       const draggableStyle: DraggableStyle = (() => {
         if (!isDragging) {
           return this.getNotDraggingStyle(

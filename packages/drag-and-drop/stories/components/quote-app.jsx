@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext } from '../../src/';
 import QuoteItem from './quote-item';
 import QuoteList from './quote-list';
@@ -19,13 +19,16 @@ const Root = styled.div`
   align-items: flex-start;
 `;
 
+const isDraggingClassName = 'is-dragging';
+
 type Props = {|
   initial: Quote[],
   listStyle?: Object,
 |}
 
 type State = {|
-  quotes: Quote[]
+  quotes: Quote[],
+  isQuoteDragging: boolean
 |}
 
 export default class QuoteApp extends Component {
@@ -34,9 +37,17 @@ export default class QuoteApp extends Component {
 
   state: State = {
     quotes: this.props.initial,
+    isQuoteDragging: false,
   };
 
+  onDragStart = () => {
+    document.body.classList.add(isDraggingClassName);
+  }
+
   onDragEnd = (result: DropResult) => {
+    // remove drag styles
+    document.body.classList.remove(isDraggingClassName);
+
     const source: DraggableLocation = result.source;
     const destination: ?DraggableLocation = result.destination;
 
@@ -71,11 +82,22 @@ export default class QuoteApp extends Component {
     });
   }
 
+  componentDidMount() {
+    // eslint-disable-next-line no-unused-expressions
+    injectGlobal`
+      body.${isDraggingClassName} {
+        cursor: grabbing;
+        user-select: none;
+      }
+    `;
+  }
+
   render() {
     const { quotes } = this.state;
 
     return (
       <DragDropContext
+        onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
       >
         <Root>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
@@ -46,14 +45,13 @@ export class ConfirmTrialBase extends Component {
       confirmButtonDisabled: true,
       confluenceFailedToStart: false,
     });
+
     Promise.resolve(startProductTrial()).then(onComplete).catch(() => {
-      setTimeout(() => {
-        this.setState({
-          confluenceFailedToStart: true,
-          spinnerActive: false,
-          confirmButtonDisabled: false,
-        });
-      }, 1500);
+      this.setState({
+        confluenceFailedToStart: true,
+        spinnerActive: false,
+        confirmButtonDisabled: false,
+      });
     });
   };
 

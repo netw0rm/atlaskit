@@ -23,9 +23,9 @@ export default class MultiStep extends Component {
     };
   }
 
-  nextStep = () => {
+  nextStep = (increment = 1) => {
     this.setState({
-      step: this.state.step + 1,
+      step: this.state.step + increment,
     });
   };
 

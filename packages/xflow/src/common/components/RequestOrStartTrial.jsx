@@ -23,6 +23,7 @@ class RequestOrStartTrial extends Component {
   static propTypes = {
     locale: PropTypes.string,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
+    isProductInstalledOrActivating: PropTypes.func.isRequired,
     //fireAnalyticsEvent: PropTypes.func.isRequired,
   };
 
@@ -41,9 +42,10 @@ class RequestOrStartTrial extends Component {
   }
 
   resetRequestOrStartTrial = async () => {
+    const { isProductInstalledOrActivating, canCurrentUserAddProduct } = this.props;
     try {
-      const alreadyStarted = await this.props.isProductInstalledOrActivating();
-      const canAdd = alreadyStarted ? false : await this.props.canCurrentUserAddProduct();
+      const alreadyStarted = await isProductInstalledOrActivating();
+      const canAdd = alreadyStarted ? false : await canCurrentUserAddProduct();
 
       if (alreadyStarted) {
         this.setState({ screen: Screens.ALREADY_STARTED });

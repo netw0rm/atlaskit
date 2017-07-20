@@ -11,8 +11,8 @@ export default class Step extends Component {
     cancel: PropTypes.func.isRequired,
   };
 
-  nextStep = () => {
-    this.context.nextStep();
+  nextStep = (increment = 1) => {
+    this.context.nextStep(increment);
   };
 
   cancel = () => {

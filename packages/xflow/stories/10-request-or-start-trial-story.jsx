@@ -11,6 +11,15 @@ storiesOf('RequestOrStartTrial')
       <MockConfluenceXFlow
         isProductInstalledOrActivating={() => Promise.resolve(false)}
         canCurrentUserAddProduct={() => Promise.resolve(true)}
+        hasProductBeenEvaluated={() => Promise.resolve(false)}
+        retrieveUsers={() =>
+          Promise.resolve([
+            { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
+            { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
+            { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
+            { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
+            { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
+          ])}
         startProductTrial={() => new Promise(resolve => setTimeout(resolve, 1000))}
         cancelStartProductTrial={() => Promise.resolve()}
         grantAccessToUsers={() => new Promise(resolve => setTimeout(resolve, 1000))}
@@ -20,6 +29,23 @@ storiesOf('RequestOrStartTrial')
         <RequestOrStartTrial analyticsId="growth.happy" />
       </MockConfluenceXFlow>
     )
+  )
+  .add(
+    'if a user can add a product, but the product has been evaluated previously, skip the grant access screen',
+    () =>
+      setupStorybookAnalytics(
+        <MockConfluenceXFlow
+          isProductInstalledOrActivating={() => Promise.resolve(false)}
+          canCurrentUserAddProduct={() => Promise.resolve(true)}
+          hasProductBeenEvaluated={() => Promise.resolve(true)}
+          startProductTrial={() => new Promise(resolve => setTimeout(resolve, 1000))}
+          cancelStartProductTrial={() => Promise.resolve()}
+          goToProduct={() => Promise.resolve()}
+          closeLoadingDialog={() => Promise.resolve()}
+        >
+          <RequestOrStartTrial analyticsId="growth.happy" />
+        </MockConfluenceXFlow>
+      )
   )
   .add('if the product is already installed or activating, show Already Started', () =>
     setupStorybookAnalytics(

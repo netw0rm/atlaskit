@@ -54,8 +54,9 @@ storiesOf('StartTrialConfirm')
       <ConfirmTrialBase
         {...defaultProps}
         analyticsId="growth.happy"
-        onComplete={() => Promise.reject(true)}
-        onCancel={() => Promise.resolve(true)}
+        startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+        onComplete={() => Promise.resolve()}
+        onCancel={() => Promise.resolve()}
       />
     )
   );

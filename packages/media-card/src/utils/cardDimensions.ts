@@ -40,6 +40,11 @@ export const maxImageCardDimensions = {
   height: 360
 };
 
+export const maxHorizontalCardDimensions = {
+  width: 744,
+  height: 116
+};
+
 export const getCardMinHeight = (appearance?: CardAppearance) => {
   if (appearance === 'small') {
     return minSmallCardDimensions.height;

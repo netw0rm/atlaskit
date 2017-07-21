@@ -53,12 +53,9 @@ const theme = {
 export default theme;
 
 export function getProperty(appearance, property) {
-  const prop = theme[appearance][property];
-
-  if (!prop) {
-    Error(`No matching property "${property}" for appearance "${appearance}"`);
+  if (!theme[appearance] || !theme[appearance][property]) {
+    console.error(`No matching property "${property}" for appearance "${appearance}"`);
     return undefined;
   }
-
-  return prop;
+  return theme[appearance][property];
 }

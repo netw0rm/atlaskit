@@ -13,28 +13,29 @@ import {
   akColorN600,
   akColorN700,
   akColorN800,
-
   akGridSize,
 } from '@atlaskit/util-shared-styles';
 
+import { themeValue } from '../../../theme/src';
+
 const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
 
-export const ExampleSource = ({ isSourceClosing = false, handleAnimationEnd = () => {}, src }) => (
-  <Code
-    closing={isSourceClosing}
-    onAnimationEnd={handleAnimationEnd}
-  >
+export const ExampleSource = ({
+  isSourceClosing = false,
+  handleAnimationEnd = () => {},
+  src,
+}) =>
+  <Code closing={isSourceClosing} onAnimationEnd={handleAnimationEnd}>
     <pre>
       <code dangerouslySetInnerHTML={{ __html: formatSrc(src) }} />
     </pre>
-  </Code>
-);
+  </Code>;
 
 export default class Example extends PureComponent {
   state = {
     isSourceClosing: false,
     isSourceVisible: false,
-  }
+  };
 
   toggleSource = () => {
     const { isSourceClosing, isSourceVisible } = this.state;
@@ -47,7 +48,7 @@ export default class Example extends PureComponent {
     } else {
       this.setState({ isSourceClosing: true });
     }
-  }
+  };
   handleAnimationEnd = () => {
     const { isSourceClosing } = this.state;
 
@@ -57,7 +58,7 @@ export default class Example extends PureComponent {
       isSourceClosing: false,
       isSourceVisible: false,
     });
-  }
+  };
 
   render() {
     const { Component, title, src } = this.props;
@@ -75,15 +76,19 @@ export default class Example extends PureComponent {
           title={toggleLabel}
           open={isSourceVisible}
         >
-          <ToggleTitle>{title}</ToggleTitle>
+          <ToggleTitle>
+            {title}
+          </ToggleTitle>
           <ToggleIcon label={toggleLabel} />
         </Toggle>
 
-        {isSourceVisible ? <ExampleSource
-          src={src}
-          handleAnimationEnd={this.handleAnimationEnd}
-          isSourceClosing={isSourceClosing}
-        /> : null}
+        {isSourceVisible
+          ? <ExampleSource
+            src={src}
+            handleAnimationEnd={this.handleAnimationEnd}
+            isSourceClosing={isSourceClosing}
+          />
+          : null}
         <Showcase>
           <Component />
         </Showcase>
@@ -94,7 +99,7 @@ export default class Example extends PureComponent {
 
 const TRANSITION_DURATION = '200ms';
 
-const getWrapperBg = (props) => {
+const getWrapperBg = props => {
   let color = akColorN20;
 
   if (props.open && props.hover) color = akColorN700;
@@ -135,7 +140,8 @@ const animOut = keyframes`
   to { max-height: 0; opacity: 0; }
 `;
 const Code = styled.div`
-  animation: ${props => (props.closing ? animOut : animIn)} ${TRANSITION_DURATION} ease-out;
+  animation: ${props => (props.closing ? animOut : animIn)}
+    ${TRANSITION_DURATION} ease-out;
   background-color: ${akColorN800};
   border-radius: 3px;
   color: ${akColorN60};
@@ -151,7 +157,7 @@ const Code = styled.div`
 `;
 
 const Showcase = styled.div`
-  background-color: white;
+  background-color: ${themeValue('colors.background')};
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   padding: ${akGridSize};

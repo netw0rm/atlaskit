@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { themeValue } from '../../../../theme/src';
+
 const Wrapper = styled.code`
   display: inline-block;
-  background: white;
+  background: ${themeValue('colors.background')};
   color: #333;
   border-radius: 3px;
   border-left: 3px solid #eee;

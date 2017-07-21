@@ -1,5 +1,6 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
+import { beforeAll } from 'jest';
 
 import PresenceResource, {
   DefaultPresenceCache, DefaultPresenceParser, PresenceMap

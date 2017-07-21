@@ -13,19 +13,21 @@ export const Wrapper = styled.div`
   border-radius: ${akBorderRadius};
   margin: ${akGridSizeUnitless / 2}px 0;
   padding: ${akGridSizeUnitless}px;
-  display: flex;
+  position: relative;
 `;
 
 // tslint:disable-next-line:variable-name
 export const ContentWrapper = styled.div`
-  margin: 1px 0 1px ${akGridSize};
-  flex: 1 1 auto;
+  margin: 1px 0 1px 32px;
 `;
 
 // tslint:disable-next-line:variable-name
 export const CheckBoxWrapper = styled.span`
-  flex: 0 24px;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: ${akGridSize};
+  bottom: 0;
+  width: 24px;
 
   & > input[type="checkbox"] {
     position: absolute;

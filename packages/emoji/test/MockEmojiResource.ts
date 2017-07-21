@@ -1,7 +1,7 @@
 import * as uid from 'uid';
 
 import { customCategory, customType } from '../src/constants';
-import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../src/types';
+import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../src/types';
 import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { AbstractResource } from '../src/api/SharedResources';
@@ -41,6 +41,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   protected emojiRepository: EmojiRepository;
   protected promiseBuilder: PromiseBuilder<any>;
   protected lastQuery: string = '';
+  protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
 
   recordedSelections: EmojiId[] = [];
@@ -110,6 +111,15 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   optimisticMediaRendering(emoji: EmojiDescription) {
     return !!this.optimisticRendering;
   }
+
+  getSelectedTone(): ToneSelection {
+    return this.selectedTone;
+  }
+
+  setSelectedTone(tone: ToneSelection) {
+    this.selectedTone = tone;
+  }
+
 }
 
 export interface UploadDetail {

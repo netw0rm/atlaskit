@@ -8,13 +8,13 @@ const fromHTML = (html: string) => fromHTML_(html, schema);
 describe('@atlaskit/editor-core/schema mention node', () => {
   it('should have mention id and display name when serializing to DOM', () => {
     const html = toHTML(schema.nodes.mention.create({ id: '@bar', text: 'foo bar' }), schema);
-    expect(html).to.have.string('mention-id="@bar"');
+    expect(html).to.have.string('data-mention-id="@bar"');
     expect(html).to.have.string('contenteditable="false"');
     expect(html).to.have.string('foo bar');
   });
 
   it('should extract the correct values of mention id and display name', () => {
-    const doc = fromHTML('<span mention-id=\'@user-1\'>foo bar</span>');
+    const doc = fromHTML('<span data-mention-id=\'@user-1\'>foo bar</span>');
     const mention = doc.firstChild!.firstChild!;
 
     expect(mention.type.name).to.equal('mention');

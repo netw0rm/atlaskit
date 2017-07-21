@@ -8,6 +8,7 @@ import { EmojiProvider } from '../../api/EmojiResource';
 export interface Props extends LoadingProps {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
+  hideToneSelector?: boolean;
 }
 
 export default class EmojiPicker extends LoadingEmojiComponent<Props,LoadingState> {

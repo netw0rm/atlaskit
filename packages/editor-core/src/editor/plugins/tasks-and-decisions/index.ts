@@ -17,7 +17,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     return [
       { rank: 500, plugin: (schema, props, providerFactory) => createPlugin() },
       { rank: 510, plugin: schema => inputRulePlugin(schema) },
-      { rank: 520, plugin: schema => keymap(schema) }
+      { rank: 9800, plugin: schema => keymap(schema) } // Needs to be after "save-on-enter"
     ];
   }
 };

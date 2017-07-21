@@ -7,7 +7,7 @@ import {
   Plugin,
   ResolvedPos,
  } from '../../prosemirror';
-
+import uuid from './uuid';
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
 
   const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction ) => {
@@ -54,7 +54,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
 
         deleteCurrentItem($from, tr)
           .insert(previousPos.pos, decisionItem.create({}, content))
-          .setSelection(new TextSelection(previousPos))
+          .setSelection(new TextSelection(tr.doc.resolve(previousPos.pos + 1)))
           .scrollIntoView()
         ;
 
@@ -74,7 +74,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
         }
 
         tr
-          .setSelection(new TextSelection( tr.doc.resolve(insertPos)))
+          .setSelection(new TextSelection( tr.doc.resolve(insertPos + 1)))
           .scrollIntoView()
         ;
 
@@ -88,21 +88,27 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
       const { $from } = selection;
       const node = $from.node($from.depth);
       if (
-        node && node.type === nodes.decisionItem &&
-        node.textContent.length === 0
+        node && node.type === nodes.decisionItem
       ) {
+        const isEmpty = node.textContent.length === 0;
         const decisionList = $from.node($from.depth - 1);
         const end = $from.end($from.depth - 1) + 1;
 
+        if (!isEmpty) {
+          tr.split($from.pos, 1, [{type: nodes.decisionItem, attrs: { localId: uuid.generate() }}]);
+          dispatch(tr);
+          return true;
+        }
+
         // If list is empty, replace with paragraph
-        if (decisionList.childCount === 1) {
+        if (isEmpty && decisionList.childCount === 1) {
           deleteDecisionList($from, tr, schema.nodes.paragraph.create({}));
           dispatch(tr);
           return true;
         }
 
         // If last child, remove it and insert a paragraph
-        if (decisionList.child(decisionList.childCount - 1) === node) {
+        if (isEmpty && decisionList.child(decisionList.childCount - 1) === node) {
           tr.insert(end, schema.nodes.paragraph.create({}));
           deleteCurrentItem($from, tr);
           dispatch(tr);

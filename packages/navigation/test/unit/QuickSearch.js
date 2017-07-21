@@ -14,7 +14,7 @@ const noOp = () => {};
 describe('Quick Search', () => {
   const QsComponent = (
     <AkQuickSearch
-      onSearchChange={noOp}
+      onSearchInput={noOp}
     />);
 
   const isInputFocused = wrapper =>
@@ -44,7 +44,7 @@ describe('Quick Search', () => {
     describe('Props', () => {
       const QsKbComponent = (
         <AkQuickSearchWithKeyboardControls
-          onSearchChange={noOp}
+          onSearchInput={noOp}
         />);
 
       let wrapper;
@@ -98,7 +98,7 @@ describe('Quick Search', () => {
     describe('Interactions', () => {
       const QsInteractionComponent = (
         <AkQuickSearchWithKeyboardControls
-          onSearchChange={noOp}
+          onSearchInput={noOp}
           results={kbTestResults}
         />);
       let wrapper;

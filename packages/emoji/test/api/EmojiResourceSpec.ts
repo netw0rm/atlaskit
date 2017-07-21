@@ -1181,6 +1181,8 @@ describe('helpers', () => {
     findByEmojiId = emojiId => Promise.resolve(evilburnsEmoji);
     findById = emojiIdStr => Promise.resolve(evilburnsEmoji);
     findInCategory = categoryId => Promise.resolve([]);
+    getSelectedTone = () => -1;
+    setSelectedTone = tone => {};
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};

@@ -18,7 +18,7 @@ import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emoji
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
-
+import codeMirrorPlugins from '../../src/plugins/code-mirror';
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
   baseKeymap,
@@ -296,6 +296,7 @@ export default class Editor extends PureComponent<Props, State> {
           // this is needed until we implement keymap proirity :(
           ...listsPlugins(schema),
           ...codeBlockPlugins(schema),
+          ...codeMirrorPlugins(schema),
           ...panelPlugins(schema),
           ...tablePlugins(),
           ...reactNodeViewPlugins(schema),

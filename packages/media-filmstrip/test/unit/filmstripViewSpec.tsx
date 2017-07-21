@@ -1,170 +1,107 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
 import * as sinon from 'sinon';
-import {expect} from 'chai';
-import {shallow, mount} from 'enzyme';
-import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../../src/index';
-import {ArrowLeftWrapper, ArrowRightWrapper} from '../../src/styled';
-import {CardView} from '@atlaskit/media-card';
 
-const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: FilmStripCardClickEvent) => void) => {
-  const wrapper = mount(<FilmStripView items={items} width={width} onCardClick={onCardClick}/>, {attachTo: container});
+import { FilmStripNavigator } from '../../src';
+import { FilmStripViewWrapper, FilmStripListItem } from '../../src/styled';
 
-  return wrapper;
-};
+describe('FilmStripNavigator', () => {
+  let clock;
 
-// we need to wait until the filmstrip animation completes
-const waitAndContinue = (f: () => void) => {
-  setTimeout(f, 1000);
-};
-
-describe('FilmstripView', () => {
-  const items: Array<FilmStripViewItem> = [
-    {
-      id: 'some-id-1',
-      dataURI: 'some-data-uri-1',
-      mediaName: 'some-name-1',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-2',
-      dataURI: 'some-data-uri-2',
-      mediaName: 'some-name-2',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-3',
-      dataURI: 'some-data-uri-3',
-      mediaName: 'some-name-3',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-4',
-      dataURI: 'some-data-uri-4',
-      mediaName: 'some-name-4',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-5',
-      dataURI: 'some-data-uri-5',
-      mediaName: 'some-name-5',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-6',
-      dataURI: 'some-data-uri-6',
-      mediaName: 'some-name-6',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-7',
-      dataURI: 'some-data-uri-7',
-      mediaName: 'some-name-7',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-8',
-      dataURI: 'some-data-uri-8',
-      mediaName: 'some-name-8',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-9',
-      dataURI: 'some-data-uri-9',
-      mediaName: 'some-name-9',
-      mediaType: 'image'
-    }
-
-  ];
-
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+  beforeEach(function () {
+    clock = sinon.useFakeTimers();
   });
 
-  afterEach(() => {
-    document.body.removeChild(container);
+  afterEach(function () {
+    clock.restore();
   });
 
-  it('should contain all provided items', () => {
-    const filmStrip = shallow(<FilmStripView items={items} />);
-    expect(filmStrip.find('CardView').length).to.be.equal(items.length);
+  it('Wrap children into LI elements', () => {
+    const children = [1, 2, 3];
+    const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
+
+    expect(filmstripNavigator.find(FilmStripListItem).first().children().text()).to.equal(`${children[0]}`);
+    expect(filmstripNavigator.find(FilmStripListItem).last().children().text()).to.equal(`${children[2]}`);
   });
 
-  it.skip('should initially have right arrow with large collection', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 200);
+  it('Renders correct number of children', () => {
+    const children = [<div key="1">1</div>, <div key="2">2</div>, <div key="3">3</div>];
+    const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
 
-    waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
-
-      filmStrip.detach();
-      done();
-    });
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(children.length);
   });
 
-  it.skip('should initially have no arrows with small collection', (done) => {
-    const smallCollection = items.slice(0, 2);
-    const filmStrip = mountFilmStrip(container, smallCollection, 500);
-
-    waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).to.equal(0);
-
-      filmStrip.detach();
-      done();
-    });
+  it('Navigator items gets re-rendered when children are modified', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(2);
+    filmstripNavigator.setProps({children: [1, 2, 3]});
+    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(3);
   });
 
-  it.skip('should show both arrows after moving right', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 500);
+  it('passes width "undefined" to FilmStripViewWrapper when width prop is falsey', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
 
-    waitAndContinue(() => {
-      filmStrip.find(ArrowRightWrapper).first().simulate('click');
-
-      waitAndContinue(() => {
-        expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(1);
-        expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
-
-        filmStrip.detach();
-        done();
-      });
-    });
+    expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: undefined});
   });
 
-  it.skip('should show only right arrow in the leftmost position', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 500);
+  it('passes width to FilmstripViewWrapper when width prop is a truthy number', () => {
+    const width = 1000;
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={width}>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
 
-    waitAndContinue(() => {
-      filmStrip.find(ArrowRightWrapper).first().simulate('click');
-
-      waitAndContinue(() => {
-        filmStrip.find(ArrowLeftWrapper).first().simulate('click');
-
-        waitAndContinue(() => {
-          expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-          expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
-
-          filmStrip.detach();
-          done();
-        });
-      });
-    });
+    expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
   });
 
-  it('should handle the onCardClick event', () => {
-    const onCardClick = sinon.spy();
-    const cardViewClickMock = {event: {}};
+  it('Fires a real "scroll" event when users navigate through the list', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={10}>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
+    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+    const scrollSpy = sinon.spy();
 
-    const filmStrip = shallow(<FilmStripView items={items} onCardClick={onCardClick} />);
-    filmStrip.find(CardView).first().simulate('click', cardViewClickMock);
+    instance.triggerScrollEvent = scrollSpy;
+    instance.navigate('right')();
 
-    expect(onCardClick.calledOnce).to.be.true;
+    clock.tick(10);
+    expect(scrollSpy.called).to.equal(true);
+  });
 
-    const {item: clickedItem, items: clickedItems} = onCardClick.firstCall.args[0];
-    expect(clickedItem).deep.equals(items[0]);
-    expect(clickedItems).deep.equals(clickedItems);
+  it('should save the right width for all child elements', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator width={10}>
+        {[1, 2, 3, 4]}
+      </FilmStripNavigator>
+    );
+    const children = [{
+      clientWidth: 10
+    }, {
+      clientWidth: 50
+    }, {
+      clientWidth: 20
+    }, {
+      clientWidth: 30
+    }] as Array<HTMLElement>;
+    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+
+    instance.saveChildrenWidths(children);
+
+    expect(instance.childrenWidths[0]).to.be.equal(0);
+    expect(instance.childrenWidths[1]).to.be.equal(42);
+    expect(instance.childrenWidths[2]).to.be.equal(12);
+    expect(instance.childrenWidths[3]).to.be.equal(16);
   });
 });

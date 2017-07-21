@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import * as sinon from 'sinon';
 
-import { FilmStripNavigator } from '../../src';
+import { FilmstripView } from '../../src/filmstripView';
 import { FilmStripViewWrapper, FilmStripListItem } from '../../src/styled';
 
-describe('FilmStripNavigator', () => {
+describe('FilmstripView', () => {
   let clock;
 
   beforeEach(function () {

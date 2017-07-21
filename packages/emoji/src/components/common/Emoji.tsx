@@ -127,6 +127,7 @@ const renderAsImage = (props: Props) => {
   const representation = emoji.representation as ImageRepresentation;
   const emojiNode = (
     <img
+      className={styles.emojiImage}
       src={representation.imagePath}
       alt={emoji.shortName}
     />

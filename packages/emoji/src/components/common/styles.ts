@@ -13,6 +13,7 @@ import { style } from 'typestyle';
 export const selected = 'selected';
 export const selectOnHover = 'selectOnHover';
 export const emojiSprite = 'emoji-sprite';
+export const emojiImage = 'emoji-image';
 
 const checkerBoard = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
 

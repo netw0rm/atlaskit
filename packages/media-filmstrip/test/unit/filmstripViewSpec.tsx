@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import {shallow} from 'enzyme';
 import * as sinon from 'sinon';
 
-import { FilmstripView } from '../../src/filmstripView';
-import { FilmStripViewWrapper, FilmStripListItem } from '../../src/styled';
+import {FilmstripView} from '../../src/filmstripView';
+import {FilmStripListItem} from '../../src/filmstripView/styled';
 
 describe('FilmstripView', () => {
   let clock;
@@ -17,74 +16,67 @@ describe('FilmstripView', () => {
     clock.restore();
   });
 
-  it('Wrap children into LI elements', () => {
+  it('should wrap children', () => {
     const children = [1, 2, 3];
-    const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
-
-    expect(filmstripNavigator.find(FilmStripListItem).first().children().text()).to.equal(`${children[0]}`);
-    expect(filmstripNavigator.find(FilmStripListItem).last().children().text()).to.equal(`${children[2]}`);
+    const element = shallow(<FilmstripView>{children}</FilmstripView>);
+    element.find(FilmStripListItem).forEach((child, index) => {
+      expect(child.children().text()).toEqual(`${children[index]}`);
+    });
   });
 
-  it('Renders correct number of children', () => {
-    const children = [<div key="1">1</div>, <div key="2">2</div>, <div key="3">3</div>];
-    const filmstripNavigator = shallow(<FilmStripNavigator>{children}</FilmStripNavigator>);
-
-    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(children.length);
-  });
-
-  it('Navigator items gets re-rendered when children are modified', () => {
-    const filmstripNavigator = shallow(
-      <FilmStripNavigator>
+  it('should re-render when children are modified', () => {
+    const element = shallow(
+      <FilmstripView>
         {[1, 2]}
-      </FilmStripNavigator>
+      </FilmstripView>
     );
-    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(2);
-    filmstripNavigator.setProps({children: [1, 2, 3]});
-    expect(filmstripNavigator.find(FilmStripListItem).length).to.equal(3);
+    expect(element.find(FilmStripListItem).length).toEqual(2);
+    element.setProps({children: [1, 2, 3]});
+    expect(element.find(FilmStripListItem).length).toEqual(3);
   });
 
   it('passes width "undefined" to FilmStripViewWrapper when width prop is falsey', () => {
-    const filmstripNavigator = shallow(
-      <FilmStripNavigator>
+    const element = shallow(
+      <FilmstripView>
         {[1, 2]}
-      </FilmStripNavigator>
+      </FilmstripView>
     );
 
-    expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: undefined});
+    expect(element.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: undefined});
   });
 
   it('passes width to FilmstripViewWrapper when width prop is a truthy number', () => {
     const width = 1000;
-    const filmstripNavigator = shallow(
-      <FilmStripNavigator width={width}>
+    const element = shallow(
+      <FilmstripView width={width}>
         {[1, 2]}
-      </FilmStripNavigator>
+      </FilmstripView>
     );
 
-    expect(filmstripNavigator.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
+    expect(element.find(FilmStripViewWrapper).prop('style')).to.deep.equal({width: `${width}px`});
   });
 
   it('Fires a real "scroll" event when users navigate through the list', () => {
-    const filmstripNavigator = shallow(
-      <FilmStripNavigator width={10}>
+    const element = shallow(
+      <FilmstripView width={10}>
         {[1, 2]}
-      </FilmStripNavigator>
+      </FilmstripView>
     );
-    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+    const instance = element.instance() as FilmstripView;
     const scrollSpy = sinon.spy();
 
     instance.triggerScrollEvent = scrollSpy;
     instance.navigate('right')();
 
     clock.tick(10);
-    expect(scrollSpy.called).to.equal(true);
+    expect(scrollSpy.called).toEqual(true);
   });
 
   it('should save the right width for all child elements', () => {
-    const filmstripNavigator = shallow(
-      <FilmStripNavigator width={10}>
+    const element = shallow(
+      <FilmstripView width={10}>
         {[1, 2, 3, 4]}
-      </FilmStripNavigator>
+      </FilmstripView>
     );
     const children = [{
       clientWidth: 10
@@ -95,7 +87,7 @@ describe('FilmstripView', () => {
     }, {
       clientWidth: 30
     }] as Array<HTMLElement>;
-    const instance = filmstripNavigator.instance() as FilmStripNavigator;
+    const instance = element.instance() as FilmstripView;
 
     instance.saveChildrenWidths(children);
 

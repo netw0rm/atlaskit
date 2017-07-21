@@ -36,7 +36,6 @@ const cardSize = ({cardSize}: CardProps) => {
  // min-width required in Details to get proper text wrapping in IE11
 export const Details = styled.div`
   ${spaceAround}
-  flex: 1;
   padding: 10px;
   background-color: ${akColorN20};
 `;

@@ -103,8 +103,8 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     return getCSSUnitValue(height || defaultHeight);
   }
 
-  get cardSize(): BreakpointSizeValue {
-    return breakpointSize(this.width, breakpointSizes);
+  get cardSize(): BreakpointSizeValue | undefined {
+    return this.isHorizontal ? breakpointSize(this.width, breakpointSizes) : undefined;
   }
 
   private get isHorizontal() {

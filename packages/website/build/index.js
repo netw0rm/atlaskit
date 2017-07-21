@@ -49,6 +49,7 @@ const packages = fs.readdirSync('..').map((key) => {
   // The name of the component may be in the "ak:component" section; we default
   // to the directory name if it isn't present
   const pkgName = pkg['ak:component'].name || key;
+  const supportsDarkMode = pkg['ak:component'].dark;
   const isPattern = pkg['ak:component'].pattern;
 
   // Some packages have docs, so we test for the presence of a directory and
@@ -92,6 +93,7 @@ const packages = fs.readdirSync('..').map((key) => {
     key,
     name: pkgName,
     isPattern,
+    supportsDarkMode,
     pkg,
   };
 }).filter(i => i).sort((a, b) => a.name > b.name ? 1 : -1);

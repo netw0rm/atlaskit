@@ -431,3 +431,113 @@ export function stringRepeat(text: string, length: number): string {
 export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
 }
+
+/**
+ * Check if current state's document constains from 1 to 3 emoji.
+ * Accepts either a PM document or a JSON document.
+ */
+export function isEmojiMessage(doc: Node): boolean;
+export function isEmojiMessage(doc: { [key: string]: any }): boolean {
+  let emojiCount = 0;
+
+  if (doc instanceof Node) {
+    // Analyse PM document instance
+    const { firstChild } = doc;
+
+    if (doc.nodeSize > 12 || !firstChild) {
+      return false;
+    }
+
+    // The message must contain a single paragraph
+    if (
+      doc.content.content.length !== 1 ||
+      firstChild!.type.name !== 'paragraph'
+    ) {
+      return false;
+    }
+
+    const contentArray = firstChild.content.content;
+    for (let x = 0; x < contentArray.length; x++) {
+      let c = contentArray[x];
+
+      switch (c.type.name) {
+        case 'text':
+          // Allow emojiQuery to prevent editor blinking
+          let { marks } = c;
+          if (
+            marks &&
+            marks.length &&
+            marks[0].type.name === 'emojiQuery'
+          ) {
+            continue;
+          }
+
+          // Disallow any text other than spaces
+          if (c.text && !c.text.match(/^ *$/)) {
+            return false;
+          }
+
+          continue;
+        case 'emoji':
+          if (++emojiCount > 3) {
+            return false;
+          }
+          continue;
+
+        default:
+          // Only text and emoji nodes are allowed
+          return false;
+      }
+    }
+  } else {
+    // Analyse JSON document
+    let { content } = doc;
+
+    // The message must contain a single paragraph with content
+    if (
+      content.length !== 1 ||
+      !content[0].type ||
+      content[0].type !== 'paragraph' ||
+      !content[0].content.length
+    ) {
+      return false;
+    }
+
+    content = content[0].content;
+    for (let x = 0; x < content.length; x++) {
+      let c = content[x];
+
+      switch (c.type) {
+        case 'text':
+          // Allow emojiQuery to prevent editor blinking
+          let { marks } = c;
+          if (
+            marks &&
+            marks.length &&
+            marks[0].type &&
+            marks[0].type === 'emojiQuery'
+          ) {
+            continue;
+          }
+
+          // Disallow any text other than spaces
+          if (c.text && !c.text.match(/^ *$/)) {
+            return false;
+          }
+
+          continue;
+        case 'emoji':
+          if (++emojiCount > 3) {
+            return false;
+          }
+          continue;
+
+        default:
+          // Only text and emoji nodes are allowed
+          return false;
+      }
+    }
+  }
+
+  return emojiCount > 0;
+}

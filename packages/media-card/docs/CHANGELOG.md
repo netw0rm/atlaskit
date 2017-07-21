@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* bug fix; pass mediaItemType to Card placeholder in order to display right loading state
 ## 17.9.0 (2017-07-12)
 
 

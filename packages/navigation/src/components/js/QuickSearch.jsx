@@ -16,7 +16,6 @@ export default class QuickSearch extends PureComponent {
 
     /* SearchResults pass-through props */
     isResultHoverStylesDisabled: AkSearchResults.propTypes.isResultHoverStylesDisabled,
-    onResultClick: AkSearchResults.propTypes.onClick.isRequired,
     onResultMouseEnter: AkSearchResults.propTypes.onResultMouseEnter,
     onResultMouseLeave: AkSearchResults.propTypes.onResultMouseLeave,
     results: AkSearchResults.propTypes.results,
@@ -48,7 +47,6 @@ export default class QuickSearch extends PureComponent {
         <AkSearchResults
           isResultHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
           isTabbingDisabled
-          onClick={this.props.onResultClick}
           onResultMouseEnter={this.props.onResultMouseEnter}
           onResultMouseLeave={this.props.onResultMouseLeave}
           results={this.props.results}

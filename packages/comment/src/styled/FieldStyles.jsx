@@ -1,21 +1,19 @@
 import styled, { css } from 'styled-components';
-
 import { akColorN500 } from '@atlaskit/util-shared-styles';
 
-const commonStyles = ({ hasAuthor }) => css`
+const ThemeColor = {
+  text: akColorN500,
+};
+
+const common = ({ hasAuthor }) => css`
   &:not(:hover):not(:active) {
-    color: ${akColorN500};
+    color: ${ThemeColor.text};
   }
   font-weight: ${hasAuthor ? 500 : 'inherit'};
 `;
 
-const Anchor = styled.a`
-  ${props => commonStyles(props)}
-`;
-
-const Span = styled.span`
-  ${props => commonStyles(props)}
-`;
+const Anchor = styled.a`${p => common(p)}`;
+const Span = styled.span`${p => common(p)}`;
 
 export {
   Anchor,

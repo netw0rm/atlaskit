@@ -24,6 +24,7 @@ export default class Droplist extends PureComponent {
     shouldAllowMultilineItems: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
+    maxHeight: PropTypes.number,
     trigger: PropTypes.node,
   }
   static defaultProps = {
@@ -71,11 +72,15 @@ export default class Droplist extends PureComponent {
   }
 
   setMaxHeight = (dropDomRef) => {
-    const { appearance } = this.props;
-    const maxHeight = this.getMaxHeight();
-
-    if (maxHeight && appearance !== 'tall') {
-      dropDomRef.style.maxHeight = `${maxHeight}px`;
+    const { appearance, maxHeight } = this.props;
+    let calcMaxHeight;
+    if (maxHeight) {
+      calcMaxHeight = maxHeight;
+    } else {
+      calcMaxHeight = this.getMaxHeight();
+    }
+    if (calcMaxHeight && appearance !== 'tall') {
+      dropDomRef.style.maxHeight = `${calcMaxHeight}px`;
     }
   }
 

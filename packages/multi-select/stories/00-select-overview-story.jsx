@@ -17,6 +17,8 @@ import MultiSelectOverview from './examples/MultiSelectOverview';
 import multiSelectOverviewSrc from '!raw!./examples/MultiSelectOverview';
 import MultiSelectStatelessOverview from './examples/MultiSelectStatelessOverview';
 import multiSelectStatelessOverviewSrc from '!raw!./examples/MultiSelectStatelessOverview';
+import MultiSelectStatelessDoesNotFlip from './examples/MultiSelectStatelessDoesNotFlip';
+import multiSelectStatelessDoesNotFlipSrc from '!raw!./examples/MultiSelectStatelessDoesNotFlip';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
@@ -286,6 +288,17 @@ storiesOf(name, module)
       </div>
       <CodeWrapper>
         <Code language="js" showLineNumbers={false} text={SmartSelectWithFooterRaw} />
+      </CodeWrapper>
+    </Spaced>
+  ))
+  .add('Multi select that will not flip', () => (
+    <Spaced title="Multi select with footer">
+      <div style={{ width: '300px' }}>
+        <p>When you reduce the size of the window, the multi-select will remain in place.</p>
+        {MultiSelectStatelessDoesNotFlip}
+      </div>
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={multiSelectStatelessDoesNotFlipSrc} />
       </CodeWrapper>
     </Spaced>
   ))

@@ -372,7 +372,7 @@ function canCreateParagraphNear(state: EditorState<any>): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-function createParagraphNear(view: EditorView, append: boolean = true): void {
+export function createParagraphNear(view: EditorView, append: boolean = true): void {
   const { state, dispatch } = view;
   const paragraph = state.schema.nodes.paragraph;
 

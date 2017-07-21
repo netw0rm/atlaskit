@@ -7,6 +7,7 @@ chai.use(chaiPlugin);
 
 describe('@atlaskit/editor-core/schema strike mark', () => {
   itMatches('<s>text</s>', 'text');
+  itMatches('<del>text</del>', 'text');
   itMatches('<strike>text</strike>', 'text');
   itMatches('<span style="text-decoration: line-through">text</span>', 'text');
 

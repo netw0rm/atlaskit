@@ -1,5 +1,9 @@
 # @atlaskit/editor-jira
 
+## 18.2.4 (2017-07-14)
+
+* fix; media plugin was not being destroyed with the editor
+
 ## 18.2.3 (2017-07-13)
 
 

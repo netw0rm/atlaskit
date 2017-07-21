@@ -9,17 +9,20 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { TRANSITION_DURATION } from './constants';
 
-const backgroundColor = {
-  error: akColorR400,
-  warning: akColorY300,
-};
-const textColor = {
-  error: akColorN0,
-  warning: akColorN800,
+// exported for testing
+export const ThemeColor = {
+  background: {
+    error: akColorR400,
+    warning: akColorY300,
+  },
+  text: {
+    error: akColorN0,
+    warning: akColorN800,
+  },
 };
 
-export const getBackgroundColor = ({ appearance }) => backgroundColor[appearance];
-export const getTextColor = ({ appearance }) => textColor[appearance];
+export const getBackgroundColor = ({ appearance }) => ThemeColor.background[appearance];
+export const getTextColor = ({ appearance }) => ThemeColor.text[appearance];
 
 export default styled.div`
   align-items: center;

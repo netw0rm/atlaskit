@@ -27,7 +27,6 @@ export class Menu extends Component<MenuProps, {}> {
     const actions = this.props.actions || [];
 
     if (!actions.length) { return null; }
-
     const content = this.shouldRenderDeleteButton(actions) ? this.renderDeleteButton(actions[0]) : this.renderDropdown(actions);
 
     return (
@@ -52,6 +51,7 @@ export class Menu extends Component<MenuProps, {}> {
   }
 
   private renderDropdown(actions: Array<CardAction>) {
+    // Note: handler here does not do anything within DropdownMenu it is called by this.onItemActivated
     const items = actions.map(i => ({content: i.label, handler: i.handler}));
     const dropdownItems = [{items}];
 

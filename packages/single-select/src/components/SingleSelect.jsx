@@ -77,6 +77,8 @@ export default class AkSingleSelect extends PureComponent {
     shouldFocus: PropTypes.bool,
     /** Sets whether the droplist should flip its position when there is not enough space. */
     shouldFlip: PropTypes.bool,
+    /** Set the max height of the dropdown list in pixels. */
+    maxHeight: PropTypes.number,
   }
 
   static defaultProps = {
@@ -142,6 +144,7 @@ export default class AkSingleSelect extends PureComponent {
         shouldFitContainer={this.props.shouldFitContainer}
         shouldFocus={this.props.shouldFocus}
         shouldFlip={this.props.shouldFlip}
+        maxHeight={this.props.maxHeight}
       />
     );
   }

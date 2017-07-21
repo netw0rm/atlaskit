@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* feature; adds maxHeight prop to single-select
 ## 1.12.0 (2017-06-29)
 
 

@@ -6,3 +6,4 @@ export { default as emojiPlugin } from './emoji';
 export { default as saveOnEnterPlugin } from './save-on-enter';
 export { default as onChangePlugin } from './on-change';
 export { default as mediaPlugin } from './media';
+export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';

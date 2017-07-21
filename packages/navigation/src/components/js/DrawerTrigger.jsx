@@ -15,6 +15,8 @@ export default class DrawerTrigger extends PureComponent {
     if (this.props.children === null) return null;
     return (
       <DrawerTriggerInner
+        role="button"
+        tabindex="0"
         aria-haspopup="true"
         onClick={this.props.onActivate}
         onMouseDown={e => e.preventDefault()}

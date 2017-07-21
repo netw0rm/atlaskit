@@ -27,7 +27,6 @@ type ResultGroup = {|
 type Props = {|
   isResultHoverStylesDisabled?: boolean,
   isTabbingDisabled?: boolean,
-  onClick?: () => null,
   onResultMouseEnter?: () => null,
   onResultMouseLeave?: () => null,
   results?: Array<ResultGroup>,
@@ -38,7 +37,6 @@ export default class SearchResults extends PureComponent {
   static defaultProps = {
     isResultHoverStylesDisabled: false,
     isTabbingDisabled: false,
-    onClick: noOp,
     onResultMouseEnter: noOp,
     onResultMouseLeave: noOp,
     results: [],
@@ -55,7 +53,6 @@ export default class SearchResults extends PureComponent {
         isHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
         isSelected={isSelected}
         key={props.resultId}
-        onClick={this.props.onClick}
         onMouseEnter={this.props.onResultMouseEnter}
         onMouseLeave={this.props.onResultMouseLeave}
         isTabbingDisabled={this.props.isTabbingDisabled}
@@ -66,7 +63,7 @@ export default class SearchResults extends PureComponent {
      ) : null;
   }
 
-  renderResultGroup = (group, index) => (
+  renderResultGroup = (group: ResultGroup, index: number) => (
     group.items && group.items.length > 0 ? (
       <AkNavigationItemGroup key={group.title || index} title={group.title}>
         {group.items.map(this.renderResultItem)}

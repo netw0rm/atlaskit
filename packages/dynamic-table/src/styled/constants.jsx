@@ -1,10 +1,9 @@
 import { css } from 'styled-components';
-import { akColorN40, akColorN60, akColorN300, akGridSize } from '@atlaskit/util-shared-styles';
-
 import { ASC, DESC } from '../internal/constants';
+import Theme from './theme';
 
-export const gridUnit = parseInt(akGridSize, 10);
-export const baselineUnit = gridUnit / 2;
+export const { spacing } = Theme.$;
+export const baselineUnit = spacing / 2;
 
 export const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
   ${width ? css`width: ${width}%;` : ''}
@@ -29,7 +28,7 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
     display: block;
     height: 0;
     position: absolute;
-    right: -${gridUnit}px;
+    right: -${spacing}px;
     width: 0;
   `;
 
@@ -38,13 +37,19 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
       position: relative;
         &:before {
           ${pseudoBase};
-            border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN40};
+            border-bottom: 3px solid ${sortOrder === ASC
+              ? Theme.arrow.color.selected
+              : Theme.arrow.color.default
+            };
             bottom: 8px;
             content: ' ';
           };
         &:after {
           ${pseudoBase};
-          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN40};
+          border-top: 3px solid ${sortOrder === DESC
+            ? Theme.arrow.color.selected
+            : Theme.arrow.color.default
+          };
           bottom: 0;
           content: ' ';
         };
@@ -52,10 +57,16 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
 
       &:hover > span {
         &:before {
-          border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN60};
+          border-bottom: 3px solid ${sortOrder === ASC
+            ? Theme.arrow.color.selected
+            : Theme.arrow.color.hover
+          };
         }
         &:after {
-          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN60};
+          border-top: 3px solid ${sortOrder === DESC
+            ? Theme.arrow.color.selected
+            : Theme.arrow.color.hover
+          };
         }
       }
     `;
@@ -63,12 +74,9 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
 
 export const cellStyle = css`
     border: none;
-    padding: ${baselineUnit}px ${gridUnit}px;
+    padding: ${baselineUnit}px ${spacing}px;
     text-align: left;
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child {
-      padding-right: 0;
-    }
+
+    &:first-child { padding-left: 0; }
+    &:last-child { padding-right: 0; }
 `;

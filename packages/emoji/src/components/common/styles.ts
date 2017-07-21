@@ -72,10 +72,8 @@ export const placeholderEmoji = style({
 export const emojiButton = style({
   backgroundColor: 'transparent',
   border: '0',
-  borderRadius: '5px',
   cursor: 'pointer',
-  margin: '0',
-  padding: '4px',
+  padding: 0,
 
   $nest: {
     /* Firefox */
@@ -83,7 +81,22 @@ export const emojiButton = style({
       border: '0 none',
       padding: 0,
     },
+
+    '&>span': {
+      borderRadius: '5px',
+      padding: '8px',
+
+      $nest: {
+        // Scale sprite to fit regardless of default emoji size
+        '&>.emoji-sprite': {
+          height: '24px',
+          width: '24px',
+        }
+      }
+    }
   },
+
+
 });
 
 // Emoji Preview
@@ -100,7 +113,6 @@ export const withToneSelector = 'with-tone-selector';
 
 export const emojiPreview = style({
   display: 'flex',
-  padding: '10px',
   height: '50px',
   boxSizing: 'border-box',
 
@@ -108,7 +120,8 @@ export const emojiPreview = style({
     [`.${preview}`]: {
       display: 'flex',
       flexDirection: 'row',
-      flexWrap: 'wrap',
+      flexWrap: 'nowrap',
+      padding: '10px',
 
       $nest: {
         [`.${emojiSprite}`]: {
@@ -146,11 +159,14 @@ export const emojiPreview = style({
         },
 
         [`.${previewText}`]: {
-          flex: 'column',
+          display: 'flex',
+          flexDirection: 'column',
           marginLeft: '10px',
           marginTop: '-2px',
           maxWidth: '285px',
           width: '285px', /* IE */
+          flexGrow: 1,
+          flexShrink: 1,
 
           $nest: {
             [`.${name}`]: {
@@ -201,16 +217,18 @@ export const emojiPreview = style({
     [`.${buttons}`]: {
       flex: 1,
       textAlign: 'right',
+      margin: '6px',
     },
-
 
     [`.${toneSelectorContainer}`]: {
       flex: 1,
       textAlign: 'right',
+      margin: '6px',
     },
 
     [`.${withToneSelector} .${previewText}`]: {
-      maxWidth: '255px',
+      maxWidth: '235px',
+      width: '235px', /* IE */
     },
   },
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
@@ -188,5 +188,22 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     await resolvedMediaProvider.viewContext;
 
     expect(subscribeCalled).to.equal(true);
+  });
+
+  it('should not raise exception if there is no linkCreateContext in mediaProvider', async () => {
+    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
+      viewContext: Promise.resolve({})
+    });
+
+    const media = mount(
+      <MediaComponent
+        id={link.attrs.id}
+        type={link.attrs.type as MediaType}
+        collection={link.attrs.collection}
+      />
+    );
+
+    const resolvedMediaProvider = await mediaProvider;
+    await (media as any).node.handleMediaProvider(resolvedMediaProvider);
   });
 });

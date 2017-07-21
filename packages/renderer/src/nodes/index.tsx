@@ -12,6 +12,7 @@ import Heading, { HeadingLevel } from './heading';
 import BulletList from './bulletList';
 import OrderedList from './orderedList';
 import ListItem from './listItem';
+import { DecisionList, DecisionItem } from './decision';
 import Blockquote from './blockquote';
 import Panel, { PanelType } from './panel';
 import Rule from './rule';
@@ -49,6 +50,8 @@ enum NodeType {
   bulletList,
   orderedList,
   listItem,
+  decisionList,
+  decisionItem,
   blockquote,
   panel,
   rule,
@@ -232,6 +235,24 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         }
         break;
       }
+      case NodeType.decisionList: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case NodeType.decisionItem: {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
       case NodeType.blockquote: {
         if (content) {
           return {
@@ -365,6 +386,10 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <OrderedList key={key} {...optionalProps}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</OrderedList>;
     case NodeType.listItem:
       return <ListItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</ListItem>;
+    case NodeType.decisionList:
+      return <DecisionList key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</DecisionList>;
+    case NodeType.decisionItem:
+      return <DecisionItem key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</DecisionItem>;
     case NodeType.blockquote:
       return <Blockquote key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Blockquote>;
     case NodeType.panel:

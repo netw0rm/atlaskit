@@ -71,6 +71,7 @@ export interface EmojiDescription extends EmojiId {
   category: string;
   ascii?: string[];
   representation: EmojiRepresentation;
+  searchable: boolean;
 }
 
 export interface EmojiDescriptionWithVariations extends EmojiDescription {
@@ -92,6 +93,7 @@ export interface EmojiServiceDescription {
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;
+  searchable: boolean;
 }
 
 export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescription {
@@ -148,8 +150,8 @@ export interface OnToneSelected {
   (variation: number): void;
 }
 
-export interface OnEmojiEvent {
-  (emojiId: EmojiId, emoji: OptionalEmojiDescription, event?: SyntheticEvent<any>): void;
+export interface OnEmojiEvent<T = any> {
+  (emojiId: EmojiId, emoji: OptionalEmojiDescription, event?: SyntheticEvent<T>): void;
 }
 
 export interface OnCategory {
@@ -160,6 +162,8 @@ export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
 }
+
+export type ToneSelection = number | undefined;
 
 export interface EmojiUpload {
   name: string;

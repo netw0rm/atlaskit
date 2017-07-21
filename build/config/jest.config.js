@@ -1,27 +1,21 @@
+const getConfigRoot = require('./_getConfigRoot');
 const path = require('path');
 
-const { rootDir, tsConfigFile, testSetupDir } = (() => {
-  const cwd = process.cwd();
+const cwd = process.cwd();
+const configRoot = getConfigRoot(cwd);
+const repoRoot = path.join(cwd.split('packages')[0]);
+const testSetupDir = path.join(repoRoot, 'test-setup');
 
-  if (cwd.match(/packages/)) {
-    const repoRoot = path.join(cwd.split('packages')[0]);
+let tsConfigFile;
 
-    return {
-      rootDir: cwd,
-      tsConfigFile: path.join(cwd, 'tsconfig.json'),
-      testSetupDir: path.join(repoRoot, 'test-setup'),
-    };
-  }
-
-  return {
-    rootDir: cwd,
-    tsConfigFile: path.join(cwd, 'build/types/tsconfig.base.json'),
-    testSetupDir: path.join(cwd, 'test-setup'),
-  };
-})();
+if (configRoot.indexOf('packages') > 0) {
+  tsConfigFile = path.join(cwd, 'tsconfig.json');
+} else {
+  tsConfigFile = path.join(cwd, 'build/types/tsconfig.base.json');
+}
 
 module.exports = {
-  rootDir,
+  rootDir: cwd,
 
   testRegex: '\\/test\\/unit\\/[^_].*\\.(j|t)sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],

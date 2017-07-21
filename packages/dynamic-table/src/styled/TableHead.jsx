@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { akColorN300 } from '@atlaskit/util-shared-styles';
 import { onClickStyle, truncateStyle, arrowsStyle, cellStyle } from './constants';
+import Theme from './theme';
 
 export const Head = styled.thead`
-  border-bottom: 2px solid #DFE1E6;
+  border-bottom: 2px solid ${Theme.th.border.color};
 `;
 
 export const HeadCell = styled.th`
@@ -12,7 +12,7 @@ export const HeadCell = styled.th`
   ${props => arrowsStyle(props)}
   ${cellStyle}
   border: none;
-  color: ${akColorN300};
+  color: ${Theme.th.text.color};
   font-size: 12px;
   font-weight: 600;
   position: relative;

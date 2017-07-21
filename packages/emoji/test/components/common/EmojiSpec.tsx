@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
+import Tooltip from '@atlaskit/tooltip';
 
 import * as styles from '../../../src/components/common/styles';
 import Emoji from '../../../src/components/common/Emoji';
@@ -50,7 +51,7 @@ describe('<Emoji />', () => {
         emoji={spriteEmoji}
       />);
       wrapper.simulate('mouseenter');
-      expect(wrapper.find('AKTooltip')).to.have.length(0);
+      expect(wrapper.find(Tooltip)).to.have.length(0);
     });
 
     it('should render a tooltip on hover if showTooltip is set to true', () => {
@@ -59,7 +60,7 @@ describe('<Emoji />', () => {
         showTooltip={true}
       />);
       wrapper.simulate('mouseenter');
-      expect(wrapper.find('AKTooltip')).to.have.length(1);
+      expect(wrapper.find(Tooltip).prop('description')).to.equal(spriteEmoji.shortName);
     });
   });
 
@@ -88,7 +89,7 @@ describe('<Emoji />', () => {
         emoji={imageEmoji}
       />);
       wrapper.simulate('mouseenter');
-      expect(wrapper.find('AKTooltip')).to.have.length(0);
+      expect(wrapper.find(Tooltip)).to.have.length(0);
     });
 
     it('should render a tooltip on hover if showTooltip is set to true', () => {
@@ -97,7 +98,7 @@ describe('<Emoji />', () => {
         showTooltip={true}
       />);
       wrapper.simulate('mouseenter');
-      expect(wrapper.find('AKTooltip')).to.have.length(1);
+      expect(wrapper.find(Tooltip).prop('description')).to.equal(imageEmoji.shortName);
     });
   });
 });

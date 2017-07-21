@@ -1,6 +1,5 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
-import { beforeAll } from 'jest';
 
 import PresenceResource, {
   DefaultPresenceCache, DefaultPresenceParser, PresenceMap
@@ -55,16 +54,13 @@ describe('PresenceCache', () => {
   let testPresenceMap: PresenceMap;
   let extraPresences: PresenceMap;
 
-  beforeAll(() => {
+  beforeEach(() => {
     const beforeParser = new DefaultPresenceParser();
     testPresenceMap = beforeParser.parse(validPresenceData);
     extraPresences = {
       '13-thirteen-13': {'status': 'available'},
       'Roger-rolo-the-steam-roller-Lo': {'status': 'busy'}
     };
-  });
-
-  beforeEach(() => {
     // Setup presence resource and cache
     cache = new DefaultPresenceCache();
     parser = new DefaultPresenceParser();

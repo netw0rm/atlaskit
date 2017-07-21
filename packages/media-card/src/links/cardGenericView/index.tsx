@@ -84,7 +84,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     });
   }
 
-  private get width(): string {
+  get width(): string {
     const {dimensions} = this.props;
     const {width} = dimensions || {width: undefined};
     const defaultWidth = this.isHorizontal ? defaultHorizontalCardDimensions.width : defaultSquareCardDimensions.width;
@@ -103,7 +103,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     return getCSSUnitValue(height || defaultHeight);
   }
 
-  private get cardSize(): BreakpointSizeValue {
+  get cardSize(): BreakpointSizeValue {
     return breakpointSize(this.width, breakpointSizes);
   }
 

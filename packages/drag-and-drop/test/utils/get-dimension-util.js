@@ -4,6 +4,18 @@ import type { Dimension } from '../../src/types';
 
 let count = 0;
 
+export const getDraggableDimension = ({
+  id = `item-${++count}`,
+  top = 0,
+  bottom = 100,
+  left = 0,
+  right = 100,
+  margin = { top: 0, right: 0, bottom: 0, left: 0 },
+  scroll = { x: 0, y: 0 },
+}: Object = {}) => {
+
+}
+
 export default ({
   id = `item-${++count}`,
   top = 0,
@@ -25,3 +37,4 @@ export default ({
     margin,
     scroll,
   );
+

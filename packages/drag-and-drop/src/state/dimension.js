@@ -87,15 +87,15 @@ export const getDraggableDimension = ({
   const dimension: DraggableDimension = {
     id,
     droppableId,
+    // on the viewport
+    client: {
+      withoutMargin: getFragment(clientRect),
+      withMargin: getFragment(getWithMargin(clientRect, margin)),
+    },
     // with scroll
     page: {
       withoutMargin: getFragment(withScroll),
       withMargin: getFragment(withScrollAndMargin),
-    },
-    // on the viewport
-    client: {
-      withoutMargin: getFragment(clientRect),
-      withMargin: getWithMargin(clientRect, margin),
     },
   };
 
@@ -117,17 +117,18 @@ export const getDroppableDimension = ({
   windowScroll,
   scroll,
 }: GetDroppableArgs): DroppableDimension => {
-  const withScroll = getWithPosition(clientRect, windowScroll);
-  const withScrollAndMargin = getWithMargin(withScroll, margin);
+  const withWindowScroll = getWithPosition(clientRect, windowScroll);
+  const withWindowScrollAndMargin = getWithMargin(withWindowScroll, margin);
 
   const dimension: DroppableDimension = {
     id,
     scroll: {
       initial: scroll,
+      // when we start the current scroll is the initial scroll
       current: scroll,
     },
-    withoutMargin: getFragment(withScroll),
-    withMargin: getFragment(withScrollAndMargin),
+    withoutMargin: getFragment(withWindowScroll),
+    withMargin: getFragment(withWindowScrollAndMargin),
   };
 
   return dimension;

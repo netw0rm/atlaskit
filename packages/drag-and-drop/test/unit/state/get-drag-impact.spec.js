@@ -11,7 +11,7 @@ import type {
   Position,
 } from '../../../src/types';
 
-const droppable: Dimension = getDimension({
+const droppable: Dimension = getDraggableDimension({
   id: 'drop-1',
   top: 0,
   left: 0,

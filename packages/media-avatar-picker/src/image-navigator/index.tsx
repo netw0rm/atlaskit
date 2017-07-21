@@ -18,7 +18,6 @@ export interface Props {
   onLoad?: OnLoadHandler;
   containerWidth?: number | 'auto';
   mask?: MaskType;
-  preserveWidth?: boolean;
   canNavigateVertically?: boolean;
   allowZooming?: boolean;
 }
@@ -48,7 +47,6 @@ export interface State {
 
 export class ImageNavigator extends Component<Props, State> {
   static defaultProps = {
-    preserveWidth: false,
     canNavigateVertically: true,
     allowZooming: true
   };
@@ -106,12 +104,13 @@ export class ImageNavigator extends Component<Props, State> {
     const newX = imageInitPos.x + (x - cursorInitPos.x);
     const newY = canNavigateVertically ? imageInitPos.y + (y - cursorInitPos.y) : imagePos.y;
     const isScrollXValid = newX + (imageElement.width || 0) >= containerDimensions.width;
+    const isScrollYValid = imageElement.height - containerDimensions.height > 0;
 
     this.setState({
       cursorInitPos,
       imagePos: {
         x: isScrollXValid ? Math.min(newX, 0) : imagePos.x,
-        y: newY
+        y: isScrollYValid ? newY : imagePos.y
       }
     });
   }

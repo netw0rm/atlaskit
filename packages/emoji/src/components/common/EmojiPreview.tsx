@@ -3,16 +3,15 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import AkButton from '@atlaskit/button';
-import Emoji from '../../components/common/Emoji';
+import EmojiButton from '../../components/common/EmojiButton';
 import CachingEmoji from '../../components/common/CachingEmoji';
 import ToneSelector from './ToneSelector';
-import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
 
 export interface Props {
   emoji?: EmojiDescription;
   toneEmoji?: EmojiDescriptionWithVariations;
-  selectedTone?: number;
+  selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
 }
 
@@ -72,12 +71,11 @@ export default class EmojiPreview extends PureComponent<Props, State> {
 
     return (
       <div className={styles.buttons}>
-        <AkButton
-          id="toneSelectorButton"
-          appearance="subtle"
-          iconBefore={<Emoji emoji={previewEmoji} />}
-          onClick={this.onToneButtonClick}
-          spacing="none"
+        <EmojiButton
+          emoji={previewEmoji}
+          // tslint:disable-next-line:jsx-no-lambda
+          onSelected={() => this.onToneButtonClick()}
+          selectOnHover={true}
         />
       </div>
     );
@@ -86,7 +84,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   renderEmojiPreview() {
     const emoji = this.props.emoji;
 
-    if (!emoji) {
+    if (!emoji || this.state.selectingTone) {
       return null;
     }
 

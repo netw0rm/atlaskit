@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
-import { EmojiDescription, OnEmojiEvent } from '../../types';
+import { EmojiDescription, OnEmojiEvent, ToneSelection } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
@@ -34,6 +34,7 @@ export interface State {
   visible: boolean;
   emojis: EmojiDescription[];
   loading: boolean;
+  selectedTone?: ToneSelection;
 }
 
 const isFullShortName = (query?: string) => query && query.length > 1 && query.charAt(0) === ':' && query.charAt(query.length-1) === ':';
@@ -77,6 +78,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
       visible: true,
       emojis: [],
       loading: true,
+      selectedTone: props.emojiProvider.getSelectedTone(),
     };
     if (this.props.onOpen) {
       this.props.onOpen();
@@ -141,6 +143,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
     const { emojiProvider, listLimit } = this.props;
     emojiProvider.filter(query, {
       limit: listLimit || defaultListLimit,
+      skinTone: this.state.selectedTone,
     });
   }
 

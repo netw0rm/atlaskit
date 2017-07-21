@@ -13,7 +13,8 @@ const reservedEmojis = new Map([
   // :thumbsup: has skin variations need for testing
   // :thumbsdown: used to verify order against :thumbsup:
   // :police_officer: is for testing non-searchable emoji
-  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:', ':police_officer:']],
+  // :raised_hand: used for tone selector testing
+  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:', ':police_officer:', ':raised_hand:']],
   ['FLAGS', [':flag_black:', ':flag_cg:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian
   ['NATURE', [':boom:']],

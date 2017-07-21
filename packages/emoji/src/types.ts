@@ -163,6 +163,8 @@ export interface SearchOptions {
   limit?: number;
 }
 
+export type ToneSelection = number | undefined;
+
 export interface EmojiUpload {
   name: string;
   shortName: string;

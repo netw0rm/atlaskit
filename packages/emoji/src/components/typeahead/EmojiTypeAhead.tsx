@@ -18,7 +18,7 @@ export interface Props extends EmojiTypeAheadBaseProps, LoadingProps {
   offsetY?: number;
 }
 
-export default class EmojiPicker extends LoadingEmojiComponent<Props,LoadingState> {
+export default class EmojiTypeahead extends LoadingEmojiComponent<Props,LoadingState> {
   constructor(props) {
     super(props, {});
   }

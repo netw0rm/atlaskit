@@ -1,5 +1,7 @@
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
+import 'whatwg-fetch';
 import { expect } from 'chai';
-import * as fetchMock from 'fetch-mock';
+import * as fetchMock from 'fetch-mock/src/client';
 
 import { requestService, RefreshSecurityProvider, RequestServiceOptions, SecurityProvider, ServiceConfig } from '../../src/serviceUtils';
 
@@ -29,10 +31,6 @@ const refreshedSecurityProvider: RefreshSecurityProvider = () => (
 );
 
 describe('requestService', () => {
-  beforeEach(() => {
-
-  });
-
   afterEach(() => {
     fetchMock.restore();
   });
@@ -74,14 +72,13 @@ describe('requestService', () => {
       expect(response).to.deep.equal(defaultResponse);
       const calls = fetchMock.calls('request');
       expect(calls.length, 'Fetch calls').to.equal(1);
-      const { url, path, headers, method } = calls[0][0];
-      const xCheeseHeader = headers._headers['x-cheese'];
+      const { url, headers, method } = calls[0][0];
+      const xCheeseHeader = headers.map['x-cheese'];
       expect(xCheeseHeader, 'Header defined').to.not.equal(undefined);
-      expect(xCheeseHeader.length, 'Header single value').to.equal(1);
-      expect(xCheeseHeader[0], 'Header value').to.equal('american');
+      expect(xCheeseHeader, 'Header value').to.equal('american');
       expect(url.indexOf(url), `url starts with ${url}`).to.equal(0);
-      expect(path.indexOf('sauce=tomato') >= 0, 'sauce query param').to.equal(true);
-      expect(path.indexOf('bacon=nice') >= 0, 'sauce query param').to.equal(true);
+      expect(url.indexOf('sauce=tomato') >= 0, 'sauce query param').to.equal(true);
+      expect(url.indexOf('bacon=nice') >= 0, 'sauce query param').to.equal(true);
       expect(method, 'method').to.equal('POST');
     });
   });
@@ -121,13 +118,13 @@ describe('requestService', () => {
     return requestService(serviceConfig).then(response => {
       const refreshCalls = fetchMock.calls('request');
       expect(refreshCalls.length, 'Second request').to.equal(1);
-      const { url, path, headers } = refreshCalls[0][0];
-      const xCheeseHeader = headers._headers['x-cheese'];
+      const { url, headers } = refreshCalls[0][0];
+
+      const xCheeseHeader = headers.map['x-cheese'];
       expect(xCheeseHeader, 'Header defined').to.not.equal(undefined);
-      expect(xCheeseHeader.length, 'Header single value').to.equal(1);
-      expect(xCheeseHeader[0], 'Header value').to.equal('swiss');
+      expect(xCheeseHeader, 'Header value').to.equal('swiss');
       expect(url.indexOf(url), `url starts with ${url}`).to.equal(0);
-      expect(path.indexOf('bacon=crispy') >= 0, 'sauce query param').to.equal(true);
+      expect(url.indexOf('bacon=crispy') >= 0, 'sauce query param').to.equal(true);
     });
   });
 });

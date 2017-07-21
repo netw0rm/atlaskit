@@ -303,13 +303,20 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private getClosest(position: number, start: number, accumulator: number, stop: number): number {
+
+    // for (let i = 0; i < this.childrenLength - 1; ++i) {
+
+    //   if (position < th)
+    // }
+
+
     // First position
     let minDist = Math.abs(position - start);
     let result = start;
 
     // Positions between elements
     let x = accumulator;
-    for (let i = 0; i < this.childrenLength - 1; ++i) {
+    for (let i = 0; i < this.childrenWidths.length - 1; ++i) {
       x += (this.childrenWidths[i] + 2 * elementPadding);
 
       const dist = Math.abs(position - x);

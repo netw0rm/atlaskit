@@ -18,14 +18,20 @@ const DURATION_BASE = 0.5;
 const DURATION_MAX = 1.0;
 
 // TODO: drag & drop
-// TODO: handleSizeChange() when the children have changed
-// TODO: reset position to 0 when the children have changed
-// TODO: delay visibility of arrows when position changes
+// TODO: reset position to 0 when the children have changed (can we reliably know this?)
+// TODO: delay visibility of arrows when position changes (does that make sense because i might think there's more and try to keep clicking)
+
+export interface ChildPosition {
+  left: number;
+  right: number;
+}
 
 export interface SizeEvent {
+  width: number;
   position: number;
-  bufferWidth: number;
-  windowWidth: number;
+  positions: ChildPosition[];
+  minPosition: number;
+  maxPosition: number;
 }
 
 export interface ScrollEvent {
@@ -54,6 +60,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   private windowElement: HTMLElement;
   private windowWidth: number = 0;
+  private childrenPositions: {left: number, right: number}[];
 
   private previousPosition: number = 0;
 
@@ -63,7 +70,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   state = {};
 
   get position() {
-    return this.props.position || 0;
+    const {position} = this.props;
+    if (!position) {
+      return 0;
+    }
+    return Math.min(this.maxPosition, Math.max(this.minPosition, position));
   }
 
   get minPosition() {
@@ -71,7 +82,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   get maxPosition() {
-    return this.bufferWidth - this.windowWidth;
+    return Math.max(this.minPosition, this.bufferWidth - this.windowWidth);
   }
 
   get canGoPrev() {
@@ -93,33 +104,85 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     }
   }
 
+  private triggerScrollEvent() {
+    if (!this.windowElement) {
+      return;
+    }
+    const event = document.createEvent('MouseEvents');
+    event.initEvent('scroll', true, true);
+    this.windowElement.dispatchEvent(event);
+  }
+
+  // find the child that is cut off on the left edge of the window and change the window position to
+  // start to the left of that child
+  private getClosestForLeft(position: number): number {
+    for (let i = 0; i < this.childrenPositions.length; ++i) {
+      const childBounds = this.childrenPositions[i];
+      const leftWindowEdge = position;
+      if (leftWindowEdge > childBounds.left && leftWindowEdge < childBounds.right) {
+        return childBounds.left;
+      }
+    }
+    return Math.max(this.minPosition, position);
+  }
+
+  // find the child that is cut off on the right edge of the window and change the window position
+  // to finish at start of the next child
+  private getClosestForRight(position: number): number {
+    const rightWindowEdge = position + this.windowWidth;
+    for (let i = 0; i < this.childrenPositions.length; ++i) {
+      const childBounds = this.childrenPositions[i];
+      if (rightWindowEdge > childBounds.left && rightWindowEdge < childBounds.right) {
+        return childBounds.right - this.windowWidth;
+      }
+    }
+    return Math.min(this.maxPosition, position);
+  }
+
   private handleSizeChange = () => {
 
     // get the widths
     const {windowElement, bufferElement} = this;
     let bufferWidth = 0;
     let windowWidth = 0;
+    let childrenPositions = [];
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
+
+      // we're calculating `left` based on `width` because `rect.left` can be a negative value after resizing the window (considered scrolled??)
+      const children = Array.prototype.slice.call(bufferElement.children, 0);
+      let left = 0;
+      childrenPositions = children.map((child, index) => {
+        const width = child.getBoundingClientRect().width;
+        const position = {
+          left,
+          right: left + width
+        };
+        left += width;
+        return position;
+      });
     }
 
     // make sure the widths have changed before we notify the integrator
-    if (bufferWidth === this.bufferWidth && windowWidth === this.bufferWidth) {
+    if (bufferWidth === this.bufferWidth && windowWidth === this.windowWidth) {
       return;
     }
 
     // store the widths
     this.bufferWidth = bufferWidth;
     this.windowWidth = windowWidth;
+    this.childrenPositions = childrenPositions;
 
     // notify the integrator
     const {onSize} = this.props;
     if (onSize) {
       onSize({
         position: Math.min(this.maxPosition, this.position),
-        bufferWidth: this.bufferWidth,
-        windowWidth: this.windowWidth
+        positions: childrenPositions,
+        width: this.windowWidth,
+        minPosition: this.minPosition,
+        maxPosition: this.maxPosition
       });
     }
 
@@ -138,7 +201,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   handleLeftClick = () => {
     const {onScroll} = this.props;
     if (onScroll) {
-      const newPosition = Math.max(this.minPosition, this.position - this.windowWidth);
+      const newPosition = this.getClosestForLeft(this.position - this.windowWidth);
       onScroll({
         direction: 'left',
         position: newPosition
@@ -149,7 +212,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   handleRightClick = () => {
     const {onScroll} = this.props;
     if (onScroll) {
-      const newPosition = Math.min(this.maxPosition, this.position + this.windowWidth);
+      const newPosition = this.getClosestForRight(this.position + this.windowWidth);
       onScroll({
         direction: 'right',
         position: newPosition
@@ -164,7 +227,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       return;
     }
 
-    // don't actually scroll because we'll fake the scroll with `transform: translateX()`
+    // don't actually let the element scroll because we'll fake scrolling with `transform: translateX()`
     event.preventDefault();
 
     // hack: disable transitions when we think the user is updating due to scrolling
@@ -228,12 +291,14 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   componentDidUpdate() {
     this.previousPosition = this.position;
 
-    // if the children changed, this.bufferWidth may have changed so we'll want to notify the user of a potentially changed position
-    // warn: we're reading the DOM here on every render (which the whole point of React is to avoid!)
-    // the alternative is a n^2 loop comparing old and new children, or 2xn loops and a hash table?
-    // this.handleSizeChange();
+    // trigger a "real" scroll event so lazily loaded cards realize they've been shown
+    this.triggerScrollEvent();
 
-    // hack: disable transitions when we think the user is updating due to scrolling
+    // the children widths and therefore `this.bufferWidth` may have changed so we need to update our stored sizes
+    // note: this reads the DOM on every render (that's nullifying some of the value of having a virtual-dom!)
+    this.handleSizeChange();
+
+    // hack: enable transitions when the user may have stopped scrolling
     this.scrolling = false;
     clearTimeout(this.scrollingTimeout);
 

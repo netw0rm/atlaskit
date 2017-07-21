@@ -1,9 +1,25 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-confusing-arrow */
+
 import styled, { keyframes } from 'styled-components';
 import {
   akAnimationMixins,
-  akColorN900,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+
+import { themeValue, addThemeComponent } from '../../../theme/src';
+
+addThemeComponent('tooltip', (mode, theme) => {
+  return mode === 'dark'
+    ? {
+      backgroundColor: theme.colors.DN80,
+      textColor: theme.colors.DN800,
+    }
+    : {
+      backgroundColor: theme.colors.N800,
+      textColor: theme.colors.N0,
+    };
+});
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -55,20 +71,19 @@ const KEYFRAMES_FLIPPED = {
   right: KEYFRAMES.left,
   top: KEYFRAMES.bottom,
 };
-const getKeyframeName = ({ isFlipped, position }) => (isFlipped
-  ? KEYFRAMES_FLIPPED[position]
-  : KEYFRAMES[position]
-);
+const getKeyframeName = ({ isFlipped, position }) =>
+  isFlipped ? KEYFRAMES_FLIPPED[position] : KEYFRAMES[position];
 
 // apply all the things
 export default styled.div`
   animation: ${getKeyframeName} ${animTime}s ${animDelay}s backwards;
-  background-color: ${akColorN900};
+  background-color: ${themeValue('tooltip.backgroundColor')};
   border-radius: 3px;
   box-sizing: border-box;
-  color: white;
+  color: ${themeValue('tooltip.textColor')};
+  color: ${themeValue('tooltip.textColor')};
   font-size: ${fontSize}px;
-  line-height: ${(4 * grid) / (fontSize)};
+  line-height: ${(4 * grid) / fontSize};
   margin: ${2 * grid}px;
   max-width: ${105 * grid}px;
   padding: ${grid / 2}px ${2 * grid}px;

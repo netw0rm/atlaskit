@@ -208,6 +208,9 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       });
     });
 
+    const storedTone = localStorage.getItem('selectedTone');
+    this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
+
     if (config.providers.length === 0) {
       throw new Error('No providers specified');
     }
@@ -418,6 +421,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
+    localStorage.setItem('selectedTone', tone ? tone.toString() : '');
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

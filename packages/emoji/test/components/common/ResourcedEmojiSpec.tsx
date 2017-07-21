@@ -30,6 +30,19 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
+  it('should render emoji with correct data attributes', () => {
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
+    />);
+
+    return waitUntil(() => emojiVisible(component)).then(() => {
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-id').value).to.equal(grinEmoji.id);
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-short-name').value).to.equal('shouldnotbeused');
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-text').value).to.equal('shouldnotbeused');
+    });
+  });
+
   it('should not render a tooltip on hover if there is no showTooltip prop', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}

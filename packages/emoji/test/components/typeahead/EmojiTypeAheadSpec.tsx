@@ -4,9 +4,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
+
 // import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../TestData';
 import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, blackFlagEmoji, openMouthEmoji } from '../../TestData';
-import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from '../../emoji-selectors';
+import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem  } from '../../emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props } from '../../../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadComponent from '../../../src/components/typeahead/EmojiTypeAheadComponent';
@@ -21,7 +22,7 @@ import { State as TypeAheadState } from '../../../src/components/typeahead/Emoji
 function setupTypeAhead(props?: Props): Promise<ReactWrapper<any, any>> {
   const component = mount(
     <EmojiTypeAhead
-      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiProvider={props && props.emojiProvider ? props.emojiProvider : getEmojiResourcePromise() as Promise<EmojiProvider>}
       query=""
       {...props}
     />
@@ -369,6 +370,36 @@ describe('EmojiTypeAhead', () => {
     .then(component =>
       waitUntil(() => doneLoading(component)).then(() => {
         expect(onSelection.callCount, 'selected 1').to.equal(1);
+      })
+    );
+  });
+
+  it('should display emojis without skin tone variations by default', () => {
+    return setupTypeAhead({
+      query: 'raised_hand',
+    } as Props)
+    .then(component =>
+      waitUntil(() => doneLoading(component)).then(() => {
+        expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+        const typeaheadEmoji = getSelectedEmojiTypeAheadItem(component).prop('emoji');
+        expect(typeaheadEmoji.shortName).to.equal(':raised_hand:');
+      })
+    );
+  });
+
+  it('should display emojis using the skin tone preference provided by the EmojiResource', () => {
+    const emojiProvider = getEmojiResourcePromise();
+    emojiProvider.then(provider => provider.setSelectedTone(1));
+
+    return setupTypeAhead({
+      emojiProvider: emojiProvider,
+      query: 'raised_hand',
+    } as Props)
+    .then(component =>
+      waitUntil(() => doneLoading(component)).then(() => {
+        expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+        const typeaheadEmoji = getSelectedEmojiTypeAheadItem(component).prop('emoji');
+        expect(typeaheadEmoji.shortName).to.equal(':raised_hand::skin-tone-2:');
       })
     );
   });

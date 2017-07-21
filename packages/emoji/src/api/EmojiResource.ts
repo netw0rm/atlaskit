@@ -1,5 +1,5 @@
 import { customCategory } from '../constants';
-import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions } from '../types';
+import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
@@ -105,6 +105,18 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * only explicitly loaded via loadEmojiImageData if it fails to load.
    */
   optimisticMediaRendering(emoji: EmojiDescription): boolean;
+
+  /**
+   * Used by the picker and typeahead to obtain a skin tone preference
+   * if the user has previously selected one via the Tone Selector
+   */
+  getSelectedTone(): ToneSelection;
+
+  /**
+   * Used by Tone Selector to indicate to the provider that the user
+   * has selected a skin tone preference that should be remembered
+   */
+  setSelectedTone(tone: ToneSelection);
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -168,6 +180,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected mediaEmojiResource?: MediaEmojiResource;
+  protected selectedTone: ToneSelection;
 
   constructor(config: EmojiResourceConfig) {
     super();
@@ -397,6 +410,14 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return requestService(recordConfig, { queryParams, requestInit });
     }
     return Promise.reject('Resource does not support recordSelection');
+  }
+
+  getSelectedTone(): ToneSelection {
+    return this.selectedTone;
+  }
+
+  setSelectedTone(tone: ToneSelection) {
+    this.selectedTone = tone;
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

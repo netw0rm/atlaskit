@@ -108,7 +108,32 @@ storiesOf(`${name}/ResourcedEmoji by shortName`, module)
         />
       </span>
     </p>
-  ))  .add('Content resourced emoji shortName', () => (
+  ))
+  .add('non-searchable emoji', () => (
+    <p style={lineStyle}>
+        <ResourcedEmoji
+          emojiId={{ shortName: ':blond_haired_person:' }}
+          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
+        />
+        <ResourcedEmoji
+          emojiId={{ shortName: ':person_wearing_turban:' }}
+          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
+        />
+        <ResourcedEmoji
+          emojiId={{ shortName: ':police_officer:' }}
+          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
+        />
+        <ResourcedEmoji
+          emojiId={{ shortName: ':construction_worker:' }}
+          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          showTooltip={true}
+        />
+    </p>
+  ))
+  .add('Content resourced emoji shortName', () => (
     <div>
       <h1>Heading 1 <SampleEmojis /></h1>
       <h2>Heading 2 <SampleEmojis /></h2>

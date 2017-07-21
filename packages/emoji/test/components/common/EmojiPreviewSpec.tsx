@@ -6,6 +6,7 @@ import * as styles from '../../../src/components/common/styles';
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
 import Emoji from '../../../src/components/common/Emoji';
+import EmojiButton from '../../../src/components/common/EmojiButton';
 // import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../src/types';
 import { imageEmoji, generateSkinVariation } from '../../TestData';
@@ -61,13 +62,13 @@ describe('<EmojiPreview />', () => {
 
   describe('tone', () => {
     it('should display tone selector after clicking on the tone button', () => {
-      const wrapper = shallow(<EmojiPreview
+      const wrapper = mount(<EmojiPreview
         emoji={emoji}
         toneEmoji={toneEmoji}
       />);
 
-      wrapper.find('#toneSelectorButton').first().simulate('click');
-      expect((wrapper).state('selectingTone')).to.equal(true);
+      wrapper.find(EmojiButton).simulate('mousedown', { button: 0 });
+      expect(wrapper.state('selectingTone')).to.equal(true);
       expect(wrapper.find(ToneSelector), 'ToneSelector in preview').to.have.length(1);
     });
 

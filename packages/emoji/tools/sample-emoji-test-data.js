@@ -12,7 +12,9 @@ const reservedEmojis = new Map([
   // :smiley: used to test ascii representations
   // :thumbsup: has skin variations need for testing
   // :thumbsdown: used to verify order against :thumbsup:
-  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:']],
+  // :police_officer: is for testing non-searchable emoji
+  // :raised_hand: used for tone selector testing
+  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:', ':police_officer:', ':raised_hand:']],
   ['FLAGS', [':flag_black:', ':flag_cg:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian
   ['NATURE', [':boom:']],
@@ -41,11 +43,13 @@ stdin.on('end', () => {
   const inputJSON = inputChunks.join('');
   const parsedData = JSON.parse(inputJSON);
 
-  const { emojis, meta } = parsedData;
+  const emojis = parsedData.emojis;
+  const meta = parsedData.meta;
   const countByCategory = initCountByCategory();
 
   const filteredEmojis = emojis.filter((emoji) => {
-    const { category, shortName } = emoji;
+    const category = emoji.category;
+    const shortName = emoji.shortName;
     const count = countByCategory.get(category) || 0;
 
     if (isReservedEmoji(category, shortName)) { return true; }

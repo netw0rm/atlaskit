@@ -6,7 +6,7 @@ import { EmojiDescription } from '../../src/types';
 import { containsEmojiId, toEmojiId } from '../../src/type-helpers';
 import EmojiRepository from '../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../TestData';
+import { emojis as allEmojis, searchableEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -37,6 +37,7 @@ const cowboy: EmojiDescription = {
     xIndex: 19,
     yIndex: 21,
   },
+  searchable: true,
 };
 
 const siteTest: EmojiDescription = {
@@ -60,6 +61,7 @@ const siteTest: EmojiDescription = {
     xIndex: 19,
     yIndex: 21,
   },
+  searchable: true,
 };
 
 const atlassianTest: EmojiDescription = {
@@ -83,6 +85,7 @@ const atlassianTest: EmojiDescription = {
     xIndex: 19,
     yIndex: 21,
   },
+  searchable: true,
 };
 
 const standardTest: EmojiDescription = {
@@ -106,6 +109,7 @@ const standardTest: EmojiDescription = {
     xIndex: 19,
     yIndex: 21,
   },
+  searchable: true,
 };
 
 const allNumberTest: EmojiDescription = {
@@ -129,6 +133,7 @@ const allNumberTest: EmojiDescription = {
     xIndex: 7,
     yIndex: 0,
   },
+  searchable: true,
 };
 
 
@@ -137,21 +142,29 @@ describe('EmojiRepository', () => {
 
   describe('#search', () => {
     it('all', () => {
+
       const expectedEmojis = [
-        ...allEmojis.slice(0, 10), // upto flag,
+        ...searchableEmojis.slice(0, 10), // upto flag,
         cowboy,
-        ...allEmojis.slice(10), // rest...
+        ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(expectedEmojis);
       const emojis = repository.all().emojis;
       checkOrder(expectedEmojis, emojis);
     });
 
+    it('all should not include non-searchable emoji', () => {
+      const emojis = emojiRepository.all().emojis;
+
+      expect(emojis.length).to.be.greaterThan(0);
+      expect(emojis.filter(emoji => emoji.shortName === ':police_officer:').length).to.equal(0);
+    });
+
     it('search all - colon style', () => {
       const expectedEmojis = [
-        ...allEmojis.slice(0, 10), // upto flag,
+        ...searchableEmojis.slice(0, 10), // upto flag,
         cowboy,
-        ...allEmojis.slice(10), // rest...
+        ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(expectedEmojis);
       const emojis = repository.search(':').emojis;
@@ -173,7 +186,7 @@ describe('EmojiRepository', () => {
 
     it('returns exact matches first', () => {
       const emojis = emojiRepository.search(':grin').emojis;
-      const grinEmojis = allEmojis.filter(emoji => emoji.shortName.indexOf(':grin') === 0).sort((e1, e2) => {
+      const grinEmojis = searchableEmojis.filter(emoji => emoji.shortName.indexOf(':grin') === 0).sort((e1, e2) => {
         // If second emoji matches query exactly, bring forward
         if (e2.shortName === ':grin:' && e1.shortName !== ':grin:') {
           return 1;
@@ -186,11 +199,11 @@ describe('EmojiRepository', () => {
 
     it('conflicting shortName matches show in type order Site -> Atlassian -> Standard', () => {
       const splitCategoryEmojis = [
-        ...allEmojis.slice(0, 10), // upto flag,
+        ...searchableEmojis.slice(0, 10), // upto flag,
         atlassianTest,
         standardTest,
         siteTest,
-        ...allEmojis.slice(10), // rest...
+        ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(splitCategoryEmojis);
       const emojis = repository.search(':test').emojis;
@@ -213,12 +226,12 @@ describe('EmojiRepository', () => {
 
     it('options - limit ignored if missing', () => {
       const emojis = emojiRepository.search('').emojis;
-      checkOrder(allEmojis, emojis);
+      checkOrder(searchableEmojis, emojis);
     });
 
     it('options - limit results', () => {
       const emojis = emojiRepository.search('', { limit: 10 }).emojis;
-      checkOrder(allEmojis.slice(0, 10), emojis);
+      checkOrder(searchableEmojis.slice(0, 10), emojis);
     });
 
     it('includes ascii match at the top', () => {
@@ -242,7 +255,7 @@ describe('EmojiRepository', () => {
 
     it('returns emojis whose shortName starts with a number', () => {
       const expectedEmojis = [
-        ...allEmojis,
+        ...searchableEmojis,
         allNumberTest,
       ];
       const repository = new EmojiRepository(expectedEmojis);
@@ -253,7 +266,7 @@ describe('EmojiRepository', () => {
 
     it('should include numbers as a part of the query', () => {
       const expectedEmojis = [
-        ...allEmojis,
+        ...searchableEmojis,
         atlassianTest,
         standardTest,
       ];
@@ -261,6 +274,15 @@ describe('EmojiRepository', () => {
       const emojis = repository.search(':test1').emojis;
       expect(emojis.length, 'One emoji').to.equal(1);
       expect(emojis[0].name).to.equal('BOOM');
+    });
+
+    it('should not find a non-searchable emoji', () => {
+      // ensure :police_officer: is present
+      const policeEmoji = emojiRepository.findByShortName(':police_officer:');
+      expect(policeEmoji === undefined, 'A :police_officer: emoji is expected in the repository').to.equal(false);
+
+      const emojis = emojiRepository.search(':police_officer:').emojis;
+      expect(emojis.length, 'The :police_officer: emoji should not be returned by a search').to.equal(0);
     });
   });
 
@@ -270,7 +292,7 @@ describe('EmojiRepository', () => {
       const repository = new EmojiRepository(allEmojis);
       repository.addCustomEmoji(siteTest);
       const searchEmojis = repository.search('').emojis;
-      expect(searchEmojis.length, 'Extra emoji in results').to.equal(allEmojis.length + 1);
+      expect(searchEmojis.length, 'Extra emoji in results').to.equal(searchableEmojis.length + 1);
       expect(containsEmojiId(searchEmojis, siteEmojiId), 'Contains site emoji').to.equal(true);
 
       expect(repository.findById(siteEmojiId.id as string)).to.be.deep.equal(siteTest);

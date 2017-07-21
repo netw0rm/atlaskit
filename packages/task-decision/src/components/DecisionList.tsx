@@ -12,7 +12,7 @@ export interface Props {
 }
 
 // tslint:disable-next-line:variable-name
-const ListWrapper = styled.ul`
+const ListWrapper = styled.ol`
   list-style-type: none;
   margin: 0 4px;
   padding-left: 0;

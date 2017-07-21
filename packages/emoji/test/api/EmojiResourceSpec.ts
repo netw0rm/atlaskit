@@ -26,6 +26,7 @@ import {
     defaultMediaApiToken,
     evilburnsEmoji,
     fetchSiteEmojiUrl,
+    filterToSearchable,
     grinEmoji,
     mediaEmoji,
     mediaEmojiImagePath,
@@ -78,8 +79,8 @@ const defaultApiConfig: EmojiResourceConfig = {
   providers: [provider1],
 };
 
-const providerData1 = standardEmojis;
-const providerData2 = atlassianEmojis;
+const providerData1 = filterToSearchable(standardEmojis);
+const providerData2 = filterToSearchable(atlassianEmojis);
 const providerServiceData1 = standardServiceEmojis;
 const providerServiceData2 = atlassianServiceEmojis;
 
@@ -1180,6 +1181,8 @@ describe('helpers', () => {
     findByEmojiId = emojiId => Promise.resolve(evilburnsEmoji);
     findById = emojiIdStr => Promise.resolve(evilburnsEmoji);
     findInCategory = categoryId => Promise.resolve([]);
+    getSelectedTone = () => -1;
+    setSelectedTone = tone => {};
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};

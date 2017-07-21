@@ -8,7 +8,7 @@ import { AbstractResource } from '../../src/api/SharedResources';
 import debug from '../../src/util/logger';
 
 export interface PromiseBuilder<R> {
-  (result: R): Promise<R>;
+  (result: R, context: string): Promise<R>;
 }
 
 export interface MockEmojiResourceConfig {
@@ -61,7 +61,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
     this.lastQuery = query;
-    this.promiseBuilder(this.emojiRepository.search(query, options)).then((result: EmojiSearchResult) => {
+    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
       this.notifyResult(result);
     });
   }
@@ -69,39 +69,38 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   findByShortName(shortName: string): Promise<OptionalEmojiDescription> {
     const emoji = this.emojiRepository.findByShortName(shortName);
     debug('MockEmojiResource.findByShortcut', shortName, emoji);
-    return this.promiseBuilder(emoji);
+    return this.promiseBuilder(emoji, 'findByShortName');
   }
 
-  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> | OptionalEmojiDescription {
     const { id, shortName } = emojiId;
     if (id) {
       const emoji = this.emojiRepository.findById(id);
       debug('MockEmojiResource.findById', emojiId, emoji);
-      return this.promiseBuilder(emoji);
+      return this.promiseBuilder(emoji, 'findByEmojiId');
     }
-    const emoji = this.emojiRepository.findByShortName(shortName);
-    debug('MockEmojiResource.findById; not id using shortName', emojiId, emoji);
-    return this.promiseBuilder(emoji);
+    debug('MockEmojiResource.findById; not id using shortName', emojiId);
+    return this.emojiRepository.findByShortName(shortName);
   }
 
   findById(id: string): Promise<OptionalEmojiDescription> {
     const emoji = this.emojiRepository.findById(id);
     debug('MockEmojiResource.findById', id, emoji);
-    return this.promiseBuilder(emoji);
+    return this.promiseBuilder(emoji, 'findById');
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
     const emojis = this.emojiRepository.findInCategory(categoryId);
-    return this.promiseBuilder(emojis);
+    return this.promiseBuilder(emojis, 'findInCategory');
   }
 
   getAsciiMap(): Promise<Map<string, EmojiDescription>> {
-    return this.promiseBuilder(this.emojiRepository.getAsciiMap());
+    return this.promiseBuilder(this.emojiRepository.getAsciiMap(), 'getAsciiMap');
   }
 
   recordSelection?(id: EmojiId): Promise<any> {
     this.recordedSelections.push(id);
-    return this.promiseBuilder(undefined);
+    return this.promiseBuilder(undefined, 'recordSelection');
   }
 
   loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
@@ -143,13 +142,13 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
     this.lastQuery = query;
-    this.promiseBuilder(this.emojiRepository.search(query, options)).then((result: EmojiSearchResult) => {
+    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
       this.notifyResult(addCustomCategoryToResult(this.uploadSupported, result));
     });
   }
 
   isUploadSupported(): Promise<boolean> {
-    return this.promiseBuilder(this.uploadSupported);
+    return this.promiseBuilder(this.uploadSupported, 'isUploadSupported');
   }
 
   uploadCustomEmoji(upload: EmojiUpload) {
@@ -163,7 +162,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
     });
     this.emojiRepository.addCustomEmoji(emoji);
     this.filter(this.lastQuery);
-    return this.promiseBuilder(emoji);
+    return this.promiseBuilder(emoji, 'uploadCustomEmoji');
   }
 
   getUploads(): UploadDetail[] {
@@ -179,7 +178,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
 
   loadMediaEmoji(emoji: EmojiDescription) {
     if (this.promiseBuilder) {
-      return this.promiseBuilder(emoji);
+      return this.promiseBuilder(emoji, 'loadMediaEmoji');
     }
     return emoji;
   }
@@ -188,7 +187,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
 export const mockNonUploadingEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockNonUploadingEmojiResource>) => {
   const mockEmojiResource = new MockNonUploadingEmojiResource(emojiRepository, config);
   if (promiseBuilder) {
-    return promiseBuilder(mockEmojiResource);
+    return promiseBuilder(mockEmojiResource, 'mockNonUploadingEmojiResourceFactory');
   }
   return Promise.resolve(mockEmojiResource);
 };
@@ -196,7 +195,7 @@ export const mockNonUploadingEmojiResourceFactory = (emojiRepository: EmojiRepos
 export const mockEmojiResourceFactory = (emojiRepository: EmojiRepository, config?: MockEmojiResourceConfig, promiseBuilder?: PromiseBuilder<MockEmojiResource>) => {
   const mockEmojiResource = new MockEmojiResource(emojiRepository, config);
   if (promiseBuilder) {
-    return promiseBuilder(mockEmojiResource);
+    return promiseBuilder(mockEmojiResource, 'mockEmojiResourceFactory');
   }
   return Promise.resolve(mockEmojiResource);
 };

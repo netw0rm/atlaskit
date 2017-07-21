@@ -146,12 +146,9 @@ describe('<ResourcedEmoji />', () => {
       showTooltip={true}
     />);
 
-    return waitUntil(() => !!resolver).then(() => {
-      resolver();
-      return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
-        component.simulate('mouseenter');
-        expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
-      });
+    return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
+      component.simulate('mouseenter');
+      expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
     });
   });
 });

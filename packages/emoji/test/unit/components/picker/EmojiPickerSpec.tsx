@@ -4,12 +4,12 @@ import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
-import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, pngDataURL, pngFileUploadData } from '../../_TestData';
-// import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../_TestData';
+import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../_TestData';
+import { MockEmojiResourceConfig } from '../../_MockEmojiResource';
 
-// import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
-// import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
-// import { UploadPromptMessage } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
+import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
+import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
+import { UploadPromptMessage } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
 import * as commonStyles from '../../../../src/components/common/styles';
 import CategorySelector from '../../../../src/components/picker/CategorySelector';
 import Emoji from '../../../../src/components/common/Emoji';
@@ -33,13 +33,13 @@ function setupPickerWithoutToneSelector(): Promise<ReactWrapper<any, any>> {
   });
 }
 
-function setupPicker(props?: Props): Promise<ReactWrapper<any, any>> {
-  const pickerProps = {
+function setupPicker(props?: Props, config?: MockEmojiResourceConfig): Promise<ReactWrapper<any, any>> {
+  const pickerProps: Props = {
     ...props
-  };
+  } as Props;
 
   if (props && !props.emojiProvider || !props) {
-    pickerProps.emojiProvider = getEmojiResourcePromise();
+    pickerProps.emojiProvider = getEmojiResourcePromise(config);
   }
 
   const picker = mount(
@@ -64,42 +64,42 @@ const emojisVisible = (list) => findEmoji(list).length > 0;
 const nodeIsCategory = (category: string, n) =>
   n.is(EmojiPickerCategoryHeading) && n.prop('title').toLocaleLowerCase() === category.toLocaleLowerCase();
 
-// const findCategoryHeading = (category: string, component) =>
-//   component.find(EmojiPickerCategoryHeading).filterWhere(n => nodeIsCategory(category, n));
+const findCategoryHeading = (category: string, component) =>
+  component.find(EmojiPickerCategoryHeading).filterWhere(n => nodeIsCategory(category, n));
 
-// const findAllVirtualRows = (component) =>
-//   component.findWhere(n =>
-//     n.is(EmojiPickerListSearch) ||
-//     n.is(EmojiPickerCategoryHeading) ||
-//     n.is(EmojiPickerEmojiRow) ||
-//     n.is(UploadPromptMessage)
-//     // ignore spinner
-//   );
+const findAllVirtualRows = (component) =>
+  component.findWhere(n =>
+    n.is(EmojiPickerListSearch) ||
+    n.is(EmojiPickerCategoryHeading) ||
+    n.is(EmojiPickerEmojiRow) ||
+    n.is(UploadPromptMessage)
+    // ignore spinner
+  );
 
-// const emojiRowsVisibleInCategory = (category: string, component) => {
-//   const rows = findAllVirtualRows(component);
-//   let foundStart = false;
-//   let foundEnd = false;
-//   return rows.filterWhere(n => {
-//     if (foundEnd) {
-//       return false;
-//     }
+const emojiRowsVisibleInCategory = (category: string, component) => {
+  const rows = findAllVirtualRows(component);
+  let foundStart = false;
+  let foundEnd = false;
+  return rows.filterWhere(n => {
+    if (foundEnd) {
+      return false;
+    }
 
-//     if (foundStart) {
-//       if (!n.is(EmojiPickerEmojiRow)) {
-//         foundEnd = true;
-//         return false;
-//       }
-//       return true;
-//     }
+    if (foundStart) {
+      if (!n.is(EmojiPickerEmojiRow)) {
+        foundEnd = true;
+        return false;
+      }
+      return true;
+    }
 
-//     if (nodeIsCategory(category, n)) {
-//       foundStart = true;
-//     }
+    if (nodeIsCategory(category, n)) {
+      foundStart = true;
+    }
 
-//     return false;
-//   });
-// };
+    return false;
+  });
+};
 
 const getCategoryButton = (category: string, picker) => {
   const categorySelector = picker.find(CategorySelector);
@@ -178,22 +178,31 @@ describe('<EmojiPicker />', () => {
       })
     );
 
-    // it('media emoji should render placeholder while loading', () =>
-    //   setupPicker().then(component =>
-    //     showCategory(customCategory, component).then(() => {
-    //       const list = component.find(EmojiPickerList);
+    it('media emoji should render placeholder while loading', () => {
+      const mockConfig: MockEmojiResourceConfig = {
+        promiseBuilder: (result, context) => {
+          if (context === 'loadMediaEmoji') {
+            // unresolved promise
+            return new Promise(() => {});
+          }
+          return Promise.resolve(result);
+        }
+      };
+      return setupPicker(undefined, mockConfig).then(component =>
+        showCategory(customCategory, component).then(() => {
+          const list = component.find(EmojiPickerList);
 
-    //       const customHeading = findCategoryHeading(customCategory, list);
-    //       expect(customHeading.length, 'Custom category heading found').to.equal(1);
-    //       expect(customHeading.prop('title'), 'Custom category title').to.equal(customCategory);
-    //       const customEmojiRows = emojiRowsVisibleInCategory(customCategory, component);
-    //       const placeholders = customEmojiRows.find(EmojiPlaceholder);
-    //       expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
-    //       const props = placeholders.get(0).props;
-    //       expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
-    //     })
-    //   )
-    // );
+          const customHeading = findCategoryHeading(customCategory, list);
+          expect(customHeading.length, 'Custom category heading found').to.equal(1);
+          expect(customHeading.prop('title'), 'Custom category title').to.equal(customCategory);
+          const customEmojiRows = emojiRowsVisibleInCategory(customCategory, component);
+          const placeholders = customEmojiRows.find(EmojiPlaceholder);
+          expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
+          const props = placeholders.get(0).props;
+          expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+        })
+      );
+    });
   });
 
   describe('hover', () => {
@@ -650,7 +659,8 @@ describe('<EmojiPicker />', () => {
             expect(preview.length, 'Single preview visible').to.equal(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'No emoji shown in preview').to.equal(0);
+            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
+            expect(previewEmoji.prop('emoji').shortName, 'Emoji preview shortName').to.equal(':media:');
 
             // No uploads occured
             const uploads = provider.getUploads();
@@ -733,7 +743,8 @@ describe('<EmojiPicker />', () => {
             expect(preview.length, 'Single preview visible').to.equal(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'No emoji shown in preview').to.equal(0);
+            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
+            expect(previewEmoji.prop('emoji').shortName, 'Emoji preview shortName').to.equal(':media:');
 
             // No uploads occured
             const uploads = provider.getUploads();

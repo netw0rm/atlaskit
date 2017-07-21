@@ -11,10 +11,19 @@ import {
   sendKeyToPm,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import uuid from '../../../../src/plugins/tasks-and-decisions/uuid';
 
 chai.use(chaiPlugin);
 
 describe('tasks and decisions - keymaps', () => {
+
+  before(() => {
+    uuid.setStatic('local-decision');
+  });
+
+  after(() => {
+    uuid.setStatic(false);
+  });
 
   const editor = (doc: any) => makeEditor({
     doc,

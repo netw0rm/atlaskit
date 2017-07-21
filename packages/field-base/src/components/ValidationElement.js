@@ -1,7 +1,15 @@
+import styled from 'styled-components';
 import React, { PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
 import Icon from '@atlaskit/icon/glyph/warning';
-import WarningIcon from '../styled/WarningIcon';
+import theme from '../styled/theme';
+
+// exported for testing
+export const WarningIcon = styled.div`
+  align-items: center;
+  color: ${theme.icon.color};
+  display: flex;
+`;
 
 const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
   if (!isDisabled && isInvalid) {
@@ -11,6 +19,7 @@ const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
       </WarningIcon>
     );
   }
+
   return isLoading ? <Spinner /> : null;
 };
 

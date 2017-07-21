@@ -74,6 +74,12 @@ describe('<Mention />', () => {
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
     });
+
+    it('should render a stateless mention component with correct data attributes', () => {
+     const mention = mount(<Mention {...mentionData} accessLevel="NONE" />);
+     expect(mention.getDOMNode().attributes.getNamedItem('data-mention-id').value).to.equal(mentionData.id);
+     expect(mention.getDOMNode().attributes.getNamedItem('data-access-level').value).to.equal('NONE');
+    });
   });
 
   describe('ResourcedMention', () => {

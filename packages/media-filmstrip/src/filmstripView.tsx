@@ -17,8 +17,16 @@ const DURATION_MIN = 0.5;
 const DURATION_BASE = 0.5;
 const DURATION_MAX = 1.0;
 
-// TODO: drag & drop
-// TODO: reset position to 0 when the children have changed (can we reliably know this?)
+// TODO QA:
+// - Banana editor
+// - Banana renderer
+// - Lazy cards
+
+// SPECS
+// - Closest magic
+// - Get new window width when child dimensions change
+// TODO:
+// -Create task for arrow visibility
 // TODO: delay visibility of arrows when position changes (does that make sense because i might think there's more and try to keep clicking)
 
 export interface ChildPosition {
@@ -60,7 +68,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   private windowElement: HTMLElement;
   private windowWidth: number = 0;
-  private childrenPositions: {left: number, right: number}[];
+  private childPositions: ChildPosition[];
 
   private previousPosition: number = 0;
 
@@ -116,8 +124,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   // find the child that is cut off on the left edge of the window and change the window position to
   // start to the left of that child
   private getClosestForLeft(position: number): number {
-    for (let i = 0; i < this.childrenPositions.length; ++i) {
-      const childBounds = this.childrenPositions[i];
+    for (let i = 0; i < this.childPositions.length; ++i) {
+      const childBounds = this.childPositions[i];
       const leftWindowEdge = position;
       if (leftWindowEdge > childBounds.left && leftWindowEdge < childBounds.right) {
         return childBounds.left;
@@ -130,8 +138,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   // to finish at start of the next child
   private getClosestForRight(position: number): number {
     const rightWindowEdge = position + this.windowWidth;
-    for (let i = 0; i < this.childrenPositions.length; ++i) {
-      const childBounds = this.childrenPositions[i];
+    for (let i = 0; i < this.childPositions.length; ++i) {
+      const childBounds = this.childPositions[i];
       if (rightWindowEdge > childBounds.left && rightWindowEdge < childBounds.right) {
         return childBounds.right - this.windowWidth;
       }
@@ -172,7 +180,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     // store the widths
     this.bufferWidth = bufferWidth;
     this.windowWidth = windowWidth;
-    this.childrenPositions = childrenPositions;
+    this.childPositions = childrenPositions;
 
     // notify the integrator
     const {onSize} = this.props;
@@ -305,18 +313,21 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   render(): JSX.Element {
-    const {children} = this.props;
+    const {
+      children
+    } = this.props;
 
     const transform = `translateX(${-this.position}px)`;
     const transitionProperty = this.scrolling ? 'none' : 'transform';
     const transitionDuration = `${this.transitionDuration}s`;
 
-    // FilmStripViewWrapper style={{width}} onDrop={onDragEvent(onDrop)} onDragEnter={onDragEvent(onDragEnter)} onDragOver={onDragEvent(onDragOver)}
-    // FilmStripList style={{transform, transitionProperty, transitionDuration}}
     return (
       <FilmStripViewWrapper>
         {this.renderLeftArrow()}
-        <FilmStripListWrapper innerRef={this.handleWindowElementChange} onWheel={this.handleScroll}>
+        <FilmStripListWrapper
+          innerRef={this.handleWindowElementChange}
+          onWheel={this.handleScroll}
+        >
           <FilmStripList innerRef={this.handleBufferElementChange} style={{transform, transitionProperty, transitionDuration}}>
             {React.Children.map(children, (child, index) => (
               <FilmStripListItem key={index}>

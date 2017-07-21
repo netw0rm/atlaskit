@@ -58,6 +58,9 @@ export default {
           active: hex2rgba(akColorB75, 0.6),
           selected: akColorN700,
         },
+        boxShadowColor: {
+          focus: hex2rgba(akColorB200, 0.6),
+        },
         color: {
           default: akColorN400,
           active: akColorB400,
@@ -75,6 +78,9 @@ export default {
           disabled: akColorN20A,
           selected: akColorN700,
         },
+        boxShadowColor: {
+          focus: hex2rgba(akColorB200, 0.6),
+        },
         color: {
           default: akColorN400,
           active: akColorB400,
@@ -91,6 +97,9 @@ export default {
           active: akColorB500,
           selected: akColorN700,
         },
+        boxShadowColor: {
+          focus: hex2rgba(akColorB200, 0.6),
+        },
         color: {
           default: akColorN0,
           disabled: hex2rgba(akColorN0, 0.5),
@@ -103,6 +112,9 @@ export default {
         background: {
           default: 'none',
           selected: akColorN700,
+        },
+        boxShadowColor: {
+          focus: hex2rgba(akColorB200, 0.6),
         },
         color: {
           default: akColorB400,
@@ -121,6 +133,9 @@ export default {
         background: {
           default: 'none',
           selected: akColorN700,
+        },
+        boxShadowColor: {
+          focus: hex2rgba(akColorB200, 0.6),
         },
         color: {
           default: akColorN100,
@@ -146,6 +161,9 @@ export default {
           disabled: hex2rgba(akColorN0, 0.04),
           selected: akColorN20,
         },
+        boxShadowColor: {
+          focus: akColorB75,
+        },
         color: {
           default: akColorN0,
           disabled: akColorN100,
@@ -162,6 +180,9 @@ export default {
           disabled: hex2rgba(akColorN0, 0.04),
           selected: akColorN20,
         },
+        boxShadowColor: {
+          focus: akColorB75,
+        },
         color: {
           default: akColorN0,
           disabled: akColorN100,
@@ -177,6 +198,9 @@ export default {
           disabled: akColorB400,
           selected: akColorN20,
         },
+        boxShadowColor: {
+          focus: akColorB75,
+        },
         color: {
           default: akColorN0,
           disabled: hex2rgba(akColorN0, 0.5),
@@ -189,6 +213,9 @@ export default {
         background: {
           default: 'none',
           selected: akColorN20,
+        },
+        boxShadowColor: {
+          focus: akColorB75,
         },
         color: {
           default: akColorB75,
@@ -208,6 +235,9 @@ export default {
         background: {
           default: 'none',
           selected: akColorN20,
+        },
+        boxShadowColor: {
+          focus: akColorB75,
         },
         color: {
           default: akColorN0,

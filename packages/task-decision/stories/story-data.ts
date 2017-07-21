@@ -12,7 +12,7 @@ export const document = {
     { type: 'hardBreak' },
     {
       type: 'text',
-      text: 'This is a decision '
+      text: 'This is a some content '
     },
     {
       type: 'emoji',

@@ -43,7 +43,7 @@ export default class DecisionItem extends PureComponent<Props,{}> {
     return (
       <Wrapper>
         <IconWrapper>
-          <DecisionIcon label="Decision" />
+          <DecisionIcon label="Decision" size="medium" />
         </IconWrapper>
         <ContentWrapper innerRef={contentRef}>
           {children}

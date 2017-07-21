@@ -32,7 +32,7 @@ export class LoadingTimeBase extends Component {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number,
     productLogo: PropTypes.node,
-    goToProduct: PropTypes.func,
+    goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
     confluenceTimedOut: PropTypes.bool,
     firePrivateAnalyticsEvent: PropTypes.func,

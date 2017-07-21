@@ -1,75 +1,106 @@
 // @flow
-import { expect } from 'chai';
-import getDimension from '../../utils/get-dimension-util';
+import {
+  getDraggableDimension,
+  getDroppableDimension,
+} from '../../../src/state/dimension';
+// eslint-disable-next-line no-duplicate-imports
 import getDragImpact from '../../../src/state/get-drag-impact';
 import noImpact from '../../../src/state/no-impact';
-
+import { getClientRect, noMargin } from '../../utils/dimension';
 import type {
-  Dimension,
-  DimensionMap,
+  WithinDroppable,
+  DraggableId,
+  DroppableId,
+  DraggableDimension,
+  DroppableDimension,
+  DraggableDimensionMap,
+  DroppableDimensionMap,
   DragImpact,
   Position,
 } from '../../../src/types';
 
-const droppable: Dimension = getDraggableDimension({
-  id: 'drop-1',
-  top: 0,
-  left: 0,
-  right: 100,
-  bottom: 100,
+const droppableId: DroppableId = 'drop-1';
+const noScroll: Position = { x: 0, y: 0 };
+
+const droppable: DroppableDimension = getDroppableDimension({
+  id: droppableId,
+  clientRect: getClientRect({
+    top: 0,
+    left: 0,
+    right: 100,
+    bottom: 100,
+  }),
+  margin: noMargin,
+  windowScroll: noScroll,
+  scroll: noScroll,
 });
 
 // Making sure the draggables have different heights
 // so that we do not get false positives in the tests
 
 // height of 9
-const draggable1: Dimension = getDimension({
+const draggable1: DraggableDimension = getDraggableDimension({
   id: 'drag-1',
-  top: 1,
-  left: 10,
-  right: 90,
-  bottom: 11,
+  droppableId,
+  clientRect: getClientRect({
+    top: 1,
+    left: 10,
+    right: 90,
+    bottom: 11,
+  }),
+  margin: noMargin,
+  windowScroll: noScroll,
 });
 
-// height of 19
-const draggable2: Dimension = getDimension({
-  id: 'drag-2',
-  top: 11,
-  left: 10,
-  right: 90,
-  bottom: 30,
-});
+// // height of 19
+// const draggable2: Dimension = getDimension({
+//   id: 'drag-2',
+//   top: 11,
+//   left: 10,
+//   right: 90,
+//   bottom: 30,
+// });
 
-// height of 29
-const draggable3: Dimension = getDimension({
-  id: 'drag-3',
-  top: 31,
-  left: 10,
-  right: 90,
-  bottom: 60,
-});
+// // height of 29
+// const draggable3: Dimension = getDimension({
+//   id: 'drag-3',
+//   top: 31,
+//   left: 10,
+//   right: 90,
+//   bottom: 60,
+// });
 
-const droppables: DimensionMap = {
+const droppables: DroppableDimensionMap = {
   [droppable.id]: droppable,
 };
 
-const draggables: DimensionMap = {
+const draggables: DraggableDimensionMap = {
   [draggable1.id]: draggable1,
-  [draggable2.id]: draggable2,
-  [draggable3.id]: draggable3,
+  // [draggable2.id]: draggable2,
+  // [draggable3.id]: draggable3,
 };
 
 describe('get drag impact', () => {
-  it('should return no movement when not dragging over anything', () => {
+  it.only('should return no movement when not dragging over anything', () => {
     // dragging up above the list
-    const newCenter: Position = {
-      x: draggable1.center.x,
-      y: draggable1.center.y - 100,
+    const page: Position = {
+      x: droppable.page.withMargin.left,
+      y: droppable.page.withMargin.top - 100,
     };
 
-    const impact: DragImpact = getDragImpact(newCenter, draggable1.id, draggables, droppables);
+    const withinDroppable: WithinDroppable = {
+      center: page,
+    };
 
-    expect(impact).to.deep.equal(noImpact);
+    const impact: DragImpact = getDragImpact({
+      page,
+      withinDroppable,
+      draggableId: draggable1.id,
+      draggables,
+      droppables,
+    });
+
+    expect(impact).toEqual(noImpact);
   });
 
   describe('moving forward', () => {

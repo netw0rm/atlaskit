@@ -42,8 +42,10 @@ export type DroppableDimension = {|
     initial: Position,
     current: Position,
   |},
-  withMargin: DimensionFragment,
-  withoutMargin: DimensionFragment,
+  page: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |}
 |}
 export type DraggableLocation = {|
   droppableId: DroppableId,

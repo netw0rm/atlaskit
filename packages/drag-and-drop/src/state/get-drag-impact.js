@@ -52,7 +52,6 @@ export default ({
     draggables
   );
 
-  // TEMP
   const draggableCenter: Position = draggingDimension.page.withoutMargin.center;
   const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 

@@ -33,7 +33,7 @@ const windowScroll: Position = {
   y: 80,
 };
 
-describe.only('dimension', () => {
+describe('dimension', () => {
   describe('draggable dimension', () => {
     const dimension: DraggableDimension = getDraggableDimension({
       id: draggableId,
@@ -163,7 +163,7 @@ describe.only('dimension', () => {
         },
       };
 
-      expect(dimension.withoutMargin).toEqual(fragment);
+      expect(dimension.page.withoutMargin).toEqual(fragment);
     });
 
     it('should return a portion that does consider margins', () => {
@@ -185,7 +185,7 @@ describe.only('dimension', () => {
         },
       };
 
-      expect(dimension.withMargin).toEqual(fragment);
+      expect(dimension.page.withMargin).toEqual(fragment);
     });
   });
 });

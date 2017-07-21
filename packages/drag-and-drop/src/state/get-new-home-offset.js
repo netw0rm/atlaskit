@@ -8,8 +8,6 @@ import type {
 } from '../types';
 import { add, subtract } from './position';
 
-const origin: Position = { x: 0, y: 0 };
-
 type NewHomeArgs = {|
   movement: DragMovement,
   clientOffset: Position,
@@ -38,8 +36,6 @@ export default ({
       const dimension: DraggableDimension = draggables[draggableId];
       return previous + dimension.page.withMargin.height;
     }, 0);
-
-  console.log('distance', distance);
 
   const amount: number = movement.isMovingForward ? distance : -distance;
 

@@ -3,6 +3,7 @@
 ## Unreleased
 
 * fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
+* Add border-top also to the editor when it reached max-height.
 
 ## 39.1.3 (2017-07-14)
 

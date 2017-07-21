@@ -1,5 +1,6 @@
 import { Node, NodeSpec } from '../../prosemirror';
 import { Inline } from './doc';
+import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 /**
  * @name decisionItem_node
@@ -20,7 +21,7 @@ export interface Definition {
 export const decisionItem: NodeSpec = {
   content: 'inline<_>*',
   attrs: {
-    localId: { default: '' },
+    localId: { compute: uuid.generate },
     state: { default: 'DECIDED' },
   },
   parseDOM: [{
@@ -31,14 +32,14 @@ export const decisionItem: NodeSpec = {
     priority: 100,
 
     getAttrs: (dom: Element) => ({
-      id: dom.getAttribute('data-decision-local-id')!,
+      localId: uuid.generate(),
       state: dom.getAttribute('data-decision-state')!,
     })
   }],
   toDOM(node: Node): [string, any, number] {
-    const { id, state } = node.attrs;
+    const { localId, state } = node.attrs;
     const attrs = {
-      'data-decision-local-id': id || 'local-decision',
+      'data-decision-local-id': localId || 'local-decision',
       'data-decision-state': state,
     };
     return ['li', attrs, 0];

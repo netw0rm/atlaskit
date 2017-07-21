@@ -14,8 +14,7 @@ const noOp = () => {};
 describe('Quick Search', () => {
   const QsComponent = (
     <AkQuickSearch
-      onSearchChange={noOp}
-      onResultClick={noOp}
+      onSearchInput={noOp}
     />);
 
   const isInputFocused = wrapper =>
@@ -32,20 +31,20 @@ describe('Quick Search', () => {
   });
 
   describe('<QuickSearchWithKeyboardControls />', () => {
+    const onClickSpy = sinon.spy();
     const kbTestResults = [{
       title: 'test group',
       items: [
-        { resultId: '1', type: 'person', name: 'one' },
-        { resultId: '2', type: 'person', name: 'two' },
-        { resultId: '3', type: 'person', name: 'three' },
+        { resultId: '1', type: 'person', name: 'one', onClick: onClickSpy },
+        { resultId: '2', type: 'person', name: 'two', onClick: onClickSpy },
+        { resultId: '3', type: 'person', name: 'three', onClick: onClickSpy },
       ],
     }];
 
     describe('Props', () => {
       const QsKbComponent = (
         <AkQuickSearchWithKeyboardControls
-          onSearchChange={noOp}
-          onResultClick={noOp}
+          onSearchInput={noOp}
         />);
 
       let wrapper;
@@ -97,11 +96,9 @@ describe('Quick Search', () => {
     });
 
     describe('Interactions', () => {
-      const onClickSpy = sinon.spy();
       const QsInteractionComponent = (
         <AkQuickSearchWithKeyboardControls
-          onSearchChange={noOp}
-          onResultClick={onClickSpy}
+          onSearchInput={noOp}
           results={kbTestResults}
         />);
       let wrapper;
@@ -142,6 +139,22 @@ describe('Quick Search', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).toBe('three');
         expect(isInputFocused(searchInput)).toBe(true);
+      });
+      it('should call window.location.assign() with item`s href property', () => {
+        const locationAssignSpy = sinon.spy(window.location, 'assign');
+        try {
+          const url = 'http://www.atlassian.com';
+          wrapper.setProps({
+            results: [{
+              title: 'a',
+              items: [{ resultId: 'b', type: 'person', name: 'test', href: url }],
+            }],
+          });
+          searchInput.simulate('keydown', { key: 'Enter' });
+          expect(locationAssignSpy.calledWith(url)).toBe(true);
+        } finally {
+          locationAssignSpy.restore();
+        }
       });
       it('should trigger the onClick handler with the same parameters when a result is submitted via keyboards as when clicked', () => {
         searchInput.simulate('keydown', { key: 'Enter' });

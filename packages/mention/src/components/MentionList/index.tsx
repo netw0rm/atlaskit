@@ -60,10 +60,7 @@ export default class MentionList extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      selectedKey: getKey(0, props.mentions),
-      selectedIndex: 0,
-    };
+    this.setDefaultSelectionState();
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -72,9 +69,10 @@ export default class MentionList extends PureComponent<Props, State> {
     const { selectedKey } = this.state;
     if (mentions) {
       if (!selectedKey) {
-        this.selectIndexNewMentions(0, mentions);
+        // don't explicitly set any selected index and go with default behaviour
         return;
       }
+
       for (let i = 0; i < mentions.length; i++) {
         if (selectedKey === mentions[i].id) {
           this.setState({
@@ -83,8 +81,9 @@ export default class MentionList extends PureComponent<Props, State> {
           return;
         }
       }
-      // existing selection not in results, pick first
-      this.selectIndexNewMentions(0, mentions);
+
+      // existing selection not in results so clear any current selection state and go with default behaviour
+      this.setDefaultSelectionState();
     }
   }
 
@@ -152,11 +151,14 @@ export default class MentionList extends PureComponent<Props, State> {
     }
   }
 
-  private selectIndexNewMentions(index: number, mentions: MentionDescription[]): void {
-    this.setState({
-      selectedIndex: index,
-      selectedKey: getKey(index, mentions),
-    });
+  /**
+   * The default selection state is to chose index 0 and not have any particular key selected
+   */
+  private setDefaultSelectionState(): void {
+    this.state = {
+      selectedIndex: 0,
+      selectedKey: undefined,
+    };
   }
 
   private selectIndexOnHover = (mention: MentionDescription, event: MouseEvent<any>) => {
@@ -175,7 +177,6 @@ export default class MentionList extends PureComponent<Props, State> {
 
   private renderItems(): JSX.Element | null {
     const { mentions } = this.props;
-    const { selectedKey } = this.state;
 
     if (mentions && mentions.length) {
       this.items = {};
@@ -183,12 +184,11 @@ export default class MentionList extends PureComponent<Props, State> {
       return (
         <div>
           {mentions.map((mention, idx) => {
-            const selected = selectedKey === mention.id;
             const key = mention.id;
             const item = (
               <MentionItem
                 mention={mention}
-                selected={selected}
+                selected={this.isSelectedMention(mention, idx)}
                 key={key}
                 onMouseMove={this.selectIndexOnHover}
                 /* Cannot use onclick, as onblur will close the element, and prevent
@@ -211,6 +211,11 @@ export default class MentionList extends PureComponent<Props, State> {
       );
     }
     return null;
+  }
+
+  private isSelectedMention(mention: MentionDescription, index: number): boolean {
+    const { selectedKey } = this.state;
+    return selectedKey ? selectedKey === mention.id : index === 0;
   }
 
   private handleScrollableRef = (ref) => {

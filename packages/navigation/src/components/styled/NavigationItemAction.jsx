@@ -9,6 +9,7 @@ const NavigationItemAction = styled.div`
   flex-shrink: 0;
 
   ${whenCollapsed`
+    flex-shrink: 1;
     opacity: 0;
   `}
 `;

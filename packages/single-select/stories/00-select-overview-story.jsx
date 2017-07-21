@@ -29,6 +29,8 @@ import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 import SelectWithDescriptions from './examples/SelectWithDescriptions';
 import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
+import SelectWithLongDescriptions from './examples/SelectWithLongDescriptions';
+import SelectWithLongDescriptionsRaw from '!raw!./examples/SelectWithLongDescriptions';
 import SelectWithTooltips from './examples/SelectWithTooltips';
 import SelectWithTooltipsRaw from '!raw!./examples/SelectWithTooltips';
 import ItemsOverview from './examples/ItemsOverview';
@@ -67,6 +69,7 @@ const propDescriptions = {
   shouldFitContainer: 'Specifies whether a select will take all available space',
   shouldFocus: 'Specifies whether the component will auto-focus itself',
   shouldFlip: 'Specifies whether the droplist should flip its position when there is not enough space',
+  maxHeight: 'Specifies if the droplist should be of a specific height',
 };
 
 const propTypes = {
@@ -202,6 +205,17 @@ storiesOf(name, module)
       </div>
       <Code>
         {SelectWithDescriptionsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with long descriptions and max height', () => (
+    <Chrome title="Select with long descriptions and max height">
+      <div style={{ width: '300px' }}>
+        {SelectWithLongDescriptions}
+      </div>
+      <Code>
+        {SelectWithLongDescriptionsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

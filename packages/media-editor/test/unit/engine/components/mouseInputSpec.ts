@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {expect} from 'chai';
 import {createMouseEvent} from '@atlaskit/media-test-helpers';
 import {DefaultMouseInput} from '../../../../src/engine/components/mouseInput';

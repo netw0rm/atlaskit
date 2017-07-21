@@ -9,6 +9,15 @@ export interface CardProps {
   background: string | undefined;
 }
 
+const positionedBehindCard = `
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+`;
+
 const cardColors = ({background}: CardProps) => {
   if (background) {
     return css`
@@ -26,18 +35,19 @@ const cardColors = ({background}: CardProps) => {
 const cardOverlay = ({background}: CardProps) => {
   if (background) {
     return css`
-      &::after {
+      &::before {
+        ${positionedBehindCard}
         content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        z-index: -1;
+        background-color: ${akColorN20};
+      }
+      &::after {
+        ${positionedBehindCard}
+        content: "";
         border-radius: 3px;
         background-image: url(${background});
         background-size: cover;
         background-repeat: no-repeat;
+        background-position: center;
       }
     `;
   } else {

@@ -21,7 +21,7 @@ describe(`${name} - core`, () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>);
+      wrapper = mount(<Droplist trigger="text" isOpen maxHeight={100}>{itemsList}</Droplist>);
     });
 
     it('should render Layer component', () => {
@@ -39,6 +39,11 @@ describe(`${name} - core`, () => {
       expect(layer.prop('position')).toBe('bottom left');
       expect(layer.prop('autoFlip')).toBe(wrapper.props().shouldFlip);
       expect(layer.prop('content')).not.toBe(undefined);
+    });
+
+    it('should render dropdown list content with height of maxHeight', () => {
+      const layer = wrapper.find(Layer);
+      expect(layer.children().nodes[1].childNodes[0].style['max-height']).toBe('100px');
     });
 
     it('should render droplist content', () => {

@@ -409,12 +409,12 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     default: {
       // Try render text of unkown node
       if (validNode.attrs && validNode.attrs.text) {
-        return validNode.attrs.text;
+        return <span>{validNode.attrs.text}</span>;
       } else if (nodeContent.length) {
         // If we have an unknown, block-level node with text content, default to a paragraph with text
         return <span key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</span>;
       } else if (validNode.text) {
-        return validNode.text;
+        return <span>{validNode.text}</span>;
       }
 
       // Node is unkown or invalid and can't be rendered
@@ -423,10 +423,10 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       }
 
       if (NodeType[node.type]) {
-        return `Unknown format: "${node.type}"`;
+        return <span>Unknown format: "{node.type}"</span>;
       }
 
-      return `Unknown type: "${node.type}"`;
+      return <span>Unknown type: "{node.type}"</span>;
     }
   }
 };

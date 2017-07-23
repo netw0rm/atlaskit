@@ -61,7 +61,8 @@ describe('FileProvider', () => {
       fileProvider.subscribe({
         complete: () => {
           expect(observer.next.firstCall.args[0]).to.equal(pendingFileItem);
-          expect(observer.next.secondCall.args[0]).to.equal(succeededFileItem);
+          expect(observer.next.secondCall.args[0]).to.equal(pendingFileItem);
+          expect(observer.next.thirdCall.args[0]).to.equal(succeededFileItem);
           assert(observer.complete.calledWith(undefined));
           assert(observer.error.notCalled);
           resolve();
@@ -89,7 +90,7 @@ describe('FileProvider', () => {
     });
   });
 
-  it('should call the service only once for multiple observers', (done) => {
+  it('should call the service only twice for multiple observers', (done) => {
     const fileService = Mocks.fileServiceSucceeded();
     const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
 
@@ -101,7 +102,6 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe({
       complete: () => {
-
         // observer 1
         assert(observer.next.calledWith(succeededFileItem));
         assert(observer.complete.calledWith(undefined));
@@ -112,7 +112,7 @@ describe('FileProvider', () => {
         assert(observer2.complete.calledWith(undefined));
         assert(observer2.error.notCalled);
 
-        expect(fileService.getFileItem.callCount).to.equal(1);
+        expect(fileService.getFileItem.callCount).to.equal(2);
 
         done();
       }
@@ -171,6 +171,7 @@ class Mocks {
   public static fileServiceSucceeded() {
     const stub = sinon.stub();
     stub.onCall(0).returns(Promise.resolve(succeededFileItem));
+    stub.onCall(1).returns(Promise.resolve(succeededFileItem));
     return {
       getFileItem: stub
     };
@@ -179,7 +180,10 @@ class Mocks {
   public static fileServicePendingBeforeSucceeded() {
     const stub = sinon.stub();
     stub.onCall(0).returns(Promise.resolve(pendingFileItem));
-    stub.onCall(1).returns(Promise.resolve(succeededFileItem));
+    stub.onCall(1).returns(Promise.resolve(pendingFileItem));
+
+    stub.onCall(2).returns(Promise.resolve(succeededFileItem));
+    stub.onCall(3).returns(Promise.resolve(succeededFileItem));
 
     return {
       getFileItem: stub

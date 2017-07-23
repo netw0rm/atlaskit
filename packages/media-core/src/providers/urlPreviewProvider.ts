@@ -1,6 +1,8 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
+
 import {UrlPreview, MediaApiConfig} from '../';
 import {UrlPreviewService, MediaUrlPreviewService} from '../services/urlPreviewService';
-import {Observable} from 'rxjs/Observable';
 
 export interface UrlPreviewProvider {
   observable(): Observable<UrlPreview>;
@@ -18,17 +20,11 @@ export class UrlPreviewProvider {
   public static fromUrlPreviewService(urlPreviewService: UrlPreviewService, url: string, clientId: string): UrlPreviewProvider {
     return {
       observable() {
-        return new Observable<UrlPreview>((observer) => {
+        const urlPreviewMetadata$ = Observable.fromPromise(
           urlPreviewService.getUrlPreview(url, clientId)
-            .then(linkPreview => {
-              observer.next(linkPreview);
-              observer.complete();
-            }, error => {
-              observer.error(error);
-            });
-          return () => {
-          };
-        });
+        );
+
+        return urlPreviewMetadata$;
       }
     };
   }

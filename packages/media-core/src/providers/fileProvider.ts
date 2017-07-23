@@ -1,8 +1,15 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/defer';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/publishLast';
+import 'rxjs/add/operator/switchMapTo';
+import 'rxjs/add/operator/takeWhile';
+
 import {FileItem, MediaApiConfig, MediaItem} from '../';
 import {FileService, MediaFileService} from '../services/fileService';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/publishReplay';
 import {LRUCache} from 'lru-fast';
+
 
 export const FILE_PROVIDER_RETRY_INTERVAL = 2000;
 
@@ -32,38 +39,19 @@ export class FileProvider {
                                 pollInterval?: number): FileProvider {
     return {
       observable() {
-        const observable = new Observable<FileItem>(subscriber => {
-          let handle: number;
-          const timeout = pollInterval || 1000;
+        const fileItemRequest$ = Observable.defer(
+          () => fileService.getFileItem(fileId, clientId, collectionName)
+        );
 
-          const fetch = () => {
-            fileService.getFileItem(fileId, clientId, collectionName)
-              .then(fileItem => {
-                  if (fileItem.details.processingStatus !== 'pending') {
-                    subscriber.next(fileItem);
-                    subscriber.complete();
-                  } else {
-                    subscriber.next(fileItem);
-                    handle = setTimeout(() => fetch(), timeout);
-                  }
-                },
-                error => {
-                  subscriber.error(error);
-                });
-          };
+        const fileMetadata$ = Observable.timer(0, 1000)
+          .switchMapTo(fileItemRequest$)
+          .takeWhile(fileItem => fileItem.details.processingStatus === 'pending')
+          .concat(fileItemRequest$)
+          .publishLast();
 
-          fetch();
+        fileMetadata$.connect();
 
-          return () => {
-            if (handle !== null) {
-              clearTimeout(handle);
-            }
-          };
-        }).publishReplay(1);
-
-        observable.connect();
-
-        return observable;
+        return fileMetadata$;
       }
     };
   }

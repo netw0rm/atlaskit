@@ -15,6 +15,8 @@ import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
 import { container } from '../../theme/presets';
 
+const escKeyCode = 27;
+
 export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
@@ -33,6 +35,21 @@ export default class Drawer extends PureComponent {
     primaryIcon: null,
     width: 'narrow',
     isOpen: false,
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (event: KeyboardEvent) => {
+    if (event.keyCode === escKeyCode) {
+      event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
+      this.props.onBackButton(event);
+    }
   }
 
   render() {

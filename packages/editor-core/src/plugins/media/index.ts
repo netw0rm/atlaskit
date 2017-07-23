@@ -29,6 +29,7 @@ import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
+import { splitMediaGroup } from './media-common';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -172,6 +173,10 @@ export class MediaPluginState {
 
   insertLinks = (): void => {
     insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
+  }
+
+  splitMediaGroup = (): boolean => {
+    return splitMediaGroup(this.view);
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -487,8 +492,8 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = new Plugin({
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
@@ -519,11 +524,18 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
+      },
+      handleTextInput(view: EditorView, from: number, to: number, text: string): boolean {
+        const pluginState: MediaPluginState = stateKey.getState(view.state);
+        pluginState.splitMediaGroup();
+        return false;
       }
     }
   });
+};
 
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

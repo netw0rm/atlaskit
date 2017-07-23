@@ -6,10 +6,8 @@ import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 import { customCategory } from '../constants';
-import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
-import CategorySelector from '../components/picker/CategorySelector';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
@@ -145,27 +143,17 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private asciiMap: Map<string, EmojiDescription>;
-  private categoryOrder: Map<string, number>;
   private static readonly defaultEmojiWeight: number = 1000000;
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
-    this.categoryOrder = new Map();
-    CategorySelector.defaultProps.categories.forEach((category, index) => {
-      this.categoryOrder.set(category.id, index + 1);
-    });
 
     this.initMaps();
-    this.fullSearch = new Search('id');
-    this.fullSearch.tokenizer = Tokenizer;
-    this.fullSearch.searchIndex = new UnorderedSearchIndex();
-    this.fullSearch.addIndex('name');
-    this.fullSearch.addIndex('shortName');
-    this.fullSearch.addDocuments(emojis);
+    this.initSearchIndex();
   }
 
   /**
-   * Returns all available emoji.
+   * Returns all available (and searchable) emoji.
    */
   all(): EmojiSearchResult {
     return this.search();
@@ -174,7 +162,7 @@ export default class EmojiRepository {
   /**
    * Text search of emoji shortName and name field for suitable matches.
    *
-   * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.
+   * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
@@ -186,7 +174,7 @@ export default class EmojiRepository {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
       }
     } else {
-      filteredEmoji = this.emojis;
+      filteredEmoji = this.getAllSearchableEmojis();
     }
 
     filteredEmoji = applySearchOptions(filteredEmoji, options);
@@ -208,7 +196,6 @@ export default class EmojiRepository {
    * Returns the first matching emoji matching the id, or null if none found.
    */
   findById(id: string): OptionalEmojiDescription {
-    debug('findById', id, this.idMap);
     return findByKey(this.idMap, id);
   }
 
@@ -226,6 +213,7 @@ export default class EmojiRepository {
     if (emoji.category !== customCategory) {
       throw new Error(`Emoji is not a custom emoji, but from category ${emoji.category}`);
     }
+
     this.emojis = [
       ...this.emojis,
       emoji,
@@ -261,6 +249,20 @@ export default class EmojiRepository {
     this.emojis.forEach(emoji => {
       this.addToMaps(emoji);
     });
+  }
+
+  private initSearchIndex(): void {
+    this.fullSearch = new Search('id');
+    this.fullSearch.tokenizer = Tokenizer;
+    this.fullSearch.searchIndex = new UnorderedSearchIndex();
+    this.fullSearch.addIndex('name');
+    this.fullSearch.addIndex('shortName');
+
+    this.fullSearch.addDocuments(this.getAllSearchableEmojis());
+  }
+
+  private getAllSearchableEmojis(): EmojiDescription[] {
+    return this.emojis.filter(emojiDescription => emojiDescription.searchable);
   }
 
   private addToMaps(emoji: EmojiDescription): void {

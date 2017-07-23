@@ -40,23 +40,23 @@ describe(`${name} - stateless`, () => {
     });
 
     it('native select should be "disabled"', () => {
-      expect(wrapper.find('select[disabled]').length).to.equal(1);
+      expect(wrapper.find('select[disabled]').length).toBe(1);
     });
 
     it('should pass appearance property to field base', () => {
-      expect(wrapper.find(FieldBaseStateless).prop('appearance')).to.equal('subtle');
+      expect(wrapper.find(FieldBaseStateless).prop('appearance')).toBe('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {
-      expect(wrapper.find(FieldBaseStateless).prop('isDisabled')).to.equal(true);
+      expect(wrapper.find(FieldBaseStateless).prop('isDisabled')).toBe(true);
     });
 
     it('should pass isDisabled property to Trigger sub-component', () => {
-      expect(wrapper.find(Trigger).prop('isDisabled')).to.equal(true);
+      expect(wrapper.find(Trigger).prop('isDisabled')).toBe(true);
     });
 
     it('should not render input if disabled', () => {
-      expect(wrapper.find('input[disabled]').length).to.equal(0);
+      expect(wrapper.find('input[disabled]').length).toBe(0);
     });
   });
 });

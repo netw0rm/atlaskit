@@ -6,9 +6,11 @@ import * as styles from '../../../src/components/common/styles';
 import EmojiPreview from '../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../src/components/common/ToneSelector';
 import Emoji from '../../../src/components/common/Emoji';
-import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
+import EmojiButton from '../../../src/components/common/EmojiButton';
+// import EmojiPlaceholder from '../../../src/components/common/EmojiPlaceholder';
 import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../src/types';
-import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../TestData';
+import { imageEmoji, generateSkinVariation } from '../../TestData';
+// import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../TestData';
 
 const baseEmoji = imageEmoji;
 
@@ -60,13 +62,13 @@ describe('<EmojiPreview />', () => {
 
   describe('tone', () => {
     it('should display tone selector after clicking on the tone button', () => {
-      const wrapper = shallow(<EmojiPreview
+      const wrapper = mount(<EmojiPreview
         emoji={emoji}
         toneEmoji={toneEmoji}
       />);
 
-      wrapper.find('#toneSelectorButton').first().simulate('click');
-      expect((wrapper).state('selectingTone')).to.equal(true);
+      wrapper.find(EmojiButton).simulate('mousedown', { button: 0 });
+      expect(wrapper.state('selectingTone')).to.equal(true);
       expect(wrapper.find(ToneSelector), 'ToneSelector in preview').to.have.length(1);
     });
 
@@ -145,15 +147,15 @@ describe('<EmojiPreview />', () => {
       expect(wrapper.state('selectingTone')).to.equal(false);
     });
 
-    it('should render placeholder for unloaded media emoji', () => {
-      const wrapper = shallow(<EmojiPreview
-        emoji={mediaEmoji}
-      />);
+    // it('should render placeholder for unloaded media emoji', () => {
+    //   const wrapper = shallow(<EmojiPreview
+    //     emoji={mediaEmoji}
+    //   />);
 
-      const placeholders = wrapper.find(EmojiPlaceholder);
-      expect(placeholders.length).to.equal(1);
-      const props = placeholders.get(0).props;
-      expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
-    });
+    //   const placeholders = wrapper.find(EmojiPlaceholder);
+    //   expect(placeholders.length).to.equal(1);
+    //   const props = placeholders.get(0).props;
+    //   expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+    // });
   });
 });

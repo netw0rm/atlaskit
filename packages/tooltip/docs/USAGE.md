@@ -97,7 +97,7 @@ React component used to display floating tooltips next to a component.
 
 **HTML Example**
 ```js
-<AKTooltip description="Foo!" position="right"><div>Foo</div></AKTooltip>
+<Tooltip description="Foo!" position="right"><div>Foo</div></Tooltip>
 ```
 <a name="Tooltip+position"></a>
 

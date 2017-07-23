@@ -11,11 +11,6 @@ import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
-
-  // nodeviews
-  nodeViewFactory,
-  ReactMediaGroupNode,
-  ReactMediaNode,
 } from '../../../../src';
 import { undo, history } from '../../../../src/prosemirror';
 import {
@@ -30,6 +25,8 @@ import {
   storyMediaProviderFactory,
   randomId,
   sleep,
+  setNodeSelection,
+  insertText,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
@@ -55,13 +52,7 @@ describe('Media plugin', () => {
       ...mediaPluginFactory(defaultSchema, { providerFactory, uploadErrorHandler }),
       history(),
     ],
-    schema: defaultSchema,
-    nodeViews: {
-      mediaGroup: nodeViewFactory(providerFactory, {
-        mediaGroup: ReactMediaGroupNode,
-        media: ReactMediaNode,
-      }, true),
-    },
+    schema: defaultSchema
   });
 
   const getNodePos = (pluginState: MediaPluginState, id: string) => {
@@ -502,6 +493,49 @@ describe('Media plugin', () => {
       ));
 
       collectionFromProviderSpy.restore();
+    });
+  });
+
+  describe('splitMediaGroup', () => {
+    it('splits media group', () => {
+      const { editorView, pluginState } = editor(doc(
+        mediaGroup(
+          media({ id: 'media1', type: 'file', collection: testCollectionName }),
+          media({ id: 'media2', type: 'file', collection: testCollectionName }),
+        ),
+      ));
+      const positionOfFirstMediaNode = 2;
+      setNodeSelection(editorView, positionOfFirstMediaNode);
+
+      pluginState.splitMediaGroup();
+
+      expect(editorView.state.doc).to.deep.equal(doc(
+        mediaGroup(
+          media({ id: 'media1', type: 'file', collection: testCollectionName }),
+        )
+      ));
+    });
+
+    context('when insert text in the middle of media group', () => {
+      it('splits media group', () => {
+        const { editorView } = editor(doc(
+          mediaGroup(
+            media({ id: 'media1', type: 'file', collection: testCollectionName }),
+            media({ id: 'media2', type: 'file', collection: testCollectionName }),
+          ),
+        ));
+        const positionOfFirstMediaNode = 1;
+        setNodeSelection(editorView, positionOfFirstMediaNode);
+
+        insertText(editorView, 'hello', 1);
+
+        expect(editorView.state.doc).to.deep.equal(doc(
+          p('hello'),
+          mediaGroup(
+            media({ id: 'media2', type: 'file', collection: testCollectionName }),
+          )
+        ));
+      });
     });
   });
 });

@@ -13,6 +13,7 @@ const compactButtonHeight = `${(akGridSizeUnitless * 3) / akFontSizeUnitless}em`
 const getState = ({
   disabled,
   isActive,
+  isFocus,
   isHover,
   isSelected,
 }) => {
@@ -20,6 +21,7 @@ const getState = ({
   if (isSelected) return 'selected';
   if (isActive) return 'active';
   if (isHover) return 'hover';
+  if (isFocus) return 'focus';
   return 'default';
 };
 
@@ -37,8 +39,6 @@ export const getPropertyAppearance = (property, props = {}, definitions = themeD
 
   const state = getState(props);
 
-  // console.log('getting styles');
-
   return propertyStyles[state] || propertyStyles.default || fallbacks[property];
 };
 
@@ -47,6 +47,7 @@ export default function getButtonStyles(props) {
    * Variable styles
    */
   let cursor = 'default';
+  let boxShadow = 'none';
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
@@ -55,6 +56,15 @@ export default function getButtonStyles(props) {
   let transitionDuration = '0.1s, 0.15s';
   let transition = 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)';
   let verticalAlign = 'middle';
+  let width = 'auto';
+
+  /**
+   * Appearance + Theme styles
+   */
+  const background = getPropertyAppearance('background', props);
+  const color = getPropertyAppearance('color', props);
+  const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
+  const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact
   if (props.spacing === 'compact') {
@@ -83,6 +93,7 @@ export default function getButtonStyles(props) {
 
   // Interaction: Focus
   if (props.isFocus) {
+    boxShadow = `0 0 0 2px ${boxShadowColor}`;
     outline = 'none';
     transitionDuration = '0s, 0.2s';
   }
@@ -93,19 +104,19 @@ export default function getButtonStyles(props) {
     cursor = 'not-allowed';
   }
 
-  /**
-   * Appearance + Theme styles
-   */
-  const background = getPropertyAppearance('background', props);
-  const color = getPropertyAppearance('color', props);
-  const textDecoration = getPropertyAppearance('textDecoration', props);
+  // Fit to parent width
+  if (props.fit) {
+    width = '100%';
+  }
 
   return css`
     align-items: baseline;
     background: ${background};
     box-sizing: border-box;
+    box-shadow: ${boxShadow};
     border-radius: ${akBorderRadius};
     border-width: 0;
+    width: ${width};
     color: ${color};
     cursor: ${cursor};
     display: inline-flex;

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { akColorN10 } from '@atlaskit/util-shared-styles';
 import { onClickStyle, truncateStyle, cellStyle } from './constants';
+import Theme from './theme';
 
 export const TableBodyRow = styled.tr`
   ${props => onClickStyle(props)}
   &:hover {
-    background: ${akColorN10};
+    background: ${Theme.tr.background.hover};
   }
 `;
 

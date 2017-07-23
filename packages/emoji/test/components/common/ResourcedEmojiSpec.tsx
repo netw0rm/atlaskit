@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
+import Tooltip from '@atlaskit/tooltip';
 
 import { EmojiDescription } from '../../../src/types';
 import Emoji from '../../../src/components/common/Emoji';
@@ -29,6 +30,19 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
+  it('should render emoji with correct data attributes', () => {
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
+    />);
+
+    return waitUntil(() => emojiVisible(component)).then(() => {
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-id').value).to.equal(grinEmoji.id);
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-short-name').value).to.equal('shouldnotbeused');
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-text').value).to.equal('shouldnotbeused');
+    });
+  });
+
   it('should not render a tooltip on hover if there is no showTooltip prop', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
@@ -37,7 +51,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find('AKTooltip')).to.have.length(0);
+      expect(component.find(Tooltip)).to.have.length(0);
     });
   });
 
@@ -50,7 +64,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find('AKTooltip')).to.have.length(1);
+      expect(component.find(Tooltip).prop('description')).to.equal(':grin:');
     });
   });
 
@@ -149,7 +163,7 @@ describe('<ResourcedEmoji />', () => {
       resolver();
       return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
         component.simulate('mouseenter');
-        expect(component.find('AKTooltip')).to.have.length(1);
+        expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
       });
     });
   });

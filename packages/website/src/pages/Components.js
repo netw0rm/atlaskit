@@ -6,12 +6,10 @@ import { Link } from 'react-router-dom';
 import LayoutFork from 'react-media';
 import {
   akBorderRadius,
-
   akColorB50,
   akColorB500,
   akColorN600,
   akColorN80,
-
   akGridSize,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';

@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import { akColorN20A, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { verticalPadding } from '../styled/constants';
 
+const ThemeColor = {
+  Highlight: {
+    background: akColorN20A,
+  },
+};
+
 const AvatarSectionDiv = styled.div`
   /* -ms- properties are necessary until MS supports the latest version of the grid spec */
   -ms-grid-row: 1;
@@ -46,7 +52,7 @@ const ContentSectionDiv = styled.div`
 `;
 
 const Highlight = styled.div`
-  background: ${akColorN20A};
+  background: ${ThemeColor.Highlight.background};
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;

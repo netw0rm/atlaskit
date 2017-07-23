@@ -141,7 +141,8 @@ class PreviewEmojiUpload extends PureComponent<PreviewEmojiUploadProps, {}> {
           imagePath: previewImage,
           width: 24,
           height: 24,
-        }
+        },
+        searchable: true
       };
 
       emojiComponent = (<Emoji emoji={emoji} />);

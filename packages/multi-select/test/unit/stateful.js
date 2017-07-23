@@ -17,7 +17,7 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless multi select', () => {
-      expect(mount(<MultiSelect />).find(MultiSelectStateless).length).to.equal(1);
+      expect(mount(<MultiSelect />).find(MultiSelectStateless).length).toBe(1);
     });
 
     it('should pass all the relevant props to the stateless component', () => {
@@ -48,21 +48,21 @@ describe(`${name} - smart`, () => {
         shouldFitContainer
       />);
       const statelessProps = wrapper.find(MultiSelectStateless).props();
-      expect(statelessProps.appearance, 'appearance').to.equal('subtle');
-      expect(statelessProps.id, 'id').to.equal('id');
-      expect(statelessProps.isDisabled, 'isDisabled').to.equal(true);
-      expect(statelessProps.isInvalid, 'isInvalid').to.equal(true);
-      expect(statelessProps.invalidMessage, 'invalidMessage').to.equal('invalid message');
-      expect(statelessProps.isOpen, 'isOpen').to.equal(true);
-      expect(statelessProps.isRequired, 'isRequired').to.equal(true);
-      expect(statelessProps.items, 'items').to.equal(items);
-      expect(statelessProps.label, 'label').to.equal('label');
-      expect(statelessProps.name, 'name').to.equal('name');
-      expect(statelessProps.noMatchesFound, 'noMatchesFound').to.equal('no matches');
-      expect(statelessProps.position, 'position').to.equal('top left');
-      expect(statelessProps.selectedItems, 'selectedItems').to.deep.equal([items[0].items[0]]);
-      expect(statelessProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
-      expect(statelessProps.shouldFocus, 'shouldFocus').to.equal(true);
+      expect(statelessProps.appearance).toBe('subtle');
+      expect(statelessProps.id).toBe('id');
+      expect(statelessProps.isDisabled).toBe(true);
+      expect(statelessProps.isInvalid).toBe(true);
+      expect(statelessProps.invalidMessage).toBe('invalid message');
+      expect(statelessProps.isOpen).toBe(true);
+      expect(statelessProps.isRequired).toBe(true);
+      expect(statelessProps.items).toBe(items);
+      expect(statelessProps.label).toBe('label');
+      expect(statelessProps.name).toBe('name');
+      expect(statelessProps.noMatchesFound).toBe('no matches');
+      expect(statelessProps.position).toBe('top left');
+      expect(statelessProps.selectedItems).toEqual([items[0].items[0]]);
+      expect(statelessProps.shouldFitContainer).toBe(true);
+      expect(statelessProps.shouldFocus).toBe(true);
     });
   });
 
@@ -104,15 +104,15 @@ describe(`${name} - smart`, () => {
 
       it('should call onOpenChange when triggered', () => {
         instance.handleOpenChange(attrs);
-        expect(onOpenChangeSpy.callCount).to.equal(1);
-        expect(onOpenChangeSpy.calledWith(attrs)).to.equal(true);
+        expect(onOpenChangeSpy.callCount).toBe(1);
+        expect(onOpenChangeSpy.calledWith(attrs)).toBe(true);
       });
 
       it('should set isOpen state', () => {
         instance.handleOpenChange(attrs);
-        expect(wrapper.state().isOpen).to.equal(true);
+        expect(wrapper.state().isOpen).toBe(true);
         instance.handleOpenChange({ isOpen: false });
-        expect(wrapper.state().isOpen).to.equal(false);
+        expect(wrapper.state().isOpen).toBe(false);
       });
     });
 
@@ -120,13 +120,13 @@ describe(`${name} - smart`, () => {
       const value = 'test';
       it('should call onFilterChange when triggered', () => {
         instance.handleFilterChange(value);
-        expect(onFilterChangeSpy.callCount).to.equal(1);
-        expect(onFilterChangeSpy.calledWith(value)).to.equal(true);
+        expect(onFilterChangeSpy.callCount).toBe(1);
+        expect(onFilterChangeSpy.calledWith(value)).toBe(true);
       });
 
       it('should set filterValue state', () => {
         instance.handleFilterChange(value);
-        expect(wrapper.state().filterValue).to.equal(value);
+        expect(wrapper.state().filterValue).toBe(value);
       });
     });
 
@@ -135,13 +135,13 @@ describe(`${name} - smart`, () => {
         const item = items[0].items[0];
         const spy = sinon.spy(instance, 'removeItem');
         instance.selectedChange(item);
-        expect(spy.called).to.equal(true);
+        expect(spy.called).toBe(true);
       });
 
       it('should call selectItem when an item was added', () => {
         const spy = sinon.spy(instance, 'selectItem');
         instance.selectedChange({ content: 'something new', value: 2 });
-        expect(spy.called).to.equal(true);
+        expect(spy.called).toBe(true);
       });
     });
 
@@ -149,19 +149,19 @@ describe(`${name} - smart`, () => {
       it('should remove the item and set the new selectedItems state', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(wrapper.state().selectedItems).to.deep.equal([]);
+        expect(wrapper.state().selectedItems).toEqual([]);
       });
 
       it('should remove the item and call onSelectedChange', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(onSelectedChange.callCount).to.equal(1);
+        expect(onSelectedChange.callCount).toBe(1);
       });
 
       it('onSelectedChange should be called with the correct params', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(onSelectedChange.calledWith({ items: [], action: 'remove', changed: item })).to.equal(true);
+        expect(onSelectedChange.calledWith({ items: [], action: 'remove', changed: item })).toBe(true);
       });
     });
 
@@ -169,19 +169,19 @@ describe(`${name} - smart`, () => {
       it('should add the item and set the new selectedItems state', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(wrapper.state().selectedItems).to.deep.equal([items[0].items[0], item]);
+        expect(wrapper.state().selectedItems).toEqual([items[0].items[0], item]);
       });
 
       it('should add the item and call onSelectedChange', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(onSelectedChange.callCount).to.equal(1);
+        expect(onSelectedChange.callCount).toBe(1);
       });
 
       it('onSelectedChange should be called with the correct params', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).to.equal(true);
+        expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).toBe(true);
       });
     });
 
@@ -190,16 +190,16 @@ describe(`${name} - smart`, () => {
         const newValue = 'new';
         instance.handleNewItemCreate({ value: newValue });
         const { items: itemsList } = wrapper.state().items[0];
-        expect(itemsList.length).to.equal(3);
-        expect(itemsList[2].content).to.equal(newValue);
+        expect(itemsList.length).toBe(3);
+        expect(itemsList[2].content).toBe(newValue);
       });
 
       it('should make new value selected', () => {
         const newValue = 'new';
         instance.handleNewItemCreate({ value: newValue });
         const { selectedItems } = wrapper.state();
-        expect(selectedItems.length).to.equal(2);
-        expect(selectedItems[1].content).to.equal(newValue);
+        expect(selectedItems.length).toBe(2);
+        expect(selectedItems[1].content).toBe(newValue);
       });
     });
   });

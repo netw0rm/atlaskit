@@ -1,8 +1,7 @@
 import * as React from 'react';
 import TooltipWrapper from './TooltipWrapper';
 import { placeholderEmoji, placeholderContainer } from './styles';
-
-export const defaultSize = 24;
+import { defaultEmojiHeight } from '../../constants';
 
 export interface Props {
   shortName: string;
@@ -12,7 +11,7 @@ export interface Props {
 
 // tslint:disable-next-line:variable-name
 const EmojiPlaceholder = (props: Props) => {
-  const { shortName, size = defaultSize, showTooltip } = props;
+  const { shortName, size = defaultEmojiHeight, showTooltip } = props;
   const center = Math.floor(size / 2);
   const radius = center - 1;
   const style = {

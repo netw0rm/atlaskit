@@ -27,44 +27,50 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<MultiSelectStateless />).isEmpty()).to.equal(false);
+      expect(shallow(<MultiSelectStateless />).isEmpty()).toBe(false);
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<MultiSelectStateless />).find(SelectWrapper).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(SelectWrapper).length).toBe(1);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<MultiSelectStateless />).find(Label).length).to.equal(0);
-      expect(mount(<MultiSelectStateless label="test" />).find(Label).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(Label).length).toBe(0);
+      expect(mount(<MultiSelectStateless label="test" />).find(Label).length).toBe(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<MultiSelectStateless />).find(Droplist).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(Droplist).length).toBe(1);
+    });
+
+    it('should pass shouldFlip to Droplist', () => {
+      expect(
+        mount(<MultiSelectStateless shouldFlip />).find(Droplist).props().shouldFlip
+      ).toBe(true);
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<MultiSelectStateless />).find(FieldBase).length).to.equal(1);
-      expect(mount(<MultiSelectStateless />).find(Droplist).find(FieldBase).length).to.equal(1);
+      expect(mount(<MultiSelectStateless />).find(FieldBase).length).toBe(1);
+      expect(mount(<MultiSelectStateless />).find(Droplist).find(FieldBase).length).toBe(1);
     });
 
     it('should render Trigger inside Fieldbase', () => {
       const wrapper = mount(<MultiSelectStateless />);
-      expect(wrapper.find(TriggerDiv).length).to.equal(1);
-      expect(wrapper.find(FieldBase).find(TriggerDiv).length).to.equal(1);
+      expect(wrapper.find(TriggerDiv).length).toBe(1);
+      expect(wrapper.find(FieldBase).find(TriggerDiv).length).toBe(1);
     });
 
     it('should render Footer if shouldAllowCreateItem is true and the search value is not empty', () => {
-      expect(mount(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).to.equal(1);
+      expect(mount(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).toBe(1);
     });
 
     it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
-      expect(mount(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).to.equal(0);
+      expect(mount(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).toBe(0);
     });
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
       const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" isOpen shouldAllowCreateItem />);
-      expect(wrapper.find(Footer).text()).to.equal('test (new)');
+      expect(wrapper.find(Footer).text()).toBe('test (new)');
     });
 
     it('should render Footer if footer`s content prop is passed', () => {
@@ -72,14 +78,14 @@ describe(`${name} - stateless`, () => {
         content: 'footer',
       };
       const wrapper = mount(<MultiSelectStateless footer={footer} isOpen />);
-      expect(wrapper.find(Footer).length).to.equal(1);
-      expect(wrapper.find(Footer).text()).to.equal('footer');
+      expect(wrapper.find(Footer).length).toBe(1);
+      expect(wrapper.find(Footer).text()).toBe('footer');
     });
 
     it('if shouldAllowCreateItem and footer are passed at the same time, "new item" footer has the priority and general footer shouldnt be rendered', () => {
       const footer = <div>footer</div>;
       const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" footer={footer} isOpen shouldAllowCreateItem />);
-      expect(wrapper.find(Footer).text()).to.equal('test (new)');
+      expect(wrapper.find(Footer).text()).toBe('test (new)');
     });
 
     describe('groups and items', () => {
@@ -119,9 +125,9 @@ describe(`${name} - stateless`, () => {
 
       it('should render groups and items inside Droplist (when open)', () => {
         const select = mount(<MultiSelectStateless items={items} isOpen />);
-        expect(select.find(Group).length).to.equal(1);
-        expect(select.find(Item).length).to.equal(2);
-        expect(select.find(Group).find(Item).length).to.equal(2);
+        expect(select.find(Group).length).toBe(1);
+        expect(select.find(Item).length).toBe(2);
+        expect(select.find(Group).find(Item).length).toBe(2);
       });
 
       it('should not render a group if all items in that group are selected', () => {
@@ -131,7 +137,7 @@ describe(`${name} - stateless`, () => {
           selectedItems={selectedItems}
           isOpen
         />);
-        expect(select.find(Group).length).to.equal(0);
+        expect(select.find(Group).length).toBe(0);
       });
 
       it('should render 3 groups with all non-selected items', () => {
@@ -142,10 +148,10 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(Group).length).to.equal(3);
-        expect(select.find(Group).at(0).find(Item).length).to.equal(1);
-        expect(select.find(Group).at(1).find(Item).length).to.equal(1);
-        expect(select.find(Group).at(2).find(Item).length).to.equal(2);
+        expect(select.find(Group).length).toBe(3);
+        expect(select.find(Group).at(0).find(Item).length).toBe(1);
+        expect(select.find(Group).at(1).find(Item).length).toBe(1);
+        expect(select.find(Group).at(2).find(Item).length).toBe(2);
       });
 
       it('should not render a group if all items in the group are selected', () => {
@@ -156,11 +162,11 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(Group).length).to.equal(2);
-        expect(select.find(Group).at(0).find(Item).length).to.equal(2);
-        expect(select.find(Group).at(0).props().heading).to.equal('group 1');
-        expect(select.find(Group).at(1).find(Item).length).to.equal(2);
-        expect(select.find(Group).at(1).props().heading).to.equal('group 3');
+        expect(select.find(Group).length).toBe(2);
+        expect(select.find(Group).at(0).find(Item).length).toBe(2);
+        expect(select.find(Group).at(0).props().heading).toBe('group 1');
+        expect(select.find(Group).at(1).find(Item).length).toBe(2);
+        expect(select.find(Group).at(1).props().heading).toBe('group 3');
       });
 
       it('should render a no matches found if there is no item at all', () => {
@@ -170,7 +176,7 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(NoMatches).length).to.equal(1);
+        expect(select.find(NoMatches).length).toBe(1);
       });
 
       it('should render a no matches found if all items are selected', () => {
@@ -185,7 +191,7 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(NoMatches).length).to.equal(1);
+        expect(select.find(NoMatches).length).toBe(1);
       });
 
       it('should not render a no matches found message if at least an item is available in dropdown', () => {
@@ -203,7 +209,7 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(NoMatches).length).to.equal(0);
+        expect(select.find(NoMatches).length).toBe(0);
       });
 
       it('should filter selected items by their values not reference', () => {
@@ -213,9 +219,9 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
 
-        expect(select.find(Group).length).to.equal(1);
-        expect(select.find(Group).find(Item).length).to.equal(1);
-        expect(select.find(Group).find(Item).props().description).to.equal('item1');
+        expect(select.find(Group).length).toBe(1);
+        expect(select.find(Group).find(Item).length).toBe(1);
+        expect(select.find(Group).find(Item).props().description).toBe('item1');
       });
     });
 
@@ -231,7 +237,7 @@ describe(`${name} - stateless`, () => {
       ];
       const select = mount(<MultiSelectStateless items={items} isOpen />);
 
-      expect(select.find(Avatar).length).to.equal(2);
+      expect(select.find(Avatar).length).toBe(2);
     });
 
     it('should pass props to Item', () => {
@@ -257,10 +263,10 @@ describe(`${name} - stateless`, () => {
         items={selectItems}
       />);
       const itemProps = select.find(Item).props();
-      expect(itemProps.description, 'description').to.equal('Descr');
-      expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
-      expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
-      expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+      expect(itemProps.description).toBe('Descr');
+      expect(itemProps.isDisabled).toBe(true);
+      expect(itemProps.elemBefore).toBe('1');
+      expect(itemProps.elemAfter).toBe('2');
     });
   });
 
@@ -280,22 +286,22 @@ describe(`${name} - stateless`, () => {
     it('should render selectedTags', () => {
       const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
-      expect(tagGroup.find(Tag).length).to.equal(2);
+      expect(tagGroup.find(Tag).length).toBe(2);
     });
 
     it('should pass on tag.elemBefore prop to selected tags', () => {
       const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
-      expect(tagGroup.find(Tag).length).to.equal(2);
-      expect(tagGroup.find(Avatar).length).to.equal(1);
+      expect(tagGroup.find(Tag).length).toBe(2);
+      expect(tagGroup.find(Avatar).length).toBe(1);
     });
 
     it('should pass on tag.appearance prop to selected tags', () => {
       const wrapper = mount(<MultiSelectStateless items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
-      expect(tagGroup.find(Tag).length).to.equal(2);
-      expect(tagGroup.find(Tag).at(0).prop('appearance')).to.equal('rounded');
-      expect(tagGroup.find(Tag).at(1).prop('appearance')).to.equal('default');
+      expect(tagGroup.find(Tag).length).toBe(2);
+      expect(tagGroup.find(Tag).at(0).prop('appearance')).toBe('rounded');
+      expect(tagGroup.find(Tag).at(1).prop('appearance')).toBe('default');
     });
   });
 });

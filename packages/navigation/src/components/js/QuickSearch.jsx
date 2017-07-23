@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
 import { AkSearch, AkSearchResults } from '../../../src';
 
@@ -8,22 +7,27 @@ const noOp = () => {};
 export default class QuickSearch extends PureComponent {
   static propTypes = {
     /* Search pass-through props */
-    isLoading: PropTypes.bool,
-    onSearchChange: PropTypes.func.isRequired,
-    onSearchClear: PropTypes.func,
-    onSearchKeyDown: PropTypes.func,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
+    isLoading: AkSearch.propTypes.isLoading,
+    onSearchBlur: AkSearch.propTypes.onBlur,
+    onSearchInput: AkSearch.propTypes.onInput,
+    onSearchKeyDown: AkSearch.propTypes.onKeyDown,
+    placeholder: AkSearch.propTypes.placeholder,
+    value: AkSearch.propTypes.value,
 
     /* SearchResults pass-through props */
-    onResultClick: PropTypes.func.isRequired,
+    isResultHoverStylesDisabled: AkSearchResults.propTypes.isResultHoverStylesDisabled,
+    onResultMouseEnter: AkSearchResults.propTypes.onResultMouseEnter,
+    onResultMouseLeave: AkSearchResults.propTypes.onResultMouseLeave,
     results: AkSearchResults.propTypes.results,
-    selectedItemId: PropTypes.string,
+    selectedItemId: AkSearchResults.propTypes.selectedItemId,
   }
 
   static defaultProps = {
     isLoading: false,
-    onSearchClear: noOp,
+    isResultHoverStylesDisabled: false,
+    onResultMouseEnter: noOp,
+    onResultMouseLeave: noOp,
+    onSearchBlur: noOp,
     onSearchKeyDown: noOp,
     placeholder: 'Search',
     results: [],
@@ -34,14 +38,17 @@ export default class QuickSearch extends PureComponent {
     return (
       <AkSearch
         isLoading={this.props.isLoading}
-        onChange={this.props.onSearchChange}
+        onBlur={this.props.onSearchBlur}
+        onInput={this.props.onSearchInput}
         onKeyDown={this.props.onSearchKeyDown}
-        onSearchClear={this.props.onSearchClear}
         placeholder={this.props.placeholder}
         value={this.props.value}
       >
         <AkSearchResults
-          onClick={this.props.onResultClick}
+          isResultHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
+          isTabbingDisabled
+          onResultMouseEnter={this.props.onResultMouseEnter}
+          onResultMouseLeave={this.props.onResultMouseLeave}
           results={this.props.results}
           selectedItemId={this.props.selectedItemId}
         />

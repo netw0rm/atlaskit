@@ -14,6 +14,7 @@ const NavigationItemOuter = styled.div`
   box-sizing: border-box;
   height: ${({ theme }) => (isInCompactGroup(theme) ? itemStyles.width.compact : itemStyles.width.standard)}px;
   position: relative;
+  flex-shrink: 0;
 
   /* AK-2548: rather than targeting like this - the styles should be applied on the InteractionWrapper */
   button, a {
@@ -45,7 +46,7 @@ const NavigationItemOuter = styled.div`
     }
 
     &:hover {
-      background-color: ${props => getItemOrDropdown(props).hover.background};
+      background-color: ${props => props.isHoverStylesEnabled && getItemOrDropdown(props).hover.background};
     }
 
     &:active {

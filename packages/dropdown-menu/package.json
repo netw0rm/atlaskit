@@ -1,18 +1,22 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "3.0.1",
+  "version": "3.4.0",
   "config": {
     "access": "public"
   },
   "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Dropdown Menu"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/dropdown-menu; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/dropdown-menu; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh",
+    "eslint": "../../build/bin/lint.eslint.sh"
   },
   "files": [
     "dist"
@@ -38,7 +42,7 @@
     "@atlaskit/util-readme": "^3.0.0",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^1.0.0",
-    "@atlaskit/tooltip": "*"
+    "@atlaskit/tooltip": "^1.2.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

@@ -1,12 +1,11 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { beforeEach, afterEach, describe, it } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
-import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../user-input-util';
+import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../../utils/user-input-util';
 import type {
   Hooks,
   DraggableLocation,
@@ -17,11 +16,12 @@ import type {
 } from '../../../src/types';
 import type { Provided as DraggableProvided } from '../../../src/view/draggable/draggable-types';
 import type { Provided as DroppableProvided } from '../../../src/view/droppable/droppable-types';
+import * as keyCodes from '../../../src/view/key-codes';
 
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const mouseDown = mouseEvent.bind(null, 'mousedown');
-const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, 'Escape');
+const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, keyCodes.escape);
 
 describe('hooks integration', () => {
   let clock;
@@ -82,6 +82,7 @@ describe('hooks integration', () => {
   };
 
   beforeEach(() => {
+    requestAnimationFrame.reset();
     clock = sinon.useFakeTimers();
     hooks = {
       onDragStart: sinon.stub(),
@@ -92,6 +93,7 @@ describe('hooks integration', () => {
 
   afterEach(() => {
     clock.restore();
+    requestAnimationFrame.reset();
 
     // clean up any loose events
     wrapper.unmount();
@@ -135,7 +137,11 @@ describe('hooks integration', () => {
       clock.tick(10);
     };
 
-    const move = () => windowMouseMove(dragMove.x, dragMove.y + sloppyClickThreshold + 1);
+    const move = () => {
+      windowMouseMove(dragMove.x, dragMove.y + sloppyClickThreshold + 1);
+      // movements are scheduled with requestAnimationFrame
+      requestAnimationFrame.step();
+    };
 
     const stop = () => {
       windowMouseUp();

@@ -11,12 +11,13 @@ import {
 /**
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
-export const gridSize = akGridSizeUnitless;
+
+export const gridSize: number = akGridSizeUnitless;
 
 export const layout = {
   padding: {
-    top: gridSize * 3,
-    bottom: gridSize * 3,
+    top: gridSize * 2,
+    bottom: gridSize * 2,
     side: gridSize,
   },
   width: {
@@ -61,14 +62,14 @@ export const globalPrimaryActions = (() => {
   };
 
   const margin = {
-    bottom: gridSize * 3.5,
+    bottom: gridSize * 2,
   };
 
-  const innerHeight = itemSizes.medium * 3;
+  const innerHeight = (itemSizes.medium * 3) + (gridSize * 2);
 
   const height = {
     inner: innerHeight,
-    outer: margin.bottom + innerHeight,
+    outer: gridSize + margin.bottom + innerHeight,
   };
 
   return {
@@ -80,11 +81,11 @@ export const globalPrimaryActions = (() => {
 
 export const globalSecondaryActions = (() => {
   const itemSizes = {
-    medium: 1 + (gridSize * 5),
+    medium: gridSize * 5,
   };
 
   const margin = {
-    bottom: gridSize * 3,
+    bottom: gridSize * 2,
   };
 
   const height = (actionCount) => {

@@ -1,7 +1,6 @@
 import {
   Fragment,
-  Node as PMNode,
-  MediaNode
+  Node as PMNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -167,7 +166,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
           text: cdata!.nodeValue,
         });
       case 'FAB:MEDIA':
-        const mediaNode: MediaNode = schema.nodes.media.create({
+        const mediaNode = schema.nodes.media.create({
           id: node.getAttribute('media-id'),
           type: node.getAttribute('media-type'),
           collection: node.getAttribute('media-collection'),

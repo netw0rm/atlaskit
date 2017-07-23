@@ -17,7 +17,7 @@ export default class AvatarExample extends PureComponent {
         <Wrapper><Presence presence="online" /></Wrapper>
         <Wrapper><Presence presence="busy" /></Wrapper>
         <Wrapper><Presence presence="offline" /></Wrapper>
-        <Wrapper><Presence presence="none" /></Wrapper>
+        <Wrapper><Presence /></Wrapper>
       </div>
     );
   }

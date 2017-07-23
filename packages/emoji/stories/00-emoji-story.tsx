@@ -20,6 +20,7 @@ const emoji = {
     height: 24,
     width: 30,
   },
+  searchable: true
 };
 
 storiesOf(`${name}/Emoji`, module)

@@ -18,7 +18,7 @@ import { MentionsState, stateKey as mentionPluginKey } from '../../plugins/menti
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
-import { MediaPluginState } from '../../plugins/media';
+import { MediaPluginState, stateKey as mediaPluginKey } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
 import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
@@ -113,7 +113,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   componentDidMount() {
     const { maxHeight } = this.props;
     if (maxHeight) {
-      this.addBorderBottom();
+      this.addBorders();
     }
   }
 
@@ -123,14 +123,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleSpinnerComplete() {}
 
-  private addBorderBottom = () => {
+  private addBorders = () => {
     const { maxHeight } = this.props;
     if (maxHeight) {
       let { maxHeightStyle } = this.state;
       if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}` };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
       } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: null };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
       this.setState({ maxHeightStyle });
     }
@@ -250,8 +250,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}
-          onPaste={this.addBorderBottom}
-          onKeyDown={this.addBorderBottom}
+          onPaste={this.addBorders}
+          onKeyDown={this.addBorders}
         >
           <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
             {this.props.children}
@@ -333,7 +333,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
             {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
-            {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}
+            {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>
         </Footer>
       </Container>
@@ -363,18 +363,22 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   }
 
   @analytics('atlassian.editor.stop.cancel')
-  private handleCancel = () => {
+  private handleCancel = (): boolean => {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
+      return true;
     }
+    return false;
   }
 
   @analytics('atlassian.editor.stop.save')
-  private handleSave = () => {
+  private handleSave = (): boolean => {
     const { onSave } = this.props;
     if (onSave) {
       onSave();
+      return true;
     }
+    return false;
   }
 }

@@ -103,21 +103,21 @@ export default class ToolbarLists extends PureComponent<Props, State> {
   private handleBulletListClick = () => {
     if (!this.state.bulletListDisabled) {
       if (this.props.editorView) {
-        (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
-      } else {
-        (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
+        return (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
       }
+      return (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
     }
+    return false;
   }
 
   @analytics('atlassian.editor.format.list.numbered.button')
   private handleOrderedListClick = () => {
     if (!this.state.orderedListDisabled) {
       if (this.props.editorView) {
-        (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
-      } else {
-        (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
+        return (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
       }
+      return (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
     }
+    return false;
   }
 }

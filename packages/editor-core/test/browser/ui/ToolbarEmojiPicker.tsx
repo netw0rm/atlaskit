@@ -18,7 +18,8 @@ const grinEmojiId = {
   fallback: grinEmoji.fallback,
 };
 
-describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
+// TODO: Unskip this test in: https://product-fabric.atlassian.net/browse/ED-2201
+describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, new ProviderFactory()),

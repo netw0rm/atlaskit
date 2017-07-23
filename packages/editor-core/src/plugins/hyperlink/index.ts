@@ -311,7 +311,7 @@ const plugin = new Plugin({
       const html = clipboardData && clipboardData.getData('text/html');
       let contentSlices;
       if (html) {
-        contentSlices = linkifyContent(slice);
+        contentSlices = linkifyContent(view.state.schema, slice);
       } else {
         const text = clipboardData && clipboardData.getData('text/plain');
         if (text) {

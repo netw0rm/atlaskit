@@ -3,13 +3,9 @@ import React, { PureComponent } from 'react';
 
 import { name } from '../package.json';
 import AkProfilecardResourced from '../src';
+import { getMockProfileClient } from './util';
 
-import MockProfileClient from './story-data';
-
-const mockClient = new MockProfileClient({
-  cacheSize: 10,
-  cacheMaxAge: 5000,
-});
+const mockClient = getMockProfileClient(10, 5000);
 
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };

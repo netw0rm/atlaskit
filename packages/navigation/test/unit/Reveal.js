@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
 import sinon from 'sinon';
 import Reveal from '../../src/components/js/Reveal';
 
@@ -28,15 +26,15 @@ describe('Reveal', () => {
     });
 
     it('should render its children', () => {
-      expect(wrapper.find(Child).length).to.equal(1);
+      expect(wrapper.find(Child).length).toBe(1);
     });
 
     it('should not animate the growth of the children', () => {
-      expect(wrapper.find('RevealInner').props().shouldAnimate).to.equal(false);
+      expect(wrapper.find('RevealInner').props().shouldAnimate).toBe(false);
     });
 
     it('should open to the open height', () => {
-      expect(wrapper.find('RevealInner').props().openHeight).to.equal(100);
+      expect(wrapper.find('RevealInner').props().openHeight).toBe(100);
     });
   });
 
@@ -52,7 +50,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find(Child).length).to.equal(1);
+      expect(wrapper.find(Child).length).toBe(1);
     });
 
     it('should start not open', () => {
@@ -66,7 +64,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find('RevealInner').props().isOpen).to.equal(false);
+      expect(wrapper.find('RevealInner').props().isOpen).toBe(false);
     });
 
     it('should then open async after mounting', () => {
@@ -83,12 +81,12 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find('RevealInner').props().isOpen).to.equal(false);
+      expect(wrapper.find('RevealInner').props().isOpen).toBe(false);
 
       clock.tick();
       requestAnimationFrame.step();
 
-      expect(wrapper.find('RevealInner').props().isOpen).to.equal(true);
+      expect(wrapper.find('RevealInner').props().isOpen).toBe(true);
 
       // restore system clock
       clock.restore();
@@ -107,13 +105,13 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find(Child).length).to.equal(1);
+      expect(wrapper.find(Child).length).toBe(1);
 
       wrapper.setProps({
         isOpen: false,
       });
 
-      expect(wrapper.find(Child).length).to.equal(0);
+      expect(wrapper.find(Child).length).toBe(0);
     });
   });
 
@@ -133,7 +131,7 @@ describe('Reveal', () => {
         isOpen: false,
       });
 
-      expect(wrapper.find(Child).length).to.equal(1);
+      expect(wrapper.find(Child).length).toBe(1);
     });
 
     it('should remove children after closing', () => {
@@ -147,7 +145,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find(Child).length).to.equal(1);
+      expect(wrapper.find(Child).length).toBe(1);
 
       wrapper.setProps({
         isOpen: false,
@@ -156,7 +154,7 @@ describe('Reveal', () => {
       // mocking a transition end
       wrapper.find('RevealInner').simulate('transitionEnd');
 
-      expect(wrapper.find(Child).length).to.equal(0);
+      expect(wrapper.find(Child).length).toBe(0);
     });
   });
 
@@ -172,7 +170,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find(Child).length).to.equal(0);
+      expect(wrapper.find(Child).length).toBe(0);
     });
   });
 
@@ -188,7 +186,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find(Child).length).to.equal(0);
+      expect(wrapper.find(Child).length).toBe(0);
     });
   });
 });

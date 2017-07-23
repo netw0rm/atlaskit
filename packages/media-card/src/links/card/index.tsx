@@ -3,6 +3,7 @@ import { Component, MouseEvent } from 'react';
 import { TrelloBoardLinkApp, UrlPreview, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
@@ -22,6 +23,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
     const {appearance} = this.props;
     const {resources} = this;
+
+    if (resources.smartCard) {
+      return this.renderApplicationCard();
+    }
 
     // If appearance is passed we prioritize that instead of the better looking one
     if (appearance === 'small') {
@@ -43,6 +48,18 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
 
     return this.renderGenericLink();
+  }
+
+  private renderApplicationCard(): JSX.Element | null {
+    const {resources} = this;
+
+    if (!resources.smartCard) {
+      return null;
+    }
+
+    return (
+      <AppCardView model={resources.smartCard}/>
+    );
   }
 
   private renderApplicationLink(): JSX.Element {

@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import { akColorN100A, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
+const ThemeColor = {
+  Restricted: {
+    text: akColorN100A,
+  },
+};
+
 const BulletSpacer = styled.span`
   padding-right: ${akGridSizeUnitless / 2}px;
 `;
 
 const Restricted = styled.div`
-  color: ${akColorN100A};
+  color: ${ThemeColor.Restricted.text};
   display: flex;
 `;
 
@@ -17,13 +23,15 @@ RestrictedIconWrapper.displayName = 'RestrictedIconWrapper';
 
 const TopItem = styled.div`
   display: inline-block;
+  margin-left: ${akGridSizeUnitless}px;
+
   &:first-child {
     margin-left: 0;
+
     [dir="rtl"] & {
       margin-right: 0;
     }
   }
-  margin-left: ${akGridSizeUnitless}px;
 
   [dir="rtl"] & {
     margin-left: 0;
@@ -35,4 +43,10 @@ const TopItemsContainer = styled.div`
   display: flex;
 `;
 
-export { BulletSpacer, Restricted, RestrictedIconWrapper, TopItem, TopItemsContainer };
+export {
+  BulletSpacer,
+  Restricted,
+  RestrictedIconWrapper,
+  TopItem,
+  TopItemsContainer,
+};

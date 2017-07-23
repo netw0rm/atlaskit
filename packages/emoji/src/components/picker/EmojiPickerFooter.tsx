@@ -5,14 +5,15 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 import EmojiPreview from '../common/EmojiPreview';
 import EmojiUploadPicker, { OnUploadEmoji } from '../common/EmojiUploadPicker';
-import { EmojiDescription, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
 
 export interface Props {
   selectedEmoji?: EmojiDescription;
-  selectedTone?: number;
+  selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
   uploading: boolean;
   initialUploadName?: string;
+  toneEmoji?: EmojiDescriptionWithVariations;
   uploadErrorMessage?: string;
   onUploadCancelled: () => void;
   onUploadEmoji: OnUploadEmoji;
@@ -27,13 +28,19 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
       onUploadEmoji,
       selectedEmoji,
       selectedTone,
+      toneEmoji,
       uploadErrorMessage,
       uploading,
     } = this.props;
 
+    const previewFooterClassnames = classNames([
+      styles.emojiPickerFooter,
+      styles.emojiPickerFooterWithTopShadow,
+    ]);
+
     if (uploading) {
       return (
-        <div className={styles.emojiPickerFooter}>
+        <div className={previewFooterClassnames}>
           <EmojiUploadPicker
             onUploadCancelled={onUploadCancelled}
             onUploadEmoji={onUploadEmoji}
@@ -44,15 +51,11 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
       );
     }
 
-    const previewFooterClassnames = classNames([
-      styles.emojiPickerFooter,
-      styles.emojiPickerFooterWithTopShadow,
-    ]);
-
     return (
       <div className={previewFooterClassnames}>
         <EmojiPreview
           emoji={selectedEmoji}
+          toneEmoji={toneEmoji}
           selectedTone={selectedTone}
           onToneSelected={onToneSelected}
         />

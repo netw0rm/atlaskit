@@ -1,80 +1,91 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
 import { action } from '@kadira/storybook';
+import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
+
+const onClickAction = (item) => { action('onClick')(`resultId: ${item.resultId}`); };
 
 const data = [
   {
     title: 'Jedi',
     items: [
       {
-        id: '1',
+        resultId: '1',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(1),
         name: 'Jedi Council [archived]',
+        onClick: onClickAction,
         privacy: 'private',
       }, {
-        id: '2',
+        resultId: '2',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(2),
         name: 'Lightsaber colour discussion',
         topic: 'Please keep it civil. Strictly no red saber talk',
+        onClick: onClickAction,
         privacy: 'public',
       }, {
-        id: '3',
+        resultId: '3',
         type: 'room',
         avatarUrl: getRoomAvatarUrl(3),
         name: 'Force tricks',
         topic: 'Impress your friends',
+        onClick: onClickAction,
         privacy: 'private',
       }, {
-        id: 'qgjinn',
+        resultId: 'qgjinn',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('qgjinn'),
         mentionName: 'MasterQ',
         name: 'Qui-Gon Jinn',
+        onClick: onClickAction,
         presenceMessage: 'On-call',
         presenceState: 'offline',
       }, {
-        id: 'askywalker',
+        resultId: 'askywalker',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('askywalker'),
         mentionName: 'askywalker',
         name: 'Anakin Skywalker',
+        onClick: onClickAction,
         presenceMessage: 'Trying out the dark side',
         presenceState: 'offline',
       }, {
-        id: 'owkenobi',
+        resultId: 'owkenobi',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('owkenobi'),
         mentionName: 'BenKen',
         name: 'Obi-Wan Kenobi',
+        onClick: onClickAction,
         presenceMessage: 'In exile',
         presenceState: 'busy',
       }, {
-        id: 'yoda',
+        resultId: 'yoda',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('yoda'),
         mentionName: 'yoda',
         name: 'Yoda',
+        onClick: onClickAction,
         presenceMessage: 'Chillin`',
         presenceState: 'online',
       }, {
-        id: 'mwindu',
+        resultId: 'mwindu',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('mwindu'),
         mentionName: 'mwindu',
         name: 'Mace Windu',
+        onClick: onClickAction,
         presenceState: 'offline',
       }, {
-        id: 'lskywalker',
+        resultId: 'lskywalker',
         type: 'person',
         avatarUrl: getPersonAvatarUrl('lskywalker'),
         mentionName: 'lskywalker',
         name: 'Luke Skywalker',
+        onClick: onClickAction,
         presenceMessage: 'Is this Yoda guy for real? lol',
         presenceState: 'online',
       },
@@ -84,89 +95,103 @@ const data = [
     title: 'CSI',
     items: [
       {
-        id: 'Forensics Lab',
+        resultId: 'Forensics Lab',
         type: 'room',
         name: 'Forensics Lab',
         topic: 'Science!',
         avatarUrl: getRoomAvatarUrl(4),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Ballistics Lab',
+        resultId: 'Ballistics Lab',
         type: 'room',
         name: 'Ballistics Lab',
         topic: 'Pew pew pew',
         avatarUrl: getRoomAvatarUrl(5),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Cotton swab enthusiasts',
+        resultId: 'Cotton swab enthusiasts',
         type: 'room',
         name: 'Cotton swab enthusiasts',
         topic: 'So many applications',
         avatarUrl: getRoomAvatarUrl(6),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'David Caruso',
+        resultId: 'David Caruso',
         type: 'person',
         name: 'David Caruso',
         mentionName: 'Horatio Caine',
         avatarUrl: getPersonAvatarUrl('hcaine'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Kim Delaney',
+        resultId: 'Kim Delaney',
         type: 'person',
         name: 'Kim Delaney',
         mentionName: 'Megan Donner',
         avatarUrl: getPersonAvatarUrl('mdonner'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Emily Procter',
+        resultId: 'Emily Procter',
         type: 'person',
         name: 'Emily Procter',
         mentionName: 'Calleigh Duquesne',
         avatarUrl: getPersonAvatarUrl('cduqesne'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Adam Rodriguez',
+        resultId: 'Adam Rodriguez',
         type: 'person',
         name: 'Adam Rodriguez',
         mentionName: 'Delko',
         avatarUrl: getPersonAvatarUrl('delko'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Khandi Alexander',
+        resultId: 'Khandi Alexander',
         type: 'person',
         name: 'Khandi Alexander',
         mentionName: 'Alexx Woods',
         avatarUrl: getPersonAvatarUrl('awoods'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Rory Cochrane',
+        resultId: 'Rory Cochrane',
         type: 'person',
         name: 'Rory Cochrane',
         mentionName: 'Tim Speedle',
         avatarUrl: getPersonAvatarUrl('tspeedle'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Rex Linn',
+        resultId: 'Rex Linn',
         type: 'person',
         name: 'Rex Linn',
         mentionName: 'Frank Tripp',
         avatarUrl: getPersonAvatarUrl('ftripp'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Eva LaRue',
+        resultId: 'Eva LaRue',
         type: 'person',
         name: 'Eva LaRue',
         mentionName: 'Natalia Boa Vista',
         avatarUrl: getPersonAvatarUrl('`nboavista`'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Megalyn Echikunwoke',
+        resultId: 'Megalyn Echikunwoke',
         type: 'person',
         name: 'Megalyn Echikunwoke',
         mentionName: 'Tara Price',
         avatarUrl: getPersonAvatarUrl('tprice'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Eddie Cibrian',
+        resultId: 'Eddie Cibrian',
         type: 'person',
         name: 'Eddie Cibrian',
         mentionName: 'Jesse Cardoza',
         avatarUrl: getPersonAvatarUrl('jcardoza'),
+        href: 'http://www.atlassian.com',
       }, {
-        id: 'Omar Benson Miller',
+        resultId: 'Omar Benson Miller',
         type: 'person',
         name: 'Omar Benson Miller',
         mentionName: 'Walter Simmons',
         avatarUrl: getPersonAvatarUrl('wsimmons'),
+        href: 'http://www.atlassian.com',
       },
     ],
   },
@@ -188,8 +213,6 @@ function searchData(query) {
 
 // a little fake store for holding the query after a component unmounts
 const store = {};
-
-const onClickAction = (item) => { action(`onResultClick: ${item.name}`)(item); };
 
 export default class BasicQuickSearch extends PureComponent {
   static propTypes = {
@@ -233,12 +256,12 @@ export default class BasicQuickSearch extends PureComponent {
       : AkQuickSearch;
     return (
       <QuickSearchComp
+        /* Search props */
         isLoading={this.state.isLoading}
-        onSearchChange={({ target }) => { this.search(target.value); }}
-        onSearchClear={() => { this.search(''); }}
+        onSearchInput={({ target }) => { this.search(target.value); }}
         value={this.state.query}
 
-        onResultClick={onClickAction}
+        /* SearchResults props */
         results={this.state.results}
       />
     );

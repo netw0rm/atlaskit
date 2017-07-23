@@ -59,6 +59,7 @@ Installation
 * [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
 * [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
 * [yarn](https://yarnpkg.com/) should be installed globally (see yarn website for installation instructions)
+* [watchman](https://facebook.github.io/watchman/docs/install.html) should be installed to enable running tests in watch mode
 
 #### Clone the repo and install
 
@@ -94,39 +95,32 @@ A comprehensive list of components and detailed usage of each can be found in th
 
 You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
 
-
 Tests
 =====
 
-### Running unit tests
+### Running unit tests with jest
+
+For packages that use Jest (every package except those used by the Fabric team), we are using Jest as a test runner. These tests live inside a packages `test/unit` folder. Every file in this folder is considered a test and must have at least one test function in it, unless the filename begins with an underscore.
+
+To run the full unit test suite: `npm run test/unit`
+To run the tests for a single package: `lerna run test/unit --scope=@atlaskit/<packageName>`
+
+While developing, it is useful to run jest in watch-mode. We recommend running Jest in watch-mode from the root, so it runs all the tests affected by a change. Since the tests run so quickly, this is going to give you the best possible coverage of any of your changes.
+
+Note: This requires the installation of [Watchman](https://facebook.github.io/watchman/docs/install.html)
+
+To run the unit tests in watch mode for development/tdd: `npm run test/unit -- --watch`
+
+### If the above instructions don't apply to the package you are working on
+
+Some of the packages haven't been converted over to the new process yet. For those packages, the legacy instructions are:
+
+#### Running unit tests
 
 * To run unit tests for a single component: `yarn run test/single @atlaskit/my-component-name`
 * To continuously run tests for a single component: `yarn run test/single/watch @atlaskit/my-component`
 
 > You can pass arguments to Karma like this to override the AtlasKit defaults: `yarn run test/single @atlaskit/my-component-name -- --browsers=Chrome`
-
-**Note: The above information is slightly out of date in some cases as we are currently undergoing a major refactor for how we run tests**
-
-Some packages will have moved to the new unit testing framework (using mocha to run jsdom rather than karma).
-
-For these packages you'll need to run the `test/unit` script
-
-```
-yarn run test/unit
-```
-
-To run tests for a single package you can pass the package name (the name used in the directory not the package.json) like so:
-
-```
-yarn run test/unit avatar
-```
-
-And to pass any extra flags you need to separate them using `--`
-
-```
-yarn run test/unit avatar -- --watch
-```
-
 
 Reporting issues
 ============

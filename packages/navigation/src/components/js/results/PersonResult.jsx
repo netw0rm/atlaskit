@@ -3,25 +3,42 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@atlaskit/avatar';
 
-import { AkNavigationItem } from '../../../../src';
+import ResultBase from './ResultBase';
+
+const noOp = () => {};
+
+// ===================================================================
+// If adding a prop or feature that may be useful to all result types,
+// add it to ResultBase instead
+// ===================================================================
 
 export default class PersonResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
+    href: PropTypes.string,
+    isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
+    isTabbingDisabled: PropTypes.bool,
     mentionName: PropTypes.string,
     mentionPrefix: PropTypes.string,
     name: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     presenceMessage: PropTypes.string,
-    presenceState: PropTypes.oneOf(['none', 'online', 'busy', 'offline']),
+    presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
+    resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    type: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
+    isHoverStylesDisabled: false,
     isSelected: false,
-    onClick: () => {},
+    isTabbingDisabled: false,
     mentionPrefix: '@',
-    presenceState: 'none',
+    onClick: noOp,
+    onMouseEnter: noOp,
+    onMouseLeave: noOp,
   }
 
   getMention = () => (
@@ -30,21 +47,42 @@ export default class PersonResult extends PureComponent {
       : null
   );
 
-  render() {
-    const userAvatar = (
-      <Avatar
-        presence={this.props.presenceState}
-        src={this.props.avatarUrl}
-      />);
+  getAvatar = () => (
+    <Avatar
+      presence={this.props.presenceState}
+      src={this.props.avatarUrl}
+    />
+  )
 
+  render() {
+    const {
+      href,
+      isHoverStylesDisabled,
+      isSelected,
+      isTabbingDisabled,
+      name,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+      presenceMessage,
+      resultId,
+      type,
+    } = this.props;
     return (
-      <AkNavigationItem
+      <ResultBase
         caption={this.getMention()}
-        icon={userAvatar}
-        isSelected={this.props.isSelected}
-        onClick={() => this.props.onClick(this.props)}
-        subText={this.props.presenceMessage}
-        text={this.props.name}
+        href={href}
+        icon={this.getAvatar()}
+        isHoverStylesDisabled={isHoverStylesDisabled}
+        isSelected={isSelected}
+        isTabbingDisabled={isTabbingDisabled}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        resultId={resultId}
+        subText={presenceMessage}
+        text={name}
+        type={type}
       />
     );
   }

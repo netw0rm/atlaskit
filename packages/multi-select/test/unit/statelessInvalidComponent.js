@@ -41,15 +41,15 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should pass isInvalid property to field base', () => {
-      expect(wrapper.find(FieldBaseStateless).prop('isInvalid')).to.equal(true);
+      expect(wrapper.find(FieldBaseStateless).prop('isInvalid')).toBe(true);
     });
 
     it('should pass invalidMessage property to field base', () => {
-      expect(wrapper.find(FieldBaseStateless).prop('invalidMessage')).to.equal('invalid message');
+      expect(wrapper.find(FieldBaseStateless).prop('invalidMessage')).toBe('invalid message');
     });
 
     it('should set isDialogOpen property on field base', () => {
-      expect(wrapper.find(FieldBaseStateless).prop('isDialogOpen')).to.equal(true);
+      expect(wrapper.find(FieldBaseStateless).prop('isDialogOpen')).toBe(true);
     });
   });
 });

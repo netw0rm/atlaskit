@@ -1,5 +1,5 @@
 // @flow
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import createStore from '../../state/create-store';
 // eslint-disable-next-line no-duplicate-imports
@@ -14,7 +14,7 @@ type Context = {|
   [storeKey]: Store
 |}
 
-export default class DragDropContext extends PureComponent {
+export default class DragDropContext extends Component {
   /* eslint-disable react/sort-comp */
   props: Props
   store: Store

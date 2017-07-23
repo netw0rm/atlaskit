@@ -3,6 +3,7 @@ import { Component, MouseEvent } from 'react';
 import { TrelloBoardLinkApp, UrlPreview, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import {Href} from '../../utils/href';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
@@ -51,15 +52,26 @@ export class LinkCard extends Component<LinkCardProps, {}> {
   }
 
   private renderApplicationCard(): JSX.Element | null {
-    const {resources} = this;
+    const {resources: {smartCard}} = this;
 
-    if (!resources.smartCard) {
+    // this check is just to silence TS - this method should never be called if we don't have
+    // data for a smart-card
+    if (!smartCard) {
       return null;
     }
 
+    if (!smartCard.link) {
+      return (
+        <AppCardView model={smartCard}/>
+      );
+    }
+
     return (
-      <AppCardView model={resources.smartCard}/>
+      <Href linkUrl={smartCard.link.url}>
+        <AppCardView model={smartCard}/>
+      </Href>
     );
+
   }
 
   private renderApplicationLink(): JSX.Element {

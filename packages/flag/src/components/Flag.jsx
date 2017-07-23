@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
@@ -13,60 +13,47 @@ import Container, {
 } from '../styled/Flag';
 import Expander from './Expander';
 import Actions from './FlagActions';
-import { APPEARANCE_ENUM, getAppearance } from '../shared-variables';
+import { getProperty } from '../theme';
+import type { ActionsType, AppearanceTypes, ChildrenType, ElementType, FunctionType } from '../types';
 
-// Note: needed to copy these from APPEARANCE_ENUM because the readme storybook util
-// can't currently handle importing these from shared-variables.js (sadpanda)
-const appearanceEnumValues = ['error', 'info', 'normal', 'success', 'warning'];
-const appearanceEnumDefault = 'normal';
+export const DEFAULT_APPEARANCE = 'normal';
+
+type Props = {
+  /** Array of clickable actions to be shown at the bottom of the flag. For flags where appearance
+    * is 'normal', actions will be shown as links. For all other appearance values, actions will
+    * shown as buttons.
+    */
+  actions?: ActionsType,
+  /** Makes the flag appearance bold. Setting this to anything other than 'normal' hides the
+    * dismiss button.
+    */
+  appearance?: AppearanceTypes,
+  /** The secondary content shown below the flag title */
+  description?: ChildrenType,
+  /** The icon displayed in the top-left of the flag. Should be an instance of `@atlaskit/icon`.
+    * Your icon will receive the appropriate default color, which you can override by wrapping the
+    * icon in a containing element with CSS `color` set to your preferred icon color.
+    */
+  icon: ElementType,
+  /** A unique identifier used for rendering and onDismissed callbacks. */
+  id?: number | string,
+  /** Private, do not use. */
+  isDismissAllowed?: boolean,
+  /** Private, do not use. Use the FlagGroup onDismissed handler. */
+  onDismissed?: FunctionType,
+  /** The bold text shown at the top of the flag. */
+  title: string,
+};
 
 export default class Flag extends PureComponent {
-  static propTypes = {
-    /** Array of clickable actions to be shown at the bottom of the flag. For flags where appearance
-      * is 'normal', actions will be shown as links. For all other appearance values, actions will
-      * shown as buttons.
-      */
-    actions: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.node,
-      onClick: PropTypes.func,
-    })),
-    /** Makes the flag appearance bold. Setting this to anything other than 'normal' hides the
-      * dismiss button.
-      */
-    appearance: PropTypes.oneOf(appearanceEnumValues),
-    /** The secondary content shown below the flag title */
-    description: PropTypes.node,
-    /** The icon displayed in the top-left of the flag. Should be an instance of `@atlaskit/icon`.
-      * Your icon will receive the appropriate default color, which you can override by wrapping the
-      * icon in a containing element with CSS `color` set to your preferred icon color.
-      */
-    icon: PropTypes.element.isRequired,
-    /** A unique identifier used for rendering and onDismissed callbacks. */
-    id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    /** Private, do not use. */
-    isDismissAllowed: PropTypes.bool,
-    /** Private, do not use. Use the FlagGroup onDismissed handler. */
-    onDismissed: PropTypes.func,
-    /** The bold text shown at the top of the flag. */
-    title: PropTypes.string.isRequired,
-  };
-
+  props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
-    appearance: appearanceEnumDefault,
     actions: [],
+    appearance: DEFAULT_APPEARANCE,
     isDismissAllowed: false,
   }
 
-  state = {
-    isExpanded: false,
-  }
-
-  getButtonFocusRingColor = () => (
-    getAppearance(this.props.appearance).focusRingColor
-  )
+  state = { isExpanded: false }
 
   dismissFlag = () => {
     if (this.props.isDismissAllowed && this.props.onDismissed) {
@@ -74,7 +61,7 @@ export default class Flag extends PureComponent {
     }
   }
 
-  isBold = () => this.props.appearance !== APPEARANCE_ENUM.defaultValue
+  isBold = () => this.props.appearance !== DEFAULT_APPEARANCE
 
   toggleExpand = () => {
     this.setState({ isExpanded: !this.state.isExpanded });
@@ -93,10 +80,10 @@ export default class Flag extends PureComponent {
 
     return (
       <DismissButton
-        focusRingColor={this.getButtonFocusRingColor()}
         appearance={appearance}
-        type="button"
+        focusRingColor={getProperty(appearance, 'focusRingColor')}
         onClick={buttonAction}
+        type="button"
       >
         <ButtonIcon label={buttonLabel} size="small" />
       </DismissButton>
@@ -104,37 +91,24 @@ export default class Flag extends PureComponent {
   }
 
   renderBody = () => {
-    const {
-      appearance,
-      actions,
-      description,
-    } = this.props;
-
+    const { actions, appearance, description } = this.props;
     const isExpanded = !this.isBold() || this.state.isExpanded;
-
-    const OptionalDescription = () => (
-      description ? (
-        <Description appearance={appearance}>{description}</Description>
-      ) : null
-    );
 
     return (
       <Expander isExpanded={isExpanded}>
-        <OptionalDescription />
+        {description && (
+          <Description appearance={appearance}>
+            {description}
+          </Description>
+        )}
         <Actions actions={actions} appearance={appearance} />
       </Expander>
     );
   }
 
   render() {
-    const {
-      appearance,
-      icon,
-      title,
-    } = this.props;
-
+    const { appearance, icon, title } = this.props;
     const OptionalDismissButton = this.renderToggleOrDismissButton;
-
     const Body = this.renderBody;
 
     return (

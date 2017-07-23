@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless, akZIndexFlag } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless as spacing, akZIndexFlag } from '@atlaskit/util-shared-styles';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 export default styled.div`
-  bottom: ${akGridSizeUnitless * 6}px;
-  left: ${akGridSizeUnitless * 10}px;
+  bottom: ${spacing * 6}px;
+  left: ${spacing * 10}px;
   position: fixed;
   z-index: ${akZIndexFlag};
 `;

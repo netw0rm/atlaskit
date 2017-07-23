@@ -1,11 +1,13 @@
 import { MediaState } from '@atlaskit/media-core';
 import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
+import { AnalyticsHandler } from '../../analytics';
 
 export type EditorAppearance = 'tray' | 'mini' | 'midi' | 'maxi';
 
 export interface EditorProps {
   appearance: EditorAppearance;
+  analyticsHandler?: AnalyticsHandler;
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;

@@ -7,7 +7,8 @@ import {
   Schema,
 } from '../../prosemirror';
 import * as MarkdownIt from 'markdown-it';
-import * as  emoji from 'markdown-it-emoji';
+import * as emoji from 'markdown-it-emoji';
+import table from 'markdown-it-table';
 
 function isCode(str) {
   const lines = str.split(/\r?\n|\r/);
@@ -17,19 +18,19 @@ function isCode(str) {
   let weight = 0;
   lines.forEach(line => {
     // Ends with : or ;
-    /[:;]$/.test(line) && weight++;
+    if (/[:;]$/.test(line)) { weight++; }
     // Contains second and third braces
-    /[{}\[\]]/.test(line) && weight++;
+    if (/[{}\[\]]/.test(line)) { weight++; }
     // Contains <tag> or </
-    (/<\w+>/.test(line) || /<\//.test(line)) && weight++;
+    if ((/<\w+>/.test(line) || /<\//.test(line))) { weight++; }
     // Contains () <- function calls
-    /\(\)/.test(line) && weight++;
+    if (/\(\)/.test(line)) { weight++; }
     // New line starts with less than two chars. e.g- if, {, <, etc
     const token = /^(\s+)[a-zA-Z<{]{2,}/.exec(line);
-    token && 2 <= token[1].length && weight++;
+    if (token && 2 <= token[1].length) { weight++; }
     // My own additions
     // Contains second and third braces
-    /&&/.test(line) && weight++;
+    if (/&&/.test(line)) { weight++; }
   });
   return 4 <= weight && weight >= 0.5 * lines.length;
 }
@@ -77,7 +78,8 @@ const plugin = new Plugin({
 });
 
 const md = MarkdownIt('default', { html: false, linkify: true });
-md.use(emoji);
+// Disable default table, it doesn't support nested content in cell
+md.disable('table').use(emoji).use(table);
 
 const plugins = (schema: Schema<any, any>) => {
   atlassianMarkDownParser = new MarkdownParser(schema, md, {
@@ -113,11 +115,9 @@ const plugins = (schema: Schema<any, any>) => {
       })
     },
     table: { block: 'table' },
-    thead: { ignore: true },
     tr: { block: 'tableRow' },
-    th: { blockP: 'tableHeader' },
-    tbody: { ignore: true },
-    td: { blockP: 'tableCell' },
+    th: { block: 'tableHeader' },
+    td: { block: 'tableCell' },
     s: { mark: 'strike' },
   });
   return [plugin].filter((plugin) => !!plugin) as Plugin[];

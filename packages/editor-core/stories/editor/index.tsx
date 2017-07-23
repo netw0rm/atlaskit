@@ -277,7 +277,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
-          ...pastePlugins(schema),          
+          ...pastePlugins(schema),
           ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
           ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.providerFactory),

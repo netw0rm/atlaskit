@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { AbstractResource, OnProviderChange } from '../../src/serviceResources';
+import { AbstractResource } from '../../src/serviceResources';
+import { OnProviderChange } from '../../src/types';
 
 class TestResource extends AbstractResource<string, string[], string, string, {}> {
   filter() {}

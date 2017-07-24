@@ -34,19 +34,14 @@ export const withDroppableId = (droppableId: DroppableId): ContextDefinition => 
   },
 });
 
-const base: ContextDefinition = {
-  context: {},
-  childContextTypes: {},
-};
-
-export const combine = (...args: ContextDefinition[]): ContextDefinition =>
-  args.reduce((previous: ContextDefinition, current: ContextDefinition): ContextDefinition => ({
+export const combine = (first: ContextDefinition,
+  second: ContextDefinition): ContextDefinition => ({
     context: {
-      ...previous.context,
-      ...current.context,
+      ...first.context,
+      ...second.context,
     },
     childContextTypes: {
-      ...previous.childContextTypes,
-      ...current.childContextTypes,
+      ...first.childContextTypes,
+      ...second.childContextTypes,
     },
-  }), base);
+  });

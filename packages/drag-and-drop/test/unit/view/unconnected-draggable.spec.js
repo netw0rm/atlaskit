@@ -2,9 +2,9 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
+import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
-import sinon from 'sinon';
 import Draggable, { zIndexOptions } from '../../../src/view/draggable/draggable';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import Moveable from '../../../src/view/moveable/';
@@ -27,7 +27,6 @@ import type {
   DroppableId,
   TypeId,
   InitialDragLocation,
-  CurrentDragLocation,
 } from '../../../src/types';
 import { getDraggableDimension } from '../../../src/state/dimension';
 import { getClientRect, noMargin } from '../../utils/dimension';
@@ -64,6 +63,7 @@ const origin: Position = { x: 0, y: 0 };
 
 const dimension: DraggableDimension = getDraggableDimension({
   id: draggableId,
+  droppableId,
   clientRect: getClientRect({
     top: 0,
     right: 100,
@@ -836,8 +836,8 @@ describe('Draggable - unconnected', () => {
     });
 
     it('should give a placeholder the same dimension of the element being moved', () => {
-      const stub = sinon.stub();
-      const Stubber = getStubber(stub);
+      const myMock = jest.fn();
+      const Stubber = getStubber(myMock);
 
       mountDraggable({
         mapProps: draggingMapProps,
@@ -846,15 +846,44 @@ describe('Draggable - unconnected', () => {
       // finish moving to the initial position
       requestAnimationFrame.flush();
 
-      const provided: Provided = stub.lastCall.args[0].provided;
+      const provided: Provided = getLastCall(myMock)[0].provided;
       // $ExpectError - because we do not have the correct React type for placeholder
       expect(provided.placeholder.props.height).toBe(dimension.page.withMargin.height);
-      // $ExpectError - because we do not have the correct React type for placeholder
+      // $ExpectError
       expect(provided.placeholder.props.width).toBe(dimension.page.withMargin.width);
     });
 
     describe('is not dragging - and nothing else is (default rest)', () => {
+      let provided: Provided;
+      let snapshot: StateSnapshot;
 
+      beforeEach(() => {
+        const myMock = jest.fn();
+        mountDraggable({
+          mapProps: defaultMapProps,
+          WrappedComponent: getStubber(myMock),
+        });
+        provided = myMock.mock.calls[myMock.mock.calls.length - 1][0].provided;
+        snapshot = myMock.mock.calls[myMock.mock.calls.length - 1][0].snapshot;
+      });
+
+      it('should not render a placeholder', () => {
+        expect(provided.placeholder).toBe(null);
+      });
+
+      it('should have base inline styles', () => {
+        const expected: NotDraggingStyle = {
+          transform: null,
+          transition: css.outOfTheWay,
+          pointerEvents: 'auto',
+        };
+
+        expect(provided.draggableStyle).toEqual(expected);
+      });
+
+      it('should be informed that it is not dragging', () => {
+        expect(snapshot.isDragging).toBe(false);
+      });
     });
 
     describe('is not dragging - and something else is', () => {
@@ -934,16 +963,16 @@ describe('Draggable - unconnected', () => {
         };
 
         beforeEach(() => {
-          const stub = sinon.stub();
+          const myMock = jest.fn();
           wrapper = mountDraggable({
             mapProps,
-            WrappedComponent: getStubber(stub),
+            WrappedComponent: getStubber(myMock),
           });
           // let react-motion tick over
           requestAnimationFrame.step();
 
-          provided = stub.lastCall.args[0].provided;
-          snapshot = stub.lastCall.args[0].snapshot;
+          provided = getLastCall(myMock)[0].provided;
+          snapshot = getLastCall(myMock)[0].snapshot;
         });
 
         it('should not render a placeholder', () => {
@@ -965,8 +994,8 @@ describe('Draggable - unconnected', () => {
         });
 
         it('should instantly move out of the way without css if animation is disabled', () => {
-          const stub = sinon.stub();
-          const CustomStubber = getStubber(stub);
+          const myMock = jest.fn();
+          const CustomStubber = getStubber(myMock);
           // $ExpectError - using spread
           const customProps: MapProps = {
             ...mapProps,
@@ -986,7 +1015,7 @@ describe('Draggable - unconnected', () => {
           // flush react motion
           requestAnimationFrame.flush();
 
-          const customProvided = stub.lastCall.args[0].provided;
+          const customProvided = getLastCall(myMock)[0].provided;
           expect(customWrapper.find(Moveable).props().speed).toBe('INSTANT');
           expect(customProvided.draggableStyle).toEqual(expected);
         });
@@ -1040,18 +1069,18 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should be above Draggables that are drop animating', () => {
-        const draggingStub = sinon.stub();
+        const draggingMock = jest.fn();
         mountDraggable({
           mapProps: draggingMapProps,
-          WrappedComponent: getStubber(draggingStub),
+          WrappedComponent: getStubber(draggingMock),
         });
-        const draggingProvided: Provided = draggingStub.lastCall.args[0].provided;
-        const returningHomeStub = sinon.stub();
+        const draggingProvided: Provided = getLastCall(draggingMock)[0].provided;
+        const returningHomeMock = jest.fn();
         mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(returningHomeStub),
+          WrappedComponent: getStubber(returningHomeMock),
         });
-        const returningHomeProvided: Provided = returningHomeStub.lastCall.args[0].provided;
+        const returningHomeProvided: Provided = getLastCall(returningHomeMock)[0].provided;
 
         // $ExpectError - not type checking draggableStyle
         expect(draggingProvided.draggableStyle.zIndex)
@@ -1082,7 +1111,7 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should be positioned in the correct offset while dragging', () => {
-        const stub = sinon.stub();
+        const myMock = jest.fn();
         const offset: Position = { x: 10, y: 20 };
         // $ExpectError - using spread
         const mapProps: MapProps = {
@@ -1091,7 +1120,7 @@ describe('Draggable - unconnected', () => {
         };
         mountDraggable({
           mapProps,
-          WrappedComponent: getStubber(stub),
+          WrappedComponent: getStubber(myMock),
         });
         // release frame for animation
         requestAnimationFrame.step();
@@ -1108,7 +1137,7 @@ describe('Draggable - unconnected', () => {
           pointerEvents: 'none',
         };
 
-        const provided: Provided = stub.lastCall.args[0].provided;
+        const provided: Provided = getLastCall(myMock)[0].provided;
         global.expect(provided.draggableStyle).toEqual(expected);
       });
 
@@ -1127,39 +1156,36 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should let consumers know that the item is dragging', () => {
-        const stub = sinon.stub();
+        const myMock = jest.fn();
 
         mountDraggable({
           mapProps: draggingMapProps,
-          WrappedComponent: getStubber(stub),
+          WrappedComponent: getStubber(myMock),
         });
 
-        const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
+        const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
         expect(snapshot.isDragging).toBe(true);
       });
     });
 
     describe('drop animating', () => {
       it('should render a placeholder', () => {
-        const stub = sinon.stub();
+        const myMock = jest.fn();
 
         mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(stub),
+          WrappedComponent: getStubber(myMock),
         });
 
-        const provided: Provided = stub.lastCall.args[0].provided;
+        const provided: Provided = getLastCall(myMock)[0].provided;
 
         // $ExpectError - because we do not have the correct React type for placeholder
         expect(provided.placeholder.type).toBe(Placeholder);
       });
 
       it('should move back to home with standard speed', () => {
-        const stub = sinon.stub();
-
         const wrapper = mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(stub),
         });
 
         expect(wrapper.find(Moveable).props().speed).toBe('STANDARD');
@@ -1167,20 +1193,20 @@ describe('Draggable - unconnected', () => {
 
       it('should be on top of draggables that are not being dragged', () => {
         // not dragging
-        const notDraggingStub = sinon.stub();
+        const notDraggingMock = jest.fn();
         mountDraggable({
           mapProps: somethingElseDraggingMapProps,
-          WrappedComponent: getStubber(notDraggingStub),
+          WrappedComponent: getStubber(notDraggingMock),
         });
-        const notDraggingProvided: Provided = notDraggingStub.lastCall.args[0].provided;
+        const notDraggingProvided: Provided = getLastCall(notDraggingMock)[0].provided;
         const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
         // returning home
-        const dropAnimatingStub = sinon.stub();
+        const dropAnimatingMock = jest.fn();
         mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(dropAnimatingStub),
+          WrappedComponent: getStubber(dropAnimatingMock),
         });
-        const droppingProvided: Provided = dropAnimatingStub.lastCall.args[0].provided;
+        const droppingProvided: Provided = getLastCall(dropAnimatingMock)[0].provided;
         const droppingStyle: DraggingStyle = (droppingProvided.draggableStyle : any);
         const expectedNotDraggingStyle: NotDraggingStyle = {
           transition: css.outOfTheWay,
@@ -1193,7 +1219,7 @@ describe('Draggable - unconnected', () => {
       });
 
       it('should be positioned absolutely in the same spot as before', () => {
-        const stub = sinon.stub();
+        const myMock = jest.fn();
         const offset = dropAnimatingMapProps.offset;
         const expected: DraggingStyle = {
           position: 'fixed',
@@ -1209,36 +1235,36 @@ describe('Draggable - unconnected', () => {
 
         mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(stub),
+          WrappedComponent: getStubber(myMock),
         });
         // finish the animation
         requestAnimationFrame.flush();
 
-        const provided: Provided = stub.lastCall.args[0].provided;
+        const provided: Provided = getLastCall(myMock)[0].provided;
         global.expect(provided.draggableStyle).toEqual(expected);
       });
 
       it('should let consumers know that the item is still dragging', () => {
-        const stub = sinon.stub();
+        const myMock = jest.fn();
 
         mountDraggable({
           mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(stub),
+          WrappedComponent: getStubber(myMock),
         });
 
-        const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
+        const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
         expect(snapshot.isDragging).toBe(true);
       });
     });
 
     describe('drop complete', () => {
-      const stub = sinon.stub();
+      const myMock = jest.fn();
       mountDraggable({
         mapProps: dropCompleteMapProps,
-        WrappedComponent: getStubber(stub),
+        WrappedComponent: getStubber(myMock),
       });
-      const provided: Provided = stub.lastCall.args[0].provided;
-      const snapshot: StateSnapshot = stub.lastCall.args[0].snapshot;
+      const provided: Provided = getLastCall(myMock)[0].provided;
+      const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
 
       it('should not render a placeholder', () => {
         expect(provided.placeholder).toBe(null);

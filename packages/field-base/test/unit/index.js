@@ -6,8 +6,8 @@ import sinon from 'sinon';
 
 import FieldBase, { FieldBaseStateless } from '../../src';
 
-import Content from '../../src/styled/Content';
-import WarningIconComponent from '../../src/styled/WarningIcon';
+import { Content } from '../../src/styled/Content';
+import { WarningIcon } from '../../src/components/ValidationElement';
 
 const defaultProps = {
   onFocus: () => {},
@@ -59,19 +59,19 @@ describe('ak-field-base', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const Invalid = mount(<FieldBaseStateless {...defaultProps} isInvalid />);
         expect(Invalid.find(Content).prop('invalid')).toBe(true);
-        expect(Invalid.find(WarningIconComponent).length).toBeGreaterThan(0);
+        expect(Invalid.find(WarningIcon).length).toBeGreaterThan(0);
       });
 
       it('should render the warning icon', () =>
         expect(mount(<FieldBaseStateless {...defaultProps} isInvalid />)
-          .find(WarningIconComponent).length).toBeGreaterThan(0)
+          .find(WarningIcon).length).toBeGreaterThan(0)
       );
     });
 
     describe('isDisabled prop = true AND isInvalid prop = true', () => {
       it('should not render the warning icon', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isDisabled isInvalid />)
-          .find(WarningIconComponent).length).toBe(0)
+          .find(WarningIcon).length).toBe(0)
       );
     });
 

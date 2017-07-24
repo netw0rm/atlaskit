@@ -1,33 +1,43 @@
-import styled from 'styled-components';
-import { labelColor, labelFontSize, labelLineHeight, grid } from './constants';
+import styled, { css } from 'styled-components';
+import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import theme from './theme';
 
-const LabelWrapper = styled.label`
+const fontSize = 12;
+const innerHeight = spacing * 2; // 16px
+const lineHeight = innerHeight / fontSize;
+
+const getPadding = ({ firstChild, inlineEdit }) => {
+  const right = 0;
+  let bottom = spacing / 2;
+  let left = 0;
+  let top = spacing * 2.5;
+
+  if (inlineEdit) {
+    bottom = 0;
+    left = spacing;
+    top = spacing;
+  }
+  if (firstChild) {
+    top = spacing / 2;
+  }
+
+  return css`padding: ${top}px ${right}px ${bottom}px ${left}px`;
+};
+
+export const LabelWrapper = styled.label`
   display: block;
 `;
 
-const inlineEditStyle = `
-  padding-bottom: 0;
-  padding-left: ${grid}px);
-  padding-top: ${grid}px);
-`;
-
-const LabelInner = styled.div`
-  color: ${labelColor};
-  font-size: ${labelFontSize}px;
+export const LabelInner = styled.div`
+  color: ${theme.label.color};
+  font-size: ${fontSize}px;
   font-weight: 600;
-  line-height: ${labelLineHeight}
-  padding: ${grid * 2.5}px 0 ${grid / 2}px 0;
-  ${({ isHidden }) => (isHidden ? 'display: none' : '')}
-  ${({ inlineEdit }) => (inlineEdit ? inlineEditStyle : '')}
-  ${({ firstChild }) => (firstChild ? `padding-top: ${grid / 2}px` : '')}
+  line-height: ${lineHeight}
+  ${getPadding}
+
+  ${p => (p.isHidden && 'display: none;')}
 `;
 
-const RequiredIndicator = styled.span`
+export const RequiredIndicator = styled.span`
   padding-left: 2px;
 `;
-
-export {
-  LabelWrapper,
-  RequiredIndicator,
-  LabelInner,
-};

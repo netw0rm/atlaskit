@@ -1,6 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 
 import Editor from './editor';
@@ -16,8 +16,8 @@ const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
 const analyticsHandler = (actionName, props) => action(actionName)(props);
-const mentionProvider = new Promise<any>(resolve => resolve(mentionData.mentionStoryData.resourceProvider));
-const emojiProvider = emojiStoryData.getEmojiResource();
+const mentionProvider = new Promise<any>(resolve => resolve(mentionStoryData.resourceProvider));
+const emojiProvider = emojiStoryData.getEmojiResource() as any;
 
 storiesOf(name, module)
   .add('Popup Examples', () => {

@@ -4,15 +4,15 @@ import * as styles from './styles';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
-import { EditorView } from '../../prosemirror';
+import { EditorView, PluginKey } from '../../prosemirror';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@atlaskit/emoji';
 import Layer from '@atlaskit/layer';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
-  pluginState: EmojiState;
   editorView: EditorView;
+  pluginKey: PluginKey;
   emojiProvider: Promise<EmojiProvider>;
 }
 
@@ -25,18 +25,29 @@ export interface State {
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
   private buttonRef: any;
+  private pluginState?: any;
 
   state: State = {
     isOpen: false,
   };
 
-  componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+  componentWillMount() {
+    const { editorView, pluginKey } = this.props;
+
+    if (!editorView) {
+      return;
+    }
+
+    this.pluginState = pluginKey.getState(editorView.state);
   }
 
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+  componentDidMount() {
+    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+    this.pluginState.subscribe(this.handlePluginStateChange);
+  }
+
+  componentWillUmount() {
+    this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
@@ -142,7 +153,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   @analytics('atlassian.editor.emoji.button')
   private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
     if (this.state.isOpen) {
-      this.props.pluginState.insertEmoji(emojiId);
+      this.pluginState.insertEmoji(emojiId);
       this.close();
       return true;
     }

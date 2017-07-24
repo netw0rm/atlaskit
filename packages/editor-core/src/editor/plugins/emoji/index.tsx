@@ -8,6 +8,7 @@ import { inputRulePlugin as asciiInputRulePlugin } from '../../../plugins/emojis
 import { emoji } from '../../../schema/nodes/emoji';
 import { emojiQuery } from '../../../schema/marks/emoji-query';
 import pluginKey from '../../../plugins/emojis/plugin-key';
+import ToolbarEmojiPicker from '../../../ui/ToolbarEmojiPicker';
 import EmojiTypeAhead from '../../../ui/EmojiTypeAhead';
 
 const emojiPlugin: EditorPlugin = {
@@ -40,7 +41,21 @@ const emojiPlugin: EditorPlugin = {
         renderNode={renderNode}
       />
     );
-  }
+  },
+
+  secondaryToolbarComponent(editorView, providerFactory) {
+    const renderNode = (providers) => {
+      return <ToolbarEmojiPicker editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
+    };
+
+    return (
+      <WithProviders
+        providerFactory={providerFactory}
+        providers={['emojiProvider']}
+        renderNode={renderNode}
+      />
+    );
+  },
 };
 
 export default emojiPlugin;

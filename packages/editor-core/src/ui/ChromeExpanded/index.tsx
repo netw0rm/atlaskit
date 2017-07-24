@@ -383,7 +383,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           </FooterActions>
           <SecondaryToolbar>
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
+            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>

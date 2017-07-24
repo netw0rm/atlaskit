@@ -6,7 +6,7 @@ import type { PropType, HasDefaultProp } from 'babel-plugin-react-flow-props-to-
 
 import type {
   DraggableId,
-  InitialDrag,
+  DraggableDimension,
   Position,
   TypeId,
   ZIndex,
@@ -84,7 +84,7 @@ export type MapProps = {|
   isDropAnimating: boolean,
   canAnimate: boolean,
   offset: Position,
-  initial: ?InitialDrag,
+  dimension: ?DraggableDimension,
 |}
 
 export type OwnProps = {|

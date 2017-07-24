@@ -4,7 +4,6 @@ import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
 import type {
   Position,
-  InitialDrag,
   HTMLElement,
   DraggableDimension,
   InitialDragLocation,
@@ -145,14 +144,12 @@ export default class Draggable extends Component {
   onMove = (client: Position) => {
     this.throwIfCannotDrag();
 
-    const { draggableId, initial, move } = this.props;
+    const { draggableId, dimension, move } = this.props;
 
     // dimensions not provided yet
-    if (!initial) {
+    if (!dimension) {
       return;
     }
-
-    // return;
 
     const windowScroll: Position = getWindowScrollPosition();
     const page: Position = add(client, windowScroll);
@@ -205,8 +202,8 @@ export default class Draggable extends Component {
   })
 
   getPlaceholder() {
-    invariant(this.props.initial, 'cannot get a drag placeholder when not dragging');
-    const dimension: DraggableDimension = this.props.initial.dimension;
+    const dimension: ?DraggableDimension = this.props.dimension;
+    invariant(dimension, 'cannot get a drag placeholder when not dragging');
 
     return (
       <Placeholder
@@ -259,7 +256,7 @@ export default class Draggable extends Component {
       isDropAnimating: boolean,
       canAnimate: boolean,
       blockPointerEvents: boolean,
-      initial: ?InitialDrag,
+      dimension: ?DraggableDimension,
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
     ): Provided => {
@@ -271,9 +268,9 @@ export default class Draggable extends Component {
             blockPointerEvents,
           );
         }
-        invariant(initial, 'initial dimension required for dragging');
+        invariant(dimension, 'initial dimension required for dragging');
 
-        const { width, height, top, left } = initial.dimension.client.withoutMargin;
+        const { width, height, top, left } = dimension.client.withoutMargin;
         return this.getDraggingStyle(width, height, top, left, isDropAnimating, movementStyle);
       })();
 
@@ -321,7 +318,7 @@ export default class Draggable extends Component {
       canAnimate,
       isDragDisabled,
       blockPointerEvents,
-      initial,
+      dimension,
       children,
     } = this.props;
 
@@ -352,7 +349,7 @@ export default class Draggable extends Component {
                     isDropAnimating,
                     canAnimate,
                     blockPointerEvents,
-                    initial,
+                    dimension,
                     dragHandleProps,
                     movementStyle,
                   ),

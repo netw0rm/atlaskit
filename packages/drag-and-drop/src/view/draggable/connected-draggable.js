@@ -27,6 +27,7 @@ import type {
   PendingDrop,
   Phase,
   DragMovement,
+  DraggableDimension,
 } from '../../types';
 import type {
   MapProps,
@@ -42,7 +43,7 @@ const defaultMapProps: MapProps = {
   blockPointerEvents: false,
   canAnimate: true,
   offset: origin,
-  initial: null,
+  dimension: null,
 };
 
 export const makeSelector = () => {
@@ -61,7 +62,7 @@ export const makeSelector = () => {
       canAnimate: true,
       blockPointerEvents,
       offset,
-      initial: null,
+      dimension: null,
     })
   );
 
@@ -86,17 +87,33 @@ export const makeSelector = () => {
     }
   );
 
+  const draggableSelector = (state: State, ownProps: OwnProps): ?DraggableDimension => {
+    if (!state.dimension) {
+      return null;
+    }
+    const dimension: ?DraggableDimension = state.dimension.draggable[ownProps.draggableId];
+
+    // dimension might not be published yet
+    if (!dimension) {
+      return null;
+    }
+
+    return dimension;
+  };
+
   return createSelector(
     [
       phaseSelector,
       dragSelector,
       pendingDropSelector,
       idSelector,
+      draggableSelector,
     ],
     (phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
       id: DraggableId,
+      dimension: ?DraggableDimension,
     ): MapProps => {
       if (phase === 'DRAGGING') {
         if (!drag) {
@@ -104,7 +121,7 @@ export const makeSelector = () => {
           return defaultMapProps;
         }
 
-        const { current, initial, impact } = drag;
+        const { current, impact } = drag;
 
         if (current.id !== id) {
           return getNotDraggingProps(
@@ -126,7 +143,7 @@ export const makeSelector = () => {
           isDropAnimating: false,
           canAnimate,
           offset,
-          initial,
+          dimension,
         };
       }
 
@@ -156,7 +173,7 @@ export const makeSelector = () => {
           blockPointerEvents: true,
           canAnimate: true,
           offset: pending.newHomeOffset,
-          initial: pending.last.initial,
+          dimension,
         };
       }
 
@@ -169,7 +186,7 @@ export const makeSelector = () => {
           blockPointerEvents: false,
           isDragging: false,
           canAnimate: false,
-          initial: null,
+          dimension: null,
         };
       }
 

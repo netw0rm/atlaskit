@@ -83,10 +83,6 @@ export type InitialDrag = {|
   page: InitialDragLocation,
   // viewport + window scroll + droppable scroll diff (this will be the same as)
   withinDroppable: WithinDroppable,
-  // droppableScroll: Position,
-  // required for placeholder positioning
-  // TODO: just look up from store
-  dimension: DraggableDimension,
 |}
 
 export type CurrentDragLocation = {|

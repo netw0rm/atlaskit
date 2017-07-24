@@ -1,9 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import Draggable, { zIndexOptions } from '../../../src/view/draggable/draggable';
@@ -72,13 +70,14 @@ const mockInitial: InitialDrag = {
 };
 
 const getDispatchPropsStub = (): DispatchProps => ({
-  lift: sinon.stub(),
-  move: sinon.stub(),
-  moveForward: sinon.stub(),
-  moveBackward: sinon.stub(),
-  drop: sinon.stub(),
-  cancel: sinon.stub(),
-  dropAnimationFinished: sinon.stub(),
+  lift: jest.fn(),
+  move: jest.fn(),
+  moveByWindowScroll: jest.fn(),
+  moveForward: jest.fn(),
+  moveBackward: jest.fn(),
+  drop: jest.fn(),
+  cancel: jest.fn(),
+  dropAnimationFinished: jest.fn(),
 });
 
 // $ExpectError - not setting children function

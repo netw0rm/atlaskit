@@ -1,26 +1,34 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import Draggable, { makeSelector } from '../../../src/view/draggable/connected-draggable';
-import getDimension from '../../utils/get-dimension-util';
+import { getDraggableDimension } from '../../../src/state/dimension';
 import noImpact from '../../../src/state/no-impact';
-import getContextOptions from '../../utils/get-context-options';
+import { combine, withStore, withDroppableId } from '../../utils/get-context-options';
+import getClientRect from '../../utils/get-client-rect';
+import { add } from '../../../src/state/position';
 import type {
   CurrentDrag,
   Phase,
   DragState,
   DropResult,
   PendingDrop,
-  Dimension,
   DragImpact,
   DraggableId,
+  DroppableId,
+  TypeId,
   InitialDrag,
   Position,
+  DraggableDimension,
+  InitialDragLocation,
+  CurrentDragLocation,
 } from '../../../src/types';
 import type { MapProps, Provided } from '../../../src/view/draggable/draggable-types';
+
+const droppableId: DroppableId = 'drop-1';
+const type: TypeId = 'TYPE';
 
 const make = (() => {
   let callCount = 0;
@@ -29,31 +37,58 @@ const make = (() => {
     callCount++;
     const id: DraggableId = `drag-id-${callCount}`;
     const selector = makeSelector();
-    const dimension: Dimension = getDimension({
-      top: 100 * callCount,
-      left: 0,
-      right: 100,
-      bottom: (100 * callCount) + 20,
+    const dimension: DraggableDimension = getDraggableDimension({
+      id,
+      droppableId,
+      clientRect: getClientRect({
+        top: 100 * callCount,
+        left: 0,
+        right: 100,
+        bottom: (100 * callCount) + 20,
+      }),
     });
-    const initial: InitialDrag = {
-      source: {
-        index: 0,
-        droppableId: 'drop-1',
-      },
-      center: dimension.center,
-      selection: dimension.center,
-      dimension,
-    };
-    const drag = (offset: Position, impact?: DragImpact = noImpact): DragState => {
-      const center: Position = {
-        x: initial.center.x + offset.x,
-        y: initial.center.y + offset.y,
+    // using the center position as the selection point
+    const initial: InitialDrag = (() => {
+      const client: InitialDragLocation = {
+        selection: dimension.page.withoutMargin.center,
+        center: dimension.page.withoutMargin.center,
       };
+
+      // not worrying about window scroll for now
+      const page = client;
+
+      const value: InitialDrag = {
+        source: {
+          index: 0,
+          droppableId,
+        },
+        client,
+        page,
+        withinDroppable: {
+          center: page.center,
+        },
+      };
+
+      return value;
+    })();
+
+    const drag = (offset: Position, impact?: DragImpact = noImpact): DragState => {
+      const client: CurrentDragLocation = {
+        selection: add(initial.client.selection, offset),
+        center: add(initial.client.center, offset),
+        offset,
+      };
+      // not worrying about scroll for now
+      const page = client;
+
       const current: CurrentDrag = {
         id,
-        type: 'TYPE',
-        offset,
-        center,
+        type,
+        client,
+        page,
+        withinDroppable: {
+          center: page.center,
+        },
         shouldAnimate: true,
       };
 
@@ -85,7 +120,7 @@ const make = (() => {
       return pending;
     };
 
-    return { id, selector, initial, dimension, drag, drop };
+    return { id, selector, dimension, drag, drop };
   };
 })();
 
@@ -142,14 +177,14 @@ describe('Draggable - connected', () => {
           id,
         });
 
-        expect(result).to.deep.equal(defaultMapProps);
+        expect(result).toEqual(defaultMapProps);
 
-        expect(console.error.calledOnce).to.equal(true);
+        expect(console.error.calledOnce).toBe(true);
       });
 
       describe('item is dragging', () => {
         it('should return the current position of the item', () => {
-          const { id, initial, selector, drag } = make();
+          const { id, dimension, selector, drag } = make();
           const offset: Position = {
             x: 100,
             y: 200,
@@ -159,7 +194,7 @@ describe('Draggable - connected', () => {
             isDragging: true,
             canAnimate: true,
             offset,
-            initial,
+            dimension,
           };
 
           const result: MapProps = execute(selector)({
@@ -169,7 +204,7 @@ describe('Draggable - connected', () => {
             id,
           });
 
-          expect(result).to.deep.equal(expected);
+          expect(result).toEqual(expected);
         });
 
         it('should break memoization on every call', () => {
@@ -189,9 +224,9 @@ describe('Draggable - connected', () => {
             id,
           });
 
-      // checking we did not get the same reference back
-          expect(first).to.not.equal(second);
-          expect(first).to.deep.equal(second);
+        // checking we did not get the same reference back
+          expect(first).not.toEqual(second);
+          expect(first).toEqual(second);
         });
       });
 
@@ -206,7 +241,7 @@ describe('Draggable - connected', () => {
             id: notDragging.id,
           });
 
-          expect(result).to.deep.equal(defaultMapProps);
+          expect(result).toEqual(defaultMapProps);
         });
 
         it('should not break memoization on multiple calls', () => {
@@ -224,7 +259,7 @@ describe('Draggable - connected', () => {
           });
 
         // checking that we got the same object back
-          expect(first).to.equal(second);
+          expect(first).toBe(second);
         });
       });
     });
@@ -240,8 +275,8 @@ describe('Draggable - connected', () => {
           id,
         });
 
-        expect(props).to.deep.equal(defaultMapProps);
-        expect(console.error.calledOnce).to.equal(true);
+        expect(props).toEqual(defaultMapProps);
+        expect(console.error.calledOnce).toBe(true);
       });
 
       describe('item was dragging', () => {
@@ -268,7 +303,7 @@ describe('Draggable - connected', () => {
             id,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
       });
 
@@ -284,7 +319,7 @@ describe('Draggable - connected', () => {
             id: notDragging.id,
           });
 
-          expect(props).to.deep.equal(defaultMapProps);
+          expect(props).toEqual(defaultMapProps);
         });
 
         it('should not break memoization from while the drag was occurring', () => {
@@ -304,10 +339,10 @@ describe('Draggable - connected', () => {
             id: notDragging.id,
           });
 
-          expect(duringDrag).to.deep.equal(defaultMapProps);
-          expect(postDrag).to.deep.equal(defaultMapProps);
+          expect(duringDrag).toEqual(defaultMapProps);
+          expect(postDrag).toEqual(defaultMapProps);
         // checking object equality
-          expect(duringDrag).to.equal(postDrag);
+          expect(duringDrag).toBe(postDrag);
         });
       });
 
@@ -346,7 +381,7 @@ describe('Draggable - connected', () => {
             id: notDragging.id,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
 
         it('should not break memoization if it was already heading to the same location before the drag was completed', () => {
@@ -381,7 +416,7 @@ describe('Draggable - connected', () => {
           });
 
         // checking that the result objects have the same reference
-          expect(duringDrag).to.equal(afterDrag);
+          expect(duringDrag).toBe(afterDrag);
         });
       });
     });
@@ -407,7 +442,7 @@ describe('Draggable - connected', () => {
             id: dragging.id,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
       });
 
@@ -428,7 +463,7 @@ describe('Draggable - connected', () => {
             id: notDragging.id,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
       });
     });
@@ -446,7 +481,7 @@ describe('Draggable - connected', () => {
             id,
           });
 
-          expect(props).to.deep.equal(defaultMapProps);
+          expect(props).toEqual(defaultMapProps);
         });
       });
     });
@@ -501,33 +536,33 @@ describe('Draggable - connected', () => {
     });
 
     it('should render the child function when the parent renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, combine(withStore(), withDroppableId(droppableId)));
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(2);
-      expect(wrapper.find(Person).props().name).to.equal('Jake');
+      expect(Person.prototype.render.callCount).toBe(2);
+      expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
     it('should render the child function when the parent re-renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, combine(withStore(), withDroppableId(droppableId)));
 
       wrapper.update();
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(3);
-      expect(wrapper.find(Person).props().name).to.equal('Jake');
+      expect(Person.prototype.render.callCount).toBe(3);
+      expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
     it('should render the child function when the parents props changes that cause a re-render', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, combine(withStore(), withDroppableId(droppableId)));
 
       wrapper.setProps({
         currentUser: 'Finn',
       });
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(3);
-      expect(wrapper.find(Person).props().name).to.equal('Finn');
+      expect(Person.prototype.render.callCount).toBe(3);
+      expect(wrapper.find(Person).props().name).toBe('Finn');
     });
   });
 });

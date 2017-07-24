@@ -4,14 +4,9 @@ import { storeKey, droppableIdKey } from '../../src/view/context-keys';
 import createStore from '../../src/state/create-store';
 import type { DroppableId } from '../../src/types';
 
-type ContextDefinition = {|
-  context: { [string] : any },
-  childContextTypes: { [string] : any },
-|}
-
 // Not using this store - just putting it on the context
 // For any connected components that need it (eg DimensionPublisher)
-export const withStore = (): ContextDefinition => ({
+export const withStore = () => ({
   context: {
     // Each consumer will get their own store
     [storeKey]: createStore({ onDragEnd: () => { } }),
@@ -25,7 +20,7 @@ export const withStore = (): ContextDefinition => ({
   },
 });
 
-export const withDroppableId = (droppableId: DroppableId): ContextDefinition => ({
+export const withDroppableId = (droppableId: DroppableId): Object => ({
   context: {
     [droppableIdKey]: droppableId,
   },
@@ -34,14 +29,14 @@ export const withDroppableId = (droppableId: DroppableId): ContextDefinition => 
   },
 });
 
-const base: ContextDefinition = {
+const base: Object = {
   context: {},
   childContextTypes: {},
 };
 
 // returning type Object because that is what enzyme wants
-export const combine = (...args: ContextDefinition[]): Object =>
-  args.reduce((previous: ContextDefinition, current: ContextDefinition): ContextDefinition => ({
+export const combine = (...args: Object[]): Object =>
+  args.reduce((previous: Object, current: Object): Object => ({
     context: {
       ...previous.context,
       ...current.context,

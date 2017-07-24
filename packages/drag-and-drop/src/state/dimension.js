@@ -26,6 +26,13 @@ export type Margin = {|
 
 const origin: Position = { x: 0, y: 0 };
 
+export const noMargin: Margin = {
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+};
+
 const getWithPosition = (clientRect: ClientRect, point: Position): ClientRect => {
   const { top, right, bottom, left, width, height } = clientRect;
   return {
@@ -70,16 +77,16 @@ type GetDraggableArgs = {|
   id: DraggableId,
   droppableId: DroppableId,
   clientRect: ClientRect,
-  margin: Margin,
-  windowScroll: Position,
+  margin?: Margin,
+  windowScroll?: Position,
 |};
 
 export const getDraggableDimension = ({
   id,
   droppableId,
   clientRect,
-  margin,
-  windowScroll,
+  margin = noMargin,
+  windowScroll = origin,
 }: GetDraggableArgs): DraggableDimension => {
   const withScroll = getWithPosition(clientRect, windowScroll);
   const withScrollAndMargin = getWithMargin(withScroll, margin);
@@ -105,17 +112,17 @@ export const getDraggableDimension = ({
 type GetDroppableArgs = {|
   id: DroppableId,
   clientRect: ClientRect,
-  margin: Margin,
-  windowScroll: Position,
-  scroll: Position,
+  margin?: Margin,
+  windowScroll?: Position,
+  scroll?: Position,
 |}
 
 export const getDroppableDimension = ({
   id,
   clientRect,
-  margin,
-  windowScroll,
-  scroll,
+  margin = noMargin,
+  windowScroll = origin,
+  scroll = origin,
 }: GetDroppableArgs): DroppableDimension => {
   const withWindowScroll = getWithPosition(clientRect, windowScroll);
   const withWindowScrollAndMargin = getWithMargin(withWindowScroll, margin);

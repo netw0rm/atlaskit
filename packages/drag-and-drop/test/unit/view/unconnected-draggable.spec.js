@@ -29,7 +29,7 @@ import type {
   InitialDragLocation,
 } from '../../../src/types';
 import { getDraggableDimension } from '../../../src/state/dimension';
-import { getClientRect, noMargin } from '../../utils/dimension';
+import getClientRect from '../../utils/get-client-rect';
 import { combine, withStore, withDroppableId } from '../../utils/get-context-options';
 import { dispatchWindowMouseEvent, mouseEvent } from '../../utils/user-input-util';
 import setWindowScroll from '../../utils/set-window-scroll';
@@ -70,8 +70,6 @@ const dimension: DraggableDimension = getDraggableDimension({
     bottom: 100,
     left: 0,
   }),
-  margin: noMargin,
-  windowScroll: origin,
 });
 
 const getDispatchPropsStub = (): DispatchProps => ({
@@ -102,43 +100,46 @@ const disabledOwnProps: OwnProps = {
 const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
+  isAnotherDragging: false,
   canAnimate: true,
   offset: origin,
   dimension: null,
-  blockPointerEvents: false,
 };
 
-// $ExpectError - using spread
 const somethingElseDraggingMapProps: MapProps = {
-  ...defaultMapProps,
-  blockPointerEvents: true,
+  isDropAnimating: false,
+  isDragging: false,
+  isAnotherDragging: true,
+  canAnimate: true,
+  offset: origin,
+  dimension: null,
 };
 
 const draggingMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: true,
+  isAnotherDragging: false,
   canAnimate: false,
   dimension,
   offset: { x: 75, y: 75 },
-  blockPointerEvents: true,
 };
 
 const dropAnimatingMapProps: MapProps = {
   isDropAnimating: true,
   isDragging: true,
   canAnimate: true,
+  isAnotherDragging: false,
   dimension,
   offset: { x: 75, y: 75 },
-  blockPointerEvents: true,
 };
 
 const dropCompleteMapProps: MapProps = {
   offset: origin,
+  isAnotherDragging: false,
   isDropAnimating: false,
   isDragging: false,
   canAnimate: false,
   dimension: null,
-  blockPointerEvents: false,
 };
 
 type MountConnected = {|
@@ -275,8 +276,6 @@ describe('Draggable - unconnected', () => {
     it('should allow you to attach a drag handle', () => {
       const dispatchProps: DispatchProps = getDispatchPropsStub();
       const wrapper = mountDraggable({
-        ownProps: defaultOwnProps,
-        mapProps: defaultMapProps,
         dispatchProps,
         WrappedComponent: Item,
       });
@@ -312,8 +311,6 @@ describe('Draggable - unconnected', () => {
       it('should allow the ability to have the drag handle to be a child of the draggable', () => {
         const dispatchProps: DispatchProps = getDispatchPropsStub();
         const wrapper = mountDraggable({
-          ownProps: defaultOwnProps,
-          mapProps: defaultMapProps,
           dispatchProps,
           WrappedComponent: WithNestedHandle,
         });
@@ -326,8 +323,6 @@ describe('Draggable - unconnected', () => {
       it('should not drag by the draggable element', () => {
         const dispatchProps: DispatchProps = getDispatchPropsStub();
         const wrapper = mountDraggable({
-          ownProps: defaultOwnProps,
-          mapProps: defaultMapProps,
           dispatchProps,
           WrappedComponent: WithNestedHandle,
         });
@@ -340,8 +335,6 @@ describe('Draggable - unconnected', () => {
       it('should not drag by other elements', () => {
         const dispatchProps: DispatchProps = getDispatchPropsStub();
         const wrapper = mountDraggable({
-          ownProps: defaultOwnProps,
-          mapProps: defaultMapProps,
           dispatchProps,
           WrappedComponent: WithNestedHandle,
         });
@@ -456,9 +449,7 @@ describe('Draggable - unconnected', () => {
         });
 
         it('should throw if not attached to the DOM', () => {
-          const wrapper = mountDraggable({
-            mapProps: defaultMapProps,
-          });
+          const wrapper = mountDraggable();
           const move = () => {
             // Calling the prop directly as this is not able to be done otherwise
             wrapper.find(DragHandle).props().callbacks.onMove({ x: 100, y: 200 });
@@ -472,7 +463,6 @@ describe('Draggable - unconnected', () => {
         it('should not do anything if the dimensions have not all been published yet', () => {
           const dispatchProps = getDispatchPropsStub();
           const wrapper = mountDraggable({
-            mapProps: defaultMapProps,
             dispatchProps,
           });
 
@@ -549,9 +539,7 @@ describe('Draggable - unconnected', () => {
         });
 
         it('should throw if not attached to the DOM', () => {
-          const wrapper = mountDraggable({
-            mapProps: defaultMapProps,
-          });
+          const wrapper = mountDraggable();
           const drop = () => {
             wrapper.find(DragHandle).props().callbacks.onDrop();
           };
@@ -564,7 +552,6 @@ describe('Draggable - unconnected', () => {
         it('should trigger drop', () => {
           const dispatchProps = getDispatchPropsStub();
           const wrapper = mountDraggable({
-            mapProps: draggingMapProps,
             dispatchProps,
           });
 
@@ -581,7 +568,6 @@ describe('Draggable - unconnected', () => {
         beforeEach(() => {
           dispatchProps = getDispatchPropsStub();
           standardWrapper = mountDraggable({
-            mapProps: defaultMapProps,
             dispatchProps,
           });
         });
@@ -589,7 +575,6 @@ describe('Draggable - unconnected', () => {
         it('should throw if dragging is disabled', () => {
           const wrapper = mountDraggable({
             ownProps: disabledOwnProps,
-            mapProps: defaultMapProps,
           });
 
           const onKeyLift = () => executeOnKeyLift(wrapper)();
@@ -650,7 +635,6 @@ describe('Draggable - unconnected', () => {
         it('should throw if dragging is disabled', () => {
           const wrapper = mountDraggable({
             ownProps: disabledOwnProps,
-            mapProps: defaultMapProps,
           });
 
           const tryMove = () =>

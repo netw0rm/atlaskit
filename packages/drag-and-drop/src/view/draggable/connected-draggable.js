@@ -40,7 +40,7 @@ const origin: Position = { x: 0, y: 0 };
 const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
-  blockPointerEvents: false,
+  isAnotherDragging: false,
   canAnimate: true,
   offset: origin,
   dimension: null,
@@ -56,11 +56,11 @@ export const makeSelector = () => {
   );
 
   const getWithMovement = memoizeOne(
-    (offset: Position, blockPointerEvents: boolean): MapProps => ({
+    (offset: Position, isAnotherDragging: boolean): MapProps => ({
       isDropAnimating: false,
       isDragging: false,
       canAnimate: true,
-      blockPointerEvents,
+      isAnotherDragging,
       offset,
       dimension: null,
     })
@@ -69,12 +69,12 @@ export const makeSelector = () => {
   const getNotDraggingProps = memoizeOne(
     (draggableId: DraggableId,
       movement: DragMovement,
-      blockPointerEvents: boolean,
+      isAnotherDragging: boolean,
     ): MapProps => {
       const needsToMove = movement.draggables.indexOf(draggableId) !== -1;
 
       if (!needsToMove) {
-        return getWithMovement(origin, blockPointerEvents);
+        return getWithMovement(origin, isAnotherDragging);
       }
 
       const amount = movement.isMovingForward ? -movement.amount : movement.amount;
@@ -82,7 +82,7 @@ export const makeSelector = () => {
       return getWithMovement(
         // currently not handling horizontal movement
         memoizedOffset(0, amount),
-        blockPointerEvents,
+        isAnotherDragging,
       );
     }
   );
@@ -139,7 +139,7 @@ export const makeSelector = () => {
         // not memoizing result as it should not move without an update
         return {
           isDragging: true,
-          blockPointerEvents: true,
+          isAnotherDragging: false,
           isDropAnimating: false,
           canAnimate,
           offset,
@@ -157,9 +157,8 @@ export const makeSelector = () => {
           return getNotDraggingProps(
             id,
             pending.last.impact.movement,
-            // not blocking pointer events while drop animating
-            // to allow users to quickly drag something else while
-            // drop is animating.
+            // We are indicating that nothing else is dragging while a drop is
+            // occurring
             false,
           );
         }
@@ -170,7 +169,7 @@ export const makeSelector = () => {
           // while dropping.
           isDragging: true,
           isDropAnimating: true,
-          blockPointerEvents: true,
+          isAnotherDragging: false,
           canAnimate: true,
           offset: pending.newHomeOffset,
           dimension,
@@ -183,7 +182,7 @@ export const makeSelector = () => {
         return {
           offset: origin,
           isDropAnimating: false,
-          blockPointerEvents: false,
+          isAnotherDragging: false,
           isDragging: false,
           canAnimate: false,
           dimension: null,

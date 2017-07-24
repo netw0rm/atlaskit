@@ -6,7 +6,7 @@ import {
 // eslint-disable-next-line no-duplicate-imports
 import getDragImpact from '../../../src/state/get-drag-impact';
 import noImpact from '../../../src/state/no-impact';
-import { getClientRect, noMargin } from '../../utils/dimension';
+import getClientRect from '../../utils/get-client-rect';
 import type {
   WithinDroppable,
   DroppableId,
@@ -19,7 +19,6 @@ import type {
 } from '../../../src/types';
 
 const droppableId: DroppableId = 'drop-1';
-const noScroll: Position = { x: 0, y: 0 };
 
 const droppable: DroppableDimension = getDroppableDimension({
   id: droppableId,
@@ -29,9 +28,6 @@ const droppable: DroppableDimension = getDroppableDimension({
     right: 100,
     bottom: 100,
   }),
-  margin: noMargin,
-  windowScroll: noScroll,
-  scroll: noScroll,
 });
 
 // Making sure the draggables have different heights
@@ -47,8 +43,6 @@ const draggable1: DraggableDimension = getDraggableDimension({
     right: 90,
     bottom: 11,
   }),
-  margin: noMargin,
-  windowScroll: noScroll,
 });
 
 // // height of 19
@@ -61,8 +55,6 @@ const draggable2: DraggableDimension = getDraggableDimension({
     right: 90,
     bottom: 30,
   }),
-  margin: noMargin,
-  windowScroll: noScroll,
 });
 
 // // height of 29
@@ -75,8 +67,6 @@ const draggable3: DraggableDimension = getDraggableDimension({
     right: 90,
     bottom: 60,
   }),
-  margin: noMargin,
-  windowScroll: noScroll,
 });
 
 const droppables: DroppableDimensionMap = {

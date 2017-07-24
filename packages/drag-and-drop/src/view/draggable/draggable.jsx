@@ -230,7 +230,6 @@ export default class Draggable extends Component {
         top,
         left,
         transform: movementStyle.transform ? `${movementStyle.transform}` : null,
-        // TEMP: make little movements a bit smoother
       };
       return style;
     }
@@ -240,22 +239,23 @@ export default class Draggable extends Component {
     (
       canAnimate: boolean,
       movementStyle: MovementStyle,
-      blockPointerEvents: boolean,
+      isAnotherDragging: boolean,
     ): NotDraggingStyle => {
       const style: NotDraggingStyle = {
         transition: canAnimate ? css.outOfTheWay : null,
         transform: movementStyle.transform,
-        pointerEvents: blockPointerEvents ? 'none' : 'auto',
+        pointerEvents: isAnotherDragging ? 'none' : 'auto',
       };
       return style;
     }
   )
 
   getProvided = memoizeOne(
-    (isDragging: boolean,
+    (
+      isDragging: boolean,
       isDropAnimating: boolean,
+      isAnotherDragging: boolean,
       canAnimate: boolean,
-      blockPointerEvents: boolean,
       dimension: ?DraggableDimension,
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
@@ -265,10 +265,10 @@ export default class Draggable extends Component {
           return this.getNotDraggingStyle(
             canAnimate,
             movementStyle,
-            blockPointerEvents,
+            isAnotherDragging,
           );
         }
-        invariant(dimension, 'initial dimension required for dragging');
+        invariant(dimension, 'draggable dimension required for dragging');
 
         const { width, height, top, left } = dimension.client.withoutMargin;
         return this.getDraggingStyle(width, height, top, left, isDropAnimating, movementStyle);
@@ -315,9 +315,9 @@ export default class Draggable extends Component {
       offset,
       isDragging,
       isDropAnimating,
+      isAnotherDragging,
       canAnimate,
       isDragDisabled,
-      blockPointerEvents,
       dimension,
       children,
     } = this.props;
@@ -347,8 +347,8 @@ export default class Draggable extends Component {
                   this.getProvided(
                     isDragging,
                     isDropAnimating,
+                    isAnotherDragging,
                     canAnimate,
-                    blockPointerEvents,
                     dimension,
                     dragHandleProps,
                     movementStyle,

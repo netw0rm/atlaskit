@@ -26,11 +26,13 @@ class RequestOrStartTrial extends Component {
     locale: PropTypes.string,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     isProductInstalledOrActivating: PropTypes.func.isRequired,
-    //fireAnalyticsEvent: PropTypes.func.isRequired,
+    // fireAnalyticsEvent: PropTypes.func.isRequired,
+    onComplete: PropTypes.func,
   };
 
   static defaultProps = {
     locale: 'en_US',
+    onComplete: () => {},
   };
 
   state = {
@@ -72,6 +74,8 @@ class RequestOrStartTrial extends Component {
   ];
 
   render() {
+    const { onComplete } = this.props;
+
     return (
       <App locale={this.props.locale}>
         <RequestOrStartTrialDialog>
@@ -93,13 +97,13 @@ class RequestOrStartTrial extends Component {
                 );
               }
               case Screens.START_TRIAL: {
-                return <StartTrial />;
+                return <StartTrial onComplete={onComplete} />;
               }
               case Screens.ALREADY_STARTED: {
-                return <AlreadyStarted />;
+                return <AlreadyStarted onComplete={onComplete} />;
               }
               case Screens.REQUEST_TRIAL: {
-                return <RequestTrial />;
+                return <RequestTrial onComplete={onComplete} />;
               }
               default: {
                 return <InitializingScreen />;

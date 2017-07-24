@@ -20,7 +20,6 @@ storiesOf('RequestOrStartTrial')
             { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
             { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
           ])}
-        startProductTrial={() => new Promise(resolve => setTimeout(resolve, 1000))}
         cancelStartProductTrial={() => Promise.resolve()}
         grantAccessToUsers={() => new Promise(resolve => setTimeout(resolve, 1000))}
         goToProduct={() => Promise.resolve()}

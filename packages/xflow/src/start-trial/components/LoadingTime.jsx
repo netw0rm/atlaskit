@@ -30,8 +30,9 @@ const i18n = i18nId('loading-product-trial');
 export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
-    progress: PropTypes.number,
-    productLogo: PropTypes.node,
+    progress: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    productLogo: PropTypes.node.isRequired,
     goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
     confluenceTimedOut: PropTypes.bool,
@@ -39,7 +40,6 @@ export class LoadingTimeBase extends Component {
   };
 
   static defaultProps = {
-    goToProduct: () => Promise.resolve(),
     closeLoadingDialog: () => Promise.resolve(),
     confluenceTimedOut: false,
   };
@@ -65,7 +65,7 @@ export class LoadingTimeBase extends Component {
     if (this.state.confluenceTimedOut) {
       this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
       return <FormattedMessage id={i18n`error-heading`} />;
-    } else if (this.props.progress === 100) {
+    } else if (this.props.progress === 1) {
       this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
       return <FormattedMessage id={i18n`complete-heading`} />;
     }
@@ -73,22 +73,15 @@ export class LoadingTimeBase extends Component {
   };
 
   showProgressBar = () => {
-    if (this.props.progress === 100) {
+    if (this.props.progress === 1 && this.props.status === 'ACTIVE') {
       return (
         <ProgressBarWithIconDiv>
           <CenterProgressBarDiv>
             <ProgressBar progress={this.props.progress} />
           </CenterProgressBarDiv>
-          <CheckCircleIcon label="errorIcon" primaryColor="#35b37e" />
-        </ProgressBarWithIconDiv>
-      );
-    } else if (this.state.confluenceTimedOut) {
-      return (
-        <ProgressBarWithIconDiv>
-          <CenterProgressBarDiv>
-            <ProgressBar progress={this.props.progress} />
-          </CenterProgressBarDiv>
-          <CrossCircleIcon label="errorIcon" primaryColor="#ff7451" />
+          {this.props.status === 'ACTIVE'
+            ? <CheckCircleIcon label="Product activated" primaryColor="#35b37e" />
+            : <CrossCircleIcon label="Activation timed out" primaryColor="#ff7451" />}
         </ProgressBarWithIconDiv>
       );
     }
@@ -102,7 +95,7 @@ export class LoadingTimeBase extends Component {
   render() {
     const { productLogo, progress } = this.props;
 
-    const isReady = progress === 100;
+    const isReady = progress === 1;
 
     return (
       <ModalDialog
@@ -160,10 +153,11 @@ export default withAnalytics(
   withXFlowProvider(
     LoadingTimeBase,
     ({
-      xFlow: { config: { productLogo }, state: { progress }, goToProduct, closeLoadingDialog },
+      xFlow: { config: { productLogo }, goToProduct, closeLoadingDialog, progress, status },
     }) => ({
       productLogo,
       progress,
+      status,
       goToProduct,
       closeLoadingDialog,
     })

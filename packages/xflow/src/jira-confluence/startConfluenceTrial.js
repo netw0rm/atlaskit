@@ -7,13 +7,13 @@ export const START_TRIAL_ENDPOINT = '/admin/rest/billing/api/product/confluence.
  * Start a Confluence trial and return a promise that
  * resolves if successful, and rejects if there was a problem
  */
-export default () =>
-  fetch(START_TRIAL_ENDPOINT, {
+export default async () => {
+  const response = await fetch(START_TRIAL_ENDPOINT, {
     credentials: 'same-origin',
     method: 'POST',
-  }).then((response) => {
-    if (response.status >= 300) {
-      throw new Error(`Unable to start confluence trial. Status: ${response.status}`);
-    }
-    return null;
   });
+
+  if (response.status !== 200) {
+    throw new Error(`Unable to start confluence trial. Status: ${response.status}`);
+  }
+};

@@ -289,7 +289,9 @@ export class GrantAccessBase extends Component {
 
 export default withXFlowProvider(
   GrantAccessBase,
-  ({ xFlow: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers } }) => ({
+  ({
+    xFlow: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers, progress },
+  }) => ({
     productLogo,
     optionItems: startTrial.grantOptionItems,
     userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
@@ -298,5 +300,6 @@ export default withXFlowProvider(
     defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
     grantAccessToUsers,
     retrieveUsers,
+    progress,
   })
 );

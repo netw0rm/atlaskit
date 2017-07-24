@@ -5,6 +5,11 @@ export default class MultiStep extends Component {
   static propTypes = {
     children: PropTypes.node,
     start: PropTypes.number,
+    onComplete: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onComplete: () => {},
   };
 
   static childContextTypes = {
@@ -21,6 +26,12 @@ export default class MultiStep extends Component {
       nextStep: this.nextStep,
       cancel: this.cancel,
     };
+  }
+
+  componentDidUpdate() {
+    if (!this.props.children[this.state.step]) {
+      this.props.onComplete();
+    }
   }
 
   nextStep = (increment = 1) => {

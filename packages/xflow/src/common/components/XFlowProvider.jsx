@@ -3,7 +3,6 @@ import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
 export const xFlowShape = PropTypes.shape({
-  state: PropTypes.object,
   config: PropTypes.shape({
     productLogo: PropTypes.element,
     languagePacks: PropTypes.object.isRequired,
@@ -30,6 +29,9 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
   }),
+
+  progress: PropTypes.number,
+  status: PropTypes.string,
 
   canCurrentUserAddProduct: PropTypes.func,
   isProductInstalledOrActivating: PropTypes.func,
@@ -58,15 +60,10 @@ export class XFlowProvider extends Component {
     xFlow: xFlowShape,
   };
 
-  state = {
-    progress: 0,
-  };
-
   getChildContext() {
     return {
       xFlow: {
         ...this.props,
-        state: this.state,
       },
     };
   }
@@ -87,40 +84,3 @@ export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}
       return <WrappedComponent {...mapContextToProps(this.context)} {...props} />;
     }
   };
-
-//
-// const Permissions = withFlowProvider(({state: { grantAccessMode }}) => (
-//   <div>{grantAccessMode}</div>
-// ));
-//
-// const Hello = () => {
-//   return <div>Hello, we are giving access to <Permissions /></div>
-// }
-//
-// class FlowProvider extends Component {
-//   childContextTypes = {
-//     state: PropTypes.object,
-//     onChangeAccessMode: PropTypes.func,
-//   }
-//   state = {
-//     grantAccessMode: 'all',
-//   }
-//   onChangeAccessMode(newMode) {
-//     this.setState({ grantAccessMode: newMode });
-//   }
-//   render() {
-//     return this.children;
-//   }
-// }
-//
-// class Flow extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <Hello/>
-//       </div>
-//     )
-//   }
-// }
-//
-// const ConfluenceFlow = () => <Flow config={{ productName: 'Confluence' }} />

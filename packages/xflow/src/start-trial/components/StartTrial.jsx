@@ -8,33 +8,21 @@ import { MultiStep, Step } from '../../multi-step';
 import ConfirmTrial from './ConfirmTrial';
 import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
-import SiteChecker from '../../common/utils/SiteChecker';
 
 export class StartTrialBase extends Component {
   static propTypes = {
     hasProductBeenEvaluated: PropTypes.func.isRequired,
+    onComplete: PropTypes.func,
   };
 
-  constructor() {
-    super();
-    this.siteChecker = new SiteChecker();
-    this.startCheckingSite();
-  }
-
-  componentWillUnmount() {
-    this.siteChecker.stop();
-  }
-
-  startCheckingSite() {
-    this.siteChecker.start((progress) => {
-      this.setState({ progress });
-    });
-  }
+  static defaultProps = {
+    onComplete: () => {},
+  };
 
   render() {
-    const { hasProductBeenEvaluated } = this.props;
+    const { hasProductBeenEvaluated, onComplete } = this.props;
     return (
-      <MultiStep start={0}>
+      <MultiStep start={0} onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmTrial
@@ -45,18 +33,8 @@ export class StartTrialBase extends Component {
               onCancel={cancel}
             />}
         />
-        <Step
-          render={nextStep =>
-            <GrantAccess
-              onComplete={async () => {
-                nextStep();
-              }}
-              progress={this.state.progress}
-            />}
-        />
-        <Step
-          render={nextStep => <LoadingTime onComplete={nextStep} progress={this.state.progress} />}
-        />
+        <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />
+        <Step render={nextStep => <LoadingTime onComplete={nextStep} />} />
       </MultiStep>
     );
   }

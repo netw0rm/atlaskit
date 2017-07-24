@@ -4,12 +4,13 @@ import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-
 
 import Editor from './editor';
 import { Content } from './styles';
-import { name } from '../package.json';
+import { name, version } from '../package.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
 import {
   CustomBoundryExample,
   PortalExample, PortalWithCustomBoundaryExample, PortalInScrollContainerExample
 } from './popup-examples';
+import { storyDecorator } from '../src/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -19,6 +20,7 @@ const mentionProvider = new Promise<any>(resolve => resolve(mentionData.mentionS
 const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
 
 storiesOf(name, module)
+  .addDecorator(storyDecorator(version))
   .add('Popup Examples', () => {
     return (
       <div>

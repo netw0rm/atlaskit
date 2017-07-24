@@ -12,14 +12,14 @@ import {
   defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 
-import ProviderFactory from '../src/providerFactory';
-import { document } from './story-data';
-import Renderer from '../src/ui/Renderer';
+import ProviderFactory from '../../src/providerFactory';
+import { document } from '../story-data';
+import Renderer from '../../src/ui/Renderer';
 
 import {
   AkProfileClient,
   modifyResponse,
-} from '../src/utils/profilecard';
+} from '../../src/utils/profilecard';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 // tslint:disable-next-line:variable-name

@@ -18,6 +18,9 @@ storiesOf(name, module)
 
           allowTextFormatting={true}
           allowTasksAndDecisions={true}
+          allowHyperlinks={true}
+          allowCodeBlocks={true}
+
           saveOnEnter={true}
 
           mentionProvider={mentionProvider}

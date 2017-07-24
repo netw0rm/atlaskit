@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 import { emoji as emojiNode } from '../../../../src';
 import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
@@ -21,16 +21,16 @@ import {
 import defaultSchema from '../../../../src/test-helper/schema';
 import ProviderFactory from '../../../../src/providerFactory';
 
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
-const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,
   fallback: grinEmoji.fallback,
 };
 
-const evilburnsEmoji = emojiData.emojiTestData.evilburnsEmoji;
+const evilburnsEmoji = emojiTestData.evilburnsEmoji;
 const evilburnsEmojiId = {
   shortName: evilburnsEmoji.shortName,
   id: evilburnsEmoji.id,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
@@ -24,7 +24,7 @@ const rejectedPromise = Promise.reject(new Error('Simulated provider rejection')
 const pendingPromise = new Promise<any>(() => {});
 const providers = {
   mentionProvider: {
-    resolved: Promise.resolve(mentionData.mentionStoryData.resourceProvider),
+    resolved: Promise.resolve(mentionStoryData.resourceProvider),
     'resolved 2': Promise.resolve(new MentionResource({
       url: 'https://pf-mentions-service.staging.atlassian.io/mentions/f7ebe2c0-0309-4687-b913-41d422f2110b',
       containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',

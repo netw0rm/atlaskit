@@ -34,14 +34,20 @@ export const withDroppableId = (droppableId: DroppableId): ContextDefinition => 
   },
 });
 
-export const combine = (first: ContextDefinition,
-  second: ContextDefinition): ContextDefinition => ({
+const base: ContextDefinition = {
+  context: {},
+  childContextTypes: {},
+};
+
+// returning type Object because that is what enzyme wants
+export const combine = (...args: ContextDefinition[]): Object =>
+  args.reduce((previous: ContextDefinition, current: ContextDefinition): ContextDefinition => ({
     context: {
-      ...first.context,
-      ...second.context,
+      ...previous.context,
+      ...current.context,
     },
     childContextTypes: {
-      ...first.childContextTypes,
-      ...second.childContextTypes,
+      ...previous.childContextTypes,
+      ...current.childContextTypes,
     },
-  });
+  }), base);

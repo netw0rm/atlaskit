@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import sinon from 'sinon';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
 import * as presets from '../../src/theme/presets';
@@ -12,7 +11,7 @@ import { getRootTheme, getGroupTheme } from './_theme-util';
 describe('theme', () => {
   describe('WithRootTheme', () => {
     it('should provide theme values to styled components', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -25,13 +24,13 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
-      })).toBe(true);
+      });
     });
 
     it('should publish updates to children', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
     `;
@@ -47,16 +46,16 @@ describe('theme', () => {
         provided: presets.settings,
       });
 
-      expect(stub.getCall(0).calledWith({
+      expect(stub.mock.calls[0][0]).toEqual({
         theme: getRootTheme(presets.container),
-      })).toBe(true);
-      expect(stub.getCall(1).calledWith({
+      });
+      expect(stub.mock.calls[1][0]).toEqual({
         theme: getRootTheme(presets.settings),
-      })).toBe(true);
+      });
     });
 
     it('should preserve parent styled-component theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -75,7 +74,7 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      const arg = stub.args[0][0];
+      const arg = stub.mock.calls[0][0];
 
       expect(arg).toEqual({
         theme: {
@@ -86,7 +85,7 @@ describe('theme', () => {
     });
 
     it('should override clashing theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
       fake: ${stub}
     `;
@@ -105,9 +104,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      expect(stub.calledWithExactly({
+      expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
-      })).toBe(true);
+      });
     });
   });
 
@@ -118,7 +117,7 @@ describe('theme', () => {
   // tests could be collapsed into a single test suite.
   describe('WithGroupTheme', () => {
     it('should provide theme values to styled components', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -132,13 +131,13 @@ describe('theme', () => {
         </WithGroupTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: getGroupTheme(isCompact),
-      })).toBe(true);
+      });
     });
 
     it('should publish updates to children', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
     `;
@@ -154,16 +153,16 @@ describe('theme', () => {
         isCompact: false,
       });
 
-      expect(stub.getCall(0).calledWith({
+      expect(stub.mock.calls[0][0]).toEqual({
         theme: getGroupTheme(true),
-      })).toBe(true);
-      expect(stub.getCall(1).calledWith({
+      });
+      expect(stub.mock.calls[1][0]).toEqual({
         theme: getGroupTheme(false),
-      })).toBe(true);
+      });
     });
 
     it('should preserve parent styled-component theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -183,7 +182,7 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      const arg = stub.args[0][0];
+      const arg = stub.mock.calls[0][0];
 
       expect(arg).toEqual({
         theme: {
@@ -194,7 +193,7 @@ describe('theme', () => {
     });
 
     it('should override clashing theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -214,9 +213,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      expect(stub.calledWithExactly({
+      expect(stub).toHaveBeenCalledWith({
         theme: getGroupTheme(isCompact),
-      })).toBe(true);
+      });
     });
   });
 
@@ -225,7 +224,7 @@ describe('theme', () => {
     // But given that this is such a common use case I thought it
     // was worth having an explicit test for it.
     it('should the nesting of a group theme within a root theme', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -243,12 +242,12 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: {
           ...getRootTheme(presets.settings),
           ...getGroupTheme(isCompact),
         },
-      })).toBe(true);
+      });
     });
   });
 
@@ -319,7 +318,7 @@ describe('theme', () => {
 
   describe('whenCollapsed', () => {
     it('should return the provided rules when collapsed', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${stub}
@@ -335,11 +334,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).toBe(true);
+      expect(stub).toHaveBeenCalled();
     });
 
     it('should not return the provided rules when not collapsed', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${stub}
@@ -355,11 +354,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).toBe(false);
+      expect(stub).not.toHaveBeenCalled();
     });
 
     it('should allow access to props within the rules', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${props => stub(props.name)}
@@ -375,11 +374,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith('Alex')).toBe(true);
+      expect(stub).toHaveBeenCalledWith('Alex');
     });
 
     it('should allow access to the theme within the rules', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${props => stub(getProvided(props.theme))}
@@ -395,7 +394,7 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith(presets.settings)).toBe(true);
+      expect(stub).toHaveBeenCalledWith(presets.settings);
     });
   });
 

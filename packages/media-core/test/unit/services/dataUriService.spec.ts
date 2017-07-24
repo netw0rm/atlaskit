@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-import { spy } from 'sinon';
 import { MediaDataUriService } from '../../../src/services/dataUriService';
 
 const clientId = 'some-client-id';
@@ -13,21 +11,21 @@ describe('MediaDataUriService', () => {
 
   describe('fetchImageDataUri()', () => {
     it('should use "crop" resize mode as default', () => {
-      const fetchSomeDataUriSpy = spy();
+      const fetchSomeDataUriSpy = jest.fn();
       service.fetchSomeDataUri = fetchSomeDataUriSpy;
 
       service.fetchImageDataUri({type: 'file', details: {}}, 100, 100);
 
-      expect(fetchSomeDataUriSpy.args[0][1].mode).to.equal('crop');
+      expect(fetchSomeDataUriSpy.mock.calls[0][1].mode).toBe('crop');
     });
 
     it('should allow consumers to specify a resize mode', () => {
-      const fetchSomeDataUriSpy = spy();
+      const fetchSomeDataUriSpy = jest.fn();
       service.fetchSomeDataUri = fetchSomeDataUriSpy;
 
       service.fetchImageDataUri({type: 'file', details: {}}, 100, 100, 'full-fit');
 
-      expect(fetchSomeDataUriSpy.args[0][1].mode).to.equal('full-fit');
+      expect(fetchSomeDataUriSpy.mock.calls[0][1].mode).toBe('full-fit');
     });
   });
 });

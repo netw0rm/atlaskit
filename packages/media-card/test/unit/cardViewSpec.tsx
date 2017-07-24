@@ -1,8 +1,5 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
 
-import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
@@ -30,7 +27,7 @@ describe('CardView', () => {
       />
     );
     const linkCard = element.find(FileCard);
-    expect(linkCard).to.be.length(1);
+    expect(linkCard).toHaveLength(1);
   });
 
   it('should render LinkCard with details', () => {
@@ -43,8 +40,8 @@ describe('CardView', () => {
     );
 
     const linkCard = element.find(LinkCard);
-    expect(linkCard).to.be.length(1);
-    expect(linkCard.props().details).to.equal(link);
+    expect(linkCard).toHaveLength(1);
+    expect(linkCard.props().details).toBe(link);
   });
 
   it('should render LinkCard with other props', () => {
@@ -57,8 +54,8 @@ describe('CardView', () => {
     );
 
     const linkCard = element.find(LinkCard);
-    expect(linkCard).to.be.length(1);
-    expect(linkCard.prop('appearance')).to.equal('small');
+    expect(linkCard).toHaveLength(1);
+    expect(linkCard.prop('appearance')).toBe('small');
   });
 
   it('should render FileCard with details', () => {
@@ -71,8 +68,8 @@ describe('CardView', () => {
     );
 
     const card = element.find(FileCard);
-    expect(card).to.be.length(1);
-    expect(card.props().details).to.equal(file);
+    expect(card).toHaveLength(1);
+    expect(card.props().details).toBe(file);
   });
 
   it('should render FileCard with other props', () => {
@@ -85,8 +82,8 @@ describe('CardView', () => {
     );
 
     const fileCard = element.find(FileCard);
-    expect(fileCard).to.be.length(1);
-    expect(fileCard.prop('appearance')).to.equal('small');
+    expect(fileCard).toHaveLength(1);
+    expect(fileCard.prop('appearance')).toBe('small');
   });
 
   it('should render LinkCard and NOT use details to determine which card to render when mediaItemType is "link"', () => {
@@ -99,7 +96,7 @@ describe('CardView', () => {
     );
 
     const linkCard = element.find(LinkCard);
-    expect(linkCard).to.be.length(1);
+    expect(linkCard).toHaveLength(1);
   });
 
   it('should render FileCard and NOT use details to determine which card to render when mediaItemType is "file"', () => {
@@ -112,69 +109,69 @@ describe('CardView', () => {
     );
 
     const linkCard = element.find(FileCard);
-    expect(linkCard).to.be.length(1);
+    expect(linkCard).toHaveLength(1);
   });
 
   it('should fire onClick and onMouseEnter events when file details are passed in', () => {
-    const clickHandler = sinon.spy();
-    const hoverHandler = sinon.spy();
+    const clickHandler = jest.fn();
+    const hoverHandler = jest.fn();
     const card = mount(<CardView status="loading" metadata={file} onClick={clickHandler} onMouseEnter={hoverHandler} />);
 
     card.simulate('click');
     card.simulate('mouseEnter');
 
-    expect(clickHandler.calledOnce).to.be.true;
-    const clickHandlerArg = clickHandler.firstCall.args[0];
-    expect(clickHandlerArg.mediaItemDetails).to.deep.equal(file);
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+    const clickHandlerArg = clickHandler.mock.calls[0][0];
+    expect(clickHandlerArg.mediaItemDetails).toEqual(file);
 
-    expect(hoverHandler.calledOnce).to.be.true;
-    const hoverHandlerArg = hoverHandler.firstCall.args[0];
-    expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(file);
+    expect(hoverHandler).toHaveBeenCalledTimes(1);
+    const hoverHandlerArg = hoverHandler.mock.calls[0][0];
+    expect(hoverHandlerArg.mediaItemDetails).toEqual(file);
   });
 
   it('should fire onClick and onMouseEnter events when link details are passed in', () => {
-    const clickHandler = sinon.spy();
-    const hoverHandler = sinon.spy();
+    const clickHandler = jest.fn();
+    const hoverHandler = jest.fn();
     const card = shallow(<CardView status="loading" metadata={link} onClick={clickHandler} onMouseEnter={hoverHandler} />);
 
     card.simulate('click');
     card.simulate('mouseEnter');
 
-    expect(clickHandler.calledOnce).to.be.true;
-    const clickHandlerArg = clickHandler.firstCall.args[0];
-    expect(clickHandlerArg.mediaItemDetails).to.deep.equal(link);
+    expect(clickHandler).toHaveBeenCalledTimes(1);
+    const clickHandlerArg = clickHandler.mock.calls[0][0];
+    expect(clickHandlerArg.mediaItemDetails).toEqual(link);
 
-    expect(hoverHandler.calledOnce).to.be.true;
-    const hoverHandlerArg = hoverHandler.firstCall.args[0];
-    expect(hoverHandlerArg.mediaItemDetails).to.deep.equal(link);
+    expect(hoverHandler).toHaveBeenCalledTimes(1);
+    const hoverHandlerArg = hoverHandler.mock.calls[0][0];
+    expect(hoverHandlerArg.mediaItemDetails).toEqual(link);
   });
 
   it('should NOT fire onSelectChange when card is NOT selectable', () => {
-    const handler = sinon.spy();
+    const handler = jest.fn();
     const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} />);
     card.setProps({selected: true});
 
-    expect(handler.called).to.be.false;
+    expect(handler).not.toHaveBeenCalled();
   });
 
   it('should fire onSelectChange when selected state is changed by the consumer and selectable is true', () => {
-    const handler = sinon.spy();
+    const handler = jest.fn();
     const card = shallow(<CardView status="loading" metadata={file} onSelectChange={handler} selectable={true} />);
     card.setProps({selected: true});
 
-    expect(handler.calledOnce).to.be.true;
-    expect(handler.firstCall.args[0]).to.deep.equal({selected: true, mediaItemDetails: file});
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler.mock.calls[0][0]).toEqual({selected: true, mediaItemDetails: file});
   });
 
   it('should render a cropped image by default', () => {
     const card = mount(<CardView status="complete" dataURI="a" metadata={file}/>);
 
-    expect(card.find('MediaImage').prop('crop')).to.be.true;
+    expect(card.find('MediaImage').prop('crop')).toBe(true);
   });
 
   it('should render not render a cropped image if we specify a different resizeMode', () => {
     const card = mount(<CardView status="complete" dataURI="a" metadata={file} resizeMode="full-fit"/>);
 
-    expect(card.find('MediaImage').prop('crop')).to.be.false;
+    expect(card.find('MediaImage').prop('crop')).toBe(false);
   });
 });

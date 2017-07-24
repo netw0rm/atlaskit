@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 // Testing the dumb component
 import { TooltipStateless as Tooltip } from '../../src';
@@ -51,21 +50,21 @@ describe('Tooltip', () => {
 
   describe('onMouseOver callback', () => {
     it('should be called when a mouse enters', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = shallow(<Tooltip onMouseOver={spy} />);
 
       wrapper.simulate('mouseOver');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('onMouseOut callback', () => {
     it('should be called when a mouse leaves', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = shallow(<Tooltip onMouseOut={spy} />);
 
       wrapper.simulate('mouseOut');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 });

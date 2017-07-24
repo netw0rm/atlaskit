@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import React from 'react';
 import Drawer from '../../src/components/js/Drawer';
 
@@ -69,9 +68,9 @@ describe('<Drawer />', () => {
       });
 
       it('should trigger onBackButton when the DrawerTrigger is clicked', () => {
-        const spy = sinon.stub();
+        const spy = jest.fn();
         mount(<Drawer isOpen onBackButton={spy} />).find('DrawerTrigger').simulate('click');
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
       });
 
       it('should default the back icon position at 0px', () => {
@@ -116,14 +115,14 @@ describe('<Drawer />', () => {
     });
 
     it('should treat clicking an open blanket as if it where a back button', () => {
-      const onBackButton = sinon.stub();
+      const onBackButton = jest.fn();
       const blanket = mount(<Drawer isOpen onBackButton={onBackButton} />).find('Blanket');
 
       expect(blanket.props().onBlanketClicked).toBe(onBackButton);
 
       blanket.simulate('click');
 
-      expect(onBackButton.called).toBe(true);
+      expect(onBackButton).toHaveBeenCalled();
     });
   });
 });

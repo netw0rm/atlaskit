@@ -1,11 +1,4 @@
-// TODO: deal with unused expression error while calling "chai calledOnce"
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
-import { SinonStub } from 'sinon';
-import * as chai from 'chai';
-import { expect } from 'chai';
-import * as sinonChai from 'sinon-chai';
 import { mount, shallow } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import { MediaCollection, MediaCollectionFileItem } from '@atlaskit/media-core';
@@ -15,11 +8,9 @@ import {
 import { MediaFileAttributesFactory } from '../../../src/domain/media-file-attributes';
 import { Stubs } from '../_stubs';
 
-chai.use(sinonChai);
-
 describe('<MediaCollectionViewer />', () => {
   const token = 'some-token';
-  const tokenProvider = sinon.stub().returns(Promise.resolve(token));
+  const tokenProvider = jest.fn(() => Promise.resolve(token));
   const serviceHost = 'some-service-host';
   const contextConfig = {
     clientId: 'some-client',
@@ -52,8 +43,8 @@ describe('<MediaCollectionViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(context.getMediaCollectionProvider).to.have.been.calledOnce;
-    expect(context.getMediaCollectionProvider).to.have.been.calledWith(collectionName, MediaCollectionViewer.defaultPageSize);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(collectionName, MediaCollectionViewer.defaultPageSize);
   });
 
   it('should get the correct collection provider given page size', () => {
@@ -70,8 +61,8 @@ describe('<MediaCollectionViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(context.getMediaCollectionProvider).to.have.been.calledOnce;
-    expect(context.getMediaCollectionProvider).to.have.been.calledWith(collectionName, pageSize);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledTimes(1);
+    expect(context.getMediaCollectionProvider).toHaveBeenCalledWith(collectionName, pageSize);
   });
 
   it('should construct a media viewer instance with default config', () => {
@@ -86,20 +77,19 @@ describe('<MediaCollectionViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(mediaViewerConstructor).to.have.been.calledOnce;
-    expect(mediaViewerConstructor).to.have.been.calledWith({
-      assets: {
-        basePath
-      },
-      fetchToken: sinon.match.func
-    });
+    expect(mediaViewerConstructor).toHaveBeenCalledTimes(1);
+    let firstCall = mediaViewerConstructor.mock.calls[0];
+    let firstArg = firstCall[0];
+    expect(firstArg.assets).toEqual({ basePath });
+    expect(firstArg.enableMiniMode).toBe(undefined);
+    expect(typeof firstArg.fetchToken).toBe('function');
   });
 
   it('should construct a media viewer instance with custom config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
     const additionalConfiguration = {
       enableMiniMode: true
-    }
+    };
 
     shallow(
       <MediaCollectionViewer
@@ -111,18 +101,16 @@ describe('<MediaCollectionViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(mediaViewerConstructor).to.have.been.calledOnce;
-    expect(mediaViewerConstructor).to.have.been.calledWith({
-      assets: {
-        basePath
-      },
-      enableMiniMode: true,
-      fetchToken: sinon.match.func
-    });
+    expect(mediaViewerConstructor).toHaveBeenCalledTimes(1);
+    let firstCall = mediaViewerConstructor.mock.calls[0];
+    let firstArg = firstCall[0];
+    expect(firstArg.assets).toEqual({ basePath });
+    expect(firstArg.enableMiniMode).toBe(true);
+    expect(typeof firstArg.fetchToken).toBe('function');
   });
 
   it('should listen on fv.close given an onClose handler', () => {
-    const onClose = sinon.stub();
+    const onClose = jest.fn();
 
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
@@ -136,10 +124,10 @@ describe('<MediaCollectionViewer />', () => {
 
     const { mediaViewer } = wrapper.state();
 
-    expect(mediaViewer.on).to.have.been.calledWith('fv.close', onClose);
+    expect(mediaViewer.on).toHaveBeenCalledWith('fv.close', onClose);
 
     wrapper.unmount();
-    expect(mediaViewer.off).to.have.been.calledWith('fv.close', onClose);
+    expect(mediaViewer.off).toHaveBeenCalledWith('fv.close', onClose);
   });
 
   it('should not listen on fv.close given no onClose handler', () => {
@@ -152,7 +140,7 @@ describe('<MediaCollectionViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(wrapper.state().mediaViewer.on).to.have.not.been.calledWith('fv.close');
+    expect(wrapper.state().mediaViewer.on).not.toHaveBeenCalledWith('fv.close');
   });
 
   it('should listen on fv.changeFile to detect if the next page needs to be loaded', () => {
@@ -167,10 +155,13 @@ describe('<MediaCollectionViewer />', () => {
 
     const { mediaViewer } = wrapper.state();
 
-    expect(mediaViewer.on).to.have.been.calledWith('fv.changeFile');
+    expect(mediaViewer.on).toHaveBeenCalledTimes(1);
+    expect((mediaViewer.on as any).mock.calls[0][0]).toBe('fv.changeFile');
 
     wrapper.unmount();
-    expect(mediaViewer.off).to.have.been.calledWith('fv.changeFile');
+
+    expect(mediaViewer.off).toHaveBeenCalledTimes(1);
+    expect((mediaViewer.off as any).mock.calls[0][0]).toBe('fv.changeFile');
   });
 
   it('should open media viewer with query, given media viewer is not open', () => {
@@ -186,12 +177,12 @@ describe('<MediaCollectionViewer />', () => {
 
     const files = MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost);
     const { mediaViewer } = wrapper.state();
-    (mediaViewer.isOpen as SinonStub).returns(false);
+    (mediaViewer.isOpen as any).mockImplementation(() => false);
 
     subject.next(collection);
 
-    expect(mediaViewer.open).to.have.been.calledWith({ id: occurrenceKey });
-    expect(mediaViewer.setFiles).to.have.been.calledWith(files);
+    expect(mediaViewer.open).toHaveBeenCalledWith({ id: occurrenceKey });
+    expect(mediaViewer.setFiles).toHaveBeenCalledWith(files);
   });
 
   it('should set files with query and not open media viewer, given media viewer is already open', () => {
@@ -209,13 +200,13 @@ describe('<MediaCollectionViewer />', () => {
     const currentFile = files[0];
     const { mediaViewer } = wrapper.state();
 
-    (mediaViewer.isOpen as SinonStub).returns(true);
-    (mediaViewer.getCurrent as SinonStub).returns(currentFile);
+    (mediaViewer.isOpen as any).mockImplementation(() => true);
+    (mediaViewer.getCurrent as any).mockImplementation(() => currentFile);
 
     subject.next(collection);
 
-    expect(mediaViewer.open).to.have.been.not.called;
-    expect(mediaViewer.setFiles).to.have.been.calledWith(files, { id: currentFile.id });
+    expect(mediaViewer.open).not.toHaveBeenCalled();
+    expect(mediaViewer.setFiles).toHaveBeenCalledWith(files, { id: currentFile.id });
   });
 
   it('should load next page, given media viewer is showing last page on navigation', () => {
@@ -231,10 +222,10 @@ describe('<MediaCollectionViewer />', () => {
 
     const { mediaViewer } = wrapper.state();
 
-    (mediaViewer.isShowingLastFile as SinonStub).returns(true);
+    (mediaViewer.isShowingLastFile as any).mockImplementation(() => true);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(provider.loadNextPage).to.have.been.called;
+    expect(provider.loadNextPage).toHaveBeenCalled();
   });
 
   it('should not load next page, given media viewer not is showing last page on navigation', () => {
@@ -250,9 +241,9 @@ describe('<MediaCollectionViewer />', () => {
 
     const { mediaViewer } = wrapper.state();
 
-    (mediaViewer.isShowingLastFile as SinonStub).returns(false);
+    (mediaViewer.isShowingLastFile as any).mockImplementation(() => false);
     (mediaViewer as any).trigger('fv.changeFile');
 
-    expect(provider.loadNextPage).to.have.not.been.called;
+    expect(provider.loadNextPage).not.toHaveBeenCalled();
   });
 });

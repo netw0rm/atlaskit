@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import { Label } from '../../src/';
 import {
@@ -69,10 +68,10 @@ describe('ak-field-base', () =>
 
     describe('onClick prop', () =>
       it('should fire handler when the span is clicked', () => {
-        const handler = sinon.spy();
+        const handler = jest.fn();
         const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
         wrapper.find('span').simulate('click');
-        expect(handler.callCount).toBe(1);
+        expect(handler).toHaveBeenCalledTimes(1);
       })
     );
 

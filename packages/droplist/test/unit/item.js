@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
@@ -120,32 +119,32 @@ describe(`${name} - item`, () => {
     let onActivate;
 
     beforeEach(() => {
-      onActivate = sinon.spy();
+      onActivate = jest.fn();
     });
     afterEach(() => {
-      onActivate.reset();
+      onActivate.mockClear();
     });
 
     describe('onActivate', () => {
       let wrapper;
       beforeEach(() => {
-        onActivate = sinon.spy();
+        onActivate = jest.fn();
         wrapper = mount(<Item onActivate={onActivate} />).find(Element);
       });
 
       it('should be activated when enter is pressed', () => {
         wrapper.simulate('keyPress', { key: 'Enter' });
-        expect(onActivate.calledOnce).toBe(true);
+        expect(onActivate).toHaveBeenCalledTimes(1);
       });
 
       it('should be activated when space is pressed', () => {
         wrapper.simulate('keyPress', { key: ' ' });
-        expect(onActivate.calledOnce).toBe(true);
+        expect(onActivate).toHaveBeenCalledTimes(1);
       });
 
       it('should be activated when clicked', () => {
         wrapper.simulate('click');
-        expect(onActivate.calledOnce).toBe(true);
+        expect(onActivate).toHaveBeenCalledTimes(1);
       });
 
       it('should not be activated when disabled', () => {
@@ -154,7 +153,7 @@ describe(`${name} - item`, () => {
         disabledWrapper.simulate('click');
         disabledWrapper.simulate('keyPress', { key: 'Enter' });
         disabledWrapper.simulate('keyPress', { key: ' ' });
-        expect(onActivate.called).toBe(false);
+        expect(onActivate).not.toHaveBeenCalled();
       });
     });
   });

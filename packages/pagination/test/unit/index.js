@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import { spy } from 'sinon';
 import Button from '@atlaskit/button';
 import Pagination, { PaginationStateless } from '../../src';
 import { pageRange } from '../../src/components/Stateless';
@@ -62,22 +61,22 @@ describe(name, () => {
     });
 
     it('should invoke callback passed to onSetPage', () => {
-      const onSetPage = spy();
+      const onSetPage = jest.fn();
       const wrapper = mount(<PaginationStateless total={3} current={2} onSetPage={onSetPage} />);
       const buttons = wrapper.find(Button);
 
       buttons.at(1).simulate('click');
-      expect(onSetPage.calledOnce).toBe(true);
-      expect(onSetPage.calledWith(1)).toBe(true);
+      expect(onSetPage).toHaveBeenCalledTimes(1);
+      expect(onSetPage).toHaveBeenCalledWith(1);
 
       buttons.at(3).simulate('click');
-      expect(onSetPage.calledTwice).toBe(true);
-      expect(onSetPage.calledWith(3)).toBe(true);
+      expect(onSetPage).toHaveBeenCalledTimes(2);
+      expect(onSetPage).toHaveBeenCalledWith(3);
     });
 
     describe('shouldn\'t invoke callback passed to onSetPage', () => {
       it('when clicked on active page', () => {
-        const onSetPage = spy();
+        const onSetPage = jest.fn();
         const wrapper = mount(
           <PaginationStateless
             total={3}
@@ -87,11 +86,11 @@ describe(name, () => {
             );
         const buttons = wrapper.find(Button);
         buttons.at(2).simulate('click');
-        expect(onSetPage.calledOnce).toBe(false);
+        expect(onSetPage).not.toHaveBeenCalled();
       });
 
       it('when clicked on Prev and first page is active', () => {
-        const onSetPage = spy();
+        const onSetPage = jest.fn();
         const wrapper = mount(
           <PaginationStateless
             total={3}
@@ -101,11 +100,11 @@ describe(name, () => {
             );
         const buttons = wrapper.find(Button);
         buttons.at(1).simulate('click');
-        expect(onSetPage.calledOnce).toBe(false);
+        expect(onSetPage).not.toHaveBeenCalled();
       });
 
       it('when clicked on Next and last page is active', () => {
-        const onSetPage = spy();
+        const onSetPage = jest.fn();
         const wrapper = mount(
           <PaginationStateless
             total={3}
@@ -115,7 +114,7 @@ describe(name, () => {
             );
         const buttons = wrapper.find(Button);
         buttons.at(4).simulate('click');
-        expect(onSetPage.calledOnce).toBe(false);
+        expect(onSetPage).not.toHaveBeenCalled();
       });
     });
     describe('pageRange helper function', () => {

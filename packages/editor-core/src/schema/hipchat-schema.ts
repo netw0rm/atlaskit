@@ -31,6 +31,10 @@ export const hipchatSchema: Schema<any, any> = createSchema({
     // An emoji.
     'emoji',
 
+    // Decision
+    'decisionList',
+    'decisionItem',
+
     // media
     'mediaGroup',
     'media',

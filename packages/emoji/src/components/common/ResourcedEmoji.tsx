@@ -111,20 +111,32 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   render() {
     const { emojiId, showTooltip } = this.props;
     const { emoji, loaded } = this.state;
+    const { shortName, fallback } = emojiId;
     if (emoji) {
-      return (
+      return this.emojiWrapper((
         <CachingEmoji
           emoji={emoji}
           showTooltip={showTooltip}
         />
-      );
+      ));
     } else if (loaded) {
       // loaded but not found - render fallback
-      const { shortName, fallback } = emojiId;
-      return (<span>{fallback || shortName}</span>);
+      return this.emojiWrapper((
+        <span>{fallback || shortName}</span>
+      ));
     }
 
-    const { shortName } = this.props.emojiId;
-    return <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip}/>;
+    return this.emojiWrapper((
+      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip}/>
+    ));
+  }
+
+  private emojiWrapper(element: JSX.Element) {
+    const { shortName, id, fallback } = this.props.emojiId;
+    return (
+      <span data-emoji-id={id} data-emoji-short-name={shortName} data-emoji-text={fallback || shortName}>
+        {element}
+      </span>
+    );
   }
 }

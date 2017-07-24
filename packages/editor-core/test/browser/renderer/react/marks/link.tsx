@@ -17,4 +17,14 @@ describe('Renderer - React/Marks/Link', () => {
   it('should set target to _blank', () => {
     expect(mark.find('a').props()).to.have.property('target', '_blank');
   });
+
+  it('should set target to _blank by default', () => {
+    const mark = mount(<Link href="https://www.atlassian.com">This is a link</Link>);
+    expect(mark.find('a').props()).to.have.property('target', '_blank');
+  });
+
+  it('should set target to whatever props.target was', () => {
+    const mark = mount(<Link href="https://www.atlassian.com" target="_top">This is a link</Link>);
+    expect(mark.find('a').props()).to.have.property('target', '_top');
+  });
 });

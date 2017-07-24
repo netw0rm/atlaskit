@@ -1,10 +1,11 @@
 import styled, { keyframes } from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { flagWidth, flagWidthUnitless } from './constants';
+import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+
+export const flagWidth = spacing * 50;
 
 // This is the translateX position that we target when animating a card out
 // towards the left of screen.
-const exitXPosition = `${0 - (flagWidthUnitless / 2)}px`;
+const exitXPosition = `${0 - (flagWidth / 2)}px`;
 const flagAnimationDuration = '0.4s';
 
 const animationEnter = keyframes`
@@ -45,14 +46,14 @@ const Wrapper = styled.div`
   bottom: 0;
   position: absolute;
   transition: transform ${flagAnimationDuration} ease-in-out;
-  width: ${flagWidth};
+  width: ${flagWidth}px;
 
   &:first-child {
     animation: ${getAnimation};
   }
 
   &:nth-child(n+2) {
-    transform: translateX(0) translateY(100%) translateY(${2 * akGridSizeUnitless}px);
+    transform: translateX(0) translateY(100%) translateY(${2 * spacing}px);
   }
 
   /* Layer the 'primary' flag above the 'secondary' flag */

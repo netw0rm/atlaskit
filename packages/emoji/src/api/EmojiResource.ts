@@ -1,11 +1,11 @@
+import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
+
 import { customCategory } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
-import { requestService, ServiceConfig } from './SharedResourceUtils';
-import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
 import MediaEmojiResource from './media/MediaEmojiResource';
 
 export interface EmojiResourceConfig {
@@ -407,7 +407,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       const requestInit = {
         method: 'POST',
       };
-      return requestService(recordConfig, { queryParams, requestInit });
+      return serviceUtils.requestService(recordConfig, { queryParams, requestInit });
     }
     return Promise.reject('Resource does not support recordSelection');
   }

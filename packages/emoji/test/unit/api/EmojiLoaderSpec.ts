@@ -1,8 +1,8 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { SecurityOptions } from '@atlaskit/util-service-support';
 
-import { SecurityOptions } from '../../../src/api/SharedResourceUtils';
 import { EmojiLoaderConfig } from '../../../src/api/EmojiUtils';
 import EmojiLoader from '../../../src/api/EmojiLoader';
 

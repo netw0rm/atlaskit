@@ -1,0 +1,22 @@
+{
+  "name": "@atlaskit/util-build",
+  "version": "1.0.0",
+  "description": "Boomshakalaka.",
+  "bin": {
+    "ak": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "eslint": "^3.7.1",
+    "eslint-friendly-formatter": "^2.0.6",
+    "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-plugin-chai-expect": "1.1.1",
+    "eslint-plugin-compat": "^1.0.2",
+    "shelljs": "^0.7.8",
+    "yargs": "^8.0.2"
+  }
+}

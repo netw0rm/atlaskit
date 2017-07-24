@@ -9,6 +9,7 @@ import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-han
 import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withKeyboard } from '../../utils/user-input-util';
 import type { Position } from '../../../src/types';
 import * as keyCodes from '../../../src/view/key-codes';
+import getWindowScrollPosition from '../../../src/view/get-window-scroll-position';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
@@ -349,6 +350,132 @@ describe('drag handle', () => {
           // no movements should be recorded
           onMove: 0,
           onDrop: 1,
+        })).toBe(true);
+      });
+    });
+
+    describe('window scroll during drag', () => {
+      const originalScroll: Position = getWindowScrollPosition();
+      const origin: Position = { x: 0, y: 0 };
+
+      const setWindowScroll = (point: Position, shouldPublish? : boolean = true) => {
+        window.pageXOffset = point.x;
+        window.pageYOffset = point.y;
+        if (shouldPublish) {
+          window.dispatchEvent(new Event('scroll'));
+        }
+      };
+
+      beforeEach(() => {
+        setWindowScroll(origin, false);
+      });
+
+      afterEach(() => {
+        setWindowScroll(originalScroll, false);
+      });
+
+      it('should not trigger onWindowScroll before an animation frame', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        // first scroll
+        setWindowScroll({
+          x: 0,
+          y: 0,
+        });
+        // second scroll
+        setWindowScroll({
+          x: 100,
+          y: 200,
+        });
+        // no animation frame to release diff
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onWindowScroll: 0,
+        })).toBe(true);
+      });
+
+      it('should trigger an onWindowScroll callback with the diff current window scroll', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        // first scroll
+        setWindowScroll({
+          x: 20,
+          y: 40,
+        });
+        // second scroll is published with the diff
+        setWindowScroll({
+          x: 100,
+          y: 200,
+        });
+        requestAnimationFrame.step();
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onWindowScroll: 1,
+        })).toBe(true);
+        expect(callbacks.onWindowScroll).toHaveBeenCalledWith({ x: 80, y: 160 });
+      });
+
+      it('should only trigger an onWindowScroll with the latest value in an animation frame', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        // first scroll to get initial scroll
+        setWindowScroll({
+          x: 0,
+          y: 0,
+        });
+        // all these frames occurring in a single frame
+        setWindowScroll({
+          x: 100,
+          y: 200,
+        });
+        setWindowScroll({
+          x: 101,
+          y: 201,
+        });
+        setWindowScroll({
+          x: 102,
+          y: 202,
+        });
+        requestAnimationFrame.step();
+
+        expect(callbacks.onWindowScroll).toHaveBeenCalledTimes(1);
+        expect(callbacks.onWindowScroll).toHaveBeenCalledWith({ x: 102, y: 202 });
+      });
+
+      it('should only trigger onWindowScroll if still dragging when the animation frame fires', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+
+        // first scroll to get initial scroll
+        setWindowScroll({
+          x: 0,
+          y: 0,
+        });
+        // second scroll occurring in same frame
+        setWindowScroll({
+          x: 100,
+          y: 200,
+        });
+
+        // drop
+        windowMouseUp();
+
+        // flush window event
+        requestAnimationFrame.flush();
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onDrop: 1,
+          onWindowScroll: 0,
         })).toBe(true);
       });
     });
@@ -866,6 +993,18 @@ describe('drag handle', () => {
         pressSpacebar(wrapper);
         // resize event
         window.dispatchEvent(new Event('resize'));
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 1,
+        })).toBe(true);
+      });
+
+      it('should cancel if the window is scrolled', () => {
+        // lift
+        pressSpacebar(wrapper);
+        // scroll event
+        window.dispatchEvent(new Event('scroll'));
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,

@@ -27,8 +27,8 @@ type State = {
 };
 
 export default class DragHandle extends Component {
-
   /* eslint-disable react/sort-comp */
+
   props: Props
   state: State
 
@@ -62,12 +62,12 @@ export default class DragHandle extends Component {
     this.ifDragging(this.props.callbacks.onMoveBackward);
   });
 
-  scheduleScrollMove = rafScheduler(() => {
+  scheduleWindowScrollMove = rafScheduler(() => {
     this.ifDragging(() => {
       const current: Position = getWindowScrollPosition();
 
       if (!this.previousScroll) {
-        this.previousScroll = current;
+        console.error('cannot schedule window scroll if there is no initial scroll');
         return;
       }
 
@@ -77,6 +77,14 @@ export default class DragHandle extends Component {
       this.props.callbacks.onWindowScroll(diff);
     });
   });
+
+  seedWindowScroll = () => {
+    if (this.previousScroll) {
+      return;
+    }
+
+    this.previousScroll = getWindowScrollPosition();
+  }
 
   /* eslint-enable react/sort-comp */
 
@@ -90,8 +98,7 @@ export default class DragHandle extends Component {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    // TODO: unbind handlers if drag is cancelled from above
-
+    // TODO: unbind handlers if drag is cancelled some somewhere else in application
     if (nextProps.isEnabled) {
       return;
     }
@@ -122,8 +129,15 @@ export default class DragHandle extends Component {
   onWindowScroll = () => {
     const { draggingWith } = this.state;
 
+    if (!draggingWith) {
+      return;
+    }
+
     if (draggingWith === 'MOUSE') {
-      this.scheduleScrollMove();
+      if (!this.previousScroll) {
+        this.seedWindowScroll();
+      }
+      this.scheduleWindowScrollMove();
       return;
     }
 

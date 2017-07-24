@@ -3,7 +3,8 @@ import { Search } from 'js-search';
 import { MentionDescription } from '../../src/types';
 import debug from '../../src/util/logger';
 import { AbstractMentionResource, HttpError } from '../../src/api/MentionResource';
-import mentionData from './_mention-data';
+import mentionData from './mention-data';
+import { MockMentionConfig } from './support-types';
 
 const search = new Search('id');
 search.addIndex('name');
@@ -11,11 +12,6 @@ search.addIndex('mentionName');
 search.addIndex('nickname');
 
 search.addDocuments(mentionData.mentions);
-
-export interface MockMentionConfig {
-  minWait?: number;
-  maxWait?: number;
-}
 
 export default class MockMentionResource extends AbstractMentionResource {
   private config: MockMentionConfig;

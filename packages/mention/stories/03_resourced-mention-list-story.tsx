@@ -5,7 +5,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { name } from '../package.json';
 import ResourcedMentionList from '../src/components/ResourcedMentionList';
 import SearchTextInput from './demo-search-text-input';
-import { resourceProvider } from './story-data';
+import { resourceProvider } from '../src/support/story-data';
 
 export interface State {
   query: string;

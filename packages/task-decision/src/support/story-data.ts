@@ -1,3 +1,15 @@
+import { ServiceDecisionResponse } from '../types';
+import { MockTaskDecisionResourceConfig } from './support-types';
+import MockTaskDecisionResource from './MockTaskDecisionResource';
+
+declare var require: {
+    <T>(path: string): T;
+};
+
+export const getServiceDecisionsResponse = (): ServiceDecisionResponse => require('./sample-decisions.json') as ServiceDecisionResponse;
+
+export const getMockTaskDecisionResource = (config?: MockTaskDecisionResourceConfig) => new MockTaskDecisionResource(config);
+
 export const document = {
   version: 1,
   type: 'doc',

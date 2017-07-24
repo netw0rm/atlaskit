@@ -4,7 +4,7 @@ import Renderer from '@atlaskit/renderer';
 
 import TaskList from '../src/components/TaskList';
 import TaskItem from '../src/components/TaskItem';
-import { document } from './story-data';
+import { document } from '../src/support/story-data';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console

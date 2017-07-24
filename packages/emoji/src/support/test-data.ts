@@ -1,11 +1,12 @@
 import * as sinon from 'sinon';
 
-import { customCategory, customType } from '../../src/constants';
-import EmojiRepository from '../../src/api/EmojiRepository';
-import TokenManager from '../../src/api/media/TokenManager';
-import { denormaliseEmojiServiceResponse } from '../../src/api/EmojiUtils';
-import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, MediaApiToken } from '../../src/types';
-import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig, MockNonUploadingEmojiResource } from './_MockEmojiResource';
+import { customCategory, customType } from '../constants';
+import EmojiRepository from '../api/EmojiRepository';
+import TokenManager from '../api/media/TokenManager';
+import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, MediaApiToken } from '../types';
+import { MockEmojiResourceConfig } from './support-types';
+import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockNonUploadingEmojiResource } from './MockEmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
   id: 'grimacing',

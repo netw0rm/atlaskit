@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
-import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../_TestData';
-import { MockEmojiResourceConfig } from '../../_MockEmojiResource';
+import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../../../src/support/test-data';
+import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';

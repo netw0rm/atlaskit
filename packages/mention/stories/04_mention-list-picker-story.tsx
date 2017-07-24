@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import MentionTextInput from './demo-mention-text-input';
-import { resourceProvider, resourceProviderWithInfoHints, slowResourceProvider, MockPresenceProvider } from './story-data';
+import { resourceProvider, resourceProviderWithInfoHints, slowResourceProvider, MockPresenceProvider } from '../src/support/story-data';
 
 const bottomStyle = {
   position: 'absolute',

@@ -117,4 +117,12 @@ describe('LinkCardGenericView', () => {
 
     expect(card.getDOMNode()).to.be.instanceOf(HTMLAnchorElement);
   });
+
+  it('should use max horizontal dimensions and large size if the width is too big', () => {
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} dimensions={{width: 1000000}} />);
+    const instance = card.instance() as LinkCardGenericView;
+
+    expect(instance.width).to.be.equal('744px');
+    expect(instance.cardSize).to.be.equal('large');
+  });
 });

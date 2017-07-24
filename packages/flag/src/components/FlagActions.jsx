@@ -1,61 +1,45 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import Container, { Action } from '../styled/Actions';
-import { APPEARANCE_ENUM, getAppearance } from '../shared-variables';
-import CustomFocusButton from '../styled/CustomFocusButton';
+import Button from '../styled/CustomFocusButton';
+import { getProperty } from '../theme';
+import type { ActionsType, AppearanceTypes } from '../types';
+import { DEFAULT_APPEARANCE } from './Flag';
+
+type Props = {
+  appearance: AppearanceTypes,
+  actions: ActionsType,
+};
 
 export default class FlagActions extends PureComponent {
-  static propTypes = {
-    appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
-    actions: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.node,
-      onClick: PropTypes.func,
-    })),
-  };
-
+  props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
-    appearance: APPEARANCE_ENUM.defaultValue,
+    appearance: DEFAULT_APPEARANCE,
     actions: [],
   }
 
-  getButtonFocusRingColor = () => (
-    getAppearance(this.props.appearance).focusRingColor
-  )
-
-  getButtonTheme = () => (
-    this.isBold()
-      ? getAppearance(this.props.appearance).actionTheme
-      : undefined
-  );
-
-  getButtonSpacing = () => (
-    this.isBold() ? 'compact' : 'none'
-  );
-
-  getButtonAppearance = () => (
-    this.isBold() ? 'default' : 'subtle-link'
-  );
-
-  isBold = () => this.props.appearance !== APPEARANCE_ENUM.defaultValue
+  getButtonFocusRingColor = a => getProperty(a, 'focusRingColor');
+  getButtonTheme = a => getProperty(a, 'buttonTheme');
+  getButtonAppearance = b => (b ? 'default' : 'subtle-link');
+  getButtonSpacing = b => (b ? 'compact' : 'none');
 
   render() {
-    if (!this.props.actions.length) return null;
+    const { actions, appearance } = this.props;
+    const isBold = appearance !== DEFAULT_APPEARANCE;
 
-    const items = this.props.actions.map((action, index) => (
-      <Action
-        useMidDot={!this.isBold()}
-        key={index}
-        hasDivider={!!index}
-      >
-        <CustomFocusButton
-          appearance={this.getButtonAppearance()}
-          focusRingColor={this.getButtonFocusRingColor()}
+    if (!actions.length) return null;
+
+    const items = actions.map((action, index) => (
+      <Action key={index} hasDivider={!!index} useMidDot={!isBold}>
+        <Button
+          appearance={this.getButtonAppearance(isBold)}
+          focusRingColor={this.getButtonFocusRingColor(appearance)}
           onClick={action.onClick}
-          spacing={this.getButtonSpacing()}
-          theme={this.getButtonTheme()}
+          spacing={this.getButtonSpacing(isBold)}
+          theme={this.getButtonTheme(appearance)}
         >
           {action.content}
-        </CustomFocusButton>
+        </Button>
       </Action>
     ));
 

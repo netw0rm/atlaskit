@@ -1,13 +1,14 @@
+import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { EditorState, Transaction, Plugin, PluginKey, inputRules, Schema, Node } from '../../prosemirror';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
-import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
+import ProviderFactory from '../../providerFactory';
 
 let matcher: AsciiEmojiMatcher;
 
-export function inputRulePlugin(schema: Schema<any, any>, emojiProvider: Promise<EmojiProvider> | undefined): Plugin | undefined {
-  if (schema.nodes.emoji && emojiProvider) {
-    initMatcher(emojiProvider);
+export function inputRulePlugin(schema: Schema<any, any>, providerFactory?: ProviderFactory): Plugin | undefined {
+  if (schema.nodes.emoji && providerFactory) {
+    initMatcher(providerFactory);
     const asciiEmojiRule = createInputRule(AsciiEmojiMatcher.REGEX, inputRuleHandler);
     return inputRules({
       rules: [asciiEmojiRule]
@@ -15,12 +16,20 @@ export function inputRulePlugin(schema: Schema<any, any>, emojiProvider: Promise
   }
 }
 
-function initMatcher(emojiProvider: Promise<EmojiProvider>) {
-  emojiProvider.then(provider => {
-    provider.getAsciiMap().then(map => {
-      matcher = new AsciiEmojiMatcher(map);
+function initMatcher(providerFactory: ProviderFactory) {
+  const handleProvider = (name: string, provider?: Promise<EmojiProvider>) => {
+    if (!provider) {
+      return;
+    }
+
+    provider.then(emojiProvider => {
+      emojiProvider.getAsciiMap().then(map => {
+        matcher = new AsciiEmojiMatcher(map);
+      });
     });
-  });
+  };
+
+  providerFactory.subscribe('emojiProvider', handleProvider);
 }
 
 function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [string], start: number, end: number): Transaction | undefined {
@@ -174,8 +183,8 @@ class AsciiEmojiTransactionCreator {
 
 export const stateKey = new PluginKey('asciiEmojiPlugin');
 
-const plugins = (schema: Schema<any, any>, emojiProvider: Promise<EmojiProvider> | undefined) => {
-  return [inputRulePlugin(schema, emojiProvider)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, providerFactory?: ProviderFactory) => {
+  return [inputRulePlugin(schema, providerFactory)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

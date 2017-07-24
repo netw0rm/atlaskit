@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import ImageIcon from '@atlaskit/icon/glyph/editor/image';
+import { analyticsDecorator as analytics } from '../../analytics';
 import { EditorView, PluginKey } from '../../prosemirror';
 import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
@@ -53,7 +54,9 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
     });
   }
 
+  @analytics('atlassian.editor.media.button')
   private handleClickMediaButton = () => {
     this.pluginState.showMediaPicker();
+    return true;
   }
 }

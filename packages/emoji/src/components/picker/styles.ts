@@ -222,16 +222,13 @@ export const emojiCategoryTitle = style({
 });
 
 export const emojiItem = style({
-  padding: '4px',
-  width: '32px',
-  height: '32px',
   display: 'inline-block',
   textAlign: 'center',
 
   $nest: {
     '&>span': {
       cursor: 'pointer',
-      padding: '4px',
+      padding: '8px',
       borderRadius: '5px',
       width: '24px',
       height: '24px',

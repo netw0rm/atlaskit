@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { globalPrimaryActions } from '../../shared-variables';
+import { globalPrimaryActions, gridSize } from '../../shared-variables';
 
 const GlobalPrimaryActionsInner = styled.div`
   box-sizing: border-box;
-  margin-bottom: ${globalPrimaryActions.margin.bottom}px;
+  padding: ${gridSize}px 0 ${globalPrimaryActions.margin.bottom}px 0;
 `;
 
 GlobalPrimaryActionsInner.displayName = 'GlobalPrimaryActionsInner';

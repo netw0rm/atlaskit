@@ -1,6 +1,3 @@
-import FieldBaseStateless from './components/Stateless';
-import Label from './components/Label';
-import FieldBase from './components/Stateful';
-
-export default FieldBase;
-export { FieldBaseStateless, Label };
+export { default } from './components/Stateful';
+export { default as FieldBaseStateless } from './components/Stateless';
+export { default as Label } from './components/Label';

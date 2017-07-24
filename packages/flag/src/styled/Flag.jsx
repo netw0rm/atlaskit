@@ -1,29 +1,37 @@
 import styled from 'styled-components';
 import {
   akBorderRadius,
-  akGridSize,
-  akGridSizeUnitless,
-  akElevationMixins,
+  akGridSizeUnitless as spacing,
 } from '@atlaskit/util-shared-styles';
-import { focusRingMixin } from './constants';
-import { getAppearance } from '../shared-variables';
 import { getFocusRingStyle } from './CustomFocusButton';
+import theme, { getProperty } from '../theme';
 
-const getBackgroundColor = ({ appearance }) => getAppearance(appearance).backgroundColor;
-const getBodyColor = ({ appearance }) => getAppearance(appearance).bodyColor;
-const getTitleColor = ({ appearance }) => getAppearance(appearance).titleColor;
+const getTextColor = p => getProperty(p.appearance, 'text');
+const getBoxShadow = ({ appearance }) => {
+  const borderColor = getProperty(appearance, 'border');
+  const shadowColor = getProperty(appearance, 'shadow');
+
+  const border = borderColor && `0 0 1px ${borderColor}`;
+  const shadow = `0 20px 32px -8px ${shadowColor}`;
+
+  return [border, shadow].filter(p => p).join(',');
+};
 
 export default styled.div`
-  background-color: ${getBackgroundColor};
+  background-color: ${p => getProperty(p.appearance, 'background')};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
-  color: ${getBodyColor};
+  box-shadow: ${getBoxShadow};
+  color: ${getTextColor};
   display: flex;
-  padding: ${akGridSizeUnitless * 2}px;
+  padding: ${spacing * 2}px;
   width: 100%;
+  z-index: 600;
 
-  ${akElevationMixins.e600}
-  ${focusRingMixin}
+  &:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 2px ${theme.normal.focusRingColor};
+  }
 `;
 
 // Header
@@ -32,7 +40,7 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.span`
-  color: ${getTitleColor};
+  color: ${getTextColor};
   font-weight: 600;
   flex: 1;
   overflow: hidden;
@@ -45,10 +53,10 @@ export const DismissButton = styled.button`
   background: none;
   border: none;
   border-radius: ${akBorderRadius};
-  color: ${getBodyColor};
+  color: ${getTextColor};
   cursor: pointer;
   display: flex;
-  margin-left: ${akGridSize};
+  margin-left: ${spacing}px;
   padding: 0;
   white-space: nowrap;
 
@@ -72,8 +80,8 @@ export const Expander = styled.div`
 `;
 
 export const Description = styled.div`
-  color: ${getBodyColor};
-  margin-top: ${akGridSize};
+  color: ${getTextColor};
+  margin-top: ${spacing}px;
 `;
 
 export const Icon = styled.div`
@@ -81,5 +89,5 @@ export const Icon = styled.div`
   display: inline-flex;
   flex: 0 0 auto;
   flex-direction: column;
-  width: ${akGridSizeUnitless * 4}px;
+  width: ${spacing * 4}px;
 `;

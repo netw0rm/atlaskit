@@ -2,18 +2,46 @@
 import styled from 'styled-components';
 import { akColorN0, akColorN20 } from '@atlaskit/util-shared-styles';
 import { Root, borderRadius, spaceAround, cardShadow } from '../styles';
+import { BreakpointSizeValue } from '../utils/breakpointSize';
 
+export interface CardProps {
+  cardSize?: BreakpointSizeValue;
+}
+
+const cardSize = ({cardSize}: CardProps) => {
+  switch (cardSize) {
+    case 'small':
+      return `
+        .media-card {
+          width: 116px;
+        }
+        .details {
+          width: calc(100% - 116px);
+        }
+      `;
+
+    case 'large':
+      return `
+        .media-card {
+          width: 174px;
+        }
+        .details {
+          width: calc(100% - 174px);
+        }
+      `;
+  }
+
+  return '';
+};
  // min-width required in Details to get proper text wrapping in IE11
 export const Details = styled.div`
   ${spaceAround}
-  flex-grow: 1;
-  min-width: 320px;
-
   padding: 10px;
   background-color: ${akColorN20};
 `;
 
 export const Wrapper = styled(Root)`
+  ${cardSize}
   display: flex;
   user-select: none;
   background-color: ${akColorN0};

@@ -11,12 +11,12 @@ import { code } from '../../../schema/marks/code';
 const textFormatting: EditorPlugin = {
   marks() {
     return [
-      { name: 'em', mark: em, rank: 100 },
-      { name: 'strong', mark: strong, rank: 200 },
-      { name: 'strike', mark: strike, rank: 300 },
-      { name: 'subsup', mark: subsup, rank: 400 },
-      { name: 'underline', mark: underline, rank: 500 },
-      { name: 'code', mark: code, rank: 600 }
+      { name: 'em', mark: em, rank: 200 },
+      { name: 'strong', mark: strong, rank: 300 },
+      { name: 'strike', mark: strike, rank: 400 },
+      { name: 'subsup', mark: subsup, rank: 500 },
+      { name: 'underline', mark: underline, rank: 600 },
+      { name: 'code', mark: code, rank: 700 }
     ];
   },
 

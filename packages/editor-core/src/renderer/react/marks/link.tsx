@@ -26,17 +26,14 @@ export default class Link extends PureComponent<Props, {}> {
   render() {
     const {
       href,
-      target,
+      target = '_blank',
     } = this.props;
 
     const anchorProps: any = {
       href,
+      target,
       title: href,
     };
-
-    if (target) {
-      anchorProps.target = target;
-    }
 
     return (
       <StyledAnchor {...anchorProps}>{this.props.children}</StyledAnchor>

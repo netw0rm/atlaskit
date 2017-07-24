@@ -1,11 +1,24 @@
+// TODO: Check square appearance
+// TODO: fix horizontal no image
 import * as React from 'react';
 import {Component, ReactElement} from 'react';
 import {ImageResizeMode, MediaItemType} from '@atlaskit/media-core';
-import {CardDimensions} from '@atlaskit/media-card';
+import {Card, CardView, CardDimensions} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
 
+export type FilmstripChild = Card | CardView | ChildWithTypeAndId;
+
 export interface FilmstripProps {
-  children?: any;
+  children?: Array<FilmstripChild>;
+  // children?: Array<Card | CardView | >;
+  enlargeSingleItem?: boolean; // default false
+}
+
+export interface ChildWithTypeAndId {
+  props: {
+    id: string;
+    type: MediaItemType;
+  };
 }
 
 export interface FilmstripState {
@@ -23,6 +36,10 @@ const smallLinkDimensions: CardDimensions = {
   width: 343
 };
 
+const largeLinkDimensions: CardDimensions = {
+  width: 744
+};
+
 export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   private get childrenLength() {
     const {children} = this.props;
@@ -30,12 +47,25 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   }
 
   private getDimensionsFromMediaItemType = (type: MediaItemType): CardDimensions | undefined => {
+    const {enlargeSingleItem} = this.props;
     const {isSingleItem} = this;
     const isLink = type === 'link';
-    const linkDimensions = !isSingleItem ? smallLinkDimensions : undefined;
-    const fileDimensions = isSingleItem ? largeCardDimensions : undefined;
+    const linkDimensions = isSingleItem && enlargeSingleItem ? largeLinkDimensions : smallLinkDimensions;
+    const fileDimensions = isSingleItem && enlargeSingleItem ? largeCardDimensions : undefined;
 
     return isLink ? linkDimensions : fileDimensions;
+  }
+
+  private getItemTypeFromChild(child: FilmstripChild): MediaItemType {
+    if (child.type === Card) {
+      return child.props.identifier.mediaItemType;
+    } else if (child.type === CardView) {
+      // TODO: use isLinkDetails
+    } else if (child.props.type) {
+      return child.props.type;
+    }
+
+    return 'file';
   }
 
   get resizeMode(): ImageResizeMode {
@@ -49,8 +79,8 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   }
 
   getChildProps(child: ReactElement<any>) {
-    const {resizeMode, getDimensionsFromMediaItemType} = this;
-    const dimensions = getDimensionsFromMediaItemType(child.props.identifier && child.props.identifier.mediaItemType);
+    const {resizeMode, getItemTypeFromChild, getDimensionsFromMediaItemType} = this;
+    const dimensions = getDimensionsFromMediaItemType(getItemTypeFromChild(child));
 
     return {
       resizeMode,

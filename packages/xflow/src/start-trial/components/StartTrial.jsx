@@ -46,7 +46,13 @@ export class StartTrialBase extends Component {
             />}
         />
         <Step
-          render={nextStep => <GrantAccess onComplete={nextStep} progress={this.state.progress} />}
+          render={nextStep =>
+            <GrantAccess
+              onComplete={async () => {
+                nextStep();
+              }}
+              progress={this.state.progress}
+            />}
         />
         <Step
           render={nextStep => <LoadingTime onComplete={nextStep} progress={this.state.progress} />}

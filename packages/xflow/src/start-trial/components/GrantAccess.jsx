@@ -106,7 +106,6 @@ export class GrantAccessBase extends Component {
       continueButtonDisabled: true,
       failedToGrantAccess: false,
     });
-
     Promise.resolve(
       grantAccessToUsers(selectedRadio, selectedRadio === usersOption ? selectedUsers : null)
     )

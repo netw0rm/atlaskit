@@ -12,7 +12,7 @@ export default () =>
     credentials: 'same-origin',
     method: 'POST',
   }).then((response) => {
-    if (response.status !== 200) {
+    if (response.status >= 300) {
       throw new Error(`Unable to start confluence trial. Status: ${response.status}`);
     }
     return null;

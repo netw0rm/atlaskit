@@ -14,8 +14,8 @@ describe('startConfluenceTrial', () => {
     fetchMock.restore();
   });
 
-  it('should return a resolved promise with no value if the endpoint returns a 200 response', () => {
-    fetchMock.mock(START_TRIAL_ENDPOINT, 200);
+  it('should return a resolved promise with no value if the endpoint returns a 202 response', () => {
+    fetchMock.mock(START_TRIAL_ENDPOINT, 202);
     return assert.eventually.equal(startProductTrial(), null);
   });
 

@@ -71,7 +71,6 @@ export default class MockConfluenceXFlowProvider extends Component {
       requestTrialAccessWithNote,
       requestTrialAccessWithoutNote,
       cancelRequestTrialAccess,
-
       startProductTrial: startConfluenceTrial,
       cancelStartProductTrial,
       grantAccessToUsers,

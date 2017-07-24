@@ -11,6 +11,8 @@ import StartTrial from '../../start-trial/components/StartTrial';
 import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
 import ErrorFlag from '../../start-trial/components/ErrorFlag';
 
+import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
+
 const Screens = {
   INITIALIZING: 'INITIALIZING',
   CANNOT_ADD: 'CANNOT_ADD',
@@ -72,37 +74,39 @@ class RequestOrStartTrial extends Component {
   render() {
     return (
       <App locale={this.props.locale}>
-        {(() => {
-          switch (this.state.screen) {
-            case Screens.INITIALIZING: {
-              return (
-                <div>
-                  <InitializingScreen isOpen={!this.state.initializingCheckFailed} />
-                  <ErrorFlag
-                    flagRetry
-                    flagActions={this.flagActions}
-                    title="Oops... Something went wrong"
-                    description="Let's try again."
-                    showFlag={this.state.initializingCheckFailed}
-                    onDismissed={() => this.setState({ initializingCheckFailed: false })}
-                  />
-                </div>
-              );
+        <RequestOrStartTrialDialog>
+          {(() => {
+            switch (this.state.screen) {
+              case Screens.INITIALIZING: {
+                return (
+                  <div>
+                    <InitializingScreen isOpen={!this.state.initializingCheckFailed} />
+                    <ErrorFlag
+                      flagRetry
+                      flagActions={this.flagActions}
+                      title="Oops... Something went wrong"
+                      description="Let's try again."
+                      showFlag={this.state.initializingCheckFailed}
+                      onDismissed={() => this.setState({ initializingCheckFailed: false })}
+                    />
+                  </div>
+                );
+              }
+              case Screens.START_TRIAL: {
+                return <StartTrial />;
+              }
+              case Screens.ALREADY_STARTED: {
+                return <AlreadyStarted />;
+              }
+              case Screens.REQUEST_TRIAL: {
+                return <RequestTrial />;
+              }
+              default: {
+                return <InitializingScreen />;
+              }
             }
-            case Screens.START_TRIAL: {
-              return <StartTrial />;
-            }
-            case Screens.ALREADY_STARTED: {
-              return <AlreadyStarted />;
-            }
-            case Screens.REQUEST_TRIAL: {
-              return <RequestTrial />;
-            }
-            default: {
-              return <InitializingScreen />;
-            }
-          }
-        })()}
+          })()}
+        </RequestOrStartTrialDialog>
       </App>
     );
   }

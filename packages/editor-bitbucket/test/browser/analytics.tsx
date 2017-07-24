@@ -342,8 +342,6 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   [
-    { value: 'codeblock', name: 'Code block' },
-    { value: 'blockquote', name: 'Block quote' },
     { value: 'heading1', name: 'Heading 1' },
     { value: 'heading2', name: 'Heading 2' },
     { value: 'heading3', name: 'Heading 3' },
@@ -356,6 +354,22 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
         .find('ToolbarBlockType')
         .find('Item')
         .filterWhere(n => n.text() === blockType.name)
+        .find('Element')
+        .simulate('click');
+
+      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(true);
+    });
+  });
+
+  [
+    { value: 'codeblock', name: 'Code block' },
+    { value: 'blockquote', name: 'Block quote' },
+  ].forEach(blockType => {
+    it(`atlassian.editor.format.${blockType.value}.button`, () => {
+      editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
+      editor
+        .find('Item')
+        .filterWhere(n => n.text().indexOf(blockType.name) > 0)
         .find('Element')
         .simulate('click');
 

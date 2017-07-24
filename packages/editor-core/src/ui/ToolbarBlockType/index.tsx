@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import ToolbarButton from '../ToolbarButton';
 import { analyticsService as analytics } from '../../analytics';
-import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
@@ -22,8 +22,9 @@ export interface Props {
 
 export interface State {
   active: boolean;
-  availableBlockTypes: GroupedBlockTypes;
+  availableBlockTypes: BlockType[];
   currentBlockType: BlockType;
+  isCodeBlock: boolean;
 }
 
 export default class ToolbarBlockType extends PureComponent<Props, State> {
@@ -35,6 +36,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       active: false,
       availableBlockTypes: pluginState.availableBlockTypes,
       currentBlockType: pluginState.currentBlockType,
+      isCodeBlock: pluginState.isCodeBlock,
     };
   }
 
@@ -68,8 +70,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, currentBlockType } = this.state;
+    const { active, currentBlockType, isCodeBlock, availableBlockTypes } = this.state;
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const blockTypeTitles = availableBlockTypes
+      .filter(blockType => blockType.name === currentBlockType.name)
+      .map(blockType => blockType.title);
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
@@ -82,11 +87,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           </ExpandIconWrapper>
         }
       >
-        <ButtonContent>{currentBlockType.title}</ButtonContent>
+        <ButtonContent>{blockTypeTitles[0] || 'Other...'}</ButtonContent>
       </ToolbarButton>
     );
 
-    if (!this.props.isDisabled) {
+    if (!this.props.isDisabled && !isCodeBlock) {
       const items = this.createItems();
       return (
         <DropdownMenu
@@ -117,15 +122,13 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   private createItems = () => {
     const { currentBlockType, availableBlockTypes } = this.state;
     let items: any[] = [];
-    availableBlockTypes.forEach((blockTypeGroup, groupNo) => {
-      blockTypeGroup.forEach((blockType, blockTypeNo) => {
-        items.push({
-          content: blockType.title,
-          value: blockType,
-          isActive: (currentBlockType === blockType),
-          tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-          tooltipPosition: 'right',
-        });
+    availableBlockTypes.forEach((blockType, blockTypeNo) => {
+      items.push({
+        content: blockType.title,
+        value: blockType,
+        isActive: (currentBlockType === blockType),
+        tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
+        tooltipPosition: 'right',
       });
     });
     return [{
@@ -138,6 +141,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       active: this.state.active,
       availableBlockTypes: pluginState.availableBlockTypes,
       currentBlockType: pluginState.currentBlockType,
+      isCodeBlock: pluginState.isCodeBlock,
     });
   }
 

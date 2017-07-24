@@ -16,6 +16,7 @@ export interface Props {
 
 export interface State {
   tableElement?: HTMLElement;
+  tableActive?: boolean;
   tableNode?: Node;
   cellSelection?: CellSelection;
   tableSelected: boolean;
@@ -59,10 +60,10 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tableElement, tableSelected } = this.state;
+    const { tableActive, tableElement, tableSelected } = this.state;
     const { pluginState, popupsBoundariesElement, popupsMountPoint } = this.props;
 
-    if (!tableElement) {
+    if (!tableElement || !tableActive) {
       return null;
     }
 
@@ -105,7 +106,7 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: TableState) => {
-    const { tableElement, tableNode, cellSelection } = pluginState;
-    this.setState({ tableElement, tableNode, cellSelection });
+    const { tableElement, tableActive, tableNode, cellSelection } = pluginState;
+    this.setState({ tableElement, tableActive, tableNode, cellSelection });
   }
 }

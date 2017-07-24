@@ -1,10 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
-import sinon from 'sinon';
 import DragHandle, { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 // eslint-disable-next-line no-duplicate-imports
 import type { Callbacks, Provided } from '../../../src/view/drag-handle/drag-handle-types';
@@ -16,13 +14,14 @@ const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
 
 const getStubCallbacks = (): Callbacks => ({
-  onLift: sinon.stub(),
-  onKeyLift: sinon.stub(),
-  onMove: sinon.stub(),
-  onMoveForward: sinon.stub(),
-  onMoveBackward: sinon.stub(),
-  onDrop: sinon.stub(),
-  onCancel: sinon.stub(),
+  onLift: jest.fn(),
+  onKeyLift: jest.fn(),
+  onMove: jest.fn(),
+  onMoveForward: jest.fn(),
+  onMoveBackward: jest.fn(),
+  onDrop: jest.fn(),
+  onCancel: jest.fn(),
+  onWindowScroll: jest.fn(),
 });
 
 type CallBacksCalledFn = {|
@@ -32,7 +31,8 @@ type CallBacksCalledFn = {|
   onMoveForward?: number,
   onMoveBackward?: number,
   onDrop?: number,
-  onCancel?: number,
+  onCancel ?: number,
+  onWindowScroll ?: number,
 |}
 
 const callbacksCalled = (callbacks: Callbacks) => ({
@@ -43,13 +43,14 @@ const callbacksCalled = (callbacks: Callbacks) => ({
   onMoveBackward = 0,
   onDrop = 0,
   onCancel = 0,
-}: CallBacksCalledFn = {}) => callbacks.onLift.callCount === onLift &&
-  callbacks.onKeyLift.callCount === onKeyLift &&
-  callbacks.onMove.callCount === onMove &&
-  callbacks.onMoveForward.callCount === onMoveForward &&
-  callbacks.onMoveBackward.callCount === onMoveBackward &&
-  callbacks.onDrop.callCount === onDrop &&
-  callbacks.onCancel.callCount === onCancel;
+}: CallBacksCalledFn = {}) =>
+  callbacks.onLift.mock.calls.length === onLift &&
+  callbacks.onKeyLift.mock.calls.length === onKeyLift &&
+  callbacks.onMove.mock.calls.length === onMove &&
+  callbacks.onMoveForward.mock.calls.length === onMoveForward &&
+  callbacks.onMoveBackward.mock.calls.length === onMoveBackward &&
+  callbacks.onDrop.mock.calls.length === onDrop &&
+  callbacks.onCancel.mock.calls.length === onCancel;
 
 const whereAnyCallbacksCalled = (callbacks: Callbacks) =>
   !callbacksCalled(callbacks)();
@@ -66,16 +67,6 @@ class Child extends Component {
     );
   }
 }
-
-const originalScroll: Position = {
-  x: window.pageXOffset,
-  y: window.pageYOffset,
-};
-
-const setScroll = (point: Position): void => {
-  window.pageXOffset = point.x;
-  window.pageYOffset = point.y;
-};
 
 const windowMouseUp = dispatchWindowMouseEvent.bind(null, 'mouseup');
 const windowMouseMove = dispatchWindowMouseEvent.bind(null, 'mousemove');
@@ -148,44 +139,17 @@ describe('drag handle', () => {
           mouseDown(customWrapper, 0, 0);
           windowMouseMove(point.x, point.y);
 
-          expect(customCallbacks.onLift.calledWith(point)).to.equal(true);
+          expect(customCallbacks.onLift).toHaveBeenCalledWith(point);
 
           customWrapper.unmount();
         });
-      });
-
-      it('should consider any scrolling of the document when publishing the initial position', () => {
-        const scroll: Position = {
-          x: 100,
-          y: 200,
-        };
-        const initial: Position = {
-          x: 50,
-          y: 50,
-        };
-        const movedTo: Position = {
-          x: initial.x,
-          y: initial.y + sloppyClickThreshold,
-        };
-        setScroll(scroll);
-
-        mouseDown(wrapper, initial.x, initial.y);
-        windowMouseMove(movedTo.x, movedTo.y);
-
-        expect(callbacks.onLift.calledWith({
-          x: movedTo.x + scroll.x,
-          y: movedTo.y + scroll.y,
-        })).to.equal(true);
-
-        // cleanup
-        setScroll(originalScroll);
       });
 
       it('should not start a drag if there was no mouse movement while mouse was pressed', () => {
         mouseDown(wrapper);
         windowMouseUp();
 
-        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+        expect(whereAnyCallbacksCalled(callbacks)).toBe(false);
       });
 
       it('should not start a drag if there was too little mouse movement while mouse was pressed', () => {
@@ -193,7 +157,7 @@ describe('drag handle', () => {
         windowMouseMove(0, sloppyClickThreshold - 1);
         windowMouseUp(0, sloppyClickThreshold - 1);
 
-        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+        expect(whereAnyCallbacksCalled(callbacks)).toBe(false);
       });
 
       it('should not start a drag if not using the primary mouse button', () => {
@@ -202,7 +166,7 @@ describe('drag handle', () => {
 
         expect(callbacksCalled(callbacks)({
           onLift: 0,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       describe('cancelled before moved enough', () => {
@@ -225,15 +189,15 @@ describe('drag handle', () => {
               onLift: 0,
               onCancel: 0,
               onDrop: 0,
-            })).to.equal(true);
+            })).toBe(true);
           });
 
           it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
-            const stub = sinon.stub();
+            const mock = jest.fn();
 
-            click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+            click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
 
-            expect(stub.called).to.equal(false);
+            expect(mock).not.toHaveBeenCalled();
           });
         });
 
@@ -258,15 +222,15 @@ describe('drag handle', () => {
               onLift: 0,
               onCancel: 0,
               onDrop: 0,
-            })).to.equal(true);
+            })).toBe(true);
           });
 
           it('should not prevent subsequent click actions if a pending drag is cancelled', () => {
-            const stub = sinon.stub();
+            const mock = jest.fn();
 
-            click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+            click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
 
-            expect(stub.called).to.equal(false);
+            expect(mock).not.toHaveBeenCalled();
           });
         });
       });
@@ -286,7 +250,7 @@ describe('drag handle', () => {
         windowMouseMove(expected.x, expected.y);
         requestAnimationFrame.step();
 
-        expect(callbacks.onMove.calledWith(expected)).to.equal(true);
+        expect(callbacks.onMove).toBeCalledWith(expected);
       });
 
       it('should prevent keyboard submission', () => {
@@ -295,7 +259,7 @@ describe('drag handle', () => {
 
         const event: KeyboardEvent = windowEnter();
 
-        expect(event.defaultPrevented).to.equal(true);
+        expect(event.defaultPrevented).toBe(true);
       });
 
       it('should prevent tabbing', () => {
@@ -304,7 +268,7 @@ describe('drag handle', () => {
 
         const event: KeyboardEvent = windowTab();
 
-        expect(event.defaultPrevented).to.equal(true);
+        expect(event.defaultPrevented).toBe(true);
       });
 
       it('should not drop on spacebar', () => {
@@ -316,7 +280,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onDrop: 0,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should prevent scrolling on spacebar', () => {
@@ -325,7 +289,7 @@ describe('drag handle', () => {
 
         const event: KeyboardEvent = windowSpacebar();
 
-        expect(event.defaultPrevented).to.equal(true);
+        expect(event.defaultPrevented).toBe(true);
       });
 
       it('should not attempt to move forward or backward with arrow keys', () => {
@@ -339,7 +303,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMoveForward: 0,
           onMoveBackward: 0,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should collapse multiple mouse movements into a single animation frame', () => {
@@ -357,11 +321,11 @@ describe('drag handle', () => {
         requestAnimationFrame.step();
 
         // should only be calling onMove with the last value
-        expect(callbacks.onMove.calledWith({ x: 0, y: sloppyClickThreshold + 4 })).to.equal(true);
+        expect(callbacks.onMove).toBeCalledWith({ x: 0, y: sloppyClickThreshold + 4 });
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onMove: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should not fire a move if no longer dragging when the scheduled animation frame is fired', () => {
@@ -385,7 +349,7 @@ describe('drag handle', () => {
           // no movements should be recorded
           onMove: 0,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -397,7 +361,7 @@ describe('drag handle', () => {
         // drop
         windowMouseUp();
 
-        expect(callbacks.onDrop.called).to.equal(true);
+        expect(callbacks.onDrop).toHaveBeenCalled();
       });
 
       it('should stop listening to window mouse events after a drop', () => {
@@ -415,7 +379,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
         // this should have no impact
         windowMouseMove(0, sloppyClickThreshold);
@@ -429,7 +393,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should fire an onDrop even when not dropping with the primary mouse button', () => {
@@ -437,7 +401,7 @@ describe('drag handle', () => {
         windowMouseMove(0, sloppyClickThreshold);
         windowMouseUp(0, 0, auxiliaryButton);
 
-        expect(callbacks.onDrop.called).to.equal(true);
+        expect(callbacks.onDrop).toHaveBeenCalled();
       });
     });
 
@@ -449,13 +413,13 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 0,
-        })).to.equal(true);
+        })).toBe(true);
 
         windowEscape();
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should stop listening to mouse events after a cancel', () => {
@@ -472,7 +436,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
         // these should not do anything
         windowMouseMove(0, sloppyClickThreshold + 1);
@@ -481,7 +445,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should cancel when the window is resized', () => {
@@ -495,18 +459,18 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 0,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should not do anything if there is nothing dragging', () => {
         windowEscape();
-        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+        expect(whereAnyCallbacksCalled(callbacks)).toBe(false);
       });
     });
 
     describe('post drag click prevention', () => {
       it('should prevent clicks after a successful drag', () => {
-        const stub = sinon.stub();
+        const mock = jest.fn();
 
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
@@ -514,14 +478,14 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
-        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
-        expect(stub.called).to.equal(true);
+        click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
+        expect(mock).toHaveBeenCalled();
       });
 
       it('should prevent clicks after a drag was cancelled', () => {
-        const stub = sinon.stub();
+        const mock = jest.fn();
 
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
@@ -529,14 +493,14 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
-        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
-        expect(stub.called).to.equal(true);
+        click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
+        expect(mock).toHaveBeenCalled();
       });
 
       it('should not prevent a click if the sloppy click threshold was not exceeded', () => {
-        const stub = sinon.stub();
+        const mock = jest.fn();
 
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold - 1);
@@ -545,10 +509,10 @@ describe('drag handle', () => {
           onLift: 0,
           onCancel: 0,
           onDrop: 0,
-        })).to.equal(true);
+        })).toBe(true);
 
-        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
-        expect(stub.called).to.equal(false);
+        click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
+        expect(mock).not.toHaveBeenCalled();
       });
 
       describe('subsequent interactions', () => {
@@ -559,15 +523,15 @@ describe('drag handle', () => {
           expect(callbacksCalled(callbacks)({
             onLift: 1,
             onDrop: 1,
-          })).to.equal(true);
+          })).toBe(true);
 
-          const stub1 = sinon.stub();
-          click(wrapper, 0, 0, primaryButton, { preventDefault: stub1 });
-          expect(stub1.called).to.equal(true);
+          const mock1 = jest.fn();
+          click(wrapper, 0, 0, primaryButton, { preventDefault: mock1 });
+          expect(mock1).toHaveBeenCalled();
 
-          const stub2 = sinon.stub();
-          click(wrapper, 0, 0, primaryButton, { preventDefault: stub2 });
-          expect(stub2.called).to.equal(false);
+          const mock2 = jest.fn();
+          click(wrapper, 0, 0, primaryButton, { preventDefault: mock2 });
+          expect(mock2).not.toHaveBeenCalled();
         });
       });
     });
@@ -585,14 +549,14 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onCancel: 0,
-        })).to.equal(true);
+        })).toBe(true);
 
         wrapper.setProps({ isEnabled: false });
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onMove: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should stop listening to mouse events', () => {
@@ -608,7 +572,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
         // should have no impact
         windowMouseMove(0, sloppyClickThreshold + 1);
@@ -626,7 +590,7 @@ describe('drag handle', () => {
           onLift: 1,
           onMove: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -641,7 +605,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should unbind any window events', () => {
@@ -650,7 +614,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -670,7 +634,7 @@ describe('drag handle', () => {
             onLift: val + 1,
             onMove: val + 1,
             onDrop: val + 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
       });
 
@@ -682,7 +646,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
         mouseDown(wrapper);
         windowMouseMove(0, sloppyClickThreshold);
@@ -692,7 +656,7 @@ describe('drag handle', () => {
           onCancel: 1,
           onLift: 2,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
   });
@@ -704,17 +668,17 @@ describe('drag handle', () => {
 
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should stop the event before it can be listened to', () => {
-        const preventDefault = sinon.stub();
-        const stopPropagation = sinon.stub();
+        const preventDefault = jest.fn();
+        const stopPropagation = jest.fn();
 
         pressSpacebar(wrapper, { preventDefault, stopPropagation });
 
-        expect(preventDefault.called).to.equal(true);
-        expect(stopPropagation.called).to.equal(true);
+        expect(preventDefault).toHaveBeenCalled();
+        expect(stopPropagation).toHaveBeenCalled();
       });
     });
 
@@ -728,7 +692,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onMoveBackward: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should move forward when the user presses ArrowDown', () => {
@@ -740,7 +704,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onMoveForward: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should prevent tabbing away from the element while dragging', () => {
@@ -748,14 +712,14 @@ describe('drag handle', () => {
 
         const event: KeyboardEvent = windowTab();
 
-        expect(event.defaultPrevented).to.equal(true);
+        expect(event.defaultPrevented).toBe(true);
       });
 
       it('should prevent submitting the dragging item', () => {
         pressSpacebar(wrapper);
         const event: KeyboardEvent = windowEnter();
 
-        expect(event.defaultPrevented).to.equal(true);
+        expect(event.defaultPrevented).toBe(true);
       });
 
       it('should not take into account any mouse movements', () => {
@@ -768,7 +732,7 @@ describe('drag handle', () => {
           onMove: 0,
           onMoveForward: 0,
           onMoveBackward: 0,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       describe('event collapsing', () => {
@@ -785,7 +749,7 @@ describe('drag handle', () => {
             onMove: 0,
             onMoveForward: 1,
             onMoveBackward: 0,
-          })).to.equal(true);
+          })).toBe(true);
 
           // being super safe and ensuring nothing firers later
           requestAnimationFrame.flush();
@@ -795,7 +759,7 @@ describe('drag handle', () => {
             onMove: 0,
             onMoveForward: 1,
             onMoveBackward: 0,
-          })).to.equal(true);
+          })).toBe(true);
         });
 
         it('should collapse multiple backward movements into a single animation frame', () => {
@@ -811,7 +775,7 @@ describe('drag handle', () => {
             onMove: 0,
             onMoveForward: 0,
             onMoveBackward: 1,
-          })).to.equal(true);
+          })).toBe(true);
 
           // being super safe and ensuring nothing firers later
           requestAnimationFrame.flush();
@@ -821,7 +785,7 @@ describe('drag handle', () => {
             onMove: 0,
             onMoveForward: 0,
             onMoveBackward: 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
 
         it('should not fire a scheduled forward movement if no longer dragging', () => {
@@ -837,7 +801,7 @@ describe('drag handle', () => {
             onMoveForward: 0,
             onKeyLift: 1,
             onDrop: 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
 
         it('should not fire a scheduled backward movement if no longer dragging', () => {
@@ -853,7 +817,7 @@ describe('drag handle', () => {
             onMoveBackward: 0,
             onKeyLift: 1,
             onDrop: 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
       });
     });
@@ -866,7 +830,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -878,7 +842,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should cancel when the user pushes any mouse button', () => {
@@ -893,7 +857,7 @@ describe('drag handle', () => {
           expect(callbacksCalled(callbacks)({
             onKeyLift: index + 1,
             onCancel: index + 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
       });
 
@@ -906,25 +870,25 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
 
       it('should not do anything if there is nothing dragging', () => {
         windowEscape();
-        expect(whereAnyCallbacksCalled(callbacks)).to.equal(false);
+        expect(whereAnyCallbacksCalled(callbacks)).toBe(false);
       });
     });
 
     describe('post drag click', () => {
       it('should not prevent any clicks after a drag', () => {
-        const stub = sinon.stub();
+        const mock = jest.fn();
         pressSpacebar(wrapper);
         windowArrowDown(wrapper);
         windowSpacebar();
 
-        click(wrapper, 0, 0, primaryButton, { preventDefault: stub });
+        click(wrapper, 0, 0, primaryButton, { preventDefault: mock });
 
-        expect(stub.called).to.equal(false);
+        expect(mock).not.toHaveBeenCalled();
       });
     });
 
@@ -939,7 +903,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -953,7 +917,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
 
@@ -972,7 +936,7 @@ describe('drag handle', () => {
             onKeyLift: val + 1,
             onMoveForward: val + 1,
             onDrop: val + 1,
-          })).to.equal(true);
+          })).toBe(true);
         });
       });
 
@@ -984,7 +948,7 @@ describe('drag handle', () => {
         expect(callbacksCalled(callbacks)({
           onKeyLift: 1,
           onCancel: 1,
-        })).to.equal(true);
+        })).toBe(true);
 
         // lift and drop
         pressSpacebar(wrapper);
@@ -994,26 +958,28 @@ describe('drag handle', () => {
           onCancel: 1,
           onKeyLift: 2,
           onDrop: 1,
-        })).to.equal(true);
+        })).toBe(true);
       });
     });
   });
 
   describe('drag disabled', () => {
     it('should not pass any handleProps to the child', () => {
-      const stub = sinon.stub().returns(<div>hey</div>);
+      const mock = jest.fn();
+      mock.mockReturnValue(<div>hello world</div>);
+
       mount(
         <DragHandle
           callbacks={callbacks}
           isEnabled={false}
         >
           {(dragHandleProps: ?Provided) => (
-            stub(dragHandleProps)
+            mock(dragHandleProps)
         )}
         </DragHandle>
-    );
+      );
 
-      expect(stub.calledWith(null)).to.equal(true);
+      expect(mock).toHaveBeenCalledWith(null);
     });
   });
 });

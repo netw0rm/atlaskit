@@ -4,7 +4,7 @@ import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
-import { getEmojiResource, lorem } from './story-data';
+import { getEmojiResource, lorem } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 
 storiesOf(`${name}/EmojiPicker`, module)

@@ -5,16 +5,15 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 
-// import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, mediaEmoji, blackFlagEmoji, openMouthEmoji } from '../../_TestData';
-import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, blackFlagEmoji, openMouthEmoji } from '../../_TestData';
+import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, blackFlagEmoji, openMouthEmoji } from '../../../../src/support/test-data';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem  } from '../../_emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props } from '../../../../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadComponent from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
 import { OnLifecycle } from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
 import EmojiTypeAheadItem from '../../../../src/components/typeahead/EmojiTypeAheadItem';
-// import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
-import { OptionalEmojiDescription, EmojiId, OnEmojiEvent } from '../../../../src/types';
+import { OptionalEmojiDescription, OnEmojiEvent } from '../../../../src/types';
+import { toEmojiId } from '../../../../src/type-helpers';
 import { EmojiProvider } from '../../../../src/api/EmojiResource';
 import { Props as TypeAheadProps } from '../../../../src/components/typeahead/EmojiTypeAhead';
 import { State as TypeAheadState } from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
@@ -230,9 +229,7 @@ describe('EmojiTypeAhead', () => {
   );
 
   it('should highlight emojis by matching on id then falling back to shortName', () => {
-    const standardBoomId: EmojiId = {
-      ...standardBoomEmoji
-    };
+    const standardBoomId = toEmojiId(standardBoomEmoji);
 
     return setupTypeAhead({
       query: 'boom',
@@ -247,9 +244,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should highlight correct emoji regardless of conflicting shortName', () => {
-    const atlassianBoomId: EmojiId = {
-      ...atlassianBoomEmoji
-    };
+    const atlassianBoomId = toEmojiId(atlassianBoomEmoji);
 
     return setupTypeAhead({
       query: 'boom',
@@ -263,26 +258,8 @@ describe('EmojiTypeAhead', () => {
     );
   });
 
-  // it('should render placeholder for unloaded media emoji', () => {
-  //   return setupTypeAhead({
-  //     query: 'media',
-  //   } as Props)
-  //   .then(component =>
-  //     waitUntil(() => doneLoading(component)).then(() => {
-  //       const emojiItems = findEmojiItems(component);
-  //       expect(emojiItems.length).to.equal(1);
-  //       const placeholders = emojiItems.find(EmojiPlaceholder);
-  //       expect(placeholders.length).to.equal(1);
-  //       const props = placeholders.get(0).props;
-  //       expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
-  //     })
-  //   );
-  // });
-
   it('should retain selected match across search refinement', () => {
-    const blackFlagId: EmojiId = {
-      ...blackFlagEmoji
-    };
+    const blackFlagId = toEmojiId(blackFlagEmoji);
 
     return setupTypeAhead({
       query: 'fla',

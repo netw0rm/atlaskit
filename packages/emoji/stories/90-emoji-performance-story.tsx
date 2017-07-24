@@ -5,7 +5,7 @@ import * as Perf from 'react-addons-perf';
 import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import { name } from '../package.json';
-import { getEmojiResource } from './story-data';
+import { getEmojiResource } from '../src/support/story-data';
 
 export interface PerformanceWrapperProps {
   children?: ReactNode;

@@ -1,12 +1,17 @@
-
 // @flow
 import PropTypes from 'prop-types';
-import { storeKey } from '../../src/view/context-keys';
+import { storeKey, droppableIdKey } from '../../src/view/context-keys';
 import createStore from '../../src/state/create-store';
+import type { DroppableId } from '../../src/types';
+
+type ContextDefinition = {|
+  context: { [string] : any },
+  childContextTypes: { [string] : any },
+|}
 
 // Not using this store - just putting it on the context
 // For any connected components that need it (eg DimensionPublisher)
-export default () => ({
+export const withStore = (): ContextDefinition => ({
   context: {
     // Each consumer will get their own store
     [storeKey]: createStore({ onDragEnd: () => { } }),
@@ -19,3 +24,29 @@ export default () => ({
     }).isRequired,
   },
 });
+
+export const withDroppableId = (droppableId: DroppableId): ContextDefinition => ({
+  context: {
+    [droppableIdKey]: droppableId,
+  },
+  childContextTypes: {
+    [droppableIdKey]: PropTypes.string.isRequired,
+  },
+});
+
+const base: ContextDefinition = {
+  context: {},
+  childContextTypes: {},
+};
+
+export const combine = (...args: ContextDefinition[]): ContextDefinition =>
+  args.reduce((previous: ContextDefinition, current: ContextDefinition): ContextDefinition => ({
+    context: {
+      ...previous.context,
+      ...current.context,
+    },
+    childContextTypes: {
+      ...previous.childContextTypes,
+      ...current.childContextTypes,
+    },
+  }), base);

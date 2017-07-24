@@ -10,6 +10,7 @@ import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent, withK
 import type { Position } from '../../../src/types';
 import * as keyCodes from '../../../src/view/key-codes';
 import getWindowScrollPosition from '../../../src/view/get-window-scroll-position';
+import setWindowScroll from '../../utils/set-window-scroll';
 
 const primaryButton: number = 0;
 const auxiliaryButton: number = 1;
@@ -358,20 +359,12 @@ describe('drag handle', () => {
       const originalScroll: Position = getWindowScrollPosition();
       const origin: Position = { x: 0, y: 0 };
 
-      const setWindowScroll = (point: Position, shouldPublish? : boolean = true) => {
-        window.pageXOffset = point.x;
-        window.pageYOffset = point.y;
-        if (shouldPublish) {
-          window.dispatchEvent(new Event('scroll'));
-        }
-      };
-
       beforeEach(() => {
-        setWindowScroll(origin, false);
+        setWindowScroll(origin, { shouldPublish: false });
       });
 
       afterEach(() => {
-        setWindowScroll(originalScroll, false);
+        setWindowScroll(originalScroll, { shouldPublish: false });
       });
 
       it('should not trigger onWindowScroll before an animation frame', () => {

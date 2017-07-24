@@ -6,47 +6,16 @@ import { liftFollowingList } from '../../commands/lists';
 export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
   const { selection } = state;
   if (selection.empty) {
-    const { listItem, panel, blockquote, codeBlock, paragraph } = state.schema.nodes;
-    const node = selection.$from.node(selection.$from.depth);
-    const wrapper = selection.$from.node(selection.$from.depth - 1);
-    const secondWrapper = selection.$from.node(selection.$from.depth - 2);
-    const parent = selection.$from.node(selection.$from.depth - 3);
-    if (node && wrapper && parent) {
-      const { textContent } = node;
-      const { type: wrapperType } = wrapper;
-      const { type: parentType } = parent;
-      if (textContent.length === 0 && wrapperType === listItem && parentType === listItem) {
+    const { $from } = selection;
+    const { listItem } = state.schema.nodes;
+    const node = $from.node($from.depth);
+    const wrapper = $from.node($from.depth - 1);
+    if (wrapper.type === listItem) {
+      const wrapperParent = $from.node($from.depth - 3);
+      if (node.textContent.length === 0 && wrapperParent.type === listItem) {
         return commands.outdentList()(state, dispatch);
-      }
-      if (textContent.length === 0 &&
-        (secondWrapper.type === listItem) &&
-        ((panel && wrapperType === panel) ||
-        (blockquote && wrapperType === blockquote))
-      ) {
-        let { tr} = state;
-        const { $from } = state.selection;
-        tr = tr.split($from.pos, 3);
-        const { $from: newFrom, $to: newTo } = tr.selection;
-        tr = tr.lift(newFrom.blockRange(newTo)!, newFrom.depth - 2);
-        tr = tr.delete($from.pos - 1, $from.pos + 1);
-        dispatch(tr);
-        return true;
-      }
-      if (codeBlock && node.type === codeBlock && wrapperType === listItem) {
-        if (node.textContent.slice(node.textContent.length - 2) === '\n\n') {
-          let { tr} = state;
-          const { $from } = state.selection;
-          tr = tr.split($from.pos, 2);
-          const { $from: newFrom, $to: newTo } = tr.selection;
-          tr = tr.setBlockType(newFrom.pos, newTo.pos, paragraph);
-          tr = tr.delete($from.pos - 2, $from.pos);
-          dispatch(tr);
-          return true;
-        }
-        return false;
-      }
-      if (wrapperType === listItem) {
-        return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
+      } else {
+        return baseListCommand.splitListItem(listItem)(state, dispatch);
       }
     }
   }
@@ -95,9 +64,10 @@ export const toggleList = (
  */
 function liftSelectionList(state: EditorState<any>, tr: Transaction): Transaction {
   const { from, to } = state.selection;
+  const { paragraph } = state.schema.nodes;
   const listCol: any[] = [];
   tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.isTextblock) {
+    if (node.type === paragraph) {
       listCol.push({ node, pos });
     }
   });

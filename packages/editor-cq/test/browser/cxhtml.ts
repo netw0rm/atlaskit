@@ -325,10 +325,6 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
       check('with a paragraph',
         '<blockquote><p>Elementary my dear Watson</p></blockquote>',
         doc(blockquote(p('Elementary my dear Watson'))));
-
-      check('with nested blockquote',
-        '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
-        doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
 
     describe('table', () => {

@@ -27,7 +27,7 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)
+          trackAndInvoke(eventName, () => pluginState.insertBlockType(blockType.name, view)
         ), list);
       }
     }

@@ -38,8 +38,6 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
   };
 })();
 
-const isListNode = (node: Node) => node.type.name === 'bulletList' || node.type.name === 'orderedList';
-
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
@@ -81,18 +79,15 @@ const nodes = {
     const delimiter = parent.type.name === 'bulletList' ? '* ' : `${index + 1}. `;
     for (let i = 0; i < node.childCount; i++) {
       const child = node.child(i);
-      if (child.type.name === 'codeBlock' && i === 0) {
-        state.write(delimiter);
-      }
-      if (!(child.type.name === 'paragraph' && i === 0)) {
+      if (i > 0) {
         state.write('\n');
       }
-      if (!isListNode(child) && i === 0 && child.type.name !== 'codeBlock') {
+      if (i === 0) {
         state.wrapBlock('  ', delimiter, node, () => state.render(child, parent, i));
       } else {
         state.wrapBlock('    ', null, node, () => state.render(child, parent, i));
       }
-      if (!(child.type.name === 'paragraph' && i === 0) && !isListNode(child)) {
+      if (child.type.name === 'paragraph' && i > 0) {
         state.write('\n');
       }
       state.flushClose(1);

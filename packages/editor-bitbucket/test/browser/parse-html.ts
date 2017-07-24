@@ -11,8 +11,6 @@ import {
 
 chai.use(chaiPlugin);
 
-const pre = code_block();
-
 // Based on https://bitbucket.org/tutorials/markdowndemo
 describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('block elements', () => {
@@ -79,38 +77,6 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('blockquotes', () => {
     it('should be parsed', () => {
       expect(parse('<blockquote><p>text</p></blockquote>')).to.deep.equal(doc(blockquote(p('text'))));
-    });
-
-    it('with nested blockquotes should be parsed', () => {
-      expect(parse(
-        '<blockquote><blockquote><p>text</p></blockquote></blockquote>'
-      )).to.deep.equal(
-        doc(blockquote(blockquote(p('text'))))
-      );
-    });
-
-    it('containing other block level elements should be parse', () => {
-      expect(parse(
-        '<blockquote>' +
-          '<p>foo</p>' +
-          '<ul>' +
-            '<li>bar</li>' +
-            '<li>baz</li>' +
-          '</ul>' +
-          '<h1>boo</h1>' +
-        '</blockquote>'
-      )).to.deep.equal(
-        doc(
-          blockquote(
-            p('foo'),
-            ul(
-              li(p('bar')),
-              li(p('baz')),
-            ),
-            h1('boo')
-          )
-        )
-      );
     });
   });
 
@@ -243,64 +209,6 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
               ),
               p('baz'),
             ),
-          ),
-        )
-      );
-    });
-
-    it('should support embedding blockquotes in a list item', () => {
-      expect(parse(
-        '<ul>' +
-          '<li>' +
-            'foo' +  // NOTE: python-markdown skips <p></p> on the first line
-            '<blockquote>' +
-              '<p>bar</p>' +
-            '</blockquote>' +
-          '</li>' +
-          '<li>' +
-            '<p>baz</p>' +
-          '</li>' +
-        '</ul>'
-      )).to.deep.equal(
-        doc(
-          ul(
-            li(
-              p('foo'),
-              blockquote(
-                p('bar')
-              ),
-            ),
-            li(p('baz'))
-          ),
-        )
-      );
-    });
-
-    it('should support embedding code blocks in a list item', () => {
-      expect(parse(
-        '<ul>' +
-          '<li>' +
-            '<p>foo</p>' +
-            '<p>bar</p>' +
-            '<div class="codehilite">' +
-              '<pre><span></span><span class="kn">import</span> <span class="nn">schema</span> <span class="nn">from</span> <span class="s1">\'ak-editor-schema\'</span><span class="p">;</span></pre>' +
-            '</div>' +
-          '</li>' +
-          '<li>' +
-            '<p>baz</p>' +
-          '</li>' +
-        '</ul>'
-      )).to.deep.equal(
-        doc(
-          ul(
-            li(
-              p('foo'),
-              p('bar'),
-              pre(
-                'import schema from \'ak-editor-schema\';'
-              ),
-            ),
-            li(p('baz'))
           ),
         )
       );

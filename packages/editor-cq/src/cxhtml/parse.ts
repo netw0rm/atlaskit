@@ -335,14 +335,14 @@ function convertTable (node: Element) {
     const cols = rows[i].querySelectorAll('td,th');
 
     for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
-      const cell = cols[j].nodeName === 'TD' ? tableCell : tableHeader;
-
+      const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
+      const { childNodes} = cols[j];
       // if a cell has nested nodes
-      if (cell.childNodes.length) {
+      if (childNodes && childNodes.length) {
         const cellContent: any[] = [];
 
-        for (let k = 0, cellNodesCount = cell.childNodes.length; k < cellNodesCount; k += 1) {
-          const domNode: any = cell.childNodes[k];
+        for (let k = 0, cellNodesCount = childNodes.length; k < cellNodesCount; k += 1) {
+          const domNode: any = childNodes[k];
           const content = getContent(domNode);
           const cellNode = converter(content, domNode);
           if (cellNode) {
@@ -350,7 +350,7 @@ function convertTable (node: Element) {
           }
         }
 
-        cellNodes.push(cell.create(null, cellContent));
+        cellNodes.push(cell.create(null, schema.nodes.paragraph.createChecked({}, cellContent)));
       } else {
         cellNodes.push(cell.createAndFill());
       }

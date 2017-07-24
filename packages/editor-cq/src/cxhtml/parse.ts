@@ -192,6 +192,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'TABLE':
         if (hasClass(node, 'wysiwyg-macro')) {
           return convertWYSIWYGMacro(node) || unsupportedInline;
+        } else if (hasClass(node, 'confluenceTable')) {
+          return convertTable(node);
         }
         return unsupportedInline;
 
@@ -321,4 +323,39 @@ function convertCodeFromView (node: Element): Fragment | PMNode | null | undefin
 function convertNoFormatFromView (node: Element): Fragment | PMNode | null | undefined  {
     const codeContent = node.querySelector('pre')!.textContent || ' ';
     return createCodeFragment(codeContent);
+}
+
+function convertTable (node: Element) {
+  const { table, tableRow, tableCell, tableHeader } =  schema.nodes;
+  const rowNodes: PMNode[] = [];
+  const rows = node.querySelectorAll('tr');
+
+  for (let i = 0, rowsCount = rows.length; i < rowsCount; i ++) {
+    const cellNodes: PMNode[] = [];
+    const cols = rows[i].querySelectorAll('td,th');
+
+    for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
+      const cell = cols[j].nodeName === 'TD' ? tableCell : tableHeader;
+
+      // if a cell has nested nodes
+      if (cell.childNodes.length) {
+        const cellContent: any[] = [];
+
+        for (let k = 0, cellNodesCount = cell.childNodes.length; k < cellNodesCount; k += 1) {
+          const domNode: any = cell.childNodes[k];
+          const content = getContent(domNode);
+          const cellNode = converter(content, domNode);
+          if (cellNode) {
+            cellContent.push(cellNode);
+          }
+        }
+
+        cellNodes.push(cell.create(null, cellContent));
+      } else {
+        cellNodes.push(cell.createAndFill());
+      }
+    }
+    rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
+  }
+  return table.create(null, Fragment.from(rowNodes));
 }

@@ -46,7 +46,9 @@ export default function encode(node: PMNode) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
-    } else {
+    } else if (node.type === schema.nodes.table) {
+      return encodeTable(node);
+    }else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -100,6 +102,11 @@ export default function encode(node: PMNode) {
     if (node.fileMimeType) {
       elem.setAttribute('file-mime-type', node.fileMimeType);
     }
+    return elem;
+  }
+
+  function encodeTable(node: any): Element {
+    const elem = doc.createElement('table');
     return elem;
   }
 

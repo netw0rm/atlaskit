@@ -15,6 +15,8 @@ import {
   clearFormattingPlugins,
   panelPlugins,
   mentionsPlugins,
+  tablePlugins,
+  tableStateKey,
   blockTypeStateKey,
   codeBlockStateKey,
   hyperlinkStateKey,
@@ -243,7 +245,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-
+    const tableState = editorState && tableStateKey.getState(editorState);
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
@@ -263,6 +265,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMedia={mediaState}
         pluginStatePanel={panelState}
+        pluginStateTable={tableState}
         packageVersion={version}
         packageName={name}
         mentionProvider={this.mentionProvider}
@@ -314,6 +317,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
+          ...tablePlugins(),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),

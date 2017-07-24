@@ -91,7 +91,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     const maxWidth = this.isHorizontal ? maxHorizontalCardDimensions.width : Infinity;
 
     return getCSSUnitValue(
-      Math.min(parseInt(`${width}`, 0) || defaultWidth, maxWidth)
+      Math.min(parseInt(`${width}`, 10) || defaultWidth, maxWidth)
     );
   }
 

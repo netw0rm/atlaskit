@@ -6,12 +6,12 @@ import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
-const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,

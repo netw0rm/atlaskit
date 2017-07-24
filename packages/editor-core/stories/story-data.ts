@@ -1,4 +1,4 @@
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
 
 const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
@@ -14,7 +14,6 @@ const toEmojiId = (emoji) => {
    return { shortName, id, fallback };
 };
 
-const { emojiTestData, emojiStoryData } = emojiData;
 export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
 export const evilburnsEmojiAttrs = toEmojiAttrs(emojiTestData.evilburnsEmoji);
 

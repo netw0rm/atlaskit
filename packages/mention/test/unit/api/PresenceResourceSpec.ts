@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import PresenceResource, {
   DefaultPresenceCache, DefaultPresenceParser, PresenceMap
 } from '../../../src/api/PresenceResource';
-import { validPresenceData, invalidPresenceData } from '../_presence-data';
+import { validPresenceData, invalidPresenceData } from '../../../src/support/presence-data';
 
 const baseUrl = 'https://bogus/presence';
 const dummyId = 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5';

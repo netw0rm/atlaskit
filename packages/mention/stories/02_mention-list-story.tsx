@@ -6,7 +6,7 @@ import { name } from '../package.json';
 import { MentionDescription } from '../src/types';
 import { HttpError } from '../src/api/MentionResource';
 import MentionList from '../src/components/MentionList';
-import { mentions } from './story-data';
+import { mentions } from '../src/support/story-data';
 
 function randomMentions() {
   return mentions.filter(() => Math.random() < 0.7);

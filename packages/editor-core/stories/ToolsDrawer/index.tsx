@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
+import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
@@ -34,7 +35,7 @@ const providers = {
     'undefined' : undefined,
   },
   emojiProvider: {
-    resolved: emojiData.emojiStoryData.getEmojiResource(),
+    resolved: emojiStoryData.getEmojiResource(),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined' : undefined,

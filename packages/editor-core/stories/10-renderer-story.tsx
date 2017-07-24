@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
 
 import * as React from 'react';
 import RendererDemo from './renderer-demo';
@@ -294,9 +294,8 @@ storiesOf(name, module)
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult"/>
   ))
   .add('nodes/emoji', () => {
-    const { emojiStoryData, emojiTestData } = emojiData;
     const loadingEmojiProvider = new Promise(() => {});
-    const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+    const emojiProvider = emojiStoryData.getEmojiResource();
     const lorem = emojiStoryData.lorem;
 
     // tslint:disable-next-line:variable-name

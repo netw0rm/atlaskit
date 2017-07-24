@@ -13,7 +13,7 @@ import EmojiPickerList from '../../../../src/components/picker/EmojiPickerList';
 import EmojiPreview from '../../../../src/components/common/EmojiPreview';
 import EmojiTypeAhead from '../../../../src/components/typeahead/EmojiTypeAhead';
 
-import { getEmojiResourcePromiseFromRepository, mediaEmoji, mediaEmojiId, newSiteEmojiRepository } from '../../_TestData';
+import { getEmojiResourcePromiseFromRepository, mediaEmoji, mediaEmojiId, newSiteEmojiRepository } from '../../../../src/support/test-data';
 
 describe('Media Emoji Handling across components', () => {
   let emojiProvider: Promise<EmojiProvider>;

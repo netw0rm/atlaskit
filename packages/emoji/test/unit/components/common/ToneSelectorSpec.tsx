@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import ToneSelector from '../../../../src/components/common/ToneSelector';
 import EmojiButton from '../../../../src/components/common/EmojiButton';
 import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../../src/types';
-import { imageEmoji, generateSkinVariation } from '../../_TestData';
+import { imageEmoji, generateSkinVariation } from '../../../../src/support/test-data';
 
 const baseHandEmoji: EmojiDescription = {
   ...imageEmoji,

@@ -7,7 +7,7 @@ import { isPromise } from '../../../../src/type-helpers';
 import MediaEmojiCache, { BrowserCacheStrategy, EmojiCacheStrategy, MemoryCacheStrategy } from '../../../../src/api/media/MediaEmojiCache';
 import TokenManager from '../../../../src/api/media/TokenManager';
 
-import { createTokenManager, imageEmoji, loadedMediaEmoji, mediaEmoji, mediaEmojiImagePath } from '../../_TestData';
+import { createTokenManager, imageEmoji, loadedMediaEmoji, mediaEmoji, mediaEmojiImagePath } from '../../../../src/support/test-data';
 
 const restoreStub = (stub: any) => {
   if (stub.restore) {

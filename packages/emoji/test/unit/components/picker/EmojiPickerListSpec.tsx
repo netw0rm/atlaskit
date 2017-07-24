@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 import * as styles from '../../../../src/components/picker/styles';
 import EmojiList from '../../../../src/components/picker/EmojiPickerList';
-import { imageEmoji } from './../../_TestData';
+import { imageEmoji } from '../../../../src/support/test-data';
 
 const emojis = [ imageEmoji ];
 

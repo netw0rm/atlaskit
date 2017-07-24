@@ -35,7 +35,7 @@ import {
     standardEmojis,
     standardServiceEmojis,
     thumbsupEmoji,
-} from '../_TestData';
+} from '../../../src/support/test-data';
 
 import { alwaysPromise } from '../_test-util';
 

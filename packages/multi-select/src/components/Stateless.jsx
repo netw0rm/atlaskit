@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';
@@ -114,6 +115,10 @@ export default class StatelessMultiSelect extends PureComponent {
      * inside the autocomplete field. If set to true then no additional footer from the 'footer'
      * property would be rendered.*/
     shouldAllowCreateItem: PropTypes.bool,
+    /**
+     * Icon to display at the right end of the multi-select
+     */
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
@@ -134,6 +139,7 @@ export default class StatelessMultiSelect extends PureComponent {
     position: 'bottom left',
     selectedItems: [],
     shouldAllowCreateItem: false,
+    icon: <ExpandIcon label="" />,
   }
 
   // This is used only to manipulate focus , it's okay to have state in this case.
@@ -480,6 +486,7 @@ export default class StatelessMultiSelect extends PureComponent {
               selectedItems={selectedItems}
               tagGroup={this.tagGroup}
               tagGroupRefFunction={ref => (this.tagGroup = ref)}
+              icon={this.props.icon}
             />
           }
         >

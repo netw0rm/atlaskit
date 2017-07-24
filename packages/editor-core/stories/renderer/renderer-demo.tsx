@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import {
-  emoji as emojiData,
-  profilecard as profilecardUtils,
-} from '@atlaskit/util-data-test';
+import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 
 import {
   StoryBookTokenProvider,
@@ -39,7 +37,7 @@ const mediaProvider = Promise.resolve({
   })
 });
 
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+const emojiProvider = emojiStoryData.getEmojiResource();
 
 const profilecardProvider = Promise.resolve({
   cloudId: 'DUMMY-CLOUDID',

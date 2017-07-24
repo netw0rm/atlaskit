@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
+import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 
 import Editor from './editor';
 import { Content } from './styles';
@@ -17,7 +18,7 @@ const SAVE_ACTION = () => action('Save')();
 
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const mentionProvider = new Promise<any>(resolve => resolve(mentionData.mentionStoryData.resourceProvider));
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+const emojiProvider = emojiStoryData.getEmojiResource();
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))

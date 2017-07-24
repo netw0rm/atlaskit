@@ -49,9 +49,10 @@ export default ({
 
   const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
     droppableDimension,
-    draggables
+    draggables,
   );
 
+  // not considering margin so that items move based on visible edges
   const draggableCenter: Position = draggingDimension.page.withoutMargin.center;
   const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
 
@@ -98,6 +99,7 @@ export default ({
   })();
 
   const amount = index !== startIndex ?
+    // need to ensure that the whole item is moved
     draggingDimension.page.withMargin.height :
     0;
 

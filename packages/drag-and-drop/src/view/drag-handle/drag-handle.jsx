@@ -90,6 +90,8 @@ export default class DragHandle extends Component {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    // TODO: unbind handlers if drag is cancelled from above
+
     if (nextProps.isEnabled) {
       return;
     }

@@ -2,12 +2,11 @@ import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util-service-support';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import { EmojiDescription, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
-import { SecurityOptions, ServiceConfig } from '../../../src/api/SharedResourceUtils';
-import { OnProviderChange } from '../../../src/api/SharedResources';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
 import EmojiResource, {
     EmojiProvider,

@@ -1,4 +1,4 @@
-import { requestService, RequestServiceOptions, ServiceConfig, KeyValues } from './SharedResourceUtils';
+import { KeyValues, RequestServiceOptions, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
@@ -29,7 +29,7 @@ export const emojiRequest = (provider: EmojiLoaderConfig, options?: RequestServi
       ...queryParams,
     },
   };
-  return requestService<EmojiServiceResponse>(serviceConfig, requestOptions);
+  return serviceUtils.requestService<EmojiServiceResponse>(serviceConfig, requestOptions);
 };
 
 const calculateScale = (getRatio: () => number): KeyValues => {

@@ -1,3 +1,4 @@
+export * from './types';
 export * from './serviceResources';
 import * as serviceUtils from './serviceUtils';
 

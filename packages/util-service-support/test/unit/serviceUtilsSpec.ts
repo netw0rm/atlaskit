@@ -3,7 +3,8 @@ import 'whatwg-fetch';
 import { expect } from 'chai';
 import * as fetchMock from 'fetch-mock/src/client';
 
-import { requestService, RefreshSecurityProvider, RequestServiceOptions, SecurityProvider, ServiceConfig } from '../../src/serviceUtils';
+import { requestService } from '../../src/serviceUtils';
+import { RefreshSecurityProvider, RequestServiceOptions, SecurityProvider, ServiceConfig } from '../../src/types';
 
 const url = 'http://cheese';
 const defaultResponse = {

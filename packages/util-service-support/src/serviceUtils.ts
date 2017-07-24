@@ -1,41 +1,6 @@
 import * as URL from 'url';
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-
-export interface KeyValues {
-  [index: string]: any;
-}
-
-export interface SecurityOptions {
-  params?: KeyValues;
-  headers?: KeyValues;
-}
-
-/**
- * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a
- * new token. Will be used for single retry per request if a 401 is returned.
- */
-export interface RefreshSecurityProvider {
-  (): Promise<SecurityOptions>;
-}
-
-/**
- * Returns the current SecurityOptions for the mentions service.
- */
-export interface SecurityProvider {
-  (): SecurityOptions;
-}
-
-export interface ServiceConfig {
-  url: string;
-  securityProvider?: SecurityProvider;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
-}
-
-export interface RequestServiceOptions {
-  path?: string;
-  queryParams?: KeyValues;
-  requestInit?: RequestInit;
-}
+import { KeyValues, RequestServiceOptions, ServiceConfig, SecurityOptions } from './types';
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 

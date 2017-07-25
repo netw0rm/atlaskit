@@ -81,7 +81,7 @@ export default class Flag extends PureComponent {
     return (
       <DismissButton
         appearance={appearance}
-        focusRingColor={getProperty(appearance, 'focusRingColor')}
+        focusRingColor={getProperty('focusRingColor', this.props)}
         onClick={buttonAction}
         type="button"
       >

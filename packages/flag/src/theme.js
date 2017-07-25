@@ -1,61 +1,109 @@
 import {
-  akColorB100,
-  akColorG400,
-  akColorN0,
-  akColorN40,
-  akColorN50A,
-  akColorN60A,
-  akColorN200,
-  akColorN500,
-  akColorN700,
-  akColorR400,
-  akColorY200,
-} from '@atlaskit/util-shared-styles';
+  theme as getTheme,
+  addThemeComponent as registerThemeComponent,
+} from '../../theme/src';
+import { DEFAULT_APPEARANCE } from './components/Flag';
 
-const theme = {
+const COMPONENT_NAME = 'flag';
+const lightButtonBackground = 'rgba(255, 255, 255, 0.08)';
+
+registerThemeComponent(COMPONENT_NAME, (mode, theme) => (mode === 'dark'
+? {
   error: {
-    background: akColorR400,
-    buttonTheme: 'dark',
-    focusRingColor: akColorN40,
-    text: akColorN0,
-    shadow: akColorN50A,
+    background: theme.colors.R300,
+    buttonBackground: theme.colors.DN600A,
+    buttonText: theme.colors.DN40,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.DN40,
+    shadow: theme.colors.N50A,
   },
   info: {
-    background: akColorN500,
-    buttonTheme: 'dark',
-    focusRingColor: akColorN40,
-    text: akColorN0,
-    shadow: akColorN50A,
+    background: theme.colors.N500,
+    buttonBackground: lightButtonBackground,
+    buttonText: theme.colors.DN600,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.DN600,
+    shadow: theme.colors.N50A,
   },
   normal: {
-    background: akColorN0,
-    border: akColorN60A,
-    focusRingColor: akColorB100,
-    text: akColorN500,
-    shadow: akColorN50A,
+    background: theme.colors.DN50,
+    buttonBackground: 'none',
+    buttonText: theme.colors.B100,
+    focusRingColor: theme.colors.B100,
+    text: theme.colors.DN600,
+    shadow: theme.colors.N50A,
   },
   success: {
-    background: akColorG400,
-    buttonTheme: 'dark',
-    focusRingColor: akColorN40,
-    text: akColorN0,
-    shadow: akColorN50A,
+    background: theme.colors.G300,
+    buttonBackground: theme.colors.DN600A,
+    buttonText: theme.colors.DN40,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.DN40,
+    shadow: theme.colors.N50A,
   },
   warning: {
-    background: akColorY200,
-    border: akColorN60A,
-    focusRingColor: akColorN200,
-    text: akColorN700,
-    shadow: akColorN50A,
+    background: theme.colors.Y300,
+    buttonBackground: theme.colors.DN600A,
+    buttonText: theme.colors.DN40,
+    focusRingColor: theme.colors.N200,
+    text: theme.colors.DN40,
+    shadow: theme.colors.N50A,
   },
-};
+} : {
+  error: {
+    background: theme.colors.R400,
+    buttonBackground: lightButtonBackground,
+    buttonText: theme.colors.N0,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.N0,
+    shadow: theme.colors.N50A,
+  },
+  info: {
+    background: theme.colors.N500,
+    buttonBackground: lightButtonBackground,
+    buttonText: theme.colors.N0,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.N0,
+    shadow: theme.colors.N50A,
+  },
+  normal: {
+    background: theme.colors.N0,
+    border: theme.colors.N60A,
+    buttonBackground: 'none',
+    buttonText: theme.colors.B400,
+    focusRingColor: theme.colors.B100,
+    text: theme.colors.N500,
+    shadow: theme.colors.N50A,
+  },
+  success: {
+    background: theme.colors.G400,
+    buttonBackground: lightButtonBackground,
+    buttonText: theme.colors.N0,
+    focusRingColor: theme.colors.N40,
+    text: theme.colors.N0,
+    shadow: theme.colors.N50A,
+  },
+  warning: {
+    background: theme.colors.Y200,
+    buttonBackground: theme.colors.N30A,
+    buttonText: theme.colors.N700,
+    focusRingColor: theme.colors.N200,
+    text: theme.colors.N700,
+    shadow: theme.colors.N50A,
+  },
+}));
 
-export default theme;
+// eslint-disable-next-line import/prefer-default-export
+export function getProperty(property, props) {
+  const appearance = props.appearance || DEFAULT_APPEARANCE;
+  const flagTheme = getTheme(props).flag;
+  const isDev = process.env.NODE_ENV !== 'production';
 
-export function getProperty(appearance, property) {
-  if (!theme[appearance] || !theme[appearance][property]) {
-    console.error(`No matching property "${property}" for appearance "${appearance}"`);
+  if (!flagTheme[appearance] || !flagTheme[appearance][property]) {
+    // eslint-disable-next-line no-console
+    if (isDev) console.error(`No matching property "${property}" for appearance "${appearance}"`);
+
     return undefined;
   }
-  return theme[appearance][property];
+  return flagTheme[appearance][property];
 }

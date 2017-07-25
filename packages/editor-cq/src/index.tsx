@@ -354,7 +354,8 @@ export default class Editor extends PureComponent<Props, State> {
         handlePaste(view: EditorView, event: any, slice: Slice): boolean {
           const { clipboardData } = event;
           const html = clipboardData && clipboardData.getData('text/html');
-          if (html) {
+          // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
+          if (html && !html.match(/<table[^>]+>/g)) {
             const doc = parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
               view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))

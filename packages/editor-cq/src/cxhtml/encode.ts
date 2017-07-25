@@ -120,6 +120,8 @@ export default function encode(node: PMNode) {
         );
         cellElement.appendChild(encodeFragment(colNode.content));
         rowElement.appendChild(cellElement);
+
+        return false;
       });
 
       tbody.appendChild(rowElement);
@@ -127,6 +129,8 @@ export default function encode(node: PMNode) {
     });
 
     elem.appendChild(tbody);
+    elem.setAttribute('class', 'confluenceTable');
+
     return elem;
   }
 

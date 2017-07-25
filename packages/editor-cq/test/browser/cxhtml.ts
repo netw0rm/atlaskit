@@ -6,7 +6,8 @@ import { encode, parse, LANGUAGE_MAP } from '../../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
-  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media
+  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
+  table, tr, td, th
 } from './_schema-builder';
 chai.use(chaiPlugin);
 
@@ -329,6 +330,30 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+
+    describe('table', () => {
+      check('with header column',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><td><p>1</p></td><td><p>2</p></td></tr><tr><th><p>two</p></th><td><p>3</p></td><td><p>4</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
+          tr(th({})(p('two')), td({})(p('3')), td({})(p('4')))
+        )));
+
+      check('with header row',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
+          tr(td({})(p('1')), td({})(p('2')), td({})(p('3')))
+        )));
+
+      check('with header row and header column',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><th><p>four</p></th><td><p>1</p></td><td><p>2</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
+          tr(th({})(p('four')), td({})(p('1')), td({})(p('2')))
+        )));
+    });
+
 
     describe('code block', () => {
       check('with CDATA',

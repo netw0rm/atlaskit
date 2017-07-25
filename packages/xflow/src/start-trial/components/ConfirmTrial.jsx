@@ -46,7 +46,7 @@ export class ConfirmTrialBase extends Component {
       confluenceFailedToStart: false,
     });
 
-    Promise.resolve(startProductTrial()).then(onComplete).catch(() => {
+    Promise.resolve(startProductTrial()).then(() => onComplete()).catch(() => {
       this.setState({
         confluenceFailedToStart: true,
         spinnerActive: false,

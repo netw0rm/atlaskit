@@ -24,12 +24,12 @@ export class RequestTrialNoteBase extends Component {
 
   handleSendRequest = () => {
     const { requestTrialAccessWithNote, onComplete } = this.props;
-    return Promise.resolve(requestTrialAccessWithNote()).then(onComplete);
+    return Promise.resolve(requestTrialAccessWithNote()).then(() => onComplete());
   };
 
   handleSendRequestWithoutNote = () => {
     const { requestTrialAccessWithoutNote, onComplete } = this.props;
-    return Promise.resolve(requestTrialAccessWithoutNote()).then(onComplete);
+    return Promise.resolve(requestTrialAccessWithoutNote()).then(() => onComplete());
   };
 
   render() {
@@ -49,7 +49,11 @@ export class RequestTrialNoteBase extends Component {
         }
       >
         <div>
-          {React.isValidElement(this.props.prompt) ? this.props.prompt : <p>{this.props.prompt}</p>}
+          {React.isValidElement(this.props.prompt)
+            ? this.props.prompt
+            : <p>
+              {this.props.prompt}
+            </p>}
           <NoteText placeholder={this.props.placeholder} />
         </div>
       </ModalDialog>

@@ -33,7 +33,7 @@ export class RequestTrialAccessBase extends Component {
 
   handleRequestAccessClick = () => {
     const { requestTrialAccess, onComplete } = this.props;
-    Promise.resolve(requestTrialAccess()).then(onComplete);
+    Promise.resolve(requestTrialAccess()).then(() => onComplete());
   };
 
   render() {
@@ -69,11 +69,7 @@ export class RequestTrialAccessBase extends Component {
 export default withXFlowProvider(
   RequestTrialAccessBase,
   ({
-    xFlow: {
-      config: { productLogo, requestTrial },
-      requestTrialAccess,
-      cancelRequestTrialAccess,
-    },
+    xFlow: { config: { productLogo, requestTrial }, requestTrialAccess, cancelRequestTrialAccess },
   }) => ({
     productLogo,
     banner: requestTrial.accessBanner,

@@ -52,13 +52,13 @@ export class LoadingTimeBase extends Component {
   handleGoToProductClick = () => {
     this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
     const { goToProduct, onComplete } = this.props;
-    Promise.resolve(goToProduct()).then(onComplete);
+    Promise.resolve(goToProduct()).then(() => onComplete());
   };
 
   handleCloseClick = () => {
     this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
     const { closeLoadingDialog, onComplete } = this.props;
-    Promise.resolve(closeLoadingDialog()).then(onComplete);
+    Promise.resolve(closeLoadingDialog()).then(() => onComplete());
   };
 
   showHeading = () => {

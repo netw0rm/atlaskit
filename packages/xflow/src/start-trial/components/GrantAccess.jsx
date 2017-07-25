@@ -109,7 +109,7 @@ export class GrantAccessBase extends Component {
     Promise.resolve(
       grantAccessToUsers(selectedRadio, selectedRadio === usersOption ? selectedUsers : null)
     )
-      .then(onComplete)
+      .then(() => onComplete())
       .catch(() => {
         this.setState({
           continueButtonDisabled: false,

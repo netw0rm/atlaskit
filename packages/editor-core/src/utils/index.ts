@@ -441,7 +441,7 @@ export function isEmojiDocument(doc: { [key: string]: any }): boolean {
   let emojiCount = 0;
 
   if (doc instanceof Node) {
-    // Analyse PM document instance
+    // We're handling a PM document
     const { firstChild } = doc;
 
     if (doc.nodeSize > 12 || !firstChild) {
@@ -456,41 +456,9 @@ export function isEmojiDocument(doc: { [key: string]: any }): boolean {
       return false;
     }
 
-    const contentArray = firstChild.content.content;
-    for (let x = 0; x < contentArray.length; x++) {
-      let c = contentArray[x];
-
-      switch (c.type.name) {
-        case 'text':
-          // Allow emojiQuery to prevent editor blinking
-          let { marks } = c;
-          if (
-            marks &&
-            marks.length &&
-            marks[0].type.name === 'emojiQuery'
-          ) {
-            continue;
-          }
-
-          // Disallow any text other than spaces
-          if (c.text && !c.text.match(/^ *$/)) {
-            return false;
-          }
-
-          continue;
-        case 'emoji':
-          if (++emojiCount > 3) {
-            return false;
-          }
-          continue;
-
-        default:
-          // Only text and emoji nodes are allowed
-          return false;
-      }
-    }
+    doc = doc.toJSON();
   } else {
-    // Analyse JSON document
+    // We're handling a JSON document
     let { content } = doc;
 
     // The message must contain a single paragraph with content
@@ -502,40 +470,40 @@ export function isEmojiDocument(doc: { [key: string]: any }): boolean {
     ) {
       return false;
     }
+  }
 
-    content = content[0].content;
-    for (let x = 0; x < content.length; x++) {
-      let c = content[x];
+  const content = doc.content[0].content;
+  for (let x = 0; x < content.length; x++) {
+    let c = content[x];
 
-      switch (c.type) {
-        case 'text':
-          // Allow emojiQuery to prevent editor blinking
-          let { marks } = c;
-          if (
-            marks &&
-            marks.length &&
-            marks[0].type &&
-            marks[0].type === 'emojiQuery'
-          ) {
-            continue;
-          }
-
-          // Disallow any text other than spaces
-          if (c.text && !c.text.match(/^ *$/)) {
-            return false;
-          }
-
+    switch (c.type) {
+      case 'text':
+        // Allow emojiQuery to prevent editor blinking
+        let { marks } = c;
+        if (
+          marks &&
+          marks.length &&
+          marks[0].type &&
+          marks[0].type === 'emojiQuery'
+        ) {
           continue;
-        case 'emoji':
-          if (++emojiCount > 3) {
-            return false;
-          }
-          continue;
+        }
 
-        default:
-          // Only text and emoji nodes are allowed
+        // Disallow any text other than spaces
+        if (c.text && !c.text.match(/^ *$/)) {
           return false;
-      }
+        }
+
+        continue;
+      case 'emoji':
+        if (++emojiCount > 3) {
+          return false;
+        }
+        continue;
+
+      default:
+        // Only text and emoji nodes are allowed
+        return false;
     }
   }
 

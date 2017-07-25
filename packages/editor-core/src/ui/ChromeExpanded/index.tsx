@@ -181,8 +181,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               isDisabled={disabled}
               pluginState={pluginStateBlockType}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -206,8 +204,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               disabled={disabled}
               pluginState={pluginStateTextColor}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -218,8 +214,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginStateTextFormatting={pluginStateTextFormatting}
               pluginStateClearFormatting={pluginStateClearFormatting}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -245,8 +239,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginStateMedia={pluginStateMedia}
               pluginStateBlockType={pluginStateBlockType}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             />
@@ -344,20 +336,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Footer>
       </Container>
     );
-  }
-
-  /**
-   * Blurs editor but keeps focus on editor container,
-   * so components like inline-edit can check if focus is still inside them
-   */
-  softBlurEditor = () => {
-    if (this.editorContainer) {
-      this.editorContainer.focus();
-    }
-  }
-
-  focusEditor = () => {
-    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {

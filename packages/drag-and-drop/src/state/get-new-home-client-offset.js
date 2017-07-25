@@ -16,15 +16,17 @@ type NewHomeArgs = {|
   draggables: DraggableDimensionMap,
 |}
 
-// Returns the offset required to move an item from its
-// original position to its final reseting position
+type ClientOffset = Position;
+
+// Returns the client offset required to move an item from its
+// original client position to its final resting position
 export default ({
   movement,
   clientOffset,
   pageOffset,
   scrollDiff,
   draggables,
-}: NewHomeArgs): Position => {
+}: NewHomeArgs): ClientOffset => {
   // Just animate back to where it started
   if (!movement.draggables.length) {
     return scrollDiff;
@@ -39,12 +41,21 @@ export default ({
 
   const amount: number = movement.isMovingForward ? distance : -distance;
 
-  // result = total change - pageOffset + clientOffset
-
+  // How much distance the item needs to travel to be in its new home
+  // from where it started
   const verticalChange: Position = {
     x: 0,
     y: amount,
   };
 
-  return add(add(subtract(verticalChange, pageOffset), clientOffset), scrollDiff);
+  // How far away it is on the page from where it needs to be
+  const verticalDiff: Position = subtract(verticalChange, pageOffset);
+
+  // The final client offset
+  const client: Position = add(verticalDiff, clientOffset);
+
+  // Accounting for container scroll
+  const withScroll: Position = add(client, scrollDiff);
+
+  return withScroll;
 };

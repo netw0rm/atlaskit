@@ -11,7 +11,7 @@ import type {
   Dispatch,
   State,
 } from '../types';
-import getNewHomeOffset from './get-new-home-offset';
+import getNewHomeClientOffset from './get-new-home-client-offset';
 import { subtract, isEqual } from './position';
 
 export type RequestDimensionsAction = {|
@@ -223,7 +223,7 @@ export const drop = (id: DraggableId) =>
 
     const scrollDiff: Position = subtract(droppable.scroll.initial, droppable.scroll.current);
 
-    const newHomeOffset: Position = getNewHomeOffset({
+    const newHomeOffset: Position = getNewHomeClientOffset({
       movement: impact.movement,
       clientOffset: current.client.offset,
       pageOffset: current.page.offset,

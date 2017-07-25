@@ -384,13 +384,6 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     });
   }
 
-  for (let level = 1; level <= 5; level++) {
-    it(`atlassian.editor.format.heading${level}.keyboard`, () => {
-      sendKeyToPm(editorView, browser.mac ? `Cmd-Alt-${level}` : `Ctrl-${level}`);
-      expect(handler.calledWith(`atlassian.editor.format.heading${level}.keyboard`)).to.equal(true);
-    });
-  }
-
   it('atlassian.editor.format.blockquote.keyboard', () => {
     sendKeyToPm(editorView, browser.mac ? 'Cmd-Alt-7' : 'Ctrl-7');
     expect(handler.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);

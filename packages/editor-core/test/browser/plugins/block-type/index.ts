@@ -378,54 +378,6 @@ describe('block-type', () => {
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a Mac', () => {
-        context('when hits Cmd-Alt-0', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(h1('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-0');
-            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-          });
-        });
-
-        context('when hits Cmd-Alt-1', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-1');
-            expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
-          });
-        });
-
-        context('when hits Cmd-Alt-2', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-2');
-            expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
-          });
-        });
-
-        context('when hits Cmd-Alt-3', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-3');
-            expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
-          });
-        });
-
-        context('when hits Cmd-Alt-4', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-4');
-            expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
-          });
-        });
-
-        context('when hits Cmd-Alt-5', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-5');
-            expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
-          });
-        });
-
         context('when hits Cmd-Alt-7', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
@@ -497,54 +449,6 @@ describe('block-type', () => {
       });
     } else {
       context('when not on a Mac', () => {
-        context('when hits Ctrl-0', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(h1('text')));
-            sendKeyToPm(editorView, 'Ctrl-0');
-            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-          });
-        });
-
-        context('when hits Ctrl-1', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-1');
-            expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
-          });
-        });
-
-        context('when hits Ctrl-2', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-2');
-            expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
-          });
-        });
-
-        context('when hits Ctrl-3', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-3');
-            expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
-          });
-        });
-
-        context('when hits Ctrl-4', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-4');
-            expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
-          });
-        });
-
-        context('when hits Ctrl-5', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-5');
-            expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
-          });
-        });
-
         context('when hits Ctrl-7', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));

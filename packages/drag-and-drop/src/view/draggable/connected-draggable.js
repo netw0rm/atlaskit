@@ -103,16 +103,16 @@ export const makeSelector = () => {
 
   return createSelector(
     [
+      idSelector,
       phaseSelector,
       dragSelector,
       pendingDropSelector,
-      idSelector,
       draggableSelector,
     ],
-    (phase: Phase,
+    (id: DraggableId,
+      phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
-      id: DraggableId,
       dimension: ?DraggableDimension,
     ): MapProps => {
       if (phase === 'DRAGGING') {
@@ -164,14 +164,12 @@ export const makeSelector = () => {
         }
 
         return {
-          // Tell the consumer that the drag is still
-          // occurring with props to keep the isDragging appearance
-          // while dropping.
-          isDragging: true,
+          isDragging: false,
           isDropAnimating: true,
           isAnotherDragging: false,
           canAnimate: true,
           offset: pending.newHomeOffset,
+          // still need to provide the dimension for the placeholder
           dimension,
         };
       }
@@ -180,11 +178,11 @@ export const makeSelector = () => {
         // Cut off all animation as the item is already reordered
         // If it is not everyone is going to have a bad time
         return {
-          offset: origin,
           isDropAnimating: false,
           isAnotherDragging: false,
           isDragging: false,
           canAnimate: false,
+          offset: origin,
           dimension: null,
         };
       }

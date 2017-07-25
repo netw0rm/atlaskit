@@ -29,6 +29,7 @@ import type { MapProps, Provided } from '../../../src/view/draggable/draggable-t
 
 const droppableId: DroppableId = 'drop-1';
 const type: TypeId = 'TYPE';
+const origin: Position = { x: 0, y: 0 };
 
 const make = (() => {
   let callCount = 0;
@@ -68,7 +69,6 @@ const make = (() => {
           center: page.center,
         },
       };
-
       return value;
     })();
 
@@ -120,36 +120,36 @@ const make = (() => {
       return pending;
     };
 
-    return { id, selector, dimension, drag, drop };
+    return { id, selector, dimension, initial, drag, drop };
   };
 })();
 
-const defaultMapProps = {
-  isDropAnimating: false,
+const defaultMapProps: MapProps = {
   isDragging: false,
+  isDropAnimating: false,
+  isAnotherDragging: false,
   canAnimate: true,
   // at the origin by default
-  offset: {
-    x: 0,
-    y: 0,
-  },
-  initial: null,
+  offset: origin,
+  dimension: null,
 };
 
 type SelectorArgs = {|
+  id: DraggableId,
   phase: Phase,
   drag: ?DragState,
   pending: ?PendingDrop,
-  id: DraggableId,
+  dimension: ?DraggableDimension,
 |}
 
 const execute = (selector: Function) =>
-  ({ phase, drag, pending, id }: SelectorArgs): MapProps =>
+  ({ phase, drag, pending, id, dimension }: SelectorArgs): MapProps =>
     selector.resultFunc(
+      id,
       phase,
       drag,
       pending,
-      id,
+      dimension,
     );
 
 describe('Draggable - connected', () => {
@@ -168,17 +168,17 @@ describe('Draggable - connected', () => {
 
     describe('dragging', () => {
       it('should log an error and return default props if there is invalid drag state', () => {
-        const { id, selector } = make();
+        const { id, selector, dimension } = make();
 
         const result = execute(selector)({
           phase: 'DRAGGING',
           drag: null,
           pending: null,
           id,
+          dimension,
         });
 
         expect(result).toEqual(defaultMapProps);
-
         expect(console.error.calledOnce).toBe(true);
       });
 
@@ -190,42 +190,47 @@ describe('Draggable - connected', () => {
             y: 200,
           };
           const expected: MapProps = {
-            isDropAnimating: false,
             isDragging: true,
+            isDropAnimating: false,
+            isAnotherDragging: false,
             canAnimate: true,
             offset,
             dimension,
           };
 
           const result: MapProps = execute(selector)({
+            id,
             phase: 'DRAGGING',
             drag: drag(offset),
             pending: null,
-            id,
+            dimension,
           });
 
           expect(result).toEqual(expected);
         });
 
         it('should break memoization on every call', () => {
-          const { selector, id, drag } = make();
+          const { selector, id, drag, dimension } = make();
           const state: DragState = drag({ x: 100, y: 200 });
 
           const first: MapProps = execute(selector)({
+            id,
             phase: 'DRAGGING',
             drag: state,
             pending: null,
-            id,
+            dimension,
           });
           const second: MapProps = execute(selector)({
+            id,
             phase: 'DRAGGING',
             drag: state,
             pending: null,
-            id,
+            dimension,
           });
 
-        // checking we did not get the same reference back
-          expect(first).not.toEqual(second);
+          // checking we did not get the same reference back
+          expect(first).not.toBe(second);
+          // even though we got the same value
           expect(first).toEqual(second);
         });
       });
@@ -233,29 +238,43 @@ describe('Draggable - connected', () => {
       describe('item is not dragging', () => {
         const dragging = make();
         const notDragging = make();
-        it('should return the default props', () => {
+        it('should return indicate that another item is dragging', () => {
+          const expected: MapProps = {
+            // property under test
+            isAnotherDragging: true,
+            // other properties
+            isDragging: false,
+            isDropAnimating: false,
+            canAnimate: true,
+            offset: origin,
+            dimension: null,
+          };
+
           const result: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DRAGGING',
             drag: dragging.drag({ x: 100, y: 200 }),
             pending: null,
-            id: notDragging.id,
+            dimension: null,
           });
 
-          expect(result).toEqual(defaultMapProps);
+          expect(result).toEqual(expected);
         });
 
         it('should not break memoization on multiple calls', () => {
           const first: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DRAGGING',
             drag: dragging.drag({ x: 100, y: 200 }),
             pending: null,
-            id: notDragging.id,
+            dimension: null,
           });
           const second: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DRAGGING',
             drag: dragging.drag({ x: 100, y: 200 }),
             pending: null,
-            id: notDragging.id,
+            dimension: null,
           });
 
         // checking that we got the same object back
@@ -266,13 +285,14 @@ describe('Draggable - connected', () => {
 
     describe('drop animating', () => {
       it('should log an error and return default props if there is no pending drop', () => {
-        const { id, selector } = make();
+        const { id, selector, dimension } = make();
 
         const props: MapProps = execute(selector)({
+          id,
           phase: 'DROP_ANIMATING',
           drag: null,
           pending: null,
-          id,
+          dimension,
         });
 
         expect(props).toEqual(defaultMapProps);
@@ -281,26 +301,27 @@ describe('Draggable - connected', () => {
 
       describe('item was dragging', () => {
         it('should move to the new home offset', () => {
-          const { id, initial, selector, drop } = make();
+          const { id, dimension, selector, drop } = make();
           const newHomeOffset: Position = {
             x: 100,
             y: 10,
           };
           const expected: MapProps = {
-          // Still having isDragging: true to keep the isDraggingProp the same
-            isDragging: true,
+            isDragging: false,
             isDropAnimating: true,
+            isAnotherDragging: false,
             canAnimate: true,
             offset: newHomeOffset,
-            initial,
+            dimension,
           };
           const pending: PendingDrop = drop(newHomeOffset);
 
           const props: MapProps = execute(selector)({
+            id,
             phase: 'DROP_ANIMATING',
             drag: null,
             pending,
-            id,
+            dimension,
           });
 
           expect(props).toEqual(expected);
@@ -313,47 +334,59 @@ describe('Draggable - connected', () => {
           const notDragging = make();
 
           const props: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DROP_ANIMATING',
             drag: null,
             pending: dragging.drop({ x: 100, y: 200 }),
-            id: notDragging.id,
+            dimension: null,
           });
 
           expect(props).toEqual(defaultMapProps);
         });
 
-        it('should not break memoization from while the drag was occurring', () => {
+        it('should break memoization when switching from dragging to dropping', () => {
           const dragging = make();
           const notDragging = make();
+          const duringDragMapProps: MapProps = {
+            isDragging: false,
+            isDropAnimating: false,
+            isAnotherDragging: true,
+            canAnimate: true,
+            // at the origin by default
+            offset: origin,
+            dimension: null,
+          };
 
           const duringDrag: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DRAGGING',
             drag: dragging.drag({ x: 100, y: 200 }),
             pending: null,
-            id: notDragging.id,
+            dimension: null,
           });
-          const postDrag: MapProps = execute(notDragging.selector)({
+          const duringDrop: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DROP_ANIMATING',
             drag: null,
             pending: dragging.drop({ x: 200, y: 200 }),
-            id: notDragging.id,
+            dimension: null,
           });
 
-          expect(duringDrag).toEqual(defaultMapProps);
-          expect(postDrag).toEqual(defaultMapProps);
-        // checking object equality
-          expect(duringDrag).toBe(postDrag);
+          // checking value
+          expect(duringDrag).toEqual(duringDragMapProps);
+          expect(duringDrop).toEqual(defaultMapProps);
         });
       });
 
       describe('item was not dragging but was moved out of the way', () => {
         const dragging = make();
         const notDragging = make();
+
         it('should move to the final offset', () => {
           const impact: DragImpact = {
             movement: {
               draggables: [notDragging.id],
-              amount: dragging.dimension.withMargin.height,
+              amount: dragging.dimension.page.withMargin.height,
               isMovingForward: true,
             },
             destination: {
@@ -364,59 +397,27 @@ describe('Draggable - connected', () => {
           const expected: MapProps = {
             isDropAnimating: false,
             isDragging: false,
-            canAnimate: true,
-          // Because the item is moving forward, this will
-          // be moving backwards to get out of the way.
+            // Other item is no longer dragging
+            isAnotherDragging: false,
+            // Because the item is moving forward, this will
+            // be moving backwards to get out of the way.
             offset: {
               x: 0,
-              y: -dragging.dimension.withMargin.height,
+              y: -dragging.dimension.page.withMargin.height,
             },
-            initial: null,
+            canAnimate: true,
+            dimension: null,
           };
 
           const props: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DROP_ANIMATING',
             drag: null,
             pending: dragging.drop({ x: 100, y: 100 }, impact),
-            id: notDragging.id,
+            dimension: null,
           });
 
           expect(props).toEqual(expected);
-        });
-
-        it('should not break memoization if it was already heading to the same location before the drag was completed', () => {
-          const offset: Position = {
-            x: 100,
-            y: 200,
-          };
-        // notDragging is moving out of the way
-          const impact: DragImpact = {
-            movement: {
-              draggables: [notDragging.id],
-              amount: dragging.dimension.withMargin.height,
-              isMovingForward: true,
-            },
-            destination: {
-              index: dragging.initial.source.index + 1,
-              droppableId: dragging.initial.source.droppableId,
-            },
-          };
-
-          const duringDrag: MapProps = execute(notDragging.selector)({
-            phase: 'DRAGGING',
-            drag: dragging.drag(offset, impact),
-            pending: null,
-            id: notDragging.id,
-          });
-          const afterDrag: MapProps = execute(notDragging.selector)({
-            phase: 'DROP_ANIMATING',
-            drag: null,
-            pending: dragging.drop({ x: 1, y: 10 }, impact),
-            id: notDragging.id,
-          });
-
-        // checking that the result objects have the same reference
-          expect(duringDrag).toBe(afterDrag);
         });
       });
     });
@@ -428,18 +429,20 @@ describe('Draggable - connected', () => {
       describe('item was dragging', () => {
         it('should move to the origin with no animation', () => {
           const expected: MapProps = {
-            offset: { x: 0, y: 0 },
-            isDropAnimating: false,
+            offset: origin,
             isDragging: false,
+            isAnotherDragging: false,
+            isDropAnimating: false,
             canAnimate: false,
-            initial: null,
+            dimension: null,
           };
 
           const props: MapProps = execute(dragging.selector)({
+            id: dragging.id,
             phase: 'DROP_COMPLETE',
             drag: null,
             pending: null,
-            id: dragging.id,
+            dimension: null,
           });
 
           expect(props).toEqual(expected);
@@ -449,18 +452,20 @@ describe('Draggable - connected', () => {
       describe('item was not dragging', () => {
         it('should move to the origin with no animation', () => {
           const expected: MapProps = {
-            offset: { x: 0, y: 0 },
+            offset: origin,
             isDropAnimating: false,
+            isAnotherDragging: false,
             isDragging: false,
             canAnimate: false,
-            initial: null,
+            dimension: null,
           };
 
           const props: MapProps = execute(notDragging.selector)({
+            id: notDragging.id,
             phase: 'DROP_COMPLETE',
             drag: null,
             pending: null,
-            id: notDragging.id,
+            dimension: null,
           });
 
           expect(props).toEqual(expected);
@@ -475,10 +480,11 @@ describe('Draggable - connected', () => {
 
         phases.forEach((phase: Phase): void => {
           const props: MapProps = execute(selector)({
+            id,
             phase,
             drag: null,
             pending: null,
-            id,
+            dimension: null,
           });
 
           expect(props).toEqual(defaultMapProps);

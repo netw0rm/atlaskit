@@ -284,8 +284,8 @@ export default class Draggable extends Component {
     }
   )
 
-  getSnapshot = memoizeOne((isDragging: boolean): StateSnapshot => ({
-    isDragging,
+  getSnapshot = memoizeOne((isDragging: boolean, isDropAnimating: boolean): StateSnapshot => ({
+    isDragging: isDragging || isDropAnimating,
   }))
 
   getSpeed = memoizeOne(
@@ -353,7 +353,7 @@ export default class Draggable extends Component {
                     dragHandleProps,
                     movementStyle,
                   ),
-                  this.getSnapshot(isDragging)
+                  this.getSnapshot(isDragging, isDropAnimating)
                 )
               }
             </DragHandle>

@@ -5,6 +5,8 @@ import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import { MultiSelectStateless } from '../../src';
 import { SelectWrapper } from '../../src/styled/Stateless';
@@ -86,6 +88,17 @@ describe(`${name} - stateless`, () => {
       const footer = <div>footer</div>;
       const wrapper = mount(<MultiSelectStateless createNewItemLabel="new" filterValue="test" footer={footer} isOpen shouldAllowCreateItem />);
       expect(wrapper.find(Footer).text()).toBe('test (new)');
+    });
+
+    it('should render ExpandIcon if no custom icon provided', () => {
+      expect(mount(<MultiSelectStateless />).find(ExpandIcon).length).toBe(1);
+    });
+
+    it('should render custom icon if provided', () => {
+      const icon = <SearchIcon label="" />;
+      const select = mount(<MultiSelectStateless icon={icon} />);
+      expect(select.find(SearchIcon).length).toBe(1);
+      expect(select.find(ExpandIcon).length).toBe(0);
     });
 
     describe('groups and items', () => {

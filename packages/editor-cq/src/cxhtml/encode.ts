@@ -105,8 +105,28 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodeTable(node: any): Element {
+  function encodeTable(node: PMNode): Element {
     const elem = doc.createElement('table');
+    const tbody = doc.createElement('tbody');
+
+    node.descendants(rowNode => {
+      const rowElement = doc.createElement('tr');
+
+      rowNode.descendants(colNode => {
+        const cellElement = (
+          colNode.type === schema.nodes.tableCell
+            ? doc.createElement('td')
+            : doc.createElement('th')
+        );
+        cellElement.appendChild(encodeFragment(colNode.content));
+        rowElement.appendChild(cellElement);
+      });
+
+      tbody.appendChild(rowElement);
+      return false;
+    });
+
+    elem.appendChild(tbody);
     return elem;
   }
 

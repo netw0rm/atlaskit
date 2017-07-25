@@ -336,7 +336,8 @@ function convertTable (node: Element) {
 
     for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
       const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
-      const { childNodes} = cols[j];
+      const { childNodes } = cols[j];
+
       // if a cell has nested nodes
       if (childNodes && childNodes.length) {
         const cellContent: any[] = [];

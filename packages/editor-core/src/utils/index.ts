@@ -433,8 +433,8 @@ export function arrayFrom(obj: any): any[] {
 }
 
 /**
- * Check if current state's document constains from 1 to 3 emoji.
- * Accepts either a PM document or a JSON document.
+ * Check if the document contains 1 to 3 emoji and no other nodes.
+ * The function accepts either a PM document or a JSON document and is optimised for speed.
  */
 export function isEmojiDocument(doc: Node): boolean;
 export function isEmojiDocument(doc: { [key: string]: any }): boolean {

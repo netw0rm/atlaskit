@@ -22,13 +22,14 @@ import {
   getContent,
 } from './utils';
 
+const convertedNodes = new WeakMap();
+
 export default function(cxhtml: string) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
   return schema.nodes.doc.createChecked({}, parseDomNode(dom));
 }
 
 function parseDomNode(dom: Element): PMNode {
-  const convertedNodes = new WeakMap();
   const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
 
   // Process through nodes in reverse (so deepest child elements are first).

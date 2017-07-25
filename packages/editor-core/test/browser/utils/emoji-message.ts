@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import defaultSchema from '../../../src/test-helper/schema';
-import { isEmojiMessage } from '../../../src/utils';
+import { isEmojiDocument } from '../../../src/utils';
 
 // tslint:disable:quotemark
 
@@ -10,11 +10,11 @@ describe('@atlaskit/editore-core/utils', () => {
       const pmDoc = defaultSchema.nodeFromJSON(doc);
 
       context('handles JSON documents', () => {
-        expect(isEmojiMessage(doc)).to.eq(state);
+        expect(isEmojiDocument(doc)).to.eq(state);
       });
 
       context('handles ProseMirror documents', () => {
-        expect(isEmojiMessage(pmDoc)).to.eq(state);
+        expect(isEmojiDocument(pmDoc)).to.eq(state);
       });
     });
 

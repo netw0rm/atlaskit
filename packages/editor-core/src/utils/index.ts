@@ -436,8 +436,8 @@ export function arrayFrom(obj: any): any[] {
  * Check if current state's document constains from 1 to 3 emoji.
  * Accepts either a PM document or a JSON document.
  */
-export function isEmojiMessage(doc: Node): boolean;
-export function isEmojiMessage(doc: { [key: string]: any }): boolean {
+export function isEmojiDocument(doc: Node): boolean;
+export function isEmojiDocument(doc: { [key: string]: any }): boolean {
   let emojiCount = 0;
 
   if (doc instanceof Node) {

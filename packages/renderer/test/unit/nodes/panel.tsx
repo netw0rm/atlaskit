@@ -4,9 +4,8 @@ import { expect } from 'chai';
 import Panel from '../../../src/nodes/panel';
 
 describe('<Panel/>', () => {
-    let context = 'info';
-    const infoPanel = shallow(<Panel type="info">This is a info panel</Panel> , { context });
 
+    const infoPanel = shallow(<Panel type="info">This is a info panel</Panel> );
     it('should wrap content with <div>-tag', () => {
       expect(infoPanel.name()).to.equal('styled.div');
     });
@@ -15,9 +14,7 @@ describe('<Panel/>', () => {
       expect(infoPanel.children()).to.have.length(2);
     });
 
-    context = 'note';
-    const notePanel = shallow(<Panel type="note">This is a note panel</Panel> , { context });
-
+    const notePanel = shallow(<Panel type="note">This is a note panel</Panel> );
     it('should wrap content with <div>-tag', () => {
       expect(notePanel.name()).to.equal('styled.div');
     });
@@ -26,9 +23,7 @@ describe('<Panel/>', () => {
       expect(notePanel.children()).to.have.length(2);
     });
 
-    context = 'tip';
-    const tipPanel = shallow(<Panel type="tip">This is a tip panel</Panel> , { context });
-
+    const tipPanel = shallow(<Panel type="tip">This is a tip panel</Panel>);
     it('should wrap content with <div>-tag', () => {
       expect(tipPanel.name()).to.equal('styled.div');
     });
@@ -37,7 +32,6 @@ describe('<Panel/>', () => {
       expect(tipPanel.children()).to.have.length(2);
     });
 
-    context = 'warning';
     const warningPanel = shallow(<Panel type="warning">This is a warning panel</Panel>);
 
     it('should wrap content with <div>-tag', () => {
@@ -47,5 +41,4 @@ describe('<Panel/>', () => {
     it('should have two children', () => {
       expect(warningPanel.children()).to.have.length(2);
     });
-
   });

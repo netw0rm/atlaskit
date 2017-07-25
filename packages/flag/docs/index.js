@@ -3,16 +3,13 @@ import styled from 'styled-components';
 
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';
-import flagExampleSrc from '!raw-loader!./FlagExample';
-/*
-=============================================
-NOTE: Flag group example is commented out as it does not display correctly.
-We need to come back to this once the component is easier to make display correctly.
-Currently it is mostly hidden behind the left navbar.
-=============================================
-*/
-// import FlagGroupExample from './FlagGroupExample';
-// import flagGroupExampleSrc from '!raw-loader!./FlagGroupExample';
+import flagExampleSource from '!raw-loader!./FlagExample';
+
+import FlagBoldExample from './FlagBoldExample';
+import flagBoldExampleSource from '!raw-loader!./FlagBoldExample';
+
+import FlagGroupExample from './FlagGroupExample';
+import flagGroupExampleSource from '!raw-loader!./FlagGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -39,11 +36,16 @@ export const examples = [
   {
     title: 'Flag Component',
     Component: FlagExample,
-    src: flagExampleSrc,
+    src: flagExampleSource,
   },
-  // {
-  //   title: 'Flag Group Example',
-  //   Component: FlagGroupExample,
-  //   src: flagGroupExampleSrc,
-  // },
+  {
+    title: 'Bold Flag Component',
+    Component: FlagBoldExample,
+    src: flagBoldExampleSource,
+  },
+  {
+    title: 'Flag Group Example',
+    Component: FlagGroupExample,
+    src: flagGroupExampleSource,
+  },
 ];

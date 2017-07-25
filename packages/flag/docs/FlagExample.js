@@ -1,23 +1,15 @@
 import React from 'react';
 import Flag from '@atlaskit/flag';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
-
-const Icon = <WarningIcon label="Info icon" />;
+import { getIcon } from './utils';
 
 const actions = [
-  {
-    content: 'Understood',
-    onClick: () => console.log('understood'),
-  },
-  {
-    content: 'No Way!',
-    onClick: () => console.log('nope'),
-  },
+  { content: 'Understood', onClick: () => console.log('Understood') },
+  { content: 'No Way!', onClick: () => console.log('No Way!') },
 ];
 
 const FlagExample = () => (
   <Flag
-    icon={Icon}
+    icon={getIcon('success')}
     actions={actions}
     id="flag-1"
     key="flag-1"

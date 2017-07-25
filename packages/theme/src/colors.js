@@ -72,7 +72,7 @@ export const N600 = '#344563';
 export const N700 = '#253858';
 export const N800 = '#172B4D';
 
-// ATTENTION: update the tints this if you update this one
+// ATTENTION: update the tints if you update this
 export const N900 = '#091E42';
 
 // Each tint is made of N900 and an alpha channel

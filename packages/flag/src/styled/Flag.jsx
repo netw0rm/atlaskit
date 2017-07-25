@@ -3,13 +3,12 @@ import {
   akBorderRadius,
   akGridSizeUnitless as spacing,
 } from '@atlaskit/util-shared-styles';
-import { getFocusRingStyle } from './CustomFocusButton';
-import theme, { getProperty } from '../theme';
+import { getProperty } from '../theme';
 
-const getTextColor = p => getProperty(p.appearance, 'text');
-const getBoxShadow = ({ appearance }) => {
-  const borderColor = getProperty(appearance, 'border');
-  const shadowColor = getProperty(appearance, 'shadow');
+const getTextColor = props => getProperty('text', props);
+const getBoxShadow = props => {
+  const borderColor = getProperty('border', props);
+  const shadowColor = getProperty('shadow', props);
 
   const border = borderColor && `0 0 1px ${borderColor}`;
   const shadow = `0 20px 32px -8px ${shadowColor}`;
@@ -18,7 +17,7 @@ const getBoxShadow = ({ appearance }) => {
 };
 
 export default styled.div`
-  background-color: ${p => getProperty(p.appearance, 'background')};
+  background-color: ${props => getProperty('background', props)};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
   box-shadow: ${getBoxShadow};
@@ -30,7 +29,7 @@ export default styled.div`
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${theme.normal.focusRingColor};
+    box-shadow: 0px 0px 0px 2px ${props => getProperty('focusRingColor', props)};
   }
 `;
 
@@ -60,7 +59,10 @@ export const DismissButton = styled.button`
   padding: 0;
   white-space: nowrap;
 
-  ${getFocusRingStyle}
+  &:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 2px ${props => getProperty('focusRingColor', props)};
+  }
 `;
 
 // Content

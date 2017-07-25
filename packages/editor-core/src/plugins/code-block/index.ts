@@ -6,8 +6,6 @@ import {
   Plugin,
   PluginKey,
   NodeViewDesc,
-  Fragment,
-  Slice,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import keymapPlugin from './keymaps';

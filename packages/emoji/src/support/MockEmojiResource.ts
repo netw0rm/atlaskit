@@ -49,7 +49,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
 
     if (window.localStorage) {
-      const storedTone = window.localStorage.getItem('selectedTone');
+      const storedTone = window.localStorage.getItem('fabric.emoji.selectedTone');
       this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
     }
   }
@@ -114,7 +114,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
     if (window.localStorage) {
-      window.localStorage.setItem('selectedTone', tone ? tone.toString() : '');
+      window.localStorage.setItem('fabric.emoji.selectedTone', tone ? tone.toString() : '');
     }
   }
 

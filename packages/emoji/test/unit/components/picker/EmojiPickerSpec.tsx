@@ -5,7 +5,16 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
-import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../../../src/support/test-data';
+import {
+    createPngFile,
+    getEmojiResourcePromise,
+    getNonUploadingEmojiResourcePromise,
+    mediaEmoji,
+    mockLocalStorage,
+    newEmojiRepository,
+    pngDataURL,
+    pngFileUploadData
+} from '../../../../src/support/test-data';
 import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
@@ -144,17 +153,8 @@ const findSearchInput = (component) => component.find(EmojiPickerListSearch).fin
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
-  let data = {};
-
   beforeEach(() => {
-    global.window.localStorage = {
-      length: Object.keys(data).length,
-      getItem: (key) => data[key],
-      setItem: (key, value) =>  data[key] = value + '',
-      clear: () => data = {},
-      key: (key) => null,
-      removeItem: (key) => data[key] = {},
-    };
+    global.window.localStorage = mockLocalStorage;
   });
 
   afterEach(() => {

@@ -209,8 +209,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     });
 
     if (window.localStorage) {
-      const storedTone = window.localStorage.getItem('selectedTone');
-      this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
+      this.selectedTone = this.loadStoredTone();
     }
 
     if (config.providers.length === 0) {
@@ -271,6 +270,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         resolveReject.resolve(result);
       }
     });
+  }
+
+  private loadStoredTone(): ToneSelection {
+    const storedToneString = window.localStorage.getItem('fabric.emoji.selectedTone');
+    if (storedToneString) {
+      const storedTone = parseInt(storedToneString, 10);
+      return !isNaN(storedTone) ? storedTone : undefined;
+    }
+
+    return undefined;
   }
 
   protected refreshLastFilter(): void {
@@ -424,7 +433,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
     if (window.localStorage) {
-      window.localStorage.setItem('selectedTone', tone ? tone.toString() : '');
+      window.localStorage.setItem('fabric.emoji.selectedTone', tone ? tone.toString() : '');
     }
   }
 

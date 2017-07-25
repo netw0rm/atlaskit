@@ -5,7 +5,15 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
 
-import { newEmojiRepository, standardBoomEmoji, atlassianBoomEmoji, getEmojiResourcePromise, blackFlagEmoji, openMouthEmoji } from '../../../../src/support/test-data';
+import {
+    atlassianBoomEmoji,
+    blackFlagEmoji,
+    getEmojiResourcePromise,
+    mockLocalStorage,
+    newEmojiRepository,
+    openMouthEmoji,
+    standardBoomEmoji
+} from '../../../../src/support/test-data';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem  } from '../../_emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props } from '../../../../src/components/typeahead/EmojiTypeAhead';
@@ -45,17 +53,8 @@ const itemsVisible = (component) => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
-  let data = {};
-
   beforeEach(() => {
-    global.window.localStorage = {
-      length: Object.keys(data).length,
-      getItem: (key) => data[key],
-      setItem: (key, value) =>  data[key] = value + '',
-      clear: () => data = {},
-      key: (key) => null,
-      removeItem: (key) => data[key] = {},
-    };
+    global.window.localStorage = mockLocalStorage;
   });
 
   afterEach(() => {

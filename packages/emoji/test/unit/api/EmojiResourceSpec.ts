@@ -30,6 +30,7 @@ import {
     missingMediaEmoji,
     missingMediaEmojiId,
     missingMediaServiceEmoji,
+    mockLocalStorage,
     siteServiceEmojis,
     siteUrl,
     standardEmojis,
@@ -1172,20 +1173,12 @@ describe('UploadingEmojiResource', () => {
 });
 
 describe('#toneSelectionStorage', () => {
-  let data = {};
-
   beforeEach(() => {
-    global.window.localStorage = {
-      length: Object.keys(data).length,
-      getItem: (key) => data[key],
-      setItem: (key, value) =>  data[key] = value + '',
-      clear: () => data = {},
-      key: (key) => null,
-      removeItem: (key) => data[key] = {},
-    };
+    global.window.localStorage = mockLocalStorage;
   });
 
   afterEach(() => {
+    global.window.localStorage.clear();
     global.window.localStorage = undefined;
   });
 
@@ -1202,7 +1195,7 @@ describe('#toneSelectionStorage', () => {
     const resource = new EmojiResource(defaultApiConfig);
     resource.setSelectedTone(1);
     expect(setSpy.callCount).to.equal(1);
-    expect(setSpy.getCall(0).args[0]).to.equal('selectedTone');
+    expect(setSpy.getCall(0).args[0]).to.equal('fabric.emoji.selectedTone');
     expect(setSpy.getCall(0).args[1]).to.equal('1');
   });
 });

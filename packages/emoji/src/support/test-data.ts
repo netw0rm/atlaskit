@@ -245,3 +245,13 @@ export const pngFileUploadData = {
   filename: 'playasateam.png',
   dataURL: pngDataURL,
 };
+
+let data = {};
+export const mockLocalStorage: Storage = {
+  length: Object.keys(data).length,
+  getItem: (key) => data[key],
+  setItem: (key, value) =>  data[key] = value + '',
+  clear: () => data = {},
+  key: (key) => null,
+  removeItem: (key) => data[key] = {},
+};

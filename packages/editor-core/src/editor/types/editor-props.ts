@@ -3,7 +3,7 @@ import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 
-export type EditorAppearance = 'tray' | 'mini' | 'midi' | 'maxi';
+export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page';
 
 export interface EditorProps {
   appearance: EditorAppearance;

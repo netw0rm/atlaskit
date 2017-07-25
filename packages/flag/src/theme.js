@@ -11,7 +11,7 @@ registerThemeComponent(COMPONENT_NAME, (mode, theme) => (mode === 'dark'
 ? {
   error: {
     background: theme.colors.R300,
-    buttonBackground: theme.colors.DN600A,
+    buttonBackground: theme.colors.N30A,
     buttonText: theme.colors.DN40,
     focusRingColor: theme.colors.N40,
     text: theme.colors.DN40,
@@ -35,7 +35,7 @@ registerThemeComponent(COMPONENT_NAME, (mode, theme) => (mode === 'dark'
   },
   success: {
     background: theme.colors.G300,
-    buttonBackground: theme.colors.DN600A,
+    buttonBackground: theme.colors.N30A,
     buttonText: theme.colors.DN40,
     focusRingColor: theme.colors.N40,
     text: theme.colors.DN40,
@@ -43,7 +43,7 @@ registerThemeComponent(COMPONENT_NAME, (mode, theme) => (mode === 'dark'
   },
   warning: {
     background: theme.colors.Y300,
-    buttonBackground: theme.colors.DN600A,
+    buttonBackground: theme.colors.N30A,
     buttonText: theme.colors.DN40,
     focusRingColor: theme.colors.N200,
     text: theme.colors.DN40,

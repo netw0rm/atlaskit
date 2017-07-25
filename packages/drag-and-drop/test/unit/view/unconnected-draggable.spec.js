@@ -2,7 +2,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import Draggable, { zIndexOptions } from '../../../src/view/draggable/draggable';
@@ -179,12 +178,13 @@ type StartDrag = {|
 |}
 
 const stubClientRect = (center?: Position = origin): void =>
-  sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
+  // $ExpectError
+  jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => getClientRect({
     left: 0,
     top: 0,
     right: center.x * 2,
     bottom: center.y * 2,
-  });
+  }));
 
 const executeOnLift = (wrapper: ReactWrapper) => ({
     selection = origin,
@@ -218,7 +218,7 @@ const getFromLift = (dispatchProps: DispatchProps) => {
   };
 };
 
-const getLastCall = (myMock: any) => myMock.mock.calls[myMock.mock.calls.length - 1];
+const getLastCall = myMock => myMock.mock.calls[myMock.mock.calls.length - 1];
 
 const getStubber = stub =>
   class Stubber extends Component {
@@ -242,8 +242,8 @@ describe('Draggable - unconnected', () => {
   });
 
   afterEach(() => {
-    if (Element.prototype.getBoundingClientRect.restore) {
-      Element.prototype.getBoundingClientRect.restore();
+    if (Element.prototype.getBoundingClientRect.mockRestore) {
+      Element.prototype.getBoundingClientRect.mockRestore();
     }
     requestAnimationFrame.reset();
     setWindowScroll(originalWindowScroll, { shouldPublish: false });

@@ -13,7 +13,9 @@ import {
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
   onChangePlugin,
-  mediaPlugin
+  mediaPlugin,
+  hyperlinkPlugin,
+  codeBlockPlugin
 } from '../plugins';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
@@ -39,6 +41,14 @@ export function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTextFormatting) {
     plugins.push(textFormattingPlugin);
+  }
+
+  if (props.allowHyperlinks) {
+    plugins.push(hyperlinkPlugin);
+  }
+
+  if (props.allowCodeBlocks) {
+    plugins.push(codeBlockPlugin);
   }
 
   if (props.mentionProvider) {

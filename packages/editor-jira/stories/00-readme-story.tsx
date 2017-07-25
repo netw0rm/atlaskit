@@ -129,6 +129,12 @@ storiesOf(name, module)
               <td><code>--</code></td>
               <td>If <code>provided</code>, controlls how mention will be encoded to html.</td>
             </tr>
+            <tr>
+              <td><code>renderFooter</code></td>
+              <td><code>(saveDisabled: boolean) => React.Element</code></td>
+              <td><code>--</code></td>
+              <td>If <code>provided</code>, renders custom react component next to save/cancel buttons.</td>
+            </tr>
           </tbody>
         </table>
         <Heading type="2">Document structure translation</Heading>

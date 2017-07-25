@@ -271,7 +271,7 @@ export class HyperlinkState {
   }
 }
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
       const pluginState = stateKey.getState(view.state);

@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Blanket from '../../src';
 import { getOpacity } from '../../src/styled/Container';
@@ -38,19 +37,19 @@ describe('ak-blanket', () => {
         expect(mount(<Blanket />).prop('canClickThrough')).toBe(false);
       });
       it('when canClickThrough is true, onBlanketClicked should not be triggered', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(<Blanket canClickThrough onBlanketClicked={spy} />);
         wrapper.simulate('click');
-        expect(spy.callCount).toBe(0);
+        expect(spy).toHaveBeenCalledTimes(0);
       });
     });
 
     describe('onBlanketClicked', () => {
       it('should trigger when blanket clicked', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(<Blanket onBlanketClicked={spy} />);
         wrapper.simulate('click');
-        expect(spy.callCount).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
   });

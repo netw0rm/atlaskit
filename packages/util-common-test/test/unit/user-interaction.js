@@ -1,5 +1,4 @@
 import keyCode from 'keycode';
-import sinon from 'sinon';
 import { keydown, keyup, keypress } from '../../src';
 
 describe('Keyboard interaction', () => {
@@ -9,7 +8,7 @@ describe('Keyboard interaction', () => {
     describe(`(${type}) with a document event bound`, () => {
       let spy;
       beforeEach(() => {
-        spy = sinon.spy();
+        spy = jest.fn();
         document.addEventListener(type, spy);
       });
 
@@ -19,7 +18,7 @@ describe('Keyboard interaction', () => {
 
       it(`can fire ${type} events`, () => {
         key('[');
-        expect(spy.callCount).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
       it('meta keys can be specified', () => {
         key('[', {
@@ -27,7 +26,7 @@ describe('Keyboard interaction', () => {
             shiftKey: true,
           },
         });
-        expect(spy.getCall(0).args[0].shiftKey).toBe(true);
+        expect(spy.mock.calls[0][0].shiftKey).toBe(true);
       });
       it('key takes precedence over keycode event property', () => {
         key('A', {
@@ -35,15 +34,15 @@ describe('Keyboard interaction', () => {
             keyCode: keyCode('Z'),
           },
         });
-        expect(spy.getCall(0).args[0].keyCode).toBe(keyCode('A'));
+        expect(spy.mock.calls[0][0].keyCode).toBe(keyCode('A'));
       });
 
       it('meta keys are initially off', () => {
         key('[');
-        expect(!!spy.getCall(0).args[0].shiftKey).toBe(false);
-        expect(!!spy.getCall(0).args[0].metaKey).toBe(false);
-        expect(!!spy.getCall(0).args[0].altKey).toBe(false);
-        expect(!!spy.getCall(0).args[0].ctrlKey).toBe(false);
+        expect(!!spy.mock.calls[0][0].shiftKey).toBe(false);
+        expect(!!spy.mock.calls[0][0].metaKey).toBe(false);
+        expect(!!spy.mock.calls[0][0].altKey).toBe(false);
+        expect(!!spy.mock.calls[0][0].ctrlKey).toBe(false);
       });
 
       describe('with a div in the DOM', () => {
@@ -61,7 +60,7 @@ describe('Keyboard interaction', () => {
           key('[', {
             target: div,
           });
-          expect(spy.getCall(0).args[0].target).toBe(div);
+          expect(spy.mock.calls[0][0].target).toBe(div);
         });
       });
     });

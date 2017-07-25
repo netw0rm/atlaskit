@@ -1,10 +1,11 @@
+import { AbstractResource } from '@atlaskit/util-service-support';
+
 import Emoji from './components/common/Emoji';
 import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
 import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, { EmojiProvider, UploadingEmojiProvider } from './api/EmojiResource';
-import { AbstractResource } from './api/SharedResources';
 import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
 import EmojiLoader from './api/EmojiLoader';
 import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';

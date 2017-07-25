@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
@@ -67,11 +66,11 @@ describe('Toggle', () => {
     describe('input events handlers', () =>
       ['change', 'focus', 'blur'].forEach(eventName =>
         it('onChange', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const props = { [`on${capitalize(eventName)}`]: spy };
           const wrapper = mount(<Toggle {...props} />);
           wrapper.find(Input).simulate(eventName);
-          expect(spy.called).toBe(true);
+          expect(spy).toHaveBeenCalled();
         })
       )
     );

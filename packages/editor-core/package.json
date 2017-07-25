@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "39.6.0",
+  "version": "41.2.0",
   "config": {
     "access": "public"
   },
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
@@ -67,7 +68,7 @@
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",
     "prosemirror-inputrules": "^0.22.0",
-    "prosemirror-keymap": "^0.22.0",
+    "prosemirror-keymap": "^0.22.1",
     "prosemirror-markdown": "^0.22.0",
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",

@@ -1,18 +1,15 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
-import {expect} from 'chai';
-import {UrlPreview, LinkDetails, FileDetails} from '@atlaskit/media-core';
+import { UrlPreview, LinkDetails, FileDetails } from '@atlaskit/media-core';
 import {isLinkDetails} from '../../../src/utils/isLinkDetails';
 
 describe('isLinkDetails()', () => {
 
   it('should return false for undefined', () => {
-    expect(isLinkDetails(undefined)).to.be.false;
+    expect(isLinkDetails(undefined)).toBe(false);
   });
 
   it('should return false for something random', () => {
-    expect(isLinkDetails('test')).to.be.false;
-    expect(isLinkDetails(2.2)).to.be.false;
+    expect(isLinkDetails('test')).toBe(false);
+    expect(isLinkDetails(2.2)).toBe(false);
   });
 
   it('should return true for a UrlPreview', () => {
@@ -21,7 +18,7 @@ describe('isLinkDetails()', () => {
       url: 'https://example.com',
       title: 'Example link preview'
     };
-    expect(isLinkDetails(link)).to.be.true;
+    expect(isLinkDetails(link)).toBe(true);
   });
 
   it('should return true for a LinkDetails', () => {
@@ -31,7 +28,7 @@ describe('isLinkDetails()', () => {
       url: 'https://example.com',
       title: 'Example link item'
     };
-    expect(isLinkDetails(link)).to.be.true;
+    expect(isLinkDetails(link)).toBe(true);
   });
 
   it('should return true for a FileDetails', () => {
@@ -39,7 +36,7 @@ describe('isLinkDetails()', () => {
       name: 'foobar.jpg',
       size: 14000
     };
-    expect(isLinkDetails(file)).to.be.false;
+    expect(isLinkDetails(file)).toBe(false);
   });
 
 });

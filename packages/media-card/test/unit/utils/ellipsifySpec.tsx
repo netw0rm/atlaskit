@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { Ellipsify } from '../../../src/utils';
 
@@ -39,18 +38,18 @@ describe.skip('Ellipsify', () => {
     let wrapper = mountEllipsis('foo', 1);
     let elementHeight = getElementHeight(wrapper, container);
 
-    expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight));
+    expect(Math.ceil(elementHeight)).toBe(Math.ceil(lineHeight));
 
     wrapper = mountEllipsis('foo', 2);
     elementHeight = getElementHeight(wrapper, container);
 
-    expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight));
+    expect(Math.ceil(elementHeight)).toBe(Math.ceil(lineHeight));
   });
 
   it('Cut text where there is not enough lines', () => {
     const wrapper = mountEllipsis('This text should be bigger than two lines', 2, 50);
     const elementHeight = getElementHeight(wrapper, container);
 
-    expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight * 2));
+    expect(Math.ceil(elementHeight)).toBe(Math.ceil(lineHeight * 2));
   });
 });

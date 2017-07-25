@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { fetchToken } from '../../../src/domain/fetch-token';
 import { MediaFile } from '../../../src/mediaviewer';
 import { extract, parse } from 'query-string';
@@ -14,13 +13,13 @@ describe('fetchToken', () => {
   const assertUrl = (expected: string, actual?: string) => {
     const index = expected.indexOf('?');
     if (!actual) {
-      expect.fail('actual should not be undefined.');
+      throw new Error('actual should not be undefined.');
     }
     else if (index > 0) {
-      expect(expected.substring(0, index)).to.equal(actual.substring(0, index));
-      expect(parse(extract(expected))).to.deep.equal(parse(extract(actual)));
+      expect(expected.substring(0, index)).toBe(actual.substring(0, index));
+      expect(parse(extract(expected))).toEqual(parse(extract(actual)));
     } else {
-      expect(expected).to.equal(actual);
+      expect(expected).toBe(actual);
     }
   };
 
@@ -34,7 +33,7 @@ describe('fetchToken', () => {
             assertUrl(`https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`, result.src_hd);
             assertUrl(`https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`, result.poster);
           } else {
-            expect.fail('fetchToken did no return anything');
+            throw new Error('fetchToken did no return anything');
           }
         })
         .then(resolve, reject);
@@ -50,7 +49,7 @@ describe('fetchToken', () => {
             assertUrl(`https://some-host.com/file/artifact/hd.mp4/binary?${authQueryString}`, result.src_hd);
             assertUrl(`https://some-host.com/file/artifact/poster.mp4/binary?${authQueryString}`, result.poster);
           } else {
-            expect.fail('fetchToken did no return anything');
+            throw new Error('fetchToken did no return anything');
           }
         })
         .then(resolve, reject);

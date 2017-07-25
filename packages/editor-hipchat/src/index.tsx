@@ -24,6 +24,7 @@ import {
   Node,
   Plugin,
   ProviderFactory,
+  tasksAndDecisionsPlugin,
   textFormattingPlugins,
   TextSelection,
   toJSON,
@@ -364,6 +365,8 @@ export default class Editor extends PureComponent<Props, State> {
         ...blockTypePlugins(schema),
         history(),
         keymap(hcKeymap),
+        // After hcKeyMap to ensure 'ENTER' is not taken by task/decision (which will create a new task/decision)
+        ...tasksAndDecisionsPlugin(schema),
         keymap(baseKeymap) // should be last
       ]
     });

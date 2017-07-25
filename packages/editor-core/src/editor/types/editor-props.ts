@@ -12,6 +12,9 @@ export interface EditorProps {
   allowTextFormatting?: boolean;
   allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
+  allowHyperlinks?: boolean;
+  allowCodeBlocks?: boolean;
+
   saveOnEnter?: boolean;
 
   errorReporterHandler?: ErrorReportingHandler;

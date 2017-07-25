@@ -1,8 +1,5 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
 import {ColorWithAlpha} from '../../../../src/common';
 import {DefaultDrawingArea, OutputSize} from '../../../../src/engine/components/drawingArea';
-import {expect} from 'chai';
 
 describe('MediaEditor DrawingArea', () => {
   const backColor: ColorWithAlpha = {red: 0xAB, green: 0xDD, blue: 0x89, alpha: 0x32};
@@ -12,25 +9,25 @@ describe('MediaEditor DrawingArea', () => {
   it('should return passed parameters', () => {
     const drawingArea = new DefaultDrawingArea(canvas, size, backColor);
 
-    expect(drawingArea.canvas).to.equal(canvas);
-    expect(drawingArea.outputSize).to.deep.equal(size);
-    expect(drawingArea.backgroundColor).to.deep.equal(backColor);
+    expect(drawingArea.canvas).toBe(canvas);
+    expect(drawingArea.outputSize).toEqual(size);
+    expect(drawingArea.backgroundColor).toEqual(backColor);
   });
 
   it('should provide resize event', () => {
     const drawingArea = new DefaultDrawingArea(canvas, size, backColor);
 
-    expect(drawingArea.resize).to.exist;
+    expect(drawingArea.resize).toBeDefined();
   });
 
   it('should trigger resize event on setSize', (done) => {
     const drawingArea = new DefaultDrawingArea(canvas, size, backColor);
-    expect(drawingArea.outputSize).to.deep.equal(size);
+    expect(drawingArea.outputSize).toEqual(size);
 
     const newSize = {width: 500, height: 43, screenScaleFactor: 2};
     drawingArea.resize.listen((size) => {
-      expect(drawingArea.outputSize).to.deep.equal(newSize);
-      expect(size).to.deep.equal(newSize);
+      expect(drawingArea.outputSize).toEqual(newSize);
+      expect(size).toEqual(newSize);
       done();
     });
     drawingArea.setSize(newSize);

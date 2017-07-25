@@ -4,7 +4,7 @@ import {
   CardStatus,
   CardView,
   CardDimensions,
-  UrlPreviewIdentifier,
+  MediaIdentifier,
 } from '@atlaskit/media-card';
 
 import {
@@ -133,25 +133,25 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
-    const { id, collection, cardDimensions, onDelete } = this.props;
-    const url = id;
+    const { id, collection, cardDimensions, onDelete, onClick } = this.props;
     const otherProps: any = {};
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
     }
 
-    linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
-      metadata => linkCreateContext.addLinkItem(url, collection, metadata)
-    );
-
-    const identifier: UrlPreviewIdentifier = {
+    const identifier: MediaIdentifier = {
       mediaItemType: 'link',
-      url
+      collectionName: collection,
+      id,
     };
 
     if (onDelete) {
       otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
+    if (onClick) {
+      otherProps.onClick = onClick;
     }
 
     return (
@@ -159,7 +159,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         context={linkCreateContext}
         dimensions={cardDimensions}
         identifier={identifier}
-        appearance="image"
+        appearance="horizontal"
         resizeMode={this.resizeMode}
         {...otherProps}
       />

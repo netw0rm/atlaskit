@@ -18,6 +18,8 @@ import { EmojiProvider } from '../../../../src/api/EmojiResource';
 import { Props as TypeAheadProps } from '../../../../src/components/typeahead/EmojiTypeAhead';
 import { State as TypeAheadState } from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
 
+declare var global: any;
+
 function setupTypeAhead(props?: Props): Promise<ReactWrapper<any, any>> {
   const component = mount(
     <EmojiTypeAhead
@@ -43,6 +45,24 @@ const itemsVisible = (component) => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
+  let data = {};
+
+  beforeEach(() => {
+    global.window.localStorage = {
+      length: Object.keys(data).length,
+      getItem: (key) => data[key],
+      setItem: (key, value) =>  data[key] = value + '',
+      clear: () => data = {},
+      key: (key) => null,
+      removeItem: (key) => data[key] = {},
+    };
+  });
+
+  afterEach(() => {
+    global.window.localStorage.clear();
+    global.window.localStorage = undefined;
+  });
+
   it('should display max emoji by default', () =>
     setupTypeAhead().then(component =>
       waitUntil(() => doneLoading(component)).then(() => {
@@ -372,12 +392,37 @@ describe('EmojiTypeAhead', () => {
       emojiProvider: emojiProvider,
       query: 'raised_hand',
     } as Props)
-    .then(component =>
-      waitUntil(() => doneLoading(component)).then(() => {
+    .then(component => waitUntil(() => doneLoading(component)).then(() => {
+      expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+      const typeaheadEmoji = getSelectedEmojiTypeAheadItem(component).prop('emoji');
+      expect(typeaheadEmoji.shortName).to.equal(':raised_hand::skin-tone-2:');
+    }));
+  });
+
+  it('should remember skin tone preference between session in the typeahead', () => {
+    const setSpy = sinon.spy(window.localStorage, 'setItem');
+    getEmojiResourcePromise().then(provider => provider.setSelectedTone(2));
+
+    return waitUntil(() => setSpy.callCount === 1).then(() =>
+      setupTypeAhead({
+        query: 'raised_hand',
+      } as Props)
+      .then(component => waitUntil(() => doneLoading(component)).then(() => {
         expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
         const typeaheadEmoji = getSelectedEmojiTypeAheadItem(component).prop('emoji');
-        expect(typeaheadEmoji.shortName).to.equal(':raised_hand::skin-tone-2:');
-      })
+        expect(typeaheadEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+      })) &&
+      // Second typeahead should have tone set by default
+      setupTypeAhead({
+        query: 'raised_hand',
+      } as Props)
+      .then(component => waitUntil(() => doneLoading(component)).then(() => {
+        expect(itemsVisibleCount(component) === 1, 'One emoji visible').to.equal(true);
+        const typeaheadEmoji = getSelectedEmojiTypeAheadItem(component).prop('emoji');
+        expect(typeaheadEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+      }))
+
     );
   });
+
 });

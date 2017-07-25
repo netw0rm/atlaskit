@@ -1171,6 +1171,42 @@ describe('UploadingEmojiResource', () => {
   });
 });
 
+describe('#toneSelectionStorage', () => {
+  let data = {};
+
+  beforeEach(() => {
+    global.window.localStorage = {
+      length: Object.keys(data).length,
+      getItem: (key) => data[key],
+      setItem: (key, value) =>  data[key] = value + '',
+      clear: () => data = {},
+      key: (key) => null,
+      removeItem: (key) => data[key] = {},
+    };
+  });
+
+  afterEach(() => {
+    global.window.localStorage = undefined;
+  });
+
+  it('retrieves previously stored tone selection upon construction', () => {
+    const getSpy = sinon.spy(global.window.localStorage, 'getItem');
+    const provider = new EmojiResource(defaultApiConfig);
+    // Linter throws an error if nothing done with EmojiResource
+    provider.filter();
+    expect(getSpy.callCount).to.equal(1);
+  });
+
+  it('calling setSelectedTone calls setItem in localStorage', () => {
+    const setSpy = sinon.spy(global.window.localStorage, 'setItem');
+    const resource = new EmojiResource(defaultApiConfig);
+    resource.setSelectedTone(1);
+    expect(setSpy.callCount).to.equal(1);
+    expect(setSpy.getCall(0).args[0]).to.equal('selectedTone');
+    expect(setSpy.getCall(0).args[1]).to.equal('1');
+  });
+});
+
 describe('helpers', () => {
   class TestEmojiProvider implements EmojiProvider {
     getAsciiMap = () => Promise.resolve(new Map([[grinEmoji.ascii![0], grinEmoji]]));

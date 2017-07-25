@@ -47,8 +47,11 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
       }
       this.optimisticRendering = config.optimisticRendering;
     }
-    const storedTone = localStorage.getItem('selectedTone');
-    this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
+
+    if (window.localStorage) {
+      const storedTone = window.localStorage.getItem('selectedTone');
+      this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
+    }
   }
 
   filter(query: string, options?: SearchOptions) {
@@ -110,7 +113,9 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
 
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
-    localStorage.setItem('selectedTone', tone ? tone.toString() : '');
+    if (window.localStorage) {
+      window.localStorage.setItem('selectedTone', tone ? tone.toString() : '');
+    }
   }
 
 }

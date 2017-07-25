@@ -211,7 +211,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
     }
 
     const { id, type, client, page } = action.payload;
-    const draggable: DraggableDimension = state.dimension.draggable[id];
 
     // no scroll diff yet so withinDroppable is just the center position
     const withinDroppable: WithinDroppable = {
@@ -238,7 +237,6 @@ export default (state: State = clean('IDLE'), action: Action): State => {
       client,
       page,
       withinDroppable,
-      dimension: draggable,
     };
 
     const current: CurrentDrag = {

@@ -4,26 +4,13 @@ import invariant from 'invariant';
 import rafScheduler from 'raf-schd';
 import getWindowScrollPosition from '../get-window-scroll-position';
 import { getDroppableDimension } from '../../state/dimension';
+import getClosestScrollable from '../get-closest-scrollable';
 // eslint-disable-next-line no-duplicate-imports
 import type { Margin } from '../../state/dimension';
 import type { DroppableDimension, Position, HTMLElement } from '../../types';
 import type { Props } from './droppable-dimension-publisher-types';
 
 const origin: Position = { x: 0, y: 0 };
-
-const getClosestScrollable = (el: ?HTMLElement): ?HTMLElement => {
-  // cannot do anything else!
-  if (el == null) {
-    return null;
-  }
-
-  if (el.scrollHeight === el.clientHeight) {
-    return getClosestScrollable(el.parentElement);
-  }
-
-  // success!
-  return el;
-};
 
 export default class DroppableDimensionPublisher extends Component {
   /* eslint-disable react/sort-comp */

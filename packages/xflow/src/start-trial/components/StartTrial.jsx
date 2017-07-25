@@ -13,21 +13,26 @@ export class StartTrialBase extends Component {
   static propTypes = {
     hasProductBeenEvaluated: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
+    onTrialActivating: PropTypes.func,
   };
 
   static defaultProps = {
     onComplete: () => {},
+    onTrialActivating: () => {},
   };
 
   render() {
-    const { hasProductBeenEvaluated, onComplete } = this.props;
+    const { hasProductBeenEvaluated, onComplete, onTrialActivating } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmTrial
               onComplete={async () => {
-                const evalStatus = await hasProductBeenEvaluated();
+                const [evalStatus] = await Promise.all([
+                  hasProductBeenEvaluated(),
+                  onTrialActivating(),
+                ]);
                 nextStep(evalStatus ? 2 : 1);
               }}
               onCancel={cancel}

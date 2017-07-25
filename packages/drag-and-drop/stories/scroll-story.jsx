@@ -5,8 +5,9 @@ import { storiesOf } from '@kadira/storybook';
 import styled from 'styled-components';
 import QuoteApp from './components/quote-app';
 import { getQuotes } from './components/quotes';
+import type { Quote } from './components/types';
 
-const bigData = getQuotes(40);
+const bigData: Quote[] = getQuotes(40);
 
 const ScrollContainer = styled.div`
   box-sizing: border-box;

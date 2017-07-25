@@ -124,8 +124,8 @@ const draggingMapProps: MapProps = {
 };
 
 const dropAnimatingMapProps: MapProps = {
+  isDragging: false,
   isDropAnimating: true,
-  isDragging: true,
   canAnimate: true,
   isAnotherDragging: false,
   dimension,
@@ -154,7 +154,7 @@ const mountDraggable = ({
   dispatchProps = getDispatchPropsStub(),
   WrappedComponent = Item,
 }: MountConnected = {}): ReactWrapper => mount(
-    // $ExpectError - using spread for props
+  // $ExpectError - using spread for props
   <Draggable
     {...ownProps}
     {...mapProps}
@@ -237,7 +237,7 @@ const getStubber = stub =>
 };
 
 describe('Draggable - unconnected', () => {
-  beforeAll(() => { // eslint-disable-line no-undef
+  beforeAll(() => {
     requestAnimationFrame.reset();
   });
 
@@ -490,9 +490,7 @@ describe('Draggable - unconnected', () => {
           });
 
           wrapper.find(DragHandle).props().callbacks.onMove(mouse);
-          const [, client] = dispatchProps.move.mock.calls[
-            dispatchProps.move.mock.calls.length - 1
-          ];
+          const [, client] = getLastCall(dispatchProps.move);
 
           expect(client).toEqual(expected);
         });
@@ -520,7 +518,7 @@ describe('Draggable - unconnected', () => {
           });
 
           wrapper.find(DragHandle).props().callbacks.onMove(mouse);
-          const [,, page] = dispatchProps.move.mock.calls[dispatchProps.move.mock.calls.length - 1];
+          const [, , page] = getLastCall(dispatchProps.move);
 
           expect(page).toEqual(expected);
         });
@@ -748,10 +746,155 @@ describe('Draggable - unconnected', () => {
     });
   });
 
-  describe('movement', () => {
-    it('should move by the provided offset on mount', () => {
+  describe('is dragging', () => {
+    it('should render a placeholder', () => {
+      const myMock = jest.fn();
+
+      mountDraggable({
+        mapProps: draggingMapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+
+      const provided: Provided = getLastCall(myMock)[0].provided;
+      // $ExpectError - because we do not have the correct React type for placeholder
+      expect(provided.placeholder.type).toBe(Placeholder);
+    });
+
+    it('should give a placeholder the same dimension of the element being moved', () => {
       const myMock = jest.fn();
       const Stubber = getStubber(myMock);
+
+      mountDraggable({
+        mapProps: draggingMapProps,
+        WrappedComponent: Stubber,
+      });
+      // finish moving to the initial position
+      requestAnimationFrame.flush();
+
+      const provided: Provided = getLastCall(myMock)[0].provided;
+      // $ExpectError - because we do not have the correct React type for placeholder
+      expect(provided.placeholder.props.height).toBe(dimension.page.withMargin.height);
+      // $ExpectError
+      expect(provided.placeholder.props.width).toBe(dimension.page.withMargin.width);
+    });
+
+    it('should be above Draggables that are not dragging', () => {
+      // dragging item
+      const draggingMock = jest.fn();
+      mountDraggable({
+        mapProps: draggingMapProps,
+        WrappedComponent: getStubber(draggingMock),
+      });
+      const draggingProvided: Provided = getLastCall(draggingMock)[0].provided;
+      const draggingStyle: DraggingStyle = (draggingProvided.draggableStyle : any);
+
+      // not dragging item
+      const notDraggingMock = jest.fn();
+      mountDraggable({
+        mapProps: somethingElseDraggingMapProps,
+        WrappedComponent: getStubber(notDraggingMock),
+      });
+      const notDraggingProvided: Provided = getLastCall(notDraggingMock)[0].provided;
+      const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
+      const notDraggingExpected: NotDraggingStyle = {
+        transform: null,
+        transition: css.outOfTheWay,
+        pointerEvents: 'none',
+      };
+
+      expect(draggingStyle.zIndex).toBe(zIndexOptions.dragging);
+      expect(notDraggingStyle).toEqual(notDraggingExpected);
+    });
+
+    it('should be above Draggables that are drop animating', () => {
+      const draggingMock = jest.fn();
+      mountDraggable({
+        mapProps: draggingMapProps,
+        WrappedComponent: getStubber(draggingMock),
+      });
+      const draggingProvided: Provided = getLastCall(draggingMock)[0].provided;
+      const returningHomeMock = jest.fn();
+      mountDraggable({
+        mapProps: dropAnimatingMapProps,
+        WrappedComponent: getStubber(returningHomeMock),
+      });
+      const returningHomeProvided: Provided = getLastCall(returningHomeMock)[0].provided;
+
+      // $ExpectError - not type checking draggableStyle
+      expect(draggingProvided.draggableStyle.zIndex)
+      // $ExpectError - not type checking draggableStyle
+        .toBeGreaterThan(returningHomeProvided.draggableStyle.zIndex);
+    });
+
+    it('should be positioned in the same spot as before the drag', () => {
+      const myMock = jest.fn();
+      mountDraggable({
+        mapProps: draggingMapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+      const expected: DraggingStyle = {
+        position: 'fixed',
+        zIndex: zIndexOptions.dragging,
+        boxSizing: 'border-box',
+        width: dimension.page.withMargin.width,
+        height: dimension.page.withMargin.height,
+        top: dimension.page.withMargin.top,
+        left: dimension.page.withMargin.left,
+        transform: null,
+        pointerEvents: 'none',
+      };
+
+      const provided: Provided = getLastCall(myMock)[0].provided;
+      expect(provided.draggableStyle).toEqual(expected);
+    });
+
+    it('should be positioned in the correct offset while dragging', () => {
+      const myMock = jest.fn();
+      const offset: Position = { x: 10, y: 20 };
+      // $ExpectError - using spread
+      const mapProps: MapProps = {
+        ...draggingMapProps,
+        offset,
+      };
+      mountDraggable({
+        mapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+      // release frame for animation
+      requestAnimationFrame.step();
+
+      const expected: DraggingStyle = {
+        position: 'fixed',
+        zIndex: zIndexOptions.dragging,
+        boxSizing: 'border-box',
+        width: dimension.page.withMargin.width,
+        height: dimension.page.withMargin.height,
+        top: dimension.page.withMargin.top,
+        left: dimension.page.withMargin.left,
+        transform: `translate(${offset.x}px, ${offset.y}px)`,
+        pointerEvents: 'none',
+      };
+
+      const provided: Provided = getLastCall(myMock)[0].provided;
+      global.expect(provided.draggableStyle).toEqual(expected);
+    });
+
+    it('should move quickly if it can animate', () => {
+      // $ExpectError - spread operator on exact type
+      const mapProps: MapProps = {
+        ...draggingMapProps,
+        canAnimate: true,
+      };
+
+      const wrapper = mountDraggable({
+        mapProps,
+      });
+
+      expect(wrapper.find(Moveable).props().speed).toBe('FAST');
+    });
+
+    it('should move by the provided offset on mount', () => {
+      const myMock = jest.fn();
       const expected: DraggingStyle = {
         // property under test:
         transform: `translate(${draggingMapProps.offset.x}px, ${draggingMapProps.offset.y}px)`,
@@ -768,14 +911,13 @@ describe('Draggable - unconnected', () => {
 
       mountDraggable({
         mapProps: draggingMapProps,
-        WrappedComponent: Stubber,
+        WrappedComponent: getStubber(myMock),
       });
       // finish moving to the initial position
       requestAnimationFrame.flush();
 
       // first call is for the setRef
-
-      const provided: Provided = myMock.mock.calls[myMock.mock.calls.length - 1][0].provided;
+      const provided: Provided = getLastCall(myMock)[0].provided;
       const style: DraggingStyle = (provided.draggableStyle: any);
 
       expect(style).toEqual(expected);
@@ -819,25 +961,138 @@ describe('Draggable - unconnected', () => {
       });
     });
 
-    it('should give a placeholder the same dimension of the element being moved', () => {
+    it('should let consumers know that the item is dragging', () => {
       const myMock = jest.fn();
-      const Stubber = getStubber(myMock);
 
       mountDraggable({
         mapProps: draggingMapProps,
-        WrappedComponent: Stubber,
+        WrappedComponent: getStubber(myMock),
       });
-      // finish moving to the initial position
+
+      const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
+      expect(snapshot.isDragging).toBe(true);
+    });
+  });
+
+  describe('drop animating', () => {
+    it('should render a placeholder', () => {
+      const myMock = jest.fn();
+
+      mountDraggable({
+        mapProps: dropAnimatingMapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+
+      const provided: Provided = getLastCall(myMock)[0].provided;
+
+      // $ExpectError - because we do not have the correct React type for placeholder
+      expect(provided.placeholder.type).toBe(Placeholder);
+    });
+
+    it('should move back to home with standard speed', () => {
+      const wrapper = mountDraggable({
+        mapProps: dropAnimatingMapProps,
+      });
+
+      expect(wrapper.find(Moveable).props().speed).toBe('STANDARD');
+    });
+
+    it('should be on top of draggables that are not being dragged', () => {
+      // not dragging
+      const notDraggingMock = jest.fn();
+      mountDraggable({
+        mapProps: somethingElseDraggingMapProps,
+        WrappedComponent: getStubber(notDraggingMock),
+      });
+      const notDraggingProvided: Provided = getLastCall(notDraggingMock)[0].provided;
+      const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
+      // returning home
+      const dropAnimatingMock = jest.fn();
+      mountDraggable({
+        mapProps: dropAnimatingMapProps,
+        WrappedComponent: getStubber(dropAnimatingMock),
+      });
+      const droppingProvided: Provided = getLastCall(dropAnimatingMock)[0].provided;
+      const droppingStyle: DraggingStyle = (droppingProvided.draggableStyle : any);
+      const expectedNotDraggingStyle: NotDraggingStyle = {
+        transition: css.outOfTheWay,
+        transform: null,
+        pointerEvents: 'none',
+      };
+
+      expect(droppingStyle.zIndex).toBe(zIndexOptions.dropAnimating);
+      expect(notDraggingStyle).toEqual(expectedNotDraggingStyle);
+    });
+
+    it('should be positioned in the same spot as before', () => {
+      const myMock = jest.fn();
+      const offset = dropAnimatingMapProps.offset;
+      const expected: DraggingStyle = {
+        position: 'fixed',
+        boxSizing: 'border-box',
+        zIndex: zIndexOptions.dropAnimating,
+        width: dimension.page.withMargin.width,
+        height: dimension.page.withMargin.height,
+        top: dimension.page.withMargin.top,
+        left: dimension.page.withMargin.left,
+        transform: `translate(${offset.x}px, ${offset.y}px)`,
+        pointerEvents: 'none',
+      };
+
+      mountDraggable({
+        mapProps: dropAnimatingMapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+      // finish the animation
       requestAnimationFrame.flush();
 
       const provided: Provided = getLastCall(myMock)[0].provided;
-      // $ExpectError - because we do not have the correct React type for placeholder
-      expect(provided.placeholder.props.height).toBe(dimension.page.withMargin.height);
-      // $ExpectError
-      expect(provided.placeholder.props.width).toBe(dimension.page.withMargin.width);
+      global.expect(provided.draggableStyle).toEqual(expected);
     });
 
-    describe('is not dragging - and nothing else is (default rest)', () => {
+    it('should let consumers know that the item is still dragging', () => {
+      const myMock = jest.fn();
+
+      mountDraggable({
+        mapProps: dropAnimatingMapProps,
+        WrappedComponent: getStubber(myMock),
+      });
+
+      const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
+      expect(snapshot.isDragging).toBe(true);
+    });
+  });
+
+  describe('drop complete', () => {
+    const myMock = jest.fn();
+    mountDraggable({
+      mapProps: dropCompleteMapProps,
+      WrappedComponent: getStubber(myMock),
+    });
+    const provided: Provided = getLastCall(myMock)[0].provided;
+    const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
+
+    it('should not render a placeholder', () => {
+      expect(provided.placeholder).toBe(null);
+    });
+
+    it('should not be moved from its original position', () => {
+      const style: NotDraggingStyle = {
+        transform: null,
+        transition: null,
+        pointerEvents: 'auto',
+      };
+
+      expect(provided.draggableStyle).toEqual(style);
+    });
+
+    it('should let consumers know that the item is not dragging', () => {
+      expect(snapshot.isDragging).toBe(false);
+    });
+  });
+
+  describe('is not dragging', () => {
+    describe('nothing else is dragging', () => {
       let provided: Provided;
       let snapshot: StateSnapshot;
 
@@ -847,8 +1102,8 @@ describe('Draggable - unconnected', () => {
           mapProps: defaultMapProps,
           WrappedComponent: getStubber(myMock),
         });
-        provided = myMock.mock.calls[myMock.mock.calls.length - 1][0].provided;
-        snapshot = myMock.mock.calls[myMock.mock.calls.length - 1][0].snapshot;
+        provided = getLastCall(myMock)[0].provided;
+        snapshot = getLastCall(myMock)[0].snapshot;
       });
 
       it('should not render a placeholder', () => {
@@ -870,7 +1125,7 @@ describe('Draggable - unconnected', () => {
       });
     });
 
-    describe('is not dragging - and something else is', () => {
+    describe('something else is dragging', () => {
       describe('not moving out of the way', () => {
         let wrapper: ReactWrapper;
         let provided: Provided;
@@ -882,8 +1137,8 @@ describe('Draggable - unconnected', () => {
             mapProps: somethingElseDraggingMapProps,
             WrappedComponent: getStubber(myMock),
           });
-          provided = myMock.mock.calls[myMock.mock.calls.length - 1][0].provided;
-          snapshot = myMock.mock.calls[myMock.mock.calls.length - 1][0].snapshot;
+          provided = getLastCall(myMock)[0].provided;
+          snapshot = getLastCall(myMock)[0].snapshot;
         });
 
         it('should not render a placeholder', () => {
@@ -906,7 +1161,7 @@ describe('Draggable - unconnected', () => {
         it('should instantly move out of the way without css if animation is disabled', () => {
           const myMock = jest.fn();
           const CustomStubber = getStubber(myMock);
-        // $ExpectError - using spread
+          // $ExpectError - using spread
           const mapProps: MapProps = {
             ...somethingElseDraggingMapProps,
             canAnimate: false,
@@ -1007,265 +1262,6 @@ describe('Draggable - unconnected', () => {
         it('should let consumers know that the item is not dragging', () => {
           expect(snapshot.isDragging).toBe(false);
         });
-      });
-    });
-
-    describe('is dragging', () => {
-      it('should render a placeholder', () => {
-        const myMock = jest.fn();
-
-        mountDraggable({
-          mapProps: draggingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-
-        const provided: Provided = getLastCall(myMock)[0].provided;
-        // $ExpectError - because we do not have the correct React type for placeholder
-        expect(provided.placeholder.type).toBe(Placeholder);
-      });
-
-      it('should be above Draggables that are not dragging', () => {
-        // dragging item
-        const draggingMock = jest.fn();
-        mountDraggable({
-          mapProps: draggingMapProps,
-          WrappedComponent: getStubber(draggingMock),
-        });
-        const draggingProvided: Provided = getLastCall(draggingMock)[0].provided;
-        const draggingStyle: DraggingStyle = (draggingProvided.draggableStyle : any);
-
-        // not dragging item
-        const notDraggingMock = jest.fn();
-        mountDraggable({
-          mapProps: somethingElseDraggingMapProps,
-          WrappedComponent: getStubber(notDraggingMock),
-        });
-        const notDraggingProvided: Provided = getLastCall(notDraggingMock)[0].provided;
-        const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
-        const notDraggingExpected: NotDraggingStyle = {
-          transform: null,
-          transition: css.outOfTheWay,
-          pointerEvents: 'none',
-        };
-
-        expect(draggingStyle.zIndex).toBe(zIndexOptions.dragging);
-        expect(notDraggingStyle).toEqual(notDraggingExpected);
-      });
-
-      it('should be above Draggables that are drop animating', () => {
-        const draggingMock = jest.fn();
-        mountDraggable({
-          mapProps: draggingMapProps,
-          WrappedComponent: getStubber(draggingMock),
-        });
-        const draggingProvided: Provided = getLastCall(draggingMock)[0].provided;
-        const returningHomeMock = jest.fn();
-        mountDraggable({
-          mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(returningHomeMock),
-        });
-        const returningHomeProvided: Provided = getLastCall(returningHomeMock)[0].provided;
-
-        // $ExpectError - not type checking draggableStyle
-        expect(draggingProvided.draggableStyle.zIndex)
-          // $ExpectError - not type checking draggableStyle
-          .toBeGreaterThan(returningHomeProvided.draggableStyle.zIndex);
-      });
-
-      it('should be positioned in the same spot as before the drag', () => {
-        const myMock = jest.fn();
-        mountDraggable({
-          mapProps: draggingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-        const expected: DraggingStyle = {
-          position: 'fixed',
-          zIndex: zIndexOptions.dragging,
-          boxSizing: 'border-box',
-          width: dimension.page.withMargin.width,
-          height: dimension.page.withMargin.height,
-          top: dimension.page.withMargin.top,
-          left: dimension.page.withMargin.left,
-          transform: null,
-          pointerEvents: 'none',
-        };
-
-        const provided: Provided = getLastCall(myMock)[0].provided;
-        expect(provided.draggableStyle).toEqual(expected);
-      });
-
-      it('should be positioned in the correct offset while dragging', () => {
-        const myMock = jest.fn();
-        const offset: Position = { x: 10, y: 20 };
-        // $ExpectError - using spread
-        const mapProps: MapProps = {
-          ...draggingMapProps,
-          offset,
-        };
-        mountDraggable({
-          mapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-        // release frame for animation
-        requestAnimationFrame.step();
-
-        const expected: DraggingStyle = {
-          position: 'fixed',
-          zIndex: zIndexOptions.dragging,
-          boxSizing: 'border-box',
-          width: dimension.page.withMargin.width,
-          height: dimension.page.withMargin.height,
-          top: dimension.page.withMargin.top,
-          left: dimension.page.withMargin.left,
-          transform: `translate(${offset.x}px, ${offset.y}px)`,
-          pointerEvents: 'none',
-        };
-
-        const provided: Provided = getLastCall(myMock)[0].provided;
-        global.expect(provided.draggableStyle).toEqual(expected);
-      });
-
-      it('should move quickly if it can animate', () => {
-          // $ExpectError - spread operator on exact type
-        const mapProps: MapProps = {
-          ...draggingMapProps,
-          canAnimate: true,
-        };
-
-        const wrapper = mountDraggable({
-          mapProps,
-        });
-
-        expect(wrapper.find(Moveable).props().speed).toBe('FAST');
-      });
-
-      it('should let consumers know that the item is dragging', () => {
-        const myMock = jest.fn();
-
-        mountDraggable({
-          mapProps: draggingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-
-        const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
-        expect(snapshot.isDragging).toBe(true);
-      });
-    });
-
-    describe('drop animating', () => {
-      it('should render a placeholder', () => {
-        const myMock = jest.fn();
-
-        mountDraggable({
-          mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-
-        const provided: Provided = getLastCall(myMock)[0].provided;
-
-        // $ExpectError - because we do not have the correct React type for placeholder
-        expect(provided.placeholder.type).toBe(Placeholder);
-      });
-
-      it('should move back to home with standard speed', () => {
-        const wrapper = mountDraggable({
-          mapProps: dropAnimatingMapProps,
-        });
-
-        expect(wrapper.find(Moveable).props().speed).toBe('STANDARD');
-      });
-
-      it('should be on top of draggables that are not being dragged', () => {
-        // not dragging
-        const notDraggingMock = jest.fn();
-        mountDraggable({
-          mapProps: somethingElseDraggingMapProps,
-          WrappedComponent: getStubber(notDraggingMock),
-        });
-        const notDraggingProvided: Provided = getLastCall(notDraggingMock)[0].provided;
-        const notDraggingStyle: NotDraggingStyle = (notDraggingProvided.draggableStyle : any);
-        // returning home
-        const dropAnimatingMock = jest.fn();
-        mountDraggable({
-          mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(dropAnimatingMock),
-        });
-        const droppingProvided: Provided = getLastCall(dropAnimatingMock)[0].provided;
-        const droppingStyle: DraggingStyle = (droppingProvided.draggableStyle : any);
-        const expectedNotDraggingStyle: NotDraggingStyle = {
-          transition: css.outOfTheWay,
-          transform: null,
-          pointerEvents: 'none',
-        };
-
-        expect(droppingStyle.zIndex).toBe(zIndexOptions.dropAnimating);
-        expect(notDraggingStyle).toEqual(expectedNotDraggingStyle);
-      });
-
-      it('should be positioned absolutely in the same spot as before', () => {
-        const myMock = jest.fn();
-        const offset = dropAnimatingMapProps.offset;
-        const expected: DraggingStyle = {
-          position: 'fixed',
-          boxSizing: 'border-box',
-          zIndex: zIndexOptions.dropAnimating,
-          width: dimension.page.withMargin.width,
-          height: dimension.page.withMargin.height,
-          top: dimension.page.withMargin.top,
-          left: dimension.page.withMargin.left,
-          transform: `translate(${offset.x}px, ${offset.y}px)`,
-          pointerEvents: 'none',
-        };
-
-        mountDraggable({
-          mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-        // finish the animation
-        requestAnimationFrame.flush();
-
-        const provided: Provided = getLastCall(myMock)[0].provided;
-        global.expect(provided.draggableStyle).toEqual(expected);
-      });
-
-      it('should let consumers know that the item is still dragging', () => {
-        const myMock = jest.fn();
-
-        mountDraggable({
-          mapProps: dropAnimatingMapProps,
-          WrappedComponent: getStubber(myMock),
-        });
-
-        const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
-        expect(snapshot.isDragging).toBe(true);
-      });
-    });
-
-    describe('drop complete', () => {
-      const myMock = jest.fn();
-      mountDraggable({
-        mapProps: dropCompleteMapProps,
-        WrappedComponent: getStubber(myMock),
-      });
-      const provided: Provided = getLastCall(myMock)[0].provided;
-      const snapshot: StateSnapshot = getLastCall(myMock)[0].snapshot;
-
-      it('should not render a placeholder', () => {
-        expect(provided.placeholder).toBe(null);
-      });
-
-      it('should not be moved from its original position', () => {
-        const style: NotDraggingStyle = {
-          transform: null,
-          transition: null,
-          pointerEvents: 'auto',
-        };
-
-        expect(provided.draggableStyle).toEqual(style);
-      });
-
-      it('should let consumers know that the item is not dragging', () => {
-        expect(snapshot.isDragging).toBe(false);
       });
     });
   });

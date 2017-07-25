@@ -260,8 +260,10 @@ export default class Draggable extends Component {
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
     ): Provided => {
+      const useDraggingStyle: boolean = isDragging || isDropAnimating;
+
       const draggableStyle: DraggableStyle = (() => {
-        if (!isDragging) {
+        if (!useDraggingStyle) {
           return this.getNotDraggingStyle(
             canAnimate,
             movementStyle,
@@ -276,7 +278,7 @@ export default class Draggable extends Component {
 
       const provided: Provided = {
         innerRef: this.setRef,
-        placeholder: (isDragging || isDropAnimating) ? this.getPlaceholder() : null,
+        placeholder: useDraggingStyle ? this.getPlaceholder() : null,
         dragHandleProps,
         draggableStyle,
       };
@@ -285,7 +287,7 @@ export default class Draggable extends Component {
   )
 
   getSnapshot = memoizeOne((isDragging: boolean, isDropAnimating: boolean): StateSnapshot => ({
-    isDragging: isDragging || isDropAnimating,
+    isDragging: (isDragging || isDropAnimating),
   }))
 
   getSpeed = memoizeOne(

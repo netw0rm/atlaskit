@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import { getEmojis, getStandardEmojis, getAtlassianEmojis } from './story-data';
+import { getEmojis, getStandardEmojis, getAtlassianEmojis } from '../src/support/story-data';
 
 import EmojiPreview from '../src/components/common/EmojiPreview';
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';

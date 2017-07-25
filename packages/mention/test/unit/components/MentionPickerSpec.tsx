@@ -5,9 +5,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
-import mentionData, { mentionDataSize } from '../_mention-data';
+import mentionData, { mentionDataSize } from '../../../src/support/mention-data';
 import { HttpError } from '../../../src/api/MentionResource';
-import MentionResource from '../_mock-ak-mention-resource';
+import MentionResource from '../../../src/support/MockMentionResource';
 import MentionPicker, { OnClose, OnOpen, Props, State } from '../../../src/components/MentionPicker';
 import MentionList from '../../../src/components/MentionList';
 import MentionListError from '../../../src/components/MentionListError';

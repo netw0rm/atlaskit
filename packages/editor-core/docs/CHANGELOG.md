@@ -1,17 +1,20 @@
 # @atlaskit/editor-core
 
 ## Unreleased
-
+* New insert-block menu (ED-2059)
 * fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
+* Add border-top also to the editor when it reached max-height.
 
 ## 39.1.3 (2017-07-14)
 
 * fix; dropzone configuration in picker facade.
+* docs; add interactive UI to renderer story
+* fix; render codeBlock if language is null (issues closed: ed-2240)
 
 ## 39.1.2 (2017-07-14)
 
 * fix; show URL on link hover (issues closed: ed-2220)
-
+* bug fix; render codeBlock if language is null (issues closed: ed-2240)
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)

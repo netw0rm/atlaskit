@@ -107,6 +107,9 @@ export default class StatelessMultiSelect extends PureComponent {
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Set whether the dropdown should flip its position when there is not enough
+    room in its default position. */
+    shouldFlip: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
      * inside the autocomplete field. If set to true then no additional footer from the 'footer'
      * property would be rendered.*/
@@ -119,6 +122,7 @@ export default class StatelessMultiSelect extends PureComponent {
     filterValue: '',
     footer: {},
     shouldFocus: false,
+    shouldFlip: true,
     isOpen: false,
     items: [],
     label: '',
@@ -417,6 +421,7 @@ export default class StatelessMultiSelect extends PureComponent {
       selectedItems,
       shouldAllowCreateItem,
       shouldFitContainer,
+      shouldFlip,
     } = this.props;
 
     const { groupedItems, isFocused, focusedItemIndex } = this.state;
@@ -454,6 +459,7 @@ export default class StatelessMultiSelect extends PureComponent {
           onOpenChange={this.onOpenChange}
           position={position}
           shouldFitContainer
+          shouldFlip={shouldFlip}
           trigger={
             <Trigger
               appearance={appearance}

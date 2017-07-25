@@ -57,7 +57,7 @@ export default class Mention extends PureComponent<Props, {}> {
       handleOnMouseLeave,
       props,
     } = this;
-    const { text } = props;
+    const { text, id, accessLevel } = props;
     const mentionType: MentionType = this.getMentionType();
 
     const mentionComponent = (
@@ -72,7 +72,10 @@ export default class Mention extends PureComponent<Props, {}> {
     );
 
     return (
-      <MentionContainer>
+      <MentionContainer
+        data-mention-id={id}
+        data-access-level={accessLevel}
+      >
         { mentionType === MentionType.RESTRICTED ?
           <Tooltip
               description={`${props.text} won't be notified as they have no access`}

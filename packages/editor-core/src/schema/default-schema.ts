@@ -25,6 +25,8 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'tableCell',
     'tableHeader',
     'tableRow',
+    'decisionList',
+    'decisionItem',
     'unknownBlock',
   ],
   marks: [

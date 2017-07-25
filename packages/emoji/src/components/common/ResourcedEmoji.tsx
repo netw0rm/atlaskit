@@ -1,23 +1,53 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import Emoji from './Emoji';
+import { EmojiContext } from './internal-types';
+import CachingEmoji from './CachingEmoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
+import LoadingEmojiCompoent, { Props as LoadingProps, State as LoadingState } from './LoadingEmojiComponent';
 import { EmojiId, OptionalEmojiDescription } from '../../types';
+import { isPromise } from '../../type-helpers';
 import EmojiProvider from '../../api/EmojiResource';
 
-export interface Props {
+export interface BaseResourcedEmojiProps {
   emojiId: EmojiId;
-  emojiProvider: Promise<EmojiProvider>;
   showTooltip?: boolean;
 }
 
-export interface State {
+export interface Props extends BaseResourcedEmojiProps, LoadingProps {
+}
+
+interface ComponentProps extends BaseResourcedEmojiProps {
+  emojiProvider: EmojiProvider;
+}
+
+export interface State extends LoadingState {
   emoji: OptionalEmojiDescription;
   loaded: boolean;
 }
 
-export default class ResourcedEmoji extends PureComponent<Props, State> {
+export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
+  renderLoading() {
+    const { shortName } = this.props.emojiId;
+    return <EmojiPlaceholder shortName={shortName} showTooltip={this.props.showTooltip}/>;
+  }
+
+  renderLoaded(loadedEmojiProvider: EmojiProvider) {
+    const { emojiProvider, ...otherProps } = this.props;
+    return (
+      <ResourcedEmojiComponent
+        {...otherProps}
+        emojiProvider={loadedEmojiProvider}
+      />
+    );
+  }
+}
+
+class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
+  static childContextTypes = {
+      emoji: React.PropTypes.object
+  };
+
   private ready = false;
 
   constructor(props) {
@@ -29,21 +59,34 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     };
   }
 
-  private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, emojiId: EmojiId) {
-    if (emojiProviderPromise) {
+  getChildContext(): EmojiContext {
+    return {
+      emoji: {
+        emojiProvider: this.props.emojiProvider
+      }
+    };
+  }
+
+  private refreshEmoji(emojiProvider: EmojiProvider, emojiId: EmojiId) {
+    const foundEmoji = emojiProvider.findByEmojiId(emojiId);
+    if (isPromise(foundEmoji)) {
       this.setState({
         loaded: false,
       });
-      emojiProviderPromise.then(emojiProvider => {
-        emojiProvider.findByEmojiId(emojiId).then(emoji => {
-          if (this.ready) {
-            // don't update state if component was unmounted
-            this.setState({
-              emoji,
-              loaded: true,
-            });
-          }
-        });
+      foundEmoji.then(emoji => {
+        if (this.ready) {
+          // don't update state if component was unmounted
+          this.setState({
+            emoji,
+            loaded: true,
+          });
+        }
+      });
+    } else {
+      // loaded
+      this.setState({
+        emoji: foundEmoji,
+        loaded: true,
       });
     }
   }
@@ -59,23 +102,41 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     this.ready = false;
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: ComponentProps) {
     if (nextProps.emojiProvider !== this.props.emojiProvider || nextProps.emojiId !== this.props.emojiId) {
       this.refreshEmoji(nextProps.emojiProvider, nextProps.emojiId);
     }
   }
 
   render() {
+    const { emojiId, showTooltip } = this.props;
     const { emoji, loaded } = this.state;
+    const { shortName, fallback } = emojiId;
     if (emoji) {
-      return (<Emoji emoji={emoji} showTooltip={this.props.showTooltip} />);
+      return this.emojiWrapper((
+        <CachingEmoji
+          emoji={emoji}
+          showTooltip={showTooltip}
+        />
+      ));
     } else if (loaded) {
       // loaded but not found - render fallback
-      const { shortName, fallback } = this.props.emojiId;
-      return (<span>{fallback || shortName}</span>);
+      return this.emojiWrapper((
+        <span>{fallback || shortName}</span>
+      ));
     }
 
-    const { shortName } = this.props.emojiId;
-    return <EmojiPlaceholder shortName={shortName} showTooltip={this.props.showTooltip}/>;
+    return this.emojiWrapper((
+      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip}/>
+    ));
+  }
+
+  private emojiWrapper(element: JSX.Element) {
+    const { shortName, id, fallback } = this.props.emojiId;
+    return (
+      <span data-emoji-id={id} data-emoji-short-name={shortName} data-emoji-text={fallback || shortName}>
+        {element}
+      </span>
+    );
   }
 }

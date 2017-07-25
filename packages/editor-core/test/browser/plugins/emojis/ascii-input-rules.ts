@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import asciiEmojiPlugins from '../../../../src/plugins/emojis/ascii-input-rules';
+import ProviderFactory from '../../../../src/providerFactory';
 import {
   chaiPlugin,
   insertText,
@@ -16,8 +17,11 @@ import {
 import defaultSchema from '../../../../src/test-helper/schema';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
+const providerFactory = new ProviderFactory();
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
-const plugins = asciiEmojiPlugins(defaultSchema, emojiProvider);
+providerFactory.setProvider('emojiProvider', emojiProvider);
+
+const plugins = asciiEmojiPlugins(defaultSchema, providerFactory);
 
 chai.use(chaiPlugin);
 

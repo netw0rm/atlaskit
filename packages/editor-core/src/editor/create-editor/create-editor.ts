@@ -1,16 +1,21 @@
+import { analyticsService, AnalyticsHandler } from '../../analytics';
 import { EditorState, EditorView, Schema, MarkSpec, Plugin } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
 import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ErrorReporter from '../../utils/error-reporter';
 import {
   basePlugin,
+  analyticsPastePlugin,
   blockTypePlugin,
   textFormattingPlugin,
   mentionsPlugin,
   emojiPlugin,
+  tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
   onChangePlugin,
-  mediaPlugin
+  mediaPlugin,
+  hyperlinkPlugin,
+  codeBlockPlugin
 } from '../plugins';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
@@ -32,10 +37,18 @@ export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]
 }
 
 export function createPluginsList(props: EditorProps): EditorPlugin[] {
-  const plugins = [basePlugin, blockTypePlugin];
+  const plugins = [analyticsPastePlugin, basePlugin, blockTypePlugin];
 
   if (props.allowTextFormatting) {
     plugins.push(textFormattingPlugin);
+  }
+
+  if (props.allowHyperlinks) {
+    plugins.push(hyperlinkPlugin);
+  }
+
+  if (props.allowCodeBlocks) {
+    plugins.push(codeBlockPlugin);
   }
 
   if (props.mentionProvider) {
@@ -44,6 +57,10 @@ export function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.emojiProvider) {
     plugins.push(emojiPlugin);
+  }
+
+  if (props.allowTasksAndDecisions) {
+    plugins.push(tasksAndDecisionsPlugin);
   }
 
   if (props.saveOnEnter) {
@@ -138,9 +155,16 @@ export function createErrorReporter(errorReporterHandler) {
   return errorReporter;
 }
 
+export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
+  analyticsService.handler = analyticsHandler || (() => {});
+  analyticsService.trackEvent('atlassian.editor.start');
+}
+
 export default function createEditor(place: HTMLElement, props: EditorProps, providerFactory: ProviderFactory) {
   const editorConfig = processPluginsList(createPluginsList(props));
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
+
+  initAnalytics(props.analyticsHandler);
 
   const errorReporter = createErrorReporter(props.errorReporterHandler);
   const schema = createSchema(editorConfig);

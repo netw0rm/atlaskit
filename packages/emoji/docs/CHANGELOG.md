@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* feature; skin tone selection stored in EmojiResource propagated to typeahead (issues closed: fs-1128)
+* breaking; EmojiProvider requires getter/setter for remembering tone selection
+* breaking; skin tone selection made in the picker is stored in the EmojiResource (issues closed: fs-1127)
+* feature; emojis with skin variations in the picker (issues closed: fs-1126)
 ## 18.4.2 (2017-07-10)
 
 

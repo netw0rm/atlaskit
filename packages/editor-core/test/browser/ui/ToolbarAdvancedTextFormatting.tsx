@@ -29,7 +29,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 
-    it('should have 4 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
+    it('should have 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
@@ -41,10 +41,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(5);
     });
 
-    it('should return only 3 items if only pluginStateTextFormatting is defined', () => {
+    it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
@@ -55,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(3);
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
     });
 
     it('should return only 1 items if only pluginStateClearFormatting is defined', () => {

@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import {getUtf32Codes, getUtf32CodeUnits, adjustSize} from '../../src/util';
 import {expect} from 'chai';
 

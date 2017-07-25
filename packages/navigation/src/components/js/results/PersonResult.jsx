@@ -15,6 +15,7 @@ const noOp = () => {};
 export default class PersonResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
+    href: PropTypes.string,
     isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     isTabbingDisabled: PropTypes.bool,
@@ -25,7 +26,7 @@ export default class PersonResult extends PureComponent {
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     presenceMessage: PropTypes.string,
-    presenceState: PropTypes.oneOf(['none', 'online', 'busy', 'offline']),
+    presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     type: PropTypes.string.isRequired,
   }
@@ -38,7 +39,6 @@ export default class PersonResult extends PureComponent {
     onClick: noOp,
     onMouseEnter: noOp,
     onMouseLeave: noOp,
-    presenceState: 'none',
   }
 
   getMention = () => (
@@ -56,6 +56,7 @@ export default class PersonResult extends PureComponent {
 
   render() {
     const {
+      href,
       isHoverStylesDisabled,
       isSelected,
       isTabbingDisabled,
@@ -70,6 +71,7 @@ export default class PersonResult extends PureComponent {
     return (
       <ResultBase
         caption={this.getMention()}
+        href={href}
         icon={this.getAvatar()}
         isHoverStylesDisabled={isHoverStylesDisabled}
         isSelected={isSelected}

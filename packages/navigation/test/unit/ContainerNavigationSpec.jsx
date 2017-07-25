@@ -1,10 +1,8 @@
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import createStub from 'raf-stub';
 import styled from 'styled-components';
 import ContainerNavigation from '../../src/components/js/ContainerNavigation';
-import ContainerHeader from '../../src/components/js/ContainerHeader';
 import { globalSecondaryActions } from '../../src/shared-variables';
 import { isCollapsed } from '../../src/theme/util';
 import * as presets from '../../src/theme/presets';
@@ -114,66 +112,6 @@ describe('<ContainerNavigation />', () => {
 
       wrapper.setProps({ globalSecondaryActions: [<div />] });
       expect(wrapper.find('GlobalSecondaryActions').length).toBe(1);
-    });
-  });
-
-  describe('is scrolled', () => {
-    const raf = createStub();
-    const originalRaf = window.requestAnimationFrame;
-    const originalCaf = window.cancelAnimationFrame;
-    let wrapper;
-    let node;
-
-    const triggerScroll = (el, scrollTop) => {
-      el.scrollTop = scrollTop;
-      // currently not working with new CustomEvent() so using an older syntax
-      const event = document.createEvent('Event');
-      event.initEvent('scroll', true, true);
-      el.dispatchEvent(event);
-    };
-
-    const isHeaderScrolled = testWrapper =>
-      testWrapper.find(ContainerHeader).prop('isContentScrolled');
-
-    beforeAll(() => { // eslint-disable-line no-undef
-      window.requestAnimationFrame = raf.add;
-      window.cancelAnimationFrame = raf.remove;
-    });
-
-    beforeEach(() => {
-      wrapper = mount(
-        <ContainerNavigation
-          headerComponent={() => <div />}
-        />
-      );
-      node = wrapper.find('ContainerNavigationInner').getDOMNode();
-    });
-
-    afterEach(() => {
-      raf.reset();
-    });
-
-    afterAll(() => { // eslint-disable-line no-undef
-      window.requestAnimationFrame = originalRaf;
-      window.cancelAnimationFrame = originalCaf;
-    });
-
-    it('should let the header know when the container scrolls', () => {
-      triggerScroll(node, 200);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(true);
-    });
-    it('should let the header know when the container is no longer scrolled', () => {
-      triggerScroll(node, 200);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(true);
-
-      triggerScroll(node, 0);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(false);
     });
   });
 });

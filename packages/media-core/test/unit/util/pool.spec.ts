@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import {Pool} from '../../../src/providers/util/pool';

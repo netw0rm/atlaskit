@@ -11,7 +11,7 @@ const getOutline = (props) => {
   return focusOutline(provided.item.focus.outline);
 };
 
-const DrawerTriggerInner = styled.button`
+const DrawerTriggerInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

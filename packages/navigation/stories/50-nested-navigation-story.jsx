@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import BasicNestedNavigation from './components/nested-navigation/BasicNestedNavigation';
 import LazyLoadNestedNavigation from './components/nested-navigation/LazyLoadNestedNavigation';
 import NestedNavigationWithInlineDialog from './components/nested-navigation/NestedNavigationWithInlineDialog';
+import NestedNavigationWithDrawers from './components/nested-navigation/NestedNavigationWithDrawers';
 import ReactRouterNestedNavigation from './components/nested-navigation/ReactRouterNestedNavigation';
 import { name } from '../package.json';
 
@@ -20,5 +21,11 @@ storiesOf(`${name}/NestedNavigation`, module)
   ))
   .add('inline-dialog in nested navigation', () => (
     <NestedNavigationWithInlineDialog />
+  ))
+  .add('tooltip in nested navigation', () => (
+    <BasicNestedNavigation withtootips />
+  ))
+  .add('nested navigation with drawers', () => (
+    <NestedNavigationWithDrawers />
   )
 );

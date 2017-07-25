@@ -1,4 +1,5 @@
 export { default as basePlugin } from './base';
+export { default as analyticsPastePlugin } from './analytics-paste';
 export { default as blockTypePlugin } from './block-type';
 export { default as textFormattingPlugin } from './text-formatting';
 export { default as mentionsPlugin } from './mentions';
@@ -6,3 +7,6 @@ export { default as emojiPlugin } from './emoji';
 export { default as saveOnEnterPlugin } from './save-on-enter';
 export { default as onChangePlugin } from './on-change';
 export { default as mediaPlugin } from './media';
+export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';
+export { default as hyperlinkPlugin } from './hyperlink';
+export { default as codeBlockPlugin } from './code-block';

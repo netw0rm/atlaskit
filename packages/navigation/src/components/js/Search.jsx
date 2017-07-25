@@ -16,14 +16,19 @@ type Props = {|
   isLoading?: boolean,
   /** Function to be called when the search input loses focus. */
   onBlur: () => mixed,
-  /** Function to be called when a change action occurs. */
-  onChange: () => mixed,
+  /** Function to be called when a input action occurs (native `oninput` event). */
+  onInput: () => mixed,
   /** Function to be called when the user hits the escape key.  */
   onKeyDown: () => mixed,
   /** Placeholder text for search field. */
   placeholder?: string,
   /** Current value of search field. */
   value?: string,
+|}
+
+type State = {|
+  /** Current value of search field. */
+  value: string
 |}
 
 export default class Search extends PureComponent {
@@ -33,14 +38,27 @@ export default class Search extends PureComponent {
     placeholder: 'Search',
   }
 
+  state: State = {
+    value: this.props.value,
+  }
+
   onInputKeyDown = (event) => {
+    const { onKeyDown } = this.props;
     if (controlKeys.indexOf(event.key) === -1) {
       return;
     }
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(event);
+    if (onKeyDown) {
+      onKeyDown(event);
     }
     event.stopPropagation();
+  }
+
+  onInput = (event) => {
+    const { onInput } = this.props;
+    this.setState({ value: event.target.value });
+    if (onInput) {
+      onInput(event);
+    }
   }
 
   setInputRef = (ref) => {
@@ -52,11 +70,12 @@ export default class Search extends PureComponent {
   render() {
     const {
       children,
-      value,
       onBlur,
-      onChange,
       placeholder,
+      isLoading,
     } = this.props;
+
+    const { value } = this.state;
 
     return (
       <SearchInner>
@@ -67,14 +86,14 @@ export default class Search extends PureComponent {
             appearance="none"
             isFitContainerWidthEnabled
             isPaddingDisabled
-            isLoading={this.props.isLoading}
+            isLoading={isLoading}
           >
             <SearchFieldBaseInner>
               <SearchInput
                 autoFocus
                 innerRef={this.setInputRef}
                 onBlur={onBlur}
-                onChange={onChange}
+                onInput={this.onInput}
                 placeholder={placeholder}
                 spellCheck={false}
                 type="text"

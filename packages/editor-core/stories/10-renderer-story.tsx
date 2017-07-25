@@ -1,7 +1,8 @@
-import { action, storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
-import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
+
 import * as React from 'react';
+import RendererDemo from './renderer-demo';
 import { name } from '../package.json';
 
 import {
@@ -20,6 +21,8 @@ import {
   BulletList,
   Blockquote,
   CodeBlock,
+  DecisionItem,
+  DecisionList,
   Emoji,
   HardBreak,
   Heading,
@@ -33,59 +36,13 @@ import {
 
 import { EmojiProps } from '../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../src/providerFactory';
-import Renderer from '../src/ui/Renderer';
-import { document } from './story-data';
-
-const mentionProvider = Promise.resolve({
-  shouldHighlightMention(mention) {
-    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
-  }
-});
-
-const mediaProvider = Promise.resolve({
-  viewContext: Promise.resolve({
-    clientId: defaultClientId,
-    serviceHost: defaultServiceHost,
-    tokenProvider: StoryBookTokenProvider.tokenProvider,
-  })
-});
-
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
 
 storiesOf(name, module)
   .add('renderer', () => {
-    const providerFactory = new ProviderFactory();
-    providerFactory.setProvider('mentionProvider', mentionProvider);
-    providerFactory.setProvider('mediaProvider', mediaProvider);
-    providerFactory.setProvider('emojiProvider', emojiProvider);
-
-    const eventHandlers = {
-      mention: {
-        onClick: action('onClick'),
-        onMouseEnter: action('onMouseEnter'),
-        onMouseLeave: action('onMouseLeave'),
-      },
-      media: {
-        onClick: action('onClick'),
-      },
-    };
-
-    return (
-      <div>
-        <Renderer
-          document={document}
-          eventHandlers={eventHandlers}
-          dataProviders={providerFactory}
-        />
-      </div>
-    );
+    return <RendererDemo withProviders={true}/>;
   })
   .add('renderer without providers', () => {
-    return (
-      <div>
-        <Renderer document={document}/>
-      </div>
-    );
+    return <RendererDemo withProviders={false}/>;
   })
   .add('renderer/marks/em', () => (
     <Em>This is italic</Em>
@@ -533,6 +490,16 @@ storiesOf(name, module)
       <Panel panelType="tip">This is a tip panel</Panel>
       <Panel panelType="warning">This is a warning panel</Panel>
     </div>
+  ))
+  .add('nodes/decisionList', () => (
+    <DecisionList>
+      <DecisionItem>
+        Hello <b>world</b>.
+      </DecisionItem>
+      <DecisionItem>
+        This is another decision.
+      </DecisionItem>
+    </DecisionList>
   ))
   .add('nodes/rule', () => (
     <Rule />

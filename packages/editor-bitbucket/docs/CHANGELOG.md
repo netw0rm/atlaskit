@@ -1,6 +1,8 @@
 # @atlaskit/editor-bitbucket
 
 ## Unreleased
+* Update BB editor with a max height (ED-1949).
+
 
 ## 2.3.4 (2017-07-12)
 

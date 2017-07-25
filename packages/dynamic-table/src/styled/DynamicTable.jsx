@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { gridUnit, baselineUnit } from './constants';
+import { baselineUnit, spacing } from './constants';
 
 export const Table = styled.table`
   ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
@@ -13,7 +13,7 @@ export const Caption = styled.caption`
   font-weight: 500;
   letter-spacing: -0.008em;
   line-height: 1.2;
-  margin-bottom: ${gridUnit}px;
+  margin-bottom: ${spacing}px;
   margin-top: ${baselineUnit * 7}px;
   text-align: left;
 `;

@@ -13,31 +13,33 @@ import {
   akColorB500,
 } from '@atlaskit/util-shared-styles';
 
-const backgroundColor = {
-  added: akColorG50,
-  darkTheme: akColorB50,
-  default: akColorN30,
-  important: akColorR300,
-  primary: akColorB400,
-  removed: akColorR50,
-};
-const textColor = {
-  added: akColorG500,
-  darkTheme: akColorB500,
-  default: akColorN500,
-  important: akColorN0,
-  primary: akColorN0,
-  removed: akColorR500,
+const ThemeColor = {
+  background: {
+    added: akColorG50,
+    darkTheme: akColorB50,
+    default: akColorN30,
+    important: akColorR300,
+    primary: akColorB400,
+    removed: akColorR50,
+  },
+  text: {
+    added: akColorG500,
+    darkTheme: akColorB500,
+    default: akColorN500,
+    important: akColorN0,
+    primary: akColorN0,
+    removed: akColorR500,
+  },
 };
 
 const getBackgroundColor = ({ appearance, theme }) => (theme === 'dark'
-  ? backgroundColor.darkTheme
-  : backgroundColor[appearance]
+  ? ThemeColor.background.darkTheme
+  : ThemeColor.background[appearance]
 );
 
 const getTextColor = ({ appearance, theme }) => (theme === 'dark'
-  ? textColor.darkTheme
-  : textColor[appearance]
+  ? ThemeColor.text.darkTheme
+  : ThemeColor.text[appearance]
 );
 
 const BadgeElement = styled.div`

@@ -1,11 +1,25 @@
 import styled, { css } from 'styled-components';
-import { akBorderRadius, akColorB50, akColorB200, akColorN30, akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import {
+  akBorderRadius,
+
+  akColorB50,
+  akColorB200,
+  akColorN30,
+  akColorN100,
+  akColorN800,
+
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
+
+const ThemeColor = {
+  backgroundActive: akColorB50,
+  backgroundHover: akColorN30,
+  borderFocus: akColorB200,
+  primaryText: akColorN800,
+  secondaryText: akColorN100,
+};
 
 const gutter = akGridSizeUnitless / 2;
-
-// passed to the Avatar as borderColor
-export const bgHoverColor = akColorN30;
-export const bgActiveColor = akColorB50;
 
 export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSelected, onClick }) {
   const isInteractive = href || onClick;
@@ -19,18 +33,18 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    backgroundColor = bgHoverColor;
+    backgroundColor = ThemeColor.backgroundHover;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    backgroundColor = bgActiveColor;
+    backgroundColor = ThemeColor.backgroundActive;
   }
 
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
     outline = 'none';
-    borderColor = akColorB200;
+    borderColor = ThemeColor.borderFocus;
   }
 
   // Disabled
@@ -86,9 +100,10 @@ export const Content = styled.div`
 `;
 export const PrimaryText = styled.div`
   ${truncateText}
+  color: ${ThemeColor.primaryText};
 `;
 export const SecondaryText = styled.div`
   ${truncateText}
-  color: ${akColorN100};
+  color: ${ThemeColor.secondaryText};
   font-size: 0.85em;
 `;

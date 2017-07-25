@@ -1,6 +1,6 @@
-import MentionResource from '../test/_mock-ak-mention-resource';
-import MentionResourceWithInfoHints from '../test/_mock-ak-mention-resource-with-info-hints';
-import PresenceResource from '../test/_mock-ak-presence-resource';
+import MentionResource from '../test/unit/_mock-ak-mention-resource';
+import MentionResourceWithInfoHints from '../test/unit/_mock-ak-mention-resource-with-info-hints';
+import PresenceResource from '../test/unit/_mock-ak-presence-resource';
 import { enableLogger } from '../src/util/logger';
 
 enableLogger(true);

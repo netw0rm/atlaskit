@@ -1,10 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import InlineDialog from '@atlaskit/inline-dialog';
-import ContentWrapper from '../styled/ContentWrapper';
-import DialogWrapper from '../styled/DialogWrapper';
-import Content from '../styled/Content';
+import { Content, ContentWrapper } from '../styled/Content';
 import ValidationElement from './ValidationElement';
+
+const DialogWrapper = styled.div`
+  ${p => (p.grow ? 'flex: 1 1 auto;' : '')}
+  max-width: 100%;
+`;
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBaseStateless extends PureComponent {
@@ -99,35 +103,38 @@ export default class FieldBaseStateless extends PureComponent {
       onFocus,
     } = this.props;
 
+    function getAppearance(a) {
+      if (isDisabled) return 'disabled';
+      if (isInvalid) return 'invalid';
+
+      return a;
+    }
+
     return (
-      <ContentWrapper
-        fitContainerWidth={isFitContainerWidthEnabled}
-        disabled={isDisabled}
-      >
-        <DialogWrapper
-          fitContainerWidth={isFitContainerWidthEnabled}
-        >
+      <ContentWrapper disabled={isDisabled} grow={isFitContainerWidthEnabled}>
+        <DialogWrapper grow={isFitContainerWidthEnabled}>
           <InlineDialog
-            position="right middle"
-            isOpen={isDialogOpen && !!invalidMessage}
             content={invalidMessage}
-            shouldFlip={['top']}
+            isOpen={isDialogOpen && !!invalidMessage}
             onContentBlur={onDialogBlur}
             onContentClick={onDialogClick}
             onContentFocus={onDialogFocus}
+            position="right middle"
+            shouldFlip={['top']}
           >
             <Content
-              none={appearance === 'none'}
-              subtle={appearance === 'subtle'}
+              appearance={getAppearance(appearance)}
               compact={isCompact}
               disabled={isDisabled}
-              readOnly={isReadOnly}
-              paddingDisabled={isPaddingDisabled}
               fitContainerWidth={isFitContainerWidthEnabled}
               focused={isFocused}
               invalid={isInvalid && !isFocused}
-              onFocusCapture={onFocus}
+              none={appearance === 'none'}
               onBlurCapture={onBlur}
+              onFocusCapture={onFocus}
+              paddingDisabled={isPaddingDisabled}
+              readOnly={isReadOnly}
+              subtle={appearance === 'subtle'}
             >
               {children}
               <ValidationElement

@@ -1,13 +1,12 @@
 import styled from 'styled-components';
+import { layout } from '../../shared-variables';
 
 const DrawerMain = styled.div`
-  // needed to fix sticky header on retina displays 🙃
-  transform-style: preserve-3d;
-
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: ${layout.padding.top}px 0;
   overflow-y: auto;
   position: relative;
   width: 100%;

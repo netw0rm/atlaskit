@@ -303,12 +303,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private setContext = async (contextName: string, mediaProvider: MediaProvider) =>  {
     let context = await mediaProvider[contextName];
-    if ('clientId' in (context as ContextConfig)) {
-      context = ContextFactory.create(context as ContextConfig);
+
+    if (this.destroyed || !context) {
+      return;
     }
 
-    if (this.destroyed) {
-      return;
+    if ('clientId' in (context as ContextConfig)) {
+      context = ContextFactory.create(context as ContextConfig);
     }
 
     this.setState({ [contextName as any]: context as Context });

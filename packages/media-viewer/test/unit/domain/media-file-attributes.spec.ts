@@ -1,3 +1,5 @@
+// TODO: Remove when Chai is replaced with Jest
+/* tslint:disable:no-unused-expression */
 import { FileItem } from '@atlaskit/media-core';
 import { expect } from 'chai';
 

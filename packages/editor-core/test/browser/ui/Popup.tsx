@@ -116,6 +116,17 @@ describe('Popup', () => {
           };
           expect(getVerticalPlacement(target, boundary, 100)).to.eq('bottom');
         });
+
+        it('should use parentElement if target is a TEXT_NODE', () => {
+          const target: any = {
+            getBoundingClientRect: () => ({ top: 135, height: 30 })
+          };
+          const textTarget: any = {
+            nodeType: 3,
+            parentElement: target
+          };
+          expect(getVerticalPlacement(textTarget, boundary, 100)).to.eq('bottom');
+        });
       });
     });
 
@@ -173,6 +184,17 @@ describe('Popup', () => {
           };
           expect(getHorizontalPlacement(target, boundary, 100)).to.eq('left');
         });
+
+        it('should use parentElement if target is a TEXT_NODE', () => {
+          const target: any = {
+            getBoundingClientRect: () => ({ left: 135, width: 30 })
+          };
+          const textTarget: any = {
+            nodeType: 3,
+            parentElement: target
+          };
+          expect(getHorizontalPlacement(textTarget, boundary, 100)).to.eq('left');
+        });
       });
     });
 
@@ -225,6 +247,22 @@ describe('Popup', () => {
       it('should return {} without target or popup', () => {
         expect(calculatePosition({ placement: ['top', 'left'], popup: document.body, offset: [] })).to.deep.eq({});
         expect(calculatePosition({ placement: ['top', 'left'], target: document.body, offset: [] })).to.deep.eq({});
+      });
+
+      it('should use parentElement if target is a TEXT_NODE', () => {
+        const target: any = {
+          getBoundingClientRect: () => ({ top: 270, left: 0, width: 30, height: 30 })
+        };
+        const textTarget: any = {
+          nodeType: 3,
+          parentElement: target
+        };
+        expect(calculatePosition({
+          placement: ['top', 'left'],
+          target: textTarget,
+          popup,
+          offset: [0, 0]
+        })).to.deep.eq({ left: 0, bottom: 30 });
       });
 
       describe('[top, left]', () => {

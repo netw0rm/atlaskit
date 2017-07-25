@@ -81,7 +81,6 @@ export default styled.div`
   border-radius: 3px;
   box-sizing: border-box;
   color: ${themeValue('tooltip.textColor')};
-  color: ${themeValue('tooltip.textColor')};
   font-size: ${fontSize}px;
   line-height: ${(4 * grid) / fontSize};
   margin: ${2 * grid}px;

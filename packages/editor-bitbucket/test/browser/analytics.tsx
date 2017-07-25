@@ -185,7 +185,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.code.keyboard', () => {
-    sendKeyToPm(editorView, 'Mod-Shift-m');
+    sendKeyToPm(editorView, 'Mod-Shift-M');
     expect(handler.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
   });
 
@@ -195,7 +195,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.list.numbered.keyboard', () => {
-    sendKeyToPm(editorView, 'Shift-Mod-l');
+    sendKeyToPm(editorView, 'Shift-Mod-L');
     expect(handler.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
   });
 
@@ -227,7 +227,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.list.bullet.keyboard', () => {
-    sendKeyToPm(editorView, 'Shift-Mod-b');
+    sendKeyToPm(editorView, 'Shift-Mod-B');
     expect(handler.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
   });
 
@@ -417,7 +417,8 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.newline.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.horizontalrule.keyboard', () => {
+  // Need to unskip after ED-2305
+  it.skip('atlassian.editor.horizontalrule.keyboard', () => {
     sendKeyToPm(editorView, 'Mod-Shift--');
     expect(handler.calledWith('atlassian.editor.format.horizontalrule.keyboard')).to.equal(true);
   });

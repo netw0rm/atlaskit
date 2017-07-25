@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 
 import MultiSelect, { MultiSelectStateless } from '../../src';
 import { name } from '../../package.json';
@@ -69,9 +68,9 @@ describe(`${name} - smart`, () => {
   describe('inner functions', () => {
     let wrapper;
     let instance;
-    const onFilterChangeSpy = sinon.spy();
-    const onOpenChangeSpy = sinon.spy();
-    const onSelectedChange = sinon.spy();
+    const onFilterChangeSpy = jest.fn();
+    const onOpenChangeSpy = jest.fn();
+    const onSelectedChange = jest.fn();
     const items = [
       {
         heading: 'test',
@@ -94,9 +93,9 @@ describe(`${name} - smart`, () => {
     });
 
     afterEach(() => {
-      onFilterChangeSpy.reset();
-      onOpenChangeSpy.reset();
-      onSelectedChange.reset();
+      onFilterChangeSpy.mockClear();
+      onOpenChangeSpy.mockClear();
+      onSelectedChange.mockClear();
     });
 
     describe('handleOpenChange', () => {
@@ -104,8 +103,8 @@ describe(`${name} - smart`, () => {
 
       it('should call onOpenChange when triggered', () => {
         instance.handleOpenChange(attrs);
-        expect(onOpenChangeSpy.callCount).toBe(1);
-        expect(onOpenChangeSpy.calledWith(attrs)).toBe(true);
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onOpenChangeSpy).toHaveBeenCalledWith(attrs);
       });
 
       it('should set isOpen state', () => {
@@ -120,8 +119,8 @@ describe(`${name} - smart`, () => {
       const value = 'test';
       it('should call onFilterChange when triggered', () => {
         instance.handleFilterChange(value);
-        expect(onFilterChangeSpy.callCount).toBe(1);
-        expect(onFilterChangeSpy.calledWith(value)).toBe(true);
+        expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onFilterChangeSpy).toHaveBeenCalledWith(value);
       });
 
       it('should set filterValue state', () => {
@@ -133,15 +132,15 @@ describe(`${name} - smart`, () => {
     describe('selectedChange', () => {
       it('should call removeItem when an item was removed', () => {
         const item = items[0].items[0];
-        const spy = sinon.spy(instance, 'removeItem');
+        const spy = jest.spyOn(instance, 'removeItem');
         instance.selectedChange(item);
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
       });
 
       it('should call selectItem when an item was added', () => {
-        const spy = sinon.spy(instance, 'selectItem');
+        const spy = jest.spyOn(instance, 'selectItem');
         instance.selectedChange({ content: 'something new', value: 2 });
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
       });
     });
 
@@ -155,13 +154,13 @@ describe(`${name} - smart`, () => {
       it('should remove the item and call onSelectedChange', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(onSelectedChange.callCount).toBe(1);
+        expect(onSelectedChange).toHaveBeenCalledTimes(1);
       });
 
       it('onSelectedChange should be called with the correct params', () => {
         const item = items[0].items[0];
         instance.removeItem(item);
-        expect(onSelectedChange.calledWith({ items: [], action: 'remove', changed: item })).toBe(true);
+        expect(onSelectedChange).toHaveBeenCalledWith({ items: [], action: 'remove', changed: item });
       });
     });
 
@@ -175,13 +174,13 @@ describe(`${name} - smart`, () => {
       it('should add the item and call onSelectedChange', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(onSelectedChange.callCount).toBe(1);
+        expect(onSelectedChange).toHaveBeenCalledTimes(1);
       });
 
       it('onSelectedChange should be called with the correct params', () => {
         const item = { content: 'new', value: 2 };
         instance.selectItem(item);
-        expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).toBe(true);
+        expect(onSelectedChange).toHaveBeenCalledWith({ items: [items[0].items[0], item], action: 'select', changed: item });
       });
     });
 

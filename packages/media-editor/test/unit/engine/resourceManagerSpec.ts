@@ -1,7 +1,4 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
 import {ResourceManager} from '../../../src/engine/resourceManager';
-import {expect} from 'chai';
 
 class SomeResource {
   loaded: boolean;
@@ -32,7 +29,7 @@ describe('MediaEditor ResourceManager', () => {
     resourceManager.add(resource);
     resourceManager.releaseAll();
 
-    expect(resource.loaded).to.be.false;
+    expect(resource.loaded).toBe(false);
   });
 
   it('should not release resource twice', () => {
@@ -43,7 +40,7 @@ describe('MediaEditor ResourceManager', () => {
     resourceManager.releaseAll();
     resourceManager.releaseAll();
 
-    expect(resource.loaded).to.be.false;
+    expect(resource.loaded).toBe(false);
   });
 
   it('should successfully release with release function', () => {
@@ -58,7 +55,7 @@ describe('MediaEditor ResourceManager', () => {
     });
     resourceManager.releaseAll();
 
-    expect(text).to.equal('released');
+    expect(text).toBe('released');
   });
 
   it('should release in reverse order', () => {
@@ -74,8 +71,8 @@ describe('MediaEditor ResourceManager', () => {
     resourceManager.addCustom(() => { first = ++counter; });
     resourceManager.releaseAll();
 
-    expect(first).to.equal(1);
-    expect(second).to.equal(2);
-    expect(third).to.equal(3);
+    expect(first).toBe(1);
+    expect(second).toBe(2);
+    expect(third).toBe(3);
   });
 });

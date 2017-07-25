@@ -1,7 +1,4 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
-import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../../src/index';
 import {ArrowLeftWrapper, ArrowRightWrapper} from '../../src/styled';
@@ -90,15 +87,15 @@ describe('FilmstripView', () => {
 
   it('should contain all provided items', () => {
     const filmStrip = shallow(<FilmStripView items={items} />);
-    expect(filmStrip.find('CardView').length).to.be.equal(items.length);
+    expect(filmStrip.find('CardView').length).toBe(items.length);
   });
 
   it.skip('should initially have right arrow with large collection', (done) => {
     const filmStrip = mountFilmStrip(container, items, 200);
 
     waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
+      expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
+      expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
 
       filmStrip.detach();
       done();
@@ -110,8 +107,8 @@ describe('FilmstripView', () => {
     const filmStrip = mountFilmStrip(container, smallCollection, 500);
 
     waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).to.equal(0);
+      expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
+      expect(filmStrip.find(ArrowRightWrapper).length).toBe(0);
 
       filmStrip.detach();
       done();
@@ -125,8 +122,8 @@ describe('FilmstripView', () => {
       filmStrip.find(ArrowRightWrapper).first().simulate('click');
 
       waitAndContinue(() => {
-        expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(1);
-        expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
+        expect(filmStrip.find(ArrowLeftWrapper).length).toBe(1);
+        expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
 
         filmStrip.detach();
         done();
@@ -144,8 +141,8 @@ describe('FilmstripView', () => {
         filmStrip.find(ArrowLeftWrapper).first().simulate('click');
 
         waitAndContinue(() => {
-          expect(filmStrip.find(ArrowLeftWrapper).length).to.equal(0);
-          expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
+          expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
+          expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
 
           filmStrip.detach();
           done();
@@ -155,16 +152,16 @@ describe('FilmstripView', () => {
   });
 
   it('should handle the onCardClick event', () => {
-    const onCardClick = sinon.spy();
+    const onCardClick = jest.fn();
     const cardViewClickMock = {event: {}};
 
     const filmStrip = shallow(<FilmStripView items={items} onCardClick={onCardClick} />);
     filmStrip.find(CardView).first().simulate('click', cardViewClickMock);
 
-    expect(onCardClick.calledOnce).to.be.true;
+    expect(onCardClick).toHaveBeenCalledTimes(1);
 
-    const {item: clickedItem, items: clickedItems} = onCardClick.firstCall.args[0];
-    expect(clickedItem).deep.equals(items[0]);
-    expect(clickedItems).deep.equals(clickedItems);
+    const {item: clickedItem, items: clickedItems} = onCardClick.mock.calls[0][0];
+    expect(clickedItem).toEqual(items[0]);
+    expect(clickedItems).toEqual(clickedItems);
   });
 });

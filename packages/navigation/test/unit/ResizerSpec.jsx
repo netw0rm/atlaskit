@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import React from 'react';
 import Resizer from '../../src/components/js/Resizer';
 import { standardOpenWidth, globalOpenWidth } from '../../src/shared-variables';
@@ -11,9 +10,9 @@ describe('<Resizer />', () => {
     let resizeSpy;
     let resizeEndSpy;
     beforeEach(() => {
-      resizeStartSpy = sinon.spy();
-      resizeSpy = sinon.spy();
-      resizeEndSpy = sinon.spy();
+      resizeStartSpy = jest.fn();
+      resizeSpy = jest.fn();
+      resizeEndSpy = jest.fn();
 
       resizer = mount(<Resizer
         onResizeStart={resizeStartSpy}
@@ -22,15 +21,15 @@ describe('<Resizer />', () => {
       />);
     });
     it('mousedown default is prevented', () => {
-      const preventDefaultSpy = sinon.spy();
+      const preventDefaultSpy = jest.fn();
       resizer.find('ResizerInner').simulate('mousedown', { screenX: 100, preventDefault: preventDefaultSpy });
-      expect(preventDefaultSpy.called).toBe(true);
+      expect(preventDefaultSpy).toHaveBeenCalled();
     });
     it('mousedown triggers onResizeStart', () => {
       resizer.find('ResizerInner').simulate('mousedown', { screenX: 100, preventDefault: () => {} });
-      expect(resizeStartSpy.called).toBe(true);
-      expect(resizeSpy.called).toBe(false);
-      expect(resizeEndSpy.called).toBe(false);
+      expect(resizeStartSpy).toHaveBeenCalled();
+      expect(resizeSpy).not.toHaveBeenCalled();
+      expect(resizeEndSpy).not.toHaveBeenCalled();
     });
 
     // TODO: onResize and onResizeEnd won't play nice with document event listeners

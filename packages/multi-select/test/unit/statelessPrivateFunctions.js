@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 
 import { MultiSelectStateless } from '../../src';
 import { name } from '../../package.json';
@@ -16,10 +15,10 @@ describe(`${name} - stateless`, () => {
   });
 
   describe('private functions', () => {
-    const onFilterChangeSpy = sinon.spy();
-    const onOpenChangeSpy = sinon.spy();
-    const onSelectedSpy = sinon.spy();
-    const onRemovedSpy = sinon.spy();
+    const onFilterChangeSpy = jest.fn();
+    const onOpenChangeSpy = jest.fn();
+    const onSelectedSpy = jest.fn();
+    const onRemovedSpy = jest.fn();
     let wrapper;
     let instance;
     const selectItems = [
@@ -48,10 +47,10 @@ describe(`${name} - stateless`, () => {
     });
 
     afterEach(() => {
-      onFilterChangeSpy.reset();
-      onOpenChangeSpy.reset();
-      onSelectedSpy.reset();
-      onRemovedSpy.reset();
+      onFilterChangeSpy.mockClear();
+      onOpenChangeSpy.mockClear();
+      onSelectedSpy.mockClear();
+      onRemovedSpy.mockClear();
       wrapper.setProps({ filterValue: '' });
       wrapper.setProps({ selectedItems });
     });
@@ -60,14 +59,14 @@ describe(`${name} - stateless`, () => {
       it('default behavior', () => {
         const args = { event: {}, isOpen: true };
         instance.handleTriggerClick({});
-        expect(onOpenChangeSpy.calledOnce).toBe(true);
-        expect(onOpenChangeSpy.calledWith(args)).toBe(true);
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onOpenChangeSpy).toHaveBeenCalledWith(args);
       });
 
       it('disabled select', () => {
         wrapper.setProps({ isDisabled: true });
         instance.handleTriggerClick({});
-        expect(onOpenChangeSpy.called).toBe(false);
+        expect(onOpenChangeSpy).not.toHaveBeenCalled();
         wrapper.setProps({ isDisabled: false });
       });
     });
@@ -75,125 +74,125 @@ describe(`${name} - stateless`, () => {
     it('handleItemRemove', () => {
       const args = {};
       instance.handleItemRemove(args);
-      expect(onRemovedSpy.calledOnce).toBe(true);
-      expect(onRemovedSpy.calledWith(args)).toBe(true);
+      expect(onRemovedSpy).toHaveBeenCalledTimes(1);
+      expect(onRemovedSpy).toHaveBeenCalledWith(args);
     });
 
     it('removeLatestItem', () => {
-      const spy = sinon.spy(instance, 'handleItemRemove');
+      const spy = jest.spyOn(instance, 'handleItemRemove');
       instance.removeLatestItem();
-      expect(spy.calledOnce).toBe(true);
-      expect(onRemovedSpy.calledWith(selectedItems[0])).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(onRemovedSpy).toHaveBeenCalledWith(selectedItems[0]);
     });
 
     describe('handleKeyboardInteractions', () => {
       it('should call onOpenChange when there was no value and Backspace was pressed', () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyboardInteractions(event);
-        expect(onOpenChangeSpy.calledOnce).toBe(true);
-        expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).toBe(true);
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onOpenChangeSpy).toHaveBeenCalledWith({ event, isOpen: true });
       });
 
       it('should call removeLatestItem when there was no value and Backspace was pressed', () => {
-        const spy = sinon.spy(instance, 'removeLatestItem');
+        const spy = jest.spyOn(instance, 'removeLatestItem');
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should call focusNextItem when ArrowDown is pressed and Select is open', () => {
-        const spy = sinon.spy(instance, 'focusNextItem');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'focusNextItem');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should call focusNextItem when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
-        const spy = sinon.spy(instance, 'focusNextItem');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'focusNextItem');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should call onOpenChange when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
-        const spy = sinon.spy(instance, 'onOpenChange');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'onOpenChange');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should call focusPreviousItem when ArrowUp is pressed and Select is open', () => {
-        const spy = sinon.spy(instance, 'focusPreviousItem');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'focusPreviousItem');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should NOT call focusPreviousItem when ArrowUp is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
-        const spy = sinon.spy(instance, 'focusPreviousItem');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'focusPreviousItem');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.called).toBe(false);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).not.toHaveBeenCalled();
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should call handleItemSelect when Enter is pressed and an item is focused and Select is open', () => {
         wrapper.setState({ focusedItemIndex: 0 });
-        const spy = sinon.spy(instance, 'handleItemSelect');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'handleItemSelect');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should NOT call handleItemSelect when Enter is pressed and no item is focused and Select is open', () => {
-        const spy = sinon.spy(instance, 'handleItemSelect');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'handleItemSelect');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.called).toBe(false);
-        expect(preventDefaultSpy.calledOnce).toBe(true);
+        expect(spy).not.toHaveBeenCalled();
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should NOT call handleItemSelect when Enter is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         wrapper.setState({ focusedItemIndex: 0 });
-        const spy = sinon.spy(instance, 'handleItemSelect');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'handleItemSelect');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
-        expect(spy.called).toBe(false);
-        expect(preventDefaultSpy.calledOnce).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
+        expect(preventDefaultSpy).not.toHaveBeenCalled();
       });
 
       it('should call handleItemCreate when Enter is pressed and shouldAllowCreateItem is true', () => {
         wrapper.setState({ focusedItemIndex: null });
-        const spy = sinon.spy(instance, 'handleItemCreate');
-        const preventDefaultSpy = sinon.spy();
+        const spy = jest.spyOn(instance, 'handleItemCreate');
+        const preventDefaultSpy = jest.fn();
         const event = { key: 'Enter', preventDefault: preventDefaultSpy };
 
         wrapper.setProps({ shouldAllowCreateItem: false });
         instance.handleKeyboardInteractions(event);
-        expect(spy.called).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
 
         wrapper.setProps({ shouldAllowCreateItem: true });
         instance.handleKeyboardInteractions(event);
-        expect(spy.calledOnce).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
 
-        expect(preventDefaultSpy.calledTwice).toBe(true);
+        expect(preventDefaultSpy).toHaveBeenCalledTimes(2);
       });
     });
 
@@ -203,15 +202,15 @@ describe(`${name} - stateless`, () => {
         const value2 = '2';
         let event = { key: '', target: { value: value1 } };
         instance.handleOnChange(event);
-        expect(onFilterChangeSpy.calledOnce).toBe(true);
-        expect(onFilterChangeSpy.calledWith(value1)).toBe(true);
-        onFilterChangeSpy.reset();
+        expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onFilterChangeSpy).toHaveBeenCalledWith(value1);
+        onFilterChangeSpy.mockClear();
 
         wrapper.setProps({ filterValue: value1 });
         event = { key: '', target: { value: value2 } };
         instance.handleOnChange(event);
-        expect(onFilterChangeSpy.calledOnce).toBe(true);
-        expect(onFilterChangeSpy.calledWith(value2)).toBe(true);
+        expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onFilterChangeSpy).toHaveBeenCalledWith(value2);
       });
 
       it('should not call onFilterChange when value is the same', () => {
@@ -219,7 +218,7 @@ describe(`${name} - stateless`, () => {
         const event = { key: '', target: { value } };
         wrapper.setProps({ filterValue: value });
         instance.handleOnChange(event);
-        expect(onFilterChangeSpy.called).toBe(false);
+        expect(onFilterChangeSpy).not.toHaveBeenCalled();
       });
 
       it('should reset focus if shouldAllowCreateItem is set to true', () => {
@@ -297,19 +296,19 @@ describe(`${name} - stateless`, () => {
 
       it('should call onSelected when called', () => {
         instance.handleItemSelect(item, attrs);
-        expect(onSelectedSpy.callCount).toBe(1);
+        expect(onSelectedSpy).toHaveBeenCalledTimes(1);
       });
 
       it('should call onOpenChange when called', () => {
         instance.handleItemSelect(item, attrs);
-        expect(onOpenChangeSpy.callCount).toBe(1);
-        expect(onOpenChangeSpy.calledWith({ isOpen: false, event: attrs.event })).toBe(true);
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onOpenChangeSpy).toHaveBeenCalledWith({ isOpen: false, event: attrs.event });
       });
 
       it('should call onFilterChange with empty string when called', () => {
         instance.handleItemSelect(item, attrs);
-        expect(onFilterChangeSpy.callCount).toBe(1);
-        expect(onFilterChangeSpy.calledWith('')).toBe(true);
+        expect(onFilterChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onFilterChangeSpy).toHaveBeenCalledWith('');
       });
     });
 
@@ -319,24 +318,24 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should call onNewItemCreated prop when there is a new value', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const testValue = 'test';
         wrapper.setProps({ onNewItemCreated: spy, filterValue: testValue });
         instance.handleItemCreate({});
-        expect(spy.calledOnce).toBe(true);
-        expect(spy.calledWith({ value: testValue })).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith({ value: testValue });
       });
 
       it('should call handleItemSelect when the value match the existing value', () => {
-        const spyCreate = sinon.spy();
-        const spySelect = sinon.spy(instance, 'handleItemSelect');
+        const spyCreate = jest.fn();
+        const spySelect = jest.spyOn(instance, 'handleItemSelect');
         const testValue = 'Test1';
 
         wrapper.setProps({ onNewItemCreated: spyCreate, filterValue: testValue });
         instance.handleItemCreate({});
-        expect(spyCreate.called).toBe(false);
-        expect(spySelect.calledOnce).toBe(true);
-        expect(spySelect.calledWith({ value: 1, content: 'Test1' }, { event: {} })).toBe(true);
+        expect(spyCreate).not.toHaveBeenCalled();
+        expect(spySelect).toHaveBeenCalledTimes(1);
+        expect(spySelect).toHaveBeenCalledWith({ value: 1, content: 'Test1' }, { event: {} });
       });
     });
 

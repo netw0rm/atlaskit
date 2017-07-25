@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import TabsNav from '../../src/components/TabsNav';
 import { name } from '../../package.json';
@@ -54,21 +53,19 @@ describe(name, () => {
           });
         });
       });
-    });
 
-    describe('props', () => {
       describe('onKeyboardNav', () => {
         const keys = ['ArrowRight', 'ArrowLeft'];
         keys.forEach((key) => {
           it(`is called in response to ${key} key press`, () => {
-            const spy = sinon.spy();
+            const spy = jest.fn();
             const wrapper = shallow(<TabsNav
               onKeyboardNav={spy}
               tabs={sampleTabs}
             />);
             wrapper.find(TabLabel).at(1).simulate('keyDown', { key });
-            expect(spy.calledOnce).toBe(true);
-            expect(spy.args[0][0]).toBe(key);
+            expect(spy).toHaveBeenCalledTimes(1);
+            expect(spy.mock.calls[0][0]).toBe(key);
           });
         });
       });

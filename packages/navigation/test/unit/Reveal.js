@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 import Reveal from '../../src/components/js/Reveal';
 
 class Child extends PureComponent {
@@ -69,7 +68,7 @@ describe('Reveal', () => {
 
     it('should then open async after mounting', () => {
       // override system clock
-      const clock = sinon.useFakeTimers();
+      jest.useFakeTimers();
 
       const wrapper = mount(
         <Reveal
@@ -83,13 +82,13 @@ describe('Reveal', () => {
 
       expect(wrapper.find('RevealInner').props().isOpen).toBe(false);
 
-      clock.tick();
+      jest.runOnlyPendingTimers();
       requestAnimationFrame.step();
 
       expect(wrapper.find('RevealInner').props().isOpen).toBe(true);
 
       // restore system clock
-      clock.restore();
+      jest.useRealTimers();
     });
   });
 

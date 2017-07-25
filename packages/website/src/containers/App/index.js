@@ -14,10 +14,9 @@ import {
   akColorN10,
   akColorN30,
   akColorN100,
-  akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { AtlasKitThemeProvider } from '../../../../theme/src';
+import { AtlasKitThemeProvider, theme } from '../../../../theme/src';
 
 import { MOBILE_QUERY } from '../../../constants';
 
@@ -170,7 +169,7 @@ const FooterContainer = styled.div`
   border-top: 1px solid ${akColorN30};
   color: ${akColorN100};
   font-size: 0.85em;
-  margin-top: ${akGridSizeUnitless * 6}px;
+  margin-top: ${props => theme(props).gridSize * 6}px;
   padding: 2em 1.4em 1.4em;
   text-align: center;
 

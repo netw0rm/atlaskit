@@ -2,20 +2,20 @@
 
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import Media from 'react-media';
 import { Link } from 'react-router-dom';
 import { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
 import {
   akBorderRadius,
-  akColorN300,
-  akColorB500,
   akElevationMixins,
   akGridSize,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+
+import { theme } from '../../../theme/src';
 
 import { DESKTOP_QUERY, MOBILE_QUERY } from '../../constants';
 
@@ -44,17 +44,17 @@ const GettingInvolvedContent = () => (
   </Section>
 );
 
-const Message = ({ children, title, ...props }) => (
+const Message = withTheme(({ children, title, ...props }) => (
   <MessageRoot {...props}>
     <MessageIcon>
-      <WarningIcon label="Blue alert icon" primaryColor={akColorB500} />
+      <WarningIcon label="Blue alert icon" primaryColor={theme(props).colors.blue} />
     </MessageIcon>
     <MessageContent>
       <MessageTitle>{title}</MessageTitle>
       <MessageText>{children}</MessageText>
     </MessageContent>
   </MessageRoot>
-);
+));
 
 const Mobile = () => (
   <MobileIntro>
@@ -174,6 +174,5 @@ const MessageTitle = styled.h5`
   margin-bottom: ${akGridSize};
 `;
 const MessageText = styled.p`
-  color: ${akColorN300};
   margin: 0 0 ${akGridSize};
 `;

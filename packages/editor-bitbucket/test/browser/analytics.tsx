@@ -361,20 +361,26 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     });
   });
 
-  [
-    { value: 'codeblock', name: 'Code block' },
-    { value: 'blockquote', name: 'Block quote' },
-  ].forEach(blockType => {
-    it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
-      editor
-        .find('Item')
-        .filterWhere(n => n.text().indexOf(blockType.name) > 0)
-        .find('Element')
-        .simulate('click');
+  it.skip(`atlassian.editor.format.codeblock.button`, () => {
+    editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
+    editor
+      .find('Item')
+      .filterWhere(n => n.text().indexOf('Code block') > 0)
+      .find('Element')
+      .simulate('click');
 
-      expect(handler.calledWith(`atlassian.editor.format.${blockType.value}.button`)).to.equal(true);
-    });
+    expect(handler.calledWith(`atlassian.editor.format.codeblock.button`)).to.equal(true);
+  });
+
+  it.skip(`atlassian.editor.format.blockquote.button`, () => {
+    editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
+    editor
+      .find('Item')
+      .filterWhere(n => n.text().indexOf('Block quote') > 0)
+      .find('Element')
+      .simulate('click');
+
+    expect(handler.calledWith(`atlassian.editor.format.blockquote.button`)).to.equal(true);
   });
 
   for (let level = 1; level <= 5; level++) {

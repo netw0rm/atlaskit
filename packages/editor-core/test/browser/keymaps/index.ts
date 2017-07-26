@@ -35,7 +35,7 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Cmd-Alt-1');
+            expect(keymaps.findShortcutByDescription('panel')).to.eq('Cmd-Alt-9');
           });
         });
 
@@ -71,7 +71,7 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Ctrl-1');
+            expect(keymaps.findShortcutByDescription('panel')).to.eq('Ctrl-9');
           });
         });
 

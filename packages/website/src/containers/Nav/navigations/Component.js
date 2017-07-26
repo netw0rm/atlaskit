@@ -33,7 +33,8 @@ const ComponentNavItem = withRouter(
   ({ componentKey, location, destination }) => {
     const component = packages[componentKey];
     const url = `${destination}/${componentKey}`;
-    const isSelected = location.pathname === url;
+    // We are matching against endswith so changelogs also show item as selected
+    const isSelected = location.pathname.endsWith(`/${componentKey}`);
 
     return (
       <Link to={url} key={componentKey}>

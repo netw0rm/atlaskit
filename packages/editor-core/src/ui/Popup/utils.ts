@@ -16,6 +16,10 @@ export function isBody(elem: HTMLElement | Element): boolean {
   return elem === document.body;
 }
 
+export function isTextNode(elem: HTMLElement | Element): boolean {
+  return elem && elem.nodeType === 3;
+}
+
 /**
  * Decides if given fitHeight fits below or above the target taking boundaries into account.
  */
@@ -23,8 +27,13 @@ export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTM
   if (alignY) {
     return alignY;
   }
+
   if (!fitHeight) {
     return 'bottom';
+  }
+
+  if (isTextNode(target)) {
+    target = target.parentElement!;
   }
 
   const boundariesClientRect = boundariesElement.getBoundingClientRect();
@@ -49,8 +58,13 @@ export function getHorizontalPlacement(target: HTMLElement, boundariesElement: H
   if (alignX) {
     return alignX;
   }
+
   if (!fitWidth) {
     return 'left';
+  }
+
+  if (isTextNode(target)) {
+    target = target.parentElement!;
   }
 
   const { left: targetLeft, width: targetWidth } = target.getBoundingClientRect();
@@ -81,6 +95,10 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
 
   if (!target || !popup || !popup.offsetParent) {
     return position;
+  }
+
+  if (isTextNode(target)) {
+    target = target.parentElement!;
   }
 
   const popupOffsetParent = popup.offsetParent as HTMLElement;

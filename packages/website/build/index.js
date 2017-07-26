@@ -12,6 +12,34 @@ const createBabylonOptions = require('babylon-options');
 const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
 
+const getChangelog = (src) => {
+  let changelog;
+  try {
+    changelog = fs.readFileSync(src, 'utf8').toString();
+  } catch (e) {
+    console.log(`DID NOT GET CHANGELOG FOR ${src}`, e);
+    changelog = '';
+  }
+  const ludicrousString = 'abcdefghijklmnoasdf';
+  const toReturn = changelog
+  ? changelog
+    .replace(/## /g, `${ludicrousString}## `)
+    .split(ludicrousString)
+    .map((md) => {
+      // This should only allow us to skip the first chunk which is the name, as
+      // well as the unreleased section.
+      const version = md.match(/\d+\.\d+\.\d+/) ? md.match(/\d+\.\d+\.\d+/)[0] : null;
+      if (!version) return null;
+      return {
+        version,
+        md,
+      };
+    })
+    .filter(t => t)
+  : [''];
+  return toReturn;
+};
+
 const parseProps = (src) => {
   const fileContents = fs.readFileSync(src).toString();
 
@@ -57,10 +85,13 @@ const packages = fs.readdirSync('..').map((key) => {
   let docs;
   let nestedDocs;
   let props;
+  let changelog;
   try {
     const docsFile = path.resolve(__dirname, '../../', key, 'docs', 'index.js');
     const componentsDir = path.resolve(__dirname, '../../', key, 'docs', 'components');
     const sourcesFile = path.resolve(__dirname, '../../', key, 'docs', 'components.js');
+    const changelogFile = path.resolve(__dirname, '../../', key, 'docs', 'CHANGELOG.md');
+    changelog = getChangelog(changelogFile);
     docs = fs.statSync(docsFile).isFile();
     // We find out if we have a components directory, which determines whether
     // all exports are intended to be documented on a single page. Note, only
@@ -87,14 +118,15 @@ const packages = fs.readdirSync('..').map((key) => {
   }
   // Return the component data
   return {
+    changelog,
     docs,
-    nestedDocs,
-    props,
+    isPattern,
     key,
     name: pkgName,
-    isPattern,
     supportsDarkMode,
+    nestedDocs,
     pkg,
+    props,
   };
 }).filter(i => i).sort((a, b) => a.name > b.name ? 1 : -1);
 

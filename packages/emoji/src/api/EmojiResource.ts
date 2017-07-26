@@ -1,6 +1,6 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { customCategory } from '../constants';
+import { customCategory, selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
@@ -208,6 +208,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       });
     });
 
+    if (window.localStorage) {
+      this.selectedTone = this.loadStoredTone();
+    }
+
     if (config.providers.length === 0) {
       throw new Error('No providers specified');
     }
@@ -266,6 +270,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         resolveReject.resolve(result);
       }
     });
+  }
+
+  private loadStoredTone(): ToneSelection {
+    const storedToneString = window.localStorage.getItem(selectedToneStorageKey);
+    if (storedToneString) {
+      const storedTone = parseInt(storedToneString, 10);
+      return !isNaN(storedTone) ? storedTone : undefined;
+    }
+
+    return undefined;
   }
 
   protected refreshLastFilter(): void {
@@ -418,6 +432,13 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
+    if (window.localStorage) {
+      try {
+        window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
+      } catch (e) {
+        console.error('localStorage is full', e);
+      }
+    }
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

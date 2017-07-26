@@ -5,7 +5,6 @@ import ToolbarButton from '../ToolbarButton';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
-import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
 import { ButtonContent, ExpandIconWrapper } from './styles';
@@ -14,8 +13,6 @@ export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
   pluginState: BlockTypeState;
-  softBlurEditor: () => void;
-  focusEditor: () => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }
@@ -49,21 +46,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private onOpenChange = (attrs: any) => {
-    // Hack for IE needed to prevent caret blinking above the opened dropdown.
-    if (attrs.isOpen) {
-      const { $from } = this.props.editorView.state.selection;
-      const node = $from.node($from.depth);
-      if (!(node && node.attrs['isCodeMirror'])) {
-        this.props.softBlurEditor();
-      }
-    } else {
-      const { $from } = this.props.editorView.state.selection;
-      const node = $from.node($from.depth);
-      if (!(node && node.attrs['isCodeMirror'])) {
-        this.props.focusEditor();
-      }
-    }
-
     this.setState({
       active: attrs.isOpen,
     });
@@ -127,8 +109,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         content: blockType.title,
         value: blockType,
         isActive: (currentBlockType === blockType),
-        tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-        tooltipPosition: 'right',
       });
     });
     return [{
@@ -146,7 +126,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = ({ item }) => {
-    this.props.focusEditor();
     const blockType = item.value;
     const { availableBlockTypes } = this.state;
     this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);

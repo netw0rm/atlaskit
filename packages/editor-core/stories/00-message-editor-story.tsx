@@ -17,7 +17,7 @@ storiesOf(name, module)
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
           // TODO: rename this to align with decision on naming.
-          appearance="tray"
+          appearance="message"
           analyticsHandler={analyticsHandler}
 
           allowTextFormatting={true}

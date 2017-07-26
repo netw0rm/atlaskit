@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import MultiSelect, { MultiSelectStateless } from '../../src';
 import { name } from '../../package.json';
 
@@ -17,6 +18,12 @@ describe(`${name} - smart`, () => {
   describe('render', () => {
     it('should render stateless multi select', () => {
       expect(mount(<MultiSelect />).find(MultiSelectStateless).length).toBe(1);
+    });
+
+    it('should pass ExpandIcon to the stateless component if no custom icon provided', () => {
+      const wrapper = mount(<MultiSelect />);
+      const statelessProps = wrapper.find(MultiSelectStateless).props();
+      expect(statelessProps.icon).toEqual(<ExpandIcon label="" />);
     });
 
     it('should pass all the relevant props to the stateless component', () => {
@@ -44,6 +51,7 @@ describe(`${name} - smart`, () => {
         name="name"
         noMatchesFound="no matches"
         position="top left"
+        icon={<SearchIcon label="" />}
         shouldFitContainer
       />);
       const statelessProps = wrapper.find(MultiSelectStateless).props();
@@ -62,6 +70,7 @@ describe(`${name} - smart`, () => {
       expect(statelessProps.selectedItems).toEqual([items[0].items[0]]);
       expect(statelessProps.shouldFitContainer).toBe(true);
       expect(statelessProps.shouldFocus).toBe(true);
+      expect(statelessProps.icon).toEqual(<SearchIcon label="" />);
     });
   });
 

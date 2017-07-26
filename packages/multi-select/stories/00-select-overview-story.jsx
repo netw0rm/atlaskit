@@ -43,6 +43,8 @@ import SmartSelectWithCreateNewItem from './examples/SmartSelectWithCreateNewIte
 import SmartSelectWithCreateNewItemRaw from '!raw!./examples/SmartSelectWithCreateNewItem';
 import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
 import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
+import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
+import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
 /* eslint-enable import/first, import/no-duplicates */
 
 const Spaced = styled.div`
@@ -302,4 +304,12 @@ storiesOf(name, module)
       </CodeWrapper>
     </Spaced>
   ))
+  .add('Multi select - custom icon', () => (
+    <Spaced>
+      {SmartSelectCustomIcon}
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={SmartSelectCustomIconRaw} />
+      </CodeWrapper>
+    </Spaced>
+    ))
   ;

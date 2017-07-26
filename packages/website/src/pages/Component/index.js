@@ -23,6 +23,7 @@ import Docs from '../../components/ComponentDocs';
 import { Heading, Intro } from '../../components/Type';
 
 import MetaData from './MetaData';
+import LatestChange from './LatestChange';
 
 const componentKeys = Object.keys(data);
 const componentItems = componentKeys.map((key) => {
@@ -149,12 +150,10 @@ export default class PackageComponent extends PureComponent {
             }}
           />
           <MetaData
-            maintainers={component.maintainers}
             packageKey={component.key}
             packageName={component.packageName}
-            publishedDate={component.publishedDate}
-            version={component.version}
           />
+          <LatestChange changelog={component.changelog} componentKey={component.key} />
           <Main itemProp="mainEntity">
             <Docs component={component} />
           </Main>

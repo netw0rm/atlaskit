@@ -115,7 +115,11 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
     if (window.localStorage) {
-      window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
+      try {
+        window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
+      } catch (e) {
+        console.error('localStorage is full', e);
+      }
     }
   }
 

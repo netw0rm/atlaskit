@@ -12,19 +12,22 @@ import Changelog from '../../components/Changelog';
 const LatestChange = (
   { changelog, componentKey }:
   { changelog: Array<{ version: string }>, componentKey: string }
-) => (
-  <LogWrapper>
-    <Latest />
-    <Changelog
-      changelog={changelog}
-      range={changelog[0].version}
-      packageName={componentKey}
-    />
-    <Button component={Link} to={`/changelog/${componentKey}`}>
-      Changelog
-    </Button>
-  </LogWrapper>
-);
+) => {
+  if (!changelog[0].version) return null;
+  return (
+    <LogWrapper>
+      <Latest />
+      <Changelog
+        changelog={changelog}
+        range={changelog[0].version}
+        packageName={componentKey}
+      />
+      <Button component={Link} to={`/changelog/${componentKey}`}>
+        Changelog
+      </Button>
+    </LogWrapper>
+  );
+};
 
 // border-left: ${akGridSizeUnitless / 2}px solid ${akColorN30};
 // padding: 0 0 0 ${akGridSizeUnitless * 2}px;

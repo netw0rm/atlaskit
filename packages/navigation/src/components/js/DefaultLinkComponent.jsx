@@ -5,7 +5,7 @@ import type { ReactElement } from '../../types';
 type Props = {|
   children: ReactElement,
   className?: string,
-  href: string,
+  href?: string,
   onClick?: () => mixed,
   onMouseDown?: () => mixed,
   onMouseEnter?: () => mixed,
@@ -26,6 +26,7 @@ export default class DefaultLinkComponent extends PureComponent {
       onMouseEnter,
       onMouseLeave,
       tabIndex,
+      ...otherProps
     } = this.props;
 
     return (href ? (
@@ -37,6 +38,7 @@ export default class DefaultLinkComponent extends PureComponent {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         tabIndex={tabIndex}
+        {...otherProps}
       >{children}</a>
     ) : children);
   }

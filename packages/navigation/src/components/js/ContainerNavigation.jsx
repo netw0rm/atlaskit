@@ -34,7 +34,7 @@ type Props = {|
   globalSearchIcon?: ReactElement,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
   component is designed to be used as the headerComponent. */
-  headerComponent: () => mixed,
+  headerComponent?: () => mixed,
   /** Set to determine whether the ContainerNavigation should be rendered in its
   open state or closed state. Passed through to the headerComponent. */
   isCollapsed?: boolean,

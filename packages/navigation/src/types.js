@@ -62,3 +62,9 @@ export type DrawerProps = {
   given to the GlobalNavigation component */
   primaryIcon: ReactElement,
 }
+
+export type DragProvided = {|
+  innerRef: Function,
+  placeholder?: ReactElement,
+  draggableStyle: Object
+|}

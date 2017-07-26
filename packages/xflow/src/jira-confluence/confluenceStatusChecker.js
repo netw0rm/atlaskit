@@ -1,14 +1,13 @@
+import { ACTIVE, INACTIVE, UNKNOWN } from '../common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
  * has come up.
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
 
-export const INACTIVE = 'INACTIVE';
-export const ACTIVE = 'ACTIVE';
-export const UNKNOWN = 'UNKNOWN';
-
 export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';
+
+const POLLING_TIMEOUT = 300000; // milliseconds;
 
 let interval = null;
 let startTime = 0;
@@ -19,7 +18,7 @@ async function checkStatus() {
     credentials: 'same-origin',
   });
 
-  if (!(response.status >= 200 && response.status <= 299)) {
+  if (!response.ok) {
     return UNKNOWN;
   }
 
@@ -36,15 +35,16 @@ export default {
 
       const poll = async () => {
         const status = await checkStatus();
-
+        const timeElapsed = Date.now() - startTime;
+        const progress = status === ACTIVE ? 1 : Math.min(timeElapsed / POLLING_TIMEOUT, 1);
         if (progressHandler) {
           progressHandler({
             status,
-            time: Date.now() - startTime,
+            progress,
           });
         }
 
-        if (status === ACTIVE) {
+        if (progress === 1) {
           this.stop();
         }
       };

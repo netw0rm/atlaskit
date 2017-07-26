@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
+import { injectIntl, intlShape } from 'react-intl';
 import { XFlowProvider } from '../common/components/XFlowProvider';
 
 import { isUserTrusted } from './tenantContext';
@@ -16,11 +17,9 @@ import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 import languagePacks from './language-packs.json';
-import confluenceStatusChecker, { ACTIVE } from './confluenceStatusChecker';
+import confluenceStatusChecker from './confluenceStatusChecker';
 
-const POLLING_TIMEOUT = 300000; // milliseconds
-
-const defaultProps = {
+export const defaultProps = intl => ({ // eslint-disable-line
   config: {
     productLogo: <ConfluenceLogo />,
     languagePacks,
@@ -72,47 +71,28 @@ const defaultProps = {
   requestTrialAccessWithoutNote,
   cancelRequestTrialAccess,
 
+  startProductTrial: startConfluenceTrial,
   cancelStartProductTrial,
+  productStatusChecker: confluenceStatusChecker,
   grantAccessToUsers,
   retrieveUsers: retrieveJiraUsers,
   goToProduct,
   closeLoadingDialog,
-};
+});
 
-export default class JiraToConfluenceXFlowProvider extends Component {
-  state = {
-    progress: 0,
-    status: '',
-  };
-
-  componentWillUnmount() {
-    confluenceStatusChecker.stop();
+export class JiraToConfluenceXFlowProviderBase extends Component {
+  static propTypes = {
+    intl: intlShape,
   }
 
-  progressUpdate = ({ status, time }) => {
-    const progress = status === ACTIVE ? 1 : Math.min(time / POLLING_TIMEOUT, 1);
-    this.setState({
-      progress,
-      status,
-    });
-    if (progress === 1) {
-      confluenceStatusChecker.stop();
-    }
-  };
-
-  startProductTrial = async (...args) => {
-    await startConfluenceTrial(...args);
-    confluenceStatusChecker.start(this.progressUpdate);
-  };
-
   render() {
+    const { intl } = this.props;
     const props = {
-      ...defaultProps,
-      startProductTrial: this.startProductTrial,
-      ...this.state,
+      ...defaultProps(intl),
       ...this.props,
     };
 
     return <XFlowProvider {...props} />;
   }
 }
+export default injectIntl(JiraToConfluenceXFlowProviderBase);

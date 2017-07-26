@@ -1,3 +1,4 @@
+import { ACTIVE, INACTIVE } from '../../src/common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
  * has come up.
@@ -5,10 +6,9 @@
 const DEFAULT_POLLING_INTERVAL = 5000;
 const MOCK_ACTIVATION_TIME = 30000; // milliseconds
 
-export const INACTIVE = 'INACTIVE';
-export const ACTIVE = 'ACTIVE';
-
 export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';
+
+const POLLING_TIMEOUT = 300000; // milliseconds;
 
 let interval = null;
 let startTime = 0;
@@ -29,15 +29,16 @@ export default {
 
       const poll = async () => {
         const status = await checkStatus();
-
+        const timeElapsed = Date.now() - startTime;
+        const progress = status === ACTIVE ? 1 : Math.min(timeElapsed / POLLING_TIMEOUT, 1);
         if (progressHandler) {
           progressHandler({
             status,
-            time: Date.now() - startTime,
+            progress,
           });
         }
 
-        if (status === ACTIVE) {
+        if (progress === 1) {
           this.stop();
         }
       };

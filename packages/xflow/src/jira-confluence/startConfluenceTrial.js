@@ -13,7 +13,7 @@ export default async () => {
     method: 'POST',
   });
 
-  if (!(response.status >= 200 && response.status <= 299)) {
+  if (!response.ok) {
     throw new Error(`Unable to start confluence trial. Status: ${response.status}`);
   }
 };

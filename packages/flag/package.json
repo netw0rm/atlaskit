@@ -10,7 +10,8 @@
   "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Flag"
+    "name": "Flag",
+    "dark": true
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/flag; } || ../../node_modules/.bin/not-in-publish",

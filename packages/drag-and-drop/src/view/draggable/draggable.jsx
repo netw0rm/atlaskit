@@ -100,6 +100,7 @@ export default class Draggable extends Component {
   }
 
   onLift = (point: Position) => {
+    console.log('lifting', this.context[droppableIdKey]);
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
     const { ref } = this.state;

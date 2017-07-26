@@ -110,7 +110,7 @@ describe('hooks integration', () => {
   const drag = (() => {
     const initial: Position = {
       x: fakeBox.left + 1,
-      y: fakeBox.bottom + 1,
+      y: fakeBox.top + 1,
     };
     const dragStart: Position = {
       x: initial.x,

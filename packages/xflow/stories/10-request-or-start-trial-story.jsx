@@ -5,10 +5,12 @@ import { RequestOrStartTrial } from '@atlaskit/xflow';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
+import { INACTIVE, ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
+
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 const defaultProps = {
-  isProductInstalledOrActivating: async () => false,
+  isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
   hasProductBeenEvaluated: async () => false,
   retrieveUsers: () =>
@@ -56,11 +58,22 @@ storiesOf('RequestOrStartTrial')
         </MockConfluenceXFlow>
       )
   )
-  .add('if the product is already installed or activating, show Already Started', () =>
+  .add('if the product is already active, show Already Started', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps} // 3
-        isProductInstalledOrActivating={async () => true}
+        isProductInstalledOrActivating={async () => ACTIVE}
+        canCurrentUserAddProduct={async () => true}
+      >
+        <RequestOrStartTrial analyticsId="growth.happy" />
+      </MockConfluenceXFlow>
+    )
+  )
+  .add('if the product is currently activating, show Already Started with progress bar', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlow
+        {...defaultProps} // 3
+        isProductInstalledOrActivating={async () => ACTIVATING}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
@@ -85,7 +98,7 @@ storiesOf('RequestOrStartTrial')
       setupStorybookAnalytics(
         <MockConfluenceXFlow
           {...defaultProps} // 5
-          isProductInstalledOrActivating={() => new Promise(() => {})}
+          isProductInstalledOrActivating={() => new Promise(() => {})} // Never resolves
         >
           <RequestOrStartTrial analyticsId="growth.happy" />
         </MockConfluenceXFlow>

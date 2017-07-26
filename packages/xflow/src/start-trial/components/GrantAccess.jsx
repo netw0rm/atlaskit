@@ -29,12 +29,14 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import i18nId from '../../common/i18nId';
 
+import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+
 const i18n = i18nId('grant-access');
 
 export class GrantAccessBase extends Component {
   static propTypes = {
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(['ACTIVE', 'INACTIVE', 'UNKNOWN']).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,

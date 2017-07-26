@@ -1,4 +1,4 @@
-import { ACTIVE, INACTIVE, UNKNOWN } from '../common/productProvisioningStates';
+import { ACTIVE, ACTIVATING, UNKNOWN } from '../common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
  * has come up.
@@ -25,7 +25,7 @@ async function checkStatus() {
   const products = await response.json();
   return products.usages.some(usage => usage.productKey === 'confluence.ondemand')
     ? ACTIVE
-    : INACTIVE;
+    : ACTIVATING;
 }
 
 export default {

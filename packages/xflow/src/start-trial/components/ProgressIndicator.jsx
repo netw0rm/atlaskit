@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 
 import ProgressBarContainer from '../styled/ProgressBarContainer';
 import ProgressBar from '../../progress-bar/components/ProgressBar';
 
+import { ACTIVE, INACTIVE, ACTIVATING, UNKNOWN } from '../../common/productProvisioningStates';
+
 export default class ProgressIndicator extends Component {
   static propTypes = {
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(['ACTIVE', 'INACTIVE', 'UNKNOWN']).isRequired,
+    status: PropTypes.oneOf([ACTIVE, INACTIVE, ACTIVATING, UNKNOWN]).isRequired,
     onComplete: PropTypes.func,
   };
 
@@ -36,7 +37,7 @@ export default class ProgressIndicator extends Component {
     let icon = null;
     if (showIcon) {
       icon =
-        status === 'ACTIVE'
+        status === ACTIVE
           ? <CheckCircleIcon label="Complete" primaryColor="#36B37E" />
           : <CrossCircleIcon label="Error" primaryColor="#FF5630" />;
     }

@@ -20,13 +20,15 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import i18nId from '../../common/i18nId';
 import { withAnalytics } from '../../common/components/Analytics';
 
+import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+
 const i18n = i18nId('loading-product-trial');
 
 export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(['ACTIVE', 'INACTIVE', 'UNKNOWN']).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
     goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
@@ -59,7 +61,7 @@ export class LoadingTimeBase extends Component {
     const { isReady } = this.state;
 
     if (isReady) {
-      if (status === 'ACTIVE') {
+      if (status === ACTIVE) {
         this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
         return <FormattedMessage id={i18n`complete-heading`} />;
       }
@@ -98,7 +100,7 @@ export class LoadingTimeBase extends Component {
           <StartTrialFooter>
             <Button
               id="xflow-loading-go-to-product-button"
-              isDisabled={!(isReady && status === 'ACTIVE')}
+              isDisabled={!(isReady && status === ACTIVE)}
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
@@ -106,7 +108,8 @@ export class LoadingTimeBase extends Component {
             </Button>
             <Button
               id="xflow-loading-close-button"
-              onClick={this.handleCloseClick} appearance="subtle-link"
+              onClick={this.handleCloseClick}
+              appearance="subtle-link"
             >
               <FormattedMessage id={i18n`close-button`} />
             </Button>

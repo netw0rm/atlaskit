@@ -13,6 +13,8 @@ import ErrorFlag from '../../start-trial/components/ErrorFlag';
 
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
+import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../productProvisioningStates';
+
 const Screens = {
   INITIALIZING: 'INITIALIZING',
   CANNOT_ADD: 'CANNOT_ADD',
@@ -43,6 +45,7 @@ class RequestOrStartTrial extends Component {
     screen: Screens.INITIALIZING,
     error: null,
     initializingCheckFailed: false,
+    activationState: UNKNOWN,
   };
 
   async componentWillMount() {
@@ -52,11 +55,11 @@ class RequestOrStartTrial extends Component {
   resetRequestOrStartTrial = async () => {
     const { isProductInstalledOrActivating, canCurrentUserAddProduct } = this.props;
     try {
-      const alreadyStarted = await isProductInstalledOrActivating();
-      const canAdd = alreadyStarted ? false : await canCurrentUserAddProduct();
+      const activationState = await isProductInstalledOrActivating();
+      const canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
 
-      if (alreadyStarted) {
-        this.setState({ screen: Screens.ALREADY_STARTED });
+      if (activationState === ACTIVE || activationState === ACTIVATING) {
+        this.setState({ screen: Screens.ALREADY_STARTED, activationState });
       } else if (canAdd) {
         this.setState({ screen: Screens.START_TRIAL });
       } else {
@@ -79,6 +82,7 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const { onComplete, onTrialRequested, onTrialActivating } = this.props;
+    const { activationState } = this.state;
 
     return (
       <App locale={this.props.locale}>
@@ -104,7 +108,7 @@ class RequestOrStartTrial extends Component {
                 return <StartTrial onComplete={onComplete} onTrialActivating={onTrialActivating} />;
               }
               case Screens.ALREADY_STARTED: {
-                return <AlreadyStarted onComplete={onComplete} />;
+                return <AlreadyStarted onComplete={onComplete} activationState={activationState} />;
               }
               case Screens.REQUEST_TRIAL: {
                 return <RequestTrial onComplete={onComplete} onTrialRequested={onTrialRequested} />;

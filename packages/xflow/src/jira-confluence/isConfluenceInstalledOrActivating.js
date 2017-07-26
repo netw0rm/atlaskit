@@ -1,3 +1,5 @@
+import { ACTIVE, ACTIVATING, INACTIVE } from '../common/productProvisioningStates';
+
 export default async () => {
   const response = await fetch('/admin/rest/billing/api/instance/pricing', {
     credentials: 'same-origin',
@@ -11,8 +13,15 @@ export default async () => {
   }
 
   const pricing = await response.json();
-  return (
-    pricing.activeProducts.some(product => product.productKey === 'confluence.ondemand') ||
-    pricing.activatingProducts.includes('confluence.ondemand')
+  const isActive = pricing.activeProducts.some(
+    product => product.productKey === 'confluence.ondemand'
   );
+  const isActivating = pricing.activatingProducts.includes('confluence.ondemand');
+
+  if (isActive) {
+    return ACTIVE;
+  } else if (isActivating) {
+    return ACTIVATING;
+  }
+  return INACTIVE;
 };

@@ -2,7 +2,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
-import { INACTIVE } from '../productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../productProvisioningStates';
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
@@ -33,7 +33,7 @@ export const xFlowShape = PropTypes.shape({
   }),
 
   progress: PropTypes.number,
-  status: PropTypes.string,
+  status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]),
 
   canCurrentUserAddProduct: PropTypes.func,
   isProductInstalledOrActivating: PropTypes.func,

@@ -153,13 +153,14 @@ const findSearchInput = (component) => component.find(EmojiPickerListSearch).fin
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
+  const localStorage = global.window.localStorage;
   beforeEach(() => {
     global.window.localStorage = mockLocalStorage;
   });
 
   afterEach(() => {
     global.window.localStorage.clear();
-    global.window.localStorage = undefined;
+    global.window.localStorage = localStorage;
   });
 
   describe('display', () => {

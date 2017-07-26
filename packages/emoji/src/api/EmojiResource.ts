@@ -1,6 +1,6 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { customCategory } from '../constants';
+import { customCategory, selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
@@ -273,7 +273,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   }
 
   private loadStoredTone(): ToneSelection {
-    const storedToneString = window.localStorage.getItem('fabric.emoji.selectedTone');
+    const storedToneString = window.localStorage.getItem(selectedToneStorageKey);
     if (storedToneString) {
       const storedTone = parseInt(storedToneString, 10);
       return !isNaN(storedTone) ? storedTone : undefined;
@@ -433,7 +433,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
     if (window.localStorage) {
-      window.localStorage.setItem('fabric.emoji.selectedTone', tone ? tone.toString() : '');
+      window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
     }
   }
 

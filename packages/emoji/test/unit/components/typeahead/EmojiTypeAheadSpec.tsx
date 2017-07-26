@@ -53,13 +53,14 @@ const itemsVisible = (component) => itemsVisibleCount(component) > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
+  const localStorage = global.window.localStorage;
   beforeEach(() => {
     global.window.localStorage = mockLocalStorage;
   });
 
   afterEach(() => {
     global.window.localStorage.clear();
-    global.window.localStorage = undefined;
+    global.window.localStorage = localStorage;
   });
 
   it('should display max emoji by default', () =>

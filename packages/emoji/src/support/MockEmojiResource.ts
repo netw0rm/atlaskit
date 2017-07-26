@@ -3,6 +3,7 @@ import { AbstractResource } from '@atlaskit/util-service-support';
 
 import { customCategory, customType } from '../../src/constants';
 import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
+import { selectedToneStorageKey } from '../../src/constants';
 import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../../src/api/EmojiRepository';
 import debug from '../../src/util/logger';
@@ -49,7 +50,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
 
     if (window.localStorage) {
-      const storedTone = window.localStorage.getItem('fabric.emoji.selectedTone');
+      const storedTone = window.localStorage.getItem(selectedToneStorageKey);
       this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
     }
   }
@@ -114,7 +115,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
     if (window.localStorage) {
-      window.localStorage.setItem('fabric.emoji.selectedTone', tone ? tone.toString() : '');
+      window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
     }
   }
 

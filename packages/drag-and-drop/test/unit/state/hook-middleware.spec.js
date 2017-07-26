@@ -321,12 +321,9 @@ describe('Hook middleware', () => {
       it('should return a result with a null destination', () => {
         execute(hooks, state.idle, state.dragging);
 
-        if (!state.dragging.drag) {
-          throw new Error('invalid state');
-        }
-
         expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
+          // $ExpectError
           source: state.dragging.drag.initial.source,
           destination: null,
         });
@@ -352,12 +349,9 @@ describe('Hook middleware', () => {
       it('should return a result with a null destination', () => {
         execute(hooks, state.idle, state.dropAnimating);
 
-        if (!state.dropAnimating.drop || !state.dropAnimating.drop.pending) {
-          throw new Error('invalid state');
-        }
-
         expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
+          // $ExpectError
           source: state.dropAnimating.drop.pending.result.source,
           destination: null,
         });

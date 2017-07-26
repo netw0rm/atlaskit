@@ -7,7 +7,7 @@ import { DragDropContext } from '../../../src/';
 import { storeKey } from '../../../src/view/context-keys';
 
 class App extends Component {
-  // Part of react's api is to use flow types for this.
+  // Part of reacts api is to use flow types for this.
   // Sadly cannot use flow
   static contextTypes = {
     [storeKey]: PropTypes.shape({

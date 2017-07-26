@@ -60,11 +60,11 @@ const draggable3: DraggableDimension = getDraggableDimension({
   }),
 });
 
-const droppables: DraggableDimensionMap = {
+const droppables: DroppableDimensionMap = {
   [droppable.id]: droppable,
 };
 
-const draggables: DroppableDimensionMap = {
+const draggables: DraggableDimensionMap = {
   [draggable1.id]: draggable1,
   [draggable2.id]: draggable2,
   [draggable3.id]: draggable3,

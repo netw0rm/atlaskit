@@ -7,7 +7,6 @@ import type { Position } from '../../../src/types';
 import type { Speed, Style } from '../../../src/view/moveable/';
 
 describe('Moveable', () => {
-  let clock;
   let wrapper;
   let childFn;
 

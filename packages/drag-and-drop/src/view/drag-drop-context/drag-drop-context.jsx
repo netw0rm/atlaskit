@@ -10,9 +10,9 @@ type Props = Hooks & {|
   children?: ReactElement,
 |}
 
-type Context = {|
-  [storeKey]: Store
-|}
+type Context = {
+  [string]: Store
+}
 
 export default class DragDropContext extends Component {
   /* eslint-disable react/sort-comp */

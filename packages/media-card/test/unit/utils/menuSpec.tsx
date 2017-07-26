@@ -44,7 +44,7 @@ describe('Menu', () => {
     const onToggle = jest.fn();
     const card = mount(<Menu actions={menuActions} onToggle={onToggle}/>);
 
-    card.find(DropdownMenu).simulate('click');
+    card.find(DropdownMenu).find('button').simulate('click');
     expect(onToggle).toHaveBeenCalled();
   });
 

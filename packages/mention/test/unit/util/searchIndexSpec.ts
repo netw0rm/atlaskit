@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import {Highlighter, SearchIndex} from '../../../src/util/searchIndex';
 
 describe('SearchIndex', () => {
@@ -15,7 +14,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('homer').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -26,7 +25,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('simpson').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -37,7 +36,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('mention').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -48,7 +47,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('donut').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -59,7 +58,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('国').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -70,7 +69,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('atlas').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -81,7 +80,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('h s').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -92,7 +91,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('m').then(result => {
-      expect(result.mentions).to.have.lengthOf(0);
+      expect(result.mentions).toHaveLength(0);
       done();
     });
   });
@@ -103,7 +102,7 @@ describe('SearchIndex', () => {
     ]);
 
     searchIndex.search('a').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
+      expect(result.mentions).toHaveLength(1);
       done();
     });
   });
@@ -130,17 +129,18 @@ describe('Highlighter', () => {
     { description: 'combining character', value: 'ញុំ', query: 'ញ', results: [{ start: 0, end: 2 }] },
   ];
 
-  it('should match rules', () => {
+  describe('matching rules', () => {
     for (let key in rules) {
       if (rules.hasOwnProperty(key)) {
         const rule = rules[key];
         const highlights = Highlighter.find(rule.value, rule.query);
-        expect(highlights).to.have.lengthOf(rule.results.length);
+        expect(highlights).toHaveLength(rule.results.length);
 
         for (let index = 0; index < rule.results.length; index++) {
-          expect(highlights).to.include(rule.results[index], 'Rule <' + rule.description + '> failed');
+          test('Rule <' + rule.description + '>', () => {
+            expect(highlights).toContainEqual(rule.results[index]);
+          });
         }
-
       }
     }
   });

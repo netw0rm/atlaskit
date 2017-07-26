@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Item, { itemThemeNamespace } from '../../src';
 
@@ -40,27 +39,27 @@ describe(`${name} - Item`, () => {
     let wrapper;
 
     beforeEach(() => {
-      clickSpy = sinon.spy();
+      clickSpy = jest.fn();
       wrapper = mount(<Item onClick={clickSpy} />);
     });
 
     test('should cause onClick to not be fired when isDisabled true', () => {
       wrapper.setProps({ isDisabled: true });
       wrapper.simulate('click');
-      expect(clickSpy.callCount).toBe(0);
+      expect(clickSpy).not.toHaveBeenCalled();
     });
 
     test('should allow onClick to be fired when isDisabled false', () => {
       wrapper.simulate('click');
-      expect(clickSpy.callCount).toBe(1);
+      expect(clickSpy).toHaveBeenCalledTimes(1);
     });
   });
 
   test('should prevent default onMouseDown event to avoid focus ring when clicked', () => {
     const wrapper = mount(<Item />);
-    const preventDefault = sinon.spy();
+    const preventDefault = jest.fn();
     wrapper.simulate('mousedown', { preventDefault });
-    expect(preventDefault.callCount).toBe(1);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
   });
 
   describe('shouldAllowMultiline prop', () => {

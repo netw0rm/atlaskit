@@ -1,6 +1,4 @@
 import * as fetchMock from 'fetch-mock/src/client';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { SecurityOptions } from '@atlaskit/util-service-support';
 
 import { EmojiLoaderConfig } from '../../../src/api/EmojiUtils';
@@ -34,9 +32,9 @@ const providerData1 = [
 const fetchResponse = data => ({ emojis: data });
 
 function checkOrder(expected, actual) {
-  expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
+  expect(actual.length).toBe(expected.length);
   expected.forEach((emoji, idx) => {
-    expect(emoji.id, `emoji #${idx}`).to.equal(actual[idx].id);
+    expect(emoji.id).toBe(actual[idx].id);
   });
 }
 
@@ -125,8 +123,7 @@ describe('EmojiLoader', () => {
     });
 
     it('401 error once retry', () => {
-      const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header(666)));
+      const refreshedSecurityProvider = jest.fn(() => Promise.resolve(header(666)));
 
       const provider401 = {
         ...provider1,
@@ -150,19 +147,18 @@ describe('EmojiLoader', () => {
 
       const resource = new EmojiLoader(provider401);
       return resource.loadEmoji().then((emojiResponse) => {
-        expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+        expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
         const calls = fetchMock.calls(provider401Matcher.name);
-        expect(calls.length, 'number of calls to fetch').to.equal(2);
-        expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
-        expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
+        expect(calls.length).toBe(2);
+        expect(getSecurityHeader(calls[0])).toBe(defaultSecurityCode);
+        expect(getSecurityHeader(calls[1])).toBe('666');
 
         checkOrder([...providerData1], emojiResponse.emojis);
       });
     });
 
     it('401 error twice retry', () => {
-      const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header(666)));
+      const refreshedSecurityProvider = jest.fn(() => Promise.resolve(header(666)));
 
       const provider401 = {
         ...provider1,
@@ -181,9 +177,9 @@ describe('EmojiLoader', () => {
 
       const resource = new EmojiLoader(provider401);
       return resource.loadEmoji().then((emojiResponse) => {
-        expect(true, 'Emojis should not have loaded').to.equal(false);
+        throw new Error('Emojis should not have loaded');
       }).catch(err => {
-        expect(err.code, `Expected error: '${err}' to contain 401`).to.equal(401);
+        expect(err.code).toBe(401);
       });
     });
   });

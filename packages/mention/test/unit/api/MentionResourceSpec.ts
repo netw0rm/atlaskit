@@ -1,6 +1,4 @@
 import * as fetchMock from 'fetch-mock/src/client';
-import { assert, expect } from 'chai';
-import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
 import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../../src/api/MentionResource';
@@ -28,12 +26,12 @@ const apiConfig: MentionResourceConfig = {
 };
 
 function checkOrder(expected, actual) {
-  expect(actual.length, 'Number of responses').to.equal(expected.length);
+  expect(actual.length).toBe(expected.length);
   for (let i = 0; i < expected.length; i++) {
-    expect(actual[i].length, `Mentions in response #${i}`).to.equal(expected[i].length);
+    expect(actual[i].length).toBe(expected[i].length);
     if (expected[i].length) {
       for (let j = 0; j < expected[i].length; j++) {
-        expect(actual[i][j].id, `Mentions #${j} in response #${i}`).to.equal(expected[i][j].id);
+        expect(actual[i][j].id).toBe(expected[i][j].id);
       }
     }
   }
@@ -76,7 +74,7 @@ describe('MentionResource', () => {
     it('subscribe should receive updates', (done) => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe('test1', (mentions) => {
-        expect(mentions.length).to.equal(resultCraig.length);
+        expect(mentions.length).toBe(resultCraig.length);
         done();
       });
       resource.filter('craig');
@@ -86,14 +84,14 @@ describe('MentionResource', () => {
       const resource = new MentionResource(apiConfig);
       let count = 0;
       resource.subscribe('test1', (mentions) => {
-        expect(mentions.length).to.equal(resultCraig.length);
+        expect(mentions.length).toBe(resultCraig.length);
         count++;
         if (count === 2) {
           done();
         }
       });
       resource.subscribe('test2', (mentions) => {
-        expect(mentions.length).to.equal(resultCraig.length);
+        expect(mentions.length).toBe(resultCraig.length);
         count++;
         if (count === 2) {
           done();
@@ -104,17 +102,24 @@ describe('MentionResource', () => {
   });
 
   describe('#unsubscribe', () => {
-    it('subscriber should no longer called', (done) => {
+    it('subscriber should no longer called', () => {
       const resource = new MentionResource(apiConfig);
-      const listener = sinon.spy();
+      const listener = jest.fn();
       resource.subscribe('test1', listener);
       resource.unsubscribe('test1');
       resource.filter('craig');
       // Not desirable...
-      setTimeout(() => {
-        expect(listener.called).to.equal(false);
-        done();
-      }, 50);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(listener).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
+          resolve();
+        }, 50);
+      });
     });
   });
 
@@ -168,7 +173,7 @@ describe('MentionResource', () => {
           done();
         }
         if (results.length > 1) {
-          assert.fail(results.length, 1, 'More than one response was unexpected.');
+          expect(results).toHaveLength(1);
         }
       });
       resource.filter('delay');
@@ -180,7 +185,7 @@ describe('MentionResource', () => {
     it('error response', (done) => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe('test1', () => {
-        assert.fail('listener called', 'listener not called');
+        throw new Error('listener called');
       }, () => {
         done();
       });
@@ -206,8 +211,8 @@ describe('MentionResource', () => {
         times: 1,
       });
 
-      const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header('666')));
+      const refreshedSecurityProvider = jest.fn()
+        .mockImplementation(() => Promise.resolve(header('666')));
 
       const retryConfig = {
         ...apiConfig,
@@ -217,18 +222,17 @@ describe('MentionResource', () => {
       const resource = new MentionResource(retryConfig);
       resource.subscribe('test1', () => {
         try {
-          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+          expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
           const calls = fetchMock.calls(matcher.name);
-          expect(calls.length, 'number of calls to fetch').to.equal(2);
-          expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
-          expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
+          expect(calls).toHaveLength(2);
+          expect(getSecurityHeader(calls[0])).toBe(defaultSecurityCode);
+          expect(getSecurityHeader(calls[1])).toBe('666');
           done();
         } catch (ex) {
           done(ex);
         }
       }, (err) => {
-        assert.fail('listener error called', 'listener error not called');
-        done(err);
+        throw new Error('listener error called');
       });
       resource.filter('test');
     });
@@ -242,8 +246,8 @@ describe('MentionResource', () => {
 
       fetchMock.mock({ ...matcher, response: 401 });
 
-      const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header(666)));
+      const refreshedSecurityProvider = jest.fn()
+        .mockImplementation(() => Promise.resolve(header(666)));
 
       const retryConfig = {
         ...apiConfig,
@@ -252,16 +256,16 @@ describe('MentionResource', () => {
       };
       const resource = new MentionResource(retryConfig);
       resource.subscribe('test1', () => {
-        assert.fail('listener called', 'listener not called');
+        throw new Error('listener called');
       }, (err: Error) => {
         try {
-          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
-          expect(err).to.be.instanceof(HttpError);
-          expect((<HttpError>err).statusCode, 'response code').to.be.equal(401);
+          expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
+          expect(err).toBeInstanceOf(HttpError);
+          expect((<HttpError>err).statusCode).toBe(401);
           const calls = fetchMock.calls(matcher.name);
-          expect(calls.length, 'number of calls to fetch').to.equal(2);
-          expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
-          expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
+          expect(calls.length).toBe(2);
+          expect(getSecurityHeader(calls[0])).toBe(defaultSecurityCode);
+          expect(getSecurityHeader(calls[1])).toBe('666');
           done();
         } catch (ex) {
           done(ex);
@@ -279,17 +283,17 @@ describe('MentionResource', () => {
         count++;
         if (count === 1) {
           // the first call is for a remote search for 'c' and should return mentions.
-          expect(mentions.length).to.equal(resultC.length);
+          expect(mentions.length).toBe(resultC.length);
         } else if (count === 2) {
           // the second call is from a search against the local index for 'cz' and should return no matches
-          expect(mentions.length).to.equal(0);
+          expect(mentions.length).toBe(0);
         } else if (count > 2) {
           done(new Error('Result callback was called more than expected. Error callback was expected.'));
         }
       },
       (err) => {
-        expect(err).to.be.instanceof(HttpError);
-        expect((<HttpError>err).statusCode, 'response code').to.be.equal(401);
+        expect(err).toBeInstanceOf(HttpError);
+        expect((<HttpError>err).statusCode).toBe(401);
         done();
       });
 
@@ -307,7 +311,7 @@ describe('MentionResource', () => {
       resource.recordMentionSelection({
         id: '666',
       }).then(() => {
-        expect(fetchMock.called('record')).to.equal(true);
+        expect(fetchMock.called('record')).toBe(true);
         done();
       });
     });
@@ -316,7 +320,7 @@ describe('MentionResource', () => {
   describe('#shouldHighlightMention', () => {
     it('should return false by default', () => {
       const resource = new MentionResource(apiConfig);
-      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).to.equal(false);
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).toBe(false);
     });
 
     it('should use config if available', () => {
@@ -325,8 +329,8 @@ describe('MentionResource', () => {
         shouldHighlightMention: mention => mention.id === 'abcd-abcd-abcd',
       });
 
-      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).to.equal(true);
-      expect(resource.shouldHighlightMention({ id: 'abcd-abcd' })).to.equal(false);
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).toBe(true);
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd' })).toBe(false);
     });
   });
 });

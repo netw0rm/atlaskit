@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -15,8 +14,8 @@ describe('<CachingEmoji />', () => {
   describe('Non-media emoji', () => {
     it('CachingMediaEmoji not used, just an Emoji rendered', () => {
       const component = mount(<CachingEmoji emoji={imageEmoji} />);
-      expect(component.find(CachingMediaEmoji).length, 'No CachingMediaEmoji').to.equal(0);
-      expect(component.find(Emoji).length, 'Emoji found').to.equal(1);
+      expect(component.find(CachingMediaEmoji).length).toBe(0);
+      expect(component.find(Emoji).length).toBe(1);
     });
   });
 
@@ -40,20 +39,20 @@ describe('<CachingEmoji />', () => {
 
     it('Nothing rendered if missing context', () => {
       const component = mount(<CachingEmoji emoji={mediaEmoji} />);
-      expect(component.find(CachingMediaEmoji).length, 'No CachingMediaEmoji').to.equal(1);
-      expect(component.find(Emoji).length, 'No Emoji').to.equal(0);
-      expect(component.find(EmojiPlaceholder).length, 'EmojiPlaceholder').to.equal(1);
+      expect(component.find(CachingMediaEmoji).length).toBe(1);
+      expect(component.find(Emoji).length).toBe(0);
+      expect(component.find(EmojiPlaceholder).length).toBe(1);
     });
 
     it('Renders direct url if optimistic rendering true', () => {
       emojiProviderStub.optimisticMediaRendering.returns(true);
       const component = mount(<CachingEmoji emoji={mediaEmoji} />, contextOptions);
-      expect(component.find(CachingMediaEmoji).length, 'CachingMediaEmoji').to.equal(1);
+      expect(component.find(CachingMediaEmoji).length).toBe(1);
       return waitUntil(() => component.find(Emoji).length > 0).then(() => {
         const emoji = component.find(Emoji);
-        expect(emoji.length, 'Emoji').to.equal(1);
+        expect(emoji.length).toBe(1);
         const emojiDescription = emoji.prop('emoji');
-        expect(emojiDescription, 'Exact mediaEmoji returned').to.deep.equal(mediaEmoji);
+        expect(emojiDescription).toEqual(mediaEmoji);
       });
     });
 
@@ -61,12 +60,12 @@ describe('<CachingEmoji />', () => {
       emojiProviderStub.optimisticMediaRendering.returns(false);
       emojiProviderStub.loadMediaEmoji.returns(Promise.resolve(loadedMediaEmoji));
       const component = mount(<CachingEmoji emoji={mediaEmoji} />, contextOptions);
-      expect(component.find(CachingMediaEmoji).length, 'CachingMediaEmoji').to.equal(1);
+      expect(component.find(CachingMediaEmoji).length).toBe(1);
       return waitUntil(() => component.find(Emoji).length > 0).then(() => {
         const emoji = component.find(Emoji);
-        expect(emoji.length, 'Emoji').to.equal(1);
+        expect(emoji.length).toBe(1);
         const emojiDescription = emoji.prop('emoji');
-        expect(emojiDescription, 'Exact mediaEmoji returned').to.deep.equal(loadedMediaEmoji);
+        expect(emojiDescription).toEqual(loadedMediaEmoji);
       });
     });
 
@@ -74,12 +73,12 @@ describe('<CachingEmoji />', () => {
       emojiProviderStub.optimisticMediaRendering.returns(false);
       emojiProviderStub.loadMediaEmoji.returns(loadedMediaEmoji);
       const component = mount(<CachingEmoji emoji={mediaEmoji} />, contextOptions);
-      expect(component.find(CachingMediaEmoji).length, 'CachingMediaEmoji').to.equal(1);
+      expect(component.find(CachingMediaEmoji).length).toBe(1);
       return waitUntil(() => component.find(Emoji).length > 0).then(() => {
         const emoji = component.find(Emoji);
-        expect(emoji.length, 'Emoji').to.equal(1);
+        expect(emoji.length).toBe(1);
         const emojiDescription = emoji.prop('emoji');
-        expect(emojiDescription, 'Exact mediaEmoji returned').to.deep.equal(loadedMediaEmoji);
+        expect(emojiDescription).toEqual(loadedMediaEmoji);
       });
     });
   });

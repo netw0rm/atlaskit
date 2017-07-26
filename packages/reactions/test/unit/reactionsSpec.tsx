@@ -1,6 +1,4 @@
-import * as chai from 'chai';
 import * as React from 'react';
-import * as sinon from 'sinon';
 
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../../src';
@@ -13,14 +11,12 @@ import {ObjectReactionKey} from '../../src/reactions-resource';
 
 const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
-const { expect } = chai;
-
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 // Override "subscribe" so that it resovles instantly.
 const subscribe = reactionsProvider.subscribe;
-sinon.stub(reactionsProvider, 'subscribe').callsFake((objectReactionKey: ObjectReactionKey, handler: Function) => {
+jest.spyOn(reactionsProvider, 'subscribe').mockImplementation((objectReactionKey: ObjectReactionKey, handler: Function) => {
   subscribe.call(reactionsProvider, objectReactionKey, handler);
   reactionsProvider.notifyUpdated(containerAri, demoAri, (reactionsProvider as any).cachedReactions[reactionsProvider.objectReactionKeyToString(objectReactionKey)]);
 });
@@ -37,11 +33,11 @@ const getSortedReactions = () => {
 describe('@atlaskit/reactions/reactions', () => {
 
   it('should trigger "onReactionClick" when Reaction is clicked', () => {
-    const onReactionClick = sinon.spy();
+    const onReactionClick = jest.fn();
     const reactions = mount(renderReactions(onReactionClick));
 
     reactions.find(Reaction).first().simulate('mouseup', { button: 0 });
-    expect(onReactionClick.called).to.equal(true);
+    expect(onReactionClick).toHaveBeenCalled();
     reactions.unmount();
   });
 
@@ -49,13 +45,13 @@ describe('@atlaskit/reactions/reactions', () => {
     const reactions = mount(renderReactions());
     const sortedReactions = getSortedReactions();
 
-    expect(reactions.length).to.equal(1);
+    expect(reactions.length).toBe(1);
     const reactionElements = reactions.find(Reaction);
-    expect(reactionElements.length).to.equal(sortedReactions.length);
+    expect(reactionElements.length).toBe(sortedReactions.length);
 
     // NOTE: Type definitions for enzyme is wrong. forEach takes a second parameter (index).
     (reactionElements as any).forEach((reaction, index) => {
-      expect(reaction.props().reaction).to.deep.equal(sortedReactions[index]);
+      expect(reaction.props().reaction).toEqual(sortedReactions[index]);
     });
     reactions.unmount();
   });
@@ -65,12 +61,12 @@ describe('@atlaskit/reactions/reactions', () => {
     const sortedReactions = getSortedReactions();
 
     const reactionElements = reactions.find(Reaction);
-    expect(reactionElements.length).to.equal(sortedReactions.length);
+    expect(reactionElements.length).toBe(sortedReactions.length);
 
     return reactionsProvider.addReaction(containerAri, demoAri, smileyId.id!)
       .then(state => {
         reactionsProvider.notifyUpdated(containerAri, demoAri, state);
-        expect(reactions.find(Reaction).length).to.equal(sortedReactions.length + 1);
+        expect(reactions.find(Reaction).length).toBe(sortedReactions.length + 1);
         reactions.unmount();
       });
   });

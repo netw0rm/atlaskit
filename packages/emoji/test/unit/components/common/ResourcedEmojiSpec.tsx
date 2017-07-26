@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -26,7 +25,7 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').id).toBe(grinEmoji.id);
     });
   });
 
@@ -37,9 +36,9 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-id').value).to.equal(grinEmoji.id);
-      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-short-name').value).to.equal('shouldnotbeused');
-      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-text').value).to.equal('shouldnotbeused');
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-id').value).toBe(grinEmoji.id);
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-short-name').value).toBe('shouldnotbeused');
+      expect(component.find('span[data-emoji-id]').getDOMNode().attributes.getNamedItem('data-emoji-text').value).toBe('shouldnotbeused');
     });
   });
 
@@ -51,7 +50,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip)).to.have.length(0);
+      expect(component.find(Tooltip)).toHaveLength(0);
     });
   });
 
@@ -64,7 +63,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip).prop('description')).to.equal(':grin:');
+      expect(component.find(Tooltip).prop('description')).toBe(':grin:');
     });
   });
 
@@ -75,7 +74,7 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').id).toBe(grinEmoji.id);
     });
   });
 
@@ -87,13 +86,13 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').id).toBe(grinEmoji.id);
       component.setProps({
         emojiId: { shortName: evilburnsEmoji.shortName },
       });
 
       return waitUntil(() => emojiVisibleById(component, evilburnsEmoji.id)).then(() => {
-        expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(evilburnsEmoji.id);
+        expect(findEmoji(component).prop('emoji').id).toBe(evilburnsEmoji.id);
       });
     });
   });
@@ -112,10 +111,12 @@ describe('<ResourcedEmoji />', () => {
       emojiId={{ shortName: 'doesnotexist', id: 'doesnotexist' }}
     />);
 
+    expect.assertions(1);
+
     return waitUntil(() => !!resolver).then(() => {
       resolver();
       return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
-        expect(true, 'EmojiPlaceholder found').to.equal(true);
+        expect(true).toBe(true);
       });
     });
   });
@@ -138,7 +139,7 @@ describe('<ResourcedEmoji />', () => {
       return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
         resolver(resolverResult);
         return waitUntil(() => emojiVisible(component)).then(() => {
-          expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+          expect(findEmoji(component).prop('emoji').id).toBe(grinEmoji.id);
         });
       });
     });
@@ -161,7 +162,7 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
+      expect(component.find(Tooltip).prop('description')).toBe('doesnotexist');
     });
   });
 });

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
@@ -128,7 +126,7 @@ const categoryVisible = (category: string, component) => {
 
 const showCategory = (category: string, component): Promise<any> => {
   const categoryButton = getCategoryButton(category, component);
-  expect(categoryButton.length, `Category "${category}" button`).to.equal(1);
+  expect(categoryButton).toHaveLength(1);
 
   const list = component.find(EmojiPickerList);
 
@@ -170,9 +168,9 @@ describe('<EmojiPicker />', () => {
         return waitUntil(() => emojisVisible(list)).then(() => {
           const emojis = findEmoji(list);
           const emojiProp = emojis.at(0).prop('emoji');
-          expect(emojiProp.id, 'First emoji displayed').to.equal(allEmojis[0].id);
+          expect(emojiProp.id).toBe(allEmojis[0].id);
           const lastEmojiProp = emojis.at(emojis.length - 1).prop('emoji');
-          expect(lastEmojiProp.id, 'Last displayed emoji in same order as source data').to.equal(allEmojis[emojis.length - 1].id);
+          expect(lastEmojiProp.id).toBe(allEmojis[emojis.length - 1].id);
         });
       })
     );
@@ -183,10 +181,10 @@ describe('<EmojiPicker />', () => {
         const buttons = categorySelector.find('button');
         const expectedCategories = CategorySelector.defaultProps.categories;
 
-        expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+        expect(buttons).toHaveLength(expectedCategories.length);
         for (let i = 0; i < buttons.length; i++) {
           const button = buttons.at(i);
-          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(expectedCategories[i].name);
+          expect(button.text()).toBe(expectedCategories[i].name);
         }
       })
     );
@@ -196,7 +194,7 @@ describe('<EmojiPicker />', () => {
         const footer = component.find(EmojiPickerFooter);
         const previewEmoji = footer.find(Emoji);
 
-        expect(previewEmoji.length, 'No emoji preview by default').to.equal(0);
+        expect(previewEmoji).toHaveLength(0);
       })
     );
 
@@ -215,13 +213,13 @@ describe('<EmojiPicker />', () => {
           const list = component.find(EmojiPickerList);
 
           const customHeading = findCategoryHeading(customCategory, list);
-          expect(customHeading.length, 'Custom category heading found').to.equal(1);
-          expect(customHeading.prop('title'), 'Custom category title').to.equal(customCategory);
+          expect(customHeading).toHaveLength(1);
+          expect(customHeading.prop('title')).toBe(customCategory);
           const customEmojiRows = emojiRowsVisibleInCategory(customCategory, component);
           const placeholders = customEmojiRows.find(EmojiPlaceholder);
-          expect(placeholders.length, 'EmojiPlaceholder visible').to.equal(1);
+          expect(placeholders).toHaveLength(1);
           const props = placeholders.get(0).props;
-          expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
+          expect(props.shortName).toBe(mediaEmoji.shortName);
         })
       );
     });
@@ -239,9 +237,9 @@ describe('<EmojiPicker />', () => {
           const hoverButton = list.find(Emoji).at(hoverOffset);
           hoverButton.simulate('mousemove');
           const previewEmoji = footer.find(Emoji);
-          expect(previewEmoji.length, 'Emoji preview after hover').to.equal(1);
+          expect(previewEmoji).toHaveLength(1);
           const emojiProps = previewEmoji.prop('emoji');
-          expect(emojiProps.id, 'First emoji displayed').to.equal(allEmojis[hoverOffset].id);
+          expect(emojiProps.id).toBe(allEmojis[hoverOffset].id);
         });
       });
     });
@@ -251,15 +249,15 @@ describe('<EmojiPicker />', () => {
     it('selecting category should show that category', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
+        expect(list.prop('selectedCategory')).not.toBe('FLAGS');
 
         return waitUntil(() => emojisVisible(list)).then(() => {
-          expect(categoryVisible('flags', component), 'Flag category not rendered as not in view').to.equal(false);
+          expect(categoryVisible('flags', component)).toBe(false);
 
           return showCategory('flags', component);
         }).then(() => {
           return waitUntil(() => list.prop('selectedCategory') === 'FLAGS' && categoryVisible('flags', component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
+            expect(list.prop('selectedCategory')).toBe('FLAGS');
           });
         });
       })
@@ -268,15 +266,15 @@ describe('<EmojiPicker />', () => {
     it('selecting custom category - should show preview with media first emoji loading', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
+        expect(list.prop('selectedCategory')).not.toBe(customCategory);
 
         return waitUntil(() => emojisVisible(list)).then(() => {
-          expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
+          expect(categoryVisible(customCategory, component)).toBe(false);
 
           return showCategory(customCategory, component);
         }).then(() => {
           return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
+            expect(list.prop('selectedCategory')).toBe(customCategory);
           });
         });
       })
@@ -296,9 +294,9 @@ describe('<EmojiPicker />', () => {
         return waitUntil(() => hoverButton().exists()).then(() => {
           hoverButton().simulate('mousedown', leftClick);
           return waitUntil(() => !!selection).then(() => {
-            expect(selection, 'Selected emoji defined').to.not.equal(undefined);
+            expect(selection).not.toBe(undefined);
             if (selection) {
-              expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
+              expect(selection.id).toBe(allEmojis[clickOffset].id);
             }
           });
         });
@@ -326,9 +324,9 @@ describe('<EmojiPicker />', () => {
         }).then(() => {
           const list = component.find(EmojiPickerList);
           const emojis = list.find(Emoji);
-          expect(emojis.length, 'Two matching emoji').to.equal(2);
-          expect(emojis.at(0).prop('emoji').shortName, 'Albania emoji displayed').to.equal(':flag_al:');
-          expect(emojis.at(1).prop('emoji').shortName, 'Algeria emoji displayed').to.equal(':flag_dz:');
+          expect(emojis).toHaveLength(2);
+          expect(emojis.at(0).prop('emoji').shortName).toBe(':flag_al:');
+          expect(emojis.at(1).prop('emoji').shortName).toBe(':flag_dz:');
         })
       )
     );
@@ -352,10 +350,10 @@ describe('<EmojiPicker />', () => {
         }).then(() => {
           const list = component.find(EmojiPickerList);
           const emojis = list.find(Emoji);
-          expect(emojis.length, 'One matching emoji').to.equal(1);
+          expect(emojis).toHaveLength(1);
           const emojiDescription = emojis.at(0).prop('emoji');
-          expect(emojiDescription.name, 'Automobile emoji displayed').to.equal('automobile');
-          expect(emojiDescription.shortName, 'Automobile emoji displayed').to.equal(':red_car:');
+          expect(emojiDescription.name).toBe('automobile');
+          expect(emojiDescription.shortName).toBe(':red_car:');
         })
       )
     );
@@ -395,7 +393,7 @@ describe('<EmojiPicker />', () => {
       return setupPicker({ emojiProvider }).then(component =>
         waitUntil(() => customSectionVisible(component)).then(() => {
           const addEmoji = findStartEmojiUpload(component);
-          expect(addEmoji.length, 'Emoji option').to.equal(0);
+          expect(addEmoji).toHaveLength(0);
         })
       );
     });
@@ -404,7 +402,7 @@ describe('<EmojiPicker />', () => {
       setupPicker().then(component =>
         waitUntil(() => customSectionVisible(component)).then(() => {
           const addEmoji = findStartEmojiUpload(component);
-          expect(addEmoji.length, 'Emoji option').to.equal(0);
+          expect(addEmoji).toHaveLength(0);
         })
       )
     );
@@ -416,7 +414,7 @@ describe('<EmojiPicker />', () => {
           waitUntil(() => startEmojiUploadVisible(component))
         ).then(() => {
           const addEmoji = findStartEmojiUpload(component);
-          expect(addEmoji.length, 'Emoji upload option').to.equal(1);
+          expect(addEmoji).toHaveLength(1);
         })
       );
     });
@@ -442,12 +440,12 @@ describe('<EmojiPicker />', () => {
                 value: ':cheese burger:',
               }
             });
-            expect(nameInput.prop('value'), 'emoji name filtered').to.equal('cheese_burger');
+            expect(nameInput.prop('value')).toBe('cheese_burger');
 
             // choose file
             const fileChooser = component.find(FileChooser);
             const fileOnChange = fileChooser.prop('onChange');
-            expect(fileOnChange, 'FileChooser exists with onChange prop').to.not.equal(undefined);
+            expect(fileOnChange).not.toBe(undefined);
             if (fileOnChange) {
               fileOnChange({
                 target: {
@@ -461,12 +459,12 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload preview shown
             const uploadPreview = findUploadPreview(component);
-            expect(uploadPreview.length, 'Upload preview visible').to.equal(1);
+            expect(uploadPreview).toHaveLength(1);
             const previewEmoji = uploadPreview.find(Emoji);
-            expect(previewEmoji.length, 'Preview emoji inside preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
             const emoji = previewEmoji.prop('emoji');
-            expect(emoji.shortName).to.equal(':cheese_burger:');
-            expect(emoji.representation.imagePath).to.equal(pngDataURL);
+            expect(emoji.shortName).toBe(':cheese_burger:');
+            expect(emoji.representation.imagePath).toBe(pngDataURL);
 
             // add emoji
             const addEmojiButton = findAddEmojiButton(component);
@@ -477,9 +475,9 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload called on provider
             const uploads = provider.getUploads();
-            expect(uploads.length, 'One upload occurred').to.equal(1);
+            expect(uploads).toHaveLength(1);
             const upload = uploads[0];
-            expect(upload.upload).to.deep.equal({
+            expect(upload.upload).toEqual({
               name: 'Cheese burger',
               shortName: ':cheese_burger:',
               ...pngFileUploadData,
@@ -493,26 +491,26 @@ describe('<EmojiPicker />', () => {
             // new emoji in view
             const newEmojiDescription = provider.getUploads()[0].emoji;
             const emoji = findEmojiWithId(component, newEmojiDescription.id);
-            expect(emoji.length, 'Emoji found').to.equal(1);
+            expect(emoji).toHaveLength(1);
 
             const { name, shortName, fallback } = emoji.prop('emoji');
-            expect(name, 'name').to.equal('Cheese burger');
-            expect(shortName, 'shortName').to.equal(':cheese_burger:');
-            expect(fallback, 'fallback').to.equal(':cheese_burger:');
+            expect(name).toBe('Cheese burger');
+            expect(shortName).toBe(':cheese_burger:');
+            expect(fallback).toBe(':cheese_burger:');
 
             return waitUntil(() => previewVisible(component));
           }).then(() => {
             // preview is back with new emoji shown by default
             const preview = findPreview(component);
-            expect(preview.length, 'Single preview visible').to.equal(1);
+            expect(preview).toHaveLength(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
 
             const { name, shortName, fallback } = previewEmoji.prop('emoji');
-            expect(name, 'name').to.equal('Cheese burger');
-            expect(shortName, 'shortName').to.equal(':cheese_burger:');
-            expect(fallback, 'fallback').to.equal(':cheese_burger:');
+            expect(name).toBe('Cheese burger');
+            expect(shortName).toBe(':cheese_burger:');
+            expect(fallback).toBe(':cheese_burger:');
           });
         })
       );
@@ -546,12 +544,12 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // name is "cheese_burger" (from search)
             const nameInput = findEmojiNameInput(component);
-            expect(nameInput.prop('value'), 'emoji name corresponds to search').to.equal('cheese_burger');
+            expect(nameInput.prop('value')).toBe('cheese_burger');
 
             // choose file
             const fileChooser = component.find(FileChooser);
             const fileOnChange = fileChooser.prop('onChange');
-            expect(fileOnChange, 'FileChooser exists with onChange prop').to.not.equal(undefined);
+            expect(fileOnChange).not.toBe(undefined);
             if (fileOnChange) {
               fileOnChange({
                 target: {
@@ -565,12 +563,12 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload preview shown
             const uploadPreview = findUploadPreview(component);
-            expect(uploadPreview.length, 'Upload preview visible').to.equal(1);
+            expect(uploadPreview).toHaveLength(1);
             const previewEmoji = uploadPreview.find(Emoji);
-            expect(previewEmoji.length, 'Preview emoji inside preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
             const emoji = previewEmoji.prop('emoji');
-            expect(emoji.shortName).to.equal(':cheese_burger:');
-            expect(emoji.representation.imagePath).to.equal(pngDataURL);
+            expect(emoji.shortName).toBe(':cheese_burger:');
+            expect(emoji.representation.imagePath).toBe(pngDataURL);
 
             // add emoji
             const addEmojiButton = findAddEmojiButton(component);
@@ -581,9 +579,9 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload called on provider
             const uploads = provider.getUploads();
-            expect(uploads.length, 'One upload occurred').to.equal(1);
+            expect(uploads).toHaveLength(1);
             const upload = uploads[0];
-            expect(upload.upload).to.deep.equal({
+            expect(upload.upload).toEqual({
               name: 'Cheese burger',
               shortName: ':cheese_burger:',
               ...pngFileUploadData,
@@ -597,26 +595,26 @@ describe('<EmojiPicker />', () => {
             // new emoji in view
             const newEmojiDescription = provider.getUploads()[0].emoji;
             const emoji = findEmojiWithId(component, newEmojiDescription.id);
-            expect(emoji.length, 'Emoji found').to.equal(1);
+            expect(emoji).toHaveLength(1);
 
             const { name, shortName, fallback } = emoji.prop('emoji');
-            expect(name, 'name').to.equal('Cheese burger');
-            expect(shortName, 'shortName').to.equal(':cheese_burger:');
-            expect(fallback, 'fallback').to.equal(':cheese_burger:');
+            expect(name).toBe('Cheese burger');
+            expect(shortName).toBe(':cheese_burger:');
+            expect(fallback).toBe(':cheese_burger:');
 
             return waitUntil(() => previewVisible(component));
           }).then(() => {
             // preview is back with new emoji shown by default
             const preview = findPreview(component);
-            expect(preview.length, 'Single preview visible').to.equal(1);
+            expect(preview).toHaveLength(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
 
             const { name, shortName, fallback } = previewEmoji.prop('emoji');
-            expect(name, 'name').to.equal('Cheese burger');
-            expect(shortName, 'shortName').to.equal(':cheese_burger:');
-            expect(fallback, 'fallback').to.equal(':cheese_burger:');
+            expect(name).toBe('Cheese burger');
+            expect(shortName).toBe(':cheese_burger:');
+            expect(fallback).toBe(':cheese_burger:');
           });
         })
       );
@@ -643,12 +641,12 @@ describe('<EmojiPicker />', () => {
                 value: ':cheese burger:',
               }
             });
-            expect(nameInput.prop('value'), 'emoji name filtered').to.equal('cheese_burger');
+            expect(nameInput.prop('value')).toBe('cheese_burger');
 
             // choose file
             const fileChooser = component.find(FileChooser);
             const fileOnChange = fileChooser.prop('onChange');
-            expect(fileOnChange, 'FileChooser exists with onChange prop').to.not.equal(undefined);
+            expect(fileOnChange).not.toBe(undefined);
             if (fileOnChange) {
               fileOnChange({
                 target: {
@@ -662,12 +660,12 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload preview shown
             const uploadPreview = findUploadPreview(component);
-            expect(uploadPreview.length, 'Upload preview visible').to.equal(1);
+            expect(uploadPreview).toHaveLength(1);
             const previewEmoji = uploadPreview.find(Emoji);
-            expect(previewEmoji.length, 'Preview emoji inside preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
             const emoji = previewEmoji.prop('emoji');
-            expect(emoji.shortName).to.equal(':cheese_burger:');
-            expect(emoji.representation.imagePath).to.equal(pngDataURL);
+            expect(emoji.shortName).toBe(':cheese_burger:');
+            expect(emoji.representation.imagePath).toBe(pngDataURL);
 
             // cancel
             const cancelLink = findCancelLink(component);
@@ -678,15 +676,15 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // preview is back with new emoji shown by default
             const preview = findPreview(component);
-            expect(preview.length, 'Single preview visible').to.equal(1);
+            expect(preview).toHaveLength(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
-            expect(previewEmoji.prop('emoji').shortName, 'Emoji preview shortName').to.equal(':media:');
+            expect(previewEmoji).toHaveLength(1);
+            expect(previewEmoji.prop('emoji').shortName).toBe(':media:');
 
             // No uploads occured
             const uploads = provider.getUploads();
-            expect(uploads.length, 'No uploads occurred').to.equal(0);
+            expect(uploads).toHaveLength(0);
           });
         })
       );
@@ -712,12 +710,12 @@ describe('<EmojiPicker />', () => {
                 value: ':cheese burger:',
               }
             });
-            expect(nameInput.prop('value'), 'emoji name filtered').to.equal('cheese_burger');
+            expect(nameInput.prop('value')).toBe('cheese_burger');
 
             // choose file
             const fileChooser = component.find(FileChooser);
             const fileOnChange = fileChooser.prop('onChange');
-            expect(fileOnChange, 'FileChooser exists with onChange prop').to.not.equal(undefined);
+            expect(fileOnChange).not.toBe(undefined);
             if (fileOnChange) {
               fileOnChange({
                 target: {
@@ -731,12 +729,12 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // upload preview shown
             const uploadPreview = findUploadPreview(component);
-            expect(uploadPreview.length, 'Upload preview visible').to.equal(1);
+            expect(uploadPreview).toHaveLength(1);
             const previewEmoji = uploadPreview.find(Emoji);
-            expect(previewEmoji.length, 'Preview emoji inside preview').to.equal(1);
+            expect(previewEmoji).toHaveLength(1);
             const emoji = previewEmoji.prop('emoji');
-            expect(emoji.shortName).to.equal(':cheese_burger:');
-            expect(emoji.representation.imagePath).to.equal(pngDataURL);
+            expect(emoji.shortName).toBe(':cheese_burger:');
+            expect(emoji.representation.imagePath).toBe(pngDataURL);
 
             // add emoji
             const addEmojiButton = findAddEmojiButton(component);
@@ -747,11 +745,11 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // Check error displayed
             const uploadError = findUploadError(component);
-            expect(uploadError.length, 'Upload error displayed').to.equal(1);
+            expect(uploadError).toHaveLength(1);
 
             // upload not called on provider
             const uploads = provider.getUploads();
-            expect(uploads.length, 'No upload occurred').to.equal(0);
+            expect(uploads).toHaveLength(0);
 
             // cancel
             const cancelLink = findCancelLink(component);
@@ -762,15 +760,15 @@ describe('<EmojiPicker />', () => {
           }).then(() => {
             // preview is back with new emoji shown by default
             const preview = findPreview(component);
-            expect(preview.length, 'Single preview visible').to.equal(1);
+            expect(preview).toHaveLength(1);
 
             const previewEmoji = preview.find(Emoji);
-            expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
-            expect(previewEmoji.prop('emoji').shortName, 'Emoji preview shortName').to.equal(':media:');
+            expect(previewEmoji).toHaveLength(1);
+            expect(previewEmoji.prop('emoji').shortName).toBe(':media:');
 
             // No uploads occured
             const uploads = provider.getUploads();
-            expect(uploads.length, 'No uploads occurred').to.equal(0);
+            expect(uploads).toHaveLength(0);
           });
         })
       );
@@ -789,7 +787,7 @@ describe('<EmojiPicker />', () => {
           const hoverButton = list.find(Emoji).at(hoverOffset);
           hoverButton.simulate('mousemove');
           const toneEmoji = footer.find(EmojiButton);
-          expect(toneEmoji.length, 'Tone emoji displayed').to.equal(1);
+          expect(toneEmoji).toHaveLength(1);
         });
       });
     });
@@ -805,7 +803,7 @@ describe('<EmojiPicker />', () => {
           const hoverButton = findEmoji(list).at(hoverOffset);
           hoverButton.simulate('mousemove');
           const toneEmoji = footer.find(EmojiButton);
-          expect(toneEmoji.length, 'Tone emoji not displayed').to.equal(0);
+          expect(toneEmoji).toHaveLength(0);
         });
       });
     });
@@ -817,9 +815,9 @@ describe('<EmojiPicker />', () => {
         return waitUntil(() => emojisVisible(list)).then(() => {
           const emojis = findEmoji(list);
           const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
+          expect(hoverOffset).not.toBe(-1);
           const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName, 'Should show emoji without skin variation').to.equal(':raised_hand:');
+          expect(handEmoji.shortName).toBe(':raised_hand:');
         });
       });
     });
@@ -832,28 +830,28 @@ describe('<EmojiPicker />', () => {
         return waitUntil(() => emojisVisible(list)).then(() => {
           const emojis = findEmoji(list);
           const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
+          expect(hoverOffset).not.toBe(-1);
           const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-2:');
+          expect(handEmoji.shortName).toBe(':raised_hand::skin-tone-2:');
         });
       });
     });
   });
 
   it('should use localStorage to remember tone selection between sessions', () => {
-    const setSpy = sinon.spy(window.localStorage, 'setItem');
+    const setSpy = jest.spyOn(window.localStorage, 'setItem');
     getEmojiResourcePromise().then(provider => provider.setSelectedTone(2));
 
-    return waitUntil(() => setSpy.callCount === 1).then(() =>
+    return waitUntil(() => setSpy.mock.calls.length === 1).then(() =>
       // First picker should have tone set by default
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
         return waitUntil(() => emojisVisible(list)).then(() => {
           const emojis = findEmoji(list);
           const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
+          expect(hoverOffset).not.toBe(-1);
           const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          expect(handEmoji.shortName).toBe(':raised_hand::skin-tone-3:');
         });
       }) &&
       // Second picker should have tone set by default
@@ -862,9 +860,9 @@ describe('<EmojiPicker />', () => {
         return waitUntil(() => emojisVisible(list)).then(() => {
           const emojis = findEmoji(list);
           const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
+          expect(hoverOffset).not.toBe(-1);
           const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          expect(handEmoji.shortName).toBe(':raised_hand::skin-tone-3:');
         });
       })
 

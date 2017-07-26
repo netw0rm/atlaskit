@@ -1,5 +1,4 @@
 import * as fetchMock from 'fetch-mock/src/client';
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -136,7 +135,7 @@ describe('MediaEmojiResource', () => {
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
       const uploadPromise = mediaEmojiResource.uploadEmoji(upload).then(emoji => {
-        expect(emoji).to.deep.equal({
+        expect(emoji).toEqual({
           ...serviceResponse.emojis[0],
           representation: {
             mediaPath: 'http://media/123.png',
@@ -146,18 +145,18 @@ describe('MediaEmojiResource', () => {
         });
 
         const mediaUploads = mockMediaPicker.getUploads();
-        expect(mediaUploads.length, '1 media upload').to.equal(1);
-        expect(mediaUploads[0], 'upload params').to.deep.equal({
+        expect(mediaUploads).toHaveLength(1);
+        expect(mediaUploads[0]).toEqual({
           dataURL: upload.dataURL,
           filename: upload.filename,
         });
 
         const uploadEmojiCalls = fetchMock.calls('emoji-upload');
-        expect(uploadEmojiCalls.length, 'Emoji service upload emoji called').to.equal(1);
+        expect(uploadEmojiCalls).toHaveLength(1);
         const uploadRequest = uploadEmojiCalls[0][0];
         return uploadRequest.json().then(json => {
           const { shortName, name, width, height } = upload;
-          expect(json, 'Emoji service upload request').to.deep.equal({
+          expect(json).toEqual({
             shortName,
             name,
             width,
@@ -192,15 +191,15 @@ describe('MediaEmojiResource', () => {
 
       const uploadPromise = mediaEmojiResource.uploadEmoji(upload).catch(error => {
         const mediaUploads = mockMediaPicker.getUploads();
-        expect(mediaUploads.length, '1 media upload').to.equal(1);
-        expect(mediaUploads[0], 'upload params').to.deep.equal({
+        expect(mediaUploads).toHaveLength(1);
+        expect(mediaUploads[0]).toEqual({
           dataURL: upload.dataURL,
           filename: upload.filename,
         });
 
         const uploadEmojiCalls = fetchMock.calls('emoji-upload');
-        expect(uploadEmojiCalls.length, 'Emoji service upload emoji called').to.equal(0);
-        expect(error, 'Error message').to.equal('oh crap');
+        expect(uploadEmojiCalls).toHaveLength(0);
+        expect(error).toBe('oh crap');
       });
 
       // simulate MediaAPI done - after getToken resolved
@@ -230,21 +229,21 @@ describe('MediaEmojiResource', () => {
 
       const uploadPromise = mediaEmojiResource.uploadEmoji(upload).catch(error => {
         const mediaUploads = mockMediaPicker.getUploads();
-        expect(mediaUploads.length, '1 media upload').to.equal(1);
-        expect(mediaUploads[0], 'upload params').to.deep.equal({
+        expect(mediaUploads).toHaveLength(1);
+        expect(mediaUploads[0]).toEqual({
           dataURL: upload.dataURL,
           filename: upload.filename,
         });
 
         const uploadEmojiCalls = fetchMock.calls('emoji-upload');
-        expect(uploadEmojiCalls.length, 'Emoji service upload emoji called').to.equal(1);
+        expect(uploadEmojiCalls).toHaveLength(1);
         const uploadRequest = uploadEmojiCalls[0][0];
 
-        expect(error, 'Error message').to.equal('Bad Request');
+        expect(error).toBe('Bad Request');
 
         return uploadRequest.json().then(json => {
           const { shortName, name, width, height } = upload;
-          expect(json, 'Emoji service upload request').to.deep.equal({
+          expect(json).toEqual({
             shortName,
             name,
             width,
@@ -279,8 +278,8 @@ describe('MediaEmojiResource', () => {
       const portion = 0.5;
 
       const donePromise = waitUntil(() => progress).then(() => {
-        expect(progress.percent < portion, 'progress percent less than media portion').to.equal(true);
-        expect(progress.percent, 'progress percent').to.equal(portion * mediaProportionOfProgress);
+        expect(progress.percent < portion).toBe(true);
+        expect(progress.percent).toBe(portion * mediaProportionOfProgress);
       });
 
       // simulate MediaAPI done - after getToken resolved
@@ -309,7 +308,7 @@ describe('MediaEmojiResource', () => {
       const getTokenStub = tokenManagerStub.getToken;
       const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub);
       mediaEmojiResource.prepareForUpload();
-      expect(getTokenStub.called, 'getToken called').to.equal(true);
+      expect(getTokenStub.called).toBe(true);
     });
   });
 
@@ -336,10 +335,10 @@ describe('MediaEmojiResource', () => {
       });
 
       return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
-        expect(emoji, 'Emoji defined').to.not.equal(undefined);
-        expect(emoji).to.deep.equal(missingMediaEmoji);
+        expect(emoji).not.toBe(undefined);
+        expect(emoji).toEqual(missingMediaEmoji);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+        expect(fetchSiteEmojiCalls).toHaveLength(1);
       });
     });
 
@@ -364,9 +363,9 @@ describe('MediaEmojiResource', () => {
       });
 
       return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
-        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        expect(emoji).toBe(undefined);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+        expect(fetchSiteEmojiCalls).toHaveLength(1);
       });
     });
 
@@ -382,9 +381,9 @@ describe('MediaEmojiResource', () => {
       });
 
       return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
-        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        expect(emoji).toBe(undefined);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+        expect(fetchSiteEmojiCalls).toHaveLength(1);
       });
     });
   });

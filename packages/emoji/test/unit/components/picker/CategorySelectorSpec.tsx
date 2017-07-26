@@ -1,6 +1,5 @@
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 
 import * as styles from '../../../../src/components/picker/styles';
 import CategorySelector, { Props } from '../../../../src/components/picker/CategorySelector';
@@ -25,9 +24,9 @@ describe('<CategorySelector />', () => {
   it('all categories visible', () => {
     const component = setupComponent();
     const categoryButtons = component.find('button');
-    expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
+    expect(categoryButtons).toHaveLength(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
-      expect(categoryButtons.at(i).prop('title'), `Button #${i}`).to.equal(category.name);
+      expect(categoryButtons.at(i).prop('title')).toBe(category.name);
     });
   });
 
@@ -38,12 +37,12 @@ describe('<CategorySelector />', () => {
       availableCategories: toAvailableCategories([enabledCat1, enabledCat2]),
     });
     const categoryButtons = component.find('button');
-    expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
+    expect(categoryButtons).toHaveLength(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
       const button = categoryButtons.at(i);
-      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
+      expect(button.prop('title')).toBe(category.name);
       const shouldBeEnabled = i === 0 || i === 3;
-      expect(button.hasClass(styles.disable), `Button #${i} enabled=${shouldBeEnabled}`).to.equal(!shouldBeEnabled);
+      expect(button.hasClass(styles.disable)).toBe(!shouldBeEnabled);
     });
   });
 
@@ -54,7 +53,7 @@ describe('<CategorySelector />', () => {
     });
     const categoryButtons = component.find('button');
     categoryButtons.at(4).simulate('click');
-    expect(selectedCategoryId, 'Category was selected').to.equal(defaultCategories[4].id);
+    expect(selectedCategoryId).toBe(defaultCategories[4].id);
   });
 
   it('active category highlighted', () => {
@@ -63,12 +62,12 @@ describe('<CategorySelector />', () => {
       activeCategoryId,
     });
     const categoryButtons = component.find('button');
-    expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
+    expect(categoryButtons).toHaveLength(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
       const button = categoryButtons.at(i);
-      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
+      expect(button.prop('title')).toBe(category.name);
       const shouldBeActive = i === 3;
-      expect(button.hasClass(styles.active), `Button #${i} active=${shouldBeActive}`).to.equal(shouldBeActive);
+      expect(button.hasClass(styles.active)).toBe(shouldBeActive);
     });
   });
 });

@@ -1,5 +1,4 @@
 import * as fetchMock from 'fetch-mock/src/client';
-import { expect } from 'chai';
 
 import PresenceResource, {
   DefaultPresenceCache, DefaultPresenceParser, PresenceMap
@@ -23,7 +22,7 @@ describe('PresenceParser', () => {
     let count = 0;
     validPresenceData['data'].PresenceBulk.forEach((response) => {
       if (response.state) {
-        expect(update[response.userId].status).to.equal(parser.mapState(response.state));
+        expect(update[response.userId].status).toBe(parser.mapState(response.state));
         count++;
       }
     });
@@ -38,7 +37,7 @@ describe('PresenceParser', () => {
     let count = 0;
     invalidPresenceData['data'].PresenceBulk.forEach((response) => {
       if (response.userId && response.state) {
-        expect(update[response.userId].status).to.equal(parser.mapState(response.state));
+        expect(update[response.userId].status).toBe(parser.mapState(response.state));
         count++;
       }
     });
@@ -69,33 +68,32 @@ describe('PresenceCache', () => {
   it('should know whether it contains a user by ID', () => {
     cache.update(testPresenceMap);
     const userId = Object.keys(testPresenceMap)[0];
-    expect(cache.contains(userId)).to.be.equal(true);
+    expect(cache.contains(userId)).toBe(true);
    });
 
   it('should not contain IDs that not have been manually added to the cache', () => {
     cache.update(testPresenceMap);
-    expect(cache.contains('DEFINITELY-N0T-A-TEST-US3R-1D'), 'Claimed to contain a user ID it shouldn\'t have').to.be.equal(false);
+    expect(cache.contains('DEFINITELY-N0T-A-TEST-US3R-1D')).toBe(false);
   });
 
   it('should retrieve a user given their ID', () => {
     cache.update(testPresenceMap);
     const userId = Object.keys(testPresenceMap)[0];
     const expectedPresence = testPresenceMap[userId];
-    expect(cache.get(userId)).to.deep.equal(expectedPresence);
+    expect(cache.get(userId)).toEqual(expectedPresence);
   });
 
   it('should return no presence if queried for users not present in the cache', () => {
     cache.update(testPresenceMap);
 
-    // tslint:disable-next-line:no-unused-expression
-    expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).to.be.empty;
+    expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).toEqual({});
   });
 
   it('should retrieve a set of users given an array of their IDs', () => {
     cache.update(testPresenceMap);
     const userIds = Object.keys(testPresenceMap);
     const actual = cache.getBulk(userIds);
-    expect(actual).to.deep.equal(testPresenceMap);
+    expect(actual).toEqual(testPresenceMap);
   });
 
   it('should update its entries when given a PresenceMap', () => {
@@ -105,18 +103,18 @@ describe('PresenceCache', () => {
       ...testPresenceMap,
       ...extraPresences
     };
-    expect(cache.getBulk(Object.keys(combinedPresences))).to.deep.equal(combinedPresences);
+    expect(cache.getBulk(Object.keys(combinedPresences))).toEqual(combinedPresences);
   });
 
   it('should retrieve a set of missing users given an array of their IDs', () => {
     const extraIds: string[] = ['13-thirteen-13', 'Roger-rolo-the-steam-roller-Lo'];
     cache.update(testPresenceMap);
-    expect(cache.getMissingUserIds(testIds.concat(extraIds))).to.deep.equal(testIds.slice(6, 9).concat(extraIds));
+    expect(cache.getMissingUserIds(testIds.concat(extraIds))).toEqual(testIds.slice(6, 9).concat(extraIds));
   });
 
   it('should insert and store user ids on demand', (done) => {
     // Check cache only adds entries when hit by presence service
-    expect(cache.contains(testIds[0])).to.equal(false);
+    expect(cache.contains(testIds[0])).toBe(false);
     cache.update(testPresenceMap);
     let cacheHits = 0;
     testIds.forEach((id) => {
@@ -134,7 +132,7 @@ describe('PresenceCache', () => {
     // Check cache stores correct mapping
     validPresenceData['data'].PresenceBulk.forEach((response) => {
       if (response.state) {
-        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
+        expect(cache.get(response.userId).status).toBe(parser.mapState(response.state));
       }
     });
   });
@@ -144,7 +142,7 @@ describe('PresenceCache', () => {
     // Check cache stores correct mapping
     validPresenceData['data'].PresenceBulk.forEach((response) => {
       if (response.state) {
-        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
+        expect(cache.get(response.userId).status).toBe(parser.mapState(response.state));
       }
     });
   });
@@ -153,7 +151,7 @@ describe('PresenceCache', () => {
     const expiredCache = new DefaultPresenceCache(-1);
     expiredCache.update(testPresenceMap);
     expiredCache.get(testIds[0]);
-    expect(expiredCache.contains(testIds[0])).to.be.equal(false);
+    expect(expiredCache.contains(testIds[0])).toBe(false);
   });
 
   it('should remove all expired users if the cache hits its trigger point', () => {
@@ -161,7 +159,7 @@ describe('PresenceCache', () => {
     limitedCache.update(testPresenceMap);
     limitedCache.update(extraPresences);
     validPresenceData['data'].PresenceBulk.forEach((response) => {
-      expect(limitedCache.contains(response.userId)).to.be.equal(false);
+      expect(limitedCache.contains(response.userId)).toBe(false);
     });
   });
 });
@@ -193,12 +191,12 @@ describe('PresenceResource', () => {
         // notifyListeners called twice as no cache hits so must call again after service query
         resource.refreshPresence(testIds);
         let calls = fetchMock.calls(mockName);
-        expect(calls.length, 'First presence query made').to.equal(1);
+        expect(calls).toHaveLength(1);
         setTimeout(() => {
             resource.refreshPresence(testIds.slice(0, 6));
           }, 5);
         calls = fetchMock.calls(mockName);
-        expect(calls.length, 'Cache should return all data').to.equal(1);
+        expect(calls).toHaveLength(1);
         done();
       } catch (err) {
         done(err);
@@ -218,7 +216,7 @@ describe('PresenceResource', () => {
         resource.refreshPresence(testIds.slice(0, 6));
         const calls = fetchMock.calls(mockName);
         // One call since only needs to render info from cache
-        expect(calls.length).to.equal(0);
+        expect(calls).toHaveLength(0);
         done();
       } catch (err) {
         done(err);

@@ -1,6 +1,5 @@
 import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util-service-support';
 
@@ -84,17 +83,17 @@ const providerServiceData1 = standardServiceEmojis;
 const providerServiceData2 = atlassianServiceEmojis;
 
 const checkOrder = (expected: EmojiDescription[], actual: EmojiDescription[]) => {
-  expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
+  expect(actual).toHaveLength(expected.length);
   expected.forEach((emoji, idx) => {
     checkEmoji(emoji, actual[idx], idx);
   });
 };
 
 const checkEmoji = (expected: EmojiDescription, actual: EmojiDescription | undefined, idx?: number) => {
-  expect(actual, 'Emoji is defined').to.not.equal(undefined);
+  expect(actual).not.toBe(undefined);
   if (actual) {
-    expect(actual.id, `emoji #${idx}`).to.equal(expected.id);
-    expect(actual.shortName, `emoji #${idx}`).to.equal(expected.shortName);
+    expect(actual.id).toBe(expected.id);
+    expect(actual.shortName).toBe(expected.shortName);
   }
 };
 
@@ -167,8 +166,8 @@ describe('EmojiResource', () => {
 
   describe('#test data', () => {
     it('expected test data', () => {
-      expect(standardEmojis.length > 0, 'More than 1 Standard Emoji').to.equal(true);
-      expect(atlassianEmojis.length > 0, 'More than 1 Atlassian Emoji').to.equal(true);
+      expect(standardEmojis.length).toBeGreaterThan(0);
+      expect(atlassianEmojis.length).toBeGreaterThan(0);
     });
   });
 
@@ -178,13 +177,8 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [],
       };
-      try {
-        // tslint:disable-next-line:no-unused-expression
-        new EmojiResource(config);
-        expect(true, 'EmojiResource construction should throw error').to.equal(false);
-      } catch (e) {
-        expect(true, 'EmojiResource threw error due to no providers').to.equal(true);
-      }
+
+      expect(() => new EmojiResource(config)).toThrow();
     });
 
     it('single provider all emoji', () => {
@@ -201,8 +195,8 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResult().then(emojiResponse => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
-        expect(emojiResponse.emojis.length, 'Number of emoji').to.equal(providerData1.length);
+        expect(onChange.resultCalls).toHaveLength(1);
+        expect(emojiResponse.emojis).toHaveLength(providerData1.length);
         checkOrder(providerData1, emojiResponse.emojis);
       });
       resource.subscribe(onChange);
@@ -225,13 +219,13 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResult().then(emojiResponse => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
-        expect(emojiResponse.emojis.length, 'One emoji found').to.equal(1);
+        expect(onChange.resultCalls).toHaveLength(1);
+        expect(emojiResponse.emojis).toHaveLength(1);
         const expectedSelectedSkinEmoji = (thumbsupEmoji.skinVariations && thumbsupEmoji.skinVariations[skinTone - 1]) as EmojiDescription;
-        expect(emojiResponse.emojis[0].id).to.equal(expectedSelectedSkinEmoji.id);
+        expect(emojiResponse.emojis[0].id).toBe(expectedSelectedSkinEmoji.id);
         const emoji = emojiResponse.emojis[0];
-        expect(emoji.shortName, 'Tone button emoji shortName').to.equal(expectedSelectedSkinEmoji.shortName);
-        expect(emoji.id, 'Tone button emoji id').to.equal(expectedSelectedSkinEmoji.id);
+        expect(emoji.shortName).toBe(expectedSelectedSkinEmoji.shortName);
+        expect(emoji.id).toBe(expectedSelectedSkinEmoji.id);
       });
       resource.subscribe(onChange);
       resource.filter('thumbsup', { skinTone });
@@ -254,9 +248,9 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResults(2).then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(2);
+        expect(onChange.resultCalls).toHaveLength(2);
         const emojis = onChange.resultCalls[1].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(providerData1.length + providerData2.length);
+        expect(emojis).toHaveLength(providerData1.length + providerData2.length);
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
@@ -285,18 +279,18 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromiseChain = onChange.waitForResult().then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
+        expect(onChange.resultCalls).toHaveLength(1);
         const emojis = onChange.resultCalls[0].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(providerData2.length);
+        expect(emojis).toHaveLength(providerData2.length);
         checkOrder(providerData2, emojis);
         // Complete 1st emoji set
         resolveProvider1(providerServiceData1);
         return onChange.waitForResult();
       }).then(() => {
         // After 2nd dataset is loaded, this is for the 1st data set
-        expect(onChange.resultCalls.length, 'Result called').to.equal(2);
+        expect(onChange.resultCalls).toHaveLength(2);
         const emojis = onChange.resultCalls[1].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(providerData1.length + providerData2.length);
+        expect(emojis).toHaveLength(providerData1.length + providerData2.length);
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
@@ -320,11 +314,11 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResult().then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
+        expect(onChange.resultCalls).toHaveLength(1);
         const emojis = onChange.resultCalls[0].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(providerData2.length);
+        expect(emojis).toHaveLength(providerData2.length);
         checkOrder(providerData2, emojis);
-        expect(onChange.errorCalls.length, 'Errors occurred').to.equal(1);
+        expect(onChange.errorCalls).toHaveLength(1);
       });
       resource.subscribe(onChange);
       resource.filter('');
@@ -344,14 +338,14 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(defaultApiConfig);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForAnyCall().then(() => {
-        expect(onChange.notReadyCalls, 'Not ready called').to.equal(1);
+        expect(onChange.notReadyCalls).toBe(1);
         // Complete 1st emoji set
         resolveProvider1(providerServiceData1);
         return onChange.waitForResult();
       }).then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
+        expect(onChange.resultCalls).toHaveLength(1);
         const emojis = onChange.resultCalls[0].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(providerData1.length);
+        expect(emojis).toHaveLength(providerData1.length);
         checkOrder(providerData1, emojis);
       });
       resource.subscribe(onChange);
@@ -375,11 +369,11 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(config);
       const onChange = new MockOnProviderChange();
       const filteredPromise = onChange.waitForResults(2).then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(2);
+        expect(onChange.resultCalls).toHaveLength(2);
         const emojis = onChange.resultCalls[1].emojis;
-        expect(emojis.length, 'Number of emoji').to.equal(2);
-        expect(emojis[0].shortName).to.equal(':grin:');
-        expect(emojis[1].shortName).to.equal(':grinning:');
+        expect(emojis).toHaveLength(2);
+        expect(emojis[0].shortName).toBe(':grin:');
+        expect(emojis[1].shortName).toBe(':grinning:');
       });
       resource.subscribe(onChange);
       resource.filter('grin');
@@ -404,7 +398,7 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(defaultApiConfig);
 
       return resource.recordSelection({ shortName: ':bacon:', id: '123bacon' }).then(() => {
-        expect(fetchMock.called('record')).to.equal(true);
+        expect(fetchMock.called('record')).toBe(true);
       });
     });
   });
@@ -550,7 +544,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: 'bogus' })); // does not exist
       const done = emojiPromise.then(emoji => {
-        expect(emoji).to.equal(undefined);
+        expect(emoji).toBe(undefined);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -596,7 +590,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = alwaysPromise(resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' })); // grin
       const done = emojiPromise.then(emoji => {
-        expect(emoji, 'Emoji not found due to failed provider').to.equal(undefined);
+        expect(emoji).toBe(undefined);
       });
       resolveProvider2(providerServiceData2);
       return done;
@@ -660,8 +654,8 @@ describe('EmojiResource', () => {
       return alwaysPromise(resource.findByEmojiId(missingMediaEmojiId))
         .then(emoji => {
           const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-          expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
-          expect(emoji).to.deep.equal(missingMediaEmoji);
+          expect(fetchSiteEmojiCalls).toHaveLength(1);
+          expect(emoji).toEqual(missingMediaEmoji);
         });
     });
 
@@ -703,8 +697,8 @@ describe('EmojiResource', () => {
       return alwaysPromise(resource.findByEmojiId(emojiId))
         .then(emoji => {
           const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-          expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
-          expect(emoji).to.deep.equal(mediaEmoji);
+          expect(fetchSiteEmojiCalls).toHaveLength(1);
+          expect(emoji).toEqual(mediaEmoji);
         });
     });
 
@@ -742,10 +736,10 @@ describe('EmojiResource', () => {
       return alwaysPromise(resource.findByEmojiId(emojiId))
         .then(emoji => {
           const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
-          expect (fetchSiteEmojiCalls.length, 'No call fetch site emoji on server').to.equal(0);
+          expect(fetchSiteEmojiCalls).toHaveLength(0);
           // media url not loaded - url pass through
           const { width, height, mediaPath } = mediaEmoji.representation as MediaApiRepresentation;
-          expect(emoji).to.deep.equal({
+          expect(emoji).toEqual({
             ...mediaEmoji,
             representation: {
               imagePath: mediaPath,
@@ -772,7 +766,7 @@ describe('EmojiResource', () => {
 
       const emojiPromise = alwaysPromise(resource.findById('unknownid'));
       const done = emojiPromise.then(emoji => {
-        expect(emoji).to.equal(undefined);
+        expect(emoji).toBe(undefined);
       });
       resolveProvider1(providerServiceData1);
       return done;
@@ -977,7 +971,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = alwaysPromise(resource.findByShortName(':bogus:'));
       const done = emojiPromise.then(emoji => {
-        expect(emoji).to.equal(undefined);
+        expect(emoji).toBe(undefined);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -1023,7 +1017,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = alwaysPromise(resource.findByShortName(':grin:'));
       const done = emojiPromise.then(emoji => {
-        expect(emoji, 'Emoji not found due to failed provider').to.equal(undefined);
+        expect(emoji).toBe(undefined);
       });
       resolveProvider2(providerServiceData2);
       return done;
@@ -1091,21 +1085,21 @@ describe('UploadingEmojiResource', () => {
     it('resource has custom emoji with media support', () => {
       const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any);
       return emojiResource.isUploadSupported().then(supported => {
-        expect(supported, 'Upload is supported').to.equal(true);
+        expect(supported).toBe(true);
       });
     });
 
     it('resource has no media support', () => {
       const emojiResource = new TestUploadingEmojiResource();
       return emojiResource.isUploadSupported().then(supported => {
-        expect(supported, 'Upload is not supported').to.equal(false);
+        expect(supported).toBe(false);
       });
     });
 
     it('allowUpload is false', () => {
       const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any, { allowUpload: false } as EmojiResourceConfig);
       return emojiResource.isUploadSupported().then(supported => {
-        expect(supported, 'Upload is not supported').to.equal(false);
+        expect(supported).toBe(false);
       });
     });
   });
@@ -1122,11 +1116,7 @@ describe('UploadingEmojiResource', () => {
 
     it('no media support - throw error', () => {
       const emojiResource = new TestUploadingEmojiResource();
-      return emojiResource.uploadCustomEmoji(upload).then(emoji => {
-        expect(true, 'Promise should have been rejected').to.equal(false);
-      }).catch(error => {
-        expect(true, 'Promise should be rejected').to.equal(true);
-      });
+      return expect(emojiResource.uploadCustomEmoji(upload)).rejects.toBeDefined();
     });
 
     it('media support - upload successful', () => {
@@ -1135,8 +1125,8 @@ describe('UploadingEmojiResource', () => {
       uploadEmojiStub.returns(Promise.resolve(mediaEmoji));
       const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
       return emojiResource.uploadCustomEmoji(upload).then(emoji => {
-        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
-        expect(emoji, 'Emoji uploaded').to.equal(mediaEmoji);
+        expect(uploadEmojiStub.calledWith(upload)).toBe(true);
+        expect(emoji).toBe(mediaEmoji);
       });
     });
 
@@ -1145,20 +1135,19 @@ describe('UploadingEmojiResource', () => {
       const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
       uploadEmojiStub.returns(Promise.reject('bad things'));
       const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
-      return emojiResource.uploadCustomEmoji(upload).then(emoji => {
-        expect(true, 'Promise should have been rejected').to.equal(false);
-      }).catch(error => {
-        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
-        expect(true, 'Promise should be rejected').to.equal(true);
+
+      return expect(emojiResource.uploadCustomEmoji(upload)).rejects.toBeDefined().then(() => {
+        expect(uploadEmojiStub.calledWith(upload)).toBe(true);
       });
     });
   });
 
   describe('#prepareForUpload', () => {
     it('no media support - no error', () => {
-      const emojiResource = new TestUploadingEmojiResource();
-      emojiResource.prepareForUpload();
-      expect(true, 'executed without error').to.equal(true);
+      expect(() => {
+        const emojiResource = new TestUploadingEmojiResource();
+        emojiResource.prepareForUpload();
+      }).not.toThrow();
     });
 
     it('media support - token primed', () => {
@@ -1167,7 +1156,7 @@ describe('UploadingEmojiResource', () => {
       const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
       emojiResource.prepareForUpload();
       return waitUntil(() => prepareForUploadStub.called).then(() => {
-        expect(prepareForUploadStub.called, 'upload called on mediaEmojiResource').to.equal(true);
+        expect(prepareForUploadStub.called).toBe(true);
       });
     });
   });
@@ -1189,16 +1178,16 @@ describe('#toneSelectionStorage', () => {
     const provider = new EmojiResource(defaultApiConfig);
     // Linter throws an error if nothing done with EmojiResource
     provider.filter();
-    expect(getSpy.callCount).to.equal(1);
+    expect(getSpy.callCount).toBe(1);
   });
 
   it('calling setSelectedTone calls setItem in localStorage', () => {
     const setSpy = sinon.spy(global.window.localStorage, 'setItem');
     const resource = new EmojiResource(defaultApiConfig);
     resource.setSelectedTone(1);
-    expect(setSpy.callCount).to.equal(1);
-    expect(setSpy.getCall(0).args[0]).to.equal(selectedToneStorageKey);
-    expect(setSpy.getCall(0).args[1]).to.equal('1');
+    expect(setSpy.callCount).toBe(1);
+    expect(setSpy.getCall(0).args[0]).toBe(selectedToneStorageKey);
+    expect(setSpy.getCall(0).args[1]).toBe('1');
   });
 });
 
@@ -1225,11 +1214,11 @@ describe('helpers', () => {
   }
 
   it('supportsUploadFeature for UploadingEmojiProvider is true', () => {
-    expect(supportsUploadFeature(new TestUploadingEmojiProvider()), 'Supports upload feature').to.equal(true);
+    expect(supportsUploadFeature(new TestUploadingEmojiProvider())).toBe(true);
   });
 
   it('supportsUploadFeature for plain old EmojiProvider is false', () => {
-    expect(supportsUploadFeature(new TestEmojiProvider()), 'Does not support upload feature').to.equal(false);
+    expect(supportsUploadFeature(new TestEmojiProvider())).toBe(false);
   });
 
 });

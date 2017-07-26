@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import { customCategory, customType } from '../../../src/constants';
 import { EmojiDescription } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
@@ -8,9 +6,9 @@ import EmojiRepository from '../../../src/api/EmojiRepository';
 import { emojis as allEmojis, searchableEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../../../src/support/test-data';
 
 function checkOrder(expected, actual) {
-  expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
+  expect(actual.length).toBe(expected.length);
   expected.forEach((emoji, idx) => {
-    expect(emoji.id, `emoji #${idx}`).to.equal(actual[idx].id);
+    expect(emoji.id).toBe(actual[idx].id);
   });
 }
 
@@ -155,8 +153,8 @@ describe('EmojiRepository', () => {
     it('all should not include non-searchable emoji', () => {
       const emojis = emojiRepository.all().emojis;
 
-      expect(emojis.length).to.be.greaterThan(0);
-      expect(emojis.filter(emoji => emoji.shortName === ':police_officer:').length).to.equal(0);
+      expect(emojis.length).toBeGreaterThan(0);
+      expect(emojis.filter(emoji => emoji.shortName === ':police_officer:').length).toBe(0);
     });
 
     it('search all - colon style', () => {
@@ -177,7 +175,7 @@ describe('EmojiRepository', () => {
 
       emojis.forEach(emoji => {
         if (emoji.category !== lastCategory) {
-          expect(foundCategories.has(emoji.category), 'New category not found before').to.equal(false);
+          expect(foundCategories.has(emoji.category)).toBe(false);
           lastCategory = emoji.category;
         }
       });
@@ -235,21 +233,21 @@ describe('EmojiRepository', () => {
 
     it('includes ascii match at the top', () => {
       const emojis = emojiRepository.search(':O').emojis;
-      expect(emojis[0]).to.equal(openMouthEmoji);
+      expect(emojis[0]).toBe(openMouthEmoji);
     });
 
     it('de-dupes ascii match from other matches', () => {
       const emojis = emojiRepository.search(':O').emojis;
       const openMouthEmojiCount = emojis.filter(e => e.id === openMouthEmoji.id).length;
-      expect(openMouthEmojiCount, 'emoji matching ascii representation is only returned once in the search results').to.equal(1);
+      expect(openMouthEmojiCount).toBe(1);
     });
 
     it('minus not indexed', () => {
       const emojis = emojiRepository.search(':congo').emojis;
-      expect(emojis.length, 'One emoji').to.equal(1);
-      expect(emojis[0].name).to.equal('Congo - Brazzaville');
+      expect(emojis.length).toBe(1);
+      expect(emojis[0].name).toBe('Congo - Brazzaville');
       const noEmojis = emojiRepository.search(':-').emojis;
-      expect(noEmojis.length, 'No emoji').to.equal(0);
+      expect(noEmojis.length).toBe(0);
     });
 
     it('returns emojis whose shortName starts with a number', () => {
@@ -259,8 +257,8 @@ describe('EmojiRepository', () => {
       ];
       const repository = new EmojiRepository(expectedEmojis);
       const emojis = repository.search(':4').emojis;
-      expect(emojis.length, 'One emoji').to.equal(1);
-      expect(emojis[0].name).to.equal('panda face');
+      expect(emojis.length).toBe(1);
+      expect(emojis[0].name).toBe('panda face');
     });
 
     it('should include numbers as a part of the query', () => {
@@ -271,17 +269,17 @@ describe('EmojiRepository', () => {
       ];
       const repository = new EmojiRepository(expectedEmojis);
       const emojis = repository.search(':test1').emojis;
-      expect(emojis.length, 'One emoji').to.equal(1);
-      expect(emojis[0].name).to.equal('BOOM');
+      expect(emojis.length).toBe(1);
+      expect(emojis[0].name).toBe('BOOM');
     });
 
     it('should not find a non-searchable emoji', () => {
       // ensure :police_officer: is present
       const policeEmoji = emojiRepository.findByShortName(':police_officer:');
-      expect(policeEmoji === undefined, 'A :police_officer: emoji is expected in the repository').to.equal(false);
+      expect(policeEmoji === undefined).toBe(false);
 
       const emojis = emojiRepository.search(':police_officer:').emojis;
-      expect(emojis.length, 'The :police_officer: emoji should not be returned by a search').to.equal(0);
+      expect(emojis.length).toBe(0);
     });
   });
 
@@ -291,38 +289,35 @@ describe('EmojiRepository', () => {
       const repository = new EmojiRepository(allEmojis);
       repository.addCustomEmoji(siteTest);
       const searchEmojis = repository.search('').emojis;
-      expect(searchEmojis.length, 'Extra emoji in results').to.equal(searchableEmojis.length + 1);
-      expect(containsEmojiId(searchEmojis, siteEmojiId), 'Contains site emoji').to.equal(true);
+      expect(searchEmojis.length).toBe(searchableEmojis.length + 1);
+      expect(containsEmojiId(searchEmojis, siteEmojiId)).toBe(true);
 
-      expect(repository.findById(siteEmojiId.id as string)).to.be.deep.equal(siteTest);
-      expect(repository.findByShortName(siteEmojiId.shortName)).to.be.deep.equal(siteTest);
+      expect(repository.findById(siteEmojiId.id as string)).toEqual(siteTest);
+      expect(repository.findByShortName(siteEmojiId.shortName)).toEqual(siteTest);
     });
 
     it('add non-custom emoji rejected', () => {
-      try {
+      expect(() => {
         const repository = new EmojiRepository(allEmojis);
         repository.addCustomEmoji(standardTest);
-        expect(false, 'Should throw exception').to.equal(true);
-      } catch (e) {
-        expect(true, 'Exception should be thrown').to.equal(true);
-      }
+      }).toThrow();
     });
   });
 
   describe('#findByAsciiRepresentation', () => {
     it('returns the correct emoji for a matching ascii representation', () => {
       const emoji = emojiRepository.findByAsciiRepresentation(':D');
-      expect(emoji).to.be.deep.equal(smileyEmoji);
+      expect(emoji).toEqual(smileyEmoji);
     });
 
     it('returns the correct emoji for alternative ascii representation', () => {
       const emoji = emojiRepository.findByAsciiRepresentation('=D');
-      expect(emoji).to.be.deep.equal(smileyEmoji);
+      expect(emoji).toEqual(smileyEmoji);
     });
 
     it('returns undefined when there is no matching ascii representation', () => {
       const emoji = emojiRepository.findByAsciiRepresentation('not-ascii');
-      expect(emoji).to.equal(undefined);
+      expect(emoji).toBe(undefined);
     });
   });
 });

@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
@@ -27,8 +26,8 @@ describe('Media Emoji Handling across components', () => {
       const component = mount(<ResourcedEmoji emojiProvider={emojiProvider} emojiId={mediaEmojiId} />);
       return waitUntil(() => component.find(Emoji).length > 0).then(() => {
         const emojiDescription = component.find(Emoji).prop('emoji');
-        expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
-        expect(component.find(CachingMediaEmoji).length, 'Rendered via CachingMediaEmoji').to.equal(1);
+        expect(emojiDescription).toEqual(mediaEmoji);
+        expect(component.find(CachingMediaEmoji)).toHaveLength(1);
       });
     });
   });
@@ -38,11 +37,11 @@ describe('Media Emoji Handling across components', () => {
       const component = mount(<EmojiPicker emojiProvider={emojiProvider} />);
       return waitUntil(() => component.find(EmojiPickerList).length > 0).then(() => {
         const list = component.find(EmojiPickerList);
-        expect(list.length, 'List exists').to.equal(1);
+        expect(list).toHaveLength(1);
         return waitUntil(() => list.find(Emoji).length > 0).then(() => {
           const emojiDescription = component.find(Emoji).prop('emoji');
-          expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
-          expect(component.find(CachingMediaEmoji).length, 'Rendered via CachingMediaEmoji').to.equal(1);
+          expect(emojiDescription).toEqual(mediaEmoji);
+          expect(component.find(CachingMediaEmoji)).toHaveLength(1);
         });
       });
     });
@@ -51,22 +50,22 @@ describe('Media Emoji Handling across components', () => {
       const component = mount(<EmojiPicker emojiProvider={emojiProvider} />);
       return waitUntil(() => component.find(EmojiPickerList).length > 0).then(() => {
         const list = component.find(EmojiPickerList);
-        expect(list.length, 'List exists').to.equal(1);
+        expect(list).toHaveLength(1);
         return waitUntil(() => list.find(Emoji).length > 0).then(() => {
           const emoji = component.find(Emoji);
           const emojiDescription = emoji.prop('emoji');
-          expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
-          expect(list.find(CachingMediaEmoji).length, 'Rendered via CachingMediaEmoji').to.equal(1);
+          expect(emojiDescription).toEqual(mediaEmoji);
+          expect(list.find(CachingMediaEmoji)).toHaveLength(1);
           const preview = component.find(EmojiPreview);
-          expect(preview.length, 'Preview').to.equal(1);
+          expect(preview).toHaveLength(1);
 
           // Hover to force preview
           emoji.simulate('mousemove');
 
           return waitUntil(() => preview.find(Emoji).length > 0).then(() => {
             const previewEmojiDescription = preview.find(Emoji).prop('emoji');
-            expect(previewEmojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
-            expect(preview.find(CachingMediaEmoji).length, 'Rendered via CachingMediaEmoji').to.equal(1);
+            expect(previewEmojiDescription).toEqual(mediaEmoji);
+            expect(preview.find(CachingMediaEmoji)).toHaveLength(1);
           });
         });
       });
@@ -78,8 +77,8 @@ describe('Media Emoji Handling across components', () => {
       const component = mount(<EmojiTypeAhead emojiProvider={emojiProvider} />);
       return waitUntil(() => component.find(Emoji).length > 0).then(() => {
         const emojiDescription = component.find(Emoji).prop('emoji');
-        expect(emojiDescription, 'Is media emoji').to.deep.equal(mediaEmoji);
-        expect(component.find(CachingMediaEmoji).length, 'Rendered via CachingMediaEmoji').to.equal(1);
+        expect(emojiDescription).toEqual(mediaEmoji);
+        expect(component.find(CachingMediaEmoji)).toHaveLength(1);
       });
     });
   });

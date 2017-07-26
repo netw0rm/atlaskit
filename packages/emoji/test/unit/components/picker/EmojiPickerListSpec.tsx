@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { expect } from 'chai';
 
 import * as styles from '../../../../src/components/picker/styles';
 import EmojiList from '../../../../src/components/picker/EmojiPickerList';
@@ -16,7 +15,7 @@ describe('<EmojiPickerList />', () => {
         showUploadOption={true}
       />);
 
-      expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);
+      expect(wrapper.find(`.${styles.pickerSearch}`)).toHaveLength(1);
     });
   });
 });

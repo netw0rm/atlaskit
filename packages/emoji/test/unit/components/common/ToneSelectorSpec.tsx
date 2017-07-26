@@ -1,7 +1,5 @@
-import * as sinon from 'sinon';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { expect } from 'chai';
 
 import ToneSelector from '../../../../src/components/common/ToneSelector';
 import EmojiButton from '../../../../src/components/common/EmojiButton';
@@ -27,23 +25,23 @@ const handEmoji: EmojiDescriptionWithVariations = {
 
 describe('<ToneSelector />', () => {
   it('should display one emoji per skin variations + default', () => {
-    const onToneSelectedSpy = sinon.spy();
+    const onToneSelectedSpy = jest.fn();
     const wrapper = shallow(<ToneSelector
       emoji={handEmoji}
       onToneSelected={onToneSelectedSpy}
     />);
 
-    expect(wrapper.find(EmojiButton)).to.have.length(6);
+    expect(wrapper.find(EmojiButton)).toHaveLength(6);
   });
 
   it('should call onToneSelected on click', () => {
-    const onToneSelectedSpy = sinon.spy();
+    const onToneSelectedSpy = jest.fn();
     const wrapper = mount(<ToneSelector
       emoji={handEmoji}
       onToneSelected={onToneSelectedSpy}
     />);
 
     wrapper.find(EmojiButton).first().simulate('mousedown', { button: 0 });
-    expect(onToneSelectedSpy.calledWith(0)).to.equal(true);
+    expect(onToneSelectedSpy).toHaveBeenCalledWith(0);
   });
 });

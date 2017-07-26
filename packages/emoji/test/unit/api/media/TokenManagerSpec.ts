@@ -1,5 +1,4 @@
 import * as fetchMock from 'fetch-mock/src/client';
-import { expect } from 'chai';
 
 import TokenManager from '../../../../src/api/media/TokenManager';
 
@@ -27,7 +26,7 @@ describe('TokenManager', () => {
       const addedToken = defaultMediaApiToken();
       tokenManager.addToken('read', addedToken);
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned token equals added token').to.deep.equal(addedToken);
+        expect(token).toEqual(addedToken);
       });
     });
   });
@@ -46,8 +45,8 @@ describe('TokenManager', () => {
         url: siteServiceConfig.url,
       });
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned token equals added token').to.deep.equal(expectedToken);
-        expect(fetchMock.calls('token-read').length, 'Called server once').to.equal(1);
+        expect(token).toEqual(expectedToken);
+        expect(fetchMock.calls('token-read').length).toBe(1);
       });
     });
 
@@ -64,12 +63,12 @@ describe('TokenManager', () => {
         url: siteServiceConfig.url,
       });
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned token equals new token').to.deep.equal(expectedToken);
-        expect(fetchMock.calls('token-read').length, 'Called server once').to.equal(1);
+        expect(token).toEqual(expectedToken);
+        expect(fetchMock.calls('token-read').length).toBe(1);
         return tokenManager.getToken('read');
       }).then(token => {
-        expect(token, 'Returned token equals same token').to.deep.equal(expectedToken);
-        expect(fetchMock.calls('token-read').length, 'Called server once (i.e. not again)').to.equal(1);
+        expect(token).toEqual(expectedToken);
+        expect(fetchMock.calls('token-read').length).toBe(1);
       });
     });
 
@@ -100,12 +99,12 @@ describe('TokenManager', () => {
       });
 
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned token equals new token').to.deep.equal(expectedToken1);
-        expect(fetchMock.calls('token-read-1').length, 'Called server once').to.equal(1);
+        expect(token).toEqual(expectedToken1);
+        expect(fetchMock.calls('token-read-1').length).toBe(1);
         return tokenManager.getToken('read', true);
       }).then(token => {
-        expect(token, 'Returned token equals new token').to.deep.equal(expectedToken2);
-        expect(fetchMock.calls('token-read-2').length, 'Called server again').to.equal(1);
+        expect(token).toEqual(expectedToken2);
+        expect(fetchMock.calls('token-read-2').length).toBe(1);
       });
     });
 
@@ -130,8 +129,8 @@ describe('TokenManager', () => {
 
       tokenManager.addToken('read', addedToken);
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned token equals added token').to.deep.equal(expectedToken);
-        expect(fetchMock.calls('token-read').length, 'Called server once').to.equal(1);
+        expect(token).toEqual(expectedToken);
+        expect(fetchMock.calls('token-read').length).toBe(1);
       });
     });
 
@@ -163,12 +162,12 @@ describe('TokenManager', () => {
         url: siteServiceConfig.url,
       });
       return tokenManager.getToken('read').then(token => {
-        expect(token, 'Returned read token equals new read token').to.deep.equal(expectedReadToken);
-        expect(fetchMock.calls('token-read').length, 'Called server once for read token').to.equal(1);
+        expect(token).toEqual(expectedReadToken);
+        expect(fetchMock.calls('token-read').length).toBe(1);
         return tokenManager.getToken('upload');
       }).then(token => {
-        expect(token, 'Returned upload token equals upload token').to.deep.equal(expectedUploadToken);
-        expect(fetchMock.calls('token-upload').length, 'Called server once for upload token').to.equal(1);
+        expect(token).toEqual(expectedUploadToken);
+        expect(fetchMock.calls('token-upload').length).toBe(1);
       });
     });
   });

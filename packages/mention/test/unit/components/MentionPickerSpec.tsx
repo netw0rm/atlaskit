@@ -1,8 +1,6 @@
 import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
 import mentionData, { mentionDataSize } from '../../../src/support/mention-data';
@@ -92,8 +90,8 @@ describe('MentionPicker', () => {
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
-          expect(err.statusCode).to.equal(401);
-          expect(errorMention.text()).to.contain('logging out');
+          expect(err.statusCode).toBe(401);
+          expect(errorMention.text()).toContain('logging out');
         });
       });
   });
@@ -111,8 +109,8 @@ describe('MentionPicker', () => {
         return waitUntil(createMentionErrorShownTest(component)).then(() => {
           let errorMention = component.find(MentionListError);
           let err = errorMention.prop('error') as HttpError;
-          expect(err.statusCode).to.equal(403);
-          expect(errorMention.text()).to.contain('different text');
+          expect(err.statusCode).toBe(403);
+          expect(errorMention.text()).toContain('different text');
         });
       });
   });
@@ -223,8 +221,8 @@ describe('MentionPicker', () => {
   });
 
   it('should fire onOpen when first result shown', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       onOpen: onOpen as OnOpen,
@@ -233,14 +231,14 @@ describe('MentionPicker', () => {
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
-        expect(onOpen.callCount, 'opened').to.equal(1);
-        expect(onClose.callCount, 'closed').to.equal(0);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).not.toHaveBeenCalled();
       });
   });
 
   it('should fire onClose when no matches', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       onOpen: onOpen as OnOpen,
@@ -250,20 +248,20 @@ describe('MentionPicker', () => {
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
-        expect(onOpen.callCount, 'opened 1').to.equal(1);
-        expect(onClose.callCount, 'closed 1').to.equal(0);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).not.toHaveBeenCalled();
         component.setProps({ query: 'nothing' });
         return waitUntil(noMentionItemsShown);
       })
       .then(() => {
-        expect(onOpen.callCount, 'opened 2').to.equal(1);
-        expect(onClose.callCount, 'closed 2').to.equal(1);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).toHaveBeenCalledTimes(1);
       });
   });
 
   it('should fire onOpen when error to display', () => {
-    const onOpen = sinon.spy();
-    const onClose = sinon.spy();
+    const onOpen = jest.fn();
+    const onClose = jest.fn();
 
     const component = setupPicker({
       query: 'error',
@@ -273,8 +271,8 @@ describe('MentionPicker', () => {
 
     return waitUntil(createMentionErrorShownTest(component))
       .then(() => {
-        expect(onOpen.callCount, 'opened').to.equal(1);
-        expect(onClose.callCount, 'closed').to.equal(0);
+        expect(onOpen).toHaveBeenCalledTimes(1);
+        expect(onClose).not.toHaveBeenCalled();
       });
   });
 
@@ -284,7 +282,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
         const mentionPicker = component.instance() as MentionPicker;
-        expect(mentionPicker.mentionsCount()).to.equal(mentionDataSize);
+        expect(mentionPicker.mentionsCount()).toBe(mentionDataSize);
       });
   });
 });

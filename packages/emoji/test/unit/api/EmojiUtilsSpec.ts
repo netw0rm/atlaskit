@@ -1,5 +1,3 @@
-import { expect } from 'chai';
-
 import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
 import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
@@ -12,7 +10,7 @@ describe('EmojiUtils', () => {
 
     const checkFields = (actual, expected, fields) => {
       fields.forEach((field) => {
-        expect(actual[field], field).to.equal(expected[field]);
+        expect(actual[field]).toBe(expected[field]);
       });
     };
 
@@ -72,7 +70,7 @@ describe('EmojiUtils', () => {
         },
       });
       const emojis = emojiResponse.emojis;
-      expect(emojis.length).to.equal(1);
+      expect(emojis.length).toBe(1);
       const e = emojis[0];
       checkFields(e, emoji, emojiFields);
       const spriteFields = ['x', 'y', 'height', 'width', 'xIndex', 'yIndex'];
@@ -80,7 +78,7 @@ describe('EmojiUtils', () => {
       const spriteSheetFields = ['url', 'row', 'column', 'height', 'width'];
       const representation = e.representation as SpriteRepresentation;
       checkFields(representation && representation.sprite, spriteSheet, spriteSheetFields);
-      expect(e.skinVariations && e.skinVariations.length).to.equal(1);
+      expect(e.skinVariations && e.skinVariations.length).toBe(1);
       if (e.skinVariations && emoji.skinVariations && emoji.skinVariations.length) {
         const skinEmoji0 = e.skinVariations[0];
         checkFields(skinEmoji0, emoji.skinVariations[0], spriteFields);
@@ -124,11 +122,11 @@ describe('EmojiUtils', () => {
         emojis: [emoji],
       });
       const emojis = emojiResponse.emojis;
-      expect(emojis.length).to.equal(1);
+      expect(emojis.length).toBe(1);
       const e = emojis[0];
       checkFields(e, emoji, emojiFields);
       checkFields(e.representation, emoji.representation, ['imagePath', 'height', 'width']);
-      expect(e.skinVariations && e.skinVariations.length).to.equal(1);
+      expect(e.skinVariations && e.skinVariations.length).toBe(1);
       checkFields(e.skinVariations && e.skinVariations[0], emoji.skinVariations[0], ['imagePath', 'height', 'width']);
     });
 
@@ -160,7 +158,7 @@ describe('EmojiUtils', () => {
       const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],
       });
-      expect(emojiResponse.emojis[0].ascii).to.deep.equal([':D', ':-D', '=D']);
+      expect(emojiResponse.emojis[0].ascii).toEqual([':D', ':-D', '=D']);
     });
   });
 
@@ -174,14 +172,14 @@ describe('EmojiUtils', () => {
         },
       };
       const serviceRepresentation = mediaServiceEmoji.representation as ImageRepresentation;
-      expect(serviceRepresentation.imagePath.indexOf(mediaApiToken.url), 'Test data matches').to.equal(0);
+      expect(serviceRepresentation.imagePath.indexOf(mediaApiToken.url)).toBe(0);
 
       const emojiData = denormaliseEmojiServiceResponse(emojiServiceData);
-      expect(emojiData.mediaApiToken, 'mediaApiToken copied').to.deep.equal(mediaApiToken);
-      expect(emojiData.emojis.length, 'Same number of emoji').to.equal(1);
+      expect(emojiData.mediaApiToken).toEqual(mediaApiToken);
+      expect(emojiData.emojis.length).toBe(1);
 
       const convertedEmoji = emojiData.emojis[0];
-      expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
+      expect(convertedEmoji).toEqual(mediaEmoji);
     });
   });
 });

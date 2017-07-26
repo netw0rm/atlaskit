@@ -1,35 +1,23 @@
 import styled from 'styled-components';
-import { layout, gridSize } from '../../shared-variables';
+import { gridSize } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
-const paddingOpen = (() => {
-  const paddingTop = gridSize;
-  const paddingLeft = layout.padding.side + (gridSize * 1.5);
-  const paddingRight = layout.padding.side + (gridSize * 1.75);
-  const paddingBottom = gridSize;
-
-  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
-})();
-
-const paddingClosed = (() => {
-  const paddingTop = gridSize;
-  const paddingLeft = layout.padding.side + (gridSize / 2);
-  const paddingRight = layout.padding.side + (gridSize / 2);
-  const paddingBottom = gridSize;
-
-  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
-})();
+const itemSize = 40;
+const itemBottomMargin = gridSize;
 
 const ContainerHeaderWrapper = styled.div`
-  padding: ${paddingOpen};
+  min-height: ${itemSize + itemBottomMargin}px;
+  flex-shrink: 0;
+  padding: ${gridSize}px ${gridSize}px ${gridSize / 2}px ${gridSize}px;
 
   ${whenCollapsed`
     /* centering the icon */
     display: flex;
     justify-content: center;
     flex-shrink: 0;
-    padding: ${paddingClosed};
+    flex-direction: column;
   `}
+  > * + * { margin-top: 16px; }
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

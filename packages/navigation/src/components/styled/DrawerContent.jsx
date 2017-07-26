@@ -1,13 +1,9 @@
 import styled from 'styled-components';
-import { layout, drawerOffset } from '../../shared-variables';
+import { layout } from '../../shared-variables';
 
 export const ContentArea = styled.div`
-/* Required for children elements be able to have bottom of a screen */
-bottom: 0;
-position: absolute;
-transition: top 220ms;
-top: ${props => (props.isFullWidth ? 0 : props.iconOffset)}px;
-width: calc(100% - ${drawerOffset}px);
+transition: margin-top 220ms;
+margin-top: ${props => (props.isFullWidth ? 0 : props.iconOffset - 16)}px;
 `;
 
 const DrawerContent = styled.div`

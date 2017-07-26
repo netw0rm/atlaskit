@@ -5,6 +5,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
+import InlineDialog from '@atlaskit/inline-dialog';
 import Tooltip from '@atlaskit/tooltip';
 
 import {
@@ -22,6 +23,22 @@ export default class BasicNestedNavigation extends PureComponent {
   }
 
   static menu = [
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 1" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 2" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 3" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 4" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 5" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 6" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 7" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 8" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 9" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 10" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 11" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 12" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 13" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 14" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 15" /> },
+    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 16" /> },
     {
       component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Movies" />,
       childMenu: [
@@ -73,27 +90,44 @@ export default class BasicNestedNavigation extends PureComponent {
 
   state = {
     stack: [BasicNestedNavigation.menu],
+    isHeaderInlineDialogOpen: false,
   }
 
-  getContainerHeaderComponent = () => (
-    <div>
-      <AkContainerTitle
-        href="#foo"
-        icon={
-          <img alt="nucleus" src={nucleusLogo} />
-        }
-        text="AtlasKit"
-        subText="Is the king"
+  getContainerHeaderComponent = () => {
+    const backButton = this.state.stack.length > 1 ? (
+      <AkNavigationItem
+        icon={<ArrowLeftIcon label="Back" />}
+        onClick={() => this.stackPop()}
+        text="Back" key="2"
       />
-      {this.state.stack.length > 1 ? (
-        <AkNavigationItem
-          icon={<ArrowLeftIcon label="Back" />}
-          onClick={() => this.stackPop()}
-          text="Back"
-        />
-      ) : null}
-    </div>
-  )
+    ) : null;
+
+    return [
+      <InlineDialog
+        content={<div style={{ maxWidth: '200px' }}>Menu or something like the HipChat status form would go here</div>}
+        isOpen={this.state.isHeaderInlineDialogOpen}
+        position="bottom left"
+      >
+        <div
+          onClick={() => {
+            this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
+          }}
+        >
+          <Tooltip key="1" position="right" description="Header tooltip text">
+            <AkContainerTitle
+              href="#foo"
+              icon={
+                <img alt="nucleus" src={nucleusLogo} />
+              }
+              text="AtlasKit"
+              subText="Is the king"
+            />
+          </Tooltip>
+        </div>
+      </InlineDialog>,
+      backButton,
+    ];
+  };
 
   stackPush = (newPage) => {
     const stack = [...this.state.stack, newPage];

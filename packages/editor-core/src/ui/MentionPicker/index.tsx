@@ -1,4 +1,3 @@
-import Layer from '@atlaskit/layer';
 import { MentionPicker as AkMentionPicker, MentionProvider, MentionDescription } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';

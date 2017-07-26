@@ -1,6 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
+import { akElevationMixins } from '@atlaskit/util-shared-styles';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -29,11 +30,16 @@ const getHeightStyles = ({ isCompact, theme }) => {
   ` : '';
 };
 
-const getInteractiveStyles = ({ isDisabled }) => {
+const getInteractiveStyles = ({ isDisabled, isDragging }) => {
   if (isDisabled) {
     return css`
       cursor: not-allowed;
       ${getItemState('disabled')}
+    `;
+  } else if (isDragging) {
+    return css`
+      ${akElevationMixins.e200}
+      ${getItemState('hover')}
     `;
   }
 
@@ -85,9 +91,9 @@ const styledRootElement = (
   if (href) {
     return linkComponent
       ? styled(linkComponent)`${ItemBase}`
-      : styled.a`${ItemBase};`;
+      : styled.a`${ItemBase}`;
   }
-  return styled.span`${ItemBase};`;
+  return styled.span`${ItemBase}`;
 };
 
 export default styledRootElement;

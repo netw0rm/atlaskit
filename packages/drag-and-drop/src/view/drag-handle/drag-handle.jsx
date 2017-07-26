@@ -126,6 +126,10 @@ export default class DragHandle extends Component {
       return;
     }
 
+    if (!this.state.draggingWith) {
+      return;
+    }
+
     this.stopDragging(() => this.props.callbacks.onCancel());
   }
 
@@ -408,6 +412,7 @@ export default class DragHandle extends Component {
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
     window.removeEventListener('keydown', this.onWindowKeydown);
+    window.removeEventListener('resize', this.onWindowResize);
     window.removeEventListener('scroll', this.onWindowScroll);
   }
 

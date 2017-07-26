@@ -6,6 +6,7 @@ import sinon from 'sinon';
 import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../../utils/user-input-util';
+import getClientRect from '../../utils/get-client-rect';
 import type {
   Hooks,
   DraggableLocation,
@@ -32,18 +33,16 @@ describe('hooks integration', () => {
   const droppableId: DroppableId = 'drop-1';
 
   // both our list and item have the same dimension for now
-  const fakeBox = {
+  const clientRect = getClientRect({
     top: 0,
     right: 100,
     bottom: 100,
     left: 0,
-    height: 100,
-    width: 100,
-  };
+  });
 
   const getMountedApp = () => {
       // Both list and item will have the same dimensions
-    sinon.stub(Element.prototype, 'getBoundingClientRect').returns(fakeBox);
+    sinon.stub(Element.prototype, 'getBoundingClientRect').returns(clientRect);
 
       // Stubbing out totally - not including margins in this
     sinon.stub(window, 'getComputedStyle').returns({
@@ -109,8 +108,8 @@ describe('hooks integration', () => {
 
   const drag = (() => {
     const initial: Position = {
-      x: fakeBox.left + 1,
-      y: fakeBox.top + 1,
+      x: clientRect.left + 1,
+      y: clientRect.top + 1,
     };
     const dragStart: Position = {
       x: initial.x,

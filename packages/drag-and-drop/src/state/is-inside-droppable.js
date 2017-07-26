@@ -9,8 +9,6 @@ export default (target: Position, dimension: DroppableDimension): boolean => {
   const fragment: DimensionFragment = dimension.page.withMargin;
   const { top, right, bottom, left } = fragment;
 
-  console.log(target, fragment);
-
   return target.x >= left &&
     target.x <= right &&
     target.y >= top &&

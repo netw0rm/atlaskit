@@ -88,7 +88,7 @@ export const settings: Provided = ((): Provided => {
   const theme: Provided = {
     background: {
       primary: style.akColorN800,
-      secondary: style.akColorN700,
+      secondary: style.akColorN800,
       tertiary: style.akColorN700,
     },
     text: style.akColorN0,

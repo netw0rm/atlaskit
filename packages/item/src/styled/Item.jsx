@@ -24,16 +24,9 @@ const getPadding = ({ isCompact, theme }) => {
 const getHeightStyles = ({ isCompact, theme }) => {
   const heightKey = isCompact ? 'compact' : 'default';
   const height = getThemeStyle(theme[themeNamespace], heightKey, 'height');
-  return height ? (
-    css`
-      height: ${height}px;
-      box-sizing: border-box;
-    `
-  ) : (
-    css`
-      box-sizing: border-box;
-    `
-  );
+  return height ? css`
+    height: ${height}px;
+  ` : '';
 };
 
 const getInteractiveStyles = ({ isDisabled }) => {
@@ -62,8 +55,10 @@ const getInteractiveStyles = ({ isDisabled }) => {
 export const ItemBase = ({ isSelected, theme }) => css`
   align-items: center;
   border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
+  box-sizing: border-box;
   cursor: pointer;
   display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
+  flex: none;
   ${getItemState(isSelected ? 'selected' : 'default')}
   ${getPadding}
   ${getInteractiveStyles}

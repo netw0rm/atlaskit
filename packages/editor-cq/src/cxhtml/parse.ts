@@ -14,30 +14,35 @@ import {
   getAcParameter,
   getAcTagContent,
   createCodeFragment,
-  getAcTagNodes,
+  getAcTagNode,
   getMacroAttribute,
   getMacroParameters,
   hasClass,
   marksFromStyle,
+  getContent,
 } from './utils';
 
 const convertedNodes = new WeakMap();
 
 export default function(cxhtml: string) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
+  return schema.nodes.doc.createChecked({}, parseDomNode(dom));
+}
+
+function parseDomNode(dom: Element): PMNode {
   const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
 
   // Process through nodes in reverse (so deepest child elements are first).
   for (let i = nodes.length - 1; i >= 0; i--) {
     const node = nodes[i];
-    const content = getContent(node);
+    const content = getContent(node, convertedNodes);
     const candidate = converter(content, node);
     if (typeof candidate !== 'undefined') {
       convertedNodes.set(node, candidate);
     }
   }
 
-  const content = getContent(dom);
+  const content = getContent(dom, convertedNodes);
   const compatibleContent = content.childCount > 0
     // Dangling inline nodes can't be directly inserted into a document, so
     // we attempt to wrap in a paragraph.
@@ -47,23 +52,7 @@ export default function(cxhtml: string) {
     // The document must have at least one block element.
     : schema.nodes.paragraph.createChecked({});
 
-  return schema.nodes.doc.createChecked({}, compatibleContent);
-}
-
-/*
- * Contructs a struct string of replacement blocks and marks for a given node
- */
-function getContent(node: Node): Fragment {
-  let fragment = Fragment.fromArray([]);
-  let childIndex;
-  for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
-    const child = node.childNodes[childIndex];
-    const thing = convertedNodes.get(child);
-    if (thing instanceof Fragment || thing instanceof PMNode) {
-      fragment = fragment.append(Fragment.from(thing));
-    }
-  }
-  return fragment;
+  return compatibleContent;
 }
 
 function converter(content: Fragment, node: Node): Fragment | PMNode | null | undefined {
@@ -192,6 +181,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'TABLE':
         if (hasClass(node, 'wysiwyg-macro')) {
           return convertWYSIWYGMacro(node) || unsupportedInline;
+        } else if (hasClass(node, 'confluenceTable')) {
+          return convertTable(node);
         }
         return unsupportedInline;
 
@@ -234,7 +225,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     case 'NOTE':
     case 'TIP':
       const panelTitle = getAcParameter(node, 'title');
-      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
+      const panelRichTextBody = getAcTagNode(node, 'AC:RICH-TEXT-BODY') || '';
       let panelBody: any[] = [];
 
       if (panelTitle) {
@@ -243,17 +234,9 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         );
       }
 
-      if (panelNodes) {
-        const nodes = Array.prototype.slice.call(panelNodes);
-
-        for (let i = 0, len = nodes.length; i < len; i += 1) {
-          const domNode: any = nodes[i];
-          const content = getContent(domNode);
-          const pmNode = converter(content, domNode);
-          if (pmNode) {
-            panelBody.push(pmNode);
-          }
-        }
+      if (panelRichTextBody) {
+        const pmNode = parseDomNode(panelRichTextBody);
+        panelBody = panelBody.concat(pmNode.content);
       } else {
         panelBody.push(schema.nodes.paragraph.create({}));
       }
@@ -321,4 +304,23 @@ function convertCodeFromView (node: Element): Fragment | PMNode | null | undefin
 function convertNoFormatFromView (node: Element): Fragment | PMNode | null | undefined  {
     const codeContent = node.querySelector('pre')!.textContent || ' ';
     return createCodeFragment(codeContent);
+}
+
+function convertTable (node: Element) {
+  const { table, tableRow, tableCell, tableHeader } =  schema.nodes;
+  const rowNodes: PMNode[] = [];
+  const rows = node.querySelectorAll('tr');
+
+  for (let i = 0, rowsCount = rows.length; i < rowsCount; i ++) {
+    const cellNodes: PMNode[] = [];
+    const cols = rows[i].querySelectorAll('td,th');
+
+    for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
+      const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
+      const pmNode = parseDomNode(cols[j]);
+      cellNodes.push(cell.createChecked(null, pmNode));
+    }
+    rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
+  }
+  return table.create(null, Fragment.from(rowNodes));
 }

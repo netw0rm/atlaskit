@@ -46,7 +46,9 @@ export default function encode(node: PMNode) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
       return encodeMedia(node);
-    } else {
+    } else if (node.type === schema.nodes.table) {
+      return encodeTable(node);
+    }else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -100,6 +102,35 @@ export default function encode(node: PMNode) {
     if (node.fileMimeType) {
       elem.setAttribute('file-mime-type', node.fileMimeType);
     }
+    return elem;
+  }
+
+  function encodeTable(node: PMNode): Element {
+    const elem = doc.createElement('table');
+    const tbody = doc.createElement('tbody');
+
+    node.descendants(rowNode => {
+      const rowElement = doc.createElement('tr');
+
+      rowNode.descendants(colNode => {
+        const cellElement = (
+          colNode.type === schema.nodes.tableCell
+            ? doc.createElement('td')
+            : doc.createElement('th')
+        );
+        cellElement.appendChild(encodeFragment(colNode.content));
+        rowElement.appendChild(cellElement);
+
+        return false;
+      });
+
+      tbody.appendChild(rowElement);
+      return false;
+    });
+
+    elem.appendChild(tbody);
+    elem.setAttribute('class', 'confluenceTable');
+
     return elem;
   }
 

@@ -1,8 +1,4 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
 import * as React from 'react';
-import {expect} from 'chai';
-import * as sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import LazyLoad from 'react-lazy-load-zz';
 import {Observable} from 'rxjs';
@@ -72,10 +68,10 @@ describe('CardList', () => {
     const context = contextWithInclusiveStartKey;
     mount(<CardList context={context} collectionName={collectionName}/>);
 
-    expect(context.getMediaCollectionProvider.callCount).to.be.equal(expectedMediaItems.length);
-    expect(context.getMediaItemProvider.callCount).to.be.equal(expectedMediaItems.length);
-    expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).to.be.true;
-    expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).to.be.true;
+    expect(context.getMediaCollectionProvider.callCount).toBe(expectedMediaItems.length);
+    expect(context.getMediaItemProvider.callCount).toBe(expectedMediaItems.length);
+    expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).toBe(true);
+    expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).toBe(true);
   });
 
   it('should pass a provider to MediaCard', () => {
@@ -85,24 +81,24 @@ describe('CardList', () => {
 
     card.setState({loading: false, error: undefined, collection});
     // re-render now that we've subscribed (relying on the stubbed provider being synchronous)
-    expect(card.find(MediaCard)).to.have.length(2);
+    expect(card.find(MediaCard)).toHaveLength(2);
     card.find(MediaCard).forEach(mediaCard =>
-      expect((mediaCard.prop('provider').observable() as any).value).to.be.equal(expectedMediaItemProvider)
+      expect((mediaCard.prop('provider').observable() as any).value).toBe(expectedMediaItemProvider)
     );
   });
 
   it('should be loading=true when mounted', () => {
     const context = fakeContext();
     const card = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>);
-    expect(card.state().loading).to.be.true;
+    expect(card.state().loading).toBe(true);
   });
 
   it('should be loading=false when we start loading the next page', () => {
     const context = contextWithInclusiveStartKey;
     const card = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
-    card.setState({loading: false, loadNextPage: sinon.spy()});
+    card.setState({loading: false, loadNextPage: jest.fn()});
     card.instance().loadNextPage();
-    expect(card.state().loading).to.be.false;
+    expect(card.state().loading).toBe(false);
   });
 
   it('should not animate items the first time', () => {
@@ -119,7 +115,7 @@ describe('CardList', () => {
     const collection = {items: [item]};
     const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
     list.setState({loading: false, error: undefined, collection});
-    expect(list.state('shouldAnimate')).to.be.false;
+    expect(list.state('shouldAnimate')).toBe(false);
   });
 
   it('should animate items when they are new', () => {
@@ -147,13 +143,13 @@ describe('CardList', () => {
 
     list.setState({loading: false, error: undefined, collection});
     instance.handleNextItems({context, collectionName})(collection);
-    expect(list.state('firstItemKey')).to.be.equal(`${oldItem.details.id}-${oldItem.details.occurrenceKey}`);
+    expect(list.state('firstItemKey')).toBe(`${oldItem.details.id}-${oldItem.details.occurrenceKey}`);
 
     const newCollection = {items: [newItem, ...collection.items]};
     list.setState({collection: newCollection});
     instance.handleNextItems({context, collectionName})(newCollection);
-    expect(list.state('firstItemKey')).to.be.equal(`${newItem.details.id}-${newItem.details.occurrenceKey}`);
-    expect(list.state('shouldAnimate')).to.be.true;
+    expect(list.state('firstItemKey')).toBe(`${newItem.details.id}-${newItem.details.occurrenceKey}`);
+    expect(list.state('shouldAnimate')).toBe(true);
   });
 
   it('should reset previous state when props change', () => {
@@ -177,13 +173,13 @@ describe('CardList', () => {
     });
     const collectionName = 'MyMedia';
     const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
-    const spy = sinon.spy();
+    const spy = jest.fn();
 
     list.instance().setState = spy;
     list.setProps({context, collectionName: 'otherCollection'});
 
-    expect(spy.firstCall.args[0].collection).to.be.undefined;
-    expect(spy.firstCall.args[0].firstItemKey).to.be.undefined;
+    expect(spy.mock.calls[0][0].collection).toBe(undefined);
+    expect(spy.mock.calls[0][0].firstItemKey).toBe(undefined);
   });
 
   it('should fire onCardClick handler with updated MediaItemDetails when a Card in the list is clicked', () => {
@@ -219,15 +215,15 @@ describe('CardList', () => {
     });
 
 
-    const onCardClickHandler = sinon.spy();
+    const onCardClickHandler = jest.fn();
 
     const wrapper = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} onCardClick={onCardClickHandler} />) as any;
     wrapper.setState({loading: false, error: undefined, collection});
     wrapper.find(MediaCard).first().simulate('click', {mediaItemDetails: newItemDetails});
 
-    expect(onCardClickHandler.calledOnce).to.be.true;
-    expect(onCardClickHandler.firstCall.args[0].mediaCollectionItem).to.deep.equal(newItem);
-    expect(onCardClickHandler.firstCall.args[0].collectionName).to.deep.equal(collectionName);
+    expect(onCardClickHandler).toHaveBeenCalledTimes(1);
+    expect(onCardClickHandler.mock.calls[0][0].mediaCollectionItem).toEqual(newItem);
+    expect(onCardClickHandler.mock.calls[0][0].collectionName).toEqual(collectionName);
   });
 
   describe('.render()', () => {
@@ -235,21 +231,21 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
       list.setState({loading: true});
-      expect(list.children().text()).to.contain('loading...');
+      expect(list.children().text()).toContain('loading...');
     });
 
     it('should render the empty view when the list is not loading and the error is an axios response with a status of 404', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
       list.setState({loading: false, error: {response: {status: 404}}});
-      expect(list.children().text()).to.contain('No items');
+      expect(list.children().text()).toContain('No items');
     });
 
     it('should render the error view when the the list is not loading and the error is not an axios response with a status of 404', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
       list.setState({loading: false, error: new Error()});
-      expect(list.children().text()).to.contain('ERROR');
+      expect(list.children().text()).toContain('ERROR');
     });
 
     // TODO: when would this even occur? loading=true is set when the collection is set! and error=xyz is set when the collection is undefined
@@ -257,21 +253,21 @@ describe('CardList', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
       list.setState({loading: false, error: undefined, collection: undefined});
-      expect(list.children().text()).to.contain('loading...');
+      expect(list.children().text()).toContain('loading...');
     });
 
     it('should render wrapped in an <InfiniteScroll> when useInfiniteScroll=true', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} useInfiniteScroll={true}/>) as any;
       list.setState({loading: false, error: undefined, collection: {items: []}});
-      expect(list.is(InfiniteScroll)).to.be.true;
+      expect(list.is(InfiniteScroll)).toBe(true);
     });
 
     it('should not render wrapped in an <InfiniteScroll> when useInfiniteScroll=false', () => {
       const context = fakeContext();
       const list = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName} useInfiniteScroll={false}/>) as any;
       list.setState({loading: false, error: undefined, collection: {items: []}});
-      expect(list.is(InfiniteScroll)).to.be.false;
+      expect(list.is(InfiniteScroll)).toBe(false);
     });
 
     it('should render wrapped in an <LazyLoad> by default', () => {
@@ -280,7 +276,7 @@ describe('CardList', () => {
 
       list.setState({loading: false, error: undefined, collection});
 
-      expect(list.find(LazyLoad)).to.have.length(1);
+      expect(list.find(LazyLoad)).toHaveLength(1);
     });
 
     it('should not render wrapped in an <LazyLoad> when shouldLazyLoadCards=false', () => {
@@ -289,7 +285,7 @@ describe('CardList', () => {
 
       list.setState({loading: false, error: undefined, collection});
 
-      expect(list.find(LazyLoad)).to.have.length(0);
+      expect(list.find(LazyLoad)).toHaveLength(0);
     });
 
     it('should not wrap existing items into LazyContent', () => {
@@ -297,7 +293,7 @@ describe('CardList', () => {
       const list = mount(<CardList useInfiniteScroll={false} context={context} collectionName={collectionName}/>) as any;
 
       list.setState({loading: false, error: undefined, shouldAnimate: true, collection});
-      expect(list.find(LazyContent)).to.have.length(0);
+      expect(list.find(LazyContent)).toHaveLength(0);
     });
   });
 });

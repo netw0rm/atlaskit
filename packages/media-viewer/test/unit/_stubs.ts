@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import {
@@ -14,36 +13,36 @@ export class Stubs {
       on: noop,
       off: noop,
       trigger: event => emitter.emit(event),
-      isOpen: sinon.stub(),
-      open: sinon.stub(),
-      setFiles: sinon.stub(),
-      getCurrent: sinon.stub(),
-      isShowingLastFile: sinon.stub()
+      isOpen: jest.fn(),
+      open: jest.fn(),
+      setFiles: jest.fn(),
+      getCurrent: jest.fn(),
+      isShowingLastFile: jest.fn()
     };
 
-    sinon.stub(mediaViewer, 'on', (event, callback) => emitter.on(event, callback));
-    sinon.stub(mediaViewer, 'off', (event, callback) => emitter.removeListener(event, callback));
+    jest.spyOn(mediaViewer, 'on').mockImplementation((event, callback) => emitter.on(event, callback));
+    jest.spyOn(mediaViewer, 'off').mockImplementation((event, callback) => emitter.removeListener(event, callback));
 
     return mediaViewer;
   }
 
   static mediaViewerConstructor() {
-    return sinon.stub().returns(Stubs.mediaViewer());
+    return jest.fn(() => Stubs.mediaViewer());
   }
 
   static mediaCollectionProvider(subject?: Subject<MediaCollection>) {
     return {
-      observable: sinon.stub().returns(subject || new Subject<MediaCollection>()),
-      refresh: sinon.spy(),
-      loadNextPage: sinon.stub(),
-      loadNextPageUntil: sinon.stub()
+      observable: jest.fn(() => subject || new Subject<MediaCollection>()),
+      refresh: jest.fn(),
+      loadNextPage: jest.fn(),
+      loadNextPageUntil: jest.fn()
     };
   }
 
   static context(config: ContextConfig, collectionProvider?: MediaCollectionProvider) {
     return {
       config,
-      getMediaCollectionProvider: sinon.stub().returns(collectionProvider || Stubs.mediaCollectionProvider())
+      getMediaCollectionProvider: jest.fn(() => collectionProvider || Stubs.mediaCollectionProvider())
     };
   }
 }

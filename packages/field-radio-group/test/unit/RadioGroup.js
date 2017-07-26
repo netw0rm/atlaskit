@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
-import sinon from 'sinon';
 
 import Radio from '../../src/components/Radio';
 import AkFieldRadioGroup from '../../src/components/RadioGroupStateless';
@@ -81,10 +80,10 @@ describe(name, () => {
 
       describe('onRadioChange prop', () => {
         it('is called when a radio item is changed', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const wrapper = mount(<AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />);
           wrapper.find(Radio).first().find('input').simulate('change');
-          expect(spy.callCount).toBe(1);
+          expect(spy).toHaveBeenCalledTimes(1);
         });
       });
     });

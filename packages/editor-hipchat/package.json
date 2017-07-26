@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "4.15.0",
+  "version": "4.16.0",
   "config": {
     "access": "public"
   },
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",

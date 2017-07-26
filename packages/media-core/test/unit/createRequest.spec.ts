@@ -1,6 +1,3 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
-import {expect} from 'chai';
 import * as sinon from 'sinon';
 import createRequest from '../../src/services/util/createRequest';
 
@@ -36,10 +33,10 @@ describe('createRequest()', () => {
     setTimeout(() => myFakeResponses[0].respond(200), 0);
 
     return request({url: '/some-api/links'}).then(json => {
-      expect(tokenProvider.calledOnce).to.be.true;
-      expect(myFakeResponses[0].url).to.equal('http://example.com/some-api/links');
-      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).to.equal(clientId);
-      expect(myFakeResponses[0].requestHeaders['Authorization']).to.equal(`Bearer ${token}`);
+      expect(tokenProvider.calledOnce).toBe(true);
+      expect(myFakeResponses[0].url).toBe('http://example.com/some-api/links');
+      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).toBe(clientId);
+      expect(myFakeResponses[0].requestHeaders['Authorization']).toBe(`Bearer ${token}`);
     });
   });
 
@@ -58,10 +55,10 @@ describe('createRequest()', () => {
     setTimeout(() => myFakeResponses[0].respond(200), 0);
 
     return request({url: '/some-api/links'}).then(json => {
-      expect(tokenProvider.calledOnce).to.be.true;
-      expect(myFakeResponses[0].url).to.equal(`http://example.com/some-api/links?token=${token}&client=${clientId}`);
-      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).to.be.undefined;
-      expect(myFakeResponses[0].requestHeaders['Authorization']).to.be.undefined;
+      expect(tokenProvider.calledOnce).toBe(true);
+      expect(myFakeResponses[0].url).toBe(`http://example.com/some-api/links?token=${token}&client=${clientId}`);
+      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).toBeUndefined();
+      expect(myFakeResponses[0].requestHeaders['Authorization']).toBeUndefined();
     });
   });
 });

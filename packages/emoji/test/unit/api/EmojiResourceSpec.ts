@@ -7,6 +7,7 @@ import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util
 import { waitUntil } from '@atlaskit/util-common-test';
 
 import { EmojiDescription, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
+import { selectedToneStorageKey } from '../../../src/constants';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
 import EmojiResource, {
     EmojiProvider,
@@ -30,12 +31,13 @@ import {
     missingMediaEmoji,
     missingMediaEmojiId,
     missingMediaServiceEmoji,
+    mockLocalStorage,
     siteServiceEmojis,
     siteUrl,
     standardEmojis,
     standardServiceEmojis,
     thumbsupEmoji,
-} from '../_TestData';
+} from '../../../src/support/test-data';
 
 import { alwaysPromise } from '../_test-util';
 
@@ -1168,6 +1170,35 @@ describe('UploadingEmojiResource', () => {
         expect(prepareForUploadStub.called, 'upload called on mediaEmojiResource').to.equal(true);
       });
     });
+  });
+});
+
+describe('#toneSelectionStorage', () => {
+  const localStorage = global.window.localStorage;
+  beforeEach(() => {
+    global.window.localStorage = mockLocalStorage;
+  });
+
+  afterEach(() => {
+    global.window.localStorage.clear();
+    global.window.localStorage = localStorage;
+  });
+
+  it('retrieves previously stored tone selection upon construction', () => {
+    const getSpy = sinon.spy(global.window.localStorage, 'getItem');
+    const provider = new EmojiResource(defaultApiConfig);
+    // Linter throws an error if nothing done with EmojiResource
+    provider.filter();
+    expect(getSpy.callCount).to.equal(1);
+  });
+
+  it('calling setSelectedTone calls setItem in localStorage', () => {
+    const setSpy = sinon.spy(global.window.localStorage, 'setItem');
+    const resource = new EmojiResource(defaultApiConfig);
+    resource.setSelectedTone(1);
+    expect(setSpy.callCount).to.equal(1);
+    expect(setSpy.getCall(0).args[0]).to.equal(selectedToneStorageKey);
+    expect(setSpy.getCall(0).args[1]).to.equal('1');
   });
 });
 

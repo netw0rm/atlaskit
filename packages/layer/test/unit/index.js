@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import Layer from '../../src';
 
@@ -51,15 +50,15 @@ describe('Layer', () => {
     });
 
     it('flipped should cause onFlippedChange callback to be called', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
       const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
 
       expect(wrapper.state('flipped')).toBe(false);
       wrapper.setState(state);
 
-      expect(spy.callCount).toBe(1);
-      expect(spy.calledWith(state)).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(state);
     });
   });
 });

@@ -21,7 +21,7 @@ const hyperlinkPlugin: EditorPlugin = {
   },
 
   contentComponent(editorView, providerFactory, appearance) {
-    if (appearance === 'tray') {
+    if (appearance === 'message') {
       return null;
     }
 

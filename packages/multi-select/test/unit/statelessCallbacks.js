@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
-import sinon from 'sinon';
 
 import { MultiSelectStateless } from '../../src';
 
@@ -29,14 +28,14 @@ describe(`${name} - stateless`, () => {
     ];
 
     it('should call onRemoved when an item is removed', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const select = mount(<MultiSelectStateless
         items={selectItems}
         isOpen onRemoved={spy}
         selectedItems={[selectItems[0].items[0]]}
       />);
       select.find(Tag).first().props().onAfterRemoveAction();
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 });

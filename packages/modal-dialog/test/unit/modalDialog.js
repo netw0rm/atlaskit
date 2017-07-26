@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import ModalDialog from '../../src';
 
@@ -42,7 +41,7 @@ describe('ak-modal-dialog', () => {
         expect(hasWidth(shallow(<ModalDialog isOpen />), 'medium')).toBe(true);
       });
 
-      it('should support a custom pixel width as string', () => {
+      it('should support a custom pixel width as string (pixels)', () => {
         expect(shallow(
           <ModalDialog
             isOpen
@@ -51,7 +50,7 @@ describe('ak-modal-dialog', () => {
         ).find(ModalPositioner).prop('style')).toEqual({ width: '300px' });
       });
 
-      it('should support a custom pixel width as string', () => {
+      it('should support a custom pixel width as string (percent)', () => {
         expect(shallow(
           <ModalDialog
             isOpen
@@ -107,28 +106,28 @@ describe('ak-modal-dialog', () => {
 
     describe('onDialogDismissed', () => {
       it('should trigger when blanket clicked', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(ModalWrapper).children().first().simulate('click');
-        expect(spy.callCount).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(ModalPositioner).simulate('click');
-        expect(spy.callCount).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should not trigger when blanket content clicked', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(
           <ModalDialog isOpen onDialogDismissed={spy}>
             <span className="my-content" />
           </ModalDialog>
         );
         wrapper.find('.my-content').simulate('click');
-        expect(spy.callCount).toBe(0);
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });

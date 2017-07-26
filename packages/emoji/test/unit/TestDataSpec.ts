@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { atlassianEmojis, newEmojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from './_TestData';
+import { atlassianEmojis, newEmojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from '../../src/support/test-data';
 
 describe('#test data', () => {
   const emojiRepository = newEmojiRepository();

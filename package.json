@@ -97,6 +97,7 @@
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",
     "mocha": "^3.2.0",
+    "modify-babel-preset": "^3.2.1",
     "npm-run-all": "^4.0.1",
     "npmconf": "^2.1.2",
     "package-json-validator": "^0.6.1",

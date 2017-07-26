@@ -15,18 +15,12 @@ const cardSize = ({cardSize}: CardProps) => {
         .media-card {
           width: 116px;
         }
-        .details {
-          width: calc(100% - 116px);
-        }
       `;
 
     case 'large':
       return `
         .media-card {
           width: 174px;
-        }
-        .details {
-          width: calc(100% - 174px);
         }
       `;
   }
@@ -38,11 +32,11 @@ export const Details = styled.div`
   ${spaceAround}
   padding: 10px;
   background-color: ${akColorN20};
+  height: 100%;
 `;
 
 export const Wrapper = styled(Root)`
   ${cardSize}
-  display: flex;
   user-select: none;
   background-color: ${akColorN0};
   line-height: initial;
@@ -51,6 +45,7 @@ export const Wrapper = styled(Root)`
   ${cardShadow}
 
   &.square {
+    display: flex;
     flex-direction: column;
     justify-content: flex-end;
 
@@ -69,5 +64,6 @@ export const Wrapper = styled(Root)`
 
   .media-card {
     border-radius: 3px 0 0 3px;
+    float: left;
   }
 `;

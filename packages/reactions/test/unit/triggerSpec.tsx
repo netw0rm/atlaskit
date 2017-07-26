@@ -1,5 +1,3 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';

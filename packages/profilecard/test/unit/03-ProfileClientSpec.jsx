@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import fetchMock from 'fetch-mock';
 
 import AkProfileClient, { modifyResponse } from '../../src/api/profile-client';
@@ -39,10 +38,9 @@ describe('Profilecard', () => {
       });
 
       let cache;
-      let clock;
 
       beforeEach(() => {
-        clock = sinon.useFakeTimers();
+        jest.useFakeTimers();
         fetchMock.post(
           '*',
           { data: 'foo' }
@@ -50,7 +48,7 @@ describe('Profilecard', () => {
       });
 
       afterEach(() => {
-        clock.restore();
+        jest.useRealTimers();
         fetchMock.restore();
       });
 
@@ -58,7 +56,7 @@ describe('Profilecard', () => {
         it('should return cached data within n milliseconds', (done) => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
-            clock.tick(clientCacheMaxAge);
+            jest.runTimersToTime(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).toBe(data);
@@ -72,7 +70,7 @@ describe('Profilecard', () => {
         it('should return `null` after n+1 milliseconds ', (done) => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then(() => {
-            clock.tick(clientCacheMaxAge + 1);
+            jest.runTimersToTime(clientCacheMaxAge + 1);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).toBe(null);
@@ -86,12 +84,12 @@ describe('Profilecard', () => {
         it('should reset expiry to n ms when cache item is used', (done) => {
           client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
-            clock.tick(clientCacheMaxAge);
+            jest.runTimersToTime(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).toBe(data);
 
-            clock.tick(clientCacheMaxAge);
+            jest.runTimersToTime(clientCacheMaxAge);
             cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
             expect(cache).toBe(data);

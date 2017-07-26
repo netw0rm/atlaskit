@@ -2,10 +2,9 @@
 set -e
 
 MAX_RETRIES=2
-GITHEAD_SHORT=$(git rev-parse --short HEAD)
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GITHEAD_SHORT=$BITBUCKET_COMMIT
+CURRENT_BRANCH=$BITBUCKET_BRANCH
 CHALK="`yarn bin`/chalk"
-
 
 # $RUN_BROWSERSTACK_IN_BRANCH is used to disable browserstack tests in CI without having to merge
 # a build. We can set to "*" or empty to have it run always, or set to a specific branch to whitelist

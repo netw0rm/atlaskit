@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';
-import sinon from 'sinon';
 
 import InlineDialog from '../../src';
 import Container from '../../src/styled/Container';
@@ -95,44 +94,44 @@ describe('inline-dialog', () => {
 
   describe('onContentClick', () => {
     it('should be triggered when the content is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineDialog onContentClick={spy} content={<div>content</div>} isOpen />
       );
       const content = mount(wrapper.find(Layer).props().content);
 
       content.simulate('click');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('onContentFocus', () => {
     it('should be triggered when an element in the content is focused', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const linkEl = <a id="link" href="/test">a link</a>;
       const wrapper = mount(<InlineDialog onContentFocus={spy} content={linkEl} isOpen />);
       const content = mount(wrapper.find(Layer).props().content);
 
       content.find('#link').simulate('focus');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('onContentBlur', () => {
     it('should be triggered when an element in the content is blurred', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const linkEl = <a id="link" href="/test">a link</a>;
       const wrapper = mount(<InlineDialog onContentBlur={spy} content={linkEl} isOpen />);
       const content = mount(wrapper.find(Layer).props().content);
 
       content.find('#link').simulate('blur');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('handleClickOutside', () => {
     it('should trigger the onClose prop', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<InlineDialog onClose={spy} isOpen />);
       const event = {
         target: document.createElement('div'),
@@ -140,12 +139,12 @@ describe('inline-dialog', () => {
 
       wrapper.instance().handleClickOutside(event);
 
-      expect(spy.callCount).toBe(1);
-      expect(spy.getCall(0).args[0].isOpen).toBe(false);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0].isOpen).toBe(false);
     });
 
     it('should NOT trigger the onClose prop when isOpen is false', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<InlineDialog onClose={spy} />);
       const event = {
         target: document.createElement('div'),
@@ -153,7 +152,7 @@ describe('inline-dialog', () => {
 
       wrapper.instance().handleClickOutside(event);
 
-      expect(spy.callCount).toBe(0);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 });

@@ -7,16 +7,14 @@ import EmojiPreview from '../../../../src/components/common/EmojiPreview';
 import ToneSelector from '../../../../src/components/common/ToneSelector';
 import Emoji from '../../../../src/components/common/Emoji';
 import EmojiButton from '../../../../src/components/common/EmojiButton';
-// import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
-import { EmojiDescription, EmojiDescriptionWithVariations } from '../../../../src/types';
-import { imageEmoji, generateSkinVariation } from '../../_TestData';
-// import { imageEmoji, generateSkinVariation, mediaEmoji } from '../../_TestData';
+import { EmojiDescriptionWithVariations } from '../../../../src/types';
+import { imageEmoji, generateSkinVariation } from '../../../../src/support/test-data';
 
 const baseEmoji = imageEmoji;
 
-const emoji: EmojiDescription = {
+const emoji: EmojiDescriptionWithVariations = {
   ...baseEmoji,
-  generateSkinVariations: [
+  skinVariations: [
     generateSkinVariation(imageEmoji, 1),
     generateSkinVariation(imageEmoji, 2),
     generateSkinVariation(imageEmoji, 3),
@@ -34,7 +32,7 @@ const baseToneEmoji = {
 
 const toneEmoji: EmojiDescriptionWithVariations = {
   ...baseToneEmoji,
-  generateSkinVariations: [
+  skinVariations: [
     generateSkinVariation(baseToneEmoji, 1),
     generateSkinVariation(baseToneEmoji, 2),
     generateSkinVariation(baseToneEmoji, 3),
@@ -85,11 +83,13 @@ describe('<EmojiPreview />', () => {
       expect(emoji1Prop, 'First has emoji prop').to.not.equal(undefined);
       expect(emoji1Prop.id, 'Emoji id').to.equal(emoji.id);
       expect(emoji1Prop.shortName, 'Emoji shortName').to.equal(emoji.shortName);
+
       const second = wrapper.find(Emoji).at(1);
+      const selectedTone = toneEmoji!.skinVariations![0];
       const emoji2Prop = second.prop('emoji');
       expect(emoji2Prop, 'Second has emoji prop').to.not.equal(undefined);
-      expect(emoji2Prop.id, 'Tone id').to.equal(toneEmoji.id);
-      expect(emoji2Prop.shortName, 'Tone shortName').to.equal(toneEmoji.shortName);
+      expect(emoji2Prop.id, 'Tone id').to.equal(selectedTone.id);
+      expect(emoji2Prop.shortName, 'Tone shortName').to.equal(selectedTone.shortName);
     });
 
     it('button should show default tone if selected tone is not specified', () => {
@@ -146,16 +146,5 @@ describe('<EmojiPreview />', () => {
       wrapper.simulate('mouseLeave');
       expect(wrapper.state('selectingTone')).to.equal(false);
     });
-
-    // it('should render placeholder for unloaded media emoji', () => {
-    //   const wrapper = shallow(<EmojiPreview
-    //     emoji={mediaEmoji}
-    //   />);
-
-    //   const placeholders = wrapper.find(EmojiPlaceholder);
-    //   expect(placeholders.length).to.equal(1);
-    //   const props = placeholders.get(0).props;
-    //   expect(props.shortName, 'short name').to.equals(mediaEmoji.shortName);
-    // });
   });
 });

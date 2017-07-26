@@ -2,7 +2,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import Draggable, { makeSelector } from '../../../src/view/draggable/connected-draggable';
 import { getDraggableDimension } from '../../../src/state/dimension';
 import noImpact from '../../../src/state/no-impact';
@@ -159,11 +158,11 @@ describe('Draggable - connected', () => {
     });
 
     beforeEach(() => {
-      sinon.stub(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(() => { });
     });
 
     afterEach(() => {
-      console.error.restore();
+      console.error.mockRestore();
     });
 
     describe('dragging', () => {
@@ -179,7 +178,7 @@ describe('Draggable - connected', () => {
         });
 
         expect(result).toEqual(defaultMapProps);
-        expect(console.error.calledOnce).toBe(true);
+        expect(console.error).toHaveBeenCalledTimes(1);
       });
 
       describe('item is dragging', () => {
@@ -296,7 +295,7 @@ describe('Draggable - connected', () => {
         });
 
         expect(props).toEqual(defaultMapProps);
-        expect(console.error.calledOnce).toBe(true);
+        expect(console.error).toHaveBeenCalledTimes(1);
       });
 
       describe('item was dragging', () => {
@@ -534,18 +533,18 @@ describe('Draggable - connected', () => {
     }
 
     beforeEach(() => {
-      sinon.spy(Person.prototype, 'render');
+      jest.spyOn(Person.prototype, 'render');
     });
 
     afterEach(() => {
-      Person.prototype.render.restore();
+      Person.prototype.render.mockRestore();
     });
 
     it('should render the child function when the parent renders', () => {
       const wrapper = mount(<App currentUser="Jake" />, combine(withStore(), withDroppableId(droppableId)));
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).toBe(2);
+      expect(Person.prototype.render).toHaveBeenCalledTimes(2);
       expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
@@ -555,7 +554,7 @@ describe('Draggable - connected', () => {
       wrapper.update();
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).toBe(3);
+      expect(Person.prototype.render).toHaveBeenCalledTimes(3);
       expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
@@ -567,7 +566,7 @@ describe('Draggable - connected', () => {
       });
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).toBe(3);
+      expect(Person.prototype.render).toHaveBeenCalledTimes(3);
       expect(wrapper.find(Person).props().name).toBe('Finn');
     });
   });

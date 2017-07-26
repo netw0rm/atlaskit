@@ -5,7 +5,4 @@
   "rules": {
     "jest/valid-expect": "off"
   },
-  "plugins": [
-    "chai-expect",
-  ]
 }

@@ -1,3 +1,4 @@
+import Layer from '@atlaskit/layer';
 import { MentionPicker as AkMentionPicker, MentionProvider, MentionDescription } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -80,6 +81,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={300}
         fitWidth={340}
+        alignX="left"
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
         offset={[0, 3]}

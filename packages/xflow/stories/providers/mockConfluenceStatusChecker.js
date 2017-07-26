@@ -3,7 +3,7 @@
  * has come up.
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
-const FOUR_MINUTES = 240000; // milliseconds
+const MOCK_ACTIVATION_TIME = 30000; // milliseconds
 
 export const INACTIVE = 'INACTIVE';
 export const ACTIVE = 'ACTIVE';
@@ -15,7 +15,10 @@ let startTime = 0;
 
 async function checkStatus() {
   return new Promise(resolve =>
-    setTimeout(() => resolve(Date.now() - startTime > FOUR_MINUTES ? ACTIVE : INACTIVE), 500)
+    setTimeout(
+      () => resolve(Date.now() - startTime > MOCK_ACTIVATION_TIME ? ACTIVE : INACTIVE),
+      500
+    )
   );
 }
 

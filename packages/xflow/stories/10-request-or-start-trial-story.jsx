@@ -37,7 +37,7 @@ storiesOf('RequestOrStartTrial')
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial
-          onTrialActivating={() => console.log('Trial is activating')}
+          onTrialActivating={() => console.log('Activating...')}
           analyticsId="growth.happy"
         />
       </MockConfluenceXFlow>

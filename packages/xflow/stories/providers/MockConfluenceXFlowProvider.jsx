@@ -4,7 +4,7 @@ import { XFlowProvider } from '@atlaskit/xflow';
 
 import mockConfluenceStatusChecker, { ACTIVE } from './mockConfluenceStatusChecker';
 
-const FIVE_MINUTES = 300000; // milliseconds
+const POLLING_TIMEOUT = 300000; // milliseconds
 
 const notImplemented = () => {
   throw new Error('Not implemented.');
@@ -80,7 +80,7 @@ export default class MockConfluenceXFlowProvider extends Component {
   }
 
   progressUpdate = ({ status, time }) => {
-    const progress = status === ACTIVE ? 1 : Math.min(time / FIVE_MINUTES, 1);
+    const progress = status === ACTIVE ? 1 : Math.min(time / POLLING_TIMEOUT, 1);
     this.setState({
       progress,
       status,

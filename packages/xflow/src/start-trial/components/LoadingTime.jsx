@@ -2,19 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
-import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
-import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import { FormattedMessage } from 'react-intl';
 
 import ModalDialog from '@atlaskit/modal-dialog';
-import ProgressBar from './ProgressBar';
+import ProgressIndicator from './ProgressIndicator';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
-import ProgressBarWithIconDiv from '../styled/ProgressBarWithIconDiv';
-import ProgressBarDiv from '../styled/ProgressBarDiv';
-import CenterProgressBarDiv from '../styled/CenterProgressBarDiv';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
 import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
@@ -31,22 +26,20 @@ export class LoadingTimeBase extends Component {
   static propTypes = {
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
-    status: PropTypes.string.isRequired,
+    status: PropTypes.oneOf(['ACTIVE', 'INACTIVE', 'UNKNOWN']).isRequired,
     productLogo: PropTypes.node.isRequired,
     goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
-    confluenceTimedOut: PropTypes.bool,
     firePrivateAnalyticsEvent: PropTypes.func,
   };
 
   static defaultProps = {
     closeLoadingDialog: () => Promise.resolve(),
-    confluenceTimedOut: false,
   };
 
   state = {
     // TODO set according to the provisioning status and how long it has been polling
-    confluenceTimedOut: this.props.confluenceTimedOut,
+    isReady: false,
   };
 
   handleGoToProductClick = () => {
@@ -62,40 +55,30 @@ export class LoadingTimeBase extends Component {
   };
 
   showHeading = () => {
-    if (this.state.confluenceTimedOut) {
+    const { status } = this.props;
+    const { isReady } = this.state;
+
+    if (isReady) {
+      if (status === 'ACTIVE') {
+        this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
+        return <FormattedMessage id={i18n`complete-heading`} />;
+      }
       this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
       return <FormattedMessage id={i18n`error-heading`} />;
-    } else if (this.props.progress === 1) {
-      this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
-      return <FormattedMessage id={i18n`complete-heading`} />;
     }
     return <FormattedMessage id={i18n`loading-heading`} />;
   };
 
-  showProgressBar = () => {
-    if (this.props.progress === 1 && this.props.status === 'ACTIVE') {
-      return (
-        <ProgressBarWithIconDiv>
-          <CenterProgressBarDiv>
-            <ProgressBar progress={this.props.progress} />
-          </CenterProgressBarDiv>
-          {this.props.status === 'ACTIVE'
-            ? <CheckCircleIcon label="Product activated" primaryColor="#35b37e" />
-            : <CrossCircleIcon label="Activation timed out" primaryColor="#ff7451" />}
-        </ProgressBarWithIconDiv>
-      );
-    }
-    return (
-      <ProgressBarDiv>
-        <ProgressBar progress={this.props.progress} />
-      </ProgressBarDiv>
-    );
+  handleProgressComplete = () => {
+    this.setState({
+      isReady: true,
+    });
   };
 
   render() {
-    const { productLogo, progress } = this.props;
+    const { productLogo, progress, status } = this.props;
 
-    const isReady = progress === 1;
+    const { isReady } = this.state;
 
     return (
       <ModalDialog
@@ -104,13 +87,17 @@ export class LoadingTimeBase extends Component {
         header={
           <StartTrialHeaderDiv>
             {productLogo}
-            {this.showProgressBar()}
+            <ProgressIndicator
+              progress={progress}
+              status={status}
+              onComplete={this.handleProgressComplete}
+            />
           </StartTrialHeaderDiv>
         }
         footer={
           <StartTrialFooter>
             <Button
-              isDisabled={!isReady}
+              isDisabled={!(isReady && status === 'ACTIVE')}
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >

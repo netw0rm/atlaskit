@@ -9,7 +9,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { FormattedMessage } from 'react-intl';
 
-import ProgressBar from './ProgressBar';
+import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from './ErrorFlag';
 
 import StartTrialDialog from '../styled/StartTrialDialog';
@@ -33,7 +33,8 @@ const i18n = i18nId('grant-access');
 
 export class GrantAccessBase extends Component {
   static propTypes = {
-    progress: PropTypes.number,
+    progress: PropTypes.number.isRequired,
+    status: PropTypes.oneOf(['ACTIVE', 'INACTIVE', 'UNKNOWN']).isRequired,
     productLogo: PropTypes.node.isRequired,
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,
@@ -171,7 +172,14 @@ export class GrantAccessBase extends Component {
   });
 
   render() {
-    const { productLogo, optionItems, userSelectPlaceholder, chooseOption } = this.props;
+    const {
+      productLogo,
+      optionItems,
+      userSelectPlaceholder,
+      chooseOption,
+      progress,
+      status,
+    } = this.props;
 
     return (
       <ModalDialog
@@ -180,7 +188,7 @@ export class GrantAccessBase extends Component {
         header={
           <StartTrialHeaderDiv>
             {productLogo}
-            <ProgressBar progress={this.props.progress} />
+            <ProgressIndicator progress={progress} status={status} />
           </StartTrialHeaderDiv>
         }
         footer={
@@ -290,7 +298,13 @@ export class GrantAccessBase extends Component {
 export default withXFlowProvider(
   GrantAccessBase,
   ({
-    xFlow: { config: { productLogo, startTrial }, grantAccessToUsers, retrieveUsers, progress },
+    xFlow: {
+      config: { productLogo, startTrial },
+      grantAccessToUsers,
+      retrieveUsers,
+      progress,
+      status,
+    },
   }) => ({
     productLogo,
     optionItems: startTrial.grantOptionItems,
@@ -301,5 +315,6 @@ export default withXFlowProvider(
     grantAccessToUsers,
     retrieveUsers,
     progress,
+    status,
   })
 );

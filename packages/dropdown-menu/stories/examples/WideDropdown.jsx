@@ -1,34 +1,32 @@
 import React from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
+import { akColorN50, akColorN20A, akColorN40A, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
 
-const trigger = (<div style={{ border: '1px solid black', padding: '8px' }}>
-    This is the trigger
-</div>);
+const TriggerDiv = styled.div`
+  border: 1px solid ${akColorN50};
+  padding: ${akGridSizeUnitless}px;
 
-export default (
+  &:hover {
+    background-color: ${akColorN20A};
+  }
+
+  &:active {
+    background-color: ${akColorN40A};
+  }
+`;
+
+export default () => (
   <DropdownMenu
-    items={[
-      {
-        heading: 'Menu Heading',
-        items: [
-          {
-            content: 'Status project',
-          },
-          {
-            content: 'Move to done',
-          },
-          {
-            content: 'View workflow',
-          },
-        ],
-      },
-    ]}
-    onItemActivated={(item) => {
-      // you can do allthethings here!
-      console.log(item);
-    }}
     shouldFitContainer
+    trigger={
+      <TriggerDiv>This is the trigger</TriggerDiv>
+    }
   >
-    {trigger}
+    <DropdownItemGroup>
+      <DropdownItem>Status project</DropdownItem>
+      <DropdownItem>Move to done</DropdownItem>
+      <DropdownItem>View workflow</DropdownItem>
+    </DropdownItemGroup>
   </DropdownMenu>
 );

@@ -20,7 +20,7 @@ export interface State {
 
 export default class Editor extends PureComponent<EditorProps, State> {
   static defaultProps: EditorProps = {
-    appearance: 'tray'
+    appearance: 'message'
   };
 
   private providerFactory: ProviderFactory;

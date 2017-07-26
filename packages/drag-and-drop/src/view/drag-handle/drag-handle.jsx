@@ -26,20 +26,38 @@ type State = {
   pending: ?Position,
 };
 
+type WindowEventMap = {
+  [string]: Function
+}
+
 export default class DragHandle extends Component {
   /* eslint-disable react/sort-comp */
 
   props: Props
   state: State
 
-  previousScroll: ?Position = null;
-
   state: State = {
     draggingWith: null,
     pending: null,
   };
 
-  preventClick: boolean;
+  previousScroll: ?Position = null;
+  preventClick: boolean
+  windowEventMap: WindowEventMap
+
+  constructor(props: Props, context: mixed) {
+    super(props, context);
+
+    // the events that will be bound during a drag
+    this.windowEventMap = {
+      mousemove: this.onWindowMouseMove,
+      mouseup: this.onWindowMouseUp,
+      mousedown: this.onWindowMouseDown,
+      keydown: this.onWindowKeydown,
+      resize: this.onWindowResize,
+      scroll: this.onWindowScroll,
+    };
+  }
 
   ifDragging = (fn: Function) => {
     if (this.state.draggingWith) {
@@ -47,6 +65,12 @@ export default class DragHandle extends Component {
     }
   }
 
+  // There is a case where if this is fired between
+  // two different drags with the same x,y then the second
+  // drag will not fire a move. This will only effect the
+  // first frame. It was decided that this is better than
+  // needing to clear the memoization cache between drags
+  // given that it is a huge edge case.
   memoizedMove = memoizeOne((x: number, y: number) => {
     const point: Position = { x, y };
     this.props.callbacks.onMove(point);
@@ -408,21 +432,18 @@ export default class DragHandle extends Component {
   }
 
   unbindWindowEvents = () => {
-    window.removeEventListener('mousemove', this.onWindowMouseMove);
-    window.removeEventListener('mouseup', this.onWindowMouseUp);
-    window.removeEventListener('mousedown', this.onWindowMouseDown);
-    window.removeEventListener('keydown', this.onWindowKeydown);
-    window.removeEventListener('resize', this.onWindowResize);
-    window.removeEventListener('scroll', this.onWindowScroll);
+    // using a map to ensure that everything that is added
+    // is always removed. It is easy to add a listener and
+    // to forget about removing it.
+    Object.keys(this.windowEventMap).forEach((eventName: string) => {
+      window.removeEventListener(eventName, this.windowEventMap[eventName]);
+    });
   }
 
   bindWindowEvents = () => {
-    window.addEventListener('mousemove', this.onWindowMouseMove);
-    window.addEventListener('mouseup', this.onWindowMouseUp);
-    window.addEventListener('mousedown', this.onWindowMouseDown);
-    window.addEventListener('keydown', this.onWindowKeydown);
-    window.addEventListener('resize', this.onWindowResize);
-    window.addEventListener('scroll', this.onWindowScroll);
+    Object.keys(this.windowEventMap).forEach((eventName: string) => {
+      window.addEventListener(eventName, this.windowEventMap[eventName]);
+    });
   }
 
   getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {

@@ -491,7 +491,9 @@ describe('Media plugin', () => {
       // wait until mediaProvider's linkCreateContext has been set
       await provider.linkCreateContext;
 
-      provider.linkCreateContext = linkCreateContextMock;
+      provider.linkCreateContext = Promise.resolve(linkCreateContextMock);
+
+      await pluginState.setMediaProvider(Promise.resolve(provider));
 
       // way to stub private member
       (pluginState as any).linkRanges = [{ start: sel - link.length - 1, end: sel, urls: [link] }];

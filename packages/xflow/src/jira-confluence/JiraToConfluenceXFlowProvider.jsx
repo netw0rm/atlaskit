@@ -16,9 +16,9 @@ import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 import languagePacks from './language-packs.json';
-import confluenceStatusChecker from './confluenceStatusChecker';
+import confluenceStatusChecker, { ACTIVE } from './confluenceStatusChecker';
 
-const FIVE_MINUTES = 300000; // milliseconds
+const POLLING_TIMEOUT = 300000; // milliseconds
 
 const defaultProps = {
   config: {
@@ -90,7 +90,7 @@ export default class JiraToConfluenceXFlowProvider extends Component {
   }
 
   progressUpdate = ({ status, time }) => {
-    const progress = status === 'complete' ? 1 : Math.min(time / FIVE_MINUTES, 1);
+    const progress = status === ACTIVE ? 1 : Math.min(time / POLLING_TIMEOUT, 1);
     this.setState({
       progress,
       status,
@@ -105,13 +105,14 @@ export default class JiraToConfluenceXFlowProvider extends Component {
     confluenceStatusChecker.start(this.progressUpdate);
   };
 
-  render = () => {
+  render() {
     const props = {
       ...defaultProps,
       startProductTrial: this.startProductTrial,
       ...this.state,
       ...this.props,
     };
+
     return <XFlowProvider {...props} />;
-  };
+  }
 }

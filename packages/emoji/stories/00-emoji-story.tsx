@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import Emoji from '../src/components/common/Emoji';
-import { getEmojiRepository } from './story-data';
+import { getEmojiRepository } from '../src/support/story-data';
 
 const emojiService = getEmojiRepository();
 

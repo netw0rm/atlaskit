@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import Radio from '../../src/components/Radio';
 import { name } from '../../package.json';
@@ -69,10 +68,10 @@ describe(name, () => {
         expectPropReflectedToInput('onChange', 'onChange', func);
 
         it('should be reflected to the input', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const wrapper = mount(<Radio onChange={spy} />);
           wrapper.find('input').simulate('change');
-          expect(spy.calledOnce).toBe(true);
+          expect(spy).toHaveBeenCalledTimes(1);
         });
       });
 

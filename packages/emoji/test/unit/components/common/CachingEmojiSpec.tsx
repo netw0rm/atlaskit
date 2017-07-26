@@ -9,7 +9,7 @@ import EmojiResource from '../../../../src/api/EmojiResource';
 import Emoji from '../../../../src/components/common/Emoji';
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
 import CachingEmoji, { CachingMediaEmoji } from '../../../../src/components/common/CachingEmoji';
-import { imageEmoji, loadedMediaEmoji, mediaEmoji } from '../../_TestData';
+import { imageEmoji, loadedMediaEmoji, mediaEmoji } from '../../../../src/support/test-data';
 
 describe('<CachingEmoji />', () => {
   describe('Non-media emoji', () => {

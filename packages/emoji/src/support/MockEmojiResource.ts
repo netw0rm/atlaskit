@@ -3,22 +3,14 @@ import { AbstractResource } from '@atlaskit/util-service-support';
 
 import { customCategory, customType } from '../../src/constants';
 import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
+import { selectedToneStorageKey } from '../../src/constants';
 import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
 import EmojiRepository, { EmojiSearchResult } from '../../src/api/EmojiRepository';
 import debug from '../../src/util/logger';
 
-export interface PromiseBuilder<R> {
-  (result: R, context: string): Promise<R>;
-}
+import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
 
-export interface MockEmojiResourceConfig {
-  promiseBuilder?: PromiseBuilder<any>;
-  uploadSupported?: boolean;
-  uploadError?: string;
-  optimisticRendering?: boolean;
-}
-
-export const emojiFromUpload = (upload: EmojiUpload) => {
+const emojiFromUpload = (upload: EmojiUpload) => {
   const { shortName, name, dataURL, height, width } = upload;
   return {
     id: uid(),
@@ -55,6 +47,11 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
         this.promiseBuilder = config.promiseBuilder;
       }
       this.optimisticRendering = config.optimisticRendering;
+    }
+
+    if (window.localStorage) {
+      const storedTone = window.localStorage.getItem(selectedToneStorageKey);
+      this.selectedTone = storedTone ? parseInt(storedTone, 10) : undefined;
     }
   }
 
@@ -117,6 +114,13 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
 
   setSelectedTone(tone: ToneSelection) {
     this.selectedTone = tone;
+    if (window.localStorage) {
+      try {
+        window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
+      } catch (e) {
+        console.error('localStorage is full', e);
+      }
+    }
   }
 
 }

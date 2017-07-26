@@ -6,7 +6,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import MediaImageLoader from '../../../../src/api/media/MediaImageLoader';
 import TokenManager from '../../../../src/api/media/TokenManager';
 
-import { blobResponse, createTokenManager, defaultMediaApiToken, mediaBaseUrl, mediaEmojiImagePath } from '../../_TestData';
+import { blobResponse, createTokenManager, defaultMediaApiToken, mediaBaseUrl, mediaEmojiImagePath } from '../../../../src/support/test-data';
 
 const testConcurrentDownloadLimit = 2;
 

@@ -20,10 +20,10 @@ import {
   insertText
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 
 const mentionProvider = new Promise<any>(resolve => {
-  resolve(mentionData.mentionStoryData.resourceProvider);
+  resolve(mentionStoryData.resourceProvider);
 });
 
 chai.use(chaiPlugin);

@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { toEmojiId } from '@atlaskit/emoji';
+import { storyData as  emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
 
 import * as React from 'react';
 import { name, version } from '../../package.json';
@@ -16,9 +17,8 @@ import ProviderFactory from '../../src/providerFactory';
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('nodes/emoji', () => {
-    const { emojiStoryData, emojiTestData } = emojiData;
     const loadingEmojiProvider = new Promise(() => {});
-    const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+    const emojiProvider = emojiStoryData.getEmojiResource();
     const lorem = emojiStoryData.lorem;
 
     // tslint:disable-next-line:variable-name
@@ -26,8 +26,14 @@ storiesOf(name, module)
       const providerFactory = new ProviderFactory();
       providerFactory.setProvider('emojiProvider', props.emojiProvider);
 
-      const evilBurnsEmojiProps: EmojiProps = { ...emojiTestData.evilburnsEmoji, providers: providerFactory };
-      const grinEmojiProps: EmojiProps = { ...emojiTestData.grinEmoji, providers: providerFactory };
+      const evilBurnsEmojiProps: EmojiProps = {
+        ...toEmojiId(emojiTestData.evilburnsEmoji),
+        providers: providerFactory
+      };
+      const grinEmojiProps: EmojiProps = {
+        ...toEmojiId(emojiTestData.grinEmoji),
+        providers: providerFactory
+      };
 
       const nopeEmojiProps: EmojiProps = { shortName: ':nope:' };
       if (props.emojiProvider) {

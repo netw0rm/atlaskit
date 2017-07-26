@@ -21,8 +21,6 @@ import { TriggerWrapper, ExpandIconWrapper } from './styles';
 export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
-  softBlurEditor: () => void;
-  focusEditor: () => void;
   pluginStateTable?: TableState;
   pluginStateMedia?: MediaPluginState;
   pluginStateBlockType?: BlockTypeState;
@@ -111,13 +109,6 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   }
 
   private onOpenChange = (attrs: any) => {
-    // Hack for IE needed to prevent caret blinking above the opened dropdown.
-    if (attrs.isOpen) {
-      this.props.softBlurEditor();
-    } else {
-      this.props.focusEditor();
-    }
-
     this.setState({
       isOpen: attrs.isOpen,
     });
@@ -243,7 +234,6 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
 
   private onItemActivated = ({ item }) => {
     const { editorView, pluginStateTable, pluginStateMedia } = this.props;
-    this.props.focusEditor();
     analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
     switch(item.value.name) {
       case 'table':

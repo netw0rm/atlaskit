@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import { name } from '../../package.json';
 import * as exports from '../../src';
 import {
@@ -31,8 +29,13 @@ describe(name, () => {
     let removeAttributeSpy;
     beforeEach(() => {
       el = document.createElement('div');
-      setAttributeSpy = sinon.spy(el, 'setAttribute');
-      removeAttributeSpy = sinon.spy(el, 'removeAttribute');
+      setAttributeSpy = jest.spyOn(el, 'setAttribute');
+      removeAttributeSpy = jest.spyOn(el, 'removeAttribute');
+    });
+
+    afterEach(() => {
+      setAttributeSpy.mockRestore();
+      removeAttributeSpy.mockRestore();
     });
 
     describe('computeBooleanValue', () => {
@@ -62,7 +65,7 @@ describe(name, () => {
       nonNullValues.forEach((value) => {
         beforeEach(() => {
           el.setAttribute(ATTRIBUTE, value);
-          setAttributeSpy.reset();
+          setAttributeSpy.mockClear();
         });
 
         it(`matches hasAttribute (${describeValue(value)})`, () => {
@@ -77,7 +80,7 @@ describe(name, () => {
         it(`removes the attr for falsy values (${describeValue(value)})`, () => {
           setBooleanAttribute(el, ATTRIBUTE, value);
           expect(el.hasAttribute(ATTRIBUTE)).toBe(false, 'hasAttribute');
-          expect(removeAttributeSpy.callCount).toBe(1, 'removeAttribute');
+          expect(removeAttributeSpy).toHaveBeenCalledTimes(1);
         });
       });
     }
@@ -87,7 +90,7 @@ describe(name, () => {
         it(`adds the attr for truthy values (${describeValue(value)})`, () => {
           setBooleanAttribute(el, ATTRIBUTE, value);
           expect(el.getAttribute(ATTRIBUTE)).toBe('', 'getAttribute');
-          expect(setAttributeSpy.callCount).toBe(1, 'removeAttribute');
+          expect(setAttributeSpy).toHaveBeenCalledTimes(1);
         });
       });
     }
@@ -100,7 +103,7 @@ describe(name, () => {
     describe('setBooleanAttribute for attr present and empty', () => {
       beforeEach(() => {
         el.setAttribute(ATTRIBUTE, '');
-        setAttributeSpy.reset();
+        setAttributeSpy.mockClear();
       });
 
       itRemovesTheBooleanAttributeWhenPropertySetToBeFalsy();
@@ -110,7 +113,7 @@ describe(name, () => {
     describe('setBooleanAttribute for attr present and non-empty', () => {
       beforeEach(() => {
         el.setAttribute(ATTRIBUTE, ATTRIBUTE);
-        setAttributeSpy.reset();
+        setAttributeSpy.mockClear();
       });
 
       itRemovesTheBooleanAttributeWhenPropertySetToBeFalsy();
@@ -155,30 +158,29 @@ describe(name, () => {
 
       it('setEnumAttribute sets the attribute even if it is aleady exactly the new value', () => {
         el.setAttribute(ENUM_OPTIONS.attribute, 'foo');
-        setAttributeSpy.reset();
+        setAttributeSpy.mockClear();
 
         setEnumAttribute(el, ENUM_OPTIONS, 'foo');
         expect(el.getAttribute(ENUM_OPTIONS.attribute)).toBe('foo', 'getAttribute');
-        expect(setAttributeSpy.callCount).toBe(1, 'setAttribute');
+        expect(setAttributeSpy).toHaveBeenCalledTimes(1);
       });
 
       it('setEnumAttribute passes the new value verbatim to setAttribute', () => {
         FALSY_VALUES.forEach((value) => {
-          setAttributeSpy.reset();
+          setAttributeSpy.mockClear();
 
           setEnumAttribute(el, ENUM_OPTIONS, value);
-          expect(setAttributeSpy.callCount).toBe(1, `setAttribute (${describeValue(value)})`);
-          expect(setAttributeSpy.calledWithExactly(ENUM_OPTIONS.attribute, value)).toBe(true,
-            `calledWith (${describeValue(value)}`);
+          expect(setAttributeSpy).toHaveBeenCalledTimes(1);
+          expect(setAttributeSpy).toHaveBeenCalledWith(ENUM_OPTIONS.attribute, value);
         });
       });
 
       it('setEnumAttribute does not remove the attribute for null', () => {
         el.setAttribute(ENUM_OPTIONS.attribute, 'foo');
-        setAttributeSpy.reset();
+        setAttributeSpy.mockClear();
 
         setEnumAttribute(el, ENUM_OPTIONS, null);
-        expect(removeAttributeSpy.callCount).toBe(0);
+        expect(removeAttributeSpy).toHaveBeenCalledTimes(0);
       });
     });
 

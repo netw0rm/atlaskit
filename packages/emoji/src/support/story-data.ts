@@ -1,7 +1,8 @@
-import { denormaliseEmojiServiceResponse } from '../src/api/EmojiUtils';
-import EmojiRepository from '../src/api/EmojiRepository';
-import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/unit/_MockEmojiResource';
-import { EmojiDescription, EmojiServiceResponse } from '../src/types';
+import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
+import EmojiRepository from '../api/EmojiRepository';
+import { MockEmojiResourceConfig } from './support-types';
+import { mockEmojiResourceFactory, MockEmojiResource } from './MockEmojiResource';
+import { EmojiDescription, EmojiServiceResponse } from '../types';
 
 declare var require: {
     <T>(path: string): T;

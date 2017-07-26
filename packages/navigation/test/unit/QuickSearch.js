@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import {
   AkQuickSearch,
   AkQuickSearchWithKeyboardControls,
@@ -31,7 +30,7 @@ describe('Quick Search', () => {
   });
 
   describe('<QuickSearchWithKeyboardControls />', () => {
-    const onClickSpy = sinon.spy();
+    const onClickSpy = jest.fn();
     const kbTestResults = [{
       title: 'test group',
       items: [
@@ -70,28 +69,28 @@ describe('Quick Search', () => {
         expect(qsWrapper.prop('isResultHoverStylesDisabled')).toBe(false);
       });
       it('should pass through or wrap onSearchBlur callback props', () => {
-        const blurSpy = sinon.spy();
+        const blurSpy = jest.fn();
         wrapper.setProps({ onSearchBlur: blurSpy });
         qsWrapper.prop('onSearchBlur')();
-        expect(blurSpy.callCount).toBe(1);
+        expect(blurSpy).toHaveBeenCalledTimes(1);
       });
       it('should pass through or wrap onSearchKeyDown callback props', () => {
-        const keyDownSpy = sinon.spy();
+        const keyDownSpy = jest.fn();
         wrapper.setProps({ onSearchKeyDown: keyDownSpy });
         qsWrapper.prop('onSearchKeyDown')({ key: null });
-        expect(keyDownSpy.callCount).toBe(1);
+        expect(keyDownSpy).toHaveBeenCalledTimes(1);
       });
       it('should pass through or wrap onResultMouseEnter callback props', () => {
-        const mouseEnterSpy = sinon.spy();
+        const mouseEnterSpy = jest.fn();
         wrapper.setProps({ onResultMouseEnter: mouseEnterSpy });
         qsWrapper.prop('onResultMouseEnter')();
-        expect(mouseEnterSpy.callCount).toBe(1);
+        expect(mouseEnterSpy).toHaveBeenCalledTimes(1);
       });
       it('should pass through or wrap onResultMouseLeave callback props', () => {
-        const mouseLeaveSpy = sinon.spy();
+        const mouseLeaveSpy = jest.fn();
         wrapper.setProps({ onResultMouseLeave: mouseLeaveSpy });
         qsWrapper.prop('onResultMouseLeave')();
-        expect(mouseLeaveSpy.callCount).toBe(1);
+        expect(mouseLeaveSpy).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -110,7 +109,7 @@ describe('Quick Search', () => {
       });
 
       afterEach(() => {
-        onClickSpy.reset();
+        onClickSpy.mockClear();
       });
 
       it('should select the first result by default', () => {
@@ -141,7 +140,7 @@ describe('Quick Search', () => {
         expect(isInputFocused(searchInput)).toBe(true);
       });
       it('should call window.location.assign() with item`s href property', () => {
-        const locationAssignSpy = sinon.spy(window.location, 'assign');
+        const locationAssignSpy = jest.spyOn(window.location, 'assign');
         try {
           const url = 'http://www.atlassian.com';
           wrapper.setProps({
@@ -151,21 +150,21 @@ describe('Quick Search', () => {
             }],
           });
           searchInput.simulate('keydown', { key: 'Enter' });
-          expect(locationAssignSpy.calledWith(url)).toBe(true);
+          expect(locationAssignSpy).toHaveBeenCalledWith(url);
         } finally {
-          locationAssignSpy.restore();
+          locationAssignSpy.mockRestore();
         }
       });
       it('should trigger the onClick handler with the same parameters when a result is submitted via keyboards as when clicked', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
         const paramsKeyboard = onClickSpy.args;
-        onClickSpy.reset();
+        onClickSpy.mockClear();
         wrapper.find(AkNavigationItem).at(0).find('button').simulate('click');
         expect(onClickSpy.args).toEqual(paramsKeyboard);
       });
       it('should run the onClick callback with the result\'s data on ENTER keystroke', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
-        expect(onClickSpy.callCount).toBe(1);
+        expect(onClickSpy).toHaveBeenCalledTimes(1);
         expect(isInputFocused(searchInput)).toBe(true);
       });
       it('should select the first result when query changes', () => {

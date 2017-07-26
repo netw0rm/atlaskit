@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {expect} from 'chai';
-import * as sinon from 'sinon';
 import {ImageCropper, ImageCropperProp} from '../../../src/image-cropper';
 import {Container, DragOverlay} from '../../../src/image-cropper/styled';
 import {smallImage} from '@atlaskit/media-test-helpers';
@@ -23,8 +21,8 @@ describe('Image cropper', () => {
   let onImageSizeSpy;
 
   const createComponent = (props = {}) => {
-    onDragStartedSpy = sinon.spy();
-    onImageSizeSpy = sinon.spy();
+    onDragStartedSpy = jest.fn();
+    onImageSizeSpy = jest.fn();
     const allProps: ImageCropperProp = {
       imageSource,
       scale,
@@ -48,30 +46,30 @@ describe('Image cropper', () => {
 
     describe('image tag', () => {
       it('should have defined source', () => {
-        expect(img.props().src).to.equal(imageSource);
+        expect(img.props().src).toBe(imageSource);
       });
 
       it('should have defined position', () => {
-        expect(img.props().style.top).to.equal(`${top}px`);
-        expect(img.props().style.left).to.equal(`${left}px`);
+        expect(img.props().style.top).toBe(`${top}px`);
+        expect(img.props().style.left).toBe(`${left}px`);
       });
 
       it('should have scaled width', () => {
-        expect(img.props().style.width).to.equal(`${imageWidth * scale}px`);
+        expect(img.props().style.width).toBe(`${imageWidth * scale}px`);
       });
     });
 
     describe('container', () => {
       it('should have defined size', () => {
-        expect(container.props().style.height).to.equal(`${containerSize}px`);
-        expect(container.props().style.width).to.equal(`${containerSize}px`);
+        expect(container.props().style.height).toBe(`${containerSize}px`);
+        expect(container.props().style.width).toBe(`${containerSize}px`);
       });
     });
 
     it('should call onDragging callback', () => {
       dragOverlay.simulate('mousedown');
-      expect(onDragStartedSpy.calledOnce).to.equal(true);
-      expect(onDragStartedSpy.getCall(0).args.length).to.equal(0);
+      expect(onDragStartedSpy).toHaveBeenCalledTimes(1);
+      expect(onDragStartedSpy.mock.calls[0]).toHaveLength(0);
     });
   });
 
@@ -83,8 +81,8 @@ describe('Image cropper', () => {
 
     it('should call onImageSize when image is loaded', () => {
       img.simulate('load', {target: {naturalWidth: imageWidth, naturalHeight: imageHeight}});
-      expect(onImageSizeSpy.calledOnce).to.equal(true);
-      expect(onImageSizeSpy.calledWith(imageWidth, imageHeight)).to.equal(true);
+      expect(onImageSizeSpy).toHaveBeenCalledTimes(1);
+      expect(onImageSizeSpy).toHaveBeenCalledWith(imageWidth, imageHeight);
     });
   });
 });

@@ -10,8 +10,8 @@ import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder
 import ResourcedEmoji from '../../../../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../../../../src/api/EmojiResource';
 
-import { MockEmojiResourceConfig } from '../../_MockEmojiResource';
-import { evilburnsEmoji, grinEmoji, getEmojiResourcePromise } from '../../_TestData';
+import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
+import { evilburnsEmoji, grinEmoji, getEmojiResourcePromise } from '../../../../src/support/test-data';
 
 const findEmoji = component => component.find(Emoji);
 const emojiVisible = (component) => findEmoji(component).length === 1;

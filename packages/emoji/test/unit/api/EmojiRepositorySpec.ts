@@ -5,7 +5,7 @@ import { EmojiDescription } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
 import EmojiRepository from '../../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, searchableEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../_TestData';
+import { emojis as allEmojis, searchableEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../../../src/support/test-data';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);

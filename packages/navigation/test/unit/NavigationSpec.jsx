@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import Navigation from '../../src/components/js/Navigation';
@@ -69,8 +68,8 @@ describe('<Navigation />', () => {
     const getSpacerWidth = wrapper => wrapper.find('Spacer').first().props().width;
 
     it('should not allow resizing if not resizable', () => {
-      const onResizeStart = sinon.stub();
-      const onResize = sinon.stub();
+      const onResizeStart = jest.fn();
+      const onResize = jest.fn();
       const wrapper = shallow(
         <Navigation
           isOpen
@@ -85,12 +84,12 @@ describe('<Navigation />', () => {
     });
 
     it('should call onResizeStart when the resizer starts resizing', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const wrapper = shallow(<Navigation onResizeStart={stub} />);
 
       wrapper.find('Resizer').simulate('resizeStart');
 
-      expect(stub.called).toBe(true);
+      expect(stub).toHaveBeenCalled();
     });
 
     it('should render a Spacer that has the width of the current container', () => {
@@ -103,12 +102,12 @@ describe('<Navigation />', () => {
     });
 
     it('should call onResize when a resize finishes', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const wrapper = shallow(<Navigation isOpen onResize={stub} />);
 
       wrapper.find('Resizer').simulate('resizeEnd');
 
-      expect(stub.called).toBe(true);
+      expect(stub).toHaveBeenCalled();
     });
 
     it('should never have a width less than the GlobalNavigation', () => {
@@ -144,7 +143,7 @@ describe('<Navigation />', () => {
 
       describe('starting open', () => {
         it('should snap closed if moving beyond the resize breakpoint', () => {
-          const stub = sinon.stub();
+          const stub = jest.fn();
           const wrapper = shallow(<Navigation isOpen onResize={stub} />);
           const diff = standardOpenWidth - resizeClosedBreakpoint;
           // moving to the left beyond the resize breakpoint
@@ -152,14 +151,14 @@ describe('<Navigation />', () => {
 
           resize(wrapper, resizeTo);
 
-          expect(stub.calledWith({
+          expect(stub).toHaveBeenCalledWith({
             width: globalOpenWidth,
             isOpen: false,
-          })).toBe(true);
+          });
         });
 
         it('should snap open if closing but did not move past the resize breakpoint', () => {
-          const stub = sinon.stub();
+          const stub = jest.fn();
           const wrapper = shallow(<Navigation isOpen onResize={stub} />);
           const diff = standardOpenWidth - resizeClosedBreakpoint;
           // moving to the left but not enough
@@ -167,30 +166,30 @@ describe('<Navigation />', () => {
 
           resize(wrapper, resizeTo);
 
-          expect(stub.calledWith({
+          expect(stub).toHaveBeenCalledWith({
             width: standardOpenWidth,
             isOpen: true,
-          })).toBe(true);
+          });
         });
       });
 
       describe('starting closed', () => {
         it('should snap closed if opening but did not move beyond the resize breakpoint', () => {
-          const stub = sinon.stub();
+          const stub = jest.fn();
           const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
           // moving to the right but not beyond the resize breakpoint
           const resizeTo = globalOpenWidth + 1;
 
           resize(wrapper, resizeTo);
 
-          expect(stub.calledWith({
+          expect(stub).toHaveBeenCalledWith({
             width: globalOpenWidth,
             isOpen: false,
-          })).toBe(true);
+          });
         });
 
         it('should snap open if expanding beyond the resize breakpoint', () => {
-          const stub = sinon.stub();
+          const stub = jest.fn();
           const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
           const diff = resizeClosedBreakpoint - globalOpenWidth;
           // moving to the right beyond the resize breakpoint
@@ -198,10 +197,10 @@ describe('<Navigation />', () => {
 
           resize(wrapper, resizeTo);
 
-          expect(stub.calledWith({
+          expect(stub).toHaveBeenCalledWith({
             width: standardOpenWidth,
             isOpen: true,
-          })).toBe(true);
+          });
         });
       });
 
@@ -310,12 +309,12 @@ describe('<Navigation />', () => {
     let warnStub;
 
     beforeEach(() => {
-      warnStub = sinon.stub(console, 'warn');
+      warnStub = jest.spyOn(console, 'warn');
       wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
     });
 
     afterEach(() => {
-      warnStub.restore();
+      warnStub.mockRestore();
       wrapper.unmount();
     });
 
@@ -338,21 +337,21 @@ describe('<Navigation />', () => {
     });
 
     it('should log a warning on mount', () => {
-      expect(warnStub.called).toBe(true);
+      expect(warnStub).toHaveBeenCalled();
     });
 
     it('should log a warning on update', () => {
-      warnStub.reset();
+      warnStub.mockClear();
       const customWrapper = shallow(<Navigation isOpen />);
 
-      expect(warnStub.callCount).toBe(0);
+      expect(warnStub).toHaveBeenCalledTimes(0);
 
       customWrapper.setProps({
         isOpen: false,
         isCollapsible: false,
       });
 
-      expect(warnStub.callCount).toBe(1);
+      expect(warnStub).toHaveBeenCalledTimes(1);
     });
   });
 

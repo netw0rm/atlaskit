@@ -3,7 +3,7 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 
-import mentionData, { mentionDataSize } from '../_mention-data';
+import mentionData, { mentionDataSize } from '../../../src/support/mention-data';
 import MentionList, { Props, State } from '../../../src/components/MentionList';
 import MentionItem from '../../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_ak-selectors';

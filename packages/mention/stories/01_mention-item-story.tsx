@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import MentionItem from '../src/components/MentionItem';
-import { sampleAvatarUrl as avatarUrl } from './story-data';
+import { sampleAvatarUrl as avatarUrl } from '../src/support/story-data';
 
 function renderSingleMention(mention) {
   return (

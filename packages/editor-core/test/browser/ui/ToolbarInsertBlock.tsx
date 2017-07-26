@@ -22,8 +22,6 @@ const mediaProvider: Promise<MediaProvider> = Promise.resolve({
 const providerFactory = new ProviderFactory();
 providerFactory.setProvider('mediaProvider', mediaProvider);
 
-const noop = () => {};
-
 describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   const blockTypePluginsSet = blockTypePlugins(defaultSchema);
   const tablePluginsSet = tablePlugins();
@@ -44,8 +42,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
         isDisabled={true}
       />
     );
@@ -57,8 +53,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     expect(toolbarOption.html()).to.equal(null);
@@ -70,8 +64,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -84,8 +76,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -98,8 +88,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -112,8 +100,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -133,8 +119,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -154,8 +138,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -175,8 +157,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -196,8 +176,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -218,8 +196,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
@@ -236,8 +212,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       <ToolbarInsertBlock
         pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
         editorView={editorView}
-        focusEditor={noop}
-        softBlurEditor={noop}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');

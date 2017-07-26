@@ -1,5 +1,5 @@
 import { MediaApiToken } from '../../types';
-import { requestService, ServiceConfig } from '../SharedResourceUtils';
+import { ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
 // expire 30 seconds early to factor in latency, slow services, etc
 export const expireAdjustment = 30;
@@ -51,7 +51,7 @@ export default class TokenManager {
     const path = `token/${type}`;
 
     // request a new token and track the promise for future requests until completed
-    tokenDetail.activeTokenRefresh = requestService<MediaApiToken>(this.siteServiceConfig, { path }).then(mediaApiToken => {
+    tokenDetail.activeTokenRefresh = serviceUtils.requestService<MediaApiToken>(this.siteServiceConfig, { path }).then(mediaApiToken => {
       tokenDetail.activeTokenRefresh = undefined;
       tokenDetail.mediaApiToken = mediaApiToken;
       return mediaApiToken;

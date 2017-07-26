@@ -47,7 +47,7 @@ describe('TableFloatingControls', () => {
       const floatingControls = shallow(
         <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
-      floatingControls.setState({ tableElement: document.createElement('table') });
+      floatingControls.setState({ tableElement: document.createElement('table'), tableActive: true });
       expect(floatingControls.find(CornerControls)).to.have.length(1);
       expect(floatingControls.find(ColumnControls)).to.have.length(1);
       expect(floatingControls.find(RowControls)).to.have.length(1);

@@ -5,7 +5,6 @@ import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import Tooltip from '@atlaskit/tooltip';
-import sinon from 'sinon';
 
 import { name } from '../../package.json';
 
@@ -199,7 +198,7 @@ describe(name, () => {
           { content: 'item 1', type: 'checkbox' },
         ],
       }];
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <Menu items={items} defaultOpen onItemActivated={spy}>
           Test
@@ -207,10 +206,10 @@ describe(name, () => {
       );
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
-      expect(spy.calledOnce).toBe(true);
-      expect(spy.calledWith(sinon.match({
-        item: sinon.match({ content: 'item 1', type: 'checkbox' }),
-      }))).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toMatchObject({
+        item: { content: 'item 1', type: 'checkbox' },
+      });
     });
 
     it('should pass the item when activated', () => {

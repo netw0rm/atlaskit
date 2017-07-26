@@ -1,16 +1,15 @@
-import sinon from 'sinon';
 import { afterMutations } from '../../src';
 
 // eslint-disable-next-line jest/no-disabled-tests
 describe.skip('afterMutations', () => {
   it('should respond to prop changes', (done) => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     afterMutations(
       spy,
       spy,
       spy,
       () => {
-        expect(spy.callCount).toBe(3);
+        expect(spy).toHaveBeenCalledTimes(3);
         done();
       });
   });

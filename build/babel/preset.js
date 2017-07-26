@@ -1,9 +1,14 @@
+const modifyBabelPreset = require('modify-babel-preset');
+
 module.exports = function atlaskit(context, opts = {}) {
-  const modules = opts.modules !== undefined ? opts.modules : 'commonjs';
+  const modules = opts.modules !== undefined ? opts.modules : true;
 
   return {
     presets: [
-      ['es2015', { modules }],
+      modifyBabelPreset('es2015', {
+        'transform-es2015-classes': { loose: true },
+        'transform-es2015-modules-commonjs': modules,
+      }),
       'react',
       'stage-0',
       'flow',

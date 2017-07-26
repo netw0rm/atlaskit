@@ -1,7 +1,7 @@
 # @atlaskit/editor-core
 
 ## Unreleased
-
+* New insert-block menu (ED-2059)
 * fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
 * Add border-top also to the editor when it reached max-height.
 

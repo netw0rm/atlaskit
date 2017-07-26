@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import { LazyContent } from '../../../src/utils';
 import { LazyLoadCard } from '../../../src/root/card/styled';
@@ -31,8 +30,8 @@ describe('LazyContent', () => {
 
     lazyContent.setState({isVisible: false});
 
-    expect(lazyContent.find(Placeholder)).to.have.length(1);
-    expect(lazyContent.find(LazyLoadCard)).to.have.length(1);
+    expect(lazyContent.find(Placeholder)).toHaveLength(1);
+    expect(lazyContent.find(LazyLoadCard)).toHaveLength(1);
   });
 
   it('should not render the content if its not in the viewport', () => {
@@ -43,7 +42,7 @@ describe('LazyContent', () => {
     );
 
     lazyContent.setState({isVisible: false});
-    expect(lazyContent.find(Content)).to.have.length(0);
+    expect(lazyContent.find(Content)).toHaveLength(0);
   });
 
 
@@ -55,7 +54,7 @@ describe('LazyContent', () => {
     );
 
     lazyContent.setState({isVisible: true});
-    expect(lazyContent.find(Placeholder)).to.have.length(0);
-    expect(lazyContent.find(Content)).to.have.length(1);
+    expect(lazyContent.find(Placeholder)).toHaveLength(0);
+    expect(lazyContent.find(Content)).toHaveLength(1);
   });
 });

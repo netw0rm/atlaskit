@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {expect} from 'chai';
 import {CONTAINER_SIZE, ImageNavigator} from '../../../src/image-navigator';
 import {ImageUploader} from '../../../src/image-navigator/styled';
 import {ImageCropper} from '../../../src/image-cropper';
@@ -20,11 +19,11 @@ describe('Image navigator', () => {
   });
 
   it('should have image cropper', () => {
-    expect(imageCropper.length).to.equal(1);
+    expect(imageCropper.length).toBe(1);
   });
 
   it('should have slider', () => {
-    expect(slider.length).to.equal(1);
+    expect(slider.length).toBe(1);
   });
 
   describe('when landscape image is loaded', () => {
@@ -35,20 +34,20 @@ describe('Image navigator', () => {
     });
 
     it('should have image width set', () => {
-      expect(imageCropper.props().imageWidth).to.equal(imageWidth);
+      expect(imageCropper.props().imageWidth).toBe(imageWidth);
     });
 
     it('should have slider value set', () => {
-      expect(slider.props().value).to.equal(50);
+      expect(slider.props().value).toBe(50);
     });
 
     it('should have image scale set', () => {
-      expect(imageCropper.props().scale).to.equal(0.5);
+      expect(imageCropper.props().scale).toBe(0.5);
     });
 
     it('should have min scale set to minimum allowed', () => {
       const expectedMinScale = (CONTAINER_SIZE / 2) / Math.max(imageWidth, imageHeight);
-      expect(slider.props().min).to.equal(expectedMinScale * 100);
+      expect(slider.props().min).toBe(expectedMinScale * 100);
     });
   });
 
@@ -60,7 +59,7 @@ describe('Image navigator', () => {
     });
 
     it('should have image scale set', () => {
-      expect(imageCropper.props().scale).to.equal(0.5);
+      expect(imageCropper.props().scale).toBe(0.5);
     });
   });
 
@@ -73,24 +72,24 @@ describe('Image navigator', () => {
     });
 
     it('should have image scale maxed at 1', () => {
-      expect(imageCropper.props().scale).to.equal(1);
+      expect(imageCropper.props().scale).toBe(1);
     });
   });
 
   it('should change scale in state when slider is moved', () => {
     slider.props().onChange(20);
-    expect(component.state().scale).to.equal(0.2);
+    expect(component.state().scale).toBe(0.2);
   });
 
   it('should mark state as is dragging when mouse pressed down', () => {
     imageCropper.props().onDragStarted();
-    expect(component.state().isDragging).to.equal(true);
+    expect(component.state().isDragging).toBe(true);
   });
 
   it('should mark state as is not dragging when mouse unpressed', () => {
     imageCropper.props().onDragStarted();
     document.dispatchEvent(createMouseEvent('mouseup'));
-    expect(component.state().isDragging).to.equal(false);
+    expect(component.state().isDragging).toBe(false);
   });
 
   describe('when image is dragged', () => {
@@ -99,16 +98,16 @@ describe('Image navigator', () => {
 
       imageCropper.props().onDragStarted();
       document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
-      expect(component.state().cursorInitPos).to.deep.equal({x: 20, y: 30});
-      expect(component.state().imagePos).to.deep.equal({x: imageInitPos.x, y: imageInitPos.y});
+      expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
+      expect(component.state().imagePos).toEqual({x: imageInitPos.x, y: imageInitPos.y});
 
       document.dispatchEvent(createMouseEvent('mousemove', {screenX: 50, screenY: 70}));
-      expect(component.state().cursorInitPos).to.deep.equal({x: 20, y: 30});
-      expect(component.state().imagePos).to.deep.equal({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
+      expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
+      expect(component.state().imagePos).toEqual({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
 
       document.dispatchEvent(createMouseEvent('mouseup'));
-      expect(component.state().cursorInitPos).to.equal(undefined);
-      expect(component.state().imageInitPos).to.deep.equal({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
+      expect(component.state().cursorInitPos).toBe(undefined);
+      expect(component.state().imageInitPos).toEqual({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
     });
 
   });
@@ -116,7 +115,7 @@ describe('Image navigator', () => {
     it('should render ImageUploader to allow users to pick an image', () => {
       const component = mount(<ImageNavigator />);
 
-      expect(component.find(ImageUploader)).to.have.length(1);
+      expect(component.find(ImageUploader)).toHaveLength(1);
     });
   });
 });

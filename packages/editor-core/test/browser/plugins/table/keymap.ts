@@ -83,7 +83,7 @@ describe('table keymap', () => {
       });
     });
 
-    context('Shift-Alt-t keypress', () => {
+    context('Shift-Alt-T keypress', () => {
       it('it should insert 3x3 table', () => {
         const tableNode = table(
           tr(thEmpty, thEmpty, thEmpty ),
@@ -91,7 +91,7 @@ describe('table keymap', () => {
           tr(tdEmpty, tdEmpty, tdEmpty )
         );
         const { editorView } = editor(doc(p('{<>}')));
-        sendKeyToPm(editorView, 'Shift-Alt-t');
+        sendKeyToPm(editorView, 'Shift-Alt-T');
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });
     });

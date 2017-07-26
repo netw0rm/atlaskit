@@ -1,13 +1,7 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
-import {expect} from 'chai';
-import * as sinon from 'sinon';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import {MediaItem, MediaItemProvider} from '../../src';
 import {ContextFactory} from '../../src/context/context';
-
-let sandbox;
 
 const tokenProvider = function () {
   return Promise.resolve('some-token-that-does-not-really-matter-in-this-tests');
@@ -24,21 +18,12 @@ const createFakeContext = () => {
 describe('Context', () => {
 
   describe('.getMediaItemProvider()', () => {
-
-    beforeEach(() => {
-      sandbox = sinon.sandbox.create();
-    });
-
-    afterEach(() => {
-      sandbox.restore();
-    });
-
     it('should return different mediaItemProviders for different fileIds', () => {
       const fileId = 'some-id';
       const fileId2 = 'some-other-id';
       const context = createFakeContext();
       const mediaItemProvider = context.getMediaItemProvider(fileId, 'file');
-      expect(mediaItemProvider).to.not.equal(context.getMediaItemProvider(fileId2, 'file'));
+      expect(mediaItemProvider).not.toBe(context.getMediaItemProvider(fileId2, 'file'));
     });
 
     it('should return media item when a link media item is passed in', done => {
@@ -61,7 +46,7 @@ describe('Context', () => {
           actualMediaItem = mediaItem;
         },
         complete() {
-          expect(actualMediaItem).to.be.equal(expectedMediaItem);
+          expect(actualMediaItem).toBe(expectedMediaItem);
           done();
         },
         error(error) {
@@ -87,7 +72,7 @@ describe('Context', () => {
           actualMediaItem = mediaItem;
         },
         complete() {
-          expect(actualMediaItem).to.be.equal(expectedMediaItem);
+          expect(actualMediaItem).toBe(expectedMediaItem);
           done();
         },
         error(error) {
@@ -113,11 +98,11 @@ describe('Context', () => {
         }
       };
 
-      const fromPool = sandbox.stub(MediaItemProvider, 'fromPool').returns({
+      const fromPool = jest.spyOn(MediaItemProvider, 'fromPool').mockImplementation(() => ({
         observable() {
           return Observable.of(secondExpectedMediaItem);
         }
-      });
+      }));
 
       const context = createFakeContext();
       const provider = context.getMediaItemProvider('some-id', 'link', undefined, firstExpectedMediaItem);
@@ -127,10 +112,10 @@ describe('Context', () => {
           actualMediaItems.push(mediaItem);
         },
         complete() {
-          expect(fromPool.calledOnce).to.be.true;
-          expect(actualMediaItems).to.be.an('array').to.be.length(2);
-          expect(actualMediaItems[0]).to.be.equal(firstExpectedMediaItem);
-          expect(actualMediaItems[1]).to.be.equal(secondExpectedMediaItem);
+          expect(fromPool).toHaveBeenCalledTimes(1);
+          expect(actualMediaItems).toHaveLength(2);
+          expect(actualMediaItems[0]).toBe(firstExpectedMediaItem);
+          expect(actualMediaItems[1]).toBe(secondExpectedMediaItem);
           done();
         },
         error(error) {
@@ -149,11 +134,13 @@ describe('Context', () => {
         }
       };
 
-      const fromPool = sandbox.stub(MediaItemProvider, 'fromPool').returns({
+      const fromPool = jest.spyOn(MediaItemProvider, 'fromPool').mockImplementation(() => ({
         observable() {
           return Observable.of(firstExpectedMediaItem);
         }
-      });
+      }));
+
+      fromPool.mockClear();
 
       const context = createFakeContext();
       const provider = context.getMediaItemProvider('some-id', 'link', undefined);
@@ -163,9 +150,9 @@ describe('Context', () => {
           actualMediaItems.push(mediaItem);
         },
         complete() {
-          expect(fromPool.calledOnce).to.be.true;
-          expect(actualMediaItems).to.be.an('array').to.be.length(1);
-          expect(actualMediaItems[0]).to.be.equal(firstExpectedMediaItem);
+          expect(fromPool).toHaveBeenCalledTimes(1);
+          expect(actualMediaItems).toHaveLength(1);
+          expect(actualMediaItems[0]).toBe(firstExpectedMediaItem);
           done();
         },
         error(error) {

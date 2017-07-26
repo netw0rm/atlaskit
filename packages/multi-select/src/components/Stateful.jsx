@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import uid from 'uid';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';
@@ -89,6 +90,10 @@ export default class MultiSelect extends PureComponent {
     /** Sets whether a new item could be created and added to the list by pressing Enter
      * inside the autocomplete field */
     shouldAllowCreateItem: PropTypes.bool,
+    /**
+     * Icon to display at the right end of the multi-select
+     */
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
@@ -106,6 +111,7 @@ export default class MultiSelect extends PureComponent {
     onSelectedChange: () => {},
     position: 'bottom left',
     shouldAllowCreateItem: false,
+    icon: <ExpandIcon label="" />,
   }
 
   state = {
@@ -186,6 +192,7 @@ export default class MultiSelect extends PureComponent {
       shouldFitContainer,
       shouldFocus,
       shouldFlip,
+      icon,
     } = this.props;
     const { filterValue, isOpen, items, selectedItems } = this.state;
 
@@ -218,6 +225,7 @@ export default class MultiSelect extends PureComponent {
         shouldFitContainer={shouldFitContainer}
         shouldFocus={shouldFocus}
         shouldFlip={shouldFlip}
+        icon={icon}
       />
     );
   }

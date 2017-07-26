@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 
 import Button from '../../src/index';
 
@@ -85,17 +84,17 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should call onClick handler when link is clicked', () => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     const wrapper = mount(<Button href="test" onClick={spy}>button</Button>);
     wrapper.find('a').simulate('click');
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should call onClick handler when button is clicked', () => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     const wrapper = mount(<Button onClick={spy}>button</Button>);
     wrapper.find('button').simulate('click');
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should render tabIndex attribute when the tabIndex property is set', () => {

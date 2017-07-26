@@ -31,7 +31,7 @@ pipelines:
             # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
             # --bail is used to make jest fail fast when it finds a test failure
             - npm run test/unit -- --runInBand --bail
-            - run-p -ln "test" "test/base"
+            - npm run test/base
             - yarn run browserstack/tunnel/start
             - yarn run test/browserstack
             - yarn run browserstack/tunnel/stop
@@ -65,7 +65,7 @@ pipelines:
           # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
           # --bail is used to make jest fail fast when it finds a test failure
           - npm run test/unit -- --runInBand --bail
-          - run-p -ln "test" "test/base"
+          - npm run test/base
           - yarn run browserstack/tunnel/start
           - yarn run test/browserstack
           - yarn run browserstack/tunnel/stop

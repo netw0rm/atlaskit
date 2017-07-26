@@ -1,4 +1,3 @@
-import * as chai from 'chai';
 import * as sinon from 'sinon';
 
 import {MediaUrlPreviewService} from '../../src/services/urlPreviewService';
@@ -7,9 +6,6 @@ import {JwtTokenProvider} from '../../src';
 const serviceHost = 'some-host';
 const token = 'some-token';
 const clientId = 'some-client-id';
-
-const expect = chai.expect;
-const assert = chai.assert;
 
 describe('UrlPreviewService', () => {
   let tokenProvider: JwtTokenProvider;
@@ -29,7 +25,7 @@ describe('UrlPreviewService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = sinon.stub().returns(Promise.resolve(token));
+    tokenProvider = jest.fn(() => Promise.resolve(token));
     urlPreviewService = new MediaUrlPreviewService({serviceHost, tokenProvider});
   });
 
@@ -55,17 +51,17 @@ describe('UrlPreviewService', () => {
 
     const response = urlPreviewService.getUrlPreview('http://atlassian.com', clientId)
       .then(preview => {
-        expect(preview).to.deep.equal(linkPreviewResponse);
+        expect(preview).toEqual(linkPreviewResponse);
       })
       .then(() => {
         // Validate call to token provider with no parameters
-        assert((tokenProvider as any).calledOnce);
+        expect(tokenProvider).toHaveBeenCalledTimes(1);
       })
       .then(() => {
         const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(headers['X-Client-Id']).toBe(clientId);
+        expect(headers['Authorization']).toBe(`Bearer ${token}`);
+        expect(requests[0].url).toBe('some-host/link/preview?url=http:%2F%2Fatlassian.com');
       });
 
     setTimeout(() => {
@@ -86,17 +82,17 @@ describe('UrlPreviewService', () => {
 
     const response = urlPreviewService.getUrlPreview('http://atlassian.com', clientId)
       .catch((actualError) => {
-        expect(actualError.message).to.deep.equal(expectedError);
+        expect(actualError.message).toEqual(expectedError);
       })
       .then(() => {
         // Validate call to token provider with no parameters
-        assert((tokenProvider as any).calledOnce);
+        expect(tokenProvider).toHaveBeenCalledTimes(1);
       })
       .then(() => {
         const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(headers['X-Client-Id']).toBe(clientId);
+        expect(headers['Authorization']).toBe(`Bearer ${token}`);
+        expect(requests[0].url).toBe('some-host/link/preview?url=http:%2F%2Fatlassian.com');
       });
 
     setTimeout(() => {

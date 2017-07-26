@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import NavigationItem from '../../src/components/js/NavigationItem';
 import NavigationItemIcon from '../../src/components/styled/NavigationItemIcon';
 import NavigationItemAfter from '../../src/components/styled/NavigationItemAfter';
@@ -23,28 +22,28 @@ describe('<NavigationItem />', () => {
       expect(mountWithRootTheme(<NavigationItem />).find('a').length).toBe(0);
     });
     it('with an onClick should call the onClick', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onClick={spy} />);
       navigation.find('button').simulate('click');
-      expect(spy.calledOnce).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onMouseEnter should call the onMouseEnter', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onMouseEnter={spy} />);
       navigation.find('button').simulate('mouseenter');
-      expect(spy.calledOnce).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onMouseLeave should call the onMouseLeave', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onMouseLeave={spy} />);
       navigation.find('button').simulate('mouseleave');
-      expect(spy.calledOnce).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onClick and href should render the href on a link, and bind the onClick to it', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem href="foo" onClick={spy} />);
       navigation.find('a').simulate('click');
-      expect(spy.calledOnce).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(navigation.find('a').props().href).toBe('foo');
     });
     it('linkComponent should render a custom link component', () => {
@@ -123,11 +122,11 @@ describe('<NavigationItem />', () => {
   });
   describe('behaviour', () => {
     it('mousedown on the link is prevented', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       mountWithRootTheme(<NavigationItem href="foo" />).find('InteractiveWrapper').simulate('mouseDown', {
         preventDefault: spy,
       });
-      expect(spy.called).toBe(true);
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

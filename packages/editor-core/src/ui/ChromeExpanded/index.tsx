@@ -34,12 +34,12 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarInsertBlock from '../ToolbarInsertBlock';
 import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableFloatingControls from '../TableFloatingControls';
-import ToolbarTable from '../ToolbarTable';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
@@ -181,8 +181,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               isDisabled={disabled}
               pluginState={pluginStateBlockType}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -194,13 +192,18 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTextFormatting ?
+            <ToolbarInlineCode
+              disabled={disabled}
+              editorView={editorView}
+              pluginState={pluginStateTextFormatting}
+            /> : null
+          }
           {pluginStateTextColor ?
             <ToolbarTextColor
               disabled={disabled}
               pluginState={pluginStateTextColor}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -211,17 +214,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginStateTextFormatting={pluginStateTextFormatting}
               pluginStateClearFormatting={pluginStateClearFormatting}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
-            /> : null
-          }
-          {pluginStateTextFormatting ?
-            <ToolbarInlineCode
-              disabled={disabled}
-              editorView={editorView}
-              pluginState={pluginStateTextFormatting}
             /> : null
           }
           {pluginStateHyperlink ?
@@ -231,19 +225,23 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
-          {pluginStateTable ?
-            <ToolbarTable
-              disabled={disabled}
-              pluginState={pluginStateTable}
-              editorView={editorView}
-            /> : null
-          }
           {pluginStateLists ?
             <ToolbarLists
               disabled={disabled}
               pluginState={pluginStateLists}
               editorView={editorView}
             /> : null
+          }
+          {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
+            <ToolbarInsertBlock
+              isDisabled={disabled}
+              pluginStateTable={pluginStateTable}
+              pluginStateMedia={pluginStateMedia}
+              pluginStateBlockType={pluginStateBlockType}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            />
           }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
@@ -338,20 +336,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Footer>
       </Container>
     );
-  }
-
-  /**
-   * Blurs editor but keeps focus on editor container,
-   * so components like inline-edit can check if focus is still inside them
-   */
-  softBlurEditor = () => {
-    if (this.editorContainer) {
-      this.editorContainer.focus();
-    }
-  }
-
-  focusEditor = () => {
-    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {

@@ -313,7 +313,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
             ...emojisPlugins(schema, this.providerFactory),
-            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
+            ...asciiEmojiPlugins(schema, this.providerFactory),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),

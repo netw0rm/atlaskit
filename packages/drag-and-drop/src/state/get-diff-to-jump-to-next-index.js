@@ -1,5 +1,6 @@
 // @flow
 import memoizeOne from 'memoize-one';
+import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import type {
   DraggableLocation,
   DraggableDimension,
@@ -9,7 +10,6 @@ import type {
   Position,
   DraggableId,
 } from '../types';
-import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
 const getIndex = memoizeOne(
   (draggables: DraggableDimension[],

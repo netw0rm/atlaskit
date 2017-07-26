@@ -1,24 +1,35 @@
 // @flow
-import { expect } from 'chai';
 import getDroppableOver from '../../../src/state/get-droppable-over';
-import getDimension from '../../utils/get-dimension-util';
-import type { Dimension, DimensionMap, DroppableId, Position } from '../../../src/types';
+import { getDroppableDimension } from '../../../src/state/dimension';
+import getClientRect from '../../utils/get-client-rect';
+import type {
+  DroppableDimension,
+  DroppableDimensionMap,
+  DroppableId,
+  Position,
+} from '../../../src/types';
 
-const droppable1: Dimension = getDimension({
-  top: 0,
-  left: 0,
-  bottom: 100,
-  right: 100,
+const droppable1: DroppableDimension = getDroppableDimension({
+  id: 'drop-1',
+  clientRect: getClientRect({
+    top: 0,
+    left: 0,
+    bottom: 100,
+    right: 100,
+  }),
 });
 
-const droppable2: Dimension = getDimension({
-  top: 101,
-  left: 0,
-  bottom: 200,
-  right: 100,
+const droppable2: DroppableDimension = getDroppableDimension({
+  id: 'drop-2',
+  clientRect: getClientRect({
+    top: 101,
+    left: 0,
+    bottom: 200,
+    right: 100,
+  }),
 });
 
-const droppableMap: DimensionMap = {
+const droppableMap: DroppableDimensionMap = {
   [droppable1.id]: droppable1,
   [droppable2.id]: droppable2,
 };
@@ -33,7 +44,7 @@ describe('get droppable over', () => {
 
     const result: ?DroppableId = getDroppableOver(target, droppableMap);
 
-    expect(result).to.equal(null);
+    expect(result).toBe(null);
   });
 
   it('should return the droppable dimension that the target is over', () => {
@@ -44,6 +55,6 @@ describe('get droppable over', () => {
 
     const result: ?DroppableId = getDroppableOver(target, droppableMap);
 
-    expect(result).to.equal(droppable1.id);
+    expect(result).toBe(droppable1.id);
   });
 });

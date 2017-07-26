@@ -1,5 +1,4 @@
 // @flow
-import { expect } from 'chai';
 import getDiffToJumpToNextIndex from '../../../src/state/get-diff-to-jump-to-next-index';
 import { getDraggableDimension, getDroppableDimension } from '../../../src/state/dimension';
 import getClientRect from '../../utils/get-client-rect';
@@ -87,7 +86,7 @@ describe('jump to next index', () => {
         droppables,
       });
 
-      expect(point).to.equal(null);
+      expect(point).toBe(null);
     });
 
     describe('is moving toward start position', () => {
@@ -112,7 +111,7 @@ describe('jump to next index', () => {
           droppables,
         });
 
-        expect(result).to.deep.equal(expected);
+        expect(result).toEqual(expected);
       });
     });
 
@@ -137,7 +136,7 @@ describe('jump to next index', () => {
             droppables,
           });
 
-          expect(result).to.deep.equal(expected);
+          expect(result).toEqual(expected);
         });
       });
 
@@ -161,7 +160,7 @@ describe('jump to next index', () => {
             droppables,
           });
 
-          expect(result).to.deep.equal(expected);
+          expect(result).toEqual(expected);
         });
       });
 
@@ -186,7 +185,7 @@ describe('jump to next index', () => {
             droppables,
           });
 
-          expect(result).to.deep.equal(expected);
+          expect(result).toEqual(expected);
         });
       });
     });
@@ -207,7 +206,7 @@ describe('jump to next index', () => {
         droppables,
       });
 
-      expect(point).to.equal(null);
+      expect(point).toBe(null);
     });
 
     describe('is moving toward start position', () => {
@@ -232,7 +231,7 @@ describe('jump to next index', () => {
           droppables,
         });
 
-        expect(point).to.deep.equal(expected);
+        expect(point).toEqual(expected);
       });
     });
 
@@ -256,7 +255,7 @@ describe('jump to next index', () => {
             droppables,
           });
 
-          expect(point).to.deep.equal(expected);
+          expect(point).toEqual(expected);
         });
       });
 
@@ -279,7 +278,7 @@ describe('jump to next index', () => {
             droppables,
           });
 
-          expect(point).to.deep.equal(expected);
+          expect(point).toEqual(expected);
         });
       });
     });

@@ -1,12 +1,13 @@
-const parseCommitMessage = require('./parseCommitMessage');
+const transformCommitMessage = require('./transformCommitMessage');
 const getNextVersion = require('./getNextVersion');
 
-const parseCommitMessages = commits => commits.map(commit => parseCommitMessage(commit)).join('\n');
+const transformCommitMessages = commits => commits.map(commit => transformCommitMessage(commit)).join('\n');
 
-const modifyChangelog = (version, type, oldChangelog) => {
-  const nextVersion = getNextVersion(version, type.type);
-  const releaseMessages = parseCommitMessages(type.commits);
-  const changes = `\n\n## ${nextVersion} (${new Date().toISOString().slice(0, 10)})\n\n${releaseMessages}`;
+// Called per changelog with the old and new information
+const modifyChangelog = (currentVersion, releaseDetails, oldChangelog) => {
+  const nextVersion = getNextVersion(currentVersion, releaseDetails.type);
+  const transformedCommitMessages = transformCommitMessages(releaseDetails.commits);
+  const changes = `\n\n## ${nextVersion} (${new Date().toISOString().slice(0, 10)})\n\n${transformedCommitMessages}`;
   return oldChangelog.replace('\n', changes).replace('\n## Unreleased', '');
 };
 

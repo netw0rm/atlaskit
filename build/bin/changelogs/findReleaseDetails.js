@@ -29,7 +29,7 @@ const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
     ));
   }).catch((e) => {
     if (e.code === 'ENOCHANGE') return null;
-    console.log('ERROR ERROR ERROR', e);
+    console.error('Unexpected Error getting package details', e);
     throw e;
   });
 };

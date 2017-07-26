@@ -5,10 +5,7 @@ const getChangeType = (text) => {
   return null;
 };
 
-// This should absolutely append the commit has btw
-
-// All the splitting text we are doing is busywork from setup
-const parseCommitMessage = (commit) => {
+const transformCommitMessage = (commit) => {
   // Only changes that cause releases will be added to changelog
   const changeType = getChangeType(commit.message);
   if (!changeType) return null;
@@ -17,8 +14,8 @@ const parseCommitMessage = (commit) => {
   // We know that the array will need at least three items, so we escape if this
   // expectation is not met. The third line is always the affected packages.
   if (!parts[2]) return null;
-  // Breaking changes are denoted by a line of "BREAKING CHANGE:" then the actual change on the next
-  // lines.
+  // Breaking changes are denoted by a line of "BREAKING CHANGE:" then the actual
+  // change on the next lines.
   const breakingIndex = parts.indexOf('BREAKING CHANGE:');
 
   const issuesClosed = parts.find(e => e.includes('ISSUES CLOSED: '))
@@ -34,4 +31,4 @@ const parseCommitMessage = (commit) => {
   return breakingChange ? `${breakingChange}\n${change}` : change;
 };
 
-module.exports = parseCommitMessage;
+module.exports = transformCommitMessage;

@@ -1,5 +1,12 @@
 # @atlaskit/util-cz-atlaskit-changelog
 
+## 1.3.0 (2017-07-26)
+
+* feature; re-add changelog process under new idea ([8a500b8](https://bitbucket.org/atlassian/atlaskit/commits/8a500b8))
+* feature; revert util-cz-atlaskit-changelog to 1.1 functionality, move changelog changes to b ([6823984](https://bitbucket.org/atlassian/atlaskit/commits/6823984))
+* feature; changelog writing is now in build process for static changelogs ([3b43dbb](https://bitbucket.org/atlassian/atlaskit/commits/3b43dbb))
+* feature; move changelog updating to pre-deploy ([1caa752](https://bitbucket.org/atlassian/atlaskit/commits/1caa752))
+
 ## 1.2.0 (2017-07-13)
 
 

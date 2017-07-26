@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import { themeValue } from '../../../theme/src';
+import { theme, themeValue } from '../../../theme/src';
 
 export const Heading = styled.h1`
-  font-size: ${akGridSizeUnitless * 4}px;
+  font-size: ${p => theme(p).base.gridSize * 4}px;
   font-weight: 500;
 
   /* override css reset */
@@ -15,14 +14,14 @@ export const Heading = styled.h1`
   @media (min-width: 600px) {
     &,
     &:first-child {
-      margin-top: ${akGridSizeUnitless * 6}px;
+      margin-top: ${p => theme(p).base.gridSize * 6}px;
     }
   }
 `;
 
 export const Intro = styled.p`
   color: ${themeValue('colors.heading')};
-  font-size: ${akGridSizeUnitless * 2}px;
+  font-size: ${p => theme(p).base.gridSize * 2}px;
   font-weight: 300;
   line-height: 1.4em;
 `;

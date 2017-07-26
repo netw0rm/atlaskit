@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { akColorN80, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { theme, themeValue } from '../../../../theme/src';
 
 const MetaItem = ({ href, label, summary }) => (
   <DI>
@@ -77,12 +77,12 @@ const Meta = styled.section`
   flex-wrap: wrap;
   margin-left: -0.5em;
   margin-right: -0.5em;
-  padding-bottom: ${akGridSizeUnitless * 1.5}px;
-  padding-top: ${akGridSizeUnitless * 1.5}px;
+  padding-bottom: ${p => theme(p).base.gridSize * 1.5}px;
+  padding-top: ${p => theme(p).base.gridSize * 1.5}px;
 
   @media (min-width: 780px) {
-    padding-bottom: ${akGridSizeUnitless * 3}px;
-    padding-top: ${akGridSizeUnitless * 3}px;
+    padding-bottom: ${p => theme(p).base.gridSize * 3}px;
+    padding-top: ${p => theme(p).base.gridSize * 3}px;
   }
 `;
 const DI = styled.div`
@@ -100,7 +100,7 @@ const DI = styled.div`
   }
 `;
 const DT = styled.div`
-  color: ${akColorN80};
+  color: ${themeValue('colors.subtleText')};
   flex-basis: 25%;
 `;
 const DD = styled.div`

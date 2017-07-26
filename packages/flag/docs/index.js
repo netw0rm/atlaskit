@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { theme } from '../../theme/src';
 
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';
@@ -12,12 +13,16 @@ import FlagGroupExample from './FlagGroupExample';
 import flagGroupExampleSource from '!raw-loader!./FlagGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const Usage = styled.pre`
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  margin: 14px 0;
-  padding: 8px;
-`;
+const CodeBlock = styled.pre`${props => {
+  const { base: { borderRadius, gridSize }, colors, mode } = theme(props);
+
+  return css`
+    background-color: ${mode === 'dark' ? colors.DN50 : colors.N20};
+    border-radius: ${borderRadius}px;
+    margin: ${gridSize * 2}px 0;
+    padding: ${gridSize}px;
+  `;
+}}`;
 
 export const description = (
   <div>
@@ -26,9 +31,9 @@ export const description = (
       The <code>Flag</code> component applies styling, while <code>FlagGroup</code> animates
       the loading and unloading of flags.
     </p>
-    <Usage>
+    <CodeBlock>
       {'import Flag, { FlagGroup } from @atlaskit/flag'}
-    </Usage>
+    </CodeBlock>
   </div>
 );
 

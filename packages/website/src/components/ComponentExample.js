@@ -6,17 +6,8 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 import 'prismjs/themes/prism-tomorrow.css';
-import {
-  akColorN20,
-  akColorN30,
-  akColorN60,
-  akColorN600,
-  akColorN700,
-  akColorN800,
-  akGridSize,
-} from '@atlaskit/util-shared-styles';
 
-import { themeValue } from '../../../theme/src';
+import { theme, themeValue } from '../../../theme/src';
 
 const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
 
@@ -24,12 +15,13 @@ export const ExampleSource = ({
   isSourceClosing = false,
   handleAnimationEnd = () => {},
   src,
-}) =>
+}) => (
   <Code closing={isSourceClosing} onAnimationEnd={handleAnimationEnd}>
     <pre>
       <code dangerouslySetInnerHTML={{ __html: formatSrc(src) }} />
     </pre>
-  </Code>;
+  </Code>
+);
 
 export default class Example extends PureComponent {
   state = {
@@ -67,14 +59,17 @@ export default class Example extends PureComponent {
       ? 'Hide Code Snippet'
       : 'Show Code Snippet';
 
+    const state = isHover ? 'hover' : 'normal';
+    const mode = isSourceVisible ? 'open' : 'normal';
+
     return (
-      <Wrapper hover={isHover} open={isSourceVisible}>
+      <Wrapper state={state} mode={mode}>
         <Toggle
           onClick={this.toggleSource}
           onMouseOver={() => this.setState({ isHover: true })}
           onMouseOut={() => this.setState({ isHover: false })}
           title={toggleLabel}
-          open={isSourceVisible}
+          mode={mode}
         >
           <ToggleTitle>
             {title}
@@ -99,31 +94,21 @@ export default class Example extends PureComponent {
 
 const TRANSITION_DURATION = '200ms';
 
-const getWrapperBg = props => {
-  let color = akColorN20;
-
-  if (props.open && props.hover) color = akColorN700;
-  else if (props.open) color = akColorN600;
-  else if (props.hover) color = akColorN30;
-
-  return color;
-};
-
 const Wrapper = styled.div`
-  background-color: ${getWrapperBg};
+  background-color: ${p => theme(p).website.example.wrapper.background[p.mode][p.state]};
   border-radius: 5px;
+  color: ${p => theme(p).website.example.toggle[p.mode]};
   margin-top: 20px;
-  padding: 0 ${akGridSize} ${akGridSize};
+  padding: 0 ${p => theme(p).base.gridSize}px ${p => theme(p).base.gridSize}px;
   transition: background-color ${TRANSITION_DURATION};
 `;
 
 const Toggle = styled.div`
   align-items: center;
-  color: ${props => (props.open ? 'white' : akColorN600)};
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  padding: ${akGridSize};
+  padding: ${p => theme(p).base.gridSize}px;
   transition: color ${TRANSITION_DURATION}, fill ${TRANSITION_DURATION};
 `;
 const ToggleTitle = styled.h4`
@@ -142,13 +127,13 @@ const animOut = keyframes`
 const Code = styled.div`
   animation: ${props => (props.closing ? animOut : animIn)}
     ${TRANSITION_DURATION} ease-out;
-  background-color: ${akColorN800};
+  background-color: ${themeValue('website.example.code.background')};
   border-radius: 3px;
-  color: ${akColorN60};
+  color: ${themeValue('website.example.code.text')};
   display: block;
-  margin: 0 0 ${akGridSize};
+  margin: 0 0 ${p => theme(p).base.gridSize}px;
   overflow-x: auto;
-  padding: ${akGridSize};
+  padding: ${p => theme(p).base.gridSize}px;
 
   & code {
     font-family: Monaco, Menlo, monospace;
@@ -160,5 +145,5 @@ const Showcase = styled.div`
   background-color: ${themeValue('colors.background')};
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-  padding: ${akGridSize};
+  padding: ${p => theme(p).base.gridSize}px;
 `;

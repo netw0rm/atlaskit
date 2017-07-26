@@ -15,8 +15,10 @@ import {
   akColorN30,
   akColorN100,
 } from '@atlaskit/util-shared-styles';
+import LightbulbIcon from '@atlaskit/icon/glyph/lightbulb';
+import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { AtlasKitThemeProvider, theme } from '../../../../theme/src';
+import { AtlasKitThemeProvider, theme, themeValue } from '../../../../theme/src';
 
 import { MOBILE_QUERY } from '../../../constants';
 
@@ -147,8 +149,11 @@ export default class App extends PureComponent {
             <Media query={MOBILE_QUERY}>
               {matches => (matches ? <MobileView /> : <DesktopView />)}
             </Media>
-            <SwitchThemeButton onClick={this.switchTheme}>
-              Switch Theme ({themeMode})
+            <SwitchThemeButton onClick={this.switchTheme} mode={themeMode} title={`Theme: "${themeMode}"`}>
+              {themeMode === 'dark'
+                ? <LightbulbIcon label="Light off" />
+                : <LightbulbFilledIcon label="Light on" />
+              }
             </SwitchThemeButton>
           </ScrollToTop>
         </AtlasKitThemeProvider>
@@ -158,10 +163,33 @@ export default class App extends PureComponent {
 }
 
 const SwitchThemeButton = styled.button`
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  background-color: ${themeValue('colors.text')};
+  border-radius: ${themeValue('base.borderRadius')}px;
+  border: 0;
+  color: ${p => (p.mode === 'dark'
+    ? theme(p).colors.N800
+    : theme(p).colors.DN600
+  )};
+  cursor: pointer;
+  height: 3.4em;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  transition: box-shadow 200ms ease-out;
+  width: 4em;
   z-index: 1000;
+
+  &:focus {
+    box-shadow:
+      0 0 0 1px ${themeValue('colors.background')},
+      0 0 0 3px ${p => (p.mode === 'dark'
+        ? theme(p).colors.link
+        : theme(p).colors.B100
+      )};
+  }
 `;
 
 const FooterContainer = styled.div`

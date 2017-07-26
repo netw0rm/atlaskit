@@ -5,18 +5,14 @@ import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import LayoutFork from 'react-media';
+
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
-import {
-  akBorderRadius,
-  akColorN20,
-  akColorPrimary1,
-  akColorPrimary2,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 
-import LayoutFork from 'react-media';
+import { theme, themeValue } from '../../../../theme/src';
+
 import { MOBILE_QUERY, NO_FOOTER_COMPONENT } from '../../../constants';
 
 import { getStorybookURL } from '../../utils';
@@ -197,10 +193,10 @@ export const StandardComponent = ({ match }) => (
 
 // Header
 const Title = styled.header`
-  padding-top: ${akGridSizeUnitless * 3}px;
+  padding-top: ${p => theme(p).base.gridSize * 3}px;
 
   @media (min-width: 780px) {
-    padding-top: ${akGridSizeUnitless * 6}px;
+    padding-top: ${p => theme(p).base.gridSize * 6}px;
   }
 `;
 const TitleBar = styled.div`
@@ -209,36 +205,50 @@ const TitleBar = styled.div`
   justify-content: space-between;
 `;
 const Main = styled.main`
-  padding-bottom: ${akGridSizeUnitless * 3}px;
+  padding-bottom: ${p => theme(p).base.gridSize * 3}px;
 `;
 
 // Footer
 const FooterRoot = styled.footer`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  border-radius: ${themeValue('base.borderRadius')}px;
   display: flex;
-  margin-bottom: ${akGridSizeUnitless * 3}px;
+  margin-bottom: ${p => theme(p).base.gridSize * 3}px;
 `;
 const FooterItem = styled(Link)`
+  background-color: ${themeValue('website.footer.background.normal')};
   flex: 1;
-  padding: ${akGridSizeUnitless * 2}px;
+  padding: ${p => theme(p).base.gridSize * 2}px;
   text-decoration: none;
 
+  &:first-child {
+    border-top-left-radius: ${themeValue('base.borderRadius')}px;
+    border-bottom-left-radius: ${themeValue('base.borderRadius')}px;
+  }
+  &:last-child {
+    border-top-right-radius: ${themeValue('base.borderRadius')}px;
+    border-bottom-right-radius: ${themeValue('base.borderRadius')}px;
+  }
+
   &:hover {
+    background-color: ${themeValue('website.footer.background.hover')};
+    position: relative;
     text-decoration: none;
 
     > span {
       text-decoration: underline;
     }
   }
+  &:focus {
+    position: relative;
+  }
 `;
 const FooterItemPlaceholder = styled.span`
   flex: 1;
 `;
 const FooterLabel = styled.h5`
-  color: ${akColorPrimary1}
+  color: ${themeValue('colors.heading')}
   margin-bottom: 1em;
 `;
 const FooterTitle = styled.span`
-  color: ${akColorPrimary2}
+  color: ${themeValue('colors.primary')};
 `;

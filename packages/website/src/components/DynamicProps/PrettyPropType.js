@@ -2,16 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { themeValue } from '../../../../theme/src';
+import { theme, themeValue } from '../../../../theme/src';
 
 const Wrapper = styled.code`
   display: inline-block;
-  background: ${themeValue('colors.background')};
-  color: #333;
-  border-radius: 3px;
-  border-left: 3px solid #eee;
-  padding: 5px 10px;
-  margin-bottom: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: ${themeValue('base.gridSize')}px;
+  margin-top: ${themeValue('base.gridSize')}px;
 `;
 const Block = styled.span`
   display: block;
@@ -21,44 +19,35 @@ const TypeMinWidth = styled.span`
   min-width: 60px;
 `;
 const Type = styled.span`
+  background-color: ${themeValue('dynamicProps.types.base.background')};
+  border-radius: ${themeValue('base.borderRadius')}px;
+  color: ${themeValue('dynamicProps.types.base.text')};
   display: inline-block;
-  border: 1px solid #bedcf7;
-  color: #1c4b75;
-  background: #eff7ff;
-  border-radius: 3px;
-  margin: 0 2px;
-  padding: 0 3px;
-  font-size: 90%;
+  margin: 2px 0;
+  padding: 0 0.2em;
 `;
 const TypeMeta = styled(Type)`
-  border: 1px solid #ddd;
-  color: #666;
-  background: #f3f3f3;
-  margin: 2px;
+  background-color: ${themeValue('dynamicProps.types.meta.background')};
+  color: ${themeValue('dynamicProps.types.meta.text')};
 `;
 const StringType = styled(Type)`
-  color: #30874d;
-  border-color: #ace0be;
-  background: #effff4;
+  background-color: ${themeValue('dynamicProps.types.string.background')};
+  color: ${themeValue('dynamicProps.types.string.text')};
 `;
 const InstanceType = styled(Type)`
-  color: #453087;
-  border-color: #906bba;
-  background: #ede0fc;
+  background-color: ${themeValue('dynamicProps.types.instance.background')};
+  color: ${themeValue('dynamicProps.types.instance.text')};
 `;
 const Required = styled.span`
-  color: #b74242;
+  color: ${themeValue('dynamicProps.types.required')};
 `;
 const Outline = styled.span`
-  color: #666;
-  font-size: 110%;
+  color: ${themeValue('dynamicProps.types.outline')};
   line-height: 1;
-  -webkit-text-stroke: 1px #666;
 `;
 const Invalid = styled.span`
-  color: #999;
-  border: 1px solid #eee;
-  margin: 5px;
+  color: ${themeValue('dynamicProps.types.invalid')};
+  margin: ${p => theme(p).base.gridSize / 2}px;
 `;
 
 const SIMPLE_TYPES = ['array', 'bool', 'func', 'number', 'object', 'string',
@@ -77,7 +66,7 @@ function printComplexType(type) {
 
 function print(type, depth = 1) {
   const Indent = ({ children }) => (
-    <div style={{ paddingLeft: depth * 10 }}>{children}</div>
+    <div style={{ paddingLeft: '1.3em' }}>{children}</div>
   );
   Indent.propTypes = { children: PropTypes.node };
 

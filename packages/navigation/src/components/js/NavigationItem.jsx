@@ -1,18 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
-import DefaultLinkComponent from './DefaultLinkComponent';
-import InteractiveWrapper from './InteractiveWrapper';
+import Item from '@atlaskit/item';
 
-import NavigationItemIcon from '../styled/NavigationItemIcon';
-import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemAction from '../styled/NavigationItemAction';
+import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';
-import NavigationItemText from '../styled/NavigationItemText';
+import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
-import NavigationItemInner from '../styled/NavigationItemInner';
-import NavigationItemMainText from '../styled/NavigationItemMainText';
-import NavigationItemOuter from '../styled/NavigationItemOuter';
-import NavigationItemSubText from '../styled/NavigationItemSubText';
+import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
 import type { ReactElement } from '../../types';
 
 type Props = {|
@@ -28,8 +23,8 @@ type Props = {|
   /** Element displayed to the right of the item. The dropIcon should generally be
   an appropriate @atlaskit icon, such as the ExpandIcon. */
   dropIcon?: ReactElement,
-  /** Set whether to disable the hover styling */
-  isHoverStylesDisabled?: boolean,
+  /** Makes the navigation item appear with reduced padding and font size. */
+  isCompact?: boolean,
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
@@ -49,8 +44,6 @@ type Props = {|
   onMouseLeave?: (e: MouseEvent) => void,
   /** Text to be displayed beneath the main text. */
   subText?: string,
-  /** Tab index of the component */
-  tabIndex?: number,
   /** Main text to be displayed as the item. Accepts a react component but in most
   cases this should just be a string. */
   text: ReactElement,
@@ -60,9 +53,7 @@ type Props = {|
 
 export default class NavigationItem extends PureComponent {
   static defaultProps = {
-    isHoverStylesDisabled: false,
     isSelected: false,
-    linkComponent: DefaultLinkComponent,
     isDropdownTrigger: false,
     onMouseEnter: () => {},
     onMouseLeave: () => {},
@@ -105,6 +96,16 @@ export default class NavigationItem extends PureComponent {
       </NavigationItemAfter>
     ) : null;
 
+    // There are various 'after' elements which are all optional. If any of them are present we
+    // render those inside a shared wrapper.
+    const allAfter = (after || dropIcon || action) ? (
+      <NavigationItemAfterWrapper>
+        {after}
+        {dropIcon}
+        {action}
+      </NavigationItemAfterWrapper>
+    ) : null;
+
     const wrappedCaption = this.props.caption
       ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
       : null;
@@ -114,40 +115,23 @@ export default class NavigationItem extends PureComponent {
       onClick: this.props.onClick,
       onMouseEnter: this.props.onMouseEnter,
       onMouseLeave: this.props.onMouseLeave,
-      tabIndex: this.props.tabIndex,
+      href: this.props.href,
+      linkComponent: this.props.linkComponent,
     };
 
-    if (!this.props.isDropdownTrigger) {
-      interactiveWrapperProps.href = this.props.href;
-      interactiveWrapperProps.linkComponent = this.props.linkComponent;
-    }
-
     return (
-      <NavigationItemOuter
-        isDropdown={this.props.isDropdownTrigger}
-        isHoverStylesEnabled={!this.props.isHoverStylesDisabled}
+      <Item
+        elemBefore={icon}
+        elemAfter={allAfter}
+        description={this.props.subText}
         isSelected={this.props.isSelected}
+        isDropdown={this.props.isDropdownTrigger}
+        isCompact={this.props.isCompact}
+        {...interactiveWrapperProps}
       >
-        <InteractiveWrapper
-          {...interactiveWrapperProps}
-        >
-          <NavigationItemInner>
-            {icon}
-            <NavigationItemText isDropdown={this.props.isDropdownTrigger}>
-              <NavigationItemMainText>
-                {this.props.text}
-                {wrappedCaption}
-              </NavigationItemMainText>
-              <NavigationItemSubText>
-                {this.props.subText}
-              </NavigationItemSubText>
-            </NavigationItemText>
-            {after}
-            {dropIcon}
-            {action}
-          </NavigationItemInner>
-        </InteractiveWrapper>
-      </NavigationItemOuter>
+        {this.props.text}
+        {wrappedCaption}
+      </Item>
     );
   }
 }

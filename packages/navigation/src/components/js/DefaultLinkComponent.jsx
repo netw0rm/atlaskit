@@ -27,6 +27,7 @@ export default class DefaultLinkComponent extends PureComponent {
       onMouseLeave,
       tabIndex,
     } = this.props;
+
     return (href ? (
       <a
         className={className}

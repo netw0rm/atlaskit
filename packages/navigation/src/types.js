@@ -42,10 +42,6 @@ export type RootTheme = {|
   isCollapsed: bool,
 |}
 
-export type GroupTheme = {|
-  isCompact: bool
-|}
-
 export type ReactElement = any;
 
 export type DrawerProps = {

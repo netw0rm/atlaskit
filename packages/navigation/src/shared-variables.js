@@ -103,14 +103,6 @@ export const globalSecondaryActions = (() => {
   };
 })();
 
-export const item = {
-  borderRadius: 3,
-  width: {
-    compact: gridSize * 4.5,
-    standard: gridSize * 5,
-  },
-};
-
 export const search = {
   layout: {
     padding: {

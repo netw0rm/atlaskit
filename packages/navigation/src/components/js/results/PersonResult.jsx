@@ -16,7 +16,6 @@ export default class PersonResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
     href: PropTypes.string,
-    isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     isTabbingDisabled: PropTypes.bool,
     mentionName: PropTypes.string,
@@ -32,7 +31,6 @@ export default class PersonResult extends PureComponent {
   }
 
   static defaultProps = {
-    isHoverStylesDisabled: false,
     isSelected: false,
     isTabbingDisabled: false,
     mentionPrefix: '@',
@@ -57,7 +55,6 @@ export default class PersonResult extends PureComponent {
   render() {
     const {
       href,
-      isHoverStylesDisabled,
       isSelected,
       isTabbingDisabled,
       name,
@@ -73,7 +70,6 @@ export default class PersonResult extends PureComponent {
         caption={this.getMention()}
         href={href}
         icon={this.getAvatar()}
-        isHoverStylesDisabled={isHoverStylesDisabled}
         isSelected={isSelected}
         isTabbingDisabled={isTabbingDisabled}
         onClick={onClick}

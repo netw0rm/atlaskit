@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers';
 import 'rxjs/add/operator/do';
@@ -26,8 +25,8 @@ describe('RemoteMediaCollectionProvider', () => {
     const subscription = collectionProvider.observable()
       .subscribe({
         next: collection => {
-          expect(collection.id).to.be.equal(defaultCollectionName);
-          expect(collection.items).to.be.length(itemsPerPageCount);
+          expect(collection.id).toBe(defaultCollectionName);
+          expect(collection.items).toHaveLength(itemsPerPageCount);
           subscription.unsubscribe();
           done();
         }
@@ -56,8 +55,8 @@ describe('RemoteMediaCollectionProvider', () => {
       .take(1)
       .subscribe({
         next: collection => {
-          expect(collection.items).to.be.length(2 * itemsPerPageCount);
-          expect(collection.items[2 * itemsPerPageCount - 1].details.occurrenceKey).to.be.equal('file-19');
+          expect(collection.items).toHaveLength(2 * itemsPerPageCount);
+          expect(collection.items[2 * itemsPerPageCount - 1].details.occurrenceKey).toBe('file-19');
           subscription2.unsubscribe();
           done();
         }
@@ -80,8 +79,8 @@ describe('RemoteMediaCollectionProvider', () => {
       .take(1)
       .subscribe({
         next: collection => {
-          expect(collection.items).to.be.length(7 * itemsPerPageCount);
-          expect(collection.items[7 * itemsPerPageCount - 1].details.occurrenceKey).to.be.equal('file-69');
+          expect(collection.items).toHaveLength(7 * itemsPerPageCount);
+          expect(collection.items[7 * itemsPerPageCount - 1].details.occurrenceKey).toBe('file-69');
           subscription.unsubscribe();
           done();
         }
@@ -103,7 +102,7 @@ describe('RemoteMediaCollectionProvider', () => {
       .subscribe({
         next: collection => {
           if (collection.items.length === totalItemCount) {
-            expect(collection.items[totalItemCount - 1].details.occurrenceKey).to.be.equal('file-99');
+            expect(collection.items[totalItemCount - 1].details.occurrenceKey).toBe('file-99');
             subscription.unsubscribe();
             done();
           }
@@ -144,8 +143,8 @@ describe('RemoteMediaCollectionProvider', () => {
               firstTime = false;
               collectionProvider.refresh();
             } else {
-              expect(collection.items).to.be.length(firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...firstPageItems]);
+              expect(collection.items).toHaveLength(firstPageItems.length);
+              expect(collection.items).toEqual([...firstPageItems]);
               subscription.unsubscribe();
               done();
             }
@@ -186,8 +185,8 @@ describe('RemoteMediaCollectionProvider', () => {
               firstTime = false;
               collectionProvider.refresh();
             } else {
-              expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
+              expect(collection.items).toHaveLength(newItems.length + firstPageItems.length);
+              expect(collection.items).toEqual([...newItems, ...firstPageItems]);
               subscription.unsubscribe();
               done();
             }
@@ -228,8 +227,8 @@ describe('RemoteMediaCollectionProvider', () => {
               firstTime = false;
               collectionProvider.refresh();
             } else {
-              expect(collection.items).to.be.length(newItems.length + firstPageItems.length);
-              expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems]);
+              expect(collection.items).toHaveLength(newItems.length + firstPageItems.length);
+              expect(collection.items).toEqual([...newItems, ...firstPageItems]);
               subscription.unsubscribe();
               done();
             }
@@ -274,18 +273,18 @@ describe('RemoteMediaCollectionProvider', () => {
             switch (callCount) {
 
               case 0:
-                expect(collection.items).to.be.length(secondPageItems.length);
+                expect(collection.items).toHaveLength(secondPageItems.length);
                 collectionProvider.loadNextPage();
                 break;
 
               case 1:
-                expect(collection.items).to.be.length(firstPageItems.length + secondPageItems.length);
+                expect(collection.items).toHaveLength(firstPageItems.length + secondPageItems.length);
                 collectionProvider.refresh();
                 break;
 
               case 2:
-                expect(collection.items).to.be.length(newItems.length + firstPageItems.length + secondPageItems.length);
-                expect(collection.items).to.be.deep.equal([...newItems, ...firstPageItems, ...secondPageItems]);
+                expect(collection.items).toHaveLength(newItems.length + firstPageItems.length + secondPageItems.length);
+                expect(collection.items).toEqual([...newItems, ...firstPageItems, ...secondPageItems]);
                 subscription.unsubscribe();
                 done();
                 break;
@@ -337,13 +336,13 @@ describe('RemoteMediaCollectionProvider', () => {
             switch (callCount) {
 
               case 0:
-                expect(collection.items).to.be.length(3);
+                expect(collection.items).toHaveLength(3);
                 collectionProvider.refresh();
                 break;
 
               case 1:
-                expect(collection.items).to.be.length(9);
-                expect(collection.items).to.be.deep.equal([...newItemsPage1, ...newItemsPage2, ...firstPageItems]);
+                expect(collection.items).toHaveLength(9);
+                expect(collection.items).toEqual([...newItemsPage1, ...newItemsPage2, ...firstPageItems]);
                 subscription.unsubscribe();
                 done();
                 break;

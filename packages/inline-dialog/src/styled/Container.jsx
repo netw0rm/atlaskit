@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 import {
-  akBorderRadius,
-  akColorN0,
-  akGridSizeUnitless,
-  akElevationMixins,
+  akBorderRadius as borderRadius,
+  akGridSizeUnitless as spacing,
 } from '@atlaskit/util-shared-styles';
+import theme from './theme';
 
 export default styled.div`
-  background: ${akColorN0};
-  border-radius: ${akBorderRadius};
-  border: 1px solid ${akColorN0};
-  box-sizing: border-box; /* so padding is taken into account for max-width */
-  max-height: ${akGridSizeUnitless * 60}px;
-  max-width: ${akGridSizeUnitless * 62}px;
-  padding: ${akGridSizeUnitless * 3}px;
-
-  ${akElevationMixins.e200}
+  background: ${theme.light.background};
+  border-radius: ${borderRadius};
+  box-shadow: 0 0 1px ${theme.light.border},  0 4px 8px -2px ${theme.light.shadow};
+  box-sizing: border-box;
+  color: ${theme.light.text};
+  max-height: ${spacing * 60}px;
+  max-width: ${spacing * 62}px;
+  padding: ${spacing * 3}px;
+  z-index: 200;
 `;

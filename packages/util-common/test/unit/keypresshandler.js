@@ -1,7 +1,6 @@
 import keyCode from 'keycode';
 import 'custom-event-polyfill';
 import { afterMutations } from '@atlaskit/util-common-test';
-import sinon from 'sinon';
 
 import { name } from '../../package.json';
 import KeyPressHandler,
@@ -19,14 +18,14 @@ describe(name, () => {
         cancelable: true,
       });
       keyPressEvent.keyCode = keyCode('ESCAPE');
-      keyPressCallback = sinon.spy();
+      keyPressCallback = jest.fn();
       keyPressObj = new KeyPressHandler('ESCAPE', keyPressCallback);
     });
 
     it('should create an event listener when created', (done) => {
       document.dispatchEvent(keyPressEvent);
       afterMutations(
-        () => expect(keyPressCallback.called).toBe(true),
+        () => expect(keyPressCallback).toHaveBeenCalled(),
         done
       );
     });
@@ -37,21 +36,21 @@ describe(name, () => {
       document.dispatchEvent(keyPressEvent);
 
       afterMutations(
-        () => expect(keyPressCallback.called).toBe(true),
+        () => expect(keyPressCallback).toHaveBeenCalled(),
         done
       );
     });
 
     it('correct callback should be called', (done) => {
-      const newCallback = sinon.spy();
+      const newCallback = jest.fn();
       keyPressEvent.keyCode = keyCode('CTRL');
       keyPressObj.add('CTRL', newCallback);
       document.dispatchEvent(keyPressEvent);
 
       afterMutations(
         () => {
-          expect(keyPressCallback.called).toBe(false);
-          expect(newCallback.called).toBe(true);
+          expect(keyPressCallback).not.toHaveBeenCalled();
+          expect(newCallback).toHaveBeenCalled();
         },
         done
       );
@@ -61,8 +60,8 @@ describe(name, () => {
       document.dispatchEvent(keyPressEvent);
       afterMutations(
         () => {
-          expect(keyPressCallback.called).toBe(true);
-          expect(keyPressCallback.calledWith(keyPressEvent)).toBe(true);
+          expect(keyPressCallback).toHaveBeenCalled();
+          expect(keyPressCallback).toHaveBeenCalledWith(keyPressEvent);
         },
         done
       );
@@ -73,13 +72,13 @@ describe(name, () => {
 
       document.dispatchEvent(keyPressEvent);
       afterMutations(
-        () => expect(keyPressCallback.called).toBe(false),
+        () => expect(keyPressCallback).not.toHaveBeenCalled(),
         done
       );
     });
 
     it('should be possible to remove all events', (done) => {
-      const newCallback = sinon.spy();
+      const newCallback = jest.fn();
       keyPressObj.add('CTRL', newCallback);
       keyPressObj.destroy();
       document.dispatchEvent(keyPressEvent);
@@ -88,8 +87,8 @@ describe(name, () => {
 
       afterMutations(
         () => {
-          expect(keyPressCallback.called).toBe(false);
-          expect(newCallback.called).toBe(false);
+          expect(keyPressCallback).not.toHaveBeenCalled();
+          expect(newCallback).not.toHaveBeenCalled();
         },
         done
       );

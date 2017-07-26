@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import { EmojiServiceResponse, EmojiServiceDescription } from '../src/types';
-import { getAllEmojiData, getAtlassianEmojiData, getStandardEmojiData } from './story-data';
+import { getAllEmojiData, getAtlassianEmojiData, getStandardEmojiData } from '../src/support/story-data';
 
 const filterEmojiData = (data: EmojiServiceResponse): EmojiServiceResponse => {
   const { emojis, meta } = data;

@@ -7,13 +7,7 @@ export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
 export const toggleUnderline = makeKeyMapWithCommon('Underline', 'Mod-u');
 export const toggleStrikethrough = makeKeyMapWithCommon('Strikethrough', 'Mod-Shift-s');
 export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
-export const setNormalText = makeKeymap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
 export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
-export const toggleHeading1 = makeKeymap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
-export const toggleHeading2 = makeKeymap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
-export const toggleHeading3 = makeKeymap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
-export const toggleHeading4 = makeKeymap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
-export const toggleHeading5 = makeKeymap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
 export const toggleBlockQuote = makeKeymap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
 export const toggleCodeBlock = makeKeymap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
 export const togglePanel = makeKeymap('Panel', 'Ctrl-9', 'Cmd-Alt-9');
@@ -81,7 +75,6 @@ export function findShortcutByKeymap(keymap: Keymap): string | undefined {
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleCode,
-  setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
   toggleBlockQuote, toggleCodeBlock, togglePanel, insertNewLine, insertRule,
   splitCodeBlock, splitListItem, redo, undo];
 

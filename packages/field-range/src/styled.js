@@ -1,12 +1,6 @@
 /* eslint-disable no-mixed-operators */
 import styled, { css } from 'styled-components';
-import {
-    akColorN0,
-    akColorN20,
-    akColorN800,
-    akColorB50,
-    akColorB100,
-} from '@atlaskit/util-shared-styles';
+import theme from './theme';
 
 const sliderThumbSize = 20;
 const sliderThumbBorderThickness = 2;
@@ -14,20 +8,20 @@ const sliderLineThickness = 6;
 export const overallHeight = 40;
 
 const sliderThumbStyle = css`
-  background: ${akColorN0};
+  background: ${theme.thumb.background.normal};
   border-radius: ${sliderThumbSize / 2}px;
-  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${akColorN800};
+  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${theme.thumb.border.normal};
   cursor: pointer;
   height: ${sliderThumbSize}px;
   width: ${sliderThumbSize}px;
 `;
 
 const sliderThumbFocusedStyle = css`
-  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${akColorB100};
+  box-shadow: 0 0 0 ${sliderThumbBorderThickness}px ${theme.thumb.border.focus};
 `;
 
 const sliderTrackStyle = css`
-  background: ${akColorN20};
+  background: ${theme.track.background.normal};
   border-radius: ${sliderLineThickness / 2}px;
   border: 0;
   cursor: pointer;
@@ -36,7 +30,7 @@ const sliderTrackStyle = css`
 `;
 
 const sliderTrackFocusedStyle = css`
-  background: ${akColorB50};
+  background: ${theme.track.background.focus};
 `;
 
 const chromeRangeInputStyle = css`
@@ -98,12 +92,12 @@ const IERangeInputStyle = css`
     width: 100%;
   }
   &::-ms-fill-lower {
-    background: ${akColorN20};
+    background: ${theme.track.background.normal};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }
   &::-ms-fill-upper {
-    background: ${akColorN20};
+    background: ${theme.track.background.normal};
     border-radius: ${sliderLineThickness / 2}px;
     border: 0;
   }

@@ -1,24 +1,27 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { emoji as emojiData, mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 
 import Editor from './editor';
 import { Content } from './styles';
-import { name } from '../package.json';
+import { name, version } from '../package.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
 import {
   CustomBoundryExample,
   PortalExample, PortalWithCustomBoundaryExample, PortalInScrollContainerExample
 } from './popup-examples';
+import { storyDecorator } from '../src/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
 const analyticsHandler = (actionName, props) => action(actionName)(props);
-const mentionProvider = new Promise<any>(resolve => resolve(mentionData.mentionStoryData.resourceProvider));
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+const mentionProvider = new Promise<any>(resolve => resolve(mentionStoryData.resourceProvider));
+const emojiProvider = emojiStoryData.getEmojiResource() as any;
 
 storiesOf(name, module)
+  .addDecorator(storyDecorator(version))
   .add('Popup Examples', () => {
     return (
       <div>

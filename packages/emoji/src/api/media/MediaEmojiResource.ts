@@ -1,4 +1,5 @@
 import { MediaPicker } from 'mediapicker';
+import { ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
 import {
   EmojiDescription,
@@ -14,7 +15,6 @@ import { isMediaRepresentation, isMediaEmoji } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
 import { denormaliseEmojiServiceResponse, emojiRequest } from '../EmojiUtils';
-import { requestService, ServiceConfig } from '../SharedResourceUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
@@ -73,7 +73,7 @@ export default class MediaEmojiResource {
     return this.tokenManager.getToken('upload').then(uploadToken => {
       const tokenLoadTime = Date.now() - startTime;
       debug('upload token load time', tokenLoadTime);
-      return new Promise((resolve, reject) => {
+      return new Promise<EmojiDescription>((resolve, reject) => {
         const { url, clientId, collectionName } = uploadToken;
         const mpConfig = {
           apiUrl: url,
@@ -152,7 +152,7 @@ export default class MediaEmojiResource {
       })
     };
 
-    return requestService<EmojiUploadResponse>(this.siteServiceConfig, { requestInit }).then((response): EmojiDescription => {
+    return serviceUtils.requestService<EmojiUploadResponse>(this.siteServiceConfig, { requestInit }).then((response): EmojiDescription => {
       const { emojis } = response;
       if (emojis.length) {
         const emoji = emojis[0];

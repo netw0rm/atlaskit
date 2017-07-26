@@ -8,7 +8,7 @@ import debug from '../src/util/logger';
 import { OnEmojiEvent, RelativePosition } from '../src/types';
 
 import SearchTextInput from './demo-search-text-input';
-import { lorem } from './story-data';
+import { lorem } from '../src/support/story-data';
 
 export interface Props {
   label: string;

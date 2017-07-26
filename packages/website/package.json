@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "265.0.0",
+  "version": "288.0.0",
   "description": "The AtlasKit Website",
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
@@ -15,7 +15,8 @@
     "@atlaskit/css-reset": "^1.0.5",
     "@atlaskit/dropdown-menu": "^1.1.13",
     "@atlaskit/dynamic-table": "^2.1.3",
-    "@atlaskit/icon": "^7.0.1",
+    "@atlaskit/field-text": "^3.0.0",
+    "@atlaskit/icon": "^6.0.0",
     "@atlaskit/inline-message": "^2.0.0",
     "@atlaskit/lozenge": "^3.0.0",
     "@atlaskit/navigation": "^8.0.2",
@@ -44,6 +45,7 @@
     "react-docgen": "^2.14.1",
     "react-dom": "^15.3.2",
     "react-helmet": "^5.0.3",
+    "react-markdown": "^2.5.0",
     "react-media": "^1.5.1",
     "react-router-dom": "^4.0.0",
     "react-transition-group": "^1.1.3",

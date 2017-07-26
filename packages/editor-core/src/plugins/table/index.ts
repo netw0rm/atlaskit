@@ -255,7 +255,7 @@ export class TableState {
   update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
 
-    const tableElement = this.editorFocused ? this.getTableElement(docView) : undefined;
+    const tableElement = this.getTableElement(docView);
     if (domEvent && tableElement || tableElement !== this.tableElement) {
       this.tableElement = tableElement;
       this.domEvent = domEvent;
@@ -274,7 +274,7 @@ export class TableState {
       dirty = true;
     }
 
-    const tableActive = !!tableElement;
+    const tableActive = this.editorFocused && !!tableElement;
     if (tableActive !== this.tableActive) {
       this.tableActive = tableActive;
       dirty = true;

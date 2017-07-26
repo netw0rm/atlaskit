@@ -2,7 +2,7 @@ import { EditorView, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
-import { ALL_BLOCK_TYPES } from './types';
+import { BLOCK_QUOTE, CODE_BLOCK, PANEL } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
 import { undoInputRule } from '../../prosemirror/prosemirror-inputrules';
 import { BlockTypeState } from './';
@@ -20,7 +20,7 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
 
   const nodes = view.state.schema.nodes;
 
-  ALL_BLOCK_TYPES.forEach((blockType) => {
+  [BLOCK_QUOTE, CODE_BLOCK, PANEL].forEach((blockType) => {
     if (nodes[blockType.nodeName]) {
       const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {

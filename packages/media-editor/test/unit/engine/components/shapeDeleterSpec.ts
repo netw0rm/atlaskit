@@ -1,6 +1,3 @@
-import {expect} from 'chai';
-import * as sinon from 'sinon';
-
 import {DefaultShapeDeleter} from '../../../../src/engine/components/shapeDeleter';
 
 describe('MediaEditor DefaultShapeDeleter', () => {
@@ -12,7 +9,7 @@ describe('MediaEditor DefaultShapeDeleter', () => {
     textArea = document.createElement('textarea');
     shapeDeleter = new DefaultShapeDeleter(textArea);
 
-    signalSpy = sinon.spy();
+    signalSpy = jest.fn();
     shapeDeleter.deleteShape.listen(signalSpy);
   });
 
@@ -23,49 +20,49 @@ describe('MediaEditor DefaultShapeDeleter', () => {
   it('should not emit deleteShape if deletion is not allowed', () => {
     textArea.dispatchEvent(createEventWithKey('Delete'));
 
-    expect(signalSpy.notCalled).to.equal(true);
+    expect(signalSpy).not.toHaveBeenCalled();
   });
 
   it('should emit deleteShape when Delete key is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithKey('Delete'));
 
-    expect(signalSpy.calledOnce).to.equal(true);
+    expect(signalSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should emit deleteShape when Backspace key is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithKey('Backspace'));
 
-    expect(signalSpy.calledOnce).to.equal(true);
+    expect(signalSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should emit deleteShape when key #46 (delete) is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithWhich(46));
 
-    expect(signalSpy.calledOnce).to.equal(true);
+    expect(signalSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should emit deleteShape when key #8 (backspace) is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithWhich(8));
 
-    expect(signalSpy.calledOnce).to.equal(true);
+    expect(signalSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should not emit deleteShape when PageDown key is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithKey('PageDown'));
 
-    expect(signalSpy.calledOnce).to.equal(false);
+    expect(signalSpy).not.toHaveBeenCalled();
   });
 
   it('should not emit deleteShape when key #37 (arrow left) is passed and deletion is allowed', () => {
     shapeDeleter.deleteEnabled();
     textArea.dispatchEvent(createEventWithWhich(37));
 
-    expect(signalSpy.calledOnce).to.equal(false);
+    expect(signalSpy).not.toHaveBeenCalled();
   });
 
   it('should not emit deleteShape if deletion was already disabled', () => {
@@ -73,7 +70,7 @@ describe('MediaEditor DefaultShapeDeleter', () => {
     shapeDeleter.deleteDisabled();
     textArea.dispatchEvent(createEventWithKey('Delete'));
 
-    expect(signalSpy.notCalled).to.equal(true);
+    expect(signalSpy).not.toHaveBeenCalled();
   });
 
   const createEventWithKey = (key: string) => {

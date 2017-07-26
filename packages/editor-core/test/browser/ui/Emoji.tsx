@@ -23,7 +23,7 @@ describe('Emoji', () => {
     expect(fallbackSpan.text()).to.equal('fallback');
   });
 
-  it('should still render resourced emoji if allowTextFallback=true', () => {
+  it.skip('should still render resourced emoji if allowTextFallback=true', () => {
     const component = mount(
       <Emoji
         shortName=":anything:"

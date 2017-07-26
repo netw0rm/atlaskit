@@ -1,9 +1,4 @@
-import * as chai from 'chai';
-import * as sinon from 'sinon';
 import {FileProvider} from '../../src/providers/fileProvider';
-
-const expect = chai.expect;
-const assert = chai.assert;
 
 const fileId = 'some-file-id';
 const clientId = 'some-client-id';
@@ -24,9 +19,9 @@ const pendingFileItem = {
 };
 const mockObserver = () => {
   return {
-    next: sinon.spy(),
-    complete: sinon.spy(),
-    error: sinon.spy()
+    next: jest.fn(),
+    complete: jest.fn(),
+    error: jest.fn()
   };
 };
 
@@ -38,12 +33,17 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe(observer);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       fileProvider.subscribe({
         complete: () => {
-          assert(observer.next.calledWith(succeededFileItem));
-          assert(observer.complete.calledWith(undefined));
-          assert(observer.error.notCalled);
+          try {
+            expect(observer.next.mock.calls[0][0]).toBe(succeededFileItem);
+            expect(observer.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
           resolve();
         }
       });
@@ -57,13 +57,18 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe(observer);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       fileProvider.subscribe({
         complete: () => {
-          expect(observer.next.firstCall.args[0]).to.equal(pendingFileItem);
-          expect(observer.next.secondCall.args[0]).to.equal(succeededFileItem);
-          assert(observer.complete.calledWith(undefined));
-          assert(observer.error.notCalled);
+          try {
+            expect(observer.next.mock.calls[0][0]).toBe(pendingFileItem);
+            expect(observer.next.mock.calls[1][0]).toBe(succeededFileItem);
+            expect(observer.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
           resolve();
         }
       });
@@ -77,19 +82,24 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe(observer);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       fileProvider.subscribe({
         error: (error) => {
-          expect(observer.next.notCalled);
-          expect(observer.complete.notCalled);
-          expect(observer.error.calledWith(error));
+          try {
+            expect(observer.next).not.toHaveBeenCalled();
+            expect(observer.complete).not.toHaveBeenCalled();
+            expect(observer.error.mock.calls[0][0]).toBe(error);
+          } catch (err) {
+            reject(err);
+            return;
+          }
           resolve();
         }
       });
     });
   });
 
-  it('should call the service only once for multiple observers', (done) => {
+  it('should call the service only once for multiple observers', () => {
     const fileService = Mocks.fileServiceSucceeded();
     const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
 
@@ -99,27 +109,34 @@ describe('FileProvider', () => {
     fileProvider.subscribe(observer);
     fileProvider.subscribe(observer2);
 
-    fileProvider.subscribe({
-      complete: () => {
+    return new Promise((resolve, reject) => {
+      fileProvider.subscribe({
+        complete: () => {
 
-        // observer 1
-        assert(observer.next.calledWith(succeededFileItem));
-        assert(observer.complete.calledWith(undefined));
-        assert(observer.error.notCalled);
+          try {
+            // observer 1
+            expect(observer.next.mock.calls[0][0]).toBe(succeededFileItem);
+            expect(observer.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
 
-        // observer 2
-        assert(observer2.next.calledWith(succeededFileItem));
-        assert(observer2.complete.calledWith(undefined));
-        assert(observer2.error.notCalled);
+            // observer 2
+            expect(observer2.next.mock.calls[0][0]).toBe(succeededFileItem);
+            expect(observer2.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer2.error).not.toHaveBeenCalled();
 
-        expect(fileService.getFileItem.callCount).to.equal(1);
+            expect(fileService.getFileItem).toHaveBeenCalledTimes(1);
+          } catch (err) {
+            reject(err);
+            return;
+          }
 
-        done();
-      }
+          resolve();
+        }
+      });
     });
   });
 
-  it('should replay last file item after completion', (done) => {
+  it('should replay last file item after completion', () => {
     const fileService = Mocks.fileServiceSucceeded();
     const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
 
@@ -127,24 +144,36 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe(observer);
 
-    fileProvider.subscribe({
-      complete: () => {
-        assert(observer.next.calledWith(succeededFileItem));
-        assert(observer.complete.calledWith(undefined));
-        assert(observer.error.notCalled);
+    return new Promise((resolve, reject) => {
+      fileProvider.subscribe({
+        complete: () => {
+          try {
+            expect(observer.next.mock.calls[0][0]).toBe(succeededFileItem);
+            expect(observer.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
 
-        fileProvider.subscribe({
-          next: fileItem => {
-            expect(fileItem).to.equal(succeededFileItem);
-            done();
-          },
-          error: error => assert.fail(error)
-        });
-      }
+          fileProvider.subscribe({
+            next: fileItem => {
+              try {
+                expect(fileItem).toBe(succeededFileItem);
+              } catch (err) {
+                reject(err);
+                return;
+              }
+              resolve();
+            },
+            error: error => reject(error)
+          });
+        }
+      });
     });
   });
 
-  it('should replay complete event after completion', (done) => {
+  it('should replay complete event after completion', () => {
     const fileService = Mocks.fileServiceSucceeded();
     const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
 
@@ -152,34 +181,48 @@ describe('FileProvider', () => {
 
     fileProvider.subscribe(observer);
 
-    fileProvider.subscribe({
-      complete: () => {
-        assert(observer.next.calledWith(succeededFileItem));
-        assert(observer.complete.calledWith(undefined));
-        assert(observer.error.notCalled);
+    return new Promise((resolve, reject) => {
+      fileProvider.subscribe({
+        complete: () => {
+          try {
+            expect(observer.next.mock.calls[0][0]).toBe(succeededFileItem);
+            expect(observer.complete.mock.calls[0][0]).toBe(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
 
-        fileProvider.subscribe({
-          complete: () => done(),
-          error: error => assert.fail(error)
-        });
-      }
+          fileProvider.subscribe({
+            complete: () => resolve(),
+            error: error => reject(error),
+          });
+        }
+      });
     });
   });
 });
 
 class Mocks {
   public static fileServiceSucceeded() {
-    const stub = sinon.stub();
-    stub.onCall(0).returns(Promise.resolve(succeededFileItem));
+    const stub = jest.fn(() => Promise.resolve(succeededFileItem));
     return {
       getFileItem: stub
     };
   }
 
   public static fileServicePendingBeforeSucceeded() {
-    const stub = sinon.stub();
-    stub.onCall(0).returns(Promise.resolve(pendingFileItem));
-    stub.onCall(1).returns(Promise.resolve(succeededFileItem));
+    let callCount = 0;
+
+    const stub = jest.fn(() => {
+      callCount++;
+
+      if (callCount === 1) {
+        return Promise.resolve(pendingFileItem);
+      } else if (callCount === 2) {
+        return Promise.resolve(succeededFileItem);
+      }
+    });
 
     return {
       getFileItem: stub
@@ -188,8 +231,7 @@ class Mocks {
 
   public static fileServiceError() {
     return {
-      getFileItem: sinon.stub()
-        .returns(Promise.reject(new Error('mock-error')))
+      getFileItem: jest.fn(() => Promise.reject(new Error('mock-error')))
     };
   }
 }

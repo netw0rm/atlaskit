@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from '@atlaskit/field-base';
-import sinon from 'sinon';
 
 import FieldText, { FieldTextStateless } from '../../src';
 import Input from '../../src/styled/Input';
@@ -112,19 +111,19 @@ describe('FieldTextStateless', () => {
     );
 
     it('onChange should be called when input value changes', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<FieldTextStateless onChange={spy} />);
       wrapper.find(Input).simulate('change');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('FieldText', () => {
     it('should call onChange when input value changes', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<FieldText onChange={spy} />);
       wrapper.find(Input).simulate('change');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 

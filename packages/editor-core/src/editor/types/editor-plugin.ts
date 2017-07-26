@@ -3,11 +3,11 @@ import ProviderFactory from '../../providerFactory';
 import { Plugin, Schema, EditorView } from '../../prosemirror';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
-import { EditorProps } from './editor-props';
+import { EditorProps, EditorAppearance } from './editor-props';
 
 export type PMPluginFactory = (schema: Schema<any, any>, props: EditorProps, providerFactory: ProviderFactory, errorReporter: ErrorReporter) => Plugin | undefined;
 
-export type UIComponentFactory = (editorView: EditorView, providerFactory: ProviderFactory) => React.ReactElement<any>;
+export type UIComponentFactory = (editorView: EditorView, providerFactory: ProviderFactory, appearance: EditorAppearance) => React.ReactElement<any> | null;
 
 export interface EditorPlugin {
   /*

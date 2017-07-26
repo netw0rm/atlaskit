@@ -1,3 +1,4 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import Button from '@atlaskit/button';
@@ -5,39 +6,36 @@ import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import Flag, { FlagGroup } from '../../src';
 import ExampleNavigation from './ExampleNavigation';
-import { APPEARANCE_ENUM } from '../../src/shared-variables';
+import { AppearanceArray } from '../../src/types';
 
-const appearanceItems = APPEARANCE_ENUM.values.map(val => (
-  { name: val, value: val, label: val, defaultSelected: val === APPEARANCE_ENUM.defaultValue }
+const appearanceItems = AppearanceArray.map(val => (
+  { name: val, value: val, label: val, defaultSelected: val === Flag.defaultProps.appearance }
 ));
 
-const descriptions = [
-  'Marzipan croissant pie. Jelly beans gingerbread caramels brownie icing.',
-  'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
-];
+function getRandomDescription() {
+  const descriptions = [
+    'Marzipan croissant pie. Jelly beans gingerbread caramels brownie icing.',
+    'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
+  ];
+
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+}
 
 export default class AnimationDemo extends PureComponent {
-  constructor() {
-    super();
-    this.createdFlagCount = 0;
-    this.state = {
-      chosenAppearance: APPEARANCE_ENUM.defaultValue,
-      flags: [],
-    };
-  }
+  createdFlagCount = 0; // eslint-disable-line react/sort-comp
+  state = {
+    chosenAppearance: Flag.defaultProps.appearance,
+    flags: [],
+  };
 
-  componentDidMount() {
-    this.addFlag();
-  }
-
-  randomDescription = () => descriptions[Math.floor(Math.random() * descriptions.length)];
+  componentDidMount() { this.addFlag(); }
 
   newFlag = (timeOffset = 0) => ({
     appearance: this.state.chosenAppearance,
-    title: 'Whoa a new flag',
-    description: this.randomDescription(),
     created: Date.now() - (timeOffset * 1000),
-    key: this.createdFlagCount++,
+    description: getRandomDescription(),
+    index: this.createdFlagCount++,
+    title: 'Whoa a new flag',
   })
 
   addFlag = () => {
@@ -47,10 +45,9 @@ export default class AnimationDemo extends PureComponent {
   }
 
   flagDismissed = (flagId) => {
-    action(`Flag.onDismissed fired for first Flag id "${flagId}"`)();
-    this.setState({
-      flags: this.state.flags.slice(1),
-    });
+    action('Flag.onDismissed fired for id')(flagId);
+
+    this.setState(state => ({ flags: state.flags.slice(1) }));
   }
 
   render() {
@@ -78,22 +75,20 @@ export default class AnimationDemo extends PureComponent {
           </div>
         </ExampleNavigation>
         <FlagGroup onDismissed={this.flagDismissed}>
-          {
-            this.state.flags.map(flag => (
-              <Flag
-                appearance={flag.appearance}
-                actions={[
-                  { content: 'Nice one!', onClick: action('Nice one!') },
-                  { content: 'Not right now thanks', onClick: action('Not right now thanks') },
-                ]}
-                description={flag.description}
-                icon={<SuccessIcon label="Success" />}
-                id={flag.key}
-                key={flag.key}
-                title={`${flag.key}: ${flag.title}`}
-              />
-            ))
-          }
+          {this.state.flags.map(flag => (
+            <Flag
+              appearance={flag.appearance}
+              actions={[
+                { content: 'Nice one!', onClick: action('Nice one!') },
+                { content: 'Not right now thanks', onClick: action('Not right now thanks') },
+              ]}
+              description={flag.description}
+              icon={<SuccessIcon label="Success" />}
+              id={flag.index}
+              key={flag.index}
+              title={`${flag.index}: ${flag.title}`}
+            />
+          ))}
         </FlagGroup>
       </div>
     );

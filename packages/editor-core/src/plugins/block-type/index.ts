@@ -2,8 +2,8 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Node,
   Plugin,
+  Node,
   PluginKey,
 } from '../../prosemirror';
 
@@ -17,7 +17,6 @@ import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
-export type GroupedBlockTypes = BlockType[][];
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
 /**
@@ -31,21 +30,18 @@ export class BlockTypeState {
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
-  availableBlockTypes: GroupedBlockTypes = [];
+  availableBlockTypes: BlockType[] = [];
+  availableWrapperBlockTypes: BlockType[] = [];
+  isCodeBlock: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
     this.state = state;
 
-    const groupedBlockTypes = [
-      [NORMAL_TEXT],
-      [HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5],
-      [BLOCK_QUOTE, CODE_BLOCK, PANEL]
-    ];
+    this.availableBlockTypes = [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5]
+      .filter(this.isBlockTypeSchemaSupported);
 
-    this.availableBlockTypes = groupedBlockTypes.map(
-      blockTypesInGroup => blockTypesInGroup.filter(this.isBlockTypeSchemaSupported)
-    );
+    this.availableWrapperBlockTypes = [BLOCK_QUOTE, CODE_BLOCK, PANEL].filter(this.isBlockTypeSchemaSupported);
 
     this.update(state);
   }
@@ -63,12 +59,22 @@ export class BlockTypeState {
     return commands.toggleBlockType(view, name);
   }
 
+  insertBlockType(name: string, view: EditorView): boolean {
+    return commands.insertBlockType(view, name);
+  }
+
   update(newEditorState, dirty = false) {
     this.state = newEditorState;
 
     const newBlockType = this.detectBlockType();
     if (newBlockType !== this.currentBlockType) {
       this.currentBlockType = newBlockType;
+      dirty = true;
+    }
+
+    const newIsCodeBlock = this.detectCodeBlock();
+    if (newIsCodeBlock !== this.isCodeBlock) {
+      this.isCodeBlock = newIsCodeBlock;
       dirty = true;
     }
 
@@ -83,25 +89,22 @@ export class BlockTypeState {
 
   private detectBlockType(): BlockType {
     const { state } = this;
-
     // Before a document is loaded, there is no selection.
     if (!state.selection) {
       return NORMAL_TEXT;
     }
-
     let blockType;
     const { $from, $to } = state.selection;
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      const resolvedPosDepth = state.doc.resolve(pos).depth;
-      if (node.isBlock && resolvedPosDepth === 0) {
+      const nodeBlockType = this.availableBlockTypes.filter(blockType => blockType === this.nodeBlockType(node));
+      if (nodeBlockType.length > 0) {
         if (!blockType) {
-          blockType = this.nodeBlockType(node);
-        } else if (blockType !== OTHER && blockType !== this.nodeBlockType(node)) {
+          blockType = nodeBlockType[0];
+        } else if (blockType !== OTHER && blockType !== nodeBlockType[0]) {
           blockType = OTHER;
         }
       }
     });
-
     return blockType || OTHER;
   }
 
@@ -119,17 +122,26 @@ export class BlockTypeState {
         case 5:
           return HEADING_5;
       }
-    } else if (node.type === this.state.schema.nodes.codeBlock) {
-      return CODE_BLOCK;
-    } else if (node.type === this.state.schema.nodes.blockquote) {
-      return BLOCK_QUOTE;
-    } else if (node.type === this.state.schema.nodes.panel) {
-      return PANEL;
     } else if (node.type === this.state.schema.nodes.paragraph) {
       return NORMAL_TEXT;
     }
-
     return OTHER;
+  }
+
+  private detectCodeBlock(): boolean {
+    const { state } = this;
+    let isCodeBlock = false;
+    if (state.selection) {
+      const { $from, $to } = state.selection;
+      const { codeBlock } = state.schema.nodes;
+      isCodeBlock = true;
+      state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+        if (node.isTextblock && node.type !== codeBlock) {
+          isCodeBlock = false;
+        }
+      });
+    }
+    return isCodeBlock;
   }
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {

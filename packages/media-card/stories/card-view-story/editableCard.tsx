@@ -120,11 +120,11 @@ export const generateStoriesForEditableCards = () => {
             <SliderWrapper>
               <div>
                 Width ({width})
-                <Slider value={width} min={144} max={800} onChange={this.onWidthChange} />
+                <Slider value={width} min={144} max={1000} onChange={this.onWidthChange} />
               </div>
               <div>
                 Height ({height})
-                <Slider value={height} min={50} max={800} onChange={this.onHeightChange} />
+                <Slider value={height} min={50} max={1000} onChange={this.onHeightChange} />
               </div>
               <div>
                 Progress ({progress})

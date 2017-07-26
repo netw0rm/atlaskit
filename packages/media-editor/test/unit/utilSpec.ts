@@ -1,33 +1,30 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
 import {getUtf32Codes, getUtf32CodeUnits, adjustSize} from '../../src/util';
-import {expect} from 'chai';
 
 describe('MediaEditor Util', () => {
   describe('getUtf32Codes', () => {
     it('should return empty array when the text is empty', () => {
       const result = getUtf32Codes('');
-      expect(result).to.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should return one code for one 2-byte character', () => {
       const result = getUtf32Codes('a');
-      expect(result).to.deep.equal([97]);
+      expect(result).toEqual([97]);
     });
 
     it('should return two codes for two 2-byte characters', () => {
       const result = getUtf32Codes('ab');
-      expect(result).to.deep.equal([97, 98]);
+      expect(result).toEqual([97, 98]);
     });
 
     it('should return one code for a surrogate pair', () => {
       const result = getUtf32Codes('\uD852\uDF62');
-      expect(result).to.deep.equal([0x24B62]);
+      expect(result).toEqual([0x24B62]);
     });
 
     it('should return correct codes for a string with surrogate pairs', () => {
       const result = getUtf32Codes('The text \u20AC appears to \uD834\uDF06 and \uD852\uDF62');
-      expect(result).to.deep.equal([0x54, 0x68, 0x65, 0x20, 0x74, 0x65, 0x78, 0x74, 0x20, 0x20AC, 0x20,
+      expect(result).toEqual([0x54, 0x68, 0x65, 0x20, 0x74, 0x65, 0x78, 0x74, 0x20, 0x20AC, 0x20,
                                     0x61, 0x70, 0x70, 0x65, 0x61, 0x72, 0x73, 0x20, 0x74, 0x6F, 0x20,
                                     0x1D306, 0x20, 0x61, 0x6E, 0x64, 0x20, 0x24B62]);
     });
@@ -36,27 +33,27 @@ describe('MediaEditor Util', () => {
   describe('getUtf32CodeUnits', () => {
     it('should return empty array when the text is empty', () => {
       const result = getUtf32CodeUnits('');
-      expect(result).to.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should return one character for one 2-byte character', () => {
       const result = getUtf32CodeUnits('a');
-      expect(result).to.deep.equal(['a']);
+      expect(result).toEqual(['a']);
     });
 
     it('should return two characters for two 2-byte characters', () => {
       const result = getUtf32CodeUnits('ab');
-      expect(result).to.deep.equal(['a', 'b']);
+      expect(result).toEqual(['a', 'b']);
     });
 
     it('should return one character for a surrogate pair', () => {
       const result = getUtf32CodeUnits('\uD852\uDF62');
-      expect(result).to.deep.equal(['\u{24B62}']);
+      expect(result).toEqual(['\u{24B62}']);
     });
 
     it('should return correct characters for a string with surrogate pairs', () => {
       const result = getUtf32CodeUnits('The text \u20AC appears to \uD834\uDF06 and \uD852\uDF62');
-      expect(result).to.deep.equal(['T', 'h', 'e', ' ', 't', 'e', 'x', 't', ' ', '\u{20AC}', ' ',
+      expect(result).toEqual(['T', 'h', 'e', ' ', 't', 'e', 'x', 't', ' ', '\u{20AC}', ' ',
                                     'a', 'p', 'p', 'e', 'a', 'r', 's', ' ', 't', 'o', ' ', '\u{1D306}', ' ',
                                     'a', 'n', 'd', ' ', '\u{24B62}']);
     });
@@ -80,79 +77,79 @@ describe('MediaEditor Util', () => {
       const arr: Array<number> = [];
       adjustSize(arr, 0, creator, deleter);
 
-      expect(arr).to.be.empty;
+      expect(Object.keys(arr)).toHaveLength(0);
     });
 
     it('should do nothing if the array already has the required size', () => {
       const arr = [5, 6, 8];
       adjustSize(arr, 3, creator, deleter);
 
-      expect(arr).to.deep.equal([5, 6, 8]);
-      expect(deletedElements).to.be.empty;
+      expect(arr).toEqual([5, 6, 8]);
+      expect(Object.keys(deletedElements)).toHaveLength(0);
     });
 
     it('should add 1 element to empty', () => {
       const arr: Array<number> = [];
       adjustSize(arr, 1, creator, deleter);
 
-      expect(arr).to.deep.equal([0]);
-      expect(deletedElements).to.be.empty;
+      expect(arr).toEqual([0]);
+      expect(Object.keys(deletedElements)).toHaveLength(0);
     });
 
     it('should add 3 elements to empty', () => {
       const arr: Array<number> = [];
       adjustSize(arr, 3, creator, deleter);
 
-      expect(arr).to.deep.equal([0, 1, 2]);
-      expect(deletedElements).to.be.empty;
+      expect(arr).toEqual([0, 1, 2]);
+      expect(Object.keys(deletedElements)).toHaveLength(0);
     });
 
     it('should add 1 element to not empty', () => {
       const arr = [55, 14];
       adjustSize(arr, 3, creator, deleter);
 
-      expect(arr).to.deep.equal([55, 14, 0]);
-      expect(deletedElements).to.be.empty;
+      expect(arr).toEqual([55, 14, 0]);
+      expect(Object.keys(deletedElements)).toHaveLength(0);
     });
 
     it('should add 3 elements to not empty', () => {
       const arr = [55, 14];
       adjustSize(arr, 5, creator, deleter);
 
-      expect(arr).to.deep.equal([55, 14, 0, 1, 2]);
-      expect(deletedElements).to.be.empty;
+      expect(arr).toEqual([55, 14, 0, 1, 2]);
+      expect(Object.keys(deletedElements)).toHaveLength(0);
     });
 
     it('should make 1 element array empty', () => {
       const arr = [123];
       adjustSize(arr, 0, creator, deleter);
 
-      expect(arr).to.be.empty;
-      expect(deletedElements).to.deep.equal([123]);
+      expect(Object.keys(arr)).toHaveLength(0);
+      expect(deletedElements).toEqual([123]);
     });
 
     it('should make 5 element array empty', () => {
       const arr = [12, 34, 56, 78, 90];
       adjustSize(arr, 0, creator, deleter);
 
-      expect(arr).to.be.empty;
-      expect(deletedElements).to.deep.equal([12, 34, 56, 78, 90]);
+      expect(Object.keys(arr)).toHaveLength(0);
+      expect(deletedElements).toEqual([12, 34, 56, 78, 90]);
     });
 
     it('should remove 1 element', () => {
       const arr = [12, 34, 56, 78, 90];
       adjustSize(arr, 4, creator, deleter);
 
-      expect(arr).to.deep.equal([12, 34, 56, 78]);
-      expect(deletedElements).to.deep.equal([90]);
+      expect(arr).toEqual([12, 34, 56, 78]);
+      expect(deletedElements).toEqual([90]);
     });
 
     it('should remove 3 elements', () => {
       const arr = [12, 34, 56, 78, 90];
       adjustSize(arr, 2, creator, deleter);
 
-      expect(arr).to.deep.equal([12, 34]);
-      expect(deletedElements).to.deep.equal([56, 78, 90]);
+      expect(arr).toEqual([12, 34]);
+      expect(deletedElements).toEqual([56, 78, 90]);
     });
   });
 });

@@ -13,6 +13,7 @@ import { MOBILE_QUERY } from '../../../constants';
 import Page from '../../components/Page';
 
 import { NavPackageComponent, StandardComponent } from '../../pages/Component';
+import Changelog from '../../pages/Changelog';
 import Components from '../../pages/Components';
 import Patterns from '../../pages/Patterns';
 import Examples from '../../pages/Examples';
@@ -54,6 +55,7 @@ const Routes = () => (
           : <StandardComponent match={match} />
       )}
     />
+    <Route path="/changelog/:component/:semver?" component={Changelog} />
     <Route component={NoMatch} />
   </Switch>
 );

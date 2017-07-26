@@ -1,4 +1,3 @@
-import { marks } from './../../prosemirror/prosemirror-schema-basic/schema-basic.d';
 import { Context } from './../../../../media-core/src/context/context';
 import {
   atTheEndOfDoc,

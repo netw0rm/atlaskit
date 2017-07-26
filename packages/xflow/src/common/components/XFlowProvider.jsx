@@ -2,6 +2,8 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
+import { INACTIVE } from '../productProvisioningStates';
+
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
     productLogo: PropTypes.element,
@@ -54,19 +56,49 @@ export const xFlowShape = PropTypes.shape({
 export class XFlowProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
+    productStatusChecker: PropTypes.shape({
+      start: PropTypes.func.isRequired,
+      stop: PropTypes.func.isRequired,
+    }).isRequired,
+    startProductTrial: PropTypes.func.isRequired,
   };
 
   static childContextTypes = {
     xFlow: xFlowShape,
   };
 
+  state = {
+    progress: 0,
+    status: INACTIVE,
+  };
+
   getChildContext() {
     return {
       xFlow: {
         ...this.props,
+        ...this.state,
+        startProductTrial: this.startProductTrial,
       },
     };
   }
+
+  componentWillUnmount() {
+    const { productStatusChecker } = this.props;
+    productStatusChecker.stop();
+  }
+
+  progressUpdate = ({ status, progress }) => {
+    this.setState({
+      progress,
+      status,
+    });
+  };
+
+  startProductTrial = async (...args) => {
+    const { productStatusChecker, startProductTrial } = this.props;
+    await startProductTrial(...args);
+    productStatusChecker.start(this.progressUpdate);
+  };
 
   render() {
     return Children.only(this.props.children);

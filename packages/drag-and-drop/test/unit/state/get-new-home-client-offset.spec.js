@@ -112,28 +112,7 @@ describe('get new home client offset', () => {
       // this is the final client offset
       const expected = add(clientOffset, diff);
 
-      const newHomeOffset = getNewHomeClientOffset;
-      // have not moved the item on the screen at all
-      const clientOffset: Position = origin;
-      // the window has scrolled to get it to the selection point
-      const pageOffset: Position = subtract(selection, draggable1.page.withoutMargin.center);
-      const movement: DragMovement = {
-        draggables: [draggable2.id, draggable3.id],
-        amount: draggable1.page.withMargin.height,
-        isMovingForward: true,
-      };
-      // How much distance the item needs to travel to be in its new home
-      // from where it started
-      const verticalChange = {
-        x: 0,
-        y: draggable2.page.withMargin.height + draggable3.page.withMargin.height,
-      };
-      // How far away it is from where it needs to end up
-      const diff: Position = subtract(verticalChange, pageOffset);
-      // this is the final client offset
-      const expected = add(clientOffset, diff);
-
-      const newHomeOffset = getNewHomeOffset({
+      const newHomeOffset = getNewHomeClientOffset({
         movement,
         clientOffset,
         pageOffset,
@@ -164,7 +143,7 @@ describe('get new home client offset', () => {
       // this is the final client offset
       const expected = add(diff, scrollDiff);
 
-      const newHomeOffset = getNewHomeOffset({
+      const newHomeOffset = getNewHomeClientOffset({
         movement,
         clientOffset,
         pageOffset,
@@ -210,7 +189,7 @@ describe('get new home client offset', () => {
       // this is the final client offset
       const expected = add(clientOffset, diff);
 
-      const newHomeOffset = getNewHomeOffset({
+      const newHomeOffset = getNewHomeClientOffset({
         movement,
         clientOffset,
         pageOffset,
@@ -243,7 +222,7 @@ describe('get new home client offset', () => {
       // this is the final client offset
       const expected = add(clientOffset, diff);
 
-      const newHomeOffset = getNewHomeOffset({
+      const newHomeOffset = getNewHomeClientOffset({
         movement,
         clientOffset,
         pageOffset,
@@ -274,7 +253,7 @@ describe('get new home client offset', () => {
       // this is the final client offset
       const expected = add(diff, scrollDiff);
 
-      const newHomeOffset = getNewHomeOffset({
+      const newHomeOffset = getNewHomeClientOffset({
         movement,
         clientOffset,
         pageOffset,

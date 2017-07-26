@@ -1,6 +1,9 @@
 // @flow
+import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types';
+import {
+  publishDraggableDimension,
+} from '../../state/action-creators';
 import type {
-  DraggableDimension,
   DraggableId,
   DroppableId,
   TypeId,
@@ -13,7 +16,7 @@ export type MapProps = {|
 |}
 
 export type DispatchProps = {|
-  publish: (dimension: DraggableDimension) => mixed,
+  publish: PropType<typeof publishDraggableDimension, Function>,
 |}
 
 export type OwnProps = {|

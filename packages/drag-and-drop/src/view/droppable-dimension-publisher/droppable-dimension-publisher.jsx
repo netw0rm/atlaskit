@@ -2,6 +2,7 @@
 import { Component } from 'react';
 import invariant from 'invariant';
 import rafScheduler from 'raf-schd';
+import memoizeOne from 'memoize-one';
 import getWindowScrollPosition from '../get-window-scroll-position';
 import { getDroppableDimension } from '../../state/dimension';
 import getClosestScrollable from '../get-closest-scrollable';
@@ -56,25 +57,39 @@ export default class DroppableDimensionPublisher extends Component {
     return dimension;
   }
 
+  memoizedUpdateScroll = memoizeOne((x: number, y: number) => {
+    const offset: Position = { x, y };
+    this.props.updateScroll(this.props.droppableId, offset);
+  });
+
   scheduleScrollUpdate = rafScheduler((offset: Position) => {
     // might no longer be listening for scroll changes by the time a frame comes back
     if (this.isWatchingScroll) {
-      this.props.updateScroll(this.props.droppableId, offset);
+      this.memoizedUpdateScroll(offset.x, offset.y);
     }
   });
+
+  componentWillUnmount() {
+    if (this.isWatchingScroll) {
+      this.unwatchScroll();
+    }
+  }
 
   onClosestScroll = () => {
     this.scheduleScrollUpdate(this.getScrollOffset());
   }
 
   watchScroll = () => {
-    // Do not bother listening to the scroll if there is nothing to listen to
-    if (!this.closestScrollable) {
+    invariant(this.props.targetRef, 'cannot watch scroll if not in the dom');
+
+    this.closestScrollable = getClosestScrollable(this.props.targetRef);
+
+    // no closest parent
+    if (this.closestScrollable == null) {
       return;
     }
 
     if (this.isWatchingScroll) {
-      console.warn('already watching the scroll');
       return;
     }
 
@@ -95,11 +110,9 @@ export default class DroppableDimensionPublisher extends Component {
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.targetRef !== this.props.targetRef) {
       if (this.isWatchingScroll) {
-        console.error('changing targetRef while watching scroll!');
+        console.warn('changing targetRef while watching scroll!');
         this.unwatchScroll();
       }
-      this.closestScrollable = getClosestScrollable(nextProps.targetRef);
-      console.log('closest scrollable', this.closestScrollable);
     }
 
     // Because the dimension publisher wraps children - it might render even when its props do

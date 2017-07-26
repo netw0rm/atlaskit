@@ -308,6 +308,32 @@ describe('drag handle', () => {
         })).toBe(true);
       });
 
+      it('should not fire a mouse movement if the mouse position has not changed since the last frame', () => {
+        mouseDown(wrapper);
+        // will start the drag
+        windowMouseMove(0, sloppyClickThreshold);
+
+        // will fire the first move
+        windowMouseMove(10, 20);
+        requestAnimationFrame.step();
+        expect(callbacks.onMove).toBeCalledWith({ x: 10, y: 20 });
+
+        // second move event
+        windowMouseMove(11, 21);
+        // no frame to release event
+        // third move event
+        windowMouseMove(10, 20);
+        // releasing frame
+        requestAnimationFrame.step();
+
+        expect(callbacks.onMove).toHaveBeenCalledTimes(1);
+        expect(callbacks.onMove).toBeCalledWith({ x: 10, y: 20 });
+
+        // being super safe and flushing the animation queue
+        requestAnimationFrame.flush();
+        expect(callbacks.onMove).toHaveBeenCalledTimes(1);
+      });
+
       it('should collapse multiple mouse movements into a single animation frame', () => {
         // lift
         mouseDown(wrapper);
@@ -741,14 +767,23 @@ describe('drag handle', () => {
     describe('subsequent drags', () => {
       it('should be possible to do another drag after one finishes', () => {
         Array.from({ length: 10 }, (v, k) => k).forEach((val: number) => {
+          // move memoization cache is not cleared between drags so adding 'val'.
+          // it is a little edge case so not going to code around it
+
+          const originalY: number = sloppyClickThreshold + val;
+
           // lift
           mouseDown(wrapper);
-          windowMouseMove(0, sloppyClickThreshold);
+          windowMouseMove(0, originalY);
           // move
-          windowMouseMove(0, sloppyClickThreshold);
+          windowMouseMove(0, originalY + 1);
           requestAnimationFrame.step();
           // drop
-          windowMouseUp(0, sloppyClickThreshold);
+          windowMouseUp(0, originalY + 1);
+
+          // expect(callbacks.onLift).toHaveBeenCalledTimes(val + 1);
+          expect(callbacks.onMove).toHaveBeenCalledTimes(val + 1);
+          // expect(callbacks.onDrop).toHaveBeenCalledTimes(val + 1);
 
           expect(callbacksCalled(callbacks)({
             onLift: val + 1,

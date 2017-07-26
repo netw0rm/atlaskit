@@ -15,7 +15,7 @@ export type MapProps = {|
 
 export type DispatchProps = {|
   publish: (dimension: DroppableDimension) => mixed,
-  updateScroll: (offset: Position) => mixed,
+  updateScroll: (id: DroppableId, offset: Position) => mixed,
 |}
 
 export type OwnProps = {|

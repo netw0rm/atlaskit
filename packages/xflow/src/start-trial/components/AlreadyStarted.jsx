@@ -64,7 +64,7 @@ export class AlreadyStartedBase extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog>
+        <StartTrialDialog id="xflow-already-started">
           <StartTrialHeader>
             {heading}
           </StartTrialHeader>

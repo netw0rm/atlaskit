@@ -97,19 +97,23 @@ export class LoadingTimeBase extends Component {
         footer={
           <StartTrialFooter>
             <Button
+              id="xflow-loading-go-to-product-button"
               isDisabled={!(isReady && status === 'ACTIVE')}
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
               <FormattedMessage id={i18n`go-to-product-button`} />
             </Button>
-            <Button onClick={this.handleCloseClick} appearance="subtle-link">
+            <Button
+              id="xflow-loading-close-button"
+              onClick={this.handleCloseClick} appearance="subtle-link"
+            >
               <FormattedMessage id={i18n`close-button`} />
             </Button>
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog>
+        <StartTrialDialog id="xflow-loading-time">
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>

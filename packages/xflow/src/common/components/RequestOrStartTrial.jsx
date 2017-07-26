@@ -82,7 +82,7 @@ class RequestOrStartTrial extends Component {
 
     return (
       <App locale={this.props.locale}>
-        <RequestOrStartTrialDialog>
+        <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
           {(() => {
             switch (this.state.screen) {
               case Screens.INITIALIZING: {

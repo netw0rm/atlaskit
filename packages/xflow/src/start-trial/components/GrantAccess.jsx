@@ -197,6 +197,7 @@ export class GrantAccessBase extends Component {
               <Spinner isCompleting={!this.state.spinnerActive} />
             </SpinnerDiv>
             <Button
+              id="xflow-grant-access-continue-button"
               onClick={this.handleContinueClick}
               appearance="primary"
               isDisabled={this.state.continueButtonDisabled}
@@ -215,7 +216,7 @@ export class GrantAccessBase extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog>
+        <StartTrialDialog id="xflow-grant-access">
           <StartTrialHeader>
             <FormattedMessage id={i18n`heading`} />
           </StartTrialHeader>

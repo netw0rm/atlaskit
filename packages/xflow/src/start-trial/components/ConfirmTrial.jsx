@@ -73,19 +73,24 @@ export class ConfirmTrialBase extends Component {
               <Spinner isCompleting={!this.state.spinnerActive} />
             </SpinnerDiv>
             <Button
+              id="xflow-confirm-trial-confirm-button"
               onClick={this.handleConfirmClick}
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
               <FormattedMessage id={i18n`confirm-button`} />
             </Button>
-            <Button onClick={this.handleCancelClick} appearance="subtle-link">
+            <Button
+              id="xflow-confirm-trial-cancel-button"
+              onClick={this.handleCancelClick}
+              appearance="subtle-link"
+            >
               <FormattedMessage id={i18n`cancel-button`} />
             </Button>
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog>
+        <StartTrialDialog id="xflow-confirm-trial">
           <StartTrialHeader>
             <FormattedMessage id={i18n`heading`} />
           </StartTrialHeader>

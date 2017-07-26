@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import styled from 'styled-components';
 import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 
 // tslint:disable-next-line:variable-name
-const TrayEditor = styled.div`
+const MessageEditor = styled.div`
   display: flex;
   border: 1px solid #C1C7D0;
   border-radius: 3px;
@@ -43,10 +42,10 @@ const SecondaryToolbarContainer = styled.div`
   display: flex;
 `;
 
-export default class Editor extends PureComponent<EditorAppearanceComponentProps, any> {
-  static displayName = 'TrayEditor';
+export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+  static displayName = 'MessageEditor';
 
-  private appearance: EditorAppearance = 'tray';
+  private appearance: EditorAppearance = 'message';
 
   private handleRef = ref => {
     if (this.props.onUiReady) {
@@ -58,7 +57,7 @@ export default class Editor extends PureComponent<EditorAppearanceComponentProps
     const { editorView, contentComponents, secondaryToolbarComponents, providerFactory } = this.props;
 
     return (
-      <TrayEditor>
+      <MessageEditor>
         <ContentArea innerRef={this.handleRef}>
           <PluginSlot
             editorView={editorView}
@@ -75,7 +74,7 @@ export default class Editor extends PureComponent<EditorAppearanceComponentProps
             items={secondaryToolbarComponents}
           />
         </SecondaryToolbarContainer>
-      </TrayEditor>
+      </MessageEditor>
     );
   }
 }

@@ -668,34 +668,9 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
 
       // check that node attributes are set during parsing
       const parsedMediaNode = parsed.firstChild.firstChild;
-      expect(parsedMediaNode.fileName).to.equal('2017-04-12 07.15.57.jpg');
-      expect(parsedMediaNode.fileSize).to.equal(95316);
-      expect(parsedMediaNode.fileMimeType).to.equal('image/jpeg');
-    });
-
-    it('should encode/parse media nodes with own attributes', () => {
-      const cxhtml = '<p><fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/></p>';
-      const mediaNode = media({
-        id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
-        type: 'file',
-        collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
-        fileName: '2017-04-12 07.15.57.jpg',
-        fileSize: 95316,
-        fileMimeType: 'image/jpeg'
-      });
-      const docNode = doc(mediaGroup(mediaNode));
-
-      // check that parsing/encoding is working as expected
-      // plus takes node own attributes into account
-      const parsed = parse(cxhtml);
-      expect(parsed).to.deep.equal(docNode);
-      expect(parse(encode(docNode))).to.deep.equal(docNode);
-
-      // check that node attributes are set during parsing
-      const parsedMediaNode = parsed.firstChild.firstChild;
-      expect(parsedMediaNode.fileName).to.equal('2017-04-12 07.15.57.jpg');
-      expect(parsedMediaNode.fileSize).to.equal(95316);
-      expect(parsedMediaNode.fileMimeType).to.equal('image/jpeg');
+      expect(parsedMediaNode.attrs.__fileName).to.equal('2017-04-12 07.15.57.jpg');
+      expect(parsedMediaNode.attrs.__fileSize).to.equal(95316);
+      expect(parsedMediaNode.attrs.__fileMimeType).to.equal('image/jpeg');
     });
   });
 

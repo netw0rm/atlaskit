@@ -1,6 +1,8 @@
 import {
   Fragment,
-  Node as PMNode
+  Node as PMNode,
+  MediaAttributes,
+  MediaType,
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -166,25 +168,25 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
           text: cdata!.nodeValue,
         });
       case 'FAB:MEDIA':
-        const mediaNode = schema.nodes.media.create({
-          id: node.getAttribute('media-id'),
-          type: node.getAttribute('media-type'),
-          collection: node.getAttribute('media-collection'),
-        });
+        const mediaAttrs: MediaAttributes = {
+          id: node.getAttribute('media-id') || '',
+          type: (node.getAttribute('media-type') || 'file') as MediaType,
+          collection: node.getAttribute('media-collection') || '',
+        };
 
         if (node.hasAttribute('file-name')) {
-          mediaNode.fileName = node.getAttribute('file-name')!;
+          mediaAttrs.__fileName = node.getAttribute('file-name')!;
         }
 
         if (node.hasAttribute('file-size')) {
-          mediaNode.fileSize = parseInt(node.getAttribute('file-size')!, 10);
+          mediaAttrs.__fileSize = parseInt(node.getAttribute('file-size')!, 10);
         }
 
         if (node.hasAttribute('file-mime-type')) {
-          mediaNode.fileMimeType = node.getAttribute('file-mime-type')!;
+          mediaAttrs.__fileMimeType = node.getAttribute('file-mime-type')!;
         }
 
-        return mediaNode;
+        return schema.nodes.media.create(mediaAttrs);
 
       case 'PRE':
         return schema.nodes.codeBlock.create({ language: null }, schema.text(node.textContent || ''));

@@ -1,6 +1,7 @@
 import {
   Fragment,
-  Node as PMNode
+  Node as PMNode,
+  MediaAttributes,
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -86,19 +87,20 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodeMedia(node: any): Element {
+  function encodeMedia(node: PMNode): Element {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
-    elem.setAttribute('media-id', node.attrs.id);
-    elem.setAttribute('media-type', node.attrs.type);
-    elem.setAttribute('media-collection', node.attrs.collection);
-    if (node.fileName) {
-      elem.setAttribute('file-name', node.fileName);
+    const attrs = node.attrs as MediaAttributes;
+    elem.setAttribute('media-id', attrs.id);
+    elem.setAttribute('media-type', attrs.type);
+    elem.setAttribute('media-collection', attrs.collection);
+    if (attrs.__fileName) {
+      elem.setAttribute('file-name', attrs.__fileName);
     }
-    if (node.fileSize) {
-      elem.setAttribute('file-size', `${node.fileSize}`);
+    if (attrs.__fileSize) {
+      elem.setAttribute('file-size', `${attrs.__fileSize}`);
     }
-    if (node.fileMimeType) {
-      elem.setAttribute('file-mime-type', node.fileMimeType);
+    if (attrs.__fileMimeType) {
+      elem.setAttribute('file-mime-type', attrs.__fileMimeType);
     }
     return elem;
   }

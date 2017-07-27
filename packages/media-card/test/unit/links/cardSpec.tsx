@@ -135,7 +135,7 @@ describe('LinkCard', () => {
       }
     };
 
-    const element = shallow(<LinkCard status="complete" details={details}/>);
+    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
     expect(element.find(AppCardView).exists()).toBeTruthy();
 
   });
@@ -155,7 +155,7 @@ describe('LinkCard', () => {
       }
     };
 
-    const element = shallow(<LinkCard status="complete" details={details}/>);
+    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
     expect(element.find(Href).exists()).toBeFalsy();
     expect(element.find(AppCardView).exists()).toBeTruthy();
 
@@ -179,9 +179,68 @@ describe('LinkCard', () => {
       }
     };
 
-    const element = shallow(<LinkCard status="complete" details={details}/>);
+    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
     expect(element.find(Href).find(AppCardView).exists()).toBeTruthy();
 
   });
 
+  it('should not render an AppCardView when appearance=small', () => {
+
+    const details: UrlPreview = {
+      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
+      type: 'link',
+      title: 'Public Trello Boards',
+      resources: {
+        smartCard: {
+          title: {
+            text: 'Public Trello Boards'
+          }
+        }
+      }
+    };
+
+    const element = shallow(<LinkCard status="complete" details={details} appearance="small"/>);
+    expect(element.find(AppCardView).exists()).toBeFalsy();
+
+  });
+
+  it('should not render an AppCardView when appearance=image', () => {
+
+    const details: UrlPreview = {
+      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
+      type: 'link',
+      title: 'Public Trello Boards',
+      resources: {
+        smartCard: {
+          title: {
+            text: 'Public Trello Boards'
+          }
+        }
+      }
+    };
+
+    const element = shallow(<LinkCard status="complete" details={details} appearance="image"/>);
+    expect(element.find(AppCardView).exists()).toBeFalsy();
+
+  });
+
+  it('should not render an AppCardView when appearance=square', () => {
+
+    const details: UrlPreview = {
+      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
+      type: 'link',
+      title: 'Public Trello Boards',
+      resources: {
+        smartCard: {
+          title: {
+            text: 'Public Trello Boards'
+          }
+        }
+      }
+    };
+
+    const element = shallow(<LinkCard status="complete" details={details} appearance="square"/>);
+    expect(element.find(AppCardView).exists()).toBeFalsy();
+
+  });
 });

@@ -57,16 +57,14 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
       <Wrapper>
         <FilmStripNavigator>
         {
-          React.Children.map(this.props.children, (child: ReactElement<MediaProps>) => {
-            switch(child.props.type) {
+          React.Children.map(this.props.children, (child: ReactElement<MediaNodeProps>) => {
+            switch(child.props.node.attrs.type) {
               case 'file':
-                return React.cloneElement(child, {
-                  resizeMode: 'crop'
-                } as MediaProps);
+                return child;
 
               default:
               case 'link':
-                return React.cloneElement(child, {
+                return React.cloneElement(child as ReactElement<any>, {
                   cardDimensions: {
                     width: 343,
                   },

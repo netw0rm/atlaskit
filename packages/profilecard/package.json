@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "config": {
     "access": "public"
   },
   "description": "A React component to display a card with user information.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/profilecard; } || ../../node_modules/.bin/not-in-publish",

@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/banner",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "config": {
     "access": "public"
   },
   "description": "React component that displays a prominent banner message and icon",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Banner"

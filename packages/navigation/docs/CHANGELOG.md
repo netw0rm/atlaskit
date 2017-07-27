@@ -1,6 +1,13 @@
 # @atlaskit/navigation
 
-## Unreleased
+## 16.1.1 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+## 16.1.0 (2017-07-27)
+
+
+* bug fix; hiding the scrollbar corner and moved colours into the vars ([3439174](https://bitbucket.org/atlassian/atlaskit/commits/3439174))
+* feature; improved nav scrollbar styles in Chrome/Webkit/Edge ([7345249](https://bitbucket.org/atlassian/atlaskit/commits/7345249))
 
 ## 15.4.0 (2017-07-12)
 

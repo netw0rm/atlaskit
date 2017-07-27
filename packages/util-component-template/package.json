@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/util-component-template",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "config": {
     "access": "public"
   },
   "description": "A template for creating AtlasKit components",
   "main": "dist/bundle.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {

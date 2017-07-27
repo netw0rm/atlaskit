@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "4.6.1",
+  "version": "4.6.2",
   "config": {
     "access": "public"
   },
   "description": "ak-droplist React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/droplist; } || ../../node_modules/.bin/not-in-publish",

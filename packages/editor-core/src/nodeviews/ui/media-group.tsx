@@ -1,11 +1,12 @@
 import * as assert from 'assert';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
 import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import { MediaPluginState, mediaStateKey } from '../../plugins';
 import { EditorView } from '../../prosemirror';
+import { Props as MediaProps } from '../../ui/Media/MediaComponent';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -54,7 +55,26 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
   render() {
     return (
       <Wrapper>
-        <FilmStripNavigator>{this.props.children}</FilmStripNavigator>
+        <FilmStripNavigator>
+        {
+          React.Children.map(this.props.children, (child: ReactElement<MediaProps>) => {
+            switch(child.props.type) {
+              case 'file':
+                return React.cloneElement(child, {
+                  resizeMode: 'crop'
+                } as MediaProps);
+
+              default:
+              case 'link':
+                return React.cloneElement(child, {
+                  cardDimensions: {
+                    width: 343,
+                  },
+                } as MediaProps);
+            }
+          })
+        }
+        </FilmStripNavigator>
       </Wrapper>
     );
   }

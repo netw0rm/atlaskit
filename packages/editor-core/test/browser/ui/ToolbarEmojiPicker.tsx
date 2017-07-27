@@ -81,4 +81,11 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
   });
 
+  it('should disable the ToolbarEmojiPicker when there in an active mention query mark', () => {
+    const { pluginState, editorView } = editor(doc(p('@')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginState={pluginState} emojiProvider={emojiProvider} editorView={editorView} />);
+
+    expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
+  });
+
 });

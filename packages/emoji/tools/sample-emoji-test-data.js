@@ -14,7 +14,8 @@ const reservedEmojis = new Map([
   // :thumbsdown: used to verify order against :thumbsup:
   // :police_officer: is for testing non-searchable emoji
   // :raised_hand: used for tone selector testing
-  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:', ':police_officer:', ':raised_hand:']],
+  // :sweat_smile: used in editor-core for ascii emoji test
+  ['PEOPLE', [':grin:', ':smiley:', ':thumbsup:', ':thumbsdown:', ':open_mouth:', ':police_officer:', ':raised_hand:', ':sweat_smile:']],
   ['FLAGS', [':flag_black:', ':flag_cg:']],
   // :boom: is used for testing duplicate shortName between standard and atlassian
   ['NATURE', [':boom:']],

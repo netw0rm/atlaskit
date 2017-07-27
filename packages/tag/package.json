@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/tag",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "config": {
     "access": "public"
   },
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index",
   "ak:component": {
     "name": "Tag"

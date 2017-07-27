@@ -1,6 +1,8 @@
 # @atlaskit/dynamic-table
 
-## Unreleased
+## 4.5.2 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 ## 4.1.0 (2017-07-12)
 

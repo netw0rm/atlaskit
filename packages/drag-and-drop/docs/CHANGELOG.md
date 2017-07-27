@@ -1,5 +1,8 @@
 # @atlaskit/drag-and-drop
 
+## 4.4.2 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 ## 3.0.1 (2017-07-13)
 
 ## 3.0.0 (2017-07-12)
@@ -7,7 +10,6 @@
 
 ## 4.0.0 (2017-07-14)
 
-## Unreleased
 
 * bug fix; resorting to using keyCodes for event key matching for improved browser support (issues closed: ak-2993)
 * breaking; Minor changes to Draggable > Provided > DraggableStyle. In most cases upgrading will involve no

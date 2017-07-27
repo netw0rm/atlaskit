@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/util-readme",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "config": {
     "access": "public"
   },
   "description": "A suite of components for building readme-style docs into your stories.",
   "main": "dist/bundle.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {

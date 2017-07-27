@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "config": {
     "access": "public"
   },
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Tooltip"

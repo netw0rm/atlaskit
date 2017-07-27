@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "config": {
     "access": "public"
   },
   "description": "A React component that displays a spinning icon to show a loading state",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Spinner"

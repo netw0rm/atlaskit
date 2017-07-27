@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "config": {
     "access": "public"
   },
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {

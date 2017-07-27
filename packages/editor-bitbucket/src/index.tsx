@@ -33,9 +33,6 @@ import {
   version as coreVersion,
 
   // nodeviews
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
   reactNodeViewPlugins,
 
   // error-reporting
@@ -47,7 +44,6 @@ import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { MentionResource, MentionSource } from './mention-resource';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
@@ -78,7 +74,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
   errorReporter?: ErrorReportingHandler;
-  mentionSource?: MentionSource;
+  mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
@@ -114,24 +110,16 @@ export default class Editor extends PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
-    if (props.mentionSource !== nextProps.mentionSource || props.emojiProvider !== nextProps.emojiProvider) {
+    if (
+      props.mentionProvider !== nextProps.mentionProvider ||
+      props.emojiProvider !== nextProps.emojiProvider
+    ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionSource } = props;
-
-    let mentionProvider;
-
-    if (mentionSource) {
-      const mentionsResourceProvider = new MentionResource({
-        minWait: 10,
-        maxWait: 25,
-      }, mentionSource);
-
-      mentionProvider = Promise.resolve(mentionsResourceProvider);
-    }
+    const { emojiProvider, mentionProvider } = props;
 
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
@@ -313,7 +301,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
             ...emojisPlugins(schema, this.providerFactory),
-            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
+            ...asciiEmojiPlugins(schema, this.providerFactory),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
@@ -347,10 +335,6 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

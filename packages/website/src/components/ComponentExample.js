@@ -71,7 +71,7 @@ export default class Example extends PureComponent {
           title={toggleLabel}
           mode={mode}
         >
-          <ToggleTitle>
+          <ToggleTitle mode={mode}>
             {title}
           </ToggleTitle>
           <ToggleIcon label={toggleLabel} />
@@ -111,8 +111,10 @@ const Toggle = styled.div`
   padding: ${p => theme(p).base.gridSize}px;
   transition: color ${TRANSITION_DURATION}, fill ${TRANSITION_DURATION};
 `;
+
+// NOTE: use of important necessary to override element targeted headings
 const ToggleTitle = styled.h4`
-  color: inherit;
+  color: ${p => theme(p).website.example.toggle[p.mode]} !important;
   margin: 0;
 `;
 

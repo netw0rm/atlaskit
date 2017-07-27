@@ -16,23 +16,20 @@ addThemeComponent('website', (mode, theme) => (mode === 'dark'
           hover: theme.colors.DN60,
         },
         open: {
-          normal: theme.colors.DN600,
-          hover: theme.colors.DN700,
+          normal: theme.colors.N700,
+          hover: theme.colors.N600,
         },
       },
     },
     toggle: {
-      normal: theme.colors.DN600,
-      open: theme.colors.DN50,
+      normal: theme.colors.DN100,
+      open: theme.colors.text,
     },
     code: {
-      background: theme.colors.DN800,
-      text: theme.colors.DN60,
+      background: theme.colors.N800,
+      text: theme.colors.N60,
     },
   },
-  propdocs: {},
-  page: {},
-  nav: {},
 } : {
   footer: {
     background: {
@@ -62,7 +59,4 @@ addThemeComponent('website', (mode, theme) => (mode === 'dark'
       text: theme.colors.N60,
     },
   },
-  propdocs: {},
-  page: {},
-  nav: {},
 }));

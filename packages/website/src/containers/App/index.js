@@ -165,7 +165,10 @@ export default class App extends PureComponent {
 }
 
 const SwitchThemeButton = styled.button`
-  background-color: ${themeValue('colors.text')};
+  background-color: ${p => (p.mode === 'dark'
+    ? theme(p).colors.DN600
+    : theme(p).colors.N900
+  )};
   border-radius: ${themeValue('base.borderRadius')}px;
   border: 0;
   color: ${p => (p.mode === 'dark'
@@ -178,12 +181,22 @@ const SwitchThemeButton = styled.button`
   outline: 0;
   padding: 0;
   position: fixed;
-  right: 10px;
-  top: 10px;
+  right: ${p => theme(p).base.gridSize * 2}px;
+  top: ${p => theme(p).base.gridSize * 2}px;
   transition: box-shadow 200ms ease-out;
   width: 4em;
   z-index: 1000;
 
+  &:hover {
+    background-color: ${p => (p.mode === 'dark'
+      ? theme(p).colors.DN700
+      : theme(p).colors.N800
+    )};
+    color: ${p => (p.mode === 'dark'
+      ? theme(p).colors.N900
+      : theme(p).colors.DN700
+    )};
+  }
   &:focus {
     box-shadow:
       0 0 0 1px ${themeValue('colors.background')},
@@ -191,6 +204,11 @@ const SwitchThemeButton = styled.button`
         ? theme(p).colors.link
         : theme(p).colors.B100
       )};
+  }
+
+  @media ${MOBILE_QUERY} {
+    bottom: ${p => theme(p).base.gridSize * 2}px;
+    top: auto;
   }
 `;
 

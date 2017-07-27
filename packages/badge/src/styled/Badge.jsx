@@ -1,48 +1,34 @@
 import styled from 'styled-components';
-import {
-  akColorN30,
-  akColorN500,
-  akColorB400,
-  akColorR300,
-  akColorG50,
-  akColorG500,
-  akColorR50,
-  akColorR500,
-  akColorN0,
-  akColorB50,
-  akColorB500,
-} from '@atlaskit/util-shared-styles';
+import { addThemeComponent, theme as getTheme } from '../../../theme/src';
 
-const ThemeColor = {
-  background: {
-    added: akColorG50,
-    darkTheme: akColorB50,
-    default: akColorN30,
-    important: akColorR300,
-    primary: akColorB400,
-    removed: akColorR50,
-  },
-  text: {
-    added: akColorG500,
-    darkTheme: akColorB500,
-    default: akColorN500,
-    important: akColorN0,
-    primary: akColorN0,
-    removed: akColorR500,
-  },
-};
+const PKG_NM = 'badge';
 
-const getBackgroundColor = ({ appearance, theme }) => (theme === 'dark'
-  ? ThemeColor.background.darkTheme
-  : ThemeColor.background[appearance]
-);
+addThemeComponent(PKG_NM, (mode, theme) => {
+  const dark = mode === 'dark';
+  const { colors } = theme;
 
-const getTextColor = ({ appearance, theme }) => (theme === 'dark'
-  ? ThemeColor.text.darkTheme
-  : ThemeColor.text[appearance]
-);
+  return {
+    background: {
+      added: colors.G50,
+      default: dark ? colors.DN70 : colors.N30,
+      important: dark ? colors.DN900 : colors.R300,
+      primary: dark ? colors.DN600 : colors.B400,
+      removed: colors.R50,
+    },
+    text: {
+      added: colors.G500,
+      default: dark ? colors.DN900 : colors.N500,
+      important: dark ? colors.DN0 : colors.N0,
+      primary: dark ? colors.DN70 : colors.N0,
+      removed: colors.R500,
+    },
+  };
+});
 
-const BadgeElement = styled.div`
+const getBackgroundColor = (p) => getTheme(p)[PKG_NM].background[p.appearance];
+const getTextColor = (p) => getTheme(p)[PKG_NM].text[p.appearance];
+
+export default styled.div`
   background-color: ${getBackgroundColor};
   border-radius: 2em;
   color: ${getTextColor};
@@ -54,5 +40,3 @@ const BadgeElement = styled.div`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
-BadgeElement.displayName = 'BadgeElement';
-export default BadgeElement;

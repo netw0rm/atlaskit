@@ -37,6 +37,7 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/emoji": "^22.2.0",
     "@atlaskit/util-data-test": "^4.6.1",
     "akutil-common-test": "*"
   },

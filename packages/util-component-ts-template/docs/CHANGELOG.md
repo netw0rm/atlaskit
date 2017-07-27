@@ -1,6 +1,10 @@
 # @atlaskit/util-component-ts-template
 
-## Unreleased
+
+## 2.0.6 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
 ## 2.0.5 (2017-04-27)
 

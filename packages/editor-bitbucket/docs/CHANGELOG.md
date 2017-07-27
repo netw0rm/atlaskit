@@ -1,18 +1,21 @@
 # @atlaskit/editor-bitbucket
 
-## 2.6.1 (2017-07-28)
 
-* bug fix; bump editor-core in editor-bitbucket ([abec6f0](https://bitbucket.org/atlassian/atlaskit/commits/abec6f0))
-## 2.6.0 (2017-07-27)
+## 2.5.0 (2017-07-25)
 
-* bug fix; fixed mentions in storybook ([823c533](https://bitbucket.org/atlassian/atlaskit/commits/823c533))
-* bug fix; fix emoji storybook ([82fb228](https://bitbucket.org/atlassian/atlaskit/commits/82fb228))
-* bug fix; fix emojiProvider tslint error ([3b158f8](https://bitbucket.org/atlassian/atlaskit/commits/3b158f8))
-* feature; bump editor-core to 43.1.0 ([ed778c2](https://bitbucket.org/atlassian/atlaskit/commits/ed778c2))
+## 2.4.1 (2017-07-25)
 
 
-* Update BB editor with a max height (ED-1949).
+* fix; updated shift keymap related tests and make them passed. Skip horizontal tests. ([36f1993](https://bitbucket.org/atlassian/atlaskit/commits/36f1993))
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
+
+* feature; change es2015 build so it transpiles everything except import/export statements ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
+
+## 2.4.0 (2017-07-19)
+
+
+* feature; bitbucket editor to have a max-height of 480px. ([ce8f2cc](https://bitbucket.org/atlassian/atlaskit/commits/ce8f2cc))
 
 ## 2.3.4 (2017-07-12)
 

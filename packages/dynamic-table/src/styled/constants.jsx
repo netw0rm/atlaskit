@@ -1,9 +1,7 @@
 import { css } from 'styled-components';
 import { ASC, DESC } from '../internal/constants';
-import Theme from './theme';
-
-export const { spacing } = Theme.$;
-export const baselineUnit = spacing / 2;
+import { PKG_NM } from './theme';
+import { theme, themeValue } from '../../../theme/src';
 
 export const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
   ${width ? css`width: ${width}%;` : ''}
@@ -20,7 +18,10 @@ export const onClickStyle = ({ onClick }) => onClick && css`
   }
 `;
 
-export const arrowsStyle = ({ isSortable, sortOrder }) => {
+export const arrowsStyle = (props) => {
+  const { isSortable, sortOrder } = props;
+  const { arrow } = theme(props)[PKG_NM];
+
   if (!isSortable) return '';
 
   const pseudoBase = css`
@@ -28,7 +29,7 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
     display: block;
     height: 0;
     position: absolute;
-    right: -${spacing}px;
+    right: -${themeValue('base.gridSize')}px;
     width: 0;
   `;
 
@@ -38,8 +39,8 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
         &:before {
           ${pseudoBase};
             border-bottom: 3px solid ${sortOrder === ASC
-              ? Theme.arrow.color.selected
-              : Theme.arrow.color.default
+              ? arrow.color.selected
+              : arrow.color.default
             };
             bottom: 8px;
             content: ' ';
@@ -47,8 +48,8 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
         &:after {
           ${pseudoBase};
           border-top: 3px solid ${sortOrder === DESC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.default
+            ? arrow.color.selected
+            : arrow.color.default
           };
           bottom: 0;
           content: ' ';
@@ -58,14 +59,14 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
       &:hover > span {
         &:before {
           border-bottom: 3px solid ${sortOrder === ASC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.hover
+            ? arrow.color.selected
+            : arrow.color.hover
           };
         }
         &:after {
           border-top: 3px solid ${sortOrder === DESC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.hover
+            ? arrow.color.selected
+            : arrow.color.hover
           };
         }
       }
@@ -74,7 +75,7 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
 
 export const cellStyle = css`
     border: none;
-    padding: ${baselineUnit}px ${spacing}px;
+    padding: ${p => theme(p)[PKG_NM].baselineUnit}px ${themeValue('base.gridSize')}px;
     text-align: left;
 
     &:first-child { padding-left: 0; }

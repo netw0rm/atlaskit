@@ -32,24 +32,26 @@ const Body = ({ rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize }
     <tbody>
       {sortedRows
         .slice((page - 1) * rowsPerPage, page * rowsPerPage)
-        .map((row, rowIndex) => <TableRow
-          key={rowIndex}
-          row={row}
-          head={head}
-          isFixedSize={isFixedSize}
-        />)}
+        .map((row, rowIndex) => (
+          <TableRow
+            head={head}
+            isFixedSize={isFixedSize}
+            key={rowIndex}
+            row={row}
+          />
+        ))}
     </tbody>
   );
 };
 
 Body.propTypes = {
   head: props.head,
+  isFixedSize: PropTypes.bool,
+  page: props.isInteger,
   rows: props.rows,
+  rowsPerPage: props.isInteger,
   sortKey: props.sortKey,
   sortOrder: PropTypes.oneOf([ASC, DESC]),
-  rowsPerPage: props.isInteger,
-  page: props.isInteger,
-  isFixedSize: PropTypes.bool,
 };
 
 export default Body;

@@ -1,33 +1,34 @@
-import {
-  akColorN10,
-  akColorN40,
-  akColorN60,
-  akColorN300,
+import { addThemeComponent } from '../../../theme/src';
 
-  akGridSizeUnitless as spacing,
-} from '@atlaskit/util-shared-styles';
+// eslint-disable-next-line import/prefer-default-export
+export const PKG_NM = 'dynamic-table';
 
-export default {
-  $: { spacing },
+addThemeComponent(PKG_NM, (mode, theme) => {
+  const dark = mode === 'dark';
 
-  arrow: {
-    color: {
-      default: akColorN40,
-      selected: akColorN300,
-      hover: akColorN60,
+  return {
+    common: {
+      baselineUnit: theme.base.gridSize / 2,
     },
-  },
-  tr: {
-    background: {
-      hover: akColorN10,
+    arrow: {
+      color: {
+        default: dark ? theme.colors.DN40 : theme.colors.N40,
+        selected: dark ? theme.colors.DN300 : theme.colors.N300,
+        hover: dark ? theme.colors.DN60 : theme.colors.N60,
+      },
     },
-  },
-  th: {
-    border: {
-      color: akColorN40,
+    tr: {
+      background: {
+        hover: dark ? theme.colors.DN10 : theme.colors.N10,
+      },
     },
-    text: {
-      color: akColorN300,
+    th: {
+      border: {
+        color: dark ? theme.colors.DN40 : theme.colors.N40,
+      },
+      text: {
+        color: dark ? theme.colors.DN300 : theme.colors.N300,
+      },
     },
-  },
-};
+  };
+});

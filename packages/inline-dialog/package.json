@@ -10,7 +10,8 @@
   "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Inline Dialog"
+    "name": "Inline Dialog",
+    "dark": true
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-dialog; } || ../../node_modules/.bin/not-in-publish",

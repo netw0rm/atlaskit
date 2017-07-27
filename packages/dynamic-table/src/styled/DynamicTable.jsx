@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { baselineUnit, spacing } from './constants';
+import { PKG_NM } from './theme';
+import { theme, themeValue } from '../../../theme/src';
 
 export const Table = styled.table`
   ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
@@ -13,7 +14,7 @@ export const Caption = styled.caption`
   font-weight: 500;
   letter-spacing: -0.008em;
   line-height: 1.2;
-  margin-bottom: ${spacing}px;
-  margin-top: ${baselineUnit * 7}px;
+  margin-bottom: ${themeValue('base.gridSize')}px;
+  margin-top: ${p => theme(p)[PKG_NM].common.baselineUnit * 7}px;
   text-align: left;
 `;

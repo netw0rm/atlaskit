@@ -93,7 +93,7 @@ const ThemeReset = styled.div`
 
 function getStylesheetResetCSS(currentTheme) {
   return `
-    body { background: ${currentTheme.colors.background}; };
+    body { background: ${currentTheme.colors.background}; }
   `;
 }
 

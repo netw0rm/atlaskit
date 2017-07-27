@@ -4,21 +4,14 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import LayoutFork from 'react-media';
-import {
-  akBorderRadius,
-  akColorB50,
-  akColorB500,
-  akColorN600,
-  akColorN80,
-  akGridSize,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
 import components from '../data';
 import { MOBILE_QUERY } from '../../constants';
+
+import { addThemeComponent, theme as getTheme, themeValue } from '../../../theme/src';
 
 const componentKeys = Object.keys(components);
 
@@ -134,15 +127,15 @@ export default class Components extends PureComponent {
       const { description, name, version } = component;
 
       return (
-        <RowButton to={`/components/${key}`} key={key}>
-          <RowButtonHeader>
-            <RowButtonTitle>{name}</RowButtonTitle>
-            <div>{version}</div>
-          </RowButtonHeader>
-          <RowButtonDescription>
+        <Row to={`/components/${key}`} key={key}>
+          <RowHeader>
+            <RowTitle>{name}</RowTitle>
+            <RowVersion>{version}</RowVersion>
+          </RowHeader>
+          <RowDescription>
             {description}
-          </RowButtonDescription>
-        </RowButton>
+          </RowDescription>
+        </Row>
       );
     })}</div>
   );
@@ -166,7 +159,7 @@ export default class Components extends PureComponent {
             {matches => (matches ? <MobileContent /> : <DesktopContent />)}
           </LayoutFork>
         </Section>
-        <Section style={{ marginLeft: `-${akGridSize}` }}>
+        <Section style={{ marginLeft: -getTheme(this.props).base.gridSize }}>
           <Message title="Atlassians">
             For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
           </Message>
@@ -176,15 +169,38 @@ export default class Components extends PureComponent {
   }
 }
 
+const COMP_NAME = 'website-components-page';
+
+addThemeComponent(COMP_NAME, (mode, theme) => {
+  const dark = mode === 'dark';
+  const { colors } = theme;
+
+  return {
+    time: {
+      text: dark ? colors.DN80 : colors.N80,
+    },
+    row: {
+      background: {
+        active: dark ? colors.DN50 : colors.B50,
+        focus: dark ? colors.DN50 : colors.B50,
+      },
+      text: dark ? colors.DN80 : colors.N80,
+      title: colors.link,
+      description: colors.text,
+      version: colors.subtleText,
+    },
+  };
+});
+
 // Layout
 const Wrapper = styled.div`
   padding-bottom: 3em;
-  padding-left: ${akGridSizeUnitless * 2.5}px;
-  padding-right: ${akGridSizeUnitless * 2.5}px;
+  padding-left: ${p => getTheme(p).base.gridSize * 2.5}px;
+  padding-right: ${p => getTheme(p).base.gridSize * 2.5}px;
 
   @media (min-width: 600px) {
-    padding-left: ${akGridSizeUnitless * 5}px;
-    padding-right: ${akGridSizeUnitless * 5}px;
+    padding-left: ${p => getTheme(p).base.gridSize * 5}px;
+    padding-right: ${p => getTheme(p).base.gridSize * 5}px;
   }
 `;
 
@@ -199,17 +215,18 @@ const TableWrapper = styled.div`
   }
 `;
 const RowCell = styled.div`
-  padding-bottom: ${akGridSize};
-  padding-top: ${akGridSize};
+  padding-bottom: ${themeValue('base.gridSize')}px;
+  padding-top: ${themeValue('base.gridSize')}px;
 `;
 const Time = styled.time`
-  color: ${akColorN80};
+  color: ${themeValue(`${COMP_NAME}.time.text`)};
 `;
 
 // Mobile content
-const RowButton = styled(Link)`
-  border-radius: ${akBorderRadius};
-  color: ${akColorN80};
+const Row = styled(Link)`
+  padding-bottom: ${themeValue('base.gridSize')}px;
+  border-radius: ${themeValue('base.borderRadius')}px;
+  color: ${themeValue(`${COMP_NAME}.row.text`)};
   display: block;
   padding: 0.5em 1em;
   margin-bottom: 0.5em;
@@ -217,22 +234,26 @@ const RowButton = styled(Link)`
   margin-right: -1em;
   text-decoration: none !important;
 
-  &:active, &:focus {
-    background-color: ${akColorB50};
+  &:active,
+  &:focus {
+    background-color: ${themeValue(`${COMP_NAME}.row.background.focus`)};
     text-decoration: none;
   }
 `;
-const RowButtonHeader = styled.div`
+const RowHeader = styled.div`
   align-items: baseline;
   display: flex;
 `;
-const RowButtonTitle = styled.div`
-  color: ${akColorB500};
+const RowTitle = styled.div`
+  color: ${themeValue(`${COMP_NAME}.row.title`)};
   font-weight: 500;
   margin-right: 0.5em;
 `;
-const RowButtonDescription = styled.div`
-  color: ${akColorN600};
+const RowVersion = styled.div`
+  color: ${themeValue(`${COMP_NAME}.row.version`)};
+`;
+const RowDescription = styled.div`
+  color: ${themeValue(`${COMP_NAME}.row.description`)};
   line-height: 1.4;
   font-size: 0.85em;
 `;

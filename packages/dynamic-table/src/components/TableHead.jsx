@@ -12,36 +12,35 @@ const TableHead = ({ head, sortKey, sortOrder, isFixedSize, onSort }) => {
   return (
     <Head {...rest}>
       <tr>
-        {
-          cells.map((cell, index) => {
-            const { isSortable, key, content, ...restCellProps } = cell;
-            return (
-              <HeadCell
-                key={key || index}
-                onClick={isSortable && onSort(cell)}
-                isFixedSize={isFixedSize}
-                isSortable={isSortable}
-                sortOrder={key === sortKey && sortOrder}
-                {...restCellProps}
-              >
-                <span>
-                  {content}
-                </span>
-              </HeadCell>
-            );
-          })
-        }
+        {cells.map((cell, index) => {
+          const { isSortable, key, content, ...restCellProps } = cell;
+
+          return (
+            <HeadCell
+              isFixedSize={isFixedSize}
+              isSortable={isSortable}
+              key={key || index}
+              onClick={isSortable && onSort(cell)}
+              sortOrder={key === sortKey && sortOrder}
+              {...restCellProps}
+            >
+              <span>
+                {content}
+              </span>
+            </HeadCell>
+          );
+        })}
       </tr>
     </Head>
   );
 };
 
 TableHead.propTypes = {
-  onSort: PropTypes.func,
   head: props.head,
+  isFixedSize: PropTypes.bool,
+  onSort: PropTypes.func,
   sortKey: props.sortKey,
   sortOrder: PropTypes.oneOf([ASC, DESC]),
-  isFixedSize: PropTypes.bool,
 };
 
 export default TableHead;

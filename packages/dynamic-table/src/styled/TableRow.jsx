@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { onClickStyle, truncateStyle, cellStyle } from './constants';
-import Theme from './theme';
+import { PKG_NM } from './theme';
+import { theme } from '../../../theme/src';
 
 export const TableBodyRow = styled.tr`
   ${props => onClickStyle(props)}
   &:hover {
-    background: ${Theme.tr.background.hover};
+    background: ${p => theme(p)[PKG_NM].tr.background.hover};
   }
 `;
 

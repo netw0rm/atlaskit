@@ -21,12 +21,17 @@ export interface LinkCardProps extends SharedCardProps {
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
+
+  get isSmartCard(): boolean {
+    return Boolean(this.resources.smartCard);
+  }
+
   render(): JSX.Element | null {
     const {appearance} = this.props;
-    const {resources} = this;
+    const {resources, isSmartCard} = this;
 
-    if (resources.smartCard) {
-      return this.renderApplicationCard();
+    if (isSmartCard && appearance === 'horizontal') {
+      return this.renderSmartCard();
     }
 
     // If appearance is passed we prioritize that instead of the better looking one
@@ -48,10 +53,14 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       if (resources.image) { return this.renderLinkCardImage(); }
     }
 
+    if (isSmartCard) {
+      return this.renderSmartCard();
+    }
+
     return this.renderGenericLink();
   }
 
-  private renderApplicationCard(): JSX.Element | null {
+  private renderSmartCard(): JSX.Element | null {
     const {resources: {smartCard}} = this;
 
     // this check is just to silence TS - this method should never be called if we don't have

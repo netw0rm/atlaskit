@@ -4,9 +4,11 @@ import { mount } from 'enzyme';
 import DraggableDimensionPublisher from '../../../src/view/draggable-dimension-publisher/draggable-dimension-publisher';
 import { getDraggableDimension } from '../../../src/state/dimension';
 // eslint-disable-next-line no-duplicate-imports
-import type { Margin } from '../../../src/state/dimension';
+import type { ClientRect, Margin } from '../../../src/state/dimension';
 import getClientRect from '../../utils/get-client-rect';
+import setWindowScroll from '../../utils/set-window-scroll';
 import type {
+  Position,
   DraggableId,
   DroppableId,
   DraggableDimension,
@@ -25,6 +27,13 @@ const dimension: DraggableDimension = getDraggableDimension({
     left: 0,
   }),
 });
+
+const noComputedMargin = {
+  marginTop: '0',
+  marginRight: '0',
+  marginBottom: '0',
+  marginLeft: '0',
+};
 
 class Item extends Component {
   /* eslint-disable react/sort-comp */
@@ -96,19 +105,14 @@ describe('DraggableDimensionPublisher', () => {
       height: dimension.page.withoutMargin.height,
       width: dimension.page.withoutMargin.width,
     }));
-    jest.spyOn(window, 'getComputedStyle').mockImplementation(() => ({
-      marginTop: '0',
-      marginRight: '0',
-      marginBottom: '0',
-      marginLeft: '0',
-    }));
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(() => noComputedMargin);
 
     const wrapper = mount(<Item publish={publish} />);
     wrapper.setProps({
       shouldPublish: true,
     });
 
-    expect(publish.mock.calls[0][0]).toEqual(dimension);
+    expect(publish).toHaveBeenCalledTimes(1);
     expect(publish).toBeCalledWith(dimension);
   });
 
@@ -152,6 +156,42 @@ describe('DraggableDimensionPublisher', () => {
     });
 
     expect(publish).toBeCalledWith(expected);
+  });
+
+  it('should consider the window scroll when calculating dimensions', () => {
+    const publish = jest.fn();
+    const originalScroll: Position = {
+      x: window.pageXOffset,
+      y: window.pageYOffset,
+    };
+    const windowScroll: Position = {
+      x: 100,
+      y: 200,
+    };
+    const clientRect: ClientRect = getClientRect({
+      top: 0,
+      right: 100,
+      bottom: 100,
+      left: 0,
+    });
+    const expected: DraggableDimension = getDraggableDimension({
+      id: draggableId,
+      droppableId,
+      clientRect,
+      windowScroll,
+    });
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => clientRect);
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(() => noComputedMargin);
+    setWindowScroll(windowScroll);
+
+    const wrapper = mount(<Item publish={publish} />);
+    wrapper.setProps({
+      shouldPublish: true,
+    });
+
+    expect(publish).toHaveBeenCalledWith(expected);
+
+    setWindowScroll(originalScroll);
   });
 
   it('should not publish unless it is freshly required to do so', () => {

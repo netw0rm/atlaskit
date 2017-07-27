@@ -4,8 +4,9 @@ import { mount } from 'enzyme';
 import DroppableDimensionPublisher from '../../../src/view/droppable-dimension-publisher/droppable-dimension-publisher';
 import { getDroppableDimension } from '../../../src/state/dimension';
 // eslint-disable-next-line no-duplicate-imports
-import type { Margin } from '../../../src/state/dimension';
+import type { Margin, ClientRect } from '../../../src/state/dimension';
 import getClientRect from '../../utils/get-client-rect';
+import setWindowScroll from '../../utils/set-window-scroll';
 import type {
   DroppableId,
   DroppableDimension,
@@ -48,27 +49,33 @@ class ScrollableItem extends Component {
 
   render() {
     return (
-      <div
-        className="scroll-container"
-        style={{ overflowY: 'auto' }}
+        // $ExpectError - for an unknown reason flow is having a hard time with this
+      <DroppableDimensionPublisher
+        droppableId={droppableId}
+        type="TYPE"
+        targetRef={this.state.ref}
+        shouldPublish={Boolean(this.props.shouldPublish)}
+        publish={this.props.publish}
+        updateScroll={this.props.updateScroll}
       >
-        {/* $ExpectError - for an unknown reason flow is having a hard time with this */}
-        <DroppableDimensionPublisher
-          droppableId={droppableId}
-          type="TYPE"
-          targetRef={this.state.ref}
-          shouldPublish={Boolean(this.props.shouldPublish)}
-          publish={this.props.publish}
-          updateScroll={this.props.updateScroll}
+        <div
+          className="scroll-container"
+          style={{ overflowY: 'auto' }}
+          ref={this.setRef}
         >
-          <div ref={this.setRef}>hi</div>
-        </DroppableDimensionPublisher>
-      </div>
+          hi
+        </div>
+      </DroppableDimensionPublisher>
     );
   }
 }
 
 describe('DraggableDimensionPublisher', () => {
+  const originalWindowScroll: Position = {
+    x: window.pageXOffset,
+    y: window.pageYOffset,
+  };
+
   afterEach(() => {
     // clean up any stubs
     if (Element.prototype.getBoundingClientRect.mockRestore) {
@@ -77,6 +84,7 @@ describe('DraggableDimensionPublisher', () => {
     if (window.getComputedStyle.mockRestore) {
       window.getComputedStyle.mockRestore();
     }
+    setWindowScroll(originalWindowScroll, { shouldPublish: false });
   });
 
   describe('dimension publishing', () => {
@@ -129,8 +137,8 @@ describe('DraggableDimensionPublisher', () => {
         shouldPublish: true,
       });
 
-      expect(publish.mock.calls[0][0]).toEqual(dimension);
       expect(publish).toBeCalledWith(dimension);
+      expect(publish).toHaveBeenCalledTimes(1);
 
       wrapper.unmount();
     });
@@ -180,6 +188,100 @@ describe('DraggableDimensionPublisher', () => {
       });
 
       expect(publish).toBeCalledWith(expected);
+
+      wrapper.unmount();
+    });
+
+    it('should consider the window scroll when calculating dimensions', () => {
+      const publish = jest.fn();
+      const updateScroll = jest.fn();
+      const windowScroll: Position = {
+        x: 500,
+        y: 1000,
+      };
+      setWindowScroll(windowScroll, { shouldPublish: false });
+      const clientRect: ClientRect = getClientRect({
+        top: 0,
+        right: 100,
+        bottom: 100,
+        left: 0,
+      });
+      const expected: DroppableDimension = getDroppableDimension({
+        id: droppableId,
+        clientRect,
+        windowScroll,
+      });
+      jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => clientRect);
+      jest.spyOn(window, 'getComputedStyle').mockImplementation(() => ({
+        marginTop: '0',
+        marginRight: '0',
+        marginBottom: '0',
+        marginLeft: '0',
+      }));
+      const wrapper = mount(
+        <ScrollableItem
+          publish={publish}
+          updateScroll={updateScroll}
+        />
+      );
+
+      wrapper.setProps({
+        shouldPublish: true,
+      });
+
+      expect(publish).toHaveBeenCalledWith(expected);
+
+      wrapper.unmount();
+    });
+
+    it('should consider the closest scrollable when calculating dimensions', () => {
+      const publish = jest.fn();
+      const updateScroll = jest.fn();
+      const closestScroll: Position = {
+        x: 500,
+        y: 1000,
+      };
+      const expected: DroppableDimension = getDroppableDimension({
+        id: droppableId,
+        clientRect: getClientRect({
+          top: 0,
+          right: 100,
+          bottom: 100,
+          left: 0,
+        }),
+        scroll: closestScroll,
+      });
+      jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => ({
+        top: expected.page.withoutMargin.top,
+        bottom: expected.page.withoutMargin.bottom,
+        left: expected.page.withoutMargin.left,
+        right: expected.page.withoutMargin.right,
+        height: expected.page.withoutMargin.height,
+        width: expected.page.withoutMargin.width,
+      }));
+      jest.spyOn(window, 'getComputedStyle').mockImplementation(() => ({
+        overflowY: 'scroll',
+        marginTop: '0',
+        marginRight: '0',
+        marginBottom: '0',
+        marginLeft: '0',
+      }));
+      const wrapper = mount(
+        <ScrollableItem
+          publish={publish}
+          updateScroll={updateScroll}
+        />
+      );
+      // setting initial scroll
+      const container: HTMLElement = wrapper.getDOMNode();
+      container.scrollTop = closestScroll.y;
+      container.scrollLeft = closestScroll.x;
+
+      wrapper.setProps({
+        shouldPublish: true,
+      });
+
+      expect(publish).toHaveBeenCalledWith(expected);
 
       wrapper.unmount();
     });

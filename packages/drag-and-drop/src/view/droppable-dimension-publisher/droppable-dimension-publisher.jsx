@@ -82,8 +82,6 @@ export default class DroppableDimensionPublisher extends Component {
   watchScroll = () => {
     invariant(this.props.targetRef, 'cannot watch scroll if not in the dom');
 
-    this.closestScrollable = getClosestScrollable(this.props.targetRef);
-
     // no closest parent
     if (this.closestScrollable == null) {
       return;
@@ -129,6 +127,8 @@ export default class DroppableDimensionPublisher extends Component {
       return;
     }
 
+    // discovering the closest scrollable for a drag
+    this.closestScrollable = getClosestScrollable(this.props.targetRef);
     this.props.publish(this.getDimension());
     this.watchScroll();
   }

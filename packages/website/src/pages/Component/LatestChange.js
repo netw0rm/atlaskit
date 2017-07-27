@@ -13,7 +13,8 @@ const LatestChange = (
   { changelog, componentKey }:
   { changelog: Array<{ version: string }>, componentKey: string }
 ) => {
-  if (!changelog[0].version) return null;
+  if (!changelog || !changelog[0] || !changelog[0].version) return null;
+
   return (
     <LogWrapper>
       <Latest />
@@ -28,9 +29,6 @@ const LatestChange = (
     </LogWrapper>
   );
 };
-
-// border-left: ${akGridSizeUnitless / 2}px solid ${akColorN30};
-// padding: 0 0 0 ${akGridSizeUnitless * 2}px;
 
 const gutter = `${akGridSizeUnitless * 3}px`;
 

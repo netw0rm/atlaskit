@@ -2,15 +2,12 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import chai, { assert } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-
 import isConfluenceInstalledOrActivating from '../../../src/jira-confluence/isConfluenceInstalledOrActivating';
 import noConfluenceResponse from './mock-data/pricingNoConfluence.json';
 import activatingConfluenceResponse from './mock-data/pricingActivatingConfluence.json';
 import activeConfluenceResponse from './mock-data/pricingActiveConfluence.json';
 
-chai.use(chaiAsPromised);
+import { ACTIVE, ACTIVATING, INACTIVE } from '../../../src/common/productProvisioningStates';
 
 const mockEndpointWithResponse = (response) => {
   const url = '/admin/rest/billing/api/instance/pricing';
@@ -27,28 +24,47 @@ describe('isConfluenceInstalledOrActivating', () => {
     fetchMock.restore();
   });
 
-  it('will return false if Confluence is neither active nor activating', () => {
+  it('will return false if Confluence is neither active nor activating', async () => {
     mockEndpointWithResponse(noConfluenceResponse);
-    return assert.eventually.equal(isConfluenceInstalledOrActivating(), false);
+    const result = await isConfluenceInstalledOrActivating();
+    expect(result).toBe(INACTIVE);
   });
 
-  it('will return true if Confluence is activating', () => {
+  it('will return true if Confluence is activating', async () => {
     mockEndpointWithResponse(activatingConfluenceResponse);
-    return assert.eventually.equal(isConfluenceInstalledOrActivating(), true);
+    const result = await isConfluenceInstalledOrActivating();
+    expect(result).toBe(ACTIVATING);
   });
 
-  it('will return true if Confluence is active', () => {
+  it('will return true if Confluence is active', async () => {
     mockEndpointWithResponse(activeConfluenceResponse);
-    return assert.eventually.equal(isConfluenceInstalledOrActivating(), true);
+    const result = await isConfluenceInstalledOrActivating();
+    expect(result).toBe(ACTIVE);
   });
 
-  it('will return reject with an error if the endpoint returns a 404', () => {
+  it('will return reject with an error if the endpoint returns a 404', async () => {
     mockEndpointWithFailureStatus(404);
-    return assert.isRejected(isConfluenceInstalledOrActivating(), /404/);
+    let err;
+
+    try {
+      await isConfluenceInstalledOrActivating();
+    } catch (e) {
+      err = e;
+    }
+
+    expect(err.message).toMatch(/404/);
   });
 
-  it('will return reject with an error if the endpoint returns a 500', () => {
+  it('will return reject with an error if the endpoint returns a 500', async () => {
     mockEndpointWithFailureStatus(500);
-    return assert.isRejected(isConfluenceInstalledOrActivating(), /500/);
+    let err;
+
+    try {
+      await isConfluenceInstalledOrActivating();
+    } catch (e) {
+      err = e;
+    }
+
+    expect(err.message).toMatch(/500/);
   });
 });

@@ -6,7 +6,7 @@ export default async () => {
     cache: 'no-store',
   });
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     throw new Error(
       `Unable to determine state of Confluence activation. Status: ${response.status}`
     );

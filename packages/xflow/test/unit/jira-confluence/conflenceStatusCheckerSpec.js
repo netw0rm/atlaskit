@@ -3,20 +3,19 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import chai, { assert } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-
 import productUsageInactive from './mock-data/productUsageInactive.json';
 import productUsageActive from './mock-data/productUsageActive.json';
 
 import confluenceStatusChecker, {
   PRODUCT_USAGE_URL,
-  ACTIVE,
-  INACTIVE,
-  UNKNOWN,
 } from '../../../src/jira-confluence/confluenceStatusChecker';
 
-chai.use(chaiAsPromised);
+import {
+  ACTIVE,
+  ACTIVATING,
+  // INACTIVE,
+  UNKNOWN,
+} from '../../../src/common/productProvisioningStates';
 
 const mockProductUsageEndpointWithSuccess = (inactiveResponseCount = Infinity) => {
   let count = 0;
@@ -42,15 +41,15 @@ describe('confluenceStatusChecker', () => {
   });
 
   it('will poll the product usage endpoint until confluence is active', async () => {
-    const expect = 3;
+    const expectedValue = 3;
     let called = 0;
 
-    mockProductUsageEndpointWithSuccess(expect - 1);
+    mockProductUsageEndpointWithSuccess(expectedValue - 1);
 
     const result = await new Promise((resolve) => {
       const progressHandler = ({ status }) => {
         called++;
-        if (called === expect) {
+        if (called === expectedValue) {
           resolve(status);
         }
       };
@@ -58,10 +57,10 @@ describe('confluenceStatusChecker', () => {
       confluenceStatusChecker.start(progressHandler, 100);
     });
 
-    assert.equal(result, ACTIVE);
+    expect(result).toEqual(ACTIVE);
   });
 
-  it('will invoke the progressHandler with the status and polling time', async () => {
+  it('will invoke the progressHandler with the status and progress', async () => {
     mockProductUsageEndpointWithSuccess(1);
 
     const result = await new Promise((resolve) => {
@@ -72,11 +71,11 @@ describe('confluenceStatusChecker', () => {
       confluenceStatusChecker.start(progressHandler);
     });
 
-    assert.property(result, 'status');
-    assert.property(result, 'time');
-    assert.isNumber(result.time, 'The time should be a number');
-    assert.isString(result.status, 'The state should be a string');
-    assert.equal(result.status, INACTIVE);
+    expect(result).toHaveProperty('status');
+    expect(result).toHaveProperty('progress');
+    expect(result.progress).toBeGreaterThanOrEqual(0);
+    expect(result.progress).toBeLessThanOrEqual(1);
+    expect(result.status).toBe(ACTIVATING);
   });
 
   it('will invoke the progressHandler with the status UNKNOWN when the endpoint fails', async () => {
@@ -90,10 +89,7 @@ describe('confluenceStatusChecker', () => {
       confluenceStatusChecker.start(progressHandler);
     });
 
-    assert.property(result, 'status');
-    assert.property(result, 'time');
-    assert.isNumber(result.time, 'The time should be a number');
-    assert.isString(result.status, 'The state should be a string');
-    assert.equal(result.status, UNKNOWN);
+    expect(result).toHaveProperty('status');
+    expect(result.status).toBe(UNKNOWN);
   });
 });

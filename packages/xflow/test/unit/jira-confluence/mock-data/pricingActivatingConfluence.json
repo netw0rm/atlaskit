@@ -11,15 +11,6 @@
     "renewalFrequency": "monthly"
   },
   "activeProducts": [{
-    "productKey": "confluence.ondemand",
-    "productName": "Confluence (Cloud)",
-    "usingNextPricingPlan": true,
-    "amount": 0,
-    "trialEndDate": "2017-08-17",
-    "features": {
-      "userCount": 0
-    }
-  }, {
     "productKey": "jira-software.ondemand",
     "productName": "JIRA Software (Cloud)",
     "usingNextPricingPlan": false,

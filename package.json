@@ -92,6 +92,7 @@
     "karma-webpack": "^1.8.0",
     "lerna": "^2.0.0-rc.5",
     "lerna-semantic-release": "^9.1.0",
+    "lerna-semantic-release-analyze-commits": "^4.2.1",
     "lerna-semantic-release-io": "^7.0.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",

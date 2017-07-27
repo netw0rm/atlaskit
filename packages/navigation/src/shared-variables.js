@@ -54,6 +54,15 @@ export const zIndex = {
 export const unthemedColors = {
   resizer: akColorB200,
   presenceIconBg: akColorPrimary3,
+  scrollbarBackground: 'rgba(0,0,0,0.2)',
+  scrollbarHoverBackground: 'rgba(0,0,0,0.4)',
+};
+
+// these colours are for the scrollbars in ContainerNavigationChildren
+export const scrollbar = {
+  size: gridSize,
+  background: unthemedColors.scrollbarBackground,
+  hoverBackground: unthemedColors.scrollbarHoverBackground,
 };
 
 export const globalPrimaryActions = (() => {

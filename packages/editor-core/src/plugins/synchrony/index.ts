@@ -37,11 +37,7 @@ const ensureSynchronyLoaded = (synchronyUrl, debug) : Promise<{configureProsemir
   return loading;
 };
 
-const configureEditorState = (config, {synchronyUrl, synchronyDebug, contentId, jwtToken}) => {
-  if (!synchronyUrl) {
-    return config;
-  }
-
+const loadSynchronyStateAndPlugin = (config, {synchronyUrl, synchronyDebug, contentId, jwtToken}) => {
   return ensureSynchronyLoaded(synchronyUrl, synchronyDebug).then((synchrony) => {
     return synchrony.configureProsemirror(prosemirror, config, synchronyUrl, contentId, jwtToken);
   }).catch(e => {
@@ -50,4 +46,4 @@ const configureEditorState = (config, {synchronyUrl, synchronyDebug, contentId, 
   });
 };
 
-export default configureEditorState;
+export default loadSynchronyStateAndPlugin;

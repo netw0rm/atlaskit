@@ -37,7 +37,7 @@ import {
   MediaPluginState,
   MediaState,
   Slice,
-  configureEditorState,
+  loadSynchronyStateAndPlugin,
 
   // nodeviews
   nodeViewFactory,
@@ -98,7 +98,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
-  private editorRef?: Element;
+  private editorRef?: Element|null;
 
   constructor(props: Props) {
     super(props);
@@ -295,107 +295,112 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
-    const { schema } = this.state;
-    const { mediaPlugins } = this;
-
-    if (place) {
-      const doc = parse(this.props.defaultValue || '');
-      const cqKeymap = {
-        'Mod-Enter': this.handleSave,
-      };
-
-      const {synchronyUrl, synchronyDebug, contentId, jwtToken} = this.props;
-      this.editorRef = place;
-      Promise.resolve({
-        schema,
-        doc,
-        plugins: [
-          ...mentionsPlugins(schema, this.providerFactory),
-          ...clearFormattingPlugins(schema),
-          ...hyperlinkPlugins(schema),
-          ...rulePlugins(schema),
-          ...mediaPlugins,
-          ...panelPlugins(schema),
-          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
-          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-          // if converting is possible
-          ...blockTypePlugins(schema),
-          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
-          // this is needed to ensure that all block types are supported inside lists
-          // this is needed until we implement keymap proirity :(
-          ...listsPlugins(schema),
-          ...textFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
-          ...reactNodeViewPlugins(schema),
-          ...tablePlugins(),
-          history(),
-          keymap(cqKeymap),
-          keymap(baseKeymap),
-        ]
-      })
-      .then(config => configureEditorState(config, {synchronyUrl, synchronyDebug, contentId, jwtToken}))
-      .then(config => {
-        const editorState = EditorState.create(config);
-
-        const codeBlockState = codeBlockStateKey.getState(editorState);
-        codeBlockState.setLanguages(supportedLanguages);
-
-        const editorView = new EditorView(place, {
-          state: editorState,
-          editable: (state: EditorState<any>) => !this.props.disabled,
-          dispatchTransaction: (tr) => {
-            const newState = editorView.state.apply(tr);
-            editorView.updateState(newState);
-            this.handleChange();
-          },
-          nodeViews: {
-            jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
-            unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
-            unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
-            mediaGroup: nodeViewFactory(this.providerFactory, {
-              mediaGroup: ReactMediaGroupNode,
-              media: ReactMediaNode,
-            }, true),
-            mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-          },
-          handleDOMEvents: {
-            paste(view: EditorView, event: ClipboardEvent) {
-              analyticsService.trackEvent('atlassian.editor.paste');
-              return false;
-            }
-          },
-          handlePaste(view: EditorView, event: any, slice: Slice): boolean {
-            const { clipboardData } = event;
-            const html = clipboardData && clipboardData.getData('text/html');
-            // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
-            if (html && !html.match(/<table[^>]+>/g)) {
-              const doc = parse(html.replace(/^<meta[^>]+>/, ''));
-              view.dispatch(
-                view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
-              );
-              return true;
-            }
-            return false;
-          },
-        });
-
-        this.sendUnsupportedNodeUsage(config.doc);
-        return editorView;
-      }).then((editorView: EditorView) => {
-        if(this.editorRef === place) {
-          analyticsService.trackEvent('atlassian.editor.start');
-
-          this.setState({ editorView }, () => {
-            this.focus();
-          });
-        } else {
-          this.destroyEditorView(editorView);
-        }
-      });
-    } else {
+    if (!place) {
       this.editorRef = undefined;
       this.setState({ editorView: undefined });
+      return;
     }
+
+    this.editorRef = place;
+
+    const { schema } = this.state;
+    const { mediaPlugins } = this;
+    const doc = parse(this.props.defaultValue || '');
+    const cqKeymap = {
+      'Mod-Enter': this.handleSave,
+    };
+
+    const {synchronyUrl, synchronyDebug, contentId, jwtToken} = this.props;
+    const initialConfig = {
+      schema,
+      doc,
+      plugins: [
+        ...mentionsPlugins(schema, this.providerFactory),
+        ...clearFormattingPlugins(schema),
+        ...hyperlinkPlugins(schema),
+        ...rulePlugins(schema),
+        ...mediaPlugins,
+        ...panelPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
+        // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+        // this is needed to ensure that all block types are supported inside lists
+        // this is needed until we implement keymap proirity :(
+        ...listsPlugins(schema),
+        ...textFormattingPlugins(schema),
+        ...codeBlockPlugins(schema),
+        ...reactNodeViewPlugins(schema),
+        ...tablePlugins(),
+        history(),
+        keymap(cqKeymap),
+        keymap(baseKeymap),
+      ]
+    };
+
+    const configure = synchronyUrl
+      ? loadSynchronyStateAndPlugin(initialConfig, {synchronyUrl, synchronyDebug, contentId, jwtToken})
+      : Promise.resolve(initialConfig);
+
+    configure.then(config => {
+      const editorState = EditorState.create(config);
+
+      const codeBlockState = codeBlockStateKey.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
+
+      const editorView = new EditorView(place, {
+        state: editorState,
+        editable: (state: EditorState<any>) => !this.props.disabled,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
+          unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
+          unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
+          mediaGroup: nodeViewFactory(this.providerFactory, {
+            mediaGroup: ReactMediaGroupNode,
+            media: ReactMediaNode,
+          }, true),
+          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        },
+        handlePaste(view: EditorView, event: any, slice: Slice): boolean {
+          const { clipboardData } = event;
+          const html = clipboardData && clipboardData.getData('text/html');
+          // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
+          if (html && !html.match(/<table[^>]+>/g)) {
+            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+            view.dispatch(
+              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
+            );
+            return true;
+          }
+          return false;
+        },
+      });
+
+      this.sendUnsupportedNodeUsage(config.doc);
+      return editorView;
+    }).then((editorView: EditorView) => {
+      if(this.editorRef === place) {
+        analyticsService.trackEvent('atlassian.editor.start');
+
+        this.setState({ editorView }, () => {
+          this.focus();
+        });
+      } else {
+        this.destroyEditorView(editorView);
+      }
+    });
   }
 
   private handleCancel = () => {

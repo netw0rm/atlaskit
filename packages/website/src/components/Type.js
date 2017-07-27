@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { theme, themeValue } from '../../../theme/src';
+import { gridSize, colors, math } from '../../../theme/src';
 
 export const Heading = styled.h1`
-  font-size: ${p => theme(p).base.gridSize * 4}px;
+  font-size: ${math.multiply(gridSize, 4)}px;
   font-weight: 500;
 
   /* override css reset */
@@ -14,14 +14,14 @@ export const Heading = styled.h1`
   @media (min-width: 600px) {
     &,
     &:first-child {
-      margin-top: ${p => theme(p).base.gridSize * 6}px;
+      margin-top: ${math.multiply(gridSize, 6)}px;
     }
   }
 `;
 
 export const Intro = styled.p`
-  color: ${themeValue('colors.heading')};
-  font-size: ${p => theme(p).base.gridSize * 2}px;
+  color: ${colors.heading};
+  font-size: ${math.multiply(gridSize, 2)}px;
   font-weight: 300;
   line-height: 1.4em;
 `;

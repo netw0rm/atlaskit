@@ -7,19 +7,8 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-import { themeValue, addThemeComponent } from '../../../theme/src';
-
-addThemeComponent('tooltip', (mode, theme) => {
-  return mode === 'dark'
-    ? {
-      backgroundColor: theme.colors.DN80,
-      textColor: theme.colors.DN800,
-    }
-    : {
-      backgroundColor: theme.colors.N800,
-      textColor: theme.colors.N0,
-    };
-});
+import { borderRadius } from '../../../theme/src';
+import { tooltipBackgroundColor, tooltipTextColor } from '../theme';
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -77,10 +66,10 @@ const getKeyframeName = ({ isFlipped, position }) =>
 // apply all the things
 export default styled.div`
   animation: ${getKeyframeName} ${animTime}s ${animDelay}s backwards;
-  background-color: ${themeValue('tooltip.backgroundColor')};
-  border-radius: 3px;
+  background-color: ${tooltipBackgroundColor};
+  border-radius: ${borderRadius}px;
   box-sizing: border-box;
-  color: ${themeValue('tooltip.textColor')};
+  color: ${tooltipTextColor};
   font-size: ${fontSize}px;
   line-height: ${(4 * grid) / fontSize};
   margin: ${2 * grid}px;

@@ -133,8 +133,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
-    const { id, collection, cardDimensions, onDelete, onClick } = this.props;
-    const otherProps: any = {};
+    const { id, collection, cardDimensions, onDelete, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
@@ -147,11 +146,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     };
 
     if (onDelete) {
-      otherProps.actions = [ CardDelete(onDelete) ];
-    }
-
-    if (onClick) {
-      otherProps.onClick = onClick;
+      (otherProps as any).actions = [ CardDelete(onDelete) ];
     }
 
     return (
@@ -161,7 +156,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         identifier={identifier}
         appearance="horizontal"
         resizeMode={this.resizeMode}
-        {...otherProps}
+        {...otherProps as any}
       />
     );
   }

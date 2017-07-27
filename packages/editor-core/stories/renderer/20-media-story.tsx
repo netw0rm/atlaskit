@@ -104,6 +104,24 @@ storiesOf(name, module)
             eventHandlers={eventHandlers}
           />
         </MediaGroup>
+        <br/>
+        <Media
+          id={imageLinkId.id}
+          type={imageLinkId.mediaItemType}
+          collection={imageLinkId.collectionName}
+          providers={providerFactory}
+          eventHandlers={eventHandlers}
+        />
+        <br/>
+        <MediaGroup>
+          <Media
+            id="80e2bd90-3d97-4e8c-b38d-79ee0e40bbf3"
+            type="link"
+            collection={genericLinkId.collectionName}
+            providers={providerFactory}
+            eventHandlers={eventHandlers}
+          />
+        </MediaGroup>
         <h3>Multiple media links</h3>
         <MediaGroup>
           <Media
@@ -123,6 +141,13 @@ storiesOf(name, module)
           <Media
             id={genericLinkId.id}
             type={genericLinkId.mediaItemType}
+            collection={genericLinkId.collectionName}
+            providers={providerFactory}
+            eventHandlers={eventHandlers}
+          />
+          <Media
+            id="80e2bd90-3d97-4e8c-b38d-79ee0e40bbf3"
+            type="link"
             collection={genericLinkId.collectionName}
             providers={providerFactory}
             eventHandlers={eventHandlers}
@@ -169,6 +194,13 @@ storiesOf(name, module)
             id={audioFileId.id}
             type={audioFileId.mediaItemType}
             collection={audioFileId.collectionName}
+            providers={providerFactory}
+            eventHandlers={eventHandlers}
+          />
+          <Media
+            id="80e2bd90-3d97-4e8c-b38d-79ee0e40bbf3"
+            type="link"
+            collection={genericLinkId.collectionName}
             providers={providerFactory}
             eventHandlers={eventHandlers}
           />

@@ -34,7 +34,7 @@ export const insertLinks = async (view: EditorView, linkRanges: RangeWithUrls[],
     let linkIds: Array<string> = [];
     const resolveWhenFinished = () => --queueSize === 0 && resolve(linkIds);
 
-    links.map(({ urls, pos }) => {
+    links.forEach(({ urls, pos }) => {
       urls.map(url => {
         // TODO: Remove the following line once we've solved https://product-fabric.atlassian.net/browse/ED-2321
         url = normalizeUrl(url);
@@ -108,12 +108,10 @@ export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType): RangeW
 const mapLinksInfo = (state, linkRanges: RangeWithUrls[]): Array<{ pos: number, urls: string[] }> => {
   const posAtTheEndOfDoc = state.doc.nodeSize - 4;
 
-  return linkRanges.map(rangeWithUrls => {
-    return {
-      urls: rangeWithUrls.urls,
-      pos: posAtTheEndOfDoc < rangeWithUrls.end ? posAtTheEndOfDoc : rangeWithUrls.end
-    };
-  });
+  return linkRanges.map(rangeWithUrls => ({
+    urls: rangeWithUrls.urls,
+    pos: posAtTheEndOfDoc < rangeWithUrls.end ? posAtTheEndOfDoc : rangeWithUrls.end
+  }));
 };
 
 const findRangesWithUrlsInAddMarkStep = (step: AddMarkStep, link: MarkType): RangeWithUrls | undefined => {

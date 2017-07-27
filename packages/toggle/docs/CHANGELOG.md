@@ -1,5 +1,8 @@
 # @atlaskit/toggle
 
+## 2.4.2 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 ## 2.0.5 (2017-07-13)
 
 

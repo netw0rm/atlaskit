@@ -1,6 +1,12 @@
 # @atlaskit/editor-core
 
-## Unreleased
+## 43.1.1 (2017-07-27)
+
+
+
+
+* bug fix; updated emoji dependency ([7adf4a7](https://bitbucket.org/atlassian/atlaskit/commits/7adf4a7))
+* bug fix; emoji picker can no longer be opened when mention typeahead is open (issues closed: fs-1198, fs-1110) ([e513fd8](https://bitbucket.org/atlassian/atlaskit/commits/e513fd8))
 * New insert-block menu (ED-2059)
 * fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
 * Add border-top also to the editor when it reached max-height.

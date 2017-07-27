@@ -1,6 +1,8 @@
 # @atlaskit/flag
 
-## Unreleased
+## 3.4.3 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 ## 3.0.0 (2017-07-06)
 

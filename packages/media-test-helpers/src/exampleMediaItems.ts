@@ -203,6 +203,22 @@ export const genericLinkDetails: LinkDetails = {
   ...genericUrlPreview
 };
 
+export const minimalLinkDetailsContainingASmartCard: UrlPreview = {
+  url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
+  type: 'link',
+  title: 'Public Trello Boards',
+  resources: {
+    smartCard: {
+      title: {
+        text: 'Public Trello Boards'
+      },
+      link: {
+        url: 'https://trello.com/b/rq2mYJNn/public-trello-boards'
+      }
+    }
+  }
+};
+
 export const genericFileDetails: FileDetails = {
   id: 'fd4c4672-323a-4b6c-8326-223169e2a13e',
   mediaType: 'image',

@@ -3,16 +3,28 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
+import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import ErrorFlag from './ErrorFlag';
-
 import SpinnerDiv from '../styled/SpinnerDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
-export class ConfirmTrialBase extends Component {
+const messages = defineMessages({
+  errorFlagTitle: {
+    id: 'xflow.generic.start-trial.error-flag.title',
+    defaultMessage: 'Oops... Something went wrong',
+  },
+  errorFlagDescription: {
+    id: 'xflow.generic.start-tral.error-flag.description',
+    defaultMessage: 'Let\'s try that again.',
+  },
+});
+
+class ConfirmTrial extends Component {
   static propTypes = {
+    intl: intlShape.isRequired,
     productLogo: PropTypes.node.isRequired,
     spinnerActive: PropTypes.bool,
     confirmButtonDisabled: PropTypes.bool,
@@ -20,12 +32,8 @@ export class ConfirmTrialBase extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
-    confirmButtonText: PropTypes.string.isRequired,
-    cancelButtonText: PropTypes.string.isRequired,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
-    errorFlagTitle: PropTypes.string.isRequired,
-    errorFlagDescription: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -64,13 +72,10 @@ export class ConfirmTrialBase extends Component {
 
   render() {
     const {
+      intl,
       productLogo,
-      confirmButtonText,
-      cancelButtonText,
       heading,
       message,
-      errorFlagTitle,
-      errorFlagDescription,
     } = this.props;
     return (
       <ModalDialog
@@ -88,14 +93,14 @@ export class ConfirmTrialBase extends Component {
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
-              { confirmButtonText }
+              <FormattedMessage id="xflow.generic.confirm-trial.confirm-button" defaultMessage="Confirm" />
             </Button>
             <Button
               id="xflow-confirm-trial-cancel-button"
               onClick={this.handleCancelClick}
               appearance="subtle-link"
             >
-              { cancelButtonText }
+              <FormattedMessage id="xflow.generic.confirm-trial.cancel-button" defaultMessage="Cancel" />
             </Button>
           </StartTrialFooter>
         }
@@ -104,13 +109,11 @@ export class ConfirmTrialBase extends Component {
           <StartTrialHeader>
             { heading }
           </StartTrialHeader>
-          <p>
-            { message }
-          </p>
+          { message }
         </StartTrialDialog>
         <ErrorFlag
-          title={errorFlagTitle}
-          description={errorFlagDescription}
+          title={intl.formatMessage(messages.errorFlagTitle)}
+          description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.confluenceFailedToStart}
           onDismissed={() => this.setState({ confluenceFailedToStart: false })}
         />
@@ -119,18 +122,16 @@ export class ConfirmTrialBase extends Component {
   }
 }
 
+export const ConfirmTrialBase = injectIntl(ConfirmTrial);
+
 export default withXFlowProvider(
   ConfirmTrialBase,
   ({ xFlow: {
     config: {
       productLogo,
       startTrial: {
-        confirmButtonText,
-        cancelButtonText,
         trialHeading,
         trialMessage,
-        errorFlagTitle,
-        errorFlagDescription,
     },
     },
     startProductTrial,
@@ -139,11 +140,7 @@ export default withXFlowProvider(
     productLogo,
     startProductTrial,
     cancelStartProductTrial,
-    confirmButtonText,
-    cancelButtonText,
     heading: trialHeading,
     message: trialMessage,
-    errorFlagTitle,
-    errorFlagDescription,
   })
 );

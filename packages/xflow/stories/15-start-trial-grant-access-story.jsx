@@ -77,7 +77,6 @@ storiesOf('GrantAccess')
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
-        analyticsId="growth.happy"
         changeUsers
         defaultSelectedRadio="siteAdmins"
       />
@@ -87,7 +86,18 @@ storiesOf('GrantAccess')
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
-        analyticsId="growth.happy"
+        changeUsers
+        defaultSelectedRadio="specificUsers"
+        userSelectInFocus
+        userSelectIsInvalid
+      />
+    )
+  )
+  .add('Show Grant Access dialog, error retrieving users', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase
+        {...defaultProps}
+        retrieveUsers={() => Promise.reject(new Error('Error retrieving users.'))}
         changeUsers
         defaultSelectedRadio="specificUsers"
         userSelectInFocus
@@ -99,7 +109,6 @@ storiesOf('GrantAccess')
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
-        analyticsId="growth.happy"
         spinnerActive
         continueButtonDisabled
       />
@@ -121,7 +130,6 @@ storiesOf('GrantAccess')
       setupStorybookAnalytics(
         <GrantAccessBase
           {...defaultProps}
-          analyticsId="growth.happy"
           changeUsers
           defaultSelectedRadio="everyone"
           grantAccessToUsers={() => {

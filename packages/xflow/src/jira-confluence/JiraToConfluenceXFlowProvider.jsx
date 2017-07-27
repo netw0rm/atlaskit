@@ -20,25 +20,29 @@ import languagePacks from './language-packs.json';
 import confluenceStatusChecker from './confluenceStatusChecker';
 
 const messages = defineMessages({
-  startTrialConfirmButtonText: {
-    id: 'xflow.start-trial.confirm-button',
-    defaultMessage: 'Confirm',
-  },
-  startTrialCancelButtonText: {
-    id: 'xflow.start-trial.cancel-button',
-    defaultMessage: 'Cancel',
-  },
   startTrialHeading: {
-    id: 'xflow.start-trial.heading',
+    id: 'xflow.j2c.start-trial.heading',
     defaultMessage: 'Start your 30 day trial',
   },
-  startTrialErrorFlagTitle: {
-    id: 'xflow.start-trial.error-flag.title',
-    defaultMessage: 'Oops... Something went wrong',
+  grantAccessHeading: {
+    id: 'xflow.j2c.grant-access.heading',
+    defaultMessage: 'Who should have access?',
   },
-  startTrialErrorFlagDescription: {
-    id: 'xflow.start-trial.error-flag.description',
-    defaultMessage: 'Let\'s try that again.',
+  grantAccessDefaultAccess: {
+    id: 'xflow.j2c.grant-access.default-access',
+    defaultMessage: 'Everyone in JIRA Software will have access to Confluence.',
+  },
+  loadingProductHeading: {
+    id: 'xflow.j2c.loading-product-trial.heading',
+    defaultMessage: 'Where to find Confluence',
+  },
+  loadingProductMessage: {
+    id: 'xflow.j2c.loading-product-trial.message',
+    defaultMessage: 'Hit the menu icon near your profile image to switch between products.',
+  },
+  loadingProductGotoProductButton: {
+    id: 'xflow.j2c.loading-product-trial.goto-button',
+    defaultMessage: 'Go to Confluence',
   },
 });
 
@@ -54,12 +58,13 @@ export const defaultProps = intl => ({
       notePlaceholder: 'I would like to try Confluence because…',
     },
     startTrial: {
-      confirmButtonText: intl.formatMessage(messages.startTrialConfirmButtonText),
-      confirmCancelButtonText: intl.formatMessage(messages.startTrialCancelButtonText),
       trialHeading: intl.formatMessage(messages.startTrialHeading),
       trialMessage: <FormattedMessage id="xflow.start-trial.message" defaultMessage="Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance." values={{ br: <br /> }} />,
-      errorFlagTitle: intl.formatMessage(messages.startTrialErrorFlagTitle),
-      errorFlagDescription: intl.formatMessage(messages.startTrialErrorFlagDescription),
+      grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
+      grantAccessDefaultAccess: intl.formatMessage(messages.grantAccessDefaultAccess),
+      loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
+      loadingProductMessage: intl.formatMessage(messages.loadingProductMessage),
+      loadingProductGotoProductButton: intl.formatMessage(messages.loadingProductGotoProductButton),
       grantOptionItems: [
         {
           value: 'everyone',

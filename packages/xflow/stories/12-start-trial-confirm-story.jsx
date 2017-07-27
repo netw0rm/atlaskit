@@ -16,8 +16,6 @@ const defaultProps = {
       We will email your billing contact 3 days in advance.
     </p>
   ),
-  confirmButtonText: 'Confirm',
-  cancelButtonText: 'Cancel',
   spinnerActive: false,
   getStartedButtonDisabled: false,
   onComplete: () => {},

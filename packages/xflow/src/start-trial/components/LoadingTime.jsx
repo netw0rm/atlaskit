@@ -17,12 +17,10 @@ import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import i18nId from '../../common/i18nId';
+
 import { withAnalytics } from '../../common/components/Analytics';
 
 import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
-
-const i18n = i18nId('loading-product-trial');
 
 export class LoadingTimeBase extends Component {
   static propTypes = {
@@ -32,7 +30,9 @@ export class LoadingTimeBase extends Component {
     productLogo: PropTypes.node.isRequired,
     goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
-    firePrivateAnalyticsEvent: PropTypes.func,
+    heading: PropTypes.string,
+    message: PropTypes.string,
+    gotoButton: PropTypes.string,
   };
 
   static defaultProps = {
@@ -45,13 +45,13 @@ export class LoadingTimeBase extends Component {
   };
 
   handleGoToProductClick = () => {
-    this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
+    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
     const { goToProduct, onComplete } = this.props;
     Promise.resolve(goToProduct()).then(() => onComplete());
   };
 
   handleCloseClick = () => {
-    this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
+    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
     const { closeLoadingDialog, onComplete } = this.props;
     Promise.resolve(closeLoadingDialog()).then(() => onComplete());
   };
@@ -62,13 +62,13 @@ export class LoadingTimeBase extends Component {
 
     if (isReady) {
       if (status === ACTIVE) {
-        this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
-        return <FormattedMessage id={i18n`complete-heading`} />;
+        // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
+        return <FormattedMessage id="xflow.generic.loading-product-trial.complete-heading" defaultMessage="You're good to go!" />;
       }
-      this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
-      return <FormattedMessage id={i18n`error-heading`} />;
+      // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
+      return <FormattedMessage id="xflow.generic.loading-product-trial.error-heading" defaultMessage="Uh oh. That didn't work..." />;
     }
-    return <FormattedMessage id={i18n`loading-heading`} />;
+    return <FormattedMessage id="xflow.generic.loading-product-trial.loading-heading" defaultMessage="We're turning some cogs..." />;
   };
 
   handleProgressComplete = () => {
@@ -78,7 +78,7 @@ export class LoadingTimeBase extends Component {
   };
 
   render() {
-    const { productLogo, progress, status } = this.props;
+    const { productLogo, progress, status, gotoButton, heading, message } = this.props;
 
     const { isReady } = this.state;
 
@@ -104,14 +104,14 @@ export class LoadingTimeBase extends Component {
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
-              <FormattedMessage id={i18n`go-to-product-button`} />
+              { gotoButton }
             </Button>
             <Button
               id="xflow-loading-close-button"
               onClick={this.handleCloseClick}
               appearance="subtle-link"
             >
-              <FormattedMessage id={i18n`close-button`} />
+              <FormattedMessage id="xflow.generic.loading-product-trial.close-button" defaultMessage="Close" />
             </Button>
           </StartTrialFooter>
         }
@@ -130,10 +130,10 @@ export class LoadingTimeBase extends Component {
             </WhereToFindConfluenceSVGDiv>
             <WhereToFindConfluenceDiv>
               <h5>
-                <FormattedMessage id={i18n`info-heading`} />
+                { heading }
               </h5>
               <WhereToFindConfluenceText>
-                <FormattedMessage id={i18n`info-text`} />
+                { message }
               </WhereToFindConfluenceText>
             </WhereToFindConfluenceDiv>
           </LoadingTimeTextDiv>
@@ -147,13 +147,23 @@ export default withAnalytics(
   withXFlowProvider(
     LoadingTimeBase,
     ({
-      xFlow: { config: { productLogo }, goToProduct, closeLoadingDialog, progress, status },
+      xFlow: { config: {
+        productLogo,
+        startTrial: {
+          loadingProductHeading,
+          loadingProductMessage,
+          loadingProductGotoProductButton,
+        },
+      }, goToProduct, closeLoadingDialog, progress, status },
     }) => ({
       productLogo,
       progress,
       status,
       goToProduct,
       closeLoadingDialog,
+      heading: loadingProductHeading,
+      message: loadingProductMessage,
+      gotoButton: loadingProductGotoProductButton,
     })
   )
 );

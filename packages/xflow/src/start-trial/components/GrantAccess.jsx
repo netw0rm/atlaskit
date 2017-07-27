@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
-import Select from '@atlaskit/multi-select';
+import MultiSelect from '@atlaskit/multi-select';
 import Spinner from '@atlaskit/spinner';
 import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from './ErrorFlag';
@@ -27,14 +26,31 @@ import ChangeButton from '../styled/ChangeButton';
 import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import i18nId from '../../common/i18nId';
 
 import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
 
-const i18n = i18nId('grant-access');
+const messages = defineMessages({
+  noMatchesFound: {
+    id: 'xflow.generic.grant-access.no-matches',
+    defaultMessage: 'No matches found',
+  },
+  errorRetrievingUsers: {
+    id: 'xflow.generic.grant-access.retrieve-users-error',
+    defaultMessage: 'There was an issue retrieving your users.',
+  },
+  errorFlagTitle: {
+    id: 'xflow.generic.grant-access.error-flag.title',
+    defaultMessage: 'Oops... Something went wrong',
+  },
+  errorFlagDescription: {
+    id: 'xflow.generic.grant-access.error-flag.description',
+    defaultMessage: 'Let\'s try again.',
+  },
+});
 
-export class GrantAccessBase extends Component {
+class GrantAccess extends Component {
   static propTypes = {
+    intl: intlShape.isRequired,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
@@ -56,6 +72,8 @@ export class GrantAccessBase extends Component {
     onComplete: PropTypes.func.isRequired,
     grantAccessToUsers: PropTypes.func,
     retrieveUsers: PropTypes.func,
+    heading: PropTypes.string,
+    defaultAccess: PropTypes.string,
   };
 
   static defaultProps = {
@@ -68,27 +86,38 @@ export class GrantAccessBase extends Component {
     selectedRadio: this.props.defaultSelectedRadio,
     userSelectInFocus: this.props.userSelectInFocus,
     userSelectIsInvalid: this.props.userSelectIsInvalid,
-    userSelectNoMatchesMessage: 'No matches found',
+    userSelectNoMatchesMessage: this.props.intl.formatMessage(messages.noMatchesFound),
     spinnerActive: this.props.spinnerActive,
     continueButtonDisabled: this.props.continueButtonDisabled,
     failedToGrantAccess: false,
     showSkipLink: false,
-    selectItems: [{ items: [] }],
+    selectItems: [],
     selectedUsers: [],
   };
 
   componentDidMount = async () => {
-    this.setState({
-      selectItems: [
-        {
-          items: (await this.props.retrieveUsers()).map(user => ({
-            value: user.name,
-            content: user.displayName,
-            description: user.email,
-          })),
-        },
-      ],
-    });
+    let users = [];
+    try {
+      users = await this.props.retrieveUsers();
+    } catch (e) {
+      // TODO: Fire an analytic event, signifying that retrieve users failed.
+      console.error('TODO: fire analytics event'); // eslint-disable-line no-console
+      console.error(e.message); // eslint-disable-line no-console
+      console.error(e.stack); // eslint-disable-line no-console
+    }
+    if (users && users.length > 0) {
+      this.setState({
+        selectItems: [
+          {
+            items: users.map(user => ({
+              value: user.name,
+              content: user.displayName,
+              description: user.email,
+            })),
+          },
+        ],
+      });
+    }
   };
 
   handleSkipClick = () => {
@@ -124,6 +153,7 @@ export class GrantAccessBase extends Component {
   };
 
   handleLearnMoreClick = () => {
+    // TODO: Implement me!
     // console.log('Learn more clicked');
   };
 
@@ -143,13 +173,13 @@ export class GrantAccessBase extends Component {
   };
 
   handleUserSelectOpen = (evt) => {
-    const { usersOption } = this.props;
+    const { usersOption, intl } = this.props;
     if (evt.isOpen) {
       this.setState({
         selectedRadio: usersOption,
         userSelectNoMatchesMessage: this.userSelect.state.items.length
-          ? <FormattedMessage id={i18n`no-matches`} />
-          : <FormattedMessage id={i18n`user-select-error`} />,
+          ? intl.formatMessage(messages.noMatchesFound)
+          : intl.formatMessage(messages.errorRetrievingUsers),
       });
     }
   };
@@ -161,26 +191,17 @@ export class GrantAccessBase extends Component {
     });
   };
 
-  createUserItem = (key, presence, disabled = false) => ({
-    content: `Anonymous User ${key}`,
-    elemBefore: <Avatar size="small" presence={presence} />,
-    isDisabled: disabled,
-    value: `user_${key}`,
-    description: `@user_${key}`,
-    tag: {
-      elemBefore: <Avatar size="xsmall" />,
-      appearance: 'rounded',
-    },
-  });
-
   render() {
     const {
+      intl,
       productLogo,
       optionItems,
       userSelectPlaceholder,
       chooseOption,
       progress,
       status,
+      heading,
+      defaultAccess,
     } = this.props;
 
     return (
@@ -204,7 +225,7 @@ export class GrantAccessBase extends Component {
               appearance="primary"
               isDisabled={this.state.continueButtonDisabled}
             >
-              <FormattedMessage id={i18n`continue-button`} />
+              <FormattedMessage id="xflow.generic.grant-access.continue-button" defaultMessage="Continue" />
             </Button>
             {this.state.showSkipLink
               ? <Button
@@ -212,7 +233,7 @@ export class GrantAccessBase extends Component {
                 appearance="link"
                 isDisabled={this.state.continueButtonDisabled}
               >
-                <FormattedMessage id={i18n`skip-link`} />
+                <FormattedMessage id="xflow.generic.grant-access.skip-button" defaultMessage="Skip" />
               </Button>
               : null}
           </StartTrialFooter>
@@ -220,7 +241,7 @@ export class GrantAccessBase extends Component {
       >
         <StartTrialDialog id="xflow-grant-access">
           <StartTrialHeader>
-            <FormattedMessage id={i18n`heading`} />
+            { heading }
           </StartTrialHeader>
 
           {this.state.changeUsers
@@ -239,14 +260,14 @@ export class GrantAccessBase extends Component {
                 label={chooseOption}
               />
               <UserSelectDiv>
-                <Select
+                <MultiSelect
                   ref={(userSelect) => {
                     this.userSelect = userSelect;
                   }}
                   id="userSelect"
                   items={this.state.selectItems}
                   placeholder={userSelectPlaceholder}
-                  name="test"
+                  name="users"
                   onOpenChange={this.handleUserSelectOpen}
                   onSelectedChange={this.handleUserSelectChange}
                   shouldFitContainer
@@ -257,19 +278,19 @@ export class GrantAccessBase extends Component {
               </UserSelectDiv>
 
               <AffectMyBillText>
-                <FormattedMessage id={i18n`affect-bill`} />
+                <FormattedMessage id="xflow.generic.grant-access.affect-bill" defaultMessage="How will this affect my bill?" />
                 <Button onClick={this.handleLearnMoreClick} appearance="link">
-                  <FormattedMessage id={i18n`learn-more`} />
+                  <FormattedMessage id="xflow.generic.grant-access.learn-more" defaultMessage="Learn more" />
                 </Button>
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
             : <GrantAccessDefaultAccessDiv>
               <GrantAccessTextDiv>
-                <FormattedMessage id={i18n`default-access`} />
+                { defaultAccess }
               </GrantAccessTextDiv>
               <ChangeButton>
                 <Button onClick={this.handleChangeClick} appearance="link">
-                  <FormattedMessage id={i18n`change`} />
+                  <FormattedMessage id="xflow.generic.grant-access.change" defaultMessage="Change..." />
                 </Button>
               </ChangeButton>
             </GrantAccessDefaultAccessDiv>}
@@ -283,13 +304,13 @@ export class GrantAccessBase extends Component {
               defaultChecked
             />
             <InputLabel htmlFor="notifyUsers">
-              <FormattedMessage id={i18n`notify-users`} />
+              <FormattedMessage id="xflow.generic.grant-access.notify-users" defaultMessage="Notify these users" />
             </InputLabel>
           </StartTrialProgressDiv>
         </StartTrialDialog>
         <ErrorFlag
-          title="Oops... Something went wrong"
-          description="Let's try again."
+          title={intl.formatMessage(messages.errorFlagTitle)}
+          description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.failedToGrantAccess}
           onDismissed={() => this.setState({ failedToGrantAccess: false })}
         />
@@ -298,11 +319,24 @@ export class GrantAccessBase extends Component {
   }
 }
 
+export const GrantAccessBase = injectIntl(GrantAccess);
+
 export default withXFlowProvider(
   GrantAccessBase,
   ({
     xFlow: {
-      config: { productLogo, startTrial },
+      config: {
+        productLogo,
+        startTrial: {
+          grantOptionItems,
+          grantUserSelectPlaceholder,
+          grantUsersOption,
+          grantChooseOption,
+          grantDefaultSelectedRadio,
+          grantAccessHeading,
+          grantAccessDefaultAccess,
+        },
+      },
       grantAccessToUsers,
       retrieveUsers,
       progress,
@@ -310,14 +344,16 @@ export default withXFlowProvider(
     },
   }) => ({
     productLogo,
-    optionItems: startTrial.grantOptionItems,
-    userSelectPlaceholder: startTrial.grantUserSelectPlaceholder,
-    usersOption: startTrial.grantUsersOption,
-    chooseOption: startTrial.grantChooseOption,
-    defaultSelectedRadio: startTrial.grantDefaultSelectedRadio,
+    optionItems: grantOptionItems,
+    userSelectPlaceholder: grantUserSelectPlaceholder,
+    usersOption: grantUsersOption,
+    chooseOption: grantChooseOption,
+    defaultSelectedRadio: grantDefaultSelectedRadio,
     grantAccessToUsers,
     retrieveUsers,
     progress,
     status,
+    heading: grantAccessHeading,
+    defaultAccess: grantAccessDefaultAccess,
   })
 );

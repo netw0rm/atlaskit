@@ -7,35 +7,51 @@ import { ConfluenceLogo } from '@atlaskit/logo';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
+import { ACTIVE, ACTIVATING, UNKNOWN } from '../src/common/productProvisioningStates';
+
+const noop = () => {};
 const defaultProps = {
   onComplete: () => {},
   productLogo: <ConfluenceLogo />,
-  heading: 'You are almost there...',
-  completeHeading: 'Confluence is ready my friend!',
+  heading: 'Where to find Confluence',
+  message: 'Hit the menu icon near your profile image to switch between products.',
+  gotoButton: 'Go to Confluence',
+  goToProduct: noop,
+  status: ACTIVATING,
 };
 
 storiesOf('StartTrialLoading')
   .add('Show Loading dialog', () =>
     setupStorybookAnalytics(
-      <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={0} />
+      <LoadingTimeBase
+        {...defaultProps}
+        progress={0}
+      />
     )
   )
   .add('Show Loading dialog with 25% complete', () =>
     setupStorybookAnalytics(
-      <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={25} />
+      <LoadingTimeBase
+        {...defaultProps}
+        progress={0.25}
+      />
     )
   )
   .add('Show Loading dialog when complete', () =>
     setupStorybookAnalytics(
-      <LoadingTimeBase {...defaultProps} analyticsId="growth.happy" progress={100} />
+      <LoadingTimeBase
+        {...defaultProps}
+        status={ACTIVE}
+        progress={1}
+      />
     )
   )
   .add('Show Loading dialog when timed out', () =>
     setupStorybookAnalytics(
       <LoadingTimeBase
         {...defaultProps}
-        analyticsId="growth.happy"
-        progress={0}
+        status={UNKNOWN}
+        progress={1}
         confluenceTimedOut
       />
     )

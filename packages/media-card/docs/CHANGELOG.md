@@ -1,6 +1,8 @@
 # @atlaskit/media-card
 
-## Unreleased
+## 17.11.3 (2017-07-27)
+
+* bug fix; update smart-card view to only display for links with appearance="small" or appearan ([7296f99](https://bitbucket.org/atlassian/atlaskit/commits/7296f99))
 
 * bug fix; pass mediaItemType to Card placeholder in order to display right loading state
 ## 17.9.0 (2017-07-12)

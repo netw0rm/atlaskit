@@ -97,12 +97,19 @@ describe('inputrules', () => {
 
   describe('codeblock rule', () => {
     context('when node is convertable to code block', () => {
-      context('when converted node has content', () => {
-        it('should convert "```" to a code block', () => {
+      context('when three backticks are entered followed by space', () => {
+        it('should convert "``` " to a code block', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
-          insertText(editorView, '```', sel);
+          insertText(editorView, '``` ', sel);
           expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        });
+
+        it('should convert "```java " to a code block with language java', () => {
+          const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
+
+          insertText(editorView, '```java ', sel);
+          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'java' })('hello\nworld')));
         });
       });
 

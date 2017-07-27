@@ -120,16 +120,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         content={content}
         position="top left"
         offset={offset}
-        autoFlip={['top', 'bottom']}
-        boundariesElement="scrollParent"
+        autoPosition={true}
       >
         <ToolbarButton
           selected={isOpen}
           disabled={disabled}
           onClick={this.toggleOpen}
-          iconBefore={<EmojiIcon label="Emoji" />}
+          iconBefore={<EmojiIcon label="Insert emoji (:)" />}
           ref={this.handleButtonRef}
-          title="Emoji"
+          title="Insert emoji (:)"
         />
       </Layer>
     );

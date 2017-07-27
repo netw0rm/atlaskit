@@ -66,7 +66,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, {}> {
               case 'link':
                 return React.cloneElement(child, {
                   cardDimensions: {
-                    width: 344,
+                    width: 343,
                   },
                 } as MediaProps);
             }

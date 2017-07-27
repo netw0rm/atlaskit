@@ -20,7 +20,6 @@ import SearchDrawer from './SearchDrawer';
 import PatternNav from './navigations/PatternNav';
 import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';
-// import NavigationNav from './navigations/NavigationPattern';
 import patterns from '../../../patterns';
 
 const backIcon = <ArrowLeft label="Back icon" />;
@@ -53,13 +52,6 @@ const getCurrentStack = (pathname: string, router): Array<Element> => {
       pathname={pathname}
     />);
   }
-  // if (/^\/components\/navigation/.test(pathname)) {
-  //   currentStack = currentStack.concat(<NavigationNav
-  //     pathname={pathname}
-  //     backIcon={backIcon}
-  //     router={router}
-  //   />);
-  // }
   return currentStack;
 };
 

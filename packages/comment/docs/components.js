@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = [
-  { name: 'Comment', src: path.join(__dirname, '../src/components/Comment.jsx') },
+  { name: 'Default', src: path.join(__dirname, '../src/components/Comment.jsx') },
   { name: 'CommentAction', src: path.join(__dirname, '../src/components/ActionItem.jsx') },
   { name: 'CommentAuthor', src: path.join(__dirname, '../src/components/Author.jsx') },
   { name: 'CommentTime', src: path.join(__dirname, '../src/components/Time.jsx') },

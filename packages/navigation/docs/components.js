@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = [
-  { name: 'Navigation', src: path.join(__dirname, '../src/components/js/Navigation.jsx') },
+  { name: 'Default', src: path.join(__dirname, '../src/components/js/Navigation.jsx') },
   { name: 'AkNavigationItemGroup', src: path.join(__dirname, '../src/components/js/NavigationItemGroup.jsx') },
   { name: 'AkContainerLogo', src: path.join(__dirname, '../src/components/js/ContainerLogo.jsx') },
   { name: 'AkContainerTitle', src: path.join(__dirname, '../src/components/js/ContainerTitle.jsx') },

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "config": {
     "access": "public"
   },

@@ -28,7 +28,7 @@ const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
       err ? rej(err) : res({ nextRelease, pkg, location })
     ));
   }).catch((e) => {
-    if (e.code === 'ENOCHANGE' || e.code === 'ENOTINHISTORY') return null;
+    if (e.code === 'ENOCHANGE') return null;
     console.error('Unexpected Error getting package details', e);
     throw e;
   });

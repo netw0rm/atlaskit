@@ -8,7 +8,4 @@ import data from './components/quotes';
 storiesOf('single vertical list', module)
   .add('standard list with reordering', () => (
     <QuoteApp initial={data} />
-  ))
-  .add('custom drag handle', () => (
-    <div>Hello there</div>
   ));

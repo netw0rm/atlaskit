@@ -4,6 +4,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import styled from 'styled-components';
 import QuoteApp from './components/quote-app';
+import { grid } from './components/constants';
 import { getQuotes } from './components/quotes';
 import type { Quote } from './components/types';
 
@@ -12,21 +13,20 @@ const bigData: Quote[] = getQuotes(40);
 const ScrollContainer = styled.div`
   box-sizing: border-box;
   background: lightgrey;
-  padding: 16px;
+  padding: ${grid * 2}px;
   overflow-y: scroll;
   width: 500px;
 
-  /* standard layout */
-  height: 80vh;
+  height: 100vh;
   position: relative;
 `;
 
 const ScrollContainerTitle = styled.h4`
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: ${grid}px;
 `;
 
-storiesOf('scroll', module)
+storiesOf('window scroll and scroll containers', module)
   .add('window scrolling', () => (
     <QuoteApp
       initial={bigData}

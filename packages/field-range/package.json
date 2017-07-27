@@ -7,7 +7,7 @@
   "description": "Component which renders a beautiful slider and allows to subscribe to value changes. Substitute of the native input[range] element",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Field Range"

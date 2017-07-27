@@ -7,7 +7,7 @@
   "description": "React component which allows selection of multiple items from a dropdown list. Substitute for the native multiple select element",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Select (Multi)"

@@ -28,7 +28,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop}/>);
 
-      const button = chrome.find(AkButton);
+      const button = chrome.find(AkButton).filterWhere(node => node.text() === 'Save');
       expect(button.prop('isDisabled')).to.equal(false);
     });
 
@@ -36,7 +36,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false}/>);
 
-      const button = chrome.find(AkButton);
+      const button = chrome.find(AkButton).filterWhere(node => node.text() === 'Save');
       expect(button.prop('isDisabled')).to.equal(false);
     });
 
@@ -55,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={true} />);
 
-      const button = chrome.find(AkButton);
+      const button = chrome.find(AkButton).filterWhere(node => node.text() === 'Save');
       expect(button.prop('isDisabled')).to.equal(true);
     });
 

@@ -26,7 +26,7 @@ describe('lists', () => {
 
     if (browser.mac) {
       context('when on a mac', () => {
-        context('when hit Shift-Cmd-l', () => {
+        context('when hit Shift-Cmd-L', () => {
           it('should toggle ordered list', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Shift-Cmd-L');

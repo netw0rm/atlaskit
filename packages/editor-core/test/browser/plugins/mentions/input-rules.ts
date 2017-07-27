@@ -14,7 +14,7 @@ import {
   mention,
   code,
 } from '../../../../src/test-helper';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -28,7 +28,7 @@ describe('mentions - input rules', () => {
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(doc(docContents || p('{<>}')));
     return pluginState
-      .setMentionProvider(Promise.resolve(mentionData.mentionStoryData.resourceProvider))
+      .setMentionProvider(Promise.resolve(mentionStoryData.resourceProvider))
       .then(() => {
         insertText(editorView, what, sel || refs['<']);
 

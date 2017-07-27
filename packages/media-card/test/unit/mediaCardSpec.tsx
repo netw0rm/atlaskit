@@ -1,7 +1,4 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import {expect} from 'chai';
-import * as sinon from 'sinon';
 
 import {shallow, ShallowWrapper} from 'enzyme';
 import {Observable} from 'rxjs';
@@ -30,7 +27,7 @@ describe('MediaCard', () => {
           provider={createNoopProvider()}
         />
       ) as any;
-      expect(element.props()).to.include({
+      expect(element.props()).toMatchObject({
         appearance: 'small'
       });
     });
@@ -46,7 +43,7 @@ describe('MediaCard', () => {
 
       element.setState({status});
 
-      expect(element.props().status).to.be.equal(status);
+      expect(element.props().status).toBe(status);
     });
 
     it('should render metadata=object when we have metadata', () => {
@@ -62,7 +59,7 @@ describe('MediaCard', () => {
 
       element.setState({metadata});
 
-      expect(element.props().metadata).to.be.equal(metadata);
+      expect(element.props().metadata).toBe(metadata);
     });
 
     it('should NOT pass down the error when we have one', () => {
@@ -76,21 +73,21 @@ describe('MediaCard', () => {
 
       element.setState({error});
 
-      expect(element.props().error).to.be.equal(undefined);
+      expect(element.props().error).toBe(undefined);
     });
 
     it('should pass onClick to root node', function() {
       const clickHandler = (result: CardEvent) => {};
       const card = shallow(<MediaCard provider={createNoopProvider()} onClick={clickHandler} />);
 
-      expect(card.props().onClick).to.deep.equal(clickHandler);
+      expect(card.props().onClick).toEqual(clickHandler);
     });
 
     it('should pass onMouseEnter to root node', function() {
       const hoverHandler = (result: CardEvent) => {};
       const card = shallow(<MediaCard provider={createNoopProvider()} onMouseEnter={hoverHandler} />);
 
-      expect(card.props().onMouseEnter).to.deep.equal(hoverHandler);
+      expect(card.props().onMouseEnter).toEqual(hoverHandler);
     });
   });
 
@@ -116,7 +113,7 @@ describe('MediaCard', () => {
       (element.instance() as MediaCard).componentDidMount();
 
       return waitUntilCardIsLoaded(element).then(() => {
-        expect(element.state().metadata).to.equal(expectedMetadata);
+        expect(element.state().metadata).toBe(expectedMetadata);
       });
     });
 
@@ -139,12 +136,12 @@ describe('MediaCard', () => {
       (element.instance() as MediaCard).componentDidMount();
 
       return waitUntilCardIsLoaded(element).then(() => {
-        expect(element.state().metadata).to.equal(expectedMetadata);
+        expect(element.state().metadata).toBe(expectedMetadata);
       });
     });
 
     it('should call onLoadingStateChange() with type "loading" when the component has mounted', () => {
-      const onLoadingChange = sinon.spy();
+      const onLoadingChange = jest.fn();
 
       const element = shallow(
         <MediaCard
@@ -155,8 +152,8 @@ describe('MediaCard', () => {
 
       (element.instance() as MediaCard).componentDidMount();
 
-      expect(onLoadingChange.calledOnce).to.be.true;
-      expect(onLoadingChange.calledWithExactly({ type: 'loading', payload: undefined })).to.be.true;
+      expect(onLoadingChange).toHaveBeenCalledTimes(1);
+      expect(onLoadingChange).toHaveBeenCalledWith({ type: 'loading', payload: undefined });
     });
 
     it('should call onLoadingStateChange() with type "processing" when the server has started processing the media', done => {
@@ -173,7 +170,7 @@ describe('MediaCard', () => {
 
       const onLoadingChange = (state) => {
         if (state.type === 'processing') {
-          expect(state.payload).to.be.equal(fileDetailsPayload);
+          expect(state.payload).toBe(fileDetailsPayload);
           done();
         }
       };
@@ -203,7 +200,7 @@ describe('MediaCard', () => {
 
       const onLoadingChange = (state) => {
         if (state.type === 'complete') {
-          expect(state.payload).to.deep.equal(fileDetailsPayload);
+          expect(state.payload).toEqual(fileDetailsPayload);
           done();
         }
       };
@@ -234,7 +231,7 @@ describe('MediaCard', () => {
 
       const onLoadingChange = (state) => {
         if (state.type === 'error') {
-          expect(state.payload).to.deep.equal(errorPayload);
+          expect(state.payload).toEqual(errorPayload);
           done();
         }
       };
@@ -250,11 +247,11 @@ describe('MediaCard', () => {
     });
 
     it('should unsubscribe from the old provider and subscribe to the new provider when the provider changes', () => {
-      const oldUnsubscribe = sinon.spy();
-      const oldSubscribe = sinon.stub().returns({unsubscribe: oldUnsubscribe});
+      const oldUnsubscribe = jest.fn();
+      const oldSubscribe = jest.fn(() => ({unsubscribe: oldUnsubscribe}));
 
-      const newUnsubscribe = sinon.spy();
-      const newSubscribe = sinon.stub().returns({unsubscribe: newUnsubscribe});
+      const newUnsubscribe = jest.fn();
+      const newSubscribe = jest.fn(() => ({unsubscribe: newUnsubscribe}));
 
       const oldObservable = {
         map: () => ({subscribe: oldSubscribe})
@@ -279,11 +276,11 @@ describe('MediaCard', () => {
       (element.instance() as MediaCard).componentDidMount();
       element.setProps({provider: secondProvider});
 
-      expect(oldUnsubscribe.calledOnce).to.be.true;
-      expect(oldSubscribe.calledOnce).to.be.true;
+      expect(oldUnsubscribe).toHaveBeenCalledTimes(1);
+      expect(oldSubscribe).toHaveBeenCalledTimes(1);
 
-      expect(newSubscribe.calledOnce).to.be.true;
-      expect(newUnsubscribe.called).to.be.false;
+      expect(newSubscribe).toHaveBeenCalledTimes(1);
+      expect(newUnsubscribe).not.toHaveBeenCalled();
     });
 
   });

@@ -1,7 +1,4 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
-import {expect} from 'chai';
-import {createMouseEvent} from '@atlaskit/media-test-helpers';
+import { createMouseEvent } from '@atlaskit/media-test-helpers';
 import {DefaultMouseInput} from '../../../../src/engine/components/mouseInput';
 
 describe('MediaEditor DefaultMouseInput', () => {
@@ -72,7 +69,7 @@ describe('MediaEditor DefaultMouseInput', () => {
 
   it('should report one click if left button is down and up', () => {
     mouseInput.click.listen((pos) => {
-      expect(pos).to.deep.equal(start);
+      expect(pos).toEqual(start);
     });
     mouseInput.dragStart.listen(() => { throw new Error('drag start method should not be called'); });
     mouseInput.dragMove.listen(() => { throw new Error('drag move method should not be called'); });
@@ -88,14 +85,14 @@ describe('MediaEditor DefaultMouseInput', () => {
 
     mouseInput.click.listen(() => { throw new Error('click method should not be called'); });
     mouseInput.dragStart.listen((pos) => {
-      expect(pos).to.deep.equal(start);
+      expect(pos).toEqual(start);
     });
     mouseInput.dragMove.listen((pos) => {
-      expect(pos).to.deep.equal(middle);
+      expect(pos).toEqual(middle);
       ++moveCounter;
     });
     mouseInput.dragEnd.listen((pos) => {
-      expect(pos).to.deep.equal(end);
+      expect(pos).toEqual(end);
     });
     mouseInput.dragLost.listen(() => { throw new Error('drag lost method should not be called'); });
 
@@ -107,7 +104,7 @@ describe('MediaEditor DefaultMouseInput', () => {
     window.dispatchEvent(createMouseEvent('mouseup', {mouseButton: 2, clientX: xMiddle, clientY: yMiddle}));
     window.dispatchEvent(createMouseEvent('mouseup', {clientX: xEnd, clientY: yEnd}));
 
-    expect(moveCounter).to.equal(3);
+    expect(moveCounter).toBe(3);
   });
 
   it('should report nothing if the window is blurred immediately after mouse down', () => {
@@ -126,10 +123,10 @@ describe('MediaEditor DefaultMouseInput', () => {
 
     mouseInput.click.listen(() => { throw new Error('click method should not be called'); });
     mouseInput.dragStart.listen((pos) => {
-      expect(pos).to.deep.equal(start);
+      expect(pos).toEqual(start);
     });
     mouseInput.dragMove.listen((pos) => {
-      expect(pos).to.deep.equal(middle);
+      expect(pos).toEqual(middle);
     });
     mouseInput.dragEnd.listen(() => { throw new Error('drag end method should not be called'); });
     mouseInput.dragLost.listen(() => {
@@ -141,19 +138,19 @@ describe('MediaEditor DefaultMouseInput', () => {
     window.dispatchEvent(createEvent('blur'));
     window.dispatchEvent(createMouseEvent('mouseup', {clientX: xEnd, clientY: yEnd}));
 
-    expect(dragLostCalled).to.be.true;
+    expect(dragLostCalled).toBe(true);
   });
 
   it('should not report drag lost if the window is blurred after dragging complete', () => {
     mouseInput.click.listen(() => { throw new Error('click method should not be called'); });
     mouseInput.dragStart.listen((pos) => {
-      expect(pos).to.deep.equal(start);
+      expect(pos).toEqual(start);
     });
     mouseInput.dragMove.listen((pos) => {
-      expect(pos).to.deep.equal(middle);
+      expect(pos).toEqual(middle);
     });
     mouseInput.dragEnd.listen((pos) => {
-      expect(pos).to.deep.equal(end);
+      expect(pos).toEqual(end);
     });
     mouseInput.dragLost.listen(() => { throw new Error('drag lost method should not be called'); });
 

@@ -5,3 +5,5 @@ export const defaultEmojiHeight = 20;
 
 export const emojiPickerWidth = 350;
 export const emojiPickerHeight = 295;
+
+export const selectedToneStorageKey = 'fabric.emoji.selectedTone';

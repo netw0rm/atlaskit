@@ -51,6 +51,6 @@ export default abstract class LoadingEmojiComponent<P extends Props,S extends St
       return this.renderLoaded(loadedEmojiProvider as EmojiProvider);
     }
 
-    return null;
+    return this.renderLoading();
   }
 }

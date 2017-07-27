@@ -1,10 +1,5 @@
-import * as chai from 'chai';
-import * as sinon from 'sinon';
-
 import {LinkItem} from '../../src';
 import {LinkProvider} from '../../src/providers/linkProvider';
-
-const assert = chai.assert;
 
 const linkId = 'some-link-id';
 const clientId = 'some-client-id';
@@ -18,9 +13,9 @@ const someLinkItem = <LinkItem> {
 };
 const mockObserver = () => {
   return {
-    next: sinon.spy(),
-    complete: sinon.spy(),
-    error: sinon.spy()
+    next: jest.fn(),
+    complete: jest.fn(),
+    error: jest.fn()
   };
 };
 
@@ -32,12 +27,17 @@ describe('LinkProvider', () => {
 
     linkProvider.subscribe(observer);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       linkProvider.subscribe({
         complete: () => {
-          assert(observer.next.calledWith(someLinkItem));
-          assert(observer.complete.calledWith(undefined));
-          assert(observer.error.notCalled);
+          try {
+            expect(observer.next).toHaveBeenCalledWith(someLinkItem);
+            expect(observer.complete).toHaveBeenCalledWith(undefined);
+            expect(observer.error).not.toHaveBeenCalled();
+          } catch (err) {
+            reject(err);
+            return;
+          }
           resolve();
         }
       });
@@ -51,12 +51,17 @@ describe('LinkProvider', () => {
 
     linkProvider.subscribe(observer);
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       linkProvider.subscribe({
         error: (error) => {
-          assert(observer.next.notCalled);
-          assert(observer.complete.notCalled);
-          assert(observer.error.calledWith(error));
+          try {
+            expect(observer.next).not.toHaveBeenCalled();
+            expect(observer.complete).not.toHaveBeenCalled();
+            expect(observer.error).toHaveBeenCalledWith(error);
+          } catch (err) {
+            reject(err);
+            return;
+          }
           resolve();
         }
       });
@@ -66,11 +71,8 @@ describe('LinkProvider', () => {
 
 class Mocks {
   public static linkServiceResolves() {
-    const getLinkStub = sinon.stub();
-    getLinkStub.onCall(0).returns(Promise.resolve(someLinkItem));
-
-    const addLinkStub = sinon.stub();
-    addLinkStub.onCall(0).returns(Promise.resolve(linkId));
+    const getLinkStub = jest.fn(() => Promise.resolve(someLinkItem));
+    const addLinkStub = jest.fn(() => Promise.resolve(linkId));
 
     return {
       getLinkItem: getLinkStub,
@@ -79,7 +81,7 @@ class Mocks {
   }
 
   public static linkServiceError() {
-    const stub = sinon.stub().returns(Promise.reject(new Error('mock-error')));
+    const stub = jest.fn(() => Promise.reject(new Error('mock-error')));
 
     return {
       getLinkItem: stub,

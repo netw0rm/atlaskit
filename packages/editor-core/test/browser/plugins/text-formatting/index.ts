@@ -58,7 +58,7 @@ describe('text-formatting', () => {
           it('toggles strikethrough mark', () => {
             const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-s');
+            sendKeyToPm(editorView, 'Shift-Cmd-S');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -68,7 +68,7 @@ describe('text-formatting', () => {
           it('toggles code mark', () => {
             const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', text: '@helga' }), em(' text{>}'))));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-m');
+            sendKeyToPm(editorView, 'Shift-Cmd-M');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text @helga text'))));
           });
@@ -114,7 +114,7 @@ describe('text-formatting', () => {
           it('toggles strikethrough mark', () => {
             const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-s');
+            sendKeyToPm(editorView, 'Shift-Ctrl-S');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -124,7 +124,7 @@ describe('text-formatting', () => {
           it('toggles code mark', () => {
             const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-m');
+            sendKeyToPm(editorView, 'Shift-Ctrl-M');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });

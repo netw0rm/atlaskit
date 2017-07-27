@@ -1,7 +1,4 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
-import {expect} from 'chai';
 import {shallow, ShallowWrapper} from 'enzyme';
 import {waitUntil} from '@atlaskit/media-test-helpers';
 import {withDataURI, WithDataURI, WithDataURIProps, WithDataURIState} from '../../src/root/withDataURI';
@@ -10,8 +7,8 @@ const DemoComponent = () => null; // tslint:disable-line:variable-name
 const DemoComponentWithDataURI = withDataURI(DemoComponent); // tslint:disable-line:variable-name
 
 const createDataURIService = () => ({
-  fetchImageDataUri: sinon.stub().returns(Promise.resolve('data:jpg')),
-  fetchOriginalDataUri: sinon.stub().returns(Promise.resolve('data:gif'))
+  fetchImageDataUri: jest.fn(() => Promise.resolve('data:jpg')),
+  fetchOriginalDataUri: jest.fn(() => Promise.resolve('data:gif'))
 });
 
 const waitUntilDataURIIsTruthy = (card: ShallowWrapper<WithDataURIProps, WithDataURIState>) => {
@@ -28,11 +25,11 @@ describe('WithDataURI', () => {
       );
 
       const instance = element.instance() as WithDataURI;
-      const updateDataURI = sinon.spy(instance, 'updateDataURI');
+      const updateDataURI = jest.spyOn(instance, 'updateDataURI');
 
       instance.componentWillReceiveProps({dataURIService: createDataURIService()});
 
-      expect(updateDataURI.calledOnce).to.be.true;
+      expect(updateDataURI).toHaveBeenCalledTimes(1);
 
     });
 
@@ -42,11 +39,11 @@ describe('WithDataURI', () => {
       );
 
       const instance = element.instance() as WithDataURI;
-      const updateDataURI = sinon.spy(instance, 'updateDataURI');
+      const updateDataURI = jest.spyOn(instance, 'updateDataURI');
 
       instance.componentWillReceiveProps({metadata: {}});
 
-      expect(updateDataURI.calledOnce).to.be.true;
+      expect(updateDataURI).toHaveBeenCalledTimes(1);
 
     });
 
@@ -56,10 +53,10 @@ describe('WithDataURI', () => {
       );
 
       const instance = element.instance() as WithDataURI;
-      const updateDataURI = sinon.spy(instance, 'updateDataURI');
+      const updateDataURI = jest.spyOn(instance, 'updateDataURI');
       instance.componentWillReceiveProps({foo: 'bar'});
 
-      expect(updateDataURI.notCalled).to.be.true;
+      expect(updateDataURI).not.toHaveBeenCalled();
 
     });
 
@@ -83,7 +80,7 @@ describe('WithDataURI', () => {
       const instance = element.instance() as WithDataURI;
       instance.updateDataURI({dataURIService, metadata: undefined});
 
-      expect(element.state().dataURI).to.be.undefined;
+      expect(element.state().dataURI).toBe(undefined);
     });
 
     it('should clear the dataURI when the metadata is a link', () => {
@@ -102,7 +99,7 @@ describe('WithDataURI', () => {
       const instance = element.instance() as WithDataURI;
       instance.updateDataURI({dataURIService, metadata: undefined});
 
-      expect(element.state().dataURI).to.be.undefined;
+      expect(element.state().dataURI).toBe(undefined);
     });
 
     it('should set the dataURI to a GIF when the mimeType indicates the item is a GIF', () => {
@@ -119,7 +116,7 @@ describe('WithDataURI', () => {
       instance.updateDataURI({dataURIService, metadata});
 
       return waitUntilDataURIIsTruthy(element)
-        .then(() => expect(element.state().dataURI).to.be.equal('data:gif'))
+        .then(() => expect(element.state().dataURI).toBe('data:gif'))
       ;
     });
 
@@ -138,7 +135,7 @@ describe('WithDataURI', () => {
       instance.updateDataURI({dataURIService, metadata});
 
       return waitUntilDataURIIsTruthy(element)
-        .then(() => expect(element.state().dataURI).to.be.equal('data:jpg'))
+        .then(() => expect(element.state().dataURI).toBe('data:jpg'))
       ;
     });
 
@@ -153,7 +150,7 @@ describe('WithDataURI', () => {
 
       element.setState({dataURI: 'data:png'});
 
-      expect(element.find(DemoComponent).props().dataURI).to.be.equal('data:png');
+      expect(element.find(DemoComponent).props().dataURI).toBe('data:png');
     });
 
     it('should pass down other props when I am passed them', () => {
@@ -162,7 +159,7 @@ describe('WithDataURI', () => {
         <DemoComponentWithDataURI data-test="foobar"/>
       );
 
-      expect(element.find(DemoComponent).prop('data-test')).to.be.equal('foobar');
+      expect(element.find(DemoComponent).prop('data-test')).toBe('foobar');
     });
 
     it('should not pass down dataURIService when I have one', () => {
@@ -172,7 +169,7 @@ describe('WithDataURI', () => {
         <DemoComponentWithDataURI dataURIService={dataURIService}/>
       );
 
-      expect(element.find(DemoComponent).prop('dataURIService')).to.be.undefined;
+      expect(element.find(DemoComponent).prop('dataURIService')).toBe(undefined);
     });
 
   });

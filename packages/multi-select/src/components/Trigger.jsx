@@ -43,11 +43,13 @@ export default class Trigger extends PureComponent {
     placeholder: PropTypes.string,
     selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     tagGroupRefFunction: PropTypes.func,
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
     isDisabled: false,
     onClick: () => {},
+    icon: <ExpandIcon label="" />,
   }
 
   // disabled because all of the accessibility is handled manually
@@ -114,7 +116,7 @@ export default class Trigger extends PureComponent {
             </TagGroup>
           </Content>
           <Expand>
-            <ExpandIcon label="" />
+            {this.props.icon}
           </Expand>
         </TriggerDiv>
       </FieldBaseStateless>

@@ -26,7 +26,7 @@ export const mention: NodeSpec = {
   parseDOM: [{
     tag: 'span[data-mention-id]',
     getAttrs: (dom: Element) => ({
-      id: dom.getAttribute('mention-id')!,
+      id: dom.getAttribute('data-mention-id')!,
       text: dom.textContent!,
       accessLevel: dom.getAttribute('data-access-level')!
     })

@@ -17,26 +17,12 @@ const MetaItem = ({ href, label, summary }) => (
 
 export default class MetaData extends PureComponent {
   static propTypes = {
-    maintainers: PropTypes.arrayOf(PropTypes.object),
     packageKey: PropTypes.string,
     packageName: PropTypes.string,
-    publishedDate: PropTypes.string,
-    version: PropTypes.string,
   }
 
   render() {
-    const { packageKey, maintainers, packageName, publishedDate, version } = this.props;
-
-    const versionSummary = (
-      <span>
-        <strong>{version}</strong>
-        {publishedDate ? (
-          <time dateTime={publishedDate} style={{ marginLeft: 10 }}>
-            {new Date(publishedDate).toLocaleDateString()}
-          </time>
-        ) : null}
-      </span>
-    );
+    const { packageKey, packageName } = this.props;
 
     return (
       <Meta>
@@ -55,17 +41,9 @@ export default class MetaData extends PureComponent {
           summary="Bitbucket"
         />
         <MetaItem
-          label="Version"
-          summary={versionSummary}
-        />
-        <MetaItem
           href={`https://unpkg.com/${packageName}/dist`}
           label="Bundle"
           summary="unpkg.com"
-        />
-        <MetaItem
-          label={`Maintainer${maintainers.length > 1 ? 's' : ''}`}
-          summary={maintainers.map(m => m.name).join(', ')}
         />
       </Meta>
     );

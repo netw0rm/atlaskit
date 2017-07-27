@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
@@ -13,17 +12,10 @@ import { Action } from '../../src/styled/Actions';
 import ExpanderInternal from '../../src/styled/Expander';
 
 describe(name, () => {
-  let flagCount = 0;
-
   // Helper function to generate <Flag /> with base props
   function generateFlag(extraProps) {
     return (
-      <Flag
-        icon={<div />}
-        key={flagCount++}
-        title="Flag"
-        {...extraProps}
-      />
+      <Flag icon={<div />} title="Flag" {...extraProps} />
     );
   }
 
@@ -152,7 +144,7 @@ describe(name, () => {
           it('should pass appearance value on to styled sub-components', () => {
             flag.setState({ isExpanded: true });
             flag.setProps({
-              actions: [{ content: 'Hello!' }],
+              actions: [{ content: 'Hello!', onClick: () => {} }],
               description: 'Hi there',
             });
 
@@ -169,7 +161,7 @@ describe(name, () => {
         let flag;
 
         beforeEach(() => {
-          actionSpy = sinon.spy();
+          actionSpy = jest.fn();
           flag = mount(
             generateFlag({
               actions: [
@@ -189,12 +181,12 @@ describe(name, () => {
 
         it('action onClick should be triggered on click', () => {
           flag.find('button').first().simulate('click');
-          expect(actionSpy.callCount).toBe(1);
+          expect(actionSpy).toHaveBeenCalledTimes(1);
         });
       });
 
       it('onDismissed should be called with flag id as param when dismiss icon clicked', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(
           generateFlag({
             id: 'a',
@@ -203,12 +195,12 @@ describe(name, () => {
           })
         );
         wrapper.find(DismissButton).simulate('click');
-        expect(spy.callCount).toBe(1);
-        expect(spy.calledWith('a')).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith('a');
       });
 
       it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(
           generateFlag({
             id: 'a',
@@ -216,7 +208,7 @@ describe(name, () => {
           })
         );
         expect(wrapper.find(DismissButton).exists()).toBe(false);
-        expect(spy.callCount).toBe(0);
+        expect(spy).not.toHaveBeenCalled();
       });
     });
 
@@ -262,23 +254,21 @@ describe(name, () => {
     );
 
     it('onDismissed should be called when child Flag is dismissed', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <FlagGroup onDismissed={spy}>
-          {
-            generateFlag({
-              id: 'a',
-              isDismissAllowed: true,
-              onDismissed: spy,
-            })
-          }
-          { generateFlag({ id: 'b' }) }
+          {generateFlag({
+            id: 'a',
+            isDismissAllowed: true,
+            onDismissed: spy,
+          })}
+          {generateFlag({ id: 'b' })}
         </FlagGroup>
       );
       wrapper.find(DismissButton).simulate('click');
       wrapper.find(Container).first().simulate('animationEnd');
-      expect(spy.callCount).toBe(1);
-      expect(spy.calledWith('a')).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('a');
     });
   });
 });

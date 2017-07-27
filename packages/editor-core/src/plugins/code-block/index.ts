@@ -128,8 +128,7 @@ export class CodeBlockState {
 }
 export const stateKey = new PluginKey('codeBlockPlugin');
 
-
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new CodeBlockState(state);

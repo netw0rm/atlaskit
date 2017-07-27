@@ -21,10 +21,8 @@
       "es2015.promise"
     ],
     "types": [
-      "chai",
-      "mocha",
+      "jest",
       "react",
-      "sinon",
       "enzyme"
     ]
   },

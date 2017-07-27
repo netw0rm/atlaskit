@@ -1,19 +1,17 @@
-import React, { PropTypes, PureComponent } from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import ExpanderInternal from '../styled/Expander';
+import type { ChildrenType } from '../types';
+
+type Props = {
+  children?: ChildrenType,
+  isExpanded?: boolean,
+};
 
 export default class Expander extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    isExpanded: PropTypes.bool,
-  }
-
-  static defaultProps = {
-    isExpanded: false,
-  }
-
-  state = {
-    isAnimating: false,
-  }
+  props: Props; // eslint-disable-line react/sort-comp
+  static defaultProps = { isExpanded: false }
+  state = { isAnimating: false }
 
   componentWillUpdate(nextProps) {
     if (this.props.isExpanded !== nextProps.isExpanded) {
@@ -26,14 +24,13 @@ export default class Expander extends PureComponent {
   }
 
   render() {
-    const { isExpanded } = this.props;
+    const { children, isExpanded } = this.props;
+    const { isAnimating } = this.state;
 
     // Need to always render the ExpanderInternal otherwise the
     // reveal transiton doesn't happen. We can't use CSS animation for
     // the the reveal because we don't know the height of the content.
-    const childrenIfExpanded = (this.state.isAnimating || isExpanded)
-      ? this.props.children
-      : null;
+    const childrenIfExpanded = (isAnimating || isExpanded) ? children : null;
 
     return (
       <ExpanderInternal

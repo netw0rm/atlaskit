@@ -1,4 +1,3 @@
-import * as chai from 'chai';
 import * as sinon from 'sinon';
 
 import {MediaLinkService} from '../../src/services/linkService';
@@ -26,8 +25,6 @@ const linkMetadata = <UrlPreview> {
   }
 };
 const authParams = `token=${token}&client=${clientId}`;
-const expect = chai.expect;
-const assert = chai.assert;
 
 describe('MediaLinkService', () => {
   let tokenProvider: JwtTokenProvider;
@@ -47,7 +44,7 @@ describe('MediaLinkService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = sinon.stub().returns(Promise.resolve(token));
+    tokenProvider = jest.fn(() => Promise.resolve(token));
     linkService = new MediaLinkService({serviceHost, tokenProvider});
   });
 
@@ -76,21 +73,21 @@ describe('MediaLinkService', () => {
 
     const response = linkService.getLinkItem(linkId, clientId, collection)
       .then(linkItem => {
-        expect(linkItem.type).to.equal('link');
-        expect(linkItem.details.id).to.equal('some-id');
-        expect(linkItem.details.url).to.equal('some-url');
-        expect(linkItem.details.title).to.equal('some-title');
-        expect(linkItem.details.description).to.equal('some-description');
-        expect(linkItem.details.site).to.equal('some-site');
-        expect(linkItem.details.author).to.deep.equal({name: 'some-author'});
-        expect(linkItem.details.date).to.equal(123456);
+        expect(linkItem.type).toBe('link');
+        expect(linkItem.details.id).toBe('some-id');
+        expect(linkItem.details.url).toBe('some-url');
+        expect(linkItem.details.title).toBe('some-title');
+        expect(linkItem.details.description).toBe('some-description');
+        expect(linkItem.details.site).toBe('some-site');
+        expect(linkItem.details.author).toEqual({name: 'some-author'});
+        expect(linkItem.details.date).toBe(123456);
       })
       .then(() => {
         // Validate call to token provider
-        assert((tokenProvider as any).calledWith(collection));
+        expect(tokenProvider).toHaveBeenCalledWith(collection);
       })
       .then(() => {
-        expect(requests[0].url).to.equal(`some-host/link/some-link-id?collection=some-collection&${authParams}`);
+        expect(requests[0].url).toBe(`some-host/link/some-link-id?collection=some-collection&${authParams}`);
       });
     setTimeout(() => {
       const mockedResponse = {
@@ -105,8 +102,8 @@ describe('MediaLinkService', () => {
   it('should reject get link when server responded with 500', () => {
     const response = linkService.getLinkItem('some-dodgy-link-id', clientId, collection)
       .then(
-        () => assert.fail('The function getLinkItem should fail'),
-        error => expect(error).to.exist
+        () => { throw new Error('The function getLinkItem should fail'); },
+        error => expect(error).toBeDefined()
       );
 
     setTimeout(() => { requests[0].respond(500, { }, ''); });
@@ -116,17 +113,17 @@ describe('MediaLinkService', () => {
   it('should add link', () => {
     const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
       .then(id => {
-        expect(id).to.equal(linkId);
+        expect(id).toBe(linkId);
       })
       .then(() => {
         // Validate call to token provider
-        assert((tokenProvider as any).calledWith(collection));
+        expect(tokenProvider).toHaveBeenCalledWith(collection);
       })
       .then(() => {
         const headers = requests[0].requestHeaders;
-        expect(headers['X-Client-Id']).to.equal(clientId);
-        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
-        expect(requests[0].url).to.equal('some-host/link?collection=some-collection');
+        expect(headers['X-Client-Id']).toBe(clientId);
+        expect(headers['Authorization']).toBe(`Bearer ${token}`);
+        expect(requests[0].url).toBe('some-host/link?collection=some-collection');
       });
 
     setTimeout(() => {
@@ -143,8 +140,8 @@ describe('MediaLinkService', () => {
   it('should reject add link when server responded with 500', () => {
     const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
       .then(
-        () => assert.fail('The function addLinkItem should fail'),
-        error => expect(error).to.exist
+        () => { throw new Error('The function addLinkItem should fail'); },
+        error => expect(error).toBeDefined
       );
 
     setTimeout(() => { requests[0].respond(500, { }, ''); });

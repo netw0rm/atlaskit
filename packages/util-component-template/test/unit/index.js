@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { akColorR400, akColorG75 } from '@atlaskit/util-shared-styles';
-import sinon from 'sinon';
 
 import AkToggle, { Toggle } from '../../src';
 import { getContainerBackgroundColor } from '../../src/styled';
@@ -31,7 +30,7 @@ describe(name, () => {
     });
 
     it('should fire onToggle when the button is clicked', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const wrapper = mount(
         <Toggle
           onToggle={stub}
@@ -40,7 +39,7 @@ describe(name, () => {
 
       wrapper.find('button').simulate('click');
 
-      expect(stub.callCount).toBe(1);
+      expect(stub).toHaveBeenCalledTimes(1);
     });
 
     // [Current patterns for testing dynamic styles](https://extranet.atlassian.com/display/AtlasKit/Moving+from+Less+to+Styled+Components)

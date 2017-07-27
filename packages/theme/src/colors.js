@@ -113,4 +113,25 @@ export const DN40 = '#202B3D';
 export const DN30 = '#1B2638';
 export const DN20 = '#121A29';
 export const DN10 = '#0E1624';
+
+// ATTENTION: update the tints if you update this
 export const DN0 = '#0D1424';
+
+// Each dark tint is made of DN0 and an alpha channel
+export const DN800A = 'rgba(13, 20, 36, 0.02)';
+export const DN700A = 'rgba(13, 20, 36, 0.04)';
+export const DN600A = 'rgba(13, 20, 36, 0.08)';
+export const DN500A = 'rgba(13, 20, 36, 0.13)';
+export const DN400A = 'rgba(13, 20, 36, 0.25)';
+export const DN300A = 'rgba(13, 20, 36, 0.31)';
+export const DN200A = 'rgba(13, 20, 36, 0.36)';
+export const DN100A = 'rgba(13, 20, 36, 0.42)';
+export const DN90A = 'rgba(13, 20, 36, 0.48)';
+export const DN80A = 'rgba(13, 20, 36, 0.54)';
+export const DN70A = 'rgba(13, 20, 36, 0.60)';
+export const DN60A = 'rgba(13, 20, 36, 0.66)';
+export const DN50A = 'rgba(13, 20, 36, 0.71)';
+export const DN40A = 'rgba(13, 20, 36, 0.77)';
+export const DN30A = 'rgba(13, 20, 36, 0.82)';
+export const DN20A = 'rgba(13, 20, 36, 0.89)';
+export const DN10A = 'rgba(13, 20, 36, 0.95)';

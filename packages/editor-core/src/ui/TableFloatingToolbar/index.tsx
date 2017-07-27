@@ -26,6 +26,7 @@ export interface State {
   cutDisabled: boolean;
   copyDisabled: boolean;
   pasteDisabled: boolean;
+  advancedMenuDisabled: boolean;
 }
 
 export default class TableFloatingToolbar extends PureComponent<Props, State> {
@@ -34,6 +35,8 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     cutDisabled: false,
     copyDisabled: false,
     pasteDisabled: false,
+    // disabled for the first version of tables
+    advancedMenuDisabled: true
   };
 
   componentDidMount() {
@@ -51,7 +54,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   render() {
-    const { cellElement, isOpen } = this.state;
+    const { cellElement, isOpen, advancedMenuDisabled } = this.state;
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const items = this.createItems();
 
@@ -69,7 +72,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
               onClick={this.handleRemove}
               iconBefore={<RemoveIcon label="Remove selected cells" />}
             />
-            {items[0].items.length > 0 &&
+            {!advancedMenuDisabled && items[0].items.length > 0 &&
               <DropdownMenu
                 items={items}
                 isOpen={isOpen}

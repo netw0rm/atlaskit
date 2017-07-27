@@ -40,11 +40,10 @@
   "devDependencies": {
     "@atlaskit/button": "^1.1.2",
     "@atlaskit/editor-hipchat": "*",
+    "@atlaskit/emoji": "^22.3.1",
     "@atlaskit/media-core": "^8.4.1",
     "@atlaskit/media-test-helpers": "^6.0.2",
-    "@atlaskit/emoji": "^22.3.0",
-    "@atlaskit/mention": "^7.3.0",
-    "@atlaskit/util-data-test": "^7.0.0",
+    "@atlaskit/mention": "^7.3.1",
     "@atlaskit/util-readme": "^3.6.2",
     "pretty-data": "^0.40.0"
   },

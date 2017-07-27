@@ -1,3 +1,4 @@
+import { Context } from './../../../../media-core/src/context/context';
 import * as assert from 'assert';
 
 import {
@@ -19,7 +20,7 @@ import {
   Transaction,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
-import { ContextConfig } from '@atlaskit/media-core';
+import { ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
@@ -171,8 +172,29 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (): void => {
-    insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
+  insertLinks = async () => {
+    const { mediaProvider } = this;
+
+    if (!mediaProvider) {
+      return;
+    }
+
+    const { linkCreateContext } = this.mediaProvider;
+
+    if (!linkCreateContext) {
+      return;
+    }
+
+    let linkCreateContextInstance = await linkCreateContext;
+    if (!linkCreateContextInstance) {
+      return;
+    }
+
+    if (!(linkCreateContextInstance as Context).addLinkItem) {
+      linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
+    }
+
+    return insertLinks(this.view, this.linkRanges, linkCreateContextInstance as Context, this.collectionFromProvider());
   }
 
   splitMediaGroup = (): boolean => {
@@ -325,6 +347,7 @@ export class MediaPluginState {
       this.ignoreLinks = false;
       return this.linkRanges;
     }
+
     if (!link || !this.allowsLinks) {
       return this.linkRanges;
     }

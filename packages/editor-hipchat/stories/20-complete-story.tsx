@@ -68,16 +68,6 @@ storiesOf(name, module)
         this.setState({ editor });
       }
 
-      componentDidMount() {
-        // const { editor } = this.state;
-        // if (!editor) {
-        //   throw new Error('wat');
-        // }
-
-
-        // editor.focus();
-      }
-
       togglePrettify = () => {
         this.setState({ prettify: !this.state.prettify });
       }

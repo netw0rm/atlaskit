@@ -12,7 +12,10 @@
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "dependencies": {
     "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/button": "^3.0.0",
@@ -26,8 +29,10 @@
     "@atlaskit/util-shared-styles": "^2.1.1",
     "babel-runtime": "^6.11.6",
     "es6-promise": "^4.1.1",
+    "glob": "^7.1.2",
     "prop-types": "^15.5.10",
     "react-intl": "^2.3.0",
+    "rxjs": "^5.4.2",
     "styled-components": "^2.1.0",
     "tslib": "^1.2.0",
     "whatwg-fetch": "^2.0.3"
@@ -52,7 +57,8 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "babel-core": "^6.17.0"
   },
   "repository": {
     "type": "git",
@@ -61,8 +67,13 @@
   "devDependencies": {
     "@atlaskit/xflow": "*",
     "akutil-common-test": "*",
+    "babel-plugin-react-intl": "^2.3.1",
     "chai-as-promised": "^7.1.1",
     "fetch-mock": "^5.12.1"
   },
-  "keywords": ["media", "ui", "internal"]
+  "keywords": [
+    "media",
+    "ui",
+    "internal"
+  ]
 }

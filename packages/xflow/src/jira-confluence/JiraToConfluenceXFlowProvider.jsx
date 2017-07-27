@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import { XFlowProvider } from '../common/components/XFlowProvider';
 
 import { isUserTrusted } from './tenantContext';
@@ -19,7 +19,30 @@ import closeLoadingDialog from './closeLoadingDialog';
 import languagePacks from './language-packs.json';
 import confluenceStatusChecker from './confluenceStatusChecker';
 
-export const defaultProps = intl => ({ // eslint-disable-line
+const messages = defineMessages({
+  startTrialConfirmButtonText: {
+    id: 'xflow.start-trial.confirm-button',
+    defaultMessage: 'Confirm',
+  },
+  startTrialCancelButtonText: {
+    id: 'xflow.start-trial.cancel-button',
+    defaultMessage: 'Cancel',
+  },
+  startTrialHeading: {
+    id: 'xflow.start-trial.heading',
+    defaultMessage: 'Start your 30 day trial',
+  },
+  startTrialErrorFlagTitle: {
+    id: 'xflow.start-trial.error-flag.title',
+    defaultMessage: 'Oops... Something went wrong',
+  },
+  startTrialErrorFlagDescription: {
+    id: 'xflow.start-trial.error-flag.description',
+    defaultMessage: 'Let\'s try that again.',
+  },
+});
+
+export const defaultProps = intl => ({
   config: {
     productLogo: <ConfluenceLogo />,
     languagePacks,
@@ -31,8 +54,12 @@ export const defaultProps = intl => ({ // eslint-disable-line
       notePlaceholder: 'I would like to try Confluence because…',
     },
     startTrial: {
-      confirmButtonText: 'Confirm',
-      confirmCancelButtonText: 'Cancel',
+      confirmButtonText: intl.formatMessage(messages.startTrialConfirmButtonText),
+      confirmCancelButtonText: intl.formatMessage(messages.startTrialCancelButtonText),
+      trialHeading: intl.formatMessage(messages.startTrialHeading),
+      trialMessage: <FormattedMessage id="xflow.start-trial.message" defaultMessage="Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance." values={{ br: <br /> }} />,
+      errorFlagTitle: intl.formatMessage(messages.startTrialErrorFlagTitle),
+      errorFlagDescription: intl.formatMessage(messages.startTrialErrorFlagDescription),
       grantOptionItems: [
         {
           value: 'everyone',

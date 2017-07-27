@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
-import { FormattedMessage } from 'react-intl';
 import ErrorFlag from './ErrorFlag';
 
 import SpinnerDiv from '../styled/SpinnerDiv';
@@ -11,9 +10,6 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import i18nId from '../../common/i18nId';
-
-const i18n = i18nId('confirm-trial');
 
 export class ConfirmTrialBase extends Component {
   static propTypes = {
@@ -24,6 +20,12 @@ export class ConfirmTrialBase extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
+    confirmButtonText: PropTypes.string.isRequired,
+    cancelButtonText: PropTypes.string.isRequired,
+    heading: PropTypes.string.isRequired,
+    message: PropTypes.node.isRequired,
+    errorFlagTitle: PropTypes.string.isRequired,
+    errorFlagDescription: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -61,7 +63,15 @@ export class ConfirmTrialBase extends Component {
   };
 
   render() {
-    const { productLogo } = this.props;
+    const {
+      productLogo,
+      confirmButtonText,
+      cancelButtonText,
+      heading,
+      message,
+      errorFlagTitle,
+      errorFlagDescription,
+    } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -78,29 +88,29 @@ export class ConfirmTrialBase extends Component {
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
-              <FormattedMessage id={i18n`confirm-button`} />
+              { confirmButtonText }
             </Button>
             <Button
               id="xflow-confirm-trial-cancel-button"
               onClick={this.handleCancelClick}
               appearance="subtle-link"
             >
-              <FormattedMessage id={i18n`cancel-button`} />
+              { cancelButtonText }
             </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog id="xflow-confirm-trial">
           <StartTrialHeader>
-            <FormattedMessage id={i18n`heading`} />
+            { heading }
           </StartTrialHeader>
           <p>
-            <FormattedMessage id={i18n`message`} values={{ br: <br /> }} />
+            { message }
           </p>
         </StartTrialDialog>
         <ErrorFlag
-          title="Oops... Something went wrong"
-          description="Let's try again."
+          title={errorFlagTitle}
+          description={errorFlagDescription}
           showFlag={this.state.confluenceFailedToStart}
           onDismissed={() => this.setState({ confluenceFailedToStart: false })}
         />
@@ -111,9 +121,29 @@ export class ConfirmTrialBase extends Component {
 
 export default withXFlowProvider(
   ConfirmTrialBase,
-  ({ xFlow: { config: { productLogo }, startProductTrial, cancelStartProductTrial } }) => ({
+  ({ xFlow: {
+    config: {
+      productLogo,
+      startTrial: {
+        confirmButtonText,
+        cancelButtonText,
+        trialHeading,
+        trialMessage,
+        errorFlagTitle,
+        errorFlagDescription,
+    },
+    },
+    startProductTrial,
+    cancelStartProductTrial,
+  } }) => ({
     productLogo,
     startProductTrial,
     cancelStartProductTrial,
+    confirmButtonText,
+    cancelButtonText,
+    heading: trialHeading,
+    message: trialMessage,
+    errorFlagTitle,
+    errorFlagDescription,
   })
 );

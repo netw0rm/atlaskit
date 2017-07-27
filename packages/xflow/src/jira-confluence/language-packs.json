@@ -3,10 +3,6 @@
     "test": "Demande d'essai"
   },
   "en_US": {
-    "xflow.confirm-trial.heading": "Start your 30 day trial",
-    "xflow.confirm-trial.message": "Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance.",
-    "xflow.confirm-trial.confirm-button": "Confirm",
-    "xflow.confirm-trial.cancel-button": "Cancel",
     "xflow.grant-access.no-matches": "No matches found",
     "xflow.grant-access.user-select-error": "There was an issue retrieving your users",
     "xflow.grant-access.heading": "Who should have access?",

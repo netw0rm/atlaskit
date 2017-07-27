@@ -37,6 +37,7 @@ import {
   MediaPluginState,
   MediaState,
   Slice,
+  configureEditorState,
 
   // nodeviews
   nodeViewFactory,
@@ -77,6 +78,10 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  contentId?: string;
+  synchronyUrl?: string;
+  synchronyDebug?: boolean;
+  jwtToken?: Promise<string>;
 }
 
 export interface State {
@@ -93,6 +98,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
+  private editorRef?: Element;
 
   constructor(props: Props) {
     super(props);
@@ -215,17 +221,19 @@ export default class Editor extends PureComponent<Props, State> {
       }
     }
   }
+  destroyEditorView(editorView) {
+    if (editorView.state) {
+      mediaStateKey.getState(editorView.state).destroy();
+    }
 
+    editorView.destroy();
+  }
   componentWillUnmount() {
     this.providerFactory.destroy();
 
     const { editorView } = this.state;
     if (editorView) {
-      if (editorView.state) {
-        mediaStateKey.getState(editorView.state).destroy();
-      }
-
-      editorView.destroy();
+      this.destroyEditorView(editorView);
     }
   }
 
@@ -296,7 +304,9 @@ export default class Editor extends PureComponent<Props, State> {
         'Mod-Enter': this.handleSave,
       };
 
-      const editorState = EditorState.create({
+      const {synchronyUrl, synchronyDebug, contentId, jwtToken} = this.props;
+      this.editorRef = place;
+      Promise.resolve({
         schema,
         doc,
         plugins: [
@@ -322,58 +332,68 @@ export default class Editor extends PureComponent<Props, State> {
           keymap(cqKeymap),
           keymap(baseKeymap),
         ]
-      });
+      })
+      .then(config => configureEditorState(config, {synchronyUrl, synchronyDebug, contentId, jwtToken}))
+      .then(config => {
+        const editorState = EditorState.create(config);
 
-      const codeBlockState = codeBlockStateKey.getState(editorState);
-      codeBlockState.setLanguages(supportedLanguages);
+        const codeBlockState = codeBlockStateKey.getState(editorState);
+        codeBlockState.setLanguages(supportedLanguages);
 
-      const editorView = new EditorView(place, {
-        state: editorState,
-        editable: (state: EditorState<any>) => !this.props.disabled,
-        dispatchTransaction: (tr) => {
-          const newState = editorView.state.apply(tr);
-          editorView.updateState(newState);
-          this.handleChange();
-        },
-        nodeViews: {
-          jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
-          unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
-          unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
-          mediaGroup: nodeViewFactory(this.providerFactory, {
-            mediaGroup: ReactMediaGroupNode,
-            media: ReactMediaNode,
-          }, true),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
-        },
-        handleDOMEvents: {
-          paste(view: EditorView, event: ClipboardEvent) {
-            analyticsService.trackEvent('atlassian.editor.paste');
+        const editorView = new EditorView(place, {
+          state: editorState,
+          editable: (state: EditorState<any>) => !this.props.disabled,
+          dispatchTransaction: (tr) => {
+            const newState = editorView.state.apply(tr);
+            editorView.updateState(newState);
+            this.handleChange();
+          },
+          nodeViews: {
+            jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
+            unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
+            unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
+            mediaGroup: nodeViewFactory(this.providerFactory, {
+              mediaGroup: ReactMediaGroupNode,
+              media: ReactMediaNode,
+            }, true),
+            mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
+          },
+          handleDOMEvents: {
+            paste(view: EditorView, event: ClipboardEvent) {
+              analyticsService.trackEvent('atlassian.editor.paste');
+              return false;
+            }
+          },
+          handlePaste(view: EditorView, event: any, slice: Slice): boolean {
+            const { clipboardData } = event;
+            const html = clipboardData && clipboardData.getData('text/html');
+            // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
+            if (html && !html.match(/<table[^>]+>/g)) {
+              const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+              view.dispatch(
+                view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
+              );
+              return true;
+            }
             return false;
-          }
-        },
-        handlePaste(view: EditorView, event: any, slice: Slice): boolean {
-          const { clipboardData } = event;
-          const html = clipboardData && clipboardData.getData('text/html');
-          // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
-          if (html && !html.match(/<table[^>]+>/g)) {
-            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
-            view.dispatch(
-              view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
-            );
-            return true;
-          }
-          return false;
-        },
+          },
+        });
+
+        this.sendUnsupportedNodeUsage(config.doc);
+        return editorView;
+      }).then((editorView: EditorView) => {
+        if(this.editorRef === place) {
+          analyticsService.trackEvent('atlassian.editor.start');
+
+          this.setState({ editorView }, () => {
+            this.focus();
+          });
+        } else {
+          this.destroyEditorView(editorView);
+        }
       });
-
-      analyticsService.trackEvent('atlassian.editor.start');
-
-      this.setState({ editorView }, () => {
-        this.focus();
-      });
-
-      this.sendUnsupportedNodeUsage(doc);
     } else {
+      this.editorRef = undefined;
       this.setState({ editorView: undefined });
     }
   }

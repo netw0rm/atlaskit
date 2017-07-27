@@ -99,6 +99,18 @@ storiesOf(name, module)
       mentionProvider={mentionProvider}
     />
   )
+  .add('With Synchrony', () =>
+    <Editor
+      isExpandedByDefault={true}
+      onCancel={CANCEL_ACTION}
+      onSave={SAVE_ACTION}
+      onChange={handleChange}
+      mentionProvider={mentionProvider}
+      synchronyUrl={`http://${location.hostname}:10123/v1`}
+      synchronyDebug={true}
+      contentId="myapp/atldemo"
+    />
+  )
   .add('With Media support', () =>
     //  TODO: remove the following note and link after the login is not required anymore or there's better way to run the story.
     <div>

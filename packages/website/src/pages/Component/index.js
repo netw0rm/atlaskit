@@ -174,17 +174,19 @@ export default class PackageComponent extends PureComponent {
 }
 
 export const NavPackageComponent = ({ match }) => {
+  const pkgData = data[match.params.package];
+  if (!pkgData) return <div>We effed up</div>;
   const name = match.params.component;
-  const componentData = data.navigation.components[name];
+  const componentData = pkgData.components[name];
   let component;
   if (componentData) {
     component = {
-      ...data.navigation,
+      ...pkgData,
       name,
       docs: componentData,
       description: componentData.byline,
       components: undefined,
-      props: data.navigation.props.filter(comp => comp.name === name),
+      props: pkgData.props.filter(comp => comp.name === name),
     };
   }
   return (<PackageComponent component={component} name={name} />);

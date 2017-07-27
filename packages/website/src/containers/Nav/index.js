@@ -17,9 +17,10 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import atlasKitLogo from '../../images/atlaskit-logo.png';
 import SearchDrawer from './SearchDrawer';
 
+import PatternNav from './navigations/PatternNav';
 import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';
-import NavigationNav from './navigations/NavigationPattern';
+// import NavigationNav from './navigations/NavigationPattern';
 import patterns from '../../../patterns';
 
 const backIcon = <ArrowLeft label="Back icon" />;
@@ -33,35 +34,33 @@ const Header = () => (
   </Link>
 );
 
-<<<<<<< HEAD
-const getIndex = (pathname: string): number => {
-  if (/^\/components\/navigation/.test(pathname)) return 2;
-  if (/^\/components/.test(pathname)) return 1;
-  if (/^\/changelog/.test(pathname)) return 1;
-  if (/^\/patterns/.test(pathname)) return 1;
-  return 0;
-=======
 const getCurrentStack = (pathname: string, router): Array<Element> => {
   let currentStack = [<DefaultNav
     pathname={pathname}
     router={router}
   />];
-  if (/^\/components/.test(pathname) || /^\/patterns/.test(pathname)) {
+  if (/^\/components/.test(pathname) || /^\/changelog/.test(pathname)) {
     currentStack = currentStack.concat(<ComponentNav
       backIcon={backIcon}
       router={router}
       pathname={pathname}
     />);
   }
-  if (/^\/components\/navigation/.test(pathname)) {
-    currentStack = currentStack.concat(<NavigationNav
-      pathname={pathname}
+  if (/^\/patterns/.test(pathname)) {
+    currentStack = currentStack.concat(<PatternNav
       backIcon={backIcon}
       router={router}
+      pathname={pathname}
     />);
   }
+  // if (/^\/components\/navigation/.test(pathname)) {
+  //   currentStack = currentStack.concat(<NavigationNav
+  //     pathname={pathname}
+  //     backIcon={backIcon}
+  //     router={router}
+  //   />);
+  // }
   return currentStack;
->>>>>>> docs(docs): change how website considers patterns based on conversations w luke and jed
 };
 
 class StandardNav extends Component {

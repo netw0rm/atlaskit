@@ -18,7 +18,7 @@ import Components from '../../pages/Components';
 import Patterns from '../../pages/Patterns';
 import Examples from '../../pages/Examples';
 import ExampleBase from '../../pages/Navigation/ExampleBase';
-import NavExample from '../../pages/Navigation/Example';
+// import NavExample from '../../pages/Navigation/Example';
 import Home from '../../pages/Home';
 import Pattern from '../../pages/Pattern';
 import NoMatch from '../../pages/NoMatch';
@@ -36,8 +36,7 @@ const Routes = () => (
     <Route path="/examples" component={Examples} />
     <Route exact path="/patterns" component={Patterns} />
     <Route exact path="/components/navigation/examples" component={ExampleBase} />
-    <Route path="/components/navigation/components/:component" render={({ match }) => <NavPackageComponent match={match} />} />
-    <Route path="/components/navigation/examples/:exampleName" component={NavExample} />
+    <Route path="/components/:package/components/:component" render={({ match }) => <NavPackageComponent match={match} />} />
     <Route exact path="/components" component={Components} />
     <Route
       path="/components/:component"

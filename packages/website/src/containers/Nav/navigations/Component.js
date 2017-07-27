@@ -13,17 +13,11 @@ import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import packages from '../../../data';
-import PatternNav from './PatternNav';
 
 const componentKeys = Object.keys(packages);
 
-const ComponentAkNavigationItem = withRouter(({ componentKey, location, destination }) => {
-  const component = packages[componentKey];
-  const url = `${destination}/${componentKey}`;
-  // We are matching against endswith so changelogs also show item as selected
-  const isSelected = location.pathname.endsWith(`/${componentKey}`);
-
-  return (
+const NestedComponents = ({ component, url, componentKey, isSelected }) => (
+  <div>
     <Link to={url} key={componentKey}>
       <AkNavigationItem
         icon={<PackageIcon size="small" label={`${component.name} icon`} />}
@@ -31,6 +25,47 @@ const ComponentAkNavigationItem = withRouter(({ componentKey, location, destinat
         isSelected={isSelected}
       />
     </Link>
+    <div
+      style={{
+        marginLeft: '40px',
+      }}
+    >
+
+      <AkNavigationItemGroup>
+        {Object.keys(component.components).map(componentName => (
+          <Link to={`${url}/components/${componentName}`} key={componentName}>
+            <AkNavigationItem
+              text={componentName}
+              isSelected={false}
+            />
+          </Link>
+        ))}
+      </AkNavigationItemGroup>
+    </div>
+  </div>
+);
+
+const ComponentAkNavigationItem = withRouter(({ componentKey, location, destination }) => {
+  const component = packages[componentKey];
+  const url = `${destination}/${componentKey}`;
+  // We are matching against endswith so changelogs also show item as selected
+  const isSelected = location.pathname.includes(`/${componentKey}`);
+
+  return (
+    isSelected && component.components
+      ? <NestedComponents
+        component={component}
+        url={url}
+        componentKey={componentKey}
+        isSelected={isSelected}
+      />
+      : <Link to={url} key={componentKey}>
+        <AkNavigationItem
+          icon={<PackageIcon size="small" label={`${component.name} icon`} />}
+          text={component.name}
+          isSelected={isSelected}
+        />
+      </Link>
   );
 });
 
@@ -80,18 +115,7 @@ const ComponentNav = ({ backIcon, router, pathname }) => {
     navItemText: 'All components',
   };
 
-  const variables = componentVariables;
-
-  if (pathname.includes('/patterns')) {
-    return (
-      <PatternNav
-        backIcon={backIcon}
-        router={router}
-        pathname={pathname}
-      />
-    );
-  }
-  return PackagesNav({ backIcon, router, pathname, ...variables });
+  return PackagesNav({ backIcon, router, pathname, ...componentVariables });
 };
 
 export default ComponentNav;

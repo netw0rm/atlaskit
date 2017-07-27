@@ -12,7 +12,7 @@ import { MOBILE_QUERY } from '../../../constants';
 
 import Page from '../../components/Page';
 
-import { NavPackageComponent, StandardComponent } from '../../pages/Component';
+import { InnerComponent, StandardComponent } from '../../pages/Component';
 import Changelog from '../../pages/Changelog';
 import Components from '../../pages/Components';
 import Patterns from '../../pages/Patterns';
@@ -36,7 +36,7 @@ const Routes = () => (
     <Route path="/examples" component={Examples} />
     <Route exact path="/patterns" component={Patterns} />
     <Route exact path="/components/navigation/examples" component={ExampleBase} />
-    <Route path="/components/:package/components/:component" render={({ match }) => <NavPackageComponent match={match} />} />
+    <Route path="/components/:package/components/:component" render={({ match }) => <InnerComponent match={match} />} />
     <Route exact path="/components" component={Components} />
     <Route
       path="/components/:component"

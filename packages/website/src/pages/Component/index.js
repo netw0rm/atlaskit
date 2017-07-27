@@ -128,7 +128,7 @@ export default class PackageComponent extends PureComponent {
   }
 
   render() {
-    const { component } = this.props;
+    const { component, innerComponent } = this.props;
     if (!component) return <Route component={NoMatch} />;
 
     const { isSelectOpen } = this.state;
@@ -157,7 +157,10 @@ export default class PackageComponent extends PureComponent {
             packageKey={component.key}
             packageName={component.packageName}
           />
-          <LatestChange changelog={component.changelog} componentKey={component.key} />
+          {innerComponent
+            ? null
+            : <LatestChange changelog={component.changelog} componentKey={component.key} />
+          }
           <Main itemProp="mainEntity">
             <Docs component={component} />
           </Main>
@@ -173,7 +176,7 @@ export default class PackageComponent extends PureComponent {
   }
 }
 
-export const NavPackageComponent = ({ match }) => {
+export const InnerComponent = ({ match }) => {
   const pkgData = data[match.params.package];
   if (!pkgData) return <div>We effed up</div>;
   const name = match.params.component;
@@ -189,7 +192,7 @@ export const NavPackageComponent = ({ match }) => {
       props: pkgData.props.filter(comp => comp.name === name),
     };
   }
-  return (<PackageComponent component={component} name={name} />);
+  return (<PackageComponent component={component} name={name} innerComponent />);
 };
 
 export const StandardComponent = ({ match }) => (

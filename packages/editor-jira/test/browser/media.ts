@@ -1,6 +1,6 @@
 import { MediaAttributes } from '@atlaskit/editor-core/';
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { checkParse, checkEncode /*, checkParseEncodeRoundTrips */ } from '../../test-helpers';
+import { checkParse, checkEncode, checkParseEncodeRoundTrips } from '../../test-helpers';
 import { name } from '../../package.json';
 import { JIRASchema, makeSchema } from '../../src/schema';
 
@@ -71,33 +71,31 @@ const fragment2 = `
 
 describe(name, () => {
   describe('media', () => {
-    // commented out due to failing test
-    // checkParseEncodeRoundTrips('thumbnail type (viewContext)',
-    //   schema,
-    //   '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
-    //   doc(mediaGroup([
-    //     media({
-    //       id: '42', type: 'file', collection: '',
-    //       __fileName: 'foo.png', __displayType: 'thumbnail'
-    //     })
-    //   ])),
-    //   {},
-    //   {
-    //     viewContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: '' }
-    //   }
-    // );
+    checkParseEncodeRoundTrips('thumbnail type (viewContext)',
+      schema,
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: '',
+          __fileName: 'foo.png', __displayType: 'thumbnail'
+        })
+      ])),
+      {},
+      {
+        viewContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: '' }
+      }
+    );
 
-    // commented out due to failing test
-    // checkParseEncodeRoundTrips('file type',
-    //   schema,
-    //   '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42">foo.pdf</a></span></p>',
-    //   doc(mediaGroup([
-    //     media({
-    //       id: '42', type: 'file', collection: '',
-    //       __fileName: 'foo.pdf', __displayType: 'file'
-    //     })
-    //   ]))
-    // );
+    checkParseEncodeRoundTrips('file type',
+      schema,
+      '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42">foo.pdf</a></span></p>',
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: '',
+          __fileName: 'foo.pdf', __displayType: 'file'
+        })
+      ]))
+    );
 
     checkParse('!foo.jpg|thumbnail!',
       schema,

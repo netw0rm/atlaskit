@@ -1,7 +1,6 @@
 // @flow
-import { expect } from 'chai';
-import { makeSelector } from '../../../src/view/dimension-publisher/make-connected-dimension-publisher';
-import type { MapProps } from '../../../src/view/dimension-publisher/dimension-publisher-types';
+import { makeSelector } from '../../../src/view/draggable-dimension-publisher/connected-draggable-dimension-publisher';
+import type { MapProps } from '../../../src/view/draggable-dimension-publisher/draggable-dimension-publisher-types';
 
 const defaultMapProps: MapProps = {
   shouldPublish: false,
@@ -20,7 +19,7 @@ describe('Dimension publisher - connected', () => {
       null,
     );
 
-    expect(result).to.deep.equal(defaultMapProps);
+    expect(result).toEqual(defaultMapProps);
   });
 
   it('should return the default props when the type being requested does not match the current publisher', () => {
@@ -31,7 +30,7 @@ describe('Dimension publisher - connected', () => {
       'SOME_OTHER_TYPE',
     );
 
-    expect(result).to.deep.equal(defaultMapProps);
+    expect(result).toEqual(defaultMapProps);
   });
 
   it('should return that it should publish when the requested type matches', () => {
@@ -42,7 +41,7 @@ describe('Dimension publisher - connected', () => {
       'MY_TYPE',
     );
 
-    expect(result).to.deep.equal(shouldPublishMapProps);
+    expect(result).toEqual(shouldPublishMapProps);
   });
 
   it('should not break memoization on multiple do not publish results', () => {
@@ -68,11 +67,11 @@ describe('Dimension publisher - connected', () => {
     );
 
     // correct result returned?
-    expect(result1).to.deep.equal(defaultMapProps);
+    expect(result1).toEqual(defaultMapProps);
     // checking object equality
-    expect(result1).to.equal(result2);
-    expect(result2).to.equal(result3);
-    expect(result3).to.equal(result4);
+    expect(result1).toBe(result2);
+    expect(result2).toBe(result3);
+    expect(result3).toBe(result4);
   });
 
   it('should not break memoization across multiple selectors', () => {
@@ -96,7 +95,7 @@ describe('Dimension publisher - connected', () => {
       'NOT_MY_TYPE',
     );
 
-    expect(shouldPublish1).to.equal(shouldPublish2);
-    expect(noPublish1).to.equal(noPublish2);
+    expect(shouldPublish1).toBe(shouldPublish2);
+    expect(noPublish1).toBe(noPublish2);
   });
 });

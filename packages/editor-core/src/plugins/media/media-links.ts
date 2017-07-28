@@ -1,4 +1,4 @@
-import { Context } from './../../../../media-core/src/context/context';
+import { Context } from '@atlaskit/media-core';
 import {
   atTheEndOfDoc,
   endPositionOfParent

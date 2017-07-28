@@ -1,6 +1,11 @@
 # @atlaskit/dropdown-menu
 
-## Unreleased
+## 3.5.0 (2017-07-28)
+
+* feature; convert dropdown-menu and droplist to declarative API (issues closed: ak-2978) ([f6e0292](https://bitbucket.org/atlassian/atlaskit/commits/f6e0292))
+## 3.4.2 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 ## 3.0.1 (2017-06-14)
 

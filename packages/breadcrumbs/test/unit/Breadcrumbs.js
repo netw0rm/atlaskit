@@ -1,7 +1,6 @@
 /* eslint-disable  mocha/no-skipped-tests */
 import { mount, shallow } from 'enzyme';
 import React, { Component } from 'react';
-import sinon from 'sinon';
 import Button from '@atlaskit/button';
 
 import {
@@ -72,7 +71,7 @@ describe('BreadcrumbsStateless', () => {
     describe('with enough items to collapse', () => {
       const firstItem = <Item hasSeparator>item1</Item>;
       const lastItem = <Item>item2</Item>;
-      const expandSpy = sinon.spy();
+      const expandSpy = jest.fn();
       let wrapper;
 
       describe('and not expanded', () => {
@@ -98,7 +97,7 @@ describe('BreadcrumbsStateless', () => {
         it('calls the onExpand handler when the ellipsis is clicked', () => {
           const ellipsisItem = wrapper.find(EllipsisItem);
           ellipsisItem.find(Button).simulate('click');
-          expect(expandSpy.callCount).toBe(1);
+          expect(expandSpy).toHaveBeenCalledTimes(1);
         });
       });
 

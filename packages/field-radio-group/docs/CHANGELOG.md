@@ -1,6 +1,8 @@
 # @atlaskit/field-radio-group
 
-## Unreleased
+## 1.6.2 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 ## 1.2.1 (2017-06-01)
 

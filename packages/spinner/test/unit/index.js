@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import { akColorN0, akColorN500 } from '@atlaskit/util-shared-styles';
 
 import Spinner from '../../src';
@@ -60,18 +59,18 @@ describe('Spinner', () => {
 
   describe('onComplete prop', () => {
     it('should be called after isCompleting prop is set', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
       wrapper.setProps({ isCompleting: true });
       wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy.callCount).toBe(1)));
+      setTimeout(() => expect(expect(spy).toHaveBeenCalledTimes(1)));
     });
 
     it('should not be called if isCompleting is not set', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Spinner delay={0} onComplete={spy} />);
       wrapper.find(Container).simulate('animationEnd');
-      setTimeout(() => expect(expect(spy.callCount).not.toBe(1)));
+      setTimeout(() => expect(expect(spy).not.toHaveBeenCalledTimes(1)));
     });
   });
 

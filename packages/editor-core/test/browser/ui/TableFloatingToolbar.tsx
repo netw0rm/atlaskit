@@ -108,7 +108,7 @@ describe('TableFloatingToolbar', () => {
     });
   });
 
-  describe('Advance menu', () => {
+  describe.skip('Advance menu', () => {
     describe('icon', () => {
       it('should be rendered in the toolbar', () => {
         const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));

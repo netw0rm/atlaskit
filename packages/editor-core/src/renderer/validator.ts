@@ -292,7 +292,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           mediaType = type;
           mediaCollection = collection;
         }
-        if (mediaId && mediaType && mediaCollection.length) {
+        if (mediaId && mediaType) {
           return {
             type,
             attrs: {

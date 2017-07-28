@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import Tabs, { TabsStateless } from '../../src/index';
 import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './_constants';
@@ -62,17 +61,17 @@ describe(name, () => {
 
       describe('onSelect prop', () => {
         it('is not fired for default selected tab', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           mount(
             <Tabs
               onSelect={spy}
               tabs={sampleTabsDefaultSelected}
             />
           );
-          expect(spy.called).toBe(false);
+          expect(spy).not.toHaveBeenCalled();
         });
         it('is fired with selected tab index when new tab selected by click', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const wrapper = mount(
             <Tabs
               onSelect={spy}
@@ -82,11 +81,11 @@ describe(name, () => {
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
           wrapper.find(TabLabel).at(2).simulate('click');
-          expect(spy.calledOnce).toBe(true);
-          expect(spy.calledWith(2)).toBe(true);
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith(2);
         });
         it('is fired with selected tab index when new tab selected by keyboard', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const wrapper = mount(
             <Tabs
               onSelect={spy}
@@ -99,8 +98,8 @@ describe(name, () => {
           wrapper.find(TabLabel).at(1).simulate('keyDown', {
             key: 'ArrowRight',
           });
-          expect(spy.calledOnce).toBe(true);
-          expect(spy.calledWith(2)).toBe(true);
+          expect(spy).toHaveBeenCalledTimes(1);
+          expect(spy).toHaveBeenCalledWith(2);
         });
       });
     });

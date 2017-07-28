@@ -20,7 +20,11 @@ export const confluenceSchema: Schema<any, any> = createSchema({
     'text',
     'confluenceUnsupportedInline',
     'media',
-    'rule'
+    'rule',
+    'table',
+    'tableCell',
+    'tableHeader',
+    'tableRow'
   ],
   marks: [
     'link',

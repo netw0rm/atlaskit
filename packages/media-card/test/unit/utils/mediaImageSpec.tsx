@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { MediaImage } from '../../../src/utils';
 import {smallImage} from '@atlaskit/media-test-helpers';
@@ -11,8 +10,8 @@ describe('MediaImage', () => {
   // TODO: test fails on pipeline, find way of wait until img is loaded properly
   it.skip('Fires onError method when URI dont work', (done) => {
     const onError = function(ev) {
-      expect(ev).to.instanceOf(Event);
-      expect(this).to.instanceOf(HTMLElement);
+      expect(ev).toBeInstanceOf(Event);
+      expect(this).toBeInstanceOf(HTMLElement);
       done();
     };
 
@@ -28,12 +27,12 @@ describe('MediaImage', () => {
        height={'25px'}
     />);
 
-    expect(mediaImg.find('.media-card').prop('className')).to.not.contain('crop');
+    expect(mediaImg.find('.media-card').prop('className')).not.toContain('crop');
   });
 
   it('Only adds the image to the background when transparentFallback is disabled', () => {
     const mediaImg = mount(<MediaImage dataURI={validURI} transparentFallback={false} />) as any;
 
-    expect(mediaImg.find('.media-card').prop('style').backgroundImage).to.equal(`url(${validURI})`);
+    expect(mediaImg.find('.media-card').prop('style').backgroundImage).toBe(`url(${validURI})`);
   });
 });

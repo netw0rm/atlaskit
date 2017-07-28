@@ -5,6 +5,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
+import Tooltip from '@atlaskit/tooltip';
 
 import {
   AkContainerTitle,
@@ -17,7 +18,7 @@ import HtmlPage from '../HtmlPage';
 
 export default class BasicNestedNavigation extends PureComponent {
   static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.node),
+    withtootips: PropTypes.bool,
   }
 
   static menu = [
@@ -116,7 +117,14 @@ export default class BasicNestedNavigation extends PureComponent {
     );
     const key = item.component.props.text;
 
-    return React.cloneElement(item.component, { key, onClick });
+    return !this.props.withtootips ?
+      React.cloneElement(item.component, { key, onClick }) :
+      <Tooltip
+        description={key}
+        position="right"
+      >
+        {React.cloneElement(item.component, { key, onClick })}
+      </Tooltip>;
   }
 
   renderStack = () => this.state.stack.map(page => (

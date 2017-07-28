@@ -17,6 +17,8 @@ import MultiSelectOverview from './examples/MultiSelectOverview';
 import multiSelectOverviewSrc from '!raw!./examples/MultiSelectOverview';
 import MultiSelectStatelessOverview from './examples/MultiSelectStatelessOverview';
 import multiSelectStatelessOverviewSrc from '!raw!./examples/MultiSelectStatelessOverview';
+import MultiSelectStatelessDoesNotFlip from './examples/MultiSelectStatelessDoesNotFlip';
+import multiSelectStatelessDoesNotFlipSrc from '!raw!./examples/MultiSelectStatelessDoesNotFlip';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
@@ -41,6 +43,8 @@ import SmartSelectWithCreateNewItem from './examples/SmartSelectWithCreateNewIte
 import SmartSelectWithCreateNewItemRaw from '!raw!./examples/SmartSelectWithCreateNewItem';
 import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
 import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
+import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
+import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
 /* eslint-enable import/first, import/no-duplicates */
 
 const Spaced = styled.div`
@@ -289,4 +293,23 @@ storiesOf(name, module)
       </CodeWrapper>
     </Spaced>
   ))
+  .add('Multi select that will not flip', () => (
+    <Spaced title="Multi select with footer">
+      <div style={{ width: '300px' }}>
+        <p>When you reduce the size of the window, the multi-select will remain in place.</p>
+        {MultiSelectStatelessDoesNotFlip}
+      </div>
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={multiSelectStatelessDoesNotFlipSrc} />
+      </CodeWrapper>
+    </Spaced>
+  ))
+  .add('Multi select - custom icon', () => (
+    <Spaced>
+      {SmartSelectCustomIcon}
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={SmartSelectCustomIconRaw} />
+      </CodeWrapper>
+    </Spaced>
+    ))
   ;

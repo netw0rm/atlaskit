@@ -81,7 +81,7 @@ describe('Search Results', () => {
   let searchResultsWrapper;
   beforeEach(() => {
     searchResultsWrapper = mountWithRootTheme(
-      <AkSearchResults onChange={() => {}} />
+      <AkSearchResults onInput={() => {}} />
     );
   });
 

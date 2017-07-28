@@ -1,6 +1,5 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
@@ -79,15 +78,15 @@ describe(name, () => {
   });
 
   it('should invoke the open callback when it opens', () => {
-    const spy = sinon.spy();
+    const spy = jest.fn();
     const wrapper = shallow(
       <AppSwitcher {...data} onAppSwitcherOpen={spy} />
     );
-    expect(spy.callCount).toBe(0);
+    expect(spy).toHaveBeenCalledTimes(0);
 
     wrapper.instance().onOpenChange({
       isOpen: true,
     });
-    expect(spy.callCount).toBe(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

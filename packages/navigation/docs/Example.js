@@ -35,7 +35,7 @@ class ExampleNavNav extends React.PureComponent {
           >
             <AkSearch
               onSearchClear={() => this.setState({ value: '' })}
-              onChange={e => this.setState({ value: e.target.value })}
+              onInput={e => this.setState({ value: e.target.value })}
               value={this.state.value}
             >
               {items.filter(item => item.includes(this.state.value)).map(item => (

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { layout, globalOpenWidth } from '../../shared-variables';
+import { globalOpenWidth, layout } from '../../shared-variables';
 import { getProvided } from '../../theme/util';
 
 const GlobalNavigationInner = styled.div`
@@ -9,7 +9,7 @@ const GlobalNavigationInner = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: ${layout.padding.top}px ${layout.padding.side}px ${layout.padding.top}px;
+  padding: ${layout.padding.top}px 0 ${layout.padding.bottom}px;
   /* always keeping a fixed width so that the ContainerNavigation bleeds over the top of this */
   width: ${globalOpenWidth}px;
 `;

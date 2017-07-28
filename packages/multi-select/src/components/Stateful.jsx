@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import uid from 'uid';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';
@@ -83,9 +84,16 @@ export default class MultiSelect extends PureComponent {
     position: PropTypes.string,
     /** Sets whether the field should be constrained to the width of its trigger */
     shouldFitContainer: PropTypes.bool,
+    /** Set whether the dropdown should flip its position when there is not enough
+    room in its default position. */
+    shouldFlip: PropTypes.bool,
     /** Sets whether a new item could be created and added to the list by pressing Enter
      * inside the autocomplete field */
     shouldAllowCreateItem: PropTypes.bool,
+    /**
+     * Icon to display at the right end of the multi-select
+     */
+    icon: PropTypes.node,
   }
 
   static defaultProps = {
@@ -93,6 +101,7 @@ export default class MultiSelect extends PureComponent {
     createNewItemLabel: 'New item',
     defaultSelected: [],
     shouldFocus: false,
+    shouldFlip: true,
     isRequired: false,
     items: [],
     label: '',
@@ -102,6 +111,7 @@ export default class MultiSelect extends PureComponent {
     onSelectedChange: () => {},
     position: 'bottom left',
     shouldAllowCreateItem: false,
+    icon: <ExpandIcon label="" />,
   }
 
   state = {
@@ -181,6 +191,8 @@ export default class MultiSelect extends PureComponent {
       shouldAllowCreateItem,
       shouldFitContainer,
       shouldFocus,
+      shouldFlip,
+      icon,
     } = this.props;
     const { filterValue, isOpen, items, selectedItems } = this.state;
 
@@ -212,6 +224,8 @@ export default class MultiSelect extends PureComponent {
         shouldAllowCreateItem={shouldAllowCreateItem}
         shouldFitContainer={shouldFitContainer}
         shouldFocus={shouldFocus}
+        shouldFlip={shouldFlip}
+        icon={icon}
       />
     );
   }

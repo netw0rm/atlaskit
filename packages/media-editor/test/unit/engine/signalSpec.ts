@@ -1,5 +1,4 @@
 import {Signal} from '../../../src/engine/signal';
-import {expect} from 'chai';
 
 interface SignalData {
   message: string;
@@ -21,7 +20,7 @@ describe('MediaEditor Signal', () => {
   it('should successfully emit with handler', (done) => {
     const signal = new Signal<SignalData>();
     signal.listen((data) => {
-      expect(data).to.deep.equal(someData);
+      expect(data).toEqual(someData);
       done();
     });
     signal.emit(someData);
@@ -42,7 +41,7 @@ describe('MediaEditor Signal', () => {
       throw new Error('This handler must not be called');
     });
     signal.listen((data) => {
-      expect(data).to.deep.equal(someData);
+      expect(data).toEqual(someData);
       done();
     });
     signal.emit(someData);

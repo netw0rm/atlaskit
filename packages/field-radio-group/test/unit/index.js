@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../../src';
 import { name } from '../../package.json';
@@ -88,10 +87,10 @@ describe(name, () => {
 
       describe('onRadio changed prop', () => {
         it('should be called when a value is selected', () => {
-          const spy = sinon.spy();
+          const spy = jest.fn();
           const wrapper = mount(<FieldRadioGroup items={sampleItems} onRadioChange={spy} />);
           wrapper.find(AkRadio).first().find('input').simulate('change');
-          expect(spy.callCount).toBe(1);
+          expect(spy).toHaveBeenCalledTimes(1);
         });
 
         it('updates the selectedValue state when a radio is changed', () => {

@@ -3,11 +3,11 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
-import { EmojiProvider } from '@atlaskit/editor-core';
+import { EmojiProvider, MentionProvider } from '@atlaskit/editor-core';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 
 import { default as Editor, version as editorVersion } from '../src';
-import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
 
 import { name } from '../package.json';
@@ -45,8 +45,8 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
-const mentionSource = new MockMentionSource();
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider) as Promise<MentionProvider>;
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 
 storiesOf(name, module)
@@ -71,7 +71,7 @@ storiesOf(name, module)
       onCancel={CANCEL_ACTION}
       onChange={CHANGE_ACTION}
       onSave={SAVE_ACTION}
-      mentionSource={mentionSource}
+      mentionProvider={mentionProvider}
     />
   )
   .add('With emoji', () =>
@@ -168,7 +168,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
-              mentionSource={mentionSource}
+              mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
             />
             <fieldset style={{ marginTop: 20 }}>
@@ -330,7 +330,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
-              mentionSource={mentionSource}
+              mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
               analyticsHandler = {analyticsHandler}
               imageUploadHandler={imageUploadHandler}

@@ -1,7 +1,14 @@
 # @atlaskit/emoji
 
-## Unreleased
+## 22.3.1 (2017-07-27)
 
+* bug fix; update test/story data to all source from latest prod url. Stop using dev. ([2d223f8](https://bitbucket.org/atlassian/atlaskit/commits/2d223f8))
+* bug fix; ensure :sweat_smile: is in emoji test data for editor tests ([00759bf](https://bitbucket.org/atlassian/atlaskit/commits/00759bf))
+
+* feature; skin tone selection stored in EmojiResource propagated to typeahead (issues closed: fs-1128)
+* breaking; EmojiProvider requires getter/setter for remembering tone selection
+* breaking; skin tone selection made in the picker is stored in the EmojiResource (issues closed: fs-1127)
+* feature; emojis with skin variations in the picker (issues closed: fs-1126)
 ## 18.4.2 (2017-07-10)
 
 

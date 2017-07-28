@@ -6,7 +6,8 @@ import { encode, parse, LANGUAGE_MAP } from '../../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
-  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media
+  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
+  table, tr, td, th
 } from './_schema-builder';
 chai.use(chaiPlugin);
 
@@ -329,6 +330,30 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+
+    describe('table', () => {
+      check('with header column',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><td><p>1</p></td><td><p>2</p></td></tr><tr><th><p>two</p></th><td><p>3</p></td><td><p>4</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), td({})(p('1')), td({})(p('2'))),
+          tr(th({})(p('two')), td({})(p('3')), td({})(p('4')))
+        )));
+
+      check('with header row',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><td><p>1</p></td><td><p>2</p></td><td><p>3</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
+          tr(td({})(p('1')), td({})(p('2')), td({})(p('3')))
+        )));
+
+      check('with header row and header column',
+        '<table class="confluenceTable"><tbody><tr><th><p>one</p></th><th><p>two</p></th><th><p>three</p></th></tr><tr><th><p>four</p></th><td><p>1</p></td><td><p>2</p></td></tr></tbody></table>',
+        doc(table(
+          tr(th({})(p('one')), th({})(p('two')), th({})(p('three'))),
+          tr(th({})(p('four')), td({})(p('1')), td({})(p('2')))
+        )));
+    });
+
 
     describe('code block', () => {
       check('with CDATA',
@@ -668,34 +693,9 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
 
       // check that node attributes are set during parsing
       const parsedMediaNode = parsed.firstChild.firstChild;
-      expect(parsedMediaNode.fileName).to.equal('2017-04-12 07.15.57.jpg');
-      expect(parsedMediaNode.fileSize).to.equal(95316);
-      expect(parsedMediaNode.fileMimeType).to.equal('image/jpeg');
-    });
-
-    it('should encode/parse media nodes with own attributes', () => {
-      const cxhtml = '<p><fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/></p>';
-      const mediaNode = media({
-        id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
-        type: 'file',
-        collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
-        fileName: '2017-04-12 07.15.57.jpg',
-        fileSize: 95316,
-        fileMimeType: 'image/jpeg'
-      });
-      const docNode = doc(mediaGroup(mediaNode));
-
-      // check that parsing/encoding is working as expected
-      // plus takes node own attributes into account
-      const parsed = parse(cxhtml);
-      expect(parsed).to.deep.equal(docNode);
-      expect(parse(encode(docNode))).to.deep.equal(docNode);
-
-      // check that node attributes are set during parsing
-      const parsedMediaNode = parsed.firstChild.firstChild;
-      expect(parsedMediaNode.fileName).to.equal('2017-04-12 07.15.57.jpg');
-      expect(parsedMediaNode.fileSize).to.equal(95316);
-      expect(parsedMediaNode.fileMimeType).to.equal('image/jpeg');
+      expect(parsedMediaNode.attrs.__fileName).to.equal('2017-04-12 07.15.57.jpg');
+      expect(parsedMediaNode.attrs.__fileSize).to.equal(95316);
+      expect(parsedMediaNode.attrs.__fileMimeType).to.equal('image/jpeg');
     });
   });
 

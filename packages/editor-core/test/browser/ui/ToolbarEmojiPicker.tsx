@@ -6,12 +6,12 @@ import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
-const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,
@@ -79,6 +79,13 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).parent().simulate('click');
 
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
+  });
+
+  it('should disable the ToolbarEmojiPicker when there in an active mention query mark', () => {
+    const { pluginState, editorView } = editor(doc(p('@')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginState={pluginState} emojiProvider={emojiProvider} editorView={editorView} />);
+
+    expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
   });
 
 });

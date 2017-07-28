@@ -1,6 +1,8 @@
 # @atlaskit/media-filmstrip
 
-## Unreleased
+## 5.1.0 (2017-07-27)
+
+* feature; added the ability for integrators to navigate to the start or end of the filmstrip ([f23e285](https://bitbucket.org/atlassian/atlaskit/commits/f23e285))
 
 * feature; added an editable story for FilmStripNavigator
 ## 4.2.1 (2017-07-12)

@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import GlobalPrimaryActions from '../../src/components/js/GlobalPrimaryActions';
 import { mountWithRootTheme, shallowWithTheme } from './_theme-util';
 
@@ -43,7 +42,7 @@ describe('<GlobalPrimaryActions />', () => {
       expect(shallowWithTheme(<GlobalPrimaryActions primaryIcon={<img alt="foo" />} primaryItemHref="#foo" />).find('GlobalItem').at(0).props().href).toBe('#foo');
     });
     it('onSearchActivate is given to to the first <DrawerTrigger />', () => {
-      const handler = sinon.spy();
+      const handler = jest.fn();
       expect(mountWithRootTheme(<GlobalPrimaryActions
         searchIcon={'s'}
         createIcon={'c'}
@@ -51,7 +50,7 @@ describe('<GlobalPrimaryActions />', () => {
       />).find('DrawerTrigger').at(0).props().onActivate).toBe(handler);
     });
     it('onCreateActivate is given to to the second <DrawerTrigger />', () => {
-      const handler = sinon.spy();
+      const handler = jest.fn();
       expect(mountWithRootTheme(<GlobalPrimaryActions
         searchIcon={'s'}
         createIcon={'c'}

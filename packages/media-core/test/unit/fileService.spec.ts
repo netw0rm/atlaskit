@@ -1,4 +1,3 @@
-import * as chai from 'chai';
 import * as sinon from 'sinon';
 
 import {MediaFileService} from '../../src/services/fileService';
@@ -26,9 +25,6 @@ const defaultFileDetails = {
     'presentation.ppt': {href: `/file/${fileId}/artifact/presentation.ppt`}
   }
 };
-
-const expect = chai.expect;
-const assert = chai.assert;
 
 describe('MediaFileService', () => {
   let tokenProvider: JwtTokenProvider;
@@ -59,7 +55,7 @@ describe('MediaFileService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = sinon.stub().returns(Promise.resolve(token));
+    tokenProvider = jest.fn(() => Promise.resolve(token));
     const cache = new LRUCache<string, MediaItem>(0);
     fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
   });
@@ -71,15 +67,15 @@ describe('MediaFileService', () => {
   it('should resolve file item from collection given or not', () => {
     const response = fileService.getFileItem(fileId, clientId, collection)
       .then(fileItem => {
-        expect(fileItem.type).to.equal('file');
-        expect(fileItem.details).to.deep.equal(defaultFileDetails);
+        expect(fileItem.type).toBe('file');
+        expect(fileItem.details).toEqual(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
-        expect((tokenProvider as any).calledWith(collection));
+        expect(tokenProvider).toHaveBeenCalledWith(collection);
       })
       .then(() => {
-        expect(requests[0].url).to.equal(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
+        expect(requests[0].url).toBe(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
       });
 
     respondFakeXhr();
@@ -90,15 +86,15 @@ describe('MediaFileService', () => {
   it('should resolve file item from collection given', () => {
     const response = fileService.getFileItem(fileId, clientId)
       .then(fileItem => {
-        expect(fileItem.type).to.equal('file');
-        expect(fileItem.details).to.deep.equal(defaultFileDetails);
+        expect(fileItem.type).toBe('file');
+        expect(fileItem.details).toEqual(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
-        expect((tokenProvider as any).calledWith(undefined));
+        expect(tokenProvider).toHaveBeenCalledWith(undefined);
       })
       .then(() => {
-        expect(requests[0].url).to.equal(`some-host/file/some-file-id?${authParams}`);
+        expect(requests[0].url).toBe(`some-host/file/some-file-id?${authParams}`);
       });
 
     respondFakeXhr();
@@ -109,8 +105,8 @@ describe('MediaFileService', () => {
   it('should reject server responded with 500', () => {
     const response = fileService.getFileItem('some-dodgy-file-id', clientId, collection)
       .then(
-        () => assert.fail('The function getFileItem should fail'),
-        error => expect(error).to.exist
+        () => { throw new Error('The function getFileItem should fail'); },
+        (error) => expect(error).toBeDefined()
       );
 
     setTimeout(() => { requests[0].respond(500, { }, ''); });
@@ -119,10 +115,10 @@ describe('MediaFileService', () => {
 
   describe('cache', () => {
     const shouldReturnFileFromService = (id: string, cache: LRUCache<string, MediaItem>, fileDetails?: FileDetails) => {
-      tokenProvider = sinon.stub().returns(Promise.resolve(token));
+      tokenProvider = jest.fn(() => Promise.resolve(token));
       fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
       const response = fileService.getFileItem(id, clientId, collection).then(() => {
-        assert((tokenProvider as any).calledOnce);
+        expect(tokenProvider).toHaveBeenCalledTimes(1);
       });
 
       respondFakeXhr(fileDetails);
@@ -131,10 +127,10 @@ describe('MediaFileService', () => {
     };
 
     const shouldReturnFileFromCache = (id: string, cache: LRUCache<string, MediaItem>) => {
-      tokenProvider = sinon.stub().returns(Promise.resolve(token));
+      tokenProvider = jest.fn(() => Promise.resolve(token));
       fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
       return fileService.getFileItem(id, clientId, collection).then(() => {
-       assert((tokenProvider as any).notCalled);
+        expect(tokenProvider).not.toHaveBeenCalled();
       });
     };
 

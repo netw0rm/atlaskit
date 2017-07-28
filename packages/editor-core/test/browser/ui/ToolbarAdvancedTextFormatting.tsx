@@ -10,8 +10,6 @@ import ToolbarButton from '../../../src/ui/ToolbarButton';
 import { doc, p, strike, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
-const noop = () => {};
-
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const textFormattingPluginSet = textFormattingPlugins(defaultSchema);
     const clearformattingPluginSet = clearFormattingPlugins(defaultSchema);
@@ -23,39 +21,35 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     it('should render disabled ToolbarButton if both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
-          <ToolbarAdvancedTextFormatting editorView={editorView} focusEditor={noop} softBlurEditor={noop} />
+          <ToolbarAdvancedTextFormatting editorView={editorView} />
         );
 
         expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
     });
 
-    it('should have 4 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
+    it('should have 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(5);
     });
 
-    it('should return only 3 items if only pluginStateTextFormatting is defined', () => {
+    it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
         const { editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
-        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(3);
+        expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
     });
 
     it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
@@ -64,8 +58,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             <ToolbarAdvancedTextFormatting
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
@@ -84,8 +76,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
@@ -98,8 +88,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
@@ -119,8 +107,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.setState({ strikeHidden: true });
@@ -137,8 +123,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         toolbarOption.find(ToolbarButton).simulate('click');
@@ -158,8 +142,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
                 isDisabled={true}
             />
         );
@@ -178,8 +160,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
@@ -192,8 +172,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 pluginStateTextFormatting={textFormattingPluginSet[0].getState(editorView.state)}
                 pluginStateClearFormatting={clearformattingPluginSet[0].getState(editorView.state)}
                 editorView={editorView}
-                focusEditor={noop}
-                softBlurEditor={noop}
             />
         );
         const toolbarButton = toolbarOption.find(ToolbarButton);

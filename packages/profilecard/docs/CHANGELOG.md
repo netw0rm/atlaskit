@@ -1,6 +1,8 @@
 # @atlaskit/profilecard
 
-## Unreleased
+## 3.6.3 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 
 * feature; add trigger property to AkProfilecardTrigger (possible values: click, hover (defaul (issues closed: ed-1867)
 ## 3.0.2 (2017-07-12)

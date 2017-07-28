@@ -1,6 +1,8 @@
 # @atlaskit/editor-cq
 
-## Unreleased
+## 4.4.0 (2017-07-28)
+
+* feature; added tablesEnabled prop to editor-cq (issues closed: ed-2335) ([bb727d6](https://bitbucket.org/atlassian/atlaskit/commits/bb727d6))
 
 ## 4.1.4 (2017-07-12)
 

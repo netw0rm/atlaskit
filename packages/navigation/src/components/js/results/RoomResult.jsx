@@ -16,7 +16,6 @@ export default class RoomResult extends PureComponent {
   static propTypes = {
     href: PropTypes.string,
     avatarUrl: PropTypes.string,
-    isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     isTabbingDisabled: PropTypes.bool,
     name: PropTypes.string.isRequired,
@@ -30,7 +29,6 @@ export default class RoomResult extends PureComponent {
   }
 
   static defaultProps = {
-    isHoverStylesDisabled: false,
     isSelected: false,
     isTabbingDisabled: false,
     onClick: noOp,
@@ -50,7 +48,6 @@ export default class RoomResult extends PureComponent {
   render() {
     const {
       href,
-      isHoverStylesDisabled,
       isSelected,
       isTabbingDisabled,
       name,
@@ -65,7 +62,6 @@ export default class RoomResult extends PureComponent {
       <ResultBase
         href={href}
         icon={this.getAvatar()}
-        isHoverStylesDisabled={isHoverStylesDisabled}
         isSelected={isSelected}
         isTabbingDisabled={isTabbingDisabled}
         onClick={onClick}

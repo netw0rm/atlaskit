@@ -1,9 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import memoizeOne from 'memoize-one';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
-import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
@@ -11,7 +9,6 @@ import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
-import subscribe from '../../watch-scroll-top';
 import {
   globalPrimaryActions,
   globalSecondaryActions as globalSecondaryActionsSizes,
@@ -37,7 +34,7 @@ type Props = {|
   globalSearchIcon?: ReactElement,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
   component is designed to be used as the headerComponent. */
-  headerComponent: () => mixed,
+  headerComponent?: () => mixed,
   /** Set to determine whether the ContainerNavigation should be rendered in its
   open state or closed state. Passed through to the headerComponent. */
   isCollapsed?: boolean,
@@ -58,6 +55,10 @@ type Props = {|
   globalSecondaryActions: Array<ReactElement>,
 |}
 
+type State = {|
+  isInitiallyRendered: bool,
+|}
+
 export default class ContainerNavigation extends PureComponent {
   static defaultProps = {
     showGlobalActions: false,
@@ -67,19 +68,15 @@ export default class ContainerNavigation extends PureComponent {
     theme: container,
   }
 
-  constructor(props: Props, context) {
+  constructor(props: Props, context: any) {
     super(props, context);
 
     this.state = {
-      isScrolling: false,
       isInitiallyRendered: false,
     };
-
-    // Memoizing this function so that it will only be called
-    // when the underlying DOM node is changing OR if it is
-    // unmounting (in which case it will be `null`).
-    this.onRefChange = memoizeOne(this.onRefChange);
   }
+
+  state: State
 
   componentWillReceiveProps() {
     // After any update we are going to start animating.
@@ -90,38 +87,6 @@ export default class ContainerNavigation extends PureComponent {
         isInitiallyRendered: true,
       });
     }
-  }
-
-  componentWillUnmount() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
-
-  onScrollTopChange = (number: number) => {
-    const isScrolling = number > 0;
-
-    if (isScrolling === this.state.isScrolling) {
-      return;
-    }
-
-    this.setState({
-      isScrolling,
-    });
-  }
-
-  onRefChange = (el) => {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-
-    // If headerComponent doesn't exist we don't need to track scroll position,
-    // because it's only used by ContainerHeader component
-    if (!el || !this.props.headerComponent) {
-      return;
-    }
-
-    this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
   props: Props
@@ -145,14 +110,12 @@ export default class ContainerNavigation extends PureComponent {
 
     // Only animating the revealing of GlobalPrimaryActions and GlobalSecondaryActions
     // after the first render. Before that it is rendered without animation.
-    const { isInitiallyRendered, isScrolling } = this.state;
+    const { isInitiallyRendered } = this.state;
 
     const header = headerComponent ? (
-      <ContainerHeader
-        isContentScrolled={isScrolling}
-      >
+      <ContainerHeader>
         {headerComponent({ isCollapsed })}
-      </ContainerHeader>) : <ContainerNoHeader />;
+      </ContainerHeader>) : null;
 
     return (
       <WithRootTheme
@@ -161,9 +124,7 @@ export default class ContainerNavigation extends PureComponent {
       >
         {/* This div is needed for legacy reasons.
         All children should use isCollapsed on the theme */}
-        <ContainerNavigationInner
-          innerRef={this.onRefChange}
-        >
+        <ContainerNavigationInner>
           <Reveal
             shouldAnimate={isInitiallyRendered}
             isOpen={showGlobalActions}

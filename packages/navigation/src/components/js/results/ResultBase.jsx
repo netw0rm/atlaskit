@@ -14,7 +14,6 @@ export default class ResultBase extends PureComponent {
     caption: PropTypes.string,
     href: PropTypes.string,
     icon: PropTypes.node,
-    isHoverStylesDisabled: PropTypes.bool,
     isSelected: PropTypes.bool.isRequired,
     isTabbingDisabled: PropTypes.bool,
     onClick: PropTypes.func,
@@ -27,7 +26,6 @@ export default class ResultBase extends PureComponent {
   }
 
   static defaultProps = {
-    isHoverStylesDisabled: false,
     isSelected: false,
     isTabbingDisabled: false,
     onClick: () => {},
@@ -48,7 +46,6 @@ export default class ResultBase extends PureComponent {
       caption,
       href,
       icon,
-      isHoverStylesDisabled,
       isSelected,
       isTabbingDisabled,
       onMouseLeave,
@@ -63,7 +60,6 @@ export default class ResultBase extends PureComponent {
         href={href}
         icon={icon}
         isSelected={isSelected}
-        isHoverStylesDisabled={isHoverStylesDisabled}
         onClick={this.handleClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={onMouseLeave}

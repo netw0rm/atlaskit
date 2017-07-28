@@ -3,7 +3,6 @@
 
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import {
   AnalyticsDecorator,
@@ -47,18 +46,18 @@ describe('Analytics', () => {
 
     describe('wrapping callback props', () => {
       it('should call original callback props', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const Button = withAnalytics(props =>
           <button {...cleanProps(props)} />
         );
         const button = shallow(<Button onClick={spy} />);
 
         button.simulate('click');
-        expect(spy.callCount).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should fire analytics events', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const Button = withAnalytics(
           props => <button {...cleanProps(props)} />,
           {
@@ -72,12 +71,12 @@ describe('Analytics', () => {
         );
 
         listener.find(Button).simulate('click');
-        expect(spy.callCount).toBe(1);
-        expect(spy.getCall(0).args[0]).toBe('button.click');
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0][0]).toBe('button.click');
       });
 
       it('should pass eventData to analytics events', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const Button = withAnalytics(
           props => <button {...cleanProps(props)} />,
           {
@@ -91,7 +90,7 @@ describe('Analytics', () => {
         );
 
         listener.find(Button).simulate('click');
-        expect(spy.getCall(0).args[1].foo).toBe('bar');
+        expect(spy.mock.calls[0][1].foo).toBe('bar');
       });
     });
 
@@ -109,7 +108,7 @@ describe('Analytics', () => {
       const ButtonWithAnalytics = withAnalytics(Button);
 
       it('should fire analytics events', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const listener = mount(
           <AnalyticsListener onEvent={spy}>
             <ButtonWithAnalytics analyticsId="button" />
@@ -117,13 +116,13 @@ describe('Analytics', () => {
         );
 
         listener.find(Button).simulate('click');
-        expect(spy.callCount).toBe(1);
-        expect(spy.getCall(0).args[0]).toBe('button.click');
-        expect(spy.getCall(0).args[1].foo).toBe('bar');
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0][0]).toBe('button.click');
+        expect(spy.mock.calls[0][1].foo).toBe('bar');
       });
 
       it('should fire private analytics events', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const listener = mount(
           <AnalyticsListener matchPrivate onEvent={spy}>
             <ButtonWithAnalytics analyticsId="button" />
@@ -131,8 +130,8 @@ describe('Analytics', () => {
         );
 
         listener.find(Button).simulate('click');
-        expect(spy.callCount).toBe(1);
-        expect(spy.getCall(0).args[0]).toBe('private.button.click');
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0][0]).toBe('private.button.click');
       });
     });
   });
@@ -154,7 +153,7 @@ describe('Analytics', () => {
     );
 
     it('should extend eventData for analytics events', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const listener = mount(
         <AnalyticsListener onEvent={spy}>
           <AnalyticsDecorator data={{ two: 2 }}>
@@ -164,12 +163,12 @@ describe('Analytics', () => {
       );
 
       listener.find(Button).simulate('click');
-      expect(spy.getCall(0).args[1].one).toBe(1);
-      expect(spy.getCall(0).args[1].two).toBe(2);
+      expect(spy.mock.calls[0][1].one).toBe(1);
+      expect(spy.mock.calls[0][1].two).toBe(2);
     });
 
     it('should extend eventData by calling a function', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const getData = () => ({ two: 2 });
       const listener = mount(
         <AnalyticsListener onEvent={spy}>
@@ -180,12 +179,12 @@ describe('Analytics', () => {
       );
 
       listener.find(Button).simulate('click');
-      expect(spy.getCall(0).args[1].one).toBe(1);
-      expect(spy.getCall(0).args[1].two).toBe(2);
+      expect(spy.mock.calls[0][1].one).toBe(1);
+      expect(spy.mock.calls[0][1].two).toBe(2);
     });
 
     it('should not extend public eventData when matchPrivate is true', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const listener = mount(
         <AnalyticsListener onEvent={spy}>
           <AnalyticsDecorator data={{ two: 2 }} matchPrivate>
@@ -195,8 +194,8 @@ describe('Analytics', () => {
       );
 
       listener.find(Button).simulate('click');
-      expect(spy.getCall(0).args[1].one).toBe(1);
-      expect(spy.getCall(0).args[1].two).toBe(undefined);
+      expect(spy.mock.calls[0][1].one).toBe(1);
+      expect(spy.mock.calls[0][1].two).toBe(undefined);
     });
   });
 

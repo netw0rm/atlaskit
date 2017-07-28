@@ -24,8 +24,13 @@ describe('Emoji', () => {
   });
 
   it('should still render resourced emoji if allowTextFallback=true', () => {
+    const providerFactory = new ProviderFactory();
+    providerFactory.setProvider('emojiProvider', emojiProvider);
+
     const component = mount(
       <Emoji
+        providers={providerFactory}
+        allowTextFallback={true}
         shortName=":anything:"
         fallback="fallback"
       />

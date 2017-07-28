@@ -487,6 +487,22 @@ storiesOf('Card', {})
       }
     ];
 
+    const smartCardsAppearances = [
+      {
+        title: 'Small',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="small" />
+      }, {
+        title: 'Image',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="image" />
+      }, {
+        title: 'Horizontal',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="horizontal" />
+      }, {
+        title: 'Square',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="square" />
+      }
+    ];
+
     return (
       <div>
         <h1 style={{margin: '10px 20px'}}>Link cards</h1>
@@ -505,6 +521,7 @@ storiesOf('Card', {})
 
           <h3>Smart cards</h3>
           <StoryList>{smartCards}</StoryList>
+          <StoryList>{smartCardsAppearances}</StoryList>
 
         </div>
       </div>

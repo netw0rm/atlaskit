@@ -1,32 +1,17 @@
+// @flow
 import styled from 'styled-components';
-import {
-    backgroundColor,
-    backgroundColorFocus,
-    backgroundColorHover,
-    backgroundColorSelected,
-    backgroundColorSelectedHover,
-    borderColor,
-    borderColorFocus,
-    borderColorHover,
-    borderColorSelected,
-    borderColorSelectedHover,
-    borderWidth,
-    borderWidthFocus,
-    fullHeight,
-    fullWidth,
-} from './constants';
+import { borderWidth, borderWidthFocus, fullHeight, fullWidth } from './constants';
+import theme from './theme';
 
-const getStyles = ({
-  isDisabled,
-  isFocus,
-  isHover,
-  isSelected,
-}) => {
+const getStyles = (
+  { isDisabled, isFocus, isHover, isSelected }:
+  { isDisabled: boolean, isFocus: boolean, isHover: boolean, isSelected: boolean }
+) => {
   const styles = {
-    'background-color': backgroundColor,
+    'background-color': theme.default.background.default,
     'border-width': `${borderWidth}px`,
     'border-style': 'solid',
-    'border-color': borderColor,
+    'border-color': theme.default.border.default,
     'border-radius': '50%',
     'box-sizing': 'border-box',
     cursor: 'pointer',
@@ -40,14 +25,14 @@ const getStyles = ({
 
   // Hover (not Disabled)
   if (isHover && !isDisabled) {
-    styles['background-color'] = backgroundColorHover;
-    styles['border-color'] = borderColorHover;
+    styles['background-color'] = theme.default.background.hover;
+    styles['border-color'] = theme.default.border.hover;
   }
 
   // Focus
   if (isFocus) {
-    styles['background-color'] = backgroundColorFocus;
-    styles['border-color'] = borderColorFocus;
+    styles['background-color'] = theme.default.background.focus;
+    styles['border-color'] = theme.default.border.focus;
     styles['border-width'] = `${borderWidthFocus}px`;
     styles['box-sizing'] = 'content-box';
     styles.margin = '0';
@@ -55,30 +40,30 @@ const getStyles = ({
 
   // Focus + Hover
   if (isFocus && isHover) {
-    styles['background-color'] = backgroundColorHover;
+    styles['background-color'] = theme.default.background.hover;
   }
 
   // Selected
   if (isSelected) {
-    styles['background-color'] = backgroundColorSelected;
-    styles['border-color'] = borderColorSelected;
+    styles['background-color'] = theme.selected.background.default;
+    styles['border-color'] = theme.selected.border.default;
   }
 
   // Selected + Hover (not Disabled)
   if (isSelected && isHover && !isDisabled) {
-    styles['background-color'] = backgroundColorSelectedHover;
-    styles['border-color'] = borderColorSelectedHover;
+    styles['background-color'] = theme.selected.background.hover;
+    styles['border-color'] = theme.selected.border.hover;
   }
 
   // Selected + Focus (not Disabled)
   if (isSelected && isFocus && !isDisabled) {
-    styles['background-color'] = backgroundColorSelected;
-    styles['border-color'] = borderColorFocus;
+    styles['background-color'] = theme.selected.background.focus;
+    styles['border-color'] = theme.selected.border.focus;
   }
 
   // Selected + Focus + Hover
   if (isSelected && isFocus && isHover) {
-    styles['background-color'] = borderColorSelectedHover;
+    styles['background-color'] = theme.selected.background.hover;
   }
 
   // Disabled

@@ -1,10 +1,7 @@
-import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import createStub from 'raf-stub';
 import styled from 'styled-components';
 import ContainerNavigation from '../../src/components/js/ContainerNavigation';
-import ContainerHeader from '../../src/components/js/ContainerHeader';
 import { globalSecondaryActions } from '../../src/shared-variables';
 import { isCollapsed } from '../../src/theme/util';
 import * as presets from '../../src/theme/presets';
@@ -19,7 +16,7 @@ describe('<ContainerNavigation />', () => {
   describe('behaviour', () => {
     describe('putting isCollapsed on the theme', () => {
       it('should set isCollapsed to false when not collapsed', () => {
-        const stub = sinon.stub().returns('');
+        const stub = jest.fn(() => '');
         const Item = styled.div`
           property: ${({ theme }) => stub(isCollapsed(theme))}
         `;
@@ -32,11 +29,11 @@ describe('<ContainerNavigation />', () => {
           </ContainerNavigation>
         );
 
-        expect(stub.calledWith(false)).toBe(true);
+        expect(stub).toHaveBeenCalledWith(false);
       });
 
       it('should set isCollapsed to true when it is collapsed', () => {
-        const stub = sinon.stub().returns('');
+        const stub = jest.fn(() => '');
         const Item = styled.div`
           property: ${({ theme }) => stub(isCollapsed(theme))}
         `;
@@ -48,14 +45,14 @@ describe('<ContainerNavigation />', () => {
             <Item />
           </ContainerNavigation>
         );
-        expect(stub.calledWith(true)).toBe(true);
+        expect(stub).toHaveBeenCalledWith(true);
       });
     });
 
     it('collapses the container header when closed', () => {
-      const headerComponent = sinon.spy();
+      const headerComponent = jest.fn();
       shallow(<ContainerNavigation isCollapsed headerComponent={headerComponent} />);
-      expect(headerComponent.calledWith({ isCollapsed: true })).toBe(true);
+      expect(headerComponent).toHaveBeenCalledWith({ isCollapsed: true });
     });
   });
 
@@ -114,66 +111,6 @@ describe('<ContainerNavigation />', () => {
 
       wrapper.setProps({ globalSecondaryActions: [<div />] });
       expect(wrapper.find('GlobalSecondaryActions').length).toBe(1);
-    });
-  });
-
-  describe('is scrolled', () => {
-    const raf = createStub();
-    const originalRaf = window.requestAnimationFrame;
-    const originalCaf = window.cancelAnimationFrame;
-    let wrapper;
-    let node;
-
-    const triggerScroll = (el, scrollTop) => {
-      el.scrollTop = scrollTop;
-      // currently not working with new CustomEvent() so using an older syntax
-      const event = document.createEvent('Event');
-      event.initEvent('scroll', true, true);
-      el.dispatchEvent(event);
-    };
-
-    const isHeaderScrolled = testWrapper =>
-      testWrapper.find(ContainerHeader).prop('isContentScrolled');
-
-    beforeAll(() => { // eslint-disable-line no-undef
-      window.requestAnimationFrame = raf.add;
-      window.cancelAnimationFrame = raf.remove;
-    });
-
-    beforeEach(() => {
-      wrapper = mount(
-        <ContainerNavigation
-          headerComponent={() => <div />}
-        />
-      );
-      node = wrapper.find('ContainerNavigationInner').getDOMNode();
-    });
-
-    afterEach(() => {
-      raf.reset();
-    });
-
-    afterAll(() => { // eslint-disable-line no-undef
-      window.requestAnimationFrame = originalRaf;
-      window.cancelAnimationFrame = originalCaf;
-    });
-
-    it('should let the header know when the container scrolls', () => {
-      triggerScroll(node, 200);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(true);
-    });
-    it('should let the header know when the container is no longer scrolled', () => {
-      triggerScroll(node, 200);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(true);
-
-      triggerScroll(node, 0);
-      raf.step();
-
-      expect(isHeaderScrolled(wrapper)).toBe(false);
     });
   });
 });

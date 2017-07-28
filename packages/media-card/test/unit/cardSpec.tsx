@@ -1,7 +1,4 @@
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
-import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import LazyLoad from 'react-lazy-load-zz';
 import { fakeContext } from '@atlaskit/media-test-helpers';
@@ -39,11 +36,11 @@ describe('Card', () => {
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getUrlPreviewProvider.calledOnce).to.be.true;
-    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).to.be.true;
+    expect(context.getUrlPreviewProvider.calledOnce).toBe(true);
+    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).toBe(true);
 
-    expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
+    expect(mediaCard).toHaveLength(1);
+    expect(mediaCard.props().provider).toEqual(dummyProvider);
   });
 
   it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "link"', () => {
@@ -58,11 +55,11 @@ describe('Card', () => {
     const card = shallow(<Card context={context} identifier={linkIdentifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).to.be.true;
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+    expect(context.getMediaItemProvider.calledOnce).toBe(true);
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).toBe(true);
 
-    expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
+    expect(mediaCard).toHaveLength(1);
+    expect(mediaCard.props().provider).toEqual(dummyProvider);
   });
 
   it('should render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "file"', () => {
@@ -77,11 +74,11 @@ describe('Card', () => {
     const card = shallow(<Card context={context} identifier={fileIdentifier} />);
     const mediaCard = card.find(MediaCard);
 
-    expect(context.getMediaItemProvider.calledOnce).to.be.true;
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+    expect(context.getMediaItemProvider.calledOnce).toBe(true);
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).toBe(true);
 
-    expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
+    expect(mediaCard).toHaveLength(1);
+    expect(mediaCard.props().provider).toEqual(dummyProvider);
   });
 
   it('should render media card with a new MediaItemProvider when the context changes', () => {
@@ -100,11 +97,11 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const {id, mediaItemType, collectionName} = fileIdentifier;
-    expect(secondContext.getMediaItemProvider.calledOnce).to.be.true;
-    expect(secondContext.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+    expect(secondContext.getMediaItemProvider.calledOnce).toBe(true);
+    expect(secondContext.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).toBe(true);
 
-    expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().provider).to.equal(dummyProvider);
+    expect(mediaCard).toHaveLength(1);
+    expect(mediaCard.props().provider).toBe(dummyProvider);
   });
 
   it('should render media card with a new MediaItemProvider when the identifier changes', () => {
@@ -122,16 +119,16 @@ describe('Card', () => {
     const mediaCard = card.find(MediaCard);
 
     const {id, mediaItemType, collectionName} = secondIdentifier;
-    expect(context.getMediaItemProvider.calledTwice).to.be.true;
-    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+    expect(context.getMediaItemProvider.calledTwice).toBe(true);
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).toBe(true);
 
-    expect(mediaCard).to.have.length(1);
-    expect(mediaCard.props().provider).to.equal(dummyProvider);
+    expect(mediaCard).toHaveLength(1);
+    expect(mediaCard.props().provider).toBe(dummyProvider);
   });
 
   it('should fire onClick when passed in as a prop and MediaCard fires onClick', () => {
     const context = fakeContext() as any;
-    const clickHandler = sinon.spy();
+    const clickHandler = jest.fn();
 
     const card = shallow(<Card context={context} identifier={fileIdentifier} onClick={clickHandler} />);
     const mediaCardOnClick = card.find(MediaCard).props().onClick;
@@ -140,10 +137,10 @@ describe('Card', () => {
       throw new Error('MediaCard onClick was undefined');
     }
 
-    expect(clickHandler.called).to.be.false;
+    expect(clickHandler).not.toHaveBeenCalled();
 
     mediaCardOnClick({} as any);
-    expect(clickHandler.calledOnce).to.be.true;
+    expect(clickHandler).toHaveBeenCalledTimes(1);
   });
 
   it('should pass onMouseEnter to MediaCard', () => {
@@ -151,7 +148,7 @@ describe('Card', () => {
     const hoverHandler = (result: CardEvent) => {};
     const card = shallow(<Card context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
 
-    expect(card.find(MediaCard).props().onMouseEnter).to.deep.equal(hoverHandler);
+    expect(card.find(MediaCard).props().onMouseEnter).toEqual(hoverHandler);
   });
 
   it('should use lazy load by default', () => {
@@ -159,7 +156,7 @@ describe('Card', () => {
     const hoverHandler = (result: CardEvent) => {};
     const card = mount(<Card context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
 
-    expect(card.find(LazyLoad)).to.have.length(1);
+    expect(card.find(LazyLoad)).toHaveLength(1);
   });
 
   it('should not use lazy load when "isLazy" is false', () => {
@@ -167,15 +164,15 @@ describe('Card', () => {
     const hoverHandler = (result: CardEvent) => {};
     const card = mount(<Card isLazy={false} context={context} identifier={fileIdentifier} onMouseEnter={hoverHandler} />);
 
-    expect(card.find(LazyLoad)).to.have.length(0);
+    expect(card.find(LazyLoad)).toHaveLength(0);
   });
 
   it('should pass properties down to MediaCard', () => {
     const context = fakeContext() as any;
     const card = shallow(<Card context={context} identifier={fileIdentifier} appearance="small" dimensions={{width: 100, height: 50}}/>);
 
-    expect(card.find(MediaCard).props().appearance).to.equal('small');
-    expect(card.find(MediaCard).props().dimensions).to.deep.equal({width: 100, height: 50});
+    expect(card.find(MediaCard).props().appearance).toBe('small');
+    expect(card.find(MediaCard).props().dimensions).toEqual({width: 100, height: 50});
   });
 
   it('should create a card placeholder with the right props', () => {
@@ -186,15 +183,15 @@ describe('Card', () => {
     const linkPlaceholder = (linkCard.instance() as Card).placeholder;
     const {status, appearance, mediaItemType, dimensions} = filePlaceholder.props;
 
-    expect(status).to.equal('loading');
-    expect(appearance).to.equal('small');
-    expect(mediaItemType).to.equal('file');
-    expect(dimensions).to.deep.equal({width: 100, height: 50});
-    expect(linkPlaceholder.props.mediaItemType).to.equal('link');
+    expect(status).toBe('loading');
+    expect(appearance).toBe('small');
+    expect(mediaItemType).toBe('file');
+    expect(dimensions).toEqual({width: 100, height: 50});
+    expect(linkPlaceholder.props.mediaItemType).toBe('link');
   });
 
   it('should use "crop" as default resizeMode', () => {
-    const fetchImageDataUriSpy = sinon.spy(() => Promise.resolve());
+    const fetchImageDataUriSpy = jest.fn(() => Promise.resolve());
     const context = fakeContext({
       getDataUriService: {
         fetchImageDataUri: fetchImageDataUriSpy
@@ -203,13 +200,13 @@ describe('Card', () => {
     const card = mount(<Card context={context} identifier={fileIdentifier} isLazy={false}/>);
     const mediaCard = card.find(MediaCard);
 
-    expect(mediaCard.prop('resizeMode')).to.be.equal('crop');
-    expect(card.find('CardView').prop('resizeMode')).to.be.equal('crop');
-    expect(fetchImageDataUriSpy.args[0][3]).to.be.equal('crop');
+    expect(mediaCard.prop('resizeMode')).toBe('crop');
+    expect(card.find('CardView').prop('resizeMode')).toBe('crop');
+    expect(fetchImageDataUriSpy.mock.calls[0][3]).toBe('crop');
   });
 
   it('should pass right resizeMode down', () => {
-    const fetchImageDataUriSpy = sinon.spy(() => Promise.resolve());
+    const fetchImageDataUriSpy = jest.fn(() => Promise.resolve());
     const context = fakeContext({
       getDataUriService: {
         fetchImageDataUri: fetchImageDataUriSpy
@@ -218,8 +215,8 @@ describe('Card', () => {
     const card = mount(<Card context={context} identifier={fileIdentifier} isLazy={false} resizeMode="full-fit"/>);
     const mediaCard = card.find(MediaCard);
 
-    expect(mediaCard.prop('resizeMode')).to.be.equal('full-fit');
-    expect(card.find('CardView').prop('resizeMode')).to.be.equal('full-fit');
-    expect(fetchImageDataUriSpy.args[0][3]).to.be.equal('full-fit');
+    expect(mediaCard.prop('resizeMode')).toBe('full-fit');
+    expect(card.find('CardView').prop('resizeMode')).toBe('full-fit');
+    expect(fetchImageDataUriSpy.mock.calls[0][3]).toBe('full-fit');
   });
 });

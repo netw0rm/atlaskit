@@ -1,6 +1,17 @@
 # @atlaskit/navigation
 
-## Unreleased
+## 17.0.0 (2017-07-28)
+
+* bug fix; add example for Navigation drag and drop (issues closed: ak-3055) ([db5027b](https://bitbucket.org/atlassian/atlaskit/commits/db5027b))
+* breaking; Update Navigation items to use @atlaskit/item (issues closed: ak-2979) ([00c9e28](https://bitbucket.org/atlassian/atlaskit/commits/00c9e28))
+## 16.1.1 (2017-07-27)
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+## 16.1.0 (2017-07-27)
+
+
+* bug fix; hiding the scrollbar corner and moved colours into the vars ([3439174](https://bitbucket.org/atlassian/atlaskit/commits/3439174))
+* feature; improved nav scrollbar styles in Chrome/Webkit/Edge ([7345249](https://bitbucket.org/atlassian/atlaskit/commits/7345249))
 
 ## 15.4.0 (2017-07-12)
 

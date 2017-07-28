@@ -1,3 +1,4 @@
+import { MediaAttributes } from '@atlaskit/editor-core';
 import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import schema from '../../src/schema';
 
@@ -38,21 +39,22 @@ export const media = (attrs: {
   fileMimeType?: string;
   publicId?: string;
 }) => {
-  const node = schema.nodes.media.create(attrs);
+  const { id, type, collection, fileName, fileSize, fileMimeType } = attrs;
+  const mediaAttrs: MediaAttributes = { id, type, collection };
 
-  if (attrs.fileName) {
-    node.fileName = attrs.fileName;
+  if (fileName) {
+    mediaAttrs.__fileName = fileName;
   }
 
-  if (attrs.fileSize) {
-    node.fileSize = attrs.fileSize;
+  if (fileSize) {
+    mediaAttrs.__fileSize = fileSize;
   }
 
-  if (attrs.fileMimeType) {
-    node.fileMimeType = attrs.fileMimeType;
+  if (fileMimeType) {
+    mediaAttrs.__fileMimeType = fileMimeType;
   }
 
-  return node;
+  return schema.nodes.media.create(mediaAttrs);
 };
 
 // Marks
@@ -64,3 +66,7 @@ export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
+export const table = nodeFactory(schema.nodes.table, {});
+export const tr = nodeFactory(schema.nodes.tableRow, {});
+export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableHeader, attrs);

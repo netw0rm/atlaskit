@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import NavigationItem from '../../src/components/js/NavigationItem';
 import NavigationItemIcon from '../../src/components/styled/NavigationItemIcon';
 import NavigationItemAfter from '../../src/components/styled/NavigationItemAfter';
@@ -11,40 +10,40 @@ describe('<NavigationItem />', () => {
       expect(mountWithRootTheme(<NavigationItem icon={<img alt="foo" />} />).find('img').length).toBe(1);
     });
     it('isSelected=true should render a child with the isSelected prop', () => {
-      expect((mountWithRootTheme(<NavigationItem isSelected />).find('NavigationItemOuter')).props().isSelected).toBe(true);
+      expect((mountWithRootTheme(<NavigationItem isSelected />).find('Item')).props().isSelected).toBe(true);
     });
     it('isSelected=false should not render a child with the isSelected prop', () => {
-      expect(mountWithRootTheme(<NavigationItem />).find('NavigationItemOuter').props().isSelected).toBe(false);
+      expect(mountWithRootTheme(<NavigationItem />).find('Item').props().isSelected).toBe(false);
     });
     it('with a href should render onto the link', () => {
-      expect(mountWithRootTheme(<NavigationItem href="foo" />).find('InteractiveWrapper').props().href).toBe('foo');
+      expect(mountWithRootTheme(<NavigationItem href="foo" />).find('Item').props().href).toBe('foo');
     });
     it('with no href should not render a link', () => {
       expect(mountWithRootTheme(<NavigationItem />).find('a').length).toBe(0);
     });
     it('with an onClick should call the onClick', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onClick={spy} />);
-      navigation.find('button').simulate('click');
-      expect(spy.calledOnce).toBe(true);
+      navigation.find('Item').simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onMouseEnter should call the onMouseEnter', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onMouseEnter={spy} />);
-      navigation.find('button').simulate('mouseenter');
-      expect(spy.calledOnce).toBe(true);
+      navigation.find('Item').simulate('mouseenter');
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onMouseLeave should call the onMouseLeave', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem onMouseLeave={spy} />);
-      navigation.find('button').simulate('mouseleave');
-      expect(spy.calledOnce).toBe(true);
+      navigation.find('Item').simulate('mouseleave');
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('with an onClick and href should render the href on a link, and bind the onClick to it', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const navigation = mountWithRootTheme(<NavigationItem href="foo" onClick={spy} />);
       navigation.find('a').simulate('click');
-      expect(spy.calledOnce).toBe(true);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(navigation.find('a').props().href).toBe('foo');
     });
     it('linkComponent should render a custom link component', () => {
@@ -121,13 +120,33 @@ describe('<NavigationItem />', () => {
       });
     });
   });
+  describe('props required for drag and drop compatibility', () => {
+    it('should be able to get a reference to the navigation item', () => {
+      const refSpy = jest.fn();
+      mountWithRootTheme(<NavigationItem text="test" dnd={{ innerRef: refSpy }} />);
+      expect(refSpy).toHaveBeenCalled();
+    });
+    it('should be able to apply inline styles', () => {
+      const refSpy = jest.fn();
+      mountWithRootTheme(
+        <NavigationItem
+          text="test"
+          dnd={{
+            draggableStyle: { textDecoration: 'underline' },
+            innerRef: refSpy,
+          }}
+        />
+      );
+      expect(refSpy.mock.calls[0][0].style.textDecoration).toBe('underline');
+    });
+  });
   describe('behaviour', () => {
     it('mousedown on the link is prevented', () => {
-      const spy = sinon.spy();
-      mountWithRootTheme(<NavigationItem href="foo" />).find('InteractiveWrapper').simulate('mouseDown', {
+      const spy = jest.fn();
+      mountWithRootTheme(<NavigationItem href="foo" />).find('a').simulate('mouseDown', {
         preventDefault: spy,
       });
-      expect(spy.called).toBe(true);
+      expect(spy).toHaveBeenCalled();
     });
   });
 });

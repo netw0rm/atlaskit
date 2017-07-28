@@ -1,6 +1,8 @@
 # @atlaskit/mention
 
-## Unreleased
+## 7.3.1 (2017-07-27)
+
+* bug fix; fix unused expression error throwing test ([22b75b2](https://bitbucket.org/atlassian/atlaskit/commits/22b75b2))
 
 ## 7.2.0 (2017-07-07)
 

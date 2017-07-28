@@ -1,15 +1,16 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
-import { TableMap } from '../../../../src/prosemirror';
+import { TableMap, CellSelection } from '../../../../src/prosemirror';
 
 import {
-  chaiPlugin, doc, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
+  chaiPlugin, doc, createEvent, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
 } from '../../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
 describe('table keymap', () => {
+  const event = createEvent('event');
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
@@ -57,7 +58,7 @@ describe('table keymap', () => {
     });
   });
 
- describe('Shift-Tab keypress', () => {
+  describe('Shift-Tab keypress', () => {
     context('when the cursor is at the last cell of the first row', () => {
       it('it should select previous cell of the current row', () => {
         const { editorView, refs } = editor(
@@ -93,6 +94,57 @@ describe('table keymap', () => {
         const { editorView } = editor(doc(p('{<>}')));
         sendKeyToPm(editorView, 'Shift-Alt-T');
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
+      });
+    });
+  });
+
+  describe('Backspace keypress', () => {
+    context('when table is selected', () => {
+      it('it should empty table cells', () => {
+        const { editorView, plugin, pluginState } = editor(
+          doc(table(tr(tdCursor, td({})(p('2')), td({})(p('3')))))
+        );
+        plugin.props.onFocus!(editorView, event);
+        pluginState.selectTable();
+        expect(editorView.state.selection instanceof CellSelection).to.equal(true);
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty))));
+      });
+    });
+
+    [0, 1, 2].forEach(index => {
+      context(`when row ${index + 1} is selected`, () => {
+        it(`it should empty cells in the row ${index + 1}`, () => {
+          const { editorView, plugin, pluginState } = editor(
+            doc(table(tr(td({})(p('{<>}1'))), tr(td({})(p('2'))), tr(td({})(p('3')))))
+          );
+          plugin.props.onFocus!(editorView, event);
+          pluginState.selectRow(index);
+          expect(editorView.state.selection instanceof CellSelection).to.equal(true);
+          sendKeyToPm(editorView, 'Backspace');
+          const rows: any = [];
+          for (let i = 0; i < 3; i++) {
+            rows.push(tr(td({})(p( i === index ? '' : `${i + 1}`))));
+          }
+          expect(editorView.state.doc).to.deep.equal(doc(table(rows)));
+        });
+      });
+
+      context(`when column ${index + 1} is selected`, () => {
+        it(`it should empty cells in the column ${index + 1}`, () => {
+          const { editorView, plugin, pluginState } = editor(
+            doc(table(tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3')))))
+          );
+          plugin.props.onFocus!(editorView, event);
+          pluginState.selectColumn(index);
+          expect(editorView.state.selection instanceof CellSelection).to.equal(true);
+          sendKeyToPm(editorView, 'Backspace');
+          const columns: any = [];
+          for (let i = 0; i < 3; i++) {
+            columns.push(td({})(p( i === index ? '' : `${i + 1}`)));
+          }
+          expect(editorView.state.doc).to.deep.equal(doc(table(tr(columns))));
+        });
       });
     });
   });

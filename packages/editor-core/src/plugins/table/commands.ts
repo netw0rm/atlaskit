@@ -75,9 +75,12 @@ export function paste (): Command {
 export function emptyCells (): Command {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
-    const selection = state.selection as CellSelection;
-    pluginState.emptySelectedCells();
-    pluginState.moveCursorInsideTableTo(selection.$headCell.pos);
-    return true;
+    const selection = state.selection;
+    if (selection instanceof CellSelection) {
+      pluginState.emptySelectedCells();
+      pluginState.moveCursorInsideTableTo(selection.$headCell.pos);
+      return true;
+    }
+    return false;
   };
 }

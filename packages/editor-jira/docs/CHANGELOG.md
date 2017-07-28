@@ -1,5 +1,11 @@
 # @atlaskit/editor-jira
 
+## 18.4.1 (2017-07-28)
+
+* bug fix; enabled jira media tests and proved better error message when htmls not match. ([7668506](https://bitbucket.org/atlassian/atlaskit/commits/7668506))
+
+
+
 ## 18.2.4 (2017-07-14)
 
 * fix; media plugin was not being destroyed with the editor

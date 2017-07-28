@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 6.4.3 (2017-07-28)
+
+* bug fix; fixes avatars devDeps to include lozenge and button-group ([d9ae05f](https://bitbucket.org/atlassian/atlaskit/commits/d9ae05f))
 ## 6.4.2 (2017-07-27)
 
 * bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))

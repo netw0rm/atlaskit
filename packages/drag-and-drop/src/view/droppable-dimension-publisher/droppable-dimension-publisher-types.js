@@ -1,10 +1,12 @@
 // @flow
+
 import type {
-  Dimension,
-  Id,
+  DroppableDimension,
+  DroppableId,
   TypeId,
   ReactElement,
   HTMLElement,
+  Position,
 } from '../../types';
 
 export type MapProps = {|
@@ -12,11 +14,12 @@ export type MapProps = {|
 |}
 
 export type DispatchProps = {|
-  publish: (dimension: Dimension) => void,
+  publish: (dimension: DroppableDimension) => mixed,
+  updateScroll: (id: DroppableId, offset: Position) => mixed,
 |}
 
 export type OwnProps = {|
-  itemId: Id,
+  droppableId: DroppableId,
   type: TypeId,
   targetRef: ?HTMLElement,
   children?: ReactElement,

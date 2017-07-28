@@ -1,5 +1,9 @@
 # @atlaskit/editor-hipchat
 
+## 4.17.0 (2017-07-28)
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
 ## 4.14.1 (2017-07-13)
 
 

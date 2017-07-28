@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 44.0.1 (2017-07-28)
+
+* bug fix; import media core from node_modules instead of direct path ([8c5e737](https://bitbucket.org/atlassian/atlaskit/commits/8c5e737))
+
+* bug fix; removed unused typescript. ([cb99770](https://bitbucket.org/atlassian/atlaskit/commits/cb99770))
+
+* bug fix; moved setNodeSelection and setTextSelection from test-helper to src/utils ([1ec5dc6](https://bitbucket.org/atlassian/atlaskit/commits/1ec5dc6))
 ## 44.0.0 (2017-07-28)
 
 * bug fix; modifying URL doesn't change destination href (issues closed: ed-2150, ed-2321) ([add3b17](https://bitbucket.org/atlassian/atlaskit/commits/add3b17))

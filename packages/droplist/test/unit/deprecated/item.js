@@ -4,13 +4,13 @@ import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import Tooltip from '@atlaskit/tooltip';
 
-import { name } from '../../package.json';
+import { name } from '../../../package.json';
 
-import { SecondaryText, Item } from '../../src';
-import Element from '../../src/components/Element';
-import { Anchor, Span } from '../../src/styled/Item';
+import { SecondaryText, Item } from '../../../src';
+import Element from '../../../src/components/Element';
+import { Anchor, Span } from '../../../src/styled/Item';
 
-describe(`${name} - item`, () => {
+describe(`${name} - deprecated API - item`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Item />)).not.toBe(undefined);
   });

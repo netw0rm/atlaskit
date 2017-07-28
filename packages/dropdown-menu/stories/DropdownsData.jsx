@@ -1,190 +1,106 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
+import {
+  DropdownItem,
+  DropdownItemCheckbox,
+  DropdownItemRadio,
+  DropdownItemGroup,
+  DropdownItemGroupCheckbox,
+  DropdownItemGroupRadio,
+} from '@atlaskit/dropdown-menu';
+import Tooltip from '@atlaskit/tooltip';
 
-export const simpleDropdownItems = [
-  {
-    heading: 'Heading',
-    items: [
-      {
-        content: 'Some text',
-        href: '//atlassian.com',
-        target: '_blank',
-      },
-      {
-        content: 'Some text 2',
-        href: '//atlassian.com',
-        target: '_blank',
-        isDisabled: true,
-      },
-      {
-        content: 'Some text 4',
-        href: '//atlassian.com',
-        target: '_blank',
-      },
-    ],
-  },
-];
+export const simpleDropdownItems = (
+  <DropdownItemGroup title="Heading">
+    <DropdownItem>Hello it with some really quite long text here.</DropdownItem>
+    <DropdownItem>Some text 2</DropdownItem>
+    <DropdownItem isDisabled>Some disabled text</DropdownItem>
+    <DropdownItem>Some more text</DropdownItem>
+  </DropdownItemGroup>
+);
 
-export const dropdownItemsWithGroups = [
-  {
-    heading: 'The first group',
-    items: [
-      {
-        content: 'Some text 1',
-      },
-      {
-        content: 'Some text 2',
-        isDisabled: true,
-      },
-    ],
-  },
-  {
-    heading: 'Second group',
-    items: [
-      {
-        content: 'Some text 3',
-      },
-      {
-        content: 'Some text 4',
-      },
-    ],
-  },
-];
+export const dropdownItemsWithGroups = (
+  <div>
+    <DropdownItemGroup title="The first group">
+      <DropdownItem>Some text 1</DropdownItem>
+      <DropdownItem isDisabled>Some text 2</DropdownItem>
+    </DropdownItemGroup>
+    <DropdownItemGroup title="Second group">
+      <DropdownItem>Some text 3</DropdownItem>
+      <DropdownItem>Some text 4</DropdownItem>
+    </DropdownItemGroup>
+  </div>
+);
 
-export const simpleDropdownItemsWithAvatars = [
-  {
-    heading: '',
-    items: [
-      {
-        content: 'Some text',
-        elemBefore: <Avatar size="small" />,
-      },
-      {
-        content: 'Some text 2',
-        elemBefore: <Avatar size="small" />,
-      },
-      {
-        content: 'Some text 4',
-        elemBefore: <Avatar size="small" />,
-      },
-    ],
-  },
-];
+export const simpleDropdownItemsWithAvatars = (
+  <DropdownItemGroup title="Friends">
+    <DropdownItem elemBefore={<Avatar size="small" />}>Some text</DropdownItem>
+    <DropdownItem elemBefore={<Avatar size="small" />}>Some text also</DropdownItem>
+  </DropdownItemGroup>
+);
 
-export const simpleDropdownItemsWithCheckboxes = [
-  {
-    heading: 'Languages ',
-    items: [
-      {
-        content: 'Javascript',
-        type: 'checkbox',
-      },
-      {
-        content: 'Java',
-        type: 'checkbox',
-      },
-      {
-        content: 'Ruby',
-        type: 'checkbox',
-      },
-    ],
-  },
-];
+export const simpleDropdownItemsWithCheckboxes = (
+  <DropdownItemGroupCheckbox id="example-checkbox-group" title="Languages">
+    <DropdownItemCheckbox id="js">JavaScript</DropdownItemCheckbox>
+    <DropdownItemCheckbox id="java">Java</DropdownItemCheckbox>
+    <DropdownItemCheckbox id="ruby">Ruby</DropdownItemCheckbox>
+  </DropdownItemGroupCheckbox>
+);
 
 export const simpleDropdownItemsWithRadio = [
-  {
-    heading: 'Languages ',
-    items: [
-      {
-        content: 'Javascript',
-        type: 'radio',
-      },
-      {
-        content: 'Java',
-        type: 'radio',
-      },
-    ],
-  },
-  {
-    heading: 'Platforms ',
-    items: [
-      {
-        content: 'Windows',
-        type: 'radio',
-      },
-      {
-        content: 'Mac',
-        type: 'radio',
-      },
-    ],
-  },
+  <DropdownItemGroupRadio id="example-radio-group" title="Languages">
+    <DropdownItemRadio id="js">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio id="java">Java</DropdownItemRadio>
+    <DropdownItemRadio id="ruby">Ruby</DropdownItemRadio>
+  </DropdownItemGroupRadio>,
+  <DropdownItemGroupRadio behavior="radio" title="Platforms">
+    <DropdownItemRadio id="mac">MacOS</DropdownItemRadio>
+    <DropdownItemRadio id="win">Windows</DropdownItemRadio>
+  </DropdownItemGroupRadio>,
 ];
 
-export const lotsOfItems = [
-  {
-    heading: '',
-    items: [
-      {
-        content: 'Some text',
-      },
-      {
-        content: 'Some text 2',
-      },
-      {
-        content: 'Some text 3',
-      },
-      {
-        content: 'Some text 4',
-      },
-      {
-        content: 'Some text 5',
-      },
-      {
-        content: 'Some text 6',
-      },
-      {
-        content: 'Some text 7',
-      },
-      {
-        content: 'Some text 8',
-      },
-      {
-        content: 'Some text 9',
-      },
-      {
-        content: 'Some text 10',
-      },
-      {
-        content: 'Some text 11',
-      },
-    ],
-  },
+export const simpleDropdownItemsWithRadioAndCheckbox = [
+  <DropdownItemGroupRadio id="languages" title="Languages">
+    <DropdownItemRadio id="js">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio id="java">Java</DropdownItemRadio>
+    <DropdownItemRadio id="ruby">Ruby</DropdownItemRadio>
+  </DropdownItemGroupRadio>,
+  <DropdownItemGroupCheckbox id="languages2" title="Languages">
+    <DropdownItemCheckbox id="js">JavaScript</DropdownItemCheckbox>
+    <DropdownItemCheckbox id="java">Java</DropdownItemCheckbox>
+    <DropdownItemCheckbox id="ruby">Ruby</DropdownItemCheckbox>
+  </DropdownItemGroupCheckbox>,
 ];
 
-export const itemsWithTooltips = [
-  {
-    heading: 'Heading',
-    items: [
-      {
-        content: 'Tooltip on the right',
-        tooltipDescription: 'Oh, hello there!',
-        tooltipPosition: 'right',
-      },
-      {
-        content: 'Tooltip on the left',
-        tooltipDescription: 'Oh, hello there!',
-        tooltipPosition: 'left',
-      },
-      {
-        content: 'Tooltip on the top',
-        tooltipDescription: 'Oh, hello there!',
-        tooltipPosition: 'top',
-      },
-      {
-        content: 'Tooltip at the bottom',
-        tooltipDescription: 'Oh, hello there!',
-        tooltipPosition: 'bottom',
-      },
-    ],
-  },
-];
+export const lotsOfItems = (
+  <DropdownItemGroup title="">
+    <DropdownItem>Some text</DropdownItem>
+    <DropdownItem>Some text 2</DropdownItem>
+    <DropdownItem>Some text 3</DropdownItem>
+    <DropdownItem>Some text 4</DropdownItem>
+    <DropdownItem>Some text 5</DropdownItem>
+    <DropdownItem>Some text 6</DropdownItem>
+    <DropdownItem>Some text 7</DropdownItem>
+    <DropdownItem>Some text 8</DropdownItem>
+    <DropdownItem>Some text 9</DropdownItem>
+    <DropdownItem>Some text 10</DropdownItem>
+    <DropdownItem>Some text 11</DropdownItem>
+  </DropdownItemGroup>
+);
+
+export const itemsWithTooltips = (
+  <DropdownItemGroup title="Composed tooltips">
+    {
+      ['right', 'left', 'top', 'bottom'].map(tooltipPos => (
+        <Tooltip
+          description="Oh, hello there!"
+          position={tooltipPos}
+        >
+          <DropdownItem>
+            Tooltip on the {tooltipPos}
+          </DropdownItem>
+        </Tooltip>
+      ))
+    }
+  </DropdownItemGroup>
+);

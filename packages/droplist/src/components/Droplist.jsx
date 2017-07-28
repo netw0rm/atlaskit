@@ -1,30 +1,51 @@
-import React, { PureComponent } from 'react';
+// @flow
+
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
-import { akGridSize } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { ThemeProvider } from 'styled-components';
 
 import Wrapper, { Content, SpinnerContainer, Trigger } from '../styled/Droplist';
+import itemTheme from '../theme/item-theme';
 
 const halfFocusRing = 1;
-const numberOfVisibleItems = 9;
-const dropOffset = `0 ${akGridSize}`;
+const dropOffset = `0 ${akGridSizeUnitless}px`;
 
-export default class Droplist extends PureComponent {
+export default class Droplist extends Component {
   static propTypes = {
+    /**
+      * Controls the appearance of the menu.
+      * Default menu has scroll after its height exceeds the pre-defined amount.
+      * Tall menu has no restrictions.
+      */
     appearance: PropTypes.oneOf(['default', 'tall']),
+    /** Content that will be rendered inside the layer element. Should typically be
+      * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
     children: PropTypes.node,
+    /** If true, a Spinner is rendered instead of the items */
     isLoading: PropTypes.bool,
+    /** Controls the open state of the drop list. */
     isOpen: PropTypes.bool,
     onClick: PropTypes.func,
     onKeyDown: PropTypes.func,
     onOpenChange: PropTypes.func,
+    /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
+    /** Deprecated. Option to display multiline items when content is too long.
+      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+      */
     shouldAllowMultilineItems: PropTypes.bool,
+    /** Option to fit dropdown menu width to its parent width */
     shouldFitContainer: PropTypes.bool,
+    /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
+      * fit in the viewport. */
     shouldFlip: PropTypes.bool,
+    /** Controls the height at which scroll bars will appear on the drop list. */
     maxHeight: PropTypes.number,
+    /** Content which will trigger the drop list to open and close. */
     trigger: PropTypes.node,
   }
   static defaultProps = {
@@ -41,6 +62,7 @@ export default class Droplist extends PureComponent {
     shouldFlip: true,
     trigger: null,
   }
+
   static childContextTypes = {
     shouldAllowMultilineItems: PropTypes.bool,
   }
@@ -50,92 +72,104 @@ export default class Droplist extends PureComponent {
   }
 
   componentDidMount = () => {
-    if (this.props.shouldFitContainer && this.dropContentRef) {
-      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
-    }
-
-    document.addEventListener('click', this.handleClickOutside);
+    this.setContentWidth();
+    // We use a captured event here to avoid a radio or checkbox dropdown item firing its
+    // click event first, which would cause a re-render of the element and prevent Droplist
+    // from detecting the actual source of this original click event.
+    document.addEventListener('click', this.handleClickOutside, true);
     document.addEventListener('keydown', this.handleEsc);
   }
 
   componentDidUpdate = () => {
-    const { isOpen, shouldFitContainer } = this.props;
-
-    if (isOpen && shouldFitContainer && this.dropContentRef) {
-      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
+    if (this.props.isOpen) {
+      this.setContentWidth();
     }
   }
 
   componentWillUnmount = () => {
-    document.removeEventListener('click', this.handleClickOutside);
+    document.removeEventListener('click', this.handleClickOutside, true);
     document.removeEventListener('keydown', this.handleEsc);
   }
 
-  setMaxHeight = (dropDomRef) => {
-    const { appearance, maxHeight } = this.props;
-    let calcMaxHeight;
-    if (maxHeight) {
-      calcMaxHeight = maxHeight;
-    } else {
-      calcMaxHeight = this.getMaxHeight();
-    }
-    if (calcMaxHeight && appearance !== 'tall') {
-      dropDomRef.style.maxHeight = `${calcMaxHeight}px`;
+  setContentWidth = (): void => {
+    const { dropContentRef, triggerRef } = this;
+    const { shouldFitContainer } = this.props;
+
+    // We need to manually set the content width to match the trigger width
+    // if props.shouldFitContainer is true
+    if (shouldFitContainer && dropContentRef && triggerRef) {
+      dropContentRef.style.width = `${triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
     }
   }
 
-  getMaxHeight = () => {
-    // When dropdown contains more than 9 elemens (droplist items, droplist groups),
-    // it should have scroll and cut off half of the 10th item to indicate that there are more
-    // items then are seen.
-    const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');
-    const scrollThresholdItemIndex = Math.min(items.length, numberOfVisibleItems);
-    const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
+  dropContentRef: HTMLElement
+  triggerRef: HTMLElement
 
-    if (!scrollThresholdItem || (scrollThresholdItemIndex < numberOfVisibleItems)) return null;
-
-    return scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
-  }
-
-  handleEsc = (event) => {
+  handleEsc = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
-      this.close({ event });
+      this.close(event);
     }
   }
 
-  handleClickOutside = (event) => {
+  handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
       if (!domNode || (event.target instanceof Node && !domNode.contains(event.target))) {
-        this.close({ event });
+        this.close(event);
       }
     }
   }
 
-  close = (attrs) => {
-    this.props.onOpenChange({ isOpen: false, event: attrs.event });
+  close = (event: Event): void => {
+    this.props.onOpenChange({ isOpen: false, event });
   }
+
+  handleContentRef = (ref: HTMLElement) => {
+    this.dropContentRef = ref;
+
+    // If the dropdown has just been opened, we focus on the containing element so the
+    // user can tab to the first dropdown item. We will only receive this ref if isOpen
+    // is true or null, so no need to check for truthiness here.
+    if (ref) {
+      ref.focus();
+    }
+  }
+
+  handleTriggerRef = (ref: HTMLElement) => (this.triggerRef = ref)
 
   render() {
     const {
-      children, isOpen, isLoading, onClick, onKeyDown, position, shouldFlip,
-      shouldFitContainer, trigger,
+      appearance,
+      children,
+      isLoading,
+      isOpen,
+      maxHeight,
+      onClick,
+      onKeyDown,
+      position,
+      shouldFitContainer,
+      shouldFlip,
+      trigger,
     } = this.props;
 
-    const triggerRef = ref => (this.triggerRef = ref);
-    const contentRef = (ref) => {
-      if (ref) {
-        this.dropContentRef = ref;
-        this.setMaxHeight(ref);
-      }
-    };
     const layerContent = isOpen ? (
-      <Content data-role="droplistContent" innerRef={contentRef}>
+      <Content
+        data-role="droplistContent"
+        isTall={appearance === 'tall'}
+        innerRef={this.handleContentRef}
+        maxHeight={maxHeight}
+      >
         {isLoading ? (
           <SpinnerContainer>
-            <Spinner />
+            <Spinner size="small" />
           </SpinnerContainer>
-        ) : children}
+        ) : (
+          <ThemeProvider theme={itemTheme}>
+            <div>
+              {children}
+            </div>
+          </ThemeProvider>
+          )}
       </Content>
     ) : null;
 
@@ -151,7 +185,10 @@ export default class Droplist extends PureComponent {
           offset={dropOffset}
           position={position}
         >
-          <Trigger fit={shouldFitContainer} innerRef={triggerRef}>
+          <Trigger
+            fit={shouldFitContainer}
+            innerRef={this.handleTriggerRef}
+          >
             {trigger}
           </Trigger>
         </Layer>

@@ -134,6 +134,18 @@ describe('Analytics', () => {
         expect(spy.mock.calls[0][0]).toBe('private.button.click');
       });
     });
+
+    describe('it should pass through analyticsId to the WrappedComponent', () => {
+      class TestComponent extends Component {
+        render() {
+          return null;
+        }
+      }
+      const ComponentWithAnalytics = withAnalytics(TestComponent);
+      const TEST_ANALYTICS_ID = 'test.analytics.id';
+      const mountWrapper = mount(<ComponentWithAnalytics analyticsId={TEST_ANALYTICS_ID} />);
+      expect(mountWrapper.find('TestComponent').props()).toHaveProperty('analyticsId', TEST_ANALYTICS_ID);
+    });
   });
 
   describe('AnalyticsDecorator', () => {

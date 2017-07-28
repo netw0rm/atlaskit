@@ -1,1 +1,1 @@
-Object.assign(exports, require('../../../node_modules/@atlaskit/profilecard'));
+Object.assign(exports, require('@atlaskit/profilecard'));

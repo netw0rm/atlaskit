@@ -9,8 +9,6 @@ import {
   Selection,
   TableMap,
   Node,
-  Transaction,
-  Fragment,
   Slice,
   Decoration,
   DecorationSet,
@@ -18,11 +16,10 @@ import {
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { getColumnPos, getRowPos, getTablePos } from './utils';
-export type TableStateSubscriber = (state: TableState) => any;
+import * as tableCommands from './commands';
+import { Command } from './commands';
 
-export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
-}
+export type TableStateSubscriber = (state: TableState) => any;
 
 export interface SelectedCell {
   pos: number;
@@ -53,38 +50,17 @@ export class TableState {
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
   }
 
-  goToNextCell(direction: number): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (!this.tableNode) {
-        return false;
-      }
-      const offset = this.tableStartPos();
-      if (!offset) {
-        return false;
-      }
-      const map = TableMap.get(this.tableNode);
-      const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset + 1;
-      if (lastCellPos ===  this.getCurrentCellStartPos() && direction === 1) {
-        this.insertRow(map.height);
-        return true;
-      }
-      return tableBaseCommands.goToNextCell(direction)(state, dispatch);
-    };
-  }
+  createTable = (): Command => tableCommands.createTable();
 
-  createTable (): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (this.tableDisabled || this.tableElement) {
-        return false;
-      }
-      this.focusEditor();
-      const table = this.createTableNode(3, 3);
-      const tr = state.tr.replaceSelectionWith(table);
-      tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
-      dispatch(tr.scrollIntoView());
-      return true;
-    };
-  }
+  goToNextCell  = (direction: number): Command => tableCommands.goToNextCell(direction);
+
+  cut = (): Command => tableCommands.cut();
+
+  copy = (): Command => tableCommands.copy();
+
+  paste = (): Command => tableCommands.paste();
+
+  emptyCells = (): Command => tableCommands.emptyCells();
 
   insertColumn = (column: number): void => {
     if (this.tableNode) {
@@ -313,21 +289,20 @@ export class TableState {
     }
   }
 
-  cut (): void {
-    this.closeFloatingToolbar();
-  }
-
-  copy (): void {
-    this.closeFloatingToolbar();
-  }
-
-  paste (): void {
-    this.closeFloatingToolbar();
-  }
-
-  private closeFloatingToolbar (): void {
+  closeFloatingToolbar (): void {
     this.clearSelection();
     this.triggerOnChange();
+  }
+
+  getCurrentCellStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    const { tableCell, tableHeader } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === tableCell || node.type === tableHeader) {
+        return $from.start(i);
+      }
+    }
   }
 
   private createHoverSelection (from: number, to: number): void {
@@ -397,17 +372,6 @@ export class TableState {
     }
   }
 
-  private getCurrentCellStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    const { tableCell, tableHeader } = this.view.state.schema.nodes;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === tableCell || node.type === tableHeader) {
-        return $from.start(i);
-      }
-    }
-  }
-
   private getTableNode(): Node | undefined {
     const { $from } = this.view.state.selection;
     for (let i = $from.depth; i > 0; i--) {
@@ -462,22 +426,6 @@ export class TableState {
     const { state } = this.view;
     this.cellElement = undefined;
     this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
-  }
-
-  private createTableNode (rows: number, columns: number): Node {
-    const { state } = this.view;
-    const { table, tableRow, tableCell, tableHeader } = state.schema.nodes;
-    const rowNodes: Node[] = [];
-
-    for (let i = 0; i < rows; i ++) {
-      const cell = i === 0 ? tableHeader : tableCell;
-      const cellNodes: Node[] = [];
-      for (let j = 0; j < columns; j ++) {
-        cellNodes.push(cell.createAndFill());
-      }
-      rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
-    }
-    return table.create(null, Fragment.from(rowNodes));
   }
 
   private canInsertTable (): boolean {

@@ -8,6 +8,7 @@ export function keymapHandler(pluginState: TableState): Function {
   keymaps.bindKeymapWithCommand(keymaps.nextCell.common!, pluginState.goToNextCell(1), list);
   keymaps.bindKeymapWithCommand(keymaps.previousCell.common!, pluginState.goToNextCell(-1), list);
   keymaps.bindKeymapWithCommand(keymaps.toggleTable.common!, pluginState.createTable(), list);
+  keymaps.bindKeymapWithCommand(keymaps.emptyCells.common!, pluginState.emptyCells(), list);
 
   return keydownHandler(list);
 }

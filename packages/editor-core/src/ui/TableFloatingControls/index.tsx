@@ -49,6 +49,11 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
     this.props.pluginState.updateToolbarFocused(false);
   }
 
+  handleKeyDown = (event) => {
+    const { editorView, pluginState } = this.props;
+    pluginState.keymapHandler(editorView, event);
+  }
+
   handleCornerMouseOver = () => {
     this.setState({ tableSelected: true });
     this.props.pluginState.hoverTable();
@@ -74,7 +79,12 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
         mountTo={popupsMountPoint}
         alignY="top"
       >
-        <div onMouseDown={this.handleMouseDown} onBlur={this.handleBlur} className={tableSelected ? 'tableSelected' : ''}>
+        <div
+          onMouseDown={this.handleMouseDown}
+          onBlur={this.handleBlur}
+          className={tableSelected ? 'tableSelected' : ''}
+          onKeyDown={this.handleKeyDown}
+        >
           <CornerControls
             tableElement={tableElement}
             isSelected={pluginState.isTableSelected}

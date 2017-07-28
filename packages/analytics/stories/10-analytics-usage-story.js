@@ -45,7 +45,7 @@ function handlePrivateEvent(eventName, eventData) {
   console.log('Private Event:', eventName, eventData);
 }
 
-storiesOf(name, module).add('analytics', () =>
+storiesOf(name, module).addCodeExampleStory('analytics', () =>
   <div>
     <h1>Analytics</h1>
     <div>

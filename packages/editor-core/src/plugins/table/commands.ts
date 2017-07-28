@@ -13,7 +13,9 @@ export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }
 
-export function createTable (): Command {
+const commands: any = {};
+
+commands.createTable = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (pluginState.tableDisabled || pluginState.tableElement) {
@@ -26,9 +28,9 @@ export function createTable (): Command {
     dispatch(tr.scrollIntoView());
     return true;
   };
-}
+};
 
-export function goToNextCell (direction: number): Command {
+commands.goToNextCell = (direction): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.tableNode) {
@@ -46,41 +48,45 @@ export function goToNextCell (direction: number): Command {
     }
     return tableBaseCommands.goToNextCell(direction)(state, dispatch);
   };
-}
+};
 
-export function cut (): Command {
+commands.cut = (direction): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
   };
-}
+};
 
-export function copy (): Command {
+commands.copy = (direction): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
   };
-}
+};
 
-export function paste (): Command {
+commands.paste = (direction): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
   };
-}
+};
 
-export function emptyCells (): Command {
+commands.emptyCells = (direction): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
-    const selection = state.selection;
-    if (selection instanceof CellSelection) {
-      pluginState.emptySelectedCells();
-      pluginState.moveCursorInsideTableTo(selection.$headCell.pos);
-      return true;
+    if (!pluginState.cellSelection) {
+      return false;
     }
-    return false;
+    pluginState.resetHoverSelection();
+    pluginState.emptySelectedCells();
+    const selection = pluginState.view.state.selection as CellSelection;
+    const newPos = selection.$head.pos - selection.$head.parentOffset;
+    pluginState.moveCursorInsideTableTo(newPos);
+    return true;
   };
-}
+};
+
+export default commands;

@@ -51,7 +51,10 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
 
   handleKeyDown = (event) => {
     const { editorView, pluginState } = this.props;
-    pluginState.keymapHandler(editorView, event);
+    pluginState.keymapHandler(editorView, event.nativeEvent);
+    if (!pluginState.cellSelection) {
+      this.setState({ tableSelected: false });
+    }
   }
 
   handleCornerMouseOver = () => {

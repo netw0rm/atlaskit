@@ -16,8 +16,6 @@ import {
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { getColumnPos, getRowPos, getTablePos } from './utils';
-import * as tableCommands from './commands';
-import { Command } from './commands';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
@@ -49,18 +47,6 @@ export class TableState {
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
   }
-
-  createTable = (): Command => tableCommands.createTable();
-
-  goToNextCell  = (direction: number): Command => tableCommands.goToNextCell(direction);
-
-  cut = (): Command => tableCommands.cut();
-
-  copy = (): Command => tableCommands.copy();
-
-  paste = (): Command => tableCommands.paste();
-
-  emptyCells = (): Command => tableCommands.emptyCells();
 
   insertColumn = (column: number): void => {
     if (this.tableNode) {

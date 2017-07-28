@@ -116,34 +116,43 @@ describe('table keymap', () => {
       context(`when row ${index + 1} is selected`, () => {
         it(`it should empty cells in the row ${index + 1}`, () => {
           const { editorView, plugin, pluginState } = editor(
-            doc(table(tr(td({})(p('{<>}1'))), tr(td({})(p('2'))), tr(td({})(p('3')))))
+            doc(table(tr(tdEmpty, td({})(p('{<>}1'))), tr(tdEmpty, td({})(p('2'))), tr(tdEmpty, td({})(p('3')))))
           );
           plugin.props.onFocus!(editorView, event);
           pluginState.selectRow(index);
           expect(editorView.state.selection instanceof CellSelection).to.equal(true);
+          const { selection } = editorView.state;
+          const offset = pluginState.tableStartPos();
+          const cursorPos = selection.$head.pos - selection.$head.parentOffset + offset!;
           sendKeyToPm(editorView, 'Backspace');
           const rows: any = [];
           for (let i = 0; i < 3; i++) {
-            rows.push(tr(td({})(p( i === index ? '' : `${i + 1}`))));
+            rows.push(tr(tdEmpty, td({})(p( i === index ? '' : `${i + 1}`))));
           }
           expect(editorView.state.doc).to.deep.equal(doc(table(rows)));
+          expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
         });
       });
 
       context(`when column ${index + 1} is selected`, () => {
         it(`it should empty cells in the column ${index + 1}`, () => {
+          const emptyRow = tr(tdEmpty, tdEmpty, tdEmpty);
           const { editorView, plugin, pluginState } = editor(
-            doc(table(tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3')))))
+            doc(table(emptyRow, tr(td({})(p('{<>}1')), td({})(p('2')), td({})(p('3')))))
           );
           plugin.props.onFocus!(editorView, event);
           pluginState.selectColumn(index);
           expect(editorView.state.selection instanceof CellSelection).to.equal(true);
+          const { selection } = editorView.state;
+          const offset = pluginState.tableStartPos();
+          const cursorPos = selection.$head.pos - selection.$head.parentOffset + offset!;
           sendKeyToPm(editorView, 'Backspace');
           const columns: any = [];
           for (let i = 0; i < 3; i++) {
             columns.push(td({})(p( i === index ? '' : `${i + 1}`)));
           }
-          expect(editorView.state.doc).to.deep.equal(doc(table(tr(columns))));
+          expect(editorView.state.doc).to.deep.equal(doc(table(emptyRow, tr(columns))));
+          expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
         });
       });
     });

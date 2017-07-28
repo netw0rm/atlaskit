@@ -25,7 +25,6 @@ type ResultGroup = {|
 |}
 
 type Props = {|
-  isResultHoverStylesDisabled?: boolean,
   isTabbingDisabled?: boolean,
   onResultMouseEnter?: () => null,
   onResultMouseLeave?: () => null,
@@ -35,7 +34,6 @@ type Props = {|
 
 export default class SearchResults extends PureComponent {
   static defaultProps = {
-    isResultHoverStylesDisabled: false,
     isTabbingDisabled: false,
     onResultMouseEnter: noOp,
     onResultMouseLeave: noOp,
@@ -50,7 +48,6 @@ export default class SearchResults extends PureComponent {
     return Result ? (
       <Result
         // SearchResult-provided props
-        isHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
         isSelected={isSelected}
         key={props.resultId}
         onMouseEnter={this.props.onResultMouseEnter}

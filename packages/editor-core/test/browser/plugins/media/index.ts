@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import {
   DefaultMediaStateManager,
-  MediaStateStatus,
 } from '@atlaskit/media-core';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
@@ -22,6 +21,7 @@ import {
   media,
   p,
   a,
+  hr,
   storyMediaProviderFactory,
   randomId,
   sleep,
@@ -351,31 +351,19 @@ describe('Media plugin', () => {
     });
   });
 
-  [
-    'unfinalized',
-    'unknown',
-    'ready',
-    'error',
-    'cancelled',
-  ].forEach((status: MediaStateStatus) => {
-    it(`should remove ${status} media nodes`, async () => {
-      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
+  describe('handleMediaNodeRemove', () => {
+    it('removes media node', () => {
+      const deletingMediaNodeId = 'foo';
+      const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
       const { editorView, pluginState } = editor(
         doc(
-          mediaGroup(mediaNode),
+          mediaGroup(deletingMediaNode),
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
         ),
       );
 
-      await mediaProvider;
-
-      stateManager.updateState('foo', {
-        status,
-        id: 'foo',
-      });
-
-      const pos = getNodePos(pluginState, 'foo');
-      pluginState.handleMediaNodeRemove(mediaNode, () => pos);
+      const pos = getNodePos(pluginState, deletingMediaNodeId);
+      pluginState.handleMediaNodeRemoval(deletingMediaNode, () => pos);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -384,6 +372,67 @@ describe('Media plugin', () => {
         ));
     });
   });
+
+  describe('removeSelectedMediaNode', () => {
+    context('when selection is a media node', () => {
+      it('removes node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc(p()));
+      });
+
+      it('returns true', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(true);
+      });
+    });
+
+    context('when selection is a non media node', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc(hr, mediaGroup(deletingMediaNode)));
+      });
+
+      it('returns false', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+      });
+    });
+
+    context('when selection is text', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc('hello', mediaGroup(deletingMediaNode)));
+      });
+
+      it('returns false', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+      });
+    });
+  });
+
 
   it('should focus the editor after files are added to the document', async () => {
     const { editorView, pluginState } = editor(doc(p('')));

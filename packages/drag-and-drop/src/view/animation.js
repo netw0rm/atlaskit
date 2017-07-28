@@ -3,12 +3,12 @@ import type { SpringHelperConfig } from 'react-motion/lib/Types';
 
 export const physics = (() => {
   const base = {
-    stiffness: 800, // fast
+    stiffness: 1000, // fast
   // stiffness: 200, // medium
-  // stiffness: 100, // slow
+    // stiffness: 100, // slow
     damping: 60,
   // precision: 0.5,
-    precision: 0.9,
+    precision: 0.99,
   };
 
   const standard: SpringHelperConfig = {

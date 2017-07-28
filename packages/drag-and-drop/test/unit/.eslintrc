@@ -3,9 +3,7 @@
     "../../../../build/config/eslint.test.unit.js"
   ],
   "rules": {
-    "jest/valid-expect": "off"
-  },
-  "plugins": [
-    "chai-expect",
-  ]
+    "jest/valid-expect": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  }
 }

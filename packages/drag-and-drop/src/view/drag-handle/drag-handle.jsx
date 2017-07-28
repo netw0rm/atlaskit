@@ -6,7 +6,6 @@ import rafScheduler from 'raf-schd';
 // Using keyCode's for consistent event pattern matching between
 // React synthetic events as well as raw browser events.
 import * as keyCodes from '../key-codes';
-import getScrollPosition from '../get-scroll-position';
 import type { Position } from '../../types';
 import type { Props, DragTypes, Provided } from './drag-handle-types';
 
@@ -26,8 +25,8 @@ type State = {
 };
 
 export default class DragHandle extends Component {
-
   /* eslint-disable react/sort-comp */
+
   props: Props
   state: State
 
@@ -36,7 +35,7 @@ export default class DragHandle extends Component {
     pending: null,
   };
 
-  preventClick: boolean;
+  preventClick: boolean
 
   ifDragging = (fn: Function) => {
     if (this.state.draggingWith) {
@@ -44,9 +43,20 @@ export default class DragHandle extends Component {
     }
   }
 
+  // There is a case where if this is fired between
+  // two different drags with the same x,y then the second
+  // drag will not fire a move. This will only effect the
+  // first frame. It was decided that this is better than
+  // needing to clear the memoization cache between drags
+  // given that it is a huge edge case.
+  memoizedMove = memoizeOne((x: number, y: number) => {
+    const point: Position = { x, y };
+    this.props.callbacks.onMove(point);
+  });
+
   // scheduled functions
   scheduleMove = rafScheduler((point: Position) => {
-    this.ifDragging(() => this.props.callbacks.onMove(point));
+    this.ifDragging(() => this.memoizedMove(point.x, point.y));
   });
 
   scheduleMoveForward = rafScheduler(() => {
@@ -57,6 +67,9 @@ export default class DragHandle extends Component {
     this.ifDragging(this.props.callbacks.onMoveBackward);
   });
 
+  scheduleWindowScrollMove = rafScheduler(() => {
+    this.ifDragging(this.props.callbacks.onWindowScroll);
+  });
   /* eslint-enable react/sort-comp */
 
   componentWillUnmount() {
@@ -69,6 +82,7 @@ export default class DragHandle extends Component {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    // TODO: unbind handlers if drag is cancelled some somewhere else in application
     if (nextProps.isEnabled) {
       return;
     }
@@ -93,7 +107,29 @@ export default class DragHandle extends Component {
       return;
     }
 
+    if (!this.state.draggingWith) {
+      return;
+    }
+
     this.stopDragging(() => this.props.callbacks.onCancel());
+  }
+
+  onWindowScroll = () => {
+    const { draggingWith } = this.state;
+
+    if (!draggingWith) {
+      return;
+    }
+
+    if (draggingWith === 'MOUSE') {
+      this.scheduleWindowScrollMove();
+      return;
+    }
+
+    if (draggingWith === 'KEYBOARD') {
+      // currently not supporting window scrolling with a keyboard
+      this.stopDragging(() => this.props.callbacks.onCancel());
+    }
   }
 
   onWindowMouseMove = (event: MouseEvent) => {
@@ -109,11 +145,9 @@ export default class DragHandle extends Component {
       return;
     }
 
-    // Ideally would just use event.pageX - but playing it safe
-    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: clientX + scroll.x,
-      y: clientY + scroll.y,
+      x: clientX,
+      y: clientY,
     };
 
     if (!pending) {
@@ -154,11 +188,8 @@ export default class DragHandle extends Component {
   };
 
   onWindowMouseDown = () => {
-    if (this.state.draggingWith === 'MOUSE') {
-      console.error(`Should not be able to trigger a mousedown while a MOUSE drag
-                    is occurring. Expecting a mouseup first.`);
-    }
-
+    // this can happen during a drag when the user clicks a button
+    // other than the primary mouse button
     this.stopDragging(() => this.props.callbacks.onCancel());
   }
 
@@ -178,11 +209,9 @@ export default class DragHandle extends Component {
     event.stopPropagation();
     event.preventDefault();
 
-    // Ideally would just use event.pageX - but playing it safe
-    const scroll: Position = getScrollPosition();
     const point: Position = {
-      x: clientX + scroll.x,
-      y: clientY + scroll.y,
+      x: clientX,
+      y: clientY,
     };
 
     this.startPendingMouseDrag(point);
@@ -351,11 +380,15 @@ export default class DragHandle extends Component {
   }
 
   unbindWindowEvents = () => {
+    // using a map to ensure that everything that is added
+    // is always removed. It is easy to add a listener and
+    // to forget about removing it.
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
     window.removeEventListener('keydown', this.onWindowKeydown);
     window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('scroll', this.onWindowScroll);
   }
 
   bindWindowEvents = () => {
@@ -364,6 +397,7 @@ export default class DragHandle extends Component {
     window.addEventListener('mousedown', this.onWindowMouseDown);
     window.addEventListener('keydown', this.onWindowKeydown);
     window.addEventListener('resize', this.onWindowResize);
+    window.addEventListener('scroll', this.onWindowScroll, { passive: true });
   }
 
   getProvided = memoizeOne((isEnabled: boolean, isDragging: boolean): ?Provided => {

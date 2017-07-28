@@ -254,6 +254,7 @@ export class TableState {
 
   update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
+    const { cellSelection } = this;
 
     const tableElement = this.getTableElement(docView);
     if (domEvent && tableElement || tableElement !== this.tableElement) {
@@ -268,7 +269,14 @@ export class TableState {
       dirty = true;
     }
 
-    const cellElement = this.cellSelection ? this.getFirstSelectedCellElement(docView) : undefined;
+    // show floating toolbar only when the whole row, column or table is selected
+    const toolbarVisible = (
+      cellSelection && (cellSelection.isColSelection() || cellSelection.isRowSelection())
+        ? true
+        : false
+    );
+
+    const cellElement = toolbarVisible ? this.getFirstSelectedCellElement(docView) : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
       dirty = true;

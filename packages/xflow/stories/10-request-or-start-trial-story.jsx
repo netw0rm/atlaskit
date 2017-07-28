@@ -5,6 +5,7 @@ import { RequestOrStartTrial } from '@atlaskit/xflow';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
+import mockConfluenceStatusChecker from './providers/mockConfluenceStatusChecker';
 import { INACTIVE, ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -62,7 +63,7 @@ storiesOf('RequestOrStartTrial')
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps} // 3
-        isProductInstalledOrActivating={async () => ACTIVE}
+        productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />
@@ -73,7 +74,7 @@ storiesOf('RequestOrStartTrial')
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps} // 3
-        isProductInstalledOrActivating={async () => ACTIVATING}
+        productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial analyticsId="growth.happy" />

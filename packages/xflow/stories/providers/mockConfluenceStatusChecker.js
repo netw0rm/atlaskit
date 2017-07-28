@@ -1,12 +1,15 @@
-import { ACTIVE, INACTIVE } from '../../src/common/productProvisioningStates';
+import {
+  ACTIVE,
+  // ACTIVATING,
+  INACTIVE,
+  // UNKNOWN
+} from '../../src/common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
  * has come up.
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
 const MOCK_ACTIVATION_TIME = 30000; // milliseconds
-
-export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';
 
 const POLLING_TIMEOUT = 300000; // milliseconds;
 
@@ -22,7 +25,11 @@ async function checkStatus() {
   );
 }
 
-export default {
+export default initialState => ({
+  async check() {
+    return initialState;
+  },
+
   start(progressHandler, pollingInterval = DEFAULT_POLLING_INTERVAL) {
     if (interval === null) {
       startTime = Date.now();
@@ -54,4 +61,4 @@ export default {
       interval = null;
     }
   },
-};
+});

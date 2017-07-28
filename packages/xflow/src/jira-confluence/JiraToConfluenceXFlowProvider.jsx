@@ -4,7 +4,6 @@ import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-i
 import { XFlowProvider } from '../common/components/XFlowProvider';
 
 import { isUserTrusted } from './tenantContext';
-import isConfluenceInstalledOrActivating from './isConfluenceInstalledOrActivating';
 import hasConfluenceBeenEvaluated from './hasConfluenceBeenEvaluated';
 import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
@@ -59,7 +58,13 @@ export const defaultProps = intl => ({
     },
     startTrial: {
       trialHeading: intl.formatMessage(messages.startTrialHeading),
-      trialMessage: <FormattedMessage id="xflow.start-trial.message" defaultMessage="Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance." values={{ br: <br /> }} />,
+      trialMessage: (
+        <FormattedMessage
+          id="xflow.start-trial.message"
+          defaultMessage="Once your trial finishes, billing with start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance."
+          values={{ br: <br /> }}
+        />
+      ),
       grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
       grantAccessDefaultAccess: intl.formatMessage(messages.grantAccessDefaultAccess),
       loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
@@ -95,7 +100,6 @@ export const defaultProps = intl => ({
   },
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
-  isProductInstalledOrActivating: isConfluenceInstalledOrActivating,
   hasProductBeenEvaluated: hasConfluenceBeenEvaluated,
 
   requestTrialAccess,
@@ -115,7 +119,7 @@ export const defaultProps = intl => ({
 export class JiraToConfluenceXFlowProviderBase extends Component {
   static propTypes = {
     intl: intlShape,
-  }
+  };
 
   render() {
     const { intl } = this.props;

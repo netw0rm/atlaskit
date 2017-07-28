@@ -36,7 +36,7 @@ export const xFlowShape = PropTypes.shape({
   status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]),
 
   canCurrentUserAddProduct: PropTypes.func,
-  isProductInstalledOrActivating: PropTypes.func,
+  getProductActivationState: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,
   hasProductBeenEvaluated: PropTypes.func,
 
@@ -46,6 +46,7 @@ export const xFlowShape = PropTypes.shape({
   cancelRequestTrialAccess: PropTypes.func,
 
   startProductTrial: PropTypes.func,
+  waitForActivation: PropTypes.func,
   cancelStartProductTrial: PropTypes.func,
   grantAccessToUsers: PropTypes.func,
   retrieveUsers: PropTypes.func,
@@ -78,6 +79,7 @@ export class XFlowProvider extends Component {
         ...this.props,
         ...this.state,
         startProductTrial: this.startProductTrial,
+        getProductActivationState: this.getProductActivationState,
       },
     };
   }
@@ -86,6 +88,15 @@ export class XFlowProvider extends Component {
     const { productStatusChecker } = this.props;
     productStatusChecker.stop();
   }
+
+  getProductActivationState = async () => {
+    const { productStatusChecker } = this.props;
+    const status = await productStatusChecker.check();
+    this.setState({
+      status,
+    });
+    return status;
+  };
 
   progressUpdate = ({ status, progress }) => {
     this.setState({

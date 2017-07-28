@@ -2,6 +2,7 @@ import React from 'react';
 import JiraToConfluenceXFlowProvider from '../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 
 import mockConfluenceStatusChecker from './mockConfluenceStatusChecker';
+import { INACTIVE } from '../../src/common/productProvisioningStates';
 
 const notImplemented = () => {
   throw new Error('Not implemented.');
@@ -30,7 +31,7 @@ export default class MockConfluenceXFlowProvider extends JiraToConfluenceXFlowPr
     const props = {
       ...overrideImplementations,
       startProductTrial: () => new Promise(resolve => setTimeout(resolve, 1000)),
-      productStatusChecker: mockConfluenceStatusChecker,
+      productStatusChecker: mockConfluenceStatusChecker(INACTIVE),
       ...this.state,
       ...this.props,
     };

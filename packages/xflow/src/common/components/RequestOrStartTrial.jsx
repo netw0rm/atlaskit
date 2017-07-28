@@ -27,7 +27,7 @@ class RequestOrStartTrial extends Component {
   static propTypes = {
     locale: PropTypes.string,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
-    isProductInstalledOrActivating: PropTypes.func.isRequired,
+    getProductActivationState: PropTypes.func.isRequired,
     // fireAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
@@ -53,19 +53,25 @@ class RequestOrStartTrial extends Component {
   }
 
   resetRequestOrStartTrial = async () => {
-    const { isProductInstalledOrActivating, canCurrentUserAddProduct } = this.props;
-    try {
-      const activationState = await isProductInstalledOrActivating();
-      const canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
+    const { getProductActivationState, canCurrentUserAddProduct } = this.props;
+    const activationState = await getProductActivationState();
+    const canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
 
-      if (activationState === ACTIVE || activationState === ACTIVATING) {
-        this.setState({ screen: Screens.ALREADY_STARTED, activationState });
-      } else if (canAdd) {
-        this.setState({ screen: Screens.START_TRIAL });
-      } else {
-        this.setState({ screen: Screens.REQUEST_TRIAL });
-      }
-    } catch (e) {
+    if (activationState === ACTIVE || activationState === ACTIVATING) {
+      this.setState({
+        screen: Screens.ALREADY_STARTED,
+      });
+    } else if (activationState === INACTIVE && canAdd) {
+      this.setState({
+        screen: Screens.START_TRIAL,
+        activationState,
+      });
+    } else if (activationState === INACTIVE) {
+      this.setState({
+        screen: Screens.REQUEST_TRIAL,
+        activationState,
+      });
+    } else {
       this.setState({ initializingCheckFailed: true });
     }
   };
@@ -126,8 +132,8 @@ class RequestOrStartTrial extends Component {
 
 export default withXFlowProvider(
   withAnalytics(RequestOrStartTrial),
-  ({ xFlow: { canCurrentUserAddProduct, isProductInstalledOrActivating } }) => ({
+  ({ xFlow: { canCurrentUserAddProduct, getProductActivationState } }) => ({
     canCurrentUserAddProduct,
-    isProductInstalledOrActivating,
+    getProductActivationState,
   })
 );

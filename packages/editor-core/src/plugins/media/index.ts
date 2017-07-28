@@ -7,6 +7,8 @@ import {
   MediaState,
   MediaStateManager,
   UploadParams,
+  ContextConfig,
+  ContextFactory,
 } from '@atlaskit/media-core';
 
 import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
@@ -19,9 +21,9 @@ import {
   Schema,
   Transaction,
   NodeSelection,
+  Mark,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
-import { ContextConfig, ContextFactory } from '@atlaskit/media-core';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
@@ -491,6 +493,16 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr);
+
+        // Ignore creating link cards during link editing
+        const { link } = oldState.schema.marks as { link: Mark };
+        const { nodeAfter, nodeBefore } = oldState.selection.$from;
+
+        if ((nodeAfter && link.isInSet(nodeAfter.marks)) ||
+          (nodeBefore && link.isInSet(nodeBefore.marks))
+        ) {
+          pluginState.ignoreLinks = true;
+        }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()

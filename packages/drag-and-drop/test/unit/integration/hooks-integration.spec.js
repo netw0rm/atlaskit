@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
 import { mount } from 'enzyme';
-import { expect } from 'chai';
-import sinon from 'sinon';
 import { DragDropContext, Draggable, Droppable } from '../../../src/';
 import { sloppyClickThreshold } from '../../../src/view/drag-handle/drag-handle';
 import { dispatchWindowMouseEvent, dispatchWindowKeyDownEvent, mouseEvent } from '../../utils/user-input-util';
+import getClientRect from '../../utils/get-client-rect';
 import type {
   Hooks,
   DraggableLocation,
@@ -24,7 +23,6 @@ const mouseDown = mouseEvent.bind(null, 'mousedown');
 const cancelWithKeyboard = dispatchWindowKeyDownEvent.bind(null, keyCodes.escape);
 
 describe('hooks integration', () => {
-  let clock;
   let hooks: Hooks;
   let wrapper;
 
@@ -32,26 +30,24 @@ describe('hooks integration', () => {
   const droppableId: DroppableId = 'drop-1';
 
   // both our list and item have the same dimension for now
-  const fakeBox = {
+  const clientRect = getClientRect({
     top: 0,
     right: 100,
     bottom: 100,
     left: 0,
-    height: 100,
-    width: 100,
-  };
+  });
 
   const getMountedApp = () => {
-      // Both list and item will have the same dimensions
-    sinon.stub(Element.prototype, 'getBoundingClientRect').returns(fakeBox);
+    // Both list and item will have the same dimensions
+    jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(() => clientRect);
 
-      // Stubbing out totally - not including margins in this
-    sinon.stub(window, 'getComputedStyle').returns({
+    // Stubbing out totally - not including margins in this
+    jest.spyOn(window, 'getComputedStyle').mockImplementation(() => ({
       marginTop: '0',
       marginRight: '0',
       marginBottom: '0',
       marginLeft: '0',
-    });
+    }));
 
     return mount(
       <DragDropContext
@@ -83,34 +79,34 @@ describe('hooks integration', () => {
 
   beforeEach(() => {
     requestAnimationFrame.reset();
-    clock = sinon.useFakeTimers();
+    jest.useFakeTimers();
     hooks = {
-      onDragStart: sinon.stub(),
-      onDragEnd: sinon.stub(),
+      onDragStart: jest.fn(),
+      onDragEnd: jest.fn(),
     };
     wrapper = getMountedApp();
   });
 
   afterEach(() => {
-    clock.restore();
     requestAnimationFrame.reset();
+    jest.useRealTimers();
 
     // clean up any loose events
     wrapper.unmount();
 
       // clean up any stubs
-    if (Element.prototype.getBoundingClientRect.restore) {
-      Element.prototype.getBoundingClientRect.restore();
+    if (Element.prototype.getBoundingClientRect.mockRestore) {
+      Element.prototype.getBoundingClientRect.mockRestore();
     }
-    if (window.getComputedStyle.restore) {
-      window.getComputedStyle.restore();
+    if (window.getComputedStyle.mockRestore) {
+      window.getComputedStyle.mockRestore();
     }
   });
 
   const drag = (() => {
     const initial: Position = {
-      x: fakeBox.left + 1,
-      y: fakeBox.bottom + 1,
+      x: clientRect.left + 1,
+      y: clientRect.top + 1,
     };
     const dragStart: Position = {
       x: initial.x,
@@ -132,9 +128,8 @@ describe('hooks integration', () => {
       windowMouseMove(dragStart.x, dragStart.y);
 
       // Need to wait for the nested async lift action to complete
-      // this takes two async actions. However, this caller should not
-      // know that - so ticking '10ms' to indicate that this is a nested async
-      clock.tick(10);
+      // this takes two async actions.
+      jest.runAllTimers();
     };
 
     const move = () => {
@@ -149,8 +144,8 @@ describe('hooks integration', () => {
         // flush the return to home animation
       requestAnimationFrame.flush();
 
-        // animation finishing waits a tick before calling the callback
-      clock.tick();
+      // animation finishing waits a tick before calling the callback
+      jest.runOnlyPendingTimers();
     };
 
     const cancel = () => {
@@ -191,23 +186,22 @@ describe('hooks integration', () => {
   })();
 
   const wasDragStarted = (amountOfDrags?: number = 1) => {
+    expect(hooks.onDragStart).toHaveBeenCalledTimes(amountOfDrags);
     // $ExpectError - type of hook function
-    expect(hooks.onDragStart.callCount).to.equal(amountOfDrags);
-    // $ExpectError - type of hook function
-    expect(hooks.onDragStart.args[amountOfDrags - 1])
-            .to.deep.equal([draggableId, expected.completed.source]);
+    expect(hooks.onDragStart.mock.calls[amountOfDrags - 1])
+            .toEqual([draggableId, expected.completed.source]);
   };
 
   const wasDragCompleted = (amountOfDrags?: number = 1) => {
-    expect(hooks.onDragEnd.callCount).to.equal(amountOfDrags);
-    expect(hooks.onDragEnd.args[amountOfDrags - 1][0])
-            .to.deep.equal(expected.completed);
+    expect(hooks.onDragEnd).toHaveBeenCalledTimes(amountOfDrags);
+    expect(hooks.onDragEnd.mock.calls[amountOfDrags - 1][0])
+            .toEqual(expected.completed);
   };
 
   const wasDragCancelled = (amountOfDrags?: number = 1) => {
-    expect(hooks.onDragEnd.callCount).to.equal(amountOfDrags);
-    expect(hooks.onDragEnd.args[amountOfDrags - 1][0])
-          .to.deep.equal(expected.cancelled);
+    expect(hooks.onDragEnd).toHaveBeenCalledTimes(amountOfDrags);
+    expect(hooks.onDragEnd.mock.calls[amountOfDrags - 1][0])
+          .toEqual(expected.cancelled);
   };
 
   describe('drag start', () => {
@@ -224,8 +218,7 @@ describe('hooks integration', () => {
       drag.move();
 
       // should not have called on drag start again
-      // $ExpectError - type of hook function
-      expect(hooks.onDragStart.calledOnce).to.equal(true);
+      expect(hooks.onDragStart).toHaveBeenCalledTimes(1);
     });
   });
 

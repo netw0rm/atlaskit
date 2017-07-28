@@ -27,6 +27,7 @@ export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
 export const addLink = makeKeyMapWithCommon('Insert link', 'Mod-k');
 export const enter = makeKeyMapWithCommon('Enter', 'Enter');
 export const tab = makeKeyMapWithCommon('Tab', 'Tab');
+export const backspace = makeKeyMapWithCommon('Backspace', 'Backspace');
 export const space = makeKeyMapWithCommon('Space', 'Space');
 export const escape = makeKeyMapWithCommon('Escape', 'Escape');
 export const nextCell = makeKeyMapWithCommon('Next cell', 'Tab');
@@ -126,3 +127,8 @@ export const keyCodes: { [key: string]: number } = {
   'PrintScrn': 44, 'Insert': 63302, 'Delete': 63272, ';': 186, '=': 187, 'Mod': 93, '*': 106, '-': 189, '.': 190, '/': 191, ',': 188,
   '`': 192, '[': 219, '\\': 220, ']': 221, '\'': 222
 };
+
+export const LEFT = 37;
+export const RIGHT = 39;
+export const UP = 38;
+export const DOWN = 40;

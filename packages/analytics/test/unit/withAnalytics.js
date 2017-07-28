@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 
 import {
-  AnalyticsDecorator,
   AnalyticsListener,
   cleanProps,
   withAnalytics,

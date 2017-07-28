@@ -3,7 +3,6 @@
 
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import {
   AnalyticsDecorator,
@@ -44,7 +43,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -59,7 +58,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 2 });
   });
 
@@ -76,7 +75,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2, three: 3 });
   });
 
@@ -92,7 +91,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -107,7 +106,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -122,7 +121,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('private.button.click', { one: 1, two: 2 });
   });
 
@@ -137,7 +136,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('private.button.click', { one: 1 });
   });
 
@@ -152,7 +151,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -160,14 +159,14 @@ describe('AnalyticsDecorator', () => {
     const spy = jest.fn();
     const listener = mount(
       <AnalyticsListener onEvent={spy}>
-        <AnalyticsDecorator data={{ two: 2 }} match='button.'>
+        <AnalyticsDecorator data={{ two: 2 }} match="button.">
           <Button analyticsId="button" analyticsData={{ one: 1 }} />
         </AnalyticsDecorator>
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -175,14 +174,14 @@ describe('AnalyticsDecorator', () => {
     const spy = jest.fn();
     const listener = mount(
       <AnalyticsListener onEvent={spy}>
-        <AnalyticsDecorator data={{ two: 2 }} match='button.click'>
+        <AnalyticsDecorator data={{ two: 2 }} match="button.click">
           <Button analyticsId="button" analyticsData={{ one: 1 }} />
         </AnalyticsDecorator>
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -190,14 +189,14 @@ describe('AnalyticsDecorator', () => {
     const spy = jest.fn();
     const listener = mount(
       <AnalyticsListener onEvent={spy}>
-        <AnalyticsDecorator data={{ two: 2 }} match='no'>
+        <AnalyticsDecorator data={{ two: 2 }} match="no">
           <Button analyticsId="button" analyticsData={{ one: 1 }} />
         </AnalyticsDecorator>
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -212,7 +211,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -227,7 +226,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -242,7 +241,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
   });
 
@@ -257,8 +256,7 @@ describe('AnalyticsDecorator', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
-
 });

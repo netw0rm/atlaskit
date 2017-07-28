@@ -7,6 +7,7 @@ import {
   withAnalytics,
 } from '../src';
 
+/* eslint-disable react/no-multi-comp */
 const Button = withAnalytics(
   class T extends Component {
     onClick = (e) => {
@@ -22,8 +23,9 @@ const Button = withAnalytics(
         </button>
       );
     }
-  }  
+  }
 );
+/* eslint-disable react/no-multi-comp */
 
 export default class AnalyticsExample extends Component {
   state = {
@@ -33,22 +35,23 @@ export default class AnalyticsExample extends Component {
   onEvent = (eventName: string, eventData: Object) => {
     this.setState({
       lastEvent: {
-        eventName: eventName,
-        eventData: eventData
-      }
-    })
+        eventName,
+        eventData,
+      },
+    });
   }
 
   render() {
     const { lastEvent } = this.state;
 
     return (
-     <AnalyticsListener onEvent={this.onEvent} matchPrivate>
+      <AnalyticsListener onEvent={this.onEvent} matchPrivate>
         <AnalyticsDecorator data={{ time: Date.now() }} matchPrivate>
           <Button analyticsId="button" analyticsData={{ key: 'value' }}>Send Private Event</Button>
-          <p>Last event sent: {!!lastEvent ? JSON.stringify(lastEvent) : 'None'}</p>
+          <p>Last event sent: {lastEvent ? JSON.stringify(lastEvent) : 'None'}</p>
         </AnalyticsDecorator>
       </AnalyticsListener>
     );
   }
 }
+

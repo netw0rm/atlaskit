@@ -3,7 +3,6 @@
 
 import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
-import sinon from 'sinon';
 
 import {
   AnalyticsListener,
@@ -41,7 +40,7 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -57,10 +56,10 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy1).toHaveBeenCalledTimes(1)
+    expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy1).toHaveBeenCalledWith('button.click', { one: 1 });
 
-    expect(spy2).toHaveBeenCalledTimes(1)
+    expect(spy2).toHaveBeenCalledTimes(1);
     expect(spy2).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -73,7 +72,7 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('private.button.click', { one: 1 });
   });
 
@@ -89,49 +88,49 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(privateSpy).toHaveBeenCalledTimes(1)
+    expect(privateSpy).toHaveBeenCalledTimes(1);
     expect(privateSpy).toHaveBeenCalledWith('private.button.click', { one: 1 });
 
-    expect(publicSpy).toHaveBeenCalledTimes(1)
+    expect(publicSpy).toHaveBeenCalledTimes(1);
     expect(publicSpy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
   it('should send event when partial string match is true', () => {
     const spy = jest.fn();
     const listener = mount(
-      <AnalyticsListener onEvent={spy} match='button.'>
+      <AnalyticsListener onEvent={spy} match="button.">
         <Button analyticsId="button" analyticsData={{ one: 1 }} />
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
   it('should send event when full string match is true', () => {
     const spy = jest.fn();
     const listener = mount(
-      <AnalyticsListener onEvent={spy} match='button.click'>
+      <AnalyticsListener onEvent={spy} match="button.click">
         <Button analyticsId="button" analyticsData={{ one: 1 }} />
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
   it('should not send event when string match is false', () => {
     const spy = jest.fn();
     const listener = mount(
-      <AnalyticsListener onEvent={spy} match='no'>
+      <AnalyticsListener onEvent={spy} match="no">
         <Button analyticsId="button" analyticsData={{ one: 1 }} />
       </AnalyticsListener>
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(0)
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('should send event when regex match is true', () => {
@@ -143,7 +142,7 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -156,7 +155,7 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(0)
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 
   it('should send event when function match is true', () => {
@@ -168,7 +167,7 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
 
@@ -181,7 +180,6 @@ describe('AnalyticsListener', () => {
     );
 
     listener.find(Button).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(0)
+    expect(spy).toHaveBeenCalledTimes(0);
   });
-
 });

@@ -105,13 +105,15 @@ storiesOf(name, module)
           />
         </MediaGroup>
         <br/>
-        <Media
-          id={imageLinkId.id}
-          type={imageLinkId.mediaItemType}
-          collection={imageLinkId.collectionName}
-          providers={providerFactory}
-          eventHandlers={eventHandlers}
-        />
+        <MediaGroup>
+          <Media
+            id={imageLinkId.id}
+            type={imageLinkId.mediaItemType}
+            collection={imageLinkId.collectionName}
+            providers={providerFactory}
+            eventHandlers={eventHandlers}
+          />
+        </MediaGroup>
         <br/>
         <MediaGroup>
           <Media

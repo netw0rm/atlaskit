@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { name } from '../../../package.json';
+import { name } from '../../package.json';
 
-import { Group } from '../../../src';
-import { Heading, HeadingAfter, HeadingText } from '../../../src/styled/Group';
+import { Group } from '../../src';
+import { Heading, HeadingAfter, HeadingText } from '../../src/styled/Group';
 
-describe(`${name} - deprecated API - group`, () => {
+describe(`${name} - group`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Group />)).not.toBe(undefined);
   });

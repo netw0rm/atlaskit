@@ -1,5 +1,3 @@
-// @flow
-
 import {
   akBorderRadius as borderRadius,
   akGridSizeUnitless as spacing,
@@ -11,7 +9,6 @@ import {
   akColorN20,
   akColorN200,
   akColorN300,
-  akColorN50,
   akColorN50A,
   akColorN60A,
   akColorN70,
@@ -37,32 +34,20 @@ export default {
     background: {
       active: akColorB75,
       hover: akColorN20,
-      default: akColorN0,
-      disabled: akColorN0,
-      selected: akColorN0,
+      selected: akColorN200,
     },
     boxShadow: {
-      focus: akColorB100,
+      focus: `0 0 0 2px ${akColorB100} inset`,
     },
     fontSize: '14px',
-    padding: {
-      x: spacing * 1.5,
-      y: spacing,
-    },
+    padding: `0 ${spacing * 1.5}px`,
     primaryText: {
       active: akColorN800,
       default: akColorN800,
       disabled: akColorN70,
-      hover: akColorN800,
       primary: akColorB400,
-      selected: akColorN800,
+      selected: akColorN0,
     },
-    secondaryText: {
-      active: akColorN200,
-      default: akColorN200,
-      disabled: akColorN50,
-      selected: akColorN200,
-      hover: akColorN200,
-    },
+    secondaryText: akColorN200,
   },
 };

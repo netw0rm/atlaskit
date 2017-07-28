@@ -1,21 +1,27 @@
 import React from 'react';
-import DropdownMenu, {
-  DropdownItemGroup,
-  DropdownItem,
-} from '@atlaskit/dropdown-menu';
+import DropdownMenu from '@atlaskit/dropdown-menu';
+
+const simpleDropdownItems = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', type: 'radio' },
+      { content: 'Canberra', type: 'radio' },
+      {
+        content: 'Line is too long and so the last words are lost',
+        type: 'radio',
+      },
+    ],
+  },
+];
 
 const DefaultMenuExample = () => (
   <DropdownMenu
-    trigger="Choices"
+    items={simpleDropdownItems}
+    onItemActivated={e => console.log(e.item)}
     triggerType="button"
-    shouldFlip={false}
-    position="right middle"
-    onOpenChange={e => console.log('dropdown opened', e)}
   >
-    <DropdownItemGroup>
-      <DropdownItem>Sydney</DropdownItem>
-      <DropdownItem>Melbourne</DropdownItem>
-    </DropdownItemGroup>
+    Choose
   </DropdownMenu>
 );
 

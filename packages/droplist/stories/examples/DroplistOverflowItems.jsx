@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import DropdownList from '@atlaskit/droplist';
-import Item, { ItemGroup } from '@atlaskit/item';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
+import { akColorN800 } from '@atlaskit/util-shared-styles';
 import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
 import Lozenge from '@atlaskit/lozenge';
-import { BlockTrigger } from '../styled/StoryHelpers';
 
 const DroplistOverview = class extends Component {
   render() {
@@ -12,9 +11,7 @@ const DroplistOverview = class extends Component {
         <DropdownList
           isOpen
           shouldFitContainer
-          trigger={
-            <BlockTrigger>This is the wide trigger</BlockTrigger>
-          }
+          trigger={<div style={{ border: `1px solid ${akColorN800}` }}>This is the wide trigger</div>}
         >
           <Item>This is not that long</Item>
           <Item type="checkbox">
@@ -27,10 +24,10 @@ const DroplistOverview = class extends Component {
               </div>
             }
           >this item should display an arrow with a done lozenge</Item>
-          <ItemGroup title="Some heading">
+          <Group heading="Some heading">
             <Item>What about if we put some really long content inside this dropdown menu</Item>
             <Item>And then we see how the text is hidden, okey now its going to be hidden </Item>
-          </ItemGroup>
+          </Group>
         </DropdownList>
       </div>
     );

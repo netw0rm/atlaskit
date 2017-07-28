@@ -1,47 +1,39 @@
 import React from 'react';
-import DropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
 import Lozenge from '@atlaskit/lozenge';
-import styled from 'styled-components';
 
-const JiraItem = styled.div`
-  align-items: center;
-  display: flex;
-  width: 105px;
-`;
-
-export default () => (
+export default (
   <DropdownMenu
     defaultOpen
     triggerType="button"
-    trigger="To do"
+    items={[
+      {
+        heading: '',
+        items: [
+          {
+            content: 'Status project',
+            elemAfter: <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+              <Arrow label="" size="small" /><Lozenge appearance="inprogress">in progress</Lozenge>
+            </div>,
+          },
+          {
+            content: 'Move to done',
+            elemAfter: <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+              <Arrow label="" size="small" /><Lozenge appearance="success">done</Lozenge>
+            </div>,
+          },
+          {
+            content: 'View workflow',
+          },
+        ],
+      },
+    ]}
     onItemActivated={(item) => {
       // you can do allthethings here!
       console.log(item);
     }}
   >
-    <DropdownItemGroup>
-      <DropdownItem
-        elemAfter={
-          <JiraItem>
-            <Arrow label="" size="small" />
-            <Lozenge appearance="inprogress">in progress</Lozenge>
-          </JiraItem>
-        }
-      >
-        Status project
-      </DropdownItem>
-      <DropdownItem
-        elemAfter={
-          <JiraItem>
-            <Arrow label="" size="small" />
-            <Lozenge appearance="success">Done</Lozenge>
-          </JiraItem>
-        }
-      >
-        Move to done
-      </DropdownItem>
-      <DropdownItem>View workflow</DropdownItem>
-    </DropdownItemGroup>
+    To do
   </DropdownMenu>
 );

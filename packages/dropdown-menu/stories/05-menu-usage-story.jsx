@@ -2,17 +2,22 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Question from '@atlaskit/icon/glyph/question';
-import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
 
+/* eslint-disable import/first, import/no-duplicates */
 import DropdownLoadItemsExample from './DropdownLoadItemsExample';
+import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
+import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
 import StatusDropdown from './examples/StatusDropdown';
+import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
+import LongItemsDropdownRaw from '!raw!./examples/LongItemsDropdown';
 import WideDropdown from './examples/WideDropdown';
+import WideDropdownRaw from '!raw!./examples/WideDropdown';
+/* eslint-enable import/first, import/no-duplicates */
 
 import {
   simpleDropdownItems,
@@ -21,103 +26,93 @@ import {
   dropdownItemsWithGroups,
   simpleDropdownItemsWithCheckboxes,
   simpleDropdownItemsWithRadio,
-  simpleDropdownItemsWithRadioAndCheckbox,
   itemsWithTooltips,
 } from './DropdownsData';
 
-const DropdownWrapper = styled.div`padding: ${akGridSizeUnitless * 3}px`;
-const StoryContainer = styled.div`padding: ${akGridSizeUnitless * 5}px`;
+const itemsOverride = `const simpleDropdownItems = ${JSON.stringify(simpleDropdownItems, null, 2)}`;
+const dropdownItemsWithGroupsOverride =
+  `const dropdownItemsWithGroups = ${JSON.stringify(dropdownItemsWithGroups, null, 2)}`;
+
+const imports = [
+  ['React', 'react'],
+  ['DropdownMenu', '@atlaskit/dropdown-menu'],
+];
+
+const DropdownWrapper = props => (<div style={{ padding: '20px 0' }} {...props} />);
+const StoryContainer = props => (<div style={{ padding: 40 }} {...props} />);
 
 storiesOf(name, module)
-  .add('Basic Dropdown menu', () => (
+  .addCodeExampleStory('Basic Dropdown menu with a button', () => (
     <StoryContainer>
-      <p>
-        This is an example of a basic dropdown menu with the built-in trigger which looks like a
-        button with the `expand` icon.
-      </p>
+      <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
+        button with the `expand` icon.</p>
       <DropdownWrapper>
-        <DropdownMenu trigger="Test" triggerType="button">
-          {simpleDropdownItems}
+        <DropdownMenu triggerType="button" items={simpleDropdownItems}>
+          Test
         </DropdownMenu>
       </DropdownWrapper>
-    </StoryContainer>
-  ))
-  .add('with an empty trigger', () => (
-    <StoryContainer>
-      <p>A dropdown with an empty button</p>
+      <p>Empty button is also possible</p>
       <DropdownWrapper>
-        <DropdownMenu triggerType="button">
-          {simpleDropdownItems}
-        </DropdownMenu>
+        <DropdownMenu triggerType="button" items={simpleDropdownItems} />
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with avatars in dropdown item', () => (
+  ), {
+    imports,
+    overrides: {
+      items: 'simpleDropdownItems',
+    },
+    scripts: [
+      itemsOverride,
+    ],
+  })
+  .addCodeExampleStory('Basic Dropdown menu avatars/icons', () => (
     <StoryContainer>
-      <p>
-        The dropdown trigger is normal, but the dropdown items contain avatars.
-      </p>
+      <p>This is an example of a basic dropdown menu with the build-in trigger which looks like a
+        button with the `expand` icon.</p>
       <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
-          trigger="Drop menu"
+          items={simpleDropdownItemsWithAvatars}
         >
-          {simpleDropdownItemsWithAvatars}
+          Drop menu
         </DropdownMenu>
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with checkbox items', () => (
+  ), { imports })
+  .addCodeExampleStory('Basic Dropdown menu with checkbox items', () => (
     <StoryContainer>
-      <p>
-        This is an example of a basic dropdown menu with checkbox items.
-      </p>
+      <p>This is an example of a basic dropdown menu with checkbox items.
+        Use it when you want to present options the user can select or enable.</p>
       <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
-          trigger="Drop menu"
+          items={simpleDropdownItemsWithCheckboxes}
           onItemActivated={item => (console.log(item))}
         >
-          {simpleDropdownItemsWithCheckboxes}
+          Drop menu
         </DropdownMenu>
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with checkbox and radio item groups', () => (
+  ), { imports, overrides: { style: '...' } })
+  .addCodeExampleStory('Basic Dropdown menu with radio items', () => (
     <StoryContainer>
-      <p>
-        This is an example of a basic dropdown menu separate groups for checkbox and radio items.
-      </p>
+      <p>This is an example of a basic dropdown menu with radio items.
+        Use it when you want to present options the user can select or enable.</p>
       <DropdownWrapper>
         <DropdownMenu
           defaultOpen
           triggerType="button"
-          trigger="Drop menu"
+          items={simpleDropdownItemsWithRadio}
+          onItemActivated={item => (console.log(item))}
         >
-          {simpleDropdownItemsWithRadioAndCheckbox}
+          Drop menu
         </DropdownMenu>
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with radio items', () => (
-    <StoryContainer>
-      <p>
-        This is an example of a basic dropdown menu with radio items.
-      </p>
-      <DropdownWrapper>
-        <DropdownMenu
-          defaultOpen
-          triggerType="button"
-          trigger="Drop menu"
-        >
-          {simpleDropdownItemsWithRadio}
-        </DropdownMenu>
-      </DropdownWrapper>
-    </StoryContainer>
-  ))
-  .add('with anything as a trigger', () => (
+  ), { imports, overrides: { style: '...' } })
+  .addCodeExampleStory('Basic Dropdown menu with anything as a trigger', () => (
     <StoryContainer >
       <p>Anything can be a trigger for the dropdown menu.</p>
       <div
@@ -129,56 +124,73 @@ storiesOf(name, module)
           padding: '20px 0',
         }}
       >
-        <DropdownMenu trigger={<span tabIndex="0">click me</span>}>
-          {simpleDropdownItems}
+        <DropdownMenu items={simpleDropdownItems}>
+          <span tabIndex="0">click me</span>
         </DropdownMenu>
-        <DropdownMenu trigger={<span tabIndex="0"><Avatar /></span>}>
-          {simpleDropdownItems}
+        <DropdownMenu items={simpleDropdownItems}>
+          <span tabIndex="0"><Avatar /></span>
         </DropdownMenu>
-        <DropdownMenu trigger={<span tabIndex="0"><Question label="dropdown`s trigger" /></span>}>
-          {simpleDropdownItems}
+        <DropdownMenu items={simpleDropdownItems}>
+          <span tabIndex="0"><Question label="dropdown`s trigger" /></span>
         </DropdownMenu>
       </div>
     </StoryContainer>
-  ))
-  .add('with "tall" appearance', () => (
+  ), {
+    imports: [...imports, ['t', '@atlaskit/icon/glyph/question']],
+    overrides: {
+      items: 'simpleDropdownItems',
+    },
+    scripts: [
+      itemsOverride,
+    ],
+  })
+  .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (
     <StoryContainer>
-      <p>
-        This default dropdown has lots of items, and scrollbars should appear.
-      </p>
+      <p>This is an example of a default dropdown with lots of items. If there are
+      more items than it can handle then the scroll appears.</p>
       <DropdownWrapper>
-        <DropdownMenu triggerType="button" trigger="Show me the scrollbar" shouldFlip={false}>
-          {lotsOfItems}
+        <DropdownMenu triggerType="button" items={lotsOfItems}>
+          Drop it!
         </DropdownMenu>
       </DropdownWrapper>
-      <p>
-        This is the same dropdown, but with the
-        <code>appearance=&quot;tall&quot;</code> prop applied.
-      </p>
-      <p>
-        Scrollbars will never appear and dropdown will grow to fit all items, so use carefully.
-      </p>
+      <p>This is an example of a tall dropdown with lots of items. It will never have scroll, so
+      use it with caution.</p>
       <DropdownWrapper>
-        <DropdownMenu triggerType="button" trigger="No scrollbar here" appearance="tall">
-          {lotsOfItems}
+        <DropdownMenu triggerType="button" items={lotsOfItems} appearance="tall">
+          Drop it!
         </DropdownMenu>
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with items in groups', () => (
+  ), {
+    imports,
+    overrides: {
+      items: 'lotsOfItems',
+    },
+  })
+  .addCodeExampleStory('Dropdown menu with a few groups', () => (
     <StoryContainer>
       <p>If the dropdown menu has more than one group, then all the groups should have headings.</p>
       <DropdownWrapper>
-        <DropdownMenu triggerType="button" trigger="Test">
-          {dropdownItemsWithGroups}
+        <DropdownMenu triggerType="button" items={dropdownItemsWithGroups}>
+          Test
         </DropdownMenu>
       </DropdownWrapper>
     </StoryContainer>
-  ))
-  .add('with interactive item add', () => (
+  ), {
+    imports,
+    overrides: {
+      items: 'dropdownItemsWithGroups',
+    },
+    scripts: [dropdownItemsWithGroupsOverride],
+  })
+  .addCodeExampleStory('Load more items', () => (
     <DropdownLoadItemsExample />
-  ))
-  .add('with loading state', () => (
+  ), {
+    scripts: [
+      DropdownLoadItemsExampleRaw,
+    ],
+  })
+  .addCodeExampleStory('Loading dropdown', () => (
     <StoryContainer>
       <p>This is an example of a dropdown that is loading.</p>
       <p>
@@ -190,21 +202,37 @@ storiesOf(name, module)
       </p>
     </StoryContainer>
   ))
-  .add('with customized trigger button', () => (
+  .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
     <DropdownWithTriggerOptions />
-  ))
-  .add('with Status Dropdown (JIRA)', () => <StoryContainer><StatusDropdown /></StoryContainer>)
-  .add('with long items and titles', () => <StoryContainer><LongItemsDropdown /></StoryContainer>)
-  .add('with container width trigger', () => <StoryContainer><WideDropdown /></StoryContainer>)
-  .add('with item tooltips', () => (
+  ),
+  {
+    scripts: [
+      DropdownWithTriggerOptionsRaw,
+    ],
+  })
+  .addCodeExampleStory(
+    'Status Dropdown (special for JIRA)',
+    () => (StatusDropdown),
+    { scripts: [StatusDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown with long items and titles',
+    () => (LongItemsDropdown),
+    { scripts: [LongItemsDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown that fits container width',
+    () => (WideDropdown),
+    { scripts: [WideDropdownRaw] },
+  )
+  .addCodeExampleStory('Dropdown menu with tooltips', () => (
     <StoryContainer>
-      <div style={{ width: 600, margin: '0 auto' }}>
-        <p>Try hovering over items in the dropdown</p>
-        <p>
-          <DropdownMenu triggerType="button" trigger="Open me">
-            {itemsWithTooltips}
-          </DropdownMenu>
-        </p>
+      <p>Try hovering over items in the dropdown</p>
+      <div style={{ padding: '20px 0', width: 'auto', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <DropdownMenu triggerType="button" items={itemsWithTooltips}>
+          Open me
+        </DropdownMenu>
       </div>
     </StoryContainer>
-  ));
+  ))
+;

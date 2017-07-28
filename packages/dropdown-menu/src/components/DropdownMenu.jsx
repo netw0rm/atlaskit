@@ -1,15 +1,12 @@
-// @flow
-
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 
 import StatelessMenu from './DropdownMenuStateless';
-import type { OpenChangeObj } from '../types';
 
 // NOTE: duplicate prop-types are validated by the stateless component
 /* eslint-disable react/prop-types */
-export default class DropdownMenu extends Component {
+export default class DropdownMenu extends PureComponent {
   static propTypes = {
     /**
       * Controls the appearance of the menu.
@@ -17,14 +14,13 @@ export default class DropdownMenu extends Component {
       * Tall menu has no restrictions.
       */
     appearance: PropTypes.oneOf(['default', 'tall']),
-    /** Content that will be rendered inside the layer element. Should typically be
-      * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
+    /** Content that will be rendered inside the trigger element. */
     children: PropTypes.node,
-    /** Controls the initial open state of the dropdown. */
+    /** Controls the open state of the dropdown */
     defaultOpen: PropTypes.bool,
-    /** If true, a Spinner is rendered instead of the children. */
+    /** If true, a Spinner is rendered instead of the items */
     isLoading: PropTypes.bool,
-    /** Deprecated. An array of groups. Every group must contain an array of items */
+    /** An array of groups. Every group must contain an array of items */
     items: PropTypes.arrayOf(PropTypes.shape({
       elemAfter: PropTypes.node,
       heading: PropTypes.string,
@@ -36,30 +32,26 @@ export default class DropdownMenu extends Component {
         target: PropTypes.oneOf(['_blank', '_self']),
       })).isRequired,
     })).isRequired,
-    /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
+    /** Called when an item is activated. Receives an object with the activated item. */
     onItemActivated: PropTypes.func,
-    /** Deprecated. Option to display multiline items when content is too long.
-      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
-      */
-    shouldAllowMultilineItems: PropTypes.bool,
-    /** Called when the menu is open or closed. Received an object with isOpen state. */
+    /** Called when the menu should be open/closed. Received an object with isOpen state. */
     onOpenChange: PropTypes.func,
     /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
-    /** Option to fit dropdown menu width to its parent width. */
+    /** Option to display multiline items when content is too long.
+      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
+      */
+    shouldAllowMultilineItems: PropTypes.bool,
+    /** Option to fit dropdown menu width to its parent width */
     shouldFitContainer: PropTypes.bool,
-    /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-      * fit in the viewport. */
+    /** Flip its position to the opposite side of its target if it does not fit */
     shouldFlip: PropTypes.bool,
-    /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
-      * to easily get a button trigger. */
-    trigger: PropTypes.node,
-    /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
+    /** Props to pass through to the trigger button. see @atlaskit/button for options */
     triggerButtonProps: PropTypes.shape(Button.propTypes),
-    /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
-      * you to supply your own trigger component. Setting this prop to `button` will render a
-      * Button component with an 'expand' icon, and the `trigger` prop contents inside the
-      * button. */
+    /** Types of the menu's built-in trigger.
+      * default trigger is empty.
+      * button trigger uses the Button component with the 'expand' icon.
+      */
     triggerType: PropTypes.oneOf(['default', 'button']),
   }
 
@@ -121,7 +113,7 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  handleOpenChange = (attrs: OpenChangeObj) => {
+  handleOpenChange = (attrs) => {
     this.setState({ isOpen: attrs.isOpen });
     this.props.onOpenChange(attrs);
   }
@@ -132,10 +124,10 @@ export default class DropdownMenu extends Component {
   }
 
   render() {
-    const { isOpen } = this.state;
+    const { isOpen, items } = this.state;
     const {
-      appearance, children, isLoading, items, position, shouldAllowMultilineItems,
-      shouldFitContainer, shouldFlip, trigger, triggerButtonProps, triggerType,
+      appearance, children, isLoading, position, shouldAllowMultilineItems,
+      shouldFitContainer, shouldFlip, triggerButtonProps, triggerType,
     } = this.props;
 
     return (
@@ -150,7 +142,6 @@ export default class DropdownMenu extends Component {
         shouldAllowMultilineItems={shouldAllowMultilineItems}
         shouldFitContainer={shouldFitContainer}
         shouldFlip={shouldFlip}
-        trigger={trigger}
         triggerButtonProps={triggerButtonProps}
         triggerType={triggerType}
       >

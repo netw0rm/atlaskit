@@ -4,7 +4,7 @@ import Theme from './theme';
 const { spacing } = Theme.$;
 
 const focusedStyles = css`
-  box-shadow: 0 0 0 2px ${Theme.Item.boxShadow.focus} inset;
+  box-shadow: ${Theme.Item.boxShadow.focus};
   outline: none;
   outline-offset: 0;
   position: relative; /* prevents bgcolor of a hovered element from obfuscating focus ring of a focused sibling element */
@@ -31,7 +31,7 @@ const sharedStyles = props => css`
   flex-wrap: nowrap;
   font-size: ${Theme.Item.fontSize};
   font-weight: normal;
-  padding: 0 ${Theme.Item.padding.x}px;
+  padding: ${Theme.Item.padding};
   text-decoration: none;
 
   &:hover {

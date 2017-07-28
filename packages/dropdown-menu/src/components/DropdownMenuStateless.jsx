@@ -1,19 +1,13 @@
-// @flow
-
-import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
 import uid from 'uid';
+
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
-import DropdownItemFocusManager from './context/DropdownItemFocusManager';
-import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
-import WidthConstrainer from '../styled/WidthConstrainer';
-import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
-
-export default class DropdownMenuStateless extends Component {
+export default class DropdownMenuStateless extends PureComponent {
   static propTypes = {
     /**
       * Controls the appearance of the menu.
@@ -21,14 +15,13 @@ export default class DropdownMenuStateless extends Component {
       * Tall menu has no restrictions.
       */
     appearance: PropTypes.oneOf(['default', 'tall']),
-    /** Content that will be rendered inside the layer element. Should typically be
-      * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
+    /** Content that will be rendered inside the trigger element. */
     children: PropTypes.node,
     /** If true, a Spinner is rendered instead of the items */
     isLoading: PropTypes.bool,
     /** Controls the open state of the dropdown. */
     isOpen: PropTypes.bool,
-    /** Deprecated. An array of groups. Every group must contain an array of items */
+    /** An array of groups. Every group must contain an array of items */
     items: PropTypes.arrayOf(PropTypes.shape({
       elemAfter: PropTypes.node,
       heading: PropTypes.string,
@@ -40,30 +33,26 @@ export default class DropdownMenuStateless extends Component {
         target: PropTypes.oneOf(['_blank', '_self']),
       })).isRequired,
     })).isRequired,
-    /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
+    /** Called when an item is activated. Receives an object with the activated item. */
     onItemActivated: PropTypes.func,
     /** Called when the menu should be open/closed. Received an object with isOpen state. */
     onOpenChange: PropTypes.func,
     /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
     position: PropTypes.string,
-    /** Deprecated. Option to display multiline items when content is too long.
+    /** Option to display multiline items when content is too long.
       * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
       */
     shouldAllowMultilineItems: PropTypes.bool,
     /** Option to fit dropdown menu width to its parent width */
     shouldFitContainer: PropTypes.bool,
-    /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-      * fit in the viewport. */
+    /** Flip its position to the opposite side of its target if it does not fit */
     shouldFlip: PropTypes.bool,
-    /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
-      * to easily get a button trigger. */
-    trigger: PropTypes.node,
-    /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
+    /** Props to pass through to the trigger button. see @atlaskit/button for options */
     triggerButtonProps: PropTypes.shape(Button.propTypes),
-    /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
-      * you to supply your own trigger component. Setting this prop to `button` will render a
-      * Button component with an 'expand' icon, and the `trigger` prop contents inside the
-      * button. */
+    /** Types of the menu's built-in trigger.
+      * default trigger is empty.
+      * button trigger uses the Button component with the 'expand' icon.
+      */
     triggerType: PropTypes.oneOf(['default', 'button']),
   }
 
@@ -87,24 +76,17 @@ export default class DropdownMenuStateless extends Component {
   }
 
   componentDidMount = () => {
-    if (this.isUsingDeprecatedAPI()) {
-      // eslint-disable-next-line no-console
-      console.warn('DropdownMenu.items is deprecated. Please switch to the declarative API.');
-
-      if (this.domItemsList) {
-        this.focusFirstItem();
-      }
-    }
-  }
-
-  // $FlowFixMe
-  componentDidUpdate = (prevProp) => {
-    if (this.isUsingDeprecatedAPI() && this.props.isOpen && !prevProp.isOpen) {
+    if (this.domItemsList) {
       this.focusFirstItem();
     }
   }
 
-  // $FlowFixMe
+  componentDidUpdate = (prevProp) => {
+    if (this.props.isOpen && !prevProp.isOpen) {
+      this.focusFirstItem();
+    }
+  }
+
   getNextFocusable = (indexItem, available) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
@@ -122,7 +104,6 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable;
   }
 
-  // $FlowFixMe
   getPrevFocusable = (indexItem, available) => {
     let currentItem = indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
@@ -140,19 +121,11 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable || currentItem;
   }
 
-  domItemsList: NodeList<HTMLElement>
-
-  triggerContainer: HTMLElement
-
-  sourceOfIsOpen: ?string
-
   focusFirstItem = () => {
     if (this.sourceOfIsOpen === 'keydown') {
       this.focusItem(this.getNextFocusable());
     }
   }
-
-  focusedItem: number
 
   focusNextItem = () => {
     this.focusItem(this.getNextFocusable(this.focusedItem));
@@ -162,40 +135,21 @@ export default class DropdownMenuStateless extends Component {
     this.focusItem(this.getPrevFocusable(this.focusedItem));
   }
 
-  focusItem = (index: number) => {
+  focusItem = (index) => {
     this.focusedItem = index;
     this.domItemsList[this.focusedItem].focus();
   }
 
-  // $FlowFixMe
   isTargetChildItem = (target) => {
     if (!target) return false;
 
     const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
 
     // eslint-disable-next-line react/no-find-dom-node
-    const thisDom = findDOMNode(this);
-    return isDroplistItem && thisDom ? thisDom.contains(target) : false;
+    return isDroplistItem && findDOMNode(this).contains(target);
   }
 
-  handleKeyboardInteractionForOpen = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case KEY_DOWN:
-      case KEY_SPACE:
-      case KEY_ENTER:
-        event.preventDefault();
-        this.open({ event, source: 'keydown' });
-        break;
-      default:
-        break;
-    }
-  }
-
-  handleKeyboardInteractions = (event: KeyboardEvent) => {
-    this.handleKeyboardInteractionForOpen(event);
-  }
-
-  handleKeyboardInteractionsDeprecated = (event: KeyboardEvent) => {
+  handleKeyboardInteractions = (event) => {
     if (this.props.isOpen) {
       if (this.isTargetChildItem(event.target)) {
         switch (event.key) {
@@ -222,9 +176,9 @@ export default class DropdownMenuStateless extends Component {
       }
     } else {
       switch (event.key) {
-        case KEY_DOWN:
-        case KEY_SPACE:
-        case KEY_ENTER:
+        case 'ArrowDown':
+        case ' ':
+        case 'Enter':
           event.preventDefault();
           this.open({ event, source: 'keydown' });
           break;
@@ -234,71 +188,24 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  domMenuContainer: ?HTMLElement
-
-  handleClickDeprecated = (event: MouseEvent) => {
+  handleClick = (event) => {
     const menuContainer = this.domMenuContainer;
     // checking whether click was outside of the menu container.
-    // $FlowFixMe - not flow typing existing code
     if (!menuContainer || (menuContainer && !menuContainer.contains(event.target))) {
       this.toggle({ source: 'click', event });
     }
   }
 
-  isUsingDeprecatedAPI = () => Boolean(this.props.items.length)
-
-  handleClick = (event: MouseEvent) => {
-    if (this.isUsingDeprecatedAPI()) {
-      this.handleClickDeprecated(event);
-      return;
-    }
-
-    const { triggerContainer } = this;
-    // $FlowFixMe - existing code that works fine but flow doesn't like for some reason
-    if (triggerContainer && triggerContainer.contains(event.target)) {
-      const { isOpen } = this.props;
-      this.props.onOpenChange({ isOpen: !isOpen, event });
-    }
-  }
-
-  triggerContent = () => {
-    const { children, trigger, isOpen, triggerButtonProps, triggerType } = this.props;
-    const insideTriggerContent = this.isUsingDeprecatedAPI() ? children : trigger;
-
-    if (triggerType !== 'button') {
-      return insideTriggerContent;
-    }
-
-    const triggerProps = { ...triggerButtonProps };
-    const defaultButtonProps = {
-      ariaControls: this.state.id,
-      ariaExpanded: isOpen,
-      ariaHaspopup: true,
-      isSelected: isOpen,
-    };
-    if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
-      triggerProps.iconAfter = <ExpandIcon size="medium" label="" />;
-    }
-    return (
-      <Button {...defaultButtonProps} {...triggerProps}>
-        {insideTriggerContent}
-      </Button>
-    );
-  }
-
-  // $FlowFixMe
   open = (attrs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  // $FlowFixMe
   close = (attrs) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
-  // $FlowFixMe
   toggle = (attrs) => {
     if (attrs.source === 'keydown') return;
 
@@ -309,16 +216,6 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  renderTrigger = () => {
-    const triggerContent = this.triggerContent();
-    return this.isUsingDeprecatedAPI() ? triggerContent : (
-      <div ref={(ref) => { this.triggerContainer = ref; }}>
-        {triggerContent}
-      </div>
-    );
-  };
-
-  // $FlowFixMe
   renderItems = items => items.map((item, itemIndex) =>
     <Item
       {...item}
@@ -331,79 +228,71 @@ export default class DropdownMenuStateless extends Component {
     </Item>
   )
 
-  // $FlowFixMe
   renderGroups = groups => groups.map((group, groupIndex) =>
     <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
       {this.renderItems(group.items)}
     </Group>
   )
 
-  renderDeprecated = () => {
-    const { items, shouldFitContainer } = this.props;
-    const { id } = this.state;
+  renderTrigger = () => {
+    const { children, isOpen, triggerButtonProps, triggerType } = this.props;
 
-    return (
-      <div
-        id={id}
-        ref={(ref) => {
-          this.domMenuContainer = ref;
-          this.domItemsList = ref
-            ? ref.querySelectorAll('[data-role="droplistItem"]')
-            // $FlowFixMe
-            : undefined;
-        }}
-        role="menu"
-        style={shouldFitContainer ? null : { maxWidth: 300 }}
-      >
-        {this.renderGroups(items)}
-      </div>
-    );
+    if (triggerType === 'button') {
+      const triggerProps = { ...triggerButtonProps };
+      const defaultButtonProps = {
+        ariaControls: this.state.id,
+        ariaExpanded: isOpen,
+        ariaHaspopup: true,
+        isSelected: isOpen,
+      };
+      if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
+        triggerProps.iconAfter = <ExpandIcon label="" />;
+      }
+      return (
+        <Button {...defaultButtonProps} {...triggerProps}>
+          {children}
+        </Button>
+      );
+    }
+
+    return children;
   }
 
   render() {
     const {
-      appearance, children, isLoading, isOpen, onOpenChange, position,
-      shouldAllowMultilineItems, shouldFitContainer, shouldFlip,
+      appearance, isLoading, isOpen, onOpenChange, position,
+      shouldAllowMultilineItems, shouldFitContainer, shouldFlip, items,
     } = this.props;
-    const { id } = this.state;
-    const isDeprecated = this.isUsingDeprecatedAPI();
-
-    const deprecatedProps = isDeprecated ? {
-      onKeyDown: this.handleKeyboardInteractionsDeprecated,
-      shouldAllowMultilineItems,
-    } : {
-      onKeyDown: this.handleKeyboardInteractions,
-    };
+    const { id } = this;
 
     return (
-      <DropdownItemSelectionCache>
-        <Droplist
-          appearance={appearance}
-          isLoading={isLoading}
-          isOpen={isOpen}
-          onClick={this.handleClick}
-          onOpenChange={onOpenChange}
-          position={position}
-          shouldFitContainer={shouldFitContainer}
-          shouldFlip={shouldFlip}
-          trigger={this.renderTrigger()}
-          {...deprecatedProps}
+      <Droplist
+        appearance={appearance}
+        isLoading={isLoading}
+        isOpen={isOpen}
+        onClick={this.handleClick}
+        onKeyDown={this.handleKeyboardInteractions}
+        onOpenChange={onOpenChange}
+        position={position}
+        shouldAllowMultilineItems={shouldAllowMultilineItems}
+        shouldFitContainer={shouldFitContainer}
+        shouldFlip={shouldFlip}
+        trigger={this.renderTrigger()}
+      >
+        <div
+          id={id}
+          ref={(ref) => {
+            this.domMenuContainer = ref;
+            this.domItemsList = ref
+              ? ref.querySelectorAll('[data-role="droplistItem"]')
+              : undefined;
+          }}
+          role="menu"
+          style={shouldFitContainer ? null : { maxWidth: 300 }}
         >
-          {
-            isDeprecated ? this.renderDeprecated() : (
-              <WidthConstrainer
-                id={id}
-                role="menu"
-                shouldFitContainer={shouldFitContainer}
-              >
-                <DropdownItemFocusManager>
-                  {children}
-                </DropdownItemFocusManager>
-              </WidthConstrainer>
-            )
-          }
-        </Droplist>
-      </DropdownItemSelectionCache>
+          {this.renderGroups(items)}
+        </div>
+      </Droplist>
     );
   }
 }

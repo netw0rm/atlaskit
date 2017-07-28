@@ -28,6 +28,7 @@ class RequestOrStartTrial extends Component {
     locale: PropTypes.string,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
+    waitForActivation: PropTypes.func.isRequired,
     // fireAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
@@ -53,20 +54,29 @@ class RequestOrStartTrial extends Component {
   }
 
   resetRequestOrStartTrial = async () => {
-    const { getProductActivationState, canCurrentUserAddProduct } = this.props;
+    const { getProductActivationState, canCurrentUserAddProduct, waitForActivation } = this.props;
     const activationState = await getProductActivationState();
-    const canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
+
+    let canAdd;
+    try {
+      canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
+    } catch (e) {
+      // canAdd = null;
+    }
 
     if (activationState === ACTIVE || activationState === ACTIVATING) {
       this.setState({
         screen: Screens.ALREADY_STARTED,
       });
-    } else if (activationState === INACTIVE && canAdd) {
+      if (activationState === ACTIVATING) {
+        waitForActivation();
+      }
+    } else if (activationState === INACTIVE && canAdd === true) {
       this.setState({
         screen: Screens.START_TRIAL,
         activationState,
       });
-    } else if (activationState === INACTIVE) {
+    } else if (activationState === INACTIVE && canAdd === false) {
       this.setState({
         screen: Screens.REQUEST_TRIAL,
         activationState,
@@ -88,7 +98,6 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const { onComplete, onTrialRequested, onTrialActivating } = this.props;
-    const { activationState } = this.state;
 
     return (
       <App locale={this.props.locale}>
@@ -114,7 +123,7 @@ class RequestOrStartTrial extends Component {
                 return <StartTrial onComplete={onComplete} onTrialActivating={onTrialActivating} />;
               }
               case Screens.ALREADY_STARTED: {
-                return <AlreadyStarted onComplete={onComplete} activationState={activationState} />;
+                return <AlreadyStarted onComplete={onComplete} />;
               }
               case Screens.REQUEST_TRIAL: {
                 return <RequestTrial onComplete={onComplete} onTrialRequested={onTrialRequested} />;
@@ -132,8 +141,9 @@ class RequestOrStartTrial extends Component {
 
 export default withXFlowProvider(
   withAnalytics(RequestOrStartTrial),
-  ({ xFlow: { canCurrentUserAddProduct, getProductActivationState } }) => ({
+  ({ xFlow: { canCurrentUserAddProduct, getProductActivationState, waitForActivation } }) => ({
     canCurrentUserAddProduct,
     getProductActivationState,
+    waitForActivation,
   })
 );

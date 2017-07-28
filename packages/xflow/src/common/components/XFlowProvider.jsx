@@ -78,8 +78,9 @@ export class XFlowProvider extends Component {
       xFlow: {
         ...this.props,
         ...this.state,
-        startProductTrial: this.startProductTrial,
         getProductActivationState: this.getProductActivationState,
+        startProductTrial: this.startProductTrial,
+        waitForActivation: this.waitForActivation,
       },
     };
   }
@@ -106,8 +107,13 @@ export class XFlowProvider extends Component {
   };
 
   startProductTrial = async (...args) => {
-    const { productStatusChecker, startProductTrial } = this.props;
+    const { startProductTrial } = this.props;
     await startProductTrial(...args);
+    this.waitForActivation();
+  };
+
+  waitForActivation = async () => {
+    const { productStatusChecker } = this.props;
     productStatusChecker.start(this.progressUpdate);
   };
 

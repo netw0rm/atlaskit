@@ -27,7 +27,7 @@ export default class ErrorFlag extends Component {
             title={this.props.title}
             description={this.props.description}
           />
-          : null}
+          : []}
       </FlagGroup>
     );
   }

@@ -11,6 +11,9 @@ import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
+import ProgressIndicator from './ProgressIndicator';
+import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+
 export class AlreadyStartedBase extends Component {
   static propTypes = {
     productLogo: PropTypes.node.isRequired,
@@ -20,6 +23,8 @@ export class AlreadyStartedBase extends Component {
     spinnerActive: PropTypes.bool,
     getStartedButtonDisabled: PropTypes.bool,
     goToProduct: PropTypes.func,
+    progress: PropTypes.number.isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
   };
 
   static defaultProps = {
@@ -30,6 +35,7 @@ export class AlreadyStartedBase extends Component {
   state = {
     spinnerActive: this.props.spinnerActive,
     getStartedButtonDisabled: this.props.getStartedButtonDisabled,
+    initialActivationState: this.props.status,
   };
 
   handleGetStartedClick = () => {
@@ -41,14 +47,38 @@ export class AlreadyStartedBase extends Component {
     goToProduct();
   };
 
+  handleProgressComplete = () => {
+    this.setState({
+      isReady: true,
+    });
+  };
+
+  handleProgressComplete = () => {
+    this.setState({
+      isReady: true,
+    });
+  };
+
   render() {
-    const { productLogo, heading, message, getStartedButtonText } = this.props;
+    const { productLogo, heading, message, getStartedButtonText, progress, status } = this.props;
+    const { initialActivationState } = this.state;
 
     return (
       <ModalDialog
         isOpen
         width="small"
-        header={productLogo}
+        header={
+          <div>
+            {productLogo}
+            {initialActivationState === ACTIVATING
+              ? <ProgressIndicator
+                progress={progress}
+                status={status}
+                onComplete={this.handleProgressComplete}
+              />
+              : null}
+          </div>
+        }
         footer={
           <StartTrialFooter>
             <SpinnerDiv>
@@ -68,7 +98,11 @@ export class AlreadyStartedBase extends Component {
           <StartTrialHeader>
             {heading}
           </StartTrialHeader>
-          {React.isValidElement(message) ? message : <p>{message}</p>}
+          {React.isValidElement(message)
+            ? message
+            : <p>
+              {message}
+            </p>}
         </StartTrialDialog>
       </ModalDialog>
     );
@@ -77,11 +111,13 @@ export class AlreadyStartedBase extends Component {
 
 export default withXFlowProvider(
   AlreadyStartedBase,
-  ({ xFlow: { config: { productLogo, startTrial }, goToProduct } }) => ({
+  ({ xFlow: { config: { productLogo, startTrial }, goToProduct, progress, status } }) => ({
     productLogo,
     heading: startTrial.alreadyStartedHeading,
     message: startTrial.alreadyStartedMessage,
     getStartedButtonText: startTrial.alreadyStartedGetStartedButtonText,
     goToProduct,
+    progress,
+    status,
   })
 );

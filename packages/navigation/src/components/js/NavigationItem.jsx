@@ -8,12 +8,13 @@ import NavigationItemCaption from '../styled/NavigationItemCaption';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
-import type { ReactElement } from '../../types';
+import type { ReactElement, DragProvided } from '../../types';
 
 type Props = {|
   action?: ReactElement,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
+  dnd?: DragProvided,
   /** Location to link out to on click. This is passed down to the custom link
   component if one is provided. */
   href?: string,
@@ -25,6 +26,8 @@ type Props = {|
   dropIcon?: ReactElement,
   /** Makes the navigation item appear with reduced padding and font size. */
   isCompact?: boolean,
+  /** Used to apply correct dragging styles when also using @atlaskit/drag-and-drop. */
+  isDragging?: boolean,
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
@@ -33,20 +36,21 @@ type Props = {|
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
   as if you are using a different router. Component is passed a href prop, and the content
-  of the title as children. This will be wrapped in a component to style it. */
+  of the title as children. Any custom link component must accept a className prop so that
+  it can be styled. */
   linkComponent?: () => mixed,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
   onClick?: (e: MouseEvent) => void,
-  /** Function to be called on mouse enter. */
+  /** Standard onmouseenter event */
   onMouseEnter?: (e: MouseEvent) => void,
-  /** Function to be called on mouse leave. */
+  /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
-  /** Text to be displayed beneath the main text. */
+  /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. Accepts a react component but in most
   cases this should just be a string. */
-  text: ReactElement,
+  text?: ReactElement,
   /** React component to be placed to the right of the main text. */
   textAfter?: ReactElement,
 |}
@@ -55,12 +59,6 @@ export default class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-  }
-
-  onMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
   }
 
   props: Props
@@ -111,7 +109,6 @@ export default class NavigationItem extends PureComponent {
       : null;
 
     const interactiveWrapperProps = {
-      onMouseDown: this.onMouseDown,
       onClick: this.props.onClick,
       onMouseEnter: this.props.onMouseEnter,
       onMouseLeave: this.props.onMouseLeave,
@@ -125,8 +122,10 @@ export default class NavigationItem extends PureComponent {
         elemAfter={allAfter}
         description={this.props.subText}
         isSelected={this.props.isSelected}
+        isDragging={this.props.isDragging}
         isDropdown={this.props.isDropdownTrigger}
         isCompact={this.props.isCompact}
+        dnd={this.props.dnd}
         {...interactiveWrapperProps}
       >
         {this.props.text}

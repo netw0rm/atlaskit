@@ -120,6 +120,26 @@ describe('<NavigationItem />', () => {
       });
     });
   });
+  describe('props required for drag and drop compatibility', () => {
+    it('should be able to get a reference to the navigation item', () => {
+      const refSpy = jest.fn();
+      mountWithRootTheme(<NavigationItem text="test" dnd={{ innerRef: refSpy }} />);
+      expect(refSpy).toHaveBeenCalled();
+    });
+    it('should be able to apply inline styles', () => {
+      const refSpy = jest.fn();
+      mountWithRootTheme(
+        <NavigationItem
+          text="test"
+          dnd={{
+            draggableStyle: { textDecoration: 'underline' },
+            innerRef: refSpy,
+          }}
+        />
+      );
+      expect(refSpy.mock.calls[0][0].style.textDecoration).toBe('underline');
+    });
+  });
   describe('behaviour', () => {
     it('mousedown on the link is prevented', () => {
       const spy = jest.fn();

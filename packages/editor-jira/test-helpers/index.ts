@@ -21,7 +21,10 @@ export function checkEncode(
 ) {
   it(`encodes HTML: ${description}`, () => {
     const encoded = encode(node, schema, customEncoders, mediaContextInfo);
-    expect(encoded).to.deep.equal(html);
+    const encodedTree = new DOMParser().parseFromString(encoded, 'text/html');
+    const htmlTree = new DOMParser().parseFromString(html, 'text/html');
+
+    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `expect ${encoded} to equal ${html}`);
   });
 }
 
@@ -36,11 +39,78 @@ export function checkParseEncodeRoundTrips(
 
   it(`encodes HTML: ${description}`, () => {
     const encoded = encode(node, schema, customEncoders, mediaContextInfo);
-    expect(html).to.deep.equal(encoded);
+    const encodedTree = new DOMParser().parseFromString(encoded, 'text/html');
+    const htmlTree = new DOMParser().parseFromString(html, 'text/html');
+
+    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `expect ${encoded} to equal ${html}`);
   });
 
   it(`round-trips HTML: ${description}`, () => {
     const roundTripped = parse(encode(node, schema, customEncoders, mediaContextInfo), schema);
     expect(roundTripped).to.deep.equal(node);
   });
+}
+
+function getAttributeNames(tags: HTMLElement) {
+  const { attributes } = tags;
+
+  if (!attributes) {
+    return [];
+  }
+
+  const attributeNames = Array.prototype.slice.call(attributes)
+    .map((attribute) => (attribute.nodeName));
+
+  attributeNames.sort();
+  return attributeNames;
+}
+
+// This function comes from https://stackoverflow.com/questions/10679762/how-to-compare-two-html-elements
+// It was renamed
+function isElementEqual(thisElement, otherElement) {
+  let name;
+
+  if(thisElement.nodeType !== otherElement.nodeType) {
+    return false;
+  }
+
+  // Compare attributes without order sensitivity
+  const thisAttributeNames = getAttributeNames(thisElement);
+  const otherAttributeNames = getAttributeNames(otherElement);
+
+  if (thisAttributeNames.join(',') !== otherAttributeNames.join(',')) {
+    return false;
+  }
+
+  for (let index = 0; index < thisAttributeNames.length; ++index) {
+    name = thisAttributeNames[index];
+    if (thisElement.getAttribute(name) !== otherElement.getAttribute(name)) {
+      return false;
+    }
+  }
+
+  // Walk the children
+  for (thisElement = thisElement.firstChild, otherElement = otherElement.firstChild;
+    thisElement && otherElement;
+    thisElement = thisElement.nextSibling, otherElement = otherElement.nextSibling) {
+    if (thisElement.nodeType !== otherElement.nodeType) {
+      return false;
+    }
+    if (thisElement.nodeType === 1) { // Element Node
+      if (!isElementEqual(thisElement, otherElement)) {
+        return false;
+      }
+    }
+    else if (thisElement.nodeValue !== otherElement.nodeValue) {
+      return false;
+    }
+  }
+
+  if (thisElement || otherElement) {
+    // One of the elements had more nodes than the other
+    return false;
+  }
+
+  // Seem the same
+  return true;
 }

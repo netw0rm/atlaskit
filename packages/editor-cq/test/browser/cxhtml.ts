@@ -8,7 +8,7 @@ import {
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
   table, tr, td, th
-} from './_schema-builder';
+} from '../unit/_schema-builder';
 chai.use(chaiPlugin);
 
 const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode) => {

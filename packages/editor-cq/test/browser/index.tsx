@@ -18,7 +18,7 @@ import {
   doc,
   h1,
   p,
-} from './_schema-builder';
+} from '../unit/_schema-builder';
 import Editor from '../../src';
 import schema from '../../src/schema';
 

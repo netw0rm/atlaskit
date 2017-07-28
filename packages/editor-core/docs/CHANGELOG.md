@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 43.2.0 (2017-07-27)
+
+* bug fix; renderer should not break UI when collection is an empty string (issues closed: ed-2344) ([445e261](https://bitbucket.org/atlassian/atlaskit/commits/445e261))
+* feature; move JIRA serializer/parser into editor-core, copy JIRA schema as well (issues closed: ed-2324) ([07f77f6](https://bitbucket.org/atlassian/atlaskit/commits/07f77f6))
+* bug fix; appearance of media links in strip in the editor. (issues closed: ed-2295) ([3de66f4](https://bitbucket.org/atlassian/atlaskit/commits/3de66f4))
+* bug fix; inserting links must create new media item via media API. (issues closed: ed-2295) ([a247785](https://bitbucket.org/atlassian/atlaskit/commits/a247785))
+* bug fix; rendering of link cards, sizing of cards. ([fa4bbbf](https://bitbucket.org/atlassian/atlaskit/commits/fa4bbbf))
 ## 43.1.1 (2017-07-27)
 
 

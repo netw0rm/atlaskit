@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 44.0.2 (2017-07-28)
+
+* bug fix; media group with single item exception. ([78aa7d3](https://bitbucket.org/atlassian/atlaskit/commits/78aa7d3))
 ## 44.0.1 (2017-07-28)
 
 * bug fix; import media core from node_modules instead of direct path ([8c5e737](https://bitbucket.org/atlassian/atlaskit/commits/8c5e737))

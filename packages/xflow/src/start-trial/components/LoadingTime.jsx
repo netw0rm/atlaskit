@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 import { FormattedMessage } from 'react-intl';
 
 import ModalDialog from '@atlaskit/modal-dialog';
@@ -15,6 +16,7 @@ import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
 import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
 import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
+import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
@@ -28,32 +30,21 @@ export class LoadingTimeBase extends Component {
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
-    goToProduct: PropTypes.func.isRequired,
     closeLoadingDialog: PropTypes.func,
+    goToProduct: PropTypes.func.isRequired,
     heading: PropTypes.string,
     message: PropTypes.string,
     gotoButton: PropTypes.string,
   };
 
   static defaultProps = {
-    closeLoadingDialog: () => Promise.resolve(),
+    closeLoadingDialog: async () => {},
+    goToProduct: async () => {},
   };
 
   state = {
-    // TODO set according to the provisioning status and how long it has been polling
+    isLoading: false,
     isReady: false,
-  };
-
-  handleGoToProductClick = () => {
-    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
-    const { goToProduct, onComplete } = this.props;
-    Promise.resolve(goToProduct()).then(() => onComplete());
-  };
-
-  handleCloseClick = () => {
-    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
-    const { closeLoadingDialog, onComplete } = this.props;
-    Promise.resolve(closeLoadingDialog()).then(() => onComplete());
   };
 
   showHeading = () => {
@@ -63,18 +54,50 @@ export class LoadingTimeBase extends Component {
     if (isReady) {
       if (status === ACTIVE) {
         // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
-        return <FormattedMessage id="xflow.generic.loading-product-trial.complete-heading" defaultMessage="You're good to go!" />;
+        return (
+          <FormattedMessage
+            id="xflow.generic.loading-product-trial.complete-heading"
+            defaultMessage="You're good to go!"
+          />
+        );
       }
       // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
-      return <FormattedMessage id="xflow.generic.loading-product-trial.error-heading" defaultMessage="Uh oh. That didn't work..." />;
+      return (
+        <FormattedMessage
+          id="xflow.generic.loading-product-trial.error-heading"
+          defaultMessage="Uh oh. That didn't work..."
+        />
+      );
     }
-    return <FormattedMessage id="xflow.generic.loading-product-trial.loading-heading" defaultMessage="We're turning some cogs..." />;
+    return (
+      <FormattedMessage
+        id="xflow.generic.loading-product-trial.loading-heading"
+        defaultMessage="We're turning some cogs..."
+      />
+    );
   };
 
   handleProgressComplete = () => {
     this.setState({
       isReady: true,
     });
+  };
+
+  handleCloseClick = async () => {
+    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
+    const { closeLoadingDialog, onComplete } = this.props;
+    await closeLoadingDialog();
+    return onComplete();
+  };
+
+  handleGoToProductClick = async () => {
+    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
+    const { goToProduct, onComplete } = this.props;
+    this.setState({
+      isLoading: true,
+    });
+    await goToProduct();
+    onComplete();
   };
 
   render() {
@@ -98,20 +121,26 @@ export class LoadingTimeBase extends Component {
         }
         footer={
           <StartTrialFooter>
+            <SpinnerDiv>
+              <Spinner isCompleting={!this.state.isLoading} />
+            </SpinnerDiv>
             <Button
               id="xflow-loading-go-to-product-button"
-              isDisabled={!(isReady && status === ACTIVE)}
+              isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
-              { gotoButton }
+              {gotoButton}
             </Button>
             <Button
               id="xflow-loading-close-button"
               onClick={this.handleCloseClick}
               appearance="subtle-link"
             >
-              <FormattedMessage id="xflow.generic.loading-product-trial.close-button" defaultMessage="Close" />
+              <FormattedMessage
+                id="xflow.generic.loading-product-trial.close-button"
+                defaultMessage="Close"
+              />
             </Button>
           </StartTrialFooter>
         }
@@ -130,10 +159,10 @@ export class LoadingTimeBase extends Component {
             </WhereToFindConfluenceSVGDiv>
             <WhereToFindConfluenceDiv>
               <h5>
-                { heading }
+                {heading}
               </h5>
               <WhereToFindConfluenceText>
-                { message }
+                {message}
               </WhereToFindConfluenceText>
             </WhereToFindConfluenceDiv>
           </LoadingTimeTextDiv>
@@ -147,14 +176,20 @@ export default withAnalytics(
   withXFlowProvider(
     LoadingTimeBase,
     ({
-      xFlow: { config: {
-        productLogo,
-        startTrial: {
-          loadingProductHeading,
-          loadingProductMessage,
-          loadingProductGotoProductButton,
+      xFlow: {
+        config: {
+          productLogo,
+          startTrial: {
+            loadingProductHeading,
+            loadingProductMessage,
+            loadingProductGotoProductButton,
+          },
         },
-      }, goToProduct, closeLoadingDialog, progress, status },
+        goToProduct,
+        closeLoadingDialog,
+        progress,
+        status,
+      },
     }) => ({
       productLogo,
       progress,

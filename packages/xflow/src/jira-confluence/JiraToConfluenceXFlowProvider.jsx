@@ -15,6 +15,7 @@ import grantAccessToUsers from './grantAccessToUsers';
 import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
+import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import languagePacks from './language-packs.json';
 import confluenceStatusChecker from './confluenceStatusChecker';
 
@@ -114,6 +115,7 @@ export const defaultProps = intl => ({
   retrieveUsers: retrieveJiraUsers,
   goToProduct,
   closeLoadingDialog,
+  closeAlreadyStartedDialog,
 });
 
 export class JiraToConfluenceXFlowProviderBase extends Component {

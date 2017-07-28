@@ -3,8 +3,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import codeBlockPlugins, { CodeBlockState } from '../../../../src/plugins/code-block';
-import { setTextSelection, chaiPlugin, code_block, doc, makeEditor, p, createEvent, blockquote } from '../../../../src/test-helper';
+import { chaiPlugin, code_block, doc, makeEditor, p, createEvent, blockquote } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

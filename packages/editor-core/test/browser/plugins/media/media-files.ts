@@ -16,10 +16,10 @@ import {
   code_block,
   blockquote,
   randomId,
-  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { insertFile } from '../../../../src/plugins/media/media-files';
+import { setNodeSelection} from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

@@ -1,13 +1,12 @@
 import {
   atTheEndOfDoc, atTheEndOfBlock, atTheBeginningOfBlock,
-  endPositionOfParent, startPositionOfParent
+  endPositionOfParent, startPositionOfParent,
+  setNodeSelection, setTextSelection,
 } from '../../utils';
 import {
   EditorView,
   EditorState,
   Node as PMNode,
-  NodeSelection,
-  TextSelection,
   NodeType,
 } from '../../prosemirror';
 import { MediaState } from '@atlaskit/media-core';
@@ -122,8 +121,8 @@ const range = (start: number, end: number = start) => {
 };
 
 const setSelectionAfterMediaInsertion = (view: EditorView, insertPos: number): void => {
-  const { state, dispatch } = view;
-  const { doc, tr } = state;
+  const { state  } = view;
+  const { doc } = state;
   const mediaPos = posOfMediaGroupNearby(state);
   if (!mediaPos) {
     return;
@@ -131,15 +130,12 @@ const setSelectionAfterMediaInsertion = (view: EditorView, insertPos: number): v
 
   const $mediaPos = doc.resolve(mediaPos);
   const endOfMediaGroup = endPositionOfParent($mediaPos);
-  let selection;
 
   if (endOfMediaGroup + 1 >= doc.nodeSize - 1) {
     // if nothing after the media group, fallback to select the newest uploaded media item
-    selection = new NodeSelection($mediaPos);
+    setNodeSelection(view, mediaPos);
   } else {
-    selection = TextSelection.create(doc, endOfMediaGroup + 1);
+    setTextSelection(view, endOfMediaGroup + 1);
   }
-
-  dispatch(tr.setSelection(selection));
 };
 

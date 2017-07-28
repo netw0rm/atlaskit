@@ -1,6 +1,7 @@
 import { MarkSpec } from '../../prosemirror';
 import { LINK, COLOR } from '../groups';
 import { isSafeUrl } from '../../renderer/validator';
+import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
 /**
  * @name link_mark
@@ -30,7 +31,7 @@ export const link: MarkSpec = {
         const href = dom.getAttribute('href') || '';
 
         return isSafeUrl(href)
-          ? { href }
+          ? { href: normalizeUrl(href) }
           : false;
       }
     }

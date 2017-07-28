@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
-import DropdownList, { Group, Item } from '@atlaskit/droplist';
-import { akColorN800 } from '@atlaskit/util-shared-styles';
+import DropdownList from '@atlaskit/droplist';
+import Item, { ItemGroup } from '@atlaskit/item';
+import { BlockTrigger } from '../styled/StoryHelpers';
 
-const DroplistOverview = class extends Component {
+const DroplistMultiLineDemo = class extends Component {
   render() {
     return (
       <div style={{ maxWidth: '400px' }}>
         <DropdownList
           isOpen
           shouldFitContainer
-          trigger={<div style={{ border: `1px solid ${akColorN800}` }}>This is the wide trigger</div>}
-          shouldAllowMultilineItems
+          trigger={
+            <BlockTrigger>This is the wide trigger</BlockTrigger>
+          }
         >
-          <Group heading="Allow multiline">
-            <Item>What about if we put some really long content inside this dropdown menu</Item>
-            <Item>And then we see how the text is hidden, okey now its going to be hidden </Item>
-          </Group>
+          <ItemGroup title="Allow multiline">
+            <Item shouldAllowMultiline>
+              What about if we put some really long content inside this dropdown menu
+            </Item>
+            <Item shouldAllowMultiline>
+              And then we see how the text is hidden, okey now its going to be hidden
+            </Item>
+          </ItemGroup>
         </DropdownList>
       </div>
     );
@@ -23,5 +29,5 @@ const DroplistOverview = class extends Component {
 };
 
 export default (
-  <DroplistOverview />
+  <DroplistMultiLineDemo />
 );

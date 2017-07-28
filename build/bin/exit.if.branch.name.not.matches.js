@@ -1,4 +1,4 @@
-#!/usr/env node
+#!/usr/bin/env node
 
 /*
     This script simply returns a non-zero exit code if the current branch name does not match a

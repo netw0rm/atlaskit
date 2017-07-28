@@ -4,7 +4,6 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import {
   chaiPlugin,
-  fixtures,
   fromHTML,
   makeEditor,
   sendKeyToPm,
@@ -103,13 +102,22 @@ describe('@atlaskit/editor-cq', () => {
     });
   });
 
+  describe('Tables', () => {
+    it('should enable tables when tablesEnabled is true', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} tablesEnabled={true} />);
+      expect(chrome.find('ChromeExpanded').prop('pluginStateTable')).to.not.equal(undefined);
+    });
+    it('should not enable tables when tablesEnabled is not set', () => {
+      const chrome = mount(<Editor isExpandedByDefault={true} />);
+      expect(chrome.find('ChromeExpanded').prop('pluginStateTable')).to.equal(undefined);
+    });
+  });
+
   describe('ED-1410', () => {
-    const fixture = fixtures();
     const editor = (doc: any) => {
       const ed = makeEditor({
         doc,
-        schema,
-        place: fixture()
+        schema
       });
 
       afterEach(() => {

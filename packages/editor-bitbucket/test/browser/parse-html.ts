@@ -393,7 +393,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   });
 
   describe('mentions', () => {
-    it('should be parsed preserving display name and user id', () => {
+    it.skip('should be parsed preserving display name and user id', () => {
       expect(parse(
         '<p>' +
           'foo ' +

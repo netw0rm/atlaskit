@@ -11,40 +11,83 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 
+const ThemeColor = {
+  CalendarTh: {
+    text: akColorN80,
+  },
+  DateDiv: {
+    background: {
+      default: 'transparent',
+      hover: akColorN900,
+      hoverPreviouslySelected: akColorB75,
+      hoverSelected: akColorN0,
+      previouslySelected: akColorB75,
+      selected: akColorN0,
+    },
+    border: {
+      default: 'transparent',
+      focused: akColorB75,
+    },
+    text: {
+      default: akColorN0,
+      disabled: akColorN400,
+      hover: akColorN0,
+      hoverSelected: akColorN600,
+      isToday: akColorB75,
+      previouslySelected: akColorN600,
+      selected: akColorN700,
+      sibling: akColorN80,
+    },
+  },
+  DateDivUnderline: {
+    background: {
+      default: akColorB75,
+      selected: akColorN700,
+    },
+  },
+  MonthAndYear: {
+    text: akColorN0,
+  },
+  Wrapper: {
+    background: akColorN700,
+    text: akColorN0,
+  },
+};
+
 function getBackgroundColor({ selected, previouslySelected }) {
   if (selected) {
-    return akColorN0;
+    return ThemeColor.DateDiv.background.selected;
   }
   if (previouslySelected) {
-    return akColorB75;
+    return ThemeColor.DateDiv.background.previouslySelected;
   }
   return 'transparent';
 }
 
 function getBorderColor({ focused }) {
   if (focused) {
-    return akColorB75;
+    return ThemeColor.DateDiv.border.focused;
   }
-  return 'transparent';
+  return ThemeColor.DateDiv.border.default;
 }
 
 function getColor({ disabled, isToday, previouslySelected, selected, sibling }) {
   if (selected) {
-    return akColorN700;
+    return ThemeColor.DateDiv.text.selected;
   }
   if (disabled) {
-    return akColorN400;
+    return ThemeColor.DateDiv.text.disabled;
   }
   if (previouslySelected) {
-    return akColorN600;
+    return ThemeColor.DateDiv.text.previouslySelected;
   }
   if (isToday) {
-    return akColorB75;
+    return ThemeColor.DateDiv.text.isToday;
   }
   if (sibling) {
-    return akColorN80;
+    return ThemeColor.DateDiv.text.sibling;
   }
-  return akColorN0;
+  return ThemeColor.DateDiv.text.default;
 }
 
 function getCursor({ disabled }) {
@@ -53,19 +96,19 @@ function getCursor({ disabled }) {
 
 function getHoverBackgroundColor({ previouslySelected, selected }) {
   if (selected) {
-    return akColorN0;
+    return ThemeColor.DateDiv.background.hoverSelected;
   }
   if (previouslySelected) {
-    return akColorB75;
+    return ThemeColor.DateDiv.background.hoverPreviouslySelected;
   }
-  return akColorN900;
+  return ThemeColor.DateDiv.background.hover;
 }
 
 function getHoverColor({ previouslySelected, selected }) {
   if (selected || previouslySelected) {
-    return akColorN600;
+    return ThemeColor.DateDiv.text.hoverSelected;
   }
-  return akColorN0;
+  return ThemeColor.DateDiv.text.hover;
 }
 
 export const Announcer = styled.div`
@@ -91,7 +134,7 @@ export const CalendarTbody = styled.tbody`
 
 export const CalendarTh = styled.td`
   border: 0;
-  color: ${akColorN80};
+  color: ${ThemeColor.CalendarTh.text};
   font-size: 8px;
   padding: 2px 5px;
   text-transform: uppercase;
@@ -115,7 +158,10 @@ export const DateDiv = styled.div`
 
   ${({ isToday, selected }) => isToday ? `
     &::after {
-      background-color: ${selected ? akColorN700 : akColorB75};
+      background-color: ${selected
+        ? ThemeColor.DateDivUnderline.background.selected
+        : ThemeColor.DateDivUnderline.background.default
+      };
       bottom: 1px;
       content: "";
       display: block;
@@ -144,14 +190,14 @@ export const Heading = styled.div`
 `;
 
 export const MonthAndYear = styled.div`
-  color: ${akColorN0};
+  color: ${ThemeColor.MonthAndYear.text};
   flex-basis: 100%;
   text-align: center;
 `;
 
 export const Wrapper = styled.div`
-  background-color: ${akColorN700};
-  color: ${akColorN0};
+  background-color: ${ThemeColor.Wrapper.background};
+  color: ${ThemeColor.Wrapper.text};
   display: inline-block;
   padding: 10px;
   user-select: none;

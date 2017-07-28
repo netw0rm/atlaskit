@@ -1,16 +1,16 @@
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { action, storiesOf } from '@kadira/storybook';
+import { pd } from 'pretty-data';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import InlineEdit from '@atlaskit/inline-edit';
+import Spinner from '@atlaskit/spinner';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-import * as React from 'react';
-import { PureComponent } from 'react';
 import { name, version } from '../package.json';
 import Editor from '../src';
 import MentionResource from './mentions/mention-resource';
-import { pd } from 'pretty-data';
-import Spinner from '@atlaskit/spinner';
 
 const mediaTestHelpers = {
   defaultClientId,
@@ -19,6 +19,7 @@ const mediaTestHelpers = {
   StoryBookTokenProvider,
 };
 
+const analyticsHandler = (actionName, props) => action(actionName)(props);
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
@@ -106,6 +107,7 @@ storiesOf(name, module)
   .add('Editor with InlineEdit', () => {
     const fabricEditor = (
       <Editor
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
         onChange={handleChange}
         isExpandedByDefault={true}
         allowLists={true}
@@ -146,6 +148,8 @@ storiesOf(name, module)
   .add('Editor (All flags)', () =>
     <Editor
       onChange={handleChange}
+      onCancel={CANCEL_ACTION}
+      onSave={SAVE_ACTION}
       allowLists={true}
       allowLinks={true}
       allowCodeBlock={true}
@@ -153,9 +157,13 @@ storiesOf(name, module)
       allowSubSup={true}
       allowTextColor={true}
       allowBlockQuote={true}
+      analyticsHandler={analyticsHandler}
       mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={mentionEncoder}
+      // tslint:disable-next-line:jsx-no-lambda
+      renderFooter={({ saveDisabled }) =>
+        <div style={{ textAlign: 'right' }}>Some extra footer content</div>}
     />
   )
   .add('Editor with HTML Input', () => {

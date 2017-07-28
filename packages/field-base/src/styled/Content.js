@@ -1,39 +1,31 @@
 import styled, { css } from 'styled-components';
+import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import theme from './theme';
 
-import {
-  backgroundColor,
-  backgroundColorDisabled,
-  backgroundColorFocused,
-  backgroundColorHover,
-  backgroundColorSubtle,
-  borderColor,
-  borderColorDisabled,
-  borderColorFocused,
-  borderColorHover,
-  borderRadius,
-  borderWidth,
-  borderWidthFocused,
-  borderWidthSubtle,
-  colorDisabled,
-  colorInvalid,
-  fontSize,
-  heightBase,
-  heightCompact,
-  horizontalPadding,
-  innerHeight,
-  lineHeight,
-  transitionDuration,
-} from './constants';
+const borderRadius = '5px';
+const borderWidth = 1;
+const borderWidthFocused = 2;
+const borderWidthSubtle = 0;
+
+const fontSize = 14;
+const heightBase = spacing * 5;
+const heightCompact = spacing * 4;
+const horizontalPadding = spacing;
+const innerHeight = spacing * 2.5;
+const lineHeight = innerHeight / fontSize;
+const transitionDuration = '0.2s';
 
 const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtle, none }) => {
   let border;
   const height = compact ? heightCompact : heightBase;
+
   if (invalid || focused || none) border = borderWidthFocused;
   else if (subtle) border = borderWidthSubtle;
   else border = borderWidth;
-  const padding = (paddingDisabled)
-    ? css`0`
-    : `${(height - (2 * border) - innerHeight) / 2}px ${horizontalPadding - border}px;`;
+
+  const padding = paddingDisabled
+    ? 0
+    : `${(height - (2 * border) - innerHeight) / 2}px ${horizontalPadding - border}px`;
 
   return css`
     border-width: ${border}px;
@@ -41,50 +33,55 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtl
   `;
 };
 
-const getBackgroundColor = ({ disabled, none, focused, subtle }) => {
-  if (disabled) return backgroundColorDisabled;
-  if (none || subtle) return 'transparent';
-  if (focused) return backgroundColorFocused;
-  return backgroundColor;
-};
-
-const contentDisabled = css`
-  color: ${colorDisabled};
+const getDisabledState = ({ disabled }) => disabled && css`
+  color: ${theme.field.disabled.text.default};
   pointer-events: none;
 `;
 
-const getHoverState = ({ invalid, readOnly, focused, none }) => {
-  if (readOnly || focused || none) return '';
+const getHoverState = ({ appearance, readOnly, focused, none }) => {
+  if (readOnly || focused || none) return null;
+
   return css`
     &:hover {
-      background-color: ${invalid ? backgroundColorSubtle : backgroundColorHover};
-      border-color: ${invalid ? colorInvalid : borderColorHover};
+      background-color: ${theme.field[appearance].background.hover};
+      border-color: ${theme.field[appearance].border.hover};
     }
   `;
 };
 
-const getBorderColor = ({ disabled, invalid, focused }) => {
-  if (disabled) return borderColorDisabled;
-  if (invalid) return colorInvalid;
-  if (focused) return borderColorFocused;
-  return borderColor;
+const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
+  if (
+    !focused ||
+    appearance !== 'invalid' ||
+    appearance === 'none' ||
+    !paddingDisabled ||
+    readOnly
+  ) return null;
+
+  const margin = appearance === 'subtle'
+    ? borderWidthFocused
+    : borderWidth;
+
+  return css`margin: -${margin}px`;
 };
 
-const getFocusedSate = ({ focused, subtle, paddingDisabled, readOnly, none }) => {
-  if (!focused || readOnly || none) return '';
-  return css`
-    ${paddingDisabled && subtle ? `margin: -${borderWidthFocused}px` : ''}
-    ${paddingDisabled && !subtle ? `margin: -${borderWidthFocused / 2}px` : ''}
-  `;
+const getBackgroundColor = ({ appearance, focused }) => {
+  const state = focused ? 'focus' : 'default';
+  return theme.field[appearance].background[state];
 };
 
-const Content = styled.div`
-  background-color: ${props => getBackgroundColor(props)};
-  ${props => getBorderAndPadding(props)}
-  ${props => getHoverState(props)}
-  border-color: ${props => getBorderColor(props)};
+const getBorderColor = ({ appearance, focused }) => {
+  const state = focused ? 'focus' : 'default';
+  return theme.field[appearance].border[state];
+};
+
+export const Content = styled.div`
+  ${p => getBorderAndPadding(p)}
+  ${p => getMargin(p)}
+  background-color: ${p => getBackgroundColor(p)};
+  border-color: ${p => getBorderColor(p)};
   border-radius: ${borderRadius};
-  border-style: solid;
+  border-style: ${p => (p.appearance === 'none' ? 'none' : 'solid')};
   box-sizing: border-box;
   display: flex;
   flex: 0 1 auto;
@@ -94,15 +91,19 @@ const Content = styled.div`
   max-width: 100%;
   min-height: ${innerHeight}px;
   overflow: hidden;
-  transition: background-color ${transitionDuration} ease-in-out, border-color ${transitionDuration} ease-in-out;
+  transition:
+    background-color ${transitionDuration} ease-in-out,
+    border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
-  ${props => getFocusedSate(props)}
-  ${({ none }) => (none ? css`border: none;` : '')}
-  ${({ invalid, paddingDisabled }) => (invalid && paddingDisabled
-    ? css`margin: -${borderWidthFocused / 2}px;`
-    : ''
-  )}
-  ${({ disabled }) => (disabled ? contentDisabled : '')}
+
+  ${p => getHoverState(p)}
+  ${p => getDisabledState(p)}
 `;
 
-export default Content;
+export const ContentWrapper = styled.div`
+  ${p => (p.disabled && 'cursor: not-allowed;')}
+  ${p => (p.grow && 'flex: 1 1 auto;')};
+  align-items: center;
+  display: flex;
+  max-width: 100%;
+`;

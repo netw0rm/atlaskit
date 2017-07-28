@@ -52,7 +52,7 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: string, pickerConfig: any) => any
+    mediaPickerFactory?: (pickerType: string, pickerConfig: any, extraConfig?: any) => any
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
@@ -63,7 +63,8 @@ export default class PickerFacade {
 
     const picker = this.picker = mediaPickerFactory(
       pickerType,
-      this.buildPickerConfigFromContext(contextConfig)
+      this.buildPickerConfigFromContext(contextConfig),
+      pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -153,7 +154,6 @@ export default class PickerFacade {
       uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
       apiClientId: context.clientId,
-      container: this.getDropzoneContainer(),
       tokenSource: { getter: (reject, resolve) => {
         context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
       }},

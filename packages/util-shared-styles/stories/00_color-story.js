@@ -13,7 +13,7 @@ import Prism, {
   SWATCH_GREEN,
   SWATCH_YELLOW,
   SWATCH_BLUE,
-} from '../test/_Prism';
+} from '../test/unit/_Prism';
 import Blocks from './color/Blocks';
 
 const prism = new Prism(lessVars);

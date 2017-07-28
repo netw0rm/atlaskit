@@ -24,9 +24,9 @@ export const mention: NodeSpec = {
     accessLevel: { default: '' }
   },
   parseDOM: [{
-    tag: 'span[mention-id]',
+    tag: 'span[data-mention-id]',
     getAttrs: (dom: Element) => ({
-      id: dom.getAttribute('mention-id')!,
+      id: dom.getAttribute('data-mention-id')!,
       text: dom.textContent!,
       accessLevel: dom.getAttribute('data-access-level')!
     })
@@ -34,7 +34,7 @@ export const mention: NodeSpec = {
   toDOM(node: any): [string, any, string] {
     const { id, accessLevel, text } = node.attrs;
     const attrs = {
-      'mention-id': id,
+      'data-mention-id': id,
       'data-access-level': accessLevel,
       'contenteditable': 'false',
     };

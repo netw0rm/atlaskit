@@ -1,14 +1,20 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
+import type { ReactElement } from '../../types';
+
+type Props = {|
+  children: ReactElement,
+  className?: string,
+  href: string,
+  onClick?: () => mixed,
+  onMouseDown?: () => mixed,
+  onMouseEnter?: () => mixed,
+  onMouseLeave?: () => mixed,
+  tabIndex?: number,
+|}
 
 export default class DefaultLinkComponent extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    href: PropTypes.string,
-    onClick: PropTypes.func,
-    onMouseDown: PropTypes.func,
-  }
+  props: Props
 
   render() {
     const {
@@ -17,6 +23,9 @@ export default class DefaultLinkComponent extends PureComponent {
       href,
       onClick,
       onMouseDown,
+      onMouseEnter,
+      onMouseLeave,
+      tabIndex,
     } = this.props;
     return (href ? (
       <a
@@ -24,6 +33,9 @@ export default class DefaultLinkComponent extends PureComponent {
         href={href}
         onClick={onClick}
         onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        tabIndex={tabIndex}
       >{children}</a>
     ) : children);
   }

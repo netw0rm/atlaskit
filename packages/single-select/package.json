@@ -1,26 +1,29 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.12.0",
+  "version": "1.17.2",
   "config": {
     "access": "public"
   },
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Select (Single)"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/single-select; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/jest.config.js"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/single-select; } || ../../node_modules/.bin/not-in-publish",
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook": "../../build/bin/storybook.single.sh",
+    "eslint": "../../build/bin/lint.eslint.sh"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/droplist": "^3.8.0",
+    "@atlaskit/droplist": "^4.1.0",
     "@atlaskit/field-base": "^7.0.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/util-shared-styles": "^2.1.0",
@@ -35,6 +38,7 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/single-select": "*",
+    "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

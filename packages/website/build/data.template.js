@@ -11,16 +11,24 @@ const components = {${components.map(component => `
   '${component.key}': {
     description: '${component.pkg.description}',
     docs: ${component.docs ? `require('../../${component.key}/docs')` : 'false'},
+    changelog: ${JSON.stringify(component.changelog)},
     props: ${JSON.stringify(component.props)},
     key: '${component.key}',
     name: '${component.name}',
     packageName: '${component.pkg.name}',
     maintainers: ${JSON.stringify(component.pkg.maintainers || [])},
-    isPublished: '$component.isPublished',
+    isPublished: '${component.isPublished}',
     publishedDate: '${component.lastPublishedOn}',
     version: '${component.pkg.version}',
     versions: [${component.versions.map(v => `'${v}'`).join(', ')}],
     storybooks: [${component.storybooks.map(v => `'${v}'`).join(', ')}],
+    isPattern: ${!!component.isPattern},
+    ${component.nestedDocs
+      ? `components: {
+        ${component.props.map(({ name }) => `${name}: require('../../${component.key}/docs/components/${name}')`)}
+      },`
+      : ''
+    }
   },
 `).join('')}};
 

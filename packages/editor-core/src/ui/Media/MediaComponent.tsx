@@ -4,7 +4,7 @@ import {
   CardStatus,
   CardView,
   CardDimensions,
-  UrlPreviewIdentifier,
+  MediaIdentifier,
 } from '@atlaskit/media-card';
 
 import {
@@ -133,25 +133,20 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
-    const { id, collection, cardDimensions, onDelete } = this.props;
-    const url = id;
-    const otherProps: any = {};
+    const { id, collection, cardDimensions, onDelete, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
     }
 
-    linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
-      metadata => linkCreateContext.addLinkItem(url, collection, metadata)
-    );
-
-    const identifier: UrlPreviewIdentifier = {
+    const identifier: MediaIdentifier = {
       mediaItemType: 'link',
-      url
+      collectionName: collection,
+      id,
     };
 
     if (onDelete) {
-      otherProps.actions = [ CardDelete(onDelete) ];
+      (otherProps as any).actions = [ CardDelete(onDelete) ];
     }
 
     return (
@@ -159,9 +154,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         context={linkCreateContext}
         dimensions={cardDimensions}
         identifier={identifier}
-        appearance="image"
+        appearance="horizontal"
         resizeMode={this.resizeMode}
-        {...otherProps}
+        {...otherProps as any}
       />
     );
   }
@@ -303,12 +298,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private setContext = async (contextName: string, mediaProvider: MediaProvider) =>  {
     let context = await mediaProvider[contextName];
-    if ('clientId' in (context as ContextConfig)) {
-      context = ContextFactory.create(context as ContextConfig);
+
+    if (this.destroyed || !context) {
+      return;
     }
 
-    if (this.destroyed) {
-      return;
+    if ('clientId' in (context as ContextConfig)) {
+      context = ContextFactory.create(context as ContextConfig);
     }
 
     this.setState({ [contextName as any]: context as Context });

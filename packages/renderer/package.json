@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "5.4.1",
+  "version": "5.5.2",
   "config": {
     "access": "public"
   },
@@ -13,8 +13,9 @@
     "build": "npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
-    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh"
+    "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
+    "validate/typescript": "../../build/bin/validate.typescript.sh",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist",
@@ -22,12 +23,13 @@
   ],
   "dependencies": {
     "@atlaskit/code": "^2.1.2",
-    "@atlaskit/emoji": "^18.2.1",
+    "@atlaskit/emoji": "^18.4.2",
     "@atlaskit/icon": "^6.5.4",
     "@atlaskit/media-card": "^17.7.0",
     "@atlaskit/media-core": "^8.2.0",
     "@atlaskit/media-filmstrip": "^4.1.4",
     "@atlaskit/mention": "^5.3.2",
+    "@atlaskit/task-decision": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.1.1",
     "styled-components": "^1.4.0",
     "tslib": "^1.2.0"

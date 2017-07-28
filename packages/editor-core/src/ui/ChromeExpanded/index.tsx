@@ -18,7 +18,7 @@ import { MentionsState, stateKey as mentionPluginKey } from '../../plugins/menti
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
-import { MediaPluginState } from '../../plugins/media';
+import { MediaPluginState, stateKey as mediaPluginKey } from '../../plugins/media';
 import { TextColorState } from '../../plugins/text-color';
 import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
@@ -34,12 +34,12 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarInsertBlock from '../ToolbarInsertBlock';
 import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
 import TableFloatingControls from '../TableFloatingControls';
-import ToolbarTable from '../ToolbarTable';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
@@ -113,7 +113,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   componentDidMount() {
     const { maxHeight } = this.props;
     if (maxHeight) {
-      this.addBorderBottom();
+      this.addBorders();
     }
   }
 
@@ -123,14 +123,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
 
   private handleSpinnerComplete() {}
 
-  private addBorderBottom = () => {
+  private addBorders = () => {
     const { maxHeight } = this.props;
     if (maxHeight) {
       let { maxHeightStyle } = this.state;
       if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}` };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
       } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
-        maxHeightStyle = { ...maxHeightStyle, borderBottom: null };
+        maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
       this.setState({ maxHeightStyle });
     }
@@ -181,8 +181,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               isDisabled={disabled}
               pluginState={pluginStateBlockType}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -194,13 +192,18 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {pluginStateTextFormatting ?
+            <ToolbarInlineCode
+              disabled={disabled}
+              editorView={editorView}
+              pluginState={pluginStateTextFormatting}
+            /> : null
+          }
           {pluginStateTextColor ?
             <ToolbarTextColor
               disabled={disabled}
               pluginState={pluginStateTextColor}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null
@@ -211,30 +214,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               pluginStateTextFormatting={pluginStateTextFormatting}
               pluginStateClearFormatting={pluginStateClearFormatting}
               editorView={editorView}
-              softBlurEditor={this.softBlurEditor}
-              focusEditor={this.focusEditor}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
-            /> : null
-          }
-          {pluginStateTextFormatting ?
-            <ToolbarInlineCode
-              disabled={disabled}
-              editorView={editorView}
-              pluginState={pluginStateTextFormatting}
             /> : null
           }
           {pluginStateHyperlink ?
             <ToolbarHyperlink
               disabled={disabled}
               pluginState={pluginStateHyperlink}
-              editorView={editorView}
-            /> : null
-          }
-          {pluginStateTable ?
-            <ToolbarTable
-              disabled={disabled}
-              pluginState={pluginStateTable}
               editorView={editorView}
             /> : null
           }
@@ -245,13 +232,24 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
             /> : null
           }
+          {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
+            <ToolbarInsertBlock
+              isDisabled={disabled}
+              pluginStateTable={pluginStateTable}
+              pluginStateMedia={pluginStateMedia}
+              pluginStateBlockType={pluginStateBlockType}
+              editorView={editorView}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
+            />
+          }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}
-          onPaste={this.addBorderBottom}
-          onKeyDown={this.addBorderBottom}
+          onPaste={this.addBorders}
+          onKeyDown={this.addBorders}
         >
           <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
             {this.props.children}
@@ -333,25 +331,11 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
             {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
-            {pluginStateMedia && !disabled ? <ToolbarMedia pluginState={pluginStateMedia} /> : null}
+            {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>
         </Footer>
       </Container>
     );
-  }
-
-  /**
-   * Blurs editor but keeps focus on editor container,
-   * so components like inline-edit can check if focus is still inside them
-   */
-  softBlurEditor = () => {
-    if (this.editorContainer) {
-      this.editorContainer.focus();
-    }
-  }
-
-  focusEditor = () => {
-    this.props.editorView.focus();
   }
 
   private handleEditorContainerRef = ref => {

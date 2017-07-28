@@ -17,7 +17,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 import LayoutFork from 'react-media';
-import { MOBILE_QUERY } from '../../../constants';
+import { MOBILE_QUERY, NO_FOOTER_COMPONENT } from '../../../constants';
 
 import { getStorybookURL } from '../../utils';
 import data from '../../data';
@@ -27,6 +27,7 @@ import Docs from '../../components/ComponentDocs';
 import { Heading, Intro } from '../../components/Type';
 
 import MetaData from './MetaData';
+import LatestChange from './LatestChange';
 
 const componentKeys = Object.keys(data);
 const componentItems = componentKeys.map((key) => {
@@ -109,12 +110,12 @@ export default class PackageComponent extends PureComponent {
   state = { isSelectOpen: false }
 
   componentWillMount() {
-    this.setSelectedItem(this.props.match.params.component);
+    this.setSelectedItem(this.props.name);
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.component === this.props.match.params.component) return;
+    if (nextProps.name === this.props.name) return;
 
-    this.setSelectedItem(nextProps.match.params.component);
+    this.setSelectedItem(nextProps.name);
   }
   setSelectedItem = (key) => {
     const component = data[key];
@@ -127,8 +128,7 @@ export default class PackageComponent extends PureComponent {
   }
 
   render() {
-    const component = data[this.props.match.params.component];
-
+    const { component } = this.props;
     if (!component) return <Route component={NoMatch} />;
 
     const { isSelectOpen } = this.state;
@@ -154,26 +154,45 @@ export default class PackageComponent extends PureComponent {
             }}
           />
           <MetaData
-            maintainers={component.maintainers}
             packageKey={component.key}
             packageName={component.packageName}
-            publishedDate={component.publishedDate}
-            version={component.version}
           />
+          <LatestChange changelog={component.changelog} componentKey={component.key} />
           <Main itemProp="mainEntity">
             <Docs component={component} />
           </Main>
-          <Footer
+          {!NO_FOOTER_COMPONENT.includes(component.key) ? <Footer
             nextTitle={nextComponent ? nextComponent.name : null}
             nextUrl={nextComponent ? `/components/${nextComponent.key}` : null}
             prevTitle={prevComponent ? prevComponent.name : null}
             prevUrl={prevComponent ? `/components/${prevComponent.key}` : null}
-          />
+          /> : null}
         </article>
       </Container>
     );
   }
 }
+
+export const NavPackageComponent = ({ match }) => {
+  const name = match.params.component;
+  const componentData = data.navigation.components[name];
+  let component;
+  if (componentData) {
+    component = {
+      ...data.navigation,
+      name,
+      docs: componentData,
+      description: componentData.byline,
+      components: undefined,
+      props: data.navigation.props.filter(comp => comp.name === name),
+    };
+  }
+  return (<PackageComponent component={component} name={name} />);
+};
+
+export const StandardComponent = ({ match }) => (
+  <PackageComponent component={data[match.params.component]} name={match.params.component} />
+);
 
 // Header
 const Title = styled.header`

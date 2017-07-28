@@ -15,6 +15,8 @@ import {
   clearFormattingPlugins,
   panelPlugins,
   mentionsPlugins,
+  tablePlugins,
+  tableStateKey,
   blockTypeStateKey,
   codeBlockStateKey,
   hyperlinkStateKey,
@@ -75,6 +77,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  tablesEnabled?: boolean;
 }
 
 export interface State {
@@ -228,7 +231,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { disabled = false, popupsBoundariesElement, popupsMountPoint } = this.props;
+    const {
+      disabled = false,
+      tablesEnabled,
+      popupsBoundariesElement,
+      popupsMountPoint
+    } = this.props;
     const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -243,7 +251,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-
+    const tableState = tablesEnabled && editorState && tableStateKey.getState(editorState);
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
@@ -263,6 +271,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateMedia={mediaState}
         pluginStatePanel={panelState}
+        pluginStateTable={tableState}
         packageVersion={version}
         packageName={name}
         mentionProvider={this.mentionProvider}
@@ -286,9 +295,10 @@ export default class Editor extends PureComponent<Props, State> {
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
     const { mediaPlugins } = this;
+    const { tablesEnabled, defaultValue } = this.props;
 
     if (place) {
-      const doc = parse(this.props.defaultValue || '');
+      const doc = parse(defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -297,7 +307,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
-          ...mentionsPlugins(schema),
+          ...mentionsPlugins(schema, this.providerFactory),
           ...clearFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
@@ -314,6 +324,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
+          ...(tablesEnabled ? tablePlugins() : []),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
@@ -350,7 +361,8 @@ export default class Editor extends PureComponent<Props, State> {
         handlePaste(view: EditorView, event: any, slice: Slice): boolean {
           const { clipboardData } = event;
           const html = clipboardData && clipboardData.getData('text/html');
-          if (html) {
+          // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
+          if (html && !html.match(/<table[^>]+>/g)) {
             const doc = parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
               view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
@@ -360,10 +372,6 @@ export default class Editor extends PureComponent<Props, State> {
           return false;
         },
       });
-
-      if (this.mentionProvider) {
-        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      }
 
       analyticsService.trackEvent('atlassian.editor.start');
 

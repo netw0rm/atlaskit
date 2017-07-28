@@ -240,6 +240,47 @@ export function toggleHeading(level: number): Command {
   };
 }
 
+export function insertBlockType(view: EditorView, name: string): boolean {
+  const { nodes } = view.state.schema;
+
+  switch (name) {
+    case blockTypes.BLOCK_QUOTE.name:
+      if (nodes.paragraph && nodes.blockquote) {
+        return insertNodeType(view.state.schema.nodes.blockquote)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.CODE_BLOCK.name:
+      if (nodes.codeBlock) {
+        return insertCodeBlock()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.PANEL.name:
+      if (nodes.panel && nodes.paragraph) {
+        return insertNodeType(view.state.schema.nodes.panel)(view.state, view.dispatch);
+      }
+      break;
+  }
+  return false;
+}
+
+function insertNodeType(nodeType: NodeType): Command {
+  return function (state, dispatch) {
+    const { $from, $to } = state.selection;
+    dispatch(wrapIn(nodeType, state.tr, $from, $to));
+    return true;
+  };
+}
+
+export function insertCodeBlock(): Command {
+  return function (state, dispatch) {
+    if (isConvertableToCodeBlock(state)) {
+      dispatch(transformToCodeBlockAction(state, {}));
+      return true;
+    }
+    return false;
+  };
+}
+
 export function createCodeBlockFromFenceFormat(): Command {
   return function (state, dispatch) {
     const { codeBlock } = state.schema.nodes;
@@ -376,7 +417,7 @@ function canCreateParagraphNear(state: EditorState<any>): boolean {
   return $from.depth > 1 || isNodeSelection || insideCodeBlock;
 }
 
-function createParagraphNear(view: EditorView, append: boolean = true): void {
+export function createParagraphNear(view: EditorView, append: boolean = true): void {
   const { state, dispatch } = view;
   const paragraph = state.schema.nodes.paragraph;
 

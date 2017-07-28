@@ -49,12 +49,12 @@ class Icon extends PureComponent {
     };
 
     const svgStyles = {
-      height: '100%',
+      height: sizes[size],
       maxHeight: '100%',
       maxWidth: '100%',
       overflow: 'hidden',
       verticalAlign: 'bottom',
-      width: '100%',
+      width: sizes[size],
     };
 
     return (

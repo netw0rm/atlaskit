@@ -258,8 +258,8 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   let editorWrapper;
 
   beforeEach(() => {
-    const mentionResoure = sinon.stub() as any;
-    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, { attachTo: fixture() });
+    const mentionProvider = sinon.stub() as any;
+    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionProvider={mentionProvider} />, { attachTo: fixture() });
     editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });
@@ -356,5 +356,9 @@ describe('@atlaskit/editor-bitbucket/focus', () => {
     expect(spy.called).to.eq(false);
     hasFocusStub.restore();
     spy.restore();
+  });
+
+  it('should have a maxHeight peoperty set on Chrome', () => {
+    expect(editorWrapper.find('Chrome').prop('maxHeight')).to.equal(480);
   });
 });

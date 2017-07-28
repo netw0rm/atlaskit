@@ -51,7 +51,9 @@ module.exports = {
   prompter(cz, commit) {
     check('validate/lint-changed', false, () => {
       console.log('✓ Linting ok!');
-      czLernaChangelog.makePrompter(makeCustomQuestions)(cz, commit);
+      czLernaChangelog.makePrompter(makeCustomQuestions)(
+        cz, responses => commit(responses)
+      );
     }, () => {
       console.log('✗ Linting failed');
       console.log('Do you want to try fixing automatically? (y/n): ');

@@ -31,7 +31,6 @@ export const Content = styled.div`
         display: block;
       }
     }
-
     & pre {
       font-family: ${akEditorCodeFontFamily};
       background: ${akEditorCodeBackground};

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 import { emoji as emojiNode } from '../../../../src';
 import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
@@ -21,16 +21,16 @@ import {
 import defaultSchema from '../../../../src/test-helper/schema';
 import ProviderFactory from '../../../../src/providerFactory';
 
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 
-const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,
   fallback: grinEmoji.fallback,
 };
 
-const evilburnsEmoji = emojiData.emojiTestData.evilburnsEmoji;
+const evilburnsEmoji = emojiTestData.evilburnsEmoji;
 const evilburnsEmojiId = {
   shortName: evilburnsEmoji.shortName,
   id: evilburnsEmoji.id,
@@ -154,7 +154,7 @@ describe('emojis', () => {
     describe('Space', () => {
       it('should be ignored if there is no emojiProvider', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
-        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+        const spy = sinon.spy(pluginState, 'trySelectCurrent');
 
         forceUpdate(editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
@@ -163,7 +163,7 @@ describe('emojis', () => {
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+        const spy = sinon.spy(pluginState, 'trySelectCurrent');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
 
@@ -171,15 +171,36 @@ describe('emojis', () => {
         expect(spy.called, 'was not called').to.equal(false);
       });
 
-      it('should call "onTrySelectCurrent" which should return false by default', () => {
+      it('should call "trySelectCurrent" which should return false', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
-        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
+        const spy = sinon.spy(pluginState, 'trySelectCurrent');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
 
         sendKeyToPm(editorView, 'Space');
         expect(spy.called, 'was called').to.equal(true);
         expect(spy.returned(false), 'return value').to.equal(true);
+      });
+
+      it('should call "insertEmoji" if there is only 1 result', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'insertEmoji');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
+        pluginState.onSearchResult({categories: {}, emojis: [grinEmoji]});
+
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.calledWith(grinEmoji), 'was called').to.equal(true);
+      });
+
+      it('should call "dismiss" if the query is empty', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':{<>}'))));
+        const spy = sinon.spy(pluginState, 'dismiss');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
+
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.called, 'was called').to.equal(true);
       });
     });
 

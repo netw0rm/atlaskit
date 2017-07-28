@@ -1,15 +1,30 @@
 import styled from 'styled-components';
-import { layout } from '../../shared-variables';
-import { isCollapsed } from '../../theme/util';
+import { gridSize, layout, scrollbar } from '../../shared-variables';
 
 const ContainerNavigationChildren = styled.div`
-  padding: 0 ${({ theme }) => (isCollapsed(theme) ? 0 : layout.padding.side)}px;
-
-  /* Fill the entire height */
-  flex-grow: 1;
+  justify-content: flex-start;
   display: flex;
-  flex-shrink: 0;
+  flex: 1 1 auto;
   flex-direction: column;
+  overflow-y: auto;
+  padding: ${gridSize}px ${layout.padding.side}px;
+
+  /* The following styles are to style scrollbars when there is long/wide content*/
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  &::-webkit-scrollbar {
+    height: ${scrollbar.size}px;
+    width: ${scrollbar.size}px;
+  }
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${scrollbar.background};
+    border-radius: ${scrollbar.size}px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: ${scrollbar.hoverBackground};
+  }
 `;
 
 ContainerNavigationChildren.displayName = 'ContainerNavigationChildren';

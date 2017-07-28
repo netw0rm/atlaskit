@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "decisionList",
+      "content": [
+        {
+          "type": "decisionItem",
+          "attrs": {
+            "localId": "test-id",
+            "state": "DECIDED"
+          },
+          "content": [
+            {
+              "type": "blockQuote",
+              "content": [
+                {
+                  "type": "rule"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { describe, it, before, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
@@ -14,7 +13,7 @@ describe('Moveable', () => {
   let wrapper;
   let childFn;
 
-  before(() => {
+  beforeAll(() => { // eslint-disable-line no-undef
     requestAnimationFrame.reset();
     childFn = sinon.stub().returns(<div>hi there</div>);
   });
@@ -116,5 +115,12 @@ describe('Moveable', () => {
       moveTo(position);
       expect(hasMoved(position)).to.equal(true);
     });
+  });
+
+  it('should return no movement if the item is at the origin', () => {
+    moveTo({ x: 0, y: 0 });
+    expect(childFn.calledWith({
+      transform: null,
+    })).to.equal(true);
   });
 });

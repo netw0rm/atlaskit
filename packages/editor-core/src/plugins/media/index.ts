@@ -1,3 +1,4 @@
+import { Context } from './../../../../media-core/src/context/context';
 import * as assert from 'assert';
 
 import {
@@ -6,6 +7,8 @@ import {
   MediaState,
   MediaStateManager,
   UploadParams,
+  ContextConfig,
+  ContextFactory,
 } from '@atlaskit/media-core';
 
 import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
@@ -18,9 +21,9 @@ import {
   Schema,
   Transaction,
   NodeSelection,
+  Mark,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
-import { ContextConfig } from '@atlaskit/media-core';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
@@ -30,7 +33,7 @@ import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
-import { removeMediaNode } from './media-common';
+import { removeMediaNode, splitMediaGroup } from './media-common';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -172,8 +175,33 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (): void => {
-    insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
+  insertLinks = async () => {
+    const { mediaProvider } = this;
+
+    if (!mediaProvider) {
+      return;
+    }
+
+    const { linkCreateContext } = this.mediaProvider;
+
+    if (!linkCreateContext) {
+      return;
+    }
+
+    let linkCreateContextInstance = await linkCreateContext;
+    if (!linkCreateContextInstance) {
+      return;
+    }
+
+    if (!(linkCreateContextInstance as Context).addLinkItem) {
+      linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
+    }
+
+    return insertLinks(this.view, this.linkRanges, linkCreateContextInstance as Context, this.collectionFromProvider());
+  }
+
+  splitMediaGroup = (): boolean => {
+    return splitMediaGroup(this.view);
   }
 
   insertFileFromDataUrl = (url: string, fileName: string) => {
@@ -324,6 +352,7 @@ export class MediaPluginState {
       this.ignoreLinks = false;
       return this.linkRanges;
     }
+
     if (!link || !this.allowsLinks) {
       return this.linkRanges;
     }
@@ -456,14 +485,24 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  const plugin = new Plugin({
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return new Plugin({
     state: {
       init(config, state) {
         return new MediaPluginState(state, options);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr);
+
+        // Ignore creating link cards during link editing
+        const { link } = oldState.schema.marks as { link: Mark };
+        const { nodeAfter, nodeBefore } = oldState.selection.$from;
+
+        if ((nodeAfter && link.isInSet(nodeAfter.marks)) ||
+          (nodeBefore && link.isInSet(nodeBefore.marks))
+        ) {
+          pluginState.ignoreLinks = true;
+        }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
@@ -488,11 +527,18 @@ const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
+      },
+      handleTextInput(view: EditorView, from: number, to: number, text: string): boolean {
+        const pluginState: MediaPluginState = stateKey.getState(view.state);
+        pluginState.splitMediaGroup();
+        return false;
       }
     }
   });
+};
 
-  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

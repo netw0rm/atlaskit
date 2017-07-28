@@ -9,8 +9,9 @@ import {Ellipsify} from '../../utils/ellipsify';
 import {Menu} from '../../utils/menu';
 import {MediaImage} from '../../utils/mediaImage';
 import {CardLoading} from '../../utils/cardLoading';
-import {Href} from '../../utils/href';
 import {getCSSUnitValue} from '../../utils/getCSSUnitValue';
+import {breakpointSize, BreakpointSizeValue} from '../../utils/breakpointSize';
+import {defaultHorizontalCardDimensions, defaultSquareCardDimensions, maxHorizontalCardDimensions} from '../../utils/cardDimensions';
 import {Details, Wrapper} from '../styled';
 import {
   Title,
@@ -18,7 +19,8 @@ import {
   Footer,
   Link,
   ErrorContainer,
-  ErrorHeader
+  ErrorHeader,
+  A
 } from './styled';
 
 export interface LinkCardGenericViewProps {
@@ -45,10 +47,10 @@ export interface LinkCardGenericViewState {
   iconError?: boolean;
 }
 
-const defaultHorizontalWidth = '435px';
-const defaultHorizontalHeight = '116px';
-const defaultSquareWidth = '300px';
-const defaultSquareHeight = '300px';
+const breakpointSizes = {
+  small: 344,
+  large: Infinity
+};
 
 export class LinkCardGenericView extends Component<LinkCardGenericViewProps, LinkCardGenericViewState> {
   static defaultProps = {
@@ -82,26 +84,27 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     });
   }
 
-  private get width(): string {
+  get width(): string {
     const {dimensions} = this.props;
     const {width} = dimensions || {width: undefined};
+    const defaultWidth = this.isHorizontal ? defaultHorizontalCardDimensions.width : defaultSquareCardDimensions.width;
+    const maxWidth = this.isHorizontal ? maxHorizontalCardDimensions.width : Infinity;
 
-    if (!width) {
-      return this.isHorizontal ? defaultHorizontalWidth : defaultSquareWidth;
-    }
-
-    return getCSSUnitValue(width);
+    return getCSSUnitValue(
+      Math.min(parseInt(`${width}`, 10) || defaultWidth, maxWidth)
+    );
   }
 
   private get height(): string {
     const {dimensions} = this.props;
     const {height} = dimensions || {height: undefined};
+    const defaultHeight = this.isHorizontal ? defaultHorizontalCardDimensions.height : defaultSquareCardDimensions.height;
 
-    if (!height) {
-      return this.isHorizontal ? defaultHorizontalHeight : defaultSquareHeight;
-    }
+    return getCSSUnitValue(height || defaultHeight);
+  }
 
-    return getCSSUnitValue(height);
+  get cardSize(): BreakpointSizeValue | undefined {
+    return this.isHorizontal ? breakpointSize(this.width, breakpointSizes) : undefined;
   }
 
   private get isHorizontal() {
@@ -133,14 +136,17 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {appearance, onClick, onMouseEnter} = this.props;
-    const cardStyle = {height: this.height, width: this.width};
+    const {appearance, onClick, onMouseEnter, linkUrl} = this.props;
+    const {height, width, cardSize} = this;
+    const cardStyle = {height, width};
     const content = this.getContentToRender();
 
     return (
-      <Wrapper style={cardStyle} className={appearance} onClick={onClick} onMouseEnter={onMouseEnter}>
-        {content}
-      </Wrapper>
+      <A linkUrl={linkUrl} onClick={onClick} onMouseEnter={onMouseEnter}>
+        <Wrapper style={cardStyle} className={appearance} cardSize={cardSize}>
+          {content}
+        </Wrapper>
+      </A>
     );
   }
 
@@ -166,7 +172,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     return [
       thumbnail,
       <Details key="details" className="details">
-        <Title>
+        <Title className="card-title">
           {title}
         </Title>
         <Description>
@@ -176,9 +182,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
         <Footer>
           <Link>
             {icon}
-            <Href linkUrl={linkUrl} underline={true}>
+            <span>
               {site || linkUrl}
-            </Href>
+            </span>
           </Link>
           <Menu actions={actions} />
         </Footer>

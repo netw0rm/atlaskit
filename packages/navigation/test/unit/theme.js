@@ -1,20 +1,17 @@
 // @flow
 import React from 'react';
-import { describe, it } from 'mocha';
 import styled, { ThemeProvider } from 'styled-components';
-import sinon from 'sinon';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
 import * as presets from '../../src/theme/presets';
 import { prefix, getProvided, WithGroupTheme, WithRootTheme, whenCollapsed } from '../../src/theme/util';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
-import { getRootTheme, getGroupTheme } from '../theme-util';
+import { getRootTheme, getGroupTheme } from './_theme-util';
 
 describe('theme', () => {
   describe('WithRootTheme', () => {
     it('should provide theme values to styled components', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -27,13 +24,13 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
+      });
     });
 
     it('should publish updates to children', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
     `;
@@ -49,16 +46,16 @@ describe('theme', () => {
         provided: presets.settings,
       });
 
-      expect(stub.getCall(0).calledWith({
+      expect(stub.mock.calls[0][0]).toEqual({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
-      expect(stub.getCall(1).calledWith({
+      });
+      expect(stub.mock.calls[1][0]).toEqual({
         theme: getRootTheme(presets.settings),
-      })).to.equal(true);
+      });
     });
 
     it('should preserve parent styled-component theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -77,9 +74,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      const arg = stub.args[0][0];
+      const arg = stub.mock.calls[0][0];
 
-      expect(arg).to.deep.equal({
+      expect(arg).toEqual({
         theme: {
           ...getRootTheme(presets.container),
           myCustomRule: 'hello',
@@ -88,7 +85,7 @@ describe('theme', () => {
     });
 
     it('should override clashing theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
       fake: ${stub}
     `;
@@ -107,9 +104,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      expect(stub.calledWithExactly({
+      expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
-      })).to.equal(true);
+      });
     });
   });
 
@@ -120,7 +117,7 @@ describe('theme', () => {
   // tests could be collapsed into a single test suite.
   describe('WithGroupTheme', () => {
     it('should provide theme values to styled components', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -134,13 +131,13 @@ describe('theme', () => {
         </WithGroupTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: getGroupTheme(isCompact),
-      })).to.equal(true);
+      });
     });
 
     it('should publish updates to children', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
     `;
@@ -156,16 +153,16 @@ describe('theme', () => {
         isCompact: false,
       });
 
-      expect(stub.getCall(0).calledWith({
+      expect(stub.mock.calls[0][0]).toEqual({
         theme: getGroupTheme(true),
-      })).to.equal(true);
-      expect(stub.getCall(1).calledWith({
+      });
+      expect(stub.mock.calls[1][0]).toEqual({
         theme: getGroupTheme(false),
-      })).to.equal(true);
+      });
     });
 
     it('should preserve parent styled-component theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -185,9 +182,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      const arg = stub.args[0][0];
+      const arg = stub.mock.calls[0][0];
 
-      expect(arg).to.deep.equal({
+      expect(arg).toEqual({
         theme: {
           ...getGroupTheme(isCompact),
           myCustomRule: 'hello',
@@ -196,7 +193,7 @@ describe('theme', () => {
     });
 
     it('should override clashing theme values', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -216,9 +213,9 @@ describe('theme', () => {
         </ThemeProvider>
       );
 
-      expect(stub.calledWithExactly({
+      expect(stub).toHaveBeenCalledWith({
         theme: getGroupTheme(isCompact),
-      })).to.equal(true);
+      });
     });
   });
 
@@ -227,7 +224,7 @@ describe('theme', () => {
     // But given that this is such a common use case I thought it
     // was worth having an explicit test for it.
     it('should the nesting of a group theme within a root theme', () => {
-      const stub = sinon.stub().returns('my-cool-rule');
+      const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
       `;
@@ -245,12 +242,12 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith({
+      expect(stub).toHaveBeenCalledWith({
         theme: {
           ...getRootTheme(presets.settings),
           ...getGroupTheme(isCompact),
         },
-      })).to.equal(true);
+      });
     });
   });
 
@@ -268,15 +265,15 @@ describe('theme', () => {
       });
 
       it('text color', () => {
-        expect(generatedTheme.text).to.equal(textColor);
+        expect(generatedTheme.text).toBe(textColor);
       });
 
       it('subText color', () => {
-        expect(generatedTheme.subText).to.equal(chromatism.brightness(20, textColor).hex);
+        expect(generatedTheme.subText).toBe(chromatism.brightness(20, textColor).hex);
       });
 
       it('global item focus outline color', () => {
-        expect(generatedTheme.item.focus.outline).to.equal(textColor);
+        expect(generatedTheme.item.focus.outline).toBe(textColor);
       });
     });
 
@@ -289,31 +286,31 @@ describe('theme', () => {
       });
 
       it('background primary color', () => {
-        expect(generatedTheme.background.primary).to.equal(backgroundColor);
-        expect(generatedTheme.background.secondary).to.equal(backgroundColor);
+        expect(generatedTheme.background.primary).toBe(backgroundColor);
+        expect(generatedTheme.background.secondary).toBe(backgroundColor);
       });
 
       describe('global item', () => {
         it('hover color (background color 10% less bright)', () => {
-          expect(generatedTheme.item.hover.background).to.equal(
+          expect(generatedTheme.item.hover.background).toBe(
             chromatism.brightness(-10, backgroundColor).hex
           );
         });
 
         it('active color (background color 10% brighter)', () => {
-          expect(generatedTheme.item.active.background).to.equal(
+          expect(generatedTheme.item.active.background).toBe(
             chromatism.brightness(10, backgroundColor).hex
           );
         });
 
         it('selected color (background color 20% less bright)', () => {
-          expect(generatedTheme.item.selected.background).to.equal(
+          expect(generatedTheme.item.selected.background).toBe(
             chromatism.brightness(-20, backgroundColor).hex
           );
         });
 
         it('default background color should always be transparent', () => {
-          expect(generatedTheme.item.default.background).to.equal('transparent');
+          expect(generatedTheme.item.default.background).toBe('transparent');
         });
       });
     });
@@ -321,7 +318,7 @@ describe('theme', () => {
 
   describe('whenCollapsed', () => {
     it('should return the provided rules when collapsed', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${stub}
@@ -337,11 +334,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).to.equal(true);
+      expect(stub).toHaveBeenCalled();
     });
 
     it('should not return the provided rules when not collapsed', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${stub}
@@ -357,11 +354,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.called).to.equal(false);
+      expect(stub).not.toHaveBeenCalled();
     });
 
     it('should allow access to props within the rules', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${props => stub(props.name)}
@@ -377,11 +374,11 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith('Alex')).to.equal(true);
+      expect(stub).toHaveBeenCalledWith('Alex');
     });
 
     it('should allow access to the theme within the rules', () => {
-      const stub = sinon.stub();
+      const stub = jest.fn();
       const Item = styled.div`
         ${whenCollapsed`
           my-rule: ${props => stub(getProvided(props.theme))}
@@ -397,17 +394,17 @@ describe('theme', () => {
         </WithRootTheme>
       );
 
-      expect(stub.calledWith(presets.settings)).to.equal(true);
+      expect(stub).toHaveBeenCalledWith(presets.settings);
     });
   });
 
   describe('getProvided() should fall back to container theme', () => {
     it('when no theme provided', () => {
-      expect(getProvided()).to.equal(presets.container);
+      expect(getProvided()).toBe(presets.container);
     });
 
     it('when theme provided that does not contain private root theme key', () => {
-      expect(getProvided({})).to.equal(presets.container);
+      expect(getProvided({})).toBe(presets.container);
     });
   });
 });

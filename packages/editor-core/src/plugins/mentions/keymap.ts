@@ -6,7 +6,7 @@ import pluginKey from './plugin-key';
 export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.arrowUp.common!, (state: any, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
     const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;
@@ -15,7 +15,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
     return mentionsPlugin.onSelectPrevious();
   }, list);
 
-  keymaps.bindKeymapWithCommand(keymaps.arrowDown.common!, (state: any, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, (state: any, dispatch) => {
     const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
       return false;

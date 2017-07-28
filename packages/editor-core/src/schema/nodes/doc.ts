@@ -11,6 +11,7 @@ import { Definition as Heading } from './heading';
 import { Definition as CodeBlock } from './code-block';
 import { Definition as MediaGroup } from './media-group';
 import { Definition as ApplicationCard } from './applicationCard';
+import { Definition as DecisionList } from './decision-list';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
@@ -33,7 +34,8 @@ import { Definition as TextColor } from '../marks/text-color';
  */
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
-  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard
+  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
+  DecisionList
 >;
 
 export interface MarksObject<T> {

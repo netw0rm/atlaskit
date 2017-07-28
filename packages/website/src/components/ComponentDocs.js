@@ -26,6 +26,15 @@ function renderProps(comp, i) {
   return null;
 }
 
+const Examples = ({ docs, componentKey }) => (
+  Array.isArray(docs.examples) && docs.examples.length && componentKey !== 'navigation' ? (
+    <div>
+      <Title>Examples</Title>
+      {docs.examples.map((eg, i) => <Example key={i} {...eg} />)}
+    </div>
+  ) : null
+);
+
 const ComponentDocs = ({ component }) => {
   const { docs, props } = component;
   if (docs && typeof docs.default === 'function') {
@@ -36,13 +45,8 @@ const ComponentDocs = ({ component }) => {
     return (
       <div>
         {docs.description}
-        {Array.isArray(docs.examples) && docs.examples.length ? (
-          <div>
-            <Title>Examples</Title>
-            {docs.examples.map((eg, i) => <Example key={i} {...eg} />)}
-          </div>
-        ) : null}
-        {renderProps(props)}
+        <Examples docs={docs} componentKey={component.key} />
+        {!component.components && renderProps(props)}
       </div>
     );
   }

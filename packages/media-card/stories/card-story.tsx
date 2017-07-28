@@ -477,13 +477,29 @@ storiesOf('Card', {})
       }
     ];
 
-    const trelloCards = [
+    const smartCards = [
       {
         title: 'Public board',
         content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} />
       }, {
         title: 'Private board',
         content: <Card identifier={privateTrelloBoardUrlPreviewId} context={context} />
+      }
+    ];
+
+    const smartCardsAppearances = [
+      {
+        title: 'Small',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="small" />
+      }, {
+        title: 'Image',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="image" />
+      }, {
+        title: 'Horizontal',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="horizontal" />
+      }, {
+        title: 'Square',
+        content: <Card identifier={publicTrelloBoardUrlPreviewId} context={context} appearance="square" />
       }
     ];
 
@@ -503,8 +519,10 @@ storiesOf('Card', {})
           <h3>Player cards</h3>
           <StoryList>{playerCards}</StoryList>
 
-          <h3>Trello cards</h3>
-          <StoryList>{trelloCards}</StoryList>
+          <h3>Smart cards</h3>
+          <StoryList>{smartCards}</StoryList>
+          <StoryList>{smartCardsAppearances}</StoryList>
+
         </div>
       </div>
     );

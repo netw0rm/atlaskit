@@ -6,7 +6,7 @@ import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
-import { toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
+import { toggleUnderline, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
@@ -14,8 +14,6 @@ import DropdownMenu from '../DropdownMenu';
 export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
-  softBlurEditor: () => void;
-  focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
   popupsMountPoint?: HTMLElement;
@@ -24,6 +22,9 @@ export interface Props {
 
 export interface State {
   isOpen?: boolean;
+  underlineActive?: boolean;
+  underlineDisabled?: boolean;
+  underlineHidden?: boolean;
   strikethroughActive?: boolean;
   strikethroughDisabled?: boolean;
   strikeHidden?: boolean;
@@ -62,13 +63,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private onOpenChange = (attrs: any) => {
-    // Hack for IE needed to prevent caret blinking above the opened dropdown.
-    if (attrs.isOpen) {
-      this.props.softBlurEditor();
-    } else {
-      this.props.focusEditor();
-    }
-
     this.setState({
       isOpen: attrs.isOpen,
     });
@@ -81,6 +75,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   render() {
     const {
       isOpen,
+      underlineActive,
       strikethroughActive,
       strikethroughDisabled,
       clearFormattingDisabled,
@@ -89,7 +84,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     const items = this.createItems();
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        selected={isOpen || strikethroughActive}
+        selected={isOpen || underlineActive || strikethroughActive}
         disabled={disabled}
         onClick={this.handleTriggerClick}
         iconBefore={
@@ -120,11 +115,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
         </DropdownMenu>
       );
     } else {
-      // span is a flex element
       return (
-        <span>
-          <div>{toolbarButtonFactory(true)}</div>
-        </span>
+        <div>{toolbarButtonFactory(true)}</div>
       );
     }
   }
@@ -134,7 +126,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     let items: any[] = [];
 
     if (pluginStateTextFormatting) {
-      const { strikeHidden, subscriptHidden, superscriptHidden } = this.state;
+      const { underlineHidden, strikeHidden, subscriptHidden, superscriptHidden } = this.state;
+      if (!underlineHidden) {
+        this.addRecordToItems(items, 'Underline', 'underline', tooltip(toggleUnderline));
+      }
       if (!strikeHidden) {
         this.addRecordToItems(items, 'Strikethrough', 'strikethrough', tooltip(toggleStrikethrough));
       }
@@ -166,6 +161,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
     this.setState({
+      underlineActive: pluginState.underlineActive,
+      underlineDisabled: pluginState.underlineDisabled,
+      underlineHidden: pluginState.underlineHidden,
+
       strikethroughActive: pluginState.strikeActive,
       strikethroughDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
@@ -190,6 +189,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     analyticsService.trackEvent(`atlassian.editor.format.${item.value}.button`);
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
     switch(item.value) {
+      case 'underline':
+        pluginStateTextFormatting!.toggleUnderline(this.props.editorView);
+        break;
       case 'strikethrough':
         pluginStateTextFormatting!.toggleStrike(this.props.editorView);
         break;

@@ -12,7 +12,7 @@ import Prism, {
   SWATCH_PRIMARY,
   SWATCH_SECONDARY,
   tintRgx,
-} from '../../test/_Prism';
+} from '../../test/unit/_Prism';
 
 const {
   akColorN0: alternateTextColor,

@@ -1,6 +1,7 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  analyticsDecorator as analytics,
   baseKeymap,
   Chrome,
   blockTypePlugins,
@@ -49,8 +50,12 @@ import {
   ErrorReportingHandler,
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
+import Button from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
+import Spinner from '@atlaskit/spinner';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import styled from 'styled-components';
 import { encode, parse, MediaContextInfo } from './html';
 import {
   JIRASchema,
@@ -61,9 +66,24 @@ import {
   isSchemaWithTextColor,
   makeSchema,
 } from './schema';
-import { version, name } from './version';
 
+import { version, name } from './version';
 export { version };
+
+// tslint:disable-next-line:variable-name
+const FooterWrapper = styled.div`
+  display: flex;
+  padding: 12px 0 0 0;
+`;
+
+// tslint:disable-next-line:variable-name
+const FooterSlot = styled.div`
+  flex-grow: 1;
+`;
+
+export interface FooterProps {
+  saveDisabled: boolean;
+}
 
 export interface Props {
   isExpandedByDefault?: boolean;
@@ -88,6 +108,7 @@ export interface Props {
   errorReporter?: ErrorReportingHandler;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  renderFooter?: (props: FooterProps) => React.ReactElement<any>;
 }
 
 export interface State {
@@ -158,6 +179,19 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    const { editorView } = this.state;
+
+    if (editorView) {
+      if (editorView.state) {
+        const mediaState = mediaStateKey.getState(editorView.state);
+        if (mediaState) {
+          mediaState.destroy();
+        }
+      }
+
+      editorView.destroy();
+    }
+
     this.providerFactory.destroy();
   }
 
@@ -266,9 +300,12 @@ export default class Editor extends PureComponent<Props, State> {
 
   render() {
     const { editorView, isExpanded, isMediaReady } = this.state;
-    const { mentionProvider, mediaProvider, popupsBoundariesElement, popupsMountPoint } = this.props;
-    const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
-    const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const {
+      mentionProvider, mediaProvider,
+      popupsBoundariesElement, popupsMountPoint,
+      renderFooter,
+      onSave, onCancel
+    } = this.props;
     const editorState = editorView && editorView.state;
 
     const listsState = editorState && listsStateKey.getState(editorState);
@@ -280,40 +317,62 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
+    const iconAfter = !isMediaReady
+      ? <Spinner isCompleting={false} />
+      : undefined;
+    const saveButtonAppearance = !isMediaReady
+      ? 'default'
+      : 'primary';
 
     return (
-      <Chrome
-        children={<div ref={this.handleRef} />}
-        editorView={editorView!}
-        isExpanded={isExpanded}
-        mentionProvider={mentionProvider}
-        onCancel={handleCancel}
-        onSave={handleSave}
-        onCollapsedChromeFocus={this.expand}
-        placeholder={this.props.placeholder}
-        pluginStateBlockType={blockTypeState}
-        pluginStateCodeBlock={codeBlockState}
-        pluginStateLists={listsState}
-        pluginStateTextFormatting={textFormattingState}
-        pluginStateTextColor={textColorState}
-        pluginStateClearFormatting={clearFormattingState}
-        pluginStateMentions={mentionsState}
-        pluginStateHyperlink={hyperlinkState}
-        pluginStateMedia={mediaState}
-        packageVersion={version}
-        packageName={name}
-        saveDisabled={!isMediaReady}
-        popupsBoundariesElement={popupsBoundariesElement}
-        popupsMountPoint={popupsMountPoint}
-      />
+      <div>
+        <Chrome
+          children={<div ref={this.handleRef} />}
+          editorView={editorView!}
+          isExpanded={isExpanded}
+          mentionProvider={mentionProvider}
+          onCollapsedChromeFocus={this.expand}
+          placeholder={this.props.placeholder}
+          pluginStateBlockType={blockTypeState}
+          pluginStateCodeBlock={codeBlockState}
+          pluginStateLists={listsState}
+          pluginStateTextFormatting={textFormattingState}
+          pluginStateTextColor={textColorState}
+          pluginStateClearFormatting={clearFormattingState}
+          pluginStateMentions={mentionsState}
+          pluginStateHyperlink={hyperlinkState}
+          pluginStateMedia={mediaState}
+          packageVersion={version}
+          packageName={name}
+          saveDisabled={!isMediaReady}
+          popupsBoundariesElement={popupsBoundariesElement}
+          popupsMountPoint={popupsMountPoint}
+        />
+        {
+          isExpanded && (
+            <FooterWrapper>
+              {(onSave || onCancel) && (
+                <ButtonGroup>
+                  {onSave && <Button isDisabled={!isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
+                  {onCancel && <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
+                </ButtonGroup>
+              )}
+
+              {renderFooter && (<FooterSlot>{renderFooter({ saveDisabled: !isMediaReady })}</FooterSlot>)}
+            </FooterWrapper>
+          )
+        }
+      </div>
     );
   }
 
+  @analytics('atlassian.editor.stop.cancel')
   private handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel(this);
     }
+    return true;
   }
 
   private handleChange = async () => {
@@ -333,11 +392,13 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  @analytics('atlassian.editor.stop.save')
   private handleSave = () => {
     const { onSave } = this.props;
     if (onSave) {
       onSave(this);
     }
+    return true;
   }
 
   private handleRef = (place: Element | null) => {
@@ -353,7 +414,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
-          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),
           ...rulePlugins(schema as Schema<any, any>),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
@@ -398,10 +459,6 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
-
-      if (isSchemaWithMentions(schema)) {
-        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      }
 
       this.setState({ editorView }, this.focus);
     } else {

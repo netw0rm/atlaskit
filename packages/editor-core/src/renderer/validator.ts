@@ -259,7 +259,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         break;
       }
       case 'codeBlock': {
-        if (attrs && attrs.language) {
+        if (attrs && attrs.language !== undefined) {
           return {
             type,
             attrs,
@@ -292,7 +292,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           mediaType = type;
           mediaCollection = collection;
         }
-        if (mediaId && mediaType && mediaCollection.length) {
+        if (mediaId && mediaType) {
           return {
             type,
             attrs: {
@@ -441,6 +441,24 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
               content,
             };
           }
+        }
+        break;
+      }
+      case 'decisionList': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'decisionItem': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
         }
         break;
       }

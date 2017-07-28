@@ -1,15 +1,18 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.1.2",
+  "version": "1.5.2",
   "config": {
     "access": "public"
   },
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook.single.sh",
+    "eslint": "../../build/bin/lint.eslint.sh"
   },
   "files": [
     "dist"

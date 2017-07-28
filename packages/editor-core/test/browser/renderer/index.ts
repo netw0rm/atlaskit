@@ -75,6 +75,27 @@ describe('Renderer', () => {
       expect(spy.called).to.equal(true);
     });
 
+    it('should return null if document is invalid', () => {
+      const unexpectedContent = [
+        true,
+        false,
+        new Date(),
+        '',
+        1,
+        [],
+        {},
+        {
+          content: [
+            {}
+          ]
+        }
+      ];
+
+      unexpectedContent.forEach(content => {
+        expect(renderDocument(content, serializer)).to.equal(null);
+      });
+    });
+
   });
 
 });

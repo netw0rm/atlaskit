@@ -1,9 +1,8 @@
 // @flow
-import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import type { Dimension, Position } from '../../../src/types';
 import isInsideDimension from '../../../src/state/is-inside-dimension';
-import getDimension from '../get-dimension-util';
+import getDimension from '../../utils/get-dimension-util';
 
 describe('is inside dimension', () => {
   const dimension: Dimension = getDimension({

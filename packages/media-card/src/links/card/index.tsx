@@ -3,6 +3,8 @@ import { Component, MouseEvent } from 'react';
 import { TrelloBoardLinkApp, UrlPreview, ImageResizeMode } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
+import {Href} from '../../utils/href';
+import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
@@ -19,9 +21,18 @@ export interface LinkCardProps extends SharedCardProps {
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
+
+  get isSmartCard(): boolean {
+    return Boolean(this.resources.smartCard);
+  }
+
   render(): JSX.Element | null {
     const {appearance} = this.props;
-    const {resources} = this;
+    const {resources, isSmartCard} = this;
+
+    if (isSmartCard && appearance === 'horizontal') {
+      return this.renderSmartCard();
+    }
 
     // If appearance is passed we prioritize that instead of the better looking one
     if (appearance === 'small') {
@@ -42,7 +53,34 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       if (resources.image) { return this.renderLinkCardImage(); }
     }
 
+    if (isSmartCard) {
+      return this.renderSmartCard();
+    }
+
     return this.renderGenericLink();
+  }
+
+  private renderSmartCard(): JSX.Element | null {
+    const {resources: {smartCard}} = this;
+
+    // this check is just to silence TS - this method should never be called if we don't have
+    // data for a smart-card
+    if (!smartCard) {
+      return null;
+    }
+
+    if (!smartCard.link) {
+      return (
+        <AppCardView model={smartCard}/>
+      );
+    }
+
+    return (
+      <Href linkUrl={smartCard.link.url}>
+        <AppCardView model={smartCard}/>
+      </Href>
+    );
+
   }
 
   private renderApplicationLink(): JSX.Element {

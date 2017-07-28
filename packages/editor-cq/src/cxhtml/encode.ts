@@ -1,7 +1,7 @@
 import {
   Fragment,
   Node as PMNode,
-  MediaNode
+  MediaAttributes,
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -46,8 +46,10 @@ export default function encode(node: PMNode) {
     } else if (node.type === schema.nodes.mediaGroup) {
       return encodeMediaGroup(node);
     } else if (node.type === schema.nodes.media) {
-      return encodeMedia(node as MediaNode);
-    } else {
+      return encodeMedia(node);
+    } else if (node.type === schema.nodes.table) {
+      return encodeTable(node);
+    }else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -87,20 +89,50 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodeMedia(node: MediaNode) {
+  function encodeMedia(node: PMNode): Element {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
-    elem.setAttribute('media-id', node.attrs.id);
-    elem.setAttribute('media-type', node.attrs.type);
-    elem.setAttribute('media-collection', node.attrs.collection);
-    if (node.fileName) {
-      elem.setAttribute('file-name', node.fileName);
+    const attrs = node.attrs as MediaAttributes;
+    elem.setAttribute('media-id', attrs.id);
+    elem.setAttribute('media-type', attrs.type);
+    elem.setAttribute('media-collection', attrs.collection);
+    if (attrs.__fileName) {
+      elem.setAttribute('file-name', attrs.__fileName);
     }
-    if (node.fileSize) {
-      elem.setAttribute('file-size', `${node.fileSize}`);
+    if (attrs.__fileSize) {
+      elem.setAttribute('file-size', `${attrs.__fileSize}`);
     }
-    if (node.fileMimeType) {
-      elem.setAttribute('file-mime-type', node.fileMimeType);
+    if (attrs.__fileMimeType) {
+      elem.setAttribute('file-mime-type', attrs.__fileMimeType);
     }
+    return elem;
+  }
+
+  function encodeTable(node: PMNode): Element {
+    const elem = doc.createElement('table');
+    const tbody = doc.createElement('tbody');
+
+    node.descendants(rowNode => {
+      const rowElement = doc.createElement('tr');
+
+      rowNode.descendants(colNode => {
+        const cellElement = (
+          colNode.type === schema.nodes.tableCell
+            ? doc.createElement('td')
+            : doc.createElement('th')
+        );
+        cellElement.appendChild(encodeFragment(colNode.content));
+        rowElement.appendChild(cellElement);
+
+        return false;
+      });
+
+      tbody.appendChild(rowElement);
+      return false;
+    });
+
+    elem.appendChild(tbody);
+    elem.setAttribute('class', 'confluenceTable');
+
     return elem;
   }
 

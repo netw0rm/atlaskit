@@ -6,7 +6,7 @@ import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import {ImageCropper, OnLoadHandler} from '../image-cropper';
-import {Slider} from '../slider';
+import Slider from '@atlaskit/field-range';
 import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
 import {uploadPlaceholder} from './images';
 

@@ -1,13 +1,9 @@
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import AkProfilecardResourced from '@atlaskit/profilecard';
+import { getMockProfileClient } from '../util';
 
-import MockProfileClient from '../story-data';
-
-const mockClient = new MockProfileClient({
-  cacheSize: 10,
-  cacheMaxAge: 5000,
-});
+const mockClient = getMockProfileClient(10, 5000);
 
 function randomNumber() {
   return Math.floor(Math.random() * 10).toString();

@@ -24,7 +24,7 @@ export function checkEncode(
     const encodedTree = new DOMParser().parseFromString(encoded, 'text/html');
     const htmlTree = new DOMParser().parseFromString(html, 'text/html');
 
-    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `expect ${encoded} to equal ${html}`);
+    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `htmls are not matched \n expected:\n- ${encoded} \n actual:\n- ${html} \n`);
   });
 }
 
@@ -42,7 +42,7 @@ export function checkParseEncodeRoundTrips(
     const encodedTree = new DOMParser().parseFromString(encoded, 'text/html');
     const htmlTree = new DOMParser().parseFromString(html, 'text/html');
 
-    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `expect ${encoded} to equal ${html}`);
+    expect(isElementEqual(encodedTree, htmlTree)).to.equal(true, `htmls are not matched \n expected:\n- ${encoded} \n actual:\n- ${html} \n`);
   });
 
   it(`round-trips HTML: ${description}`, () => {
@@ -67,12 +67,7 @@ function getAttributeNames(tags: HTMLElement) {
 
 // This function comes from https://stackoverflow.com/questions/10679762/how-to-compare-two-html-elements
 // It was renamed
-function isElementEqual(thisElement, otherElement) {
-  let name;
-
-  if(thisElement.nodeType !== otherElement.nodeType) {
-    return false;
-  }
+function isElementEqual(thisElement, otherElement): boolean {
 
   // Compare attributes without order sensitivity
   const thisAttributeNames = getAttributeNames(thisElement);
@@ -83,16 +78,17 @@ function isElementEqual(thisElement, otherElement) {
   }
 
   for (let index = 0; index < thisAttributeNames.length; ++index) {
-    name = thisAttributeNames[index];
+    const name = thisAttributeNames[index];
     if (thisElement.getAttribute(name) !== otherElement.getAttribute(name)) {
       return false;
     }
   }
 
   // Walk the children
-  for (thisElement = thisElement.firstChild, otherElement = otherElement.firstChild;
-    thisElement && otherElement;
-    thisElement = thisElement.nextSibling, otherElement = otherElement.nextSibling) {
+  thisElement = thisElement.firstChild;
+  otherElement = otherElement.firstChild;
+
+  while (thisElement && otherElement) {
     if (thisElement.nodeType !== otherElement.nodeType) {
       return false;
     }
@@ -104,6 +100,9 @@ function isElementEqual(thisElement, otherElement) {
     else if (thisElement.nodeValue !== otherElement.nodeValue) {
       return false;
     }
+
+    thisElement = thisElement.nextSibling;
+    otherElement = otherElement.nextSibling;
   }
 
   if (thisElement || otherElement) {

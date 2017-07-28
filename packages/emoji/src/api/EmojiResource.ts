@@ -217,7 +217,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
   }
 
-  private initEmojiRepository(emojiResponses: EmojiResponse[]): void {
+  protected initEmojiRepository(emojiResponses: EmojiResponse[]): void {
     let emojis: EmojiDescription[] = [];
     emojiResponses.forEach(emojiResponse => {
       emojis = emojis.concat(emojiResponse.emojis);

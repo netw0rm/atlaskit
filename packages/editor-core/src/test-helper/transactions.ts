@@ -9,11 +9,6 @@ import {
 } from './schema-builder';
 
 /**
- * Update the transaction's current selection.
- * This will determine the selection that the editor gets when the transaction is applied.
- */
-
-/**
  * Replace the given range, or the selection if no range is given, with a text node containing the given string
  */
 export function insertText(view: EditorView, text: string, from: number, to?: number) {

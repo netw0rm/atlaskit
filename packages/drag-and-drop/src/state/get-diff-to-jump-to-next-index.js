@@ -1,37 +1,47 @@
 // @flow
 import memoizeOne from 'memoize-one';
+import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import type {
   DraggableLocation,
-  Dimension,
-  DimensionMap,
+  DraggableDimension,
+  DroppableDimension,
+  DraggableDimensionMap,
+  DroppableDimensionMap,
   Position,
   DraggableId,
 } from '../types';
-import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 
 const getIndex = memoizeOne(
-  (draggables: Dimension[],
-    target: Dimension
+  (draggables: DraggableDimension[],
+    target: DraggableDimension
   ): number => draggables.indexOf(target)
 );
 
-export default (
+type GetDiffArgs = {|
   isMovingForward: boolean,
   draggableId: DraggableId,
   location: DraggableLocation,
-  draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap,
-): ?Position => {
-  const droppableDimension: Dimension = droppableDimensions[location.droppableId];
-  const draggableDimension: Dimension = draggableDimensions[draggableId];
+  draggables: DraggableDimensionMap,
+  droppables: DroppableDimensionMap,
+|}
+
+export default ({
+  isMovingForward,
+  draggableId,
+  location,
+  draggables,
+  droppables,
+}: GetDiffArgs): ?Position => {
+  const droppable: DroppableDimension = droppables[location.droppableId];
+  const draggable: DraggableDimension = draggables[draggableId];
   const currentIndex: number = location.index;
 
-  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(
-    droppableDimension,
-    draggableDimensions
+  const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
+    droppable,
+    draggables,
   );
 
-  const startIndex: number = getIndex(insideDroppable, draggableDimension);
+  const startIndex: number = getIndex(insideDroppable, draggable);
 
   if (startIndex === -1) {
     console.error('could not find draggable inside current droppable');
@@ -48,16 +58,16 @@ export default (
     return null;
   }
 
-  const atCurrentIndex: Dimension = insideDroppable[currentIndex];
+  const atCurrentIndex: DraggableDimension = insideDroppable[currentIndex];
   const nextIndex = isMovingForward ? currentIndex + 1 : currentIndex - 1;
-  const atNextIndex: Dimension = insideDroppable[nextIndex];
+  const atNextIndex: DraggableDimension = insideDroppable[nextIndex];
 
   const isMovingTowardStart = (isMovingForward && nextIndex <= startIndex) ||
     (!isMovingForward && nextIndex >= startIndex);
 
   const amount: number = isMovingTowardStart ?
-    atCurrentIndex.withMargin.height :
-    atNextIndex.withMargin.height;
+    atCurrentIndex.page.withMargin.height :
+    atNextIndex.page.withMargin.height;
 
   const diff: Position = {
     // not worrying about horizontal for now

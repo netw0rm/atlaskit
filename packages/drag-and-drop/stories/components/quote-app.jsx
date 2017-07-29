@@ -1,21 +1,18 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext } from '../../src/';
 import QuoteItem from './quote-item';
-import QuoteDescription from './quote-description';
 import QuoteList from './quote-list';
-import QuoteTracker from './quote-tracker';
-import data from './quotes';
-import { colors, grid, borderRadius } from './constants';
+import { colors, grid } from './constants';
 import type { Quote } from './types';
-import type { DropResult, DraggableLocation, DraggableId } from '../../src/types';
+import type { DropResult, DraggableLocation } from '../../src/types';
 
 const Root = styled.div`
   background-color: ${colors.blue};
+  box-sizing: border-box;
   padding: ${grid * 2}px;
   min-height: 100vh;
-  margin-left: ${grid * 2}px;
 
   /* flexbox */
   display: flex;
@@ -23,59 +20,44 @@ const Root = styled.div`
   align-items: flex-start;
 `;
 
-const Details = styled.div`
-  background-color: white;
-  border-radius: ${borderRadius}px;
-  padding: ${grid}px;
-  margin-left: ${grid * 2}px;
-  width: 400px;
-`;
+const isDraggingClassName = 'is-dragging';
 
-const Divider = styled.hr`
-  color: lightgrey;
-  margin-top: ${grid * 2}px;
-  margin-bottom: ${grid * 2}px;
-`;
+type Props = {|
+  initial: Quote[],
+  listStyle?: Object,
+|}
 
 type State = {|
-  dragging: ?DropResult,
   quotes: Quote[],
-  history: DropResult[],
+  isQuoteDragging: boolean
 |}
 
 export default class QuoteApp extends Component {
+  /* eslint-disable react/sort-comp */
+  props: Props
   state: State
 
   state: State = {
-    dragging: null,
-    quotes: data,
-    history: [],
-  }
+    quotes: this.props.initial,
+    isQuoteDragging: false,
+  };
+  /* eslint-enable */
 
-  onDragStart = (id: DraggableId, location: DraggableLocation) => {
-    const dragging: DropResult = {
-      draggableId: id,
-      source: location,
-      destination: null,
-    };
-
-    this.setState({
-      dragging,
-    });
+  onDragStart = () => {
+    // $ExpectError - body could be null?
+    document.body.classList.add(isDraggingClassName);
   }
 
   onDragEnd = (result: DropResult) => {
+    // remove drag styles
+    // $ExpectError - body could be null?
+    document.body.classList.remove(isDraggingClassName);
+
     const source: DraggableLocation = result.source;
     const destination: ?DraggableLocation = result.destination;
-    const history: DropResult[] = this.state.history.slice(0);
-    history.push(result);
 
     // nothing to do here!
     if (destination == null) {
-      this.setState({
-        history,
-        dragging: null,
-      });
       return;
     }
 
@@ -102,20 +84,29 @@ export default class QuoteApp extends Component {
 
     this.setState({
       quotes,
-      history,
-      dragging: null,
     });
   }
 
+  componentDidMount() {
+    // eslint-disable-next-line no-unused-expressions
+    injectGlobal`
+      body.${isDraggingClassName} {
+        cursor: grabbing;
+        user-select: none;
+      }
+    `;
+  }
+
   render() {
-    const { dragging, history, quotes } = this.state;
+    const { quotes } = this.state;
+
     return (
       <DragDropContext
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
       >
         <Root>
-          <QuoteList listId="list">
+          <QuoteList listId="list" style={this.props.listStyle}>
             {quotes.map((quote: Quote) => (
               <QuoteItem
                 quote={quote}
@@ -123,14 +114,6 @@ export default class QuoteApp extends Component {
               />
           ))}
           </QuoteList>
-          <Details>
-            <QuoteDescription />
-            <Divider />
-            <QuoteTracker
-              current={dragging}
-              history={history}
-            />
-          </Details>
         </Root>
       </DragDropContext>
     );

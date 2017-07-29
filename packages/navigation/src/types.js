@@ -42,10 +42,6 @@ export type RootTheme = {|
   isCollapsed: bool,
 |}
 
-export type GroupTheme = {|
-  isCompact: bool
-|}
-
 export type ReactElement = any;
 
 export type DrawerProps = {
@@ -66,3 +62,9 @@ export type DrawerProps = {
   given to the GlobalNavigation component */
   primaryIcon: ReactElement,
 }
+
+export type DragProvided = {|
+  innerRef: Function,
+  placeholder?: ReactElement,
+  draggableStyle: Object
+|}

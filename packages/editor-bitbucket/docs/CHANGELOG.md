@@ -1,5 +1,8 @@
 # @atlaskit/editor-bitbucket
 
+## 2.6.1 (2017-07-28)
+
+* bug fix; bump editor-core in editor-bitbucket ([abec6f0](https://bitbucket.org/atlassian/atlaskit/commits/abec6f0))
 ## 2.6.0 (2017-07-27)
 
 * bug fix; fixed mentions in storybook ([823c533](https://bitbucket.org/atlassian/atlaskit/commits/823c533))

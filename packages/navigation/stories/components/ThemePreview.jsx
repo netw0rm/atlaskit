@@ -9,7 +9,10 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import ListIcon from '@atlaskit/icon/glyph/list';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
-import AkDropdownMenu from '@atlaskit/dropdown-menu';
+import AkDropdownMenu, {
+  AkDropdownItemRadio,
+  AkDropdownItemGroupRadio,
+} from '@atlaskit/dropdown-menu';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { AkNavigationItem } from '../../src';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
@@ -45,17 +48,14 @@ const famousThemes = [
   },
 ];
 
-const simpleDropdownItems = [
-  {
-    heading: 'Cities',
-    items: [
-      { content: 'Sydney', type: 'radio' },
-      { content: 'Canberra', type: 'radio' },
-      { content: 'Melbourne', type: 'radio' },
-      { content: 'Perth', type: 'radio' },
-    ],
-  },
-];
+const simpleDropdownItems = (
+  <AkDropdownItemGroupRadio id="cities" title="Cities">
+    <AkDropdownItemRadio id="city-1">Sydney</AkDropdownItemRadio>
+    <AkDropdownItemRadio id="city-2">Canberra</AkDropdownItemRadio>
+    <AkDropdownItemRadio id="city-3">Melbourne</AkDropdownItemRadio>
+    <AkDropdownItemRadio id="city-4">Perth</AkDropdownItemRadio>
+  </AkDropdownItemGroupRadio>
+);
 
 // eslint-disable-next-line react/prop-types
 const ThemeSwatches = ({ theme }) => (

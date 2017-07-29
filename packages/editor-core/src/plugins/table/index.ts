@@ -579,6 +579,14 @@ const plugin = new Plugin({
       stateKey.getState(view.state).update(view.docView, true);
       return false;
     },
+    handleDrop(view: EditorView, event: DragEvent, slice: Slice, moved: boolean) {
+      const html = event.dataTransfer && event.dataTransfer.getData('text/html');
+      // cancel dragging of table cells
+      if (html && html.indexOf('<table>') > -1) {
+        return true;
+      }
+      return false;
+    },
     onFocus(view: EditorView, event) {
       const pluginState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(true);

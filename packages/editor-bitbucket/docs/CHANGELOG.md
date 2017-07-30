@@ -1,6 +1,16 @@
 # @atlaskit/editor-bitbucket
 
-## Unreleased
+## 2.6.1 (2017-07-28)
+
+* bug fix; bump editor-core in editor-bitbucket ([abec6f0](https://bitbucket.org/atlassian/atlaskit/commits/abec6f0))
+## 2.6.0 (2017-07-27)
+
+* bug fix; fixed mentions in storybook ([823c533](https://bitbucket.org/atlassian/atlaskit/commits/823c533))
+* bug fix; fix emoji storybook ([82fb228](https://bitbucket.org/atlassian/atlaskit/commits/82fb228))
+* bug fix; fix emojiProvider tslint error ([3b158f8](https://bitbucket.org/atlassian/atlaskit/commits/3b158f8))
+* feature; bump editor-core to 43.1.0 ([ed778c2](https://bitbucket.org/atlassian/atlaskit/commits/ed778c2))
+
+
 * Update BB editor with a max height (ED-1949).
 
 

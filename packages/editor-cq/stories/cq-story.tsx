@@ -229,4 +229,14 @@ storiesOf(name, module)
 
     return <Demo />;
   })
+  .add('Tables', () =>
+    <Editor
+      isExpandedByDefault={true}
+      onCancel={CANCEL_ACTION}
+      onSave={SAVE_ACTION}
+      onChange={handleChange}
+      mentionProvider={mentionProvider}
+      tablesEnabled={true}
+    />
+  )
 ;

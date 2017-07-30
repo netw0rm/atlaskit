@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import {
   DefaultMediaStateManager,
-  MediaStateStatus,
 } from '@atlaskit/media-core';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
@@ -22,29 +21,34 @@ import {
   media,
   p,
   a,
+  hr,
   storyMediaProviderFactory,
   randomId,
   sleep,
-  setNodeSelection,
   insertText,
+  getLinkCreateContextMock,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setNodeSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+const testLinkId = `mock-link-id${randomId()}`;
+const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
-const getFreshResolvedProvider = () => {
+
+const getFreshMediaProvider = () => {
   return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
 };
 
 describe('Media plugin', () => {
-  const resolvedProvider = getFreshResolvedProvider();
+  const mediaProvider = getFreshMediaProvider();
   const temporaryFileId = `temporary:${randomId()}`;
 
   const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('mediaProvider', resolvedProvider);
+  providerFactory.setProvider('mediaProvider', mediaProvider);
 
   const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
     doc,
@@ -69,7 +73,7 @@ describe('Media plugin', () => {
   it('should invoke binary picker when calling insertFileFromDataUrl', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
-    const provider = await resolvedProvider;
+    const provider = await mediaProvider;
     await provider.uploadContext;
 
     expect(pluginState.binaryPicker!).to.be.an('object');
@@ -90,7 +94,7 @@ describe('Media plugin', () => {
     const { pluginState } = editor(doc(p(), p('{<>}')), handler);
     const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    await resolvedProvider;
+    await mediaProvider;
 
     pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
 
@@ -120,7 +124,7 @@ describe('Media plugin', () => {
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), handler);
     const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
 
-    const provider = await resolvedProvider;
+    const provider = await mediaProvider;
     await provider.uploadContext;
 
     pluginState.insertFile({ id: temporaryFileId, status: 'uploading' });
@@ -156,7 +160,7 @@ describe('Media plugin', () => {
     const thirdTemporaryFileId = `temporary:third`;
 
     // wait until mediaProvider has been set
-    const provider = await resolvedProvider;
+    const provider = await mediaProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
@@ -233,7 +237,7 @@ describe('Media plugin', () => {
     const publicFileId = `${randomId()}`;
 
     // wait until mediaProvider has been set
-    const provider = await resolvedProvider;
+    const provider = await mediaProvider;
     // wait until mediaProvider's uploadContext has been set
     await provider.uploadContext;
 
@@ -288,9 +292,9 @@ describe('Media plugin', () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
-    const mediaProvider1 = getFreshResolvedProvider();
+    const mediaProvider1 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider1);
-    const mediaProvider2 = getFreshResolvedProvider();
+    const mediaProvider2 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider2);
 
     const resolvedMediaProvider1 = await mediaProvider1;
@@ -305,14 +309,14 @@ describe('Media plugin', () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
-    const mediaProvider1 = getFreshResolvedProvider();
+    const mediaProvider1 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
     const pickersAfterMediaProvider1 = pluginState.pickers;
     expect(pickersAfterMediaProvider1).to.have.length(4);
 
-    const mediaProvider2 = getFreshResolvedProvider();
+    const mediaProvider2 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
@@ -328,7 +332,7 @@ describe('Media plugin', () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
-    const mediaProvider1 = getFreshResolvedProvider();
+    const mediaProvider1 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider1);
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
@@ -337,7 +341,7 @@ describe('Media plugin', () => {
       picker.setUploadParams = sinon.spy();
     });
 
-    const mediaProvider2 = getFreshResolvedProvider();
+    const mediaProvider2 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
@@ -347,31 +351,19 @@ describe('Media plugin', () => {
     });
   });
 
-  [
-    'unfinalized',
-    'unknown',
-    'ready',
-    'error',
-    'cancelled',
-  ].forEach((status: MediaStateStatus) => {
-    it(`should remove ${status} media nodes`, async () => {
-      const mediaNode = media({ id: 'foo', type: 'file', collection: testCollectionName });
+  describe('handleMediaNodeRemove', () => {
+    it('removes media node', () => {
+      const deletingMediaNodeId = 'foo';
+      const deletingMediaNode = media({ id: deletingMediaNodeId, type: 'file', collection: testCollectionName });
       const { editorView, pluginState } = editor(
         doc(
-          mediaGroup(mediaNode),
+          mediaGroup(deletingMediaNode),
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })),
         ),
       );
 
-      await resolvedProvider;
-
-      stateManager.updateState('foo', {
-        status,
-        id: 'foo',
-      });
-
-      const pos = getNodePos(pluginState, 'foo');
-      pluginState.handleMediaNodeRemove(mediaNode, () => pos);
+      const pos = getNodePos(pluginState, deletingMediaNodeId);
+      pluginState.handleMediaNodeRemoval(deletingMediaNode, () => pos);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -381,9 +373,70 @@ describe('Media plugin', () => {
     });
   });
 
+  describe('removeSelectedMediaNode', () => {
+    context('when selection is a media node', () => {
+      it('removes node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc(p()));
+      });
+
+      it('returns true', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(true);
+      });
+    });
+
+    context('when selection is a non media node', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc(hr, mediaGroup(deletingMediaNode)));
+      });
+
+      it('returns false', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc(hr, mediaGroup(deletingMediaNode)));
+        setNodeSelection(editorView, 1);
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+      });
+    });
+
+    context('when selection is text', () => {
+      it('does not remove media node', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { editorView, pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        pluginState.removeSelectedMediaNode();
+
+        expect(editorView.state.doc).to.deep.equal(doc('hello', mediaGroup(deletingMediaNode)));
+      });
+
+      it('returns false', () => {
+        const deletingMediaNode = media({ id: 'media', type: 'file', collection: testCollectionName });
+        const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
+
+        expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+      });
+    });
+  });
+
+
   it('should focus the editor after files are added to the document', async () => {
     const { editorView, pluginState } = editor(doc(p('')));
-    await resolvedProvider;
+    await mediaProvider;
 
     pluginState.insertFile({ id: 'foo' });
     expect(editorView.hasFocus()).to.be.equal(true);
@@ -461,38 +514,49 @@ describe('Media plugin', () => {
       it('sets ranges with links', () => {
         const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
         const { state } = editorView;
-        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+        const nodes = link1.concat(link2);
+        const length = nodes.reduce((length, node) => length + (node.text ? node.text.length : 0), 0);
+        const tr = state.tr.replaceWith(sel, sel, nodes);
         pluginState.ignoreLinks = false;
         pluginState.allowsLinks = true;
 
         pluginState.detectLinkRangesInSteps(tr);
 
         expect((pluginState as any).linkRanges).to.deep.equal([
-          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] }
+          { start: sel, end: sel + length, urls: ['www.google.com', 'www.baidu.com'] }
         ]);
       });
     });
   });
 
   describe('insertLinks', () => {
-    it('creates a link card below where is the link created', () => {
+    it('creates a link card below linkified text', async () => {
       const link = 'www.google.com';
       const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
-      const collectionFromProviderSpy = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);
+      const mediaProvider = getFreshMediaProvider();
+
+      // wait until mediaProvider has been set
+      const provider = await mediaProvider;
+      // wait until mediaProvider's linkCreateContext has been set
+      await provider.linkCreateContext;
+
+      provider.linkCreateContext = Promise.resolve(linkCreateContextMock);
+
+      await pluginState.setMediaProvider(Promise.resolve(provider));
 
       // way to stub private member
       (pluginState as any).linkRanges = [{ start: sel - link.length - 1, end: sel, urls: [link] }];
 
       // -1 for space, simulate the scenario of autoformatting link
-      pluginState.insertLinks();
+      const linkIds = await pluginState.insertLinks();
+
+      expect(linkIds).to.have.lengthOf(1);
 
       expect(editorView.state.doc).to.deep.equal(doc(
         p(`${link} `),
-        mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+        mediaGroup(media({ id: `${linkIds![0]}`, type: 'link', collection: testCollectionName })),
         p(),
       ));
-
-      collectionFromProviderSpy.restore();
     });
   });
 

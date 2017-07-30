@@ -1,5 +1,9 @@
 # @atlaskit/drag-and-drop
 
+## 4.5.0 (2017-07-28)
+
+* feature; adding support for scroll containers (issues closed: ak-2575, ak-3005, ak-3039, ak-3137) ([5afae78](https://bitbucket.org/atlassian/atlaskit/commits/5afae78))
+
 ## 4.4.2 (2017-07-27)
 
 * bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))

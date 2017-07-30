@@ -48,7 +48,12 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
+
+  // transformers
+  JIRATransformer,
 } from '@atlaskit/editor-core';
+
+import { JSONSerializer } from '@atlaskit/editor-core/src/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
@@ -466,3 +471,11 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 }
+
+export const parseIntoAtlassianDocument = (html: string, schema: JIRASchema) => {
+  const serializer = new JSONSerializer();
+  const transformer = new JIRATransformer(schema);
+  const doc = transformer.parse(html);
+
+  return serializer.serializeFragment(doc.content) as any;
+};

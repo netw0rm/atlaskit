@@ -1,6 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
+import { akElevationMixins } from '@atlaskit/util-shared-styles';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -24,23 +25,21 @@ const getPadding = ({ isCompact, theme }) => {
 const getHeightStyles = ({ isCompact, theme }) => {
   const heightKey = isCompact ? 'compact' : 'default';
   const height = getThemeStyle(theme[themeNamespace], heightKey, 'height');
-  return height ? (
-    css`
-      height: ${height}px;
-      box-sizing: border-box;
-    `
-  ) : (
-    css`
-      box-sizing: border-box;
-    `
-  );
+  return height ? css`
+    height: ${height}px;
+  ` : '';
 };
 
-const getInteractiveStyles = ({ isDisabled }) => {
+const getInteractiveStyles = ({ isDisabled, isDragging }) => {
   if (isDisabled) {
     return css`
       cursor: not-allowed;
       ${getItemState('disabled')}
+    `;
+  } else if (isDragging) {
+    return css`
+      ${akElevationMixins.e200}
+      ${getItemState('hover')}
     `;
   }
 
@@ -62,8 +61,10 @@ const getInteractiveStyles = ({ isDisabled }) => {
 export const ItemBase = ({ isSelected, theme }) => css`
   align-items: center;
   border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
+  box-sizing: border-box;
   cursor: pointer;
   display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
+  flex: none;
   ${getItemState(isSelected ? 'selected' : 'default')}
   ${getPadding}
   ${getInteractiveStyles}
@@ -90,9 +91,9 @@ const styledRootElement = (
   if (href) {
     return linkComponent
       ? styled(linkComponent)`${ItemBase}`
-      : styled.a`${ItemBase};`;
+      : styled.a`${ItemBase}`;
   }
-  return styled.span`${ItemBase};`;
+  return styled.span`${ItemBase}`;
 };
 
 export default styledRootElement;

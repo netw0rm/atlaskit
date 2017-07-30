@@ -354,7 +354,7 @@ export default class Editor extends PureComponent<Props, State> {
         ...mentionsPlugins(schema, this.providerFactory),
         ...mediaPlugins,
         ...emojisPlugins(schema, this.providerFactory),
-        ...asciiEmojiPlugins(schema, this.props.emojiProvider),
+        ...asciiEmojiPlugins(schema, this.providerFactory),
         ...hyperlinkPlugins(schema),
         ...textFormattingPlugins(schema),
         ...reactNodeViewPlugins(schema),

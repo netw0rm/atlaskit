@@ -1,5 +1,47 @@
 # @atlaskit/editor-core
 
+## 44.0.2 (2017-07-28)
+
+* bug fix; media group with single item exception. ([78aa7d3](https://bitbucket.org/atlassian/atlaskit/commits/78aa7d3))
+## 44.0.1 (2017-07-28)
+
+* bug fix; import media core from node_modules instead of direct path ([8c5e737](https://bitbucket.org/atlassian/atlaskit/commits/8c5e737))
+
+* bug fix; removed unused typescript. ([cb99770](https://bitbucket.org/atlassian/atlaskit/commits/cb99770))
+
+* bug fix; moved setNodeSelection and setTextSelection from test-helper to src/utils ([1ec5dc6](https://bitbucket.org/atlassian/atlaskit/commits/1ec5dc6))
+## 44.0.0 (2017-07-28)
+
+* bug fix; modifying URL doesn't change destination href (issues closed: ed-2150, ed-2321) ([add3b17](https://bitbucket.org/atlassian/atlaskit/commits/add3b17))
+* bug fix; sizing of file cards in Editor nodeview. ([1c7f281](https://bitbucket.org/atlassian/atlaskit/commits/1c7f281))
+
+
+* feature; add occurrenceKey in media node (issues closed: ed-2064) ([7fe150a](https://bitbucket.org/atlassian/atlaskit/commits/7fe150a))
+* bug fix; update the profilecard in the editor-core ([ddf9600](https://bitbucket.org/atlassian/atlaskit/commits/ddf9600))
+* bug fix; disable advance menu for the first table release (issues closed: ed-2341) ([51447df](https://bitbucket.org/atlassian/atlaskit/commits/51447df))
+* bug fix; renamed arrowup and arrowdown back to moveup and movedown. ([3c28847](https://bitbucket.org/atlassian/atlaskit/commits/3c28847))
+* bug fix; fixed media keymap stub, because the method was renamed. ([1bd55be](https://bitbucket.org/atlassian/atlaskit/commits/1bd55be))
+* bug fix; removed extra new lines. ([6dd0468](https://bitbucket.org/atlassian/atlaskit/commits/6dd0468))
+* breaking; Update handleMediaNodeRemove to handleMediaNodeRemoval in media plugin ([5299085](https://bitbucket.org/atlassian/atlaskit/commits/5299085))
+* breaking; give it better name ([5299085](https://bitbucket.org/atlassian/atlaskit/commits/5299085))
+* feature; handle when media node is the first one in the group ([7b8deb1](https://bitbucket.org/atlassian/atlaskit/commits/7b8deb1))
+* bug fix; move backspace test to the right place ([b61308b](https://bitbucket.org/atlassian/atlaskit/commits/b61308b))
+
+* breaking; replaced handleMediaNodeOutsideRemove in media plugin with cancelInFlightUpload ([1f6aeb1](https://bitbucket.org/atlassian/atlaskit/commits/1f6aeb1))
+* breaking; replaced handleMediaNodeOutsideRemove in media plugin with cancelInFlightUpload ([1f6aeb1](https://bitbucket.org/atlassian/atlaskit/commits/1f6aeb1))
+
+* bug fix; removed unused import. ([3292bc3](https://bitbucket.org/atlassian/atlaskit/commits/3292bc3))
+
+* feature; handle selection only if has a media node before current media node. ([c0fb6ed](https://bitbucket.org/atlassian/atlaskit/commits/c0fb6ed))
+
+* feature; set selection to previous media node after deleting media. ([a811a48](https://bitbucket.org/atlassian/atlaskit/commits/a811a48))
+## 43.2.0 (2017-07-27)
+
+* bug fix; renderer should not break UI when collection is an empty string (issues closed: ed-2344) ([445e261](https://bitbucket.org/atlassian/atlaskit/commits/445e261))
+* feature; move JIRA serializer/parser into editor-core, copy JIRA schema as well (issues closed: ed-2324) ([07f77f6](https://bitbucket.org/atlassian/atlaskit/commits/07f77f6))
+* bug fix; appearance of media links in strip in the editor. (issues closed: ed-2295) ([3de66f4](https://bitbucket.org/atlassian/atlaskit/commits/3de66f4))
+* bug fix; inserting links must create new media item via media API. (issues closed: ed-2295) ([a247785](https://bitbucket.org/atlassian/atlaskit/commits/a247785))
+* bug fix; rendering of link cards, sizing of cards. ([fa4bbbf](https://bitbucket.org/atlassian/atlaskit/commits/fa4bbbf))
 ## 43.1.1 (2017-07-27)
 
 

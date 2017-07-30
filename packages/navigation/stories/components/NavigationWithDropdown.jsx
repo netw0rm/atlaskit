@@ -5,20 +5,17 @@ import styled from 'styled-components';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import ListIcon from '@atlaskit/icon/glyph/list';
 import BasicNavigation from './BasicNavigation';
-import { AkNavigationItem } from '../../src/index';
+import NavigationItem from '../../src/components/js/NavigationItem';
 
 const DropdownWrapper = styled.div`padding-bottom: 4px`;
+
+const DropdownListIcon = <ListIcon label="List" size="medium" />;
 
 export default class NavigationWithDropdown extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    dropdownProps: PropTypes.shape({}),
+    dropdownItems: PropTypes.node,
     navigationItemProps: PropTypes.shape({}),
-  }
-
-  static defaultProps = {
-    navigationItemProps: {},
-    dropdownProps: {},
   }
 
   state = {
@@ -30,7 +27,6 @@ export default class NavigationWithDropdown extends PureComponent {
   }
 
   render() {
-    const dropdownTriggerText = this.props.navigationItemProps.text || 'Dropdown Menu'; // eslint-disable-line react/prop-types
     return (
       <BasicNavigation
         onResizeCallback={this.onResize}
@@ -39,15 +35,25 @@ export default class NavigationWithDropdown extends PureComponent {
           <AkDropdownMenu
             shouldFitContainer={this.state.isNavigationOpen}
             position={this.state.isNavigationOpen ? 'bottom left' : 'right top'}
-            {...this.props.dropdownProps}
+            trigger={
+              this.state.isNavigationOpen ? (
+                <NavigationItem
+                  isDropdownTrigger
+                  icon={DropdownListIcon}
+                  dropIcon={<ExpandIcon label="Chevron" size="medium" />}
+                  {...this.props.navigationItemProps}
+                  text="Dropdown menu"
+                />
+              ) : (
+                <NavigationItem
+                  isDropdownTrigger
+                  text={DropdownListIcon}
+                  {...this.props.navigationItemProps}
+                />
+              )
+            }
           >
-            <AkNavigationItem
-              isDropdownTrigger
-              icon={<ListIcon label="List" />}
-              dropIcon={<ExpandIcon label="Chevron" />}
-              {...this.props.navigationItemProps}
-              text={dropdownTriggerText}
-            />
+            {this.props.dropdownItems}
           </AkDropdownMenu>
         </DropdownWrapper>
         {this.props.children}

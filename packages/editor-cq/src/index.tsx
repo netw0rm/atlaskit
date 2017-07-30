@@ -77,6 +77,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  tablesEnabled?: boolean;
 }
 
 export interface State {
@@ -230,7 +231,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { disabled = false, popupsBoundariesElement, popupsMountPoint } = this.props;
+    const {
+      disabled = false,
+      tablesEnabled,
+      popupsBoundariesElement,
+      popupsMountPoint
+    } = this.props;
     const { editorView, isExpanded, isMediaReady } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -245,7 +251,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
-    const tableState = editorState && tableStateKey.getState(editorState);
+    const tableState = tablesEnabled && editorState && tableStateKey.getState(editorState);
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
@@ -289,9 +295,10 @@ export default class Editor extends PureComponent<Props, State> {
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
     const { mediaPlugins } = this;
+    const { tablesEnabled, defaultValue } = this.props;
 
     if (place) {
-      const doc = parse(this.props.defaultValue || '');
+      const doc = parse(defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -317,7 +324,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
-          ...tablePlugins(),
+          ...(tablesEnabled ? tablePlugins() : []),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),

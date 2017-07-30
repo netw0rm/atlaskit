@@ -74,7 +74,7 @@ describe('ascii emojis - input rules', () => {
         });
       });
 
-      it.skip('should replace a matching emoticon even when containing a colon', () => {
+      it('should replace a matching emoticon even when containing a colon', () => {
         return assert(`text ':D`, p('{<>}'), (state) => {
           const emoji = emojiNode({
             id: '1f605',

@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import type { Props, Provided, StateSnapshot, DefaultProps } from './droppable-types';
-import type { HTMLElement } from '../../types';
-import { DroppableDimensionPublisher } from '../dimension-publisher/';
+import type { DroppableId, HTMLElement } from '../../types';
+import DroppableDimensionPublisher from '../droppable-dimension-publisher/';
+import { droppableIdKey } from '../context-keys';
 
 type State = {|
   ref: ?HTMLElement,
+|}
+
+type Context = {|
+  [droppableIdKey]: DroppableId
 |}
 
 export default class Droppable extends Component {
@@ -19,6 +24,19 @@ export default class Droppable extends Component {
   static defaultProps: DefaultProps = {
     type: 'DEFAULT',
     isDropDisabled: false,
+  }
+
+  // Need to declare childContextTypes without flow
+  // https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22
+  static childContextTypes = {
+    [droppableIdKey]: PropTypes.string.isRequired,
+  }
+
+  getChildContext(): Context {
+    const value: Context = {
+      [droppableIdKey]: this.props.droppableId,
+    };
+    return value;
   }
   /* eslint-enable */
 
@@ -50,7 +68,7 @@ export default class Droppable extends Component {
 
     return (
       <DroppableDimensionPublisher
-        itemId={this.props.droppableId}
+        droppableId={this.props.droppableId}
         type={this.props.type}
         targetRef={this.state.ref}
       >

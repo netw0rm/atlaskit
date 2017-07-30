@@ -2,10 +2,10 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../../src';
-import { TextSelection } from '../../../../src/prosemirror';
 import listsPlugins, { ListsState } from '../../../../src/plugins/lists';
 import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 
@@ -92,13 +92,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ex{end}t')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });
@@ -106,13 +104,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ext{end}')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });

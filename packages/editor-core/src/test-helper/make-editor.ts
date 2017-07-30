@@ -8,7 +8,7 @@ import {
 } from '../prosemirror';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
-import { setTextSelection } from './transactions';
+import { setTextSelection } from '../utils';
 import { reactNodeViewPlugins } from '../plugins';
 
 /**

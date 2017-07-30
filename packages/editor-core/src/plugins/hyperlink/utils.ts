@@ -42,7 +42,7 @@ export function linkifyText(schema: Schema<any, any>, text: string): Slice|undef
     if (match.start > start) {
       fragments.push(schema.text(text.slice(start, match.start)));
     }
-    fragments.push(schema.text(match.title, [schema.marks.link.create({ href: match.href })]));
+    fragments.push(schema.text(match.title, [schema.marks.link.create({ href: normalizeUrl(match.href) })]));
     start = match.end;
   });
   if (start < text.length) {
@@ -76,7 +76,7 @@ function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragmen
           linkified.push(child.cut(pos, match.start));
         }
         linkified.push(
-          child.cut(match.start, match.end).mark(link.create({href: match.href}).addToSet(child.marks))
+          child.cut(match.start, match.end).mark(link.create({href: normalizeUrl(match.href)}).addToSet(child.marks))
         );
         pos = match.end;
       });

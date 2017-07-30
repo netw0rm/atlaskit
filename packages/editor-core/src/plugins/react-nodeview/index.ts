@@ -3,6 +3,7 @@ import {
   Schema,
   Plugin,
   PluginKey,
+  EditorView,
 } from '../../prosemirror';
 
 export type StateChangeHandler = (anchorPos: number, headPos: number) => any;
@@ -35,15 +36,20 @@ export const plugin = new Plugin({
       return new ReactNodeViewState();
     },
     apply(tr, pluginState: ReactNodeViewState, oldState, newState) {
-      if (!tr.docChanged) {
-        const { $anchor, $head } = tr.selection;
-        pluginState.notifyNewSelection($anchor.pos, $head.pos);
-      }
-
       return pluginState;
     }
   },
   key: stateKey,
+  view: (view: EditorView) => {
+    const pluginState: ReactNodeViewState = stateKey.getState(view.state);
+
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        const { $anchor, $head } = view.state.selection;
+        pluginState.notifyNewSelection($anchor.pos, $head.pos);
+      }
+    };
+  }
 });
 
 const plugins = (schema: Schema<any, any>) => {

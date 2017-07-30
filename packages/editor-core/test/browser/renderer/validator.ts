@@ -416,6 +416,24 @@ describe('Renderer - Validator', () => {
           }
         });
       });
+
+      it('should return "media" with attrs and type if collection is empty', () => {
+        expect(getValidNode({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: ''
+          }
+        })).to.deep.equal({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: ''
+          }
+        });
+      });
     });
 
     it('should overwrite the default schema if it gets a docSchema parameter', () => {

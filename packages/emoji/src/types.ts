@@ -139,11 +139,7 @@ export interface CategoryDescription {
   id: string;
   name: string;
   icon: any;
-}
-
-export interface AvailableCategories {
-  /** index is a category id */
-  [index: string]: boolean;
+  order: number;
 }
 
 export interface OnToneSelected {
@@ -161,6 +157,11 @@ export interface OnCategory {
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
+}
+
+export interface EmojiSearchResult {
+  emojis: EmojiDescription[];
+  query?: string;
 }
 
 export type ToneSelection = number | undefined;

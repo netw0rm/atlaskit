@@ -3,8 +3,8 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import { AvailableCategories, CategoryDescription, OnCategory } from '../../types';
-import { customCategory } from '../../constants';
+import { CategoryDescription, OnCategory } from '../../types';
+import { customCategory, defaultCategories } from '../../constants';
 
 import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
@@ -19,73 +19,111 @@ import EmojiSymbolsIcon from '@atlaskit/icon/glyph/emoji/symbols';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 
 export interface Props {
-  categories?: CategoryDescription[];
+  dynamicCategories?: string[];
   activeCategoryId?: string;
+  disableCategories?: boolean;
   onCategorySelected?: OnCategory;
-  availableCategories?: AvailableCategories;
 }
 
-export default class CategorySelector extends PureComponent<Props, undefined> {
+export interface State {
+  categories: string[];
+}
+
+export type CategoryMap = {
+  [id: string]: CategoryDescription;
+};
+
+// tslint:disable-next-line:variable-name
+export const CategoryDescriptionMap: CategoryMap = {
+  'FREQUENT': {
+    id: 'FREQUENT',
+    name: 'Frequent',
+    icon: EmojiFrequentIcon,
+    order: 1,
+  },
+  'PEOPLE': {
+    id: 'PEOPLE',
+    name: 'People',
+    icon: EmojiPeopleIcon,
+    order: 2,
+  },
+  'NATURE': {
+    id: 'NATURE',
+    name: 'Nature',
+    icon: EmojiNatureIcon,
+    order: 3,
+  },
+  'FOODS': {
+    id: 'FOODS',
+    name: 'Food & Drink',
+    icon: EmojiFoodIcon,
+    order: 4,
+  },
+  'ACTIVITY': {
+    id: 'ACTIVITY',
+    name: 'Activity',
+    icon: EmojiActivityIcon,
+    order: 5,
+  },
+  'PLACES': {
+    id: 'PLACES',
+    name: 'Travel & Places',
+    icon: EmojiTravelIcon,
+    order: 6,
+  },
+  'OBJECTS': {
+    id: 'OBJECTS',
+    name: 'Objects',
+    icon: EmojiObjectsIcon,
+    order: 7,
+  },
+  'SYMBOLS': {
+    id: 'SYMBOLS',
+    name: 'Symbols',
+    icon: EmojiSymbolsIcon,
+    order: 8,
+  },
+  'FLAGS': {
+    id: 'FLAGS',
+    name: 'Flags',
+    icon: EmojiFlagsIcon,
+    order: 9,
+  },
+  'ATLASSIAN': {
+    id: 'ATLASSIAN',
+    name: 'Atlassian',
+    icon: EmojiAtlassianIcon,
+    order: 10,
+  },
+  'CUSTOM': {
+    id: customCategory,
+    name: 'Custom',
+    icon: EmojiCustomIcon,
+    order: 11,
+  },
+};
+
+export const sortCategories = ((c1, c2) => CategoryDescriptionMap[c1].order - CategoryDescriptionMap[c2].order);
+
+export default class CategorySelector extends PureComponent<Props, State> {
   static defaultProps = {
-    categories: [
-      {
-        id: 'FREQUENT',
-        name: 'Frequent',
-        icon: EmojiFrequentIcon,
-      },
-      {
-        id: 'PEOPLE',
-        name: 'People',
-        icon: EmojiPeopleIcon,
-      },
-      {
-        id: 'NATURE',
-        name: 'Nature',
-        icon: EmojiNatureIcon,
-      },
-      {
-        id: 'FOODS',
-        name: 'Food & Drink',
-        icon: EmojiFoodIcon,
-      },
-      {
-        id: 'ACTIVITY',
-        name: 'Activity',
-        icon: EmojiActivityIcon,
-      },
-      {
-        id: 'PLACES',
-        name: 'Travel & Places',
-        icon: EmojiTravelIcon,
-      },
-      {
-        id: 'OBJECTS',
-        name: 'Objects',
-        icon: EmojiObjectsIcon,
-      },
-      {
-        id: 'SYMBOLS',
-        name: 'Symbols',
-        icon: EmojiSymbolsIcon,
-      },
-      {
-        id: 'FLAGS',
-        name: 'Flags',
-        icon: EmojiFlagsIcon,
-      },
-      {
-        id: 'ATLASSIAN',
-        name: 'Atlassian',
-        icon: EmojiAtlassianIcon,
-      },
-      {
-        id: customCategory,
-        name: 'Custom',
-        icon: EmojiCustomIcon,
-      },
-    ],
     onCategorySelected: () => {},
+    dynamicCategories: [],
   };
+
+  constructor(props: Props) {
+    super(props);
+    const { dynamicCategories } = props;
+
+    let categories = defaultCategories;
+    if (dynamicCategories) {
+      categories = categories.concat(dynamicCategories.filter(category => !!CategoryDescriptionMap[category]));
+      categories.sort(sortCategories);
+    }
+    this.state = {
+      categories
+    };
+  }
 
   onClick = (categoryId) => {
     const { onCategorySelected } = this.props;
@@ -95,23 +133,25 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const { categories, availableCategories } = this.props;
+    const { disableCategories } = this.props;
+    const { categories } = this.state;
     let categoriesSection;
     if (categories) {
       categoriesSection = (
         <ul>
-          {categories.map((category) => {
+          {categories.map((categoryId) => {
+            const category = CategoryDescriptionMap[categoryId];
             const categoryClasses = [styles.category];
-            if (category.id === this.props.activeCategoryId) {
+            if (categoryId === this.props.activeCategoryId) {
               categoryClasses.push(styles.active);
             }
 
             let onClick;
-            if (!availableCategories || !availableCategories[category.id]) {
+            if (disableCategories) {
               categoryClasses.push(styles.disable);
             } else {
               // disable click handling
-              onClick = () => this.onClick(category.id);
+              onClick = () => this.onClick(categoryId);
             }
 
             // tslint:disable-next-line:variable-name

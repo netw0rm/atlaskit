@@ -2,10 +2,10 @@ import * as uid from 'uid';
 import { AbstractResource } from '@atlaskit/util-service-support';
 
 import { customCategory, customType } from '../../src/constants';
-import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
+import { EmojiDescription, EmojiId, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
 import { selectedToneStorageKey } from '../../src/constants';
-import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
-import EmojiRepository, { EmojiSearchResult } from '../../src/api/EmojiRepository';
+import { EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
+import EmojiRepository from '../../src/api/EmojiRepository';
 import debug from '../../src/util/logger';
 
 import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
@@ -123,6 +123,12 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
   }
 
+  calculateDynamicCategories() {
+    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
+      return ['ATLASSIAN'];
+    }
+    return [];
+  }
 }
 
 export interface UploadDetail {
@@ -147,9 +153,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
     this.lastQuery = query;
-    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
-      this.notifyResult(addCustomCategoryToResult(this.uploadSupported, result));
-    });
+    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => this.notifyResult(result));
   }
 
   isUploadSupported(): Promise<boolean> {
@@ -186,6 +190,14 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
       return this.promiseBuilder(emoji, 'loadMediaEmoji');
     }
     return emoji;
+  }
+
+  calculateDynamicCategories(): string[] {
+    const customList = [customCategory];
+    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
+      return customList.concat(['ATLASSIAN']);
+    }
+    return customList;
   }
 }
 

@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
 import textColorPlugin, { TextColorState } from '../../../src/plugins/text-color';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import ToolbarTextColor from '../../../src/ui/ToolbarTextColor';
 import { doc, code_block, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
+import { analyticsService } from '../../../src/analytics';
 
 describe('ToolbarTextColor', () => {
   const editor = (doc: any) => makeEditor<TextColorState>({
@@ -81,5 +83,22 @@ describe('ToolbarTextColor', () => {
     );
 
     expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).to.equal(true);
+  });
+
+  describe('analytics', () => {
+    it('should trigger analyticsService.trackEvent when a color is clicked', () => {
+      let trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, pluginState } = editor(doc(p('text')));
+      const toolbarOption = mount(
+        <ToolbarTextColor
+          pluginState={pluginState}
+          editorView={editorView}
+        />
+      );
+      toolbarOption.find('button').simulate('click');
+      toolbarOption.find('ColorPalette button').first().simulate('click');
+      expect(trackEvent.calledWith('atlassian.editor.format.textcolor.button')).to.equal(true);
+    });
   });
 });

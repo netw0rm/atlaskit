@@ -21,6 +21,7 @@ import {
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { analyticsService } from '../../../../src/analytics';
 
 const mentionProvider = new Promise<any>(resolve => {
   resolve(mentionStoryData.resourceProvider);
@@ -197,6 +198,8 @@ describe('mentions', () => {
       it('should call "trySelectCurrent"', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@kai{<>}'))));
         const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
 
         return pluginState
           .setMentionProvider(mentionProvider)
@@ -205,6 +208,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Space');
             expect(spy.called).to.equal(true);
+            expect(trackEvent.calledWith('atlassian.editor.mention.try.insert.previous')).to.equal(true);
           });
       });
     });
@@ -551,6 +555,9 @@ describe('mentions', () => {
 
       return pluginState.setMentionProvider(mentionProvider)
         .then(() => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
+
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           pluginState.onMentionResult([
@@ -564,6 +571,7 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).to.equal(true);
+          expect(trackEvent.calledWith('atlassian.editor.mention.try.select.current')).to.equal(true);
         });
     });
 
@@ -655,6 +663,8 @@ describe('mentions', () => {
 
       return pluginState.setMentionProvider(mentionProvider)
         .then((mentionResource) => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
           const isFilteringStub = sandbox.stub(mentionResource, 'isFiltering');
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
@@ -664,6 +674,7 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).to.equal(true);
+          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.no.match')).to.equal(true);
         });
     });
   });
@@ -674,6 +685,8 @@ describe('mentions', () => {
 
       return pluginState.setMentionProvider(mentionProvider)
         .then(() => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
           forceUpdate(pluginState, editorView); // Force update to ensure active query.
 
           pluginState.onMentionResult([
@@ -692,6 +705,7 @@ describe('mentions', () => {
           sendKeyToPm(editorView, 'Space');
 
           expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
+          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')).to.equal(true);
         });
     });
   });

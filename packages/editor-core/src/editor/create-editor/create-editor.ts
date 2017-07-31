@@ -3,20 +3,7 @@ import { EditorState, EditorView, Schema, MarkSpec, Plugin } from '../../prosemi
 import ProviderFactory from '../../providerFactory';
 import { EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ErrorReporter from '../../utils/error-reporter';
-import {
-  basePlugin,
-  analyticsPastePlugin,
-  blockTypePlugin,
-  textFormattingPlugin,
-  mentionsPlugin,
-  emojiPlugin,
-  tasksAndDecisionsPlugin,
-  saveOnEnterPlugin,
-  onChangePlugin,
-  mediaPlugin,
-  hyperlinkPlugin,
-  codeBlockPlugin
-} from '../plugins';
+import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -34,48 +21,6 @@ export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]
     }
   });
   return marks;
-}
-
-export function createPluginsList(props: EditorProps): EditorPlugin[] {
-  const plugins = [analyticsPastePlugin, basePlugin, blockTypePlugin];
-
-  if (props.allowTextFormatting) {
-    plugins.push(textFormattingPlugin);
-  }
-
-  if (props.allowHyperlinks) {
-    plugins.push(hyperlinkPlugin);
-  }
-
-  if (props.allowCodeBlocks) {
-    plugins.push(codeBlockPlugin);
-  }
-
-  if (props.mentionProvider) {
-    plugins.push(mentionsPlugin);
-  }
-
-  if (props.emojiProvider) {
-    plugins.push(emojiPlugin);
-  }
-
-  if (props.allowTasksAndDecisions) {
-    plugins.push(tasksAndDecisionsPlugin);
-  }
-
-  if (props.saveOnEnter) {
-    plugins.push(saveOnEnterPlugin);
-  }
-
-  if (props.onChange) {
-    plugins.push(onChangePlugin);
-  }
-
-  if (props.mediaProvider) {
-    plugins.push(mediaPlugin);
-  }
-
-  return plugins;
 }
 
 export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
@@ -138,12 +83,13 @@ export function createPMPlugins(
   editorConfig: EditorConfig,
   schema: Schema<any, any>,
   props: EditorProps,
+  dispatch: Dispatch,
   providerFactory: ProviderFactory,
   errorReporter: ErrorReporter
 ): Plugin[] {
   return editorConfig.pmPlugins
     .sort(sortByRank)
-    .map(({ plugin }) => plugin(schema, props, providerFactory, errorReporter))
+    .map(({ plugin }) => plugin(schema, props, dispatch, providerFactory, errorReporter))
     .filter(plugin => !!plugin) as Plugin[];
 }
 
@@ -160,20 +106,31 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   analyticsService.trackEvent('atlassian.editor.start');
 }
 
-export default function createEditor(place: HTMLElement, props: EditorProps, providerFactory: ProviderFactory) {
-  const editorConfig = processPluginsList(createPluginsList(props));
+/**
+ * Creates and mounts EditorView to the provided place.
+ */
+export default function createEditor(
+  place: HTMLElement | null,
+  editorPlugins: EditorPlugin[] = [],
+  props: EditorProps,
+  providerFactory: ProviderFactory
+) {
+  const editorConfig = processPluginsList(editorPlugins);
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
 
   initAnalytics(props.analyticsHandler);
 
   const errorReporter = createErrorReporter(props.errorReporterHandler);
+  const eventDispatcher = new EventDispatcher();
+  const dispatch = createDispatch(eventDispatcher);
   const schema = createSchema(editorConfig);
-  const plugins = createPMPlugins(editorConfig, schema, props, providerFactory, errorReporter);
+  const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
   const state = EditorState.create({ schema, plugins });
   const editorView = new EditorView(place, { state });
 
   return {
     editorView,
+    eventDispatcher,
     contentComponents,
     primaryToolbarComponents,
     secondaryToolbarComponents

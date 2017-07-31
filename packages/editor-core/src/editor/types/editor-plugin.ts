@@ -4,10 +4,22 @@ import { Plugin, Schema, EditorView } from '../../prosemirror';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
+import { Dispatch, EventDispatcher } from '../event-dispatcher';
 
-export type PMPluginFactory = (schema: Schema<any, any>, props: EditorProps, providerFactory: ProviderFactory, errorReporter: ErrorReporter) => Plugin | undefined;
+export type PMPluginFactory = (
+  schema: Schema<any, any>,
+  props: EditorProps,
+  dispatch: Dispatch,
+  providerFactory: ProviderFactory,
+  errorReporter: ErrorReporter
+) => Plugin | undefined;
 
-export type UIComponentFactory = (editorView: EditorView, providerFactory: ProviderFactory, appearance: EditorAppearance) => React.ReactElement<any> | null;
+export type UIComponentFactory = (
+  editorView: EditorView,
+  eventDispatcher: EventDispatcher,
+  providerFactory: ProviderFactory,
+  appearance: EditorAppearance
+) => React.ReactElement<any> | null;
 
 export interface EditorPlugin {
   /*

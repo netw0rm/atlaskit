@@ -6,7 +6,7 @@ import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 import { customCategory } from '../constants';
-import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
+import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 
 XRegExpUnicodeBase(XRegExp);
@@ -45,23 +45,11 @@ class Tokenizer implements ITokenizer {
   }
 }
 
-
-export interface EmojiSearchResult {
-  emojis: EmojiDescription[];
-  categories: AvailableCategories;
-  query?: string;
-}
-
 declare type EmojiByKey = Map<any, EmojiDescription[]>;
 
 interface EmojiToKey {
   (emoji: EmojiDescription): any;
 }
-
-const availableCategories = (emojis: EmojiDescription[]): AvailableCategories => emojis.reduce((categories, emoji) => {
-  categories[emoji.category] = true;
-  return categories;
-}, {});
 
 const addAllVariants = (emoji: EmojiDescription, fnKey: EmojiToKey, map: EmojiByKey): void => {
   const key = fnKey(emoji);
@@ -180,7 +168,6 @@ export default class EmojiRepository {
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
-      categories: availableCategories(filteredEmoji),
       query,
     };
   }

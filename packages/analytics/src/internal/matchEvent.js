@@ -12,7 +12,7 @@ function matchEvent(matcher?: Matcher, name?: string): boolean {
     return true;
   }
   if (typeof matcher === 'string') {
-    if (ENDS_WITH_DOT.test(name)) {
+    if (ENDS_WITH_DOT.test(matcher)) {
       return name.substr(0, matcher.length) === matcher;
     }
     return name === matcher;

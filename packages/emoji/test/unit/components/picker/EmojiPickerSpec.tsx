@@ -21,7 +21,7 @@ import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEm
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
 import { UploadPromptMessage } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
 import * as commonStyles from '../../../../src/components/common/styles';
-import CategorySelector from '../../../../src/components/picker/CategorySelector';
+import CategorySelector, { CategoryDescriptionMap, sortCategories } from '../../../../src/components/picker/CategorySelector';
 import Emoji from '../../../../src/components/common/Emoji';
 import EmojiButton from '../../../../src/components/common/EmojiButton';
 import EmojiPicker, { Props } from '../../../../src/components/picker/EmojiPicker';
@@ -34,7 +34,11 @@ import EmojiPreview from '../../../../src/components/common/EmojiPreview';
 import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
+<<<<<<< HEAD
 import { customCategory, selectedToneStorageKey } from '../../../../src/constants';
+=======
+import { customCategory, defaultCategories, selectedToneStorageKey } from '../../../../src/constants';
+>>>>>>> 44e7df96c... feat(component): categorySelector inserts non-standard categories dynamically
 
 declare var global: any;
 
@@ -168,19 +172,27 @@ describe('<EmojiPicker />', () => {
       })
     );
 
-    it('should display all categories', () =>
-      setupPicker().then(component => {
+    it('should display all categories', () => {
+      const emojiProvider = getEmojiResourcePromise();
+      let expectedCategories = defaultCategories;
+      emojiProvider.then(provider => {
+        if (provider.calculateDynamicCategories) {
+          expectedCategories = expectedCategories.concat(provider.calculateDynamicCategories());
+        }
+      });
+
+      return setupPicker().then(component => {
         const categorySelector = component.find(CategorySelector);
         const buttons = categorySelector.find('button');
-        const expectedCategories = CategorySelector.defaultProps.categories;
-
         expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+        expectedCategories.sort(sortCategories);
+
         for (let i = 0; i < buttons.length; i++) {
           const button = buttons.at(i);
-          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(expectedCategories[i].name);
+          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
         }
-      })
-    );
+      });
+    });
 
     it('should empty preview by default', () =>
       setupPicker().then(component => {

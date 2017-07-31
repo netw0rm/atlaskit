@@ -2,23 +2,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
+import { defaultCategories } from '../../../../src/constants';
 import * as styles from '../../../../src/components/picker/styles';
-import CategorySelector, { Props } from '../../../../src/components/picker/CategorySelector';
-
-const toAvailableCategories = categories => (
-  categories.reduce((availableCategories, category) => {
-    availableCategories[category.id] = true;
-    return availableCategories;
-  }, {})
-);
-
-const defaultCategories = CategorySelector.defaultProps.categories;
+import CategorySelector, { Props, CategoryDescriptionMap } from '../../../../src/components/picker/CategorySelector';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> => mount(
-  <CategorySelector
-    availableCategories={toAvailableCategories(defaultCategories)}
-    {...props}
-  />
+  <CategorySelector {...props} />
 );
 
 describe('<CategorySelector />', () => {
@@ -26,24 +15,19 @@ describe('<CategorySelector />', () => {
     const component = setupComponent();
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
-    defaultCategories.forEach((category, i) => {
-      expect(categoryButtons.at(i).prop('title'), `Button #${i}`).to.equal(category.name);
+    defaultCategories.forEach((categoryId, i) => {
+      expect(categoryButtons.at(i).prop('title'), `Button #${i}`).to.equal(CategoryDescriptionMap[categoryId].name);
     });
   });
 
-  it('only available categories enabled', () => {
-    const enabledCat1 = defaultCategories[0];
-    const enabledCat2 = defaultCategories[3];
-    const component = setupComponent({
-      availableCategories: toAvailableCategories([enabledCat1, enabledCat2]),
-    });
+  it('all categories disabled if flag is set', () => {
+    const component = setupComponent({ disableCategories: true });
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
-    defaultCategories.forEach((category, i) => {
+    defaultCategories.forEach((categoryId, i) => {
       const button = categoryButtons.at(i);
-      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
-      const shouldBeEnabled = i === 0 || i === 3;
-      expect(button.hasClass(styles.disable), `Button #${i} enabled=${shouldBeEnabled}`).to.equal(!shouldBeEnabled);
+      expect(button.prop('title'), `Button #${i}`).to.equal(CategoryDescriptionMap[categoryId].name);
+      expect(button.hasClass(styles.disable), `Button #${i} is disabled`).to.equal(true);
     });
   });
 
@@ -54,19 +38,19 @@ describe('<CategorySelector />', () => {
     });
     const categoryButtons = component.find('button');
     categoryButtons.at(4).simulate('click');
-    expect(selectedCategoryId, 'Category was selected').to.equal(defaultCategories[4].id);
+    expect(selectedCategoryId, 'Category was selected').to.equal(defaultCategories[4]);
   });
 
   it('active category highlighted', () => {
-    const activeCategoryId = defaultCategories[3].id;
+    const activeCategoryId = defaultCategories[3];
     const component = setupComponent({
       activeCategoryId,
     });
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
-    defaultCategories.forEach((category, i) => {
+    defaultCategories.forEach((categoryId, i) => {
       const button = categoryButtons.at(i);
-      expect(button.prop('title'), `Button #${i}`).to.equal(category.name);
+      expect(button.prop('title'), `Button #${i}`).to.equal(CategoryDescriptionMap[categoryId].name);
       const shouldBeActive = i === 3;
       expect(button.hasClass(styles.active), `Button #${i} active=${shouldBeActive}`).to.equal(shouldBeActive);
     });

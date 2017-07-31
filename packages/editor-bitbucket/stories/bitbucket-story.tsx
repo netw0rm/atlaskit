@@ -3,9 +3,9 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EmojiProvider, MentionProvider } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/editor-core';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { MockMentionSource } from './_mock-mentionsource';
 
 import { default as Editor, version as editorVersion } from '../src';
 import exampleHTML from './exampleHTML';
@@ -45,7 +45,7 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
-const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider) as Promise<MentionProvider>;
+const mentionSource = new MockMentionSource();
 const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 
@@ -71,7 +71,7 @@ storiesOf(name, module)
       onCancel={CANCEL_ACTION}
       onChange={CHANGE_ACTION}
       onSave={SAVE_ACTION}
-      mentionProvider={mentionProvider}
+      mentionSource={mentionSource}
     />
   )
   .add('With emoji', () =>
@@ -168,7 +168,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
-              mentionProvider={mentionProvider}
+              mentionSource={mentionSource}
               emojiProvider={emojiProvider}
             />
             <fieldset style={{ marginTop: 20 }}>
@@ -330,7 +330,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
-              mentionProvider={mentionProvider}
+              mentionSource={mentionSource}
               emojiProvider={emojiProvider}
               analyticsHandler = {analyticsHandler}
               imageUploadHandler={imageUploadHandler}

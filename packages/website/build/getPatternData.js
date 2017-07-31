@@ -37,14 +37,14 @@ function generatePatternData() {
       if (!fileName[1]) return content;
       const name = fileName[1];
       const rawName = `${name}Src`;
-      const paths = `import ${name} from './patterns/${name}';\nimport ${rawName} from '!raw-loader!./patterns/${name}';\n`;
+      const paths = `import ${name} from '../patterns/${name}';\nimport ${rawName} from '!raw-loader!../patterns/${name}';\n`;
       content.paths = content.paths.concat(paths);
 
       const example = exampleTemplate(name, rawName);
       content.examples = content.examples.concat(example);
       return content;
     }, { paths: '', examples: [] });
-    const writeFilePath = path.join(__dirname, '../patterns.data.js');
+    const writeFilePath = path.join(__dirname, '../src/patterns.data.js');
     fs.writeFileSync(writeFilePath, patternDataTemplate(patternData));
     resolve();
   });

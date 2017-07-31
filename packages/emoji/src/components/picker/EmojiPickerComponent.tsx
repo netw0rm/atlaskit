@@ -5,7 +5,7 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 
 import { customCategory } from '../../constants';
-import { AvailableCategories, EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
+import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
 // import debug from '../../util/logger';
 import { getToneEmoji } from '../../util/filters';
@@ -13,7 +13,6 @@ import { EmojiContext } from '../common/internal-types';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
-import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
 
 export interface PickerRefHandler {
@@ -31,10 +30,11 @@ export interface State {
   filteredEmojis: EmojiDescription[];
   selectedEmoji?: EmojiDescription;
   activeCategory?: string;
+  disableCategories?: boolean;
+  dynamicCategories: string[];
   selectedCategory?: string;
   selectedTone?: ToneSelection;
   toneEmoji?: OptionalEmojiDescriptionWithVariations;
-  availableCategories?: AvailableCategories;
   query: string;
   uploadErrorMessage?: string;
   uploadSupported: boolean;
@@ -59,6 +59,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.state = {
       filteredEmojis: [],
       query: '',
+      dynamicCategories: emojiProvider.calculateDynamicCategories ? emojiProvider.calculateDynamicCategories() : [],
       selectedTone: !hideToneSelector ? emojiProvider.getSelectedTone() : undefined,
       loading: true,
       uploadSupported: false,
@@ -136,8 +137,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   onCategorySelected = (categoryId: string) => {
     const { emojiProvider } = this.props;
     emojiProvider.findInCategory(categoryId).then(emojisInCategory => {
-      const { availableCategories } = this.state;
-      if (availableCategories && availableCategories[categoryId]) {
+      const { disableCategories } = this.state;
+      if (!disableCategories) {
         const selectedEmoji = emojisInCategory[0];
         this.setState({
           activeCategory: categoryId,
@@ -167,8 +168,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const filteredEmojis = searchResults.emojis;
 
     // Only enable categories for full emoji list (non-search)
-    const availableCategories = searchResults.query ? [] : searchResults.categories;
     const query = searchResults.query;
+    const disableCategories = !!query;
 
     let selectedEmoji;
     let activeCategory;
@@ -186,7 +187,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       filteredEmojis,
       selectedEmoji,
       activeCategory,
-      availableCategories,
+      disableCategories,
       query,
       loading: false,
     } as State);
@@ -271,7 +272,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const { onSelection } = this.props;
     const {
       activeCategory,
-      availableCategories,
+      disableCategories,
+      dynamicCategories,
       filteredEmojis,
       loading,
       query,
@@ -289,8 +291,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       <div className={classNames(classes)} ref={this.handlePickerRef}>
         <CategorySelector
           activeCategoryId={activeCategory}
+          dynamicCategories={dynamicCategories}
+          disableCategories={disableCategories}
           onCategorySelected={this.onCategorySelected}
-          availableCategories={availableCategories}
         />
         <EmojiPickerList
           emojis={filteredEmojis}

@@ -1,11 +1,11 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
-import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
+import { customCategory, defaultCategories, selectedToneStorageKey } from '../constants';
+import { EmojiDescription, EmojiId, EmojiResponse, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
-import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
+import EmojiRepository from './EmojiRepository';
 import MediaEmojiResource from './media/MediaEmojiResource';
 
 export interface EmojiResourceConfig {
@@ -117,6 +117,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * has selected a skin tone preference that should be remembered
    */
   setSelectedTone(tone: ToneSelection);
+
+  /**
+   * Returns a list of all the non-default categories with emojis in the EmojiRepository
+   * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
+   */
+  calculateDynamicCategories?(): string[];
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -157,21 +163,6 @@ export interface LastQuery {
   query?: string;
   options?: SearchOptions;
 }
-
-export const addCustomCategoryToResult = (includeCustom: boolean, searchResult: EmojiSearchResult): EmojiSearchResult => {
-  if (searchResult.categories[customCategory] || !includeCustom) {
-    return searchResult;
-  }
-
-  const categories = {
-    ...searchResult.categories,
-    [customCategory]: true,
-  };
-  return {
-    ...searchResult,
-    categories
-  };
-};
 
 export class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
   protected recordConfig?: ServiceConfig;
@@ -339,8 +330,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       options,
     };
     if (this.emojiRepository) {
-      const searchResult = this.emojiRepository.search(query, options);
-      this.notifyResult(addCustomCategoryToResult(!!this.mediaEmojiResource, searchResult));
+      this.notifyResult(this.emojiRepository.search(query, options));
     } else {
       // not ready
       this.notifyNotReady();
@@ -439,6 +429,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         console.error('localStorage is full', e);
       }
     }
+  }
+
+  calculateDynamicCategories() {
+    const categorySet = new Set();
+    this.emojiRepository.all().emojis.forEach(emoji => categorySet.add(emoji.category));
+    const dynamicCategoryList = Array.from(categorySet).filter(category => defaultCategories.indexOf(category) === -1);
+    if (dynamicCategoryList.indexOf(customCategory) === -1 && !!this.mediaEmojiResource) {
+      dynamicCategoryList.push(customCategory);
+    }
+    return dynamicCategoryList;
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

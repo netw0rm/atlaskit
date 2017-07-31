@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
-import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
+import { FilmstripView } from '@atlaskit/media-filmstrip';
 import styled from 'styled-components';
 import { Props as MediaProps } from '../../../ui/Media/MediaComponent';
 
@@ -8,12 +8,28 @@ export interface MediaGroupProps {
   children?: any; /* @see https://github.com/Microsoft/TypeScript/issues/6471 */
 }
 
+export interface MediaGroupNodeState {
+  offset: number;
+}
+
 // tslint:disable-next-line
 export const FilmStripWrapper = styled.div`
   padding: 5px 0;
 `;
 
-export default class MediaGroup extends PureComponent<MediaGroupProps, {}> {
+export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGroupNodeState> {
+  state: MediaGroupNodeState = {
+    offset: 0,
+  };
+
+  handleSizeChange = ({ maxOffset }) => {
+    this.setState({ offset: maxOffset });
+  }
+
+  handleScrollChange = ({ offset }) => {
+    this.setState({ offset });
+  }
+
   render() {
     const numChildren = React.Children.count(this.props.children);
 
@@ -51,9 +67,10 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, {}> {
   }
 
   renderStrip() {
+    const { offset } = this.state;
     return (
       <FilmStripWrapper>
-        <FilmStripNavigator>
+        <FilmstripView animate={true} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
         {
           React.Children.map(this.props.children, (child: ReactElement<MediaProps>) => {
             switch(child.props.type) {
@@ -72,7 +89,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, {}> {
             }
           })
         }
-        </FilmStripNavigator>
+        </FilmstripView>
       </FilmStripWrapper>
     );
   }

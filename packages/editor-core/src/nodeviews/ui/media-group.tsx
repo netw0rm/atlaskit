@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
-import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
+import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import { MediaPluginState, mediaStateKey } from '../../plugins';
 import { EditorView } from '../../prosemirror';
@@ -10,6 +10,10 @@ import { Props as MediaProps } from '../../ui/Media/MediaComponent';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
+}
+
+export interface MediaGroupNodeState {
+  offset: number;
 }
 
 // tslint:disable-next-line:variable-name
@@ -20,9 +24,13 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {}> {
+export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, MediaGroupNodeState> {
   private mediaPluginState: MediaPluginState;
   private mediaNodesIds: string[];
+
+  state: MediaGroupNodeState = {
+    offset: 0,
+  };
 
   constructor(props) {
     super(props);
@@ -52,27 +60,36 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
     this.mediaNodesIds = newMediaNodesIds;
   }
 
+  handleSizeChange = ({ maxOffset }) => {
+    this.setState({ offset: maxOffset });
+  }
+
+  handleScrollChange = ({ offset }) => {
+    this.setState({ offset });
+  }
+
   render() {
+    const { offset } = this.state;
     return (
       <Wrapper>
-        <FilmStripNavigator>
-        {
-          React.Children.map(this.props.children, (child: ReactElement<MediaNodeProps>) => {
-            switch(child.props.node.attrs.type) {
-              case 'file':
-                return child;
+        <FilmstripView animate={true} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
+          {
+            React.Children.map(this.props.children, (child: ReactElement<MediaNodeProps>) => {
+              switch (child.props.node.attrs.type) {
+                case 'file':
+                  return child;
 
-              default:
-              case 'link':
-                return React.cloneElement(child as ReactElement<any>, {
-                  cardDimensions: {
-                    width: 343,
-                  },
-                } as MediaProps);
-            }
-          })
-        }
-        </FilmStripNavigator>
+                default:
+                case 'link':
+                  return React.cloneElement(child as ReactElement<any>, {
+                    cardDimensions: {
+                      width: 343,
+                    },
+                  } as MediaProps);
+              }
+            })
+          }
+        </FilmstripView>
       </Wrapper>
     );
   }

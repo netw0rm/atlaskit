@@ -12,7 +12,7 @@ import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import patterns from '../../../../patterns.data';
+import patterns from '../../../patterns.data';
 
 const ComponentAkNavigationItem = withRouter(({ pattern, location }) => {
   const url = `/patterns/${encodeURI(pattern.title)}`;

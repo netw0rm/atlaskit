@@ -187,7 +187,8 @@ describe('@atlaskit/editor-cq', () => {
 describe('@atlaskit/editor-cq/focus', () => {
   let editorWrapper: ReactWrapper<any, any>;
 
-  beforeEach(() => {
+  beforeEach(function() {
+    this.timeout(10000);
     editorWrapper = mount(<Editor isExpandedByDefault={true} />);
   });
 

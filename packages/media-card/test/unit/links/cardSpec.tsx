@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
+import { minimalLinkDetailsContainingASmartCard } from '@atlaskit/media-test-helpers';
 
 import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../../src/links';
 import { LinkCardImageView } from '../../../src/links/cardImageView';
@@ -185,62 +186,17 @@ describe('LinkCard', () => {
   });
 
   it('should not render an AppCardView when appearance=small', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="small"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="small"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 
   it('should not render an AppCardView when appearance=image', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="image"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="image"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 
   it('should not render an AppCardView when appearance=square', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="square"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="square"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 });

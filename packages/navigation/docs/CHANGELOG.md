@@ -4,25 +4,19 @@
 
 ## 17.0.0 (2017-07-28)
 
+* breaking; The AkNavigationItem named export is now an extension of the generic
+  @atlaskit/item. AkNavigationItem's isHoverStylesDisabled and tabIndex props have been
+  removed. The AkNavigationItemGroup is now an extension of @atlaskit/item's ItemGroup.
+* breaking; Update Navigation items to use @atlaskit/item ([00c9e28](https://bitbucket.org/atlassian/atlaskit/commits/00c9e28))
+
 ## 16.1.1 (2017-07-27)
 
 ## 16.1.0 (2017-07-27)
 
-
 * fix; hiding the scrollbar corner and moved colours into the vars ([3439174](https://bitbucket.org/atlassian/atlaskit/commits/3439174))
 * fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 * fix; add example for Navigation drag and drop ([db5027b](https://bitbucket.org/atlassian/atlaskit/commits/db5027b))
-
-
-null Update Navigation items to use [@atlaskit](https://github.com/atlaskit)/item ([00c9e28](https://bitbucket.org/atlassian/atlaskit/commits/00c9e28))
-
-
 * feature; improved nav scrollbar styles in Chrome/Webkit/Edge ([7345249](https://bitbucket.org/atlassian/atlaskit/commits/7345249))
-
-
-* breaking; The AkNavigationItem named export is now an extension of the generic
-@atlaskit/item. AkNavigationItem's isHoverStylesDisabled and tabIndex props have been
-removed. The AkNavigationItemGroup is now an extension of @atlaskit/item's ItemGroup.
 
 ISSUES CLOSED: AK-2979
 

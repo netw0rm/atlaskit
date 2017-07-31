@@ -151,8 +151,7 @@ describe('Media plugin', () => {
     collectionFromProvider.restore(); editorView.destroy(); pluginState.destroy();
   });
 
-  it('should cancel in-flight uploads after media item is removed from document', async function () {
-    this.timeout(10000);
+  it('should cancel in-flight uploads after media item is removed from document', async () => {
     const spy = sinon.spy();
     const { editorView, pluginState } = editor(doc(p(), p('{<>}')), spy);
     const collectionFromProvider = sinon.stub(pluginState, 'collectionFromProvider').returns(testCollectionName);

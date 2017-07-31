@@ -100,15 +100,15 @@ Tests
 
 ### Running unit tests with jest
 
-For packages that use Jest (every package except those used by the Fabric team), we are using Jest as a test runner. These tests live inside a packages `test/unit` folder. Every file in this folder is considered a test and must have at least one test function in it, unless the filename begins with an underscore.
+For packages that use Jest (every package except those used by the Fabric team), we are using Jest as a test runner. These tests live inside a packages `packages/<packageName>/test/unit` folder. Every file in this folder is considered a test and must have at least one test function in it, unless the filename begins with an underscore.
 
 While developing, it is useful to run jest in watch-mode. We recommend running Jest in watch-mode from the root, so it runs all the tests affected by a change. Since the tests run so quickly, this is going to give you the best possible coverage of any of your changes.
 
-* To run the full unit test suite: run `yarn run test/unit` from the repository root
+* To run the full unit test suite: run `yarn run test:unit` from the repository root
 * To run the tests for a single package:
-  * run (cd packages/<packageName>; yarn run jest)
-  * run `yarn run lerna -- run jest --stream --scope=@atlaskit/<packageName>` from the repository root
-* To run the unit tests in watch mode for development/tdd: run `yarn run test/unit -- --watch` from the repository root. Note: This requires the installation of [Watchman](https://facebook.github.io/watchman/docs/install.html)
+  * run (cd packages/<packageName>; yarn run test:unit)
+  * run `yarn run lerna -- run test:unit --stream --scope=@atlaskit/<packageName>` from the repository root
+* To run the unit tests in watch mode for development/tdd: run `yarn run test:unit -- --watch` from the repository root. Note: This might require the installation of [Watchman](https://facebook.github.io/watchman/docs/install.html). If this command fails, please install watchman and retry.
 
 ### Running tests in the browser
 

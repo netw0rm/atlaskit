@@ -125,7 +125,7 @@ export default class PickerFacade {
     try {
       this.picker.cancel(tempId);
     } catch (e) {
-      // We're deliberatelly consuming a known Media Picker exception, as it seems that
+      // We're deliberately consuming a known Media Picker exception, as it seems that
       // the picker has problems cancelling uploads before the popup picker has been shown
       // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
       if (!/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(`${e}`)) {
@@ -231,25 +231,19 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadError = (event: PickerEvent) => {
-    const { file, error } = event;
-
-    if (!file || !file.id) {
+  private handleUploadError = ({ error }: { error: PickerEventError }) => {
+    if (!error || !error.fileId) {
       const err = new Error(`Media: unknown upload-error received from Media Picker: ${error && error.name}`);
       this.errorReporter.captureException(err);
 
       return;
     }
 
-    const tempId = `temporary:${file.id}`;
+    const tempId = `temporary:${error.fileId}`;
     this.stateManager.updateState(tempId, {
       id: tempId,
-      publicId: file.publicId as string,
       status: 'error',
       error: error ? { description: error!.description, name: error!.name } : undefined,
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileMimeType: file.type as string,
     });
   }
 

@@ -96,7 +96,7 @@ describe('Media PickerFacade', () => {
     expect(mockPicker.deactivated).to.eq(true);
   });
 
-  it('activates picker upon construciton', () => {
+  it('activates picker upon construction', () => {
     expect(mockPicker.activated).to.eq(true);
   });
 
@@ -227,23 +227,19 @@ describe('Media PickerFacade', () => {
       const cb = sinon.spy();
       stateManager!.subscribe(testTemporaryFileId, cb);
       mockPicker.__triggerEvent('upload-error', {
-        file: { ...testFileData, publicId: testFilePublicId },
         error: {
           name: 'some-error',
-          description: 'something went wrong'
+          description: 'something went wrong',
+          fileId: testFileData.id,
         }
-      });
+      } as any);
       expect(cb.calledWithExactly({
         id: testTemporaryFileId,
-        publicId: testFilePublicId,
         status: 'error',
         error: {
           name: 'some-error',
           description: 'something went wrong'
         },
-        fileName: testFileData.name,
-        fileSize: testFileData.size,
-        fileMimeType: testFileData.type,
       })).to.eq(true);
     });
 

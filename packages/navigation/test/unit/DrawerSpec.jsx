@@ -5,21 +5,11 @@ import Drawer from '../../src/components/js/Drawer';
 describe('<Drawer />', () => {
   describe('content', () => {
     describe('is open', () => {
-      it('should not render the ContainerHeader when width="full"', () => {
-        expect(mount(<Drawer isOpen width="full" />).find('ContainerHeader').length).toBe(0);
-      });
-
       it('render the header', () => {
         const header = <div />;
         const wrapper = mount(<Drawer isOpen header={header} />);
 
         expect(wrapper.find('ContainerHeader').contains(header)).toBe(true);
-      });
-
-      it('should not render a ContainerHeader if no header is provided', () => {
-        const wrapper = mount(<Drawer isOpen />);
-
-        expect(wrapper.find('ContainerHeader').length).toBe(0);
       });
 
       it('should render its children', () => {

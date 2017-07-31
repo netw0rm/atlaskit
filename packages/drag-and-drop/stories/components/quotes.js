@@ -25,13 +25,6 @@ const princess: Author = {
   avatarUrl: 'https://68.media.tumblr.com/avatar_ec98529441c4_128.png',
 };
 
-export const getQuotes = (count: number): Quote[] =>
-  Array.from({ length: count }, (v, k) => k).map((val: number) => ({
-    id: `${val}`,
-    content: 'Responsibility demands sacrifice',
-    author: princess,
-  }));
-
 const quotes: Quote[] = [
   {
     id: '1',
@@ -74,5 +67,18 @@ const quotes: Quote[] = [
     author: finn,
   },
 ];
+
+export const getQuotes = (count: number): Quote[] =>
+  Array.from({ length: count }, (v, k) => k).map((val: number) => {
+    const random: Quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    const custom: Quote = {
+      id: `${val}`,
+      content: random.content,
+      author: random.author,
+    };
+
+    return custom;
+  });
 
 export default quotes;

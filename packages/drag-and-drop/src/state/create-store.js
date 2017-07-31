@@ -14,6 +14,8 @@ export default (hooks: Hooks) => createStore(
         applyMiddleware(
           thunk,
           hookMiddleware(hooks),
+          // debugging logger
+          // require('./log-middleware').default,
         )
       )
     );

@@ -1,23 +1,21 @@
 // @flow
 import React, { Component } from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import Droppable from '../../../src/view/droppable/droppable';
-import getContextOptions from '../../utils/get-context-options';
+import { withStore } from '../../utils/get-context-options';
 import type { DroppableId } from '../../../src/types';
 import type { MapProps, OwnProps, Provided, StateSnapshot } from '../../../src/view/droppable/droppable-types';
 
-const getStubber = (stub?: Function = sinon.stub()) =>
+const getStubber = (mock: Function) =>
   class Stubber extends Component {
     props: {|
       provided: Provided,
       snapshot: StateSnapshot,
     |}
     render() {
-      stub({
+      mock({
         provided: this.props.provided,
         snapshot: this.props.snapshot,
       });
@@ -59,7 +57,7 @@ const mountDroppable = ({
       <WrappedComponent provided={provided} snapshot={snapshot} />
       )}
   </Droppable>
-, getContextOptions());
+, withStore());
 
 describe('Droppable - unconnected', () => {
   it('should provide the props to its children', () => {
@@ -68,17 +66,17 @@ describe('Droppable - unconnected', () => {
     ];
 
     props.forEach((mapProps: MapProps) => {
-      const stub = sinon.stub();
+      const myMock = jest.fn();
 
       mountDroppable({
         mapProps,
-        WrappedComponent: getStubber(stub),
+        WrappedComponent: getStubber(myMock),
       });
 
-      const provided: Provided = stub.args[0][0].provided;
-      const snapshot: StateSnapshot = stub.args[0][0].snapshot;
-      expect(provided.innerRef).to.be.a('function');
-      expect(snapshot.isDraggingOver).to.equal(mapProps.isDraggingOver);
+      const provided: Provided = myMock.mock.calls[0][0].provided;
+      const snapshot: StateSnapshot = myMock.mock.calls[0][0].snapshot;
+      expect(provided.innerRef).toBeInstanceOf(Function);
+      expect(snapshot.isDraggingOver).toBe(mapProps.isDraggingOver);
     });
   });
 });

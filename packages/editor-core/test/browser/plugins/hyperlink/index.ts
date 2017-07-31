@@ -4,9 +4,10 @@ import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
-  makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
+  makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

@@ -18,7 +18,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, {}> {
     const numChildren = React.Children.count(this.props.children);
 
     if (numChildren === 1) {
-      const card = React.Children.only(this.props.children);
+      const card = React.Children.toArray(this.props.children)[0] as ReactElement<any>;
       switch (card.props.type) {
         case 'file':
           return this.renderSingleFile(card);

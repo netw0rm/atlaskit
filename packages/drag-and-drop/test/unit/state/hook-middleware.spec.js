@@ -1,12 +1,10 @@
 // @flow
-import { expect } from 'chai';
-import sinon from 'sinon';
 import middleware from '../../../src/state/hook-middleware';
+import { getDraggableDimension, getDroppableDimension } from '../../../src/state/dimension';
 import { cancel } from '../../../src/state/action-creators';
-import getDimension from '../../utils/get-dimension-util';
+import getClientRect from '../../utils/get-client-rect';
 import noImpact from '../../../src/state/no-impact';
 import type {
-  Dimension,
   DraggableId,
   DroppableId,
   DropResult,
@@ -14,16 +12,20 @@ import type {
   DragState,
   Hooks,
   State,
+  InitialDragLocation,
+  CurrentDragLocation,
+  DraggableDimension,
+  DroppableDimension,
   DimensionState,
   DraggableLocation,
 } from '../../../src/types';
 
 const execute = (hooks: Hooks, current: State, previous: State) => {
-  const stateStub = sinon.stub();
-  stateStub.onFirstCall().returns(previous);
-  stateStub.onSecondCall().returns(current);
+  const stateMock = jest.fn();
+  stateMock.mockReturnValueOnce(previous)
+            .mockReturnValueOnce(current);
   const store = {
-    getState: stateStub,
+    getState: stateMock,
   };
   const next = x => x;
   // does not matter what this is - but using cancel to get correct typing
@@ -66,21 +68,54 @@ const state = (() => {
     index: 0,
   };
 
-  const draggableDimension: Dimension = getDimension({ id: draggableId });
-  const droppableDimension: Dimension = getDimension({ id: droppableId });
+  const draggableDimension: DraggableDimension = getDraggableDimension({
+    id: draggableId,
+    droppableId,
+    clientRect: getClientRect({
+      top: 0,
+      right: 100,
+      bottom: 100,
+      left: 0,
+    }),
+  });
+  const droppableDimension: DroppableDimension = getDroppableDimension({
+    id: droppableId,
+    clientRect: getClientRect({
+      top: 0,
+      right: 100,
+      bottom: 100,
+      left: 0,
+    }),
+  });
+
+  const initialClient: InitialDragLocation = {
+    selection: { x: 10, y: 10 },
+    center: { x: 50, y: 50 },
+  };
+
+  const currentClient: CurrentDragLocation = {
+    selection: initialClient.selection,
+    center: initialClient.center,
+    offset: { x: 0, y: 0 },
+  };
 
   const drag: DragState = {
     initial: {
       source,
-      center: { x: 50, y: 50 },
-      selection: { x: 10, y: 10 },
-      dimension: draggableDimension,
+      client: initialClient,
+      page: initialClient,
+      withinDroppable: {
+        center: initialClient.center,
+      },
     },
     current: {
       id: draggableId,
       type: typeId,
-      offset: { x: 20, y: 20 },
-      center: { x: 70, y: 70 },
+      client: currentClient,
+      page: currentClient,
+      withinDroppable: {
+        center: currentClient.center,
+      },
       shouldAnimate: true,
     },
     impact: noImpact,
@@ -139,35 +174,34 @@ describe('Hook middleware', () => {
 
   beforeEach(() => {
     hooks = {
-      onDragStart: sinon.stub(),
-      onDragEnd: sinon.stub(),
+      onDragStart: jest.fn(),
+      onDragEnd: jest.fn(),
     };
-    sinon.stub(console, 'error');
+    jest.spyOn(console, 'error').mockImplementation(() => { });
   });
 
   afterEach(() => {
-    console.error.restore();
+    console.error.mockRestore();
   });
 
   describe('drag start', () => {
     it('should call the onDragStart hook when a drag starts', () => {
       execute(hooks, state.dragging, state.collecting);
 
-      // $ExpectError - onDragStart is nullable
-      expect(hooks.onDragStart.calledWith(draggableId, {
+      expect(hooks.onDragStart).toHaveBeenCalledWith(draggableId, {
         droppableId,
         index: 0,
-      })).to.equal(true);
+      });
     });
 
     it('should do nothing if no onDragStart is not provided', () => {
       const customHooks: Hooks = {
-        onDragEnd: sinon.stub(),
+        onDragEnd: jest.fn(),
       };
 
       execute(customHooks, state.dragging, state.collecting);
 
-      expect(console.error.called).to.equal(false);
+      expect(console.error).not.toHaveBeenCalled();
     });
 
     it('should log an error and not call the callback if there is no current drag', () => {
@@ -178,14 +212,13 @@ describe('Hook middleware', () => {
 
       execute(hooks, invalid, state.collecting);
 
-      expect(console.error.called).to.equal(true);
+      expect(console.error).toHaveBeenCalled();
     });
 
     it('should not call if only collecting dimensions (not dragging yet)', () => {
       execute(hooks, state.idle, state.collecting);
 
-      // $ExpectError - type of hook
-      expect(hooks.onDragStart.called).to.equal(false);
+      expect(hooks.onDragStart).not.toHaveBeenCalled();
     });
   });
 
@@ -198,17 +231,16 @@ describe('Hook middleware', () => {
         execute(hooks, state.complete, previous);
 
         if (!state.complete.drop || !state.complete.drop.result) {
-          expect.fail('invalid state');
-          return;
+          throw new Error('invalid state');
         }
 
         const result: DropResult = state.complete.drop.result;
 
-        expect(hooks.onDragEnd.calledWith({
+        expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
           source: result.source,
           destination: result.destination,
-        })).to.equal(true);
+        });
       });
 
       it('should log an error and not call the callback if there is no drop result', () => {
@@ -221,8 +253,8 @@ describe('Hook middleware', () => {
 
         execute(hooks, invalid, previous);
 
-        expect(hooks.onDragEnd.called).to.equal(false);
-        expect(console.error.called).to.equal(true);
+        expect(hooks.onDragEnd).not.toHaveBeenCalled();
+        expect(console.error).toHaveBeenCalled();
       });
 
       it('should call onDragEnd with null as the destination if there is no destination', () => {
@@ -246,11 +278,11 @@ describe('Hook middleware', () => {
 
         execute(hooks, custom, previous);
 
-        expect(hooks.onDragEnd.calledWith({
+        expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
           source: result.source,
           destination: null,
-        })).to.equal(true);
+        });
       });
 
       it('should call onDragEnd with null if the item did not move', () => {
@@ -275,11 +307,11 @@ describe('Hook middleware', () => {
 
         execute(hooks, custom, previous);
 
-        expect(hooks.onDragEnd.calledWith({
+        expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
           source: result.source,
           destination: null,
-        })).to.equal(true);
+        });
       });
     });
   });
@@ -289,16 +321,12 @@ describe('Hook middleware', () => {
       it('should return a result with a null destination', () => {
         execute(hooks, state.idle, state.dragging);
 
-        if (!state.dragging.drag) {
-          expect.fail();
-          return;
-        }
-
-        expect(hooks.onDragEnd.calledWith({
+        expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
+          // $ExpectError
           source: state.dragging.drag.initial.source,
           destination: null,
-        })).to.equal(true);
+        });
       });
 
       it('should log an error and do nothing if it cannot find a previous drag to publish', () => {
@@ -311,8 +339,8 @@ describe('Hook middleware', () => {
 
         execute(hooks, state.idle, invalid);
 
-        expect(hooks.onDragEnd.called).to.equal(false);
-        expect(console.error.called).to.equal(true);
+        expect(hooks.onDragEnd).not.toHaveBeenCalled();
+        expect(console.error).toHaveBeenCalled();
       });
     });
 
@@ -321,16 +349,12 @@ describe('Hook middleware', () => {
       it('should return a result with a null destination', () => {
         execute(hooks, state.idle, state.dropAnimating);
 
-        if (!state.dropAnimating.drop || !state.dropAnimating.drop.pending) {
-          expect.fail();
-          return;
-        }
-
-        expect(hooks.onDragEnd.calledWith({
+        expect(hooks.onDragEnd).toHaveBeenCalledWith({
           draggableId,
+          // $ExpectError
           source: state.dropAnimating.drop.pending.result.source,
           destination: null,
-        })).to.equal(true);
+        });
       });
 
       it('should log an error and do nothing if it cannot find a previous drag to publish', () => {
@@ -343,8 +367,8 @@ describe('Hook middleware', () => {
 
         execute(hooks, state.idle, invalid);
 
-        expect(hooks.onDragEnd.called).to.equal(false);
-        expect(console.error.called).to.equal(true);
+        expect(hooks.onDragEnd).not.toHaveBeenCalled();
+        expect(console.error).toHaveBeenCalled();
       });
     });
   });

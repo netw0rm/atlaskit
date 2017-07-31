@@ -1,6 +1,10 @@
 # @atlaskit/analytics
 
-## Unreleased
+## 1.0.3 (2017-07-31)
+
+* bug fix; fixed analytics partial string match (issues closed: ak-3072) ([328a204](https://bitbucket.org/atlassian/atlaskit/commits/328a204))
+
+
 
 ## 1.0.1 (2017-07-25)
 

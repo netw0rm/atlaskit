@@ -10,6 +10,7 @@ import { name } from '../package.json';
 import { AkGlobalItem, presetThemes } from '../src/';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
+import FocusedTaskExample from './components/FocusedTaskExample';
 import emmaAvatar from './emma.png';
 
 storiesOf(name, module)
@@ -53,4 +54,8 @@ storiesOf(name, module)
         ]}
       />
     </HtmlPage>
-  ));
+  ))
+  .add('Focused Task', () => (
+    <FocusedTaskExample />
+  ))
+  ;

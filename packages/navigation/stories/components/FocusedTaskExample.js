@@ -62,8 +62,10 @@ class FocusedTaskExample extends React.PureComponent {
   };
 
   onKeyPress = (event) => {
+    console.log('onKeypress run');
     if (event.keyCode === 27) {
       event.stopPropagation();
+      if (this.state.isDialogOpen) return this.setState({ isDialogOpen: false });
       if (this.state.isProjectCreate) return this.setState({ isProjectCreate: false });
       if (this.state.isDrawerOpen) return this.setState({ isDrawerOpen: false });
     }

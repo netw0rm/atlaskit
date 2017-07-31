@@ -112,11 +112,6 @@ export default class ContainerNavigation extends PureComponent {
     // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
 
-    const header = headerComponent ? (
-      <ContainerHeader>
-        {headerComponent({ isCollapsed })}
-      </ContainerHeader>) : null;
-
     return (
       <WithRootTheme
         provided={theme}
@@ -140,7 +135,9 @@ export default class ContainerNavigation extends PureComponent {
               searchIcon={globalSearchIcon}
             />
           </Reveal>
-          {header}
+          <ContainerHeader>
+            {headerComponent ? headerComponent({ isCollapsed }) : null}
+          </ContainerHeader>
           <ContainerNavigationChildren>
             {children}
           </ContainerNavigationChildren>

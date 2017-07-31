@@ -62,8 +62,8 @@ type Props = {|
   children?: ReactElement,
   /** Theme object to be used to color the navigation container. */
   containerTheme?: Provided,
-  /** Component to be rendered as the header of the container.  */
-  containerHeaderComponent?: () => ReactElement,
+  /** Component(s) to be rendered as the header of the container.  */
+  containerHeaderComponent?: () => ReactElement[],
   /** Location to pass in an array of AkSearchDrawers to be rendered. There is no
   decoration done to the components passed in here. */
   drawers?: ReactElement[],

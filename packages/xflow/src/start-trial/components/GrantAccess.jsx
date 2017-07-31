@@ -74,6 +74,7 @@ class GrantAccess extends Component {
     retrieveUsers: PropTypes.func,
     heading: PropTypes.string,
     defaultAccess: PropTypes.string,
+    goToLearnMore: PropTypes.func,
   };
 
   static defaultProps = {
@@ -153,8 +154,8 @@ class GrantAccess extends Component {
   };
 
   handleLearnMoreClick = () => {
-    // TODO: Implement me!
-    // console.log('Learn more clicked');
+    const { goToLearnMore } = this.props;
+    goToLearnMore();
   };
 
   handleChangeClick = () => {
@@ -341,6 +342,7 @@ export default withXFlowProvider(
       retrieveUsers,
       progress,
       status,
+      goToLearnMore,
     },
   }) => ({
     productLogo,
@@ -353,6 +355,7 @@ export default withXFlowProvider(
     retrieveUsers,
     progress,
     status,
+    goToLearnMore,
     heading: grantAccessHeading,
     defaultAccess: grantAccessDefaultAccess,
   })

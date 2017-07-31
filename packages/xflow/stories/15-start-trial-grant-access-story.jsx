@@ -41,6 +41,9 @@ const defaultProps = {
   affectBill: 'How will this affect my bill?',
   spinnerActive: false,
   continueButtonDisabled: false,
+  goToLearnMore: () => {
+    console.log('Go to Learn More!');
+  },
   retrieveUsers: () =>
     Promise.resolve([
       { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },

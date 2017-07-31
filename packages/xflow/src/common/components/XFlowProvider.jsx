@@ -51,6 +51,7 @@ export const xFlowShape = PropTypes.shape({
   grantAccessToUsers: PropTypes.func,
   retrieveUsers: PropTypes.func,
   goToProduct: PropTypes.func,
+  goToLearnMore: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
 
   closeAlreadyStartedDialog: PropTypes.func,

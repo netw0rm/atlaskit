@@ -31,12 +31,12 @@ const defaultProps = {
       { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
     ]),
   cancelStartProductTrial: async () => {},
-  grantAccessToUsers: () => delay(1000),
+  grantAccessToUsers: () => delay(500),
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialAccess: () => delay(1000),
-  requestTrialAccessWithNote: () => delay(1000),
-  requestTrialAccessWithoutNote: () => delay(1000),
+  requestTrialAccess: () => delay(500),
+  requestTrialAccessWithNote: () => delay(500),
+  requestTrialAccessWithoutNote: () => delay(500),
   cancelRequestTrialAccess: async () => {},
 };
 
@@ -219,9 +219,9 @@ describe('@atlaskit/xflow', () => {
       xflow = mount(setupStorybookAnalytics(
         <MockConfluenceXFlow
           {...defaultProps}
-          canCurrentUserAddProduct={() =>
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 1500))}
+          canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
           requestTrialAccess={async () => true}
+          productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
         >
           <RequestOrStartTrial analyticsId="growth.happy" />
         </MockConfluenceXFlow>
@@ -234,7 +234,11 @@ describe('@atlaskit/xflow', () => {
        waitUntil(() => xflow.find(ErrorFlag).length === 1)
         .then(() => {
           // should render error messages
-          expect(xflow.find(ErrorFlag).text()).to.include('Flag notifications');
+          expect(xflow.find(ErrorFlag).text()).to.include('Error icon');
+          expect(xflow.find(ErrorFlag).text()).to.include('Oops... Something went wrong');
+          expect(xflow.find(ErrorFlag).text()).to.include('Dismiss flag');
+          expect(xflow.find(ErrorFlag).text()).to.include('Let\'s try again.');
+          expect(xflow.find(ErrorFlag).text()).to.include('Retry');
         }));
   });
 });

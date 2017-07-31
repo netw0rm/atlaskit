@@ -9,6 +9,7 @@ import {
   akColorN200,
   akColorN500,
   akColorN800,
+  akColorB200,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
@@ -62,6 +63,12 @@ export const defaultTheme: ItemTheme = {
   disabled: {
     background: akColorN0,
     text: akColorN200,
+    secondaryText: akColorN200,
+  },
+  // same as default in this case
+  dragging: {
+    background: akColorN0,
+    text: akColorN500,
     secondaryText: akColorN200,
   },
 };

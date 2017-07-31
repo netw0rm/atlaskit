@@ -47,6 +47,9 @@ const itemThemeFromNavTheme = (
   focus: {
     outline: navTheme.item.focus.outline,
   },
+  dragging: {
+    background: navTheme.item.dragging.background,
+  },
 });
 
 export default itemThemeFromNavTheme;

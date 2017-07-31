@@ -41,7 +41,7 @@ export class WithRootTheme extends PureComponent {
     children?: any
   }
 
-  withOuterTheme = (outerTheme: ?Object = {}) => {
+  withOuterTheme = (outerTheme: ?Object = {}): Object => {
     const theme: RootTheme = {
       provided: this.props.provided,
       isCollapsed: (this.props.isCollapsed || false),

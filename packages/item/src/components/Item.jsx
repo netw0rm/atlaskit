@@ -109,16 +109,49 @@ export default class Item extends Component {
       onMouseEnter,
       onMouseLeave,
       role,
+      dnd,
       ...otherProps
     } = this.props;
 
     const { rootComponent: Root } = this;
 
-    const dragAndDropProps = this.props.dnd ? {
-      style: this.props.dnd.draggableStyle,
-      innerRef: this.props.dnd.innerRef,
-      ...this.props.dnd.dragHandleProps,
-    } : {};
+    /* eslint-disable consistent-return */
+    const patchedEventHandlers = {
+      onClick: (event: MouseEvent) => {
+        if (!dnd) {
+          return onClick;
+        }
+
+        dnd.dragHandleProps.onClick(event);
+
+        // if default is prevent - do not fire the onClick prop
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        // do not fire the click handler if the item is disabled
+        if (isDisabled) {
+          return;
+        }
+
+        this.props.onClick(event);
+      },
+      onMouseDown: (event: MouseEvent) => {
+        if (!dnd) {
+          return this.handleMouseDown;
+        }
+
+        dnd.dragHandleProps.onMouseDown(event);
+
+        // if default is prevent - do not fire other handlers
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        this.handleMouseDown(event);
+      },
+    };
+    /* eslint-enable consistent return */
 
     return (
       <Root
@@ -129,15 +162,16 @@ export default class Item extends Component {
         isDragging={isDragging}
         isHidden={isHidden}
         isSelected={isSelected}
-        onClick={isDisabled ? null : onClick}
-        onMouseDown={this.handleMouseDown}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role={role}
         tabIndex={isDisabled || isHidden ? null : 0}
         target={this.props.target}
         title={this.props.title}
-        {...dragAndDropProps}
+        style={dnd ? dnd.draggableStyle : null}
+        innerRef={dnd ? dnd.innerRef : null}
+        {...dnd.dragHandleProps}
+        {...patchedEventHandlers}
         {...otherProps}
       >
         {!!this.props.elemBefore && <BeforeAfter>{this.props.elemBefore}</BeforeAfter>}

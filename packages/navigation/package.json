@@ -26,8 +26,8 @@
     "@atlaskit/avatar": "^4.0.5",
     "@atlaskit/blanket": "^2.4.1",
     "@atlaskit/field-base": "^7.4.1",
-    "@atlaskit/item": "^2.0.0",
     "@atlaskit/icon": "^7.0.3",
+    "@atlaskit/item": "^2.0.0",
     "@atlaskit/util-common": "^1.5.1",
     "@atlaskit/util-shared-styles": "^2.10.1",
     "babel-runtime": "^6.23.0",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@atlaskit/badge": "^4.5.1",
     "@atlaskit/button": "^3.5.2",
-    "@atlaskit/drag-and-drop": "^4.4.1",
+    "@atlaskit/drag-and-drop": "4.5.0",
     "@atlaskit/dropdown-menu": "^3.4.1",
     "@atlaskit/logo": "^3.5.1",
     "@atlaskit/navigation": "*",

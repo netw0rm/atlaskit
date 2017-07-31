@@ -31,6 +31,7 @@ export type ItemTheme = {|
   hover: ItemState,
   active: ItemState,
   disabled: ItemState,
+  dragging: ItemState,
 |}
 
 export type ReactElement = any;

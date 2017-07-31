@@ -21,6 +21,9 @@ export type ItemTheme = {|
     background: Background,
     text?: Text,
   |},
+  dragging: {
+    background: Background,
+  }
 |}
 
 export type Provided = {|

@@ -36,10 +36,12 @@ const getInteractiveStyles = ({ isDisabled, isDragging }) => {
       cursor: not-allowed;
       ${getItemState('disabled')}
     `;
-  } else if (isDragging) {
+  }
+
+  if (isDragging) {
     return css`
       ${akElevationMixins.e200}
-      ${getItemState('hover')}
+      ${getItemState('dragging')}
     `;
   }
 

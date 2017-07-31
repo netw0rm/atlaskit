@@ -1,6 +1,8 @@
 # @atlaskit/media-test-helpers
 
-## Unreleased
+## 6.3.0 (2017-07-31)
+
+* feature; added minimal link details which contain a smart card ([e016c4b](https://bitbucket.org/atlassian/atlaskit/commits/e016c4b))
 
 ## 6.2.0 (2017-06-29)
 

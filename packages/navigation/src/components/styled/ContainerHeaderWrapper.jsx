@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { layout, gridSize } from '../../shared-variables';
+import { layout, gridSize, globalItemSizes } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
 const paddingOpen = {
@@ -18,9 +18,10 @@ const ContainerHeaderWrapper = styled.div`
   ${whenCollapsed`
     /* centering the icon */
     display: flex;
-    justify-content: center;
     flex-shrink: 0;
     flex-direction: column;
+    justify-content: center;
+    min-height: ${globalItemSizes.medium + gridSize / 2}px;
   `}
   > * + * { margin-top: 20px; }
 `;

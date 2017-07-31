@@ -100,7 +100,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     this.destroyed = true;
 
-    const { editorView, id } = this.props;
+    const { id } = this.props;
     const { mediaProvider } = this.state;
 
     if (mediaProvider) {
@@ -110,11 +110,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
     }
 
-    if (editorView) {
-      const stateManager = this.getStateManagerFromEditorPlugin(editorView);
-      if (stateManager) {
-        stateManager.unsubscribe(id, this.handleMediaStateChange);
-      }
+    const stateManager = this.getStateManagerFromEditorPlugin();
+    if (stateManager) {
+      stateManager.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -272,16 +270,16 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { editorView, id } = this.props;
+    const { id } = this.props;
 
     if (this.destroyed) {
       return;
     }
 
     /**
-     * Try to get stateManager from Editor Plugin first, if not, try MediaProvider
+     * Try to get stateManager from MediaProvider first, if not, try Editor Plugin
      */
-    const stateManager = this.getStateManagerFromEditorPlugin(editorView) || mediaProvider.stateManager;
+    const stateManager = mediaProvider.stateManager || this.getStateManagerFromEditorPlugin();
 
     this.setState({ mediaProvider });
 
@@ -289,7 +287,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       const mediaState = stateManager.getState(id);
 
       stateManager.subscribe(id, this.handleMediaStateChange);
-      this.setState({ ...mediaState });
+      this.setState({id,  ...mediaState });
     }
 
     await this.setContext('viewContext', mediaProvider);
@@ -310,8 +308,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState({ [contextName as any]: context as Context });
   }
 
-  getStateManagerFromEditorPlugin(editorView): MediaStateManager | undefined {
-
+  getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
+    const { editorView } = this.props;
     if (!editorView) {
       return;
     }

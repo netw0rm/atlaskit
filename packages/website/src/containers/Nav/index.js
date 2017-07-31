@@ -20,7 +20,7 @@ import SearchDrawer from './SearchDrawer';
 import PatternNav from './navigations/PatternNav';
 import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';
-import patterns from '../../../patterns';
+import patterns from '../../../patterns.data';
 
 const backIcon = <ArrowLeft label="Back icon" />;
 

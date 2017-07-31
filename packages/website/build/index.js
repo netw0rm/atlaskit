@@ -10,6 +10,7 @@ const babel = require('babel-core');
 const createBabylonOptions = require('babylon-options');
 
 const getExternalMetadata = require('./getExternalMetadata');
+const getPatternData = require('./getPatternData');
 const template = require('./data.template');
 
 const getChangelog = (src) => {
@@ -137,6 +138,8 @@ Promise.all(packages.map(mergeMetadata))
   .then(data => template({ components: data }).replace(/\n\s+\n/g, '\n'))
   .then(data => fs.writeFileSync(path.resolve('src', 'data.js'), data, 'utf8'))
   .then(() => console.info(`📦  => Wrote data.json for ${packages.length} AtlasKit components`))
+  .then(() => getPatternData())
+  .then(() => console.log('Wrote data for our current patterns'))
   .catch(console.error);
 
 // We're done!

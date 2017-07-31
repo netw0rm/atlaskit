@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 44.1.1 (2017-07-31)
+
+* bug fix; export renderer as es2015 package part ([1af0597](https://bitbucket.org/atlassian/atlaskit/commits/1af0597))
 ## 44.1.0 (2017-07-31)
 
 * feature; include localId on decisionList (issues closed: fs-1225) ([ff7ffbc](https://bitbucket.org/atlassian/atlaskit/commits/ff7ffbc))

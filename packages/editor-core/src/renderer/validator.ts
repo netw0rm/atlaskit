@@ -462,6 +462,28 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         }
         break;
       }
+      case 'taskList': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'taskItem': {
+        if (content && attrs && attrs.localId) {
+          return {
+            type,
+            content,
+            attrs: {
+              localId: attrs.localId,
+              state: attrs.state
+            },
+          };
+        }
+        break;
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { PersonResult, RoomResult } from './results';
+import { PersonResult, ResultBase, RoomResult } from './results';
 import { AkNavigationItemGroup } from '../../../src';
 
 const noOp = () => {};
@@ -16,7 +16,7 @@ const availableResultTypes = {
 
 type ResultShape = {|
   resultId: string,
-  type: 'person' | 'room',
+  type: string,
 |}
 
 type ResultGroup = {|
@@ -43,7 +43,7 @@ export default class SearchResults extends PureComponent {
   props: Props
 
   renderResultItem = (props) => {
-    const Result = availableResultTypes[props.type];
+    const Result = availableResultTypes[props.type] || ResultBase;
     const isSelected = props.resultId === this.props.selectedItemId;
     return Result ? (
       <Result

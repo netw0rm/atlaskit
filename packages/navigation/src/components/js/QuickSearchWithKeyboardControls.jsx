@@ -4,11 +4,30 @@ import { AkQuickSearch } from '../../../src';
 
 const noOp = () => {};
 
-const flattenResults = results => (
-  results.reduce((flatArray, group) => (
+/**
+ * Flatten an array of several groups of items into a single array of items
+ */
+const flattenGroupedItems = itemGroups => (
+  itemGroups.reduce((flatArray, group) => (
     flatArray.concat(group.items)
   ), [])
 );
+
+/**
+ * Flattens grouped items and appends additional items to the flattened array.
+ */
+const getItemsArray = (arrayOfItemGroups, ...additionalItems) => {
+  const itemsArray = arrayOfItemGroups ? flattenGroupedItems(arrayOfItemGroups) : [];
+  if (additionalItems) {
+    return additionalItems.reduce((cumItemsArray, item) => {
+      if (item != null) {
+        return cumItemsArray.concat(item);
+      }
+      return cumItemsArray;
+    }, itemsArray);
+  }
+  return itemsArray;
+};
 
 /**
  * Get the result ID of an item by its index in the flatResults array
@@ -61,6 +80,7 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
 export const withKeyboardControls = QuickSearchComp => (
   class WithKeyboardControls extends Component {
     static propTypes = {
+      advancedSearchOptions: AkQuickSearch.propTypes.advancedSearchOptions,
       onResultMouseEnter: AkQuickSearch.propTypes.onResultMouseEnter,
       onResultMouseLeave: AkQuickSearch.propTypes.onResultMouseLeave,
       onSearchBlur: AkQuickSearch.propTypes.onSearchBlur,
@@ -77,35 +97,35 @@ export const withKeyboardControls = QuickSearchComp => (
       results: [],
     }
 
-    flatResults = flattenResults(this.props.results);
+    itemsArray = getItemsArray(this.props.results, this.props.advancedSearchOptions);
 
     state = {
-      selectedItemId: this.props.selectedItemId || getItemIdByIndex(this.flatResults, 0),
+      selectedItemId: this.props.selectedItemId || getItemIdByIndex(this.itemsArray, 0),
     }
 
     componentWillReceiveProps(nextProps) {
-      if (nextProps.results) {
-        this.flatResults = flattenResults(nextProps.results);
+      if (nextProps.results || nextProps.advancedSearchOptions) {
+        this.itemsArray = getItemsArray(nextProps.results, nextProps.advancedSearchOptions);
         this.setState({
-          selectedItemId: nextProps.selectedItemId || getItemIdByIndex(this.flatResults, 0),
+          selectedItemId: nextProps.selectedItemId || getItemIdByIndex(this.itemsArray, 0),
         });
       }
     }
 
     /**
-     * Uses the virtual list, this.flatResults, to move the selection across grouped results as if
+     * Uses the virtual list, this.itemsArray, to move the selection across grouped results as if
      * results were in a single, circular list.
      *
      * Process:
-     * 1. Finds the index of the selected item in the flatResults array,
+     * 1. Finds the index of the selected item in this.itemsArray,
      * 2. Increments or decrements this index by the supplied adjustment amount,
      * 3. Sets the new selectedItemId based on the modifed index
      */
     adjustSelectedItemIndex = (adjustment) => {
-      const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
-      const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
+      const currentIndex = getItemIndexById(this.itemsArray, this.state.selectedItemId);
+      const newIndex = adjustIndex(this.itemsArray.length, currentIndex, adjustment);
       this.setState({
-        selectedItemId: getItemIdByIndex(this.flatResults, newIndex),
+        selectedItemId: getItemIdByIndex(this.itemsArray, newIndex),
       });
     }
 
@@ -138,7 +158,7 @@ export const withKeyboardControls = QuickSearchComp => (
         this.selectNext();
       } else if (event.key === 'Enter' && this.state.selectedItemId) {
         event.preventDefault(); // Don't fire submit event from input
-        const itemData = getItemById(this.flatResults, this.state.selectedItemId);
+        const itemData = getItemById(this.itemsArray, this.state.selectedItemId);
         if (itemData.href) {
           window.location.assign(itemData.href);
         } else if (itemData.onClick) {

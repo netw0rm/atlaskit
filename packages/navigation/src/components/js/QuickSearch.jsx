@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { AkSearch, AkSearchResults } from '../../../src';
+import AdvancedSearchOptions from './AdvancedSearchOptions';
 
 const noOp = () => {};
 
@@ -20,6 +21,10 @@ export default class QuickSearch extends PureComponent {
     onResultMouseLeave: AkSearchResults.propTypes.onResultMouseLeave,
     results: AkSearchResults.propTypes.results,
     selectedItemId: AkSearchResults.propTypes.selectedItemId,
+
+    /* AdvancedSearchOptions pass-through props */
+    advancedSearchOptions: AdvancedSearchOptions.propTypes.options,
+    advancedSearchOptionsTitle: AdvancedSearchOptions.propTypes.title,
   }
 
   static defaultProps = {
@@ -52,6 +57,16 @@ export default class QuickSearch extends PureComponent {
           results={this.props.results}
           selectedItemId={this.props.selectedItemId}
         />
+        {this.props.advancedSearchOptions && (
+          <AdvancedSearchOptions
+            isResultHoverStylesDisabled={this.props.isResultHoverStylesDisabled}
+            onResultMouseEnter={this.props.onResultMouseEnter}
+            onResultMouseLeave={this.props.onResultMouseLeave}
+            options={this.props.advancedSearchOptions}
+            selectedItemId={this.props.selectedItemId}
+            title={this.props.advancedSearchOptionsTitle}
+          />
+        )}
       </AkSearch>
     );
   }

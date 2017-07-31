@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 import { action } from '@kadira/storybook';
 import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
 
@@ -250,6 +251,21 @@ export default class BasicQuickSearch extends PureComponent {
     }, this.props.fakeNetworkLatency);
   }
 
+  advancedSearchOptions = [
+    {
+      resultId: 'Message history',
+      name: 'Message history',
+      icon: <SearchIcon label="advanced search" />,
+      onClick: () => { action(`Search message history for: ${this.state.query}`)(this.state.query); },
+    },
+    {
+      resultId: 'The Expanded Universe',
+      name: 'The Expanded Universe',
+      icon: <SearchIcon label="advanced search" />,
+      onClick: () => { action(`Search the Expanded Universe for: ${this.state.query}`)(this.state.query); },
+    },
+  ];
+
   render() {
     const QuickSearchComp = this.props.withKeyboardControls
       ? AkQuickSearchWithKeyboardControls
@@ -263,6 +279,9 @@ export default class BasicQuickSearch extends PureComponent {
 
         /* SearchResults props */
         results={this.state.results}
+
+        /* AdvancedSearchOptions props */
+        advancedSearchOptions={this.advancedSearchOptions}
       />
     );
   }

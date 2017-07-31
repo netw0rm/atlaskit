@@ -6,6 +6,7 @@ import {
   AkSearch,
   AkSearchResults,
 } from '../../src';
+import AdvancedSearchOptions from '../../src/components/js/AdvancedSearchOptions';
 import { mountWithRootTheme } from './_theme-util';
 
 const noOp = () => {};
@@ -26,7 +27,22 @@ describe('Quick Search', () => {
 
   it('should contain a SearchResults component', () => {
     const wrapper = mountWithRootTheme(QsComponent);
-    expect(wrapper.find(AkSearchResults)).toHaveLength(1);
+    expect(wrapper.children().filter(AkSearchResults)).toHaveLength(1);
+  });
+
+  it('should contain an AdvancedSearchOptions component if advancedSearchOptions prop is provided', () => {
+    const wrapper = mountWithRootTheme(
+      <AkQuickSearch
+        onSearchChange={() => {}}
+        onResultClick={() => {}}
+        advancedSearchOptions={[]}
+      />);
+    expect(wrapper.children().filter(AdvancedSearchOptions)).toHaveLength(1);
+  });
+
+  it('should not contain an AdvancedSearchOptions component if advancedSearchOptions prop is not provided', () => {
+    const wrapper = mountWithRootTheme(QsComponent);
+    expect(wrapper.children().filter(AdvancedSearchOptions)).toHaveLength(0);
   });
 
   describe('<QuickSearchWithKeyboardControls />', () => {
@@ -193,6 +209,44 @@ describe('Quick Search', () => {
         searchInput.simulate('blur');
         expect(wrapper.find(AkNavigationItem)).toHaveLength(kbTestResults[0].items.length);
         expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected'))).toHaveLength(0);
+      });
+
+      describe('with AdvancedSearchOptions', () => {
+        const QsComponentWithAdvancedSearchOptions = (
+          <AkQuickSearchWithKeyboardControls
+            onSearchChange={noOp}
+            onResultClick={onClickSpy}
+            results={kbTestResults}
+            advancedSearchOptions={[
+              {
+                resultId: 'advancedOptionTest1',
+                name: 'advanced search',
+                onClick: () => {},
+              },
+            ]}
+          />);
+
+        let wrapperWithAdvanced;
+        let searchInput2;
+
+        beforeEach(() => {
+          wrapperWithAdvanced = mountWithRootTheme(QsComponentWithAdvancedSearchOptions);
+          searchInput2 = wrapperWithAdvanced.find(AkSearch).find('input');
+        });
+
+        it('should wrap around to the top when traversing forward past the last result', () => {
+          searchInput2.simulate('keydown', { key: 'ArrowDown' });
+          searchInput2.simulate('keydown', { key: 'ArrowDown' });
+          searchInput2.simulate('keydown', { key: 'ArrowDown' });
+          searchInput2.simulate('keydown', { key: 'ArrowDown' });
+          expect(wrapperWithAdvanced.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).toBe('one');
+          expect(isInputFocused(searchInput2)).toBe(true);
+        });
+        it('should wrap around to the end when traversing backward past the first result', () => {
+          searchInput2.simulate('keydown', { key: 'ArrowUp' });
+          expect(wrapperWithAdvanced.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).toBe('advanced search');
+          expect(isInputFocused(searchInput2)).toBe(true);
+        });
       });
     });
   });

@@ -28,13 +28,14 @@ type Props = {|
 
 type State = {|
   /** Current value of search field. */
-  value: string
+  value?: string
 |}
 
 export default class Search extends PureComponent {
   static defaultProps = {
     isLoading: false,
     onBlur: () => {},
+    onKeyDown: () => {},
     placeholder: 'Search',
   }
 
@@ -47,9 +48,7 @@ export default class Search extends PureComponent {
     if (controlKeys.indexOf(event.key) === -1) {
       return;
     }
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
+    onKeyDown(event);
     event.stopPropagation();
   }
 

@@ -1,17 +1,79 @@
 # @atlaskit/navigation
 
+## Unreleased
+
 ## 17.0.0 (2017-07-28)
 
-* bug fix; add example for Navigation drag and drop (issues closed: ak-3055) ([db5027b](https://bitbucket.org/atlassian/atlaskit/commits/db5027b))
-* breaking; Update Navigation items to use @atlaskit/item (issues closed: ak-2979) ([00c9e28](https://bitbucket.org/atlassian/atlaskit/commits/00c9e28))
 ## 16.1.1 (2017-07-27)
 
-* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
 ## 16.1.0 (2017-07-27)
 
 
-* bug fix; hiding the scrollbar corner and moved colours into the vars ([3439174](https://bitbucket.org/atlassian/atlaskit/commits/3439174))
+* fix; hiding the scrollbar corner and moved colours into the vars ([3439174](https://bitbucket.org/atlassian/atlaskit/commits/3439174))
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+* fix; add example for Navigation drag and drop ([db5027b](https://bitbucket.org/atlassian/atlaskit/commits/db5027b))
+
+
+null Update Navigation items to use [@atlaskit](https://github.com/atlaskit)/item ([00c9e28](https://bitbucket.org/atlassian/atlaskit/commits/00c9e28))
+
+
 * feature; improved nav scrollbar styles in Chrome/Webkit/Edge ([7345249](https://bitbucket.org/atlassian/atlaskit/commits/7345249))
+
+
+* breaking; The AkNavigationItem named export is now an extension of the generic
+@atlaskit/item. AkNavigationItem's isHoverStylesDisabled and tabIndex props have been
+removed. The AkNavigationItemGroup is now an extension of @atlaskit/item's ItemGroup.
+
+ISSUES CLOSED: AK-2979
+
+## 16.0.1 (2017-07-25)
+
+## 16.0.0 (2017-07-21)
+
+## 15.10.0 (2017-07-21)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; fix SearchInput keystrokes "swallowing" when typing in IE11, changed \`onChange\` to \` ([6bf6995](https://bitbucket.org/atlassian/atlaskit/commits/6bf6995))
+* fix; fixing container header padding when nav collapsed ([9b5c57a](https://bitbucket.org/atlassian/atlaskit/commits/9b5c57a))
+* fix; removed the ContainerNoHeader component as it is not needed anymore ([3b7f758](https://bitbucket.org/atlassian/atlaskit/commits/3b7f758))
+
+
+* breaking; AkSearch prop \`onChange\` is replaced with \`onInput\`. | AkQuickSearch prop \`onSearchChange\` is
+replaced with \`onSearchInput\` for consistency
+
+## 15.9.0 (2017-07-20)
+
+
+* fix; fixing min-height of nav items in non-webkit ([c196e47](https://bitbucket.org/atlassian/atlaskit/commits/c196e47))
+* fix; shrinking the nav item actions when collapsed to prevent scrollbars ([5f43239](https://bitbucket.org/atlassian/atlaskit/commits/5f43239))
+* fix; using explicit flex-shrink for nav items ([7996c93](https://bitbucket.org/atlassian/atlaskit/commits/7996c93))
+
+
+* feature; sticky header in nav refactored ([e8db4e3](https://bitbucket.org/atlassian/atlaskit/commits/e8db4e3))
+
+## 15.8.1 (2017-07-19)
+
+
+* fix; change DrawerTriggerInner to be a div instead of button so that Firefox and IE captu ([aff8a3c](https://bitbucket.org/atlassian/atlaskit/commits/aff8a3c))
+
+## 15.5.0 (2017-07-17)
+
+## 15.5.0 (2017-07-17)
+
+## 15.5.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 15.5.0 (2017-07-17)
+
+
+* fix; escape now closes drawers in IE11 and Edge ([a6b0225](https://bitbucket.org/atlassian/atlaskit/commits/a6b0225))
+
+
+* feature; quick search result types - added href support + avatar v5 upgrade ([4f7e771](https://bitbucket.org/atlassian/atlaskit/commits/4f7e771))
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
 ## 15.4.0 (2017-07-12)
 

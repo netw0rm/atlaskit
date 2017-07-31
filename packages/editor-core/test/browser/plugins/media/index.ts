@@ -172,9 +172,9 @@ describe('Media plugin', () => {
       doc(
         p(),
         mediaGroup(
-          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
-          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
           media({ id: firstTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: secondTemporaryFileId, type: 'file', collection: testCollectionName }),
+          media({ id: thirdTemporaryFileId, type: 'file', collection: testCollectionName }),
         ),
         p(),
       )
@@ -445,8 +445,8 @@ describe('Media plugin', () => {
     expect(editorView.state.doc).to.deep.equal(
       doc(
         mediaGroup(
-          media({ id: 'bar', type: 'file', collection: testCollectionName }),
           media({ id: 'foo', type: 'file', collection: testCollectionName }),
+          media({ id: 'bar', type: 'file', collection: testCollectionName }),
         ),
         p(),
       ),

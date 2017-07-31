@@ -56,8 +56,8 @@ export const insertLinks = async (view: EditorView, linkRanges: RangeWithUrls[],
                 });
 
                 const $latestPos = tr.doc.resolve(pos);
-                const insertPos = posOfMediaGroupBelow(state, $latestPos, false)
-                  || posOfParentMediaGroup(state, $latestPos, false)
+                const insertPos = posOfMediaGroupBelow(state, $latestPos)
+                  || posOfParentMediaGroup(state, $latestPos)
                   || endPositionOfParent($latestPos);
 
                 // insert an empty paragraph in case we've reached the end of the document

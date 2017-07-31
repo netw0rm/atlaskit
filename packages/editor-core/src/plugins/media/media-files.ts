@@ -133,7 +133,7 @@ const setSelectionAfterMediaInsertion = (view: EditorView, insertPos: number): v
 
   if (endOfMediaGroup + 1 >= doc.nodeSize - 1) {
     // if nothing after the media group, fallback to select the newest uploaded media item
-    setNodeSelection(view, mediaPos);
+    setNodeSelection(view, mediaPos - 1);
   } else {
     setTextSelection(view, endOfMediaGroup + 1);
   }

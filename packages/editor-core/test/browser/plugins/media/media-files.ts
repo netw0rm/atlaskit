@@ -25,7 +25,7 @@ chai.use(chaiPlugin);
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
-describe('media-links', () => {
+describe('media-files', () => {
   const temporaryFileId = `temporary:${randomId()}`;
   const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
     doc,
@@ -57,7 +57,7 @@ describe('media-links', () => {
       expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
     });
 
-    it('should prepend media node to existing media group after it', () => {
+    it('appends media node to existing media group after it', () => {
       const { editorView } = editor(doc(
         p('text{<>}'),
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -69,8 +69,8 @@ describe('media-links', () => {
         doc(
           p('text{<>}'),
           mediaGroup(
-            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
             media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
           )
         )
       );
@@ -78,7 +78,7 @@ describe('media-links', () => {
   });
 
   context('when cursor is at the beginning of a text block', () => {
-    it('should prepend media node to existing media group before it', () => {
+    it('appends media node to existing media group before it', () => {
       const { editorView } = editor(doc(
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
         p('{<>}text'),
@@ -89,8 +89,8 @@ describe('media-links', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
             media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+            media({ id: 'mock2', type: 'file', collection: testCollectionName }),
           ),
           p('text'),
         )
@@ -195,7 +195,7 @@ describe('media-links', () => {
         });
 
         context('when there is an existing media group nearby', () => {
-          it('prepand media to the media group after parent', () => {
+          it('append media to the media group after parent', () => {
             const { editorView } = editor(doc(
               mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
               p('{<}text{>}'),
@@ -209,8 +209,8 @@ describe('media-links', () => {
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                 p(),
                 mediaGroup(
+                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
                   media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                  media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
                 ),
               )
             );
@@ -233,7 +233,7 @@ describe('media-links', () => {
           );
         });
 
-        it('prepends to exisiting media group after parent', () => {
+        it('appends to exisiting media group after parent', () => {
           const { editorView } = editor(doc(
             p('te{<}xt{>}'),
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -245,8 +245,8 @@ describe('media-links', () => {
             doc(
               p('te'),
               mediaGroup(
+                media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
                 media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
               )
             )
           );
@@ -273,7 +273,7 @@ describe('media-links', () => {
       });
 
       context('when selection is a media node', () => {
-        it('prepends to the existsing media group', () => {
+        it('appends to the existsing media group', () => {
           const { editorView } = editor(doc(
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
             p('text'),
@@ -285,8 +285,8 @@ describe('media-links', () => {
           expect(editorView.state.doc).to.deep.equal(
             doc(
               mediaGroup(
+                media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
                 media({ id: 'new one', type: 'file', collection: testCollectionName }),
-                media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
               ),
               p('text'),
             )
@@ -329,7 +329,7 @@ describe('media-links', () => {
 
         context('when there are exisiting media group', () => {
           context('when media group is in the front', () => {
-            it('prepend media to the exisiting media group before', () => {
+            it('appends media to the exisiting media group before', () => {
               const { editorView } = editor(doc(
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                 hr,
@@ -342,8 +342,8 @@ describe('media-links', () => {
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                     media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                   ),
                   p(),
                 )
@@ -352,7 +352,7 @@ describe('media-links', () => {
           });
 
           context('when media group is at the end', () => {
-            it('prepend media to the exisiting media group after', () => {
+            it('appends media to the exisiting media group after', () => {
               const { editorView } = editor(doc(
                 hr,
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
@@ -364,8 +364,8 @@ describe('media-links', () => {
               expect(editorView.state.doc).to.deep.equal(
                 doc(
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                     media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                   )
                 )
               );
@@ -373,7 +373,7 @@ describe('media-links', () => {
           });
 
           context('when both sides have media groups', () => {
-            it('prepend media to the exisiting media group after', () => {
+            it('appends media to the exisiting media group after', () => {
               const { editorView } = editor(doc(
                 mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                 hr,
@@ -388,8 +388,8 @@ describe('media-links', () => {
                 doc(
                   mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
                   mediaGroup(
-                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                     media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+                    media({ id: 'new one', type: 'file', collection: testCollectionName }),
                   ),
                 )
               );
@@ -413,7 +413,7 @@ describe('media-links', () => {
         );
       });
 
-      it('prepends to exisiting media group before parent', () => {
+      it('appends to exisiting media group before parent', () => {
         const { editorView } = editor(doc(
           mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
           p('{<}te{>}xt'),
@@ -424,8 +424,8 @@ describe('media-links', () => {
         expect(editorView.state.doc).to.deep.equal(
           doc(
             mediaGroup(
+              media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
               media({ id: 'new one', type: 'file', collection: testCollectionName }),
-              media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
             ),
             p('xt'),
           )
@@ -518,7 +518,7 @@ describe('media-links', () => {
       );
     });
 
-    it('prepends media to existing media group before the empty paragraph', () => {
+    it('appends media to existing media group before the empty paragraph', () => {
       const { editorView } = editor(doc(
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
         p('{<>}'),
@@ -529,8 +529,8 @@ describe('media-links', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           mediaGroup(
-            media({ id: 'another one', type: 'file', collection: testCollectionName }),
             media({ id: temporaryFileId, type: 'file', collection: testCollectionName }),
+            media({ id: 'another one', type: 'file', collection: testCollectionName }),
           ),
           p(),
         )
@@ -567,8 +567,8 @@ describe('media-links', () => {
     it('should insert all media nodes on the same line', async () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: 'mock2' }, testCollectionName);
       insertFile(editorView, { id: 'mock1' }, testCollectionName);
+      insertFile(editorView, { id: 'mock2' }, testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(doc(
         mediaGroup(

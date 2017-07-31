@@ -48,7 +48,7 @@ const posOfMediaGroupAbove = (state: EditorState<any>, $pos: ResolvedPos): numbe
   }
 
   if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-    return adjacentPos - adjacentNode.nodeSize + 1;
+    return adjacentPos - 1;
   }
 };
 
@@ -62,7 +62,7 @@ export const isInsidePotentialEmptyParagraph = (state: EditorState<any>): boolea
   return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
 };
 
-export const posOfMediaGroupBelow = (state: EditorState<any>, $pos: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfMediaGroupBelow = (state: EditorState<any>, $pos: ResolvedPos): number | undefined => {
   let adjacentPos;
   let adjacentNode;
 
@@ -75,15 +75,15 @@ export const posOfMediaGroupBelow = (state: EditorState<any>, $pos: ResolvedPos,
   }
 
   if (adjacentNode && adjacentNode.type === state.schema.nodes.mediaGroup) {
-    return prepend ? adjacentPos + 1 : adjacentPos + adjacentNode.nodeSize - 1;
+    return adjacentPos + adjacentNode.nodeSize - 1;
   }
 };
 
-export const posOfParentMediaGroup = (state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfParentMediaGroup = (state: EditorState<any>, $pos?: ResolvedPos): number | undefined => {
   const { $from } = state.selection;
   $pos = $pos || $from;
 
   if ($pos.parent.type === state.schema.nodes.mediaGroup) {
-    return prepend ? startPositionOfParent($pos) : endPositionOfParent($pos) - 1;
+    return endPositionOfParent($pos) - 1;
   }
 };

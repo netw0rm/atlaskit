@@ -1,14 +1,14 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { createJIRASchema } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { parseIntoAtlassianDocument } from '../../src';
-import { makeSchema } from '../../src/schema';
 
 chai.use(chaiPlugin);
 
 describe('parseIntoAtlassianDocument', () => {
   it('should parse HTML', () => {
-    const schema = makeSchema({});
+    const schema = createJIRASchema({});
     const json = parseIntoAtlassianDocument('<p>text</p>', schema);
 
     expect(json).to.deep.equal({
@@ -25,7 +25,7 @@ describe('parseIntoAtlassianDocument', () => {
   });
 
   it('should parse HTML according to schema', () => {
-    const schema = makeSchema({ allowMedia: false, allowLinks: true });
+    const schema = createJIRASchema({ allowMedia: false, allowLinks: true });
     const json = parseIntoAtlassianDocument('<p><a href="http://www.atlassian.com">Atlassian</a></p><p>This is a list: <ul><li>element</li></ul></p>', schema);
 
     expect(json).to.deep.equal({

@@ -1,5 +1,6 @@
 # @atlaskit/media-viewer
 
+## Unreleased
 
 ## 6.0.1 (2017-07-25)
 

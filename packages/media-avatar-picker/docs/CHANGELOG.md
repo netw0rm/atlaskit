@@ -1,5 +1,6 @@
 # @atlaskit/media-avatar-picker
 
+## Unreleased
 
 ## 2.2.2 (2017-07-25)
 

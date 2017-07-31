@@ -1,5 +1,6 @@
 # @atlaskit/eslint-config-base
 
+## Unreleased
 
 ## 2.0.6 (2017-07-25)
 

@@ -1,5 +1,19 @@
 # @atlaskit/editor-jira
 
+## Unreleased
+
+## 18.5.0 (2017-07-28)
+
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
+## 18.4.1 (2017-07-28)
+
+
+* fix; enabled jira media tests and proved better error message when htmls not match. ([7668506](https://bitbucket.org/atlassian/atlaskit/commits/7668506))
+
+
+* feature; export parseIntoAtlassianDocument function from editor-jira ([45dccef](https://bitbucket.org/atlassian/atlaskit/commits/45dccef))
 
 ## 18.4.0 (2017-07-25)
 

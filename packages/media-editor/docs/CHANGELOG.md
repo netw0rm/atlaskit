@@ -1,5 +1,6 @@
 # @atlaskit/media-editor
 
+## Unreleased
 
 ## 3.1.1 (2017-07-25)
 

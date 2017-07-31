@@ -1,5 +1,6 @@
 # @atlaskit/icon
 
+## Unreleased
 
 ## 7.0.3 (2017-07-25)
 

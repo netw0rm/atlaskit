@@ -1,5 +1,16 @@
 # @atlaskit/editor-cq
 
+## Unreleased
+
+## 4.5.0 (2017-07-28)
+
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
+## 4.4.0 (2017-07-28)
+
+
+* feature; added tablesEnabled prop to editor-cq ([bb727d6](https://bitbucket.org/atlassian/atlaskit/commits/bb727d6))
 
 ## 4.3.1 (2017-07-26)
 

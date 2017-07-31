@@ -1,5 +1,12 @@
 # @atlaskit/emoji
 
+## Unreleased
+
+## 22.3.1 (2017-07-27)
+
+
+* fix; ensure :sweat_smile: is in emoji test data for editor tests ([00759bf](https://bitbucket.org/atlassian/atlaskit/commits/00759bf))
+* fix; update test/story data to all source from latest prod url. Stop using dev. ([2d223f8](https://bitbucket.org/atlassian/atlaskit/commits/2d223f8))
 
 ## 22.3.0 (2017-07-26)
 

@@ -1,5 +1,11 @@
 # @atlaskit/media-card
 
+## Unreleased
+
+## 17.11.3 (2017-07-27)
+
+
+* fix; update smart-card view to only display for links with appearance="small" or appearan ([7296f99](https://bitbucket.org/atlassian/atlaskit/commits/7296f99))
 
 ## 17.11.2 (2017-07-25)
 

@@ -1,5 +1,6 @@
 # @atlaskit/app-switcher
 
+## Unreleased
 
 ## 2.5.1 (2017-07-25)
 

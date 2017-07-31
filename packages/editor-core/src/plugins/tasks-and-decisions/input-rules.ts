@@ -1,6 +1,7 @@
 import { NodeSelection, Schema, inputRules, InputRule, Plugin, EditorState } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
+import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: InputRule[] = [];
@@ -39,14 +40,14 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
         if (!shouldBreakNode) {
           tr
             .delete(where, $from.end($from.depth))
-            .replaceSelectionWith(decisionList.create({}, [decisionItem.create({}, content)]))
+            .replaceSelectionWith(decisionList.create({ localId: uuid.generate() }, [decisionItem.create({}, content)]))
             .delete(start + 1, end + 1)
           ;
         } else {
           tr
             .split($from.pos)
             .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
-            .replaceSelectionWith(decisionList.create({}, [decisionItem.create({}, tr.doc.nodeAt($from.pos + 1)!.content)]))
+            .replaceSelectionWith(decisionList.create({ localId: uuid.generate() }, [decisionItem.create({}, tr.doc.nodeAt($from.pos + 1)!.content)]))
             .delete(start, end + 1)
           ;
         }

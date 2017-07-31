@@ -1052,6 +1052,9 @@ System.out.println("There are " + count + " values >= 5");`
     },
     {
       type: 'decisionList',
+      attrs: {
+        localId: ''
+      },
       content: [
         {
           type: 'decisionItem',

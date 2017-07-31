@@ -9,6 +9,10 @@ LERNA_LOC="$BIN_PATH/lerna"
 # Paths for our build scripts
 BASEDIR=$(dirname $0)
 
+# Check the env varible to see if we are allowed to build storybooks for this branch
+# This is set to .+ usually but restricted when we want to speed up certain builds
+$BASEDIR/exit.if.branch.name.not.matches.js "$BRANCHES_ALLOWED_TO_BUILD_STORYBOOKS" || exit 0
+
 # source build scripts to get functions from them
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cdn_publish_folder.sh

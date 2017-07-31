@@ -17,6 +17,7 @@ import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins
 import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
+import pastePlugins from '../../src/plugins/paste';
 import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -276,6 +277,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          ...pastePlugins(schema),
           ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
           ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.providerFactory),

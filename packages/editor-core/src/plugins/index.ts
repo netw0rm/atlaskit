@@ -15,3 +15,4 @@ export { default as panelPlugins, stateKey as panelStateKey } from './panel';
 export { default as reactNodeViewPlugins, ReactNodeViewState, stateKey as reactNodeViewStateKey } from './react-nodeview';
 export { default as tablePlugins, TableState, stateKey as tableStateKey } from './table';
 export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';
+export { default as pastePlugins, stateKey as pluginStateKey } from './paste';

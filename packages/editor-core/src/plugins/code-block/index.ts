@@ -6,8 +6,6 @@ import {
   Plugin,
   PluginKey,
   NodeViewDesc,
-  Fragment,
-  Slice,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import keymapPlugin from './keymaps';
@@ -153,27 +151,6 @@ export const plugin = new Plugin({
   props: {
     handleClick(view: EditorView, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
-      return false;
-    },
-    // this hack allows to preserve nice formatting of code blocks when pasted from an external source
-    handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
-      if (!event.clipboardData) {
-        return false;
-      }
-      const text = event.clipboardData.getData('text/plain');
-      const html = event.clipboardData.getData('text/html');
-      const node = slice.content.firstChild;
-      const { schema } = view.state;
-
-      if (html && text && node && node.type === schema.nodes.codeBlock) {
-        const codeBlockNode = schema.nodes.codeBlock.create(node.attrs, schema.text(text));
-        const tr = view.state.tr.replaceSelection(
-          new Slice(Fragment.from(codeBlockNode), slice.openStart, slice.openEnd)
-        );
-        view.dispatch(tr.scrollIntoView());
-        return true;
-      }
-
       return false;
     },
     onFocus(view: EditorView, event) {

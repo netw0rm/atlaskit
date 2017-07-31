@@ -15,7 +15,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl, linkifyText, linkifyContent } from './utils';
+import { normalizeUrl, linkifyContent } from './utils';
 import { URL_REGEX } from './regex';
 
 import stateKey from './plugin-key';
@@ -376,19 +376,13 @@ export const plugin = new Plugin({
     handlePaste(view: EditorView, event: any, slice: Slice) {
       const { clipboardData } = event;
       const html = clipboardData && clipboardData.getData('text/html');
-      let contentSlices;
       if (html) {
-        contentSlices = linkifyContent(view.state.schema, slice);
-      } else {
-        const text = clipboardData && clipboardData.getData('text/plain');
-        if (text) {
-          contentSlices = linkifyText(view.state.schema, text);
+        const contentSlices = linkifyContent(view.state.schema, slice);
+        if (contentSlices) {
+          const { dispatch, state: { tr } } = view;
+          dispatch(tr.replaceSelection(contentSlices));
+          return true;
         }
-      }
-      if (contentSlices) {
-        const { dispatch, state: { tr } } = view;
-        dispatch(tr.replaceSelection(contentSlices));
-        return true;
       }
       return false;
     }

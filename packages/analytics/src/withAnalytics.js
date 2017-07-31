@@ -68,6 +68,7 @@ const withAnalytics = (WrappedComponent, map: EventMapOrFunction = {}) =>
         <WrappedComponent
           fireAnalyticsEvent={this.fireAnalyticsEvent}
           firePrivateAnalyticsEvent={this.privateAnalyticsEvent}
+          analyticsId={analyticsId}
           {...componentProps}
         />
       );

@@ -52,7 +52,7 @@ describe('FilmstripView', () => {
 
   describe('.minOffset', () => {
 
-    it('should return 0', () => {
+    it('should return minOffset', () => {
       const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
       const instance = element.instance() as FilmstripView;
@@ -63,11 +63,11 @@ describe('FilmstripView', () => {
 
   describe('.maxOffset', () => {
 
-    it('should return 90', () => {
+    it('should return maxOffset', () => {
       const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
       const instance = element.instance() as FilmstripView;
-      expect(instance.maxOffset).toEqual(90);
+      expect(instance.maxOffset).toEqual(89);
     });
 
   });
@@ -126,7 +126,7 @@ describe('FilmstripView', () => {
       const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
       const instance = element.instance() as FilmstripView;
-      expect(instance.getClosestForLeft(instance.maxOffset + 1)).toEqual(86);
+      expect(instance.getClosestForLeft(instance.maxOffset + 1)).toEqual(81);
     });
 
   });
@@ -148,10 +148,10 @@ describe('FilmstripView', () => {
       expect(instance.getClosestForRight(89)).toEqual(89);
 
       // special cases: where there's no more cards to scroll (they're already scrolled into view)
-      expect(instance.getClosestForRight(90)).toEqual(90);
-      expect(instance.getClosestForRight(94)).toEqual(90);
-      expect(instance.getClosestForRight(95)).toEqual(90);
-      expect(instance.getClosestForRight(99)).toEqual(90);
+      expect(instance.getClosestForRight(90)).toEqual(89);
+      expect(instance.getClosestForRight(94)).toEqual(89);
+      expect(instance.getClosestForRight(95)).toEqual(89);
+      expect(instance.getClosestForRight(99)).toEqual(89);
 
     });
 

@@ -99,8 +99,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     return 0;
   }
 
+  /**
+   * The furthest we can scroll, where the end of the buffer is just in view
+   */
   get maxOffset() {
-    return Math.max(this.minOffset, this.bufferWidth - this.windowWidth);
+    return Math.max(this.minOffset, this.bufferWidth - this.windowWidth - 1);
   }
 
   get canGoLeft() {

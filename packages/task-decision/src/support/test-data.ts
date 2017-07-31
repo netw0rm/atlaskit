@@ -1,4 +1,4 @@
-import { DecisionResponse, ServiceDecisionResponse } from '../types';
+import { DecisionResponse, ServiceDecision, ServiceDecisionResponse } from '../types';
 import { convertServiceDecisionResponseToDecisionResponse } from '../api/TaskDecisionUtils';
 
 declare var require: {
@@ -19,4 +19,4 @@ export const getDecisionsResponse = (hasMore?: boolean): DecisionResponse => {
   return convertServiceDecisionResponseToDecisionResponse(getServiceDecisionsResponse(), query);
 };
 
-export const serviceDecision = getServiceDecisionsResponse().decisions[0];
+export const serviceDecision: ServiceDecision = getServiceDecisionsResponse().decisions[0];

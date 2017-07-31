@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React, { PureComponent } from 'react';
-import patterns from '../../patterns';
+import patterns from '../../patterns.data';
 import NavExample from './Navigation/Example';
 import BaseExample from '../components/ComponentExample';
 import NoMatch from './NoMatch';

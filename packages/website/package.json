@@ -10,11 +10,11 @@
     "start": "yarn run build-data && webpack-dev-server"
   },
   "dependencies": {
-    "@atlaskit/button": "^3.0.0",
+    "@atlaskit/button": "^3.5.0",
     "@atlaskit/button-group": "^1.0.11",
     "@atlaskit/css-reset": "^1.0.5",
     "@atlaskit/dropdown-menu": "^1.1.13",
-    "@atlaskit/dynamic-table": "^4.5.2",
+    "@atlaskit/dynamic-table": "^4.5.1",
     "@atlaskit/field-text": "^3.0.0",
     "@atlaskit/icon": "^6.0.0",
     "@atlaskit/inline-message": "^2.0.0",

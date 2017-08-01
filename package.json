@@ -201,7 +201,7 @@
     "test/wc/single": "chalk -t '{red This command is deprecated, use `yarn run test:browser`. See README.md for more info}'",
     "test/wc/single/watch": "chalk -t '{red This command is deprecated, use `yarn run test:browser -- --watch`. See README.md for more info}'",
     "test/unit": "chalk -t '{red This command is deprecated, use `yarn run test:unit`. See README.md for more info}'",
-    "test/browserstack": "./build/bin/test.browserstack.sh",
+    "test/browserstack": "chalk -t '{yellow `yarn run test/browserstack` is deprecated, use `yarn run test:browserstack` instead}' && ./build/bin/test.browserstack.sh",
     "test:base": "jest --testRegex=\"^$(pwd)/test/.*.js\"",
     "test:browser": "node --max-old-space-size=4096 node_modules/.bin/karma start ./build/config/karma/config.js",
     "test:browserstack": "./build/bin/test.browserstack.sh",

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-local SOURCE_FOLDER="$1"
-local TARGET_PATH="$2"
-local CHALK="`yarn bin`/chalk"
+SOURCE_FOLDER="$1"
+TARGET_PATH="$2"
+CHALK="`yarn bin`/chalk"
 
 $CHALK --no-stdin -t "{blue Publishing folder '$SOURCE_FOLDER' to '$CDN_URL_SCOPE/$TARGET_PATH'}"
 

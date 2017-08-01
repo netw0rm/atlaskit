@@ -24,4 +24,5 @@ packages/**/**/README.md
 packages/*/CHANGELOG.md
 **/local-config.js
 packages/**/yarn.lock
+packages/**/storybook-static
 changed-packages

@@ -426,13 +426,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
-        console.error('localStorage is full', e);
+        console.error('failed to store selected emoji skin tone', e);
       }
     }
   }
 
   calculateDynamicCategories() {
     const categorySet = new Set();
+    if (!this.emojiRepository) {
+      return [];
+    }
     this.emojiRepository.all().emojis.forEach(emoji => categorySet.add(emoji.category));
     const dynamicCategoryList = Array.from(categorySet).filter(category => defaultCategories.indexOf(category) === -1);
     if (dynamicCategoryList.indexOf(customCategory) === -1 && !!this.mediaEmojiResource) {

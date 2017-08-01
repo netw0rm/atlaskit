@@ -146,7 +146,7 @@ export const input = 'input';
 
 export const pickerSearch = style({
   boxSizing: 'border-box',
-  padding: '10px 25px 10px 8px',
+  padding: '10px',
   flex: '0 0 auto',
 
   $nest: {
@@ -197,14 +197,8 @@ export const emojiPickerSpinner = style({
 
 //// Category/Result
 
-export const emojiPickerSection = style({
-  flex: '1 0 auto',
-});
-
 export const emojiPickerRow = style({
-  boxSizing: 'border-box',
-  padding: '0 8px',
-  flex: '1 1 auto',
+  marginLeft: '8px',
 });
 
 export const emojiCategoryTitle = style({

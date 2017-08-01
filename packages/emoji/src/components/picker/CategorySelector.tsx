@@ -117,18 +117,32 @@ export default class CategorySelector extends PureComponent<Props, State> {
 
     let categories = defaultCategories;
     if (dynamicCategories) {
-      categories = categories.concat(dynamicCategories.filter(category => !!CategoryDescriptionMap[category]));
-      categories.sort(sortCategories);
+      categories = this.addNewCategories(categories, dynamicCategories);
     }
     this.state = {
       categories
     };
   }
 
+  private addNewCategories(oldCategories: string[], newCategories?: string[]): string[] {
+    if (!newCategories) {
+      return oldCategories;
+    }
+    return oldCategories.concat(newCategories.filter(category => !!CategoryDescriptionMap[category])).sort(sortCategories);
+  }
+
   onClick = (categoryId) => {
     const { onCategorySelected } = this.props;
     if (onCategorySelected) {
       onCategorySelected(categoryId);
+    }
+  }
+
+  componentWillUpdate = (nextProps: Props, nextState: State) => {
+    if (this.props.dynamicCategories !== nextProps.dynamicCategories) {
+      this.setState({
+        categories: this.addNewCategories(defaultCategories, nextProps.dynamicCategories),
+      });
     }
   }
 

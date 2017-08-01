@@ -59,7 +59,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.state = {
       filteredEmojis: [],
       query: '',
-      dynamicCategories: emojiProvider.calculateDynamicCategories ? emojiProvider.calculateDynamicCategories() : [],
+      dynamicCategories: [],
       selectedTone: !hideToneSelector ? emojiProvider.getSelectedTone() : undefined,
       loading: true,
       uploadSupported: false,
@@ -170,6 +170,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     // Only enable categories for full emoji list (non-search)
     const query = searchResults.query;
     const disableCategories = !!query;
+    let dynamicCategories = this.state.dynamicCategories;
+    if (!disableCategories && filteredEmojis.length !== this.state.filteredEmojis.length) {
+      dynamicCategories = this.getDynamicCategories();
+    }
 
     let selectedEmoji;
     let activeCategory;
@@ -187,6 +191,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       filteredEmojis,
       selectedEmoji,
       activeCategory,
+      dynamicCategories,
       disableCategories,
       query,
       loading: false,
@@ -260,6 +265,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploading: false,
       uploadErrorMessage: undefined,
     });
+  }
+
+  private getDynamicCategories() {
+    return this.props.emojiProvider.calculateDynamicCategories ? this.props.emojiProvider.calculateDynamicCategories() : [];
   }
 
   private handlePickerRef = (ref: any) => {

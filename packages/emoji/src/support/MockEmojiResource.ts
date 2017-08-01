@@ -118,16 +118,26 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
-        console.error('localStorage is full', e);
+        console.error('failed to store selected emoji skin tone', e);
       }
     }
   }
 
-  calculateDynamicCategories() {
-    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
-      return ['ATLASSIAN'];
+  calculateDynamicCategories(): string[] {
+    const categories: string[] = [];
+    if (!this.emojiRepository) {
+      return categories;
     }
-    return [];
+    if (!!this.emojiRepository.findInCategory('FREQUENT').length) {
+      categories.push('FREQUENT');
+    }
+    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
+      categories.push('ATLASSIAN');
+    }
+    if (!!this.emojiRepository.findInCategory(customCategory).length) {
+      categories.push(customCategory);
+    }
+    return categories;
   }
 }
 
@@ -193,11 +203,12 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   }
 
   calculateDynamicCategories(): string[] {
-    const customList = [customCategory];
-    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
-      return customList.concat(['ATLASSIAN']);
+    const categories = super.calculateDynamicCategories();
+    // Uploading resource should always contain custom category
+    if (categories.indexOf(customCategory) === -1) {
+      categories.push(customCategory);
     }
-    return customList;
+    return categories;
   }
 }
 

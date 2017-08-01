@@ -208,7 +208,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
   let { content } = node;
 
   if (content) {
-    content = getValidContent(content, schema);
+    node.content = content = getValidContent(content, schema);
   }
 
   // If node type doesn't exist in schema, make it an unknow node
@@ -305,7 +305,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         break;
       }
       case 'mediaGroup': {
-        if (content) {
+        if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
             content

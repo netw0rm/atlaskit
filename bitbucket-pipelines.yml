@@ -57,19 +57,22 @@ pipelines:
           - ./build/bin/prep_for_release.sh
           - yarn
           - (cd packages/website; yarn run build-data)
+          - (cd packages/avatar; npm run storybook:static)
+          - (cd packages/badge; npm run storybook:static)
+          - (cd packages/reactions; npm run storybook:static)
           # we have to run this after `yarn` to have access to child-process-promise
-          - ./build/bin/generate.changed.packages.file.pr.sh
+          # - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript"
-          - run-p -ln "validate/tslint" "validate/eslint"
+          # - run-p -ln "validate/package.json" "validate/typescript"
+          # - run-p -ln "validate/tslint" "validate/eslint"
           # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
           # --bail is used to make jest fail fast when it finds a test failure
-          - npm run test/unit -- --runInBand --bail
-          - npm run test/base
-          - yarn run browserstack/tunnel/start
-          - yarn run test/browserstack
-          - yarn run browserstack/tunnel/stop
-          - yarn run "pr/storybook"
+          # - npm run test/unit -- --runInBand --bail
+          # - npm run test/base
+          # - yarn run browserstack/tunnel/start
+          # - yarn run test/browserstack
+          # - yarn run browserstack/tunnel/stop
+          - ./build/bin/storybook/upload.static.storybooks.js
         # caches:
           # - node
 

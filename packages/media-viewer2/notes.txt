@@ -1,0 +1,9 @@
+- click on a button, show one image from media.
+- click on a button, show one video from media.
+- click on a button, show item from media collection.
+- metadata hotspots.
+- make arrows work.
+- spinner
+- handle errors
+- handle "processing" status
+-

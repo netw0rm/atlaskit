@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction, MediaType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {CardDimensions, CardStatus} from '../../index';
@@ -24,15 +24,13 @@ export interface FileCardImageViewProps {
   error?: string;
 
   actions?: Array<CardAction>;
-  onClick?: (event: MouseEvent<HTMLElement>) => void;
-  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   render() {
     const {error, mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions,
-       selectable, selected, actions, onClick, onMouseEnter, onRetry, resizeMode} = this.props;
+       selectable, selected, actions, onRetry, resizeMode} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardImageView
@@ -48,9 +46,6 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
       selected={selected}
       actions={actions}
       resizeMode={resizeMode}
-
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
       onRetry={onRetry}
     />;
   }

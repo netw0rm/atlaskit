@@ -14,11 +14,11 @@ export interface HrefProps {
 
 export class Href extends Component<HrefProps, {}> {
   render() {
-    const {linkUrl, underline, children, className} = this.props;
+    const {linkUrl, underline, children, className, ...otherProps} = this.props;
     const classNames = cx(className, {underline});
 
     return (
-      <A href={linkUrl} className={classNames} target="_blank" rel="noopener">
+      <A {...otherProps} href={linkUrl} className={classNames} target="_blank" rel="noopener">
         {children}
       </A>
     );

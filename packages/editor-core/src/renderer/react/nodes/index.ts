@@ -19,6 +19,8 @@ import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
 import Rule from './rule';
+import TaskItem from './taskItem';
+import TaskList from './taskList';
 import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
@@ -40,6 +42,8 @@ export const nodeToReact = {
   'panel': Panel,
   'paragraph': Paragraph,
   'rule': Rule,
+  'taskItem': TaskItem,
+  'taskList': TaskList,
   'unknownBlock': UnknownBlock,
 };
 
@@ -155,5 +159,7 @@ export {
   Panel,
   Paragraph,
   Rule,
+  TaskItem,
+  TaskList,
   UnknownBlock,
 };

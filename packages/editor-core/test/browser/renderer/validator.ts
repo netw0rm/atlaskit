@@ -220,6 +220,30 @@ describe('Renderer - Validator', () => {
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
+
+      it('should return "text" if attrs.text is not a string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 2017,
+            title: { text: 'applicationCard' }
+          }
+        };
+
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "applicationCard" if attrs.text is an empty string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: '',
+            title: { text: 'applicationCard' }
+          }
+        };
+
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
     });
 
     describe('doc', () => {

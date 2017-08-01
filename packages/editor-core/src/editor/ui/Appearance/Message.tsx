@@ -36,8 +36,6 @@ const MessageEditor: any = styled.div`
   min-height: 30px;
   max-height: 305px;
   max-width: inherit;
-  overflow: hidden;
-  overflow-y: auto;
   box-sizing: border-box;
   word-wrap: break-word;
   animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
@@ -56,8 +54,11 @@ const MessageEditor: any = styled.div`
 
 // tslint:disable-next-line:variable-name
 const ContentArea = styled.div`
-  padding: 4px 8px;
+  height: 100%;
+  padding: 4px 16px 4px 8px;
   flex-grow: 1;
+  overflow: hidden;
+  overflow-y: auto;
 `;
 
 // tslint:disable-next-line:variable-name

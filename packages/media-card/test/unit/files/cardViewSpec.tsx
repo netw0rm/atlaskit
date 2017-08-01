@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { FileCardImageView } from '../../../src/files';
 import { CardOverlay } from '../../../src/utils/cardImageView/cardOverlay';
@@ -24,19 +24,5 @@ describe('FileCardView', () => {
   it('should NOT render an overlay when loading prop is true', function() {
     const card = mount(<FileCardImageView status="loading" />);
     expect(card.find(CardOverlay)).toHaveLength(0);
-  });
-
-  it('should pass onClick handlers through to root component', () => {
-    const handler = () => {};
-    const card = shallow(<FileCardImageView status="loading" onClick={handler} />);
-
-    expect(card.props().onClick).toEqual(handler);
-  });
-
-  it('should pass onMouseEnter handlers through to root component', () => {
-    const handler = () => {};
-    const card = shallow(<FileCardImageView status="loading" onMouseEnter={handler} />);
-
-    expect(card.props().onMouseEnter).toEqual(handler);
   });
 });

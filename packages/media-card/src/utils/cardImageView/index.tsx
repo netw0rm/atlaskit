@@ -3,7 +3,7 @@
  * Overlay, Content, dimensions logic lives here.
  */
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {MediaType, MediaItemType, CardAction, CardActionType, ImageResizeMode} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../getCSSUnitValue';
@@ -34,8 +34,6 @@ export interface CardImageViewProps {
   icon?: string;
 
   actions?: Array<CardAction>;
-  onClick?: (event: MouseEvent<HTMLElement>) => void;
-  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
   resizeMode?: ImageResizeMode;
 }
@@ -86,12 +84,11 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const {onClick, onMouseEnter} = this.props;
     const cardStyle = this.cardStyle;
     const cardSize = this.cardSize;
 
     return (
-      <Wrapper style={cardStyle} onClick={onClick} onMouseEnter={onMouseEnter} cardSize={cardSize}>
+      <Wrapper style={cardStyle} cardSize={cardSize}>
         {this.getCardContents()}
       </Wrapper>
     );

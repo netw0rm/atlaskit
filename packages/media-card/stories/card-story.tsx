@@ -50,6 +50,12 @@ const onSelectChangeHandler = (result: OnSelectChangeFuncResult) => {
   action('selectChanged')(result);
 };
 
+const eventHandler = (eventName: string) => {
+  return () => {
+    action(eventName)();
+  };
+};
+
 const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
   // API methods
   const apiCards = [
@@ -85,6 +91,11 @@ const createApiCards = (appearance: CardAppearance, identifier: Identifier) => {
   return apiCards;
 };
 
+const menuActions = [
+  {label: 'Open', handler: () => { action('open')(); }},
+  {label: 'Close', handler: () => { action('close')(); }}
+];
+
 storiesOf('Card', {})
   .add('Live preview', () => {
     interface LiveUrlConverterState {
@@ -109,16 +120,16 @@ storiesOf('Card', {})
         const cards = [
           {
             title: 'small',
-            content: <Card identifier={identifier} context={context} appearance="small" />
+            content: <Card identifier={identifier} context={context} appearance="small" onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
           }, {
             title: 'image',
-            content: <Card identifier={identifier} context={context} appearance="image" />
+            content: <Card identifier={identifier} context={context} appearance="image" onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
           }, {
             title: 'horizontal',
-            content: <Card identifier={identifier} context={context} appearance="horizontal" />
+            content: <Card identifier={identifier} context={context} appearance="horizontal" onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
           }, {
             title: 'square',
-            content: <Card identifier={identifier} context={context} appearance="square" />
+            content: <Card identifier={identifier} context={context} appearance="square" onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
           }
         ];
 
@@ -362,11 +373,6 @@ storiesOf('Card', {})
       }
     ];
 
-    // menu
-    const menuActions = [
-      {label: 'Open', handler: () => { action('open')(); }},
-      {label: 'Close', handler: () => { action('close')(); }}
-    ];
     const menuCards = [
       {
         title: 'Small',

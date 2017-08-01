@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../../src/links';
 import { Details } from '../../../src/links/styled';
@@ -10,7 +10,6 @@ describe('LinkCardGenericView', () => {
   const linkUrl = 'http://localhost:9001/';
   const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
   const iconUrl = 'http://localhost:9001/some/icon';
-  const event = 'some-random-event';
 
   it('should only render the title and linkUrl when not supplied with optional props', () => {
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
@@ -86,30 +85,6 @@ describe('LinkCardGenericView', () => {
     expect(card.find(ErrorContainer)).toHaveLength(1);
     expect(card.find(ErrorHeader)).toHaveLength(1);
     expect(card.find(ErrorHeader).text()).toBe(error);
-  });
-
-  it('should fire onClick when component is clicked', () => {
-    const handler = jest.fn();
-    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onClick={handler} />);
-
-    card.simulate('click', event);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler.mock.calls[0][0]).toEqual(event);
-  });
-
-  it('should fire onMouseEnter when component is hovered', () => {
-    const handler = jest.fn();
-    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
-
-    card.simulate('mouseEnter', event);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler.mock.calls[0][0]).toEqual(event);
-  });
-
-  it('should wrap the component into an A element', () => {
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl}/>);
-
-    expect(card.getDOMNode()).toBeInstanceOf(HTMLAnchorElement);
   });
 
   it('should use max horizontal dimensions and large size if the width is too big', () => {

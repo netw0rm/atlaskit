@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
+import { action } from '@kadira/storybook';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import {
   videoFileDetails,
@@ -82,6 +83,8 @@ export const generateStoriesForEditableCards = () => {
     selected: boolean;
     resizeMode: ImageResizeMode;
     mediaItemType: MediaItemType;
+    isMouseEnterHandlerActive: boolean;
+    isClickHandlerActive: boolean;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -104,7 +107,9 @@ export const generateStoriesForEditableCards = () => {
         selectable: false,
         selected: false,
         resizeMode: 'crop',
-        mediaItemType: 'file'
+        mediaItemType: 'file',
+        isMouseEnterHandlerActive: true,
+        isClickHandlerActive: true
       };
     }
 
@@ -153,6 +158,19 @@ export const generateStoriesForEditableCards = () => {
                 <Toggle
                   isDefaultChecked={false}
                   onChange={this.onSelectedChange}
+                />
+              </div>
+              <div>
+                On click
+                <Toggle
+                  isDefaultChecked={true}
+                  onChange={this.onClickChange}
+                />
+                <hr />
+                On mouse enter
+                <Toggle
+                  isDefaultChecked={true}
+                  onChange={this.onMouseEnterChange}
                 />
               </div>
             </SliderWrapper>
@@ -205,10 +223,32 @@ export const generateStoriesForEditableCards = () => {
               selectable={selectable}
               selected={selected}
               resizeMode={resizeMode}
+              onClick={this.onClick}
+              onMouseEnter={this.onMouseEnter}
             />
           </EditableCardContent>
         </div>
       );
+    }
+
+    onMouseEnterChange = () => {
+      this.setState({isMouseEnterHandlerActive: !this.state.isMouseEnterHandlerActive});
+    }
+
+    onClickChange = () => {
+      this.setState({isClickHandlerActive: !this.state.isClickHandlerActive});
+    }
+
+    onClick = () => {
+      if (this.state.isClickHandlerActive) {
+        action('onClick')();
+      }
+    }
+
+    onMouseEnter = () => {
+      if (this.state.isMouseEnterHandlerActive) {
+        action('onMouseEnter')();
+      }
     }
 
     onSelectedChange = (e) => {

@@ -40,21 +40,6 @@ describe('LinkCardViewSmall', () => {
 
     expect(card.find(CardGenericViewSmall).props().subtitle).toEqual(site);
   });
-
-  it('should pass onClick handlers through to the generic view component', () => {
-    const handler = () => {};
-    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} onClick={handler} />);
-
-    expect(card.find(CardGenericViewSmall).props().onClick).toEqual(handler);
-  });
-
-  it('should pass onMouseEnter handlers through to the generic view component', () => {
-    const handler = () => {};
-    const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} onMouseEnter={handler} />);
-
-    expect(card.find(CardGenericViewSmall).props().onMouseEnter).toEqual(handler);
-  });
-
   it('should not render a link tag when loading is "true"', () => {
     const card = shallow(<LinkCardViewSmall title={title} linkUrl={linkUrl} loading={true} />);
     expect(card.find(Href)).toHaveLength(0);

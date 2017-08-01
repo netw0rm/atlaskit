@@ -26,14 +26,14 @@ export interface Range {
 export const insertFile = (view: EditorView, mediaState: MediaState, collection?: string): void => {
   const { state, dispatch } = view;
   const { $to } = state.selection;
-  const { tr, schema } = state;
-  const { media, paragraph } = schema.nodes;
+  const { tr, schema, doc } = state;
+  const { media, mediaGroup, paragraph } = schema.nodes;
 
   if (!collection || !media) {
     return;
   }
 
-  const node = createMediaFileNode(mediaState, collection, media);
+  let node = createMediaFileNode(mediaState, collection, media);
 
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
@@ -46,6 +46,10 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
 
   // delete the selection or empty paragraph
   const deleteRange = findDeleteRange(state);
+
+  if(doc.resolve(mediaInsertPos).parent.type !== mediaGroup) {
+    node = mediaGroup.create({}, node);
+  }
 
   if (!deleteRange) {
     tr.insert(mediaInsertPos, node);

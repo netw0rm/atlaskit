@@ -12,7 +12,10 @@ import {
 
 import ProviderFactory from '../../src/providerFactory';
 import { document } from '../story-data';
-import Renderer from '../../src/ui/Renderer';
+import {
+  default as Renderer,
+  Props as RendererProps,
+} from '../../src/ui/Renderer';
 
 import {
   AkProfileClient,
@@ -111,11 +114,11 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
   }
 
   get renderer() {
-    const props: any = {
-      document: JSON.parse(this.state.input)
-    };
-
     try {
+      const props: RendererProps = {
+        document: JSON.parse(this.state.input)
+      };
+
       if (this.props.withProviders) {
         props.eventHandlers = eventHandlers;
         props.dataProviders = providerFactory;

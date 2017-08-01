@@ -157,5 +157,28 @@ describe('JIRASerializer', () => {
         uploadContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: 'MediaServicesSample' },
       },
     );
+
+    checkEncode('file type (without __displayType)',
+      schema,
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: 'MediaServicesSample',
+          __fileName: 'foo.pdf', __displayType: null, __fileMimeType: 'application/pdf'
+        })
+      ])),
+      '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42">foo.pdf</a></span></p>'
+    );
+
+    checkEncode('thumbnail type (without __displayType)',
+      schema,
+      doc(mediaGroup([
+        media({
+          id: '42', type: 'file', collection: 'MediaServicesSample',
+          __fileName: 'foo.png', __displayType: null, __fileMimeType: 'image/png'
+        })
+      ])),
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>'
+    );
+
   });
 });

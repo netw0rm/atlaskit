@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "config": {
     "access": "public"
   },
@@ -43,7 +43,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/renderer": "^5.4.3",
+    "@atlaskit/editor-core": "^44.5.0",
     "@atlaskit/util-common-test": "^2.0.0"
   },
   "keywords": [

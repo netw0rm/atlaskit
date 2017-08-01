@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "44.3.0",
+  "version": "44.6.0",
   "config": {
     "access": "public"
   },
@@ -66,6 +66,7 @@
     "codemirror": "^5.26.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
+    "markdown-it-table": "^1.0.0",
     "mediapicker": "^5.3.7",
     "orderedmap": "^1.0.0",
     "prosemirror-commands": "^0.22.0",

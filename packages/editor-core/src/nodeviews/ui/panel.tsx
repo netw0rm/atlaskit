@@ -112,6 +112,14 @@ class Panel implements NodeView {
     return this.contentDOMRef;
   }
 
+  update() {
+    /**
+     * Returning false here fixes an error where the editor fails to set selection
+     * inside the contentDOM after a transaction. See ED-2374.
+     */
+    return false;
+  }
+
   destroy() {
     ReactDOM.unmountComponentAtNode(this.domRef!);
     this.domRef = undefined;

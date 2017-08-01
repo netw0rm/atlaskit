@@ -14,6 +14,7 @@ import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
 import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
+import goToLearnMore from './goToLearnMore';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import languagePacks from './language-packs.json';
@@ -114,6 +115,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers,
   retrieveUsers: retrieveJiraUsers,
   goToProduct,
+  goToLearnMore,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
 });

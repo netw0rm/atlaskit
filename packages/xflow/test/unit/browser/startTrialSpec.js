@@ -33,6 +33,7 @@ const defaultProps = {
   cancelStartProductTrial: async () => {},
   grantAccessToUsers: () => delay(500),
   goToProduct: async () => {},
+  goToLearnMore: async () => {},
   closeLoadingDialog: async () => {},
   requestTrialAccess: () => delay(500),
   requestTrialAccessWithNote: () => delay(500),

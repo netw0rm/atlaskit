@@ -409,6 +409,28 @@ describe('<EmojiPicker />', () => {
         })
       )
     );
+
+    it('searching should disable categories in selector', () =>
+      setupPicker().then(component =>
+        waitUntil(() => searchInputVisible(component))
+        .then(() => {
+          // click search
+          const searchInput = findSearchInput(component);
+          searchInput.simulate('focus');
+          // type "al"
+          searchInput.simulate('change', {
+            target: {
+              value: 'al',
+            }
+          });
+
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => findEmoji(list).length === 2);
+        }).then(() =>
+          expect(component.find(CategorySelector).prop('disableCategories'), 'Selector disabled if searching').to.equal(true)
+        )
+      )
+    );
   });
 
   describe('upload', () => {

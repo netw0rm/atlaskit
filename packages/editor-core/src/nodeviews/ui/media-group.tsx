@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
-import { FilmStripNavigator } from '@atlaskit/media-filmstrip';
+import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import { MediaPluginState, mediaStateKey } from '../../plugins';
 import { EditorView } from '../../prosemirror';
@@ -10,6 +10,11 @@ import { Props as MediaProps } from '../../ui/Media/MediaComponent';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
+}
+
+export interface MediaGroupNodeState {
+  animate: boolean;
+  offset: number;
 }
 
 // tslint:disable-next-line:variable-name
@@ -20,9 +25,14 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {}> {
+export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, MediaGroupNodeState> {
   private mediaPluginState: MediaPluginState;
   private mediaNodesIds: string[];
+
+  state: MediaGroupNodeState = {
+    animate: false,
+    offset: 0
+  };
 
   constructor(props) {
     super(props);
@@ -30,6 +40,9 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
     this.mediaPluginState = mediaStateKey.getState(props.view.state);
     assert(this.mediaPluginState, 'Media is not enabled');
   }
+
+  private handleSize = ({offset}) => this.setState({offset});
+  private handleScroll = ({animate, offset}) => this.setState({animate, offset});
 
   /**
    * Save all childNodes ids into "mediaNodesIds"
@@ -53,9 +66,15 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
   }
 
   render() {
+    const {animate, offset} = this.state;
     return (
       <Wrapper>
-        <FilmStripNavigator>
+        <FilmstripView
+          animate={animate}
+          offset={offset}
+          onSize={this.handleSize}
+          onScroll={this.handleScroll}
+        >
         {
           React.Children.map(this.props.children, (child: ReactElement<MediaNodeProps>) => {
             switch(child.props.node.attrs.type) {
@@ -71,8 +90,8 @@ export default class MediaGroupNode extends PureComponent<MediaGroupNodeProps, {
                 } as MediaProps);
             }
           })
-        }
-        </FilmStripNavigator>
+          }
+        </FilmstripView>
       </Wrapper>
     );
   }

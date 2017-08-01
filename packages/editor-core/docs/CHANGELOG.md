@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 44.6.0 (2017-08-01)
+
+* bug fix; keep focus in node views after transactions ([dd82b25](https://bitbucket.org/atlassian/atlaskit/commits/dd82b25))
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
 ## 44.5.0 (2017-08-01)
 
 

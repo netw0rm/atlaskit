@@ -221,7 +221,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details } = attrs;
-        if (!text || !title || !title.text) { break; }
+        if (typeof text !== 'string' || !title || !title.text) { break; }
         if (
           (link && !link.url) ||
           (background && !background.url) ||

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../index';
@@ -19,8 +19,7 @@ import {
   Footer,
   Link,
   ErrorContainer,
-  ErrorHeader,
-  A
+  ErrorHeader
 } from './styled';
 
 export interface LinkCardGenericViewProps {
@@ -38,8 +37,6 @@ export interface LinkCardGenericViewProps {
   error?: string;
 
   actions?: Array<CardAction>;
-  onClick?: (event: MouseEvent<HTMLElement>) => void;
-  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
 }
 
 export interface LinkCardGenericViewState {
@@ -60,25 +57,18 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     appearance: 'auto'
   };
 
-  constructor(props: LinkCardGenericViewProps) {
-    super(props);
+  state: LinkCardGenericViewState = {
+    thumbnailError: false,
+    iconError: false
+  };
 
-    this.state = {
-      thumbnailError: false,
-      iconError: false
-    };
-
-    this.thumbnailError = this.thumbnailError.bind(this);
-    this.iconError = this.iconError.bind(this);
-  }
-
-  private thumbnailError() {
+  private thumbnailError = () => {
     this.setState({
       thumbnailError: true,
     });
   }
 
-  private iconError() {
+  private iconError = () => {
     this.setState({
       iconError: true,
     });
@@ -136,17 +126,15 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {appearance, onClick, onMouseEnter, linkUrl} = this.props;
+    const {appearance} = this.props;
     const {height, width, cardSize} = this;
     const cardStyle = {height, width};
     const content = this.getContentToRender();
 
     return (
-      <A linkUrl={linkUrl} onClick={onClick} onMouseEnter={onMouseEnter}>
-        <Wrapper style={cardStyle} className={appearance} cardSize={cardSize}>
-          {content}
-        </Wrapper>
-      </A>
+      <Wrapper className={appearance} style={cardStyle} cardSize={cardSize}>
+        {content}
+      </Wrapper>
     );
   }
 

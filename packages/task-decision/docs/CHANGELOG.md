@@ -1,6 +1,11 @@
 # @atlaskit/task-decision
 
-## Unreleased
+## 2.1.3 (2017-08-01)
+
+* bug fix; using new renderer from editor-core ([32726cf](https://bitbucket.org/atlassian/atlaskit/commits/32726cf))
+
+
+
 
 ## 2.1.2 (2017-07-25)
 

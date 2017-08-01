@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
+import tableCommands from '../../plugins/table/commands';
 import { EditorView, CellSelection } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
@@ -124,15 +125,16 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   private onItemActivated = ({ item }) => {
+    const { editorView } = this.props;
     switch(item.value) {
       case 'cut':
-        this.props.pluginState.cut();
+        tableCommands.cut()(editorView.state, editorView.dispatch);
         break;
       case 'copy':
-        this.props.pluginState.copy();
+        tableCommands.copy()(editorView.state, editorView.dispatch);
         break;
       case 'paste':
-        this.props.pluginState.paste();
+        tableCommands.paste()(editorView.state, editorView.dispatch);
         break;
     }
   }

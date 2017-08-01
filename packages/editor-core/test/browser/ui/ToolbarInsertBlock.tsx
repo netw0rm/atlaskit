@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import * as React from 'react';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import tablePlugins from '../../../src/plugins/table';
+import tableCommands from '../../../src/plugins/table/commands';
 import mediaPlugins from '../../../src/plugins/media';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import ToolbarInsertBlock from '../../../src/ui/ToolbarInsertBlock';
@@ -180,7 +181,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const funcSpy = sinon.spy();
-    tablePluginsSet[0].getState(editorView.state).createTable = () => funcSpy;
+    tableCommands.createTable = () => funcSpy;
     const tableButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Table') > 0)

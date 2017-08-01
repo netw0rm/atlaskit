@@ -1,6 +1,18 @@
 # @atlaskit/editor-core
 
-## Unreleased
+## 44.2.0 (2017-07-31)
+
+* feature; add max content size plugin (issues closed: ed-2077) ([c917a11](https://bitbucket.org/atlassian/atlaskit/commits/c917a11))
+## 44.1.1 (2017-07-31)
+
+* bug fix; export renderer as es2015 package part ([1af0597](https://bitbucket.org/atlassian/atlaskit/commits/1af0597))
+## 44.1.0 (2017-07-31)
+
+* feature; include localId on decisionList (issues closed: fs-1225) ([ff7ffbc](https://bitbucket.org/atlassian/atlaskit/commits/ff7ffbc))
+
+
+* feature; adding new auto-complete for code block triple backticks followed by space. ([1f51ad1](https://bitbucket.org/atlassian/atlaskit/commits/1f51ad1))
+
 
 ## 44.0.2 (2017-07-28)
 

@@ -1,6 +1,10 @@
 # @atlaskit/editor-bitbucket
 
-## Unreleased
+## 2.6.2 (2017-07-31)
+
+* bug fix; adding mentionSource back to editor-bitbucket ([6c1543c](https://bitbucket.org/atlassian/atlaskit/commits/6c1543c))
+
+
 
 ## 2.6.1 (2017-07-28)
 

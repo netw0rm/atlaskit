@@ -64,5 +64,6 @@
       "name": "Thorsten B"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "types": "dist/es/index.d.ts"
 }

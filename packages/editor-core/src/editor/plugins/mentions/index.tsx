@@ -21,13 +21,13 @@ const mentionsPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 300, plugin: (schema, props, providerFactory) => createPlugin(providerFactory) },
+      { rank: 300, plugin: (schema, props, dispatch, providerFactory) => createPlugin(providerFactory) },
       { rank: 310, plugin: schema => inputRulePlugin(schema) },
       { rank: 320, plugin: schema => keymap(schema) }
     ];
   },
 
-  contentComponent(editorView, providerFactory) {
+  contentComponent(editorView, eventDispatcher, providerFactory) {
     const renderNode = (providers) =>{
       return <MentionPicker editorView={editorView} pluginKey={pluginKey} mentionProvider={providers.mentionProvider} />;
     };

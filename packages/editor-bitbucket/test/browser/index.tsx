@@ -258,8 +258,8 @@ describe.skip('@atlaskit/editor-bitbucket/pasting', () => {
   let editorWrapper;
 
   beforeEach(() => {
-    const mentionProvider = sinon.stub() as any;
-    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionProvider={mentionProvider} />, { attachTo: fixture() });
+    const mentionResoure = sinon.stub() as any;
+    editorWrapper = mount(<Editor isExpandedByDefault={true} mentionSource={mentionResoure} />, { attachTo: fixture() });
     editor = editorWrapper.get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });

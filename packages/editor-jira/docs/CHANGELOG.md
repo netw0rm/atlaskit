@@ -1,6 +1,10 @@
 # @atlaskit/editor-jira
 
-## Unreleased
+## 19.0.1 (2017-08-01)
+
+* bug fix; import renderer from es2015 code ([3aa4ab4](https://bitbucket.org/atlassian/atlaskit/commits/3aa4ab4))
+
+
 
 ## 18.5.0 (2017-07-28)
 

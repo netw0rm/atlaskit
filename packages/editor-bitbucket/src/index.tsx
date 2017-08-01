@@ -48,6 +48,7 @@ import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
 import schema from './schema';
+import { MentionResource, MentionSource } from './mention-resource';
 
 export {
   AbstractMentionResource,
@@ -74,7 +75,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
   errorReporter?: ErrorReportingHandler;
-  mentionProvider?: Promise<MentionProvider>;
+  mentionSource?: MentionSource;
   emojiProvider?: Promise<EmojiProvider>;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
@@ -111,7 +112,7 @@ export default class Editor extends PureComponent<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
     if (
-      props.mentionProvider !== nextProps.mentionProvider ||
+      props.mentionSource !== nextProps.mentionSource ||
       props.emojiProvider !== nextProps.emojiProvider
     ) {
       this.handleProviders(nextProps);
@@ -119,7 +120,18 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mentionProvider } = props;
+    const { emojiProvider, mentionSource } = props;
+
+    let mentionProvider;
+
+    if (mentionSource) {
+      const mentionsResourceProvider = new MentionResource({
+        minWait: 10,
+        maxWait: 25,
+      }, mentionSource);
+
+      mentionProvider = Promise.resolve(mentionsResourceProvider);
+    }
 
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);

@@ -36,6 +36,7 @@ replaced with \`onSearchInput\` for consistency
 * fix; fixing min-height of nav items in non-webkit ([c196e47](https://bitbucket.org/atlassian/atlaskit/commits/c196e47))
 * fix; shrinking the nav item actions when collapsed to prevent scrollbars ([5f43239](https://bitbucket.org/atlassian/atlaskit/commits/5f43239))
 * fix; using explicit flex-shrink for nav items ([7996c93](https://bitbucket.org/atlassian/atlaskit/commits/7996c93))
+* fix; escape now closes drawers in IE11 and Edge ([a6b0225](https://bitbucket.org/atlassian/atlaskit/commits/a6b0225))
 * feature; sticky header in nav refactored ([e8db4e3](https://bitbucket.org/atlassian/atlaskit/commits/e8db4e3))
 
 ## 15.8.1 (2017-07-19)
@@ -44,15 +45,7 @@ replaced with \`onSearchInput\` for consistency
 
 ## 15.5.0 (2017-07-17)
 
-## 15.5.0 (2017-07-17)
-
-## 15.5.0 (2017-07-17)
-
 * fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
-
-## 15.5.0 (2017-07-17)
-
-* fix; escape now closes drawers in IE11 and Edge ([a6b0225](https://bitbucket.org/atlassian/atlaskit/commits/a6b0225))
 * feature; quick search result types - added href support + avatar v5 upgrade ([4f7e771](https://bitbucket.org/atlassian/atlaskit/commits/4f7e771))
 * feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 

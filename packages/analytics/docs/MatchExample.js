@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   AnalyticsDecorator,
   AnalyticsListener,
@@ -14,18 +15,19 @@ const Button = withAnalytics(
   { onClick: 'click' }
 );
 
-export default class AnalyticsExample extends Component {
+export default class MatchExample extends Component {
+  onEvent = (eventName: string, eventData: Object) => {
+    console.log(eventName, eventData);
+  };
+
   render() {
     return (
-      <AnalyticsListener
-        onEvent={(eventName, eventData) => {
-          console.log(eventName, eventData);
-        }}
-      >
-        <AnalyticsDecorator data={{ time: Date.now() }}>
-          <Button analyticsId="button">Send Analytics</Button>
+      <AnalyticsListener onEvent={this.onEvent} match="button.">
+        <AnalyticsDecorator data={{ time: Date.now() }} match="button.">
+          <Button analyticsId="button">Send analytics event</Button>
         </AnalyticsDecorator>
       </AnalyticsListener>
     );
   }
 }
+

@@ -35,6 +35,10 @@ export const hipchatSchema: Schema<any, any> = createSchema({
     'decisionList',
     'decisionItem',
 
+    // Task
+    'taskList',
+    'taskItem',
+
     // media
     'mediaGroup',
     'media',

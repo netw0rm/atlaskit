@@ -272,3 +272,5 @@ export const td11 = createCell(1, 1);
 export const th11 = createHeaderCell(1, 1);
 export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});
 export const decisionItem = nodeFactory(sampleSchema.nodes.decisionItem, {});
+export const taskList = nodeFactory(sampleSchema.nodes.taskList, {});
+export const taskItem = nodeFactory(sampleSchema.nodes.taskItem, {});

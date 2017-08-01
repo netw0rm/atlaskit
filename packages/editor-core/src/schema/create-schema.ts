@@ -29,6 +29,8 @@ import {
   applicationCard,
   decisionList,
   decisionItem,
+  taskList,
+  taskItem,
   unknownBlock,
 
   // Marks
@@ -128,6 +130,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'applicationCard', spec: applicationCard },
   { name: 'decisionList', spec: decisionList },
   { name: 'decisionItem', spec: decisionItem },
+  { name: 'taskList', spec: taskList },
+  { name: 'taskItem', spec: taskItem },
   { name: 'unknownBlock', spec: unknownBlock },
 ];
 

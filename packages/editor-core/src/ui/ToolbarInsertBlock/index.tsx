@@ -17,6 +17,7 @@ import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
 import ToolbarButton from '../ToolbarButton';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
+import tableCommands from '../../plugins/table/commands';
 
 export interface Props {
   isDisabled?: boolean;
@@ -233,11 +234,11 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   }
 
   private onItemActivated = ({ item }) => {
-    const { editorView, pluginStateTable, pluginStateMedia } = this.props;
+    const { editorView, pluginStateMedia } = this.props;
     analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
     switch(item.value.name) {
       case 'table':
-        pluginStateTable!.createTable()(editorView.state, editorView.dispatch);
+        tableCommands.createTable()(editorView.state, editorView.dispatch);
         break;
       case 'media':
         pluginStateMedia!.showMediaPicker();

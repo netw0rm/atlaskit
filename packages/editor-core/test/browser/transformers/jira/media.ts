@@ -151,7 +151,7 @@ describe('JIRASerializer', () => {
           __fileName: 'foo.png', __displayType: 'thumbnail'
         })
       ])),
-      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>',
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=MediaServicesSample&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample"></jira-attachment-thumbnail></a></span></p>',
       {},
       {
         uploadContext: { serviceHost: 'HOST', clientId: 'CLIENT_ID', token: 'TOKEN', collection: 'MediaServicesSample' },
@@ -166,7 +166,7 @@ describe('JIRASerializer', () => {
           __fileName: 'foo.pdf', __displayType: null, __fileMimeType: 'application/pdf'
         })
       ])),
-      '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42">foo.pdf</a></span></p>'
+      '<p class="mediaGroup"><span class="nobr"><a data-attachment-type="file" data-attachment-name="foo.pdf" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample">foo.pdf</a></span></p>'
     );
 
     checkEncode('thumbnail type (without __displayType)',
@@ -177,7 +177,7 @@ describe('JIRASerializer', () => {
           __fileName: 'foo.png', __displayType: null, __fileMimeType: 'image/png'
         })
       ])),
-      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>'
+      '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample"></jira-attachment-thumbnail></a></span></p>'
     );
 
   });

@@ -19,10 +19,8 @@ export interface Props {
 class Decision implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
-  private panelType: string;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
-    this.panelType = node.attrs.panelType;
     this.renderReactComponent();
   }
 

@@ -96,24 +96,4 @@ describe('FileCard', () => {
     expect(card.find(FileCardViewSmall).length).toEqual(1);
     expect(card.find(FileCardViewSmall).props().dataURI).toContain(fakeDataUri);
   });
-
-  it('should pass onClick handlers through to root component for appearances "small" and "image"', () => {
-    const handler = () => {};
-
-    const smallCard = shallow(<FileCard status="complete" appearance="small" onClick={handler} />);
-    const imageCard = shallow(<FileCard status="complete" appearance="image" onClick={handler} />);
-
-    expect(smallCard.find(FileCardViewSmall).props().onClick).toEqual(handler);
-    expect(imageCard.find(FileCardImageView).props().onClick).toEqual(handler);
-  });
-
-  it('should pass onMouseEnter handlers through to root component for appearances "small" and "image"', () => {
-    const handler = () => {};
-
-    const smallCard = shallow(<FileCard status="complete" appearance="small" onMouseEnter={handler} />);
-    const imageCard = shallow(<FileCard status="complete" appearance="image" onMouseEnter={handler} />);
-
-    expect(smallCard.find(FileCardViewSmall).props().onMouseEnter).toEqual(handler);
-    expect(imageCard.find(FileCardImageView).props().onMouseEnter).toEqual(handler);
-  });
 });

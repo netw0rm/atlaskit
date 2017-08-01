@@ -1,4 +1,22 @@
 /**
+ * The options used to configure a newly constructed queue.
+ */
+export interface QueueOptions {
+
+  /**
+   * The maximum number of duplicates allowed per item in the queue.
+   */
+  maxDuplicates: number;
+
+  /**
+   * The minimum number of unique items the queue should try to contain.
+   * This number constrains the absolute size of the queue. It needs to be
+   * large enough to contain maxDuplicates * minUniqueItems.
+   */
+  minUniqueItems: number;
+}
+
+/**
  * A queue which will limit the number of duplicates that it holds. When the duplicate limit is reached
  * the earliest inserted duplicate (the "original") is removed to make room for the new insertion.
  */
@@ -17,22 +35,21 @@ export default class DuplicateLimitedQueue {
   private itemsOrderedByFrequency: Array<string>;
 
   /**
-   * Construct a new DuplicateLimitedQueue. The total size of the queue will be maxDuplicates * minUnique.
+   * Construct a new DuplicateLimitedQueue.
    *
-   * @param maxDuplicates the maximum number of duplicates allowed per key
-   * @param minUnique the minimum number of unique items the queue should allow
+   * @param options the options for this queue.
    */
-  constructor(maxDuplicates: number, minUnique: number) {
-    if (maxDuplicates < 1) {
-      throw new RangeError('The maxDuplicates parameter must be at least 1');
+  constructor(options: QueueOptions) {
+    if (options.maxDuplicates < 1) {
+      throw new RangeError('The maxDuplicates option must be at least 1');
     }
 
-    if (minUnique < 1) {
-      throw new RangeError('The minUnique parameter must be at least 1');
+    if (options.minUniqueItems < 1) {
+      throw new RangeError('The minUniqueItems option must be at least 1');
     }
 
-    this.maximumSize = maxDuplicates * minUnique;
-    this.perItemSize = maxDuplicates;
+    this.maximumSize = options.maxDuplicates * options.minUniqueItems;
+    this.perItemSize = options.maxDuplicates;
 
     this.items = new Array<string>();
     this.itemCountMap = new Map<string, number>();

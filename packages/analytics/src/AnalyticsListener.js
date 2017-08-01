@@ -11,8 +11,15 @@ child component fires an analytics event, and passing the event up the hierarchy
 */
 class AnalyticsListener extends Component {
   props: {
+    /** Function called when an event has been triggered within this
+    listener. */
     onEvent: (eventName: string, eventData: Object) => any,
+    /** String, regex, or function filter to limit what events call
+    `onEvent` based on event name. String filters use exact matching
+    unless they end with a '.', in which case a partial match on the beginning
+    of the event name will be used. */
     match?: string | ((name: string) => boolean),
+    /** Sets wether to call `onEvent` for private or public events. */
     matchPrivate?: boolean,
   };
   static defaultProps = {

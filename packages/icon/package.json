@@ -17,7 +17,8 @@
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js"
   },
   "files": [
     "dist",

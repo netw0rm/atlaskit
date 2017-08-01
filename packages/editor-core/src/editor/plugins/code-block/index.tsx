@@ -17,7 +17,7 @@ const codeBlockPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, providerFactory, appearance) {
+  contentComponent(editorView, dispatch, providerFactory, appearance) {
     if (appearance === 'message') {
       return null;
     }

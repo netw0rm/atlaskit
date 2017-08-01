@@ -4,6 +4,9 @@
   "content": [
     {
       "type": "decisionList",
+      "attrs": {
+        "localId": "test-list-id"
+      },
       "content": [
         {
           "type": "decisionItem",

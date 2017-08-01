@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import listsInputRulesPlugin from '../../../../src/plugins/lists/input-rule';
 import {
@@ -7,6 +8,8 @@ import {
   li, makeEditor, ol, p, ul
 } from '../../../../src/test-helper';
 import schema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
+
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
@@ -14,12 +17,18 @@ describe('inputrules', () => {
     doc,
     plugin: listsInputRulesPlugin(schema)
   });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
+  });
 
   describe('bullet list rule', () => {
     it('should convert "* " to a bullet list item', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '* ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
+      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
     });
 
     it('should convert "* " to a bullet list item when inside a blockquote', () => {
@@ -47,6 +56,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '1. ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ol(li(p()))));
+      expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
     });
 
     it('should always begin a new list on 1', () => {

@@ -21,14 +21,14 @@ const emojiPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 400, plugin: (schema, props, providerFactory) => createPlugin(providerFactory) },
+      { rank: 400, plugin: (schema, props, dispatch, providerFactory) => createPlugin(providerFactory) },
       { rank: 410, plugin: schema => inputRulePlugin(schema) },
       { rank: 420, plugin: schema => keymap(schema) },
-      { rank: 430, plugin: (schema, props, providerFactory) => asciiInputRulePlugin(schema, providerFactory) }
+      { rank: 430, plugin: (schema, props, dispatch, providerFactory) => asciiInputRulePlugin(schema, providerFactory) }
     ];
   },
 
-  contentComponent(editorView, providerFactory) {
+  contentComponent(editorView, eventDispatcher, providerFactory) {
     const renderNode = (providers) =>{
       return <EmojiTypeAhead editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
     };

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 7.0.3 (2017-07-25)
+
+## 7.0.2 (2017-07-24)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; icons no longer grow massively in Webkit or when font size bumped ([adfb57e](https://bitbucket.org/atlassian/atlaskit/commits/adfb57e))
+
 ## 7.0.1 (2017-06-28)
 
 

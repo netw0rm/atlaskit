@@ -5,8 +5,10 @@ import * as React from 'react';
 import textFormattingPlugins, { TextFormattingState } from '../../../src/plugins/text-formatting';
 import ToolbarInlineCode from '../../../src/ui/ToolbarInlineCode';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
+import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
+import { analyticsService } from '../../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
   const editor = (doc: any) => makeEditor<TextFormattingState>({
@@ -55,4 +57,19 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
     expect(codeButton.find(ToolbarButton).length).to.equal(0);
   });
 
+  describe('analytics', () => {
+    it('should trigger analyticsService.trackEvent', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, pluginState } = editor(doc(p('text')));
+      const toolbarOption = mount(
+        <ToolbarInlineCode
+          pluginState={pluginState}
+          editorView={editorView}
+        />
+      );
+      toolbarOption.find(AkButton).simulate('click');
+      expect(trackEvent.calledWith('atlassian.editor.format.code.toggle')).to.equal(true);
+    });
+  });
 });

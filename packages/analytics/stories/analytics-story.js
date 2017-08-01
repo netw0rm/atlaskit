@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
   AnalyticsDecorator,
@@ -10,7 +10,7 @@ import {
 
 import { name } from '../package.json';
 
-const ButtonWithWrappedAnalytics = withAnalytics(
+const Button = withAnalytics(
   ({ children, ...props }) =>
     <button {...cleanProps(props)}>
       {children}
@@ -18,49 +18,67 @@ const ButtonWithWrappedAnalytics = withAnalytics(
   { onClick: 'click' }
 );
 
-class IntegratedButton extends Component {
-  onClick = (e) => {
-    const { fireAnalyticsEvent, firePrivateAnalyticsEvent } = this.props;
-    fireAnalyticsEvent('click');
-    const { clientX, clientY } = e;
-    firePrivateAnalyticsEvent('private.button.click', { clientX, clientY });
-    if (this.props.onClick) this.props.onClick(e);
-  };
-  render() {
-    const { children, ...props } = this.props;
-    return (
-      <button {...cleanProps(props)} onClick={this.onClick}>
-        {children}
-      </button>
-    );
-  }
-}
-
-const ButtonWithIntegratedAnalytics = withAnalytics(IntegratedButton);
-
 function handleAnalyticsEvent(eventName, eventData) {
   console.log('Analytics Event:', eventName, eventData);
 }
-function handlePrivateEvent(eventName, eventData) {
-  console.log('Private Event:', eventName, eventData);
-}
 
-storiesOf(name, module).add('analytics', () =>
-  <div>
-    <h1>Analytics</h1>
-    <div>
-      <AnalyticsListener onEvent={handleAnalyticsEvent}>
-        <AnalyticsListener matchPrivate onEvent={handlePrivateEvent}>
-          <AnalyticsDecorator data={{ time: Date.now() }}>
-            <ButtonWithWrappedAnalytics analyticsId="wrapped.button">
-              Wrapped Analytics
-            </ButtonWithWrappedAnalytics>
-            <ButtonWithIntegratedAnalytics analyticsId="integrated.button">
-              Integrated Analytics
-            </ButtonWithIntegratedAnalytics>
-          </AnalyticsDecorator>
-        </AnalyticsListener>
-      </AnalyticsListener>
-    </div>
-  </div>
-);
+storiesOf(name, module)
+  .add('decorating data using function', () =>
+    <AnalyticsListener onEvent={handleAnalyticsEvent}>
+      <AnalyticsDecorator
+        getData={(analyticsId, analyticsData) => {
+          if (analyticsId === 'button.click' && analyticsData.one === 1) {
+            return { one: 2, two: 2 };
+          }
+          return {};
+        }}
+      >
+        <Button analyticsId="button" analyticsData={{ one: 1 }}>
+          Send analytics
+        </Button>
+      </AnalyticsDecorator>
+    </AnalyticsListener>
+  )
+  .add('match filtering using string', () =>
+    <AnalyticsListener onEvent={handleAnalyticsEvent} match="button.full.click">
+      <AnalyticsDecorator data={{ time: Date.now() }} match="button.full.click">
+        <Button analyticsId="button.full">
+          Send analytics
+        </Button>
+      </AnalyticsDecorator>
+    </AnalyticsListener>
+  )
+  .add('match filtering using partial string', () =>
+    <AnalyticsListener onEvent={handleAnalyticsEvent} match="button.">
+      <AnalyticsDecorator data={{ time: Date.now() }} match="button.">
+        <Button analyticsId="button.partial">
+          Send analytics
+        </Button>
+      </AnalyticsDecorator>
+    </AnalyticsListener>
+  )
+  .add('match filtering using regex', () =>
+    <AnalyticsListener onEvent={handleAnalyticsEvent} match={/regex.*/}>
+      <AnalyticsDecorator data={{ time: Date.now() }} match={/regex.*/}>
+        <Button analyticsId="button.regex">
+          Send analytics
+        </Button>
+      </AnalyticsDecorator>
+    </AnalyticsListener>
+  )
+  .add('match filtering using function', () =>
+    <AnalyticsListener
+      onEvent={handleAnalyticsEvent}
+      match={analyticsId => analyticsId === 'button.function.click'}
+    >
+      <AnalyticsDecorator
+        data={{ time: Date.now() }}
+        match={analyticsId => analyticsId === 'button.function.click'}
+      >
+        <Button analyticsId="button.function">
+          Send analytics
+        </Button>
+      </AnalyticsDecorator>
+    </AnalyticsListener>
+  )
+;

@@ -392,20 +392,27 @@ export default class JIRATransformer implements Transformer<string> {
     return elem;
   }
 
-  private addDataToNode(domNode: HTMLElement, mediaNode: PMNode) {
-    const { id, type, __fileName, __displayType } = mediaNode.attrs;
+  private addDataToNode(domNode: HTMLElement, mediaNode: PMNode, defaultDisplayType = 'thumbnail') {
+    const { id, type, collection, __fileName, __displayType } = mediaNode.attrs;
     // Order of dataset matters in IE Edge, please keep the current order
-    domNode.dataset.attachmentType = __displayType || 'thumbnail';
+    domNode.dataset.attachmentType = __displayType || defaultDisplayType;
     if (__fileName) {
       domNode.dataset.attachmentName = __fileName;
     }
     domNode.dataset.mediaServicesType = type;
     domNode.dataset.mediaServicesId = id;
+    if (collection) {
+      domNode.dataset.mediaServicesCollection = collection;
+    }
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
     const { clientId, serviceHost, token, collection } = contextInfo;
     return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+  }
+
+  private isImageMimeType (mimeType?: string) {
+    return mimeType && mimeType.indexOf('image/') > -1;
   }
 
   private encodeMedia(node: PMNode) {
@@ -414,9 +421,12 @@ export default class JIRATransformer implements Transformer<string> {
     const elem = this.doc.createElement('span');
     const a = this.doc.createElement('a');
 
-    if (node.attrs.__displayType === 'file') {
+    if (
+      node.attrs.__displayType === 'file' ||
+      !(node.attrs.__displayType || this.isImageMimeType(node.attrs.__fileMimeType))
+    ) {
       elem.setAttribute('class', 'nobr');
-      this.addDataToNode(a, node);
+      this.addDataToNode(a, node, 'file');
       a.textContent = node.attrs.__fileName || '';
     } else {
       elem.setAttribute('class', 'image-wrap');

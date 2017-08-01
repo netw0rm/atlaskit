@@ -5,12 +5,12 @@ import DuplicateLimitedQueue from '../../src/DuplicateLimitedQueue';
 describe('DuplicateLimitedQueue', () => {
   describe('initialisation', () => {
     it('should throw for illegal constructor parameters', () => {
-      expect(() => new DuplicateLimitedQueue({ maxDuplicates: 0, minUniqueItems: 2 })).to.throw(RangeError);
-      expect(() => new DuplicateLimitedQueue({ maxDuplicates: 3, minUniqueItems: 0 })).to.throw(RangeError);
+      expect(() => new DuplicateLimitedQueue<string>({ maxDuplicates: 0, minUniqueItems: 2 })).to.throw(RangeError);
+      expect(() => new DuplicateLimitedQueue<string>({ maxDuplicates: 3, minUniqueItems: 0 })).to.throw(RangeError);
     });
 
     it('should behave correctly when empty', () => {
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 10, minUniqueItems: 5 });
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 10, minUniqueItems: 5 });
       const items = queue.getItemsOrderedByDuplicateCount();
       // tslint:disable-next-line
       expect(items).to.be.empty;
@@ -20,7 +20,7 @@ describe('DuplicateLimitedQueue', () => {
   describe('limits', () => {
     it('should respect maximum size for unique set of items', () => {
       const itemsToAdd = [ 'Dopey', 'Bashful', 'Sneezy', 'Grumpy', 'Sleepy', 'Doc', 'Happy'];
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 3, minUniqueItems: 2 }); /// queue size of 6
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 3, minUniqueItems: 2 }); /// queue size of 6
       itemsToAdd.slice(0,6).map(value => queue.enqueue(value));
 
       let queuedItems = queue.getItemsOrderedByDuplicateCount();
@@ -35,7 +35,7 @@ describe('DuplicateLimitedQueue', () => {
     });
 
     it('should respect maximum size of one', () => {
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 1, minUniqueItems: 1 }); /// queue size of 1
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 1, minUniqueItems: 1 }); /// queue size of 1
       queue.enqueue('apple');
       queue.enqueue('banana');
 
@@ -52,7 +52,7 @@ describe('DuplicateLimitedQueue', () => {
     it('should respect maximum duplicate size', () => {
       const itemsToAdd = [ 'b', 'a', 'a', 'a', 'c', 'c'];
 
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 3, minUniqueItems: 2 });
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 3, minUniqueItems: 2 });
       itemsToAdd.map(value => queue.enqueue(value));
 
       let queuedItems = queue.getItemsOrderedByDuplicateCount();
@@ -77,7 +77,7 @@ describe('DuplicateLimitedQueue', () => {
     it('should order most duplicated items first', () => {
       const itemsToAdd = [ 'b', 'a', 'a', 'a', 'c', 'c', 'd'];
 
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 3, minUniqueItems: 3 });
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 3, minUniqueItems: 3 });
       itemsToAdd.map(value => queue.enqueue(value));
 
       let queuedItems = queue.getItemsOrderedByDuplicateCount();
@@ -96,7 +96,7 @@ describe('DuplicateLimitedQueue', () => {
     it('should re-order when some item becomes more duplicated', () => {
       const itemsToAdd = [ 'b', 'a', 'a', 'c'];
 
-      const queue = new DuplicateLimitedQueue({ maxDuplicates: 4, minUniqueItems: 3 });
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 4, minUniqueItems: 3 });
       itemsToAdd.map(value => queue.enqueue(value));
 
       let queuedItems = queue.getItemsOrderedByDuplicateCount();

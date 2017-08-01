@@ -17,22 +17,22 @@ export interface QueueOptions {
 }
 
 /**
- * A queue which will limit the number of duplicates that it holds. When the duplicate limit is reached
- * the earliest inserted duplicate (the "original") is removed to make room for the new insertion.
+ * A queue which will limit the number of duplicates of type T that it holds. When the duplicate limit is
+ * reached the earliest inserted duplicate (the "original") is removed to make room for the new insertion.
  */
-export default class DuplicateLimitedQueue {
+export default class DuplicateLimitedQueue<T> {
 
   private maximumSize: number;
   private perItemSize: number;
 
-  private items: Array<string>;
-  private itemCountMap: Map<string, number>;
+  private items: Array<T>;
+  private itemCountMap: Map<T, number>;
 
   /**
    * An array derived from items and itemCountMap which holds each item once and is ordered by
    * how often an item is duplicated in the items array.
    */
-  private itemsOrderedByFrequency: Array<string>;
+  private itemsOrderedByFrequency: Array<T>;
 
   /**
    * Construct a new DuplicateLimitedQueue.
@@ -51,15 +51,15 @@ export default class DuplicateLimitedQueue {
     this.maximumSize = options.maxDuplicates * options.minUniqueItems;
     this.perItemSize = options.maxDuplicates;
 
-    this.items = new Array<string>();
-    this.itemCountMap = new Map<string, number>();
-    this.itemsOrderedByFrequency = new Array<string>();
+    this.items = new Array<T>();
+    this.itemCountMap = new Map<T, number>();
+    this.itemsOrderedByFrequency = new Array<T>();
   }
 
   /**
    * @param item the item to add to the queue.
    */
-  enqueue(item: string): void {
+  enqueue(item: T): void {
     const count = this.itemCountMap.get(item);
     if (count && count >= this.perItemSize) {
       // find the first item with that key in the array and remove it
@@ -83,23 +83,23 @@ export default class DuplicateLimitedQueue {
    *
    * If there are no items in the queue then an empty Array will be returned.
    */
-  getItemsOrderedByDuplicateCount(): Array<string> {
+  getItemsOrderedByDuplicateCount(): Array<T> {
     return this.itemsOrderedByFrequency;
   }
 
   /**
    * Get an array of items from the queue ordered by how often they are duplicated in the queue.
    */
-  private orderItemsByFrequency(): Array<string> {
+  private orderItemsByFrequency(): Array<T> {
     const orderedEntries = Array.from(this.itemCountMap.entries())
-      .sort((a: [string, number], b: [string, number]) => {
+      .sort((a: [T, number], b: [T, number]) => {
         return b[1] - a[1];
     });
 
-    return orderedEntries.map((value: [string, number]) => value[0]);
+    return orderedEntries.map((value: [T, number]) => value[0]);
   }
 
-  private decrementCount(item: string): void {
+  private decrementCount(item: T): void {
     let count = this.itemCountMap.get(item);
     if (count) {
       count--;
@@ -116,7 +116,7 @@ export default class DuplicateLimitedQueue {
    *
    * @param item the item to be removed.
    */
-  private removeFirstOccurrence(item: string) {
+  private removeFirstOccurrence(item: T) {
     const index = this.items.indexOf(item);
     if (index !== -1) {
       this.items.splice(index, 1);
@@ -128,7 +128,7 @@ export default class DuplicateLimitedQueue {
    * Remove the first item from the queue and update the itemCountMap accordingly.
    * @return the item add the front of the queue or undefined if the queue is empty
    */
-  private remove(): string | undefined {
+  private remove(): T | undefined {
     const removed = this.items.shift();
     if (removed !== undefined) {
       this.decrementCount(removed);
@@ -141,7 +141,7 @@ export default class DuplicateLimitedQueue {
    * Add the supplied item to the end of the queue and update the itemCountMap accordingly.
    * @param item the item to be added to the queue
    */
-  private add(item: string): void {
+  private add(item: T): void {
     this.items.push(item);
     const count = this.itemCountMap.get(item);
     if (count) {

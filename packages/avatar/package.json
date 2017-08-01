@@ -15,8 +15,10 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "eslint": "../../build/bin/lint.eslint.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "build-storybook": "../../build/bin/storybook/build.static.js",
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "storybook:static": "../../build/bin/storybook/build.static.js"
   },
   "files": [
     "dist"

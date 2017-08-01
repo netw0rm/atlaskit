@@ -15,7 +15,7 @@ export {
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   panel, panelNote, mentionQuery, hardBreak, emojiQuery,
   media, mediaGroup, textColor, table, tr, td, th, tdEmpty, td11, th11, tdCursor, thEmpty,
-  decisionItem, decisionList,
+  decisionItem, decisionList, taskItem, taskList,
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';

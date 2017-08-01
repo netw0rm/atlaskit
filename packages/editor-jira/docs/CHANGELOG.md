@@ -1,5 +1,9 @@
 # @atlaskit/editor-jira
 
+## 20.0.0 (2017-08-01)
+
+* breaking; editor-jira doesn't produce ES5 build anymore ([b0acf07](https://bitbucket.org/atlassian/atlaskit/commits/b0acf07))
+* breaking; remove ES5 build for editor-jira ([b0acf07](https://bitbucket.org/atlassian/atlaskit/commits/b0acf07))
 ## 19.0.1 (2017-08-01)
 
 * bug fix; import renderer from es2015 code ([3aa4ab4](https://bitbucket.org/atlassian/atlaskit/commits/3aa4ab4))

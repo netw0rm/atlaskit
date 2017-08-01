@@ -31,6 +31,8 @@ export default createSchema({
     'tableRow',
     'decisionList',
     'decisionItem',
+    'taskList',
+    'taskItem',
   ],
   marks: [
     'em',

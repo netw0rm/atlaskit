@@ -393,7 +393,7 @@ export default class JIRATransformer implements Transformer<string> {
   }
 
   private addDataToNode(domNode: HTMLElement, mediaNode: PMNode, defaultDisplayType = 'thumbnail') {
-    const { id, type, __fileName, __displayType } = mediaNode.attrs;
+    const { id, type, collection, __fileName, __displayType } = mediaNode.attrs;
     // Order of dataset matters in IE Edge, please keep the current order
     domNode.dataset.attachmentType = __displayType || defaultDisplayType;
     if (__fileName) {
@@ -401,6 +401,9 @@ export default class JIRATransformer implements Transformer<string> {
     }
     domNode.dataset.mediaServicesType = type;
     domNode.dataset.mediaServicesId = id;
+    if (collection) {
+      domNode.dataset.mediaServicesCollection = collection;
+    }
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {

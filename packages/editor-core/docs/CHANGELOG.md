@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 44.3.0 (2017-08-01)
+
+* bug fix; update encoder to add collection in generated HTML if available (issues closed: ed-2370) ([493b778](https://bitbucket.org/atlassian/atlaskit/commits/493b778))
+* bug fix; added tab direction constants, added creating a new row on shift-tab ([3f09382](https://bitbucket.org/atlassian/atlaskit/commits/3f09382))
+* bug fix; fix jira-encoder generating wrong HTML for uploaded non-image files (issues closed: ed-2263) ([d9b774e](https://bitbucket.org/atlassian/atlaskit/commits/d9b774e))
+
+* feature; allow creating tasks in the editor (issues closed: fs-1147) ([4122828](https://bitbucket.org/atlassian/atlaskit/commits/4122828))
+* bug fix; updated cursor posiiton and refactored commands ([4cde4b3](https://bitbucket.org/atlassian/atlaskit/commits/4cde4b3))
+
+* bug fix; empty cells on Backspace when the whole row/col/table is selected ([c7fec5c](https://bitbucket.org/atlassian/atlaskit/commits/c7fec5c))
+* bug fix; show floating toolbar when the whole row/col/table is selected (issues closed: ed-2342) ([f5830f2](https://bitbucket.org/atlassian/atlaskit/commits/f5830f2))
 ## 44.2.0 (2017-07-31)
 
 * feature; add max content size plugin (issues closed: ed-2077) ([c917a11](https://bitbucket.org/atlassian/atlaskit/commits/c917a11))

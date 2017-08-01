@@ -9,6 +9,8 @@ import {
   decisionList,
   decisionItem,
   sendKeyToPm,
+  taskList,
+  taskItem,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import uuid from '../../../../src/plugins/tasks-and-decisions/uuid';
@@ -134,6 +136,119 @@ describe('tasks and decisions - keymaps', () => {
               decisionList(
                 decisionItem('Hello World'),
                 decisionItem()
+              ),
+            )
+          );
+        });
+      });
+    });
+
+  });
+
+  describe('tasks', () => {
+
+    describe('Backspace', () => {
+
+      context('when taskList exists before paragraph', () => {
+        it('should replace paragraph with taskItem and preserves content', () => {
+          const { editorView } = editor(doc(taskList(taskItem('Hello')), p('{<>}World')));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('Hello'),
+                taskItem('World')
+              ),
+            )
+          );
+        });
+      });
+
+      context('when cursor is at the begining of a taskItem', () => {
+        it('should merge content of current item with previous item', () => {
+          const { editorView } = editor(doc(taskList(taskItem('Hello'), taskItem('{<>}World'))));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('HelloWorld'),
+              ),
+            )
+          );
+        });
+      });
+
+      context('when cursor is at the begining of the first taskItem', () => {
+        it('should convert item to paragraph', () => {
+          const { editorView } = editor(doc(taskList(taskItem('{<>}Hello'), taskItem('World'))));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('Hello'),
+              taskList(
+                taskItem('World'),
+              ),
+            )
+          );
+        });
+
+        it('should convert item to paragraph and remove the list if it is empty', () => {
+          const { editorView } = editor(doc(taskList(taskItem('{<>}Hello World'))));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p('Hello World'),
+            )
+          );
+        });
+      });
+
+    });
+
+    describe('Enter', () => {
+      context('when taskList is empty', () => {
+        it('should remove taskList and replace with paragraph', () => {
+          const { editorView } = editor(doc(taskList(taskItem('{<>}'))));
+
+          sendKeyToPm(editorView, 'Enter');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              p()
+            )
+          );
+        });
+      });
+
+      context('when cursor is at the end of empty taskItem', () => {
+        it('should remove decisionItem and insert a paragraph', () => {
+          const { editorView } = editor(doc(taskList(taskItem('Hello World'), taskItem('{<>}'))));
+
+          sendKeyToPm(editorView, 'Enter');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('Hello World')
+              ),
+              p()
+            )
+          );
+        });
+      });
+
+      context('when cursor is at the end of non-empty taskItem', () => {
+        it('should insert another taskItem', () => {
+          const { editorView } = editor(doc(taskList(taskItem('Hello World{<>}'))));
+
+          sendKeyToPm(editorView, 'Enter');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('Hello World'),
+                taskItem()
               ),
             )
           );

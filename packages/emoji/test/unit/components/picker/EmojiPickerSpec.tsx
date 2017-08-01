@@ -13,9 +13,11 @@ import {
     mockLocalStorage,
     newEmojiRepository,
     pngDataURL,
-    pngFileUploadData
+    pngFileUploadData,
+    standardEmojis,
 } from '../../../../src/support/test-data';
 import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
+import { mockNonUploadingEmojiResourceFactory } from '../../../../src/support/MockEmojiResource';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
@@ -31,6 +33,7 @@ import EmojiPickerFooter from '../../../../src/components/picker/EmojiPickerFoot
 import EmojiPickerList from '../../../../src/components/picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../../src/components/picker/EmojiPickerListSearch';
 import EmojiPreview from '../../../../src/components/common/EmojiPreview';
+import EmojiRepository from '../../../../src/api/EmojiRepository';
 import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
@@ -286,6 +289,45 @@ describe('<EmojiPicker />', () => {
           return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
             expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
           });
+        });
+      })
+    );
+
+    it('selecting custom category - should show preview with media first emoji loading', () =>
+      setupPicker().then(component => {
+        const list = component.find(EmojiPickerList);
+        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
+
+        return waitUntil(() => emojisVisible(list)).then(() => {
+          expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
+
+          return showCategory(customCategory, component);
+        }).then(() => {
+          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
+            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
+          });
+        });
+      })
+    );
+
+    it('does not add non-standard categories to the selector if there are no emojis in those categories', () =>
+      setupPicker({ emojiProvider: mockNonUploadingEmojiResourceFactory(new EmojiRepository(standardEmojis)) }).then(component => {
+        const categorySelector = component.find(CategorySelector);
+        const buttons = categorySelector.find('button');
+        expect(buttons.length).to.equal(defaultCategories.length);
+        expect(categoryVisible(customCategory, component), 'Custom category is not rendered').to.equal(false);
+        expect(categoryVisible('ATLASSIAN', component), 'Atlassian category is not rendered').to.equal(false);
+      })
+    );
+
+    it('adds non-standard categories to the selector dynamically based on whether they are populated with emojis', () =>
+      setupPicker().then(component => {
+        showCategory(customCategory, component);
+        return waitUntil(() => categoryVisible(customCategory, component)).then(() => {
+          const categorySelector = component.find(CategorySelector);
+          const buttons = categorySelector.find('button');
+          expect(buttons.length).to.equal(defaultCategories.length + 2);
+          expect(categoryVisible('ATLASSIAN', component), 'Atlassian category is rendered').to.equal(true);
         });
       })
     );

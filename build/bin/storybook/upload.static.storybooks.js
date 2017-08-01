@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
+const chalk = require('chalk');
 const fs = require('fs-extra');
 const glob = require('glob').sync;
 const path = require('path');
@@ -44,19 +45,24 @@ try {
 
   fs.ensureDirSync(tmpStorybooksPath);
 
+  console.log(chalk.blue('Copying static storybook files...'));
   getStaticStorybooks().forEach((storybook) => {
     fs.copySync(storybook, tmpStorybooksPath);
   });
 
+  console.log(chalk.blue('Creating index file for storybooks...'));
   generateIndexFile(tmpStorybooksPath, `Storybooks for build ${bbCommit}`);
 
+  console.log(chalk.blue('Uploading storybook to cdn...'));
+  console.log(chalk.blue(uploadPath));
   uploadDirectory(tmpStorybooksPath, uploadPath);
 
+  console.log(chalk.green('Successfully uploaded storybooks'));
   storybookBuildStatus('SUCCESSFUL');
 } catch (err) {
+  console.error(chalk.red('Failed to build storybooks', err));
   storybookBuildStatus('FAILED');
-  console.error(err);
   process.exit(1);
 }
 
-console.log('Done');
+console.log(chalk.green('Done'));

@@ -7,7 +7,6 @@ BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cf_invalidate.sh
-. $BASEDIR/_cdn_publish_folder.sh
 
 function registry_build_status() {
   build_status \
@@ -50,6 +49,6 @@ function build_registry() {
 
 registry_build_status "INPROGRESS"
 build_registry "$OUTDIR"
-cdn_publish_folder "$OUTDIR" "$CDN_PREFIX"
+$BASEDIR/_cdn_publish_folder.sh "$OUTDIR" "$CDN_PREFIX"
 cf_invalidate "/atlaskit/registry/*"
 registry_build_status "SUCCESSFUL"

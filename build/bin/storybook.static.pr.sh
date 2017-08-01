@@ -15,7 +15,6 @@ $BASEDIR/exit.if.branch.name.not.matches.js "$BRANCHES_ALLOWED_TO_BUILD_STORYBOO
 
 # source build scripts to get functions from them
 . $BASEDIR/_build_status.sh
-. $BASEDIR/_cdn_publish_folder.sh
 
 OUTDIR=$(mktemp -d)
 BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
@@ -46,6 +45,6 @@ function build_storybook() {
 # if we had any changed packages (string is not empty)
 if [ -n "$CHANGED_PACKAGES" ] ; then
   build_storybook "$OUTDIR"
-  cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+  $BASEDIR/_cdn_publish_folder.sh "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
   storybook_build_status "SUCCESSFUL"
 fi

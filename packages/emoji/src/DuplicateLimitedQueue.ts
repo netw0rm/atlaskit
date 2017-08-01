@@ -96,25 +96,19 @@ export default class DuplicateLimitedQueue {
         return b[1] - a[1];
     });
 
-    const orderedKeys = new Array<string>();
-    // convert to an array of id's only
-    orderedEntries.map((value: [string, number]) => {
-      orderedKeys.push(value[0]);
-    });
-
-    return orderedKeys;
+    return orderedEntries.map((value: [string, number]) => value[0]);
   }
 
   private decrementCount(item: string): void {
-      let count = this.itemCountMap.get(item);
-      if (count) {
-        count--;
-        if (count > 0) {
-          this.itemCountMap.set(item, count);
-        } else {
-          this.itemCountMap.delete(item);
-        }
+    let count = this.itemCountMap.get(item);
+    if (count) {
+      count--;
+      if (count > 0) {
+        this.itemCountMap.set(item, count);
+      } else {
+        this.itemCountMap.delete(item);
       }
+    }
   }
 
   /**

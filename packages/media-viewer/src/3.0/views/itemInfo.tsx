@@ -20,7 +20,7 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
     const {metadata} = this.props;
 
     return (
-      <ItemInfoWrapper>
+      <ItemInfoWrapper className="visible-on-hover">
         {metadata ? this.renderDetails(metadata.details) : undefined}
       </ItemInfoWrapper>
     );

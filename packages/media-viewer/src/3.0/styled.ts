@@ -12,8 +12,21 @@ export const MainWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  background-color: #1b2638;
+  overflow: hidden;
 
   * {
     box-sizing: border-box;
+  }
+
+  &:hover {
+    .visible-on-hover {
+      opacity: 1;
+    }
+  }
+
+  .visible-on-hover {
+    opacity: 0;
+    transition: opacity .3s;
   }
 `;

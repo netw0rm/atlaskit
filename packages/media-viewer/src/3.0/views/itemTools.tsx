@@ -19,7 +19,7 @@ export interface ItemToolsState {
 export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
   render() {
     return (
-      <ItemToolsWrapper>
+      <ItemToolsWrapper className="visible-on-hover">
         <UploaderDetailsWrapper>
           
         </UploaderDetailsWrapper>

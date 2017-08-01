@@ -4,19 +4,35 @@ import { expect } from 'chai';
 
 import { defaultCategories } from '../../../../src/constants';
 import * as styles from '../../../../src/components/picker/styles';
-import CategorySelector, { Props, CategoryDescriptionMap } from '../../../../src/components/picker/CategorySelector';
+import CategorySelector, { Props, CategoryDescriptionMap, sortCategories } from '../../../../src/components/picker/CategorySelector';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> => mount(
   <CategorySelector {...props} />
 );
 
 describe('<CategorySelector />', () => {
-  it('all categories visible', () => {
+  it('all standard categories visible by default', () => {
     const component = setupComponent();
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
-    defaultCategories.forEach((categoryId, i) => {
-      expect(categoryButtons.at(i).prop('title'), `Button #${i}`).to.equal(CategoryDescriptionMap[categoryId].name);
+  });
+
+  it('adds categories dynamically based on what has been passed in', () => {
+    const component = setupComponent({ dynamicCategories: ['CUSTOM', 'FREQUENT'] });
+    const categoryButtons = component.find('button');
+    expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length + 2);
+  });
+
+  it('displays categories in sorted order', () => {
+    const dynamicCategories = ['CUSTOM', 'FREQUENT', 'ATLASSIAN'];
+    const component = setupComponent({
+      dynamicCategories,
+    });
+    const orderedCategories = dynamicCategories.concat(defaultCategories).sort(sortCategories);
+    const categoryButtons = component.find('button');
+    orderedCategories.forEach((categoryId, i) => {
+      const button = categoryButtons.at(i);
+      expect(button.prop('title'), `Button #${i}`).to.equal(CategoryDescriptionMap[categoryId].name);
     });
   });
 

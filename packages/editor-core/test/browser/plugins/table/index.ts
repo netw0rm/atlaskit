@@ -4,9 +4,10 @@ import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, setTextSelection, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
+  createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
   tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
+import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

@@ -2,10 +2,11 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../../src';
-import { TextSelection } from '../../../../src/prosemirror';
 import listsPlugins, { ListsState } from '../../../../src/plugins/lists';
 import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -16,11 +17,33 @@ describe('lists', () => {
   });
 
   describe('keymap', () => {
+    let trackEvent;
+    beforeEach(() => {
+      trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+    });
+
     context('when hit enter', () => {
       it('should split list item', () => {
         const { editorView } = editor(doc(ul(li(p('text{<>}')))));
         sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')), li(p()))));
+      });
+    });
+
+    context('when hit Tab', () => {
+      it('should call indent analytics event', () => {
+        const { editorView } = editor(doc(ol(li(p('text')), li(p('text{<>}')))));
+        sendKeyToPm(editorView, 'Tab');
+        expect(trackEvent.calledWith('atlassian.editor.format.list.indent.keyboard')).to.equal(true);
+      });
+    });
+
+    context('when hit Shift-Tab', () => {
+      it('should call outdent analytics event', () => {
+        const { editorView } = editor(doc(ol(li(p('One'), ul(li(p('Two{<>}')))))));
+        sendKeyToPm(editorView, 'Shift-Tab');
+        expect(trackEvent.calledWith('atlassian.editor.format.list.outdent.keyboard')).to.equal(true);
       });
     });
 
@@ -31,6 +54,7 @@ describe('lists', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Shift-Cmd-L');
             expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
           });
         });
 
@@ -39,6 +63,7 @@ describe('lists', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Shift-Cmd-B');
             expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
           });
         });
       });
@@ -49,6 +74,7 @@ describe('lists', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Shift-Ctrl-L');
             expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
           });
         });
 
@@ -57,6 +83,7 @@ describe('lists', () => {
             const { editorView } = editor(doc(p('text{<>}')));
             sendKeyToPm(editorView, 'Shift-Ctrl-B');
             expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
           });
         });
       });
@@ -92,13 +119,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ex{end}t')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });
@@ -106,13 +131,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ext{end}')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });

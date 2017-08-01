@@ -16,7 +16,7 @@ import {
     missingMediaEmojiId,
     missingMediaServiceEmoji,
     siteServiceConfig,
-} from '../../_TestData';
+} from '../../../../src/support/test-data';
 
 interface MediaCallback {
   (result: any): void;

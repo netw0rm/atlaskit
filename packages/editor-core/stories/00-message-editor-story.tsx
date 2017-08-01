@@ -16,8 +16,7 @@ storiesOf(name, module)
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
-          // TODO: rename this to align with decision on naming.
-          appearance="tray"
+          appearance="message"
           analyticsHandler={analyticsHandler}
 
           allowTextFormatting={true}
@@ -30,7 +29,14 @@ storiesOf(name, module)
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           mediaProvider={mediaProvider}
+
           onChange={onChange}
           onSave={SAVE_ACTION}
         />}
+    />)
+  .add('Tray Editor with Max Length', () =>
+    <Editor
+      appearance="message"
+      saveOnEnter={true}
+      maxContentSize={10}
     />);

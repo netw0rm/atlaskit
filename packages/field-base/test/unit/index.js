@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Spinner from '@atlaskit/spinner';
-import sinon from 'sinon';
 
 import FieldBase, { FieldBaseStateless } from '../../src';
 
@@ -119,10 +118,10 @@ describe('ak-field-base', () => {
 
     describe('shouldReset', () =>
       it('should call onBlur when set', () => {
-        const spy = sinon.spy();
+        const spy = jest.fn();
         const wrapper = mount(<FieldBaseStateless {...defaultProps} onBlur={spy} />);
         wrapper.setProps({ shouldReset: true });
-        expect(spy.called).toBe(true);
+        expect(spy).toHaveBeenCalled();
       })
     );
 
@@ -152,28 +151,27 @@ describe('ak-field-base', () => {
     });
 
     it('should call onFocus', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       wrapper = mount(<FieldBaseStateless {...defaultProps} onFocus={spy} />);
       wrapper.find(Content).simulate('focus');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call onBlur', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       wrapper = mount(<FieldBaseStateless {...defaultProps} onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('smart component', () => {
-    let clock;
     beforeEach(() => {
-      clock = sinon.useFakeTimers();
+      jest.useFakeTimers();
     });
 
     afterEach(() => {
-      clock.restore();
+      jest.useRealTimers();
     });
 
     const isDialogOpened = wrapper => wrapper.find(InlineDialog).prop('isOpen');
@@ -185,17 +183,17 @@ describe('ak-field-base', () => {
     };
 
     it('should call onFocus handler', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<FieldBase onFocus={spy} />);
       wrapper.find(Content).simulate('focus');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should call onBlur handler', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<FieldBase onBlur={spy} />);
       wrapper.find(Content).simulate('blur');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('should close the dialog when focus goes away from both the element and the dialog', () => {
       const invalidMessage = <snap className="errorMessage">foo</snap>;
@@ -207,7 +205,7 @@ describe('ak-field-base', () => {
       wrapper.find('.errorMessage').simulate('blur');
       wrapper.find(Content).simulate('blur');
 
-      clock.tick(10);
+      jest.runTimersToTime(10);
 
       expect(isDialogOpened(wrapper)).toBe(false);
     });
@@ -220,7 +218,7 @@ describe('ak-field-base', () => {
       contentContainer.simulate('blur');
       contentContainer.simulate('focus');
 
-      clock.tick(10);
+      jest.runTimersToTime(10);
 
       expect(wrapper.state('isFocused')).toBe(true);
     });

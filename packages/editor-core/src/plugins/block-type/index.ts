@@ -133,9 +133,10 @@ export class BlockTypeState {
     let isCodeBlock = false;
     if (state.selection) {
       const { $from, $to } = state.selection;
+      const { codeBlock } = state.schema.nodes;
       isCodeBlock = true;
       state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-        if (node.isTextblock && node.type !== state.schema.codeBlock) {
+        if (node.isTextblock && node.type !== codeBlock) {
           isCodeBlock = false;
         }
       });

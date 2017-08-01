@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 2.1.3 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
 ## 2.1.2 (2017-06-21)
 
 

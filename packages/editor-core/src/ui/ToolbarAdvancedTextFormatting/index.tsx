@@ -14,8 +14,6 @@ import DropdownMenu from '../DropdownMenu';
 export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
-  softBlurEditor: () => void;
-  focusEditor: () => void;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
   popupsMountPoint?: HTMLElement;
@@ -65,21 +63,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private onOpenChange = (attrs: any) => {
-    // Hack for IE needed to prevent caret blinking above the opened dropdown.
-    if (attrs.isOpen) {
-      const { $from } = this.props.editorView.state.selection;
-      const node = $from.node($from.depth);
-      if (!(node && node.attrs['isCodeMirror'])) {
-        this.props.softBlurEditor();
-      }
-    } else {
-      const { $from } = this.props.editorView.state.selection;
-      const node = $from.node($from.depth);
-      if (!(node && node.attrs['isCodeMirror'])) {
-        this.props.focusEditor();
-      }
-    }
-
     this.setState({
       isOpen: attrs.isOpen,
     });

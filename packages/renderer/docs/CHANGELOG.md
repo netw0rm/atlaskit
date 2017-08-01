@@ -1,8 +1,27 @@
 # @atlaskit/renderer
 
+## Unreleased
+
+## 5.5.2 (2017-07-25)
+
+## 5.5.1 (2017-07-23)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 5.5.0 (2017-07-20)
+
+
+* fix; bump test-decision dep due to release ([89889a2](https://bitbucket.org/atlassian/atlaskit/commits/89889a2))
+
+
+* feature; render DecisionList and DecisionItem ([ddf1ad9](https://bitbucket.org/atlassian/atlaskit/commits/ddf1ad9))
+
 ## 5.4.3 (2017-07-14)
 
-* bug fix; show URL on link hover (issues closed: ed-2220)
+
+* fix; show URL on link hover ([bf58349](https://bitbucket.org/atlassian/atlaskit/commits/bf58349))
+
 ## 5.4.2 (2017-07-11)
 
 
@@ -12,6 +31,7 @@
 
 
 * fix; edit blockquote styling ([075465d](https://bitbucket.org/atlassian/atlaskit/commits/075465d))
+* fix; make sure renderer wraps unknown nodes in <span> ([c0163d0](https://bitbucket.org/atlassian/atlaskit/commits/c0163d0))
 
 ## 5.4.0 (2017-06-30)
 

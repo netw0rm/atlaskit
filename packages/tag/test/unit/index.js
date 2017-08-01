@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -34,26 +33,26 @@ describe('Tag component', () => {
   });
 
   it('onBeforeRemoveAction callback contract', () => {
-    const onBeforeRemoveAction = sinon.spy();
+    const onBeforeRemoveAction = jest.fn();
     const wrapper = mount(
       <Tag removeButtonText="Remove" onBeforeRemoveAction={onBeforeRemoveAction} />
     );
     wrapper.find(Remove).simulate('click');
-    expect(onBeforeRemoveAction.calledOnce).toBe(true);
+    expect(onBeforeRemoveAction).toHaveBeenCalledTimes(1);
   });
 
   it('onAfterRemoveAction callback contract', () => {
-    const onAfterRemoveAction = sinon.spy();
+    const onAfterRemoveAction = jest.fn();
     const wrapper = mount(
       <Tag removeButtonText="Remove" onAfterRemoveAction={onAfterRemoveAction} />
     );
     wrapper.find(Remove).simulate('click');
     wrapper.find(Container).simulate('animationEnd');
-    expect(onAfterRemoveAction.calledOnce).toBe(true);
+    expect(onAfterRemoveAction).toHaveBeenCalledTimes(1);
   });
 
   it('onAfterRemoveAction should not be called if onBeforeRemoveAction returns false', () => {
-    const onAfterRemoveAction = sinon.spy();
+    const onAfterRemoveAction = jest.fn();
     const wrapper = mount(
       <Tag
         removeButtonText="Remove"
@@ -62,7 +61,7 @@ describe('Tag component', () => {
       />
     );
     wrapper.find(Remove).simulate('click');
-    expect(onAfterRemoveAction.calledOnce).toBe(false);
+    expect(onAfterRemoveAction).not.toHaveBeenCalled();
   });
 
   it('set markedForRemoval via mouse events on remove button', () => {
@@ -161,25 +160,25 @@ describe('Tag component', () => {
 
   describe('onBeforeRemoveAction prop', () => {
     it('should be called if button is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onBeforeRemoveAction={spy} />);
       wrapper.find('button').simulate('click');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('onAfterRemoveAction prop', () => {
     it('should be called after remove animation is completed', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onAfterRemoveAction={spy} />);
       wrapper.find('button').simulate('click');
       wrapper.find(Container).simulate('animationEnd');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not be called if onBeforeRemoveAction returns false', () => {
       const beforeRemove = () => false;
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(<Tag
         text="foo"
         removeButtonText="removeMe"
@@ -187,7 +186,7 @@ describe('Tag component', () => {
         onAfterRemoveAction={spy}
       />);
       wrapper.find('button').simulate('click');
-      expect(spy.callCount).toBe(0);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 });

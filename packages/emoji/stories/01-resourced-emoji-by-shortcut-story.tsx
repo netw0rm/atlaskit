@@ -5,7 +5,7 @@ import { name } from '../package.json';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
-import { getEmojiResource, lorem } from './story-data';
+import { getEmojiResource, lorem } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 
 interface SampleEmojiProps {

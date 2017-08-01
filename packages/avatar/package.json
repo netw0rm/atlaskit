@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "6.4.0",
+  "version": "6.4.3",
   "config": {
     "access": "public"
   },
   "description": "A React component that represents a user in an application",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Avatar"
@@ -41,6 +41,8 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "*",
+    "@atlaskit/button-group": "^1.5.1",
+    "@atlaskit/lozenge": "^3.4.1",
     "@atlaskit/util-readme": "^3.2.0"
   },
   "repository": {

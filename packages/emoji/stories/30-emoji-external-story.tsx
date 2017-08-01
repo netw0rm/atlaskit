@@ -10,7 +10,7 @@ import ResourcedEmojiControl from './demo-resource-control';
 import ResourcedEmojiById from './demo-resourced-emoji-by-id';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
-import { getEmojiResource } from './story-data';
+import { getEmojiResource } from '../src/support/story-data';
 
 declare var require: {
     <T>(path: string): T;

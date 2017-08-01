@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/button",
-  "version": "3.5.1",
+  "version": "3.5.3",
   "config": {
     "access": "public"
   },
   "description": "A React component that is used to trigger events.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Button"

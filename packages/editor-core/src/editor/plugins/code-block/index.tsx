@@ -17,8 +17,8 @@ const codeBlockPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, providerFactory, appearance) {
-    if (appearance === 'tray') {
+  contentComponent(editorView, dispatch, providerFactory, appearance) {
+    if (appearance === 'message') {
       return null;
     }
 

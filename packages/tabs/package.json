@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/tabs",
-  "version": "2.4.0",
+  "version": "2.4.2",
   "config": {
     "access": "public"
   },
   "description": "A React component for displaying multiple panels within a single window",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Tabs"

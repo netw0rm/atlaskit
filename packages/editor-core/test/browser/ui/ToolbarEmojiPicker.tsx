@@ -1,17 +1,19 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
 import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
+import { analyticsService } from '../../../src/analytics';
 
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
-const grinEmoji = emojiData.emojiTestData.grinEmoji;
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
+const grinEmoji = emojiTestData.grinEmoji;
 const grinEmojiId = {
   shortName: grinEmoji.shortName,
   id: grinEmoji.id,
@@ -81,4 +83,27 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
   });
 
+  describe('analytics', () => {
+    it('should trigger analyticsService.trackEvent when emoji icon is clicked', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const { pluginState, editorView } = editor(doc(p('')));
+      const toolbarOption = mount(
+        <ToolbarEmojiPicker
+          pluginState={pluginState}
+          emojiProvider={emojiProvider}
+          editorView={editorView}
+        />
+      );
+      toolbarOption.find(EmojiIcon).simulate('click');
+      expect(trackEvent.calledWith('atlassian.editor.emoji.button')).to.equal(true);
+    });
+  });
+
+  it('should disable the ToolbarEmojiPicker when there in an active mention query mark', () => {
+    const { pluginState, editorView } = editor(doc(p('@')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginState={pluginState} emojiProvider={emojiProvider} editorView={editorView} />);
+
+    expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
+  });
 });

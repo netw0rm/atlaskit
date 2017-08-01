@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/comment",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "config": {
     "access": "public"
   },
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Comment",

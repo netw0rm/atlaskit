@@ -86,7 +86,7 @@ export function findTraversalPath(roots: Node[]) {
 function childrenOfNode(node: Element): NodeList | null {
   const tag = getNodeName(node);
   if (tag === 'AC:STRUCTURED-MACRO') {
-    return getAcTagNodes(node, 'AC:RICH-TEXT-BODY');
+    return getAcTagChildNodes(node, 'AC:RICH-TEXT-BODY');
   }
 
   return node.childNodes;
@@ -248,15 +248,22 @@ export function getAcTagContent(node: Element, tagName: string): string | null {
   return null;
 }
 
-export function getAcTagNodes(node: Element, tagName: string): NodeList | null {
+export function getAcTagChildNodes(node: Element, tagName: string): NodeList | null {
+  const child = getAcTagNode(node, tagName);
+  if (child) {
+    // return html collection only if childNodes are found
+    return child.childNodes.length ? child.childNodes : null;
+  }
+  return null;
+}
+
+export function getAcTagNode(node: Element, tagName: string): Element | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
-      // return html collection only if childNodes are found
-      return child.childNodes.length ? child.childNodes : null;
+      return child;
     }
   }
-
   return null;
 }
 
@@ -299,4 +306,20 @@ export function hasClass(node: Element, className: string): boolean {
     return node.className.indexOf(className) > -1;
   }
   return false;
+}
+
+/*
+ * Contructs a struct string of replacement blocks and marks for a given node
+ */
+export function getContent(node: Node, convertedNodes: WeakMap<any, any>): Fragment {
+  let fragment = Fragment.fromArray([]);
+  let childIndex;
+  for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
+    const child = node.childNodes[childIndex];
+    const thing = convertedNodes.get(child);
+    if (thing instanceof Fragment || thing instanceof PMNode) {
+      fragment = fragment.append(Fragment.from(thing));
+    }
+  }
+  return fragment;
 }

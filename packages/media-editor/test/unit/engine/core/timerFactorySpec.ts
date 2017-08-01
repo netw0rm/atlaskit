@@ -1,7 +1,4 @@
-// TODO: Remove when Chai is replaced with Jest
-/* tslint:disable:no-unused-expression */
-import {expect} from 'chai';
-import {TimerHandle, TimerFactory} from '../../../../src/engine/core/timerFactory';
+import { TimerHandle, TimerFactory } from '../../../../src/engine/core/timerFactory';
 
 type TimerCallback = () => {};
 
@@ -15,15 +12,15 @@ describe('MediaEditor TimerFactory', () => {
   const timerStarter = (callback: TimerCallback, interval: number) => {
     const handle = ++lastHandle;
 
-    expect(handle).not.equal(0);
-    expect(timerCallbacks[handle]).to.be.undefined;
+    expect(handle).not.toBe(0);
+    expect(timerCallbacks[handle]).toBeUndefined();
     timerCallbacks[handle] = callback;
 
     return handle;
   };
 
   const timerStopper = (handle: TimerHandle) => {
-    expect(timerCallbacks[handle]).to.be.not.undefined;
+    expect(timerCallbacks[handle]).toBeDefined();
     delete timerCallbacks[handle];
   };
 
@@ -43,28 +40,28 @@ describe('MediaEditor TimerFactory', () => {
   it('should returns different ids for createTimer', () => {
     const first = timerFactory.createTimer();
     const second = timerFactory.createTimer();
-    expect(first).not.equal(second);
+    expect(first).not.toBe(second);
   });
 
   it('should not start timer after createTimer', () => {
     timerFactory.createTimer();
-    expect(timerCallbacks[1]).to.be.undefined;
+    expect(timerCallbacks[1]).toBeUndefined();
   });
 
   it('should trigger ticks after timer starts', () => {
     const id = timerFactory.createTimer();
     timerFactory.startTimer(id, 100);
-    expect(timerCallbacks[1]).not.to.be.undefined;
+    expect(timerCallbacks[1]).not.toBeUndefined();
 
     timerCallbacks[1]();
-    expect(lastIdTicked).to.equal(id);
+    expect(lastIdTicked).toBe(id);
     lastIdTicked = -1;
 
     timerCallbacks[1]();
-    expect(lastIdTicked).to.equal(id);
+    expect(lastIdTicked).toBe(id);
 
     timerFactory.stopTimer(id);
-    expect(timerCallbacks[1]).to.be.undefined;
+    expect(timerCallbacks[1]).toBeUndefined();
   });
 
   it('should trigger ticks for correct timer', () => {
@@ -75,27 +72,27 @@ describe('MediaEditor TimerFactory', () => {
     timerFactory.startTimer(secondId, 200);
 
     timerCallbacks[1]();
-    expect(lastIdTicked).to.equal(firstId);
+    expect(lastIdTicked).toBe(firstId);
     lastIdTicked = -1;
 
     timerCallbacks[2]();
-    expect(lastIdTicked).to.equal(secondId);
+    expect(lastIdTicked).toBe(secondId);
     lastIdTicked = -1;
 
     timerCallbacks[2]();
-    expect(lastIdTicked).to.equal(secondId);
+    expect(lastIdTicked).toBe(secondId);
     lastIdTicked = -1;
 
     timerCallbacks[1]();
-    expect(lastIdTicked).to.equal(firstId);
+    expect(lastIdTicked).toBe(firstId);
     lastIdTicked = -1;
 
     timerFactory.stopTimer(secondId);
-    expect(timerCallbacks[1]).not.to.be.undefined;
-    expect(timerCallbacks[2]).to.be.undefined;
+    expect(timerCallbacks[1]).not.toBeUndefined();
+    expect(timerCallbacks[2]).toBeUndefined();
 
     timerFactory.stopTimer(firstId);
-    expect(timerCallbacks[1]).to.be.undefined;
+    expect(timerCallbacks[1]).toBeUndefined();
   });
 
   it('should ignore stop for not started', () => {
@@ -113,10 +110,10 @@ describe('MediaEditor TimerFactory', () => {
     const id = timerFactory.createTimer();
 
     timerFactory.startTimer(id, 100);
-    expect(timerCallbacks[1]).not.to.be.undefined;
+    expect(timerCallbacks[1]).not.toBeUndefined();
 
     timerFactory.stopTimer(id);
-    expect(timerCallbacks[1]).to.be.undefined;
+    expect(timerCallbacks[1]).toBeUndefined();
 
     timerFactory.stopTimer(id);
   });
@@ -127,11 +124,11 @@ describe('MediaEditor TimerFactory', () => {
 
     timerFactory.startTimer(firstId, 100);
     timerFactory.startTimer(secondId, 100);
-    expect(timerCallbacks[1]).not.to.be.undefined;
-    expect(timerCallbacks[2]).not.to.be.undefined;
+    expect(timerCallbacks[1]).not.toBeUndefined();
+    expect(timerCallbacks[2]).not.toBeUndefined();
 
     timerFactory.unload();
-    expect(timerCallbacks[1]).to.be.undefined;
-    expect(timerCallbacks[2]).to.be.undefined;
+    expect(timerCallbacks[1]).toBeUndefined();
+    expect(timerCallbacks[2]).toBeUndefined();
   });
 });

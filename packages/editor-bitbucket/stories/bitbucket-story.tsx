@@ -3,11 +3,11 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/editor-core';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
+import { MockMentionSource } from './_mock-mentionsource';
 
 import { default as Editor, version as editorVersion } from '../src';
-import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
 
 import { name } from '../package.json';
@@ -46,7 +46,7 @@ const imageUploadHandler = (e: any, fn: any) => {
 };
 
 const mentionSource = new MockMentionSource();
-const emojiProvider = emojiData.emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
+const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 
 storiesOf(name, module)

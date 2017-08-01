@@ -10,3 +10,4 @@ export { default as mediaPlugin } from './media';
 export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';
 export { default as hyperlinkPlugin } from './hyperlink';
 export { default as codeBlockPlugin } from './code-block';
+export { default as maxContentSizePlugin } from './max-content-size';

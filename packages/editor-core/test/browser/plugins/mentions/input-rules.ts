@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions';
 import ProviderFactory from '../../../../src/providerFactory';
@@ -14,8 +15,9 @@ import {
   mention,
   code,
 } from '../../../../src/test-helper';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -24,11 +26,16 @@ describe('mentions - input rules', () => {
     doc,
     plugins: mentionsPlugins(defaultSchema, new ProviderFactory()),
   });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
+  });
 
   const assert = (what: string, expected: boolean, docContents?: any) => {
     const { editorView, pluginState, sel, refs } = editor(doc(docContents || p('{<>}')));
     return pluginState
-      .setMentionProvider(Promise.resolve(mentionData.mentionStoryData.resourceProvider))
+      .setMentionProvider(Promise.resolve(mentionStoryData.resourceProvider))
       .then(() => {
         insertText(editorView, what, sel || refs['<']);
 
@@ -36,6 +43,7 @@ describe('mentions - input rules', () => {
         const { mentionQuery } = state.schema.marks;
         const cursorFocus = state.selection.$to.nodeBefore!;
         expect(!!mentionQuery.isInSet(cursorFocus.marks)).to.equal(expected);
+        expect(trackEvent.calledWith('atlassian.editor.mention.autoformatting')).to.equal(expected);
       });
   };
 

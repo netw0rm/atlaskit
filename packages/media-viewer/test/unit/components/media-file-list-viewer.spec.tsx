@@ -1,21 +1,13 @@
-// TODO: deal with unused expression error while calling "chai calledOnce"
-/* tslint:disable */ //:no-unused-expressions
 import * as React from 'react';
-import * as sinon from 'sinon';
-import * as chai from 'chai';
-import { expect } from 'chai';
-import * as sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import {
   MediaFileListViewer
 } from '../../../src/components/media-file-list-viewer';
 import { Stubs } from '../_stubs';
 
-chai.use(sinonChai);
-
 describe('<MediaFileListViewer />', () => {
   const token = 'some-token';
-  const tokenProvider = sinon.stub().returns(Promise.resolve(token));
+  const tokenProvider = jest.fn(() => Promise.resolve(token));
   const serviceHost = 'some-service-host';
   const contextConfig = {
     clientId: 'some-client',
@@ -38,13 +30,12 @@ describe('<MediaFileListViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(mediaViewerConstructor).to.have.been.calledOnce;
-    expect(mediaViewerConstructor).to.have.been.calledWith({
-      assets: {
-        basePath
-      },
-      fetchToken: sinon.match.func
-    });
+    expect(mediaViewerConstructor).toHaveBeenCalledTimes(1);
+    let firstCall = mediaViewerConstructor.mock.calls[0];
+    let firstArg = firstCall[0];
+    expect(firstArg.assets).toEqual({ basePath });
+    expect(firstArg.enableMiniMode).toBe(undefined);
+    expect(typeof firstArg.fetchToken).toBe('function');
   });
 
   it('should construct a media viewer instance with custom config', () => {
@@ -64,13 +55,11 @@ describe('<MediaFileListViewer />', () => {
         basePath={basePath}
       />);
 
-    expect(mediaViewerConstructor).to.have.been.calledOnce;
-    expect(mediaViewerConstructor).to.have.been.calledWith({
-      assets: {
-        basePath
-      },
-      enableMiniMode: true,
-      fetchToken: sinon.match.func
-    });
+    expect(mediaViewerConstructor).toHaveBeenCalledTimes(1);
+    let firstCall = mediaViewerConstructor.mock.calls[0];
+    let firstArg = firstCall[0];
+    expect(firstArg.assets).toEqual({ basePath });
+    expect(firstArg.enableMiniMode).toBe(true);
+    expect(typeof firstArg.fetchToken).toBe('function');
   });
 });

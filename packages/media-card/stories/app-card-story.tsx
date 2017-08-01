@@ -52,8 +52,7 @@ const modelWithUserInTitle: AppCardModel = {
 };
 
 const modelWithCollapseToggle: AppCardModel = {
-  ...modelWithShortTitle,
-  collapsible: true
+  ...modelWithShortTitle
 };
 
 const preview = {url: 'https://image.ibb.co/ghKzoF/1a99566b0c8e0589ca327bb1efe0be5ca1419aa8.png'};

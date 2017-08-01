@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/drag-and-drop",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "config": {
     "access": "public"
   },
   "description": "Drag and drop building blocks - designed for lists",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/drag-and-drop; } || ../../node_modules/.bin/not-in-publish",
@@ -31,8 +31,7 @@
     "reselect": "2.5.4"
   },
   "devDependencies": {
-    "styled-components": "2.1.0",
-    "eslint-plugin-chai-expect": "^1.1.1"
+    "styled-components": "2.1.0"
   },
   "peerDependencies": {
     "react": "15.6.1"

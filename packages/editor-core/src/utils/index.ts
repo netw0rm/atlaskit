@@ -16,6 +16,7 @@ import {
   findWrapping
 } from '../prosemirror';
 import * as commands from '../commands';
+import { LEFT } from '../keymaps';
 import JSONSerializer, { JSONDocNode } from '../renderer/json';
 
 export {
@@ -134,6 +135,19 @@ export function canJoinDown(selection: Selection, doc: any, nodeType: NodeType):
   const res = doc.resolve(selection.$to.after(findAncestorPosition(doc, selection.$to).depth));
   return res.nodeAfter && res.nodeAfter.type === nodeType;
 }
+
+export const setNodeSelection = (view: EditorView, pos: number) => {
+  const { state, dispatch } = view;
+  const tr = state.tr.setSelection(NodeSelection.create(state.doc, pos));
+  dispatch(tr);
+};
+
+export function setTextSelection(view: EditorView, anchor: number, head?: number) {
+  const { state } = view;
+  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
+  view.dispatch(tr);
+}
+
 
 /**
  * Determines if content inside a selection can be joined with the previous block.
@@ -431,3 +445,14 @@ export function stringRepeat(text: string, length: number): string {
 export function arrayFrom(obj: any): any[] {
   return Array.prototype.slice.call(obj);
 }
+
+export function moveLeft(view: EditorView) {
+  const event = new CustomEvent('keydown', {
+    bubbles: true,
+    cancelable: true,
+  });
+  (event as any).keyCode = LEFT;
+
+  (view as any).dispatchEvent(event);
+}
+

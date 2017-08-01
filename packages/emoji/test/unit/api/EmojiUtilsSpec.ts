@@ -4,7 +4,7 @@ import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
 import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
 
-import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../_TestData';
+import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
 
 describe('EmojiUtils', () => {
   describe('#denormaliseEmojiServiceResponse', () => {

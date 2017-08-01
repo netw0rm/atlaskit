@@ -15,10 +15,10 @@ import {
   emojiQuery,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
 
 const providerFactory = new ProviderFactory();
-const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
+const emojiProvider = emojiTestData.getEmojiResourcePromise();
 providerFactory.setProvider('emojiProvider', emojiProvider);
 
 const plugins = asciiEmojiPlugins(defaultSchema, providerFactory);

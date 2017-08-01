@@ -6,20 +6,23 @@ import { simpleDropdownItems } from './DropdownsData';
 
 export default class DropWithTriggerOpts extends Component {
   render() {
-    return (<div style={{ padding: '40px' }}>
-      <p>When you want to pass in custom trigger button options, use the
-        triggerButtonOptions property
-      </p>
-      <div style={{ padding: '20px 0' }}>
-        <DropdownMenu
-          items={simpleDropdownItems}
-          triggerType="button"
-          triggerButtonProps={{
-            appearance: 'subtle',
-            iconBefore: <MoreIcon label="More" />,
-          }}
-        />
+    return (
+      <div style={{ padding: '40px' }}>
+        <p>When you want to pass in custom trigger button options, use the
+          triggerButtonOptions property
+        </p>
+        <div style={{ padding: '20px 0' }}>
+          <DropdownMenu
+            triggerType="button"
+            triggerButtonProps={{
+              appearance: 'subtle',
+              iconBefore: <MoreIcon label="More" />,
+            }}
+          >
+            {simpleDropdownItems}
+          </DropdownMenu>
+        </div>
       </div>
-    </div>);
+    );
   }
 }

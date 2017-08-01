@@ -2,7 +2,7 @@ import { EditorView, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
-import { ALL_BLOCK_TYPES } from './types';
+import { BLOCK_QUOTE, CODE_BLOCK, PANEL } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
 import { undoInputRule } from '../../prosemirror/prosemirror-inputrules';
 import { BlockTypeState } from './';
@@ -14,13 +14,13 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
-  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.redo.keyboard', redo), list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
   const nodes = view.state.schema.nodes;
 
-  ALL_BLOCK_TYPES.forEach((blockType) => {
+  [BLOCK_QUOTE, CODE_BLOCK, PANEL].forEach((blockType) => {
     if (nodes[blockType.nodeName]) {
       const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {

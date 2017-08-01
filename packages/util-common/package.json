@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/util-common",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "config": {
     "access": "public"
   },
   "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {

@@ -3,7 +3,6 @@ import { mount, shallow } from 'enzyme';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base';
-import sinon from 'sinon';
 
 import InlineEditStateless from '../../src/components/InlineEditStateless';
 
@@ -88,7 +87,7 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('onEditRequested', () => {
     it('should be called when the read view is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineEditStateless
           {...defaultProps}
@@ -96,11 +95,11 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should not be called when the edit view is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineEditStateless
           {...defaultProps}
@@ -109,13 +108,13 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy.called).toBe(false);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
   describe('onConfirm', () =>
     it('should be called when confirmation button is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineEditStateless
           {...defaultProps}
@@ -124,13 +123,13 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(ConfirmIcon).simulate('click');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalled();
     })
   );
 
   describe('onCancel', () =>
     it('should be called when cancel button is clicked', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineEditStateless
           {...defaultProps}
@@ -139,7 +138,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       wrapper.find(CancelIcon).simulate('click');
-      expect(spy.callCount).toBe(1);
+      expect(spy).toHaveBeenCalled();
     })
   );
 
@@ -157,7 +156,7 @@ describe('@atlaskit/inline-edit', () => {
     });
 
     it('it should not call onClick if is read only', () => {
-      const spy = sinon.spy();
+      const spy = jest.fn();
       const wrapper = mount(
         <InlineEditStateless
           {...defaultProps}
@@ -178,7 +177,7 @@ describe('@atlaskit/inline-edit', () => {
        **/
       const onClickNode = label.findWhere(n => n.prop('onClick') && !n.find(Label).exists()).at(0);
       onClickNode.simulate('click');
-      expect(spy.called).toBe(false);
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 

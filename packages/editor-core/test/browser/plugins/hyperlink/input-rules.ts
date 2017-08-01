@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
@@ -6,6 +7,7 @@ import {
   strong, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -17,11 +19,14 @@ describe('hyperlink', () => {
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com ', sel, sel);
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).to.deep.equal(doc(p(a, ' ')));
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {

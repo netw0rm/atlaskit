@@ -1,11 +1,21 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
 
-import { createPngFile, newEmojiRepository, getEmojiResourcePromise, getNonUploadingEmojiResourcePromise, mediaEmoji, pngDataURL, pngFileUploadData } from '../../_TestData';
-import { MockEmojiResourceConfig } from '../../_MockEmojiResource';
+import {
+    createPngFile,
+    getEmojiResourcePromise,
+    getNonUploadingEmojiResourcePromise,
+    mediaEmoji,
+    mockLocalStorage,
+    newEmojiRepository,
+    pngDataURL,
+    pngFileUploadData
+} from '../../../../src/support/test-data';
+import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
@@ -25,6 +35,8 @@ import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
 import { customCategory } from '../../../../src/constants';
+
+declare var global: any;
 
 function setupPickerWithoutToneSelector(): Promise<ReactWrapper<any, any>> {
   return setupPicker({
@@ -141,6 +153,16 @@ const findSearchInput = (component) => component.find(EmojiPickerListSearch).fin
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
+  const localStorage = global.window.localStorage;
+  beforeEach(() => {
+    global.window.localStorage = mockLocalStorage;
+  });
+
+  afterEach(() => {
+    global.window.localStorage.clear();
+    global.window.localStorage = localStorage;
+  });
+
   describe('display', () => {
     it('should display first set of emoji in viewport by default', () =>
       setupPicker().then(component => {
@@ -812,9 +834,41 @@ describe('<EmojiPicker />', () => {
           const hoverOffset = findHandEmoji(emojis);
           expect(hoverOffset).to.not.equal(-1);
           const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName, 'Should show emoji with skin variation').to.equal(':raised_hand::skin-tone-2:');
+          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-2:');
         });
       });
     });
   });
+
+  it('should use localStorage to remember tone selection between sessions', () => {
+    const setSpy = sinon.spy(window.localStorage, 'setItem');
+    getEmojiResourcePromise().then(provider => provider.setSelectedTone(2));
+
+    return waitUntil(() => setSpy.callCount === 1).then(() =>
+      // First picker should have tone set by default
+      setupPicker().then(component => {
+        const list = component.find(EmojiPickerList);
+        return waitUntil(() => emojisVisible(list)).then(() => {
+          const emojis = findEmoji(list);
+          const hoverOffset = findHandEmoji(emojis);
+          expect(hoverOffset).to.not.equal(-1);
+          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+        });
+      }) &&
+      // Second picker should have tone set by default
+      setupPicker().then(component => {
+        const list = component.find(EmojiPickerList);
+        return waitUntil(() => emojisVisible(list)).then(() => {
+          const emojis = findEmoji(list);
+          const hoverOffset = findHandEmoji(emojis);
+          expect(hoverOffset).to.not.equal(-1);
+          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+        });
+      })
+
+    );
+  });
+
 });

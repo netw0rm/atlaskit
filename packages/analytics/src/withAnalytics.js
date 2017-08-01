@@ -11,23 +11,37 @@ type EventMapOrFunction =
       fireAnalyticsEvent: (eventName: string, eventData?: Object) => void
     ) => EventMap);
 
+type AnalyticsProps = {
+  analyticsId?: string,
+  analyticsData?: Object,
+};
+
 /*
 The withAnalytics HOC wraps a component and provides the `fireAnalyticsEvent`
 and `firePrivateAnalyticsEvent` methods to it as props. It contains the logic
 for how to fire events, including handling the analyticsId and analyticsData
 props. The `map` argument may be an object or a function that returns an object.
 The properties of the `map` object/result can be strings (the name of the event
-that will be fired) or functions (which are responsible for firing the event)
+that will be fired) or functions (which are responsible for firing the event).
+You can specify a default `analyticsId` and `analyticsData` with the `defaultProps`
+param. Please be aware that specifying a default `analyticsId` will cause public
+events to always fire for your component unless it has been set to a falsy but
+the component consumer.
 */
-const withAnalytics = (WrappedComponent, map: EventMapOrFunction = {}) =>
+const withAnalytics = (
+  WrappedComponent,
+  map: EventMapOrFunction = {},
+  defaultProps: AnalyticsProps = {}) =>
+
   class WithAnalytics extends Component {
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;
     static contextTypes = { onAnalyticsEvent: PropTypes.func };
-    props: {
-      analyticsId?: string,
-      analyticsData?: Object,
-    };
+    props: AnalyticsProps;
+    static defaultProps = {
+      analyticsId: defaultProps.analyticsId,
+      analyticsData: defaultProps.analyticsData,
+    }
     componentWillMount() {
       this.evaluatedMap =
         typeof map === 'function' ? map(this.fireAnalyticsEvent) : map;

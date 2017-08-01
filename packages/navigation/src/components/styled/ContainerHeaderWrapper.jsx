@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { layout, gridSize, globalItemSizes } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
+const collapsedMinHeight = (gridSize / 2) + globalItemSizes.medium;
+
 const paddingOpen = {
   top: gridSize,
   right: gridSize,
@@ -21,7 +23,7 @@ const ContainerHeaderWrapper = styled.div`
     flex-shrink: 0;
     flex-direction: column;
     justify-content: center;
-    min-height: ${globalItemSizes.medium + gridSize / 2}px;
+    min-height: ${collapsedMinHeight}px;
   `}
   > * + * { margin-top: 20px; }
 `;

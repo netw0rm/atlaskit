@@ -13,6 +13,9 @@ export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }
 
+const TAB_FORWARD_DIRECTION = 1;
+const TAB_BACKWARD_DIRECTION = -1;
+
 const createTable = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
@@ -39,11 +42,20 @@ const goToNextCell = (direction: number): Command => {
       return false;
     }
     const map = TableMap.get(pluginState.tableNode);
+    const start = pluginState.getCurrentCellStartPos();
+    const firstCellPos =  map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
     const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, pluginState.tableNode) + offset + 1;
-    if (lastCellPos ===  pluginState.getCurrentCellStartPos() && direction === 1) {
+
+    if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
+      pluginState.insertRow(0);
+      return true;
+    }
+
+    if (lastCellPos === start && direction === TAB_FORWARD_DIRECTION) {
       pluginState.insertRow(map.height);
       return true;
     }
+
     return tableBaseCommands.goToNextCell(direction)(state, dispatch);
   };
 };

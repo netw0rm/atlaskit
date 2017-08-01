@@ -84,6 +84,21 @@ describe('table keymap', () => {
       });
     });
 
+    context('when the cursor is at the first cell of the first row', () => {
+      it('it should create a new row and select the first cell of the new row', () => {
+        const { editorView, pluginState } = editor(
+          doc(table(
+            tr(tdCursor, tdEmpty, tdEmpty),
+            tr(tdEmpty, tdEmpty,  tdEmpty)
+          ))
+        );
+        sendKeyToPm(editorView, 'Shift-Tab');
+        const map = TableMap.get(pluginState.tableNode!);
+        expect(map.height).to.equal(3);
+        expect(editorView.state.selection.$from.pos).to.equal(4);
+      });
+    });
+
     context('Shift-Alt-T keypress', () => {
       it('it should insert 3x3 table', () => {
         const tableNode = table(

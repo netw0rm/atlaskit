@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 44.5.0 (2017-08-01)
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
 ## 44.4.0 (2017-08-01)
 
 * bug fix; allow empty fallback text in appCards in renderer (issues closed: ed-2364) ([f88292b](https://bitbucket.org/atlassian/atlaskit/commits/f88292b))

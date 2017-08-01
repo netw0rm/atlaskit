@@ -12,7 +12,7 @@ const createStyledComponent = {
   custom: () => {
     // Override pseudo-state specificity.
     // This is necessary because we don't know what DOM element the custom component will render.
-    const component = styled(CustomComponentProxy)`&,&:hover,&:active,&:focus{${getButtonStyles}}`;
+    const component = styled(CustomComponentProxy)`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
     component.displayName = 'StyledCustomComponent';
     return component;
   },

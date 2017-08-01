@@ -1,5 +1,6 @@
-/* eslint-disable arrow-body-style */
 /* eslint-disable no-confusing-arrow */
+
+/* TODO: finish migrating constants from util-shared-styles */
 
 import styled, { keyframes } from 'styled-components';
 import {
@@ -7,8 +8,8 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-import { borderRadius } from '../../../theme/src';
-import { tooltipBackgroundColor, tooltipTextColor } from '../theme';
+import { borderRadius, gridSize, math } from '../../../theme/src';
+import { backgroundColor, textColor } from '../theme';
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -66,15 +67,15 @@ const getKeyframeName = ({ isFlipped, position }) =>
 // apply all the things
 export default styled.div`
   animation: ${getKeyframeName} ${animTime}s ${animDelay}s backwards;
-  background-color: ${tooltipBackgroundColor};
+  background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
-  color: ${tooltipTextColor};
+  color: ${textColor};
   font-size: ${fontSize}px;
   line-height: ${(4 * grid) / fontSize};
-  margin: ${2 * grid}px;
-  max-width: ${105 * grid}px;
-  padding: ${grid / 2}px ${2 * grid}px;
+  margin: ${gridSize}px;
+  max-width: ${math.multiply(gridSize, 52)}px;
+  padding: ${math.divide(gridSize, 4)}px ${gridSize}px;
   pointer-events: none;
   white-space: nowrap;
 `;

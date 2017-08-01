@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Badge from '@atlaskit/badge';
-import { themeValue } from '../../theme/src';
+import { colors } from '../../theme/src';
 
 const Container = styled.div`
-  color: ${themeValue('colors.text')};
+  color: ${colors.text};
   max-width: 360px;
 `;
 const Row = styled.div`

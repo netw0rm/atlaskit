@@ -1,109 +1,55 @@
-import {
-  theme as getTheme,
-  addThemeComponent as registerThemeComponent,
-} from '../../theme/src';
-import { DEFAULT_APPEARANCE } from './components/Flag';
+import { colors, themed } from '../../theme/src';
 
-const COMPONENT_NAME = 'flag';
 const lightButtonBackground = 'rgba(255, 255, 255, 0.08)';
 
-registerThemeComponent(COMPONENT_NAME, (mode, theme) => (mode === 'dark'
-? {
-  error: {
-    background: theme.colors.R300,
-    buttonBackground: theme.colors.N30A,
-    buttonText: theme.colors.DN40,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.DN40,
-    shadow: theme.colors.N50A,
-  },
-  info: {
-    background: theme.colors.N500,
-    buttonBackground: lightButtonBackground,
-    buttonText: theme.colors.DN600,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.DN600,
-    shadow: theme.colors.N50A,
-  },
-  normal: {
-    background: theme.colors.DN50,
-    buttonBackground: 'none',
-    buttonText: theme.colors.link,
-    focusRingColor: theme.colors.link,
-    text: theme.colors.DN600,
-    shadow: theme.colors.N50A,
-  },
-  success: {
-    background: theme.colors.G300,
-    buttonBackground: theme.colors.N30A,
-    buttonText: theme.colors.DN40,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.DN40,
-    shadow: theme.colors.N50A,
-  },
-  warning: {
-    background: theme.colors.Y300,
-    buttonBackground: theme.colors.N30A,
-    buttonText: theme.colors.DN40,
-    focusRingColor: theme.colors.N200,
-    text: theme.colors.DN40,
-    shadow: theme.colors.N50A,
-  },
-} : {
-  error: {
-    background: theme.colors.R400,
-    buttonBackground: lightButtonBackground,
-    buttonText: theme.colors.N0,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.N0,
-    shadow: theme.colors.N50A,
-  },
-  info: {
-    background: theme.colors.N500,
-    buttonBackground: lightButtonBackground,
-    buttonText: theme.colors.N0,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.N0,
-    shadow: theme.colors.N50A,
-  },
-  normal: {
-    background: theme.colors.N0,
-    border: theme.colors.N60A,
-    buttonBackground: 'none',
-    buttonText: theme.colors.link,
-    focusRingColor: theme.colors.B100,
-    text: theme.colors.N500,
-    shadow: theme.colors.N50A,
-  },
-  success: {
-    background: theme.colors.G400,
-    buttonBackground: lightButtonBackground,
-    buttonText: theme.colors.N0,
-    focusRingColor: theme.colors.N40,
-    text: theme.colors.N0,
-    shadow: theme.colors.N50A,
-  },
-  warning: {
-    background: theme.colors.Y200,
-    buttonBackground: theme.colors.N30A,
-    buttonText: theme.colors.N700,
-    focusRingColor: theme.colors.N200,
-    text: theme.colors.N700,
-    shadow: theme.colors.N50A,
-  },
-}));
+export const flagBackgroundColor = themed('appearance', {
+  error: { light: colors.R400, dark: colors.R300 },
+  info: { light: colors.N500, dark: colors.N500 },
+  normal: { light: colors.N0, dark: colors.DN50 },
+  success: { light: colors.G400, dark: colors.G300 },
+  warning: { light: colors.Y200, dark: colors.Y300 },
+});
 
-// eslint-disable-next-line import/prefer-default-export
-export function getProperty(property, props) {
-  const appearance = props.appearance || DEFAULT_APPEARANCE;
-  const flagTheme = getTheme(props).flag;
-  const isDev = process.env.NODE_ENV !== 'production';
+export const flagBorderColor = themed('appearance', {
+  normal: { light: colors.N60A },
+});
 
-  if (!flagTheme[appearance] || !flagTheme[appearance][property]) {
-    // eslint-disable-next-line no-console
-    if (isDev) console.error(`No matching property "${property}" for appearance "${appearance}"`);
+export const flagTextColor = themed('appearance', {
+  error: { light: colors.N0, dark: colors.DN40 },
+  info: { light: colors.N0, dark: colors.DN600 },
+  normal: { light: colors.N500, dark: colors.DN600 },
+  success: { light: colors.N0, dark: colors.DN40 },
+  warning: { light: colors.N700, dark: colors.DN40 },
+});
 
-    return undefined;
-  }
-  return flagTheme[appearance][property];
-}
+export const flagShadowColor = themed('appearance', {
+  error: { light: colors.N50A, dark: colors.N50A },
+  info: { light: colors.N50A, dark: colors.N50A },
+  normal: { light: colors.N50A, dark: colors.N50A },
+  success: { light: colors.N50A, dark: colors.N50A },
+  warning: { light: colors.N50A, dark: colors.N50A },
+});
+
+export const flagFocusRingColor = themed('appearance', {
+  error: { light: colors.N40, dark: colors.N40 },
+  info: { light: colors.N40, dark: colors.N40 },
+  normal: { light: colors.B100, dark: colors.link },
+  success: { light: colors.N40, dark: colors.N40 },
+  warning: { light: colors.N200, dark: colors.N200 },
+});
+
+export const buttonBackgroundColor = themed('appearance', {
+  error: { light: lightButtonBackground, dark: colors.N30A },
+  info: { light: lightButtonBackground, dark: lightButtonBackground },
+  normal: { light: 'none', dark: 'none' },
+  success: { light: lightButtonBackground, dark: colors.N30A },
+  warning: { light: colors.N30A, dark: colors.N30A },
+});
+
+export const buttonTextColor = themed('appearance', {
+  error: { light: colors.N0, dark: colors.DN40 },
+  info: { light: colors.N0, dark: colors.DN600 },
+  normal: { light: colors.link, dark: colors.link },
+  success: { light: colors.N0, dark: colors.DN40 },
+  warning: { light: colors.N700, dark: colors.DN40 },
+});

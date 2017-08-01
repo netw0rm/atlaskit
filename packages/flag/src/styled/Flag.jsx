@@ -1,14 +1,18 @@
 import styled from 'styled-components';
-import {
-  akBorderRadius,
-  akGridSizeUnitless as spacing,
-} from '@atlaskit/util-shared-styles';
-import { getProperty } from '../theme';
 
-const getTextColor = props => getProperty('text', props);
+import { borderRadius, gridSize, math } from '../../../theme/src';
+
+import {
+  flagBackgroundColor,
+  flagBorderColor,
+  flagTextColor,
+  flagShadowColor,
+  flagFocusRingColor,
+} from '../theme';
+
 const getBoxShadow = props => {
-  const borderColor = getProperty('border', props);
-  const shadowColor = getProperty('shadow', props);
+  const borderColor = flagBorderColor(props);
+  const shadowColor = flagShadowColor(props);
 
   const border = borderColor && `0 0 1px ${borderColor}`;
   const shadow = `0 20px 32px -8px ${shadowColor}`;
@@ -17,19 +21,19 @@ const getBoxShadow = props => {
 };
 
 export default styled.div`
-  background-color: ${props => getProperty('background', props)};
-  border-radius: ${akBorderRadius};
+  background-color: ${flagBackgroundColor};
+  border-radius: ${borderRadius}px;
   box-sizing: border-box;
   box-shadow: ${getBoxShadow};
-  color: ${getTextColor};
+  color: ${flagTextColor};
   display: flex;
-  padding: ${spacing * 2}px;
+  padding: ${math.multiply(gridSize, 2)}px;
   width: 100%;
   z-index: 600;
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${props => getProperty('focusRingColor', props)};
+    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
   }
 `;
 
@@ -39,7 +43,7 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.span`
-  color: ${getTextColor};
+  color: ${flagTextColor};
   font-weight: 600;
   flex: 1;
   overflow: hidden;
@@ -51,17 +55,17 @@ export const DismissButton = styled.button`
   appearance: none;
   background: none;
   border: none;
-  border-radius: ${akBorderRadius};
-  color: ${getTextColor};
+  border-radius: ${borderRadius}px;
+  color: ${flagTextColor};
   cursor: pointer;
   display: flex;
-  margin-left: ${spacing}px;
+  margin-left: ${gridSize}px;
   padding: 0;
   white-space: nowrap;
 
   &:focus {
     outline: none;
-    box-shadow: 0px 0px 0px 2px ${props => getProperty('focusRingColor', props)};
+    box-shadow: 0px 0px 0px 2px ${flagFocusRingColor};
   }
 `;
 
@@ -82,8 +86,8 @@ export const Expander = styled.div`
 `;
 
 export const Description = styled.div`
-  color: ${getTextColor};
-  margin-top: ${spacing}px;
+  color: ${flagTextColor};
+  margin-top: ${gridSize}px;
 `;
 
 export const Icon = styled.div`
@@ -91,5 +95,5 @@ export const Icon = styled.div`
   display: inline-flex;
   flex: 0 0 auto;
   flex-direction: column;
-  width: ${spacing * 4}px;
+  width: ${math.multiply(gridSize, 4)}px;
 `;

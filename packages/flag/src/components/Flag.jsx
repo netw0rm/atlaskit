@@ -13,7 +13,7 @@ import Container, {
 } from '../styled/Flag';
 import Expander from './Expander';
 import Actions from './FlagActions';
-import { getProperty } from '../theme';
+import { flagFocusRingColor } from '../theme';
 import type { ActionsType, AppearanceTypes, ChildrenType, ElementType, FunctionType } from '../types';
 
 export const DEFAULT_APPEARANCE = 'normal';
@@ -81,7 +81,7 @@ export default class Flag extends PureComponent {
     return (
       <DismissButton
         appearance={appearance}
-        focusRingColor={getProperty('focusRingColor', this.props)}
+        focusRingColor={flagFocusRingColor(this.props)}
         onClick={buttonAction}
         type="button"
       >

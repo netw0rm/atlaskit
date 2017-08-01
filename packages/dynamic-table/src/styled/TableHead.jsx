@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { onClickStyle, truncateStyle, arrowsStyle, cellStyle } from './constants';
-import { PKG_NM } from './theme';
-import { theme } from '../../../theme/src';
+import { head } from '../theme';
 
 export const Head = styled.thead`
-  border-bottom: 2px solid ${p => theme(p)[PKG_NM].th.border.color};
+  border-bottom: 2px solid ${head.borderColor};
 `;
 
 export const HeadCell = styled.th`
@@ -13,7 +12,7 @@ export const HeadCell = styled.th`
   ${p => arrowsStyle(p)}
   ${cellStyle}
   border: none;
-  color: ${p => theme(p)[PKG_NM].th.text.color};
+  color: ${head.textColor};
   font-size: 12px;
   font-weight: 600;
   position: relative;

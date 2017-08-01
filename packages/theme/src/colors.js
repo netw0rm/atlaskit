@@ -144,6 +144,7 @@ export const text = themed({ light: N900, dark: DN600 });
 export const subtleText = themed({ light: N300, dark: DN300 });
 export const heading = themed({ light: N800, dark: DN600 });
 export const subtleHeading = themed({ light: N300, dark: DN300 });
+export const codeBlock = themed({ light: N20, dark: DN50 });
 export const link = themed({ light: B400, dark: B100 });
 export const linkHover = themed({ light: B300, dark: B200 });
 export const linkActive = themed({ light: B500, dark: B100 });

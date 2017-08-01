@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { theme } from '../../theme/src';
+import styled from 'styled-components';
+import { borderRadius, colors, gridSize } from '../../theme/src';
 
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';
@@ -13,16 +13,12 @@ import FlagGroupExample from './FlagGroupExample';
 import flagGroupExampleSource from '!raw-loader!./FlagGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const CodeBlock = styled.pre`${props => {
-  const { base: { borderRadius, gridSize }, colors, mode } = theme(props);
-
-  return css`
-    background-color: ${mode === 'dark' ? colors.DN50 : colors.N20};
-    border-radius: ${borderRadius}px;
-    margin: ${gridSize * 2}px 0;
-    padding: ${gridSize}px;
-  `;
-}}`;
+const CodeBlock = styled.pre`
+  background-color: ${colors.codeBlock};
+  border-radius: ${borderRadius}px;
+  margin: ${gridSize * 2}px 0;
+  padding: ${gridSize}px;
+`;
 
 export const description = (
   <div>

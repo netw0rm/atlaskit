@@ -10,7 +10,8 @@
   "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Badge"
+    "name": "Badge",
+    "dark": true
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/badge; } || ../../node_modules/.bin/not-in-publish",

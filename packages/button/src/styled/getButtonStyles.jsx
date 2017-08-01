@@ -109,6 +109,8 @@ export default function getButtonStyles(props) {
     width = '100%';
   }
 
+  /* Note use of !important to override the ThemeReset on anchor tag styles */
+
   return css`
     align-items: baseline;
     background: ${background};
@@ -117,7 +119,7 @@ export default function getButtonStyles(props) {
     border-radius: ${akBorderRadius};
     border-width: 0;
     width: ${width};
-    color: ${color};
+    color: ${color} !important;
     cursor: ${cursor};
     display: inline-flex;
     font-style: normal;
@@ -125,7 +127,7 @@ export default function getButtonStyles(props) {
     height: ${height};
     line-height: ${lineHeight};
     margin: 0;
-    outline: ${outline};
+    outline: ${outline} !important;
     padding: ${padding};
     pointer-events: ${pointerEvents};
     text-align: center;

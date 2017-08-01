@@ -1,9 +1,22 @@
+/* eslint-disable prefer-rest-params */
+
 import getTheme from './getTheme';
-import { DEFAULT_THEME_MODE } from './constants';
+
+function themedVariants(variantProp, variants) {
+  return props => {
+    const theme = getTheme(props);
+    const modes = variants[props[variantProp]];
+    if (!modes) return undefined;
+    return modes[theme.mode];
+  };
+}
 
 export default function themed(modes) {
-  return (props) => {
+  if (typeof arguments[0] === 'string') {
+    return themedVariants(...arguments);
+  }
+  return props => {
     const theme = getTheme(props);
-    return modes[theme.mode] || modes[DEFAULT_THEME_MODE];
+    return modes[theme.mode];
   };
 }

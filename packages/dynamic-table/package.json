@@ -10,7 +10,8 @@
   "jsnext:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.js",
   "ak:component": {
-    "name": "Dynamic Table"
+    "name": "Dynamic Table",
+    "dark": true
   },
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/dynamic-table; } || ../../node_modules/.bin/not-in-publish",

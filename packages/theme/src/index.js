@@ -1,7 +1,4 @@
-import {
-  FLATTENED,
-  THEME_COMPONENTS,
-} from './constants';
+import { FLATTENED, THEME_COMPONENTS } from './constants';
 
 import getTheme from './getTheme';
 

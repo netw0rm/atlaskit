@@ -66,7 +66,7 @@ const SecondaryToolbarContainer = styled.div`
   margin-bottom: -2px;
   box-sizing: border-box;
   justify-content: flex-end;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-shrink: 0;
   display: flex;
 `;

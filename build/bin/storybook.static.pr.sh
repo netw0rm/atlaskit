@@ -43,10 +43,9 @@ function build_storybook() {
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 
-storybook_build_status "INPROGRESS"
 # if we had any changed packages (string is not empty)
 if [ -n "$CHANGED_PACKAGES" ] ; then
   build_storybook "$OUTDIR"
   cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+  storybook_build_status "SUCCESSFUL"
 fi
-storybook_build_status "SUCCESSFUL"

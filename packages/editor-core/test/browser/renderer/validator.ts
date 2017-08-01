@@ -420,6 +420,26 @@ describe('Renderer - Validator', () => {
           ]
         });
       });
+
+      it('should return "unknownBlock" if some of it\'s content is not media', () => {
+       expect(getValidNode({
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'text',
+              text: '[media]'
+            }
+          ]
+        })).to.deep.equal({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'text',
+              text: '[media]'
+            }
+          ]
+        });
+      });
     });
 
     describe('media', () => {

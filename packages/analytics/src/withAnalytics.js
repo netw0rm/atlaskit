@@ -25,7 +25,7 @@ The properties of the `map` object/result can be strings (the name of the event
 that will be fired) or functions (which are responsible for firing the event).
 You can specify a default `analyticsId` and `analyticsData` with the `defaultProps`
 param. Please be aware that specifying a default `analyticsId` will cause public
-events to always fire for your component unless it has been set to a falsy but
+events to always fire for your component unless it has been set to a falsy by
 the component consumer.
 */
 const withAnalytics = (

@@ -305,9 +305,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         break;
       }
       case 'mediaGroup': {
-        if (content && !content.some(e => {
-          return e.type !== 'media';
-        })) {
+        if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
             content

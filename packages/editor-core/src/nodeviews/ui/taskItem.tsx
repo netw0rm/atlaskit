@@ -6,7 +6,7 @@ import {
   NodeView
 } from '../../prosemirror';
 
-import { DecisionItem } from '@atlaskit/task-decision';
+import { TaskItem } from '@atlaskit/task-decision';
 
 type getPosHandler = () => number;
 
@@ -16,11 +16,17 @@ export interface Props {
   node: PMNode;
 }
 
-class Decision implements NodeView {
+class Task implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
+  private node: PMNode;
+  private view: EditorView;
+  private getPos: getPosHandler;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    this.node = node;
+    this.view = view;
+    this.getPos = getPos;
     this.renderReactComponent();
   }
 
@@ -28,13 +34,38 @@ class Decision implements NodeView {
     this.contentDOMRef = node;
   }
 
+  private handleOnChange = (taskId: string, isChecked: boolean) => {
+    const { view } = this;
+    const { state } = view;
+    const { doc, schema, tr } = state;
+
+    const nodePos = this.getPos();
+    const node = doc.nodeAt(nodePos)!;
+
+    tr.replaceWith(
+      nodePos,
+      nodePos + node.nodeSize,
+      schema.nodes.taskItem.create({ state: isChecked ? 'DONE' : 'TODO' }, node.content)
+    );
+
+    view.dispatch(tr);
+  }
+
   private renderReactComponent() {
     this.domRef = document.createElement('li');
     this.domRef.style['list-style-type'] = 'none';
 
+    const node = this.node;
+    const { localId } = node.attrs;
+
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <DecisionItem contentRef={this.handleRef}/>,
+      <TaskItem
+        taskId={localId}
+        contentRef={this.handleRef}
+        isDone={node.attrs.state === 'DONE'}
+        onChange={this.handleOnChange}
+      />,
       this.domRef
     );
   }
@@ -54,6 +85,6 @@ class Decision implements NodeView {
   }
 }
 
-export const decisionItemNodeView = (node: any, view: any, getPos: () => number): NodeView => {
-  return new Decision(node, view, getPos);
+export const taskItemNodeView = (node: any, view: any, getPos: () => number): NodeView => {
+  return new Task(node, view, getPos);
 };

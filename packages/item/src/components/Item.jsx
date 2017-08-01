@@ -115,11 +115,13 @@ export default class Item extends Component {
 
     const { rootComponent: Root } = this;
 
-    /* eslint-disable consistent-return */
     const patchedEventHandlers = {
       onClick: (event: MouseEvent) => {
         if (!dnd) {
-          return onClick;
+          if (onClick) {
+            onClick(event);
+          }
+          return;
         }
 
         dnd.dragHandleProps.onClick(event);
@@ -138,7 +140,8 @@ export default class Item extends Component {
       },
       onMouseDown: (event: MouseEvent) => {
         if (!dnd) {
-          return this.handleMouseDown;
+          this.handleMouseDown(event);
+          return;
         }
 
         dnd.dragHandleProps.onMouseDown(event);
@@ -151,7 +154,6 @@ export default class Item extends Component {
         this.handleMouseDown(event);
       },
     };
-    /* eslint-enable consistent return */
 
     return (
       <Root
@@ -170,7 +172,7 @@ export default class Item extends Component {
         title={this.props.title}
         style={dnd ? dnd.draggableStyle : null}
         innerRef={dnd ? dnd.innerRef : null}
-        {...dnd.dragHandleProps}
+        {...(dnd ? dnd.dragHandleProps : null)}
         {...patchedEventHandlers}
         {...otherProps}
       >

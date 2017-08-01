@@ -1,23 +1,30 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  ${({inline}: {inline?: boolean}) => inline && 'display: inline;' || ''}
-`;
+import {TruncateWrapper, OldWrapper} from './styled';
 
 export interface EllipsifyProps {
   text?: string;
   lines: number;
   endLength?: number;
   inline?: boolean;
+  hasStyledCharacters?: boolean;
 }
 
 export const Ellipsify = (props: EllipsifyProps) : JSX.Element => {
+  const {text = '', lines, inline, hasStyledCharacters = false} = props;
+
+  if (hasStyledCharacters) {
+    return (
+      <OldWrapper className="ellipsed-text" innerRef={setEllipsis(props)} aria-label={text} inline={inline}>
+          {text}
+      </OldWrapper>
+    );
+  }
+
   return (
-    <Wrapper className="ellipsed-text" innerRef={setEllipsis(props)} aria-label={props.text} inline={props.inline}>
-       {props.text}
-    </Wrapper>
+    <TruncateWrapper lines={lines} inline={inline} aria-label={text} className="ellipsed-text">
+      {text}
+    </TruncateWrapper>
   );
 };
 

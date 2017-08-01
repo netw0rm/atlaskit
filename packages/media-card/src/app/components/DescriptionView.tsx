@@ -24,7 +24,7 @@ export class DescriptionView extends React.Component<DescriptionViewProps, {}> {
     if (!text) {
       return null;
     }
-    return <Ellipsify lines={2} text={text} inline={true}/>;
+    return <Ellipsify text={text} lines={2} inline={true} hasStyledCharacters={true}/>;
   }
 
   render(): JSX.Element {

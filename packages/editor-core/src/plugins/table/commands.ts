@@ -13,9 +13,7 @@ export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }
 
-const commands: any = {};
-
-commands.createTable = (): Command => {
+const createTable = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (pluginState.tableDisabled || pluginState.tableElement) {
@@ -30,7 +28,7 @@ commands.createTable = (): Command => {
   };
 };
 
-commands.goToNextCell = (direction): Command => {
+const goToNextCell = (direction: number): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.tableNode) {
@@ -50,7 +48,7 @@ commands.goToNextCell = (direction): Command => {
   };
 };
 
-commands.cut = (direction): Command => {
+const cut = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
@@ -58,7 +56,7 @@ commands.cut = (direction): Command => {
   };
 };
 
-commands.copy = (direction): Command => {
+const copy = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
@@ -66,7 +64,7 @@ commands.copy = (direction): Command => {
   };
 };
 
-commands.paste = (direction): Command => {
+const paste = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
@@ -74,7 +72,7 @@ commands.paste = (direction): Command => {
   };
 };
 
-commands.emptyCells = (direction): Command => {
+const emptyCells = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.cellSelection) {
@@ -89,4 +87,11 @@ commands.emptyCells = (direction): Command => {
   };
 };
 
-export default commands;
+export default {
+  createTable,
+  goToNextCell,
+  cut,
+  copy,
+  paste,
+  emptyCells
+};

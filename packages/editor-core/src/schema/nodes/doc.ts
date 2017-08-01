@@ -18,6 +18,7 @@ import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
+import { Table } from './tableNodes';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -36,7 +37,7 @@ import { Definition as TextColor } from '../marks/text-color';
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList
+  DecisionList | TaskList | Table
 >;
 
 export interface MarksObject<T> {

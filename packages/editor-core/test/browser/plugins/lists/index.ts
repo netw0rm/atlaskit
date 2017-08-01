@@ -49,39 +49,19 @@ describe('lists', () => {
 
     if (browser.mac) {
       context('when on a mac', () => {
-        context('when hit Shift-Cmd-L', () => {
+        context('when hit Cmd-Alt-7', () => {
           it('should toggle ordered list', () => {
             const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Cmd-L');
+            sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
             expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
           });
         });
 
-        context('when hit Shift-Cmd-B', () => {
+        context('when hit Cmd-Alt-8', () => {
           it('should toggle bullet list', () => {
             const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Cmd-B');
-            expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
-            expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
-          });
-        });
-      });
-    } else {
-      context('when not on a mac', () => {
-        context('when hit Shift-Ctrl-L', () => {
-          it('should toggle ordered list', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Ctrl-L');
-            expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
-            expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when hit Shift-Ctrl-B', () => {
-          it('should toggle bullet list', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Ctrl-B');
+            sendKeyToPm(editorView, 'Cmd-Alt-8');
             expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
             expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
           });

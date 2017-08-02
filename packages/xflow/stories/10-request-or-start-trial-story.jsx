@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
@@ -31,6 +31,7 @@ const defaultProps = {
   requestTrialAccessWithNote: () => delay(1000),
   requestTrialAccessWithoutNote: () => delay(1000),
   cancelRequestTrialAccess: async () => {},
+  onAnalyticsEvent: action('onAnalyticsEvent'),
 };
 
 storiesOf('RequestOrStartTrial')

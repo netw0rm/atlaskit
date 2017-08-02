@@ -17,6 +17,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/analytics": "^1.0.3",
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/flag": "^3.0.0",

@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { theme, themeValue } from '../../../../theme/src';
+import { colors, gridSize, math } from '../../../../theme/src';
 
 const MetaItem = ({ href, label, summary }) => (
   <DI>
@@ -55,12 +55,12 @@ const Meta = styled.section`
   flex-wrap: wrap;
   margin-left: -0.5em;
   margin-right: -0.5em;
-  padding-bottom: ${p => theme(p).base.gridSize * 1.5}px;
-  padding-top: ${p => theme(p).base.gridSize * 1.5}px;
+  padding-bottom: ${math.multiply(gridSize, 1.5)}px;
+  padding-top: ${math.multiply(gridSize, 1.5)}px;
 
   @media (min-width: 780px) {
-    padding-bottom: ${p => theme(p).base.gridSize * 3}px;
-    padding-top: ${p => theme(p).base.gridSize * 3}px;
+    padding-bottom: ${math.multiply(gridSize, 3)}px;
+    padding-top: ${math.multiply(gridSize, 3)}px;
   }
 `;
 const DI = styled.div`
@@ -78,7 +78,7 @@ const DI = styled.div`
   }
 `;
 const DT = styled.div`
-  color: ${themeValue('colors.subtleText')};
+  color: ${colors.subtleText};
   flex-basis: 25%;
 `;
 const DD = styled.div`

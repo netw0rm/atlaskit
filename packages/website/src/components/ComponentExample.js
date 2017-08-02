@@ -7,7 +7,7 @@ import 'prismjs/components/prism-jsx';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 import 'prismjs/themes/prism-tomorrow.css';
 
-import { theme, themeValue } from '../../../theme/src';
+import { colors, gridSize, themed } from '../../../theme/src';
 
 const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
 
@@ -60,7 +60,7 @@ export default class Example extends PureComponent {
       : 'Show Code Snippet';
 
     const state = isHover ? 'hover' : 'normal';
-    const mode = isSourceVisible ? 'open' : 'normal';
+    const mode = isSourceVisible ? 'open' : 'closed';
 
     return (
       <Wrapper state={state} mode={mode}>
@@ -94,12 +94,27 @@ export default class Example extends PureComponent {
 
 const TRANSITION_DURATION = '200ms';
 
+const exampleBackgroundColor = {
+  open: themed('state', {
+    normal: { light: colors.N600, dark: colors.N700 },
+    hover: { light: colors.N700, dark: colors.N600 },
+  }),
+  closed: themed('state', {
+    normal: { light: colors.N20, dark: colors.DN50 },
+    hover: { light: colors.N30, dark: colors.DN60 },
+  }),
+};
+const toggleColor = themed('mode', {
+  closed: { light: colors.N600, dark: colors.DN100 },
+  open: { light: colors.DN600, dark: colors.DN600 },
+});
+
 const Wrapper = styled.div`
-  background-color: ${p => theme(p).website.example.wrapper.background[p.mode][p.state]};
+  background-color: ${p => exampleBackgroundColor[p.mode]};
   border-radius: 5px;
-  color: ${p => theme(p).website.example.toggle[p.mode]};
+  color: ${toggleColor};
   margin-top: 20px;
-  padding: 0 ${p => theme(p).base.gridSize}px ${p => theme(p).base.gridSize}px;
+  padding: 0 ${gridSize}px ${gridSize}px;
   transition: background-color ${TRANSITION_DURATION};
 `;
 
@@ -108,13 +123,13 @@ const Toggle = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  padding: ${p => theme(p).base.gridSize}px;
+  padding: ${gridSize}px;
   transition: color ${TRANSITION_DURATION}, fill ${TRANSITION_DURATION};
 `;
 
 // NOTE: use of important necessary to override element targeted headings
 const ToggleTitle = styled.h4`
-  color: ${p => theme(p).website.example.toggle[p.mode]} !important;
+  color: ${toggleColor} !important;
   margin: 0;
 `;
 
@@ -129,13 +144,13 @@ const animOut = keyframes`
 const Code = styled.div`
   animation: ${props => (props.closing ? animOut : animIn)}
     ${TRANSITION_DURATION} ease-out;
-  background-color: ${themeValue('website.example.code.background')};
+  background-color: ${themed({ light: colors.N800, dark: colors.N800 })};
   border-radius: 3px;
-  color: ${themeValue('website.example.code.text')};
+  color: ${themed({ light: colors.N60, dark: colors.N60 })};
   display: block;
-  margin: 0 0 ${p => theme(p).base.gridSize}px;
+  margin: 0 0 ${gridSize}px;
   overflow-x: auto;
-  padding: ${p => theme(p).base.gridSize}px;
+  padding: ${gridSize}px;
 
   & code {
     font-family: Monaco, Menlo, monospace;
@@ -144,8 +159,8 @@ const Code = styled.div`
 `;
 
 const Showcase = styled.div`
-  background-color: ${themeValue('colors.background')};
+  background-color: ${colors.background};
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-  padding: ${p => theme(p).base.gridSize}px;
+  padding: ${gridSize}px;
 `;

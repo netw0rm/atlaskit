@@ -11,7 +11,7 @@ import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
 
-import { theme, themeValue } from '../../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
 
 import { MOBILE_QUERY, NO_FOOTER_COMPONENT } from '../../../constants';
 
@@ -192,10 +192,10 @@ export const StandardComponent = ({ match }) => (
 
 // Header
 const Title = styled.header`
-  padding-top: ${p => theme(p).base.gridSize * 3}px;
+  padding-top: ${math.multiply(gridSize, 3)}px;
 
   @media (min-width: 780px) {
-    padding-top: ${p => theme(p).base.gridSize * 6}px;
+    padding-top: ${math.multiply(gridSize, 6)}px;
   }
 `;
 const TitleBar = styled.div`
@@ -204,32 +204,32 @@ const TitleBar = styled.div`
   justify-content: space-between;
 `;
 const Main = styled.main`
-  padding-bottom: ${p => theme(p).base.gridSize * 3}px;
+  padding-bottom: ${math.multiply(gridSize, 3)}px;
 `;
 
 // Footer
 const FooterRoot = styled.footer`
-  border-radius: ${themeValue('base.borderRadius')}px;
+  border-radius: ${borderRadius}px;
   display: flex;
-  margin-bottom: ${p => theme(p).base.gridSize * 3}px;
+  margin-bottom: ${math.multiply(gridSize, 3)}px;
 `;
 const FooterItem = styled(Link)`
-  background-color: ${themeValue('website.footer.background.normal')};
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
   flex: 1;
-  padding: ${p => theme(p).base.gridSize * 2}px;
+  padding: ${math.multiply(gridSize, 2)}px;
   text-decoration: none;
 
   &:first-child {
-    border-top-left-radius: ${themeValue('base.borderRadius')}px;
-    border-bottom-left-radius: ${themeValue('base.borderRadius')}px;
+    border-top-left-radius: ${borderRadius}px;
+    border-bottom-left-radius: ${borderRadius}px;
   }
   &:last-child {
-    border-top-right-radius: ${themeValue('base.borderRadius')}px;
-    border-bottom-right-radius: ${themeValue('base.borderRadius')}px;
+    border-top-right-radius: ${borderRadius}px;
+    border-bottom-right-radius: ${borderRadius}px;
   }
 
   &:hover {
-    background-color: ${themeValue('website.footer.background.hover')};
+    background-color: ${themed({ light: colors.N30, dark: colors.DN60 })};
     position: relative;
     text-decoration: none;
 
@@ -245,9 +245,9 @@ const FooterItemPlaceholder = styled.span`
   flex: 1;
 `;
 const FooterLabel = styled.h5`
-  color: ${themeValue('colors.heading')}
+  color: ${colors.heading};
   margin-bottom: 1em;
 `;
 const FooterTitle = styled.span`
-  color: ${themeValue('colors.primary')};
+  color: ${colors.primary};
 `;

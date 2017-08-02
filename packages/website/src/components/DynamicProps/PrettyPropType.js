@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { theme, themeValue } from '../../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
 
 const Wrapper = styled.code`
   display: inline-block;
   font-size: 0.8rem;
   line-height: 1.4;
-  margin-bottom: ${themeValue('base.gridSize')}px;
-  margin-top: ${themeValue('base.gridSize')}px;
+  margin-bottom: ${gridSize}px;
+  margin-top: ${gridSize}px;
 `;
 const Block = styled.span`
   display: block;
@@ -19,35 +19,35 @@ const TypeMinWidth = styled.span`
   min-width: 60px;
 `;
 const Type = styled.span`
-  background-color: ${themeValue('dynamicProps.types.base.background')};
-  border-radius: ${themeValue('base.borderRadius')}px;
-  color: ${themeValue('dynamicProps.types.base.text')};
+  background-color: ${themed({ light: colors.P50, dark: colors.P500 })};
+  border-radius: ${borderRadius}px;
+  color: ${themed({ light: colors.P500, dark: colors.P50 })};
   display: inline-block;
   margin: 2px 0;
   padding: 0 0.2em;
 `;
 const TypeMeta = styled(Type)`
-  background-color: ${themeValue('dynamicProps.types.meta.background')};
-  color: ${themeValue('dynamicProps.types.meta.text')};
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
 const StringType = styled(Type)`
-  background-color: ${themeValue('dynamicProps.types.string.background')};
-  color: ${themeValue('dynamicProps.types.string.text')};
+  background-color: ${themed({ light: colors.G50, dark: colors.G500 })};
+  color: ${themed({ light: colors.G500, dark: colors.G100 })};
 `;
 const InstanceType = styled(Type)`
-  background-color: ${themeValue('dynamicProps.types.instance.background')};
-  color: ${themeValue('dynamicProps.types.instance.text')};
+  background-color: ${themed({ light: colors.Y50, dark: colors.G500 })};
+  color: ${themed({ light: colors.Y500, dark: colors.G100 })};
 `;
 const Required = styled.span`
-  color: ${themeValue('dynamicProps.types.required')};
+  color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
 const Outline = styled.span`
-  color: ${themeValue('dynamicProps.types.outline')};
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
   line-height: 1;
 `;
 const Invalid = styled.span`
-  color: ${themeValue('dynamicProps.types.invalid')};
-  margin: ${p => theme(p).base.gridSize / 2}px;
+  color: ${themed({ light: colors.N80, dark: colors.DN80 })};
+  margin: ${math.divide(gridSize, 2)}px;
 `;
 
 const SIMPLE_TYPES = ['array', 'bool', 'func', 'number', 'object', 'string',

@@ -18,7 +18,7 @@ import {
 import LightbulbIcon from '@atlaskit/icon/glyph/lightbulb';
 import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { AtlasKitThemeProvider, theme, themeValue } from '../../../../theme/src';
+import { AtlasKitThemeProvider, borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
 
 import { MOBILE_QUERY } from '../../../constants';
 
@@ -151,7 +151,7 @@ export default class App extends PureComponent {
             <Media query={MOBILE_QUERY}>
               {matches => (matches ? <MobileView /> : <DesktopView />)}
             </Media>
-            <SwitchThemeButton onClick={this.switchTheme} mode={themeMode} title={`Theme: "${themeMode}"`}>
+            <SwitchThemeButton onClick={this.switchTheme} title={`Theme: "${themeMode}"`}>
               {themeMode === 'dark'
                 ? <LightbulbIcon label="Light off" />
                 : <LightbulbFilledIcon label="Light on" />
@@ -165,49 +165,34 @@ export default class App extends PureComponent {
 }
 
 const SwitchThemeButton = styled.button`
-  background-color: ${p => (p.mode === 'dark'
-    ? theme(p).colors.DN600
-    : theme(p).colors.N900
-  )};
-  border-radius: ${themeValue('base.borderRadius')}px;
+  background-color: ${themed({ dark: colors.DN600, light: colors.N900 })};
+  border-radius: ${borderRadius}px;
   border: 0;
-  color: ${p => (p.mode === 'dark'
-    ? theme(p).colors.N800
-    : theme(p).colors.DN600
-  )};
+  color: ${themed({ dark: colors.N800, light: colors.DN600 })};
   cursor: pointer;
   height: 3.4em;
   margin: 0;
   outline: 0;
   padding: 0;
   position: fixed;
-  right: ${p => theme(p).base.gridSize * 2}px;
-  top: ${p => theme(p).base.gridSize * 2}px;
+  right: ${math.multiply(gridSize, 2)}px;
+  top: ${math.multiply(gridSize, 2)}px;
   transition: box-shadow 200ms ease-out;
   width: 4em;
   z-index: 1000;
 
   &:hover {
-    background-color: ${p => (p.mode === 'dark'
-      ? theme(p).colors.DN700
-      : theme(p).colors.N800
-    )};
-    color: ${p => (p.mode === 'dark'
-      ? theme(p).colors.N900
-      : theme(p).colors.DN700
-    )};
+    background-color: ${themed({ dark: colors.DN700, light: colors.N800 })};
+    color: ${themed({ dark: colors.N900, light: colors.DN700 })};
   }
   &:focus {
     box-shadow:
-      0 0 0 1px ${themeValue('colors.background')},
-      0 0 0 3px ${p => (p.mode === 'dark'
-        ? theme(p).colors.link
-        : theme(p).colors.B100
-      )};
+      0 0 0 1px ${colors.background},
+      0 0 0 3px ${themed({ dark: colors.link, light: colors.B100 })};
   }
 
   @media ${MOBILE_QUERY} {
-    bottom: ${p => theme(p).base.gridSize * 2}px;
+    bottom: ${math.multiply(gridSize, 2)}px;
     top: auto;
   }
 `;
@@ -217,7 +202,7 @@ const FooterContainer = styled.div`
   border-top: 1px solid ${akColorN30};
   color: ${akColorN100};
   font-size: 0.85em;
-  margin-top: ${props => theme(props).gridSize * 6}px;
+  margin-top: ${math.multiply(gridSize, 6)}px;
   padding: 2em 1.4em 1.4em;
   text-align: center;
 

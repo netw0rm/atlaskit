@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 
 import Btn from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
-import { akColorN30, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+
+import { colors, gridSize, math, themed } from '../../../../theme/src';
 
 import Changelog from '../../components/Changelog';
 
@@ -30,14 +31,12 @@ const LatestChange = (
   );
 };
 
-const gutter = `${akGridSizeUnitless * 3}px`;
-
 const LogWrapper = styled.div`
-  border-bottom: 2px solid ${akColorN30};
-  border-top: 2px solid ${akColorN30};
+  border-bottom: 2px solid ${themed({ light: colors.N30, dark: colors.DN60 })};
+  border-top: 2px solid ${themed({ light: colors.N30, dark: colors.DN60 })};
   margin-bottom: 2em;
-  padding-bottom: ${gutter};
-  padding-top: ${gutter};
+  padding-bottom: ${math.multiply(gridSize, 3)}px;
+  padding-top: ${math.multiply(gridSize, 3)}px;
   position: relative;
 
   h2 {
@@ -45,7 +44,7 @@ const LogWrapper = styled.div`
     font-weight: 500;
   }
   ul {
-    padding-left: ${akGridSizeUnitless * 4}px;
+    padding-left: ${math.multiply(gridSize, 4)}px;
 
     &:last-child {
       margin-bottom: 0;
@@ -58,7 +57,7 @@ const LogWrapper = styled.div`
 const Button = styled(Btn)`
   position: absolute;
   right: 0;
-  top: ${gutter};
+  top: ${math.multiply(gridSize, 3)}px;
 `;
 const Latest = (
   { children, ...rest }:

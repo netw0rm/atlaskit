@@ -11,7 +11,7 @@ import { Heading, Intro, Section } from '../components/Type';
 import components from '../data';
 import { MOBILE_QUERY } from '../../constants';
 
-import { addThemeComponent, theme as getTheme, themeValue } from '../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '../../../theme/src';
 
 const componentKeys = Object.keys(components);
 
@@ -159,7 +159,7 @@ export default class Components extends PureComponent {
             {matches => (matches ? <MobileContent /> : <DesktopContent />)}
           </LayoutFork>
         </Section>
-        <Section style={{ marginLeft: -getTheme(this.props).base.gridSize }}>
+        <Section style={{ marginLeft: -gridSize(this.props) }}>
           <Message title="Atlassians">
             For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
           </Message>
@@ -169,38 +169,15 @@ export default class Components extends PureComponent {
   }
 }
 
-const COMP_NAME = 'website-components-page';
-
-addThemeComponent(COMP_NAME, (mode, theme) => {
-  const dark = mode === 'dark';
-  const { colors } = theme;
-
-  return {
-    time: {
-      text: dark ? colors.DN80 : colors.N80,
-    },
-    row: {
-      background: {
-        active: dark ? colors.DN50 : colors.B50,
-        focus: dark ? colors.DN50 : colors.B50,
-      },
-      text: dark ? colors.DN80 : colors.N80,
-      title: colors.link,
-      description: colors.text,
-      version: colors.subtleText,
-    },
-  };
-});
-
 // Layout
 const Wrapper = styled.div`
   padding-bottom: 3em;
-  padding-left: ${p => getTheme(p).base.gridSize * 2.5}px;
-  padding-right: ${p => getTheme(p).base.gridSize * 2.5}px;
+  padding-left: ${math.multiply(gridSize, 2.5)}px;
+  padding-right: ${math.multiply(gridSize, 2.5)}px;
 
   @media (min-width: 600px) {
-    padding-left: ${p => getTheme(p).base.gridSize * 5}px;
-    padding-right: ${p => getTheme(p).base.gridSize * 5}px;
+    padding-left: ${math.multiply(gridSize, 5)}px;
+    padding-right: ${math.multiply(gridSize, 5)}px;
   }
 `;
 
@@ -215,18 +192,18 @@ const TableWrapper = styled.div`
   }
 `;
 const RowCell = styled.div`
-  padding-bottom: ${themeValue('base.gridSize')}px;
-  padding-top: ${themeValue('base.gridSize')}px;
+  padding-bottom: ${gridSize}px;
+  padding-top: ${gridSize}px;
 `;
 const Time = styled.time`
-  color: ${themeValue(`${COMP_NAME}.time.text`)};
+  color: ${themed({ dark: colors.DN80, light: colors.N80 })};
 `;
 
 // Mobile content
 const Row = styled(Link)`
-  padding-bottom: ${themeValue('base.gridSize')}px;
-  border-radius: ${themeValue('base.borderRadius')}px;
-  color: ${themeValue(`${COMP_NAME}.row.text`)};
+  padding-bottom: ${gridSize}px;
+  border-radius: ${borderRadius}px;
+  color: ${themed({ dark: colors.DN80, light: colors.N80 })};
   display: block;
   padding: 0.5em 1em;
   margin-bottom: 0.5em;
@@ -236,7 +213,7 @@ const Row = styled(Link)`
 
   &:active,
   &:focus {
-    background-color: ${themeValue(`${COMP_NAME}.row.background.focus`)};
+    background-color: ${themed({ dark: colors.DN50, light: colors.B50 })};
     text-decoration: none;
   }
 `;
@@ -245,15 +222,15 @@ const RowHeader = styled.div`
   display: flex;
 `;
 const RowTitle = styled.div`
-  color: ${themeValue(`${COMP_NAME}.row.title`)};
+  color: ${colors.link};
   font-weight: 500;
   margin-right: 0.5em;
 `;
 const RowVersion = styled.div`
-  color: ${themeValue(`${COMP_NAME}.row.version`)};
+  color: ${colors.subtleText};
 `;
 const RowDescription = styled.div`
-  color: ${themeValue(`${COMP_NAME}.row.description`)};
+  color: ${colors.text};
   line-height: 1.4;
   font-size: 0.85em;
 `;

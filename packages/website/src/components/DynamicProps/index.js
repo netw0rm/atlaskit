@@ -6,32 +6,31 @@ import Description from './Description';
 import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
 
-import { theme, themeValue } from '../../../../theme/src';
-import './theme';
+import { borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
 
 const Heading = styled.h3`
-  border-bottom: 2px solid ${themeValue('dynamicProps.heading.borderColor')};
+  border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
   font-size: 0.9rem;
   font-weight: normal;
   line-height: 1.4;
-  margin: 0 0 ${p => theme(p).base.gridSize}px 0;
-  padding-bottom: ${p => theme(p).base.gridSize}px;
+  margin: 0 0 ${gridSize}px 0;
+  padding-bottom: ${gridSize}px;
 `;
 const HeadingDefault = styled.code`
-  color: ${themeValue('dynamicProps.heading.defaultValue')};
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
 const HeadingRequired = styled.span`
-  color: ${themeValue('dynamicProps.heading.required')};
+  color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
 const HeadingType = styled.span`
-  background: ${themeValue('dynamicProps.heading.type.background')};
-  border-radius: ${themeValue('base.borderRadius')}px;
-  color: ${themeValue('dynamicProps.heading.type.text')};
+  background: ${themed({ light: colors.B50, dark: colors.B500 })};
+  border-radius: ${borderRadius}px;
+  color: ${themed({ light: colors.B500, dark: colors.B50 })};
   display: inline-block;
   padding: 0 0.2em;
 `;
 const PropTypeWrapper = styled.div`
-  margin-top: ${p => theme(p).base.gridSize * 4}px;
+  margin-top: ${math.multiply(gridSize, 4)}px;
 `;
 
 // Disable prop types validation for internal functional components

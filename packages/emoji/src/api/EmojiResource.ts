@@ -119,7 +119,7 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   setSelectedTone(tone: ToneSelection);
 
   /**
-   * Returns a list of all the non-default categories with emojis in the EmojiRepository
+   * Returns a list of all the non-standard categories with emojis in the EmojiRepository
    * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
    */
   calculateDynamicCategories?(): string[];

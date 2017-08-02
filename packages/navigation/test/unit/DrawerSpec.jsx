@@ -3,6 +3,69 @@ import React from 'react';
 import Drawer from '../../src/components/js/Drawer';
 
 describe('<Drawer />', () => {
+  let event;
+  const keyDown = (keyCode: number) => {
+    event = document.createEvent('Events');
+    event.initEvent('keydown', true, true);
+    event.keyCode = keyCode;
+    window.dispatchEvent(event);
+  };
+
+  describe('onKeyDown func is NOT provided', () => {
+    it('should do the default behaviours if the key is Escape', () => {
+      const onBackButtonStub = jest.fn();
+      mount(<Drawer onBackButton={onBackButtonStub} />);
+      keyDown(27);
+      expect(onBackButtonStub).toHaveBeenCalledWith(event);
+    });
+    it('should NOT do the default behaviours if the key is NOT Escape', () => {
+      const onBackButtonStub = jest.fn();
+      mount(<Drawer onBackButton={onBackButtonStub} />);
+      keyDown(26);
+      expect(onBackButtonStub).not.toHaveBeenCalledWith(event);
+    });
+  });
+
+  describe('onKeyDown func is provided', () => {
+    it('should call the provided function', () => {
+      const onKeyDownStub = jest.fn();
+      mount(<Drawer onKeyDown={onKeyDownStub} />);
+      keyDown(27);
+      expect(onKeyDownStub).toHaveBeenCalledWith(event);
+    });
+    describe('and default is not prevented', () => {
+      let onKeyDownStub;
+      let onBackButtonStub;
+      beforeEach(() => {
+        onKeyDownStub = jest.fn();
+        onBackButtonStub = jest.fn();
+        mount(<Drawer onKeyDown={onKeyDownStub} onBackButton={onBackButtonStub} />);
+      });
+      it('should also do the default behaviours if the key is Escape', () => {
+        keyDown(27);
+        expect(onBackButtonStub).toHaveBeenCalledWith(event);
+      });
+      it('should NOT do the default behaviours if the key is NOT Escape', () => {
+        keyDown(26);
+        expect(onBackButtonStub).not.toHaveBeenCalledWith(event);
+      });
+    });
+
+    describe('and default is prevented', () => {
+      let onKeyDownStub;
+      let onBackButtonStub;
+      beforeEach(() => {
+        onKeyDownStub = (e) => { e.preventDefault(); };
+        onBackButtonStub = jest.fn();
+        mount(<Drawer onKeyDown={onKeyDownStub} onBackButton={onBackButtonStub} />);
+      });
+      it('should NOT do the default behaviours', () => {
+        keyDown(27);
+        expect(onBackButtonStub).not.toHaveBeenCalledWith(event);
+      });
+    });
+  });
+
   describe('content', () => {
     describe('is open', () => {
       it('should not render the ContainerHeader when width="full"', () => {

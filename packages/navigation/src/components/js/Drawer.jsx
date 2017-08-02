@@ -28,6 +28,7 @@ export default class Drawer extends PureComponent {
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
     width: PropTypes.oneOf(['narrow', 'wide', 'full']),
+    onKeyDown: PropTypes.func,
   }
   static defaultProps = {
     iconOffset: 0,
@@ -46,9 +47,12 @@ export default class Drawer extends PureComponent {
   }
 
   handleKeyDown = (event: KeyboardEvent) => {
-    if (event.keyCode === escKeyCode) {
-      event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
-      this.props.onBackButton(event);
+    const { onKeyDown, onBackButton } = this.props;
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+    if (!event.defaultPrevented && event.keyCode === escKeyCode) {
+      onBackButton(event);
     }
   }
 

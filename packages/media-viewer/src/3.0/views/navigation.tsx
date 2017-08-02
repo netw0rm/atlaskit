@@ -35,29 +35,28 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
       const nextIndex = direction === 'left' ? -1 : 1;
 
       if (handler) {
-        console.log(this.props.list, this.currentIndex)
         const item = list[this.currentIndex + nextIndex];
-        handler(item);
+        item && handler(item);
       }
     };
   }
 
   get currentIndex(): number {
     const {list, selected} = this.props;
-
     return list.indexOf(selected);
   }
 
   get canNavigateLeft(): boolean {
+    const {list} = this.props;
     const {currentIndex} = this;
 
-    return currentIndex > 0;
+    return list.length ? currentIndex > 0 : false;
   }
 
   get canNavigateRight(): boolean {
     const {currentIndex} = this;
     const {list} = this.props;
 
-    return currentIndex < list.length;
+    return list.length ? currentIndex + 1 < list.length : false;
   }
 }

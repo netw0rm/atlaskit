@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {ImageViewerWrapper, Img} from './styled';
 import {Context, FileItem} from '@atlaskit/media-core';
-import {MediaIdentifier} from '..';
+import {ItemTools} from '../../views';
+import {MediaIdentifier} from '../..';
 
 export interface ImageViewerProps {
   identifier: MediaIdentifier;
@@ -35,8 +36,10 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
   }
 
   componentWillReceiveProps(nextProps: ImageViewerProps) {
-    // TODO: Check if the item id has changed
-    console.log('componentWillReceiveProps', nextProps.metadata.details.id)
+    if (nextProps.metadata.details.id === this.props.metadata.details.id) {
+      return;
+    }
+
     this.fetchDataURI(nextProps.metadata);
   }
 
@@ -46,6 +49,7 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
     return (
       <ImageViewerWrapper>
         <Img src={dataURI} />
+        <ItemTools />
       </ImageViewerWrapper>
     );
   }

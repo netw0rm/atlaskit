@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import {createStorybookContext, defaultCollectionName, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
+import {createStorybookContext, defaultCollectionName, videoFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
 import {MediaViewer, MediaIdentifier} from '../src/3.0';
 
 const context = createStorybookContext();
@@ -27,7 +27,7 @@ storiesOf('MediaViewer', {})
         onPreviewChanged={onPreviewChanged}
         navigation={{
           initialItem: genericFileId,
-          list: [wideImageFileId, genericFileId, largeImageFileId, smallImageFileId]
+          list: [wideImageFileId, genericFileId, videoFileId, largeImageFileId, smallImageFileId]
         }}
       />
     );

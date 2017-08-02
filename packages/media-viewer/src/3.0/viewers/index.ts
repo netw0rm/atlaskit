@@ -1,1 +1,2 @@
-export * from './image-viewer';
+export * from './image';
+export * from './video';

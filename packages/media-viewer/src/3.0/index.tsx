@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Context, MediaItemType, FileItem} from '@atlaskit/media-core';
-import {ItemInfo, ItemPreview, ItemTools, Navigation} from './views';
+import {Context, MediaItemType, FileItem, MediaCollection} from '@atlaskit/media-core';
+import {ItemInfo, ItemPreview, Navigation} from './views';
 import {MainWrapper} from './styled';
 
 // TODO: Move common types/interfaces to "domain" folder
@@ -28,6 +28,7 @@ export interface MediaViewerState {
   currentItem?: MediaIdentifier;
   metadata?: FileItem;
   error?: any;
+  listItems?: Array<MediaIdentifier>;
 }
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
@@ -47,7 +48,6 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
 
     this.subscription = provider.observable().subscribe({
       next: (metadata: FileItem) => {
-        console.log('fetchMetada', metadata)
         this.setState({ metadata });
       },
       error: (error) => {
@@ -56,44 +56,76 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     });
   }
 
+  getListItems(): Promise<Array<MediaIdentifier>> {
+    return new Promise((resolve, reject) => {
+      const {navigation, context} = this.props;
+      const collectionName = navigation.collectionName;
+      if (navigation.list) {
+        return resolve(navigation.list);
+      }
+
+      if (collectionName) {
+        const provider = context.getMediaCollectionProvider(collectionName, 20);
+        // TODO: clean subscription
+        const subscription = provider.observable().subscribe({
+          next(collection: MediaCollection) {
+            // TODO: Re-use metada provided from the collection call
+            const fileItems = collection.items
+              .filter(i => i.type === 'file')
+              .map(i => ({
+                id: i.details.id,
+                collectionName,
+                mediaItemType: 'file'
+              } as MediaIdentifier));
+
+            resolve(fileItems);
+          },
+          // error: (error: AxiosError): void => {
+          //   this.setState({ collection: undefined, error, loading: false });
+          // }
+        });
+      }
+    });
+  }
+
   componentDidMount(): void {
     const {initialItem} = this.props.navigation;
     this.fetchMetadata(initialItem);
+    this.getListItems().then((listItems: Array<MediaIdentifier>) => {
+      this.setState({listItems});
+    });
   }
 
   render() {
-    const {metadata, currentItem} = this.state;
+    const {metadata, currentItem, listItems} = this.state;
     const {context, navigation} = this.props;
     const selected = currentItem || navigation.initialItem;
-    // TODO: Who handles collection navigation?
+    const list = listItems || [];
     // TODO: deal with navigation.collectionName
 
     return (
       <MainWrapper>
-
-        <Navigation 
-          list={navigation.list || []} 
+        {list.length ? <Navigation
+          list={list} 
           selected={selected} 
           onNext={this.navigate('next')}
           onPrev={this.navigate('prev')}
-          />
+        /> : null}
 
         <ItemInfo metadata={metadata} />
         {metadata ? 
           <ItemPreview
             context={context}
             metadata={metadata}
-          /> : undefined}
-        <ItemTools />
+            identifer={selected}
+          /> : null}
 
       </MainWrapper>
     );
   }
 
-  navigate = (direction) => {
-    return (item: MediaIdentifier) => {
-      this.setState({currentItem: item});
-      this.fetchMetadata(item);
-    };
+  navigate = (direction) => (currentItem: MediaIdentifier) => {
+    this.setState({currentItem});
+    this.fetchMetadata(currentItem);
   }
 }

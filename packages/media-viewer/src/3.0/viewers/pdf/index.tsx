@@ -3,6 +3,7 @@ import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import {Wrapper} from './styled';
 import {MediaIdentifier} from '../..';
+import {ItemTools} from '../../views';
 import PDF from 'react-pdf-js';
 
 export interface PdfViewerProps {
@@ -13,10 +14,15 @@ export interface PdfViewerProps {
 
 export interface PdfViewerState {
   dataURI?: string;
+  scale: number;
 }
 
 export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
+
+  private defaultScale: number = 2;
+
   state:PdfViewerState = {
+    scale: this.defaultScale
   };
 
   fetchDataURI(metadata: FileItem) {
@@ -43,12 +49,31 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   }
 
   render() {
-    const {dataURI} = this.state;
-    const pdfViewer = dataURI ? <PDF file={dataURI} /> : null;
+    const {dataURI, scale} = this.state;
+    const pdfViewer = dataURI ? <PDF file={dataURI} scale={scale}/> : null;
     return (
       <Wrapper>
+        <ItemTools
+          onZoomOut={this.onZoomOut}
+          onZoomIn={this.onZoomIn}
+          onZoomFit={this.onZoomFit}
+        />
         {pdfViewer}
       </Wrapper>
     );
+  }
+
+  onZoomOut = () => {
+    const {scale} = this.state;
+    this.setState({scale: scale - 0.1})
+  }
+
+  onZoomIn = () => {
+    const {scale} = this.state;
+    this.setState({scale: scale + 0.1})
+  }
+
+  onZoomFit = () => {
+    this.setState({scale: this.defaultScale});
   }
 }

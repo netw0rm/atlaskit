@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import ToolbarBlockType from '../../../src/ui/ToolbarBlockType';
 import AkButton from '@atlaskit/button';
-import { doc, p, makeEditor, code_block } from '../../../src/test-helper';
+import { doc, p, makeEditor, code_block, blockquote, panel } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { analyticsService } from '../../../src/analytics';
 
@@ -17,27 +17,50 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   });
 
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
-    const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
-      <ToolbarBlockType
-        pluginState={blockTypePluginsSet[0].getState(editorView.state)}
-        editorView={editorView}
-        isDisabled={true}
-      />
-    );
-    expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
-  });
-
-  it('should render disabled ToolbarButton if code-block is selected', () => {
-    const { editorView } = editor(doc(code_block({ language: 'js' })('te{<>}xt')));
-    const toolbarOption = mount(
+      const { editorView } = editor(doc(p('text')));
+      const toolbarOption = mount(
         <ToolbarBlockType
           pluginState={blockTypePluginsSet[0].getState(editorView.state)}
           editorView={editorView}
           isDisabled={true}
         />
-    );
-    expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+      );
+      expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+  });
+
+  it('should render disabled ToolbarButton if current selection is blockquote', () => {
+      const { editorView } = editor(doc(blockquote('te{<>}xt')));
+      const toolbarOption = mount(
+        <ToolbarBlockType
+          pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+          editorView={editorView}
+          isDisabled={true}
+        />
+      );
+      expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+  });
+
+  it('should not render disabled ToolbarButton if current selection is panel', () => {
+      const { editorView } = editor(doc(panel(p('te{<>}xt'))));
+      const toolbarOption = mount(
+        <ToolbarBlockType
+          pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+          editorView={editorView}
+        />
+      );
+      expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(false);
+  });
+
+  it('should render disabled ToolbarButton if code-block is selected', () => {
+      const { editorView } = editor(doc(code_block({ language: 'js' })('te{<>}xt')));
+      const toolbarOption = mount(
+        <ToolbarBlockType
+          pluginState={blockTypePluginsSet[0].getState(editorView.state)}
+          editorView={editorView}
+          isDisabled={true}
+        />
+      );
+      expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
   });
 
   describe('analytics', () => {

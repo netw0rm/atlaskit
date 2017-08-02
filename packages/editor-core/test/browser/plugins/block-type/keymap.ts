@@ -68,11 +68,11 @@ describe('codeBlock - keymaps', () => {
 
         context('when hits Cmd-Alt-8', () => {
           it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('text{<>}')));
             const code = code_block({ language: null });
 
             sendKeyToPm(editorView, 'Cmd-Alt-8');
-            expect(editorView.state.doc).to.deep.equal(doc(code('text')));
+            expect(editorView.state.doc).to.deep.equal(doc(p('text'), code()));
             expect(trackEvent.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
           });
         });
@@ -150,11 +150,11 @@ describe('codeBlock - keymaps', () => {
 
         context('when hits Ctrl-8', () => {
           it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('text{<>}')));
             const code = code_block({ language: null });
 
             sendKeyToPm(editorView, 'Ctrl-8');
-            expect(editorView.state.doc).to.deep.equal(doc(code('text')));
+            expect(editorView.state.doc).to.deep.equal(doc(p('text'), code()));
             expect(trackEvent.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
           });
         });
@@ -224,16 +224,6 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('hello```    '), p('   hello')));
-            });
-          });
-
-          context('on a nested structure', () => {
-            it('converts to code block', () => {
-              const { editorView } = editor(doc(blockquote(p('```{<>}'))));
-
-              sendKeyToPm(editorView, 'Enter');
-
-              expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()(''))));
             });
           });
         });

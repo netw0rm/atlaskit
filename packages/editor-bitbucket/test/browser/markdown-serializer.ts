@@ -241,42 +241,6 @@ describe('Bitbucket markdown serializer: ', () => {
       ))).to.eq('para\n\n* foo\n* bar\n\nbaz');
     });
 
-    it('with code block as first list item generate correct markdown', () => {
-      expect(markdownSerializer.serialize(doc(
-        ul(
-          li(
-            pre('code\nblock'),
-          )
-        )
-      ))).to.eq(
-        '* \n' +
-        '        code\n' +
-        '        block\n' +
-        '\n' +
-        '\n' +
-        '\n'
-      );
-    });
-
-    it('with code block preserves indentation', () => {
-      expect(markdownSerializer.serialize(doc(
-        ul(
-          li(
-            p('item'),
-            pre('code\nblock'),
-          )
-        )
-      ))).to.eq(
-        '* item\n' +
-        '\n' +
-        '        code\n' +
-        '        block\n' +
-        '\n' +
-        '\n' +
-        '\n'
-      );
-    });
-
     it('with one empty element is preserved', () => {
       expect(markdownSerializer.serialize(doc(ul(li(p('')))))).to.eq('* \n\n');
     });
@@ -393,25 +357,6 @@ describe('Bitbucket markdown serializer: ', () => {
       )))).to.eq('1. item\n2. item\n3. item\n4. item\n5. item\n6. item\n7. item\n8. item\n9. item\n10. item\n\n');
     });
 
-    it('with code block preserves indentation', () => {
-      expect(markdownSerializer.serialize(doc(
-        ol(
-          li(
-            p('item'),
-            pre('code\nblock'),
-          )
-        )
-      ))).to.eq(
-       '1. item\n' +
-       '\n' +
-       '        code\n' +
-       '        block\n' +
-       '\n' +
-       '\n' +
-       '\n'
-     );
-    });
-
     it('with one empty element is preserved', () => {
       expect(markdownSerializer.serialize(doc(ol(li(p('')))))).to.eq('1. \n\n');
     });
@@ -449,21 +394,6 @@ describe('Bitbucket markdown serializer: ', () => {
         '2. foo 2\n' +
         '\n'
       );
-    });
-
-    it('should generate correct markdown for blockquote as first block', () => {
-      expect(markdownSerializer.serialize(doc(ol(
-        li(blockquote(p('foo'), p('bar'), p('baz'))),
-      )))).to.eq(
-      '\n' +
-      '1. > foo\n' +
-      '  >\n' +
-      '  > bar\n' +
-      '  >\n' +
-      '  > baz\n' +
-      '\n' +
-      '\n' +
-      '\n');
     });
   });
 
@@ -589,36 +519,6 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq('foo ![an image](http://example.com \'a title\') bar');
     });
-
-    it('in blockquote to serialize', () => {
-      expect(markdownSerializer.serialize(doc(
-        blockquote(
-          p(
-            img({
-              src: 'http://example.com',
-              alt: 'an image',
-              title: 'a title'
-            }),
-            ' foo'
-          )
-        )
-      ))).to.eq('> ![an image](http://example.com \'a title\') foo');
-
-      expect(markdownSerializer.serialize(doc(
-        blockquote(
-          blockquote(
-            p(
-              img({
-                src: 'http://example.com',
-                alt: 'an image',
-                title: 'a title'
-              }),
-              ' foo'
-            )
-          )
-        )
-      ))).to.eq('> > ![an image](http://example.com \'a title\') foo');
-    });
   });
 
   it('should serialize hardBreak to newline', () => {
@@ -628,30 +528,12 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   describe('blockquotes', () => {
-    it('of any level should serialized', () => {
+    it('should serialized', () => {
       expect(markdownSerializer.serialize(doc(blockquote(p('foo'))))).to.eq('> foo');
-      expect(markdownSerializer.serialize(doc(blockquote(blockquote(p('foo')))))).to.eq('> > foo');
       expect(markdownSerializer.serialize(doc(
         blockquote(p('foo')),
-        blockquote(blockquote(p('bar'))),
-        blockquote(blockquote(blockquote(p('baz')))),
         blockquote(p('bar')),
-      ))).to.eq('> foo\n\n> > bar\n\n> > > baz\n\n> bar');
-    });
-
-    it('containing other elements should serialize', () => {
-      expect(markdownSerializer.serialize(doc(blockquote(hr)))).to.eq('> ---');
-      expect(markdownSerializer.serialize(doc(
-        blockquote(
-          p('foo'),
-          hr,
-          h2('bar'),
-          blockquote(
-            hr,
-            p('baz')
-          )
-        ),
-      ))).to.eq('> foo\n>\n> ---\n>\n> ## bar\n>\n> > ---\n> >\n> > baz');
+      ))).to.eq('> foo\n\n> bar');
     });
   });
 
@@ -755,36 +637,6 @@ describe('Bitbucket markdown serializer: ', () => {
         expect(markdownSerializer.serialize(doc(p(
           link('foo'),
         )))).to.eq('[foo](http://example.com "some " "title"")');
-      });
-
-      it('in blockquote to serialize', () => {
-        expect(markdownSerializer.serialize(doc(
-          blockquote(
-            p(
-              img({
-                src: 'http://example.com',
-                alt: 'an image',
-                title: 'a title'
-              }),
-              ' foo'
-            )
-          )
-        ))).to.eq('> ![an image](http://example.com "a title") foo');
-
-        expect(markdownSerializer.serialize(doc(
-          blockquote(
-            blockquote(
-              p(
-                img({
-                  src: 'http://example.com',
-                  alt: 'an image',
-                  title: 'a title'
-                }),
-                ' foo'
-              )
-            )
-          )
-        ))).to.eq('> > ![an image](http://example.com "a title") foo');
       });
 
       it('in heading to serialize', () => {

@@ -145,7 +145,7 @@ export default class DuplicateLimitedQueue<T> {
     this.items.push(item);
     const count = this.itemCountMap.get(item);
     if (count) {
-        this.itemCountMap.set(item, count + 1);
+      this.itemCountMap.set(item, count + 1);
     } else {
       this.itemCountMap.set(item, 1);
     }

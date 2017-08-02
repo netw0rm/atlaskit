@@ -17,6 +17,7 @@ import ProgressIndicator from '../../../src/start-trial/components/ProgressIndic
 import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
+const noop = () => {};
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
@@ -41,6 +42,10 @@ const defaultProps = {
   cancelRequestTrialAccess: async () => {},
 };
 
+const defaultRequestOrStartTrialProps = {
+  onAnalyticsEvent: noop,
+};
+
 describe('@atlaskit/xflow', () => {
   describe('new to confluence', () => {
     let xflow;
@@ -52,8 +57,8 @@ describe('@atlaskit/xflow', () => {
           canCurrentUserAddProduct={async () => true}
         >
           <RequestOrStartTrial
+            {...defaultRequestOrStartTrialProps}
             onTrialActivating={() => true}
-            analyticsId="growth.happy"
           />
         </MockConfluenceXFlow>
       ));
@@ -139,7 +144,7 @@ describe('@atlaskit/xflow', () => {
           canCurrentUserAddProduct={async () => true}
           hasProductBeenEvaluated={async () => true}
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       ));
       expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
@@ -173,7 +178,7 @@ describe('@atlaskit/xflow', () => {
           productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
           canCurrentUserAddProduct={async () => true}
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       ));
       expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
@@ -198,7 +203,7 @@ describe('@atlaskit/xflow', () => {
           productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
           canCurrentUserAddProduct={async () => true}
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       ));
       expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
@@ -224,7 +229,7 @@ describe('@atlaskit/xflow', () => {
           requestTrialAccess={async () => true}
           productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       ));
       expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');

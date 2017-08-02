@@ -24,7 +24,6 @@ const Screens = {
 
 class RequestOrStartTrial extends Component {
   static propTypes = {
-    locale: PropTypes.string,
     onAnalyticsEvent: PropTypes.func.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
@@ -35,7 +34,6 @@ class RequestOrStartTrial extends Component {
   };
 
   static defaultProps = {
-    locale: 'en_US',
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
@@ -97,7 +95,6 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const {
-      locale,
       onAnalyticsEvent,
       onComplete,
       onTrialRequested,
@@ -105,7 +102,7 @@ class RequestOrStartTrial extends Component {
     } = this.props;
 
     return (
-      <App locale={locale} onAnalyticsEvent={onAnalyticsEvent}>
+      <App onAnalyticsEvent={onAnalyticsEvent}>
         <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
           {(() => {
             switch (this.state.screen) {

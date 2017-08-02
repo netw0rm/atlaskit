@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 44.9.0 (2017-08-02)
+
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.8.0 (2017-08-02)
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.7.0 (2017-08-02)
+
+* bug fix; fix message editor overflow issues with media film strip (issues closed: ed-2338) ([6cdbf74](https://bitbucket.org/atlassian/atlaskit/commits/6cdbf74))
+* feature; attach secondary toolbar buttons to the bottom of the Message Editor (issues closed: ed-2357) ([f97db1c](https://bitbucket.org/atlassian/atlaskit/commits/f97db1c))
 ## 44.6.0 (2017-08-01)
 
 * bug fix; keep focus in node views after transactions ([dd82b25](https://bitbucket.org/atlassian/atlaskit/commits/dd82b25))

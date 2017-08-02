@@ -45,7 +45,7 @@ export const FilmStripListItem = styled.li`
   vertical-align: middle;
 
   &:first-child {
-    padding-left: 10px;
+    padding-left: 0;
   }
 
   &:last-child {

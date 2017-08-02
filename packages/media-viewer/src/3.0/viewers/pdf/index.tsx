@@ -3,6 +3,7 @@ import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import {Wrapper} from './styled';
 import {MediaIdentifier} from '../..';
+import PDF from 'react-pdf-js';
 
 export interface PdfViewerProps {
   identifier: MediaIdentifier;
@@ -16,8 +17,7 @@ export interface PdfViewerState {
 
 export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   state:PdfViewerState = {
-
-  }
+  };
 
   fetchDataURI(metadata: FileItem) {
     const {context} = this.props;
@@ -44,10 +44,10 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
 
   render() {
     const {dataURI} = this.state;
-
+    const pdfViewer = dataURI ? <PDF file={dataURI} /> : null;
     return (
       <Wrapper>
-        PDF
+        {pdfViewer}
       </Wrapper>
     );
   }

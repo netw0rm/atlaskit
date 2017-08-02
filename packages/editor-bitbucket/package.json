@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "2.6.2",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },

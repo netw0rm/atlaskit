@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.0.0 (2017-08-02)
+
+* breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+* breaking; restricting block nesting for panel, blockquote and list. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
 ## 44.9.1 (2017-08-02)
 
 * bug fix; fix broken storybook in AUI (issues closed: ed-2138) ([6ce1692](https://bitbucket.org/atlassian/atlaskit/commits/6ce1692))

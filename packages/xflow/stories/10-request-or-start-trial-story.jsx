@@ -31,6 +31,9 @@ const defaultProps = {
   requestTrialAccessWithNote: () => delay(1000),
   requestTrialAccessWithoutNote: () => delay(1000),
   cancelRequestTrialAccess: async () => {},
+};
+
+const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
 };
 
@@ -38,12 +41,12 @@ storiesOf('RequestOrStartTrial')
   .add('if a user can add a product, show Start Trial', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
-        {...defaultProps} // 1
+        {...defaultProps}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial
-          onTrialActivating={() => console.log('Activating...')}
-          analyticsId="growth.happy"
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
         />
       </MockConfluenceXFlow>
     )
@@ -53,44 +56,44 @@ storiesOf('RequestOrStartTrial')
     () =>
       setupStorybookAnalytics(
         <MockConfluenceXFlow
-          {...defaultProps} // 2
+          {...defaultProps}
           canCurrentUserAddProduct={async () => true}
           hasProductBeenEvaluated={async () => true}
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       )
   )
   .add('if the product is already active, show Already Started', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
-        {...defaultProps} // 3
+        {...defaultProps}
         productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
         canCurrentUserAddProduct={async () => true}
       >
-        <RequestOrStartTrial analyticsId="growth.happy" />
+        <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlow>
     )
   )
   .add('if the product is currently activating, show Already Started with progress bar', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
-        {...defaultProps} // 3
+        {...defaultProps}
         productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
-        <RequestOrStartTrial analyticsId="growth.happy" />
+        <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlow>
     )
   )
   .add('if a user can not add a product, show Request Trial', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
-        {...defaultProps} // 4
+        {...defaultProps}
       >
         <RequestOrStartTrial
-          onTrialRequested={() => console.log('Trial requested')}
-          analyticsId="growth.happy"
+          {...defaultRequestOrStartTrialProps}
+          onTrialRequested={action('onTrialRequested')}
         />
       </MockConfluenceXFlow>
     )
@@ -100,22 +103,22 @@ storiesOf('RequestOrStartTrial')
     () =>
       setupStorybookAnalytics(
         <MockConfluenceXFlow
-          {...defaultProps} // 5
+          {...defaultProps}
           isProductInstalledOrActivating={() => new Promise(() => {})} // Never resolves
         >
-          <RequestOrStartTrial analyticsId="growth.happy" />
+          <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
       )
   )
   .add('if there was an error, show the error flag', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
-        {...defaultProps} // 6
+        {...defaultProps}
         canCurrentUserAddProduct={() =>
           new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 1500))}
         requestTrialAccess={async () => true}
       >
-        <RequestOrStartTrial analyticsId="growth.happy" />
+        <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlow>
     )
   );

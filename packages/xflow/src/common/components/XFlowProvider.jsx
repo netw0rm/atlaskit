@@ -7,7 +7,6 @@ import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../productProvisioningSta
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
     productLogo: PropTypes.element,
-    languagePacks: PropTypes.object.isRequired,
     requestTrial: PropTypes.shape({
       accessBanner: PropTypes.string,
       accessHeading: PropTypes.string,

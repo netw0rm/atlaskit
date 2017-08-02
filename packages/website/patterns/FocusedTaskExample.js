@@ -61,6 +61,19 @@ class FocusedTaskExample extends React.PureComponent {
     this.setState({ isDrawerOpen: true });
   };
 
+  onKeyDown = (event) => {
+    if (event.keyCode === 27) {
+      event.preventDefault();
+      if (this.state.isDialogOpen) {
+        this.setState({ isDialogOpen: false });
+      } else if (this.state.isProjectCreate) {
+        this.setState({ isProjectCreate: false });
+      } else if (this.state.isDrawerOpen) {
+        this.setState({ isDrawerOpen: false });
+      }
+    }
+  }
+
   closeDialog = () => this.setState({ isDialogOpen: false });
 
   openDialog = () => this.setState({ isDialogOpen: true });
@@ -116,6 +129,7 @@ class FocusedTaskExample extends React.PureComponent {
         isOpen={isDrawerOpen}
         isFullWidth={isProjectCreate}
         onBackButton={this.onCloseDrawer}
+        onKeyDown={this.onKeyDown}
       >
         {isProjectCreate ? this.renderFocusedTaskContent() : this.renderDrawerItems()}
       </AkCreateDrawer>,

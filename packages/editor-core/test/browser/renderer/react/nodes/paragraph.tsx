@@ -6,8 +6,8 @@ import Paragraph from '../../../../../src/renderer/react/nodes/paragraph';
 describe('Renderer - React/Nodes/Paragraph', () => {
   const paragraph = shallow(<Paragraph>This is a paragraph</Paragraph>);
 
-  it('should wrap content with <p>-tag', () => {
-    expect(paragraph.is('p')).to.equal(true);
+  it('should wrap content with <div>-tag', () => {
+    expect(paragraph.is('div')).to.equal(true);
   });
 
 });

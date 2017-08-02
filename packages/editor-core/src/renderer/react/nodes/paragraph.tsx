@@ -4,7 +4,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.p`
+export default styled.div`
   font-family: ${akFontFamily};
   font-size: ${akFontSizeDefault};
   font-weight: 400;

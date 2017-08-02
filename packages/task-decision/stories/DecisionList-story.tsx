@@ -4,7 +4,7 @@ import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es2015/ren
 
 import DecisionList from '../src/components/DecisionList';
 import DecisionItem from '../src/components/DecisionItem';
-import { document } from './story-data';
+import { document } from '../src/support/story-data';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console

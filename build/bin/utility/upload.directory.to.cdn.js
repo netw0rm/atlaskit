@@ -8,8 +8,12 @@ const path = require('path');
 function uploadToCdn(srcFolder, targetPath) {
   const scriptToRun = path.join(__dirname, '..', '_cdn_publish_folder.sh');
 
-  childProcess.spawn(scriptToRun, [srcFolder, targetPath], { stdio: 'inherit' })
-    .on('error', process.exit);
+  const cmdResult = childProcess.spawnSync(scriptToRun, [srcFolder, targetPath], { stdio: 'inherit' });
+
+  if (cmdResult.status !== 0) {
+    console.error(cmdResult.stderr, cmdResult.error);
+    process.exit(cmdResult.status);
+  }
 }
 
 module.exports = uploadToCdn;

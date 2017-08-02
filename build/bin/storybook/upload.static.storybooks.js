@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const glob = require('glob').sync;

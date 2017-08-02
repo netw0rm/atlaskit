@@ -16,7 +16,7 @@ function updateBuildStatus(buildKeyPrefix, buildName, description, state, url) {
 
     console.log(chalk.blue(`Posting build status: "${state}"`));
 
-    npmRun.spawn('bbuild',
+    const cmdResult = npmRun.spawnSync('bbuild',
       ['--commit', commit,
         '--repo', repoSlug,
         '--owner', repoOwner,
@@ -29,7 +29,12 @@ function updateBuildStatus(buildKeyPrefix, buildName, description, state, url) {
         '--state', state,
       ],
       { stdio: 'inherit' }
-    ).on('exit', process.exit);
+    );
+
+    if (cmdResult.status !== 0) {
+      console.error(cmdResult.stderr, cmdResult.error);
+      process.exit(cmdResult.status);
+    }
   }
 }
 

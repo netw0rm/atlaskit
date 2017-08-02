@@ -301,7 +301,7 @@ class GrantAccess extends Component {
                   ref={(userSelect) => {
                     this.userSelect = userSelect;
                   }}
-                  id="userSelect"
+                  id="xflow-grant-access-user-select"
                   items={this.state.selectItems}
                   placeholder={userSelectPlaceholder}
                   name="users"
@@ -319,7 +319,11 @@ class GrantAccess extends Component {
                   id="xflow.generic.grant-access.affect-bill"
                   defaultMessage="How will this affect my bill?"
                 />
-                <Button onClick={this.handleLearnMoreClick} appearance="link">
+                <Button
+                  id="xflow-grant-access-learn-more-button"
+                  onClick={this.handleLearnMoreClick}
+                  appearance="link"
+                >
                   <FormattedMessage
                     id="xflow.generic.grant-access.learn-more"
                     defaultMessage="Learn more"
@@ -332,7 +336,11 @@ class GrantAccess extends Component {
                 {defaultAccess}
               </GrantAccessTextDiv>
               <ChangeButton>
-                <Button onClick={this.handleChangeClick} appearance="link">
+                <Button
+                  id="xflow-grant-access-change-button"
+                  onClick={this.handleChangeClick}
+                  appearance="link"
+                >
                   <FormattedMessage
                     id="xflow.generic.grant-access.change"
                     defaultMessage="Change..."
@@ -344,12 +352,12 @@ class GrantAccess extends Component {
           <StartTrialProgressDiv>
             <input
               type="checkbox"
-              id="notifyUsers"
+              id="xflow-grant-access-notify-users"
               name="notify"
               defaultChecked
               onChange={this.handleCheckboxChange}
             />
-            <InputLabel htmlFor="notifyUsers">
+            <InputLabel htmlFor="xflow-grant-access-notify-users">
               <FormattedMessage
                 id="xflow.generic.grant-access.notify-users"
                 defaultMessage="Notify these users"

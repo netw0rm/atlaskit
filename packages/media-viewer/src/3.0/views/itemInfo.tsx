@@ -5,10 +5,14 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ShareIcon from '@atlaskit/icon/glyph/share';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import {ItemInfoWrapper, RightIcons, LeftInfo, DetailsWrapper} from './styled';
+import DocumentsIcon from '@atlaskit/icon/glyph/documents';
+import {ItemInfoWrapper, RightIcons, LeftInfo, DetailsWrapper, MiniModeIconWrapper} from './styled';
 
 export interface ItemInfoProps {
   metadata?: FileItem;
+  canUseMiniMode?: boolean;
+  isMiniModeActive?: boolean;
+  onMiniModeChange?: any;
 }
 
 export interface ItemInfoState {
@@ -30,6 +34,7 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
     return (
       <DetailsWrapper>
         <LeftInfo>
+          {this.renderMiniModeIcon()}
           {details.name}
           <ChevronDownIcon label="down"/>
         </LeftInfo>
@@ -39,6 +44,20 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
           <CrossIcon label="close" />
         </RightIcons>
       </DetailsWrapper>
+    );
+  }
+
+  renderMiniModeIcon() {
+    const {canUseMiniMode, isMiniModeActive, onMiniModeChange} = this.props;
+
+    if (!canUseMiniMode) {
+      return;
+    }
+
+    return (
+      <MiniModeIconWrapper isMiniModeActive={isMiniModeActive} onClick={() => onMiniModeChange(!this.props.isMiniModeActive)}>
+        <DocumentsIcon label="mini mode" />
+      </MiniModeIconWrapper>
     );
   }
 }

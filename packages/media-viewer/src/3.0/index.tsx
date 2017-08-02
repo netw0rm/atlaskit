@@ -29,12 +29,13 @@ export interface MediaViewerState {
   metadata?: FileItem;
   error?: any;
   listItems?: Array<MediaIdentifier>;
+  isMiniModeActive: boolean;
 }
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   subscription: any;
   state: MediaViewerState = {
-
+    isMiniModeActive: false
   }
 
   fetchMetadata(item: MediaIdentifier) {
@@ -97,7 +98,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   }
 
   render() {
-    const {metadata, currentItem, listItems} = this.state;
+    const {metadata, currentItem, listItems, isMiniModeActive} = this.state;
     const {context, navigation} = this.props;
     const selected = currentItem || navigation.initialItem;
     const list = listItems || [];
@@ -112,7 +113,12 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           onPrev={this.navigate('prev')}
         /> : null}
 
-        <ItemInfo metadata={metadata} />
+        <ItemInfo 
+          metadata={metadata}
+          isMiniModeActive={isMiniModeActive}
+          canUseMiniMode={!!list.length}
+          onMiniModeChange={this.onMiniModeChange}
+        />
         {metadata ? 
           <ItemPreview
             context={context}
@@ -127,5 +133,9 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   navigate = (direction) => (currentItem: MediaIdentifier) => {
     this.setState({currentItem});
     this.fetchMetadata(currentItem);
+  }
+
+  onMiniModeChange = (isMiniModeActive: boolean) => {
+    this.setState({isMiniModeActive});
   }
 }

@@ -1,6 +1,18 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 
+const iconBaseStyle = `
+  margin: 0 10px;
+  border-radius: 5px;
+  padding: 1px 3px;
+  cursor: pointer;
+  transition: background-color .3s;
+
+  &:hover {
+    background-color: #2B3955;
+  }
+`;
+
 export const ItemInfoWrapper = styled.div`
   padding: 10px;
   min-height: 50px;
@@ -80,15 +92,7 @@ export const ToolsContent = styled.div`
   justify-content: center;
 
   > span {
-    margin: 0 10px;
-    border-radius: 5px;
-    padding: 1px 3px;
-    cursor: pointer;
-    transition: background-color .3s;
-
-    &:hover {
-      background-color: #2B3955;
-    }
+    ${iconBaseStyle}
   }
 `;
 
@@ -101,6 +105,14 @@ export const ZoomWrapper = styled.div`
 export const EditorIconWrapper = styled.div`
   border-radius: 5px;
   ${({isEditing}: any) => isEditing && `
+    background: #2B3955;
+  ` || ''}
+`;
+
+export const MiniModeIconWrapper = styled.div`
+  margin-right: 10px;
+  ${iconBaseStyle}
+  ${({isMiniModeActive}: any) => isMiniModeActive && `
     background: #2B3955;
   ` || ''}
 `;

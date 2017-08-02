@@ -7,7 +7,7 @@ import XFlowAnalyticsListener from '../../src/common/components/XFlowAnalyticsLi
 const setupStorybookAnalytics = children =>
   <IntlProvider locale="en" messages={languagePacks['en-US']}>
     <XFlowAnalyticsListener onEvent={action('onAnalyticsEvent')}>
-    {children}
+      {children}
     </XFlowAnalyticsListener>
   </IntlProvider>;
 

@@ -57,6 +57,7 @@
     "custom-event-polyfill": "^0.3.0",
     "element-closest": "^2.0.2",
     "enzyme": "^2.7.1",
+    "enzyme-to-json": "^1.5.1",
     "es6-promise": "^4.0.5",
     "eslint": "^3.7.1",
     "eslint-friendly-formatter": "^2.0.6",

@@ -36,6 +36,8 @@ module.exports = {
   // runs)
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
 
+  snapshotSerializers: ['enzyme-to-json/serializer'],
+
   globals: {
     'ts-jest': {
       tsConfigFile,

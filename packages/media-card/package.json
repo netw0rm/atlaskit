@@ -76,7 +76,8 @@
     "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/toggle": "^2.0.4",
     "akutil-common-test": "*",
-    "deepcopy": "0.6.3"
+    "deepcopy": "0.6.3",
+    "jest-styled-components": "^4.3.0"
   },
   "keywords": [
     "media",

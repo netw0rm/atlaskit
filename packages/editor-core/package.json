@@ -53,7 +53,7 @@
     "@atlaskit/layer": "^2.5.1",
     "@atlaskit/media-card": "^17.11.2",
     "@atlaskit/media-core": "^8.4.1",
-    "@atlaskit/media-filmstrip": "^4.3.2",
+    "@atlaskit/media-filmstrip": "^5.0.0",
     "@atlaskit/mention": "^7.3.0",
     "@atlaskit/profilecard": "^3.6.3",
     "@atlaskit/single-select": "^1.10.0",

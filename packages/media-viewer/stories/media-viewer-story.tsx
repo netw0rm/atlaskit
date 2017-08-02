@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import {createStorybookContext, defaultCollectionName, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
-import {MediaViewer} from '../src/3.0';
+import {MediaViewer, MediaIdentifier} from '../src/3.0';
 
 const context = createStorybookContext();
+const onPreviewChanged = (item: MediaIdentifier) => {
+  action('selection changed', item);
+}
 
 storiesOf('MediaViewer', {})
   .add('Single item', () => {
     return (
       <MediaViewer
-        context={context}
-        selection={{
-          selected: genericFileId
+        context={context}        
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: genericFileId
         }}
       />
     );
@@ -20,9 +24,10 @@ storiesOf('MediaViewer', {})
     return (
       <MediaViewer
         context={context}
-        selection={{
-          selected: genericFileId,
-          list: [wideImageFileId, largeImageFileId, smallImageFileId]
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: genericFileId,
+          list: [wideImageFileId, genericFileId, largeImageFileId, smallImageFileId]
         }}
       />
     );
@@ -31,9 +36,10 @@ storiesOf('MediaViewer', {})
     return (
       <MediaViewer
         context={context}
-        selection={{
-          selected: genericFileId,
-          list: defaultCollectionName
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: genericFileId,
+          collectionName: defaultCollectionName
         }}
       />
     );

@@ -11,7 +11,9 @@
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "node ./bin/generateJSVarsFromLess && ../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-shared-styles; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "storybook": "../../build/bin/storybook/run.local.js"
   },
   "files": [
     "dist",

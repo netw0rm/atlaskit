@@ -54,7 +54,7 @@ import {
   JIRATransformer,
 } from '@atlaskit/editor-core';
 
-import { JSONSerializer } from '@atlaskit/editor-core/src/renderer';
+import { JSONSerializer } from '@atlaskit/editor-core/dist/es2015/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';

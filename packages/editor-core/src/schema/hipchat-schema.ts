@@ -1,15 +1,6 @@
 import { createSchema } from './create-schema';
-import {
-  MarkSpec,
-  Schema,
-} from '../prosemirror';
-import { code as codeBase } from './marks/code';
+import { Schema } from '../prosemirror';
 import { doc } from './nodes/doc';
-
-const code: MarkSpec = {
-  ...codeBase,
-  excludes: 'em strong underline mentionQuery emojiQuery',
-};
 
 export const hipchatSchema: Schema<any, any> = createSchema({
   nodes: [
@@ -34,6 +25,10 @@ export const hipchatSchema: Schema<any, any> = createSchema({
     // Decision
     'decisionList',
     'decisionItem',
+
+    // Task
+    'taskList',
+    'taskItem',
 
     // media
     'mediaGroup',
@@ -82,6 +77,5 @@ export const hipchatSchema: Schema<any, any> = createSchema({
   customNodeSpecs: {
     // The top level node for a document.
     doc,
-  },
-  customMarkSpecs: { code },
+  }
 });

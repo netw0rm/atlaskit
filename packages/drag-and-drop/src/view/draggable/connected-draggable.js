@@ -41,7 +41,10 @@ const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
   isAnotherDragging: false,
-  canAnimate: true,
+  // By default the item will not animate unless instructed to.
+  // If animation is enabled then there may be some animation
+  // at unexpected points: such as on a DROP_COMPLETE
+  canAnimate: false,
   offset: origin,
   dimension: null,
 };
@@ -171,19 +174,6 @@ export const makeSelector = () => {
           offset: pending.newHomeOffset,
           // still need to provide the dimension for the placeholder
           dimension,
-        };
-      }
-
-      if (phase === 'DROP_COMPLETE') {
-        // Cut off all animation as the item is already reordered
-        // If it is not everyone is going to have a bad time
-        return {
-          isDropAnimating: false,
-          isAnotherDragging: false,
-          isDragging: false,
-          canAnimate: false,
-          offset: origin,
-          dimension: null,
         };
       }
 

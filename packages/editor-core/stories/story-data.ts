@@ -1143,6 +1143,67 @@ System.out.println("There are " + count + " values >= 5");`
           ]
         }
       ]
+    },
+    {
+      type: 'taskList',
+      attrs: {
+        localId: ''
+      },
+      content: [
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'task-1',
+            state: 'TODO'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'Could you please'
+            },
+            {
+              type: 'hardBreak'
+            },
+            {
+              type: 'text',
+              text: 'do this '
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: '0',
+                text: '@Carolyn',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':wink:',
+                id: '1f609',
+                text: '😉'
+              }
+            },
+          ]
+        },
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'task-2',
+            state: 'DONE'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'This is completed'
+            }
+          ]
+        }
+      ]
     }
   ]
 };

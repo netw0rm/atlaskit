@@ -1,6 +1,14 @@
 # @atlaskit/media-card
 
-## Unreleased
+## 18.0.0 (2017-08-01)
+
+* breaking; removed PlayerCard ([1f44d4b](https://bitbucket.org/atlassian/atlaskit/commits/1f44d4b))
+* breaking; unify link wrapping and event handlers in one place ([1f44d4b](https://bitbucket.org/atlassian/atlaskit/commits/1f44d4b))
+
+
+
+
+
 
 ## 17.11.3 (2017-07-27)
 

@@ -1,6 +1,11 @@
 # @atlaskit/media-avatar-picker
 
-## Unreleased
+## 2.2.3 (2017-08-01)
+
+* bug fix; bumping media-core ([6488cfc](https://bitbucket.org/atlassian/atlaskit/commits/6488cfc))
+
+
+
 
 ## 2.2.2 (2017-07-25)
 

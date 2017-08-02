@@ -1,5 +1,38 @@
 # @atlaskit/editor-core
 
+## 44.6.0 (2017-08-01)
+
+* bug fix; keep focus in node views after transactions ([dd82b25](https://bitbucket.org/atlassian/atlaskit/commits/dd82b25))
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.5.0 (2017-08-01)
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.4.0 (2017-08-01)
+
+* bug fix; allow empty fallback text in appCards in renderer (issues closed: ed-2364) ([f88292b](https://bitbucket.org/atlassian/atlaskit/commits/f88292b))
+
+* bug fix; removed modified inline code nodeSpec (issues closed: ed-2271) ([ee8b40c](https://bitbucket.org/atlassian/atlaskit/commits/ee8b40c))
+
+* feature; adds support for tasks in renderer ([817c910](https://bitbucket.org/atlassian/atlaskit/commits/817c910))
+
+## 44.3.0 (2017-08-01)
+
+* bug fix; update encoder to add collection in generated HTML if available (issues closed: ed-2370) ([493b778](https://bitbucket.org/atlassian/atlaskit/commits/493b778))
+* bug fix; added tab direction constants, added creating a new row on shift-tab ([3f09382](https://bitbucket.org/atlassian/atlaskit/commits/3f09382))
+* bug fix; fix jira-encoder generating wrong HTML for uploaded non-image files (issues closed: ed-2263) ([d9b774e](https://bitbucket.org/atlassian/atlaskit/commits/d9b774e))
+
+* feature; allow creating tasks in the editor (issues closed: fs-1147) ([4122828](https://bitbucket.org/atlassian/atlaskit/commits/4122828))
+* bug fix; updated cursor posiiton and refactored commands ([4cde4b3](https://bitbucket.org/atlassian/atlaskit/commits/4cde4b3))
+
+* bug fix; empty cells on Backspace when the whole row/col/table is selected ([c7fec5c](https://bitbucket.org/atlassian/atlaskit/commits/c7fec5c))
+* bug fix; show floating toolbar when the whole row/col/table is selected (issues closed: ed-2342) ([f5830f2](https://bitbucket.org/atlassian/atlaskit/commits/f5830f2))
 ## 44.2.0 (2017-07-31)
 
 * feature; add max content size plugin (issues closed: ed-2077) ([c917a11](https://bitbucket.org/atlassian/atlaskit/commits/c917a11))

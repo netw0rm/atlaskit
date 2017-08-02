@@ -13,12 +13,12 @@ import { Definition as MediaGroup } from './media-group';
 import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
+import { Table } from './tableNodes';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
-import { Table } from './tableNodes';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -38,6 +38,16 @@ export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
   DecisionList | TaskList | Table
+>;
+
+/**
+ * @name table_cell_content
+ * @minItems 1
+ */
+export type TableCellContent = Array<
+  Panel | Paragraph | Blockquote | OrderedList | BulletList |
+  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
+  DecisionList | TaskList
 >;
 
 export interface MarksObject<T> {

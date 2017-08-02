@@ -1,4 +1,5 @@
 import { tableNodes, NodeSpec } from '../../prosemirror';
+import { TableCellContent } from './doc';
 
 /**
  * @name table_node
@@ -21,7 +22,7 @@ export interface TableRow {
   /**
    * @minItems 1
    */
-  content: Array<TableCell> | Array<TableHeader>;
+  content: Array<TableHeader> | Array<TableCell>;
 }
 
 /**
@@ -33,7 +34,11 @@ export interface TableCell {
   /**
    * @additionalProperties false
    */
-  attr: CellAttributes;
+  attrs: CellAttributes;
+  /**
+   * @minItems 1
+   */
+  content: TableCellContent;
 }
 
 /**
@@ -45,7 +50,11 @@ export interface TableHeader {
   /**
    * @additionalProperties false
    */
-  attr: CellAttributes;
+  attrs: CellAttributes;
+  /**
+   * @minItems 1
+   */
+  content: TableCellContent;
 }
 
 export interface CellAttributes {

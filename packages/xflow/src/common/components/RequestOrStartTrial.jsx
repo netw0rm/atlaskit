@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import App from './App';
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import { withAnalytics } from './Analytics';
 import RequestTrial from '../../request-trial/components/RequestTrial';
 import StartTrial from '../../start-trial/components/StartTrial';
 import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
@@ -26,10 +25,10 @@ const Screens = {
 class RequestOrStartTrial extends Component {
   static propTypes = {
     locale: PropTypes.string,
+    onAnalyticsEvent: PropTypes.func.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
-    // fireAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
@@ -97,10 +96,16 @@ class RequestOrStartTrial extends Component {
   ];
 
   render() {
-    const { onComplete, onTrialRequested, onTrialActivating } = this.props;
+    const {
+      locale,
+      onAnalyticsEvent,
+      onComplete,
+      onTrialRequested,
+      onTrialActivating,
+    } = this.props;
 
     return (
-      <App locale={this.props.locale}>
+      <App locale={locale} onAnalyticsEvent={onAnalyticsEvent}>
         <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
           {(() => {
             switch (this.state.screen) {
@@ -140,7 +145,7 @@ class RequestOrStartTrial extends Component {
 }
 
 export default withXFlowProvider(
-  withAnalytics(RequestOrStartTrial),
+  RequestOrStartTrial,
   ({ xFlow: { canCurrentUserAddProduct, getProductActivationState, waitForActivation } }) => ({
     canCurrentUserAddProduct,
     getProductActivationState,

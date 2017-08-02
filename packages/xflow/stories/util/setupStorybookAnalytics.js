@@ -1,20 +1,14 @@
 import React from 'react';
 import { action } from '@kadira/storybook';
-import { AnalyticsListener } from '../../src/common/components/Analytics';
 import { IntlProvider } from 'react-intl';
 import languagePacks from '../../src/language-packs.json';
+import XFlowAnalyticsListener from '../../src/common/components/XFlowAnalyticsListener';
 
 const setupStorybookAnalytics = children =>
   <IntlProvider locale="en" messages={languagePacks['en-US']}>
-    <AnalyticsListener
-      onEvent={action('AnalyticsListener::onEvent')}
-      match="xflow"
-      matchPrivate
-    >
-      <div>
-        {children}
-      </div>
-    </AnalyticsListener>
+    <XFlowAnalyticsListener onEvent={action('onAnalyticsEvent')}>
+    {children}
+    </XFlowAnalyticsListener>
   </IntlProvider>;
 
 export default setupStorybookAnalytics;

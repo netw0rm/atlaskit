@@ -20,8 +20,6 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
-import { withAnalytics } from '../../common/components/Analytics';
-
 import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
 
 export class LoadingTimeBase extends Component {
@@ -172,8 +170,7 @@ export class LoadingTimeBase extends Component {
   }
 }
 
-export default withAnalytics(
-  withXFlowProvider(
+export default withXFlowProvider(
     LoadingTimeBase,
     ({
       xFlow: {
@@ -200,5 +197,4 @@ export default withAnalytics(
       message: loadingProductMessage,
       gotoButton: loadingProductGotoProductButton,
     })
-  )
-);
+  );

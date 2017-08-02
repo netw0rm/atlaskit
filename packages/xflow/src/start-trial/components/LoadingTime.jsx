@@ -33,6 +33,7 @@ export class LoadingTimeBase extends Component {
     heading: PropTypes.string,
     message: PropTypes.string,
     gotoButton: PropTypes.string,
+    svgImg: PropTypes.string,
   };
 
   static defaultProps = {
@@ -99,7 +100,7 @@ export class LoadingTimeBase extends Component {
   };
 
   render() {
-    const { productLogo, progress, status, gotoButton, heading, message } = this.props;
+    const { productLogo, progress, status, gotoButton, heading, message, svgImg } = this.props;
 
     const { isReady } = this.state;
 
@@ -150,8 +151,7 @@ export class LoadingTimeBase extends Component {
           <LoadingTimeTextDiv>
             <WhereToFindConfluenceSVGDiv>
               <WhereToFindConfluenceImg
-                // TODO replace with proper way of serving SVGs for AtlasKit
-                src="https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg"
+                src={svgImg}
                 alt="app-switcher"
               />
             </WhereToFindConfluenceSVGDiv>
@@ -180,6 +180,7 @@ export default withXFlowProvider(
             loadingProductHeading,
             loadingProductMessage,
             loadingProductGotoProductButton,
+            loadingSVGImg,
           },
         },
         goToProduct,
@@ -196,5 +197,6 @@ export default withXFlowProvider(
       heading: loadingProductHeading,
       message: loadingProductMessage,
       gotoButton: loadingProductGotoProductButton,
+      svgImg: loadingSVGImg,
     })
   );

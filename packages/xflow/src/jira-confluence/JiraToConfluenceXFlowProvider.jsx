@@ -90,6 +90,7 @@ export const defaultProps = intl => ({
       grantUserSelectPlaceholder: 'Start typing a username',
       grantUsersOption: 'specificUsers',
       grantChooseOption: 'Choose an option',
+      loadingSVGImg: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg',
       alreadyStartedHeading: 'You already have Confluence',
       alreadyStartedMessage: (
         <div>

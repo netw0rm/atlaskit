@@ -61,6 +61,7 @@ import ReactUnsupportedInlineNode from './nodeviews/ui/unsupportedInline';
 export { version };
 
 export interface Props {
+  additionalPlugins?: Array<Plugin>;
   disabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
@@ -204,16 +205,18 @@ export default class Editor extends PureComponent<Props, State> {
       }
     }
 
-    if (nextProps.disabled !== this.props.disabled) {
-      const { editorView } = this.state;
 
-      if (editorView) {
-        editorView.dom.contentEditable = String(!nextProps.disabled);
+    const { editorView } = this.state;
+    if (editorView && nextProps.disabled !== this.props.disabled) {
+      editorView.dom.contentEditable = String(!nextProps.disabled);
 
-        if (!nextProps.disabled) {
-          editorView.focus();
-        }
+      if (!nextProps.disabled) {
+        editorView.focus();
       }
+    }
+    if (editorView && nextProps.additionalPlugins !== this.props.additionalPlugins) {
+      const config = this.getEditorConfig();
+      editorView.state.reconfigure(config);
     }
   }
 
@@ -292,18 +295,16 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleRef = (place: Element | null) => {
+  private getEditorConfig() {
     const { schema } = this.state;
     const { mediaPlugins } = this;
-    const { tablesEnabled, defaultValue } = this.props;
+    const { additionalPlugins, tablesEnabled, defaultValue } = this.props;
+    const doc = parse(defaultValue || '');
+    const cqKeymap = {
+      'Mod-Enter': this.handleSave,
+    };
 
-    if (place) {
-      const doc = parse(defaultValue || '');
-      const cqKeymap = {
-        'Mod-Enter': this.handleSave,
-      };
-
-      const editorState = EditorState.create({
+    return {
         schema,
         doc,
         plugins: [
@@ -328,8 +329,16 @@ export default class Editor extends PureComponent<Props, State> {
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
+          ...(additionalPlugins || [])
         ]
-      });
+      };
+  }
+
+  private handleRef = (place: Element | null) => {
+
+    if (place) {
+      const config = this.getEditorConfig();
+      const editorState = EditorState.create(config);
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
       codeBlockState.setLanguages(supportedLanguages);

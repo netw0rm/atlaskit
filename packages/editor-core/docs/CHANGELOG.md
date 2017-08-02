@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 44.9.1 (2017-08-02)
+
+* bug fix; fix broken storybook in AUI (issues closed: ed-2138) ([6ce1692](https://bitbucket.org/atlassian/atlaskit/commits/6ce1692))
+
+
+* bug fix; updated json schema with table nodes ([bf5b3ff](https://bitbucket.org/atlassian/atlaskit/commits/bf5b3ff))
+
 ## 44.9.0 (2017-08-02)
 
 

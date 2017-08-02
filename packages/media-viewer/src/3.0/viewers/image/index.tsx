@@ -13,11 +13,12 @@ export interface ImageViewerProps {
 
 export interface ImageViewerState {
   dataURI?: string;
+  zoomLevel: number;
 }
 
 export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
   state:ImageViewerState = {
-
+    zoomLevel: 100
   }
 
   fetchDataURI(metadata: FileItem) {
@@ -44,13 +45,25 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
   }
 
   render() {
-    const {dataURI} = this.state;
-
+    const {dataURI, zoomLevel} = this.state;
+    const scaleValue = zoomLevel / 100;
+    const transform = `scale(${scaleValue}) translateZ(0)`;
+    console.log('zoomLevel', zoomLevel, scaleValue);
     return (
       <ImageViewerWrapper>
-        <Img src={dataURI} />
-        <ItemTools />
+        <Img src={dataURI} style={{transform}}/>
+        <ItemTools onZoomOut={this.onZoomOut} onZoomIn={this.onZoomIn} zoomLevel={zoomLevel} />
       </ImageViewerWrapper>
     );
+  }
+
+  onZoomOut = () => {
+    const zoomLevel = this.state.zoomLevel - 20;
+    this.setState({zoomLevel});
+  }
+
+  onZoomIn = () => {
+    const zoomLevel = this.state.zoomLevel + 20;
+    this.setState({zoomLevel});
   }
 }

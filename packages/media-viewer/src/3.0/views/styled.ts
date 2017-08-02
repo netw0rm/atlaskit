@@ -8,6 +8,7 @@ export const ItemInfoWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
+  background: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0.0));
 `;
 
 export const ItemPreviewWrapper = styled.div`
@@ -45,6 +46,7 @@ export const ItemToolsWrapper = styled.div`
   width: 100%;
   bottom: 0;
   left: 0;
+  background: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0.0));
 `;
 
 export const DetailsWrapper = styled.div`
@@ -79,9 +81,18 @@ export const ToolsContent = styled.div`
 
   > span {
     margin: 0 10px;
+    border-radius: 5px;
+    padding: 1px 3px;
+    cursor: pointer;
+    transition: background-color .3s;
+
+    &:hover {
+      background-color: #2B3955;
+    }
   }
 `;
 
 export const ZoomWrapper = styled.div`
   flex: 1;
+  text-align: right;
 `;

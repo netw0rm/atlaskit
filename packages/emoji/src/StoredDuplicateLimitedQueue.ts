@@ -51,8 +51,6 @@ export default class StoredDuplicateLimitedQueue<T> extends DuplicateLimitedQueu
    *
    * Note: the queue is not cleared before loading. If there are existing items in the queue
    * the new items will be appended.
-   *
-   * TODO test that queue is not cleared
    */
   private load(): void {
     const itemsJson = this.storage.getItem(this.prefixedStorageKey);

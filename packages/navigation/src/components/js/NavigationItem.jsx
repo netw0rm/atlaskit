@@ -1,14 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Item from '@atlaskit/item';
-
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
-import type { ReactElement, DragProvided } from '../../types';
+import type { ReactElement, ReactClass, DragProvided } from '../../types';
 
 type Props = {|
   action?: ReactElement,
@@ -38,10 +37,13 @@ type Props = {|
   as if you are using a different router. Component is passed a href prop, and the content
   of the title as children. Any custom link component must accept a className prop so that
   it can be styled. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
-  onClick?: (e: MouseEvent) => void,
+  onClick ?: (e: MouseEvent) => void,
+  /** Function to be called on click. This is passed down to a custom link component,
+  if one is provided.  */
+  onKeyDown?: (e: KeyboardEvent) => void,
   /** Standard onmouseenter event */
   onMouseEnter?: (e: MouseEvent) => void,
   /** Standard onmouseleave event */
@@ -52,13 +54,16 @@ type Props = {|
   cases this should just be a string. */
   text?: ReactElement,
   /** React component to be placed to the right of the main text. */
-  textAfter?: ReactElement,
+  textAfter ?: ReactElement,
+  /** Whether the Item should attempt to gain browser focus when mounted */
+  autoFocus?: boolean
 |}
 
 export default class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
+    autoFocus: false,
   }
 
   props: Props
@@ -71,7 +76,7 @@ export default class NavigationItem extends PureComponent {
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
       <NavigationItemIcon
         isDropdownTrigger
-        hasNoPadding={this.props.isDropdownTrigger}
+        hasNoPadding
       >
         {this.props.dropIcon}
       </NavigationItemIcon>
@@ -110,6 +115,7 @@ export default class NavigationItem extends PureComponent {
 
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
+      onKeyDown: this.props.onKeyDown,
       onMouseEnter: this.props.onMouseEnter,
       onMouseLeave: this.props.onMouseLeave,
       href: this.props.href,
@@ -126,6 +132,7 @@ export default class NavigationItem extends PureComponent {
         isDropdown={this.props.isDropdownTrigger}
         isCompact={this.props.isCompact}
         dnd={this.props.dnd}
+        autoFocus={this.props.autoFocus}
         {...interactiveWrapperProps}
       >
         {this.props.text}

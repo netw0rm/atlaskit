@@ -1,7 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { akElevationMixins } from '@atlaskit/util-shared-styles';
+import { akColorN60A } from '@atlaskit/util-shared-styles';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -30,16 +30,28 @@ const getHeightStyles = ({ isCompact, theme }) => {
   ` : '';
 };
 
-const getInteractiveStyles = ({ isDisabled, isDragging }) => {
+// This function is responsible for drawing any focus styles for the element
+const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
+  if (isDragging) {
+    return css`
+      ${getItemState('dragging')}
+      /* e200 but without zindex */
+      /* using the same colour for all themes */
+      box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+    `;
+  }
+
+  const standardFocus = css`
+    &:focus {
+      box-shadow: 0 0 0 2px ${getThemeStyle(theme[themeNamespace], 'outline', 'focus')} inset;
+    }
+  `;
+
   if (isDisabled) {
     return css`
       cursor: not-allowed;
       ${getItemState('disabled')}
-    `;
-  } else if (isDragging) {
-    return css`
-      ${akElevationMixins.e200}
-      ${getItemState('hover')}
+      ${standardFocus}
     `;
   }
 
@@ -51,6 +63,8 @@ const getInteractiveStyles = ({ isDisabled, isDragging }) => {
     &:active {
       ${getItemState('active')}
     }
+
+    ${standardFocus}
   `;
 };
 
@@ -71,10 +85,11 @@ export const ItemBase = ({ isSelected, theme }) => css`
   ${getHeightStyles}
 
   &:focus {
-    box-shadow: 0 0 0 2px ${getThemeStyle(theme[themeNamespace], 'outline', 'focus')} inset;
+    /* focus shadow drawn by getInteractiveStyles */
+
     outline: none;
-    /* relative position prevents bgcolor of a hovered element from obfuscating focus ring of
-       a focused sibling element */
+    /* relative position prevents bgcolor of a hovered element from
+    obfuscating focus ring of a focused sibling element */
     position: relative;
   }
 `;

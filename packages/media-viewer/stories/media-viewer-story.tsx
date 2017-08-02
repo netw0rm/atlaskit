@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import {createStorybookContext, defaultCollectionName, videoFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
+import {createStorybookContext, defaultCollectionName, videoFileId, audioFileId, docFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
 import {MediaViewer, MediaIdentifier} from '../src/3.0';
 
 const context = createStorybookContext();
@@ -9,7 +9,7 @@ const onPreviewChanged = (item: MediaIdentifier) => {
 }
 
 storiesOf('MediaViewer', {})
-  .add('Single item', () => {
+  .add('Image', () => {
     return (
       <MediaViewer
         context={context}        
@@ -20,6 +20,39 @@ storiesOf('MediaViewer', {})
       />
     );
   })
+  .add('Audio', () => {
+    return (
+      <MediaViewer
+        context={context}        
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: audioFileId
+        }}
+      />
+    );
+  })  
+  .add('Video', () => {
+    return (
+      <MediaViewer
+        context={context}        
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: videoFileId
+        }}
+      />
+    );
+  })
+ .add('PDF', () => {
+    return (
+      <MediaViewer
+        context={context}        
+        onPreviewChanged={onPreviewChanged}
+        navigation={{
+          initialItem: docFileId
+        }}
+      />
+    );
+  })  
   .add('List using array of items', () => {
     return (
       <MediaViewer
@@ -27,7 +60,7 @@ storiesOf('MediaViewer', {})
         onPreviewChanged={onPreviewChanged}
         navigation={{
           initialItem: genericFileId,
-          list: [wideImageFileId, genericFileId, videoFileId, largeImageFileId, smallImageFileId]
+          list: [wideImageFileId, genericFileId, videoFileId, audioFileId, docFileId, largeImageFileId, smallImageFileId]
         }}
       />
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {FileItem, Context} from '@atlaskit/media-core';
-import {ImageViewer, VideoViewer} from '../viewers';
+import {ImageViewer, VideoViewer, AudioViewer, PdfViewer} from '../viewers';
 import {MediaIdentifier} from '..';
 
 import {ItemPreviewWrapper} from './styled';
@@ -38,6 +38,10 @@ export class ItemPreview extends Component<ItemPreviewProps, ItemPreviewState> {
       viewer = <ImageViewer context={context} metadata={metadata} identifier={identifer} />;
     } else if (mediaType === 'video') {
       viewer = <VideoViewer context={context} metadata={metadata} identifier={identifer} />;
+    } else if (mediaType === 'audio') {
+      viewer = <AudioViewer context={context} metadata={metadata} identifier={identifer} />;
+    } else if (mediaType === 'doc') {
+      viewer = <PdfViewer context={context} metadata={metadata} identifier={identifer} />;
     }
 
     return viewer;

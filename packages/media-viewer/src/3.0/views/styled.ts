@@ -95,4 +95,5 @@ export const ToolsContent = styled.div`
 export const ZoomWrapper = styled.div`
   flex: 1;
   text-align: right;
+  user-select: none;
 `;

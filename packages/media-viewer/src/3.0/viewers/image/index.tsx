@@ -48,22 +48,26 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
     const {dataURI, zoomLevel} = this.state;
     const scaleValue = zoomLevel / 100;
     const transform = `scale(${scaleValue}) translateZ(0)`;
-    console.log('zoomLevel', zoomLevel, scaleValue);
+
     return (
       <ImageViewerWrapper>
         <Img src={dataURI} style={{transform}}/>
-        <ItemTools onZoomOut={this.onZoomOut} onZoomIn={this.onZoomIn} zoomLevel={zoomLevel} />
+        <ItemTools onZoomOut={this.onZoomOut} onZoomIn={this.onZoomIn} onZoomFit={this.onZoomFit} zoomLevel={zoomLevel} />
       </ImageViewerWrapper>
     );
   }
 
   onZoomOut = () => {
-    const zoomLevel = this.state.zoomLevel - 20;
+    const zoomLevel = Math.max(this.state.zoomLevel - 20, 5);
     this.setState({zoomLevel});
   }
 
   onZoomIn = () => {
     const zoomLevel = this.state.zoomLevel + 20;
     this.setState({zoomLevel});
+  }
+
+  onZoomFit = () => {
+    this.setState({zoomLevel: 100});
   }
 }

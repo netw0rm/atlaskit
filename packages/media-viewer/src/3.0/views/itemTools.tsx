@@ -4,13 +4,13 @@ import MediaServicesZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-o
 import MediaServicesActualSizeIcon from '@atlaskit/icon/glyph/media-services/actual-size';
 import MediaServicesZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
 import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
-import MediaServicesAddCommentIcon from '@atlaskit/icon/glyph/media-services/add-comment';
 import MediaServicesBrushIcon from '@atlaskit/icon/glyph/media-services/brush';
 import {ItemToolsWrapper, UploaderDetailsWrapper, ToolsContent, ZoomWrapper} from './styled';
 
 export interface ItemToolsProps {
   onZoomOut: any;
   onZoomIn: any;
+  onZoomFit: any;
   zoomLevel: number;
 }
 
@@ -20,7 +20,7 @@ export interface ItemToolsState {
 
 export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
   render() {
-    const {onZoomOut, onZoomIn, zoomLevel} = this.props;
+    const {onZoomOut, onZoomIn, onZoomFit, zoomLevel} = this.props;
 
     return (
       <ItemToolsWrapper className="visible-on-hover">
@@ -29,10 +29,9 @@ export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
         </UploaderDetailsWrapper>
         <ToolsContent>
           <MediaServicesZoomOutIcon label="Zoom out" onClick={onZoomOut} />
-          <MediaServicesActualSizeIcon label="Actual size" />
+          <MediaServicesActualSizeIcon label="Actual size" onClick={onZoomFit} />
           <MediaServicesZoomInIcon label="Zoom in" onClick={onZoomIn} />
           <VidFullScreenOnIcon label="Full size" />
-          <MediaServicesAddCommentIcon label="Anotate" />
           <MediaServicesBrushIcon label="Draw" />
         </ToolsContent>
         <ZoomWrapper>

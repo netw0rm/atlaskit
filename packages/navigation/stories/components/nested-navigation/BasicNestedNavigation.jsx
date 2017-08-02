@@ -23,22 +23,6 @@ export default class BasicNestedNavigation extends PureComponent {
   }
 
   static menu = [
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 1" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 2" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 3" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 4" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 5" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 6" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 7" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 8" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 9" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 10" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 11" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 12" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 13" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 14" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 15" /> },
-    { component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Item 16" /> },
     {
       component: <AkNavigationItem icon={<DashboardIcon label="Dashboard" />} text="Movies" />,
       childMenu: [

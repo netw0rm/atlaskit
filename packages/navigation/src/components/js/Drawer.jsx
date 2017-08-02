@@ -85,7 +85,7 @@ export default class Drawer extends PureComponent {
 
     const content = isOpen ? (
       <DrawerMain>
-        <ContainerHeader iconOffset={iconOffset} isFullWidth={actualFullWidth}>
+        <ContainerHeader isInDrawer iconOffset={iconOffset} isFullWidth={actualFullWidth}>
           {(width !== 'full') ? header : null}
         </ContainerHeader>
         <DrawerContent>

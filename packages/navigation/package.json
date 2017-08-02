@@ -53,7 +53,7 @@
     "@atlaskit/badge": "^4.5.1",
     "@atlaskit/button": "^3.5.2",
     "@atlaskit/drag-and-drop": "^4.4.1",
-    "@atlaskit/dropdown-menu": "^3.4.1",
+    "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/inline-dialog": "^3.6.0",
     "@atlaskit/logo": "^3.5.1",
     "@atlaskit/navigation": "*",

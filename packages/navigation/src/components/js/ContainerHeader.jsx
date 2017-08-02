@@ -7,18 +7,25 @@ export default class ContainerHeader extends PureComponent {
     children: PropTypes.node,
     iconOffset: PropTypes.number,
     isFullWidth: PropTypes.bool,
+    isInDrawer: PropTypes.bool,
   }
   static defaultProps = {
     iconOffset: 40,
+    isInDrawer: false,
   }
 
   render() {
     const {
       iconOffset,
       isFullWidth,
+      isInDrawer,
     } = this.props;
     return (
-      <ContainerHeaderWrapper iconOffset={iconOffset} isFullWidth={isFullWidth}>
+      <ContainerHeaderWrapper
+        isInDrawer={isInDrawer}
+        iconOffset={iconOffset}
+        isFullWidth={isFullWidth}
+      >
         {this.props.children}
       </ContainerHeaderWrapper>
     );

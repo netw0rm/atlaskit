@@ -1,31 +1,49 @@
-import styled from 'styled-components';
-import { layout, gridSize, globalItemSizes } from '../../shared-variables';
+import styled, { css } from 'styled-components';
+import { layout, containerTitleBottomMargin, drawerContainerHeaderAnimationSpeed, gridSize, globalItemSizes } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
-const collapsedMinHeight = (gridSize / 2) + globalItemSizes.medium;
+const minHeight = (props) => {
+  if (props.isInDrawer) {
+    // the header content isn't rendered in a full-width Drawer
+    return 0;
+  }
+  // the height of the container icon and the margin below it
+  return `${(gridSize / 2) + globalItemSizes.medium}px`;
+};
 
-const paddingOpen = {
+const padding = {
   top: gridSize,
   right: gridSize,
   bottom: gridSize / 2,
   left: gridSize,
 };
 
+const flexBasis = (props) => {
+  if (props.isFullWidth) {
+    return 0;
+  } else if (props.isInDrawer) {
+    return css`${props.iconOffset - padding.top - padding.bottom - layout.padding.top}px`;
+  }
+  return 'auto';
+};
+
 const ContainerHeaderWrapper = styled.div`
-  transition: flex-basis 220ms;
-  flex-basis: ${props => (props.isFullWidth ? 0 : props.iconOffset - paddingOpen.top - paddingOpen.bottom - layout.padding.top)}px;
+  flex-basis: ${flexBasis};
   flex-shrink: 0;
-  padding: ${paddingOpen.top}px ${paddingOpen.right}px ${paddingOpen.bottom}px ${paddingOpen.left}px;
+  min-height: ${minHeight};
+  padding: ${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px;
+  transition: flex-basis ${drawerContainerHeaderAnimationSpeed};
 
   ${whenCollapsed`
     /* centering the icon */
     display: flex;
-    flex-shrink: 0;
+    flex-basis: auto;
     flex-direction: column;
     justify-content: center;
-    min-height: ${collapsedMinHeight}px;
   `}
-  > * + * { margin-top: 20px; }
+
+  /* the gap between the container title and the next item like a dropdown */
+  > *:first-child + * { margin-top: ${containerTitleBottomMargin}; }
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

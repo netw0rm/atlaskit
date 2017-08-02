@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 44.9.0 (2017-08-02)
+
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
 ## 44.8.0 (2017-08-02)
 
 * feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))

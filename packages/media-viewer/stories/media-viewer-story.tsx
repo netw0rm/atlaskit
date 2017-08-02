@@ -15,7 +15,7 @@ storiesOf('MediaViewer', {})
         context={context}        
         onPreviewChanged={onPreviewChanged}
         navigation={{
-          initialItem: genericFileId
+          initialItem: wideImageFileId
         }}
       />
     );

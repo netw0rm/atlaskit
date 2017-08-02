@@ -97,3 +97,10 @@ export const ZoomWrapper = styled.div`
   text-align: right;
   user-select: none;
 `;
+
+export const EditorIconWrapper = styled.div`
+  border-radius: 5px;
+  ${({isEditing}: any) => isEditing && `
+    background: #2B3955;
+  ` || ''}
+`;

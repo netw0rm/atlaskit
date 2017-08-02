@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^8.0.0",
+    "@atlaskit/media-editor": "^3.1.1",
     "@atlaskit/media-test-helpers": "^6.0.0",
     "@atlaskit/icon": "^7.0.3",
     "@atlaskit/field-range": "^2.4.2",

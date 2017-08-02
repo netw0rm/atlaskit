@@ -1,4 +1,67 @@
 import { tableNodes, NodeSpec } from '../../prosemirror';
+import { TableCellContent } from './doc';
+
+/**
+ * @name table_node
+ * @additionalProperties false
+ */
+export interface Table {
+  type: 'table';
+  /**
+   * @minItems 1
+   */
+  content: Array<TableRow>;
+}
+
+/**
+ * @name table_row_node
+ * @additionalProperties false
+ */
+export interface TableRow {
+  type: 'tableRow';
+  /**
+   * @minItems 1
+   */
+  content: Array<TableHeader> | Array<TableCell>;
+}
+
+/**
+ * @name table_cell_node
+ * @additionalProperties false
+ */
+export interface TableCell {
+  type: 'tableCell';
+  /**
+   * @additionalProperties false
+   */
+  attrs: CellAttributes;
+  /**
+   * @minItems 1
+   */
+  content: TableCellContent;
+}
+
+/**
+ * @name table_header_node
+ * @additionalProperties false
+ */
+export interface TableHeader {
+  type: 'tableHeader';
+  /**
+   * @additionalProperties false
+   */
+  attrs: CellAttributes;
+  /**
+   * @minItems 1
+   */
+  content: TableCellContent;
+}
+
+export interface CellAttributes {
+  colspan: number;
+  rowspan: number;
+  background?: string;
+}
 
 // TS doesn't generate type if we destructure here
 const nodes = tableNodes({

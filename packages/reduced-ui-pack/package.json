@@ -7,12 +7,13 @@
   "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
   "main": "dist/bundle.css",
   "scripts": {
-    "prepublish": "lessc src/index.less dist/bundle.css && npm run sprite",
-    "sprite": "node ./bin/buildSprite.js",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook/run.local.js",
     "eslint": "../../build/bin/lint.eslint.sh",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
+    "prepublish": "lessc src/index.less dist/bundle.css && npm run sprite",
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "sprite": "node ./bin/buildSprite.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"

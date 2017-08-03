@@ -13,6 +13,7 @@ export interface ItemInfoProps {
   canUseMiniMode?: boolean;
   isMiniModeActive?: boolean;
   onMiniModeChange?: any;
+  onClose?: any;
 }
 
 export interface ItemInfoState {
@@ -31,6 +32,8 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
   }
 
   renderDetails(details: FileDetails) {
+    const {onClose} = this.props;
+
     return (
       <DetailsWrapper>
         <LeftInfo>
@@ -41,7 +44,7 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
         <RightIcons>
           <ShareIcon label="share" />
           <DownloadIcon label="download" />
-          <CrossIcon label="close" />
+          <CrossIcon label="close" onClick={onClose} />
         </RightIcons>
       </DetailsWrapper>
     );

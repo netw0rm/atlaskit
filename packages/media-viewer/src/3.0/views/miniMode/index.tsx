@@ -43,7 +43,7 @@ export class MiniModeView extends Component<MiniModeViewProps, MiniModeViewState
     }
 
     const cards = list.map(i => (
-      <CardWrapper>
+      <CardWrapper key={i.id}>
         <Card
           context={context}
           identifier={i}

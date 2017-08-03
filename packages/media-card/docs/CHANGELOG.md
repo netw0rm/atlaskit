@@ -1,5 +1,9 @@
 # @atlaskit/media-card
 
+## 18.0.1 (2017-08-03)
+
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
 ## 18.0.0 (2017-08-01)
 
 * breaking; removed PlayerCard ([1f44d4b](https://bitbucket.org/atlassian/atlaskit/commits/1f44d4b))

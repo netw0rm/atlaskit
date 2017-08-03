@@ -32,9 +32,11 @@ export const globalItemSizes = {
 };
 
 export const drawerOffset = gridSize * 2;
+export const drawerContainerHeaderAnimationSpeed = '220ms';
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;
+export const containerTitleBottomMargin = gridSize * 2.5;
 export const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;

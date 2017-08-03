@@ -1,20 +1,23 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Span from '../styled/Chrome';
+import { tagColor, ReactElement } from '../types';
+
+type Props = {|
+  children: Array<ReactElement>,
+  isLink: bool,
+  isRemovable: bool,
+  isRemoved?: bool,
+  isRemoving?: bool,
+  isRounded?: bool,
+  markedForRemoval: bool,
+  onFocusChange: () => null,
+  color: tagColor,
+|}
 
 export default class Chrome extends PureComponent {
-  static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
-    isLink: PropTypes.bool.isRequired,
-    isRemovable: PropTypes.bool.isRequired,
-    isRemoved: PropTypes.bool,
-    isRemoving: PropTypes.bool,
-    isRounded: PropTypes.bool,
-    markedForRemoval: PropTypes.bool.isRequired,
-    onFocusChange: PropTypes.func.isRequired,
-  }
+  props: Props
 
-  handleKeyPress = (e) => {
+  handleKeyPress = (e: KeyboardEvent) => {
     const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
 
     if (this.chromeRef && spacebarOrEnter) {
@@ -30,7 +33,7 @@ export default class Chrome extends PureComponent {
 
   render() {
     const {
-      children, isLink, isRemovable, isRemoved, isRemoving, isRounded, markedForRemoval,
+      children, isLink, isRemovable, isRemoved, isRemoving, isRounded, markedForRemoval, color,
     } = this.props;
 
     const props = {
@@ -44,6 +47,7 @@ export default class Chrome extends PureComponent {
       onFocus: this.handleFocus,
       onKeyPress: this.handleKeyPress,
       tabIndex: -1,
+      color,
     };
 
     if (isLink) {

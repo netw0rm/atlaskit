@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.0.0",
+  "version": "45.0.1",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,6 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "ak:webpack:raw": "src/index.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
     "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",

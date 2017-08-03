@@ -19,6 +19,25 @@ export interface NavigationState {
 
 export class Navigation extends Component<NavigationProps, NavigationState> {
 
+  captureKeys = (ev) => {
+    const right = this.navigate('right');
+    const left = this.navigate('right');
+
+    if (ev.code === 'ArrowRight' && this.canNavigateRight) {
+      right();
+    } else if (ev.code === 'ArrowLeft' && this.canNavigateLeft) {
+      left();
+    }
+  }
+
+  componentWillMount() {
+    document.addEventListener('keydown', this.captureKeys, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.captureKeys, false);
+  }
+
   render() {
    const {canNavigateLeft, canNavigateRight} = this;
 
@@ -31,7 +50,7 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
   navigate = (direction) => {
     return () => {
       const {list, onPrev, onNext} = this.props;
-      const handler = direction === 'left' ? onPrev : onNext; 
+      const handler = direction === 'left' ? onPrev : onNext;
       const nextIndex = direction === 'left' ? -1 : 1;
 
       if (handler) {

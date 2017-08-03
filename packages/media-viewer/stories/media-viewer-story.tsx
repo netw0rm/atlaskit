@@ -80,7 +80,7 @@ storiesOf('MediaViewer', {})
 
       state = {
         isVisible: false,
-        openerElement: null
+        openerElement: undefined
       };
 
       render() {

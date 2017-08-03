@@ -16,6 +16,10 @@ export const fadeIn = `
   animation: ${fadeInKeyframe} .5s forwards
 `;
 
+export interface MainWrapperProps {
+  openerOrigin?: string;
+}
+
 export const MainWrapper = styled.div`
   ${fadeIn};
   position: absolute;
@@ -32,7 +36,7 @@ export const MainWrapper = styled.div`
   overflow: hidden;
   z-index: 9;
 
-  ${({openerOrigin}: any) => openerOrigin && `
+  ${({openerOrigin}: MainWrapperProps) => openerOrigin && `
     transform-origin: ${openerOrigin};
   ` || ''}
 

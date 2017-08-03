@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 /* eslint-disable import/no-duplicates, import/first */
 import Example from './Example';
 import exampleSrc from '!raw-loader!./Example';
+import ColoredExample from './ColoredExample';
+import coloredExampleSrc from '!raw-loader!./ColoredExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -24,5 +26,10 @@ export const examples = [
     title: 'Basic Example',
     Component: Example,
     src: exampleSrc,
+  },
+  {
+    title: 'Example With Colors',
+    Component: ColoredExample,
+    src: coloredExampleSrc,
   },
 ];

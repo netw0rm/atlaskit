@@ -15,6 +15,9 @@ const NestedNavigationWrapper = styled(
   flex-shrink: 0;
   flex-wrap: nowrap;
   width: 100%;
+
+  /* as a flex child - take up the full height */
+  flex-grow: 1;
 `;
 
 NestedNavigationWrapper.displayName = 'NestedNavigationWrapper';

@@ -64,6 +64,12 @@ export const defaultTheme: ItemTheme = {
     text: akColorN200,
     secondaryText: akColorN200,
   },
+  // same as hover in this case
+  dragging: {
+    background: akColorN20,
+    text: akColorN800,
+    secondaryText: akColorN200,
+  },
 };
 
 // Returns the theme that contains the requested theme key(s), preferring the user-supplied

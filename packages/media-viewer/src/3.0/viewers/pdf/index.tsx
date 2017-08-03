@@ -57,6 +57,7 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
           onZoomOut={this.onZoomOut}
           onZoomIn={this.onZoomIn}
           onZoomFit={this.onZoomFit}
+          zoomLevel={scale * 100}
         />
         {pdfViewer}
       </Wrapper>
@@ -65,12 +66,13 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
 
   onZoomOut = () => {
     const {scale} = this.state;
-    this.setState({scale: scale - 0.1})
+    if (scale <= 0.4) { return; }
+    this.setState({scale: scale - 0.2})
   }
 
   onZoomIn = () => {
     const {scale} = this.state;
-    this.setState({scale: scale + 0.1})
+    this.setState({scale: scale + 0.2})
   }
 
   onZoomFit = () => {

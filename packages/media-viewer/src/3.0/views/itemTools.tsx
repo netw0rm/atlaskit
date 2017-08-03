@@ -36,7 +36,7 @@ export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
           {this.getEditorButton()}
         </ToolsContent>
         <ZoomWrapper>
-          {zoomLevel}%
+          {Math.round(zoomLevel)}%
         </ZoomWrapper>
       </ItemToolsWrapper>
     );

@@ -21,7 +21,7 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
 
   captureKeys = (ev) => {
     const right = this.navigate('right');
-    const left = this.navigate('right');
+    const left = this.navigate('left');
 
     if (ev.code === 'ArrowRight' && this.canNavigateRight) {
       right();

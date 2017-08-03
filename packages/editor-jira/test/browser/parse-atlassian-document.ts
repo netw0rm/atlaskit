@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { createJIRASchema } from '@atlaskit/editor-core';
@@ -22,6 +23,21 @@ describe('parseIntoAtlassianDocument', () => {
         }],
       }],
     });
+  });
+
+  it('should throw if HTML is not a string', () => {
+    const schema = createJIRASchema({});
+    const parse: any = parseIntoAtlassianDocument;
+
+    assert.throws(
+      () => parse(undefined, schema),
+      'parseIntoAtlassianDocument should throw if first argument is not a string'
+    );
+
+    assert.throws(
+      () => parse(null, schema),
+      'parseIntoAtlassianDocument should throw if first argument is not a string'
+    );
   });
 
   it('should parse HTML according to schema', () => {

@@ -4,7 +4,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {Card} from '@atlaskit/media-card';
 import {Context} from '@atlaskit/media-core';
 import {Wrapper, CloseIconWrapper, ListWrapper, Header, CardWrapper} from './styled';
-import {MediaIdentifier} from '../..';
+import {MediaIdentifier} from '../../domain';
 
 export interface MiniModeViewProps {
   isVisible?: boolean;
@@ -15,7 +15,7 @@ export interface MiniModeViewProps {
 }
 
 export interface MiniModeViewState {
-  
+
 }
 
 export class MiniModeView extends Component<MiniModeViewProps, MiniModeViewState> {

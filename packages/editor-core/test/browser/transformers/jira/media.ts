@@ -1,6 +1,8 @@
+import * as assert from 'assert';
 import { nodeFactory } from '../../../../src/test-helper';
 import { checkParse, checkEncode, checkParseEncodeRoundTrips } from './_test-helpers';
 import { createJIRASchema, MediaAttributes } from '../../../../src/schema';
+import { JIRATransformer } from '../../../../src/transformers';
 
 const schema = createJIRASchema({ allowMedia: true });
 
@@ -180,5 +182,24 @@ describe('JIRATransformer', () => {
       '<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42" data-media-services-collection="MediaServicesSample"></jira-attachment-thumbnail></a></span></p>'
     );
 
+    it('should not throw error when trying to parse media nodes within non-media schema', () => {
+      const schema = createJIRASchema({ allowMedia: false });
+      const transformer = new JIRATransformer(schema);
+
+      assert.doesNotThrow(
+        () => transformer.parse(`<p>${fragment1}</p>`),
+        'JIRATransformer.parse() should not throw exception'
+      );
+    });
+
+    it('should not throw error when trying to parse media groups within non-media schema', () => {
+      const schema = createJIRASchema({ allowMedia: false });
+      const transformer = new JIRATransformer(schema);
+
+      assert.doesNotThrow(
+        () => transformer.parse('<p class="mediaGroup"><span class="image-wrap"><a><jira-attachment-thumbnail><img alt="foo.png" src="HOST/file/42/image?token=TOKEN&client=CLIENT_ID&collection=&width=200&height=200&mode=fit" data-attachment-type="thumbnail" data-attachment-name="foo.png" data-media-services-type="file" data-media-services-id="42"></jira-attachment-thumbnail></a></span></p>'),
+        'JIRATransformer.parse() should not throw exception'
+      );
+    });
   });
 });

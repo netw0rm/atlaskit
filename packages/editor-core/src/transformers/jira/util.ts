@@ -7,6 +7,7 @@ import {
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
+  isSchemaWithMedia,
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
 } from './schema';
@@ -127,7 +128,7 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
           return null;
         } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
           return null;
-        } else if (isMedia(node)) {
+        } else if (isMedia(node) && isSchemaWithMedia(schema)) {
           const dataNode = node.querySelector('[data-media-services-id]');
           if (dataNode && dataNode instanceof HTMLElement) {
             const {
@@ -180,7 +181,12 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
           if (hasNonMediaChildren) {
             return schema.nodes.paragraph.createChecked({}, content);
           }
-          return schema.nodes.mediaGroup.createChecked({}, Fragment.fromArray(mediaContent));
+
+          if (isSchemaWithMedia(schema)) {
+            return schema.nodes.mediaGroup.createChecked({}, Fragment.fromArray(mediaContent));
+          }
+
+          return null;
         }
 
         return schema.nodes.paragraph.createChecked({}, content);

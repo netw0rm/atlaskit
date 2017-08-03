@@ -81,7 +81,7 @@ export const ArrowWrapper = styled.div`
 `;
 
 export const ArrowLeftWrapper = styled(ArrowWrapper)`
-  left: -14px;
+  left: 8px;
 
   svg {
     padding-right: 2px;
@@ -89,7 +89,7 @@ export const ArrowLeftWrapper = styled(ArrowWrapper)`
 `;
 
 export const ArrowRightWrapper = styled(ArrowWrapper)`
-  right: -14px;
+  right: 8px;
 
   svg {
     padding-left: 1px;

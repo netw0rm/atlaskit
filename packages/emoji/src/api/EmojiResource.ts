@@ -2,15 +2,16 @@ import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as s
 
 import { customCategory, selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
-import { isMediaEmoji, isPromise } from '../type-helpers';
+import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import MediaEmojiResource from './media/MediaEmojiResource';
+import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 export interface EmojiResourceConfig {
   /**
-   * The service configuration for recording emoji selections.
+   * The service configuration for remotely recording emoji selections.
    * A post will be performed to this URL with the EmojiId as the body.
    */
   recordConfig?: ServiceConfig;
@@ -80,10 +81,11 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
 
   /**
    * Records an emoji selection, for example for using in tracking recent emoji.
+   * If no recordConfig is configured then a resolved promise should be returned
    *
    * Optional.
    */
-  recordSelection?(id: EmojiId): Promise<any>;
+  recordSelection?(id: EmojiDescription): Promise<any>;
 
   /**
    * Load media emoji that may require authentication to download, producing
@@ -181,10 +183,12 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected mediaEmojiResource?: MediaEmojiResource;
   protected selectedTone: ToneSelection;
+  protected usageTracker?: UsageFrequencyTracker;
 
   constructor(config: EmojiResourceConfig) {
     super();
     this.recordConfig = config.recordConfig;
+    this.usageTracker = new UsageFrequencyTracker();
 
     // Ensure order is retained by tracking until all done.
     const emojiResponses: EmojiResponse[] = [];
@@ -412,18 +416,31 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
-  recordSelection(id: EmojiId): Promise<any> {
-    const { recordConfig } = this;
+  /**
+   * Record the selection of an emoji to a remote service if 'recordConfig' has been supplied.
+   * Regardless of the recordConfig, emoji selections will always be recorded locally for the
+   * purposes of tracking the frequency of use.
+   *
+   * @param emoji The full description of the emoji to record usage for.
+   */
+  recordSelection(emoji: EmojiDescription): Promise<any> {
+    const { recordConfig, usageTracker } = this;
+
+    if (usageTracker) {
+      usageTracker.recordUsage(emoji);
+    }
+
     if (recordConfig) {
       const queryParams = {
-        emojiId: id,
+        emojiId: toEmojiId(emoji)
       };
       const requestInit = {
         method: 'POST',
       };
       return serviceUtils.requestService(recordConfig, { queryParams, requestInit });
     }
-    return Promise.reject('Resource does not support recordSelection');
+
+    return Promise.resolve();
   }
 
   getSelectedTone(): ToneSelection {

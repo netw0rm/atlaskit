@@ -1,0 +1,107 @@
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+
+import { Gateway, UsageFrequencyTracker } from '../../../../src/api/internal/UsageFrequencyTracker';
+import StoredDuplicateLimitedQueue from '../../../../src/StoredDuplicateLimitedQueue';
+import { grinEmoji, mockLocalStorage } from '../../../../src/support/test-data';
+
+declare var global: any;
+
+/**
+ * Extend the UsageFrequencyTracker to provide access to its queue for mocking in tests.
+ */
+class TestUsageFrequencyTracker extends UsageFrequencyTracker {
+  constructor(queue: StoredDuplicateLimitedQueue<string>) {
+    super();
+    this.queue = queue;
+  }
+}
+
+describe('UsageFrequencyTracker', () => {
+  describe('Gateway', () => {
+    it('should not accept a maximum of less than 1', () => {
+      expect(() => new Gateway(0)).to.throw(RangeError);
+    });
+
+    it('should allow work when non in-flight', (done) => {
+      const gateway = new Gateway(1);
+      expect(gateway.submit(() => { done(); })).to.equal(true);
+    });
+
+    it('should prevent work when too much in flight', (done) => {
+      const queueSize = 2;
+      let doneCounter = 0;
+      const doneCollector = () => {
+        doneCounter++;
+        if (doneCounter >= queueSize) {
+          done();
+        }
+      };
+
+      const gateway = new Gateway(queueSize);
+      expect(gateway.submit(() => { doneCollector(); })).to.equal(true);
+      expect(gateway.submit(() => { doneCollector(); })).to.equal(true);
+
+      expect(gateway.submit(() => { doneCollector(); })).to.equal(false);
+    });
+
+    it('should allow more work once in-flight work completes', (done) => {
+      const queueSize = 2;
+      let completedCounter = 0;
+
+      const completeCollector = () => {
+        completedCounter++;
+      };
+
+      const gateway = new Gateway(queueSize);
+      expect(gateway.submit(() => { completeCollector(); })).to.equal(true);
+      expect(gateway.submit(() => { completeCollector(); })).to.equal(true);
+
+      expect(gateway.submit(() => { completeCollector(); })).to.equal(false);
+
+      // now delay, and periodically check if the queued work has had a chance to complete before asserting
+      // that more can be queued.
+      const intervalId = setInterval(() => {
+        if (completedCounter > 0) {
+          clearInterval(intervalId);
+          expect(gateway.submit(() => { completeCollector(); })).to.equal(true);
+          done();
+        }
+      }, 50);
+    });
+  });
+
+  describe('UsageFrequencyTracker', () => {
+    const localStorage = global.window.localStorage;
+
+    let mockQueue: StoredDuplicateLimitedQueue<string>;
+    let mockEnqueue: sinon.SinonStub;
+
+    beforeEach(() => {
+      global.window.localStorage = mockLocalStorage;
+      mockQueue = <StoredDuplicateLimitedQueue<string>>{};
+      mockEnqueue = sinon.stub();
+      mockQueue.enqueue = mockEnqueue;
+    });
+
+    afterEach(() => {
+      global.window.localStorage.clear();
+      global.window.localStorage = localStorage;
+    });
+
+    it('should do work asynchronously', (done) => {
+      const tracker = new TestUsageFrequencyTracker(mockQueue);
+
+      tracker.recordUsage(grinEmoji);
+      expect(mockEnqueue.called).to.equal(false);
+
+      // now delay, and periodically check if the work has completed.
+      const intervalId = setInterval(() => {
+        if (mockEnqueue.called) {
+          clearInterval(intervalId);
+          done();
+        }
+      }, 50);
+    });
+  });
+});

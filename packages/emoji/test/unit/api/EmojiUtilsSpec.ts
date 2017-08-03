@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
-import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
+import { denormaliseEmojiServiceResponse, removeEmojiOneIdSkintone } from '../../../src/api/EmojiUtils';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
 
@@ -182,6 +182,20 @@ describe('EmojiUtils', () => {
 
       const convertedEmoji = emojiData.emojis[0];
       expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
+    });
+  });
+
+  describe('#removeEmojiOneIdSkintone', () => {
+    it('remove modifier included in id', () => {
+      expect(removeEmojiOneIdSkintone('1f46e-1f3ff-200d-2642-fe0f')).to.equal('1f46e-200d-2642-fe0f');
+    });
+
+    it('remove modifier at end of id', () => {
+      expect(removeEmojiOneIdSkintone('1f46e-1f3fb')).to.equal('1f46e');
+    });
+
+    it('leave id unchanged when no skintone modifier', () => {
+      expect(removeEmojiOneIdSkintone('1f46e-200d-2642-fe0f')).to.equal('1f46e-200d-2642-fe0f');
     });
   });
 });

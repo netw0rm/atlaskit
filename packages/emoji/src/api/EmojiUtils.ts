@@ -130,3 +130,17 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
     mediaApiToken,
   };
 };
+
+/**
+ * Remove any skin tone modifications from an emoji one id. This doesn't apply to (and shouldn't be used with)
+ * custom/site emoji.
+ * i.e.
+ *   1f46e-1f3ff-200d-2642-fe0f (Man police officer with dark skin) would become 1f46e-200d-2642-fe0f
+ *
+ * @param id the emoji Id from which to remove the skintone modifier
+ */
+export const removeEmojiOneIdSkintone = (id: string): string => {
+  // looking for one of 5 possible skin tone modifiers either at the end of the string, or within the string
+  const skintoneModifierRegex = /(?:-1f3f[b-f]($|-))/i;
+  return id.replace(skintoneModifierRegex, '$1'); // replace with the capture group from the end of the match
+};

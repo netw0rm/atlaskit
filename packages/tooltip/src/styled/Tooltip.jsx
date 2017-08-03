@@ -8,8 +8,7 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-import { borderRadius, gridSize, math } from '../../../theme/src';
-import { backgroundColor, textColor } from '../theme';
+import { borderRadius, colors, gridSize, math, themed } from '../../../theme/src';
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -61,8 +60,18 @@ const KEYFRAMES_FLIPPED = {
   right: KEYFRAMES.left,
   top: KEYFRAMES.bottom,
 };
-const getKeyframeName = ({ isFlipped, position }) =>
-  isFlipped ? KEYFRAMES_FLIPPED[position] : KEYFRAMES[position];
+const getKeyframeName = ({ isFlipped, position }) => isFlipped
+  ? KEYFRAMES_FLIPPED[position]
+  : KEYFRAMES[position];
+
+const backgroundColor = themed({
+  light: colors.N800,
+  dark: colors.DN0,
+});
+const textColor = themed({
+  light: colors.N0,
+  dark: colors.DN600,
+});
 
 // apply all the things
 export default styled.div`

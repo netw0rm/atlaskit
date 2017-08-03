@@ -214,7 +214,10 @@ export default class EmojiRepository {
     return this.asciiMap;
   }
 
-  getDynamicCategoryList(): string[] {
+  getDynamicCategoryList(includeCustom?: boolean): string[] {
+    if (this.dynamicCategoryList.indexOf(customCategory) === -1 && includeCustom) {
+      this.dynamicCategoryList.push(customCategory);
+    }
     return this.dynamicCategoryList;
   }
 

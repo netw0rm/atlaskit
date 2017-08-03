@@ -105,6 +105,13 @@ export const CategoryDescriptionMap: CategoryMap = {
 
 export const sortCategories = ((c1, c2) => CategoryDescriptionMap[c1].order - CategoryDescriptionMap[c2].order);
 
+const addNewCategories = (oldCategories: string[], newCategories?: string[]): string[] => {
+  if (!newCategories) {
+    return oldCategories;
+  }
+  return oldCategories.concat(newCategories.filter(category => !!CategoryDescriptionMap[category])).sort(sortCategories);
+};
+
 export default class CategorySelector extends PureComponent<Props, State> {
   static defaultProps = {
     onCategorySelected: () => {},
@@ -117,18 +124,11 @@ export default class CategorySelector extends PureComponent<Props, State> {
 
     let categories = defaultCategories;
     if (dynamicCategories) {
-      categories = this.addNewCategories(categories, dynamicCategories);
+      categories = addNewCategories(categories, dynamicCategories);
     }
     this.state = {
       categories
     };
-  }
-
-  private addNewCategories(oldCategories: string[], newCategories?: string[]): string[] {
-    if (!newCategories) {
-      return oldCategories;
-    }
-    return oldCategories.concat(newCategories.filter(category => !!CategoryDescriptionMap[category])).sort(sortCategories);
   }
 
   onClick = (categoryId) => {
@@ -141,7 +141,7 @@ export default class CategorySelector extends PureComponent<Props, State> {
   componentWillUpdate = (nextProps: Props, nextState: State) => {
     if (this.props.dynamicCategories !== nextProps.dynamicCategories) {
       this.setState({
-        categories: this.addNewCategories(defaultCategories, nextProps.dynamicCategories),
+        categories: addNewCategories(defaultCategories, nextProps.dynamicCategories),
       });
     }
   }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {FileItem, Context} from '@atlaskit/media-core';
 import {ImageViewer, VideoViewer, AudioViewer, PdfViewer} from '../viewers';
-import {MediaIdentifier} from '..';
+import {MediaIdentifier} from '../domain';
 
 import {ItemPreviewWrapper} from './styled';
 

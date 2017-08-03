@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Context, MediaItemType, FileItem, MediaCollection} from '@atlaskit/media-core';
+import {Context, FileItem, MediaCollection} from '@atlaskit/media-core';
 import {ItemInfo, ItemPreview, Navigation, MiniModeView} from './views';
 import {MainWrapper} from './styled';
+import {MediaIdentifier} from './domain';
 
 // TODO: Move common types/interfaces to "domain" folder
 export type CollectionName = string;
@@ -10,12 +11,6 @@ export interface NavigationConfig {
   initialItem: MediaIdentifier;
   list?: Array<MediaIdentifier>;
   collectionName?: CollectionName;
-}
-
-export interface MediaIdentifier {
-  readonly mediaItemType: MediaItemType;
-  readonly id: string;
-  readonly collectionName: string;
 }
 
 export interface MediaViewerProps {

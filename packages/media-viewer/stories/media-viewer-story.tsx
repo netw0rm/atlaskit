@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import {createStorybookContext, defaultCollectionName, videoFileId, audioFileId, docFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
-import {MediaViewer, MediaIdentifier} from '../src/3.0';
+import {MediaViewer} from '../src';
+import {MediaIdentifier} from '../src/3.0/domain';
 
 const context = createStorybookContext();
 const onPreviewChanged = (item: MediaIdentifier) => {

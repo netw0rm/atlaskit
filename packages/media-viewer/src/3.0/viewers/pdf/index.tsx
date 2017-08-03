@@ -2,8 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import {Wrapper} from './styled';
-import {MediaIdentifier} from '../..';
-import {ItemTools} from '../../views';
+import {MediaIdentifier} from '../../domain';
+import {ItemTools} from '../../views/itemTools';
 import PDF from 'react-pdf-js';
 
 export interface PdfViewerProps {

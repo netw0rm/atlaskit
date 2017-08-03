@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.1.1 (2017-08-03)
+
+* bug fix; export es5 renderer ([2db940d](https://bitbucket.org/atlassian/atlaskit/commits/2db940d))
 ## 45.1.0 (2017-08-03)
 
 

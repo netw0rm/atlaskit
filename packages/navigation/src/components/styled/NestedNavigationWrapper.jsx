@@ -12,6 +12,7 @@ const NestedNavigationWrapper = styled(
 )`
   display: flex;
   flex-direction: ${({ traversalDirection }) => (traversalDirection === 'up' ? 'row' : 'row-reverse')};
+  flex-shrink: 0;
   flex-wrap: nowrap;
   width: 100%;
 `;

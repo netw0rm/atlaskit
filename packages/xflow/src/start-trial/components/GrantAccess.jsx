@@ -65,7 +65,7 @@ class GrantAccess extends Component {
         value: PropTypes.string,
         label: PropTypes.string,
       })
-    ),
+    ).isRequired,
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
     chooseOption: PropTypes.string,
@@ -105,9 +105,10 @@ class GrantAccess extends Component {
     try {
       users = await this.props.retrieveUsers();
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.grant-access.retrieving.users.failed');
-      console.error(e.message); // eslint-disable-line no-console
-      console.error(e.stack); // eslint-disable-line no-console
+      firePrivateAnalyticsEvent('xflow.grant-access.retrieving.users.failed', {
+        ErrorMessage: e.message,
+        ErrorStack: e.stack,
+      });
     }
     if (users && users.length > 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.displayed');

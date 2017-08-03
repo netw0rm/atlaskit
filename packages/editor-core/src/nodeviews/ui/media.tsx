@@ -53,6 +53,10 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
   shouldComponentUpdate(nextProps) {
     const getId = (props: MediaNodeProps) => props.node.attrs.id;
+    if (nextProps.selected !== this.props.selected) {
+      this.pluginState.updateSelectedMediaNode();
+      return true;
+    }
     return getId(nextProps) !== getId(this.props) || nextProps.selected !== this.props.selected;
   }
 

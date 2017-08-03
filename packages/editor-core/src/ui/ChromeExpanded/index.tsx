@@ -23,6 +23,7 @@ import { TextColorState } from '../../plugins/text-color';
 import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
+import ImageEdit from '../ImageEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
@@ -260,6 +261,11 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+            /> : null}
+          {pluginStateMedia && !disabled ?
+            <ImageEdit
+              pluginState={pluginStateMedia}
+              editorView={editorView}
             /> : null}
 
           {pluginStateCodeBlock && !disabled ?

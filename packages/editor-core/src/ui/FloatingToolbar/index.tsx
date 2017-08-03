@@ -15,6 +15,7 @@ export interface Props {
   onPositionCalculated?: (position: any) => any;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  alignY?: 'top' | 'bottom';
 }
 
 export default class FloatingToolbar extends PureComponent<Props, any> {
@@ -23,6 +24,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       children,
       className,
       target, offset, fitWidth, fitHeight, popupsMountPoint, popupsBoundariesElement,
+      alignY,
       onPositionCalculated
     } = this.props;
 
@@ -40,6 +42,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
           onPositionCalculated={onPositionCalculated}
+          alignY={alignY}
         >
           <Container className={`${className || ''}`} >
             {children}

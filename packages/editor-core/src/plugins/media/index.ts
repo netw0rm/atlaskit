@@ -34,6 +34,7 @@ import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
+import * as commands from '../../commands';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -52,6 +53,8 @@ export class MediaPluginState {
   public pickers: PickerFacade[] = [];
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
+  public selectedMediaElement: HTMLElement | undefined;
+  public toolbarVisible: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -60,6 +63,7 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
+  private selectedMediaNode: PMNode | undefined;
 
   private popupPicker?: PickerFacade;
   private linkRanges: RangeWithUrls[];
@@ -273,6 +277,32 @@ export class MediaPluginState {
     this.view = view;
   }
 
+  alignLeft(): void {
+    if (!this.toolbarVisible) {
+      return;
+    }
+
+    const { dispatch, state } = this.view;
+    const { $from, $to } = state.selection;
+
+    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+
+    this.updateSelectedMediaNode();
+  }
+
+  alignCenter(): void {
+    if (!this.toolbarVisible) {
+      return;
+    }
+
+    const { dispatch, state } = this.view;
+    const { $from, $to } = state.selection;
+
+    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.mediaGroup));
+
+    this.updateSelectedMediaNode();
+  }
+
   /**
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
@@ -454,6 +484,56 @@ export class MediaPluginState {
     const nodePos = getPos();
     const tr = view.state.tr.replaceWith(nodePos, nodePos + mediaNode.nodeSize, newNode);
     view.dispatch(tr.setMeta('addToHistory', false));
+  }
+
+  updateSelectedMediaNode(): void {
+    let selectedMediaNode;
+    if (this.isMediaNodeSelection()) {
+      const { node } = this.view.state.selection as NodeSelection;
+      selectedMediaNode = node;
+    } else {
+      selectedMediaNode = undefined;
+    }
+
+    if (this.selectedMediaNode !== selectedMediaNode) {
+      this.selectedMediaNode = selectedMediaNode;
+      this.selectedMediaElement = this.getSelectedMediaElement() as HTMLElement;
+      this.toolbarVisible = !!this.selectedMediaElement && this.isOnlyChild();
+      this.notifyPluginStateSubscribers();
+    }
+  }
+
+  private isOnlyChild(): boolean {
+    return this.view.state.selection.$from.parent.childCount === 1;
+  }
+
+  private getSelectedMediaElement(): Node | undefined {
+    if (!this.selectedMediaNode) {
+      return;
+    }
+
+    const mediaNodeWithPos = this.findMediaNode(this.selectedMediaNode.attrs.id);
+
+    if (!mediaNodeWithPos) {
+      return;
+    }
+
+    const { docView, state } = this.view;
+    const mediaNodeStartPos = mediaNodeWithPos.getPos();
+    const { node } = docView.domFromPos(mediaNodeWithPos.getPos());
+
+    const $mediaNodeStartPos = state.doc.resolve(mediaNodeStartPos);
+    const index = $mediaNodeStartPos.index($mediaNodeStartPos.depth);
+    const mediaGroupElement = (node as HTMLElement).querySelector('ul');
+
+    if (!mediaGroupElement) {
+      return;
+    }
+
+    const mediaCardElement = (mediaGroupElement.childNodes[index] as HTMLElement)
+      .querySelector('.media-card') as HTMLElement;
+
+    return mediaCardElement;
   }
 
   removeSelectedMediaNode = (): boolean => {

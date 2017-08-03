@@ -25,10 +25,9 @@ function getCurrentTimeString() {
   return timeString;
 }
 
-function storybookBuildStatus(state) {
+function storybookBuildStatus(state, uploadPath) {
   const cdnBaseUrl = process.env.CDN_URL_BASE;
   const cdnUrlScope = process.env.CDN_URL_SCOPE;
-  const uploadPath = `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
   const fullStorybookUrl = `${cdnBaseUrl}/${cdnUrlScope}/${uploadPath}`;
   updateBuildStatus('STORYBOOK', 'Storybook', 'The storybook for this pull request', state, fullStorybookUrl);
 }
@@ -40,7 +39,9 @@ function getStaticStorybooks() {
 
 try {
   const tmpStorybooksPath = path.join(process.cwd(), 'storybook-static');
-  const uploadPath = `pr/${bbCommit}/${getCurrentTimeString()}/storybook`;
+  const currentTime = getCurrentTimeString();
+  // The trailing slash here is required
+  const uploadPath = `pr/${bbCommit}/${currentTime}/storybook/`;
 
   fs.ensureDirSync(tmpStorybooksPath);
 
@@ -52,15 +53,14 @@ try {
   console.log(chalk.blue('Creating index file for storybooks...'));
   generateIndexFile(tmpStorybooksPath, `Storybooks for build ${bbCommit}`);
 
-  console.log(chalk.blue('Uploading storybook to cdn...'));
-  console.log(chalk.blue(uploadPath));
+  console.log(chalk.blue('Uploading storybook to cdn...', uploadPath));
   uploadDirectory(tmpStorybooksPath, uploadPath);
 
   console.log(chalk.green('Successfully uploaded storybooks'));
-  storybookBuildStatus('SUCCESSFUL');
+  storybookBuildStatus('SUCCESSFUL', uploadPath);
 } catch (err) {
   console.error(chalk.red('Failed to build storybooks', err));
-  storybookBuildStatus('FAILED');
+  storybookBuildStatus('FAILED', '');
   process.exit(1);
 }
 

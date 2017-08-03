@@ -60,17 +60,7 @@ export default class DuplicateLimitedQueue<T> {
    * @param item the item to add to the queue.
    */
   enqueue(item: T): void {
-    const count = this.itemCountMap.get(item);
-    if (count && count >= this.perItemSize) {
-      // find the first item with that key in the array and remove it
-      this.removeFirstOccurrence(item);
-    } else {
-      if (this.items.length >= this.maximumSize) {
-        this.remove();
-      }
-    }
-
-    this.add(item);
+    this.enqueueWithoutOrdering(item);
 
     // enqueues are less time sensitive (and may happen less frequently) than queries against the queue
     // so do the ordering work on each enqueue.
@@ -85,6 +75,44 @@ export default class DuplicateLimitedQueue<T> {
    */
   getItemsOrderedByDuplicateCount(): Array<T> {
     return this.itemsOrderedByFrequency;
+  }
+
+  /**
+   * A more efficient mechanism for adding multiple items. Ordering is only performed once all
+   * the items have been added.
+   *
+   * @param items the items to be enqueued, which happens in their presented order.
+   */
+  protected bulkEnqueue(items: T[]): void {
+    items.map(item => this.enqueueWithoutOrdering(item));
+    this.itemsOrderedByFrequency = this.orderItemsByFrequency();
+  }
+
+  /**
+   * Return the items currently stored in the queue.
+   */
+  protected getItems(): T[] {
+    return this.items;
+  }
+
+  /**
+   * Enqueue the supplied item, keeping consistency with the limits configured. However no ordering is
+   * performed by this enqueuing. You must trigger that manually if required.
+   *
+   * @param item the item to be queued
+   */
+  private enqueueWithoutOrdering(item: T): void {
+    const count = this.itemCountMap.get(item);
+    if (count && count >= this.perItemSize) {
+      // find the first item with that key in the array and remove it
+      this.removeFirstOccurrence(item);
+    } else {
+      if (this.items.length >= this.maximumSize) {
+        this.remove();
+      }
+    }
+
+    this.add(item);
   }
 
   /**

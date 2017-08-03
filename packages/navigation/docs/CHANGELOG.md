@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 18.1.0 (2017-08-03)
+
+* feature; improving support and examples for drag and drop in navigation (issues closed: ak-1862) ([c1e0986](https://bitbucket.org/atlassian/atlaskit/commits/c1e0986))
 ## 18.0.0 (2017-08-03)
 
 

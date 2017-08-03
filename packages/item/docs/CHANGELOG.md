@@ -1,6 +1,12 @@
 # @atlaskit/item
 
-## Unreleased
+## 2.2.0 (2017-08-03)
+
+* feature; improving support and examples for drag and drop in navigation (issues closed: ak-1862) ([c1e0986](https://bitbucket.org/atlassian/atlaskit/commits/c1e0986))
+
+
+
+
 
 ## 2.1.0 (2017-07-28)
 

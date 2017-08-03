@@ -25,7 +25,7 @@ let sub = markFactory(schema.marks.subsup, { type: 'sub' });
 let sup = markFactory(schema.marks.subsup, { type: 'sup' });
 let u = markFactory(schema.marks.underline);
 
-describe(`JIRASerializer html:`, () => {
+describe('JIRATransformer html:', () => {
   describe('paragraphs:', () => {
     checkParseEncodeRoundTrips('empty',
       schema,

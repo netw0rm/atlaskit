@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "2.6.2",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,8 @@
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
     "storybook": "../../build/bin/storybook/run.local.js",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
     "dist",
@@ -31,7 +32,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^44.0.0",
+    "@atlaskit/editor-core": "^45.0.0",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

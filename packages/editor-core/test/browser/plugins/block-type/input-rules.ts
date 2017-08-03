@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { default as blockTypePlugins, BlockTypeState } from '../../../../src/plugins/block-type';
 import {
-  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, li, makeEditor, p, ul
+  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, makeEditor, p,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -28,13 +28,6 @@ describe('inputrules', () => {
       insertText(editorView, '# ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h1()));
       expect(trackEvent.calledWith('atlassian.editor.format.heading1.autoformatting')).to.equal(true);
-    });
-
-    it('should convert "# " to heading 1 inside list', () => {
-      const { editorView, sel } = editor(doc(ul(li(p('{<>}')))));
-
-      insertText(editorView, '# ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ul(li(h1()))));
     });
 
     it('should not convert "# " to heading 1 when inside a code_block', () => {
@@ -82,20 +75,6 @@ describe('inputrules', () => {
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
       expect(trackEvent.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(true);
-    });
-
-    it('should convert "> " to a blockquote inside list', () => {
-      const { editorView, sel } = editor(doc(ul(li(p('{<>}')))));
-
-      insertText(editorView, '> ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(ul(li(blockquote(p())))));
-    });
-
-    it('should convert "> " to a blockquote when inside another blockquote (nesting)', () => {
-      const { editorView, sel } = editor(doc(blockquote(p('{<>}'))));
-
-      insertText(editorView, '> ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(blockquote(blockquote(p()))));
     });
 
     it('should not convert "> " to a blockquote when inside a code_block', () => {

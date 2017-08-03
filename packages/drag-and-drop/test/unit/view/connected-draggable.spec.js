@@ -127,7 +127,7 @@ const defaultMapProps: MapProps = {
   isDragging: false,
   isDropAnimating: false,
   isAnotherDragging: false,
-  canAnimate: true,
+  canAnimate: false,
   // at the origin by default
   offset: origin,
   dimension: null,
@@ -328,6 +328,18 @@ describe('Draggable - connected', () => {
       });
 
       describe('item was not dragging and not moved', () => {
+        const expected: MapProps = {
+          isDragging: false,
+          isDropAnimating: false,
+          isAnotherDragging: false,
+          // has not moved so still at the origin
+          offset: origin,
+          dimension: null,
+          // is the same as the default props except for
+          // animation being permitted
+          canAnimate: true,
+        };
+
         it('should remain in its original position', () => {
           const dragging = make();
           const notDragging = make();
@@ -340,7 +352,7 @@ describe('Draggable - connected', () => {
             dimension: null,
           });
 
-          expect(props).toEqual(defaultMapProps);
+          expect(props).toEqual(expected);
         });
 
         it('should break memoization when switching from dragging to dropping', () => {
@@ -373,7 +385,7 @@ describe('Draggable - connected', () => {
 
           // checking value
           expect(duringDrag).toEqual(duringDragMapProps);
-          expect(duringDrop).toEqual(defaultMapProps);
+          expect(duringDrop).toEqual(expected);
         });
       });
 
@@ -404,6 +416,7 @@ describe('Draggable - connected', () => {
               x: 0,
               y: -dragging.dimension.page.withMargin.height,
             },
+            // allowing item to move out of the way
             canAnimate: true,
             dimension: null,
           };

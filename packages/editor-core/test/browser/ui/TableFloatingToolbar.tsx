@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins, { TableState } from '../../../src/plugins/table';
+import tableCommands from '../../../src/plugins/table/commands';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
@@ -148,12 +149,12 @@ describe('TableFloatingToolbar', () => {
       });
 
       ['cut', 'copy', 'paste'].forEach((command, i) => {
-        it(`should call "pluginState.${command}" when "${command}" item is clicked`, () => {
+        it(`should call "${command}" command when "${command}" item is clicked`, () => {
           const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
           const floatingToolbar = mount(
             <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
           );
-          pluginState[command] = sinon.spy();
+          tableCommands[command] = sinon.spy();
           floatingToolbar.setState({ cellElement: document.createElement('td') });
           floatingToolbar.find(ToolbarButton).at(1).simulate('click');
           expect(floatingToolbar.state('isOpen')).to.equal(true);

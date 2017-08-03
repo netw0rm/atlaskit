@@ -14,11 +14,12 @@
     "pattern": true
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook/run.local.js",
     "eslint": "../../build/bin/lint.eslint.sh",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/navigation; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -54,7 +55,8 @@
     "@atlaskit/badge": "^4.5.1",
     "@atlaskit/button": "^3.5.2",
     "@atlaskit/drag-and-drop": "^4.4.1",
-    "@atlaskit/dropdown-menu": "^3.4.1",
+    "@atlaskit/dropdown-menu": "^3.5.0",
+    "@atlaskit/inline-dialog": "^3.6.0",
     "@atlaskit/logo": "^3.5.1",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^4.4.1",

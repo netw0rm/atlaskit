@@ -17,9 +17,6 @@ export interface CardGenericViewSmallProps {
   loading?: boolean;
   actions?: Array<CardAction>;
   error?: string;
-
-  onClick?: (event: MouseEvent<HTMLElement>) => void;
-  onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onRetry?: CardAction;
 }
 
@@ -120,13 +117,13 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   private formatCard(left: JSX.Element, right: JSX.Element) {
-    const {actions, loading, mediaType, thumbnailUrl, onClick, onMouseEnter} = this.props;
+    const {actions, loading, mediaType, thumbnailUrl} = this.props;
     const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: loading});
     const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
 
     return (
-      <SmallCard style={cardStyle} className={cardClass} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <SmallCard style={cardStyle} className={cardClass}>
         <ImgWrapper className={imgClass}>
           {left}
         </ImgWrapper>

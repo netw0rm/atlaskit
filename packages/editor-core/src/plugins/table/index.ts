@@ -9,8 +9,6 @@ import {
   Selection,
   TableMap,
   Node,
-  Transaction,
-  Fragment,
   Slice,
   Decoration,
   DecorationSet,
@@ -18,11 +16,8 @@ import {
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { getColumnPos, getRowPos, getTablePos } from './utils';
-export type TableStateSubscriber = (state: TableState) => any;
 
-export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
-}
+export type TableStateSubscriber = (state: TableState) => any;
 
 export interface SelectedCell {
   pos: number;
@@ -51,39 +46,6 @@ export class TableState {
 
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
-  }
-
-  goToNextCell(direction: number): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (!this.tableNode) {
-        return false;
-      }
-      const offset = this.tableStartPos();
-      if (!offset) {
-        return false;
-      }
-      const map = TableMap.get(this.tableNode);
-      const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset + 1;
-      if (lastCellPos ===  this.getCurrentCellStartPos() && direction === 1) {
-        this.insertRow(map.height);
-        return true;
-      }
-      return tableBaseCommands.goToNextCell(direction)(state, dispatch);
-    };
-  }
-
-  createTable (): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (this.tableDisabled || this.tableElement) {
-        return false;
-      }
-      this.focusEditor();
-      const table = this.createTableNode(3, 3);
-      const tr = state.tr.replaceSelectionWith(table);
-      tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
-      dispatch(tr.scrollIntoView());
-      return true;
-    };
   }
 
   insertColumn = (column: number): void => {
@@ -254,6 +216,7 @@ export class TableState {
 
   update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
+    const { cellSelection } = this;
 
     const tableElement = this.getTableElement(docView);
     if (domEvent && tableElement || tableElement !== this.tableElement) {
@@ -268,7 +231,14 @@ export class TableState {
       dirty = true;
     }
 
-    const cellElement = this.cellSelection ? this.getFirstSelectedCellElement(docView) : undefined;
+    // show floating toolbar only when the whole row, column or table is selected
+    const toolbarVisible = (
+      cellSelection && (cellSelection.isColSelection() || cellSelection.isRowSelection())
+        ? true
+        : false
+    );
+
+    const cellElement = toolbarVisible ? this.getFirstSelectedCellElement(docView) : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
       dirty = true;
@@ -305,21 +275,20 @@ export class TableState {
     }
   }
 
-  cut (): void {
-    this.closeFloatingToolbar();
-  }
-
-  copy (): void {
-    this.closeFloatingToolbar();
-  }
-
-  paste (): void {
-    this.closeFloatingToolbar();
-  }
-
-  private closeFloatingToolbar (): void {
+  closeFloatingToolbar (): void {
     this.clearSelection();
     this.triggerOnChange();
+  }
+
+  getCurrentCellStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    const { tableCell, tableHeader } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === tableCell || node.type === tableHeader) {
+        return $from.start(i);
+      }
+    }
   }
 
   private createHoverSelection (from: number, to: number): void {
@@ -389,17 +358,6 @@ export class TableState {
     }
   }
 
-  private getCurrentCellStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    const { tableCell, tableHeader } = this.view.state.schema.nodes;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === tableCell || node.type === tableHeader) {
-        return $from.start(i);
-      }
-    }
-  }
-
   private getTableNode(): Node | undefined {
     const { $from } = this.view.state.selection;
     for (let i = $from.depth; i > 0; i--) {
@@ -454,22 +412,6 @@ export class TableState {
     const { state } = this.view;
     this.cellElement = undefined;
     this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
-  }
-
-  private createTableNode (rows: number, columns: number): Node {
-    const { state } = this.view;
-    const { table, tableRow, tableCell, tableHeader } = state.schema.nodes;
-    const rowNodes: Node[] = [];
-
-    for (let i = 0; i < rows; i ++) {
-      const cell = i === 0 ? tableHeader : tableCell;
-      const cellNodes: Node[] = [];
-      for (let j = 0; j < columns; j ++) {
-        cellNodes.push(cell.createAndFill());
-      }
-      rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
-    }
-    return table.create(null, Fragment.from(rowNodes));
   }
 
   private canInsertTable (): boolean {

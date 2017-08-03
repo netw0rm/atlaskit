@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import {
-  doc, code_block, code, p, strong, makeEditor
+  doc, code_block, code, p, strong, makeEditor, panel, blockquote
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import * as commands from '../../../src/commands';
 
-import { isMarkTypeAllowedAtCurrentPosition } from '../../../src/utils';
+import { isMarkTypeAllowedAtCurrentPosition, areBlockTypesDisabled } from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
   const editor = (doc: any) => makeEditor({
@@ -82,6 +82,20 @@ describe('@atlaskit/editore-core/utils', () => {
         let result = isMarkTypeAllowedAtCurrentPosition(mentionQuery, editorView.state);
         expect(result).to.equal(false);
       });
+    });
+  });
+
+  describe('areBlockTypesDisabled', () => {
+    it('should return true is selection has a blockquote', () => {
+      const { editorView } = editor(doc(blockquote('te{<}xt'), panel(p('te{>}xt'))));
+      const result = areBlockTypesDisabled(editorView.state);
+      expect(result).to.equal(true);
+    });
+
+    it('should return false is selection has no blockquote', () => {
+      const { editorView } = editor(doc(p('te{<}xt'), panel(p('te{>}xt'))));
+      const result = areBlockTypesDisabled(editorView.state);
+      expect(result).to.equal(false);
     });
   });
 });

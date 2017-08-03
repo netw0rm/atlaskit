@@ -114,6 +114,7 @@ export const global: Provided = ((): Provided => {
     },
     selected: {
       background: style.akColorN50A,
+      text: style.akColorB50,
     },
     focus,
   };

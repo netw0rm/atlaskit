@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import {
-  doc, code_block, code, emoji, mention, p, strong, text
+  doc, p, strong
 } from '../../../../src/test-helper';
 
 import { toJSON } from '../../../../src/utils';

@@ -124,20 +124,10 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   }
 
   calculateDynamicCategories(): string[] {
-    const categories: string[] = [];
     if (!this.emojiRepository) {
-      return categories;
+      return [];
     }
-    if (!!this.emojiRepository.findInCategory('FREQUENT').length) {
-      categories.push('FREQUENT');
-    }
-    if (!!this.emojiRepository.findInCategory('ATLASSIAN').length) {
-      categories.push('ATLASSIAN');
-    }
-    if (!!this.emojiRepository.findInCategory(customCategory).length) {
-      categories.push(customCategory);
-    }
-    return categories;
+    return this.emojiRepository.getDynamicCategoryList();
   }
 }
 

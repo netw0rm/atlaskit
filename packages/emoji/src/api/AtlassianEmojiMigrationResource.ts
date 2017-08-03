@@ -3,6 +3,13 @@ import { customType } from '../constants';
 import EmojiRepository from './EmojiRepository';
 import EmojiResource from './EmojiResource';
 
+const removeDuplicateAtlassianEmoji = (emojis: EmojiDescription[], duplicateEmojis: Set<string>): EmojiDescription[] => {
+  if (!duplicateEmojis.size) {
+    return emojis;
+  }
+  return emojis.filter(emoji => !(duplicateEmojis.has(emoji.shortName) && emoji.type.toUpperCase() === 'ATLASSIAN'));
+};
+
 /**
  * EmojiResource that removes an Atlassian emoji if there is a corresponding site emoji duplicate
  * This will temporarily be exported to editor-core -> editor-hipchat -> * during the Atlassian
@@ -17,8 +24,12 @@ export default class AtlassianEmojiMigrationResource extends EmojiResource {
     const atlassianEmojis: Set<string> = new Set();
 
     emojiResponses.forEach(emojiResponse => {
+      if (!emojiResponse.emojis.length) {
+        return;
+      }
+
       if (emojiResponse.emojis[0].type.toUpperCase() === customType) {
-       emojiResponse.emojis.forEach(emoji => siteEmojis.add(emoji.shortName));
+        emojiResponse.emojis.forEach(emoji => siteEmojis.add(emoji.shortName));
       }
       if (emojiResponse.emojis[0].type.toUpperCase() === 'ATLASSIAN') {
         emojiResponse.emojis.forEach(emoji => atlassianEmojis.add(emoji.shortName));
@@ -27,14 +38,8 @@ export default class AtlassianEmojiMigrationResource extends EmojiResource {
     });
 
     const duplicateEmojis: Set<string> = new Set(Array.from(atlassianEmojis).filter(name => siteEmojis.has(name)));
-    emojis = this.removeDuplicateAtlassianEmoji(emojis, duplicateEmojis);
+    emojis = removeDuplicateAtlassianEmoji(emojis, duplicateEmojis);
     this.emojiRepository = new EmojiRepository(emojis);
   }
 
-  private removeDuplicateAtlassianEmoji(emojis: EmojiDescription[], duplicateEmojis: Set<string>): EmojiDescription[] {
-    if (!duplicateEmojis.size) {
-      return emojis;
-    }
-    return emojis.filter(emoji => !(duplicateEmojis.has(emoji.shortName) && emoji.type.toUpperCase() === 'ATLASSIAN'));
-  }
 }

@@ -11,4 +11,5 @@ export const ImageViewerWrapper = styled.div`
 
 export const Img = styled.img`
   max-height: 100%;
+  transition: transform .3s;
 `;

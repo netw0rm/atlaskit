@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Context, MediaItemType, FileItem, MediaCollection} from '@atlaskit/media-core';
-import {ItemInfo, ItemPreview, Navigation} from './views';
+import {ItemInfo, ItemPreview, Navigation, MiniModeView} from './views';
 import {MainWrapper} from './styled';
 
 // TODO: Move common types/interfaces to "domain" folder
@@ -102,7 +102,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     const {context, navigation} = this.props;
     const selected = currentItem || navigation.initialItem;
     const list = listItems || [];
-    // TODO: deal with navigation.collectionName
+    const canUseMiniMode = !!list.length;
 
     return (
       <MainWrapper>
@@ -112,11 +112,16 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           onNext={this.navigate('next')}
           onPrev={this.navigate('prev')}
         /> : null}
-
+        <MiniModeView 
+          isVisible={isMiniModeActive}
+          onClose={() => this.onMiniModeChange(false)}
+          list={list}
+          context={context}
+        />
         <ItemInfo 
           metadata={metadata}
           isMiniModeActive={isMiniModeActive}
-          canUseMiniMode={!!list.length}
+          canUseMiniMode={canUseMiniMode}
           onMiniModeChange={this.onMiniModeChange}
         />
         {metadata ? 

@@ -29,18 +29,19 @@ export default class TaskItem extends PureComponent<Props, {}> {
 
   render() {
     const { isDone, contentRef, children, taskId } = this.props;
+    const localId = `${taskId}-${Date.now()}`;
 
     return (
       <Wrapper>
         <CheckBoxWrapper contentEditable={false}>
           <input
-            id={taskId}
-            name={taskId}
+            id={localId}
+            name={localId}
             type="checkbox"
             onChange={this.handleOnChange}
             checked={!!isDone}
           />
-          <label htmlFor={taskId} />
+          <label htmlFor={localId} />
         </CheckBoxWrapper>
         <ContentWrapper innerRef={contentRef}>
           {children}

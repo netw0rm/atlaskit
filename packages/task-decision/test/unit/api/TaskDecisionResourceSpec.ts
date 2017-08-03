@@ -2,6 +2,7 @@ import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
 
 import { getServiceDecisionsResponse } from '../../../src/support/test-data';
+import { objectKeyToString } from '../../../src/api/TaskDecisionUtils';
 import TaskDecisionResource from '../../../src/api/TaskDecisionResource';
 
 // patch URLSearchParams API for jsdom tests
@@ -69,4 +70,41 @@ describe('TaskDecisionResource', () => {
       expect(err.code).toBe(404);
     });
   });
+
+  describe('subscriptions', () => {
+    const resource = new TaskDecisionResource({ url });
+    const mockHandler = jest.fn();
+    const mockHandler2 = jest.fn();
+    const objectKey = { taskId: 'task-1', ari: 'objectAri', containerAri: 'containerAri' };
+
+    describe('subscribe', () => {
+      it('should add handlers to subscriptions-map', () => {
+        resource.subscribe(objectKey, mockHandler);
+        resource.subscribe(objectKey, mockHandler2);
+        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler, mockHandler2]);
+      });
+    });
+
+    describe('notifyUpdated', () => {
+      it('should call all subscribers', () => {
+        resource.notifyUpdated(objectKey, true);
+        expect(mockHandler).toBeCalledWith(true);
+        expect(mockHandler2).toBeCalledWith(true);
+      });
+    });
+
+    describe('unsubscribe', () => {
+      it('should remove handler from subscriptions-map', () => {
+        resource.unsubscribe(objectKey, mockHandler);
+        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler2]);
+      });
+
+      it('should delete the key from subscriptions-map if empty', () => {
+        resource.unsubscribe(objectKey, mockHandler2);
+        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual(undefined);
+      });
+    });
+
+  });
+
 });

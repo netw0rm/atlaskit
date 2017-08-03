@@ -51,8 +51,21 @@ export interface DecisionQuery {
   cursor?: Cursor;
 }
 
+export interface ObjectKey {
+  taskId: string;
+  containerAri: string;
+  ari: string;
+}
+
+export type Handler = (isDone: boolean) => void;
+
 export interface TaskDecisionProvider {
   getDecisions(query: DecisionQuery): Promise<DecisionResponse>;
+
+  // Tasks
+  toggleTask(objectKey: ObjectKey, isDone: boolean): Promise<boolean>;
+  subscribe(objectKey: ObjectKey, handler: Handler): void;
+  unsubscribe(objectKey: ObjectKey, handler: Handler): void;
 }
 
 export interface RenderDocument {

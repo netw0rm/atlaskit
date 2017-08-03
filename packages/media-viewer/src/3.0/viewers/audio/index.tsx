@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import {Wrapper, Audio} from './styled';
-import {MediaIdentifier} from '../..';
+import {MediaIdentifier} from '../../domain';
 
 export interface AudioViewerProps {
   identifier: MediaIdentifier;

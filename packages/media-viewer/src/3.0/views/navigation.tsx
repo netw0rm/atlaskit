@@ -3,7 +3,7 @@ import {Component} from 'react';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 import {ArrowLeftWrapper, ArrowRightWrapper} from './styled';
-import {MediaIdentifier} from '..';
+import {MediaIdentifier} from '../domain';
 
 export interface NavigationProps {
   list: Array<MediaIdentifier>;
@@ -42,8 +42,8 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
    const {canNavigateLeft, canNavigateRight} = this;
 
    return (<div>
-    {canNavigateLeft ? <ArrowLeftWrapper onClick={this.navigate('left')}><ArrowLeft size="large" label="navigate left" /></ArrowLeftWrapper> : null}
-    {canNavigateRight ? <ArrowRightWrapper onClick={this.navigate('right')}><ArrowRight size="large" label="navigate right" /></ArrowRightWrapper> : null}
+    {canNavigateLeft ? <ArrowLeftWrapper className="visible-on-hover" onClick={this.navigate('left')}><ArrowLeft size="large" label="navigate left" /></ArrowLeftWrapper> : null}
+    {canNavigateRight ? <ArrowRightWrapper className="visible-on-hover" onClick={this.navigate('right')}><ArrowRight size="large" label="navigate right" /></ArrowRightWrapper> : null}
    </div>);
   }
 

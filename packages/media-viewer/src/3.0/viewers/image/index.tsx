@@ -3,8 +3,8 @@ import {Component} from 'react';
 import {ImageViewerWrapper, Img} from './styled';
 import {Context, FileItem} from '@atlaskit/media-core';
 import {MediaEditor} from '@atlaskit/media-editor';
-import {ItemTools} from '../../views';
-import {MediaIdentifier} from '../..';
+import {ItemTools} from '../../views/itemTools';
+import {MediaIdentifier} from '../../domain';
 
 export interface ImageViewerProps {
   identifier: MediaIdentifier;

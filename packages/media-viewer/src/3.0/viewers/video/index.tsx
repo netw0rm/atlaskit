@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import Slider from '@atlaskit/field-range';
 import {Wrapper, Video, ControlsWrapper} from './styled';
-import {MediaIdentifier} from '../..';
+import {MediaIdentifier} from '../../domain';
 
 export interface VideoViewerProps {
   identifier: MediaIdentifier;

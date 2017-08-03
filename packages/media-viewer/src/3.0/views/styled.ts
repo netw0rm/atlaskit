@@ -37,6 +37,19 @@ export const ArrowLeftWrapper = styled.div`
   display: flex;
   align-items: center;
   min-width: 33%;
+
+  > span {
+    transition: background .3s;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    color: #576074;
+    border-radius: 100%;
+    margin-left: 10px;
+
+    &:hover {
+      background: white;
+    }
+  }
 `;
 
 export const ArrowRightWrapper = styled.div`
@@ -48,6 +61,19 @@ export const ArrowRightWrapper = styled.div`
   align-items: center;
   min-width: 33%;
   justify-content: flex-end;
+
+  > span {
+    transition: background .3s;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    color: #576074;
+    border-radius: 100%;
+    margin-right: 10px;
+
+    &:hover {
+      background: white;
+    }
+  }
 `;
 
 export const ItemToolsWrapper = styled.div`
@@ -77,6 +103,7 @@ export const LeftInfo = styled.div`
 
 export const RightIcons = styled.div`
   > span {
+    ${iconBaseStyle}
     margin: 0 10px;
   }
 `;

@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 
-import styles from './styles.less';
 import Component from '../src/index';
 import { name } from '../package.json';
 
@@ -13,7 +12,7 @@ const imports = [
 
 storiesOf(name, module)
   .addCodeExampleStory('overview', () => (
-    <div className={styles.flexContainer}>
+    <div>
       <Component
         text="Text only"
       />
@@ -49,6 +48,66 @@ storiesOf(name, module)
         text="A. Cool Name"
         elemBefore={<Avatar size="xsmall" />}
         removeButtonText="Remove me"
+      />
+      <Component
+        text="standard color"
+        color="standard"
+      />
+      <Component
+        text="green color"
+        color="green"
+      />
+      <Component
+        text="teal color"
+        color="teal"
+      />
+      <Component
+        text="blue color"
+        color="blue"
+      />
+      <Component
+        text="purple color"
+        color="purple"
+      />
+      <Component
+        text="red color"
+        color="red"
+      />
+      <Component
+        text="yellow color"
+        color="yellow"
+      />
+      <Component
+        text="grey color"
+        color="grey"
+      />
+      <Component
+        text="greenLight color"
+        color="greenLight"
+      />
+      <Component
+        text="tealLight color"
+        color="tealLight"
+      />
+      <Component
+        text="blueLight color"
+        color="blueLight"
+      />
+      <Component
+        text="purpleLight color"
+        color="purpleLight"
+      />
+      <Component
+        text="redLight color"
+        color="redLight"
+      />
+      <Component
+        text="yellowLight color"
+        color="yellowLight"
+      />
+      <Component
+        text="greyLight color"
+        color="greyLight"
       />
     </div>
   ), { imports });

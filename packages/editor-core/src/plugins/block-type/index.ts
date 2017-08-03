@@ -16,6 +16,8 @@ import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 
+import { areBlockTypesDisabled } from '../../utils';
+
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
 
@@ -30,6 +32,7 @@ export class BlockTypeState {
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
+  blockTypesDisabled: boolean = false;
   availableBlockTypes: BlockType[] = [];
   availableWrapperBlockTypes: BlockType[] = [];
   isCodeBlock: boolean = false;
@@ -72,9 +75,9 @@ export class BlockTypeState {
       dirty = true;
     }
 
-    const newIsCodeBlock = this.detectCodeBlock();
-    if (newIsCodeBlock !== this.isCodeBlock) {
-      this.isCodeBlock = newIsCodeBlock;
+    const newBlockTypesDisabled = areBlockTypesDisabled(this.state);
+    if (newBlockTypesDisabled !== this.blockTypesDisabled) {
+      this.blockTypesDisabled = newBlockTypesDisabled;
       dirty = true;
     }
 
@@ -126,22 +129,6 @@ export class BlockTypeState {
       return NORMAL_TEXT;
     }
     return OTHER;
-  }
-
-  private detectCodeBlock(): boolean {
-    const { state } = this;
-    let isCodeBlock = false;
-    if (state.selection) {
-      const { $from, $to } = state.selection;
-      const { codeBlock } = state.schema.nodes;
-      isCodeBlock = true;
-      state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-        if (node.isTextblock && node.type !== codeBlock) {
-          isCodeBlock = false;
-        }
-      });
-    }
-    return isCodeBlock;
   }
 
   private isBlockTypeSchemaSupported = (blockType: BlockType) => {
@@ -196,4 +183,3 @@ const plugins = (schema: Schema<any, any>) => {
 };
 
 export default plugins;
-

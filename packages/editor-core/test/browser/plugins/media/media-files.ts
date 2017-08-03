@@ -14,7 +14,6 @@ import {
   hr,
   mention,
   code_block,
-  blockquote,
   randomId,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -445,20 +444,6 @@ describe('media-links', () => {
         ),
         p(),
       ));
-  });
-
-  it(`should insert media node into the document after current blockquote node`, () => {
-    const { editorView } = editor(doc(blockquote(p('text{<>}'))));
-
-    insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
-
-    expect(editorView.state.doc).to.deep.equal(
-      doc(blockquote(
-        p('text'),
-        mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
-        p(),
-      ))
-    );
   });
 
   it(`should insert media node into the document after current codeblock node`, () => {

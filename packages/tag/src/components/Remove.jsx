@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/cross';
 import Button from '../styled/Remove';
 
-export default class Remove extends PureComponent {
-  static propTypes = {
-    removeText: PropTypes.string.isRequired,
-    isRounded: PropTypes.bool,
-    onHoverChange: PropTypes.func,
-    onRemoveAction: PropTypes.func,
-  }
+type Props = {|
+  removeText: string,
+  isRounded?: bool,
+  onHoverChange?: (a: bool) => null,
+  onRemoveAction?: () => null,
+|}
 
-  onKeyPress = (e) => {
+export default class Remove extends PureComponent {
+  props: Props // eslint-disable-line react/sort-comp
+
+  onKeyPress = (e: KeyboardEvent) => {
     const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
 
     if (spacebarOrEnter) {

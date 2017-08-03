@@ -1,6 +1,12 @@
 # @atlaskit/media-filmstrip
 
-## Unreleased
+## 5.1.1 (2017-08-03)
+
+
+* bug fix; fix issue with line-height and maxPosition issue ([e8c86e1](https://bitbucket.org/atlassian/atlaskit/commits/e8c86e1))
+
+
+
 
 ## 4.4.0 (2017-07-27)
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { FileCardViewSmall, FileCardViewSmallProps } from '../../../src/files';
 import { FileIcon, ErrorIcon } from '../../../src/utils/index';
 
@@ -43,13 +43,11 @@ describe('FileCardViewSmall', () => {
     // We need to be sure that we can click on the "Try again" message and this click doesn't trigger
     // click on the card
     const errorActionMock = jest.fn();
-    const onClickMock = jest.fn();
 
     const cardView = mount<FileCardViewSmallProps, {}>(
       <FileCardViewSmall
         error={'some-error'}
         onRetry={{handler: errorActionMock}}
-        onClick={onClickMock}
       />);
 
     expect(cardView.find(ErrorIcon).length).toBe(1);
@@ -57,11 +55,9 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find('.retry').length).toBe(1);
 
     cardView.simulate('click');
-    expect(onClickMock).toHaveBeenCalledTimes(1);
 
     cardView.find('.retry').first().childAt(0).simulate('click');
     expect(errorActionMock).toHaveBeenCalledTimes(1);
-    expect(onClickMock).toHaveBeenCalledTimes(1);
   });
 
   it('should display error when error without handler passed', () => {
@@ -73,19 +69,5 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find(ErrorIcon).length).toBe(1);
     expect(cardView.find('.error').length).toBe(1);
     expect(cardView.find('.retry').length).toBe(0);
-  });
-
-  it('should pass onClick handlers through to root component', () => {
-    const handler = () => {};
-    const card = shallow(<FileCardViewSmall onClick={handler} />);
-
-    expect(card.props().onClick).toEqual(handler);
-  });
-
-  it('should pass onMouseEnter handlers through to root component', () => {
-    const handler = () => {};
-    const card = shallow(<FileCardViewSmall onMouseEnter={handler} />);
-
-    expect(card.props().onMouseEnter).toEqual(handler);
   });
 });

@@ -15,9 +15,10 @@ export interface AudioViewerState {
 }
 
 export class AudioViewer extends Component<AudioViewerProps, AudioViewerState> {
-  state:AudioViewerState = {
 
-  }
+  state: AudioViewerState = {
+
+  };
 
   fetchDataURI(metadata: FileItem) {
     const {context} = this.props;
@@ -47,7 +48,7 @@ export class AudioViewer extends Component<AudioViewerProps, AudioViewerState> {
 
     return (
       <Wrapper>
-        <Audio src={dataURI} controls />
+        <Audio src={dataURI} controls={true} />
       </Wrapper>
     );
   }

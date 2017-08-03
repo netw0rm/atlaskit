@@ -23,7 +23,6 @@ export interface ItemInfoState {
 export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
   render() {
     const {metadata} = this.props;
-
     return (
       <ItemInfoWrapper className="visible-on-hover">
         {metadata ? this.renderDetails(metadata.details) : undefined}
@@ -56,9 +55,9 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
     if (!canUseMiniMode) {
       return;
     }
-
+    const onMiniModeChangeCallback = () => onMiniModeChange(!this.props.isMiniModeActive);
     return (
-      <MiniModeIconWrapper isMiniModeActive={isMiniModeActive} onClick={() => onMiniModeChange(!this.props.isMiniModeActive)}>
+      <MiniModeIconWrapper isMiniModeActive={isMiniModeActive} onClick={onMiniModeChangeCallback}>
         <DocumentsIcon label="mini mode" />
       </MiniModeIconWrapper>
     );

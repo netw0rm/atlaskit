@@ -21,7 +21,7 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
 
   private defaultScale: number = 2;
 
-  state:PdfViewerState = {
+  state: PdfViewerState = {
     scale: this.defaultScale
   };
 
@@ -67,12 +67,12 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   onZoomOut = () => {
     const {scale} = this.state;
     if (scale <= 0.4) { return; }
-    this.setState({scale: scale - 0.2})
+    this.setState({scale: scale - 0.2});
   }
 
   onZoomIn = () => {
     const {scale} = this.state;
-    this.setState({scale: scale + 0.2})
+    this.setState({scale: scale + 0.2});
   }
 
   onZoomFit = () => {

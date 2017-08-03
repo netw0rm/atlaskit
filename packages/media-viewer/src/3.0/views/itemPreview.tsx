@@ -13,13 +13,14 @@ export interface ItemPreviewProps {
 }
 
 export interface ItemPreviewState {
-  
+
 }
 
 export class ItemPreview extends Component<ItemPreviewProps, ItemPreviewState> {
-  state:ItemPreviewState = {
 
-  }
+  state: ItemPreviewState = {
+
+  };
 
   render() {
     return (

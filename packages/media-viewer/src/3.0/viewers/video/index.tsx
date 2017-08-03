@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Context, FileItem} from '@atlaskit/media-core';
 import Slider from '@atlaskit/field-range';
 import {Wrapper, Video, ControlsWrapper} from './styled';
-import {MediaIdentifier} from '../../domain';
+import {MediaIdentifier} from '../..';
 
 export interface VideoViewerProps {
   identifier: MediaIdentifier;
@@ -16,9 +16,10 @@ export interface VideoViewerState {
 }
 
 export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
-  state:VideoViewerState = {
 
-  }
+  state: VideoViewerState = {
+
+  };
 
   fetchDataURI(metadata: FileItem) {
     const {context} = this.props;
@@ -48,7 +49,7 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
 
     return (
       <Wrapper>
-        <Video src={dataURI} controls />
+        <Video src={dataURI} controls={true} />
         <ControlsWrapper>
           <Slider
             value={20}
@@ -62,6 +63,6 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
   }
 
   onSliderChange = () => {
-    
+
   }
 }

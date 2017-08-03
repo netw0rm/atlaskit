@@ -31,9 +31,10 @@ export interface MediaViewerState {
 
 export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
   subscription: any;
+
   state: MediaViewerState = {
     isMiniModeActive: false
-  }
+  };
 
   fetchMetadata(item: MediaIdentifier) {
     const { context } = this.props;
@@ -103,6 +104,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     const selected = currentItem || navigation.initialItem;
     const list = listItems || [];
     const canUseMiniMode = !!list.length;
+    const onMiniModeChange = () => this.onMiniModeChange(false);
 
     return (
       <MainWrapper>
@@ -114,7 +116,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
         /> : null}
         <MiniModeView
           isVisible={isMiniModeActive}
-          onClose={() => this.onMiniModeChange(false)}
+          onClose={onMiniModeChange}
           list={list}
           context={context}
           onCardClick={this.onCardClick}

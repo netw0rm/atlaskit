@@ -55,7 +55,9 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
 
       if (handler) {
         const item = list[this.currentIndex + nextIndex];
-        item && handler(item);
+        if (item) {
+          handler(item);
+        }
       }
     };
   }

@@ -25,9 +25,7 @@ export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
     const {onZoomOut, onZoomIn, onZoomFit, zoomLevel} = this.props;
     return (
       <ItemToolsWrapper className="visible-on-hover">
-        <UploaderDetailsWrapper>
-
-        </UploaderDetailsWrapper>
+        <UploaderDetailsWrapper/>
         <ToolsContent>
           <MediaServicesZoomOutIcon label="Zoom out" onClick={onZoomOut} />
           <MediaServicesActualSizeIcon label="Actual size" onClick={onZoomFit} />
@@ -47,9 +45,10 @@ export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
     if (!onEditModeChange) {
       return null;
     }
+    const onEditModeChangeCallback = () => onEditModeChange(!this.props.isEditing);
     return (
       <EditorIconWrapper isEditing={isEditing}>
-        <MediaServicesBrushIcon label="Draw" onClick={() => onEditModeChange(!this.props.isEditing)} />
+        <MediaServicesBrushIcon label="Draw" onClick={onEditModeChangeCallback} />
       </EditorIconWrapper>
     );
   }

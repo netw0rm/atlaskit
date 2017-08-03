@@ -23,10 +23,11 @@ const defaultColor = {red: 250, green: 61, blue: 17};
 const defaultTool = 'brush';
 
 export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
-  state:ImageViewerState = {
+
+  state: ImageViewerState = {
     zoomLevel: 100,
     isEditing: false
-  }
+  };
 
   fetchDataURI(metadata: FileItem) {
     const {context} = this.props;
@@ -59,7 +60,7 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
     return (
       <ImageViewerWrapper>
         {isEditing ? this.renderEditor() : <Img src={dataURI} style={{transform}}/>}
-        <ItemTools 
+        <ItemTools
           onZoomOut={this.onZoomOut}
           onZoomIn={this.onZoomIn}
           onZoomFit={this.onZoomFit}

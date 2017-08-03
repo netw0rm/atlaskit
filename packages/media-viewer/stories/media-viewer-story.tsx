@@ -8,13 +8,13 @@ import {MediaIdentifier} from '../src/3.0/domain';
 const context = createStorybookContext();
 const onPreviewChanged = (item: MediaIdentifier) => {
   action('selection changed', item);
-}
+};
 
 storiesOf('MediaViewer', {})
   .add('Image', () => (
     <MediaViewer
       isVisible={true}
-      context={context}        
+      context={context}
       onPreviewChanged={onPreviewChanged}
       navigation={{
         initialItem: wideImageFileId
@@ -24,17 +24,17 @@ storiesOf('MediaViewer', {})
   .add('Audio', () => (
     <MediaViewer
       isVisible={true}
-      context={context}        
+      context={context}
       onPreviewChanged={onPreviewChanged}
       navigation={{
         initialItem: audioFileId
       }}
     />
-  ))  
+  ))
   .add('Video', () => (
     <MediaViewer
       isVisible={true}
-      context={context}        
+      context={context}
       onPreviewChanged={onPreviewChanged}
       navigation={{
         initialItem: videoFileId
@@ -44,13 +44,13 @@ storiesOf('MediaViewer', {})
  .add('PDF', () => (
     <MediaViewer
       isVisible={true}
-      context={context}        
+      context={context}
       onPreviewChanged={onPreviewChanged}
       navigation={{
         initialItem: docFileId
       }}
     />
-  ))  
+  ))
   .add('List using array of items', () => (
     <MediaViewer
       isVisible={true}
@@ -75,9 +75,10 @@ storiesOf('MediaViewer', {})
   ))
   .add('Open/Close', () => {
     class MediaViewerLauncher extends Component<any, any> {
+
       state = {
         isVisible: false
-      }
+      };
 
       render() {
         const {isVisible} = this.state;

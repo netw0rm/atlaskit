@@ -10,6 +10,8 @@ const titlePadding = `0 ${gridSize * 1.5}px 0 ${gridSize * 1.5}px`;
 const ContainerTitleWrapper = styled.div`
   margin-bottom: ${gridSize / 2}px;
   padding: ${titlePadding};
+  max-width: 100%;
+  min-width: 0;
 
   ${whenCollapsed`
     padding: 0;

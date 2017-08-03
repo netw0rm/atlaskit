@@ -2,20 +2,20 @@ import styled, { css } from 'styled-components';
 import { layout, containerTitleBottomMargin, drawerContainerHeaderAnimationSpeed, gridSize, globalItemSizes } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
+const padding = {
+  top: gridSize,
+  right: gridSize,
+  bottom: gridSize / 2,
+  left: gridSize,
+};
+
 const minHeight = (props) => {
   if (props.isInDrawer) {
     // the header content isn't rendered in a full-width Drawer
     return 0;
   }
   // the height of the container icon and the margin below it
-  return `${(gridSize / 2) + globalItemSizes.medium}px`;
-};
-
-const padding = {
-  top: gridSize,
-  right: gridSize,
-  bottom: gridSize / 2,
-  left: gridSize,
+  return `${padding.bottom + globalItemSizes.medium}px`;
 };
 
 const flexBasis = (props) => {

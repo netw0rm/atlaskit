@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ContainerHeaderWrapper from '../styled/ContainerHeaderWrapper';
+import { globalItemSizes } from '../../shared-variables';
 
 export default class ContainerHeader extends PureComponent {
   static propTypes = {
@@ -10,7 +11,7 @@ export default class ContainerHeader extends PureComponent {
     isInDrawer: PropTypes.bool,
   }
   static defaultProps = {
-    iconOffset: 40,
+    iconOffset: globalItemSizes.medium,
     isInDrawer: false,
   }
 

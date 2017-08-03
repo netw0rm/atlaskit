@@ -1,6 +1,22 @@
 # @atlaskit/navigation
 
-## Unreleased
+## 18.0.0 (2017-08-03)
+
+
+* bug fix; refactoring some variables and adding comments from PR feedback ([7fd97d1](https://bitbucket.org/atlassian/atlaskit/commits/7fd97d1))
+
+* bug fix; fix styling for text of selected global-themed items ([2c7087f](https://bitbucket.org/atlassian/atlaskit/commits/2c7087f))
+
+
+
+
+
+* bug fix; fixed the height of the container header when collapsed ([eaeb6b9](https://bitbucket.org/atlassian/atlaskit/commits/eaeb6b9))
+
+* breaking; containerHeaderComponent now needs to return an array of components ([def213d](https://bitbucket.org/atlassian/atlaskit/commits/def213d))
+* breaking; nav headers refactored and new stories added ([def213d](https://bitbucket.org/atlassian/atlaskit/commits/def213d))
+
+
 
 ## 17.0.0 (2017-07-28)
 

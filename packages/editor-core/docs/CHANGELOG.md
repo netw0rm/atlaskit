@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.0.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
 ## 45.0.0 (2017-08-02)
 
 * breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))

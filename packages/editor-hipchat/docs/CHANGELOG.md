@@ -1,6 +1,12 @@
 # @atlaskit/editor-hipchat
 
-## Unreleased
+## 4.17.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+
+
+
+
 
 ## 4.17.0 (2017-07-28)
 

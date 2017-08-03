@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 2.2.1 (2017-08-03)
+
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
 ## 2.2.0 (2017-08-02)
 
 * bug fix; fix renderer dependency ([2ff20ff](https://bitbucket.org/atlassian/atlaskit/commits/2ff20ff))

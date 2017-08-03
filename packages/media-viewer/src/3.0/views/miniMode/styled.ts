@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 350px;
+  width: 355px;
   height: 100%;
   background: white;
   color: black;
@@ -40,6 +40,9 @@ export const ListWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 10px;
+  overflow: auto;
+  height: calc(100% - 50px);
+  padding: 0 5px;
 `;
 
 export const Header = styled.div`

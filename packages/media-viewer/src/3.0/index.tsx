@@ -117,6 +117,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           onClose={() => this.onMiniModeChange(false)}
           list={list}
           context={context}
+          onCardClick={this.onCardClick}
         />
         <ItemInfo 
           metadata={metadata}
@@ -142,5 +143,13 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
 
   onMiniModeChange = (isMiniModeActive: boolean) => {
     this.setState({isMiniModeActive});
+  }
+
+  onCardClick = (currentItem: MediaIdentifier) => {
+    this.setState({
+      currentItem,
+      isMiniModeActive: false
+    });
+    this.fetchMetadata(currentItem);
   }
 }

@@ -9,6 +9,7 @@ import {MediaIdentifier} from '../..';
 export interface MiniModeViewProps {
   isVisible?: boolean;
   onClose?: any;
+  onCardClick?: any;
   list?: Array<MediaIdentifier>;
   context?: Context;
 }
@@ -46,6 +47,7 @@ export class MiniModeView extends Component<MiniModeViewProps, MiniModeViewState
         <Card
           context={context}
           identifier={i}
+          onClick={this.onCardClick(i)}
         />
       </CardWrapper>
     ));
@@ -55,5 +57,15 @@ export class MiniModeView extends Component<MiniModeViewProps, MiniModeViewState
         {cards}
       </ListWrapper>
     );
+  }
+
+  onCardClick = (identifier: MediaIdentifier) => () => {
+    const {onCardClick} = this.props;
+    if (!onCardClick) {
+      return;
+    }
+
+    onCardClick(identifier);
+
   }
 }

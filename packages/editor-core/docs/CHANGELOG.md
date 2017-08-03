@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.1.0 (2017-08-03)
+
+
+* feature; support document filtering. Include implementation for task decision content. (issues closed: fs-1223) ([8afca9c](https://bitbucket.org/atlassian/atlaskit/commits/8afca9c))
 ## 45.0.1 (2017-08-03)
 
 * bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))

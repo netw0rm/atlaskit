@@ -1,6 +1,6 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
+import { selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise } from '../type-helpers';
 import debug from '../util/logger';
@@ -435,11 +435,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     if (!this.emojiRepository) {
       return [];
     }
-    const dynamicCategoryList = this.emojiRepository.getDynamicCategoryList();
-    if (dynamicCategoryList.indexOf(customCategory) === -1 && !!this.mediaEmojiResource) {
-      dynamicCategoryList.push(customCategory);
-    }
-    return dynamicCategoryList;
+    return this.emojiRepository.getDynamicCategoryList(!!this.mediaEmojiResource);
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

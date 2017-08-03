@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import * as React from 'react';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import tablePlugins from '../../../src/plugins/table';
+import tableCommands from '../../../src/plugins/table/commands';
 import mediaPlugins from '../../../src/plugins/media';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import ToolbarInsertBlock from '../../../src/ui/ToolbarInsertBlock';
@@ -46,6 +47,17 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />
     );
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+  });
+
+  it('should not render disabled ToolbarButton even if current selection is code block', () => {
+    const { editorView } = editor(doc(code_block()('text{<>}')));
+    const toolbarOption = mount(
+      <ToolbarInsertBlock
+        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(false);
   });
 
   it('should not render if none of the plugins are present', () => {
@@ -180,7 +192,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     const funcSpy = sinon.spy();
-    tablePluginsSet[0].getState(editorView.state).createTable = () => funcSpy;
+    tableCommands.createTable = () => funcSpy;
     const tableButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Table') > 0)
@@ -188,37 +200,5 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     tableButton.simulate('click');
     expect(funcSpy.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.table.button')).to.equal(true);
-  });
-
-  it('should disable table option if currently selected block is code', () => {
-    const { editorView } = editor(doc(code_block({ language: 'js' })('te{<>}xt')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
-        editorView={editorView}
-      />
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    const tableButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Table') > 0)
-      .find('Element');
-    expect(tableButton.prop('isDisabled')).to.equal(true);
-  });
-
-  it('should disable Panel option if currently selected block is code', () => {
-    const { editorView } = editor(doc(code_block({ language: 'js' })('te{<>}xt')));
-    const toolbarOption = mount(
-      <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
-        editorView={editorView}
-      />
-    );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    const panelButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.text().indexOf('Panel') > 0)
-      .find('Element');
-    expect(panelButton.prop('isDisabled')).to.equal(true);
   });
 });

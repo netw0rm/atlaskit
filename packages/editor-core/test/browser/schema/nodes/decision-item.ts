@@ -27,6 +27,6 @@ describe('@atlaskit/editor-core/schema decisionItem node', () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'decisionList', 'decisionItem', 'orderedList', 'listItem']
+    nodes: ['doc', 'paragraph', 'heading', 'text', 'decisionList', 'decisionItem', 'orderedList', 'bulletList', 'listItem']
   });
 }

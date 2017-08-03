@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "44.2.0",
+  "version": "45.0.0",
   "config": {
     "access": "public"
   },
@@ -9,6 +9,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
+  "ak:webpack:raw": "src/index.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
     "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",
@@ -17,7 +18,9 @@
     "build/json-schema": "mkdir -p dist/json-schema/v1 && ../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./dist/json-schema/v1/full.json",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "storybook": "../../build/bin/storybook.single.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
     "dist/es5",
@@ -52,7 +55,7 @@
     "@atlaskit/layer": "^2.5.1",
     "@atlaskit/media-card": "^17.11.2",
     "@atlaskit/media-core": "^8.4.1",
-    "@atlaskit/media-filmstrip": "^4.3.2",
+    "@atlaskit/media-filmstrip": "^5.0.0",
     "@atlaskit/mention": "^7.3.0",
     "@atlaskit/profilecard": "^3.6.3",
     "@atlaskit/single-select": "^1.10.0",
@@ -65,6 +68,7 @@
     "codemirror": "^5.26.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
+    "markdown-it-table": "^1.0.0",
     "mediapicker": "^5.3.7",
     "orderedmap": "^1.0.0",
     "prosemirror-commands": "^0.22.0",

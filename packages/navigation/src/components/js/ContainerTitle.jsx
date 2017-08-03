@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import ContainerTitleWrapper from '../styled/ContainerTitleWrapper';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleInner from '../styled/ContainerTitleInner';
 import ContainerTitleSubText from '../styled/ContainerTitleSubText';
@@ -53,15 +54,17 @@ export default class ContainerTitle extends PureComponent {
     const StyledLink = getStyledLink(Link);
 
     return (
-      <StyledLink href={href}>
-        <ContainerTitleInner>
-          <ContainerTitleIcon>{icon}</ContainerTitleIcon>
-          <ContainerTitleTextWrapper>
-            <ContainerTitleText>{text}</ContainerTitleText>
-            {subText ? <ContainerTitleSubText>{subText}</ContainerTitleSubText> : null}
-          </ContainerTitleTextWrapper>
-        </ContainerTitleInner>
-      </StyledLink>
+      <ContainerTitleWrapper>
+        <StyledLink href={href}>
+          <ContainerTitleInner>
+            <ContainerTitleIcon>{icon}</ContainerTitleIcon>
+            <ContainerTitleTextWrapper>
+              <ContainerTitleText>{text}</ContainerTitleText>
+              {subText ? <ContainerTitleSubText>{subText}</ContainerTitleSubText> : null}
+            </ContainerTitleTextWrapper>
+          </ContainerTitleInner>
+        </StyledLink>
+      </ContainerTitleWrapper>
     );
   }
 }

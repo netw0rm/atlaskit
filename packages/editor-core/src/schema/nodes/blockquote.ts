@@ -11,7 +11,7 @@ export interface Definition {
 }
 
 export const blockquote: NodeSpec = {
-  content: 'block+',
+  content: 'paragraph+',
   group: 'block',
   defining: true,
   selectable: false,

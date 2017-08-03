@@ -11,9 +11,18 @@ its descendents, then passes the event up the hierarchy
 */
 class AnalyticsDecorator extends Component {
   props: {
+    /** Key/values used to extend event data. */
     data?: Object,
+    /** Function called to get the key/values used to extend event data.
+    Occurs after event data has been extended with `data`. */
     getData?: (name: string, decoratedData: Object) => Object,
+    /** String, regex, or function filter to limit what events are extended
+    based on event name. String filters use exact matching unless they end
+    with a '.', in which case a partial match on the beginning of the event
+    name will be used.
+    */
     match?: string | ((name: string) => boolean),
+    /** Sets wether to extended private or public events. */
     matchPrivate?: boolean,
   };
   static defaultProps = {

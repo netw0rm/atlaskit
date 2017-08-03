@@ -1,6 +1,11 @@
 # @atlaskit/drag-and-drop
 
-## Unreleased
+## 4.5.1 (2017-08-01)
+
+* bug fix; fixing small race condition where item could still be animating in the DROP_COMPLETE ([c69febb](https://bitbucket.org/atlassian/atlaskit/commits/c69febb))
+
+
+
 
 ## 4.5.0 (2017-07-28)
 

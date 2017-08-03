@@ -67,7 +67,7 @@ const fragment2 = `
 </span>
 `;
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('media', () => {
     checkParseEncodeRoundTrips('thumbnail type (viewContext)',
       schema,

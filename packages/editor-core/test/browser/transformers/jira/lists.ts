@@ -14,7 +14,7 @@ const ol = nodeFactory(schema.nodes.orderedList!);
 // Marks
 const strong = markFactory(schema.marks.strong);
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('lists', () => {
     checkParseEncodeRoundTrips('bullet list',
       schema,

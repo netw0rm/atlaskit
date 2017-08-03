@@ -11,7 +11,7 @@ const p = nodeFactory(schema.nodes.paragraph);
 // Marks
 const textColor = (color: string) => markFactory(schema.marks.textColor!, { color });
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('textColor', () => {
     checkParseEncodeRoundTrips('colour from palette',
       schema,

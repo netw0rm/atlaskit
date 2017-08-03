@@ -9,7 +9,7 @@ const doc = nodeFactory(schema.nodes.doc);
 const blockquote = nodeFactory(schema.nodes.blockquote!, {});
 const p = nodeFactory(schema.nodes.paragraph);
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('blockquote', () => {
     checkParseEncodeRoundTrips('simple content',
       schema,

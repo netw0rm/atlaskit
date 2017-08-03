@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 
 import AtlassianContainerResult from './AtlassianContainerResult';
 
-const noOp = () => {};
-
-const ROOM_RESULT_TYPE = 'room';
-
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -14,31 +10,20 @@ const ROOM_RESULT_TYPE = 'room';
 // it to AtlassianContainerResult instead
 // ===================================================================
 
-export default class RoomResult extends PureComponent {
+export default class JiraProjectResult extends PureComponent {
   static propTypes = {
-    topic: PropTypes.string,
-    type: PropTypes.string,
-  }
-
-  static defaultProps = {
-    isSelected: false,
-    isTabbingDisabled: false,
-    onClick: noOp,
-    onMouseEnter: noOp,
-    onMouseLeave: noOp,
-    privacy: 'none',
-    type: ROOM_RESULT_TYPE,
+    projectType: PropTypes.oneOf(['Business project', 'Software project', 'Service desk']),
   }
 
   render() {
     const {
-      topic,
+      projectType,
       ...containerResultProps
     } = this.props;
     return (
       <AtlassianContainerResult
         {...containerResultProps}
-        subText={topic}
+        subText={projectType}
       />
     );
   }

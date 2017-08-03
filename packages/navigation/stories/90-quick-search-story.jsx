@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
+import AudioCircleIcon from '@atlaskit/icon/glyph/audio-circle';
 
 import BasicNavigation from './components/BasicNavigation';
 import BasicQuickSearch from './components/BasicQuickSearch';
@@ -9,7 +10,17 @@ import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
 import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
 
-const { PersonResult, RoomResult } = quickSearchResultTypes;
+const {
+  AtlassianContainerResult,
+  AtlassianObjectResult,
+  ConfluenceSpaceResult,
+  JiraProjectResult,
+  PersonResult,
+  ResultBase,
+  RoomResult,
+} = quickSearchResultTypes;
+
+import sampleAvatars from './examples/90-sample-avatars';
 
 const withRootTheme = children => (
   <WithRootTheme provided={presets.container}>
@@ -18,7 +29,7 @@ const withRootTheme = children => (
 );
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
-const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
+const getContainerAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
 
 storiesOf(`${name}/QuickSearch`, module)
   .add('Example implementation', () => withRootTheme(
@@ -36,68 +47,110 @@ storiesOf(`${name}/QuickSearch`, module)
   .add('Example with custom result types', () => withRootTheme(
     CustomQuickSearchResults
   ))
-  .add('Person Result', () => withRootTheme(
-    <div>
-      <PersonResult
-        key="1"
-        avatarUrl={getPersonAvatarUrl('owkenobi')}
-        mentionName="BenKen"
-        name="Obi Wan Kenobi"
-        presenceState="online"
-      />
-      <PersonResult
-        key="2"
-        avatarUrl={getPersonAvatarUrl('qgjinn')}
-        mentionName="MasterQ"
-        name="Qui-Gon Jinn"
-        presenceMessage="On-call"
-        presenceState="offline"
-      />
-      <PersonResult
-        key="3"
-        avatarUrl={getPersonAvatarUrl('sidious')}
-        mentionName="TheEmperor"
-        mentionPrefix="#"
-        name="Palpatine"
-        presenceMessage="Custom mention prefix"
-        presenceState="busy"
-      />
-      <PersonResult key="4" name="Minimum detail person" />
-    </div>
-  ))
-  .add('Room Result', () => withRootTheme(
-    <div>
-      <AkNavigationItemGroup title="Room Examples" key="Room Examples">
+  .add('Example results', () => withRootTheme(
+    <div style={{ padding: '2em' }}>
+      <h3>People</h3>
+      People results have circular avatar and a name.
+      They can optionally display a mention handle and presence.
+      <AkNavigationItemGroup title="People examples" key="People examples">
+        <PersonResult
+          avatarUrl={getPersonAvatarUrl('owkenobi')}
+          mentionName="BenKen"
+          name="Obi Wan Kenobi"
+          presenceState="online"
+        />
+        <PersonResult
+          avatarUrl={getPersonAvatarUrl('qgjinn')}
+          mentionName="MasterQ"
+          name="Qui-Gon Jinn"
+          presenceMessage="On-call"
+          presenceState="offline"
+        />
+        <PersonResult
+          avatarUrl={getPersonAvatarUrl('sidious')}
+          mentionName="TheEmperor"
+          mentionPrefix="#"
+          name="Palpatine"
+          presenceMessage="Custom mention prefix"
+          presenceState="busy"
+        />
+        <PersonResult key="4" name="Minimum detail person" />
+      </AkNavigationItemGroup>
+      <h3>Containers</h3>
+      Containers have square avatars, can be marked as private and have a name and subText fields.
+      <AkNavigationItemGroup title="Container examples" key="Container examples">
+        <AtlassianContainerResult
+          avatarUrl={getContainerAvatarUrl(3)}
+          name="Cargo boxes"
+          subText="They're big!"
+        />
+        <AtlassianContainerResult
+          isPrivate
+          name="Private container"
+        />
+        <AtlassianContainerResult key="3" name="Minimum detail container" />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup title="Confluence space example" key="Confluence space example">
+        <ConfluenceSpaceResult
+          avatarUrl={getContainerAvatarUrl(4)}
+          isPrivate
+          name="Phillip Jacobs' personal space"
+          spaceType="Space"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup title="Jira project example" key="Jira project example">
+        <JiraProjectResult
+          avatarUrl={getContainerAvatarUrl(5)}
+          name="AtlasKit"
+          projectType="Software Project"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup title="HipChat room example" key="HipChat room example">
         <RoomResult
-          key="3"
-          avatarUrl={getRoomAvatarUrl(3)}
+          avatarUrl={getContainerAvatarUrl(1)}
+          isPrivate
           name="No Homers"
           topic="We're allowed one"
         />
-        <RoomResult
-          key="4"
-          avatarUrl={getRoomAvatarUrl(4)}
-          name="Public Room"
-          privacy="public"
-          topic="Custom room topic w/ privacy"
-        />
-        <RoomResult key="7" name="Minimum detail room" />
       </AkNavigationItemGroup>
-      <AkNavigationItemGroup title="Privacy (should show privacy icon)" key="Privacy">
-        <RoomResult
-          key="1"
-          privacy="private"
-          name="Private Room"
+
+      <h3>Objects</h3>
+      Like containers, objects have square avatars and a name and can be marked as private,
+      however, instead of a free subText field, they display the name of their containing
+      entity.  They can optionally display an object key.
+      <AkNavigationItemGroup title="Object examples" key="Object examples">
+        <AtlassianObjectResult
+          avatarUrl={sampleAvatars.jiraIssueBug}
+          name="Too much awesomeness in one repo"
+          objectKey="AK-9001"
+          containerName="AtlasKit"
         />
-        <RoomResult
-          key="2"
-          privacy="public"
-          name="Public Room"
+        <AtlassianObjectResult
+          avatarUrl={sampleAvatars.confluenceBlog}
+          name="Yeah, I cut my dev loop in half, but you'll never guess what happened next!"
+          containerName="Buzzfluence"
+        />
+        <AtlassianObjectResult
+          avatarUrl={sampleAvatars.confluencePage}
+          name="Prank schedule: April 2017"
+          containerName="The Scream Team"
+          isPrivate
         />
       </AkNavigationItemGroup>
-      <AkNavigationItemGroup title="Invalid avatar sources (avatar should be present and square)" key="Invalid avatar sources">
-        <RoomResult key="5" avatarUrl="#" name="Room w/ broken avatarUrl" />
-        <RoomResult key="6" name="Room w/ null avatarUrl" />
+
+      <h3>Miscellaneous</h3>
+      If the preset result types do not support the shape required, ResultBase can be used
+      directly for maximum flexibility whilst maintaining QuickSearch compatibility.
+      <AkNavigationItemGroup title="Miscellaneous examples" key="Miscellaneous examples">
+        <ResultBase
+          text="I don't even have an icon or subText"
+        />
+        <ResultBase
+          caption="#ReSuLtsUNl3a$h3d!"
+          icon={<AudioCircleIcon size="large" primaryColor="#FFEBE5" secondaryColor="RebeccaPurple" />}
+          text="Cronenberg result"
+          subText="Anything goes!"
+        />
       </AkNavigationItemGroup>
     </div>
   ))

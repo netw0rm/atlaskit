@@ -17,15 +17,9 @@ const PERSON_RESULT_TYPE = 'person';
 export default class PersonResult extends PureComponent {
   static propTypes = {
     avatarUrl: PropTypes.string,
-    href: PropTypes.string,
-    isSelected: PropTypes.bool,
-    isTabbingDisabled: PropTypes.bool,
     mentionName: PropTypes.string,
     mentionPrefix: PropTypes.string,
     name: PropTypes.string.isRequired,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
     presenceMessage: PropTypes.string,
     presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -33,8 +27,6 @@ export default class PersonResult extends PureComponent {
   }
 
   static defaultProps = {
-    isSelected: false,
-    isTabbingDisabled: false,
     mentionPrefix: '@',
     onClick: noOp,
     onMouseEnter: noOp,
@@ -53,35 +45,21 @@ export default class PersonResult extends PureComponent {
       presence={this.props.presenceState}
       src={this.props.avatarUrl}
     />
-  )
+  );
 
   render() {
     const {
-      href,
-      isSelected,
-      isTabbingDisabled,
       name,
-      onClick,
-      onMouseEnter,
-      onMouseLeave,
       presenceMessage,
-      resultId,
-      type,
+      ...resultBaseProps
     } = this.props;
     return (
       <ResultBase
+        {...resultBaseProps}
         caption={this.getMention()}
-        href={href}
         icon={this.getAvatar()}
-        isSelected={isSelected}
-        isTabbingDisabled={isTabbingDisabled}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        resultId={resultId}
         subText={presenceMessage}
         text={name}
-        type={type}
       />
     );
   }

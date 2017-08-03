@@ -212,6 +212,7 @@ const FooterRoot = styled.footer`
   border-radius: ${borderRadius}px;
   display: flex;
   margin-bottom: ${math.multiply(gridSize, 3)}px;
+  margin-top: ${math.multiply(gridSize, 6)}px;
 `;
 const FooterItem = styled(Link)`
   background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};

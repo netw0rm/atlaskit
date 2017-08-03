@@ -193,12 +193,10 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   }
 
   calculateDynamicCategories(): string[] {
-    const categories = super.calculateDynamicCategories();
-    // Uploading resource should always contain custom category
-    if (categories.indexOf(customCategory) === -1) {
-      categories.push(customCategory);
+    if (!this.emojiRepository) {
+      return [];
     }
-    return categories;
+    return this.emojiRepository.getDynamicCategoryList(true);
   }
 }
 

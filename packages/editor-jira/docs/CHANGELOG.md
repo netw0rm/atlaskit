@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.0.2 (2017-08-03)
+
+* bug fix; undefined behaviour of parseIntoAtlassianDocument if first argument is nullable (issues closed: ed-2395) ([42cdb5d](https://bitbucket.org/atlassian/atlaskit/commits/42cdb5d))
 ## 20.0.1 (2017-08-03)
 
 * bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))

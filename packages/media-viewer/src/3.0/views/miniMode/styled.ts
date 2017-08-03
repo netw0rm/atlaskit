@@ -1,6 +1,10 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 
+export interface WrapperProps {
+  isVisible?: boolean;
+}
+
 export const Wrapper = styled.div`
   position: absolute;
   top: 0;
@@ -14,7 +18,7 @@ export const Wrapper = styled.div`
   transform: translateX(-100%);
   padding: 10px;
 
-  ${({isVisible}: any) => isVisible && `
+  ${({isVisible}: WrapperProps) => isVisible && `
     transform: translateX(0);
   ` || ''}
 `;

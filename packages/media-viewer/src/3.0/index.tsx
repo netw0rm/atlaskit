@@ -70,7 +70,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       if (collectionName) {
         const provider = context.getMediaCollectionProvider(collectionName, 20);
         // TODO: clean subscription
-        const subscription = provider.observable().subscribe({
+        provider.observable().subscribe({
           next(collection: MediaCollection) {
             // TODO: Re-use metada provided from the collection call
             const fileItems = collection.items
@@ -112,26 +112,26 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     return (
       <MainWrapper>
         {list.length ? <Navigation
-          list={list} 
-          selected={selected} 
+          list={list}
+          selected={selected}
           onNext={this.navigate('next')}
           onPrev={this.navigate('prev')}
         /> : null}
-        <MiniModeView 
+        <MiniModeView
           isVisible={isMiniModeActive}
           onClose={() => this.onMiniModeChange(false)}
           list={list}
           context={context}
           onCardClick={this.onCardClick}
         />
-        <ItemInfo 
+        <ItemInfo
           metadata={metadata}
           isMiniModeActive={isMiniModeActive}
           canUseMiniMode={canUseMiniMode}
           onMiniModeChange={this.onMiniModeChange}
           onClose={this.onMediaViewerClose}
         />
-        {metadata ? 
+        {metadata ?
           <ItemPreview
             context={context}
             metadata={metadata}

@@ -17,7 +17,7 @@ export interface ItemInfoProps {
 }
 
 export interface ItemInfoState {
-  
+
 }
 
 export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {

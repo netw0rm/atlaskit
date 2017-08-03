@@ -102,17 +102,25 @@ export const ZoomWrapper = styled.div`
   user-select: none;
 `;
 
+export interface EditorIconWrapperProps {
+  isEditing?: boolean;
+}
+
 export const EditorIconWrapper = styled.div`
   border-radius: 5px;
-  ${({isEditing}: any) => isEditing && `
+  ${({isEditing}: EditorIconWrapperProps) => isEditing && `
     background: #2B3955;
   ` || ''}
 `;
 
+export interface MiniModeIconWrapper {
+  isMiniModeActive?: boolean;
+}
+
 export const MiniModeIconWrapper = styled.div`
   margin-right: 10px;
   ${iconBaseStyle}
-  ${({isMiniModeActive}: any) => isMiniModeActive && `
+  ${({isMiniModeActive}: MiniModeIconWrapper) => isMiniModeActive && `
     background: #2B3955;
   ` || ''}
 `;

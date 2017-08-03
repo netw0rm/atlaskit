@@ -16,6 +16,7 @@ export interface NavigationConfig {
 export interface MediaViewerProps {
   context: Context;
   navigation: NavigationConfig;
+  openerElement?: HTMLElement;
   onPreviewChanged?: (item: MediaIdentifier) => void;
   isVisible?: boolean;
   onClose?: any;
@@ -105,9 +106,10 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
     const list = listItems || [];
     const canUseMiniMode = !!list.length;
     const onMiniModeChange = () => this.onMiniModeChange(false);
+    const openerOrigin = this.getOpenerOrigin();
 
     return (
-      <MainWrapper>
+      <MainWrapper openerOrigin={openerOrigin}>
         {list.length ? <Navigation
           list={list}
           selected={selected}
@@ -137,6 +139,18 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
 
       </MainWrapper>
     );
+  }
+
+  getOpenerOrigin(): string {
+    const {openerElement} = this.props;
+
+    if (!openerElement) { return ''; }
+
+    const {left, top, width, height} = openerElement.getBoundingClientRect();
+    const leftOrigin = left + width / 2;
+    const topOrigin = top + height / 2;
+
+    return `${leftOrigin}px ${topOrigin}px`;
   }
 
   navigate = (direction) => (currentItem: MediaIdentifier) => {

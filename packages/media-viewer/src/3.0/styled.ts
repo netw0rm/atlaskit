@@ -5,22 +5,19 @@ const fadeInKeyframe = keyframes`
   0%{
     opacity: 0;
     transform: scale(0);
-    border-radius: 50%;
   }
   100%{
     opacity: 1;
     transform: scale(1);
-    border-radius: 0;
   }
 `;
 
 export const fadeIn = `
-  animation: ${fadeInKeyframe} .4s forwards
+  animation: ${fadeInKeyframe} .5s forwards
 `;
 
 export const MainWrapper = styled.div`
   ${fadeIn};
-
   position: absolute;
   top: 0;
   left: 0;
@@ -34,6 +31,10 @@ export const MainWrapper = styled.div`
   background-color: rgba(27, 38, 56, 0.8);
   overflow: hidden;
   z-index: 9;
+
+  ${({openerOrigin}: any) => openerOrigin && `
+    transform-origin: ${openerOrigin};
+  ` || ''}
 
   * {
     box-sizing: border-box;

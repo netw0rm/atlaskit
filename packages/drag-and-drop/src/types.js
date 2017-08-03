@@ -15,26 +15,45 @@ export type Position = {|
 
 export type DimensionFragment = {|
   top: number,
-  right: number,
-  bottom: number,
   left: number,
+  bottom: number,
+  right: number,
   width: number,
   height: number,
-|}
-
-export type Dimension = {|
-  id: Id,
-  withMargin: DimensionFragment,
-  withoutMargin: DimensionFragment,
   center: Position,
 |}
 
+export type DraggableDimension = {|
+  id: DraggableId,
+  droppableId: DroppableId,
+  page: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |},
+  client: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |}
+|}
+
+export type DroppableDimension = {|
+  id: DroppableId,
+  scroll: {|
+    initial: Position,
+    current: Position,
+  |},
+  page: {|
+    withMargin: DimensionFragment,
+    withoutMargin: DimensionFragment,
+  |}
+|}
 export type DraggableLocation = {|
   droppableId: DroppableId,
   index: number
 |};
 
-export type DimensionMap = { [key: Id]: Dimension };
+export type DraggableDimensionMap = { [key: DraggableId]: DraggableDimension };
+export type DroppableDimensionMap = { [key: DroppableId]: DroppableDimension };
 
 export type DragMovement = {|
   draggables: DraggableId[],
@@ -47,18 +66,47 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
+export type InitialDragLocation = {|
+  selection: Position,
+  center: Position,
+|}
+
+export type WithinDroppable = {|
+  center: Position,
+|}
+
 export type InitialDrag = {|
   source: DraggableLocation,
-  center: Position,
+  // viewport
+  client: InitialDragLocation,
+  // viewport + window scroll
+  page: InitialDragLocation,
+  // Storing scroll directly to support movement during a window scroll.
+  // Value required for comparison with current scroll
+  windowScroll: Position,
+  // viewport + window scroll + droppable scroll diff
+  // (this will be the same as page initially)
+  withinDroppable: WithinDroppable,
+|}
+
+export type CurrentDragLocation = {|
   selection: Position,
-  dimension: Dimension,
+  center: Position,
+  offset: Position,
 |}
 
 export type CurrentDrag = {|
   id: DraggableId,
   type: TypeId,
-  offset: Position,
-  center: Position,
+  // viewport
+  client: CurrentDragLocation,
+  // viewport + scroll
+  page: CurrentDragLocation,
+  // Storing scroll directly to support movement during a window scroll.
+  // Value required for comparison with current scroll
+  windowScroll: Position,
+  // viewport + scroll + droppable scroll
+  withinDroppable: WithinDroppable,
   shouldAnimate: boolean,
 |}
 
@@ -87,8 +135,8 @@ export type Phase = 'IDLE' | 'COLLECTING_DIMENSIONS' | 'DRAGGING' | 'DROP_ANIMAT
 
 export type DimensionState = {|
   request: ?TypeId,
-  draggable: DimensionMap,
-  droppable: DimensionMap,
+  draggable: DraggableDimensionMap,
+  droppable: DroppableDimensionMap,
 |};
 
 export type DropState = {|

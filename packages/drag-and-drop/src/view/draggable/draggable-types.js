@@ -6,7 +6,7 @@ import type { PropType, HasDefaultProp } from 'babel-plugin-react-flow-props-to-
 
 import type {
   DraggableId,
-  InitialDrag,
+  DraggableDimension,
   Position,
   TypeId,
   ZIndex,
@@ -16,6 +16,7 @@ import type {
 import {
   lift,
   move,
+  moveByWindowScroll,
   moveForward,
   moveBackward,
   drop,
@@ -27,17 +28,22 @@ import type {
 } from '../drag-handle/drag-handle-types';
 
 export type DraggingStyle = {|
-  position: 'absolute',
+  position: 'fixed',
   boxSizing: 'border-box',
+  // allow scrolling of the element behind the dragging element
+  pointerEvents: 'none',
   zIndex: ZIndex,
   width: number,
   height: number,
+  top: number,
+  left: number,
   transform: ?string,
 |}
 
 export type NotDraggingStyle = {|
   transition: ?string,
   transform: ?string,
+  pointerEvents: 'none' | 'auto',
 |}
 
 export type DraggableStyle = DraggingStyle | NotDraggingStyle;
@@ -64,6 +70,7 @@ export type StateSnapshot = {|
 export type DispatchProps = {
   lift: PropType<typeof lift, Function>,
   move: PropType<typeof move, Function>,
+  moveByWindowScroll: PropType<typeof moveByWindowScroll, Function>,
   moveForward: PropType<typeof moveForward, Function>,
   moveBackward: PropType<typeof moveBackward, Function>,
   drop: PropType<typeof drop, Function>,
@@ -74,9 +81,10 @@ export type DispatchProps = {
 export type MapProps = {|
   isDragging: boolean,
   isDropAnimating: boolean,
+  isAnotherDragging: boolean,
   canAnimate: boolean,
   offset: Position,
-  initial: ?InitialDrag,
+  dimension: ?DraggableDimension,
 |}
 
 export type OwnProps = {|

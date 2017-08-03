@@ -3,8 +3,7 @@ import { gridSize } from '../../shared-variables';
 import { isInCompactGroup, isCollapsed } from '../../theme/util';
 
 const size = gridSize * 3;
-const offsetLeft = gridSize * 3;
-const openPadding = `0 ${gridSize * 2}px 0 ${offsetLeft - (gridSize * 2)}px`;
+const openPadding = `0 ${gridSize}px 0 0`;
 const compactPadding = `0 ${gridSize}px 0 0`;
 
 const getPadding = ({ theme, hasNoPadding }) => {

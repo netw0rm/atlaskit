@@ -1,11 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { ItemGroup } from '@atlaskit/item';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
-import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
-import { WithGroupTheme } from '../../theme/util';
 import type { ReactElement } from '../../types';
 
 type Props = {|
@@ -60,18 +59,18 @@ export default class NavigationItemGroup extends PureComponent {
       </NavigationItemGroupHeader>
     ) : null;
 
+    const groupHeading = separator || header ? (
+      <div>{separator}{header}</div>
+    ) : null;
+
     return (
-      <WithGroupTheme
+      <ItemGroup
+        title={groupHeading}
+        elemAfter={wrappedAction}
         isCompact={isCompact}
       >
-        <div>
-          <NavigationItemGroupInner hasHeaderContent={(separator || header)}>
-            {separator}
-            {header}
-            {children}
-          </NavigationItemGroupInner>
-        </div>
-      </WithGroupTheme>
+        {children}
+      </ItemGroup>
     );
   }
 }

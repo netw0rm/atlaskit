@@ -27,16 +27,14 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   }
 
   if (schema.nodes.codeBlock) {
-    rules.push(createInputRule(/^```$/, (state, match, start, end): Transaction | undefined => {
-      const lengthOfDecorator = match[0].length;
-
-      // Because the node content is wrap by the node margin in prosemirror
-      // + 2 is the parent margin size. 1 in the front, and 1 at the end.
-      const convertedNodeHasContent = state.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
-
-      if (isConvertableToCodeBlock(state) && convertedNodeHasContent) {
+    rules.push(createInputRule(/^```(\S*)\s$/, (state, match, start, end): Transaction | undefined => {
+      const attributes: any = {};
+      if (match[1]) {
+        attributes.language = match[1];
+      }
+      if (isConvertableToCodeBlock(state)) {
         analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
-        return transformToCodeBlockAction(state)
+        return transformToCodeBlockAction(state, attributes)
           // remove markdown decorator ```
           .delete(start, end)
           .scrollIntoView();

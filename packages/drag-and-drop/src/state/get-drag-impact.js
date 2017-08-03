@@ -2,25 +2,40 @@
 import type { DraggableId,
   DroppableId,
   DragMovement,
-  Dimension,
-  DimensionMap,
+  DraggableDimension,
+  DroppableDimension,
+  DraggableDimensionMap,
+  DroppableDimensionMap,
   DragImpact,
+  DimensionFragment,
+  WithinDroppable,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
 import getDraggablesInsideDroppable from './get-draggables-inside-droppable';
 import noImpact from './no-impact';
 
-// It is the responsiblity of this function to return
-// the impact of a drag
+// It is the responsibility of this function
+// to return the impact of a drag
 
-export default (
-  newCenter: Position,
+type ImpactArgs = {|
+  // used to lookup which droppable you are over
+  page: Position,
+  // used for comparison with other dimensions
+  withinDroppable: WithinDroppable,
   draggableId: DraggableId,
-  draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap
-): DragImpact => {
+  draggables: DraggableDimensionMap,
+  droppables: DroppableDimensionMap
+|}
+
+export default ({
+  page,
+  withinDroppable,
+  draggableId,
+  draggables,
+  droppables,
+}: ImpactArgs): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
-    newCenter, droppableDimensions
+    page, droppables
   );
 
   // not dragging over anything
@@ -28,45 +43,47 @@ export default (
     return noImpact;
   }
 
-  const draggingDimension: Dimension = draggableDimensions[draggableId];
-  const droppableDimension: Dimension = droppableDimensions[droppableId];
+  const newCenter = withinDroppable.center;
+  const draggingDimension: DraggableDimension = draggables[draggableId];
+  const droppableDimension: DroppableDimension = droppables[droppableId];
 
-  const isMovingForward: boolean = newCenter.y - draggingDimension.center.y > 0;
-
-  // TODO: if not in the same home dimensions then can only move forward
-
-  // get all draggables inside the draggable
-  const insideDroppable: Dimension[] = getDraggablesInsideDroppable(
+  const insideDroppable: DraggableDimension[] = getDraggablesInsideDroppable(
     droppableDimension,
-    draggableDimensions
+    draggables,
   );
 
+  // not considering margin so that items move based on visible edges
+  const draggableCenter: Position = draggingDimension.page.withoutMargin.center;
+  const isMovingForward: boolean = newCenter.y - draggableCenter.y > 0;
+
   const moved: DraggableId[] = insideDroppable
-    .filter((dimension: Dimension): boolean => {
+    .filter((dimension: DraggableDimension): boolean => {
       // do not want to move the item that is dragging
       if (dimension === draggingDimension) {
         return false;
       }
 
+      const fragment: DimensionFragment = dimension.page.withoutMargin;
+
       if (isMovingForward) {
         // 1. item needs to start ahead of the moving item
         // 2. the dragging item has moved over it
-        if (dimension.center.y < draggingDimension.center.y) {
+        if (fragment.center.y < draggableCenter.y) {
           return false;
         }
 
-        return newCenter.y > dimension.withMargin.top;
+        return newCenter.y > fragment.top;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
       // 2. the dragging item has moved over it
-      if (draggingDimension.center.y < dimension.center.y) {
+      if (draggableCenter.y < fragment.center.y) {
         return false;
       }
 
-      return newCenter.y < dimension.withMargin.bottom;
+      return newCenter.y < fragment.bottom;
     })
-    .map((dimension: Dimension): DroppableId => dimension.id);
+    .map((dimension: DraggableDimension): DroppableId => dimension.id);
 
   const startIndex = insideDroppable.indexOf(draggingDimension);
   const index: number = (() => {
@@ -81,7 +98,11 @@ export default (
     return startIndex - moved.length;
   })();
 
-  const amount = index !== startIndex ? draggingDimension.withMargin.height : 0;
+  const amount = index !== startIndex ?
+    // need to ensure that the whole item is moved
+    draggingDimension.page.withMargin.height :
+    0;
+
   const movement: DragMovement = {
     amount,
     draggables: moved,

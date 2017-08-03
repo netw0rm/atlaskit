@@ -3,7 +3,6 @@ const spawn = require('child_process').spawn;
 const czLernaChangelog = require('cz-lerna-changelog');
 
 const stdin = process.openStdin();
-const updateChangelog = require('./src/updateChangelog');
 
 function check(script, shouldShowStderr, cb, cbErr) {
   const spawned = spawn('npm', ['run', script, '--silent'], { stdio: 'inherit' });
@@ -53,7 +52,7 @@ module.exports = {
     check('validate/lint-changed', false, () => {
       console.log('✓ Linting ok!');
       czLernaChangelog.makePrompter(makeCustomQuestions)(
-        cz, responses => updateChangelog(responses, commit)
+        cz, responses => commit(responses)
       );
     }, () => {
       console.log('✗ Linting failed');

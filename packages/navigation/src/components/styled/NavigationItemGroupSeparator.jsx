@@ -8,6 +8,7 @@ const dividerTotalHeight = gridSize * 5;
 const NavigationItemGroupSeparator = styled.div`
   margin-top: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   margin-bottom: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
+  margin-left: -${gridSize}px;
   height: ${dividerLineHeight}px;
   background: ${({ theme }) => getProvided(theme).keyline};
   border-radius: 1px;

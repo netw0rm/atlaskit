@@ -86,9 +86,7 @@ describe('PresenceCache', () => {
 
   it('should return no presence if queried for users not present in the cache', () => {
     cache.update(testPresenceMap);
-
-    // tslint:disable-next-line:no-unused-expression
-    expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).to.be.empty;
+    expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).to.deep.equal({});
   });
 
   it('should retrieve a set of users given an array of their IDs', () => {

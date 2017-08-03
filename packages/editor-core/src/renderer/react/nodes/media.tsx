@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { EventHandlers } from '../../../ui/Renderer';
 import ProviderFactory from '../../../providerFactory';
-import { default as UIMedia } from '../../../ui/Media';
+import UIMedia from '../../../ui/Media';
 import { MediaType } from '../../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
 

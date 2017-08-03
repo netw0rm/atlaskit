@@ -6,6 +6,8 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
+import InlineDialog from '@atlaskit/inline-dialog';
+import Tooltip from '@atlaskit/tooltip';
 
 import {
   AkContainerTitle,
@@ -101,27 +103,44 @@ export default class ReactRouterNestedNavigation extends Component {
     this.setState({ parentRoute, stack });
   }
 
-  getContainerHeaderComponent = () => (
-    <div>
-      <AkContainerTitle
-        href="/"
-        icon={<img alt="nucleus" src={nucleusLogo} />}
+  getContainerHeaderComponent = () => {
+    const backButton = this.state.parentRoute ? (
+      <AkNavigationItem
+        href={this.state.parentRoute}
+        icon={<ArrowLeftIcon label="Back" />}
         linkComponent={RouterLinkComponent}
-        subText="Is the king"
-        text="AtlasKit"
+        text="Back"
       />
-      {(this.state.parentRoute ? (
-        <AkNavigationItem
-          href={this.state.parentRoute}
-          icon={<ArrowLeftIcon label="Back" />}
-          linkComponent={RouterLinkComponent}
-          text="Back"
-        />
-      ) : (
-        null
-      ))}
-    </div>
-  )
+    ) : null;
+
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
+    return [
+      <InlineDialog
+        content={<div style={{ maxWidth: '200px' }}>Menu or something like the HipChat status form would go here</div>}
+        isOpen={this.state.isHeaderInlineDialogOpen}
+        position="bottom left"
+      >
+        <div
+          onClick={() => {
+            this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
+          }}
+        >
+          <Tooltip key="1" position="right" description="Header tooltip text">
+            <AkContainerTitle
+              href="#foo"
+              icon={
+                <img alt="nucleus" src={nucleusLogo} />
+              }
+              text="AtlasKit"
+              subText="Is the king"
+            />
+          </Tooltip>
+        </div>
+      </InlineDialog>,
+      backButton,
+    ];
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
+  };
 
   render() {
     return (

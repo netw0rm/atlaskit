@@ -10,4 +10,4 @@ npm install @NAME@
 
 ## Usage
 
-Coming soon
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).

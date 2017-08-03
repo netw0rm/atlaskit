@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
 import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
@@ -14,6 +15,7 @@ import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
 import { Content } from '../../../src/ui/ChromeExpanded/styles';
+import { analyticsService } from '../../../src/analytics';
 
 const noop = () => {};
 
@@ -75,6 +77,28 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       expect(chrome.find(ToolbarMention)).to.have.length(0);
       expect(chrome.find(ToolbarImage)).to.have.length(0);
       expect(chrome.find(ToolbarMedia)).to.have.length(0);
+    });
+
+
+    describe('analytics', () => {
+      let trackEvent;
+      let toolbarOption;
+      beforeEach(() => {
+        const { editorView } = editor(doc(p()));
+        toolbarOption = mount(<ChromeExpanded editorView={editorView} onSave={noop} onCancel={noop} saveDisabled={true} />);
+        trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
+      });
+
+      it('should trigger analyticsService.trackEvent when save button is clicked', () => {
+        toolbarOption.find(AkButton).first().simulate('click');
+        expect(trackEvent.calledWith('atlassian.editor.stop.save')).to.equal(true);
+      });
+
+      it('should trigger analyticsService.trackEvent when cancel button is clicked', () => {
+        toolbarOption.find(AkButton).at(1).simulate('click');
+        expect(trackEvent.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
+      });
     });
   });
 

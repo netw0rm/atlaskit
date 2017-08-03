@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 
 import { browser } from '../../../../src/prosemirror';
 import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
@@ -8,6 +9,7 @@ import {
   li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -145,6 +147,8 @@ describe('clear-formatting', () => {
 
   describe('keymap', () => {
     it('should clear formatting', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
       const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).to.equal(true);
 
@@ -155,6 +159,7 @@ describe('clear-formatting', () => {
       }
 
       expect(pluginState.formattingIsPresent).to.equal(false);
+      expect(trackEvent.calledWith('atlassian.editor.format.clear.keyboard')).to.equal(true);
     });
   });
 });

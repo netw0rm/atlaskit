@@ -30,10 +30,10 @@ pipelines:
             - run-p -ln "validate/tslint" "validate/eslint"
             # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
             # --bail is used to make jest fail fast when it finds a test failure
-            - npm run test/unit -- --runInBand --bail
-            - npm run test/base
+            - npm run test:unit -- --runInBand --bail
+            - npm run test:base
             - yarn run browserstack/tunnel/start
-            - yarn run test/browserstack
+            - yarn run test:browserstack
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
@@ -62,13 +62,13 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
+          - yarn run browserstack/tunnel/start
+          - yarn run test:browserstack
+          - yarn run browserstack/tunnel/stop
           # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
           # --bail is used to make jest fail fast when it finds a test failure
-          - npm run test/unit -- --runInBand --bail
-          - npm run test/base
-          - yarn run browserstack/tunnel/start
-          - yarn run test/browserstack
-          - yarn run browserstack/tunnel/stop
+          - npm run test:unit -- --runInBand --bail
+          - npm run test:base
           - yarn run "pr/storybook"
         # caches:
           # - node

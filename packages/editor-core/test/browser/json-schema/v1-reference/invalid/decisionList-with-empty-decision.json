@@ -5,7 +5,8 @@
     {
       "type": "decisionList",
       "attrs": {
-        "order": 1
+        "order": 1,
+        "localId": "test-list-id"
       },
       "content": [
         {

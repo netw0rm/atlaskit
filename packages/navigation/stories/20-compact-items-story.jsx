@@ -22,6 +22,7 @@ const CompactItem = ({ children }) => (
   <AkNavigationItem
     action={<CrossIcon label="close" secondaryColor="inherit" size="small" />}
     icon={<RandomAvatar />}
+    isCompact
     text={children}
     textAfter={<RandomBadge />}
     subText={Math.random() > 0.5 && 'This is some really long sub text'}
@@ -54,7 +55,6 @@ storiesOf(name, module)
               spacing="none"
             />
           }
-          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>

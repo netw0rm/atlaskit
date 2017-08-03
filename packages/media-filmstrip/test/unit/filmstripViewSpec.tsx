@@ -1,167 +1,289 @@
 import * as React from 'react';
-import {shallow, mount} from 'enzyme';
-import {FilmStripView, FilmStripViewItem, FilmStripCardClickEvent} from '../../src/index';
-import {ArrowLeftWrapper, ArrowRightWrapper} from '../../src/styled';
-import {CardView} from '@atlaskit/media-card';
+import {shallow} from 'enzyme';
+import {FilmstripView, LeftArrow, RightArrow} from '../../src/filmstripView';
+import {FilmStripListWrapper, FilmStripListItem} from '../../src/filmstripView/styled';
 
-const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number, onCardClick?: (event: FilmStripCardClickEvent) => void) => {
-  const wrapper = mount(<FilmStripView items={items} width={width} onCardClick={onCardClick}/>, {attachTo: container});
+const BUFFER_WIDTH = 100;
+const WINDOW_WIDTH = 10;
+const CHILD_WIDTH = 5;
 
-  return wrapper;
-};
+/**
+ * Mock the size information which we don't get from JSDOM
+ *  NOTE: `mount` doesn't work either
+ * @param element
+ * @param children
+ */
+function mockSizing(element) {
+  const instance = element.instance();
 
-// we need to wait until the filmstrip animation completes
-const waitAndContinue = (f: () => void) => {
-  setTimeout(f, 1000);
-};
+  instance.bufferElement = document.createElement('div');
+  instance.bufferElement.getBoundingClientRect = () => ({
+    width: BUFFER_WIDTH
+  });
+
+  instance.windowElement = document.createElement('div');
+  instance.windowElement.getBoundingClientRect = () => ({
+    width: WINDOW_WIDTH
+  });
+
+  instance.childOffsets = [];
+  for (let i=0; i<BUFFER_WIDTH/CHILD_WIDTH; ++i) {
+    const child = document.createElement('div');
+    instance.bufferElement.appendChild(child);
+    child.getBoundingClientRect = () => ({
+      x: 0,
+      y: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      width: CHILD_WIDTH,
+      height: 0
+    });
+  }
+
+  instance.handleSizeChange();
+
+  // element.update() doesn't work. see https://github.com/airbnb/enzyme/issues/622
+  instance.forceUpdate();
+}
 
 describe('FilmstripView', () => {
-  const items: Array<FilmStripViewItem> = [
-    {
-      id: 'some-id-1',
-      dataURI: 'some-data-uri-1',
-      mediaName: 'some-name-1',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-2',
-      dataURI: 'some-data-uri-2',
-      mediaName: 'some-name-2',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-3',
-      dataURI: 'some-data-uri-3',
-      mediaName: 'some-name-3',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-4',
-      dataURI: 'some-data-uri-4',
-      mediaName: 'some-name-4',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-5',
-      dataURI: 'some-data-uri-5',
-      mediaName: 'some-name-5',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-6',
-      dataURI: 'some-data-uri-6',
-      mediaName: 'some-name-6',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-7',
-      dataURI: 'some-data-uri-7',
-      mediaName: 'some-name-7',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-8',
-      dataURI: 'some-data-uri-8',
-      mediaName: 'some-name-8',
-      mediaType: 'image'
-    },
-    {
-      id: 'some-id-9',
-      dataURI: 'some-data-uri-9',
-      mediaName: 'some-name-9',
-      mediaType: 'image'
-    }
 
-  ];
+  describe('.minOffset', () => {
 
-  let container: HTMLDivElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
-  it('should contain all provided items', () => {
-    const filmStrip = shallow(<FilmStripView items={items} />);
-    expect(filmStrip.find('CardView').length).toBe(items.length);
-  });
-
-  it.skip('should initially have right arrow with large collection', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 200);
-
-    waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
-
-      filmStrip.detach();
-      done();
+    it('should return minOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.minOffset).toEqual(0);
     });
+
   });
 
-  it.skip('should initially have no arrows with small collection', (done) => {
-    const smallCollection = items.slice(0, 2);
-    const filmStrip = mountFilmStrip(container, smallCollection, 500);
+  describe('.maxOffset', () => {
 
-    waitAndContinue(() => {
-      expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
-      expect(filmStrip.find(ArrowRightWrapper).length).toBe(0);
-
-      filmStrip.detach();
-      done();
+    it('should return maxOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.maxOffset).toEqual(89);
     });
+
   });
 
-  it.skip('should show both arrows after moving right', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 500);
+  describe('.offset', () => {
 
-    waitAndContinue(() => {
-      filmStrip.find(ArrowRightWrapper).first().simulate('click');
+    it('should return minOffset when not defined', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.offset).toEqual(instance.minOffset);
+    });
 
-      waitAndContinue(() => {
-        expect(filmStrip.find(ArrowLeftWrapper).length).toBe(1);
-        expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
+    it('should return minOffset when less than minOffset', () => {
+      const element = shallow(<FilmstripView offset={-1}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.offset).toEqual(instance.minOffset);
+    });
 
-        filmStrip.detach();
-        done();
+    it('should return maxOffset when greater than maxOffset', () => {
+      const element = shallow(<FilmstripView offset={BUFFER_WIDTH + 1}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.offset).toEqual(instance.maxOffset);
+    });
+
+  });
+
+  describe('.getClosestForLeft()', () => {
+
+    it('should return the offset where the child that intesects at the specified offset is flush with the left edge of the window', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+
+      // special case: where there's no more cards to scroll (they're already scrolled into view)
+      expect(instance.getClosestForLeft(0)).toEqual(0);
+
+      expect(instance.getClosestForLeft(4)).toEqual(0);
+      expect(instance.getClosestForLeft(5)).toEqual(1);
+      expect(instance.getClosestForLeft(6)).toEqual(1);
+      expect(instance.getClosestForLeft(10)).toEqual(6);
+      expect(instance.getClosestForLeft(11)).toEqual(6);
+
+    });
+
+    it('should return the minOffset when the offset is less than minOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.getClosestForLeft(instance.minOffset - 1)).toEqual(instance.minOffset);
+    });
+
+    it('should return the left offset of the first card offscreen at maxOffset when the offset is greater than maxOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.getClosestForLeft(instance.maxOffset + 1)).toEqual(81);
+    });
+
+  });
+
+  describe('.getClosestForRight()', () => {
+
+    it('should return the offset where the child that intesects at the specified offset is flush with the right edge of the window', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+
+      expect(instance.getClosestForRight(0)).toEqual(8);
+      expect(instance.getClosestForRight(4)).toEqual(8);
+      expect(instance.getClosestForRight(5)).toEqual(13);
+      expect(instance.getClosestForRight(6)).toEqual(13);
+      expect(instance.getClosestForRight(10)).toEqual(18);
+      expect(instance.getClosestForRight(11)).toEqual(18);
+      expect(instance.getClosestForRight(85)).toEqual(89);
+      expect(instance.getClosestForRight(89)).toEqual(89);
+
+      // special cases: where there's no more cards to scroll (they're already scrolled into view)
+      expect(instance.getClosestForRight(90)).toEqual(89);
+      expect(instance.getClosestForRight(94)).toEqual(89);
+      expect(instance.getClosestForRight(95)).toEqual(89);
+      expect(instance.getClosestForRight(99)).toEqual(89);
+
+    });
+
+    it('should return the right offset of the card at minOffset when the offset is less than minOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.getClosestForRight(instance.minOffset - 1)).toEqual(8);
+    });
+
+    it('should return the maxOffset when the offset is greater than maxOffset', () => {
+      const element = shallow(<FilmstripView>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      expect(instance.getClosestForRight(instance.maxOffset + 1)).toEqual(instance.maxOffset);
+    });
+
+  });
+
+  describe('.handleLeftClick()', () => {
+
+    it('should call onScroll() with an updated offset on the previous page', () => {
+      const onScroll = jest.fn();
+      const element = shallow(<FilmstripView offset={14} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.handleLeftClick();
+      expect(onScroll).toBeCalledWith({
+        direction: 'left',
+        offset: 0,
+        animate: true
       });
     });
+
   });
 
-  it.skip('should show only right arrow in the leftmost position', (done) => {
-    const filmStrip = mountFilmStrip(container, items, 500);
+  describe('.handleRightClick()', () => {
 
-    waitAndContinue(() => {
-      filmStrip.find(ArrowRightWrapper).first().simulate('click');
-
-      waitAndContinue(() => {
-        filmStrip.find(ArrowLeftWrapper).first().simulate('click');
-
-        waitAndContinue(() => {
-          expect(filmStrip.find(ArrowLeftWrapper).length).toBe(0);
-          expect(filmStrip.find(ArrowRightWrapper).length).toBe(1);
-
-          filmStrip.detach();
-          done();
-        });
+    it('should call onScroll() with an updated offset on the next page', () => {
+      const onScroll = jest.fn();
+      const element = shallow(<FilmstripView offset={4} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      const instance = element.instance() as FilmstripView;
+      instance.handleRightClick();
+      expect(onScroll).toBeCalledWith({
+        direction: 'right',
+        offset: 18,
+        animate: true
       });
     });
+
   });
 
-  it('should handle the onCardClick event', () => {
-    const onCardClick = jest.fn();
-    const cardViewClickMock = {event: {}};
+  describe('.handleScroll()', () => {
 
-    const filmStrip = shallow(<FilmStripView items={items} onCardClick={onCardClick} />);
-    filmStrip.find(CardView).first().simulate('click', cardViewClickMock);
+    const createWheelEvent = event => {
+      return {
+        deltaX: 0,
+        deltaY: 0,
+        preventDefault: jest.fn(),
+        ...event
+      };
+    };
 
-    expect(onCardClick).toHaveBeenCalledTimes(1);
+    it('should not call onScroll() when the user is scrolling up or down', () => {
+      const onScroll = jest.fn();
+      const element = shallow(<FilmstripView onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      element.find(FilmStripListWrapper).simulate('wheel', createWheelEvent({deltaY: 10}));
+      expect(onScroll).not.toBeCalled();
+    });
 
-    const {item: clickedItem, items: clickedItems} = onCardClick.mock.calls[0][0];
-    expect(clickedItem).toEqual(items[0]);
-    expect(clickedItems).toEqual(clickedItems);
+    it('should call onScroll() with an updated offset when the user is scrolling left', () => {
+      const onScroll = jest.fn();
+      const element = shallow(<FilmstripView offset={14} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      element.find(FilmStripListWrapper).simulate('wheel', createWheelEvent({deltaX: -10}));
+      expect(onScroll).toBeCalledWith({
+        direction: 'left',
+        offset: 4,
+        animate: false
+      });
+    });
+
+    it('should call onScroll() with an updated offset when the user is scrolling right', () => {
+      const onScroll = jest.fn();
+      const element = shallow(<FilmstripView offset={4} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      element.find(FilmStripListWrapper).simulate('wheel', createWheelEvent({deltaX: 10}));
+      expect(onScroll).toBeCalledWith({
+        direction: 'right',
+        offset: 14,
+        animate: false
+      });
+    });
+
   });
+
+  describe('.render()', () => {
+
+    it('should not render the left arrow when offset is equal to minOffset', () => {
+      const element = shallow(<FilmstripView offset={0}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      expect(element.find(LeftArrow).exists()).toBeFalsy();
+    });
+
+    it('should render the left arrow when offset is greater than minOffset', () => {
+      const element = shallow(<FilmstripView offset={1}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      expect(element.find(LeftArrow).exists()).toBeTruthy();
+    });
+
+    it('should not render the right arrow when offset is equal to maxOffset', () => {
+      const element = shallow(<FilmstripView offset={900}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      expect(element.find(RightArrow).exists()).toBeFalsy();
+    });
+
+    it('should render the right arrow when offset is less than maxOffset', () => {
+      const element = shallow(<FilmstripView offset={0}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
+      expect(element.find(RightArrow).exists()).toBeTruthy();
+    });
+
+    it('should wrap each of the children', () => {
+      const children = ['a', 'b', 'c'];
+      const element = shallow(<FilmstripView>{children}</FilmstripView>);
+      element.find(FilmStripListItem).forEach((child, index) => {
+        expect(child.children().text()).toEqual(`${children[index]}`);
+      });
+    });
+
+  });
+
 });

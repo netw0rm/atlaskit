@@ -1,48 +1,52 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "3.4.1",
+  "version": "3.5.0",
   "config": {
     "access": "public"
   },
   "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Dropdown Menu"
   },
   "scripts": {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/dropdown-menu; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "eslint": "../../build/bin/lint.eslint.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
-    "@atlaskit/droplist": "^4.0.0",
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/item": "^2.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.1",
+    "babel-runtime": "^6.23.0",
+    "@atlaskit/droplist": "^4.6.1",
+    "@atlaskit/button": "^3.5.2",
+    "@atlaskit/icon": "^7.0.3",
     "prop-types": "^15.5.10",
+    "styled-components": "^1.4.6",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Nadia M"
+      "name": "Ben G"
     }
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/avatar": "^2.0.0",
-    "@atlaskit/util-readme": "^3.0.0",
+    "@atlaskit/avatar": "^6.4.1",
+    "@atlaskit/util-readme": "^3.6.1",
     "@atlaskit/dropdown-menu": "*",
-    "@atlaskit/lozenge": "^1.0.0",
-    "@atlaskit/tooltip": "^1.2.0"
+    "@atlaskit/lozenge": "^3.4.1",
+    "@atlaskit/tooltip": "^3.4.1"
   },
   "peerDependencies": {
     "react": "^15.3.2",

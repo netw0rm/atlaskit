@@ -1,20 +1,273 @@
 # @atlaskit/editor-core
 
-## Unreleased
-* New insert-block menu (ED-2059)
-* fix; dismiss and cancel emoji typeahead when query is empty (issues closed: fs-1149)
-* Add border-top also to the editor when it reached max-height.
+## 45.0.0 (2017-08-02)
+
+* breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+* breaking; restricting block nesting for panel, blockquote and list. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+## 44.9.1 (2017-08-02)
+
+* bug fix; fix broken storybook in AUI (issues closed: ed-2138) ([6ce1692](https://bitbucket.org/atlassian/atlaskit/commits/6ce1692))
+
+
+* bug fix; updated json schema with table nodes ([bf5b3ff](https://bitbucket.org/atlassian/atlaskit/commits/bf5b3ff))
+
+## 44.9.0 (2017-08-02)
+
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.8.0 (2017-08-02)
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.7.0 (2017-08-02)
+
+* bug fix; fix message editor overflow issues with media film strip (issues closed: ed-2338) ([6cdbf74](https://bitbucket.org/atlassian/atlaskit/commits/6cdbf74))
+* feature; attach secondary toolbar buttons to the bottom of the Message Editor (issues closed: ed-2357) ([f97db1c](https://bitbucket.org/atlassian/atlaskit/commits/f97db1c))
+## 44.6.0 (2017-08-01)
+
+* bug fix; keep focus in node views after transactions ([dd82b25](https://bitbucket.org/atlassian/atlaskit/commits/dd82b25))
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.5.0 (2017-08-01)
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.4.0 (2017-08-01)
+
+* bug fix; allow empty fallback text in appCards in renderer (issues closed: ed-2364) ([f88292b](https://bitbucket.org/atlassian/atlaskit/commits/f88292b))
+
+* bug fix; removed modified inline code nodeSpec (issues closed: ed-2271) ([ee8b40c](https://bitbucket.org/atlassian/atlaskit/commits/ee8b40c))
+
+* feature; adds support for tasks in renderer ([817c910](https://bitbucket.org/atlassian/atlaskit/commits/817c910))
+
+## 44.3.0 (2017-08-01)
+
+* bug fix; update encoder to add collection in generated HTML if available (issues closed: ed-2370) ([493b778](https://bitbucket.org/atlassian/atlaskit/commits/493b778))
+* bug fix; added tab direction constants, added creating a new row on shift-tab ([3f09382](https://bitbucket.org/atlassian/atlaskit/commits/3f09382))
+* bug fix; fix jira-encoder generating wrong HTML for uploaded non-image files (issues closed: ed-2263) ([d9b774e](https://bitbucket.org/atlassian/atlaskit/commits/d9b774e))
+
+* feature; allow creating tasks in the editor (issues closed: fs-1147) ([4122828](https://bitbucket.org/atlassian/atlaskit/commits/4122828))
+* bug fix; updated cursor posiiton and refactored commands ([4cde4b3](https://bitbucket.org/atlassian/atlaskit/commits/4cde4b3))
+
+* bug fix; empty cells on Backspace when the whole row/col/table is selected ([c7fec5c](https://bitbucket.org/atlassian/atlaskit/commits/c7fec5c))
+* bug fix; show floating toolbar when the whole row/col/table is selected (issues closed: ed-2342) ([f5830f2](https://bitbucket.org/atlassian/atlaskit/commits/f5830f2))
+## 44.2.0 (2017-07-31)
+
+* feature; add max content size plugin (issues closed: ed-2077) ([c917a11](https://bitbucket.org/atlassian/atlaskit/commits/c917a11))
+## 44.1.1 (2017-07-31)
+
+* bug fix; export renderer as es2015 package part ([1af0597](https://bitbucket.org/atlassian/atlaskit/commits/1af0597))
+## 44.1.0 (2017-07-31)
+
+* feature; include localId on decisionList (issues closed: fs-1225) ([ff7ffbc](https://bitbucket.org/atlassian/atlaskit/commits/ff7ffbc))
+
+
+* feature; adding new auto-complete for code block triple backticks followed by space. ([1f51ad1](https://bitbucket.org/atlassian/atlaskit/commits/1f51ad1))
+
+
+## 44.0.2 (2017-07-28)
+
+## 44.0.1 (2017-07-28)
+
+
+* fix; import media core from node_modules instead of direct path ([8c5e737](https://bitbucket.org/atlassian/atlaskit/commits/8c5e737))
+* fix; media group with single item exception. ([78aa7d3](https://bitbucket.org/atlassian/atlaskit/commits/78aa7d3))
+
+## 44.0.0 (2017-07-28)
+
+
+* fix; modifying URL doesn't change destination href ([add3b17](https://bitbucket.org/atlassian/atlaskit/commits/add3b17))
+* fix; sizing of file cards in Editor nodeview. ([1c7f281](https://bitbucket.org/atlassian/atlaskit/commits/1c7f281))
+
+## 43.2.0 (2017-07-27)
+
+
+* fix; disable advance menu for the first table release ([51447df](https://bitbucket.org/atlassian/atlaskit/commits/51447df))
+* fix; renamed arrowup and arrowdown back to moveup and movedown. ([3c28847](https://bitbucket.org/atlassian/atlaskit/commits/3c28847))
+* fix; renderer should not break UI when collection is an empty string ([445e261](https://bitbucket.org/atlassian/atlaskit/commits/445e261))
+* fix; update the profilecard in the editor-core ([ddf9600](https://bitbucket.org/atlassian/atlaskit/commits/ddf9600))
+
+
+* feature; add occurrenceKey in media node ([7fe150a](https://bitbucket.org/atlassian/atlaskit/commits/7fe150a))
+
+## 43.1.1 (2017-07-27)
+
+
+* fix; appearance of media links in strip in the editor. ([3de66f4](https://bitbucket.org/atlassian/atlaskit/commits/3de66f4))
+* fix; emoji picker can no longer be opened when mention typeahead is open ([e513fd8](https://bitbucket.org/atlassian/atlaskit/commits/e513fd8))
+* fix; inserting links must create new media item via media API. ([a247785](https://bitbucket.org/atlassian/atlaskit/commits/a247785))
+* fix; updated emoji dependency ([7adf4a7](https://bitbucket.org/atlassian/atlaskit/commits/7adf4a7))
+
+
+* feature; move JIRA serializer/parser into editor-core, copy JIRA schema as well ([07f77f6](https://bitbucket.org/atlassian/atlaskit/commits/07f77f6))
+
+
+null removed alignment of mention picker ([647983c](https://bitbucket.org/atlassian/atlaskit/commits/647983c))
+
+## 43.1.0 (2017-07-26)
+
+
+* feature; rename editor appearances ([83cfbff](https://bitbucket.org/atlassian/atlaskit/commits/83cfbff))
+
+## 43.0.0 (2017-07-25)
+
+
+* fix; fix new stories use of util-data-test ([c501c01](https://bitbucket.org/atlassian/atlaskit/commits/c501c01))
+* fix; update mention/emoji to minimum required versions to test/story data ([9ce169a](https://bitbucket.org/atlassian/atlaskit/commits/9ce169a))
+* fix; upgrade to next available util-data-test ([8a8d2be](https://bitbucket.org/atlassian/atlaskit/commits/8a8d2be))
+* fix; util-data-test bump ([a534626](https://bitbucket.org/atlassian/atlaskit/commits/a534626))
+
+
+* feature; upgrade emoji component ([9ac9802](https://bitbucket.org/atlassian/atlaskit/commits/9ac9802))
+* feature; upgrade mentions, get story/test data from component ([4a76f8d](https://bitbucket.org/atlassian/atlaskit/commits/4a76f8d))
+
+
+* breaking; Requirements for an EmojiProvider has changed. This is a breaking change if implementing
+EmojiProvider, instead of using the supplied EmojiResource
+
+ISSUES CLOSED: FS-1127
+
+## 42.0.0 (2017-07-25)
+
+
+* fix; handle text nodes properly in Popup placement helpers ([72963ad](https://bitbucket.org/atlassian/atlaskit/commits/72963ad))
+* fix; removing softblur from the editor when toolbar dropdown menu are opened. ([8db8565](https://bitbucket.org/atlassian/atlaskit/commits/8db8565))
+
+
+* feature; removing keyboard shortcuts for headings and normal test block. ([6817617](https://bitbucket.org/atlassian/atlaskit/commits/6817617))
+
+
+* breaking; Keyboard shortcuts for heading and paragraoh blocks will not work.
+
+## 41.2.0 (2017-07-25)
+
+## 41.1.1 (2017-07-25)
+
+
+* fix; rendering of link cards, sizing of cards. ([fa4bbbf](https://bitbucket.org/atlassian/atlaskit/commits/fa4bbbf))
+
+## 41.1.0 (2017-07-24)
+
+
+* fix; updated shift keymap related tests and make them passed. Skip horizontal tests. ([36f1993](https://bitbucket.org/atlassian/atlaskit/commits/36f1993))
+
+
+* feature; enable tables in confluence-schema ([2b06b3b](https://bitbucket.org/atlassian/atlaskit/commits/2b06b3b))
+* feature; change es2015 build so it transpiles everything except import/export statements ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
+
+## 40.0.0 (2017-07-24)
+
+
+* feature; convert asciiEmojiInputRules, codeBlock and hyperlink to new architecture ([3bf997a](https://bitbucket.org/atlassian/atlaskit/commits/3bf997a))
+
+
+* breaking; asciiEmojiPlugins now accepts providerFactory instead of emojiProvider
+
+ISSUES CLOSED: ED-2075
+
+## 39.7.0 (2017-07-24)
+
+
+* feature; include decisionList and decisionItem into the hipchat schema ([331b620](https://bitbucket.org/atlassian/atlaskit/commits/331b620))
+
+## 39.6.0 (2017-07-23)
+
+
+* feature; add analytics support to the new editor architecture ([5e8f6a8](https://bitbucket.org/atlassian/atlaskit/commits/5e8f6a8))
+
+## 39.5.2 (2017-07-21)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; open link in a new window ([77609c4](https://bitbucket.org/atlassian/atlaskit/commits/77609c4))
+
+## 39.5.1 (2017-07-21)
+
+
+* fix; fixes a few bugs with decions and adds local id ([11bcdde](https://bitbucket.org/atlassian/atlaskit/commits/11bcdde))
+* fix; upgrading prosemirror-keymaps dependency to fix issue with shortcuts with alt being br ([1bbe3fc](https://bitbucket.org/atlassian/atlaskit/commits/1bbe3fc))
+
+
+* feature; adding insert block toolbar menu. ([0cc283b](https://bitbucket.org/atlassian/atlaskit/commits/0cc283b))
+
+## 39.5.0 (2017-07-20)
+
+## 39.4.0 (2017-07-20)
+
+## 39.3.1 (2017-07-19)
+
+
+* fix; bump test-decision dep due to release ([89889a2](https://bitbucket.org/atlassian/atlaskit/commits/89889a2))
+
+
+* feature; render DecisionItem and DecisionList in the "new" renderer ([899006b](https://bitbucket.org/atlassian/atlaskit/commits/899006b))
+* feature; use DecisionItem component for decision rendering ([fd4d9df](https://bitbucket.org/atlassian/atlaskit/commits/fd4d9df))
+
+## 39.3.0 (2017-07-19)
+
+
+* fix; close profilecard popup on actions click ([0989b30](https://bitbucket.org/atlassian/atlaskit/commits/0989b30))
+
+
+* feature; add profilecard integration for renderer ([9df55f5](https://bitbucket.org/atlassian/atlaskit/commits/9df55f5))
+
+## 39.2.0 (2017-07-18)
+
+
+* fix; only allow creating decision list from a top-level paragraph ([330556d](https://bitbucket.org/atlassian/atlaskit/commits/330556d))
+
+## 39.1.5 (2017-07-17)
+
+## 39.1.5 (2017-07-17)
+
+
+* fix; allow converting to decision list when there is a hard break in text node ([97cf2bd](https://bitbucket.org/atlassian/atlaskit/commits/97cf2bd))
+
+## 39.1.5 (2017-07-17)
+
+
+* feature; decisions plugin ([dc6d230](https://bitbucket.org/atlassian/atlaskit/commits/dc6d230))
+* feature; fS-1131 Add Decision list and decision node ([1ad88f6](https://bitbucket.org/atlassian/atlaskit/commits/1ad88f6))
+
+## 39.1.4 (2017-07-17)
+
+
+* fix; adding border top also to editor when max-height is reached. ([5bc1ab9](https://bitbucket.org/atlassian/atlaskit/commits/5bc1ab9))
+* fix; dismiss and cancel emoji typeahead when query is empty ([a103812](https://bitbucket.org/atlassian/atlaskit/commits/a103812))
+* fix; fixed media keymap stub, because the method was renamed. ([1bd55be](https://bitbucket.org/atlassian/atlaskit/commits/1bd55be))
+* fix; handleMediaProvider raises exception when mediaProvider doesn't have a linkCreateCon ([cf2216f](https://bitbucket.org/atlassian/atlaskit/commits/cf2216f))
+* fix; moved setNodeSelection and setTextSelection from test-helper to src/utils ([1ec5dc6](https://bitbucket.org/atlassian/atlaskit/commits/1ec5dc6))
+* fix; render codeBlock if language is null ([bbbc3e9](https://bitbucket.org/atlassian/atlaskit/commits/bbbc3e9))
+* fix; removed extra new line. ([86c48fc](https://bitbucket.org/atlassian/atlaskit/commits/86c48fc))
+* fix; removed unused typescript. ([cb99770](https://bitbucket.org/atlassian/atlaskit/commits/cb99770))
 
 ## 39.1.3 (2017-07-14)
 
-* fix; dropzone configuration in picker facade.
-* docs; add interactive UI to renderer story
-* fix; render codeBlock if language is null (issues closed: ed-2240)
+
+* fix; removed extra new lines. ([6dd0468](https://bitbucket.org/atlassian/atlaskit/commits/6dd0468))
 
 ## 39.1.2 (2017-07-14)
 
-* fix; show URL on link hover (issues closed: ed-2220)
-* bug fix; render codeBlock if language is null (issues closed: ed-2240)
+
+* fix; added codeblock styles back ([6837c22](https://bitbucket.org/atlassian/atlaskit/commits/6837c22))
+* fix; disable code-mirror plugin ([815a482](https://bitbucket.org/atlassian/atlaskit/commits/815a482))
+* fix; fixed strike mark for BB ([3ede6f4](https://bitbucket.org/atlassian/atlaskit/commits/3ede6f4))
+* fix; move backspace test to the right place ([b61308b](https://bitbucket.org/atlassian/atlaskit/commits/b61308b))
+* fix; show URL on link hover ([bf58349](https://bitbucket.org/atlassian/atlaskit/commits/bf58349))
+
+
+null give it better name ([5299085](https://bitbucket.org/atlassian/atlaskit/commits/5299085))
+
+
+* feature; handle when media node is the first one in the group ([7b8deb1](https://bitbucket.org/atlassian/atlaskit/commits/7b8deb1))
+
+
+* breaking; Update handleMediaNodeRemove to handleMediaNodeRemoval in media plugin
+
 ## 39.1.1 (2017-07-12)
 
 ## 39.1.0 (2017-07-12)
@@ -27,10 +280,16 @@
 ## 38.0.0 (2017-07-12)
 
 
+* fix; fix dropzone configuration in picker facade. ([898528c](https://bitbucket.org/atlassian/atlaskit/commits/898528c))
+* fix; fixed bug that selected media node cannot type or enter ([ea5516c](https://bitbucket.org/atlassian/atlaskit/commits/ea5516c))
 * fix; moved renderer UI component export from /src/ui to /src/renderer ([50e11df](https://bitbucket.org/atlassian/atlaskit/commits/50e11df))
 * fix; test build to check if storybook build is fixed. ([abb7889](https://bitbucket.org/atlassian/atlaskit/commits/abb7889))
 
 
+* feature; replaced handleMediaNodeOutsideRemove in media plugin with cancelInFlightUpload ([1f6aeb1](https://bitbucket.org/atlassian/atlaskit/commits/1f6aeb1))
+
+
+* breaking; replaced handleMediaNodeOutsideRemove in media plugin with cancelInFlightUpload
 * breaking; moved renderer UI component export from /src/ui to /src/renderer
 
 ## 37.5.0 (2017-07-11)
@@ -104,6 +363,9 @@ ISSUES CLOSED: ED-2037
 
 * fix; link parsing logic should not parse link inside another link. ([314da7f](https://bitbucket.org/atlassian/atlaskit/commits/314da7f))
 
+
+* feature; hit enter in the middle media node should split media group ([858ad32](https://bitbucket.org/atlassian/atlaskit/commits/858ad32))
+
 ## 35.1.2 (2017-07-06)
 
 
@@ -149,6 +411,12 @@ ISSUES CLOSED: ED-2037
 
 ## 35.0.0 (2017-07-04)
 
+
+* fix; removed unused import. ([3292bc3](https://bitbucket.org/atlassian/atlaskit/commits/3292bc3))
+
+
+* feature; handle selection only if has a media node before current media node. ([c0fb6ed](https://bitbucket.org/atlassian/atlaskit/commits/c0fb6ed))
+
 ## 34.11.1 (2017-07-04)
 
 
@@ -177,6 +445,7 @@ ISSUES CLOSED: ED-2037
 
 * feature; added hover selection decoration ([79a3fd1](https://bitbucket.org/atlassian/atlaskit/commits/79a3fd1))
 * feature; adding parsing of pasted content slices to generate link marks. ([8c24435](https://bitbucket.org/atlassian/atlaskit/commits/8c24435))
+* feature; set selection to previous media node after deleting media. ([a811a48](https://bitbucket.org/atlassian/atlaskit/commits/a811a48))
 * feature; updated json-schema to reflect the latest changes ([2e47036](https://bitbucket.org/atlassian/atlaskit/commits/2e47036))
 * feature; bump prosemirror to 0.22.0, tables to 0.1.0" ([4551ab9](https://bitbucket.org/atlassian/atlaskit/commits/4551ab9))
 

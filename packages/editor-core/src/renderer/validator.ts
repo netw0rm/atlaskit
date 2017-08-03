@@ -208,7 +208,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
   let { content } = node;
 
   if (content) {
-    content = getValidContent(content, schema);
+    node.content = content = getValidContent(content, schema);
   }
 
   // If node type doesn't exist in schema, make it an unknow node
@@ -221,7 +221,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details } = attrs;
-        if (!text || !title || !title.text) { break; }
+        if (typeof text !== 'string' || !title || !title.text) { break; }
         if (
           (link && !link.url) ||
           (background && !background.url) ||
@@ -292,7 +292,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           mediaType = type;
           mediaCollection = collection;
         }
-        if (mediaId && mediaType && mediaCollection.length) {
+        if (mediaId && mediaType) {
           return {
             type,
             attrs: {
@@ -305,7 +305,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         break;
       }
       case 'mediaGroup': {
-        if (content) {
+        if (Array.isArray(content) && !content.some(e => e.type !== 'media')) {
           return {
             type,
             content
@@ -458,6 +458,28 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+          };
+        }
+        break;
+      }
+      case 'taskList': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
+        }
+        break;
+      }
+      case 'taskItem': {
+        if (content && attrs && attrs.localId) {
+          return {
+            type,
+            content,
+            attrs: {
+              localId: attrs.localId,
+              state: attrs.state
+            },
           };
         }
         break;

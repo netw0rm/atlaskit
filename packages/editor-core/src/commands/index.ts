@@ -1,23 +1,18 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
+import { Selection, EditorState, EditorView, Fragment, liftTarget, NodeSelection, TextSelection, Transaction, findWrapping } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection, canMoveDown, canMoveUp } from '../utils';
+import {
+  isRangeOfType,
+  canMoveDown, canMoveUp,
+  setTextSelection,
+} from '../utils';
 import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
-  const { $from } = view.state.selection;
-
-  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name &&
-    $from.node($from.depth - 1).type.name !== 'listItem') {
-    if (view.state.selection.$from.depth > 1) {
-      view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to).tr);
-    }
-  }
-
   switch (name) {
     case blockTypes.NORMAL_TEXT.name:
       if (nodes.paragraph) {
@@ -49,23 +44,29 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
         return toggleHeading(5)(view.state, view.dispatch);
       }
       break;
-    case blockTypes.BLOCK_QUOTE.name:
-      if (nodes.paragraph && nodes.blockquote) {
-        return toggleNodeType(view.state.schema.nodes.blockquote)(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.CODE_BLOCK.name:
-      if (nodes.codeBlock) {
-        return toggleCodeBlock()(view.state, view.dispatch);
-      }
-      break;
-    case blockTypes.PANEL.name:
-      if (nodes.panel && nodes.paragraph) {
-        return toggleNodeType(view.state.schema.nodes.panel)(view.state, view.dispatch);
-      }
-      break;
   }
   return false;
+}
+
+export function setNormalText(): Command {
+  return function (state, dispatch) {
+    const { tr, selection: { $from, $to }, schema } = state;
+    dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
+    return true;
+  };
+}
+
+export function toggleHeading(level: number): Command {
+  return function (state, dispatch) {
+    const { tr, selection: { $from, $to }, schema } = state;
+    const currentBlock = $from.parent;
+    if (currentBlock.type !== schema.nodes.heading || currentBlock.attrs['level'] !== level) {
+      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.heading, { level }));
+    } else {
+      dispatch(tr.setBlockType($from.pos, $to.pos, schema.nodes.paragraph));
+    }
+    return true;
+  };
 }
 
 /**
@@ -188,61 +189,13 @@ export function liftListItems(): Command {
   };
 }
 
-export function toggleCodeBlock(): Command {
-  return function (state, dispatch) {
-    const { $from, $to } = state.selection;
-    const currentBlock = $from.parent;
-
-    if (currentBlock.type !== state.schema.nodes.codeBlock) {
-      if (isConvertableToCodeBlock(state)) {
-        dispatch(transformToCodeBlockAction(state, {}));
-      }
-    } else {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
-    }
-
-    return true;
-  };
-}
-
-export function setNormalText(): Command {
-  return function (state, dispatch) {
-    const { $from: initialFrom } = state.selection;
-    const currentBlock = initialFrom.parent;
-
-    if (currentBlock.type !== state.schema.nodes.paragraph) {
-      const { tr, $from, $to } = splitCodeBlockAtSelection(state);
-      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
-      return true;
-    }
-
-    return false;
-  };
-}
-
-export function toggleHeading(level: number): Command {
-  return function (state, dispatch) {
-    const { $from: initialFrom } = state.selection;
-    const currentBlock = initialFrom.parent;
-    const { tr, $from, $to } = splitCodeBlockAtSelection(state);
-
-    if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
-    } else {
-      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
-    }
-
-    return true;
-  };
-}
-
 export function insertBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
 
   switch (name) {
     case blockTypes.BLOCK_QUOTE.name:
       if (nodes.paragraph && nodes.blockquote) {
-        return insertNodeType(view.state.schema.nodes.blockquote)(view.state, view.dispatch);
+        return wrapSelectionIn(nodes.blockquote)(view.state, view.dispatch);
       }
       break;
     case blockTypes.CODE_BLOCK.name:
@@ -252,28 +205,50 @@ export function insertBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.PANEL.name:
       if (nodes.panel && nodes.paragraph) {
-        return insertNodeType(view.state.schema.nodes.panel)(view.state, view.dispatch);
+        return wrapSelectionIn(nodes.panel)(view.state, view.dispatch);
       }
       break;
   }
   return false;
 }
 
-function insertNodeType(nodeType: NodeType): Command {
-  return function (state, dispatch) {
+/**
+ * Function will add wraping node.
+ * 1. If currently selected blocks can be wrapped in the warpper type it will wrap them.
+ * 2. If current block can not be wrapped inside wrapping block it will create a new block below selection,
+ *  and set selection on it.
+ */
+function wrapSelectionIn(type): Command {
+  return function (state: EditorState<any>, dispatch) {
+    const { tr } = state;
     const { $from, $to } = state.selection;
-    dispatch(wrapIn(nodeType, state.tr, $from, $to));
+    const { paragraph } = state.schema.nodes;
+    const range = $from.blockRange($to) as any;
+    const wrapping = range && findWrapping(range, type) as any;
+    if (range && wrapping) {
+      tr.wrap(range, wrapping).scrollIntoView();
+    } else {
+      tr.replaceRangeWith($to.pos, $to.pos, type.createAndFill({}, paragraph.create()));
+      tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + 1)));
+    }
+    dispatch(tr);
     return true;
   };
 }
 
+/**
+ * Function will insert code block at current selection if block is empty or below current selection and set focus on it.
+ */
 export function insertCodeBlock(): Command {
-  return function (state, dispatch) {
-    if (isConvertableToCodeBlock(state)) {
-      dispatch(transformToCodeBlockAction(state, {}));
-      return true;
-    }
-    return false;
+  return function (state: EditorState<any>, dispatch) {
+    const { tr } = state;
+    const { $to } = state.selection;
+    const { codeBlock } = state.schema.nodes;
+    const moveSel = $to.node($to.depth).textContent ? 1 : 0;
+    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill());
+    tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + moveSel)));
+    dispatch(tr);
+    return true;
   };
 }
 
@@ -434,9 +409,7 @@ export function createParagraphNear(view: EditorView, append: boolean = true): v
 
   dispatch(state.tr.insert(insertPos, paragraph.create()));
 
-  const newState = view.state;
-  const next = new TextSelection(newState.doc.resolve(insertPos + 1));
-  dispatch(newState.tr.setSelection(next));
+  setTextSelection(view, insertPos + 1);
 }
 
 function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {
@@ -494,31 +467,6 @@ function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean):
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
-}
-
-function toggleNodeType(nodeType: NodeType): Command {
-  return function (state, dispatch) {
-    let { $from: selFrom } = state.selection;
-    const potentialNodePresent = selFrom.node(selFrom.depth - 1);
-
-    // lift the node and convert to given nodeType
-    if (potentialNodePresent.type !== nodeType) {
-      let { tr, $from, $to } = splitCodeBlockAtSelection(state);
-
-      if ($from.depth > 1 && $from.node($from.depth - 1).type.name !== 'listItem') {
-        const result = liftSelection(tr, state.doc, $from, $to);
-        tr = result.tr;
-        $from = result.$from;
-        $to = result.$to;
-      }
-
-      tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
-      dispatch(wrapIn(nodeType, tr, $from, $to));
-      return true;
-    }
-
-    return baseCommand.lift(state, dispatch);
-  };
 }
 
 export interface Command {

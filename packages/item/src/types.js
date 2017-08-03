@@ -32,3 +32,5 @@ export type ItemTheme = {|
   active: ItemState,
   disabled: ItemState,
 |}
+
+export type ReactElement = any;

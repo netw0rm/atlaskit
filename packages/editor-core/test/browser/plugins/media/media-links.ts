@@ -13,15 +13,17 @@ import {
   a,
   blockquote,
   randomId,
+  getLinkCreateContextMock,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { insertLinks, detectLinkRangesInSteps } from '../../../../src/plugins/media/media-links';
 
 chai.use(chaiPlugin);
 
-const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-
 describe('media-links', () => {
+  const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+  const testLinkId = `mock-link-id${randomId()}`;
+  const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
   const editor = (doc: any, uploadErrorHandler?: () => void) => makeEditor<MediaPluginState>({
     doc,
     schema: defaultSchema,
@@ -34,12 +36,14 @@ describe('media-links', () => {
         const { state } = editorView;
         const link1 = a({ href: 'www.google.com' })('google');
         const link2 = a({ href: 'www.baidu.com' })('baidu');
-        const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+        const nodes = link1.concat(link2);
+        const length = nodes.reduce((length, node) => length + (node.text ? node.text.length : 0), 0);
+        const tr = state.tr.replaceWith(sel, sel, nodes);
 
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link);
 
         expect(linksRanges).to.deep.equal([
-          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] }
+          { start: sel, end: sel + length, urls: ['www.google.com', 'www.baidu.com'] }
         ]);
       });
 
@@ -48,13 +52,15 @@ describe('media-links', () => {
         const { state } = editorView;
         const link1 = a({ href: 'www.google.com' })('google');
         const link2 = a({ href: 'www.baidu.com' })('baidu');
-        const blockQuote = blockquote(p(link1, link2));
-        const tr = state.tr.replaceWith(sel - 1, sel + 1, blockQuote);
+        const node = blockquote(p(link1, link2));
+        const tr = state.tr.replaceWith(sel - 1, sel + 1, node);
+        let length = 0;
+        node.firstChild!.content.forEach(node => { length += node.text ? node.text.length : 0; });
 
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link);
 
         expect(linksRanges).to.deep.equal([
-          { start: sel - 1, end: sel + 1, urls: ['www.google.com', 'www.baidu.com'] }
+          { start: sel - 1, end: sel + length + 3, urls: ['www.google.com', 'www.baidu.com'] }
         ]);
       });
 
@@ -64,12 +70,14 @@ describe('media-links', () => {
           const { state } = editorView;
           const link1 = a({ href: '' })('google');
           const link2 = a({ href: 'www.baidu.com' })('baidu');
-          const tr = state.tr.replaceWith(sel, sel, link1.concat(link2));
+          const nodes = link1.concat(link2);
+          const length = nodes.reduce((length, node) => length + (node.text ? node.text.length : 0), 0);
+          const tr = state.tr.replaceWith(sel, sel, nodes);
 
           const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link);
 
           expect(linksRanges).to.deep.equal([
-            { start: sel, end: sel, urls: ['www.baidu.com'] }
+            { start: sel, end: sel + length, urls: ['www.baidu.com'] }
           ]);
         });
       });
@@ -112,15 +120,17 @@ describe('media-links', () => {
         const { state } = editorView;
         const link1 = a({ href: 'www.google.com' })('google');
         const link2 = a({ href: 'www.baidu.com' })('baidu');
+        const nodes = link1.concat(link2);
         const linkMark = state.schema.marks.link.create({ href: 'www.atlassian.com' });
         const tr = state.tr
-          .replaceWith(sel, sel, link1.concat(link2))
+          .replaceWith(sel, sel, nodes)
           .addMark(sel - text.length, sel, linkMark);
 
+        const length1 = nodes.reduce((length, node) => length + (node.text ? node.text.length : 0), 0);
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link);
 
         expect(linksRanges).to.deep.equal([
-          { start: sel, end: sel, urls: ['www.google.com', 'www.baidu.com'] },
+          { start: sel, end: sel + length1, urls: ['www.google.com', 'www.baidu.com'] },
           { start: sel - text.length, end: sel, urls: ['www.atlassian.com'] },
         ]);
       });
@@ -166,7 +176,7 @@ describe('media-links', () => {
         const text = 'www.google.com';
         const { editorView } = editor(doc(p(`${text} {<>}`)));
 
-        insertLinks(editorView, [], testCollectionName);
+        insertLinks(editorView, [], linkCreateContextMock, testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(doc(p(`${text} `)));
       });
@@ -174,50 +184,52 @@ describe('media-links', () => {
 
     context('when there is a link stored in link ranges', () => {
       context('there is no existing media group below', () => {
-        it('creates a link card below where is the link created', () => {
+        it('creates a link card below where is the link created', async () => {
           const link = 'www.google.com';
           const { editorView, sel } = editor(doc(p(`${link} {<>}`)));
 
           // -1 for space, simulate the scenario of autoformatting link
-          insertLinks(
+          await insertLinks(
             editorView,
             [
               { start: sel - link.length - 1, end: sel, urls: [link] }
             ],
+            linkCreateContextMock,
             testCollectionName,
           );
 
           expect(editorView.state.doc).to.deep.equal(doc(
             p(`${link} `),
-            mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+            mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
             p(),
           ));
         });
 
         context('lastest pos in range is out of doc range', () => {
-          it('creates a link card at the end of doc', () => {
+          it('creates a link card at the end of doc', async () => {
             const link = 'www.google.com';
             const { editorView, sel } = editor(doc(p(`${link} {<>}`)));
 
             // -1 for space, simulate the scenario of autoformatting link
-            insertLinks(
+            await insertLinks(
               editorView,
               [
                 { start: sel - link.length - 1, end: 1000, urls: [link] }
               ],
+              linkCreateContextMock,
               testCollectionName,
             );
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link} `),
-              mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+              mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
               p(),
             ));
           });
         });
 
         context('not at the end of the doc', () => {
-          it('does not create a new p at the end of doc', () => {
+          it('does not create a new p at the end of doc', async () => {
             const link = 'www.google.com';
             const { editorView, sel } = editor(doc(
               p(`${link} {<>}`),
@@ -225,17 +237,18 @@ describe('media-links', () => {
             ));
 
             // -1 for space, simulate the scenario of autoformatting link
-            insertLinks(
+            await insertLinks(
               editorView,
               [
                 { start: sel - link.length - 1, end: sel, urls: [link] }
               ],
+              linkCreateContextMock,
               testCollectionName,
             );
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link} `),
-              mediaGroup(media({ id: link, type: 'link', collection: testCollectionName })),
+              mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
               p('hello'),
             ));
           });
@@ -243,55 +256,57 @@ describe('media-links', () => {
       });
 
       context('there is an existing media group below', () => {
-        it('creates a link card to join the existing media group below', () => {
+        it('creates a link card to join the existing media group below', async () => {
           const link1 = 'www.google.com';
           const link2 = 'www.baidu.com';
           const { editorView, sel } = editor(doc(
             p(`${link1} ${link2} {<>}`),
-            mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
+            mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
           ));
 
           // -1 for space, simulate the scenario of autoformatting link
-          insertLinks(
+          await insertLinks(
             editorView,
             [
               { start: sel - link2.length - 1, end: sel, urls: [link2] }
             ],
+            linkCreateContextMock,
             testCollectionName,
           );
 
           expect(editorView.state.doc).to.deep.equal(doc(
             p(`${link1} ${link2} `),
             mediaGroup(
-              media({ id: link1, type: 'link', collection: testCollectionName }),
-              media({ id: link2, type: 'link', collection: testCollectionName }),
+              media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+              media({ id: testLinkId, type: 'link', collection: testCollectionName }),
             )
           ));
         });
 
         context('lastest pos in range is out of doc range', () => {
-          it('creates a link card to join the existing media group below', () => {
+          it('creates a link card to join the existing media group below', async () => {
             const link1 = 'www.google.com';
             const link2 = 'www.baidu.com';
             const { editorView, sel } = editor(doc(
               p(`${link1} ${link2} {<>}`),
-              mediaGroup(media({ id: link1, type: 'link', collection: testCollectionName })),
+              mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
             ));
 
             // -1 for space, simulate the scenario of autoformatting link
-            insertLinks(
+            await insertLinks(
               editorView,
               [
                 { start: sel - link2.length - 1, end: 1000, urls: [link2] }
               ],
+              linkCreateContextMock,
               testCollectionName,
             );
 
             expect(editorView.state.doc).to.deep.equal(doc(
               p(`${link1} ${link2} `),
               mediaGroup(
-                media({ id: link1, type: 'link', collection: testCollectionName }),
-                media({ id: link2, type: 'link', collection: testCollectionName }),
+                media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+                media({ id: testLinkId, type: 'link', collection: testCollectionName }),
               )
             ));
           });
@@ -300,7 +315,7 @@ describe('media-links', () => {
     });
 
     context('when there are multiple links in link ranges', () => {
-      it('creates the same number of link cards below where the link created', () => {
+      it('creates link cards below the range where link was detected', async () => {
         const link1 = 'www.google.com';
         const link2 = 'www.baidu.com';
         const link3 = 'www.atlassian.com';
@@ -316,22 +331,25 @@ describe('media-links', () => {
         const endOfLink2 = startOfLink2 + link2.length;
 
         // -1 for space, simulate the scenario of autoformatting link
-        insertLinks(
+        await insertLinks(
           editorView,
           [
             { start: startOfLink1, end: endOfLink1, urls: [link1] },
             { start: startOfLink2, end: endOfLink2, urls: [link2, link3] },
           ],
+          linkCreateContextMock,
           testCollectionName,
         );
 
         expect(editorView.state.doc).to.deep.equal(doc(
           p(`${link1}`),
+          mediaGroup(
+            media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+          ),
           p(`${link2} ${link3}`),
           mediaGroup(
-            media({ id: link1, type: 'link', collection: testCollectionName }),
-            media({ id: link2, type: 'link', collection: testCollectionName }),
-            media({ id: link3, type: 'link', collection: testCollectionName }),
+            media({ id: testLinkId, type: 'link', collection: testCollectionName }),
+            media({ id: testLinkId, type: 'link', collection: testCollectionName }),
           ),
           p('hello'),
         ));

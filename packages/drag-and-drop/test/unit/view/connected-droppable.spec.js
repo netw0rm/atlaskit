@@ -1,13 +1,12 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { expect } from 'chai';
 import { mount } from 'enzyme';
-import sinon from 'sinon';
 import Droppable, { makeSelector } from '../../../src/view/droppable/connected-droppable';
 import noImpact from '../../../src/state/no-impact';
-import getDimension from '../../utils/get-dimension-util';
-import getContextOptions from '../../utils/get-context-options';
+import { getDraggableDimension } from '../../../src/state/dimension';
+import { withStore } from '../../utils/get-context-options';
+import getClientRect from '../../utils/get-client-rect';
 import type {
   Phase,
   DragState,
@@ -19,7 +18,9 @@ import type {
   DragImpact,
   DropResult,
   CurrentDrag,
-  Dimension,
+  DraggableDimension,
+  InitialDragLocation,
+  CurrentDragLocation,
 } from '../../../src/types';
 import type { MapProps, Provided } from '../../../src/view/droppable/droppable-types';
 
@@ -43,47 +44,79 @@ const defaultMapProps: MapProps = {
 
 const droppableId: DroppableId = 'drop-1';
 const draggableId: DraggableId = 'drag-1';
+const origin: Position = { x: 0, y: 0 };
 
 type DragArgs = {|
   isDraggingOver: boolean
 |}
 
 const perform = (() => {
-  const dragDimension: Dimension = getDimension({
-    top: 100,
-    left: 0,
-    right: 100,
-    bottom: 200,
-  });
-  const initial: InitialDrag = {
-    source: {
-      index: 0,
-      droppableId,
-    },
-    center: dragDimension.center,
-    selection: dragDimension.center,
-    dimension: dragDimension,
-  };
-  const offset: Position = {
-    x: 10,
-    y: 20,
-  };
-  const center: Position = {
-    x: initial.center.x + offset.x,
-    y: initial.center.y + offset.y,
-  };
-  const current: CurrentDrag = {
+  const dimension: DraggableDimension = getDraggableDimension({
     id: draggableId,
-    type: 'TYPE',
-    offset,
-    center,
-    shouldAnimate: true,
-  };
+    droppableId,
+    clientRect: getClientRect({
+      top: 100,
+      left: 0,
+      right: 100,
+      bottom: 200,
+    }),
+  });
+
+  const initial: InitialDrag = (() => {
+    const client: InitialDragLocation = {
+      selection: dimension.client.withoutMargin.center,
+      center: dimension.client.withoutMargin.center,
+    };
+
+    const page: InitialDragLocation = {
+      selection: dimension.page.withoutMargin.center,
+      center: dimension.page.withoutMargin.center,
+    };
+
+    const value: InitialDrag = {
+      source: {
+        index: 0,
+        droppableId,
+      },
+      client,
+      page,
+      withinDroppable: {
+        center: page.center,
+      },
+    };
+    return value;
+  })();
+
+  const current: CurrentDrag = (() => {
+    const client: CurrentDragLocation = {
+      selection: initial.client.center,
+      center: initial.client.center,
+      offset: origin,
+    };
+
+    const page: CurrentDragLocation = {
+      selection: initial.page.center,
+      center: initial.page.center,
+      offset: origin,
+    };
+
+    const value: CurrentDrag = {
+      id: draggableId,
+      type: 'TYPE',
+      client,
+      page,
+      withinDroppable: {
+        center: page.center,
+      },
+      shouldAnimate: true,
+    };
+    return value;
+  })();
 
   const dragOverImpact: DragImpact = {
     movement: {
       draggables: [draggableId],
-      amount: dragDimension.withMargin.height,
+      amount: dimension.page.withMargin.height,
       isMovingForward: true,
     },
     destination: {
@@ -132,11 +165,11 @@ const perform = (() => {
 describe('Droppable - connected', () => {
   describe('selector', () => {
     beforeEach(() => {
-      sinon.stub(console, 'error');
+      jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
-      console.error.restore();
+      console.error.mockRestore();
     });
 
     describe('dropping is disabled', () => {
@@ -152,7 +185,7 @@ describe('Droppable - connected', () => {
             isDropDisabled: true,
           });
 
-          expect(props).to.deep.equal(defaultMapProps);
+          expect(props).toEqual(defaultMapProps);
         });
       });
 
@@ -174,7 +207,7 @@ describe('Droppable - connected', () => {
           });
 
         // checking object equality
-          expect(first).to.equal(second);
+          expect(first).toBe(second);
         });
       });
     });
@@ -188,8 +221,8 @@ describe('Droppable - connected', () => {
           id: droppableId,
         });
 
-        expect(props).to.deep.equal(defaultMapProps);
-        expect(console.error.called).to.equal(true);
+        expect(props).toEqual(defaultMapProps);
+        expect(console.error).toHaveBeenCalled();
       });
 
       describe('dragging over', () => {
@@ -205,7 +238,7 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
 
         it('should not break memoization on multiple drags', () => {
@@ -228,9 +261,9 @@ describe('Droppable - connected', () => {
           });
 
         // checking object equality
-          expect(props1).to.equal(props2);
-          expect(props1).to.deep.equal(expected);
-          expect(props2).to.deep.equal(expected);
+          expect(props1).toBe(props2);
+          expect(props1).toEqual(expected);
+          expect(props2).toEqual(expected);
         });
       });
 
@@ -247,7 +280,7 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
 
         it('should not break memoization on multiple drags', () => {
@@ -270,9 +303,9 @@ describe('Droppable - connected', () => {
           });
 
         // checking object equality
-          expect(props1).to.equal(props2);
-          expect(props1).to.deep.equal(expected);
-          expect(props2).to.deep.equal(expected);
+          expect(props1).toBe(props2);
+          expect(props1).toEqual(expected);
+          expect(props2).toEqual(expected);
         });
       });
     });
@@ -286,8 +319,8 @@ describe('Droppable - connected', () => {
           id: droppableId,
         });
 
-        expect(props).to.deep.equal(defaultMapProps);
-        expect(console.error.called).to.equal(true);
+        expect(props).toEqual(defaultMapProps);
+        expect(console.error).toHaveBeenCalled();
       });
 
       describe('dragging over', () => {
@@ -303,7 +336,7 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
 
         it('should not break memoization from a previous DRAGGING phase', () => {
@@ -325,10 +358,10 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(dragging).to.deep.equal(expected);
-          expect(dropAnimating).to.deep.equal(expected);
+          expect(dragging).toEqual(expected);
+          expect(dropAnimating).toEqual(expected);
         // checking object equality
-          expect(dragging).to.equal(dropAnimating);
+          expect(dragging).toBe(dropAnimating);
         });
       });
 
@@ -345,7 +378,7 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(props).to.deep.equal(expected);
+          expect(props).toEqual(expected);
         });
 
         it('should not break memoization from a previous DRAGGING phase', () => {
@@ -367,10 +400,10 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(dragging).to.deep.equal(expected);
-          expect(dropAnimating).to.deep.equal(expected);
+          expect(dragging).toEqual(expected);
+          expect(dropAnimating).toEqual(expected);
         // checking object equality
-          expect(dragging).to.equal(dropAnimating);
+          expect(dragging).toBe(dropAnimating);
         });
       });
     });
@@ -389,7 +422,7 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(props).to.deep.equal(defaultMapProps);
+          expect(props).toEqual(defaultMapProps);
         });
       });
 
@@ -410,10 +443,10 @@ describe('Droppable - connected', () => {
             id: droppableId,
           });
 
-          expect(first).to.deep.equal(defaultMapProps);
-          expect(second).to.deep.equal(defaultMapProps);
-        // checking object equality
-          expect(first).to.equal(second);
+          expect(first).toEqual(defaultMapProps);
+          expect(second).toEqual(defaultMapProps);
+          // checking object equality
+          expect(first).toBe(second);
         });
       });
     });
@@ -456,41 +489,41 @@ describe('Droppable - connected', () => {
     }
 
     beforeEach(() => {
-      sinon.spy(Person.prototype, 'render');
+      jest.spyOn(Person.prototype, 'render');
     });
 
     afterEach(() => {
-      Person.prototype.render.restore();
+      Person.prototype.render.mockRestore();
     });
 
     it('should render the child function when the parent renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, withStore());
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(2);
-      expect(wrapper.find(Person).props().name).to.equal('Jake');
+      expect(Person.prototype.render).toHaveBeenCalledTimes(2);
+      expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
     it('should render the child function when the parent re-renders', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, withStore());
 
       wrapper.update();
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(3);
-      expect(wrapper.find(Person).props().name).to.equal('Jake');
+      expect(Person.prototype.render).toHaveBeenCalledTimes(3);
+      expect(wrapper.find(Person).props().name).toBe('Jake');
     });
 
     it('should render the child function when the parents props changes that cause a re-render', () => {
-      const wrapper = mount(<App currentUser="Jake" />, getContextOptions());
+      const wrapper = mount(<App currentUser="Jake" />, withStore());
 
       wrapper.setProps({
         currentUser: 'Finn',
       });
 
       // initial render causes two renders due to setting child ref
-      expect(Person.prototype.render.callCount).to.equal(3);
-      expect(wrapper.find(Person).props().name).to.equal('Finn');
+      expect(Person.prototype.render).toHaveBeenCalledTimes(3);
+      expect(wrapper.find(Person).props().name).toBe('Finn');
     });
   });
 });

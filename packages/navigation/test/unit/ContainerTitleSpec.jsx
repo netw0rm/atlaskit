@@ -9,10 +9,14 @@ describe('<ContainerTitle />', () => {
     });
 
     it('linkComponent can be used to render an arbitrary link', () => {
-      const wrapper = mountWithRootTheme(<ContainerTitle
-        href="http://google.com"
-        linkComponent={({ href, children }) => <a href={href} data-foo="foo">{children}</a>}
-      />);
+      const wrapper = mountWithRootTheme(
+        <ContainerTitle
+          href="http://google.com"
+          linkComponent={({ href, children }) => (
+            <a href={href} data-foo="foo">{children}</a>
+          )}
+        />
+      );
       expect(wrapper.find('[data-foo]').length).toBe(1);
       expect(wrapper.find('linkComponent').props().href).toBe('http://google.com');
     });
@@ -27,7 +31,10 @@ describe('<ContainerTitle />', () => {
 
     it('should render subText if it is provided', () => {
       const wrapper = mountWithRootTheme(
-        <ContainerTitle text="Main text" subText="sub text" />
+        <ContainerTitle
+          text="Main text"
+          subText="sub text"
+        />
       );
 
       expect(wrapper.text()).toBe('Main textsub text');

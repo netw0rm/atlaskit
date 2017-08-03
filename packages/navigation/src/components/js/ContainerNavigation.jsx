@@ -1,6 +1,5 @@
 // @flow
 import React, { PureComponent } from 'react';
-import memoizeOne from 'memoize-one';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -35,7 +34,7 @@ type Props = {|
   globalSearchIcon?: ReactElement,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
   component is designed to be used as the headerComponent. */
-  headerComponent: () => mixed,
+  headerComponent?: () => mixed,
   /** Set to determine whether the ContainerNavigation should be rendered in its
   open state or closed state. Passed through to the headerComponent. */
   isCollapsed?: boolean,
@@ -56,6 +55,10 @@ type Props = {|
   globalSecondaryActions: Array<ReactElement>,
 |}
 
+type State = {|
+  isInitiallyRendered: bool,
+|}
+
 export default class ContainerNavigation extends PureComponent {
   static defaultProps = {
     showGlobalActions: false,
@@ -65,18 +68,15 @@ export default class ContainerNavigation extends PureComponent {
     theme: container,
   }
 
-  constructor(props: Props, context) {
+  constructor(props: Props, context: any) {
     super(props, context);
 
     this.state = {
       isInitiallyRendered: false,
     };
-
-    // Memoizing this function so that it will only be called
-    // when the underlying DOM node is changing OR if it is
-    // unmounting (in which case it will be `null`).
-    this.onRefChange = memoizeOne(this.onRefChange);
   }
+
+  state: State
 
   componentWillReceiveProps() {
     // After any update we are going to start animating.
@@ -112,11 +112,6 @@ export default class ContainerNavigation extends PureComponent {
     // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
 
-    const header = headerComponent ? (
-      <ContainerHeader>
-        {headerComponent({ isCollapsed })}
-      </ContainerHeader>) : null;
-
     return (
       <WithRootTheme
         provided={theme}
@@ -140,7 +135,9 @@ export default class ContainerNavigation extends PureComponent {
               searchIcon={globalSearchIcon}
             />
           </Reveal>
-          {header}
+          <ContainerHeader>
+            {headerComponent ? headerComponent({ isCollapsed }) : null}
+          </ContainerHeader>
           <ContainerNavigationChildren>
             {children}
           </ContainerNavigationChildren>

@@ -159,7 +159,7 @@ describe('Quick Search', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
         const paramsKeyboard = onClickSpy.args;
         onClickSpy.mockClear();
-        wrapper.find(AkNavigationItem).at(0).find('button').simulate('click');
+        wrapper.find('Item').at(0).simulate('click');
         expect(onClickSpy.args).toEqual(paramsKeyboard);
       });
       it('should run the onClick callback with the result\'s data on ENTER keystroke', () => {
@@ -182,11 +182,11 @@ describe('Quick Search', () => {
       it('should let mouseEnter override keyboard selection', () => {
         // First result is selected by default as established by previous test.
         // Mouse over the third result.
-        wrapper.find(AkNavigationItem).at(2).find('InteractiveWrapper').simulate('mouseenter');
+        wrapper.find(AkNavigationItem).at(2).find('Item').simulate('mouseenter');
         expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).toBe('three');
       });
       it('should clear selection onMouseLeave', () => {
-        wrapper.find(AkNavigationItem).at(2).find('InteractiveWrapper').simulate('mouseleave');
+        wrapper.find(AkNavigationItem).at(2).find('Item').simulate('mouseleave');
         expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected'))).toHaveLength(0);
       });
       it('should remove selection on search input blur', () => {

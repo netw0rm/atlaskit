@@ -2,7 +2,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import memoizeOne from 'memoize-one';
-import storeKey from '../../state/get-store-key';
+import { storeKey } from '../context-keys';
 import { dragSelector, pendingDropSelector, phaseSelector } from '../../state/selectors';
 import Droppable from './droppable';
 import type {

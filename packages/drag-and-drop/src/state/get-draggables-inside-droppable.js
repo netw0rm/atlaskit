@@ -1,17 +1,20 @@
 // @flow
 import memoizeOne from 'memoize-one';
-import type { DimensionMap, Dimension, Id } from '../types';
-import isInsideDimension from './is-inside-dimension';
+import type { DraggableDimension, DroppableDimension, DraggableDimensionMap, Id } from '../types';
 
 export default memoizeOne(
-  (droppableDimension, draggableDimensions: DimensionMap): Dimension[] =>
+  (droppableDimension: DroppableDimension,
+  draggableDimensions: DraggableDimensionMap,
+  ): DraggableDimension[] =>
     Object.keys(draggableDimensions)
-      .map((key: Id): Dimension => draggableDimensions[key])
-      .filter((dimension: Dimension): boolean => isInsideDimension(
-          dimension.center,
-          droppableDimension
-      ))
+      .map((key: Id): DraggableDimension => draggableDimensions[key])
+      .filter((dimension: DraggableDimension): boolean =>
+        dimension.droppableId === droppableDimension.id
+      )
       // Dimensions are not guarenteed to be ordered in the same order as keys
       // So we need to sort them so they are in the correct order
-      .sort((a: Dimension, b: Dimension): number => a.center.y - b.center.y)
+      .sort((a: DraggableDimension, b: DraggableDimension): number =>
+        a.page.withoutMargin.center.y -
+        b.page.withoutMargin.center.y
+      )
   );

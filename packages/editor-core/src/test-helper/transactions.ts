@@ -1,7 +1,5 @@
 import {
   EditorView,
-  TextSelection,
-  NodeSelection
 } from '../prosemirror';
 import {
   Refs,
@@ -9,23 +7,6 @@ import {
   coerce,
   offsetRefs
 } from './schema-builder';
-
-/**
- * Update the transaction's current selection.
- * This will determine the selection that the editor gets when the transaction is applied.
- */
-export function setTextSelection(view: EditorView, anchor: number, head?: number) {
-  const { state } = view;
-  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
-  view.dispatch(tr);
-}
-
-export function setNodeSelection(view: EditorView, from: number) {
-  const { state } = view;
-  const tr = state.tr.setSelection(NodeSelection.create(state.doc, from));
-  view.dispatch(tr);
-}
-
 
 /**
  * Replace the given range, or the selection if no range is given, with a text node containing the given string

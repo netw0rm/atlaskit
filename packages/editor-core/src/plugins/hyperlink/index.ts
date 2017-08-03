@@ -8,11 +8,15 @@ import {
   NodeViewDesc,
   TextSelection,
   Slice,
+  Step,
+  ReplaceStep,
+  Transaction,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl, linkifyText, linkifyContent } from './utils';
+import { normalizeUrl, linkifyContent } from './utils';
+import { URL_REGEX } from './regex';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -23,7 +27,7 @@ export interface HyperlinkOptions {
   href: string;
   text?: string;
 }
-export type Coordniates = { left: number; right: number; top: number; bottom: number };
+export type Coordinates = { left: number; right: number; top: number; bottom: number };
 interface NodeInfo {
   node: Node;
   startPos: number;
@@ -167,7 +171,7 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  getCoordinates(editorView: EditorView, offsetParent: Element): Coordniates {
+  getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
     if (editorView.hasFocus()) {
       editorView.focus();
     }
@@ -187,7 +191,7 @@ export class HyperlinkState {
      * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
      * |               | [FloatingToolbar]               |  |
      */
-    const translateCoordinates = (coords: Coordniates, dx: number, dy: number) => {
+    const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
       return {
         left: coords.left - dx,
         right: coords.right - dx,
@@ -216,7 +220,7 @@ export class HyperlinkState {
       const { node, offset } = $from.parent.childAfter($from.parentOffset);
       const parentNodeStartPos = $from.start($from.depth);
 
-      // offset is the end postion of previous node
+      // offset is the end position of previous node
       // This is to check whether the cursor is at the beginning of current node
       if (empty && offset + 1 === $from.pos) {
         return;
@@ -271,6 +275,69 @@ export class HyperlinkState {
   }
 }
 
+function isReplaceStep(step?: Step): step is ReplaceStep {
+  return !!step && step instanceof ReplaceStep;
+}
+const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
+const isURILike = (str: string) => /^[a-z]+:\/\//i.test(str) || URL_REGEX.test(str);
+
+function updateLinkOnChange(
+  transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>
+): Transaction | undefined {
+  if (!transactions) {
+    return;
+  }
+
+  if (transactions.some(tr => tr.steps.some(isReplaceStep))) {
+    const { schema } = newState;
+
+    const { nodeAfter: oldNodeAfter, nodeBefore: oldNodeBefore } = oldState.selection.$from;
+    const oldLinkMarkAfter = hasLinkMark(schema, oldNodeAfter);
+    const oldLinkMarkBefore = hasLinkMark(schema, oldNodeBefore);
+
+    const { $from } = newState.selection;
+    const { nodeAfter: newNodeAfter, nodeBefore: newNodeBefore } = $from;
+    const newLinkMarkAfter = hasLinkMark(schema, newNodeAfter);
+    const newLinkMarkBefore = hasLinkMark(schema, newNodeBefore);
+
+    if (!(oldNodeBefore && oldLinkMarkBefore && newNodeBefore && newLinkMarkBefore)) {
+      return;
+    }
+
+    let href;
+    let end = $from.pos;
+    const start = end - newNodeBefore.nodeSize;
+
+    if (
+      oldNodeAfter && oldLinkMarkAfter &&
+      oldLinkMarkBefore.attrs.href === normalizeUrl(`${oldNodeBefore.text}${oldNodeAfter.text}`)
+    ) {
+      if (newNodeAfter && newLinkMarkAfter) {
+        // Middle of a link https://goo<|>gle.com/
+        end += newNodeAfter.nodeSize;
+        href = `${newNodeBefore.text}${newNodeAfter.text}`;
+      } else {
+        // Replace end of a link https://goo<|gle.com/|>
+        href = newNodeBefore.text;
+      }
+    } else if (oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')) {
+      // End of a link https://google.com/<|>
+      if (newNodeBefore.text !== oldNodeBefore.text) {
+        href = newNodeBefore.text;
+      }
+    }
+
+    if (href && isURILike(href)) {
+      const markType = schema.mark('link', { href: normalizeUrl(href) });
+      const tr = newState.tr.removeMark(start, end, schema.marks.link);
+      if (URL_REGEX.test(href)) {
+        tr.addMark(start, end, markType);
+      }
+      return tr;
+    }
+  }
+}
+
 export const plugin = new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
@@ -309,19 +376,13 @@ export const plugin = new Plugin({
     handlePaste(view: EditorView, event: any, slice: Slice) {
       const { clipboardData } = event;
       const html = clipboardData && clipboardData.getData('text/html');
-      let contentSlices;
       if (html) {
-        contentSlices = linkifyContent(view.state.schema, slice);
-      } else {
-        const text = clipboardData && clipboardData.getData('text/plain');
-        if (text) {
-          contentSlices = linkifyText(view.state.schema, text);
+        const contentSlices = linkifyContent(view.state.schema, slice);
+        if (contentSlices) {
+          const { dispatch, state: { tr } } = view;
+          dispatch(tr.replaceSelection(contentSlices));
+          return true;
         }
-      }
-      if (contentSlices) {
-        const { dispatch, state: { tr } } = view;
-        dispatch(tr.replaceSelection(contentSlices));
-        return true;
       }
       return false;
     }
@@ -344,7 +405,10 @@ export const plugin = new Plugin({
         pluginState.update(view.state, view.docView);
       }
     };
-  }
+  },
+  appendTransaction: (transactions, oldState, newState) => {
+    return updateLinkOnChange(transactions, oldState, newState);
+  },
 });
 
 const plugins = (schema: Schema<any, any>) => {

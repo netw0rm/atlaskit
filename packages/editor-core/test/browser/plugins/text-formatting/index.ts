@@ -8,6 +8,7 @@ import {
 } from '../../../../src/test-helper';
 import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -18,6 +19,11 @@ describe('text-formatting', () => {
   });
 
   describe('keymap', () => {
+    let trackEvent;
+    beforeEach(() => {
+      trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+    });
     if (browser.mac) {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
@@ -27,6 +33,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Cmd-b');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.strong.keyboard')).to.equal(true);
           });
         });
 
@@ -37,6 +44,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Cmd-i');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);
           });
         });
 
@@ -47,6 +55,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Cmd-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(true);
           });
         });
 
@@ -61,6 +70,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Shift-Cmd-S');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.strike.keyboard')).to.equal(true);
           });
         });
 
@@ -71,6 +81,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Shift-Cmd-M');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text @helga text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
           });
         });
       });
@@ -83,6 +94,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Ctrl-b');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.strong.keyboard')).to.equal(true);
           });
         });
 
@@ -93,6 +105,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Ctrl-i');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);
           });
         });
 
@@ -103,6 +116,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Ctrl-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.underline.keyboard')).to.equal(true);
           });
         });
 
@@ -117,6 +131,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Shift-Ctrl-S');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.strike.keyboard')).to.equal(true);
           });
         });
 
@@ -127,6 +142,7 @@ describe('text-formatting', () => {
             sendKeyToPm(editorView, 'Shift-Ctrl-M');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
+            expect(trackEvent.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
           });
         });
       });

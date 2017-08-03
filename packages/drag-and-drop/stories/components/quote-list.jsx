@@ -20,7 +20,8 @@ const Container = styled.div`
 export default class List extends Component {
   props: {|
     listId: string,
-    children?: any,
+    children ?: any,
+    style?: Object,
   |}
 
   render() {
@@ -30,6 +31,7 @@ export default class List extends Component {
           <Container
             isDraggingOver={snapshot.isDraggingOver}
             innerRef={provided.innerRef}
+            style={this.props.style}
           >
             {this.props.children}
           </Container>

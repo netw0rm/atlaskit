@@ -14,7 +14,7 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
-  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.redo.keyboard', redo), list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
@@ -27,7 +27,7 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)
+          trackAndInvoke(eventName, () => pluginState.insertBlockType(blockType.name, view)
         ), list);
       }
     }

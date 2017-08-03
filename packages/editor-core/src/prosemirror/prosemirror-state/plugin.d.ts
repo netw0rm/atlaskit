@@ -23,6 +23,7 @@ export class Plugin {
 
 export class PluginKey {
   constructor(name?: string);
+  key: string;
 
   get(state: EditorState<any>): Plugin | null;
   getState(state: EditorState<any>): any | null;

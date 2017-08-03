@@ -1,12 +1,14 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
+import tableCommands from '../../../../src/plugins/table/commands';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, setTextSelection, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
+  createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
   tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
+import { setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 
@@ -113,9 +115,9 @@ describe('table plugin', () => {
     context('when the cursor is inside the table', () => {
       it('it should not create a new table and return false', () => {
         const tableNode = table(tr(tdCursor));
-        const { plugin, pluginState, editorView } = editor(doc(tableNode));
+        const { plugin, editorView } = editor(doc(tableNode));
         plugin.props.onFocus!(editorView, event);
-        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
+        expect(tableCommands.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
       });
     });
@@ -123,8 +125,8 @@ describe('table plugin', () => {
     context('when the cursor is inside a codeblock', () => {
       it('it should not create a new table and return false', () => {
         const node = code_block()('{<>}');
-        const { pluginState, editorView } = editor(doc(node));
-        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
+        const { editorView } = editor(doc(node));
+        expect(tableCommands.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
         expect(editorView.state.doc).to.deep.equal(doc(node));
       });
     });
@@ -132,16 +134,16 @@ describe('table plugin', () => {
     context('when the cursor is inside inline code', () => {
       it('it should not create a new table and return false', () => {
         const node = p(code('te{<>}xt'));
-        const { pluginState, editorView } = editor(doc(node));
-        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
+        const { editorView } = editor(doc(node));
+        expect(tableCommands.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
         expect(editorView.state.doc).to.deep.equal(doc(node));
       });
     });
 
     context('when the cursor is outside the table', () => {
       it('it should create a new table and return true', () => {
-        const { pluginState, editorView } = editor(doc(p('{<>}')));
-        expect(pluginState.createTable()(editorView.state, editorView.dispatch)).to.equal(true);
+        const { editorView } = editor(doc(p('{<>}')));
+        expect(tableCommands.createTable()(editorView.state, editorView.dispatch)).to.equal(true);
         const tableNode = table(
           tr(thEmpty, thEmpty, thEmpty),
           tr(tdEmpty, tdEmpty, tdEmpty),

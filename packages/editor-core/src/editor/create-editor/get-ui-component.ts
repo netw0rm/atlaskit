@@ -4,6 +4,8 @@ import { EditorAppearance, EditorAppearanceComponentProps } from '../types';
 export default function getUiComponent(
   appearance: EditorAppearance
 ): React.ComponentClass<EditorAppearanceComponentProps> {
+  appearance = appearance || 'message';
+
   switch (appearance) {
     case 'message':
       return Message;

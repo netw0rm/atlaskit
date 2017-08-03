@@ -6,6 +6,7 @@ export type Callbacks = {|
   onLift: (point: Position) => void,
   onKeyLift: () => void,
   onMove: (point: Position) => void,
+  onWindowScroll: (diff: Position) => void,
   onMoveForward: () => void,
   onMoveBackward: () => void,
   onDrop: () => void,

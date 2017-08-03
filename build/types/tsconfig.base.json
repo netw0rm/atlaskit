@@ -42,6 +42,7 @@
     "./popper.d.ts",
     "./raw-loader.d.ts",
     "./webpack.d.ts",
-    "./wildcard.d.ts"
+    "./wildcard.d.ts",
+    "./css-color-names.d.ts"
   ]
 }

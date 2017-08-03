@@ -23,6 +23,10 @@ export interface Attributes {
   id: string;
   type: MediaType;
   collection: string;
+  /**
+   * @minLength 1
+   */
+  occurrenceKey?: string;
   // For both CQ and JIRA
   __fileName?: string | null;
   // For CQ
@@ -36,6 +40,7 @@ const defaultAttrs = {
   id: { default: '' },
   type: { default: '' },
   collection: { default: null },
+  occurrenceKey: { default: null },
   __fileName: { default: null },
   __fileSize: { default: null },
   __fileMimeType: { default: null },
@@ -49,8 +54,8 @@ export const media: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: HTMLElement) => {
-      const { id, type, collection } = dom.dataset;
-      const attrs = { id, type, collection } as Attributes;
+      const { id, type, collection, occurrenceKey } = dom.dataset;
+      const attrs = { id, type, collection, occurrenceKey } as Attributes;
       Object.keys(dom.dataset).forEach(key => {
         if (defaultAttrs[`__${key}`]) {
           attrs[`__${key}`] = dom.dataset[key];
@@ -69,6 +74,7 @@ export const media: NodeSpec = {
       'data-node-type': 'media',
       'data-type': node.attrs.type,
       'data-collection': node.attrs.collection,
+      'data-occurrence-key': node.attrs.occurrenceKey,
       // toDOM is used for static rendering as well as editor rendering. This comes into play for
       // emails, copy/paste, etc, so the title and styling here *is* useful (despite a React-based
       // node view being used for editing).
@@ -98,6 +104,9 @@ export const toJSON = (node: PMNode) => ({
   attrs: Object.keys(node.attrs)
     .filter(key => !(key[0] === '_' && key[1] === '_'))
     .reduce((obj, key) => {
+      if (key === 'occurrenceKey' && !node.attrs[key]) {
+        return obj;
+      }
       obj[key] = node.attrs[key];
       return obj;
     }, {})

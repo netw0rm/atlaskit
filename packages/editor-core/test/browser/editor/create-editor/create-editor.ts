@@ -61,7 +61,7 @@ describe(name, () => {
             { rank: 100, plugin: () => true }
           ]
         };
-        expect(createPMPlugins(editorConfig as any, {} as any, {} as any, {} as any, {} as any).length).to.eq(1);
+        expect(createPMPlugins(editorConfig as any, {} as any, {} as any, () => {}, {} as any, {} as any).length).to.eq(1);
       });
     });
   });

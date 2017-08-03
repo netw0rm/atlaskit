@@ -1,14 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { expect } from 'chai';
 // $ExpectError - not matching module
 import TestUtils from 'react-addons-test-utils';
 import { DragDropContext } from '../../../src/';
-import storeKey from '../../../src/state/get-store-key';
+import { storeKey } from '../../../src/view/context-keys';
 
 class App extends Component {
-  // Part of react's api is to use flow types for this.
+  // Part of reacts api is to use flow types for this.
   // Sadly cannot use flow
   static contextTypes = {
     [storeKey]: PropTypes.shape({
@@ -36,8 +35,11 @@ describe('DragDropContext', () => {
 
     const app = TestUtils.findRenderedComponentWithType(tree, App);
 
-    expect(app.context[storeKey]).to.have.property('dispatch').that.is.a('function');
-    expect(app.context[storeKey]).to.have.property('getState').that.is.a('function');
-    expect(app.context[storeKey]).to.have.property('subscribe').that.is.a('function');
+    expect(app.context[storeKey]).toHaveProperty('dispatch');
+    expect(app.context[storeKey].dispatch).toBeInstanceOf(Function);
+    expect(app.context[storeKey]).toHaveProperty('getState');
+    expect(app.context[storeKey].getState).toBeInstanceOf(Function);
+    expect(app.context[storeKey]).toHaveProperty('subscribe');
+    expect(app.context[storeKey].subscribe).toBeInstanceOf(Function);
   });
 });

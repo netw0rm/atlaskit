@@ -2,7 +2,7 @@
 
 ![example.gif](https://dl.dropboxusercontent.com/s/4oy05eutn1jmzrm/example.gif)
 
-The goal of this library is to create a beautiful drag and drop experience for lists. It provides highly performant physics based mouse and keyboard dragging without creating any wrapping DOM nodes.
+The goal of this library is to create a beautiful drag and drop experience for lists. It provides highly performant, physics based, mouse and keyboard dragging - without creating any wrapping DOM nodes.
 
 ## `DragDropContext`
 
@@ -139,8 +139,8 @@ Here are a few poor user experiences that can occur if you change things *during
 We try very hard to ensure that each `onDragStart` event is paired with a single `onDragEnd` event. However, there maybe a rouge situation where this is not the case. If that occurs - it is a bug. Currently there is no mechanism to tell the library to cancel a current drag externally.
 
 **Dynamic hooks**
-Your *hook* functions will only be captured *once at start up*. Please do not change the function after that. If there is a valid use case for this then dynamic hooks could be supported. However, at this time it is not.
 
+Your *hook* functions will only be captured *once at start up*. Please do not change the function after that. If there is a valid use case for this then dynamic hooks could be supported. However, at this time it is not.
 
 ## `Droppable`
 
@@ -234,6 +234,23 @@ The `children` function is also provided with a small about of state relating to
 - You can disable dropping on a `Droppable` altogether by always setting `isDropDisabled` to false. You can do this to create a list that is never able to be dropped on, but contains `Draggable`s.
 - Technically you do not need to use `type` and do all of your conditional drop logic with the `isDropDisabled` function. The `type` parameter is a convenient shortcut for a common use case.
 
+### Scroll containers
+
+This library supports dragging within scroll containers (DOM elements that have `overflow: auto;` or `overflow: scroll;`). The **only** supported use cases are:
+
+1. The `Droppable` can itself be a scroll container with **no scrollable parents**
+2. The `Droppable` has **one scrollable parent**
+
+**Auto scrolling is not provided**
+
+Currently auto scrolling of scroll containers is not part of this library. Auto scrolling is where the container automatically scrolls to make room for the dragging item as you drag near the edge of a scroll container. You are welcome to build your own auto scrolling list, or if you would you really like it as part of this library we could provide a auto scrolling `Droppable`.
+
+Users will be able to scroll a scroll container while dragging by using their trackpad or mouse wheel.
+
+**Keyboard dragging limitation**
+
+Getting keyboard dragging to work with scroll containers is quite difficult. Currently there is a limitation: you cannot drag with a keyboard beyond the visible edge of a scroll container. This limitation could be removed if we introduced auto scrolling.
+
 ## `Draggable`
 
 `Draggable` components can be dragged around and dropped onto `Droppable`s. A `Draggable` must always be contained within a `Droppable`. It is **possible** to reorder a `Draggable` within its home `Droppable` or move to another `Droppable`. It is **possible** because a `Droppable` is free to control what it allows to be dropped on it.
@@ -319,11 +336,9 @@ innerRef: (HTMLElement) => void
 
 - `provided.draggableStyle (?DraggableStyle)`: This is an `Object` or `null` that contains an a number of styles that needs to be applied to the `Draggable`. This needs to be applied to the same node that you apply `provided.innerRef` to. The controls the movement of the draggable when it is dragging and not dragging. You are welcome to add your own styles to this object - but please do not remove or replace any of the properties.
 
-**Be careful with position:absolute**
+**Ownership**
 
-*LTDR*: do not apply any `top`, `left`, `bottom`, `right` styles to the dragging element.
-
-One of the styles of `provided.draggableStyle` is `position:absolute`. This intended position of the element is the original position. No `top`, `left`, `bottom`, `right` values are applied to enable this. Be careful that you are not applying one of these styles (`top`, `left`, `bottom`, `right`) to the element or its positioning will be broken. This is especially true if one of your parents has `position:relative` on it.
+It is a contract of this library that it own the positioning logic of the dragging element. This includes properties such as `top`, `right`, `bottom`, `left` and `transform`. The library may change how it positions things and what properties it uses without performing a major version bump. It is also recommended that you do not apply your own `transition` property to the dragging element.
 
 ```js
 <Draggable draggableId="draggable-1">
@@ -369,22 +384,27 @@ One of the styles of `provided.draggableStyle` is `position:absolute`. This inte
 ```js
 type DraggableStyle = DraggingStyle | NotDraggingStyle;
 
-export type DraggingStyle = {|
-  position: 'absolute',
+type DraggingStyle = {|
+  position: 'fixed',
   boxSizing: 'border-box',
+  // allow scrolling of the element behind the dragging element
+  pointerEvents: 'none',
   zIndex: ZIndex,
   width: number,
   height: number,
+  top: number,
+  left: number,
   transform: ?string,
 |}
 
-export type NotDraggingStyle = {|
+type NotDraggingStyle = {|
   transition: ?string,
   transform: ?string,
+  pointerEvents: 'none' | 'auto',
 |}
 ```
 
-- `provided.placeholder (?ReactElement)` The `Draggable` element has `position:absolute` applied to it while it is dragging. The role of the `placeholder` is to sit in the place that the `Draggable` was during a drag. It is needed to stop the `Droppable` list from collapsing when you drag. It is advised to render it as a sibling to the `Draggable` node.
+- `provided.placeholder (?ReactElement)` The `Draggable` element has `position:fixed` applied to it while it is dragging. The role of the `placeholder` is to sit in the place that the `Draggable` was during a drag. It is needed to stop the `Droppable` list from collapsing when you drag. It is advised to render it as a sibling to the `Draggable` node.
 
 ```js
 <Draggable draggableId="draggable-1">
@@ -562,9 +582,11 @@ While code coverage is [not a guarantee of code health](https://stackoverflow.co
 
 This codebase is designed to be extremely performant. It builds on prior investigations into React performance that you can read about [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-b453c597b191) and [here](https://medium.com/@alexandereardon/performance-optimisations-for-react-applications-round-2-2042e5c9af97). It is designed to perform the minimum number of renders required for each task.
 
-## Keyboard handling
+## Keyboard
 
-Currently the keyboard handling is hard coded. This could be changed in the future to become a prop of `Draggable`. Here is the existing keyboard mapping:
+**Shortcuts**
+
+Currently the keyboard handling is hard coded. This could be changed in the future to become customisable. Here is the existing keyboard mapping:
 
 - **tab `↹`** - standard browser tabbing will navigate through the `Droppable`'s. The library does not do anything fancy with `tab` while users are selecting. Once a drag has started, `tab` is blocked for the duration of the drag.
 - **spacebar ` `** - lift a focused `Draggable`. Also, drop a dragging `Draggable` where the drag was started with a `spacebar`.
@@ -572,9 +594,17 @@ Currently the keyboard handling is hard coded. This could be changed in the futu
 - **Down arrow `↓`** - move a `Draggable` that is dragging down on a vertical list
 - **Escape `esc`** - cancel an existing drag - regardless of whether the user is dragging with the keyboard or mouse.
 
+**Limitations of keyboard dragging**
+
+There is a currently limitation of keyboard dragging: **the drag will cancel if the user scrolls the window**. This could be worked around but for now it is the simpliest initial approach.
+
+### Currently supported feature set
+
+- dragging an item within a single vertical list
+- the vertical list can be a scroll container (without a scrollable parent) or be the child of a scroll container (that also does not have a scrollable parent)
+
 ### Short term backlog
 
-- Correct scroll handling while dragging with keyboard or mouse
 - Moving items between vertical lists (until this lands conditional dropping will not be available)
 
 ### Medium term backlog
@@ -591,6 +621,10 @@ Currently the keyboard handling is hard coded. This could be changed in the futu
 - Dragging multiple items at a time
 - And lots more!
 
-## Author
+## Author / maintainer
 
 Alex Reardon - areardon@atlassian.com
+
+### Contributing
+
+Please do not submit a pull request without first raising an issue to discuss your proposed change.

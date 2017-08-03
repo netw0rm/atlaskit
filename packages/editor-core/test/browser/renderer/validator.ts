@@ -220,6 +220,30 @@ describe('Renderer - Validator', () => {
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
+
+      it('should return "text" if attrs.text is not a string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 2017,
+            title: { text: 'applicationCard' }
+          }
+        };
+
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "applicationCard" if attrs.text is an empty string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: '',
+            title: { text: 'applicationCard' }
+          }
+        };
+
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
     });
 
     describe('doc', () => {
@@ -396,6 +420,26 @@ describe('Renderer - Validator', () => {
           ]
         });
       });
+
+      it('should return "unknownBlock" if some of it\'s content is not media', () => {
+       expect(getValidNode({
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'text',
+              text: '[media]'
+            }
+          ]
+        })).to.deep.equal({
+          type: 'unknownBlock',
+          content: [
+            {
+              type: 'text',
+              text: '[media]'
+            }
+          ]
+        });
+      });
     });
 
     describe('media', () => {
@@ -413,6 +457,24 @@ describe('Renderer - Validator', () => {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
             collection: 'MediaServicesSample'
+          }
+        });
+      });
+
+      it('should return "media" with attrs and type if collection is empty', () => {
+        expect(getValidNode({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: ''
+          }
+        })).to.deep.equal({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: ''
           }
         });
       });

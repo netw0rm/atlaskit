@@ -3,6 +3,7 @@ import { MarkSpec } from '../../prosemirror';
 import { SEARCH_QUERY } from '../groups';
 
 export const mentionQuery: MarkSpec = {
+  excludes: `${SEARCH_QUERY}`,
   inclusive: true,
   group: SEARCH_QUERY,
   parseDOM: [

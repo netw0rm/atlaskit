@@ -1,13 +1,13 @@
 // @flow
-import type { DroppableId, Position, DimensionMap } from '../types';
-import isInsideDimension from './is-inside-dimension';
+import type { DroppableId, Position, DroppableDimensionMap } from '../types';
+import isInsideDroppable from './is-inside-droppable';
 
 export default (
   target: Position,
-  droppableDimensions: DimensionMap
+  droppables: DroppableDimensionMap
 ): ?DroppableId => {
-  const maybeId: ?DroppableId = Object.keys(droppableDimensions)
-    .find(key => isInsideDimension(target, droppableDimensions[key]));
+  const maybeId: ?DroppableId = Object.keys(droppables)
+    .find(key => isInsideDroppable(target, droppables[key]));
 
   return maybeId || null;
 };

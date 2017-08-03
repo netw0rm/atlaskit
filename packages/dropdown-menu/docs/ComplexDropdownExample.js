@@ -1,33 +1,22 @@
 import React from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropdownMenu, {
+  DropdownItemGroupRadio,
+  DropdownItemRadio,
+} from '@atlaskit/dropdown-menu';
 
-const simpleDropdownItems = [
-  {
-    heading: 'Cities',
-    items: [
-      { content: 'Sydney', type: 'checkbox' },
-      { content: 'Canberra', type: 'checkbox' },
-      {
-        content: '"shouldAllowMultilineItems" makes this line wrap.',
-        type: 'checkbox',
-      },
-    ],
-  },
-];
-
-const DefaultMenuExample = () => (
+const ComplexMenuExample = () => (
   <DropdownMenu
-    items={simpleDropdownItems}
+    trigger="Choices"
     triggerType="button"
-    appearance="tall"
     shouldFlip={false}
     position="right middle"
-    shouldAllowMultilineItems
-    onItemActivated={e => console.log(e.item)}
     onOpenChange={e => console.log('dropdown opened', e)}
   >
-    Choices
+    <DropdownItemGroupRadio id="cities">
+      <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
+      <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
+    </DropdownItemGroupRadio>
   </DropdownMenu>
 );
 
-export default DefaultMenuExample;
+export default ComplexMenuExample;

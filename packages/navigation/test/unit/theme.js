@@ -4,9 +4,9 @@ import styled, { ThemeProvider } from 'styled-components';
 import { mount } from 'enzyme';
 import chromatism from 'chromatism';
 import * as presets from '../../src/theme/presets';
-import { prefix, getProvided, WithGroupTheme, WithRootTheme, whenCollapsed } from '../../src/theme/util';
+import { prefix, getProvided, WithRootTheme, whenCollapsed } from '../../src/theme/util';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
-import { getRootTheme, getGroupTheme } from './_theme-util';
+import { getRootTheme } from './_theme-util';
 
 describe('theme', () => {
   describe('WithRootTheme', () => {
@@ -87,8 +87,8 @@ describe('theme', () => {
     it('should override clashing theme values', () => {
       const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
-      fake: ${stub}
-    `;
+        fake: ${stub}
+      `;
 
       mount(
         <ThemeProvider
@@ -106,147 +106,6 @@ describe('theme', () => {
 
       expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
-      });
-    });
-  });
-
-  // These tests are the same as those found in WithRootTheme.
-  // This could be simplified into a common helper. However,
-  // keeping them separate is very explicit for now.
-  // If WithRootTheme and WithGroup theme become more generic then these
-  // tests could be collapsed into a single test suite.
-  describe('WithGroupTheme', () => {
-    it('should provide theme values to styled components', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
-      const Item = styled.div`
-        fake: ${stub}
-      `;
-      const isCompact = true;
-
-      mount(
-        <WithGroupTheme
-          isCompact={isCompact}
-        >
-          <Item />
-        </WithGroupTheme>
-      );
-
-      expect(stub).toHaveBeenCalledWith({
-        theme: getGroupTheme(isCompact),
-      });
-    });
-
-    it('should publish updates to children', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
-      const Item = styled.div`
-        fake: ${stub}
-    `;
-
-      const wrapper = mount(
-        <WithGroupTheme
-          isCompact
-        >
-          <Item />
-        </WithGroupTheme>
-      );
-      wrapper.setProps({
-        isCompact: false,
-      });
-
-      expect(stub.mock.calls[0][0]).toEqual({
-        theme: getGroupTheme(true),
-      });
-      expect(stub.mock.calls[1][0]).toEqual({
-        theme: getGroupTheme(false),
-      });
-    });
-
-    it('should preserve parent styled-component theme values', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
-      const Item = styled.div`
-        fake: ${stub}
-      `;
-      const isCompact = true;
-
-      mount(
-        <ThemeProvider
-          theme={{
-            myCustomRule: 'hello',
-          }}
-        >
-          <WithGroupTheme
-            isCompact={isCompact}
-          >
-            <Item />
-          </WithGroupTheme>
-        </ThemeProvider>
-      );
-
-      const arg = stub.mock.calls[0][0];
-
-      expect(arg).toEqual({
-        theme: {
-          ...getGroupTheme(isCompact),
-          myCustomRule: 'hello',
-        },
-      });
-    });
-
-    it('should override clashing theme values', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
-      const Item = styled.div`
-        fake: ${stub}
-      `;
-      const isCompact = false;
-
-      mount(
-        <ThemeProvider
-          theme={{
-            [prefix('group')]: 'hello there',
-          }}
-        >
-          <WithGroupTheme
-            isCompact={isCompact}
-          >
-            <Item />
-          </WithGroupTheme>
-        </ThemeProvider>
-      );
-
-      expect(stub).toHaveBeenCalledWith({
-        theme: getGroupTheme(isCompact),
-      });
-    });
-  });
-
-  describe('WithRootTheme used with nested GroupTheme', () => {
-    // This is already indirectly tested in other tests.
-    // But given that this is such a common use case I thought it
-    // was worth having an explicit test for it.
-    it('should the nesting of a group theme within a root theme', () => {
-      const stub = jest.fn(() => 'my-cool-rule');
-      const Item = styled.div`
-        fake: ${stub}
-      `;
-      const isCompact = false;
-
-      mount(
-        <WithRootTheme
-          provided={presets.settings}
-        >
-          <WithGroupTheme
-            isCompact={isCompact}
-          >
-            <Item />
-          </WithGroupTheme>
-        </WithRootTheme>
-      );
-
-      expect(stub).toHaveBeenCalledWith({
-        theme: {
-          ...getRootTheme(presets.settings),
-          ...getGroupTheme(isCompact),
-        },
       });
     });
   });

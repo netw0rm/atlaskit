@@ -1,16 +1,14 @@
 import styled, { css } from 'styled-components';
-import { akColorB400, akColorN700, akColorR500, akGridSizeUnitless, akHelperMixins } from '@atlaskit/util-shared-styles';
+import { akColorB400, akGridSizeUnitless, akHelperMixins } from '@atlaskit/util-shared-styles';
 import { buttonWidthUnitless, fontSize, maxTextWidth, maxTextWidthUnitless } from './constants';
 
 // Common styles for Text & Link
 
-const getColor = ({ markedForRemoval }) => (markedForRemoval ? akColorR500 : akColorN700);
 const getTruncate = akHelperMixins.text.truncate(({ isRemovable }) => (isRemovable
   ? `${maxTextWidthUnitless - buttonWidthUnitless}px`
   : maxTextWidth
 ));
 const COMMON_STYLES = css`
-  color: ${getColor};
   font-size: ${fontSize};
   font-weight: normal;
   line-height: 1;

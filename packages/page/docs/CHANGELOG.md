@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+## 4.4.2 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+## 4.4.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 4.1.0 (2017-07-17)
+
+## 4.1.0 (2017-07-17)
+
+## 4.1.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 4.1.0 (2017-07-17)
+
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
 ## 4.0.1 (2017-05-26)
 
 

@@ -8,7 +8,7 @@ import {
   phaseSelector,
 } from '../../state/selectors';
 import Draggable from './draggable';
-import storeKey from '../../state/get-store-key';
+import { storeKey } from '../context-keys';
 import {
   lift as liftAction,
   move as moveAction,
@@ -17,6 +17,7 @@ import {
   drop as dropAction,
   cancel as cancelAction,
   dropAnimationFinished as dropAnimationFinishedAction,
+  moveByWindowScroll as moveByWindowScrollAction,
 } from '../../state/action-creators';
 import type {
   State,
@@ -26,6 +27,7 @@ import type {
   PendingDrop,
   Phase,
   DragMovement,
+  DraggableDimension,
 } from '../../types';
 import type {
   MapProps,
@@ -34,12 +36,17 @@ import type {
 } from './draggable-types';
 
 const origin: Position = { x: 0, y: 0 };
+
 const defaultMapProps: MapProps = {
   isDropAnimating: false,
   isDragging: false,
-  canAnimate: true,
+  isAnotherDragging: false,
+  // By default the item will not animate unless instructed to.
+  // If animation is enabled then there may be some animation
+  // at unexpected points: such as on a DROP_COMPLETE
+  canAnimate: false,
   offset: origin,
-  initial: null,
+  dimension: null,
 };
 
 export const makeSelector = () => {
@@ -52,21 +59,25 @@ export const makeSelector = () => {
   );
 
   const getWithMovement = memoizeOne(
-    (offset: Position): MapProps => ({
+    (offset: Position, isAnotherDragging: boolean): MapProps => ({
       isDropAnimating: false,
       isDragging: false,
       canAnimate: true,
+      isAnotherDragging,
       offset,
-      initial: null,
+      dimension: null,
     })
   );
 
   const getNotDraggingProps = memoizeOne(
-    (draggableId: DraggableId, movement: DragMovement): MapProps => {
+    (draggableId: DraggableId,
+      movement: DragMovement,
+      isAnotherDragging: boolean,
+    ): MapProps => {
       const needsToMove = movement.draggables.indexOf(draggableId) !== -1;
 
       if (!needsToMove) {
-        return defaultMapProps;
+        return getWithMovement(origin, isAnotherDragging);
       }
 
       const amount = movement.isMovingForward ? -movement.amount : movement.amount;
@@ -74,21 +85,38 @@ export const makeSelector = () => {
       return getWithMovement(
         // currently not handling horizontal movement
         memoizedOffset(0, amount),
+        isAnotherDragging,
       );
     }
   );
 
+  const draggableSelector = (state: State, ownProps: OwnProps): ?DraggableDimension => {
+    if (!state.dimension) {
+      return null;
+    }
+    const dimension: ?DraggableDimension = state.dimension.draggable[ownProps.draggableId];
+
+    // dimension might not be published yet
+    if (!dimension) {
+      return null;
+    }
+
+    return dimension;
+  };
+
   return createSelector(
     [
+      idSelector,
       phaseSelector,
       dragSelector,
       pendingDropSelector,
-      idSelector,
+      draggableSelector,
     ],
-    (phase: Phase,
+    (id: DraggableId,
+      phase: Phase,
       drag: ?DragState,
       pending: ?PendingDrop,
-      id: DraggableId,
+      dimension: ?DraggableDimension,
     ): MapProps => {
       if (phase === 'DRAGGING') {
         if (!drag) {
@@ -96,26 +124,29 @@ export const makeSelector = () => {
           return defaultMapProps;
         }
 
-        const { current, initial, impact } = drag;
+        const { current, impact } = drag;
 
         if (current.id !== id) {
           return getNotDraggingProps(
             id,
             impact.movement,
+            // blocking pointer events while something else is dragging
+            true,
           );
         }
 
         // this item is dragging
-        const offset: Position = current.offset;
+        const offset: Position = current.client.offset;
         const canAnimate: boolean = current.shouldAnimate;
 
         // not memoizing result as it should not move without an update
         return {
           isDragging: true,
+          isAnotherDragging: false,
           isDropAnimating: false,
           canAnimate,
           offset,
-          initial,
+          dimension,
         };
       }
 
@@ -129,30 +160,20 @@ export const makeSelector = () => {
           return getNotDraggingProps(
             id,
             pending.last.impact.movement,
+            // We are indicating that nothing else is dragging while a drop is
+            // occurring
+            false,
           );
         }
 
         return {
-          // Tell the consumer that the drag is still
-          // occurring with props to keep the isDragging appearance
-          // while dropping.
-          isDragging: true,
+          isDragging: false,
           isDropAnimating: true,
+          isAnotherDragging: false,
           canAnimate: true,
           offset: pending.newHomeOffset,
-          initial: pending.last.initial,
-        };
-      }
-
-      if (phase === 'DROP_COMPLETE') {
-        // Cut off all animation as the item is already reordered
-        // If it is not everyone is going to have a bad time
-        return {
-          offset: origin,
-          isDropAnimating: false,
-          isDragging: false,
-          canAnimate: false,
-          initial: null,
+          // still need to provide the dimension for the placeholder
+          dimension,
         };
       }
 
@@ -172,6 +193,7 @@ const mapDispatchToProps: DispatchProps = {
   move: moveAction,
   moveBackward: moveBackwardAction,
   moveForward: moveForwardAction,
+  moveByWindowScroll: moveByWindowScrollAction,
   drop: dropAction,
   dropAnimationFinished: dropAnimationFinishedAction,
   cancel: cancelAction,

@@ -1,12 +1,18 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import memoizeOne from 'memoize-one';
 import invariant from 'invariant';
-import type { Position, InitialDrag, HTMLElement } from '../../types';
-import { DraggableDimensionPublisher } from '../dimension-publisher/';
+import type {
+  Position,
+  HTMLElement,
+  DraggableDimension,
+  InitialDragLocation,
+} from '../../types';
+import DraggableDimensionPublisher from '../draggable-dimension-publisher/';
 import Moveable from '../moveable/';
 import DragHandle from '../drag-handle';
 import { css } from '../animation';
+import getWindowScrollPosition from '../get-window-scroll-position';
 // eslint-disable-next-line no-duplicate-imports
 import type {
   Callbacks as DragHandleCallbacks,
@@ -14,6 +20,8 @@ import type {
 } from '../drag-handle/drag-handle-types';
 import getCenterPosition from '../get-center-position';
 import Placeholder from './placeholder';
+import { droppableIdKey } from '../context-keys';
+import { add } from '../../state/position';
 import type {
   Props,
   Provided,
@@ -49,6 +57,12 @@ export default class Draggable extends Component {
     isDragDisabled: false,
     type: 'DEFAULT',
   }
+
+  // Need to declare contextTypes without flow
+  // https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22
+  static contextTypes = {
+    [droppableIdKey]: PropTypes.string.isRequired,
+  }
   /* eslint-enable */
 
   constructor(props: Props, context: mixed) {
@@ -62,6 +76,7 @@ export default class Draggable extends Component {
       onKeyLift: this.onKeyLift,
       onMoveBackward: this.onMoveBackward,
       onMoveForward: this.onMoveForward,
+      onWindowScroll: this.onWindowScroll,
     };
   }
 
@@ -84,45 +99,62 @@ export default class Draggable extends Component {
     this.props.dropAnimationFinished(this.props.draggableId);
   }
 
-  onLift = (selection: Position) => {
+  onLift = (point: Position) => {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
+    const { ref } = this.state;
 
-    const center: Position = getCenterPosition(this.state.ref);
+    const windowScroll: Position = getWindowScrollPosition();
 
-    lift(draggableId, type, center, selection);
+    const client: InitialDragLocation = {
+      selection: point,
+      center: getCenterPosition(ref),
+    };
+
+    const page: InitialDragLocation = {
+      selection: add(client.selection, windowScroll),
+      center: add(client.center, windowScroll),
+    };
+
+    lift(draggableId, type, client, page, windowScroll);
   }
 
   onKeyLift = () => {
     this.throwIfCannotDrag();
     const { lift, draggableId, type } = this.props;
-
-    const center: Position = getCenterPosition(this.state.ref);
+    const { ref } = this.state;
 
     // using center position as selection
-    lift(draggableId, type, center, center);
+    const center: Position = getCenterPosition(ref);
+
+    const client: InitialDragLocation = {
+      selection: center,
+      center,
+    };
+
+    const windowScroll: Position = getWindowScrollPosition();
+    const page: InitialDragLocation = {
+      selection: add(center, windowScroll),
+      center: add(center, windowScroll),
+    };
+
+    lift(draggableId, type, client, page, windowScroll);
   }
 
-  onMove = (point: Position) => {
+  onMove = (client: Position) => {
     this.throwIfCannotDrag();
 
-    const { draggableId, initial, move } = this.props;
+    const { draggableId, dimension, move } = this.props;
 
     // dimensions not provided yet
-    if (!initial) {
+    if (!dimension) {
       return;
     }
 
-    const offset: Position = {
-      x: point.x - initial.selection.x,
-      y: point.y - initial.selection.y,
-    };
-    const center: Position = {
-      x: initial.center.x + offset.x,
-      y: initial.center.y + offset.y,
-    };
+    const windowScroll: Position = getWindowScrollPosition();
+    const page: Position = add(client, windowScroll);
 
-    move(draggableId, offset, center);
+    move(draggableId, client, page, windowScroll);
   }
 
   onMoveForward = () => {
@@ -133,6 +165,12 @@ export default class Draggable extends Component {
   onMoveBackward = () => {
     this.throwIfCannotDrag();
     this.props.moveBackward(this.props.draggableId);
+  }
+
+  onWindowScroll = () => {
+    this.throwIfCannotDrag();
+    const windowScroll = getWindowScrollPosition();
+    this.props.moveByWindowScroll(this.props.draggableId, windowScroll);
   }
 
   onDrop = () => {
@@ -165,13 +203,13 @@ export default class Draggable extends Component {
   })
 
   getPlaceholder() {
-    invariant(this.props.initial, 'cannot get a drag placeholder when not dragging');
-    const dimension = this.props.initial.dimension;
+    const dimension: ?DraggableDimension = this.props.dimension;
+    invariant(dimension, 'cannot get a drag placeholder when not dragging');
 
     return (
       <Placeholder
-        height={dimension.withMargin.height}
-        width={dimension.withMargin.width}
+        height={dimension.page.withMargin.height}
+        width={dimension.page.withMargin.width}
       />
     );
   }
@@ -179,51 +217,69 @@ export default class Draggable extends Component {
   getDraggingStyle = memoizeOne(
     (width: number,
       height: number,
+      top: number,
+      left: number,
       isDropAnimating: boolean,
       movementStyle: MovementStyle): DraggingStyle => {
       const style: DraggingStyle = {
-        position: 'absolute',
+        position: 'fixed',
         boxSizing: 'border-box',
+        pointerEvents: 'none',
         zIndex: isDropAnimating ? zIndexOptions.dropAnimating : zIndexOptions.dragging,
         width,
         height,
-        transform: movementStyle.transform,
+        top,
+        left,
+        transform: movementStyle.transform ? `${movementStyle.transform}` : null,
       };
       return style;
     }
   )
 
   getNotDraggingStyle = memoizeOne(
-    (canAnimate: boolean, movementStyle: MovementStyle): NotDraggingStyle => {
+    (
+      canAnimate: boolean,
+      movementStyle: MovementStyle,
+      isAnotherDragging: boolean,
+    ): NotDraggingStyle => {
       const style: NotDraggingStyle = {
         transition: canAnimate ? css.outOfTheWay : null,
         transform: movementStyle.transform,
+        pointerEvents: isAnotherDragging ? 'none' : 'auto',
       };
       return style;
     }
   )
 
   getProvided = memoizeOne(
-    (isDragging: boolean,
+    (
+      isDragging: boolean,
       isDropAnimating: boolean,
+      isAnotherDragging: boolean,
       canAnimate: boolean,
-      initial: ?InitialDrag,
+      dimension: ?DraggableDimension,
       dragHandleProps: ?DragHandleProvided,
       movementStyle: MovementStyle,
     ): Provided => {
-      const draggableStyle: DraggableStyle = (() => {
-        if (!isDragging) {
-          return this.getNotDraggingStyle(canAnimate, movementStyle);
-        }
-        invariant(initial, 'initial dimension required for dragging');
+      const useDraggingStyle: boolean = isDragging || isDropAnimating;
 
-        const { width, height } = initial.dimension.withoutMargin;
-        return this.getDraggingStyle(width, height, isDropAnimating, movementStyle);
+      const draggableStyle: DraggableStyle = (() => {
+        if (!useDraggingStyle) {
+          return this.getNotDraggingStyle(
+            canAnimate,
+            movementStyle,
+            isAnotherDragging,
+          );
+        }
+        invariant(dimension, 'draggable dimension required for dragging');
+
+        const { width, height, top, left } = dimension.client.withoutMargin;
+        return this.getDraggingStyle(width, height, top, left, isDropAnimating, movementStyle);
       })();
 
       const provided: Provided = {
         innerRef: this.setRef,
-        placeholder: (isDragging || isDropAnimating) ? this.getPlaceholder() : null,
+        placeholder: useDraggingStyle ? this.getPlaceholder() : null,
         dragHandleProps,
         draggableStyle,
       };
@@ -231,8 +287,8 @@ export default class Draggable extends Component {
     }
   )
 
-  getSnapshot = memoizeOne((isDragging: boolean): StateSnapshot => ({
-    isDragging,
+  getSnapshot = memoizeOne((isDragging: boolean, isDropAnimating: boolean): StateSnapshot => ({
+    isDragging: (isDragging || isDropAnimating),
   }))
 
   getSpeed = memoizeOne(
@@ -262,9 +318,10 @@ export default class Draggable extends Component {
       offset,
       isDragging,
       isDropAnimating,
+      isAnotherDragging,
       canAnimate,
       isDragDisabled,
-      initial,
+      dimension,
       children,
     } = this.props;
 
@@ -272,7 +329,8 @@ export default class Draggable extends Component {
 
     return (
       <DraggableDimensionPublisher
-        itemId={draggableId}
+        draggableId={draggableId}
+        droppableId={this.context[droppableIdKey]}
         type={type}
         targetRef={this.state.ref}
       >
@@ -292,12 +350,13 @@ export default class Draggable extends Component {
                   this.getProvided(
                     isDragging,
                     isDropAnimating,
+                    isAnotherDragging,
                     canAnimate,
-                    initial,
+                    dimension,
                     dragHandleProps,
                     movementStyle,
                   ),
-                  this.getSnapshot(isDragging)
+                  this.getSnapshot(isDragging, isDropAnimating)
                 )
               }
             </DragHandle>

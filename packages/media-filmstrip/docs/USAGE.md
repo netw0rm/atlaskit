@@ -2,7 +2,7 @@
 
 Provides a component that shows multiple media cards horizontally. Allows to navigate through the stored cards.
 
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
+![Example @NAME@](https://aui-cdn.atlassian.com/atlaskit/stories/@atlaskit/@NAME@/@VERSION@/?selectedKind=FilmStripNavigator&selectedStory=%F0%9F%8D%BD%20Make%20your%20own&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel)
 
 ## Try it out
 
@@ -14,56 +14,83 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 npm install @NAME@
 ```
 
-## Using the component
+## FilmstripView
 
-**FilmStripView**
+### Usage
 
 ```javascript
-import {FilmStripView} from '@atlaskit/media-filmstrip';
-import {CardActionType} from '@atlaskit/media-core';
+import React from 'react';
+import {FilmstripView} from '@atlaskit/media-filmstrip';
 
-// Menu actions on cards
-var menuActions = [
-  {
-    label: 'Open',
-    type: CardActionType.custom,
-    handler: openHandler
-  },
-  {
-    label: 'Delete',
-    type: CardActionType.delete,
-    handler: eventHander  
+class FilmstripViewExample extends React.Component {
+
+  state = {
+    animate: false,
+    offset: 0
+  };
+
+  handleSizeChange = ({offset}) => this.setState({offset});
+
+  handleScrollChange = ({animate, offset}) => this.setState({animate, offset});
+
+  render() {
+    const {animate, offset, children} = this.state;
+    return (
+      <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
+        <div>#1</div>
+        <div>#2</div>
+        <div>#3</div>
+        <div>#4</div>
+        <div>#5</div>
+      </FilmstripView>
+    );
   }
-];
 
-// Event triggered when the user clicks on a card
-var clickAction = function (clickedItem, allItems) {
-  console.log(clickedItem, allItems);
 }
 
-// Items to be shown in the filmstrip
-var items = [
-  {
-    id: 'bac57089-23dd-4482-bc1d-657b21f1304a',
-    progress: 0.75,
-    dataURI: fileDataUri,
-    mediaName: 'in progress...',
-    mediaType: 'image',
-    mediaSize: 8041
-  },
-  {
-    id: 'c41f1a45-fb26-42c5-a385-2c35c269b2e3',
-    dataURI: imageDataUri,
-    mediaName: 'some image',
-    mediaType: 'image',
-    mediaSize: 8041
-  }
-];
-    
-<FilmStripView
-  items={items}
-  onClick={clickAction}
-  menuActions={menuActions}
-  width={550}
- />
 ```
+
+### Properties
+
+#### animate
+
+A `boolean`. Defaults to `false`.
+
+When `true`, any change to the `offset` property will be animated.
+
+> Having `animate=true` results in an awkward UX when changing the `offset` property before the
+animation finishes.
+
+#### offset
+
+A `number`. Defaults to `0`.
+
+Determines the visible portion of the filmstrip.
+
+#### onSize
+
+A `function` called when the size of the filmstrip has been changed e.g. when mounted, after the
+window is resized or the children have changed.
+
+**Arguments:**
+- `event`
+  - `width` - A `number`. The visible width of the filmstrip;
+  - `offset` - A `number`.
+  - `offsets`: ChildOffset[];
+  - `minOffset` - A `number`.
+  - `maxOffset` - A `number`.
+
+#### onScroll
+
+A `function` called when the user has indicated they wish to change the visible porition of the filmstrip e.g. clicked
+the left or right arrows, or scrolled the scroll wheel.
+
+**Arguments:**
+- `event`
+  - `direction` - Either `"left"` or `"right"`. The direction the user wants to move the filmstrip.
+  - `offset` - A `number`. The desired offset.
+  - `animate` - A `boolean`. Whether the change should be animated (this arg could probably do with a better name!)
+
+#### children
+
+Any React `node`.

@@ -26,12 +26,15 @@ if [[ "$BITBUCKET_COMMIT" != "" ]]; then
 else
   # Need to bootstrap @atlaskit/util-cz-atlaskit-changelog so that we can run commitizen (hide the output as it's pretty noisy)
   $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/util-cz-lerna-changelog for commitizen}"
-  yarn run bootstrap/single @atlaskit/util-cz-atlaskit-changelog > /dev/null
+  pushd packages/util-cz-atlaskit-changelog
+    npm install > /dev/null
+  popd
 
   # Also need to bootstrap icons because bootstrap/single/with-deps wont pick it up
   $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/icon...}"
-  # $LERNA_LOC bootstrap --scope=@atlaskit/icon > /dev/null
-  yarn run bootstrap/single @atlaskit/icon > /dev/null
+  pushd packages/icon
+    npm install > /dev/null
+  popd
 
 
   $CHALK --no-stdin -t "{green ~~~~~~~~~~~~~~~~~~~~~~~~~~~~}"

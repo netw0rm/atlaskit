@@ -33,9 +33,6 @@ import {
   version as coreVersion,
 
   // nodeviews
-  nodeViewFactory,
-  ReactEmojiNode,
-  ReactMentionNode,
   reactNodeViewPlugins,
 
   // error-reporting
@@ -47,11 +44,11 @@ import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { MentionResource, MentionSource } from './mention-resource';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
 import schema from './schema';
+import { MentionResource, MentionSource } from './mention-resource';
 
 export {
   AbstractMentionResource,
@@ -114,7 +111,10 @@ export default class Editor extends PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
-    if (props.mentionSource !== nextProps.mentionSource || props.emojiProvider !== nextProps.emojiProvider) {
+    if (
+      props.mentionSource !== nextProps.mentionSource ||
+      props.emojiProvider !== nextProps.emojiProvider
+    ) {
       this.handleProviders(nextProps);
     }
   }
@@ -313,7 +313,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
             ...emojisPlugins(schema, this.providerFactory),
-            ...asciiEmojiPlugins(schema, this.props.emojiProvider),
+            ...asciiEmojiPlugins(schema, this.providerFactory),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
@@ -347,10 +347,6 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
-        },
-        nodeViews: {
-          emoji: nodeViewFactory(this.providerFactory, { emoji: ReactEmojiNode }),
-          mention: nodeViewFactory(this.providerFactory, { mention: ReactMentionNode }),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

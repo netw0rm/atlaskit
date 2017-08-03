@@ -8,7 +8,6 @@ const DrawerMain = styled.div`
   height: 100%;
   padding: ${layout.padding.top}px 0;
   overflow-y: auto;
-  position: relative;
   width: 100%;
 `;
 

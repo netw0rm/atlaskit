@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 45.2.0 (2017-08-04)
+
+* bug fix; fix tslint ([04a6c4f](https://bitbucket.org/atlassian/atlaskit/commits/04a6c4f))
+
+* feature; added analytics events for tables (issues closed: ed-1885) ([80dd2cb](https://bitbucket.org/atlassian/atlaskit/commits/80dd2cb))
 ## 45.1.2 (2017-08-04)
 
 * bug fix; bump media-filmstrip in editor-core (issues closed: ed-2052) ([f33b88e](https://bitbucket.org/atlassian/atlaskit/commits/f33b88e))

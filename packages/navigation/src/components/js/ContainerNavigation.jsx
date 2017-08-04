@@ -14,7 +14,8 @@ import {
   globalSecondaryActions as globalSecondaryActionsSizes,
 } from '../../shared-variables';
 import { container } from '../../theme/presets';
-import type { ReactElement, Provided } from '../../types';
+import type { ReactClass, ReactElement } from '../../types';
+import type { Provided } from '../../theme/types';
 
 type Props = {|
   children: ReactElement,
@@ -40,11 +41,11 @@ type Props = {|
   isCollapsed?: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** Function to be called when the globalCreateIcon is clicked on. */
-  onGlobalCreateActivate: () => void,
+  onGlobalCreateActivate?: () => void,
   /** Function to be called when the globalSearchIcon is clicked on. */
-  onGlobalSearchActivate: () => void,
+  onGlobalSearchActivate?: () => void,
   /** Sets whether the globalyPrimaryActions should be displayed. These should be
   components shared with the GlobalNavigation component, so they can be included
   in the ContainerNavigation when Navigation is collapsed. */

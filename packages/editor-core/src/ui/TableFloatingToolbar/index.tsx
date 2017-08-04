@@ -12,6 +12,7 @@ import DropdownMenu from '../DropdownMenu';
 import { cut, copy, paste } from '../../keymaps';
 import AdvanceMenuItem from './AdvanceMenuItem';
 import { getShortcut } from './utils';
+import { analyticsService as analytics } from '../../analytics';
 
 export interface Props {
   editorView: EditorView;
@@ -128,12 +129,15 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     const { editorView } = this.props;
     switch(item.value) {
       case 'cut':
+        analytics.trackEvent('atlassian.editor.format.table.cut.button');
         tableCommands.cut()(editorView.state, editorView.dispatch);
         break;
       case 'copy':
+        analytics.trackEvent('atlassian.editor.format.table.copy.button');
         tableCommands.copy()(editorView.state, editorView.dispatch);
         break;
       case 'paste':
+        analytics.trackEvent('atlassian.editor.format.table.paste.button');
         tableCommands.paste()(editorView.state, editorView.dispatch);
         break;
     }

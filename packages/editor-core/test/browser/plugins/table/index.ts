@@ -9,6 +9,7 @@ import {
   tdEmpty, tdCursor, code_block, code
 } from '../../../../src/test-helper';
 import { setTextSelection } from '../../../../src/utils';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -17,6 +18,11 @@ describe('table plugin', () => {
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
+  });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
   });
 
   describe('subscribe', () => {
@@ -162,6 +168,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(0);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, td({})(p('c1')), td({})(p('c2'))))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
         });
       });
 
@@ -171,6 +178,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(1);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), tdCursor, td({})(p('c2'))))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
         });
       });
 
@@ -180,6 +188,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertColumn(2);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2')), tdCursor))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
         });
       });
     });
@@ -194,6 +203,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(0);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(td({})(p('row1'))), tr(td({})(p('row2'))))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
         });
       });
 
@@ -203,6 +213,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(1);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(tdCursor), tr(td({})(p('row2'))))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
         });
       });
     });
@@ -214,6 +225,7 @@ describe('table plugin', () => {
           plugin.props.onFocus!(editorView, event);
           pluginState.insertRow(2);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2'))), tr(tdCursor))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
         });
       });
     });
@@ -315,6 +327,7 @@ describe('table plugin', () => {
           pluginState.selectColumn(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
         });
       });
 
@@ -325,6 +338,7 @@ describe('table plugin', () => {
           pluginState.selectColumn(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
         });
       });
 
@@ -335,6 +349,7 @@ describe('table plugin', () => {
           pluginState.selectColumn(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
         });
       });
     });
@@ -347,6 +362,7 @@ describe('table plugin', () => {
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
         });
       });
 
@@ -357,6 +373,7 @@ describe('table plugin', () => {
           pluginState.selectRow(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
         });
       });
 
@@ -367,6 +384,7 @@ describe('table plugin', () => {
           pluginState.selectRow(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
         });
       });
     });

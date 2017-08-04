@@ -61,8 +61,9 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   render() {
-    const { node, providerFactory, selected, view, cardDimensions } = this.props;
-    const { id, type, collection } = node.attrs;
+    const { node, providerFactory, selected, view } = this.props;
+    const { id, type, collection, width } = node.attrs;
+    const cardDimensions = this.props.cardDimensions || width ? { width } : undefined;
 
     return (
       <Wrapper selected={selected}>

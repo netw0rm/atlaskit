@@ -283,7 +283,12 @@ export class MediaPluginState {
     }
 
     const { dispatch, state } = this.view;
-    const { $from, $to } = state.selection;
+    const { $from, $to, node } = state.selection as NodeSelection;
+
+    const newNode= node.copy();
+    newNode.attrs.width = this.view.dom.getBoundingClientRect().width / 2;
+
+    dispatch(state.tr.replaceSelectionWith(newNode));
 
     dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'left'}));
 
@@ -296,7 +301,12 @@ export class MediaPluginState {
     }
 
     const { dispatch, state } = this.view;
-    const { $from, $to } = state.selection;
+    const { $from, $to, node } = state.selection as NodeSelection;
+
+    const newNode= node.copy();
+    newNode.attrs.width = this.view.dom.getBoundingClientRect().width / 2;
+
+    dispatch(state.tr.replaceSelectionWith(newNode));
 
     dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'right'}));
 
@@ -309,7 +319,12 @@ export class MediaPluginState {
     }
 
     const { dispatch, state } = this.view;
-    const { $from, $to } = state.selection;
+    const { $from, $to, node } = state.selection as NodeSelection;
+
+    const newNode= node.copy();
+    newNode.attrs.width = 0;
+
+    dispatch(state.tr.replaceSelectionWith(newNode));
 
     dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.mediaGroup));
 

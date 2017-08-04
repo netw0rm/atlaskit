@@ -23,6 +23,7 @@ export interface Attributes {
   id: string;
   type: MediaType;
   collection: string;
+  width: number;
   /**
    * @minLength 1
    */
@@ -41,6 +42,7 @@ const defaultAttrs = {
   type: { default: '' },
   collection: { default: null },
   occurrenceKey: { default: null },
+  wdith: { default: 0 },
   __fileName: { default: null },
   __fileSize: { default: null },
   __fileMimeType: { default: null },
@@ -55,8 +57,8 @@ export const media: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: HTMLElement) => {
-      const { id, type, collection, occurrenceKey } = dom.dataset;
-      const attrs = { id, type, collection, occurrenceKey } as Attributes;
+      const { id, type, collection, occurrenceKey, width } = dom.dataset;
+      const attrs = { id, type: type as MediaType, collection, occurrenceKey, width: (+(width || 0)) as number } as Attributes;
       Object.keys(dom.dataset).forEach(key => {
         if (defaultAttrs[`__${key}`]) {
           attrs[`__${key}`] = dom.dataset[key];

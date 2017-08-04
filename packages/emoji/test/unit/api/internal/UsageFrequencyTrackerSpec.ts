@@ -73,11 +73,14 @@ describe('UsageFrequencyTracker', () => {
 
     let mockQueue: DuplicateLimitedQueue<string>;
     let mockEnqueue: sinon.SinonStub;
+    let mockClear: sinon.SinonSpy;
 
     beforeEach(() => {
       mockQueue = <DuplicateLimitedQueue<string>>{};
       mockEnqueue = sinon.stub();
+      mockClear = sinon.spy();
       mockQueue.enqueue = mockEnqueue;
+      mockQueue.clear = mockClear;
     });
 
     it('should do work asynchronously', (done) => {
@@ -93,6 +96,12 @@ describe('UsageFrequencyTracker', () => {
           done();
         }
       }, 50);
+    });
+
+    it('should clear the queue', () => {
+      const tracker = new TestUsageFrequencyTracker(mockQueue);
+      tracker.clear();
+      expect(mockClear.calledOnce).to.equal(true);
     });
   });
 });

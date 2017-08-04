@@ -77,8 +77,6 @@ export default class DuplicateLimitedQueue<T> {
 
   /**
    * Exposed for storybook/testing purposes only. Clear the contents of the queue.
-   *
-   * TODO write tests.
    */
   clear() {
     this.createEmptyState();

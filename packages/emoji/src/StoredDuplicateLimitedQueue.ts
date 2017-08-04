@@ -45,10 +45,7 @@ export default class StoredDuplicateLimitedQueue<T> extends DuplicateLimitedQueu
   }
 
   /**
-   * Exposed for storybook/testing purposes only. Clear the contents of the queue, and
-   * localStorage.
-   *
-   * TODO write tests
+   * Exposed for storybook/testing purposes only. Clear the contents of the queue, and localStorage.
    */
   clear() {
     super.clear();

@@ -64,8 +64,6 @@ export class UsageFrequencyTracker {
 
   /**
    * Exposed for testing only. Clear any recorded usage.
-   *
-   * TODO add tests
    */
   clear() {
     this.queue.clear();

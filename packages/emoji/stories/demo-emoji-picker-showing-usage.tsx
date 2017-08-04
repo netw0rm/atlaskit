@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { PureComponent } from 'react';
 
-import ResourcedEmojiControl from './demo-resource-control';
+import Layer from '@atlaskit/layer';
 
 import EmojiResource, { EmojiProvider, EmojiResourceConfig } from '../src/api/EmojiResource';
+import EmojiPicker from '../src/components/picker/EmojiPicker';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { localStoragePrefix } from '../src/constants';
-import { EmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiId, OnEmojiEvent, OptionalEmojiDescription } from '../src/types';
 
 export class UsagePeekEmojiResource extends EmojiResource {
   constructor(config: EmojiResourceConfig) {
@@ -39,77 +40,90 @@ export class UsagePeekEmojiResource extends EmojiResource {
 
 export interface Props {
   emojiResource: UsagePeekEmojiResource;
-  emojiConfig: EmojiResourceConfig;
-  children: ReactElement<any>;
 }
 
 export interface State {
-  emojiResource: UsagePeekEmojiResource;
-  emojiConfig: EmojiResourceConfig;
   emojiIdList: Array<string>;
   emojiQueue: Array<string>;
 }
 
-const getEmojiQueue = ():Array<string> => {
-  const json =  window.localStorage.getItem(`${localStoragePrefix}.lastUsed`);
-  if (json) {
-    try {
-      return JSON.parse(json);
-    } catch (e) {
-      // swallow any parse exception
+export default class UsageShowingEmojiPickerTextInput extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = this.getFreshState();
+  }
+
+  getFreshState(): State {
+    return {
+      emojiIdList: this.props.emojiResource.getFrequentlyUsed(),
+      emojiQueue: this.getEmojiQueue()
+    };
+  }
+
+  recordEmojiUsage(emojiId: EmojiId, emoji: OptionalEmojiDescription) {
+    const { emojiResource } = this.props;
+    if (emoji) {
+      emojiResource.recordSelection(emoji);
+      this.setState(this.getFreshState());
     }
   }
 
-  return new Array<string>();
-};
+  clearUsageData() {
+    const { emojiResource } = this.props;
+    emojiResource.clear();
+    this.setState({
+      emojiIdList: emojiResource.getFrequentlyUsed(),
+      emojiQueue: this.getEmojiQueue()
+    });
+  }
 
-export default class ResourceEmojiControlShowingUsage extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      emojiResource: props.emojiResource,
-      emojiConfig: props.emojiConfig,
-      emojiIdList: props.emojiResource.getFrequentlyUsed(),
-      emojiQueue: getEmojiQueue()
-    };
+  getEmojiQueue(): Array<string> {
+    const json =  window.localStorage.getItem(`${localStoragePrefix}.lastUsed`);
+    if (json) {
+      try {
+        return JSON.parse(json);
+      } catch (e) {
+        // swallow any parse exception
+      }
+    }
+
+    return new Array<string>();
   }
 
   render() {
-    const resourceRefresher = (config: EmojiResourceConfig) =>  new UsagePeekEmojiResource(config);
-
-    // TODO refreshing the resource will break the display of frequently used emoji
-    // since the story will now be referencing a different UsagePeekEmojiResource. However refreshing
-    // the resource doesn't actually work in the stories at the moment...
-
-    const clearUsageData = () => {
-      const resource = this.state.emojiResource;
-      resource.clear();
-      this.setState({
-        emojiIdList: resource.getFrequentlyUsed(),
-        emojiQueue: getEmojiQueue()
-      });
-    };
-
-    // TODO do away with the need for a frequently used button. Just update the display on each selection
+    const { emojiResource } = this.props;
+    const onSelectionHandler = this.recordEmojiUsage.bind(this);
+    const clearHandler = this.clearUsageData.bind(this);
 
     return (
-      <div>
-        <ResourcedEmojiControl
-          emojiResource={this.state.emojiResource}
-          resourceRefresher={resourceRefresher}
-          emojiConfig={this.state.emojiConfig}
-          children={this.props.children}
+      <div style={{ padding: '10px' }} >
+        <Layer
+          content={
+            <EmojiPicker
+              onSelection={onSelectionHandler}
+              emojiProvider={Promise.resolve(emojiResource)}
+            />
+          }
+          position="bottom left"
+        >
+        <input
+          id="picker-input"
+          style={{
+            height: '20px',
+            marginBottom: '320px',
+          }}
         />
+        </Layer>
         <div>
-          <button onClick={clearUsageData}>Clear All Usage</button>
+          <button onClick={clearHandler}>Clear All Usage</button>
         </div>
         <EmojiUsageList
-          emojiProvider={this.state.emojiResource}
+          emojiProvider={emojiResource}
           emojiIdList={this.state.emojiIdList}
           emojiQueue={this.state.emojiQueue}
         />
         <LocalStorageView
-          emojiProvider={this.state.emojiResource}
+          emojiProvider={emojiResource}
           emojiQueue={this.state.emojiQueue}
         />
       </div>
@@ -138,10 +152,9 @@ class EmojiUsageList extends PureComponent<EmojiUsageProps,any> {
         {
           this.props.emojiIdList.map((id) => {
             return (
-                <span style={{marginRight: '15px'}}>
+                <span key={id} style={{marginRight: '15px'}}>
                   <span style={{marginRight: '3px'}}>({this.props.emojiQueue.filter(emojiId => emojiId === id).length})</span>
                   <ResourcedEmoji
-                    key={id}
                     emojiId={{id: id, shortName: 'unknown'}}
                     emojiProvider={Promise.resolve(this.props.emojiProvider)}
                     showTooltip={true}
@@ -179,11 +192,10 @@ class LocalStorageView extends PureComponent<LocalStorageViewProps,any> {
     } else {
       renderedQueue = (<span>
         {
-          this.props.emojiQueue.map((id) => {
+          this.props.emojiQueue.map((id, index) => {
             return (
-                <span style={{marginRight: '3px'}}>
+                <span key={index} style={{marginRight: '3px'}}>
                   <ResourcedEmoji
-                    key={id}
                     emojiId={{id: id, shortName: 'unknown'}}
                     emojiProvider={Promise.resolve(this.props.emojiProvider)}
                     showTooltip={false}

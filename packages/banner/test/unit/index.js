@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import WarningIcon from 'ak-icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Banner from '../../src';
 import Container, { getMaxHeight } from '../../src/styled/Container';
 import { getBackgroundColor, getTextColor, ThemeColor } from '../../src/styled/Content';

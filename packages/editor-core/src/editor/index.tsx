@@ -58,6 +58,7 @@ export default class Editor extends PureComponent<EditorProps, State> {
   private initEditor = place => {
     const plugins = createPluginsList(this.props);
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
+
     this.setState({ editor });
   }
 

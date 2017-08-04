@@ -24,6 +24,7 @@ export interface NodeSpec {
   attrs?: { [key: string]: AttributeSpec };
   selectable?: boolean;
   draggable?: boolean;
+  isolating?: boolean;
   code?: boolean;
   defining?: boolean;
   toDOM?: (_0: Node) => {};

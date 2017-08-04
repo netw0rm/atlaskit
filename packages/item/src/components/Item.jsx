@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,7 +9,7 @@ import {
   ContentWrapper,
   Description,
 } from '../styled/ItemParts';
-import type { ReactElement } from '../types';
+import type { ReactElement, HTMLElement } from '../types';
 
 export default class Item extends Component {
   static propTypes = {
@@ -47,9 +46,11 @@ export default class Item extends Component {
     isHidden: PropTypes.bool,
     /** Causes the item to appear with a persistent selected background state. */
     isSelected: PropTypes.bool,
-    /** Function to be called when the item is activated, either via a click or via keyboard
-     *  interaction. Receives an object with `item` and `event` keys. */
+    /** Function to be called when the item is clicked, Receives the MouseEvent. */
     onClick: PropTypes.func,
+    /** Function to be called when the item is pressed with a keyboard,
+    * Receives the KeyboardEvent. */
+    onKeyDown: PropTypes.func,
     /** Standard onmouseenter event */
     onMouseEnter: PropTypes.func,
     /** Standard onmouseleave event */
@@ -64,6 +65,8 @@ export default class Item extends Component {
     target: PropTypes.string,
     /** Standard browser title to be displayed on the item when hovered. */
     title: PropTypes.string,
+    /** Whether the Item should attempt to gain browser focus when mounted */
+    autoFocus: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -73,7 +76,11 @@ export default class Item extends Component {
     isHidden: false,
     role: 'presentation',
     shouldAllowMultiline: false,
+    autoFocus: false,
   }
+
+  // eslint-disable-next-line react/sort-comp
+  ref: ?HTMLElement
 
   // $FlowFixMe
   constructor(props) {
@@ -89,18 +96,24 @@ export default class Item extends Component {
     });
   }
 
-  rootComponent: ReactElement
-
-  // We want to prevent the item from getting focus when clicked
-  handleMouseDown = (e: Event) => {
-    e.preventDefault();
+  componentDidMount() {
+    if (this.ref && this.props.autoFocus) {
+      this.ref.focus();
+    }
   }
+
+  setRef = (ref: ?HTMLElement) => {
+    this.ref = ref;
+  }
+
+  rootComponent: ReactElement
 
   href = () => (this.props.isDisabled ? null : this.props.href);
 
   render() {
     const {
       onClick,
+      onKeyDown,
       isCompact,
       isDisabled,
       isDragging,
@@ -109,16 +122,80 @@ export default class Item extends Component {
       onMouseEnter,
       onMouseLeave,
       role,
+      dnd,
       ...otherProps
     } = this.props;
 
     const { rootComponent: Root } = this;
+    const dragHandleProps: ?Object = (dnd && dnd.dragHandleProps) || null;
 
-    const dragAndDropProps = this.props.dnd ? {
-      style: this.props.dnd.draggableStyle,
-      innerRef: this.props.dnd.innerRef,
-      ...this.props.dnd.dragHandleProps,
-    } : {};
+    const patchedEventHandlers = {
+      onClick: (event: MouseEvent) => {
+        const original = () => {
+          if (!isDisabled && onClick) {
+            onClick(event);
+          }
+        };
+
+        if (!dragHandleProps || !dragHandleProps.onClick) {
+          original();
+          return;
+        }
+
+        // Drag and drop has its own disabled mechansim
+        // So not checking for isDisabled
+        dragHandleProps.onClick(event);
+
+        // if default is prevent - do not fire the onClick prop
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        original();
+      },
+      onMouseDown: (event: MouseEvent) => {
+        if (dragHandleProps && dragHandleProps.onMouseDown) {
+          dragHandleProps.onMouseDown(event);
+        }
+
+        // We want to prevent the item from getting focus when clicked
+        event.preventDefault();
+      },
+      onKeyDown: (event: KeyboardEvent) => {
+        const original = () => {
+          if (!isDisabled && onKeyDown) {
+            onKeyDown(event);
+          }
+        };
+
+        if (!dragHandleProps || !dragHandleProps.onKeyDown) {
+          original();
+          return;
+        }
+
+        dragHandleProps.onKeyDown(event);
+
+        // if default is prevent - do not fire other handlers
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        // not allowing keyboard events on the element while dragging
+        if (isDragging) {
+          return;
+        }
+
+        original();
+      },
+    };
+
+    const patchedInnerRef = (ref) => {
+      this.setRef(ref);
+
+      if (dnd) {
+        dnd.innerRef(ref);
+      }
+    };
 
     return (
       <Root
@@ -129,15 +206,16 @@ export default class Item extends Component {
         isDragging={isDragging}
         isHidden={isHidden}
         isSelected={isSelected}
-        onClick={isDisabled ? null : onClick}
-        onMouseDown={this.handleMouseDown}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role={role}
         tabIndex={isDisabled || isHidden ? null : 0}
         target={this.props.target}
         title={this.props.title}
-        {...dragAndDropProps}
+        style={dnd ? dnd.draggableStyle : null}
+        innerRef={patchedInnerRef}
+        {...dragHandleProps}
+        {...patchedEventHandlers}
         {...otherProps}
       >
         {!!this.props.elemBefore && <BeforeAfter>{this.props.elemBefore}</BeforeAfter>}

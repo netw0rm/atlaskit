@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import panelPlugins from '../../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, panel, code_block, ul, li
+  insertText, doc, p, makeEditor, panel, code_block
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -34,15 +34,6 @@ describe('panel input rules', () => {
 
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
     expect(trackEvent.calledWith('atlassian.editor.format.panel.info.autoformatting')).to.equal(true);
-  });
-
-  it('should replace {info} input with panel node of type info inside list item', () => {
-    const { editorView } = editor(doc(ul(li(p('{info')))));
-
-    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
-    inputRulePlugin!.props.handleTextInput!(editorView, 8, 8, '}');
-
-    expect(editorView.state.doc).to.deep.equal(doc(ul(li(panel(p())))));
   });
 
   it('should not convert {info} inside a code_block', () => {

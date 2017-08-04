@@ -26,7 +26,7 @@ export const isInCompactGroup = (map: Object): bool => {
   return map[groupKey].isCompact;
 };
 
-export const whenCollapsed = (...args: Array<mixed>) => css`
+export const whenCollapsed = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')}
 `;
 
@@ -41,7 +41,7 @@ export class WithRootTheme extends PureComponent {
     children?: any
   }
 
-  withOuterTheme = (outerTheme: ?Object = {}) => {
+  withOuterTheme = (outerTheme: ?Object = {}): Object => {
     const theme: RootTheme = {
       provided: this.props.provided,
       isCollapsed: (this.props.isCollapsed || false),

@@ -1,5 +1,34 @@
 # @atlaskit/editor-core
 
+## 45.1.2 (2017-08-04)
+
+* bug fix; bump media-filmstrip in editor-core (issues closed: ed-2052) ([f33b88e](https://bitbucket.org/atlassian/atlaskit/commits/f33b88e))
+* bug fix; media nodes parsing should not throw error when schema is media-less (issues closed: ed-2394) ([4a0dfe0](https://bitbucket.org/atlassian/atlaskit/commits/4a0dfe0))
+
+* bug fix; fix remove media on upload failure (issues closed: ed-2192) ([d5da5a0](https://bitbucket.org/atlassian/atlaskit/commits/d5da5a0))
+* bug fix; upload progress and temporary thumbnail not showing (issues closed: ed-2283) ([5c1b9b6](https://bitbucket.org/atlassian/atlaskit/commits/5c1b9b6))
+## 45.1.1 (2017-08-03)
+
+* bug fix; export es5 renderer ([2db940d](https://bitbucket.org/atlassian/atlaskit/commits/2db940d))
+## 45.1.0 (2017-08-03)
+
+
+* feature; support document filtering. Include implementation for task decision content. (issues closed: fs-1223) ([8afca9c](https://bitbucket.org/atlassian/atlaskit/commits/8afca9c))
+## 45.0.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+## 45.0.0 (2017-08-02)
+
+* breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+* breaking; restricting block nesting for panel, blockquote and list. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+## 44.9.1 (2017-08-02)
+
+* bug fix; fix broken storybook in AUI (issues closed: ed-2138) ([6ce1692](https://bitbucket.org/atlassian/atlaskit/commits/6ce1692))
+
+
+* bug fix; updated json schema with table nodes ([bf5b3ff](https://bitbucket.org/atlassian/atlaskit/commits/bf5b3ff))
+
 ## 44.9.0 (2017-08-02)
 
 

@@ -1,6 +1,12 @@
 # @atlaskit/avatar
 
-## Unreleased
+## 6.4.4 (2017-08-03)
+
+* bug fix; fixes uncaught type error in avatar by consuming latest util-shared-styles (issues closed: ak-3067) ([be705fa](https://bitbucket.org/atlassian/atlaskit/commits/be705fa))
+
+
+
+
 
 ## 6.4.3 (2017-07-28)
 

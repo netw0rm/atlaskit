@@ -27,6 +27,6 @@ describe('@atlaskit/editor-core/schema taskItem node', () => {
 
 function makeSchema() {
   return createSchema({
-    nodes: ['doc', 'paragraph', 'text', 'taskList', 'taskItem', 'orderedList', 'listItem']
+    nodes: ['doc', 'paragraph', 'text', 'taskList', 'taskItem', 'orderedList', 'bulletList', 'listItem']
   });
 }

@@ -15,7 +15,7 @@ const mentionQuery = markFactory(schema.marks.mentionQuery!);
 
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('mentions', () => {
     it(`encodes HTML: mention_query mark`, () => {
       const encoded = encode(doc(p(mentionQuery('@star'))), schema, { mention: mentionEncoder });

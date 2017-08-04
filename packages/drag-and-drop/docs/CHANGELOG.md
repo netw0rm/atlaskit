@@ -1,5 +1,9 @@
 # @atlaskit/drag-and-drop
 
+## 4.5.2 (2017-08-03)
+
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
 ## 4.5.1 (2017-08-01)
 
 * bug fix; fixing small race condition where item could still be animating in the DROP_COMPLETE ([c69febb](https://bitbucket.org/atlassian/atlaskit/commits/c69febb))

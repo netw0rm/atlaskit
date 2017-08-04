@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import DecisionItem, { ContentWrapper } from '../../src/components/DecisionItem';
+import DecisionItem, { ContentWrapper } from '../../../src/components/DecisionItem';
 
 describe('<DecisionItem/>', () => {
   it('should render children', () => {

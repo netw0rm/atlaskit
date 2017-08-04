@@ -20,6 +20,7 @@ module.exports = {
   testRegex: '\\/test\\/unit\\/[^_].*\\.(j|t)sx?$',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   setupFiles: [`${testSetupDir}/jestSetup.js`],
+  setupTestFrameworkScriptFile: `${testSetupDir}/jestFrameworkSetup.js`,
 
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
@@ -35,6 +36,8 @@ module.exports = {
   // only built on CI (if we changed this this it would dramatically increase the speed of our test
   // runs)
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
+
+  snapshotSerializers: ['enzyme-to-json/serializer'],
 
   globals: {
     'ts-jest': {

@@ -1,15 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
-import { Dropzone } from '../src';
+import { Dropzone } from '../../src';
 import { Contents } from './dropzone-contents';
 
 const apiUrl = 'https://media-api.atlassian.io';
-const apiClientId = 'some-client-id';
 
 const tenantClientProvider = (context: {collectionName: string}) => {
   return Promise.resolve({
-    id: apiClientId,
+    id: 'some-client-id',
     token: 'some-token'
   });
 };
@@ -17,7 +16,7 @@ const tenantClientProvider = (context: {collectionName: string}) => {
 storiesOf('Dropzone', module)
   .add('default', () => {
     return (
-      <Dropzone apiUrl={apiUrl} apiClientId={apiClientId} tenantClientProvider={tenantClientProvider}>
+      <Dropzone apiUrl={apiUrl} tenantClientProvider={tenantClientProvider}>
         <Contents />
       </Dropzone>
     );

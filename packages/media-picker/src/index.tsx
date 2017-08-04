@@ -19,10 +19,9 @@ export interface UploadParams {
 
 export interface PickerProps {
   apiUrl: string;
-  // TODO remove apiClientId as we now get that out of the TenantClientProvider
-  apiClientId: string;
   uploadParams?: UploadParams;
   tenantClientProvider: TenantClientProvider;
 }
 
 export * from './dropzone';
+export * from './popup';

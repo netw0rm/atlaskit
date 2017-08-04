@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 18.0.2 (2017-08-03)
+
+* bug fix; reduce box-shadow on smart-cards ([ef9658b](https://bitbucket.org/atlassian/atlaskit/commits/ef9658b))
 ## 18.0.1 (2017-08-03)
 
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))

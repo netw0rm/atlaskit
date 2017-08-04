@@ -8,6 +8,7 @@ import {
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { stateKey } from './';
 import { createTableNode } from './utils';
+import { analyticsService } from '../../analytics';
 
 export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
@@ -45,6 +46,9 @@ const goToNextCell = (direction: number): Command => {
     const start = pluginState.getCurrentCellStartPos();
     const firstCellPos =  map.positionAt(0, 0, pluginState.tableNode) + offset + 1;
     const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, pluginState.tableNode) + offset + 1;
+
+    const event = direction === TAB_FORWARD_DIRECTION ? 'next_cell' : 'previous_cell';
+    analyticsService.trackEvent(`atlassian.editor.format.table.${event}.keyboard`);
 
     if (firstCellPos === start && direction === TAB_BACKWARD_DIRECTION) {
       pluginState.insertRow(0);
@@ -95,6 +99,7 @@ const emptyCells = (): Command => {
     const selection = pluginState.view.state.selection as CellSelection;
     const newPos = selection.$head.pos - selection.$head.parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
+    analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
     return true;
   };
 };

@@ -9,6 +9,7 @@ import TableFloatingToolbar from '../../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
+import { analyticsService } from '../../../src/analytics';
 
 import {
   createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
@@ -19,6 +20,11 @@ describe('TableFloatingToolbar', () => {
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
+  });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
   });
 
   context('when cellElement is undefined', () => {
@@ -161,6 +167,7 @@ describe('TableFloatingToolbar', () => {
           floatingToolbar.find('DropdownMenu span[role="menuitem"]').at(i).simulate('click');
           expect((pluginState[command] as any).callCount).to.equal(1);
           floatingToolbar.unmount();
+          expect(trackEvent.calledWith(`atlassian.editor.format.table.${command}.button`)).to.equal(true);
         });
       });
     });

@@ -1,6 +1,6 @@
 // @flow
 import * as style from '@atlaskit/util-shared-styles';
-import type { Provided, ItemTheme } from './types';
+import type { Provided, ItemTheme, Background } from './types';
 
 // Currently shared by all the themes - but need not be
 const focus = {
@@ -8,6 +8,7 @@ const focus = {
 };
 
 export const container: Provided = ((): Provided => {
+  const primaryBackground: Background = style.akColorN20;
   const item: ItemTheme = {
     default: {
       background: 'transparent',
@@ -23,6 +24,10 @@ export const container: Provided = ((): Provided => {
       text: style.akColorB400,
     },
     focus,
+    dragging: {
+      // similar to hover - but without opacity
+      background: style.akColorN30,
+    },
   };
 
   const dropdown: ItemTheme = {
@@ -35,12 +40,13 @@ export const container: Provided = ((): Provided => {
     active: item.active,
     selected: item.selected,
     focus: item.focus,
+    dragging: item.dragging,
   };
 
   const theme: Provided = {
     background: {
-      primary: style.akColorN20,
-      secondary: style.akColorN20,
+      primary: primaryBackground,
+      secondary: primaryBackground,
       tertiary: style.akColorN0,
     },
     text: style.akColorN500,
@@ -54,6 +60,8 @@ export const container: Provided = ((): Provided => {
 })();
 
 export const settings: Provided = ((): Provided => {
+  const primaryBackground: Background = style.akColorN800;
+
   const item: ItemTheme = {
     default: {
       background: 'transparent',
@@ -70,6 +78,10 @@ export const settings: Provided = ((): Provided => {
       text: style.akColorB100,
     },
     focus,
+    dragging: {
+      // Similar to active colour - but without opacity
+      background: style.akColorN600,
+    },
   };
 
   const dropdown: ItemTheme = {
@@ -83,11 +95,12 @@ export const settings: Provided = ((): Provided => {
     active: item.active,
     selected: item.selected,
     focus: item.focus,
+    dragging: item.dragging,
   };
 
   const theme: Provided = {
     background: {
-      primary: style.akColorN800,
+      primary: primaryBackground,
       secondary: style.akColorN700,
       tertiary: style.akColorN700,
     },
@@ -102,6 +115,8 @@ export const settings: Provided = ((): Provided => {
 })();
 
 export const global: Provided = ((): Provided => {
+  const primaryBackground: Background = style.akColorB500;
+  const activeBackground: Background = style.akColorB200;
   const item: ItemTheme = {
     default: {
       background: 'transparent',
@@ -110,13 +125,17 @@ export const global: Provided = ((): Provided => {
       background: style.akColorN80A,
     },
     active: {
-      background: style.akColorB200,
+      background: activeBackground,
     },
     selected: {
       background: style.akColorN50A,
       text: style.akColorB50,
     },
     focus,
+    dragging: {
+      // using active colour for this preset
+      background: activeBackground,
+    },
   };
 
   const dropdown: ItemTheme = {
@@ -130,13 +149,14 @@ export const global: Provided = ((): Provided => {
     active: item.active,
     selected: item.selected,
     focus: item.focus,
+    dragging: item.dragging,
   };
 
   const theme: Provided = {
     background: {
-      primary: style.akColorB500,
-      secondary: style.akColorB500,
-      tertiary: style.akColorB500,
+      primary: primaryBackground,
+      secondary: primaryBackground,
+      tertiary: primaryBackground,
     },
     text: style.akColorB50,
     subText: style.akColorB75,

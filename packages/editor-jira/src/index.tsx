@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+
 import {
   AnalyticsHandler,
   analyticsService,
@@ -464,6 +466,8 @@ export default class Editor extends PureComponent<Props, State> {
 }
 
 export const parseIntoAtlassianDocument = (html: string, schema: Schema<any, any>) => {
+  assert.strictEqual(typeof html, 'string', 'First parseIntoAtlassianDocument() argument is not a string');
+
   const serializer = new JSONSerializer();
   const transformer = new JIRATransformer(schema);
   const doc = transformer.parse(html);

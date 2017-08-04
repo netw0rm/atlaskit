@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Context, FileItem, MediaCollection} from '@atlaskit/media-core';
-import {ItemInfo, ItemPreview, Navigation, MiniModeView} from './views';
+import {Context, FileItem, MediaCollection, MediaCollectionFileItem} from '@atlaskit/media-core';
+import {ItemInfo, ItemPreview, Navigation, MiniModeView, Preloader} from './views';
 import {MainWrapper} from './styled';
 import {MediaIdentifier} from './domain';
 
@@ -70,12 +70,13 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
         provider.observable().subscribe({
           next(collection: MediaCollection) {
             // TODO: Re-use metada provided from the collection call
-            const fileItems = collection.items
+            const fileItems = (collection.items as Array<MediaCollectionFileItem>)
               .filter(i => i.type === 'file')
               .map(i => ({
                 id: i.details.id,
                 collectionName,
-                mediaItemType: 'file'
+                mediaItemType: 'file',
+                mediaType: i.details.mediaType
               } as MediaIdentifier));
 
             resolve(fileItems);
@@ -136,7 +137,11 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
             metadata={metadata}
             identifer={selected}
           /> : null}
-
+        <Preloader
+          context={context}
+          selected={selected}
+          list={list}
+        />
       </MainWrapper>
     );
   }

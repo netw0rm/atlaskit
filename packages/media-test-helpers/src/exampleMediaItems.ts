@@ -203,6 +203,84 @@ export const genericLinkDetails: LinkDetails = {
   ...genericUrlPreview
 };
 
+ export const emptyLinkDetails: UrlPreview = {
+  url: '',
+  type: 'link',
+  title: 'Atlassian',
+  resources: {}
+};
+
+export const imageLinkDetails: UrlPreview = {
+  type: 'link',
+  url: 'http://i.imgur.com/KL5g7xl.png',
+  title: 'A joke that took a life of its own',
+  resources: {
+    image: {
+      url: 'image-url.png',
+      type: 'image/png',
+      width: 500,
+      height: 500
+    }
+  }
+};
+
+export const spotifyLinkDetails: UrlPreview = {
+  url: 'https://open.spotify.com/track/7drqcBBZwddPvFkHbvnCeM',
+  type: 'media',
+  site: 'Spotify',
+  title: 'House',
+  resources: {
+    icon: {
+      url: 'http://d2c87l0yth4zbw.cloudfront.net/i/_global/favicon.png',
+      type: 'image/png'
+    },
+    player: {
+      url: 'https://open.spotify.com/embed/track/7drqcBBZwddPvFkHbvnCeM',
+      type: 'text/html',
+      height: 380,
+      html: '<div><div style=\'left: 0; width: 100%; height: 380px; position: relative;\'><iframe src=\'https://open.spotify.com/embed/track/7drqcBBZwddPvFkHbvnCeM\' style=\'border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\' allowfullscreen></iframe></div></div>'
+    },
+    thumbnail: {
+      url: 'https://i.scdn.co/image/e1ee54e2e72f707d16869f9499be47ea88295c6d',
+      type: 'image',
+      width: 300,
+      height: 300
+    }
+  }
+};
+
+export const youtubeLinkDetails: UrlPreview = {
+  url: 'https://www.youtube.com/watch?v=gyTPJho5iyg',
+  type: 'media',
+  site: 'YouTube',
+  title: '2016 Sinquefield Cup: Preview',
+  description: 'The Chess Club and Scholastic Center of Saint Louis is proud to host the fourth annual Sinquefield Cup August 5-16, 2016. The Cup is the third leg of the 201...',
+  author: {
+    name: 'Chess Club and Scholastic Center of Saint Louis',
+    url: 'https://www.youtube.com/user/STLChessClub'
+  },
+  resources: {
+    icon: {
+      url: 'https://www.youtube.com/yts/img/favicon_144-vflWmzoXw.png',
+      type: 'image/png',
+      width: 144,
+      height: 144
+    },
+    player: {
+      url: 'https://www.youtube.com/embed/gyTPJho5iyg?feature=oembed',
+      type: 'text/html',
+      aspect_ratio: 1.7778,
+      html: '<div><div style=\'left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;\'><iframe src=\'https://www.youtube.com/embed/gyTPJho5iyg?feature=oembed\' style=\'border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\' allowfullscreen scrolling=\'no\'></iframe></div></div>'
+    },
+    thumbnail: {
+      url: 'https://i.ytimg.com/vi/gyTPJho5iyg/hqdefault.jpg',
+      type: 'image/jpeg',
+      width: 480,
+      height: 360
+    }
+  }
+};
+
 export const minimalLinkDetailsContainingASmartCard: UrlPreview = {
   url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
   type: 'link',

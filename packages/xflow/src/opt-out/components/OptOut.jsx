@@ -15,13 +15,9 @@ export default class OptOut extends Component {
     locale: PropTypes.string,
   };
 
-  static defaultProps = {
-    locale: 'en_US',
-  };
-
   render() {
     return (
-      <App locale={this.props.locale}>
+      <App>
         <AdminSettings />
       </App>
     );

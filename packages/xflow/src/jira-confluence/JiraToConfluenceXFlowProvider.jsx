@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-intl';
 import { XFlowProvider } from '../common/components/XFlowProvider';
+import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 
 import { isUserTrusted } from './tenantContext';
 import hasConfluenceBeenEvaluated from './hasConfluenceBeenEvaluated';
@@ -17,7 +19,6 @@ import goToProduct from './goToProduct';
 import goToLearnMore from './goToLearnMore';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
-import languagePacks from './language-packs.json';
 import confluenceStatusChecker from './confluenceStatusChecker';
 
 const messages = defineMessages({
@@ -50,7 +51,6 @@ const messages = defineMessages({
 export const defaultProps = intl => ({
   config: {
     productLogo: <ConfluenceLogo />,
-    languagePacks,
     requestTrial: {
       accessBanner: 'https://placehold.it/352x214',
       accessHeading: 'Ask your admin for access',
@@ -136,4 +136,30 @@ export class JiraToConfluenceXFlowProviderBase extends Component {
     return <XFlowProvider {...props} />;
   }
 }
-export default injectIntl(JiraToConfluenceXFlowProviderBase);
+
+const JiraToConfluenceXFlowProviderWithIntl = injectIntl(JiraToConfluenceXFlowProviderBase);
+
+// eslint-disable-next-line react/no-multi-comp
+export default class JiraToConfluenceXFlowProvider extends Component {
+  static propTypes = {
+    locale: PropTypes.string,
+  }
+
+  static defaultProps = {
+    locale: 'en_US',
+  }
+
+  render() {
+    const {
+      locale,
+      ...otherProps
+    } = this.props;
+
+    return (
+      <XFlowIntlProvider locale={locale}>
+        <JiraToConfluenceXFlowProviderWithIntl {...otherProps} />
+      </XFlowIntlProvider>
+    );
+  }
+}
+

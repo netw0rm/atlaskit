@@ -17,6 +17,7 @@ import ProgressIndicator from '../../../src/start-trial/components/ProgressIndic
 import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
+const noop = () => {};
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
@@ -41,6 +42,10 @@ const defaultProps = {
   cancelRequestTrialAccess: async () => {},
 };
 
+const defaultRequestOrStartTrialProps = {
+  onAnalyticsEvent: noop,
+};
+
 describe('@atlaskit/xflow', () => {
   describe('new to confluence', () => {
     let xflow;
@@ -50,9 +55,8 @@ describe('@atlaskit/xflow', () => {
         setupStorybookAnalytics(
           <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => true}>
             <RequestOrStartTrial
-              onAnalyticsEvent={() => {}}
+              {...defaultRequestOrStartTrialProps}
               onTrialActivating={() => true}
-              analyticsId="growth.happy"
             />
           </MockConfluenceXFlow>
         )
@@ -136,7 +140,7 @@ describe('@atlaskit/xflow', () => {
             canCurrentUserAddProduct={async () => true}
             hasProductBeenEvaluated={async () => true}
           >
-            <RequestOrStartTrial onAnalyticsEvent={() => {}} analyticsId="growth.happy" />
+            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
           </MockConfluenceXFlow>
         )
       );
@@ -172,7 +176,7 @@ describe('@atlaskit/xflow', () => {
             productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
             canCurrentUserAddProduct={async () => true}
           >
-            <RequestOrStartTrial onAnalyticsEvent={() => {}} analyticsId="growth.happy" />
+            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
           </MockConfluenceXFlow>
         )
       );
@@ -203,7 +207,7 @@ describe('@atlaskit/xflow', () => {
             productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
             canCurrentUserAddProduct={async () => true}
           >
-            <RequestOrStartTrial onAnalyticsEvent={() => {}} analyticsId="growth.happy" />
+            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
           </MockConfluenceXFlow>
         )
       );
@@ -235,7 +239,7 @@ describe('@atlaskit/xflow', () => {
             requestTrialAccess={async () => true}
             productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
           >
-            <RequestOrStartTrial onAnalyticsEvent={() => {}} analyticsId="growth.happy" />
+            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
           </MockConfluenceXFlow>
         )
       );

@@ -7,7 +7,7 @@ import EmojiResource, { EmojiProvider, EmojiResourceConfig } from '../src/api/Em
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { localStoragePrefix } from '../src/constants';
-import { EmojiDescription, EmojiId, OnEmojiEvent, OptionalEmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiId, OptionalEmojiDescription } from '../src/types';
 
 export class UsagePeekEmojiResource extends EmojiResource {
   constructor(config: EmojiResourceConfig) {
@@ -64,7 +64,11 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
     const { emojiResource } = this.props;
     if (emoji) {
       emojiResource.recordSelection(emoji);
-      this.setState(this.getFreshState());
+      // give the tracker a chance to write to the queue and local storage before updating state
+      setTimeout(() => {
+        const newState = this.getFreshState();
+        this.setState(newState);
+      });
     }
   }
 

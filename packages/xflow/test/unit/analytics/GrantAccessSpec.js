@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { mount } from 'enzyme';
 import { GrantAccessBase } from '../../../src/start-trial/components/GrantAccess';
@@ -14,7 +13,20 @@ const defaultProps = {
   status: ACTIVATING,
   heading: '',
   defaultSelectedRadio: 'everyone',
-  optionItems: [],
+  optionItems: [
+    {
+      value: 'everyone',
+      label: 'Everyone in JIRA Software',
+    },
+    {
+      value: 'siteAdmins',
+      label: 'Site admins only',
+    },
+    {
+      value: 'specificUsers',
+      label: 'Specific users',
+    },
+  ],
 };
 
 test('GrantAccess should fire an appropriate analytics event when it is mounted', () => {
@@ -47,6 +59,10 @@ test('GrantAccess should fire an appropriate analytics event if retrieving users
 test('GrantAccess should fire an appropriate analytics event when the continue button is clicked', () => {
   const spy = jest.fn();
   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.continue-button.clicked',
+    expect.any(Object)
+  );
   mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
   return waitFor(() =>
     expect(spy).toHaveBeenCalledWith(
@@ -63,13 +79,19 @@ test('GrantAccess should fire an appropriate analytics event if granting access 
       spy,
       <GrantAccessBase
         {...defaultProps}
-        grantAccessToUsers={() => {
-          return new Promise((_, reject) => setTimeout(reject, 500));
-        }}
+        grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject, 500))}
       />
     )
   );
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.continue-button.failed-to-grant-access',
+    expect.any(Object)
+  );
   mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.skip-button.clicked',
+    expect.any(Object)
+  );
   return waitFor(() => {
     expect(spy).toHaveBeenCalledWith(
       'xflow.grant-access.continue-button.failed-to-grant-access',
@@ -81,7 +103,6 @@ test('GrantAccess should fire an appropriate analytics event if granting access 
 });
 
 test('GrantAccess should fire an appropriate analytics event when the learn more button is clicked', () => {
-  debugger;
   const spy = jest.fn();
   const mountWrapper = mount(
     withAnalyticsSpy(
@@ -89,9 +110,12 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
       <GrantAccessBase {...defaultProps} changeUsers goToLearnMore={() => {}} />
     )
   );
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.learn-more-button.clicked',
+    expect.any(Object)
+  );
   mountWrapper.find('#xflow-grant-access-learn-more-button').simulate('click');
   return waitFor(() => {
-    mountWrapper.find('#xflow-grant-access-learn-more-button').simulate('click');
     expect(spy).toHaveBeenCalledWith(
       'xflow.grant-access.learn-more-button.clicked',
       expect.any(Object)
@@ -102,48 +126,104 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
 test('GrantAccess should fire an appropriate analytics event when the change button is clicked', () => {
   const spy = jest.fn();
   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.change-button.clicked',
+    expect.any(Object)
+  );
   mountWrapper.find('#xflow-grant-access-change-button').simulate('click');
   return waitFor(() =>
     expect(spy).toHaveBeenCalledWith('xflow.grant-access.change-button.clicked', expect.any(Object))
   );
 });
 
-// test('GrantAccess should fire an appropriate analytics event when the radio option is changed', () => {
-//   const spy = jest.fn();
-//   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
-//   // TODO: simulate a radio change
-//   mountWrapper.find('#xflow-specific-radio-option').simulate('click');
-//   return waitFor(() =>
-//     expect(spy).toHaveBeenCalledWith('xflow.grant-access.radio-option.changed', expect.any(Object))
-//   );
-// });
-//
-// test('GrantAccess should fire an appropriate analytics event when the user select is opened', () => {
-//   const spy = jest.fn();
-//   const mountWrapper = mount(
-//     withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
-//   );
-//   mountWrapper.find('#xflow-grant-access-user-select').simulate('click');
-//   return waitFor(() =>
-//     expect(spy).toHaveBeenCalledWith('xflow.grant-access.user-select.opened', expect.any(Object))
-//   );
-// });
-//
-// test('GrantAccess should fire an appropriate analytics event when the user select is changed', () => {
-//   const spy = jest.fn();
-//   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
-//   mountWrapper.find('#xflow-grant-access-user-select').simulate('click');
-//   // TODO: simulate choosing a new user
-//   return waitFor(() =>
-//     expect(spy).toHaveBeenCalledWith('xflow.grant-access.user-select.changed', expect.any(Object))
-//   );
-// });
-//
-// test('GrantAccess should fire an appropriate analytics event when the notify users checkbox is changed', () => {
-//   const spy = jest.fn();
-//   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
-//   mountWrapper.find('#xflow-grant-access-notify-users').simulate('click');
-//   return waitFor(() =>
-//     expect(spy).toHaveBeenCalledWith('xflow.grant-access.notify-users.changed', expect.any(Object))
-//   );
-// });
+test('GrantAccess should fire an appropriate analytics event when the radio option is changed', () => {
+  const spy = jest.fn();
+  const mountWrapper = mount(
+    withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
+  );
+  const mockResponse = { target: 'siteAdmins' };
+  const onRadioChange = mountWrapper.find('FieldRadioGroup').prop('onRadioChange');
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.radio-option.changed',
+    expect.any(Object)
+  );
+  onRadioChange(mockResponse);
+  return waitFor(() => {
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.radio-option.changed', expect.any(Object));
+  });
+});
+
+test('GrantAccess should fire an appropriate analytics event when the user select is opened', () => {
+  const spy = jest.fn();
+  const mountWrapper = mount(
+    withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
+  );
+  const mockResponse = { isOpen: true };
+  const onOpenChange = mountWrapper.find('MultiSelect').prop('onOpenChange');
+  expect(spy).not.toHaveBeenCalledWith('xflow.grant-access.user-select.opened', expect.any(Object));
+  onOpenChange(mockResponse);
+  return waitFor(() =>
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.user-select.opened', expect.any(Object))
+  );
+});
+
+test('GrantAccess should fire an appropriate analytics event when the user select is changed', () => {
+  const spy = jest.fn();
+  const mountWrapper = mount(
+    withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
+  );
+  const mockResponse = { items: [] };
+  const onSelectedChange = mountWrapper.find('MultiSelect').prop('onSelectedChange');
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.user-select.changed',
+    expect.any(Object)
+  );
+  onSelectedChange(mockResponse);
+  return waitFor(() =>
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.user-select.changed', expect.any(Object))
+  );
+});
+
+test('GrantAccess should fire an appropriate analytics event when the user select is invalid', () => {
+  const userOptionId = 'specificUsers';
+  const spy = jest.fn();
+  const mountWrapper = mount(
+    withAnalyticsSpy(
+      spy,
+      <GrantAccessBase
+        {...defaultProps}
+        changeUsers
+        defaultSelectedRadio={userOptionId}
+        userSelectIsInvalid
+        usersOption={userOptionId}
+      />
+    )
+  );
+  const mockResponse = { selectedRadio: userOptionId, selectedUsers: [] };
+  const onClick = mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick');
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.continue-button.user-select.invalid',
+    expect.any(Object)
+  );
+  onClick(mockResponse);
+  return waitFor(() =>
+    expect(spy).toHaveBeenCalledWith(
+      'xflow.grant-access.continue-button.user-select.invalid',
+      expect.any(Object)
+    )
+  );
+});
+
+test('GrantAccess should fire an appropriate analytics event when the notify users checkbox is changed', () => {
+  const spy = jest.fn();
+  const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
+  const mockResponse = { target: { checked: false } };
+  const onChange = mountWrapper.find('#xflow-grant-access-notify-users').prop('onChange');
+  expect(spy).not.toHaveBeenCalledWith('xflow.grant-access.notify-users.changed');
+  onChange(mockResponse);
+  return waitFor(() =>
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.notify-users.changed', {
+      notifyUsers: false,
+    })
+  );
+});

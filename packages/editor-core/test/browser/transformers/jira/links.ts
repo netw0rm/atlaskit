@@ -11,7 +11,7 @@ const p = nodeFactory(schema.nodes.paragraph);
 // Marks
 const linkMark = (attrs) => markFactory(schema.marks.link!, attrs);
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('links', () => {
     checkParseEncodeRoundTrips('external link',
       schema,

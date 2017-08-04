@@ -8,14 +8,15 @@ import GlobalNavigationInner from '../styled/GlobalNavigationInner';
 import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 import * as presets from '../../theme/presets';
-import type { ReactElement } from '../../types';
+import type { ReactElement, ReactClass } from '../../types';
+import type { Provided } from '../../theme/types';
 
 type Props = {|
   /** The icon to be used for the create button */
   createIcon?: ReactElement,
   /** A component that will be used to render links. A default link component is
   used if none is provided. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** The topmost icon to be placed in the global navigation - usually the product
   logo, or the product home icon */
   primaryIcon?: ReactElement,
@@ -27,18 +28,17 @@ type Props = {|
   /** The icon to use in the global navigation for the global search button */
   searchIcon?: ReactElement,
   /** A handler that is called when the search drawer is requesting to be opened */
-  onSearchActivate: () => mixed,
+  onSearchActivate?: () => void,
   /** A handler that is called when the createIcon is clicked */
-  onCreateActivate: (e: Event) => mixed,
+  onCreateActivate?: (e: Event) => void,
   /** The theme of the global navigation. Presets are available via the
   presetThemes named export, or you can generate your own using the the
   createGlobalTheme named export function. */
-  theme: Object, // eslint-disable-line react/forbid-prop-types
+  theme: Provided,
 |};
 
 export default class GlobalNavigation extends PureComponent {
   static defaultProps = {
-    accountItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     secondaryActions: [],

@@ -7,7 +7,8 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, Provided } from '../../types';
+import type { ReactElement, ReactClass } from '../../types';
+import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
   containerClosedWidth,
@@ -96,22 +97,33 @@ type Props = {|
   isResizeable?: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** Function called at the end of a resize event. It is called with an object
   containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize?: (obj: resizeObj) => mixed,
+  onResize?: (obj: resizeObj) => void,
   /** Function to be called when a resize event starts. */
-  onResizeStart?: () => mixed,
+  onResizeStart?: () => void,
   /** Function called when the globalCreateIcon is clicked. */
-  onCreateDrawerOpen?: () => mixed,
+  onCreateDrawerOpen?: () => void,
   /** Function called when the globalSearchIcon is clicked. */
-  onSearchDrawerOpen?: () => mixed,
+  onSearchDrawerOpen?: () => void,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
   width?: number,
 |}
 
+type State = {|
+  resizeDelta: number,
+  isResizing: boolean,
+  isTogglingIsOpen: boolean,
+|}
+
 export default class Navigation extends PureComponent {
+  /* eslint-disable react/sort-comp */
+  props: Props
+  state: State
+  /* eslint-enable */
+
   static defaultProps = {
     containerTheme: presets.container,
     drawers: [],
@@ -130,7 +142,7 @@ export default class Navigation extends PureComponent {
     width: globalOpenWidth + containerOpenWidth,
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: mixed) {
     super(props, context);
 
     this.state = {

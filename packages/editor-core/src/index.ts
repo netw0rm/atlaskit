@@ -64,6 +64,7 @@ export {
   ErrorReporter,
   ErrorReportingHandler,
   JSONDocNode,
+  JSONNode,
   toJSON,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';

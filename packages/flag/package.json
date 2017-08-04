@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "config": {
     "access": "public"
   },
@@ -35,7 +35,6 @@
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/icon": "^7.0.0",
     "@atlaskit/util-shared-styles": "^2.3.1",
-    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "react-transition-group": "^1.2.0",
@@ -47,7 +46,8 @@
     "@atlaskit/modal-dialog": "^2.1.2",
     "@atlaskit/navigation": "^13.4.1",
     "@atlaskit/page": "^4.0.1",
-    "@atlaskit/util-readme": "^3.2.0"
+    "@atlaskit/util-readme": "^3.2.0",
+    "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

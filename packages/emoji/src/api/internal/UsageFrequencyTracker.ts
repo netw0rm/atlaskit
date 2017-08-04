@@ -53,6 +53,23 @@ export class UsageFrequencyTracker {
       });
     }
   }
+
+  /**
+   * Returns an array of emoji id (without skin tone variations) sorted by most used to least used. If there
+   * are no usages then an empty array will be returned.
+   */
+  getOrder(): Array<string> {
+    return this.queue.getItemsOrderedByDuplicateCount();
+  }
+
+  /**
+   * Exposed for testing only. Clear any recorded usage.
+   *
+   * TODO add tests
+   */
+  clear() {
+    this.queue.clear();
+  }
 }
 
 export class Gateway {

@@ -27,19 +27,21 @@ const toJavascriptString = (obj: any): string => {
 };
 
 export interface Props {
+  emojiResource: EmojiResource;
+  resourceRefresher: (config: EmojiResourceConfig) => EmojiResource;
   children: ReactElement<any>;
   emojiConfig: EmojiResourceConfig;
 }
 
 export interface State {
-  emojiProvider: Promise<EmojiResource>;
+  emojiResource: EmojiResource;
 }
 
-export default class ResourcedEmojiControl extends PureComponent<Props, State> {
+export default class ResourcedEmojiControl extends PureComponent<Props, any> {
   constructor(props) {
     super(props);
     this.state = {
-      emojiProvider: Promise.resolve(new EmojiResource(this.props.emojiConfig)),
+      emojiResource: props.emojiResource
     };
   }
 
@@ -49,7 +51,7 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
 
   refreshEmoji(emojiConfig: EmojiResourceConfig) {
     this.setState({
-      emojiProvider: Promise.resolve(new EmojiResource(this.props.emojiConfig)),
+      emojiResource: this.props.resourceRefresher(emojiConfig)
     });
   }
 
@@ -60,7 +62,7 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojiProvider } = this.state;
+    const emojiProvider = Promise.resolve(this.state.emojiResource);
 
     return (
       <div style={{ padding: '10px' }} >
@@ -71,7 +73,7 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
         <p>
           <textarea
             id="emoji-urls"
-            rows={15}
+            rows={8}
             style={{ width: '400px' }}
             onChange={this.emojiConfigChange}
             defaultValue={toJavascriptString(this.props.emojiConfig)}

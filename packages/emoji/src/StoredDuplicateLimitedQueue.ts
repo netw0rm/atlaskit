@@ -45,6 +45,17 @@ export default class StoredDuplicateLimitedQueue<T> extends DuplicateLimitedQueu
   }
 
   /**
+   * Exposed for storybook/testing purposes only. Clear the contents of the queue, and
+   * localStorage.
+   *
+   * TODO write tests
+   */
+  clear() {
+    super.clear();
+    this.storage.removeItem(this.prefixedStorageKey);
+  }
+
+  /**
    * Initialise the queue contents from the configured Storage. If there is no data found in
    * storage then the queue will have no items added. Likewise, a failure to read or parse stored
    * data will be swallowed and no items are added to the queue.

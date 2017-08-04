@@ -51,9 +51,7 @@ export default class DuplicateLimitedQueue<T> {
     this.maximumSize = options.maxDuplicates * options.minUniqueItems;
     this.perItemSize = options.maxDuplicates;
 
-    this.items = new Array<T>();
-    this.itemCountMap = new Map<T, number>();
-    this.itemsOrderedByFrequency = new Array<T>();
+    this.createEmptyState();
   }
 
   /**
@@ -78,6 +76,15 @@ export default class DuplicateLimitedQueue<T> {
   }
 
   /**
+   * Exposed for storybook/testing purposes only. Clear the contents of the queue.
+   *
+   * TODO write tests.
+   */
+  clear() {
+    this.createEmptyState();
+  }
+
+  /**
    * A more efficient mechanism for adding multiple items. Ordering is only performed once all
    * the items have been added.
    *
@@ -93,6 +100,12 @@ export default class DuplicateLimitedQueue<T> {
    */
   protected getItems(): T[] {
     return this.items;
+  }
+
+  private createEmptyState() {
+    this.items = new Array<T>();
+    this.itemCountMap = new Map<T, number>();
+    this.itemsOrderedByFrequency = new Array<T>();
   }
 
   /**

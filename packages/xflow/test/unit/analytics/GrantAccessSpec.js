@@ -88,10 +88,6 @@ test('GrantAccess should fire an appropriate analytics event if granting access 
     expect.any(Object)
   );
   mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
-  expect(spy).not.toHaveBeenCalledWith(
-    'xflow.grant-access.skip-button.clicked',
-    expect.any(Object)
-  );
   return waitFor(() => {
     expect(spy).toHaveBeenCalledWith(
       'xflow.grant-access.continue-button.failed-to-grant-access',

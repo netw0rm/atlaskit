@@ -8,9 +8,12 @@ import { storyDecorator } from '../../src/test-helper';
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('renderer', () => {
-    return <RendererDemo withProviders={true}/>;
+    return <RendererDemo withProviders={true} serializer="react"/>;
   })
   .add('renderer without providers', () => {
-    return <RendererDemo withProviders={false}/>;
+    return <RendererDemo withProviders={false} serializer="react"/>;
+  })
+  .add('text renderer', () => {
+    return <RendererDemo withProviders={false} serializer="text"/>;
   })
 ;

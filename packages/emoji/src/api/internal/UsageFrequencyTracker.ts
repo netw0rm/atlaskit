@@ -28,9 +28,9 @@ export class UsageFrequencyTracker {
   constructor() {
     const options = UsageFrequencyTracker.queueOptions;
     if (options.storage) {
-      this.queue = new StoredDuplicateLimitedQueue(options);
+      this.queue = new StoredDuplicateLimitedQueue<string>(options);
     } else {
-      this.queue = new DuplicateLimitedQueue(options);
+      this.queue = new DuplicateLimitedQueue<string>(options);
     }
 
     this.gateway = new Gateway(10);

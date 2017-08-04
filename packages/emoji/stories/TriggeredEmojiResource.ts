@@ -51,12 +51,3 @@ export default class TriggeredEmojiResource extends EmojiResource {
   }
 }
 
-export class UsagePeekEmojiResource extends EmojiResource {
-  constructor() {
-    super(nextConfig());
-  }
-
-  getUsageTracker() {
-    return this.usageTracker;
-  }
-}

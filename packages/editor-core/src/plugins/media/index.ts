@@ -285,7 +285,20 @@ export class MediaPluginState {
     const { dispatch, state } = this.view;
     const { $from, $to } = state.selection;
 
-    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'left'}));
+
+    this.updateSelectedMediaNode();
+  }
+
+  alignRight(): void {
+    if (!this.toolbarVisible) {
+      return;
+    }
+
+    const { dispatch, state } = this.view;
+    const { $from, $to } = state.selection;
+
+    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'right'}));
 
     this.updateSelectedMediaNode();
   }
@@ -607,6 +620,9 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
+        media: nodeViewFactory(options.providerFactory, {
+          media: ReactMediaNode,
+        }),
       },
       handleTextInput(view: EditorView, from: number, to: number, text: string): boolean {
         const pluginState: MediaPluginState = stateKey.getState(view.state);

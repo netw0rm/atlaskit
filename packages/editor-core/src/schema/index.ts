@@ -28,6 +28,7 @@ export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
 export { default as unknownBlock } from './nodes/unknown-block';
+export { singleImage } from './nodes/single-image';
 export {
   media, MediaType,
   Attributes as MediaAttributes, DisplayType as MediaDisplayType

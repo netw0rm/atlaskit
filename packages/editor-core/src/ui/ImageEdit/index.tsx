@@ -79,6 +79,6 @@ export default class ImageEdit extends PureComponent<Props, State> {
   }
 
   private alignRight = (): void => {
-
+    this.props.pluginState.alignRight();
   }
 }

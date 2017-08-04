@@ -27,7 +27,7 @@ export const mediaGroup: NodeSpec = {
     return [
       'div',
       {
-        'data-node-type': 'media_group'
+        'data-node-type': 'mediaGroup'
       },
       0
     ];

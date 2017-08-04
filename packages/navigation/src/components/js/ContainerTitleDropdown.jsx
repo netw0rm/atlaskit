@@ -35,7 +35,7 @@ export default class ContainerTitleDropdown extends PureComponent {
     } = this.props;
 
     return (
-      <ContainerTitleDropdownWrapper>
+      <ContainerTitleDropdownWrapper tabIndex="0">
         <AkContainerTitle
           icon={icon}
           text={text}

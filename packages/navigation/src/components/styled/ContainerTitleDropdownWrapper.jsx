@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
 import { getProvided, isCollapsed } from '../../theme/util';
+import { focusOutline } from '../../utils/mixins';
 
 // Because ContainerTitle has a special padding 0 12px 0 12px
 // so we need to re-adjust to make the hover style aligment
@@ -26,6 +27,7 @@ const ContainerTitleDropdownWrapper = styled.div`
   }
 
   &:focus {
+    ${focusOutline(({ theme }) => getProvided(theme).dropdown.focus.outline)};
     background-color: ${({ theme }) => getProvided(theme).dropdown.focus.background};
   }
 

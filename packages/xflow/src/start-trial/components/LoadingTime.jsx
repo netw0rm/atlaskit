@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { withAnalytics } from '@atlaskit/analytics';
 
 import ModalDialog from '@atlaskit/modal-dialog';
 import ProgressIndicator from './ProgressIndicator';
@@ -22,8 +23,9 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
 
-export class LoadingTimeBase extends Component {
+class LoadingTime extends Component {
   static propTypes = {
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
@@ -46,13 +48,17 @@ export class LoadingTimeBase extends Component {
     isReady: false,
   };
 
+  componentDidMount() {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.displayed');
+  }
+
   showHeading = () => {
-    const { status } = this.props;
+    const { status, firePrivateAnalyticsEvent } = this.props;
     const { isReady } = this.state;
 
     if (isReady) {
       if (status === ACTIVE) {
-        // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.loading.finished');
         return (
           <FormattedMessage
             id="xflow.generic.loading-product-trial.complete-heading"
@@ -60,7 +66,7 @@ export class LoadingTimeBase extends Component {
           />
         );
       }
-      // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.timed.out');
+      firePrivateAnalyticsEvent('xflow.loading-product-trial.timed.out');
       return (
         <FormattedMessage
           id="xflow.generic.loading-product-trial.error-heading"
@@ -77,20 +83,26 @@ export class LoadingTimeBase extends Component {
   };
 
   handleProgressComplete = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
     this.setState({
       isReady: true,
     });
+    if (status === ACTIVE) {
+      firePrivateAnalyticsEvent('xflow.loading-product-trial.loading.finished');
+    }
   };
 
   handleCloseClick = async () => {
-    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.close');
     const { closeLoadingDialog, onComplete } = this.props;
     await closeLoadingDialog();
     return onComplete();
   };
 
   handleGoToProductClick = async () => {
-    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.go.to.product');
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.go.to.product');
     const { goToProduct, onComplete } = this.props;
     this.setState({
       isLoading: true,
@@ -150,10 +162,7 @@ export class LoadingTimeBase extends Component {
           </StartTrialHeader>
           <LoadingTimeTextDiv>
             <WhereToFindConfluenceSVGDiv>
-              <WhereToFindConfluenceImg
-                src={svgImg}
-                alt="app-switcher"
-              />
+              <WhereToFindConfluenceImg src={svgImg} alt="app-switcher" />
             </WhereToFindConfluenceSVGDiv>
             <WhereToFindConfluenceDiv>
               <h5>
@@ -170,33 +179,35 @@ export class LoadingTimeBase extends Component {
   }
 }
 
+export const LoadingTimeBase = withAnalytics(injectIntl(LoadingTime));
+
 export default withXFlowProvider(
-    LoadingTimeBase,
-    ({
-      xFlow: {
-        config: {
-          productLogo,
-          startTrial: {
-            loadingProductHeading,
-            loadingProductMessage,
-            loadingProductGotoProductButton,
-            loadingSVGImg,
-          },
+  LoadingTimeBase,
+  ({
+    xFlow: {
+      config: {
+        productLogo,
+        startTrial: {
+          loadingProductHeading,
+          loadingProductMessage,
+          loadingProductGotoProductButton,
+          loadingSVGImg,
         },
-        goToProduct,
-        closeLoadingDialog,
-        progress,
-        status,
       },
-    }) => ({
-      productLogo,
-      progress,
-      status,
       goToProduct,
       closeLoadingDialog,
-      heading: loadingProductHeading,
-      message: loadingProductMessage,
-      gotoButton: loadingProductGotoProductButton,
-      svgImg: loadingSVGImg,
-    })
-  );
+      progress,
+      status,
+    },
+  }) => ({
+    productLogo,
+    progress,
+    status,
+    goToProduct,
+    closeLoadingDialog,
+    heading: loadingProductHeading,
+    message: loadingProductMessage,
+    gotoButton: loadingProductGotoProductButton,
+    svgImg: loadingSVGImg,
+  })
+);

@@ -7,17 +7,19 @@ export default function getMockProfileClient(BaseProfileClient: any, modifyRespo
     // eslint-disable-next-line class-methods-use-this
     makeRequest(cloudId, userId) {
       const timeout = random(1500) + 500;
+      const matchError = userId.match(/^error:([0-9a-z\-]+)$/);
+      const error = matchError && matchError[1];
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          if (userId === '404') {
-            return reject();
+          if (error) {
+            return reject({reason: error});
           }
 
           const profile = profiles[userId];
 
           if (!profile) {
-            return reject(new Error('Not Found'));
+            return reject({reason: 'default'});
           }
 
           const weekday = getWeekday();

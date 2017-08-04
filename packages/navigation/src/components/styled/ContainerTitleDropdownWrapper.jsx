@@ -1,9 +1,19 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import { getProvided, isCollapsed } from '../../theme/util';
+
+// Because ContainerTitle has a special padding 0 12px 0 12px
+// so we need to re-adjust to make the hover style aligment
+const getPadding = ({ theme }) => {
+  if (isCollapsed(theme)) {
+    return `${gridSize / 2}px ${gridSize / 2}px 0`;
+  }
+
+  return `${gridSize}px ${gridSize}px ${gridSize / 2}px 0`;
+};
 
 const ContainerTitleDropdownWrapper = styled.div`
-  padding: ${gridSize}px;
+  padding: ${getPadding};
   display: flex;
   justify-content: space-between;
   align-content: space-between;

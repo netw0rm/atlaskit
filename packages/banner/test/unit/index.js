@@ -1,10 +1,18 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import WarningIcon from 'ak-icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Banner from '../../src';
-import Container, { getMaxHeight } from '../../src/styled/Container';
-import { getBackgroundColor, getTextColor, ThemeColor } from '../../src/styled/Content';
-import Text from '../../src/styled/Text';
+import {
+  backgroundColor,
+  getMaxHeight,
+  textColor,
+
+  testErrorBackgroundColor,
+  testErrorTextColor,
+
+  Container,
+  Text,
+} from '../../src/styled';
 
 describe('banner', () => {
   it('basic sanity check', () =>
@@ -17,8 +25,8 @@ describe('banner', () => {
       );
       it('should apply error styles when error appearance supplied', () => {
         const props = { appearance: 'error' };
-        expect(getBackgroundColor(props)).toBe(ThemeColor.background.error);
-        expect(getTextColor(props)).toBe(ThemeColor.text.error);
+        expect(backgroundColor(props)).toBe(testErrorBackgroundColor);
+        expect(textColor(props)).toBe(testErrorTextColor);
       });
     });
     it('should render children prop', () => {

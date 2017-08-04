@@ -2,10 +2,9 @@ import styled, { keyframes } from 'styled-components';
 import {
   akAnimationMixins,
   akBorderRadius,
-  akColorPrimary3,
-  akColorN900,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+import { colors, themed } from '../../../theme/src';
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -25,17 +24,21 @@ const fadeOut = {
   deltas: [{ from: 0, to: 1 }],
 };
 
-const ThemeColor = {
-  background: akColorN900,
-  text: akColorPrimary3,
-};
+const backgroundColor = themed({
+  light: colors.N800,
+  dark: colors.DN0,
+});
+const textColor = themed({
+  light: colors.N0,
+  dark: colors.DN600,
+});
 
 const Tooltip = styled.div`
   animation: ${keyframes`${createBold([slideDown, fadeOut])}`} 0.6s 0.1s backwards;
-  background-color: ${ThemeColor.background};
+  background-color: ${backgroundColor};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
-  color: ${ThemeColor.text};
+  color: ${textColor};
   font-size: ${fontSize}px;
   left: 50%;
   line-height: ${lineHeight};
@@ -48,6 +51,7 @@ const Tooltip = styled.div`
   text-overflow: ellipsis;
   transform: translateX(-50%);
   white-space: nowrap;
+  z-index: 1;
 `;
 
 export default Tooltip;

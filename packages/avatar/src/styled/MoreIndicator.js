@@ -1,13 +1,7 @@
 import styled from 'styled-components';
-import { akColorN40, akColorN500, akColorB200 } from '@atlaskit/util-shared-styles';
 import { getBorderRadius, getInnerStyles } from './utils';
 import { BORDER_WIDTH, EXCESS_INDICATOR_FONT_SIZE } from './constants';
-
-const ThemeColor = {
-  background: akColorN40,
-  border: akColorB200,
-  text: akColorN500,
-};
+import { colors, themed } from '../../../theme/src';
 
 const getBorderWidth = p => ((p.isFocus && !p.isActive) ? `${BORDER_WIDTH[p.size]}px` : 0);
 
@@ -17,11 +11,11 @@ export const Outer = styled.button`
 `;
 
 export const Inner = styled.span`
-  background-color: ${ThemeColor.background};
+  background-color: ${themed({ light: colors.N40, dark: colors.DN50 })};
   border-radius: ${getBorderRadius}
   align-items: center;
-  box-shadow: 0 0 0 ${getBorderWidth} ${ThemeColor.border};
-  color: ${ThemeColor.text};
+  box-shadow: 0 0 0 ${getBorderWidth} ${colors.B200};
+  color: ${themed({ light: colors.N500, dark: colors.DN300 })};
   cursor: pointer;
   display: flex;
   flex: 1;

@@ -1,23 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import { akBorderRadius, akColorN20, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { borderRadius, colors, gridSize, math, themed } from '../../theme/src';
 
 /* eslint-disable import/no-duplicates, import/first */
 import AvatarExample from './AvatarExample';
 import avatarExampleSrc from '!raw-loader!./AvatarExample';
+import AvatarGroupExample from './AvatarGroupExample';
+import avatarGroupExampleSrc from '!raw-loader!./AvatarGroupExample';
+import AvatarItemExample from './AvatarItemExample';
+import avatarItemExampleSrc from '!raw-loader!./AvatarItemExample';
 import PresenceExample from './PresenceExample';
 import presenceExampleSrc from '!raw-loader!./PresenceExample';
+import StatusExample from './StatusExample';
+import statusExampleSrc from '!raw-loader!./StatusExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Pre = styled.pre`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  border-radius: ${borderRadius}px;
   box-sizing: border-box;
   font-family: Monaco, Menlo, monospace;
   font-size: 0.9em;
-  margin: ${akGridSizeUnitless * 2}px 0;
+  margin: ${math.multiply(gridSize, 2)}px 0;
   overflow-x: auto;
-  padding: ${akGridSize};
+  padding: ${gridSize}px;
 `;
 
 export const description = (
@@ -28,7 +34,7 @@ export const description = (
       a <code>Presence</code> component:
     </p>
     <Pre>
-      {"import Avatar, { Presence } from '@atlaskit/avatar';"}
+      {"import Avatar, { AvatarGroup, AvatarItem, Presence, Status } from '@atlaskit/avatar';"}
     </Pre>
     <p>
       Use the <code>Avatar</code> component to represent users with their
@@ -49,8 +55,23 @@ export const examples = [
     src: avatarExampleSrc,
   },
   {
+    title: 'AvatarGroup',
+    Component: AvatarGroupExample,
+    src: avatarGroupExampleSrc,
+  },
+  {
+    title: 'AvatarItem',
+    Component: AvatarItemExample,
+    src: avatarItemExampleSrc,
+  },
+  {
     title: 'Presence',
     Component: PresenceExample,
     src: presenceExampleSrc,
+  },
+  {
+    title: 'Status',
+    Component: StatusExample,
+    src: statusExampleSrc,
   },
 ];

@@ -1,24 +1,34 @@
 import React from 'react';
+import styled from 'styled-components';
 import Tabs from '@atlaskit/tabs';
+import { borderRadius, colors, gridSize, math, themed } from '../../theme/src';
 
-const TabContent = () => (
-  <div>
-    <h2>Tab as a component</h2>
-    <p>Tabs can be used to render any react component as their content.</p>
-  </div>
-);
+const Content = styled.div`
+  align-items: center;
+  background-color: ${themed({ light: colors.N20, dark: colors.DN10 })}
+  border-radius: ${borderRadius}px
+  color: ${colors.subtleText};
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-size: 4em;
+  font-weight: 500;
+  justify-content: center;
+  margin-bottom: ${gridSize}px;
+  margin-top: ${math.multiply(gridSize, 2)}px;
+  padding: ${math.multiply(gridSize, 4)}px;
+`;
 
-const tabs = [
-  { label: 'Tab 1', content: 'Content of Tab 1' },
-  { label: 'Tab 2', content: 'Content of Tab 2' },
-  { label: 'Tab 3', content: 'Content of Tab 3', defaultSelected: true },
-  { label: 'Tab 4', content: TabContent() },
+export const tabs = [
+  { label: 'Tab 1', content: <Content>One</Content>, defaultSelected: true },
+  { label: 'Tab 2', content: <Content>Two</Content> },
+  { label: 'Tab 3', content: <Content>Three</Content> },
+  { label: 'Tab 4', content: <Content>Four</Content> },
 ];
 
-const TabsExample = () => (
-  <div>
-    <Tabs tabs={tabs} onSelect={e => console.log('New tab selected', e)} />
-  </div>
+export default () => (
+  <Tabs
+    tabs={tabs}
+    onSelect={idx => console.log('Selected Tab', idx + 1)}
+  />
 );
-
-export default TabsExample;

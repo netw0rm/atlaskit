@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { borderRadius, colors, gridSize, math, themed } from '../../theme/src';
 
 /* eslint-disable import/no-duplicates, import/first */
 import Example from './Example';
@@ -8,23 +9,27 @@ import StatelessExample from './StatelessExample';
 import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const Usage = styled.pre`
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  margin: 14px 0;
-  padding: 8px;
+const Pre = styled.pre`
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  border-radius: ${borderRadius}px;
+  box-sizing: border-box;
+  font-family: Monaco, Menlo, monospace;
+  font-size: 0.9em;
+  margin: ${math.multiply(gridSize, 2)}px 0;
+  overflow-x: auto;
+  padding: ${gridSize}px;
 `;
 
 export const description = (
   <div>
+    <Pre>
+      {"import Tabs, { TabsStateless } from '@atlaskit/tabs'"}
+    </Pre>
     <p>
       Tabs are a way to create navigation within a page, setting content to be
       displayed of each of a list of items, with logic around the switching of
       the content provided for you.
     </p>
-    <Usage>
-      {"import tabs, { StatelessTabs } from '@atlaskit/tabs'"}
-    </Usage>
   </div>
 );
 

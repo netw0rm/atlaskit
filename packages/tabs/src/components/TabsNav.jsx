@@ -1,28 +1,19 @@
+// @flow
+/*
+  eslint-disable
+
+  jsx-a11y/role-supports-aria-props,
+  jsx-a11y/no-static-element-interactions,
+  react/sort-comp
+*/
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import {
-  TabLabel,
-  TabLabels,
-} from '../styled/TabsNav';
+import { Nav, NavItem, NavLine, NavWrapper } from '../styled';
+import { Props } from '../types';
 
 export default class TabsNav extends PureComponent {
-  static propTypes = {
-    onKeyboardNav: PropTypes.func.isRequired,
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.node,
-      label: PropTypes.string.isRequired,
-      onSelect: PropTypes.func.isRequired,
-      isSelected: PropTypes.bool,
-    })),
-  }
-
-  static defaultProps = {
-    tabs: [],
-  }
-
-  state = {
-    wasKeyboardNav: false,
-  }
+  props: Props
+  state = { wasKeyboardNav: false }
+  tabs = []
 
   shouldComponentUpdate(nextProps, nextState) {
     // Don't re-render when we are resetting the `wasKeyboardNav` state
@@ -47,7 +38,7 @@ export default class TabsNav extends PureComponent {
     });
   }
 
-  tabKeyDownHandler = (e) => {
+  tabKeyDownHandler = (e: KeyboardEvent) => {
     this.setState({ wasKeyboardNav: true });
     this.props.onKeyboardNav(e.key);
   }
@@ -55,43 +46,38 @@ export default class TabsNav extends PureComponent {
   tabMouseDownHandler = e => e.preventDefault()
 
   render() {
-    this.tabs = [];
     const { tabs } = this.props;
-    /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
+
     return (
-      <div>
-        {
-          // without this outer div the ul renders incorrectly in Chrome only, tried for ages to
-          // fix but can't see the reason. it has something to do with the UL having display: flex
-          // ¯\_(ツ)_/¯
-        }
-        <TabLabels
-          role="tablist"
-        >
+      <NavWrapper>
+        <NavLine status="normal" />
+        <Nav role="tablist">
           {tabs.map((tab, index) => (
-            <TabLabel
+            <NavItem
               aria-posinset={index + 1}
               aria-selected={tab.isSelected}
               aria-setsize={tabs.length}
-              isSelected={tab.isSelected}
-              key={index}
-              onClick={tab.onSelect}
-              onKeyDown={this.tabKeyDownHandler}
-              onMouseDown={this.tabMouseDownHandler}
               innerRef={(ref) => {
                 this.tabs.push({
                   el: ref,
                   isSelected: tab.isSelected,
                 });
               }}
+              isSelected={tab.isSelected} // used in testing
+              key={index}
+              onClick={tab.onSelect}
+              onKeyDown={this.tabKeyDownHandler}
+              onMouseDown={this.tabMouseDownHandler}
               role="tab"
+              status={tab.isSelected ? 'selected' : 'normal'}
               tabIndex={tab.isSelected ? 0 : -1}
             >
               {tab.label}
-            </TabLabel>
+              {tab.isSelected ? <NavLine status="selected" /> : null}
+            </NavItem>
           ))}
-        </TabLabels>
-      </div>
+        </Nav>
+      </NavWrapper>
     );
     /* eslint-enable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
   }

@@ -130,6 +130,9 @@ storiesOf('Card', {})
           }, {
             title: 'square',
             content: <Card identifier={identifier} context={context} appearance="square" onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
+          }, {
+            title: 'generic (no appearance)',
+            content: <Card identifier={identifier} context={context} onClick={eventHandler('click')} onMouseEnter={eventHandler('mouseEnter')} actions={menuActions} />
           }
         ];
 
@@ -470,19 +473,6 @@ storiesOf('Card', {})
       }
     ];
 
-    const playerCards = [
-      {
-        title: 'YouTube',
-        content: <Card identifier={youTubeUrlPreviewId} context={context} />
-      }, {
-        title: 'Spotify',
-        content: <Card identifier={spotifyUrlPreviewId} context={context} />
-      }, {
-        title: 'Sound Cloud',
-        content: <Card identifier={soundcloudUrlPreviewId} context={context} />
-      }
-    ];
-
     const smartCards = [
       {
         title: 'Public board',
@@ -509,6 +499,27 @@ storiesOf('Card', {})
       }
     ];
 
+    const embedCards = [
+      {
+        title: 'YouTube',
+        content: <Card identifier={youTubeUrlPreviewId} context={context} />
+      }, {
+        title: 'Spotify',
+        content: <Card identifier={spotifyUrlPreviewId} context={context} />
+      }, {
+        title: 'Sound Cloud',
+        content: <Card identifier={soundcloudUrlPreviewId} context={context} />
+      },
+      {
+        title: 'Twitter',
+        content: <Card context={context} identifier={{mediaItemType: 'link', url: 'https://twitter.com/horse_js/status/859988831780708352'}}/>
+      },
+      {
+        title: 'Trello',
+        content: <Card context={context} identifier={{mediaItemType: 'link', url: 'https://trello.com/c/ksPxRsbf/1-test'}}/>
+      }
+    ];
+
     return (
       <div>
         <h1 style={{margin: '10px 20px'}}>Link cards</h1>
@@ -522,12 +533,12 @@ storiesOf('Card', {})
           <h3>Error</h3>
           <StoryList>{errorCards}</StoryList>
 
-          <h3>Player cards</h3>
-          <StoryList>{playerCards}</StoryList>
-
           <h3>Smart cards</h3>
           <StoryList>{smartCards}</StoryList>
           <StoryList>{smartCardsAppearances}</StoryList>
+
+          <h3>Embed cards</h3>
+          <StoryList>{embedCards}</StoryList>
 
         </div>
       </div>

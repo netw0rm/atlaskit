@@ -32,7 +32,6 @@ import {
     missingMediaEmoji,
     missingMediaEmojiId,
     missingMediaServiceEmoji,
-    mockLocalStorage,
     siteServiceEmojis,
     siteUrl,
     standardEmojis,
@@ -173,16 +172,9 @@ class TestEmojiResource extends EmojiResource {
 }
 
 describe('EmojiResource', () => {
-  const localStorage = global.window.localStorage;
-
-  beforeEach(() => {
-    global.window.localStorage = mockLocalStorage;
-  });
 
   afterEach(() => {
     fetchMock.restore();
-    global.window.localStorage.clear();
-    global.window.localStorage = localStorage;
   });
 
   describe('#test data', () => {
@@ -1210,21 +1202,41 @@ describe('UploadingEmojiResource', () => {
 });
 
 describe('#toneSelectionStorage', () => {
+  let originalLocalStorage;
+
+  let mockStorage: Storage;
+  let mockGetItem: sinon.SinonStub;
+  let mockSetItem: sinon.SinonStub;
+
+
+  beforeEach(() => {
+    originalLocalStorage = global.window.localStorage;
+
+    mockGetItem = sinon.stub();
+    mockSetItem = sinon.stub();
+    mockStorage = <Storage> {};
+    mockStorage.getItem = mockGetItem;
+    mockStorage.setItem = mockSetItem;
+
+    global.window.localStorage = mockStorage;
+  });
+
+  afterEach(() => {
+    global.window.localStorage = originalLocalStorage;
+  });
+
   it('retrieves previously stored tone selection upon construction', () => {
-    const getSpy = sinon.spy(global.window.localStorage, 'getItem');
-    const provider = new EmojiResource(defaultApiConfig);
-    // Linter throws an error if nothing done with EmojiResource
-    provider.filter();
-    expect(getSpy.callCount).to.equal(1);
+    // tslint:disable-next-line:no-unused-expression
+    new EmojiResource(defaultApiConfig);
+
+    expect(mockGetItem.calledWith(selectedToneStorageKey)).to.equal(true);
   });
 
   it('calling setSelectedTone calls setItem in localStorage', () => {
-    const setSpy = sinon.spy(global.window.localStorage, 'setItem');
     const resource = new EmojiResource(defaultApiConfig);
-    resource.setSelectedTone(1);
-    expect(setSpy.callCount).to.equal(1);
-    expect(setSpy.getCall(0).args[0]).to.equal(selectedToneStorageKey);
-    expect(setSpy.getCall(0).args[1]).to.equal('1');
+    const tone = 3;
+    resource.setSelectedTone(tone);
+    expect(mockSetItem.calledWith(selectedToneStorageKey, tone));
   });
 });
 

@@ -1,6 +1,7 @@
 import { removeEmojiOneIdSkintone } from '../EmojiUtils';
 import { atlassianCategory, customCategory, localStoragePrefix } from '../../constants';
 import { EmojiDescription } from '../../types';
+import DuplicateLimitedQueue from '../../DuplicateLimitedQueue';
 import StoredDuplicateLimitedQueue from '../../StoredDuplicateLimitedQueue';
 
 /**
@@ -14,16 +15,23 @@ import StoredDuplicateLimitedQueue from '../../StoredDuplicateLimitedQueue';
  */
 export class UsageFrequencyTracker {
 
-  protected queue: StoredDuplicateLimitedQueue<string>;
-  private gateway: Gateway;
-
-  constructor() {
-    this.queue = new StoredDuplicateLimitedQueue({
+  private static readonly queueOptions = {
       storage: window.localStorage,
       storagePrefix: localStoragePrefix,
       maxDuplicates: 25,
       minUniqueItems: 5
-    });
+  };
+
+  protected queue: DuplicateLimitedQueue<string>;
+  private gateway: Gateway;
+
+  constructor() {
+    const options = UsageFrequencyTracker.queueOptions;
+    if (options.storage) {
+      this.queue = new StoredDuplicateLimitedQueue(options);
+    } else {
+      this.queue = new DuplicateLimitedQueue(options);
+    }
 
     this.gateway = new Gateway(10);
   }

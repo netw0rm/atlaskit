@@ -10,7 +10,6 @@ import {
     getEmojiResourcePromise,
     getNonUploadingEmojiResourcePromise,
     mediaEmoji,
-    mockLocalStorage,
     newEmojiRepository,
     pngDataURL,
     pngFileUploadData
@@ -34,7 +33,7 @@ import EmojiPreview from '../../../../src/components/common/EmojiPreview';
 import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
-import { customCategory } from '../../../../src/constants';
+import { customCategory, selectedToneStorageKey } from '../../../../src/constants';
 
 declare var global: any;
 
@@ -153,15 +152,6 @@ const findSearchInput = (component) => component.find(EmojiPickerListSearch).fin
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
-  const localStorage = global.window.localStorage;
-  beforeEach(() => {
-    global.window.localStorage = mockLocalStorage;
-  });
-
-  afterEach(() => {
-    global.window.localStorage.clear();
-    global.window.localStorage = localStorage;
-  });
 
   describe('display', () => {
     it('should display first set of emoji in viewport by default', () =>
@@ -840,35 +830,60 @@ describe('<EmojiPicker />', () => {
     });
   });
 
-  it('should use localStorage to remember tone selection between sessions', () => {
-    const setSpy = sinon.spy(window.localStorage, 'setItem');
-    getEmojiResourcePromise().then(provider => provider.setSelectedTone(2));
+  describe('with localStorage available', () => {
+    let originalLocalStorage;
 
-    return waitUntil(() => setSpy.callCount === 1).then(() =>
-      // First picker should have tone set by default
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          const emojis = findEmoji(list);
-          const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
-          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
-        });
-      }) &&
-      // Second picker should have tone set by default
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          const emojis = findEmoji(list);
-          const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
-          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
-        });
-      })
+    let mockStorage: Storage;
+    let mockGetItem: sinon.SinonStub;
+    let mockSetItem: sinon.SinonStub;
 
-    );
+
+    beforeEach(() => {
+      originalLocalStorage = global.window.localStorage;
+
+      mockGetItem = sinon.stub();
+      mockSetItem = sinon.stub();
+      mockStorage = {} as Storage;
+      mockStorage.getItem = mockGetItem;
+      mockStorage.setItem = mockSetItem;
+
+      global.window.localStorage = mockStorage;
+    });
+
+    afterEach(() => {
+      global.window.localStorage = originalLocalStorage;
+    });
+
+    it('should use localStorage to remember tone selection between sessions', () => {
+      const tone = '2';
+      getEmojiResourcePromise().then(provider => provider.setSelectedTone(parseInt(tone,10)));
+      mockGetItem.returns(tone);
+
+      return waitUntil(() => mockSetItem.calledWith(selectedToneStorageKey, tone)).then(() =>
+        // First picker should have tone set by default
+        setupPicker().then(component => {
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => emojisVisible(list)).then(() => {
+            const emojis = findEmoji(list);
+            const hoverOffset = findHandEmoji(emojis);
+            expect(hoverOffset).to.not.equal(-1);
+            const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+            expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          });
+        }) &&
+        // Second picker should have tone set by default
+        setupPicker().then(component => {
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => emojisVisible(list)).then(() => {
+            const emojis = findEmoji(list);
+            const hoverOffset = findHandEmoji(emojis);
+            expect(hoverOffset).to.not.equal(-1);
+            const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+            expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          });
+        })
+
+      );
+    });
   });
-
 });

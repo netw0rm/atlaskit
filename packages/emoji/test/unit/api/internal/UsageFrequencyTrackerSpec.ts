@@ -2,16 +2,14 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { Gateway, UsageFrequencyTracker } from '../../../../src/api/internal/UsageFrequencyTracker';
-import StoredDuplicateLimitedQueue from '../../../../src/StoredDuplicateLimitedQueue';
-import { grinEmoji, mockLocalStorage } from '../../../../src/support/test-data';
-
-declare var global: any;
+import DuplicateLimitedQueue from '../../../../src/DuplicateLimitedQueue';
+import { grinEmoji } from '../../../../src/support/test-data';
 
 /**
  * Extend the UsageFrequencyTracker to provide access to its queue for mocking in tests.
  */
 class TestUsageFrequencyTracker extends UsageFrequencyTracker {
-  constructor(queue: StoredDuplicateLimitedQueue<string>) {
+  constructor(queue: DuplicateLimitedQueue<string>) {
     super();
     this.queue = queue;
   }
@@ -23,7 +21,7 @@ describe('UsageFrequencyTracker', () => {
       expect(() => new Gateway(0)).to.throw(RangeError);
     });
 
-    it('should allow work when non in-flight', (done) => {
+    it('should allow work when none in-flight', (done) => {
       const gateway = new Gateway(1);
       expect(gateway.submit(() => { done(); })).to.equal(true);
     });
@@ -72,21 +70,14 @@ describe('UsageFrequencyTracker', () => {
   });
 
   describe('UsageFrequencyTracker', () => {
-    const localStorage = global.window.localStorage;
 
-    let mockQueue: StoredDuplicateLimitedQueue<string>;
+    let mockQueue: DuplicateLimitedQueue<string>;
     let mockEnqueue: sinon.SinonStub;
 
     beforeEach(() => {
-      global.window.localStorage = mockLocalStorage;
-      mockQueue = <StoredDuplicateLimitedQueue<string>>{};
+      mockQueue = <DuplicateLimitedQueue<string>>{};
       mockEnqueue = sinon.stub();
       mockQueue.enqueue = mockEnqueue;
-    });
-
-    afterEach(() => {
-      global.window.localStorage.clear();
-      global.window.localStorage = localStorage;
     });
 
     it('should do work asynchronously', (done) => {

@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 
-import buildTheme from './buildTheme';
+import { background } from './colors';
 import ThemeReset from './ThemeReset';
 
 import { CHANNEL, DEFAULT_THEME_MODE, THEME_MODES } from './constants';
 
-function getStylesheetResetCSS(currentTheme) {
+function getStylesheetResetCSS(state) {
   return `
-    body { background: ${currentTheme.colors.background}; }
+    body { background: ${background(state)}; }
   `;
+}
+
+function buildThemeState(mode) {
+  return { theme: { [CHANNEL]: { mode } } };
 }
 
 export default class AtlasKitThemeProvider extends Component {
@@ -28,14 +32,14 @@ export default class AtlasKitThemeProvider extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { theme: { [CHANNEL]: buildTheme(this.props.mode) } };
+    this.state = buildThemeState(props.mode);
   }
   getChildContext() {
     return { hasAtlasKitThemeProvider: true };
   }
   componentWillMount() {
     if (!this.context.hasAtlasKitThemeProvider) {
-      const css = getStylesheetResetCSS(this.state.theme[CHANNEL]);
+      const css = getStylesheetResetCSS(this.state);
       this.stylesheet = document.createElement('style');
       this.stylesheet.type = 'text/css';
       this.stylesheet.innerHTML = css;
@@ -44,12 +48,12 @@ export default class AtlasKitThemeProvider extends Component {
   }
   componentWillReceiveProps(newProps) {
     if (newProps.mode !== this.props.mode) {
-      const newTheme = buildTheme(newProps.mode);
+      const newThemeState = buildThemeState(newProps.mode);
       if (this.stylesheet) {
-        const css = getStylesheetResetCSS(newTheme);
+        const css = getStylesheetResetCSS(newThemeState);
         this.stylesheet.innerHTML = css;
       }
-      this.setState({ theme: { [CHANNEL]: newTheme } });
+      this.setState(newThemeState);
     }
   }
   render() {

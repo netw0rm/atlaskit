@@ -10,7 +10,7 @@ import {
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
 import OverviewIcon from '@atlaskit/icon/glyph/overview';
-import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
+// import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import PageIcon from '@atlaskit/icon/glyph/page';
@@ -46,14 +46,14 @@ const DefaultNav = ({ pathname, router, goToNext = () => {} }) => (
         }}
         text="Components"
       />
-      <NavItem
+      {/* <NavItem
         icon={<MediaServicesZipIcon label="Pattern icon" />}
         onClick={() => {
           router.history.push('/patterns');
           goToNext();
         }}
         text="Patterns"
-      />
+      /> */}
       <Link to="http://go.atlassian.com/reduced-ui-pack" target="_new">
         <NavItem
           icon={<PageIcon label="More icon" />}

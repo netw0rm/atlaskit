@@ -1,2 +1,5 @@
 require('whatwg-fetch');
-require('raf-stub').replaceRaf([window, global]);
+require('raf-stub').replaceRaf([
+  global,
+  typeof window !== 'undefined' ? window : {},
+]);

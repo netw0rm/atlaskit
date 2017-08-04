@@ -1,6 +1,16 @@
 # @atlaskit/media-filmstrip
 
-## Unreleased
+## 5.1.2 (2017-08-03)
+
+* bug fix; moving position of letf and right arrow (issues closed: ed-2052) ([b930e8d](https://bitbucket.org/atlassian/atlaskit/commits/b930e8d))
+* bug fix; images and flimstip will align to the left edge of the text in banana (issues closed: ed-2052) ([b97cdb4](https://bitbucket.org/atlassian/atlaskit/commits/b97cdb4))
+## 5.1.1 (2017-08-03)
+
+
+* bug fix; fix issue with line-height and maxPosition issue ([e8c86e1](https://bitbucket.org/atlassian/atlaskit/commits/e8c86e1))
+
+
+
 
 ## 4.4.0 (2017-07-27)
 

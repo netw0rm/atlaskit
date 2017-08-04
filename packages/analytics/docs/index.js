@@ -13,6 +13,9 @@ import WrappingExampleSrc from '!raw-loader!./WrappingExample';
 
 import IntegratingExample from './IntegratingExample';
 import IntegratingExampleSrc from '!raw-loader!./IntegratingExample';
+
+import DefaultPropsExample from './DefaultPropsExample';
+import DefaultPropsExampleSrc from '!raw-loader!./DefaultPropsExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -55,6 +58,11 @@ export const description = (
       &apos;Wrapping Components&apos; example.
     </p>
     <p>
+      If your component needs to always fire public events then you can set a
+      default <code>analyticsId</code>, see the &apos;Setting Default Analytics Props&apos;
+      example. Please be aware that consumers can still override this default.
+    </p>
+    <p>
       <code>AnalyticsDecorator</code> can be used to extend the event data of child
       components. It can be configured to only intercept certain events based on event name
       and/or type (public or private). Decorators can also be nested within one another
@@ -87,6 +95,11 @@ export const examples = [
     title: 'Wrapping Components',
     Component: WrappingExample,
     src: WrappingExampleSrc,
+  },
+  {
+    title: 'Setting Default Analytics Props',
+    Component: DefaultPropsExample,
+    src: DefaultPropsExampleSrc,
   },
   {
     title: 'Match Filtering',

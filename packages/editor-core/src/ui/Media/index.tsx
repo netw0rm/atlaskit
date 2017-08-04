@@ -51,6 +51,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       onClick,
       onDelete,
       resizeMode,
+      editorView,
     } = this.props;
 
     return (
@@ -63,6 +64,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
         resizeMode={resizeMode}
         onDelete={onDelete}
         onClick={onClick}
+        editorView={editorView}
       />
     );
   }

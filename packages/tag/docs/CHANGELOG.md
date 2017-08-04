@@ -1,6 +1,12 @@
 # @atlaskit/tag
 
-## Unreleased
+## 2.6.0 (2017-08-03)
+
+* feature; add color options for tag (issues closed: #ak-2910) ([76831b4](https://bitbucket.org/atlassian/atlaskit/commits/76831b4))
+
+
+
+
 
 ## 2.5.2 (2017-07-27)
 

@@ -1,35 +1,49 @@
-import styled from 'styled-components';
-import { layout, gridSize } from '../../shared-variables';
+import styled, { css } from 'styled-components';
+import { layout, containerTitleBottomMargin, drawerContainerHeaderAnimationSpeed, gridSize, globalItemSizes } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
-const paddingOpen = (() => {
-  const paddingTop = gridSize;
-  const paddingLeft = layout.padding.side + (gridSize * 1.5);
-  const paddingRight = layout.padding.side + (gridSize * 1.75);
-  const paddingBottom = gridSize;
+const padding = {
+  top: gridSize,
+  right: gridSize,
+  bottom: gridSize / 2,
+  left: gridSize,
+};
 
-  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
-})();
+const minHeight = (props) => {
+  if (props.isInDrawer) {
+    // the header content isn't rendered in a full-width Drawer
+    return 0;
+  }
+  // the height of the container icon and the margin below it
+  return `${padding.bottom + globalItemSizes.medium}px`;
+};
 
-const paddingClosed = (() => {
-  const paddingTop = gridSize;
-  const paddingLeft = layout.padding.side + (gridSize / 2);
-  const paddingRight = layout.padding.side + (gridSize / 2);
-  const paddingBottom = gridSize;
-
-  return `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
-})();
+const flexBasis = (props) => {
+  if (props.isFullWidth) {
+    return 0;
+  } else if (props.isInDrawer) {
+    return css`${props.iconOffset - padding.top - padding.bottom - layout.padding.top}px`;
+  }
+  return 'auto';
+};
 
 const ContainerHeaderWrapper = styled.div`
-  padding: ${paddingOpen};
+  flex-basis: ${flexBasis};
+  flex-shrink: 0;
+  min-height: ${minHeight};
+  padding: ${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px;
+  transition: flex-basis ${drawerContainerHeaderAnimationSpeed};
 
   ${whenCollapsed`
     /* centering the icon */
     display: flex;
+    flex-basis: auto;
+    flex-direction: column;
     justify-content: center;
-    flex-shrink: 0;
-    padding: ${paddingClosed};
   `}
+
+  /* the gap between the container title and the next item like a dropdown */
+  > *:first-child + * { margin-top: ${containerTitleBottomMargin}; }
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

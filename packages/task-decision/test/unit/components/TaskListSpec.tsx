@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import TaskList from '../../src/components/TaskList';
-import TaskItem from '../../src/components/TaskItem';
+import TaskList from '../../../src/components/TaskList';
+import TaskItem from '../../../src/components/TaskItem';
 
 describe('<TaskList/>', () => {
   it('should render all TaskItems', () => {

@@ -8,7 +8,7 @@ const schema = createJIRASchema({ allowCodeBlock: true });
 const code = (attrs: { language?: string }) => nodeFactory(schema.nodes.codeBlock!, attrs);
 const doc = nodeFactory(schema.nodes.doc);
 
-describe('JIRASerializer', () => {
+describe('JIRATransformer', () => {
   describe('code block', () => {
     checkParseEncodeRoundTrips('code_block node',
       schema,

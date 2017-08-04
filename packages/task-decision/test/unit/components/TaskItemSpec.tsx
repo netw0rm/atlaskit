@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import TaskItem from '../../src/components/TaskItem';
-import { ContentWrapper } from '../../src/styled/TaskItem';
+import TaskItem from '../../../src/components/TaskItem';
+import { ContentWrapper } from '../../../src/styled/TaskItem';
 
 describe('<TaskItem/>', () => {
   it('should render children', () => {

@@ -19,6 +19,13 @@ const NestedNavigationPage = styled.div`
   ${getAnimation}
   flex-shrink: 0;
   width: 100%;
+
+  /* as a flex child - take up the full height */
+  flex-grow: 1;
+
+  /* create a new flex container to take up the full height */
+  display: flex;
+  flex-direction: column;
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

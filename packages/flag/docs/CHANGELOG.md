@@ -1,6 +1,13 @@
 # @atlaskit/flag
 
-## Unreleased
+## 3.4.4 (2017-08-04)
+
+
+* bug fix; moves babel-plugin-react-flow-props-to-prop-types to a devDependency ([6378b88](https://bitbucket.org/atlassian/atlaskit/commits/6378b88))
+
+
+
+
 
 ## 3.4.3 (2017-07-27)
 

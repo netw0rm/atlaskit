@@ -17,13 +17,13 @@ import {
 } from '../prosemirror';
 import * as commands from '../commands';
 import { LEFT } from '../keymaps';
-import JSONSerializer, { JSONDocNode } from '../renderer/json';
+import JSONSerializer, { JSONDocNode, JSONNode } from '../renderer/json';
 
 export {
   default as ErrorReporter,
   ErrorReportingHandler,
 } from './error-reporter';
-export { JSONDocNode };
+export { JSONDocNode, JSONNode };
 
 function validateNode(node: Node): boolean {
   return false;

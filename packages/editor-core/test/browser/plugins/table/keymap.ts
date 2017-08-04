@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import { TableMap, CellSelection } from '../../../../src/prosemirror';
@@ -6,6 +7,7 @@ import { TableMap, CellSelection } from '../../../../src/prosemirror';
 import {
   chaiPlugin, doc, createEvent, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p
 } from '../../../../src/test-helper';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -14,6 +16,11 @@ describe('table keymap', () => {
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
+  });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
   });
 
   describe('Tab keypress', () => {
@@ -25,6 +32,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
 
@@ -39,6 +47,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
 
@@ -54,6 +63,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(32);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
   });
@@ -67,6 +77,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
 
@@ -81,6 +92,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
 
@@ -96,6 +108,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(4);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
 
@@ -124,6 +137,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection instanceof CellSelection).to.equal(true);
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty))));
+        expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
       });
     });
 
@@ -146,6 +160,7 @@ describe('table keymap', () => {
           }
           expect(editorView.state.doc).to.deep.equal(doc(table(rows)));
           expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
         });
       });
 
@@ -168,6 +183,7 @@ describe('table keymap', () => {
           }
           expect(editorView.state.doc).to.deep.equal(doc(table(emptyRow, tr(columns))));
           expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
+          expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
         });
       });
     });

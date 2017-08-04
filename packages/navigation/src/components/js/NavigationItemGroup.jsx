@@ -5,7 +5,7 @@ import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
-import type { ReactElement } from '../../types';
+import type { ReactElement, HTMLElement } from '../../types';
 
 type Props = {|
   /** React element to be displayed to the right of the group header. */
@@ -19,6 +19,8 @@ type Props = {|
   hasSeparator?: boolean,
   /** Text to appear as heading above group. Will be auto-capitalised. */
   title?: string,
+  /** A function that returns the DOM ref created by the group */
+  innerRef?: (HTMLElement) => void,
 |};
 
 export default class NavigationItemGroup extends PureComponent {
@@ -36,6 +38,7 @@ export default class NavigationItemGroup extends PureComponent {
       isCompact,
       hasSeparator,
       children,
+      innerRef,
     } = this.props;
 
     const wrappedTitle = title ?
@@ -68,6 +71,7 @@ export default class NavigationItemGroup extends PureComponent {
         title={groupHeading}
         elemAfter={wrappedAction}
         isCompact={isCompact}
+        innerRef={innerRef}
       >
         {children}
       </ItemGroup>

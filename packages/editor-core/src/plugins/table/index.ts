@@ -16,6 +16,7 @@ import {
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { getColumnPos, getRowPos, getTablePos } from './utils';
+import { analyticsService } from '../../analytics';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
@@ -68,6 +69,8 @@ export class TableState {
         tableBaseCommands.addColumnBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
+
+      analyticsService.trackEvent('atlassian.editor.format.table.column.button');
     }
   }
 
@@ -89,6 +92,8 @@ export class TableState {
         tableBaseCommands.addRowBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
+
+      analyticsService.trackEvent('atlassian.editor.format.table.row.button');
     }
   }
 
@@ -104,16 +109,24 @@ export class TableState {
     if (isRowSelected && isColumnSelected) {
       tableBaseCommands.deleteTable(state, dispatch);
       this.focusEditor();
+      analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
     } else if (isColumnSelected) {
       tableBaseCommands.deleteColumn(state, dispatch);
       this.moveCursorToFirstCell();
+      analyticsService.trackEvent('atlassian.editor.format.table.delete_column.button');
     } else if (isRowSelected) {
+      const { tableHeader } = this.view.state.schema.nodes;
+      const cell = this.getCurrentCell();
+      const event = cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
+      analyticsService.trackEvent(`atlassian.editor.format.table.${event}.button`);
+
       tableBaseCommands.deleteRow(state, dispatch);
       this.moveCursorToFirstCell();
     } else {
       // replace selected cells with empty cells
       this.emptySelectedCells();
       this.moveCursorInsideTableTo(state.selection.from);
+      analyticsService.trackEvent('atlassian.editor.format.table.delete_content.button');
     }
   }
 
@@ -287,6 +300,17 @@ export class TableState {
       const node = $from.node(i);
       if(node.type === tableCell || node.type === tableHeader) {
         return $from.start(i);
+      }
+    }
+  }
+
+  private getCurrentCell(): Node | undefined {
+    const { $from } = this.view.state.selection;
+    const { tableCell, tableHeader } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === tableCell || node.type === tableHeader) {
+        return node;
       }
     }
   }

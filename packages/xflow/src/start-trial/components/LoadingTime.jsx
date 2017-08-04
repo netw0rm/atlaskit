@@ -35,7 +35,7 @@ class LoadingTime extends Component {
     heading: PropTypes.string,
     message: PropTypes.string,
     gotoButton: PropTypes.string,
-    svgImg: PropTypes.string,
+    headerImage: PropTypes.string,
   };
 
   static defaultProps = {
@@ -112,7 +112,7 @@ class LoadingTime extends Component {
   };
 
   render() {
-    const { productLogo, progress, status, gotoButton, heading, message, svgImg } = this.props;
+    const { productLogo, progress, status, gotoButton, heading, message, headerImage } = this.props;
 
     const { isReady } = this.state;
 
@@ -162,7 +162,7 @@ class LoadingTime extends Component {
           </StartTrialHeader>
           <LoadingTimeTextDiv>
             <WhereToFindConfluenceSVGDiv>
-              <WhereToFindConfluenceImg src={svgImg} alt="app-switcher" />
+              <WhereToFindConfluenceImg src={headerImage} alt="app-switcher" />
             </WhereToFindConfluenceSVGDiv>
             <WhereToFindConfluenceDiv>
               <h5>
@@ -191,7 +191,7 @@ export default withXFlowProvider(
           loadingProductHeading,
           loadingProductMessage,
           loadingProductGotoProductButton,
-          loadingSVGImg,
+          loadingProductHeaderImage,
         },
       },
       goToProduct,
@@ -208,6 +208,6 @@ export default withXFlowProvider(
     heading: loadingProductHeading,
     message: loadingProductMessage,
     gotoButton: loadingProductGotoProductButton,
-    svgImg: loadingSVGImg,
+    headerImage: loadingProductHeaderImage,
   })
 );

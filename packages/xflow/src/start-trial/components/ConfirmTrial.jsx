@@ -19,7 +19,7 @@ const messages = defineMessages({
   },
   errorFlagDescription: {
     id: 'xflow.generic.start-tral.error-flag.description',
-    defaultMessage: 'Let\'s try that again.',
+    defaultMessage: "Let's try that again.",
   },
 });
 
@@ -82,12 +82,7 @@ class ConfirmTrial extends Component {
   };
 
   render() {
-    const {
-      intl,
-      productLogo,
-      heading,
-      message,
-    } = this.props;
+    const { intl, productLogo, heading, message } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -104,23 +99,29 @@ class ConfirmTrial extends Component {
               appearance="primary"
               isDisabled={this.state.confirmButtonDisabled}
             >
-              <FormattedMessage id="xflow.generic.confirm-trial.confirm-button" defaultMessage="Confirm" />
+              <FormattedMessage
+                id="xflow.generic.confirm-trial.confirm-button"
+                defaultMessage="Confirm"
+              />
             </Button>
             <Button
               id="xflow-confirm-trial-cancel-button"
               onClick={this.handleCancelClick}
               appearance="subtle-link"
             >
-              <FormattedMessage id="xflow.generic.confirm-trial.cancel-button" defaultMessage="Cancel" />
+              <FormattedMessage
+                id="xflow.generic.confirm-trial.cancel-button"
+                defaultMessage="Cancel"
+              />
             </Button>
           </StartTrialFooter>
         }
       >
         <StartTrialDialog id="xflow-confirm-trial">
           <StartTrialHeader>
-            { heading }
+            {heading}
           </StartTrialHeader>
-          { message }
+          {message}
         </StartTrialDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
@@ -137,21 +138,17 @@ export const ConfirmTrialBase = withAnalytics(injectIntl(ConfirmTrial));
 
 export default withXFlowProvider(
   ConfirmTrialBase,
-  ({ xFlow: {
-    config: {
-      productLogo,
-      startTrial: {
-        trialHeading,
-        trialMessage,
+  ({
+    xFlow: {
+      config: { productLogo, startTrial: { confirmTrialHeading, confirmTrialMessage } },
+      startProductTrial,
+      cancelStartProductTrial,
     },
-    },
-    startProductTrial,
-    cancelStartProductTrial,
-  } }) => ({
+  }) => ({
     productLogo,
     startProductTrial,
     cancelStartProductTrial,
-    heading: trialHeading,
-    message: trialMessage,
+    heading: confirmTrialHeading,
+    message: confirmTrialMessage,
   })
 );

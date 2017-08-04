@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 45.1.2 (2017-08-04)
+
+* bug fix; bump media-filmstrip in editor-core (issues closed: ed-2052) ([f33b88e](https://bitbucket.org/atlassian/atlaskit/commits/f33b88e))
+* bug fix; media nodes parsing should not throw error when schema is media-less (issues closed: ed-2394) ([4a0dfe0](https://bitbucket.org/atlassian/atlaskit/commits/4a0dfe0))
+
+* bug fix; fix remove media on upload failure (issues closed: ed-2192) ([d5da5a0](https://bitbucket.org/atlassian/atlaskit/commits/d5da5a0))
+* bug fix; upload progress and temporary thumbnail not showing (issues closed: ed-2283) ([5c1b9b6](https://bitbucket.org/atlassian/atlaskit/commits/5c1b9b6))
 ## 45.1.1 (2017-08-03)
 
 * bug fix; export es5 renderer ([2db940d](https://bitbucket.org/atlassian/atlaskit/commits/2db940d))

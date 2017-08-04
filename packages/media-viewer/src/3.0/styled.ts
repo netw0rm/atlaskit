@@ -51,6 +51,7 @@ export const MainWrapper = styled.div`
   }
 
   .visible-on-hover {
+    z-index: 1;
     opacity: 0;
     transition: opacity .3s;
   }

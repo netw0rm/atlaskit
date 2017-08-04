@@ -1,11 +1,14 @@
 // @flow
 import styled from 'styled-components';
-import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import { whenCollapsed } from '../../theme/util';
 import { truncate } from '../../utils/mixins';
 
+const groupTitleFontSize = 11;
+
 const NavigationItemGroupTitle = styled.div`
-  ${akTypographyMixins.h300}
+  font-size: ${groupTitleFontSize}px;
+  line-height: ${16 / groupTitleFontSize};
+  font-weight: 600;
   ${truncate()}
 
   ${whenCollapsed`

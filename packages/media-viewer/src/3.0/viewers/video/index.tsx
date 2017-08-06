@@ -46,7 +46,7 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
 
   render() {
     const {dataURI} = this.state;
-
+    // TODO: Add ADG3 controls, see what features from video.js do we need
     return (
       <Wrapper>
         <Video src={dataURI} controls={true} />

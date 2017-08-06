@@ -48,6 +48,7 @@ export class AudioViewer extends Component<AudioViewerProps, AudioViewerState> {
 
     return (
       <Wrapper>
+        <p>What's coming next: https://extranet.atlassian.com/display/FIL/2017/05/08/Going+crazy+with+media+cards?preview=/3282046379/3282046387/audiowidget.gif</p>
         <Audio src={dataURI} controls={true} />
       </Wrapper>
     );

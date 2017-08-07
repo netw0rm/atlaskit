@@ -88,6 +88,54 @@ export const settings: Provided = ((): Provided => {
   const theme: Provided = {
     background: {
       primary: style.akColorN800,
+      secondary: style.akColorN700,
+      tertiary: style.akColorN700,
+    },
+    text: style.akColorN0,
+    subText: style.akColorN70,
+    keyline: style.akColorN900,
+    item,
+    dropdown,
+  };
+
+  return theme;
+})();
+
+export const siteSettings: Provided = ((): Provided => {
+  const item: ItemTheme = {
+    default: {
+      background: 'transparent',
+    },
+    hover: {
+      background: style.akColorN700A,
+    },
+    active: {
+      // Currently there is no ramp for white opacity
+      background: 'rgba(255, 255, 255, 0.08)',
+    },
+    selected: {
+      background: style.akColorN700A,
+      text: style.akColorB100,
+    },
+    focus,
+  };
+
+  const dropdown: ItemTheme = {
+    default: {
+      background: item.hover.background,
+    },
+    hover: {
+      // Going lighter to be different from hover
+      background: style.akColorN90A,
+    },
+    active: item.active,
+    selected: item.selected,
+    focus: item.focus,
+  };
+
+  const theme: Provided = {
+    background: {
+      primary: style.akColorN800,
       secondary: style.akColorN800,
       tertiary: style.akColorN700,
     },

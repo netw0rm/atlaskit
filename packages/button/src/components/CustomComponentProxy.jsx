@@ -18,7 +18,6 @@ const CustomComponentProxy = (props) => {
     isFocus,
     isHover,
     isSelected,
-    theme,
     shouldFitContainer,
     fit,
     ...proxiedProps

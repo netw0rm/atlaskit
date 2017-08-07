@@ -2,13 +2,7 @@
 
 ## 2.6.0 (2017-08-07)
 
-* feature; support custom modal height (issues closed: ak-1723) ([3c1f537](https://bitbucket.org/atlassian/atlaskit/commits/3c1f537))
-
-
-
-
-
-* feature; support custom modal height (issues closed: ak-1723)
+* feature; Added support for custom modal heights, with the new `ModalDialog.height` prop. It accepts a number (converted to `px`) or string (not converted to `px`, so you can use any unit you like such as `%`, `vh`, etc). (issues closed: ak-1723) ([3c1f537](https://bitbucket.org/atlassian/atlaskit/commits/3c1f537))
 
 ## 2.5.2 (2017-07-27)
 

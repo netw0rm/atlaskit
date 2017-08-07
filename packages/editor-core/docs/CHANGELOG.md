@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.2.1 (2017-08-07)
+
+* bug fix; fix linkify plain text links ([5a653cf](https://bitbucket.org/atlassian/atlaskit/commits/5a653cf))
 ## 45.2.0 (2017-08-04)
 
 * bug fix; fix tslint ([04a6c4f](https://bitbucket.org/atlassian/atlaskit/commits/04a6c4f))

@@ -1,4 +1,4 @@
-//import * as React from 'react';
+// import * as React from 'react';
 import {Component} from 'react';
 import {Context} from '@atlaskit/media-core';
 // import {ItemPreview} from '../itemPreview';
@@ -20,9 +20,10 @@ export interface PreloaderState {
 }
 
 export class Preloader extends Component<PreloaderProps, PreloaderState> {
-  state:PreloaderState = {
 
-  }
+  state: PreloaderState = {
+
+  };
 
   get itemsToPreload(): Array<MediaIdentifier> {
     const {list, selected} = this.props;

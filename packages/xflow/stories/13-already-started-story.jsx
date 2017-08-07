@@ -1,11 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import { ConfluenceLogo } from '@atlaskit/logo';
-
 import { AlreadyStartedBase } from '../src/start-trial/components/AlreadyStarted';
+
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import { ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
+
+import { ConfluenceLogo } from '@atlaskit/logo';
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,
@@ -19,7 +19,6 @@ const defaultProps = {
   getStartedButtonText: 'Get started',
   spinnerActive: false,
   getStartedButtonDisabled: false,
-  status: ACTIVATING,
   onComplete: () => {},
   goToProduct: () => {
     console.log('Go to Confluence!');
@@ -27,19 +26,22 @@ const defaultProps = {
 };
 
 storiesOf('AlreadyStarted')
-  .add('Show Already Have Product Trial dialog with progress bar', () =>
+  .add('Show Already Have Product Trial dialog', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase
         {...defaultProps}
+        analyticsId="growth.happy"
         onComplete={() => Promise.resolve(true)}
       />
     )
   )
-  .add('Show Loading dialog when product is ready', () =>
+  .add('Show Already Have Product Trial dialog with perma spinner', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase
         {...defaultProps}
-        status={ACTIVE}
+        analyticsId="growth.happy"
+        spinnerActive
+        getStartedButtonDisabled
       />
     )
   );

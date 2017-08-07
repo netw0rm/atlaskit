@@ -35,11 +35,11 @@ const messages = defineMessages({
   },
   grantAccessDefaultAccess: {
     id: 'xflow.j2c.start-trial.grant-access.default-access',
-    defaultMessage: 'Everyone in JIRA will have access to Confluence.',
+    defaultMessage: 'Everyone in JIRA Software will have access to Confluence.',
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2c.start-trial.grant-access.option.everyone',
-    defaultMessage: 'Everyone in JIRA',
+    defaultMessage: 'Everyone in JIRA Software',
   },
   grantAccessOptionItemsLabelSiteAdmins: {
     id: 'xflow.j2c.start-trial.grant-access.option.site-admins',
@@ -162,11 +162,14 @@ export const defaultProps = intl => ({
       alreadyStartedHeading: intl.formatMessage(messages.alreadyStartedHeading),
 
       alreadyStartedMessage: (
-        <FormattedMessage
-          id="xflow.already-started.message"
-          defaultMessage="A site administrator already started a trial.{br}{br}You’re all set to create vital project documentation with your team."
-          values={{ br: <br /> }}
-        />
+        <div>
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage0)}
+          </p>
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage1)}
+          </p>
+        </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
         messages.alreadyStartedGetStartedButtonText

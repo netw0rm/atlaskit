@@ -5,8 +5,8 @@ import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
-import ModalDialog from '@atlaskit/modal-dialog';
 
+import ModalDialog from '@atlaskit/modal-dialog';
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
@@ -99,15 +99,17 @@ class LoadingTime extends Component {
   };
 
   handleCloseClick = async () => {
-    const { firePrivateAnalyticsEvent, status, closeLoadingDialog, onComplete } = this.props;
-    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { status });
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.close');
+    const { closeLoadingDialog, onComplete } = this.props;
     await closeLoadingDialog();
     return onComplete();
   };
 
   handleGoToProductClick = async () => {
-    const { goToProduct, onComplete, firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.loading-product-trial.go.to.product');
+    const { goToProduct, onComplete } = this.props;
     this.setState({
       isLoading: true,
     });

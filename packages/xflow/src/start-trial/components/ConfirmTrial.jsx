@@ -64,12 +64,8 @@ class ConfirmTrial extends Component {
     });
 
     startProductTrial()
-      .then(() => {
-        firePrivateAnalyticsEvent('xflow.confirm-trial.start-product.trial.successful');
-        onComplete();
-      })
+      .then(() => onComplete())
       .catch(() => {
-        firePrivateAnalyticsEvent('xflow.confirm-trial.start-product-trial.failed');
         this.setState({
           confluenceFailedToStart: true,
           spinnerActive: false,

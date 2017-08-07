@@ -7,7 +7,7 @@ import 'prismjs/components/prism-jsx';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 import 'prismjs/themes/prism-tomorrow.css';
 
-import { colors, gridSize, themed } from '../../../theme/src';
+import { colors, gridSize, themed } from '@atlaskit/theme';
 
 const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
 

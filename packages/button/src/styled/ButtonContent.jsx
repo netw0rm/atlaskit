@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { gridSize, math } from '../../../theme/src';
+import { gridSize, math } from '@atlaskit/theme';
 
 const getAlignment = p => (p.followsIcon ? 'baseline' : 'center');
 const getMargin = p => (p.spacing === 'none'

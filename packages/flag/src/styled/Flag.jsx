@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { borderRadius, gridSize, math } from '../../../theme/src';
+import { borderRadius, gridSize, math } from '@atlaskit/theme';
 
 import {
   flagBackgroundColor,

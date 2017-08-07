@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Btn from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 
-import { colors, gridSize, math, themed } from '../../../../theme/src';
+import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Changelog from '../../components/Changelog';
 

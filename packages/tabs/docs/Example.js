@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Tabs from '@atlaskit/tabs';
-import { borderRadius, colors, gridSize, math, themed } from '../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 const Content = styled.div`
   align-items: center;

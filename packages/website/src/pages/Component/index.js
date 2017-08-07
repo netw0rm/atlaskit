@@ -11,7 +11,7 @@ import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
 
-import { borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { MOBILE_QUERY, NO_FOOTER_COMPONENT } from '../../../constants';
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import { getBorderRadius, getInnerStyles } from './utils';
 import { BORDER_WIDTH, EXCESS_INDICATOR_FONT_SIZE } from './constants';
-import { colors, themed } from '../../../theme/src';
 
 const getBorderWidth = p => ((p.isFocus && !p.isActive) ? `${BORDER_WIDTH[p.size]}px` : 0);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { borderRadius, colors, gridSize } from '../../theme/src';
+import { borderRadius, colors, gridSize } from '@atlaskit/theme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';

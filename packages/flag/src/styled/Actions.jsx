@@ -6,7 +6,7 @@ import {
   akGridSizeUnitless as spacing,
 } from '@atlaskit/util-shared-styles';
 
-import { borderRadius, gridSize, math } from '../../../theme/src';
+import { borderRadius, gridSize, math } from '@atlaskit/theme';
 
 import {
   buttonBackgroundColor,

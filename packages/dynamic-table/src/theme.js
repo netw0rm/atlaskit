@@ -1,4 +1,4 @@
-import { colors, themed } from '../../theme/src';
+import { colors, themed } from '@atlaskit/theme';
 
 export const arrow = {
   defaultColor: themed({ light: colors.N40, dark: colors.DN40 }),

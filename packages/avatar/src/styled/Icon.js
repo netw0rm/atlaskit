@@ -1,6 +1,6 @@
 import styled from 'styled-components';
+import { colors } from '@atlaskit/theme';
 import { BORDER_WIDTH } from './constants';
-import { colors } from '../../../theme/src';
 
 // set fallbacks for border color/width to protect consumers from invalid values
 export const Outer = styled.span`

@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
+import { borderRadius, fontSize, gridSize, math } from '@atlaskit/theme';
 import themeDefinitions from './themeDefinitions';
-import { borderRadius, fontSize, gridSize, math } from '../../../theme/src';
 
 const getState = ({
   disabled,

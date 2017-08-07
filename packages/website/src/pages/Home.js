@@ -12,7 +12,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
-import { borderRadius, colors, gridSize, math } from '../../../theme/src';
+import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 
 import { DESKTOP_QUERY, MOBILE_QUERY } from '../../constants';
 

@@ -10,7 +10,7 @@ import Open from '@atlaskit/icon/glyph/editor/open';
 
 import { name } from '../package.json';
 import Button from '../src';
-import { colors } from '../../theme/src';
+import { colors } from '@atlaskit/theme';
 
 const css = `
   .container {

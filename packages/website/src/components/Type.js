@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { gridSize, colors, math } from '../../../theme/src';
+import { gridSize, colors, math } from '@atlaskit/theme';
 
 export const Heading = styled.h1`
   font-size: ${math.multiply(gridSize, 4)}px;

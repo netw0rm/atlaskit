@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 export const activeBackgroundColor = themed({
   light: colors.B50,

@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Description from './Description';
 import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
-
-import { borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
 
 const Heading = styled.h3`
   border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};

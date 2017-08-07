@@ -1,4 +1,4 @@
-import { colors, themed } from '../../theme/src';
+import { colors, themed } from '@atlaskit/theme';
 
 const lightButtonBackground = 'rgba(255, 255, 255, 0.08)';
 

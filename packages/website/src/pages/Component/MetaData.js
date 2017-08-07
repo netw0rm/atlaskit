@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { colors, gridSize, math } from '../../../../theme/src';
+import { colors, gridSize, math } from '@atlaskit/theme';
 
 const MetaItem = ({ href, label, summary }) => (
   <DI>

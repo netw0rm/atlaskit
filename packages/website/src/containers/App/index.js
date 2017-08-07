@@ -18,7 +18,7 @@ import {
 import LightbulbIcon from '@atlaskit/icon/glyph/lightbulb';
 import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { AtlasKitThemeProvider, borderRadius, colors, gridSize, math, themed } from '../../../../theme/src';
+import { AtlasKitThemeProvider, borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { MOBILE_QUERY } from '../../../constants';
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import { getBorderRadius } from './utils';
-import { colors, themed } from '../../../theme/src';
 
 // if image is loading, we hide the image so it doesn't obscure the gray loading
 // block until the source image is loaded.

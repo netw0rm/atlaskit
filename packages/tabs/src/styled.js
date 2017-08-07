@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 function lockSelectedColor(normal) {
   const selected = { light: colors.B400, dark: colors.B100 };

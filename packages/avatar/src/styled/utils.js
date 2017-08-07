@@ -1,8 +1,8 @@
 // @flow
 import { css } from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import { AVATAR_RADIUS, AVATAR_SIZES, BORDER_WIDTH, TRANSITION_DURATION } from './constants';
 import type { AppearanceType, SizeType } from '../types';
-import { colors, themed } from '../../../theme/src';
 
 const backgroundColorFocus = colors.B200;
 const overlayColorDefault = 'transparent';

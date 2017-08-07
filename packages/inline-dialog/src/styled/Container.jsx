@@ -5,7 +5,7 @@ import {
   colors,
   gridSize,
   math,
-} from '../../../theme/src';
+} from '@atlaskit/theme';
 
 import {
   backgroundColor,

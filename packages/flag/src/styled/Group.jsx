@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { akZIndexFlag } from '@atlaskit/util-shared-styles';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
-import { gridSize, math } from '../../../theme/src';
+import { gridSize, math } from '@atlaskit/theme';
 
 export default styled.div`
   bottom: ${math.multiply(gridSize, 6)}px;

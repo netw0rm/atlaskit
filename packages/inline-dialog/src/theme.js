@@ -1,4 +1,4 @@
-import { colors, themed } from '../../theme/src';
+import { colors, themed } from '@atlaskit/theme';
 
 export const backgroundColor = themed({
   light: colors.N0,

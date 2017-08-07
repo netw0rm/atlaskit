@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { gridSize, math } from '../../../theme/src';
+import { gridSize, math } from '@atlaskit/theme';
 
 export const Table = styled.table`
   ${({ isFixedSize }) => isFixedSize && css`table-layout: fixed;`};

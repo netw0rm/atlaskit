@@ -8,7 +8,7 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 
-import { borderRadius, colors, gridSize, math, themed } from '../../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 const { createBold, interpolate } = akAnimationMixins;
 

@@ -6,12 +6,11 @@ import { Link } from 'react-router-dom';
 import LayoutFork from 'react-media';
 import Message from '@atlaskit/inline-message';
 import Table from '@atlaskit/dynamic-table';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { Heading, Intro, Section } from '../components/Type';
 import components from '../data';
 import { MOBILE_QUERY } from '../../constants';
-
-import { borderRadius, colors, gridSize, math, themed } from '../../../theme/src';
 
 const componentKeys = Object.keys(components);
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { gridSize, math } from '../../../theme/src';
+import { gridSize, math } from '@atlaskit/theme';
 
 const getMargin = ({ isOnlyChild, spacing, ...rest }) => {
   if (spacing === 'none') return 0;

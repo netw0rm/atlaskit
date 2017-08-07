@@ -56,8 +56,14 @@ export default class AtlasKitThemeProvider extends Component {
       this.setState(newThemeState);
     }
   }
+  componentWillUnmount() {
+    if (this.stylesheet) {
+      document.head.removeChild(this.stylesheet);
+      delete this.stylesheet;
+    }
+  }
   render() {
-    const { children } = this.props; // eslint-disable-line react/prop-types
+    const { children } = this.props;
     return (
       <ThemeProvider theme={this.state.theme}>
         <ThemeReset>
@@ -67,3 +73,7 @@ export default class AtlasKitThemeProvider extends Component {
     );
   }
 }
+
+AtlasKitThemeProvider.propTypes = {
+  children: PropTypes.node,
+};

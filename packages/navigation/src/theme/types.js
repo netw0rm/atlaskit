@@ -21,6 +21,9 @@ export type ItemTheme = {|
     background: Background,
     text?: Text,
   |},
+  dragging: {|
+    background: Background,
+  |}
 |}
 
 export type Provided = {|
@@ -73,5 +76,6 @@ export type GenericItemTheme = {|
   selected: GenericItemState,
   hover: GenericItemState,
   active: GenericItemState,
+  dragging: GenericItemState,
   disabled?: GenericItemState,
 |};

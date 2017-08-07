@@ -1,5 +1,9 @@
 # @atlaskit/avatar
 
+## 6.4.5 (2017-08-04)
+
+
+* bug fix; moves babel-plugin-react-flow-props-to-prop-types to a devDependency ([6378b88](https://bitbucket.org/atlassian/atlaskit/commits/6378b88))
 ## 6.4.4 (2017-08-03)
 
 * bug fix; fixes uncaught type error in avatar by consuming latest util-shared-styles (issues closed: ak-3067) ([be705fa](https://bitbucket.org/atlassian/atlaskit/commits/be705fa))

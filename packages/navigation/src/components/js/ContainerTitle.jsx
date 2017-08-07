@@ -8,8 +8,9 @@ import ContainerTitleInner from '../styled/ContainerTitleInner';
 import ContainerTitleSubText from '../styled/ContainerTitleSubText';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import ContainerTitleTextWrapper from '../styled/ContainerTitleTextWrapper';
-import type { ReactElement } from '../../types';
+import type { ReactElement, ReactClass } from '../../types';
 
+// $ExpectError
 const getStyledLink = component => styled(component)`
   display: block;
   text-decoration: none;
@@ -32,7 +33,7 @@ type Props = {|
   href?: string,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
 |}
 
 export default class ContainerTitle extends PureComponent {

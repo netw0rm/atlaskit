@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 18.1.1 (2017-08-06)
+
+* bug fix; apply correct styling to AkNavigationItemGroup title (issues closed: ak-3200) ([4e7d6e7](https://bitbucket.org/atlassian/atlaskit/commits/4e7d6e7))
+## 18.1.0 (2017-08-03)
+
+* feature; improving support and examples for drag and drop in navigation (issues closed: ak-1862) ([c1e0986](https://bitbucket.org/atlassian/atlaskit/commits/c1e0986))
 ## 18.0.0 (2017-08-03)
 
 

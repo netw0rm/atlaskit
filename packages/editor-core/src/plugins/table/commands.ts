@@ -3,11 +3,12 @@ import {
   Selection,
   TableMap,
   Transaction,
-  CellSelection
+  CellSelection,
+  TextSelection
 } from '../../prosemirror';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { stateKey } from './';
-import { createTableNode } from './utils';
+import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
 
 export interface Command {
@@ -96,10 +97,56 @@ const emptyCells = (): Command => {
     }
     pluginState.resetHoverSelection();
     pluginState.emptySelectedCells();
-    const selection = pluginState.view.state.selection as CellSelection;
-    const newPos = selection.$head.pos - selection.$head.parentOffset;
+    const { $head: { pos, parentOffset } } = state.selection as CellSelection;
+    const newPos = pos - parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
     analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
+
+    return true;
+  };
+};
+
+const moveCursorBackward = (): Command => {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    const pluginState = stateKey.getState(state);
+    const { $cursor } = state.selection as TextSelection;
+    // if cursor is in the middle of a text node, do nothing
+    if (!$cursor || (pluginState.view ? !pluginState.view.endOfTextblock('backward', state) : $cursor.parentOffset > 0)) {
+      return false;
+    }
+
+    // find the node before the cursor
+    let before;
+    let cut;
+    if (!isIsolating($cursor.parent)) {
+      for (let i = $cursor.depth - 1; !before && i >= 0; i--) {
+        if ($cursor.index(i) > 0) {
+          cut = $cursor.before(i + 1);
+          before = $cursor.node(i).child($cursor.index(i) - 1);
+        }
+        if (isIsolating($cursor.node(i))) {
+          break;
+        }
+      }
+    }
+
+    // if the node before is not a table node - do nothing
+    if (!before || before.type !== state.schema.nodes.table) {
+      return false;
+    }
+
+    const { tr } = state;
+    const lastCellPos = cut - 4;
+    // need to move cursor inside the table to be able to calculate table's offset
+    tr.setSelection(new TextSelection(state.doc.resolve(lastCellPos)));
+    const { $from } = tr.selection;
+    const start = $from.start(-1);
+    const pos = start + $from.parent.nodeSize - 1;
+    // move cursor to the last cell
+    // it doesn't join node before (last cell) with node after (content after the cursor)
+    // due to ridiculous amount of PM code that would have been required to overwrite
+    dispatch(tr.setSelection(new TextSelection(state.doc.resolve(pos))));
+
     return true;
   };
 };
@@ -110,5 +157,6 @@ export default {
   cut,
   copy,
   paste,
+  moveCursorBackward,
   emptyCells
 };

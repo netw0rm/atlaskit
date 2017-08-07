@@ -6,7 +6,7 @@ import { HyperlinkState } from '../../plugins/hyperlink';
 import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
-import { Seperator, Container } from './styles';
+import { Separator, Container } from './styles';
 import { EditorView } from '../../prosemirror';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
@@ -163,7 +163,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               </ToolbarButton>
             }
             {!showOpenButton ? null :
-              <Seperator />
+              <Separator />
             }
             {!showUnlinkButton ? null :
               <ToolbarButton
@@ -175,7 +175,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-              <Seperator />
+              <Separator />
             }
             {normalizedOldText && href === normalizedOldText ?
               <PanelTextInput
@@ -206,13 +206,19 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
   private handleOnBlur = () => {
     const { editorView, pluginState } = this.props;
-    const { href = '' } = this.state;
+    const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
       pluginState.hideLinkPanel();
     } else if (!href || href.length === 0) {
       pluginState.removeLink(editorView);
     } else {
-      pluginState.updateLink({ href }, editorView);
+      if (text && pluginState.text !== text) {
+        pluginState.updateLinkText(text, editorView);
+        this.setState({ text: '' });
+      }
+      if (href && pluginState.href !== href) {
+        pluginState.updateLink({ href }, editorView);
+      }
     }
     this.resetInputActive();
   }

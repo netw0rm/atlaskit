@@ -35,7 +35,8 @@
   "devDependencies": {
     "ak-icon": "^12.1.2",
     "@atlaskit/icon": "^1.0.0",
-    "@atlaskit/breadcrumbs": "*"
+    "@atlaskit/breadcrumbs": "*",
+    "@atlaskit/theme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

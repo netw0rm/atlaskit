@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { colors } from '../../theme/src';
+import { colors } from '@atlaskit/theme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import EditExamples from './EditExamples';

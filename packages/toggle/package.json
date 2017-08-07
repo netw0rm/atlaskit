@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@atlaskit/toggle": "*",
+    "@atlaskit/theme": "^1.0.0",
     "@atlaskit/util-readme": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",

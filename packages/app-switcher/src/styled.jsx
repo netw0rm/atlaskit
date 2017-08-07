@@ -78,12 +78,6 @@ export const RecentContainerName = styled.div`
   ${ellipsis}
 `;
 
-export const RecentContainerImage = styled.img`
-  border-radius: 2px;
-  height: 32px;
-  width: 32px;
-`;
-
 export const Link = styled.span`
   color: ${akColorB400};
 `;

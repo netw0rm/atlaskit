@@ -1,6 +1,12 @@
 # @atlaskit/modal-dialog
 
-## Unreleased
+## 2.6.0 (2017-08-07)
+
+* feature; support custom modal height (issues closed: ak-1723) ([3c1f537](https://bitbucket.org/atlassian/atlaskit/commits/3c1f537))
+
+
+
+
 
 * feature; support custom modal height (issues closed: ak-1723)
 

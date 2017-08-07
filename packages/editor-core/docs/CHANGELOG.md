@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.2.4 (2017-08-07)
+
+* bug fix; bumped the version of media-card ([4bbfac7](https://bitbucket.org/atlassian/atlaskit/commits/4bbfac7))
 ## 45.2.3 (2017-08-07)
 
 

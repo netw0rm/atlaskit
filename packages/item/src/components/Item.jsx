@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import styledRootElement from '../styled/Item';
 import {
-  BeforeAfter,
+  Before,
+  After,
   Content,
   ContentWrapper,
   Description,
@@ -218,7 +219,7 @@ export default class Item extends Component {
         {...patchedEventHandlers}
         {...otherProps}
       >
-        {!!this.props.elemBefore && <BeforeAfter>{this.props.elemBefore}</BeforeAfter>}
+        {!!this.props.elemBefore && <Before>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}
@@ -230,7 +231,7 @@ export default class Item extends Component {
             >{this.props.description}</Description>
           )}
         </ContentWrapper>
-        {!!this.props.elemAfter && <BeforeAfter>{this.props.elemAfter}</BeforeAfter>}
+        {!!this.props.elemAfter && <After>{this.props.elemAfter}</After>}
       </Root>
     );
   }

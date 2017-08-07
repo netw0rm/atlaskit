@@ -9,8 +9,15 @@ export const Wrapper = styled.div`
   justify-content: center;
 `;
 
+export const VideoContainer = styled.div`
+  width: 1280px;
+  height: 720px;
+  background-color: #000; /* FIXME: */
+`;
+
 export const Video = styled.video`
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
 `;
 
 export const ControlsWrapper = styled.div`

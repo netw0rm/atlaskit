@@ -98,6 +98,7 @@
     "lerna-semantic-release-io": "^7.0.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "lodash.throttle": "^4.1.1",
     "minilog": "^3.0.1",
     "mocha": "^3.2.0",
     "modify-babel-preset": "^3.2.1",

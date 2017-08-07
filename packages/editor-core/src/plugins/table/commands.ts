@@ -8,7 +8,7 @@ import {
 } from '../../prosemirror';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import { stateKey } from './';
-import { createTableNode } from './utils';
+import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
 
 export interface Command {
@@ -89,27 +89,26 @@ const paste = (): Command => {
   };
 };
 
-const emptyCells = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-  const pluginState = stateKey.getState(state);
-  if (!pluginState.cellSelection) {
-    return false;
-  }
-  pluginState.resetHoverSelection();
-  pluginState.emptySelectedCells();
-  const selection = pluginState.view.state.selection as CellSelection;
-  const newPos = selection.$head.pos - selection.$head.parentOffset;
-  pluginState.moveCursorInsideTableTo(newPos);
-  analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
-
-  return true;
-};
-
-const backspace = (): Command => {
+const emptyCells = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
-    if (pluginState.cellSelection) {
-      return emptyCells(state, dispatch);
+    if (!pluginState.cellSelection) {
+      return false;
     }
+    pluginState.resetHoverSelection();
+    pluginState.emptySelectedCells();
+    const { $head: { pos, parentOffset } } = state.selection as CellSelection;
+    const newPos = pos - parentOffset;
+    pluginState.moveCursorInsideTableTo(newPos);
+    analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
+
+    return true;
+  };
+};
+
+const moveCursorBackward = (): Command => {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    const pluginState = stateKey.getState(state);
     const { $cursor } = state.selection as TextSelection;
     // if cursor is in the middle of a text node, do nothing
     if (!$cursor || (pluginState.view ? !pluginState.view.endOfTextblock('backward', state) : $cursor.parentOffset > 0)) {
@@ -119,13 +118,13 @@ const backspace = (): Command => {
     // find the node before the cursor
     let before;
     let cut;
-    if (!$cursor.parent.type.spec.isolating) {
+    if (!isIsolating($cursor.parent)) {
       for (let i = $cursor.depth - 1; !before && i >= 0; i--) {
         if ($cursor.index(i) > 0) {
           cut = $cursor.before(i + 1);
           before = $cursor.node(i).child($cursor.index(i) - 1);
         }
-        if ($cursor.node(i).type.spec.isolating) {
+        if (isIsolating($cursor.node(i))) {
           break;
         }
       }
@@ -158,5 +157,6 @@ export default {
   cut,
   copy,
   paste,
-  backspace
+  moveCursorBackward,
+  emptyCells
 };

@@ -11,10 +11,18 @@ export const InputWrapper = styled.span`
 `;
 
 // Elements injected before/after the children
-export const BeforeAfter = styled.span`
+const BeforeAfterBase = styled.span`
   align-items: center;
   display: flex;
   flex-shrink: 0;
+`;
+
+export const Before = styled(BeforeAfterBase)`
+  margin-right: ${akGridSizeUnitless}px;
+`;
+
+export const After = styled(BeforeAfterBase)`
+  margin-left: ${akGridSizeUnitless}px;
 `;
 
 // Alignment and layout for the children
@@ -22,7 +30,7 @@ export const ContentWrapper = styled.span`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin: 0 ${akGridSizeUnitless}px;
+  margin: 0;
   overflow: hidden;
 
   &:first-child { margin: 0; }

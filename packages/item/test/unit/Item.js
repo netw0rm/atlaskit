@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Item, { itemThemeNamespace } from '../../src';
 import { name } from '../../package.json';
-import { BeforeAfter, Content, Description } from '../../src/styled/ItemParts';
+import { After, Before, Content, Description } from '../../src/styled/ItemParts';
 
 describe(`${name} - Item`, () => {
   describe('root element type', () => {
@@ -351,9 +351,9 @@ describe(`${name} - Item`, () => {
     });
 
     it('elemBefore should only be rendered if supplied', () => {
-      expect(wrapper.find(BeforeAfter).length).toBe(0);
+      expect(wrapper.find(Before).length).toBe(0);
       wrapper.setProps({ elemBefore: testElem });
-      expect(wrapper.find(BeforeAfter).length).toBe(1);
+      expect(wrapper.find(Before).length).toBe(1);
       expect(wrapper.find('.testElem').length).toBe(1);
     });
 
@@ -364,9 +364,9 @@ describe(`${name} - Item`, () => {
     });
 
     it('elemAfter should only be rendered if supplied', () => {
-      expect(wrapper.find(BeforeAfter).length).toBe(0);
+      expect(wrapper.find(After).length).toBe(0);
       wrapper.setProps({ elemAfter: testElem });
-      expect(wrapper.find(BeforeAfter).length).toBe(1);
+      expect(wrapper.find(After).length).toBe(1);
       expect(wrapper.find('.testElem').length).toBe(1);
     });
   });

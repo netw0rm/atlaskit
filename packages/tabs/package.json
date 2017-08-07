@@ -33,7 +33,6 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",
@@ -45,6 +44,7 @@
     "@atlaskit/spinner": "^1.0.0",
     "@atlaskit/tabs": "*",
     "@atlaskit/util-readme": "^1.0.0",
+    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
     "react-lorem-component": "0.11.0"
   },
   "peerDependencies": {

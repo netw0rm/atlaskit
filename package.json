@@ -141,7 +141,8 @@
     "wait-on": "^2.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.2",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "yargs": "^8.0.2"
   },
   "engines": {
     "npm": ">=3.8",
@@ -225,5 +226,6 @@
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/typescript": "lerna run validate/typescript"
-  }
+  },
+  "devDependencies": {}
 }

@@ -8,10 +8,10 @@
 */
 import React, { PureComponent } from 'react';
 import { Nav, NavItem, NavLine, NavWrapper } from '../styled';
-import { Props } from '../types';
+import type { TabsStatelessProps } from '../types';
 
 export default class TabsNav extends PureComponent {
-  props: Props
+  props: TabsStatelessProps;
   state = { wasKeyboardNav: false }
   tabs = []
 

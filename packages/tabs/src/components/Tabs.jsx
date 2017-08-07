@@ -2,7 +2,7 @@
 /* eslint-disable react/sort-comp */
 import React, { PureComponent } from 'react';
 import TabsStateless from './TabsStateless';
-import { ChildrenType } from '../types';
+import type { ChildrenType } from '../types';
 
 type Props = {
   /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */

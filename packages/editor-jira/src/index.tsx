@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+
 import {
   AnalyticsHandler,
   analyticsService,
@@ -54,7 +56,7 @@ import {
   JIRATransformer,
 } from '@atlaskit/editor-core';
 
-import { JSONSerializer } from '@atlaskit/editor-core/dist/es2015/renderer';
+import { JSONSerializer } from '@atlaskit/editor-core/dist/es5/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
@@ -464,6 +466,8 @@ export default class Editor extends PureComponent<Props, State> {
 }
 
 export const parseIntoAtlassianDocument = (html: string, schema: Schema<any, any>) => {
+  assert.strictEqual(typeof html, 'string', 'First parseIntoAtlassianDocument() argument is not a string');
+
   const serializer = new JSONSerializer();
   const transformer = new JIRATransformer(schema);
   const doc = transformer.parse(html);

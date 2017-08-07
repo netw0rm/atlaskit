@@ -1,5 +1,15 @@
 # @atlaskit/editor-jira
 
+## 20.0.2 (2017-08-03)
+
+* bug fix; undefined behaviour of parseIntoAtlassianDocument if first argument is nullable (issues closed: ed-2395) ([42cdb5d](https://bitbucket.org/atlassian/atlaskit/commits/42cdb5d))
+## 20.0.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
+
+
 ## 20.0.0 (2017-08-01)
 
 * breaking; editor-jira doesn't produce ES5 build anymore ([b0acf07](https://bitbucket.org/atlassian/atlaskit/commits/b0acf07))

@@ -17,11 +17,8 @@ export const SliderWrapper = styled.div`
 `;
 
 export const EditableCardContent = styled.div`
+  // Not making the wrapper fancier or center elements in order to have a more realistic scenario
   padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 `;
 
 export const OptionsWrapper = styled.div`

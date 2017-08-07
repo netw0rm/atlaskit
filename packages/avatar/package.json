@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "6.4.3",
+  "version": "6.4.5",
   "config": {
     "access": "public"
   },
@@ -13,12 +13,12 @@
     "name": "Avatar"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook/run.local.js",
-    "build-storybook": "../../build/bin/storybook/build.static.js",
     "eslint": "../../build/bin/lint.eslint.sh",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/avatar; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -36,7 +36,6 @@
   "dependencies": {
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/util-shared-styles": "^2.1.0",
-    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
@@ -45,7 +44,8 @@
     "@atlaskit/avatar": "*",
     "@atlaskit/button-group": "^1.5.1",
     "@atlaskit/lozenge": "^3.4.1",
-    "@atlaskit/util-readme": "^3.2.0"
+    "@atlaskit/util-readme": "^3.2.0",
+    "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
   },
   "repository": {
     "type": "git",

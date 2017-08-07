@@ -1,6 +1,12 @@
 # @atlaskit/util-shared-styles
 
-## Unreleased
+## 2.10.3 (2017-08-02)
+
+* bug fix; fix order of util-shared-styles exports so variables are available at compile time ([e9c2992](https://bitbucket.org/atlassian/atlaskit/commits/e9c2992))
+
+
+
+
 
 ## 2.10.2 (2017-07-27)
 

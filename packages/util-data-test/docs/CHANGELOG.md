@@ -1,6 +1,11 @@
 # @atlaskit/util-data-test
 
-## Unreleased
+## 7.1.0 (2017-08-04)
+
+* feature; update mock-profile-client to be able to return custom error responses ([1a99156](https://bitbucket.org/atlassian/atlaskit/commits/1a99156))
+
+
+
 
 ## 5.0.0 (2017-07-25)
 

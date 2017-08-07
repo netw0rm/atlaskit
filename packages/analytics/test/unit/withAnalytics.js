@@ -111,6 +111,70 @@ describe('withAnalytics', () => {
       const mountWrapper = mount(<ComponentWithAnalytics analyticsId={TEST_ANALYTICS_ID} />);
       expect(mountWrapper.find('TestComponent').props()).toHaveProperty('analyticsId', TEST_ANALYTICS_ID);
     });
+
+    it('should use defaultProps for analyticsId and analyticsData', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        props => <button {...cleanProps(props)} />,
+        {
+          onClick: 'click',
+        },
+        {
+          analyticsId: 'button',
+          analyticsData: { foo: 'bar' },
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy}>
+          <Button />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('button.click', { foo: 'bar' });
+    });
+
+    it('should override defaultProps with specified analyticsId and analyticsData', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        props => <button {...cleanProps(props)} />,
+        {
+          onClick: 'click',
+        },
+        {
+          analyticsId: 'button',
+          analyticsData: { foo: 'bar' },
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy}>
+          <Button analyticsId="specified.button" analyticsData={{ one: 1 }} />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('specified.button.click', { one: 1 });
+    });
+
+    it('should not fire analytics if missing analyticsId', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        props => <button {...cleanProps(props)} />,
+        {
+          onClick: 'click',
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy}>
+          <Button analyticsData={{ one: 1 }} />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
   });
 
   describe('integrated usage', () => {

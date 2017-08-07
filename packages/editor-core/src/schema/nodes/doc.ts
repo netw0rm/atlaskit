@@ -13,6 +13,7 @@ import { Definition as MediaGroup } from './media-group';
 import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
+import { Table } from './tableNodes';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
@@ -34,6 +35,16 @@ import { Definition as TextColor } from '../marks/text-color';
  * @minItems 1
  */
 export type TopLevel = Array<
+  Panel | Paragraph | Blockquote | OrderedList | BulletList |
+  Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
+  DecisionList | TaskList | Table
+>;
+
+/**
+ * @name table_cell_content
+ * @minItems 1
+ */
+export type TableCellContent = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
   DecisionList | TaskList

@@ -7,6 +7,7 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import InlineDialog from '@atlaskit/inline-dialog';
 import Tooltip from '@atlaskit/tooltip';
 
 import {
@@ -86,25 +87,43 @@ export default class BasicNestedNavigation extends PureComponent {
     });
   }
 
-  getContainerHeaderComponent = () => (
-    <div>
-      <AkContainerTitle
-        href="#foo"
-        icon={
-          <img alt="nucleus" src={nucleusLogo} />
-        }
-        text="AtlasKit"
-        subText="Is the king"
+  getContainerHeaderComponent = () => {
+    const backButton = this.state.stack.length > 1 ? (
+      <AkNavigationItem
+        icon={<ArrowLeftIcon label="Back" />}
+        onClick={() => this.stackPop()}
+        text="Back" key="2"
       />
-      {this.state.isOpen && (this.state.stack.length > 1) ? (
-        <AkNavigationItem
-          icon={<ArrowLeftIcon label="Back" />}
-          onClick={() => this.stackPop()}
-          text="Back"
-        />
-      ) : null}
-    </div>
-  )
+    ) : null;
+
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
+    return [
+      <InlineDialog
+        content={<div style={{ maxWidth: '200px' }}>Menu or something like the HipChat status form would go here</div>}
+        isOpen={this.state.isHeaderInlineDialogOpen}
+        position="bottom left"
+      >
+        <div
+          onClick={() => {
+            this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
+          }}
+        >
+          <Tooltip key="1" position="right" description="Header tooltip text">
+            <AkContainerTitle
+              href="#foo"
+              icon={
+                <img alt="nucleus" src={nucleusLogo} />
+              }
+              text="AtlasKit"
+              subText="Is the king"
+            />
+          </Tooltip>
+        </div>
+      </InlineDialog>,
+      backButton,
+    ];
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
+  };
 
   closeDrawer = () => {
     this.setState({

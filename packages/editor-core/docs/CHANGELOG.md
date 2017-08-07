@@ -1,5 +1,72 @@
 # @atlaskit/editor-core
 
+## 45.2.0 (2017-08-04)
+
+* bug fix; fix tslint ([04a6c4f](https://bitbucket.org/atlassian/atlaskit/commits/04a6c4f))
+
+* feature; added analytics events for tables (issues closed: ed-1885) ([80dd2cb](https://bitbucket.org/atlassian/atlaskit/commits/80dd2cb))
+## 45.1.2 (2017-08-04)
+
+* bug fix; bump media-filmstrip in editor-core (issues closed: ed-2052) ([f33b88e](https://bitbucket.org/atlassian/atlaskit/commits/f33b88e))
+* bug fix; media nodes parsing should not throw error when schema is media-less (issues closed: ed-2394) ([4a0dfe0](https://bitbucket.org/atlassian/atlaskit/commits/4a0dfe0))
+
+* bug fix; fix remove media on upload failure (issues closed: ed-2192) ([d5da5a0](https://bitbucket.org/atlassian/atlaskit/commits/d5da5a0))
+* bug fix; upload progress and temporary thumbnail not showing (issues closed: ed-2283) ([5c1b9b6](https://bitbucket.org/atlassian/atlaskit/commits/5c1b9b6))
+## 45.1.1 (2017-08-03)
+
+* bug fix; export es5 renderer ([2db940d](https://bitbucket.org/atlassian/atlaskit/commits/2db940d))
+## 45.1.0 (2017-08-03)
+
+
+* feature; support document filtering. Include implementation for task decision content. (issues closed: fs-1223) ([8afca9c](https://bitbucket.org/atlassian/atlaskit/commits/8afca9c))
+## 45.0.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+## 45.0.0 (2017-08-02)
+
+* breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+* breaking; restricting block nesting for panel, blockquote and list. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+## 44.9.1 (2017-08-02)
+
+* bug fix; fix broken storybook in AUI (issues closed: ed-2138) ([6ce1692](https://bitbucket.org/atlassian/atlaskit/commits/6ce1692))
+
+
+* bug fix; updated json schema with table nodes ([bf5b3ff](https://bitbucket.org/atlassian/atlaskit/commits/bf5b3ff))
+
+## 44.9.0 (2017-08-02)
+
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.8.0 (2017-08-02)
+
+* feature; updated media-filmstrip for major bump ([0d36592](https://bitbucket.org/atlassian/atlaskit/commits/0d36592))
+## 44.7.0 (2017-08-02)
+
+* bug fix; fix message editor overflow issues with media film strip (issues closed: ed-2338) ([6cdbf74](https://bitbucket.org/atlassian/atlaskit/commits/6cdbf74))
+* feature; attach secondary toolbar buttons to the bottom of the Message Editor (issues closed: ed-2357) ([f97db1c](https://bitbucket.org/atlassian/atlaskit/commits/f97db1c))
+## 44.6.0 (2017-08-01)
+
+* bug fix; keep focus in node views after transactions ([dd82b25](https://bitbucket.org/atlassian/atlaskit/commits/dd82b25))
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.5.0 (2017-08-01)
+
+
+
+* bug fix; mediaGroup should only allow media as children (issues closed: ed-2343) ([d9a8d11](https://bitbucket.org/atlassian/atlaskit/commits/d9a8d11))
+* feature; add markdown and plaintext code copy-paste (issues closed: ed-672, ed-2316, ed-2091) ([bdeb76c](https://bitbucket.org/atlassian/atlaskit/commits/bdeb76c))
+## 44.4.0 (2017-08-01)
+
+* bug fix; allow empty fallback text in appCards in renderer (issues closed: ed-2364) ([f88292b](https://bitbucket.org/atlassian/atlaskit/commits/f88292b))
+
+* bug fix; removed modified inline code nodeSpec (issues closed: ed-2271) ([ee8b40c](https://bitbucket.org/atlassian/atlaskit/commits/ee8b40c))
+
+* feature; adds support for tasks in renderer ([817c910](https://bitbucket.org/atlassian/atlaskit/commits/817c910))
+
 ## 44.3.0 (2017-08-01)
 
 * bug fix; update encoder to add collection in generated HTML if available (issues closed: ed-2370) ([493b778](https://bitbucket.org/atlassian/atlaskit/commits/493b778))

@@ -30,28 +30,6 @@ export function normalizeUrl(url: string) {
   return `http://${url}`;
 }
 
-export function linkifyText(schema: Schema<any, any>, text: string): Slice|undefined {
-  const matches: any[] = findLinkMatches(text);
-  if (matches.length === 0) {
-    return undefined;
-  }
-  matches.sort((m1, m2) => (m1.start - m2.start));
-  let start = 0;
-  const fragments: any = [];
-  matches.forEach(match => {
-    if (match.start > start) {
-      fragments.push(schema.text(text.slice(start, match.start)));
-    }
-    fragments.push(schema.text(match.title, [schema.marks.link.create({ href: normalizeUrl(match.href) })]));
-    start = match.end;
-  });
-  if (start < text.length) {
-    fragments.push(schema.text(text.slice(start, text.length)));
-  }
-  const combinedFragment = Fragment.fromArray(fragments);
-  return new Slice(combinedFragment, 0, 0);
-}
-
 export function linkifyContent(schema: Schema<any, any>, slice: Slice): Slice | undefined {
   const fragment = linkinfyFragment(schema, slice.content);
   if (fragment) {
@@ -126,7 +104,7 @@ function findLinkMatches(text: string): Match[] {
 /**
  * The function check that the regex match for url or email does not overlap an existing url or email.
  * This is required as letter separator like / . are valid characters in url,
- * and that can reasult in multiple marks being added for 1 link.
+ * and that can result in multiple marks being added for 1 link.
  */
 function isMatchOverlapping(matches: Match[], match: RegExpExecArray | null): boolean {
   let isOverlapping: boolean = false;

@@ -12,7 +12,7 @@ function themedVariants(variantProp, variants) {
 }
 
 export default function themed(modes) {
-  if (typeof arguments[0] === 'string') {
+  if (typeof modes === 'string') {
     return themedVariants(...arguments);
   }
   return props => {

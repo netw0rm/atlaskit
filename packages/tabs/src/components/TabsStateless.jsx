@@ -4,7 +4,19 @@ import React, { PureComponent } from 'react';
 
 import TabsNav from './TabsNav';
 import { TabPane, Tabs } from '../styled';
-import { Props } from '../types';
+import { ChildrenType, FunctionType } from '../types';
+
+type Props = {
+  /** Handler for navigation using the keyboard buttons. */
+  onKeyboardNav: (string) => void,
+  /** The tabs to display, with content being hidden unless the tab is selected. */
+  tabs?: Array<{
+    content?: ChildrenType,
+    isSelected?: boolean,
+    label: string,
+    onSelect: FunctionType,
+  }>
+};
 
 export default class TabsStateless extends PureComponent {
   props: Props

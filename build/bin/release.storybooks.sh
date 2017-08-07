@@ -26,8 +26,7 @@ function build_storybooks() {
   RELEASED_PACKAGES_GLOB=$($BASEDIR/get_released_packages_glob.js "$RELEASED_PACKAGES_RAW")
 
   $CHALK --no-stdin -t "{blue Building storybooks}"
-  rm -rf ./stories
-  $LERNA exec --concurrency=1 --scope="$RELEASED_PACKAGES_GLOB" -- ../../build/bin/storybook.static.registry.sh
+  $LERNA run storybook:static --concurrency=1 --scope="$RELEASED_PACKAGES_GLOB"
 }
 
 storybooks_build_status "INPROGRESS"

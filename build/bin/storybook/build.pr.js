@@ -5,16 +5,21 @@ const glob = require('glob').sync;
 const path = require('path');
 
 /*
-    This script simply finds all the static storybooks that have been built, copies them to a temp
-    directory, builds an index file and uploads them to the cdn under the path:
+    This script builds all the storybooks for a given PR in CI. It builds for all packages that have
+    a changed file but can be disabled using the BRANCHES_ALLOWED_TO_BUILD_STORYBOOKS variable (see
+    exit.if.branch.name.not.matches.js).
+
+    PR builds are uploaded to the cdn under the path:
     https://aui-cdn.atlassian.com/atlaskit/pr/COMMIT_HASH/YYY-MM-DD_HH_MM_SS/storybook/index.html
 */
 
 const generateIndexFile = require('./generate.index.file');
 const updateBuildStatus = require('../utility/update.build.status');
 const uploadDirectory = require('../utility/upload.directory.to.cdn');
+const exitIfBranchNameNotMatches = require('../exit.if.branch.name.not.matches');
 
-const bbCommit = process.env.BITBUCKET_COMMIT || 'BB_COMMIT';
+const bbCommit = process.env.BITBUCKET_COMMIT;
+const branchNameWhitelist = process.env.BRANCHES_ALLOWED_TO_BUILD_STORYBOOKS;
 
 // get the date + time in the format YYYY-MM-DD_HH_MM_SS for use in url
 function getCurrentTimeString() {
@@ -42,6 +47,9 @@ try {
   const currentTime = getCurrentTimeString();
   // The trailing slash here is required
   const uploadPath = `pr/${bbCommit}/${currentTime}/storybook/`;
+
+  // Escape hatch using env vars so we can not build storybooks for sweeping changes
+  exitIfBranchNameNotMatches(branchNameWhitelist);
 
   fs.ensureDirSync(tmpStorybooksPath);
 

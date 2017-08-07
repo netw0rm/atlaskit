@@ -9,9 +9,11 @@ import ConfirmTrial from './ConfirmTrial';
 import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
 
+import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
+
 export class StartTrialBase extends Component {
   static propTypes = {
-    hasProductBeenEvaluated: PropTypes.func.isRequired,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
   };
@@ -22,34 +24,26 @@ export class StartTrialBase extends Component {
   };
 
   render() {
-    const { hasProductBeenEvaluated, onComplete, onTrialActivating } = this.props;
+    const { status, onComplete, onTrialActivating } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmTrial
               onComplete={async () => {
-                const [evalStatus] = await Promise.all([
-                  hasProductBeenEvaluated(),
-                  onTrialActivating(),
-                ]);
-                nextStep(evalStatus ? 2 : 1);
+                await onTrialActivating();
+                nextStep(status === DEACTIVATED ? 2 : 1);
               }}
               onCancel={cancel}
             />}
         />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />
-        <Step
-          render={nextStep =>
-            <LoadingTime
-              onComplete={() => nextStep}
-            />}
-        />
+        <Step render={nextStep => <LoadingTime onComplete={() => nextStep} />} />
       </MultiStep>
     );
   }
 }
 
-export default withXFlowProvider(StartTrialBase, ({ xFlow: { hasProductBeenEvaluated } }) => ({
-  hasProductBeenEvaluated,
+export default withXFlowProvider(StartTrialBase, ({ xFlow: { status } }) => ({
+  status,
 }));

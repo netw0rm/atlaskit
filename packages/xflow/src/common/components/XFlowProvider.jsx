@@ -2,7 +2,7 @@
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
@@ -32,12 +32,11 @@ export const xFlowShape = PropTypes.shape({
   }),
 
   progress: PropTypes.number,
-  status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]),
+  status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]),
 
   canCurrentUserAddProduct: PropTypes.func,
   getProductActivationState: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,
-  hasProductBeenEvaluated: PropTypes.func,
 
   requestTrialAccess: PropTypes.func,
   requestTrialAccessWithNote: PropTypes.func,

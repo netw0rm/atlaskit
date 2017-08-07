@@ -4,7 +4,12 @@ import { mount } from 'enzyme';
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import setupStorybookAnalytics from '../../../stories/util/setupStorybookAnalytics';
-import { INACTIVE, ACTIVE, ACTIVATING } from '../../../src/common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+} from '../../../src/common/productProvisioningStates';
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import mockConfluenceStatusChecker from '../../../stories/providers/mockConfluenceStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
@@ -16,13 +21,11 @@ import AlreadyStarted from '../../../src/start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/start-trial/components/ProgressIndicator';
 import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
 
-const delay = time => new Promise(resolve => setTimeout(resolve, time));
 const noop = () => {};
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
-  hasProductBeenEvaluated: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
       { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
@@ -31,14 +34,15 @@ const defaultProps = {
       { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
       { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
     ]),
+  startProductTrial: async () => {},
   cancelStartProductTrial: async () => {},
-  grantAccessToUsers: () => delay(500),
+  grantAccessToUsers: async () => {},
   goToProduct: async () => {},
   goToLearnMore: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialAccess: () => delay(500),
-  requestTrialAccessWithNote: () => delay(500),
-  requestTrialAccessWithoutNote: () => delay(500),
+  requestTrialAccess: async () => {},
+  requestTrialAccessWithNote: async () => {},
+  requestTrialAccessWithoutNote: async () => {},
   cancelRequestTrialAccess: async () => {},
 };
 
@@ -138,7 +142,7 @@ describe('@atlaskit/xflow', () => {
           <MockConfluenceXFlow
             {...defaultProps}
             canCurrentUserAddProduct={async () => true}
-            hasProductBeenEvaluated={async () => true}
+            productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
           >
             <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
           </MockConfluenceXFlow>

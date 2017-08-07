@@ -5,19 +5,24 @@ import fetchMock from 'fetch-mock';
 import productUsageInactive from './mock-data/productUsageInactive.json';
 import productUsageActive from './mock-data/productUsageActive.json';
 
-import inactiveConfluenceResponse from './mock-data/pricingInactiveConfluence.json';
-import activatingConfluenceResponse from './mock-data/pricingActivatingConfluence.json';
-import activeConfluenceResponse from './mock-data/pricingActiveConfluence.json';
+import pricingInactive from './mock-data/pricingInactiveConfluence.json';
+import pricingActivating from './mock-data/pricingActivatingConfluence.json';
+import pricingActive from './mock-data/pricingActiveConfluence.json';
+
+import prospectivePricesInactive from './mock-data/prospectivePricesInactiveConfluence.json';
+import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivatedConfluence.json';
 
 import confluenceStatusChecker, {
   PRODUCT_USAGE_URL,
   PRICING_URL,
+  PROSPECTIVE_PRICES_URL,
 } from '../../../src/jira-confluence/confluenceStatusChecker';
 
 import {
   ACTIVE,
   ACTIVATING,
   INACTIVE,
+  DEACTIVATED,
   UNKNOWN,
 } from '../../../src/common/productProvisioningStates';
 
@@ -47,6 +52,14 @@ const mockProductUsageEndpointWithFailureStatus = (status) => {
   fetchMock.mock(PRODUCT_USAGE_URL, status);
 };
 
+const mockProspectivePricesEndpointWithResponse = (response) => {
+  fetchMock.mock(PROSPECTIVE_PRICES_URL, response, { method: 'POST' });
+};
+
+const mockProspectivePricesEndpointWithFailureStatus = (status) => {
+  fetchMock.mock(PROSPECTIVE_PRICES_URL, status);
+};
+
 const toBeNumberInRange = (min, max) => ({
   asymmetricMatch: actual => typeof actual === 'number' && actual >= min && actual <= max,
 });
@@ -66,7 +79,7 @@ describe('confluenceStatusChecker', () => {
 
   describe('polling', () => {
     it('will poll the product usage endpoint until confluence is active', async () => {
-      mockPricingEndpointWithResponse(activatingConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingActivating);
       mockProductUsageEndpointWithSuccess(5);
 
       const progressHandler = jest.fn();
@@ -90,8 +103,9 @@ describe('confluenceStatusChecker', () => {
     });
 
     it('will invoke the progressHandler with the status and progress', async () => {
-      mockPricingEndpointWithResponse(inactiveConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingInactive);
       mockProductUsageEndpointWithSuccess(1);
+      mockProspectivePricesEndpointWithResponse(prospectivePricesInactive);
 
       const result = await new Promise(async (resolve) => {
         const progressHandler = (state) => {
@@ -111,7 +125,7 @@ describe('confluenceStatusChecker', () => {
     });
 
     it('will invoke the progressHandler with the status UNKNOWN when the product usage endpoint fails', async () => {
-      mockPricingEndpointWithResponse(activatingConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingActivating);
       mockProductUsageEndpointWithFailureStatus(500);
 
       const progressHandler = jest.fn();
@@ -139,6 +153,7 @@ describe('confluenceStatusChecker', () => {
     it('will invoke the progressHandler with the status UNKNOWN when the pricing endpoint fails', async () => {
       mockPricingEndpointWithFailureStatus(500);
       mockProductUsageEndpointWithFailureStatus(500);
+      mockProspectivePricesEndpointWithFailureStatus(500);
 
       const progressHandler = jest.fn();
       const result = await new Promise(async (resolve) => {
@@ -169,19 +184,27 @@ describe('confluenceStatusChecker', () => {
 
   describe('manual check', () => {
     it('will return INACTIVE if Confluence is neither active nor activating', async () => {
-      mockPricingEndpointWithResponse(inactiveConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingInactive);
+      mockProspectivePricesEndpointWithResponse(prospectivePricesInactive);
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(INACTIVE);
     });
 
+    it('will return DEACTIVATED if Confluence is neither active nor activating, but has been activated previously', async () => {
+      mockPricingEndpointWithResponse(pricingInactive);
+      mockProspectivePricesEndpointWithResponse(prospectivePricesDeactivated);
+      const result = await confluenceStatusChecker.check();
+      expect(result).toBe(DEACTIVATED);
+    });
+
     it('will return ACTIVATING if Confluence is activating', async () => {
-      mockPricingEndpointWithResponse(activatingConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingActivating);
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(ACTIVATING);
     });
 
     it('will return ÅCTIVE if Confluence is active', async () => {
-      mockPricingEndpointWithResponse(activeConfluenceResponse);
+      mockPricingEndpointWithResponse(pricingActive);
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(ACTIVE);
     });

@@ -6,12 +6,18 @@ import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import ProgressBarContainer from '../styled/ProgressBarContainer';
 import ProgressBar from '../../progress-bar/components/ProgressBar';
 
-import { ACTIVE, INACTIVE, ACTIVATING, UNKNOWN } from '../../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../../common/productProvisioningStates';
 
 export default class ProgressIndicator extends Component {
   static propTypes = {
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf([ACTIVE, INACTIVE, ACTIVATING, UNKNOWN]).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     onComplete: PropTypes.func,
   };
 

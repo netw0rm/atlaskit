@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
-import { denormaliseEmojiServiceResponse, removeEmojiOneIdSkintone } from '../../../src/api/EmojiUtils';
+import { denormaliseEmojiServiceResponse, isEmojiVariationDescription } from '../../../src/api/EmojiUtils';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
 
@@ -86,6 +86,12 @@ describe('EmojiUtils', () => {
         checkFields(skinEmoji0, emoji.skinVariations[0], spriteFields);
         const skinEmoji0Rep = skinEmoji0.representation as SpriteRepresentation;
         checkFields(skinEmoji0Rep.sprite, spriteSheet, spriteSheetFields);
+
+        if (isEmojiVariationDescription(skinEmoji0)) {
+          expect(skinEmoji0.baseId).to.equal(e.id);
+        } else {
+          fail('The skin variation emoji did not contain a baseId');
+        }
       }
     });
 
@@ -182,20 +188,6 @@ describe('EmojiUtils', () => {
 
       const convertedEmoji = emojiData.emojis[0];
       expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
-    });
-  });
-
-  describe('#removeEmojiOneIdSkintone', () => {
-    it('remove modifier included in id', () => {
-      expect(removeEmojiOneIdSkintone('1f46e-1f3ff-200d-2642-fe0f')).to.equal('1f46e-200d-2642-fe0f');
-    });
-
-    it('remove modifier at end of id', () => {
-      expect(removeEmojiOneIdSkintone('1f46e-1f3fb')).to.equal('1f46e');
-    });
-
-    it('leave id unchanged when no skintone modifier', () => {
-      expect(removeEmojiOneIdSkintone('1f46e-200d-2642-fe0f')).to.equal('1f46e-200d-2642-fe0f');
     });
   });
 });

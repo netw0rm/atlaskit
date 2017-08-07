@@ -1,5 +1,5 @@
-import { removeEmojiOneIdSkintone } from '../EmojiUtils';
-import { atlassianCategory, customCategory, localStoragePrefix } from '../../constants';
+import { isEmojiVariationDescription } from '../EmojiUtils';
+import { localStoragePrefix } from '../../constants';
 import { EmojiDescription } from '../../types';
 import DuplicateLimitedQueue from '../../DuplicateLimitedQueue';
 import StoredDuplicateLimitedQueue from '../../StoredDuplicateLimitedQueue';
@@ -42,8 +42,8 @@ export class UsageFrequencyTracker {
   recordUsage(emoji: EmojiDescription): void {
     let emojiId = emoji.id;
     if (emojiId) {
-      if (emoji.category !== atlassianCategory && emoji.category !== customCategory) {
-        emojiId = removeEmojiOneIdSkintone(emojiId);
+      if (isEmojiVariationDescription(emoji)) {
+        emojiId = emoji.baseId;
       }
 
       this.gateway.submit(() => {

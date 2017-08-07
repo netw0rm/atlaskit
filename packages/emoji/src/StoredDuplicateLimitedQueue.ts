@@ -56,9 +56,6 @@ export default class StoredDuplicateLimitedQueue<T> extends DuplicateLimitedQueu
    * Initialise the queue contents from the configured Storage. If there is no data found in
    * storage then the queue will have no items added. Likewise, a failure to read or parse stored
    * data will be swallowed and no items are added to the queue.
-   *
-   * Note: the queue is not cleared before loading. If there are existing items in the queue
-   * the new items will be appended.
    */
   private load(): void {
     const itemsJson = this.storage.getItem(this.prefixedStorageKey);

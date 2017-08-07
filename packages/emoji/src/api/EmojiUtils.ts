@@ -2,6 +2,7 @@ import { KeyValues, RequestServiceOptions, ServiceConfig, utils as serviceUtils 
 import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
+  EmojiVariationDescription,
   EmojiMeta,
   EmojiRepresentation,
   EmojiResponse,
@@ -85,13 +86,18 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   return undefined;
 };
 
-export const denormaliseSkinEmoji = (skinEmojis?: EmojiServiceDescription[], meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
-  if (!skinEmojis) {
+export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariations, meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
+  if (!emoji.skinVariations) {
     return [];
   }
-  return skinEmojis.map((skin): EmojiDescriptionWithVariations => {
+
+  const skinEmoji: EmojiServiceDescription[] = emoji.skinVariations;
+  const baseId = emoji.id;
+
+  return skinEmoji.map((skin): EmojiVariationDescription => {
     const { representation, ...other } = skin;
     return {
+      baseId: baseId,
       ...other,
       representation: denormaliseServiceRepresentation(representation, meta),
     };
@@ -106,7 +112,7 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
     const { id, name, shortName, type, category, order, fallback, ascii, searchable } = emoji;
     const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
-    const skinVariations = denormaliseSkinEmoji(emoji.skinVariations, emojiData.meta);
+    const skinVariations = denormaliseSkinEmoji(emoji, emojiData.meta);
 
     return {
       id,
@@ -131,16 +137,6 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
   };
 };
 
-/**
- * Remove any skin tone modifications from an emoji one id. This doesn't apply to (and shouldn't be used with)
- * custom/site emoji.
- * i.e.
- *   1f46e-1f3ff-200d-2642-fe0f (Man police officer with dark skin) would become 1f46e-200d-2642-fe0f
- *
- * @param id the emoji Id from which to remove the skintone modifier
- */
-export const removeEmojiOneIdSkintone = (id: string): string => {
-  // looking for one of 5 possible skin tone modifiers either at the end of the string, or within the string
-  const skintoneModifierRegex = /(?:-1f3f[b-f]($|-))/i;
-  return id.replace(skintoneModifierRegex, '$1'); // replace with the capture group from the end of the match
+export const isEmojiVariationDescription = (object: any): object is EmojiVariationDescription => {
+  return 'baseId' in object;
 };

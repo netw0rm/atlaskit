@@ -85,7 +85,7 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *
    * Optional.
    */
-  recordSelection?(id: EmojiDescription): Promise<any>;
+  recordSelection?(emoji: EmojiDescription): Promise<any>;
 
   /**
    * Load media emoji that may require authentication to download, producing

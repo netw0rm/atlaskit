@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 
 import { Gateway, UsageFrequencyTracker } from '../../../../src/api/internal/UsageFrequencyTracker';
 import DuplicateLimitedQueue from '../../../../src/DuplicateLimitedQueue';
-import { grinEmoji } from '../../../../src/support/test-data';
+import { generateSkinVariation, grinEmoji } from '../../../../src/support/test-data';
 
 /**
  * Extend the UsageFrequencyTracker to provide access to its queue for mocking in tests.
@@ -75,6 +75,21 @@ describe('UsageFrequencyTracker', () => {
     let mockEnqueue: sinon.SinonStub;
     let mockClear: sinon.SinonSpy;
 
+    // delay and periodically check if mockEnqueue has been called
+    const waitForEnqueue = (testCompleter: () => void, assertions?: () => void) => {
+      // now delay, and periodically check if the work has completed.
+      const intervalId = setInterval(() => {
+        if (mockEnqueue.called) {
+          clearInterval(intervalId);
+          if (assertions) {
+            assertions();
+          }
+          testCompleter();
+        }
+      }, 50);
+
+    };
+
     beforeEach(() => {
       mockQueue = <DuplicateLimitedQueue<string>>{};
       mockEnqueue = sinon.stub();
@@ -90,12 +105,17 @@ describe('UsageFrequencyTracker', () => {
       expect(mockEnqueue.called).to.equal(false);
 
       // now delay, and periodically check if the work has completed.
-      const intervalId = setInterval(() => {
-        if (mockEnqueue.called) {
-          clearInterval(intervalId);
-          done();
-        }
-      }, 50);
+      waitForEnqueue(done);
+    });
+
+    it('should record base emoji not skin tone variation', (done) => {
+        const tracker = new TestUsageFrequencyTracker(mockQueue);
+        const skinToneEmoji = generateSkinVariation(grinEmoji,3);
+        tracker.recordUsage(skinToneEmoji);
+
+        waitForEnqueue(done, () => {
+          expect(mockEnqueue.calledWith(grinEmoji.id)).to.equal(true);
+        });
     });
 
     it('should clear the queue', () => {

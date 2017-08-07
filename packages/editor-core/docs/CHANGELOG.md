@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.2.3 (2017-08-07)
+
+
+* bug fix; use text rendering requirements for hipchat notifications (issues closed: ed-2392) ([abb5d28](https://bitbucket.org/atlassian/atlaskit/commits/abb5d28))
 ## 45.2.2 (2017-08-07)
 
 * bug fix; udpated isIsolating util for tables ([e7d569c](https://bitbucket.org/atlassian/atlaskit/commits/e7d569c))

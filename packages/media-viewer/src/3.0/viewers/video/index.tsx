@@ -48,7 +48,7 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     // extract the query string parameters
     const queryStringIndex = url.indexOf('?');
     let urlPath = url;
-    let urlParams = {};
+    let urlParams: any = {};
     if (queryStringIndex !== -1) {
       urlPath = url.substr(0, queryStringIndex);
       urlParams = qs.parse(url.substr(queryStringIndex + 1));

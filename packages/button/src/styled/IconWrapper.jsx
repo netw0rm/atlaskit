@@ -1,14 +1,11 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize, math } from '../../../theme/src';
 
-const getMargin = ({ isOnlyChild, spacing }) => {
-  if (spacing === 'none') {
-    return '0';
-  }
-  if (isOnlyChild) {
-    return `0 -${akGridSizeUnitless / 4}px`;
-  }
-  return `0 ${akGridSizeUnitless / 2}px`;
+const getMargin = ({ isOnlyChild, spacing, ...rest }) => {
+  if (spacing === 'none') return 0;
+  if (isOnlyChild) return `0 -${math.divide(gridSize, 4)(rest)}px`;
+
+  return `0 ${math.divide(gridSize, 2)(rest)}px`;
 };
 
 const IconWrapper = styled.span`

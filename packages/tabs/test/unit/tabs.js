@@ -10,9 +10,9 @@ import { name } from '../../package.json';
 const NOOP = () => {};
 
 describe(name, () => {
-  describe('StatelessTabs', () => {
+  describe('TabsStateless', () => {
     describe('exports', () => {
-      it('the StatelessTabs component', () => {
+      it('the TabsStateless component', () => {
         expect(TabsStateless).not.toBe(undefined);
         expect(new TabsStateless()).toBeInstanceOf(Component);
       });

@@ -7,9 +7,9 @@ import * as styles from './styles';
 import { customCategory } from '../../constants';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
-// import debug from '../../util/logger';
 import { getToneEmoji } from '../../util/filters';
 import { EmojiContext } from '../common/internal-types';
+import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
@@ -268,7 +268,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { onSelection } = this.props;
+    const { emojiProvider, onSelection } = this.props;
     const {
       activeCategory,
       availableCategories,
@@ -283,6 +283,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploadErrorMessage,
       uploadSupported,
     } = this.state;
+
+    const recordUsageOnSelection = createRecordSelectionDefault(emojiProvider, onSelection);
+
     const classes = [styles.emojiPicker];
 
     const picker = (
@@ -295,7 +298,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         <EmojiPickerList
           emojis={filteredEmojis}
           selectedCategory={selectedCategory}
-          onEmojiSelected={onSelection}
+          onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onOpenUpload={this.onOpenUpload}

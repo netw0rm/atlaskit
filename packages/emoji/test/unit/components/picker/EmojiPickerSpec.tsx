@@ -14,6 +14,7 @@ import {
     pngDataURL,
     pngFileUploadData
 } from '../../../../src/support/test-data';
+import { MockEmojiResource } from '../../../../src/support/MockEmojiResource';
 import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
@@ -289,6 +290,35 @@ describe('<EmojiPicker />', () => {
             expect(selection, 'Selected emoji defined').to.not.equal(undefined);
             if (selection) {
               expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
+            }
+          });
+        });
+      });
+    });
+
+    it('selecting emoji should call recordSelection on EmojiProvider', (done) => {
+      let selection: OptionalEmojiDescription;
+      const emojiResourcePromise = getEmojiResourcePromise() as Promise<MockEmojiResource>;
+      const clickOffset = 10;
+
+      return setupPicker({
+        onSelection: (emojiId, emoji) => { selection = emoji; },
+        emojiProvider: emojiResourcePromise,
+      } as Props)
+      .then(component => {
+        const list = component.find(EmojiPickerList);
+        const hoverButton = () => list.find(Emoji).at(clickOffset);
+        return waitUntil(() => hoverButton().exists()).then(() => {
+          hoverButton().simulate('mousedown', leftClick);
+          return waitUntil(() => !!selection).then(() => {
+            expect(selection, 'Selected emoji defined').to.not.equal(undefined);
+            if (selection) {
+              expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
+              emojiResourcePromise.then((provider) => {
+                expect(provider.recordedSelections).to.have.lengthOf(1);
+                expect(provider.recordedSelections[0].shortName).to.equal(allEmojis[clickOffset].shortName);
+                done();
+              });
             }
           });
         });

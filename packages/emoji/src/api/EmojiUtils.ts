@@ -136,7 +136,3 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
     mediaApiToken,
   };
 };
-
-export const isEmojiVariationDescription = (object: any): object is EmojiVariationDescription => {
-  return 'baseId' in object;
-};

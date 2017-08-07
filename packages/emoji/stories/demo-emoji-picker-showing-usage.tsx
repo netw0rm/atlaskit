@@ -60,16 +60,12 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
     };
   }
 
-  recordEmojiUsage(emojiId: EmojiId, emoji: OptionalEmojiDescription) {
-    const { emojiResource } = this.props;
-    if (emoji) {
-      emojiResource.recordSelection(emoji);
-      // give the tracker a chance to write to the queue and local storage before updating state
-      setTimeout(() => {
-        const newState = this.getFreshState();
-        this.setState(newState);
-      });
-    }
+  onSelection(emojiId: EmojiId, emoji: OptionalEmojiDescription) {
+    // give the tracker a chance to write to the queue and local storage before updating state
+    setTimeout(() => {
+      const newState = this.getFreshState();
+      this.setState(newState);
+    });
   }
 
   clearUsageData() {
@@ -96,7 +92,7 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
 
   render() {
     const { emojiResource } = this.props;
-    const onSelectionHandler = this.recordEmojiUsage.bind(this);
+    const onSelectionHandler = this.onSelection.bind(this);
     const clearHandler = this.clearUsageData.bind(this);
 
     return (

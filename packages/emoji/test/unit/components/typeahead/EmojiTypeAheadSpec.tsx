@@ -12,6 +12,7 @@ import {
     openMouthEmoji,
     standardBoomEmoji
 } from '../../../../src/support/test-data';
+import { MockEmojiResource } from '../../../../src/support/MockEmojiResource';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem  } from '../../_emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props } from '../../../../src/components/typeahead/EmojiTypeAhead';
@@ -148,6 +149,56 @@ describe('EmojiTypeAhead', () => {
         const item = getEmojiTypeAheadItemById(component, allEmojis[2].id);
         item.simulate('mousedown', leftClick);
         expect(chooseThirdItem()).to.equal(true);
+      })
+    );
+  });
+
+  it('should record selection on EmojiProvider even with no onSelection property', (done) => {
+    const emojiResourcePromise = getEmojiResourcePromise() as Promise<MockEmojiResource>;
+    return setupTypeAhead({
+      emojiProvider: emojiResourcePromise
+    })
+    .then(component =>
+      waitUntil(() => doneLoading(component)).then(() => {
+        const defaultEmojiShown = () => findEmojiItems(component).length === defaultListLimit;
+        expect(defaultEmojiShown()).to.equal(true);
+
+        const item = getEmojiTypeAheadItemById(component, allEmojis[2].id);
+        item.simulate('mousedown', leftClick);
+
+        // now ensure the MockEmojiProvider was called and records selection
+        emojiResourcePromise.then((provider) => {
+          expect(provider.recordedSelections).to.have.lengthOf(1);
+          expect(provider.recordedSelections[0].shortName).to.equal(allEmojis[2].shortName);
+          done();
+        });
+      })
+    );
+  });
+
+  it('should record selection on EmojiProvider and call onSelection property', (done) => {
+    let choseEmoji: OptionalEmojiDescription;
+
+    const emojiResourcePromise = getEmojiResourcePromise() as Promise<MockEmojiResource>;
+    return setupTypeAhead({
+      emojiProvider: emojiResourcePromise,
+      onSelection: (emojiId, emoji) => { choseEmoji = emoji; }
+    }).then(component =>
+      waitUntil(() => doneLoading(component)).then(() => {
+        const defaultEmojiShown = () => findEmojiItems(component).length === defaultListLimit;
+        const chooseThirdItem = () => (choseEmoji && choseEmoji.id === allEmojis[2].id);
+        expect(defaultEmojiShown()).to.equal(true);
+
+        const item = getEmojiTypeAheadItemById(component, allEmojis[2].id);
+        item.simulate('mousedown', leftClick);
+        expect(chooseThirdItem()).to.equal(true);
+
+        // now ensure the MockEmojiProvider was also called and records selection
+        emojiResourcePromise.then((provider) => {
+          expect(provider.recordedSelections).to.have.lengthOf(1);
+          expect(provider.recordedSelections[0].shortName).to.equal(allEmojis[2].shortName);
+          done();
+        });
       })
     );
   });

@@ -2,7 +2,8 @@ import { expect } from 'chai';
 
 import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
-import { denormaliseEmojiServiceResponse, isEmojiVariationDescription } from '../../../src/api/EmojiUtils';
+import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
+import { isEmojiVariationDescription } from '../../../src/type-helpers';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
 

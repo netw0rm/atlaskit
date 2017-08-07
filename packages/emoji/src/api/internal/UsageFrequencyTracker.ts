@@ -1,4 +1,4 @@
-import { isEmojiVariationDescription } from '../EmojiUtils';
+import { isEmojiVariationDescription } from '../../type-helpers';
 import { localStoragePrefix } from '../../constants';
 import { EmojiDescription } from '../../types';
 import DuplicateLimitedQueue from '../../DuplicateLimitedQueue';

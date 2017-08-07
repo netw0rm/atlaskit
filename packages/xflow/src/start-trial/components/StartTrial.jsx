@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { withAnalytics } from '@atlaskit/analytics';
+
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-
 import { MultiStep, Step } from '../../multi-step';
-
 import ConfirmTrial from './ConfirmTrial';
 import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
 
-export class StartTrialBase extends Component {
+class StartTrial extends Component {
   static propTypes = {
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     showGrantAccess: PropTypes.bool.isRequired,
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
@@ -22,7 +23,12 @@ export class StartTrialBase extends Component {
   };
 
   render() {
-    const { onComplete, onTrialActivating, showGrantAccess } = this.props;
+    const {
+      showGrantAccess,
+      onComplete,
+      onTrialActivating,
+      firePrivateAnalyticsEvent,
+    } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
         <Step
@@ -30,6 +36,12 @@ export class StartTrialBase extends Component {
             <ConfirmTrial
               onComplete={async () => {
                 await onTrialActivating();
+                // TODO: We need to capture failures from hasProductBeenEvaluated check.
+                if (showGrantAccess) {
+                  firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.true.skipping-grant-access');
+                } else {
+                  firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.false.showing-grant-access');
+                }
                 nextStep(showGrantAccess ? 1 : 2);
               }}
               onCancel={cancel}
@@ -41,5 +53,7 @@ export class StartTrialBase extends Component {
     );
   }
 }
+
+export const StartTrialBase = withAnalytics(StartTrial);
 
 export default withXFlowProvider(StartTrialBase, () => ({}));

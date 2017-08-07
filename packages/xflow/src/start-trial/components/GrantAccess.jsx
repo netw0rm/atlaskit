@@ -148,7 +148,11 @@ class GrantAccess extends Component {
       });
       return;
     }
-    firePrivateAnalyticsEvent('xflow.grant-access.continue-button.clicked');
+    firePrivateAnalyticsEvent('xflow.grant-access.continue-button.clicked', {
+      selectedRadio,
+      notfiyUsers: this.state.notifyUsers,
+      numberOfSelectedUsers: Object.keys(this.state.selectedUsers).length,
+    });
     this.setState({
       spinnerActive: true,
       continueButtonDisabled: true,
@@ -158,7 +162,10 @@ class GrantAccess extends Component {
       grantAccessToUsers(selectedRadio, selectedRadio === usersOption ? selectedUsers : null)
     )
       // TODO: only trigger stream hub notification if this.state.notifyUsers is true
-      .then(() => onComplete())
+      .then(() => {
+        firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
+        onComplete();
+      })
       .catch(() => {
         firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
         this.setState({
@@ -391,21 +398,21 @@ export default withXFlowProvider(
     xFlow: {
       config: {
         productLogo,
-        startTrial: {
+    startTrial: {
           grantAccessOptionItems,
-          grantAccessUserSelectPlaceholder,
-          grantAccessUsersOption,
-          grantAccessChooseOption,
-          grantAccessDefaultSelectedRadio,
-          grantAccessHeading,
-          grantAccessDefaultAccess,
+      grantAccessUserSelectPlaceholder,
+      grantAccessUsersOption,
+      grantAccessChooseOption,
+      grantAccessDefaultSelectedRadio,
+      grantAccessHeading,
+      grantAccessDefaultAccess,
         },
       },
-      grantAccessToUsers,
-      retrieveUsers,
-      progress,
-      status,
-      goToLearnMore,
+    grantAccessToUsers,
+    retrieveUsers,
+    progress,
+    status,
+    goToLearnMore,
     },
   }) => ({
     productLogo,

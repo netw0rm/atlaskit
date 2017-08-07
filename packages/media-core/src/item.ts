@@ -1,5 +1,4 @@
 import { MediaType } from './mediaTypes';
-import { TrelloBoardLinkApp } from './trello';
 import { SmartCardResponse } from './smartCardResponse';
 
 export type MediaItemType = 'file' | 'link';
@@ -57,7 +56,7 @@ export interface Resources {
   image?: Resource;
   file?: Resource;
   player?: Resource;
-  app?: LinkApp;
+  app?: Resource;
   smartCard?: SmartCardResponse;
 }
 
@@ -66,9 +65,8 @@ export interface Resource {
   type?: string;
   width?: number;
   height?: number;
+  aspect_ratio?: number;
   length?: number;
   html?: string;
 }
-
-export type LinkApp = TrelloBoardLinkApp;
 

@@ -2,6 +2,7 @@ import {
   ACTIVE,
   // ACTIVATING,
   INACTIVE,
+  // DEACTIVATED,
   // UNKNOWN
 } from '../../src/common/productProvisioningStates';
 /**

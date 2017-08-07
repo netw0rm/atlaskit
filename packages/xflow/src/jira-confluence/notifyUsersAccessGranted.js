@@ -22,24 +22,24 @@ export const createPayload = (adminDisplayName, instanceName, userId, usernames)
   return { events };
 };
 
-export default (adminDisplayName, instanceName, userId, usernames) => {
+export default async (adminDisplayName, instanceName, userId, usernames) => {
   if (usernames.length === 0) {
-    return Promise.resolve(null);
+    return null;
   }
 
-  return fetch(GLOBAL_ANALYTICS_ENDPOINT, {
+  const response = await fetch(GLOBAL_ANALYTICS_ENDPOINT, {
     credentials: 'same-origin',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(createPayload(adminDisplayName, instanceName, userId, usernames)),
-  }).then((response) => {
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to notify users that they were granted access. Status: ${response.status}`
-      );
-    }
-    return null;
   });
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to notify users that they were granted access. Status: ${response.status}`
+    );
+  }
+  return null;
 };

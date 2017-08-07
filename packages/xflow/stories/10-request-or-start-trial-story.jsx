@@ -6,14 +6,13 @@ import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
 import mockConfluenceStatusChecker from './providers/mockConfluenceStatusChecker';
-import { INACTIVE, ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
-  hasProductBeenEvaluated: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
       { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
@@ -40,10 +39,7 @@ const defaultRequestOrStartTrialProps = {
 storiesOf('RequestOrStartTrial')
   .add('if a user can add a product, show Start Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlow
-        {...defaultProps}
-        canCurrentUserAddProduct={async () => true}
-      >
+      <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => true}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
@@ -58,7 +54,7 @@ storiesOf('RequestOrStartTrial')
         <MockConfluenceXFlow
           {...defaultProps}
           canCurrentUserAddProduct={async () => true}
-          hasProductBeenEvaluated={async () => true}
+          productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
         >
           <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
         </MockConfluenceXFlow>
@@ -88,9 +84,7 @@ storiesOf('RequestOrStartTrial')
   )
   .add('if a user can not add a product, show Request Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlow
-        {...defaultProps}
-      >
+      <MockConfluenceXFlow {...defaultProps}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialRequested={action('onTrialRequested')}

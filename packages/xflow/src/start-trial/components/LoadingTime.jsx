@@ -21,14 +21,20 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../../common/productProvisioningStates';
 
 class LoadingTime extends Component {
   static propTypes = {
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, DEACTIVATED, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
     closeLoadingDialog: PropTypes.func,
     goToProduct: PropTypes.func.isRequired,

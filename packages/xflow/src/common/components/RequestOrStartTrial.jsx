@@ -12,7 +12,7 @@ import ErrorFlag from '../../start-trial/components/ErrorFlag';
 
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
 const Screens = {
   INITIALIZING: 'INITIALIZING',
@@ -56,7 +56,10 @@ class RequestOrStartTrial extends Component {
 
     let canAdd;
     try {
-      canAdd = activationState === INACTIVE ? await canCurrentUserAddProduct() : false;
+      canAdd =
+        activationState === INACTIVE || activationState === DEACTIVATED
+          ? await canCurrentUserAddProduct()
+          : false;
     } catch (e) {
       // canAdd = null;
     }
@@ -68,12 +71,18 @@ class RequestOrStartTrial extends Component {
       if (activationState === ACTIVATING) {
         waitForActivation();
       }
-    } else if (activationState === INACTIVE && canAdd === true) {
+    } else if (
+      (activationState === INACTIVE || activationState === DEACTIVATED) &&
+      canAdd === true
+    ) {
       this.setState({
         screen: Screens.START_TRIAL,
         activationState,
       });
-    } else if (activationState === INACTIVE && canAdd === false) {
+    } else if (
+      (activationState === INACTIVE || activationState === DEACTIVATED) &&
+      canAdd === false
+    ) {
       this.setState({
         screen: Screens.REQUEST_TRIAL,
         activationState,
@@ -94,12 +103,7 @@ class RequestOrStartTrial extends Component {
   ];
 
   render() {
-    const {
-      onAnalyticsEvent,
-      onComplete,
-      onTrialRequested,
-      onTrialActivating,
-    } = this.props;
+    const { onAnalyticsEvent, onComplete, onTrialRequested, onTrialActivating } = this.props;
 
     return (
       <App onAnalyticsEvent={onAnalyticsEvent}>

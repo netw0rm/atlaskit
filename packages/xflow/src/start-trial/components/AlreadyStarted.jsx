@@ -13,7 +13,13 @@ import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import ProgressIndicator from './ProgressIndicator';
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../../common/productProvisioningStates';
 
 export class AlreadyStartedBase extends Component {
   static propTypes = {
@@ -25,7 +31,7 @@ export class AlreadyStartedBase extends Component {
     goToProduct: PropTypes.func,
     closeAlreadyStartedDialog: PropTypes.func,
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
   };
 
   static defaultProps = {

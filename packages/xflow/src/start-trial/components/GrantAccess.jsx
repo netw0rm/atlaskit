@@ -28,7 +28,13 @@ import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../../common/productProvisioningStates';
 
 const messages = defineMessages({
   noMatchesFound: {
@@ -54,7 +60,7 @@ class GrantAccess extends Component {
     intl: intlShape.isRequired,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, UNKNOWN]).isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,

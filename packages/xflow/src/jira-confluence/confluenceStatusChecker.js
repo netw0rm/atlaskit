@@ -1,4 +1,10 @@
-import { ACTIVE, ACTIVATING, INACTIVE, UNKNOWN } from '../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
  * has come up.
@@ -8,10 +14,36 @@ const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
 
 export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';
 export const PRICING_URL = '/admin/rest/billing/api/instance/pricing';
+export const PROSPECTIVE_PRICES_URL = '/admin/rest/billing/api/instance/prospective-prices';
 
 let interval = null;
 let startTime = 0;
 let currentStatus = UNKNOWN;
+
+async function hasConfluenceBeenEvaluated() {
+  const response = await fetch(PROSPECTIVE_PRICES_URL, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    body: JSON.stringify({
+      productKeys: ['confluence.ondemand'],
+    }),
+  });
+
+  if (!response.ok) {
+    return UNKNOWN;
+  }
+
+  const prospectivePrices = await response.json();
+  return prospectivePrices.deactivatedProducts.some(
+    product => product.productKey === 'confluence.ondemand'
+  )
+    ? DEACTIVATED
+    : INACTIVE;
+}
 
 async function checkInitialStatus() {
   const response = await fetch(PRICING_URL, {
@@ -34,7 +66,8 @@ async function checkInitialStatus() {
   } else if (isActivating) {
     return ACTIVATING;
   }
-  return INACTIVE;
+
+  return await hasConfluenceBeenEvaluated();
 }
 
 async function checkActivatingStatus() {

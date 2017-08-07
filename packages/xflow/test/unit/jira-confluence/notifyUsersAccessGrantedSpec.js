@@ -18,9 +18,9 @@ const TEST_ADMIN_DISPLAY_NAME = 'The Administrator';
 const TEST_INSTANCE_NAME = 'acme.atlassian.net';
 const TEST_USERNAME = 'admin%40acme.org';
 
-const NEVER_CALL_NAME = 'NEVER_CALL_ENDPOINT';
+const NEVER_CALL_ENDPOINT = 'NEVER_CALL_ENDPOINT';
 const shouldNeverContactEndpoint = () => {
-  fetchMock.mock(GLOBAL_ANALYTICS_ENDPOINT, {}, { name: NEVER_CALL_NAME });
+  fetchMock.mock(GLOBAL_ANALYTICS_ENDPOINT, {}, { name: NEVER_CALL_ENDPOINT });
 };
 
 describe('notifyUsersAccessGranted', () => {
@@ -37,7 +37,7 @@ describe('notifyUsersAccessGranted', () => {
       []
     );
     assert.equal(result, null);
-    assert.isFalse(fetchMock.done(NEVER_CALL_NAME));
+    assert.isFalse(fetchMock.done(NEVER_CALL_ENDPOINT));
   });
 
   it('should create a payload which has as many events as usernames defined', () => {

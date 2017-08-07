@@ -12,7 +12,6 @@ const overrideImplementations = {
   canCurrentUserAddProduct: notImplemented,
   isProductInstalledOrActivating: notImplemented,
   canCurrentUserGrantAccessToProducts: notImplemented,
-  hasProductBeenEvaluated: notImplemented,
 
   requestTrialAccess: notImplemented,
   requestTrialAccessWithNote: notImplemented,

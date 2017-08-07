@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 2.2.2 (2017-08-07)
+
+* bug fix; fix correct dep for @atlaskit/spinner ([155979d](https://bitbucket.org/atlassian/atlaskit/commits/155979d))
 ## 2.2.1 (2017-08-03)
 
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))

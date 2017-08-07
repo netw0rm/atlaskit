@@ -88,7 +88,7 @@ const pmSchemaToMdMapping = {
   marks: {
     em: 'emphasis',
     strong: 'text',
-    link: ['link', 'autolink', 'reference'],
+    link: ['link', 'autolink', 'reference', 'linkify'],
     strike: 'strikethrough',
     code: 'backticks',
   }

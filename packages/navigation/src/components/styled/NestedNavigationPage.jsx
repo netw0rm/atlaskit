@@ -1,8 +1,8 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { nestedNavigationAnimationTime } from '../../shared-variables';
+import { animationTimeUnitless } from '../../shared-variables';
 
-const animationTime = nestedNavigationAnimationTime / 1000;
+const animationTime = animationTimeUnitless / 1000;
 
 export const getAnimation = ({ isEntering, isLeaving, traversalDirection }) => (
   (isEntering || isLeaving) ? (

@@ -45,7 +45,6 @@ export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
-export const nestedNavigationAnimationTime: number = 500;
 export const zIndex = {
   base: akZIndexNavigation,
   // needs to sit on top of navigation and the drawer

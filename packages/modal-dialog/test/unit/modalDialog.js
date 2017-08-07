@@ -7,6 +7,7 @@ import ModalWrapper from '../../src/styled/ModalWrapper';
 import ModalPositioner from '../../src/styled/ModalPositioner';
 import HeaderFooterWrapper from '../../src/styled/HeaderFooterWrapper';
 import KeylineMask from '../../src/styled/KeylineMask';
+import ModalContainer, { getHeight } from '../../src/styled/ModalContainer';
 
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
@@ -30,6 +31,28 @@ describe('ak-modal-dialog', () => {
         // need to simulate onAnimationEnd it doesn't seem to fire after setProps
         wrapper.find(ModalPositioner).simulate('animationEnd');
         expect(wrapper.find(ModalPositioner).length).toBe(0);
+      });
+    });
+
+    describe('height', () => {
+      it('should be passed to ModalContainer', () => {
+        expect(
+          shallow(<ModalDialog height="42%" isOpen />).find(ModalContainer).prop('height')
+        ).toBe('42%');
+      });
+
+      it('should return px if number', () => {
+        expect(getHeight({ height: 42 })).toBe('42px');
+      });
+
+      it('should return raw value if string', () => {
+        expect(getHeight({ height: '42%' })).toBe('42%');
+        expect(getHeight({ height: '42em' })).toBe('42em');
+        expect(getHeight({ height: 'initial' })).toBe('initial');
+      });
+
+      it('should return "auto" if not supplied', () => {
+        expect(getHeight({})).toBe('auto');
       });
     });
 

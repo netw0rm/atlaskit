@@ -78,6 +78,14 @@ const messages = defineMessages({
     id: 'xflow.j2c.start-trial.already-started.heading',
     defaultMessage: 'You already have Confluence',
   },
+  alreadyStartedMessage0: {
+    id: 'xflow.j2c.start-trial.already-started.message.p0',
+    defaultMessage: 'A site administrator already started a trial.',
+  },
+  alreadyStartedMessage1: {
+    id: 'xflow.j2c.start-trial.already-started.message.p1',
+    defaultMessage: 'You’re all set to create vital project documentation with your team.',
+  },
   alreadyStartedGetStartedButtonText: {
     id: 'xflow.j2c.start-trial.already-started.get-started-button',
     defaultMessage: 'Get Started',
@@ -155,29 +163,15 @@ export const defaultProps = intl => ({
       alreadyStartedHeading: intl.formatMessage(messages.alreadyStartedHeading),
 
       alreadyStartedMessage: (
-        <FormattedMessage
-          id="xflow.j2c.start-trial.already-started.message"
-          tagName="div"
-          defaultMessage="{p1}{p2}"
-          values={{
-            p1: (
-              <FormattedMessage
-                id="xflow.j2c.start-trial.already-started.message.p1"
-                tagName="p"
-                defaultMessage="A site administrator already started a trial."
-              />
-            ),
-            p2: (
-              <FormattedMessage
-                id="xflow.j2c.start-trial.already-started.message.p2"
-                tagName="p"
-                defaultMessage="You’re all set to create vital project documentation with your team."
-              />
-            ),
-          }}
-        />
+        <div>
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage0)}
+          </p>
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage1)}
+          </p>
+        </div>
       ),
-
       alreadyStartedGetStartedButtonText: intl.formatMessage(
         messages.alreadyStartedGetStartedButtonText
       ),

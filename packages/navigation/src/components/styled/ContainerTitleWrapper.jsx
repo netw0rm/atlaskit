@@ -10,8 +10,12 @@ const titlePadding = `0 ${gridSize * 1.5}px 0 ${gridSize * 1.5}px`;
 const ContainerTitleWrapper = styled.div`
   margin-bottom: ${gridSize / 2}px;
   padding: ${titlePadding};
+  
+  /* Set max and min width to make sure that the texts can be truncated  */
   max-width: 100%;
-  min-width: 0;
+  min-width: ${gridSize * 3}px;
+  /* Required for IE11 to makes truncate works */
+  width: 100%;
 
   ${whenCollapsed`
     padding: 0;

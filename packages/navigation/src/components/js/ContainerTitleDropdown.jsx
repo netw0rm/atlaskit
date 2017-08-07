@@ -43,9 +43,16 @@ export default class ContainerTitleDropdown extends PureComponent {
           href={href}
           linkComponent={linkComponent}
         />
-        <ContainerTitleDropdownIcon>
-          <ExpandIcon size="medium" label={text} />
-        </ContainerTitleDropdownIcon>
+        {
+          /* This condition should be removed when droplist.js remove its display inline-flex style*/
+          text && !icon ? (
+            <ContainerTitleDropdownIcon>
+              <ExpandIcon size="medium" label={text} />
+            </ContainerTitleDropdownIcon>
+          ) : null
+            
+        }
+        
       </ContainerTitleDropdownWrapper>
     );
   }

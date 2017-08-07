@@ -15,6 +15,7 @@ const getPadding = ({ theme }) => {
 
 const ContainerTitleDropdownWrapper = styled.div`
   padding: ${getPadding};
+  overflow: hidden; /* fix the overhang */
   display: flex;
   justify-content: space-between;
   align-content: space-between;

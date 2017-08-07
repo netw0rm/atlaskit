@@ -14,14 +14,6 @@ type Props = {|
 |}
 
 export default class BasicProjectSwitcher extends PureComponent {
-  static defaultProps = {
-    icon: <NucleusIcon />,
-    text: 'Project Switcher very long text',
-    subText: 'Software project',
-    shouldFitContainer: true,
-    position: 'bottom left',
-  }
-
   props: Props
 
   render() {

@@ -15,16 +15,16 @@ export const xFlowShape = PropTypes.shape({
       notePlaceholder: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
-      grantOptionItems: PropTypes.arrayOf(
+      grantAccessOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
           label: PropTypes.string,
         })
       ),
-      grantDefaultSelectedRadio: PropTypes.string,
-      grantUserSelectPlaceholder: PropTypes.string,
-      grantUsersOption: PropTypes.string,
-      grantChooseOption: PropTypes.string,
+      grantAccessDefaultSelectedRadio: PropTypes.string,
+      grantAccessUserSelectPlaceholder: PropTypes.string,
+      grantAccessUsersOption: PropTypes.string,
+      grantAccessChooseOption: PropTypes.string,
       alreadyStartedHeading: PropTypes.string,
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,

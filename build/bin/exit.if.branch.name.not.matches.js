@@ -1,22 +1,19 @@
-#!/usr/bin/env node
-
 /*
-    This script simply returns a non-zero exit code if the current branch name does not match a
-    passed in regex pattern.
+  This function is used to exit certain functions early based on variables (e.g. storybooks using
+  BRANCHES_ALLOWED_TO_BUILD_STORYBOOKS or browserstsack using BRANCHES_ALLOWED_TO_RUN_BROWSERSTACK)
 */
+function exitIfBranchNameMatches(regexString) {
+  if (!regexString) {
+    console.error('exitIfBranchNameMatches error: No regex string provided');
+    process.exit(1);
+  }
+  const regexToMatch = new RegExp(regexString);
+  const branchName = process.env.BITBUCKET_BRANCH;
 
-if (process.argv.length < 3) {
-  console.error('No PATTERN provided');
-  console.error('USAGE: node exit.if.branch.name.not.matches.js "PATTERN" || exit');
+  if (!regexToMatch.test(branchName)) {
+    console.error(`${branchName} does not match pattern ${regexString} - exiting`);
+    process.exit(1);
+  }
 }
 
-const regexString = process.argv[2];
-const regexToMatch = new RegExp(regexString);
-const branchName = process.env.BITBUCKET_BRANCH;
-
-if (regexToMatch.test(branchName)) {
-  process.exit(0);
-} else {
-  console.error(`${branchName} does not match pattern ${regexString} - exiting`);
-  process.exit(1);
-}
+module.exports = exitIfBranchNameMatches;

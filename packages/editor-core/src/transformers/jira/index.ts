@@ -85,8 +85,14 @@ export default class JIRATransformer implements Transformer<string> {
 
     // Process through nodes in reverse (so deepest child elements are first).
     for (let i = nodes.length - 1; i >= 0; i--) {
-      const node = nodes[i];
-      const content = this.getContent(node, convertedNodes);
+      const node = nodes[i] as Element;
+      // for tables we take tbody content, because tbody is not in schema so the whole bfs thing wouldn't work
+      const targetNode = (
+        node.tagName && node.tagName.toUpperCase() === 'TABLE'
+          ? node.firstChild!
+          : node
+      );
+      const content = this.getContent(targetNode, convertedNodes);
       const candidate = convert(content, node, this.schema);
       if (typeof candidate !== 'undefined') {
         convertedNodes.set(node, candidate);

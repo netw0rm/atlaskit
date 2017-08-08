@@ -16,6 +16,9 @@ export interface PdfViewerProps {
 export interface PdfViewerState {
   dataURI?: string;
   scale: number;
+  page: number;
+  error: any; // TODO:
+  pages?: any; // TODO?
 }
 
 export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
@@ -23,7 +26,9 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   private defaultScale: number = 2;
 
   state: PdfViewerState = {
-    scale: this.defaultScale
+    scale: this.defaultScale,
+    page: 1,
+    error: null
   };
 
   componentDidMount() {
@@ -40,13 +45,30 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   updateUrl = () => {
     const {metadata, context, identifier} = this.props;
     getBinaryURL(metadata, context, identifier.collectionName).then((url) => {
-      this.setState({dataURI: url});
+      this.setState({
+        dataURI: url,
+        error: null
+      });
     });
   }
 
   render() {
     const {dataURI, scale} = this.state;
-    const pdfViewer = dataURI ? <PDF file={dataURI} scale={scale}/> : null;
+    const pdfComponent = <PDF
+      file={dataURI}
+      page={this.state.page}
+      scale={scale}
+      onPageComplete={this.onPageComplete}
+      onDocumentComplete={this.onDocumentComplete}
+      onDocumentError={this.onDocumentError}
+    />;
+    const pdfViewer = dataURI ? pdfComponent : null;
+
+    if (this.state.error) {
+      return (
+        <div>We need a view for ERROR</div>
+      )
+    }
     return (
       <Wrapper>
         <ItemTools
@@ -58,6 +80,18 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
         {pdfViewer}
       </Wrapper>
     );
+  }
+
+  onPageComplete = (page) => {
+    this.setState({ page });
+  }
+
+  onDocumentComplete = (pages) => {
+    this.setState({ page: 1, pages });
+  }
+
+  onDocumentError = (error) => {
+    this.setState({ error });
   }
 
   onZoomOut = () => {

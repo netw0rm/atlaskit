@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {ImageViewerWrapper, Img} from './styled';
 import {Context, FileItem} from '@atlaskit/media-core';
-import {MediaEditor} from '@atlaskit/media-editor';
+// import {MediaEditor} from '@atlaskit/media-editor';
 import {ItemTools} from '../../views/itemTools';
 import {MediaIdentifier} from '../../domain';
 
@@ -18,9 +18,9 @@ export interface ImageViewerState {
   isEditing: boolean;
 }
 
-const defaultDimensions = {width: 582, height: 54};
-const defaultColor = {red: 250, green: 61, blue: 17};
-const defaultTool = 'brush';
+// const defaultDimensions = {width: 582, height: 54};
+// const defaultColor = {red: 250, green: 61, blue: 17};
+// const defaultTool = 'brush';
 
 export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
 
@@ -59,53 +59,57 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
 
     return (
       <ImageViewerWrapper>
-        {isEditing ? this.renderEditor() : <Img src={dataURI} style={{transform}}/>}
+        {isEditing ? this.renderEditor() : <Img onError={this.onError} src={dataURI} style={{transform}}/>}
         <ItemTools
           onZoomOut={this.onZoomOut}
           onZoomIn={this.onZoomIn}
           onZoomFit={this.onZoomFit}
           zoomLevel={zoomLevel}
           isEditing={isEditing}
-          onEditModeChange={this.onEditModeChange}
         />
       </ImageViewerWrapper>
     );
   }
 
+  onError() {
+    // TODO: this needs to be implemented
+    console.log('error loading image');
+  }
+
   renderEditor() {
-    const {dataURI} = this.state;
+    // const {dataURI} = this.state;
 
-    if (!dataURI) {
-      return;
-    }
+    // if (!dataURI) {
+    //   return;
+    // }
 
-    // TODO: Read dimensions from Image
-    // TODO: Save image on change
-    return (
-      <MediaEditor
-        imageUrl={dataURI}
-        dimensions={defaultDimensions}
-        backgroundColor={{red: 255, green: 255, blue: 255}}
-        shapeParameters={{color: defaultColor, lineWidth: 10, addShadow: true}}
-        tool={defaultTool}
-        onLoad={this.onEditorLoad}
-        onError={this.onEditorError}
-        onShapeParametersChanged={this.onShapeParametersChanged}
-      />
-    );
+    // // TODO: Read dimensions from Image
+    // // TODO: Save image on change
+    // return (
+    //   <MediaEditor
+    //     imageUrl={dataURI}
+    //     dimensions={defaultDimensions}
+    //     backgroundColor={{red: 255, green: 255, blue: 255}}
+    //     shapeParameters={{color: defaultColor, lineWidth: 10, addShadow: true}}
+    //     tool={defaultTool}
+    //     onLoad={this.onEditorLoad}
+    //     onError={this.onEditorError}
+    //     onShapeParametersChanged={this.onShapeParametersChanged}
+    //   />
+    // );
   }
 
   onShapeParametersChanged() {
 
   }
 
-  onEditorLoad() {
+  // onEditorLoad() {
 
-  }
+  // }
 
-  onEditorError() {
+  // onEditorError() {
 
-  }
+  // }
 
   onEditModeChange = (isEditing: boolean) => {
     this.setState({isEditing});

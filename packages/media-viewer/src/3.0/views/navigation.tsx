@@ -42,8 +42,14 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
    const {canNavigateLeft, canNavigateRight} = this;
 
    return (<div>
-    {canNavigateLeft ? <ArrowLeftWrapper className="visible-on-hover" onClick={this.navigate('left')}><ArrowLeft size="large" label="navigate left" /></ArrowLeftWrapper> : null}
-    {canNavigateRight ? <ArrowRightWrapper className="visible-on-hover" onClick={this.navigate('right')}><ArrowRight size="large" label="navigate right" /></ArrowRightWrapper> : null}
+    {canNavigateLeft ? (
+      <ArrowLeftWrapper className="visible-on-hover" onClick={this.navigate('left')}>
+        <ArrowLeft size="large" label="navigate left" />
+      </ArrowLeftWrapper>) : null }
+    {canNavigateRight ? (
+      <ArrowRightWrapper className="visible-on-hover" onClick={this.navigate('right')}>
+        <ArrowRight size="large" label="navigate right" />
+      </ArrowRightWrapper>) : null }
    </div>);
   }
 

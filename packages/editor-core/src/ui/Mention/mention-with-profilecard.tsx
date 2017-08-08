@@ -50,9 +50,7 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
         ...action,
         callback: (evt: SyntheticEvent<any>) => {
           this.setState({ visible: false });
-
           action.callback();
-          evt.stopPropagation();
         }
       };
     });

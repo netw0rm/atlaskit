@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 18.2.0 (2017-08-08)
+
+* feature; add onKeyDown to navigation's drawer ([a7cb6ec](https://bitbucket.org/atlassian/atlaskit/commits/a7cb6ec))
 ## 18.1.2 (2017-08-07)
 
 * bug fix; change nested navigation animation time to 200ms (issues closed: ak-3207) ([0bc6871](https://bitbucket.org/atlassian/atlaskit/commits/0bc6871))

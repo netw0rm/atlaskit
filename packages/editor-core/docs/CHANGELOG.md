@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 45.3.0 (2017-08-08)
+
+
+* bug fix; render profile cards in portal (issues closed: ed-2386) ([f7f6834](https://bitbucket.org/atlassian/atlaskit/commits/f7f6834))
+* feature; added encoder/parser for tables in JIRA (issues closed: ed-2396) ([c2e3d1c](https://bitbucket.org/atlassian/atlaskit/commits/c2e3d1c))
 ## 45.2.4 (2017-08-07)
 
 * bug fix; bumped the version of media-card ([4bbfac7](https://bitbucket.org/atlassian/atlaskit/commits/4bbfac7))

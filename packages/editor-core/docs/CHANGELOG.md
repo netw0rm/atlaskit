@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 45.4.0 (2017-08-08)
+
+
+* bug fix; fix cursor position when deleting cols/rows (issues closed: ed-2406) ([30f98d7](https://bitbucket.org/atlassian/atlaskit/commits/30f98d7))
+
+* feature; move Markdown parser and serialiser into editor-core transformers (issues closed: ed-2402) ([8eba5d9](https://bitbucket.org/atlassian/atlaskit/commits/8eba5d9))
 ## 45.3.0 (2017-08-08)
 
 

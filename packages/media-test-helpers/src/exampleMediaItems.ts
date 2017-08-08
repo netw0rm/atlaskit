@@ -159,6 +159,12 @@ export const docFileId = {
   collectionName
 };
 
+export const largePdfFileId = {
+  id: '0a510b7f-4168-44d8-b4d7-f5639ecefa2c',
+  mediaItemType: fileType,
+  collectionName
+};
+
 export const unknownFileId = {
   id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
   mediaItemType: fileType,

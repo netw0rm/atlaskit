@@ -35,7 +35,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
     const { objectAri, containerAri } = rendererContext || { objectAri: '', containerAri: '' };
 
     return (
-      <AkTaskItem taskId={localId} isDone={state === 'DONE'} ari={objectAri} containerAri={containerAri} taskDecisionProvider={taskDecisionProvider}>
+      <AkTaskItem taskId={localId} isDone={state === 'DONE'} objectAri={objectAri} containerAri={containerAri} taskDecisionProvider={taskDecisionProvider}>
         {children}
       </AkTaskItem>
     );

@@ -15,7 +15,13 @@ import {
 } from '../../prosemirror';
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
-import { getColumnPos, getRowPos, getTablePos } from './utils';
+import {
+  getColumnPos,
+  getRowPos,
+  getTablePos,
+  getSelectedColumn,
+  getSelectedRow
+} from './utils';
 import { analyticsService } from '../../analytics';
 
 export type TableStateSubscriber = (state: TableState) => any;
@@ -111,17 +117,30 @@ export class TableState {
       this.focusEditor();
       analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
     } else if (isColumnSelected) {
-      tableBaseCommands.deleteColumn(state, dispatch);
-      this.moveCursorToFirstCell();
       analyticsService.trackEvent('atlassian.editor.format.table.delete_column.button');
+
+      // move the cursor in the column to the left of the deleted column(s)
+      const map = TableMap.get(this.tableNode!);
+      const { anchor, head } = getSelectedColumn(this.view.state, map);
+      const column = Math.min(anchor, head);
+      const nextPos =  map.positionAt(0, column > 0 ? column - 1 : 0, this.tableNode!);
+      tableBaseCommands.deleteColumn(state, dispatch);
+      this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
       const { tableHeader } = this.view.state.schema.nodes;
       const cell = this.getCurrentCell();
       const event = cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
       analyticsService.trackEvent(`atlassian.editor.format.table.${event}.button`);
 
+      // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
+      const { anchor, head } = getSelectedRow(this.view.state);
+      const map = TableMap.get(this.tableNode!);
+      const minRow = Math.min(anchor, head);
+      const maxRow = Math.max(anchor, head);
+      const isRemovingLastRow = maxRow === (map.height - 1);
       tableBaseCommands.deleteRow(state, dispatch);
-      this.moveCursorToFirstCell();
+      const nextPos =  map.positionAt(isRemovingLastRow ? minRow - 1 : minRow, 0, this.tableNode!);
+      this.moveCursorTo(nextPos);
     } else {
       // replace selected cells with empty cells
       this.emptySelectedCells();
@@ -487,14 +506,6 @@ export class TableState {
     const offset = this.tableStartPos();
     if (offset) {
       this.moveCursorInsideTableTo(pos + offset);
-    }
-  }
-
-  private moveCursorToFirstCell (): void {
-    if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const pos =  map.positionAt(0, 0, this.tableNode);
-      this.moveCursorTo(pos);
     }
   }
 }

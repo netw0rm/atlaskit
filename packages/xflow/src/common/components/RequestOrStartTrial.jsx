@@ -54,7 +54,12 @@ class RequestOrStartTrial extends Component {
   }
 
   resetRequestOrStartTrial = async () => {
-    const { getProductActivationState, canCurrentUserAddProduct, waitForActivation } = this.props;
+    const {
+      getProductActivationState,
+      canCurrentUserAddProduct,
+      waitForActivation,
+      firePrivateAnalyticsEvent,
+    } = this.props;
     const activationState = await getProductActivationState();
 
     let canAdd;
@@ -65,6 +70,7 @@ class RequestOrStartTrial extends Component {
           : false;
     } catch (e) {
       // Do nothing. Leave "canAdd" undefined.
+      firePrivateAnalyticsEvent('xflow.request-or-start-trial.trusted-user-check.failed');
     }
 
     if (activationState === ACTIVE || activationState === ACTIVATING) {
@@ -92,7 +98,6 @@ class RequestOrStartTrial extends Component {
         activationState,
       });
     } else {
-      const { firePrivateAnalyticsEvent } = this.props;
       firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
       this.setState({ initializingCheckFailed: true });
     }

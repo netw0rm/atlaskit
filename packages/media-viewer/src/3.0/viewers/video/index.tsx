@@ -3,9 +3,11 @@ import {Component} from 'react';
 import * as qs from 'query-string';
 import * as throttle from 'lodash.throttle';
 import {Context, FileItem} from '@atlaskit/media-core';
-import Slider from '@atlaskit/field-range';
-import {Wrapper, VideoContainer, Video, ControlsWrapper} from './styled';
+import {Wrapper, VideoContainer, ControlsWrapper} from './styled';
 import {MediaIdentifier} from '../../domain';
+import {MediaElement} from '../../components/MediaElement';
+import {PlayerControls} from '../../components/PlayerControls';
+
 
 export interface QualityURL {
   sd?: string;
@@ -19,10 +21,13 @@ export interface VideoViewerProps {
 }
 
 export interface VideoViewerState {
-  quality: string;
+  quality: 'sd' | 'hd';
   videoURLs: QualityURL;
   posterURLs: QualityURL;
   videoContainerWidth: number;
+  playing: boolean;
+  duration: number;
+  time: number;
 }
 
 export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
@@ -33,7 +38,10 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     quality: 'sd',
     videoURLs: {},
     posterURLs: {},
-    videoContainerWidth: 0
+    videoContainerWidth: 0,
+    playing: false,
+    duration: 0,
+    time: 0
   };
 
   // TODO: we should move all logic for extracting metadata and fetching urls etc into a higher layer
@@ -97,6 +105,16 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     ;
   }
 
+  get videoURL(): string {
+    const {quality, videoURLs} = this.state;
+    return videoURLs[quality] || '';
+  }
+
+  get posterURL(): string {
+    const {quality, posterURLs} = this.state;
+    return posterURLs[quality] || '';
+  }
+
   calcVideoContainerHeight() {
     const {videoContainerWidth} = this.state;
     if (!videoContainerWidth) {
@@ -113,12 +131,20 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     }
   }
 
-  handleChangeVideoElement = element => {
+  handleChangeVideoContainerElement = element => {
     this.videoContainerElement = element;
     this.handleResizeWindow();
   }
 
   handleResizeWindow = throttle(() => this.updateVideoContainerWidth(), 100);
+
+  handlePlay = () => this.setState({playing: true});
+  handlePause = () => this.setState({playing: false});
+  handleChangeQuality = quality => this.setState({quality});
+
+  handlePlaybackChange = state => this.setState({playing: state === 'playing'});
+  handleDurationChange = duration => this.setState({duration});
+  handleTimeChange = time => this.setState({time});
 
   componentDidMount() {
 
@@ -141,27 +167,49 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     window.removeEventListener('resize', this.handleResizeWindow);
   }
 
+  renderVideo() {
+    const {playing} = this.state;
+    return (
+      <VideoContainer
+        innerRef={this.handleChangeVideoContainerElement}
+        style={{height: this.calcVideoContainerHeight()}}
+      >
+        <MediaElement
+          src={this.videoURL}
+          poster={this.posterURL}
+          playing={playing}
+          onPlaybackChange={this.handlePlaybackChange}
+          onDurationChange={this.handleDurationChange}
+          onTimeChange={this.handleTimeChange}
+        />
+      </VideoContainer>
+    );
+  }
+
+  renderControls() {
+    const {playing, duration, time, quality} = this.state;
+    return (
+      <ControlsWrapper>
+        <PlayerControls
+          playing={playing}
+          duration={duration}
+          time={time}
+          quality={quality}
+          onPlay={this.handlePlay}
+          onPause={this.handlePause}
+          onChangeQuality={this.handleChangeQuality}
+        />
+      </ControlsWrapper>
+    );
+  }
+
   render() {
-    const {quality, videoURLs, posterURLs} = this.state;
-    // TODO: Add ADG3 controls, see what features from video.js do we need
     return (
       <Wrapper>
-        <VideoContainer innerRef={this.handleChangeVideoElement} style={{height: this.calcVideoContainerHeight()}}>
-          <Video src={videoURLs[quality] || ''} controls={true} poster={posterURLs[quality] || ''}/>
-        </VideoContainer>
-        <ControlsWrapper>
-          <Slider
-            value={20}
-            min={0}
-            max={100}
-            onChange={this.onSliderChange}
-          />
-        </ControlsWrapper>
+        {this.renderVideo()}
+        {this.renderControls()}
       </Wrapper>
     );
   }
 
-  onSliderChange = () => {
-
-  }
 }

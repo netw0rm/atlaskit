@@ -18,17 +18,21 @@ export interface AkProfilecardTriggerActions {
 
 export type AkProfilecardTriggerPosition = 'top left' | 'top right' | 'right top' | 'right bottom' | 'bottom right' | 'bottom left' | 'left bottom' | 'left top';
 
-export interface AkProfilecardTriggerProps {
-  position?: AkProfilecardTriggerPosition;
+export interface AkProfilecardResourcedProps {
   userId: string;
   cloudId: string;
   actions?: AkProfilecardTriggerActions[];
   resourceClient: AkProfileClient;
-  trigger?: 'click' | 'hover';
   analytics?: () => void;
 }
 
+export interface AkProfilecardTriggerProps extends AkProfilecardResourcedProps {
+  position?: AkProfilecardTriggerPosition;
+  trigger?: 'click' | 'hover';
+}
+
 export class AkProfilecardTrigger extends PureComponent<AkProfilecardTriggerProps, {}> {}
+export default class AkProfilecardResourced extends PureComponent<AkProfilecardResourcedProps, {}> {}
 
 export function modifyResponse(data: any): any;
 

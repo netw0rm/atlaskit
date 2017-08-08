@@ -3,7 +3,8 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import { ResourcedMention } from '@atlaskit/mention';
 import ProviderFactory from '../../../src/providerFactory';
-import Mention from '../../../src/renderer/react/nodes/mention';
+import Mention from '../../../src/ui/Mention';
+
 
 describe('@atlaskit/editor-core/ui/Mention', () => {
   it('should render resourced mention', () => {
@@ -32,32 +33,6 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
     const resourcedMention = mention.find(ResourcedMention);
 
     expect(resourcedMention.prop('mentionProvider')).to.equal(mentionProvider);
-  });
-
-  it('should pass event handlers into resourced mention', () => {
-    const onClick = () => {};
-
-    const eventHandlers = {
-      mention: {
-        onClick
-      },
-    };
-
-    const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" eventHandlers={eventHandlers}/>);
-    const resourcedMention = mention.find(ResourcedMention);
-
-    expect(resourcedMention.prop('onClick')).to.equal(onClick);
-  });
-
-  it('should render ResourcedMentionWithProfilecard if profilecardProvider is set', async () => {
-    const providerFactory = new ProviderFactory();
-    const profilecardProvider = Promise.resolve({});
-    providerFactory.setProvider('profilecardProvider', profilecardProvider);
-
-    const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" providers={providerFactory}/>);
-    await profilecardProvider;
-
-    expect(mention.find('WithProfilecardMention')).to.have.length(1);
   });
 
   it('should not render ResourcedMentionWithProfilecard if profilecardProvider promise is rejected', async () => {

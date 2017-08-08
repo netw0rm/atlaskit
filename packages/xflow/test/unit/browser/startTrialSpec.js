@@ -80,7 +80,8 @@ describe('@atlaskit/xflow', () => {
     it('should render Start Trial component when user has access', () =>
       // eventually render to start trial screen
       waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        expect(xflow.find(StartTrial).text()).to.include('Start your 30 day trial');
+        const confirmTrialHeading = getXFlowProviderConfig().startTrial.confirmTrialHeading;
+        expect(xflow.find(StartTrial).text()).to.include(confirmTrialHeading);
       }));
 
     it('should render Grant Access component when user has not activated Confluence in the past', () =>
@@ -91,7 +92,8 @@ describe('@atlaskit/xflow', () => {
         return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
           // render grant access screen
           const grantAccess = xflow.find(GrantAccess);
-          expect(grantAccess.text()).to.include('Who should have access?');
+          const grantAccessHeading = getXFlowProviderConfig().startTrial.grantAccessHeading;
+          expect(grantAccess.text()).to.include(grantAccessHeading);
           expect(grantAccess.text()).to.include(
             getXFlowProviderConfig().startTrial.grantAccessDefaultAccess
           );
@@ -106,11 +108,17 @@ describe('@atlaskit/xflow', () => {
         return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
           const grantAccess = xflow.find(GrantAccess);
           clickOnText(grantAccess, 'Change...');
-          expect(grantAccess.text()).to.include('Choose an option');
+          const grantAccessChooseOption = getXFlowProviderConfig()
+            .startTrial
+            .grantAccessChooseOption;
+          expect(grantAccess.text()).to.include(grantAccessChooseOption);
           const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'everyone')[0].label;
           expect(grantAccess.text()).to.include(everyoneLabel);
-          expect(grantAccess.text()).to.include('Site admins only');
-          expect(grantAccess.text()).to.include('Specific users');
+          const siteAdminsLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'site-admins')[0].label;
+          expect(grantAccess.text()).to.include(siteAdminsLabel);
+          const specificUsersLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'specific-users')[0].label;
+          expect(grantAccess.text()).to.include(specificUsersLabel);
+
           expect(grantAccess.text()).to.include('How will this affect my bill?');
 
           // should render all users in retrieve users request
@@ -137,7 +145,10 @@ describe('@atlaskit/xflow', () => {
             expect(waitingScreen.text()).to.include(
               'Hit the menu icon near your profile image to switch between products.'
             );
-            expect(waitingScreen.text()).to.include('Go to Confluence');
+            const goToProductButton = getXFlowProviderConfig()
+              .startTrial
+              .loadingProductGotoProductButton;
+            expect(waitingScreen.text()).to.include(goToProductButton);
           });
         });
       }));
@@ -174,7 +185,10 @@ describe('@atlaskit/xflow', () => {
           expect(waitingScreen.text()).to.include(
             'Hit the menu icon near your profile image to switch between products.'
           );
-          expect(waitingScreen.text()).to.include('Go to Confluence');
+          const goToProductButton = getXFlowProviderConfig()
+            .startTrial
+            .loadingProductGotoProductButton;
+          expect(waitingScreen.text()).to.include(goToProductButton);
         });
       }));
   });

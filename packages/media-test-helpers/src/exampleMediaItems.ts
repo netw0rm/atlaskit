@@ -165,6 +165,12 @@ export const largePdfFileId = {
   collectionName
 };
 
+export const passwordProtectedPdfFileId = {
+  id: 'c0e5bfa5-013d-4cbc-9b87-17d7f63bcc30',
+  mediaItemType: fileType,
+  collectionName
+};
+
 export const unknownFileId = {
   id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
   mediaItemType: fileType,

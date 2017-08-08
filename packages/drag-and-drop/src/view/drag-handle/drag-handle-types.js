@@ -34,6 +34,8 @@ export type Provided = {|
 
 export type Props = {|
   isEnabled: boolean,
+  // whether the application thinks a drag is occurring
+  isDragging: boolean,
   callbacks: Callbacks,
   children: (?Provided) => void,
 |}

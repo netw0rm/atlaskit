@@ -99,6 +99,7 @@ describe('drag handle', () => {
       <DragHandle
         callbacks={callbacks}
         isEnabled
+        isDragging={false}
       >
         {(dragHandleProps: Provided) => (
           <Child dragHandleProps={dragHandleProps} />
@@ -131,6 +132,7 @@ describe('drag handle', () => {
             <DragHandle
               callbacks={customCallbacks}
               isEnabled
+              isDragging={false}
             >
               {(dragHandleProps: Provided) => (
                 <Child dragHandleProps={dragHandleProps} />
@@ -687,6 +689,46 @@ describe('drag handle', () => {
       });
     });
 
+    describe('cancelled elsewhere in the app mid drag', () => {
+      it('should end a current drag without firing the onCancel callback', () => {
+        // lift
+        mouseDown(wrapper);
+        windowMouseMove(0, sloppyClickThreshold);
+        wrapper.setProps({
+          isDragging: true,
+        });
+
+        // cancelled mid drag
+        wrapper.setProps({
+          isDragging: false,
+        });
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 0,
+          onCancel: 0,
+        })).toBe(true);
+
+        // should have no impact
+        windowMouseMove(0, sloppyClickThreshold + 1);
+        requestAnimationFrame.step();
+        windowMouseMove(0, sloppyClickThreshold + 2);
+        requestAnimationFrame.step();
+        windowMouseUp();
+        windowMouseMove(0, sloppyClickThreshold + 2);
+        requestAnimationFrame.step();
+
+        // being super safe
+        requestAnimationFrame.flush();
+
+        expect(callbacksCalled(callbacks)({
+          onLift: 1,
+          onMove: 0,
+          onCancel: 0,
+        })).toBe(true);
+      });
+    });
+
     describe('unmounted mid drag', () => {
       beforeEach(() => {
         mouseDown(wrapper);
@@ -1021,6 +1063,42 @@ describe('drag handle', () => {
       });
     });
 
+    describe('cancelled elsewhere in the app mid drag', () => {
+      it('should end a current drag without firing the onCancel callback', () => {
+        // lift
+        pressSpacebar(wrapper);
+        wrapper.setProps({
+          isDragging: true,
+        });
+
+        // cancelled mid drag
+        wrapper.setProps({
+          isDragging: false,
+        });
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 0,
+        })).toBe(true);
+
+        // should have no impact
+        windowArrowDown();
+        requestAnimationFrame.step();
+        windowArrowUp();
+        requestAnimationFrame.step();
+        windowEscape();
+        requestAnimationFrame.step();
+
+        // being super safe
+        requestAnimationFrame.flush();
+
+        expect(callbacksCalled(callbacks)({
+          onKeyLift: 1,
+          onCancel: 0,
+        })).toBe(true);
+      });
+    });
+
     describe('unmounted mid drag', () => {
       beforeEach(() => {
         pressSpacebar(wrapper);
@@ -1086,6 +1164,7 @@ describe('drag handle', () => {
         <DragHandle
           callbacks={callbacks}
           isEnabled={false}
+          isDragging={false}
         >
           {(dragHandleProps: ?Provided) => (
             mock(dragHandleProps)

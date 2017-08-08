@@ -341,6 +341,7 @@ export default class Draggable extends Component {
         >
           {(movementStyle: MovementStyle) => (
             <DragHandle
+              isDragging={isDragging}
               isEnabled={!isDragDisabled}
               callbacks={this.callbacks}
               draggableRef={this.state.ref}

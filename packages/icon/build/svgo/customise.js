@@ -1,27 +1,13 @@
 const SVGO = require('svgo');
 
-const removeNamespacedAttributes = require('./plugins/removeNamespacedAttributes');
 const preventFocusing = require('./plugins/preventFocusing');
 const addPresentationAttribute = require('./plugins/addPresentationAttribute');
 const callbackOnDefinedFill = require('./plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
 const addAriaLabels = require('./plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
-const replaceSketchHexColors = require('./plugins/replaceSketchHexColors');
 
 module.exports = (config) => {
-  const initialiseDefaultSVGO = () => new SVGO({
-    multipass: true,
-    plugins: [
-      { removeTitle: true },
-      { removeDesc: { removeAny: true } },
-      { cleanupIDs: true },
-      { collapseGroups: true },
-      { removeXMLNS: true },
-      { removeNamespacedAttributes },
-    ],
-  });
-
   const initialiseCustomSVGO = (filename) => {
     const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
       params: { title: '{title}' },
@@ -40,7 +26,6 @@ module.exports = (config) => {
         { convertAttributesToCamelcase },
         { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
         { addPresentationAttribute },
-        { replaceSketchHexColors },
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },
@@ -49,25 +34,9 @@ module.exports = (config) => {
     });
   };
 
-  const defaultSVGO = initialiseDefaultSVGO();
-
-  return (filename, rawSVG) => {
+  return (filename, data) => {
     const customSVGO = initialiseCustomSVGO(filename);
-
     // Run the default optimiser on the SVG
-    return new Promise(resolve => defaultSVGO.optimize(rawSVG, resolve))
-      // Check width and height
-      .then(({ info, data }) => {
-        if (info.width > config.maxWidth) {
-          console.warn(`"${filename}" too wide: ${info.width} > ${config.maxWidth}`);
-        }
-        if (info.height > config.maxHeight) {
-          console.warn(`"${filename}" too wide: ${info.height} > ${config.maxHeight}`);
-        }
-
-        return data;
-      })
-      // Run the custom optimiser
-      .then(data => new Promise(resolve => customSVGO.optimize(data, resolve)));
+    return new Promise(resolve => customSVGO.optimize(data, resolve));
   };
 };

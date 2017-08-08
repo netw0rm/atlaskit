@@ -154,6 +154,15 @@ describe('feature flags', () => {
     const editor: Editor = editorWrapper.get(0) as any;
     expect(editor.state.schema.nodes.codeBlock).to.eq(undefined);
   });
+
+  it('allowTables=true prop should enable tables', () => {
+    const editorWrapper = mount(<Editor allowTables={true} />);
+    const editor: Editor = editorWrapper.get(0) as any;
+    expect(editor.state.schema.nodes.table).to.not.eq(undefined);
+    expect(editor.state.schema.nodes.tableRow).to.not.eq(undefined);
+    expect(editor.state.schema.nodes.tableCell).to.not.eq(undefined);
+    expect(editor.state.schema.nodes.tableHeader).to.not.eq(undefined);
+  });
 });
 
 describe('@atlaskit/editor-jira/focus', () => {

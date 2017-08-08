@@ -12,7 +12,8 @@
     "name": "Layer Manager"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/layer-manager; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/layer-manager; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
     "dist"
@@ -30,8 +31,18 @@
     "tabbable": "^1.0.6"
   },
   "devDependencies": {
+
     "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/layer-manager": "*"
+    "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/button": "^3.0.0",
+    "@atlaskit/dropdown-menu": "^3.0.1",
+    "@atlaskit/field-text": "^3.0.0",
+    "@atlaskit/inline-dialog": "^3.2.0",
+    "@atlaskit/layer": "^2.1.4",
+    "@atlaskit/modal-dialog": "*",
+    "@atlaskit/navigation": "^13.3.0",
+    "@atlaskit/page": "^4.0.1",
+    "react-lorem-component": "0.11.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

@@ -24,7 +24,7 @@ export default class ExampleSingleModal extends Component {
             </button>
           </p>
           {!!modalIsOpen && (
-            <Modal onRequestClose={this.closeModal}>
+            <Modal isOpen onRequestClose={this.closeModal}>
               <h1>Modal Title</h1>
               <p>Modal Body</p>
               <p>

@@ -1,8 +1,12 @@
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled, { keyframes } from 'styled-components';
+import { WIDTH_ENUM } from '../shared-variables';
 
 const verticalOffset = 40;
 const easingCurve = 'cubic-bezier(0.23, 1, 0.32, 1)';
-
+const getWidth = ({ width }) => WIDTH_ENUM.widths[width];
+const viewportMargin = akGridSizeUnitless * 7.5;
+const doubleViewportMargin = viewportMargin * 2;
 const overlayAnimationMap = {
   enter: keyframes`
     from { opacity: 0; }
@@ -35,34 +39,36 @@ export const Overlay = styled.div`
   flex-direction: column;
   justify-content: center;
   left: 0;
-  padding: 20px;
   position: absolute;
   right: 0;
   top: 0;
 `;
+
 export const Dialog = styled.div`
   animation: ${props => getDialogAnimation(props)} 500ms ${easingCurve};
-  background-color: white;
-  border-radius: 1px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 1px rgba(0, 0, 0, 0.1), 0 0 20px -6px rgba(0, 0, 0, 0.3);
-  min-width: 300px;
-  max-width: 500px;
-  padding: 20px;
   position: relative;
   transform: translate3d(0, ${props => `${props.stackIndex * verticalOffset}px`}, 0) scale(${props => 1 - (props.stackIndex * 0.1)});
   transition: transform 500ms ${easingCurve};
   will-change: transform;
+  outline: 0;
+  /* Styles taken from ModalPositioner */
+  width: ${getWidth}px;
+  height: calc(100% - ${doubleViewportMargin}px);
+  max-height: calc(100% - 1px);
+  max-width: calc(100% - ${doubleViewportMargin}px);
 `;
+
 export const TabLoopTerminal = styled.span`
   background: 0;
   border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
   clip-path: inset(1px);
+  clip: rect(1px, 1px, 1px, 1px);
   height: 1px;
   outline: 0;
   overflow: hidden;
   padding: 0;
   position: absolute;
+  text-align: left;
   white-space: nowrap;
   width: 1px;
 `;

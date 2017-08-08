@@ -1,13 +1,19 @@
+// @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import tabbable from 'tabbable';
 
 import { Gateway, GatewayRegistry } from '../../gateway';
 import Portal from '../../portal';
+import { WIDTH_ENUM } from '../shared-variables';
 
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
 import { TabLoopTerminal } from '../styled/Modal';
+import ContentContainer from '../styled/ContentContainer';
+import ModalContainer from '../styled/ModalContainer';
+import HeaderFooterWrapper from '../styled/HeaderFooterWrapper';
+import KeylineMask from '../styled/KeylineMask';
 
 import AnimationContainer from './AnimationContainer';
 
@@ -41,6 +47,19 @@ export default class Modal extends Component {
       Content of the modal
     */
     children: PropTypes.node,
+    /** Elements to render in the header of the modal. */
+    header: PropTypes.node,
+    /** Elements to render in the footer of the moda.l */
+    footer: PropTypes.node,
+    /** Width of the modal. This can be provided in three different ways.
+    If a number is provided, the width is set to that number in pixels.
+    A string including pixels, or a percentage, will be directly applied as a style.
+    Several size options are also recognised. */
+    width: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.oneOf(WIDTH_ENUM.values),
+    ]),
     /**
       Function that will be run after the modal has opened.
     */
@@ -52,7 +71,7 @@ export default class Modal extends Component {
     /**
       Function that will be run when the modal is requested to be closed, prior to actually closing.
     */
-    onRequestClose: PropTypes.func.isRequired,
+    onDialogDismissed: PropTypes.func.isRequired,
     /**
       Boolean indicating if clicking the overlay should close the modal
     */
@@ -67,6 +86,7 @@ export default class Modal extends Component {
     autoFocus: false,
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
+    width: WIDTH_ENUM.defaultValue,
   }
   static contextTypes = {
     appId: PropTypes.string.isRequired,
@@ -100,6 +120,12 @@ export default class Modal extends Component {
       this.setState({ tabbableElements });
     }
   }
+  // If a custom width (number of percentage) is supplied, set inline style
+  getCustomWidth = () => (
+    WIDTH_ENUM.values.indexOf(this.props.width) === -1 ? (
+      { style: { width: this.props.width } }
+    ) : {}
+  )
   initialiseFocus() {
     const { autoFocus } = this.props;
     const hasFocusFunc = typeof autoFocus === 'function';
@@ -126,11 +152,12 @@ export default class Modal extends Component {
       }
     });
   }
+
   handleKeyDown = (event) => {
     if (!this._isMounted) return;
 
     if (event.key === 'Escape' && this.props.shouldCloseOnEscapePress) {
-      this.props.onRequestClose();
+      this.props.onDialogDismissed();
     } else if (event.key === 'Tab') {
       const tabDirection = event.shiftKey ? 'prev' : 'next';
 
@@ -141,7 +168,7 @@ export default class Modal extends Component {
   }
   handleOverlayClick = () => {
     if (this.props.shouldCloseOnOverlayClick) {
-      this.props.onRequestClose();
+      this.props.onDialogDismissed();
     }
   }
   handleDialogClick = (event) => {
@@ -178,7 +205,7 @@ export default class Modal extends Component {
   }
 
   render() {
-    const { children, onOpenComplete } = this.props;
+    const { children, onOpenComplete, header, footer, width } = this.props;
     const { tabbableElements, tabDirection } = this.state;
     const { gatewayRegistry } = this.context;
 
@@ -188,23 +215,50 @@ export default class Modal extends Component {
     const tabStartIsAvailable = canTab && tabDirection && tabDirection === 'prev';
     const tabEndIsAvailable = canTab && tabDirection && tabDirection === 'next';
 
+    const hasHeader = !!header;
+    const hasFooter = !!footer;
+
+    const optionalHeader = hasHeader ? (
+      <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
+    ) : null;
+
+    const optionalFooter = hasFooter ? (
+      <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
+    ) : null;
+
+    const headerKeylineMask = hasHeader ? (
+      <KeylineMask headerOrFooter="header" />
+    ) : null;
+
+    const footerKeylineMask = hasFooter ? (
+      <KeylineMask headerOrFooter="footer" />
+    ) : null;
+
     return (
       <GatewayOrPortal into={gatewayDestination}>
         <AnimationContainer
           dialogRef={r => (this.dialog = r)}
-          dialogOnClick={this.handleDialogClick}
           overlayOnClick={this.handleOverlayClick}
           onOpenComplete={onOpenComplete}
           onStackChange={this.handleStackChange}
           onKeyDown={this.handleKeyDown}
+          width={width}
         >
-          {tabStartIsAvailable && (
-            <TabLoopTerminal onFocus={this.handleTabLoopStart} />
-          )}
-          {children}
-          {tabEndIsAvailable && (
-            <TabLoopTerminal onFocus={this.handleTabLoopEnd} />
-          )}
+          <ModalContainer onClick={this.handleDialogClick} >
+            {tabStartIsAvailable && (
+              <TabLoopTerminal onFocus={this.handleTabLoopStart} />
+            )}
+            {optionalHeader}
+            <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
+              {headerKeylineMask}
+              {children}
+              {footerKeylineMask}
+            </ContentContainer>
+            {optionalFooter}
+            {tabEndIsAvailable && (
+              <TabLoopTerminal onFocus={this.handleTabLoopEnd} />
+            )}
+          </ModalContainer>
         </AnimationContainer>
       </GatewayOrPortal>
     );

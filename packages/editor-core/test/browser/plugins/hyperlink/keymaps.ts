@@ -2,9 +2,11 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
+import { createAddLinkTransaction } from '../../../../src/plugins/hyperlink/keymap';
 import {
   chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
 } from '../../../../src/test-helper';
+import { AddMarkStep, ReplaceStep } from '../../../../src/prosemirror';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
 
@@ -64,6 +66,16 @@ describe('hyperink - keymaps', () => {
     });
   });
 
+  describe('createAddLinkTransaction', () => {
+    it('should create single transaction with addMark and replace steps', () => {
+      const { editorView } = editor(doc(p('www.google.com{<>}')));
+      const tr = createAddLinkTransaction('www.google.com', editorView.state, 1, 15);
+      expect(tr.steps.length).to.equal(2);
+      expect(tr.steps.filter(step => step instanceof AddMarkStep).length).to.equal(1);
+      expect(tr.steps.filter(step => step instanceof ReplaceStep).length).to.equal(1);
+    });
+  });
+
   describe('Shift-Enter keypress', () => {
     it('converts possible link text to hyperlink', () => {
       const trackEvent = sinon.spy();
@@ -73,7 +85,7 @@ describe('hyperink - keymaps', () => {
       sendKeyToPm(editorView, 'Shift-Enter');
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
-      expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a)));
+      expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
       expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
   });

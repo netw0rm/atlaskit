@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 18.3.0 (2017-08-08)
+
+* bug fix; fix eslint tests (issues closed: ak-3166) ([1743654](https://bitbucket.org/atlassian/atlaskit/commits/1743654))
+* bug fix; fix the fix overhang issue when resizing sidebar, fix truncate issue on IE11 (issues closed: ak-3166) ([c2e297e](https://bitbucket.org/atlassian/atlaskit/commits/c2e297e))
+
+* bug fix; fix padding issue when hover on ContainerTitleDropdown (issues closed: ak-3166) ([85bc2c2](https://bitbucket.org/atlassian/atlaskit/commits/85bc2c2))
+* feature; add AkContainerTitleDropdown to support render dropdown menu in ContainerHeader (issues closed: ak-3166) ([e0dfa45](https://bitbucket.org/atlassian/atlaskit/commits/e0dfa45))
 ## 18.2.0 (2017-08-08)
 
 * feature; add onKeyDown to navigation's drawer ([a7cb6ec](https://bitbucket.org/atlassian/atlaskit/commits/a7cb6ec))

@@ -26,5 +26,5 @@ export const ControlsWrapper = styled.div`
   bottom: 0;
   left: 0;
   padding: 0 10px;
-  display: none;
+  /* display: none; */
 `;

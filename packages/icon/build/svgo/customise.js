@@ -7,7 +7,7 @@ const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
 const addAriaLabels = require('./plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
 
-module.exports = (config) => {
+module.exports = () => {
   const initialiseCustomSVGO = (filename) => {
     const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
       params: { title: '{title}' },

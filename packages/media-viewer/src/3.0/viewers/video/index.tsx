@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Component} from 'react';
-import * as qs from 'query-string';
 import * as throttle from 'lodash.throttle';
 import {Context, FileItem} from '@atlaskit/media-core';
 import Slider from '@atlaskit/field-range';
 import {Wrapper, VideoContainer, Video, ControlsWrapper} from './styled';
 import {MediaIdentifier} from '../../domain';
+import {getAPIURL} from '../../utils';
 
 export interface QualityURL {
   sd?: string;
@@ -36,42 +36,15 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     videoContainerWidth: 0
   };
 
-  // TODO: we should move all logic for extracting metadata and fetching urls etc into a higher layer
-  async getAPIURL(url: string): Promise<string> {
-    const {context, identifier} = this.props;
-
-    const collectionName = identifier.collectionName;
-
-    // get a new token
-    const token = await context.config.tokenProvider(collectionName);
-
-    // extract the query string parameters
-    const queryStringIndex = url.indexOf('?');
-    let urlPath = url;
-    let urlParams: any = {};
-    if (queryStringIndex !== -1) {
-      urlPath = url.substr(0, queryStringIndex);
-      urlParams = qs.parse(url.substr(queryStringIndex + 1));
-    }
-
-    // update the query string parameters
-    urlParams.client = context.config.clientId;
-    urlParams.collection = collectionName;
-    urlParams.token = token;
-
-    const prefix = context.config.serviceHost;
-    return `${prefix}${url}?${qs.stringify(urlParams)}`;
-  }
-
   async getPosterURLs(): Promise<QualityURL> {
-    const {metadata} = this.props;
+    const {metadata, identifier, context} = this.props;
     if (!metadata || !metadata.details || !metadata.details.artifacts) {
       return Promise.resolve({});
     }
     const artifacts = metadata.details.artifacts;
     return Promise.all([
-      artifacts['video.mp4'] ? this.getAPIURL(artifacts['poster.jpg'].url) : Promise.resolve(undefined),
-      artifacts['video_hd.mp4'] ? this.getAPIURL(artifacts['poster_hd.jpg'].url) : Promise.resolve(undefined)
+      artifacts['video.mp4'] ? getAPIURL(artifacts['poster.jpg'].url, context, identifier.collectionName) : Promise.resolve(undefined),
+      artifacts['video_hd.mp4'] ? getAPIURL(artifacts['poster_hd.jpg'].url, context, identifier.collectionName) : Promise.resolve(undefined)
     ])
       .then(urls => {
         const [sd, hd] = urls;
@@ -81,14 +54,14 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
   }
 
   getVideoURLs(): Promise<QualityURL> {
-    const {metadata} = this.props;
+    const {metadata, identifier, context} = this.props;
     if (!metadata || !metadata.details || !metadata.details.artifacts) {
       return Promise.resolve({});
     }
     const artifacts = metadata.details.artifacts;
     return Promise.all([
-      artifacts['video.mp4'] ? this.getAPIURL(artifacts['video.mp4'].url) : Promise.resolve(undefined),
-      artifacts['video_hd.mp4'] ? this.getAPIURL(artifacts['video_hd.mp4'].url) : Promise.resolve(undefined)
+      artifacts['video.mp4'] ? getAPIURL(artifacts['video.mp4'].url, context, identifier.collectionName) : Promise.resolve(undefined),
+      artifacts['video_hd.mp4'] ? getAPIURL(artifacts['video_hd.mp4'].url, context, identifier.collectionName) : Promise.resolve(undefined)
     ])
       .then(urls => {
         const [sd, hd] = urls;

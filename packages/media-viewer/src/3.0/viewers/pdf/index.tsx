@@ -5,6 +5,7 @@ import {Wrapper} from './styled';
 import {MediaIdentifier} from '../../domain';
 import {ItemTools} from '../../views/itemTools';
 import PDF from 'react-pdf-js';
+import {getBinaryURL} from '../../utils';
 
 export interface PdfViewerProps {
   identifier: MediaIdentifier;
@@ -25,27 +26,22 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
     scale: this.defaultScale
   };
 
-  fetchDataURI(metadata: FileItem) {
-    const {context} = this.props;
-    const {collectionName} = this.props.identifier;
-    const setDataURI = dataURI => this.setState({dataURI});
-    const clearDataURI = () => this.setState({dataURI: undefined});
-    const dataURIService = context.getDataUriService(collectionName);
-
-    dataURIService.fetchOriginalDataUri(metadata).then(setDataURI, clearDataURI);
-  }
-
   componentDidMount() {
-    const {metadata} = this.props;
-    this.fetchDataURI(metadata);
+    this.updateUrl();
   }
 
   componentWillReceiveProps(nextProps: PdfViewerProps) {
     if (nextProps.metadata.details.id === this.props.metadata.details.id) {
       return;
     }
+    this.updateUrl();
+  }
 
-    this.fetchDataURI(nextProps.metadata);
+  updateUrl = () => {
+    const {metadata, context, identifier} = this.props;
+    getBinaryURL(metadata, context, identifier.collectionName).then((url) => {
+      this.setState({dataURI: url});
+    });
   }
 
   render() {

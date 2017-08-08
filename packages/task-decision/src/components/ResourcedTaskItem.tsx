@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import TaskItem from './TaskItem';
-import { TaskDecisionProvider } from '../types';
+import { TaskDecisionProvider, TaskState } from '../types';
 
 export interface Props {
   taskId: string;
@@ -9,7 +9,7 @@ export interface Props {
   onChange?: (taskId: string, isChecked: boolean) => void;
   children?: ReactElement<any>;
   taskDecisionProvider?: TaskDecisionProvider;
-  ari: string;
+  objectAri: string;
   containerAri: string;
 }
 
@@ -44,34 +44,35 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private subscribe(provider?: TaskDecisionProvider) {
     if (provider) {
-      const { taskId, ari, containerAri } = this.props;
-      provider.subscribe({ taskId, ari, containerAri }, this.onUpdate);
+      const { taskId, objectAri, containerAri } = this.props;
+      provider.subscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
     }
   }
 
   private unsubscribe() {
-    const { taskDecisionProvider, taskId, ari, containerAri } = this.props;
+    const { taskDecisionProvider, taskId, objectAri, containerAri } = this.props;
     if (taskDecisionProvider) {
-      taskDecisionProvider.unsubscribe({ taskId, ari, containerAri }, this.onUpdate);
+      taskDecisionProvider.unsubscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
     }
   }
 
-  private onUpdate = (isDone: boolean) => {
-    this.setState({ isDone });
+  private onUpdate = (state: TaskState) => {
+    this.setState({ isDone: state === 'DONE' });
   }
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
-    const { taskDecisionProvider, ari, containerAri } = this.props;
+    const { taskDecisionProvider, objectAri, containerAri } = this.props;
     if (taskDecisionProvider) {
       // Optimistically update the task
       this.setState({ isDone });
 
       // Call provider to update task
       taskDecisionProvider
-        .toggleTask({ taskId, ari, containerAri }, isDone)
+        .toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO')
         .then(result => {
-          if (result !== isDone) { // Avoid unnecessary re-render
-            this.setState({ isDone: result });
+          const newState = result === 'DONE';
+          if (newState !== isDone) { // Avoid unnecessary re-render
+            this.setState({ isDone: newState });
           }
         })
         .catch(() => {

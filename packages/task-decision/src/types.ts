@@ -1,6 +1,7 @@
 
 export type DecisionState = 'DECIDED';
 export type DecisionStatus = 'CREATED';
+export type TaskState = 'TODO' | 'DONE';
 export type Cursor = string;
 
 export interface ServiceDecision {
@@ -17,13 +18,18 @@ export interface ServiceDecision {
   status: DecisionStatus;
 }
 
-export interface DecisionMeta {
+export interface Meta {
   cursor?: string;
 }
 
 export interface ServiceDecisionResponse {
   decisions: ServiceDecision[];
-  meta: DecisionMeta;
+  meta: Meta;
+}
+
+export interface ServiceTaskResponse {
+  decisions: ServiceTask[];
+  meta: Meta;
 }
 
 export interface Decision {
@@ -51,19 +57,54 @@ export interface DecisionQuery {
   cursor?: Cursor;
 }
 
-export interface ObjectKey {
-  taskId: string;
+export interface ServiceTask {
   containerAri: string;
-  ari: string;
+  creationDate: string;
+  creatorId: string;
+  lastUpdateDate: string;
+  localId: string;
+  objectAri: string;
+  parentLocalId: string;
+  participants: any[];
+  position: number;
+  // Atlassian Document fragment (json string)
+  rawContent: string;
+  state: TaskState;
 }
 
-export type Handler = (isDone: boolean) => void;
+export interface Task {
+  containerAri: string;
+  creationDate: Date;
+  creatorId: string;
+  lastUpdateDate: Date;
+  localId: string;
+  objectAri: string;
+  participants: any[];
+  // Atlassian Document fragment
+  content: any;
+  state: TaskState;
+}
+
+export interface ObjectKey {
+  localId: string;
+  containerAri: string;
+  objectAri: string;
+}
+
+export interface GenericItem {
+  containerAri: string;
+  objectAri: string;
+  localId: string;
+  state: TaskState | DecisionState;
+}
+
+export type Handler = (state: TaskState | DecisionState) => void;
 
 export interface TaskDecisionProvider {
   getDecisions(query: DecisionQuery): Promise<DecisionResponse>;
 
   // Tasks
-  toggleTask(objectKey: ObjectKey, isDone: boolean): Promise<boolean>;
+  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
   subscribe(objectKey: ObjectKey, handler: Handler): void;
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
 }

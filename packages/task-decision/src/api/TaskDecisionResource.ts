@@ -1,14 +1,34 @@
 import { RequestServiceOptions, ServiceConfig, utils } from '@atlaskit/util-service-support';
-import { DecisionQuery, DecisionResponse, ServiceDecisionResponse, TaskDecisionProvider, ObjectKey, Handler } from '../types';
-import { convertServiceDecisionResponseToDecisionResponse, objectKeyToString, findIndex } from './TaskDecisionUtils';
+import { convertServiceDecisionResponseToDecisionResponse, objectKeyToString, findIndex, convertServiceTaskToTask } from './TaskDecisionUtils';
+import {
+  DecisionQuery,
+  DecisionResponse,
+  ServiceDecisionResponse,
+  TaskDecisionProvider,
+  ObjectKey,
+  Handler,
+  Task,
+  Decision,
+  TaskState,
+  DecisionState,
+  ServiceTask,
+  GenericItem,
+} from '../types';
+
+let debouncedTaskStateQuery: number | null = null;
+let debouncedTaskToggle: number | null = null;
 
 export default class TaskDecisionResource implements TaskDecisionProvider {
   private serviceConfig: ServiceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
+  private cachedItems: Map<string, Task | Decision | GenericItem> = new Map();
+  private batchedKeys: Map<string, ObjectKey> = new Map();
 
   constructor(serviceConfig: ServiceConfig) {
     this.serviceConfig = serviceConfig;
     this.subscribers.clear();
+    this.cachedItems.clear();
+    this.batchedKeys.clear();
   }
 
   getDecisions(query: DecisionQuery): Promise<DecisionResponse> {
@@ -27,14 +47,58 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  toggleTask(objectKey: ObjectKey, isDone: boolean): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      // TODO: Call service to update task
-      resolve(isDone);
+  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
+    if (debouncedTaskToggle) {
+      clearTimeout(debouncedTaskToggle);
+    }
 
-      // Notify subscribers that the task have been updated so that they can re-render accordingly
-      this.notifyUpdated(objectKey, isDone);
+    return new Promise<TaskState>((resolve, reject) => {
+      debouncedTaskToggle = setTimeout(() => {
+        const options: RequestServiceOptions = {
+          path: 'tasks',
+          requestInit: {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify({
+              ...objectKey,
+              state
+            }),
+          }
+        };
+
+        utils
+          .requestService<ServiceTask>(this.serviceConfig, options)
+          .then(convertServiceTaskToTask)
+          .then(task => {
+            const key = objectKeyToString(objectKey);
+            this.cachedItems.set(key, task);
+
+            resolve(state);
+            // Notify subscribers that the task have been updated so that they can re-render accordingly
+            this.notifyUpdated(objectKey, state);
+          })
+          .catch(() => reject());
+      }, 500);
     });
+  }
+
+  getTaskState(keys: ObjectKey[]) {
+    const options: RequestServiceOptions = {
+      path: 'tasks/state',
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          'taskKeys': keys
+        }),
+      }
+    };
+
+    return utils.requestService<GenericItem[]>(this.serviceConfig, options);
   }
 
   subscribe(objectKey: ObjectKey, handler: Handler) {
@@ -42,6 +106,32 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     const handlers = this.subscribers.get(key) || [];
     handlers.push(handler);
     this.subscribers.set(key, handlers);
+
+    const cached = this.cachedItems.get(key);
+    if (cached) {
+      this.notifyUpdated(objectKey, cached.state);
+      return;
+    }
+
+    if (debouncedTaskStateQuery) {
+      clearTimeout(debouncedTaskStateQuery);
+    }
+
+    this.queueItem(objectKey);
+
+    debouncedTaskStateQuery = setTimeout(() => {
+      this.getTaskState(Array.from(this.batchedKeys.values()))
+        .then(tasks => {
+          tasks.forEach(task => {
+            const { containerAri, objectAri, localId } = task;
+            const objectKey = { containerAri, objectAri, localId };
+            this.cachedItems.set(objectKeyToString(objectKey), task);
+
+            this.dequeueItem(objectKey);
+            this.notifyUpdated(objectKey, task.state);
+          });
+        });
+    }, 1);
   }
 
   unsubscribe(objectKey: ObjectKey, handler: Handler) {
@@ -64,7 +154,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     }
   }
 
-  notifyUpdated(objectKey: ObjectKey, isDone: boolean) {
+  notifyUpdated(objectKey: ObjectKey, state: TaskState | DecisionState) {
     const key = objectKeyToString(objectKey);
     const handlers = this.subscribers.get(key);
     if (!handlers) {
@@ -72,8 +162,22 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     }
 
     handlers.forEach(handler => {
-      handler(isDone);
+      handler(state);
     });
+  }
+
+  private queueItem(objectKey: ObjectKey) {
+    const key = objectKeyToString(objectKey);
+    if (this.batchedKeys.get(key)) {
+      return;
+    }
+
+    this.batchedKeys.set(key, objectKey);
+  }
+
+  private dequeueItem(objectKey: ObjectKey) {
+    const key = objectKeyToString(objectKey);
+    this.batchedKeys.delete(key);
   }
 
 }

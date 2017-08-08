@@ -25,6 +25,10 @@ export {
 } from './error-reporter';
 export { JSONDocNode, JSONNode };
 
+export {
+  filterContentByType
+} from './filter';
+
 function validateNode(node: Node): boolean {
   return false;
 }

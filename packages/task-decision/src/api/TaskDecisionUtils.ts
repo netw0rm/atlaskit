@@ -1,4 +1,4 @@
-import { Decision, DecisionQuery, DecisionResponse, ServiceDecision, ServiceDecisionResponse, ObjectKey } from '../types';
+import { Decision, DecisionQuery, DecisionResponse, ServiceDecision, ServiceDecisionResponse, ObjectKey, ServiceTask, Task } from '../types';
 
 export const convertServiceDecisionToDecision = (serviceDecision: ServiceDecision): Decision => {
   const { creationDate, lastUpdateDate, rawContent, ...other } = serviceDecision;
@@ -26,6 +26,16 @@ export const convertServiceDecisionResponseToDecisionResponse = (serviceDecision
   };
 };
 
+export const convertServiceTaskToTask = (serviceTask: ServiceTask): Task => {
+  const { creationDate, lastUpdateDate, rawContent, ...other } = serviceTask;
+  return {
+    creationDate: new Date(creationDate),
+    lastUpdateDate: new Date(lastUpdateDate),
+    content: JSON.parse(rawContent),
+    ...other
+  };
+};
+
 export const decisionsToDocument = (decisions: Decision[]): any => ({
   type: 'doc',
   version: 1,
@@ -48,8 +58,8 @@ export const decisionsToDocument = (decisions: Decision[]): any => ({
 });
 
 export const objectKeyToString = (objectKey: ObjectKey) => {
-  const { containerAri, ari, taskId } = objectKey;
-  return `${containerAri}:${ari}:${taskId}`;
+  const { containerAri, objectAri, localId } = objectKey;
+  return `${containerAri}:${objectAri}:${localId}`;
 };
 
 export const findIndex = (array: any[], predicate: (item: any) => boolean): number => {

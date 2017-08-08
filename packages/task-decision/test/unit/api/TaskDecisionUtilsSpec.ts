@@ -36,7 +36,7 @@ describe('TaskDecisionUtils', () => {
   });
 
   it('objectKeyToString', () => {
-    const objectKey = { taskId: 'task-1', ari: 'object', containerAri: 'container' };
+    const objectKey = { localId: 'task-1', objectAri: 'object', containerAri: 'container' };
     const key = objectKeyToString(objectKey);
     expect(key).toEqual('container:object:task-1');
   });

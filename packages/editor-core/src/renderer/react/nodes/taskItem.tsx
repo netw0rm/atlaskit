@@ -1,18 +1,53 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-
-import { TaskItem as AkTaskItem } from '@atlaskit/task-decision';
-
+import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
+import { RendererContext } from '../';
+import {
+  default as ProviderFactory,
+  WithProviders
+} from '../../../providerFactory';
 export interface Props {
   localId: string;
   state?: string;
+  rendererContext?: RendererContext;
+  providers?: ProviderFactory;
 }
 
 export default class TaskItem extends PureComponent<Props, {}> {
-  render() {
-    const { children, localId, state } = this.props;
+  private providerFactory: ProviderFactory;
+
+  constructor(props) {
+    super(props);
+    this.providerFactory = props.providers || new ProviderFactory();
+  }
+
+  componentWillUnmount() {
+    if (!this.props.providers) {
+      // new ProviderFactory is created if no `providers` has been set
+      // in this case when component is unmounted it's safe to destroy this providerFactory
+      this.providerFactory.destroy();
+    }
+  }
+
+  private renderWithProvider = (providers) => {
+    const { taskDecisionProvider } = providers;
+    const { children, localId, state, rendererContext } = this.props;
+    const { objectAri, containerAri } = rendererContext || { objectAri: '', containerAri: '' };
+
     return (
-      <AkTaskItem taskId={localId} isDone={state === 'DONE'}>{children}</AkTaskItem>
+      <AkTaskItem taskId={localId} isDone={state === 'DONE'} ari={objectAri} containerAri={containerAri} taskDecisionProvider={taskDecisionProvider}>
+        {children}
+      </AkTaskItem>
+    );
+  }
+
+  render() {
+    return (
+      <WithProviders
+        providers={['taskDecisionProvider']}
+        providerFactory={this.providerFactory}
+        renderNode={this.renderWithProvider}
+      />
     );
   }
 }

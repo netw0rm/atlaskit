@@ -29,12 +29,11 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
-import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import * as commands from '../../commands';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -281,36 +280,26 @@ export class MediaPluginState {
     if (!this.toolbarVisible) {
       return;
     }
-
-    const { dispatch, state } = this.view;
-    const { $from, $to, node } = state.selection as NodeSelection;
-
-    const newNode= node.copy();
-    newNode.attrs.width = this.view.dom.getBoundingClientRect().width / 2;
-
-    dispatch(state.tr.replaceSelectionWith(newNode));
-
-    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'left'}));
-
-    this.updateSelectedMediaNode();
+    this.align('left');
   }
 
   alignRight(): void {
     if (!this.toolbarVisible) {
       return;
     }
+    this.align('right');
+  }
 
-    const { dispatch, state } = this.view;
-    const { $from, $to, node } = state.selection as NodeSelection;
+  private align(alignment: string) {
+    const { $from, $to, node } = this.view.state.selection as NodeSelection;
 
-    const newNode= node.copy();
+    const newNode = node.copy();
+    newNode.attrs = { ...node.attrs };
     newNode.attrs.width = this.view.dom.getBoundingClientRect().width / 2;
 
-    dispatch(state.tr.replaceSelectionWith(newNode));
+    this.view.dispatch(this.view.state.tr.replaceSelectionWith(newNode).setSelection(NodeSelection.create(this.view.state.doc, $from.pos)));
 
-    dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.singleImage, {alignment: 'right'}));
-
-    this.updateSelectedMediaNode();
+    this.view.dispatch(this.view.state.tr.setBlockType($from.pos, $to.pos, this.view.state.schema.nodes.singleImage, { alignment: alignment }));
   }
 
   alignCenter(): void {
@@ -321,14 +310,12 @@ export class MediaPluginState {
     const { dispatch, state } = this.view;
     const { $from, $to, node } = state.selection as NodeSelection;
 
-    const newNode= node.copy();
+    const newNode = node.copy();
     newNode.attrs.width = 0;
 
     dispatch(state.tr.replaceSelectionWith(newNode));
 
     dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.mediaGroup));
-
-    this.updateSelectedMediaNode();
   }
 
   /**
@@ -553,12 +540,13 @@ export class MediaPluginState {
     const $mediaNodeStartPos = state.doc.resolve(mediaNodeStartPos);
     const index = $mediaNodeStartPos.index($mediaNodeStartPos.depth);
     const mediaGroupElement = (node as HTMLElement).querySelector('ul');
+    let mediaCardElement = node;
 
-    if (!mediaGroupElement) {
-      return;
+    if (mediaGroupElement) {
+      mediaCardElement = mediaGroupElement.childNodes[index];
     }
 
-    const mediaCardElement = (mediaGroupElement.childNodes[index] as HTMLElement)
+    mediaCardElement = (mediaCardElement as HTMLElement)
       .querySelector('.media-card') as HTMLElement;
 
     return mediaCardElement;
@@ -635,7 +623,8 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           mediaGroup: ReactMediaGroupNode,
           media: ReactMediaNode,
         }, true),
-        media: nodeViewFactory(options.providerFactory, {
+        singleImage: nodeViewFactory(options.providerFactory, {
+          singleImage: ReactSingleImageNode,
           media: ReactMediaNode,
         }),
       },

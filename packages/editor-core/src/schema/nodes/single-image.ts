@@ -20,7 +20,6 @@ export const singleImage: NodeSpec = {
     const attrs = {
       'data-node-type': 'singleImage',
       'data-alignment': alignment,
-      'style': `display: inline-block; float: ${alignment}; ${alignment === 'left'? 'padding-right:' : 'padding-left:'} 24px; padding-bottom: 24px`
     };
     return [
       'div',

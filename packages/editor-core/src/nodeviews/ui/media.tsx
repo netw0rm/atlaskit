@@ -43,7 +43,8 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   componentDidMount() {
-    this.handleNewNode(this.props);
+    const { getPos, node } = this.props;
+    this.pluginState.handleMediaNodeMount(node, getPos);
   }
 
   componentWillUnmount() {
@@ -88,10 +89,5 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
     if (event) {
       event.stopPropagation();
     }
-  }
-
-  private handleNewNode = (props: MediaNodeProps) => {
-    const { getPos, node } = props;
-    this.pluginState.handleMediaNodeMount(node, getPos);
   }
 }

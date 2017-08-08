@@ -44,9 +44,9 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
 
   updateUrl = () => {
     const {metadata, context, identifier} = this.props;
-    getBinaryURL(metadata, context, identifier.collectionName).then((url) => {
+    getBinaryURL(metadata, context, identifier.collectionName).then((dataURI) => {
       this.setState({
-        dataURI: url,
+        dataURI,
         error: null
       });
     });

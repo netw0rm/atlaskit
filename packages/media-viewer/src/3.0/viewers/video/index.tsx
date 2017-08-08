@@ -27,7 +27,8 @@ export interface VideoViewerState {
   videoContainerWidth: number;
   playing: boolean;
   duration: number;
-  time: number;
+  elapsed: number;
+  volume: number;
 }
 
 export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
@@ -41,7 +42,8 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
     videoContainerWidth: 0,
     playing: false,
     duration: 0,
-    time: 0
+    elapsed: 0,
+    volume: 0
   };
 
   // TODO: we should move all logic for extracting metadata and fetching urls etc into a higher layer
@@ -140,11 +142,13 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
 
   handlePlay = () => this.setState({playing: true});
   handlePause = () => this.setState({playing: false});
+  handleSeek = elapsed => this.setState({elapsed});
   handleChangeQuality = quality => this.setState({quality});
+  handleChangeVolume = volume => this.setState({volume});
 
   handlePlaybackChange = state => this.setState({playing: state === 'playing'});
   handleDurationChange = duration => this.setState({duration});
-  handleTimeChange = time => this.setState({time});
+  handleElapsedChange = elapsed => this.setState({elapsed});
 
   componentDidMount() {
 
@@ -180,24 +184,26 @@ export class VideoViewer extends Component<VideoViewerProps, VideoViewerState> {
           playing={playing}
           onPlaybackChange={this.handlePlaybackChange}
           onDurationChange={this.handleDurationChange}
-          onTimeChange={this.handleTimeChange}
+          onTimeChange={this.handleElapsedChange}
         />
       </VideoContainer>
     );
   }
 
   renderControls() {
-    const {playing, duration, time, quality} = this.state;
+    const {playing, duration, elapsed, quality} = this.state;
     return (
       <ControlsWrapper>
         <PlayerControls
           playing={playing}
           duration={duration}
-          time={time}
+          elapsed={elapsed}
           quality={quality}
           onPlay={this.handlePlay}
           onPause={this.handlePause}
+          onSeek={this.handleSeek}
           onChangeQuality={this.handleChangeQuality}
+          onChangeVolume={this.handleChangeVolume}
         />
       </ControlsWrapper>
     );

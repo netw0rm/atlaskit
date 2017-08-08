@@ -44,15 +44,13 @@ export default class ContainerTitleDropdown extends PureComponent {
           linkComponent={linkComponent}
         />
         {
-          /* This condition should be removed when droplist.js remove its display inline-flex style*/
+          /* this should be removed when droplist.js remove its display inline-flex style*/
           text && !icon ? (
             <ContainerTitleDropdownIcon>
               <ExpandIcon size="medium" label={text} />
             </ContainerTitleDropdownIcon>
           ) : null
-            
         }
-        
       </ContainerTitleDropdownWrapper>
     );
   }

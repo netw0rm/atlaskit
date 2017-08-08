@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import { AkContainerTitleDropdown } from '../../../src/';
 import { ReactElement } from '../../../src/types';
-import NucleusIcon from '../NucleusIcon';
 
 type Props = {|
   icon: ReactElement,

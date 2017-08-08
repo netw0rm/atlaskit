@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 18.3.1 (2017-08-08)
+
+* bug fix; make navigation GlobalItem href prop optional (issues closed: ak-3220) ([770acc6](https://bitbucket.org/atlassian/atlaskit/commits/770acc6))
 ## 18.3.0 (2017-08-08)
 
 * bug fix; fix eslint tests (issues closed: ak-3166) ([1743654](https://bitbucket.org/atlassian/atlaskit/commits/1743654))

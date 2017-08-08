@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
-import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
-import ArrowRight from '@atlaskit/icon/glyph/arrowright';
+import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
+import ArrowRight from '@atlaskit/icon/glyph/arrow-right';
 import {ArrowLeftWrapper, ArrowRightWrapper} from './styled';
 import {MediaIdentifier} from '../domain';
 

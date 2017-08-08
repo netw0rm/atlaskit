@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { tallImage, wideImage, smallImage, wideTransparentImage } from '@atlaskit/media-test-helpers';
-import {createStorybookContext, defaultCollectionName, videoFileId, audioFileId, docFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
+import {createStorybookContext, defaultCollectionName, videoFileId, audioFileId, docFileId, largePdfFileId, wideImageFileId, largeImageFileId, smallImageFileId, genericFileId} from '@atlaskit/media-test-helpers';
 import {MediaViewer} from '../src';
 import {MediaIdentifier} from '../src/3.0/domain';
 import {Img} from './styled';
@@ -53,6 +53,16 @@ storiesOf('MediaViewer', {})
       }}
     />
   ))
+ .add('Large PDF (100MB)', () => (
+    <MediaViewer
+      isVisible={true}
+      context={context}
+      onPreviewChanged={onPreviewChanged}
+      navigation={{
+        initialItem: largePdfFileId
+      }}
+    />
+  ))
   .add('List using array of items', () => (
     <MediaViewer
       isVisible={true}
@@ -60,7 +70,7 @@ storiesOf('MediaViewer', {})
       onPreviewChanged={onPreviewChanged}
       navigation={{
         initialItem: largeImageFileId,
-        list: [wideImageFileId, genericFileId, videoFileId, audioFileId, docFileId, largeImageFileId, smallImageFileId]
+        list: [wideImageFileId, genericFileId, videoFileId, audioFileId, largePdfFileId, largeImageFileId, smallImageFileId]
       }}
     />
   ))

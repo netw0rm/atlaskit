@@ -29,6 +29,17 @@ describe('hyperlink', () => {
       expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
 
+    it('should convert "atlassian.com" to hyperlink', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, 'atlassian.com ', sel, sel);
+
+      const a = link({ href: 'http://atlassian.com' })('atlassian.com');
+      expect(editorView.state.doc).to.deep.equal(doc(p(a, ' ')));
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+    });
+
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com', sel, sel);
@@ -96,8 +107,8 @@ describe('hyperlink', () => {
 
     it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
-      insertText(editorView, 'Abc.example.com ', sel, sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example.com ')));
+      insertText(editorView, 'Abc.example ', sel, sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example ')));
     });
 
     it('should not convert invalid emails like to a mailto link (double dot)', () => {
@@ -155,10 +166,10 @@ describe('hyperlink', () => {
     it('converts to hyperlink if possible hyperink text is after a new line and previous line has an hyperlink', () => {
       const firstLink = link({ href: 'http://www.google.com' })('www.google.com');
       const secondLink = link({ href: 'http://www.baidu.com' })('www.baidu.com');
-      const { editorView, sel } = editor(doc(p(firstLink, br, p('{<>}'))));
+      const { editorView, sel } = editor(doc(p(firstLink, br, '{<>}')));
       insertText(editorView, 'www.baidu.com ', sel, sel);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(firstLink, br, p(secondLink, ' '))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(firstLink, br, secondLink, ' ')));
     });
   });
 });

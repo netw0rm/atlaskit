@@ -1,4 +1,4 @@
-import { EMAIL_REGEX, URL_REGEX_G, EMAIL_REGEX_G } from './regex';
+import { EMAIL_REGEX, EMAIL_REGEX_G, getURLMatchGlobal } from './regex';
 import { Slice, Fragment, Node, Schema } from '../../prosemirror';
 
 export function isEmail(url: string): boolean {
@@ -78,7 +78,7 @@ interface Match {
 function findLinkMatches(text: string): Match[] {
   const matches: Match[] = [];
   let match: RegExpExecArray | null;
-  while(match = URL_REGEX_G.exec(text)) {
+  while(match = getURLMatchGlobal(text)) {
     if (!isMatchOverlapping(matches, match)) {
       matches.push({
         start: match.index,

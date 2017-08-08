@@ -432,3 +432,21 @@ export function areBlockTypesDisabled(state: EditorState<any>): boolean {
 export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
+
+/**
+ * Function returns the test content of selected nodes replacing <br/> with \n.
+ */
+export const getNodeContentWithNewlines = (state: EditorState<any>) => {
+  const { schema, selection: { $from, $to } } = state;
+  let nodeStr = '';
+  state.tr.doc
+  .nodesBetween($from.start($from.depth), $to.end($to.depth), (node, pos) => {
+    if (node.type === schema.nodes.hardBreak) {
+      nodeStr += '\n';
+    }
+    if (node.type === schema.nodes.text) {
+      nodeStr += node.textContent;
+    }
+  });
+  return nodeStr;
+};

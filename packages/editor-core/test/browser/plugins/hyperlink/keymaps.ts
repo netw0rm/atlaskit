@@ -31,6 +31,18 @@ describe('hyperink - keymaps', () => {
           expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
         });
 
+        it('converts possible link text atlassian.com to hyperlink', () => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
+          const { editorView } = editor(doc(p('hello atlassian.com{<>}')));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          const a = link({ href: 'http://atlassian.com' })('atlassian.com');
+          expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
+          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+        });
+
         it('preserves other mark', () => {
           const { editorView } = editor(doc(p(em('hello www.atlassian.com{<>}'))));
 

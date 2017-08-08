@@ -2,7 +2,7 @@ import { Schema, keymap, Plugin, EditorState, Transaction } from '../../prosemir
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
-import { URL_REGEX } from './regex';
+import { testURLRegex } from './regex';
 import { normalizeUrl } from './utils';
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
@@ -39,10 +39,10 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
 
   const words = nodeBefore.text!.split(' ');
   const lastWord = words[words.length - 1];
-  const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
+  const validURL = testURLRegex(lastWord);
 
-  if (match) {
-    const hyperlinkedText = match[1];
+  if (validURL) {
+    const hyperlinkedText = lastWord;
     const start = state.selection.$from.pos - hyperlinkedText.length;
     const end = state.selection.$from.pos;
 

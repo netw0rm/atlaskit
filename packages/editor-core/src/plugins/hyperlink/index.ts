@@ -16,7 +16,7 @@ import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { normalizeUrl, linkifyContent } from './utils';
-import { URL_REGEX } from './regex';
+import { testURLRegex } from './regex';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -279,7 +279,7 @@ function isReplaceStep(step?: Step): step is ReplaceStep {
   return !!step && step instanceof ReplaceStep;
 }
 const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
-const isURILike = (str: string) => /^[a-z]+:\/\//i.test(str) || URL_REGEX.test(str);
+const isURILike = (str: string) => /^[a-z]+:\/\//i.test(str) || testURLRegex(str);
 
 function updateLinkOnChange(
   transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>
@@ -330,7 +330,7 @@ function updateLinkOnChange(
     if (href && isURILike(href)) {
       const markType = schema.mark('link', { href: normalizeUrl(href) });
       const tr = newState.tr.removeMark(start, end, schema.marks.link);
-      if (URL_REGEX.test(href)) {
+      if (testURLRegex(href)) {
         tr.addMark(start, end, markType);
       }
       return tr;

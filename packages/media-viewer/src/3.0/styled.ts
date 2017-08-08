@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled, { keyframes } from 'styled-components';
+import * as style from '@atlaskit/util-shared-styles';
 
 const fadeInKeyframe = keyframes`
   0%{
@@ -27,12 +28,11 @@ export const MainWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
   color: white;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background-color: rgba(27, 38, 56, 0.8);
+  background-color: ${style.akColorN900};
   overflow: hidden;
   z-index: 9;
 

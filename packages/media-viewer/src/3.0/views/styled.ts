@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import * as style from '@atlaskit/util-shared-styles';
 
 const iconBaseStyle = `
   margin: 0 10px;
@@ -20,7 +21,7 @@ export const ItemInfoWrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(to bottom, #0e1624, rgba(14, 22, 36, 0.0));
+  background: linear-gradient(to bottom, ${style.akColorN900}, rgba(14, 22, 36, 0.0));
 `;
 
 export const ItemPreviewWrapper = styled.div`
@@ -82,9 +83,9 @@ export const ItemToolsWrapper = styled.div`
   min-height: 50px;
   position: absolute;
   width: 100%;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
-  background: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0.0));
+  background: linear-gradient(to top, ${style.akColorN900}, rgba(14, 22, 36, 0.0));
 `;
 
 export const DetailsWrapper = styled.div`
@@ -104,7 +105,7 @@ export const LeftInfo = styled.div`
 export const RightIcons = styled.div`
   > span {
     ${iconBaseStyle}
-    margin: 0 10px;
+    margin: 10px;
   }
 `;
 
@@ -117,7 +118,6 @@ export const ToolsContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   > span {
     ${iconBaseStyle}
   }
@@ -127,6 +127,7 @@ export const ZoomWrapper = styled.div`
   flex: 1;
   text-align: right;
   user-select: none;
+  margin-right: 15px;
 `;
 
 export interface EditorIconWrapperProps {

@@ -20,8 +20,17 @@ import LoadingTime from '../../../src/start-trial/components/LoadingTime';
 import AlreadyStarted from '../../../src/start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/start-trial/components/ProgressIndicator';
 import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
+import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 
 const noop = () => {};
+
+// More tests should try to extract actual copy from the ProviderConfig,
+// instead of being hardcoded in the test
+const getXFlowProviderConfig = () =>
+  mount(<JiraToConfluenceXFlowProvider><div /></JiraToConfluenceXFlowProvider>)
+    .find('XFlowProvider')
+    .props()
+    .config;
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
@@ -84,7 +93,7 @@ describe('@atlaskit/xflow', () => {
           const grantAccess = xflow.find(GrantAccess);
           expect(grantAccess.text()).to.include('Who should have access?');
           expect(grantAccess.text()).to.include(
-            'Everyone in JIRA Software will have access to Confluence.'
+            getXFlowProviderConfig().startTrial.grantAccessDefaultAccess
           );
         });
       }));
@@ -98,7 +107,8 @@ describe('@atlaskit/xflow', () => {
           const grantAccess = xflow.find(GrantAccess);
           clickOnText(grantAccess, 'Change...');
           expect(grantAccess.text()).to.include('Choose an option');
-          expect(grantAccess.text()).to.include('Everyone in JIRA Software');
+          const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'everyone')[0].label;
+          expect(grantAccess.text()).to.include(everyoneLabel);
           expect(grantAccess.text()).to.include('Site admins only');
           expect(grantAccess.text()).to.include('Specific users');
           expect(grantAccess.text()).to.include('How will this affect my bill?');

@@ -64,10 +64,10 @@ async function isConfluenceActive() {
   );
   const isActivating = pricing.activatingProducts.includes('confluence.ondemand');
 
-  if (isActive) {
-    return ACTIVE;
-  } else if (isActivating) {
+  if (isActivating) {
     return ACTIVATING;
+  } else if (isActive) {
+    return ACTIVE;
   }
   return INACTIVE;
 }

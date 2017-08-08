@@ -3,7 +3,6 @@ import {Component} from 'react';
 import MediaServicesZoomOutIcon from '@atlaskit/icon/glyph/media-services/zoom-out';
 import MediaServicesActualSizeIcon from '@atlaskit/icon/glyph/media-services/actual-size';
 import MediaServicesZoomInIcon from '@atlaskit/icon/glyph/media-services/zoom-in';
-import VidFullScreenOnIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
 import MediaServicesBrushIcon from '@atlaskit/icon/glyph/media-services/brush';
 import {ItemToolsWrapper, UploaderDetailsWrapper, ToolsContent, ZoomWrapper, EditorIconWrapper} from './styled';
 
@@ -30,7 +29,6 @@ export class ItemTools extends Component<ItemToolsProps, ItemToolsState> {
           <MediaServicesZoomOutIcon label="Zoom out" onClick={onZoomOut} />
           <MediaServicesActualSizeIcon label="Actual size" onClick={onZoomFit} />
           <MediaServicesZoomInIcon label="Zoom in" onClick={onZoomIn} />
-          <VidFullScreenOnIcon label="Full size" />
           {this.getEditorButton()}
         </ToolsContent>
         <ZoomWrapper>

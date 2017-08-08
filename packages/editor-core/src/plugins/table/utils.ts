@@ -45,3 +45,7 @@ export const createTableNode = (rows: number, columns: number, schema: Schema<an
   }
   return table.create(null, Fragment.from(rowNodes));
 };
+
+export const isIsolating = (node: Node): boolean => {
+  return !!node.type.spec.isolating;
+};

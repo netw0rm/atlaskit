@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 18.1.2 (2017-08-07)
+
+* bug fix; change nested navigation animation time to 200ms (issues closed: ak-3207) ([0bc6871](https://bitbucket.org/atlassian/atlaskit/commits/0bc6871))
 ## 18.1.1 (2017-08-06)
 
 * bug fix; apply correct styling to AkNavigationItemGroup title (issues closed: ak-3200) ([4e7d6e7](https://bitbucket.org/atlassian/atlaskit/commits/4e7d6e7))

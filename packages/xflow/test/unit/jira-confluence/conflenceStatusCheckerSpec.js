@@ -70,6 +70,7 @@ const toBeOneOf = (...values) => ({
 
 describe('confluenceStatusChecker', () => {
   beforeEach(() => {
+    jest.clearAllTimers();
     fetchMock.restore();
   });
 
@@ -113,7 +114,6 @@ describe('confluenceStatusChecker', () => {
         };
 
         await confluenceStatusChecker.start(progressHandler);
-        jest.runAllTimers();
       });
 
       expect(result).toEqual(

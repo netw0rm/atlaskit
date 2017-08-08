@@ -67,6 +67,7 @@ class RequestOrStartTrial extends Component {
     if (activationState === ACTIVE || activationState === ACTIVATING) {
       this.setState({
         screen: Screens.ALREADY_STARTED,
+        activationState,
       });
       if (activationState === ACTIVATING) {
         waitForActivation();
@@ -104,6 +105,7 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const { onAnalyticsEvent, onComplete, onTrialRequested, onTrialActivating } = this.props;
+    const { activationState } = this.state;
 
     return (
       <App onAnalyticsEvent={onAnalyticsEvent}>
@@ -126,7 +128,13 @@ class RequestOrStartTrial extends Component {
                 );
               }
               case Screens.START_TRIAL: {
-                return <StartTrial onComplete={onComplete} onTrialActivating={onTrialActivating} />;
+                return (
+                  <StartTrial
+                    onComplete={onComplete}
+                    onTrialActivating={onTrialActivating}
+                    showGrantAccess={activationState === INACTIVE}
+                  />
+                );
               }
               case Screens.ALREADY_STARTED: {
                 return <AlreadyStarted onComplete={onComplete} />;

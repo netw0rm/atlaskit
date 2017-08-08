@@ -38,14 +38,16 @@ async function hasConfluenceBeenEvaluated() {
   }
 
   const prospectivePrices = await response.json();
-  return prospectivePrices.deactivatedProducts.some(
+
+  const isDeactivated = prospectivePrices.deactivatedProducts.some(
     product => product.productKey === 'confluence.ondemand'
-  )
-    ? DEACTIVATED
-    : INACTIVE;
+  );
+
+  const status = isDeactivated ? DEACTIVATED : INACTIVE;
+  return status;
 }
 
-async function checkInitialStatus() {
+async function isConfluenceActive() {
   const response = await fetch(PRICING_URL, {
     credentials: 'same-origin',
     cache: 'no-store',
@@ -56,18 +58,23 @@ async function checkInitialStatus() {
   }
 
   const pricing = await response.json();
+
   const isActive = pricing.activeProducts.some(
     product => product.productKey === 'confluence.ondemand'
   );
   const isActivating = pricing.activatingProducts.includes('confluence.ondemand');
 
-  if (isActive) {
-    return ACTIVE;
-  } else if (isActivating) {
+  if (isActivating) {
     return ACTIVATING;
+  } else if (isActive) {
+    return ACTIVE;
   }
+  return INACTIVE;
+}
 
-  return await hasConfluenceBeenEvaluated();
+async function checkInitialStatus() {
+  const status = await isConfluenceActive();
+  return status === INACTIVE ? await hasConfluenceBeenEvaluated() : status;
 }
 
 async function checkActivatingStatus() {
@@ -87,7 +94,7 @@ async function checkActivatingStatus() {
 }
 
 async function updateStatus() {
-  currentStatus = await (currentStatus === UNKNOWN || currentStatus === INACTIVE
+  currentStatus = await ([UNKNOWN, INACTIVE, DEACTIVATED].includes(currentStatus)
     ? checkInitialStatus()
     : checkActivatingStatus());
   return currentStatus;
@@ -114,7 +121,7 @@ export default {
         }
 
         if (progressHandler) {
-          progressHandler({
+          await progressHandler({
             status,
             progress,
           });

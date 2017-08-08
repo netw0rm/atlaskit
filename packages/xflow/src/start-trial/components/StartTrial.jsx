@@ -9,11 +9,9 @@ import ConfirmTrial from './ConfirmTrial';
 import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';
 
-import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
-
 export class StartTrialBase extends Component {
   static propTypes = {
-    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+    showGrantAccess: PropTypes.bool.isRequired,
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
   };
@@ -24,7 +22,7 @@ export class StartTrialBase extends Component {
   };
 
   render() {
-    const { status, onComplete, onTrialActivating } = this.props;
+    const { onComplete, onTrialActivating, showGrantAccess } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
         <Step
@@ -32,7 +30,7 @@ export class StartTrialBase extends Component {
             <ConfirmTrial
               onComplete={async () => {
                 await onTrialActivating();
-                nextStep(status === DEACTIVATED ? 2 : 1);
+                nextStep(showGrantAccess ? 1 : 2);
               }}
               onCancel={cancel}
             />}
@@ -44,6 +42,4 @@ export class StartTrialBase extends Component {
   }
 }
 
-export default withXFlowProvider(StartTrialBase, ({ xFlow: { status } }) => ({
-  status,
-}));
+export default withXFlowProvider(StartTrialBase, () => ({}));

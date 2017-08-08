@@ -9,7 +9,8 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Icon"
+    "name": "Icon",
+    "dark": true
   },
   "scripts": {
     "build": "node ./build/index.js",

@@ -5,6 +5,7 @@ import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { FormattedMessage } from 'react-intl';
+import { withAnalytics } from '@atlaskit/analytics';
 
 import SpinnerDiv from '../styled/SpinnerDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
@@ -21,8 +22,9 @@ import {
   UNKNOWN,
 } from '../../common/productProvisioningStates';
 
-export class AlreadyStartedBase extends Component {
+class AlreadyStarted extends Component {
   static propTypes = {
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func.isRequired,
     productLogo: PropTypes.node.isRequired,
     heading: PropTypes.string.isRequired,
@@ -45,21 +47,31 @@ export class AlreadyStartedBase extends Component {
     isReady: this.props.status === ACTIVE,
   };
 
+  componentDidMount() {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-started.displayed');
+  }
+
   handleProgressComplete = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
     this.setState({
       isReady: true,
     });
+    if (status === ACTIVE) {
+      firePrivateAnalyticsEvent('xflow.already-started.loading.finished');
+    }
   };
 
   handleCloseClick = async () => {
-    // this.props.firePrivateAnalyticsEvent('xflow.loading.screen.close');
-    const { closeAlreadyStartedDialog, onComplete } = this.props;
+    const { closeAlreadyStartedDialog, onComplete, firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-started.close-button.clicked');
     await closeAlreadyStartedDialog();
     return onComplete();
   };
 
   handleGetStartedClick = async () => {
-    const { goToProduct, onComplete } = this.props;
+    const { goToProduct, onComplete, firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-started.go.to.product');
     this.setState({
       isLoading: true,
     });
@@ -112,16 +124,14 @@ export class AlreadyStartedBase extends Component {
           <StartTrialHeader>
             {heading}
           </StartTrialHeader>
-          {React.isValidElement(message)
-            ? message
-            : <p>
-              {message}
-            </p>}
+          {message}
         </StartTrialDialog>
       </ModalDialog>
     );
   }
 }
+
+export const AlreadyStartedBase = withAnalytics(AlreadyStarted);
 
 export default withXFlowProvider(
   AlreadyStartedBase,

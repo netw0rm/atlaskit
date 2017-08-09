@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withAnalytics } from '@atlaskit/analytics';
 
 import App from './App';
 import { withXFlowProvider } from './XFlowProvider';
@@ -9,7 +9,6 @@ import RequestTrial from '../../request-trial/components/RequestTrial';
 import StartTrial from '../../start-trial/components/StartTrial';
 import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
 import ErrorFlag from '../../start-trial/components/ErrorFlag';
-
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
@@ -24,10 +23,11 @@ const Screens = {
 
 class RequestOrStartTrial extends Component {
   static propTypes = {
-    onAnalyticsEvent: PropTypes.func.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    onAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
@@ -51,7 +51,12 @@ class RequestOrStartTrial extends Component {
   }
 
   resetRequestOrStartTrial = async () => {
-    const { getProductActivationState, canCurrentUserAddProduct, waitForActivation } = this.props;
+    const {
+      getProductActivationState,
+      canCurrentUserAddProduct,
+      waitForActivation,
+      firePrivateAnalyticsEvent,
+    } = this.props;
     const activationState = await getProductActivationState();
 
     let canAdd;
@@ -61,7 +66,8 @@ class RequestOrStartTrial extends Component {
           ? await canCurrentUserAddProduct()
           : false;
     } catch (e) {
-      // canAdd = null;
+      // Do nothing. Leave "canAdd" undefined.
+      firePrivateAnalyticsEvent('xflow.request-or-start-trial.trusted-user-check.failed');
     }
 
     if (activationState === ACTIVE || activationState === ACTIVATING) {
@@ -89,6 +95,7 @@ class RequestOrStartTrial extends Component {
         activationState,
       });
     } else {
+      firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
       this.setState({ initializingCheckFailed: true });
     }
   };
@@ -153,8 +160,10 @@ class RequestOrStartTrial extends Component {
   }
 }
 
+export const RequestOrStartTrialBase = withAnalytics(RequestOrStartTrial);
+
 export default withXFlowProvider(
-  RequestOrStartTrial,
+  RequestOrStartTrialBase,
   ({ xFlow: { canCurrentUserAddProduct, getProductActivationState, waitForActivation } }) => ({
     canCurrentUserAddProduct,
     getProductActivationState,

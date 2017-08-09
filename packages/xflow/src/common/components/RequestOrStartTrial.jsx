@@ -22,13 +22,10 @@ const Screens = {
 };
 
 class RequestOrStartTrial extends Component {
-  // had to add in disable lines due to lack of async support - https://github.com/yannickcr/eslint-plugin-react/issues/885
   static propTypes = {
-    /* eslint-disable react/no-unused-prop-types */
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
-    /* eslint-enable react/no-unused-prop-types */
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     onAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { UrlPreview, ImageResizeMode } from '@atlaskit/media-core';
+import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 
 import { SharedCardProps, CardStatus } from '../..';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
+import { EmbedCard } from '../embedCard';
 import { A } from './styled';
 
 export interface LinkCardProps extends SharedCardProps {
@@ -16,75 +17,112 @@ export interface LinkCardProps extends SharedCardProps {
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
-  get isSmartCard(): boolean {
-    return Boolean(this.resources.smartCard);
-  }
 
   render(): JSX.Element | null {
-    const {resources: {smartCard, image}, isLoading, isError, isSmartCard} = this;
+    const {resources: {smartCard, app, player, image}} = this;
     const {appearance} = this.props;
-    const {url} = this.urlPreview;
-    let link = url;
-    let card;
 
-    if (isSmartCard && appearance === 'horizontal') {
-      link = smartCard && smartCard.link ? smartCard.link.url : '';
-      card = this.renderSmartCard();
-    } else if (appearance === 'small') {
-      card = this.renderSmallLink();
-    } else if (appearance === 'image') {
-      card = this.renderLinkCardImage();
-    } else if (appearance === 'horizontal' || appearance === 'square') {
-      card = this.renderGenericLink();
-    } else if (image) {
-      card = this.renderLinkCardImage();
-    } else {
-      card = this.renderGenericLink();
+    switch (appearance) {
+
+      case 'small':
+        return this.renderSmallLink();
+
+      case 'image':
+        return this.renderLinkCardImage();
+
+      case 'horizontal':
+        if (smartCard) {
+          return this.renderSmartCard();
+        } else {
+          return this.renderGenericLink();
+        }
+
+      case 'square':
+        return this.renderGenericLink();
+
+      default:
+        if (smartCard) {
+          return this.renderSmartCard();
+        } else if (app && this.isEmbedCard(app)) {
+          return this.renderEmbedCard(app);
+        } else if (player && this.isEmbedCard(player)) {
+          return this.renderEmbedCard(player);
+        } else if (image) {
+          return this.renderLinkCardImage();
+        } else {
+          return this.renderGenericLink();
+        }
+
     }
 
+  }
+
+  private renderInLink(link, child): JSX.Element  {
+    const {isLoading, isError} = this;
     if (link && !isLoading && !isError) {
       return (
         <A linkUrl={link}>
-          {card}
+          {child}
         </A>
       );
+    } else {
+      return child;
     }
-
-    return card;
   }
 
-  private renderSmartCard(): JSX.Element | null {
+  private isEmbedCard(embed: Resource) {
+    // we can't display embed cards when we don't know how high they are
+    return (
+      embed
+      && embed.url
+      && embed.type === 'text/html'
+      && (embed.height || embed.aspect_ratio !== 1)
+    );
+  }
+
+  private renderEmbedCard(embed: Resource) {
+    const {url = '', width, height, aspect_ratio} = embed;
+    return (
+      <EmbedCard url={url} width={width} height={height} aspectRatio={aspect_ratio}/>
+    );
+  }
+
+  private renderSmartCard(): JSX.Element {
     const {resources: {smartCard}} = this;
 
     // this check is just to silence TS - this method should never be called if we don't have
     // data for a smart-card
     if (!smartCard) {
-      return null;
+      throw new Error('Must have smartCard data to render a smart card');
     }
 
-    return (
+    return this.renderInLink(
+      smartCard.link ? smartCard.link.url : '',
       <AppCardView model={smartCard}/>
     );
   }
 
-  private renderGenericLink(): JSX.Element {
+  private renderGenericLink(): JSX.Element | null {
     const { url, title, site, description } = this.urlPreview;
     const { dimensions, actions, appearance } = this.props;
     const { errorMessage } = this;
 
-    return <LinkCardGenericView
-      error={errorMessage}
-      linkUrl={url}
-      title={title}
-      site={site}
-      description={description}
-      thumbnailUrl={this.thumbnailUrl}
-      iconUrl={this.iconUrl}
-      dimensions={dimensions}
-      appearance={appearance}
-      loading={this.isLoading}
-      actions={actions}
-    />;
+    return this.renderInLink(
+      url,
+      <LinkCardGenericView
+        error={errorMessage}
+        linkUrl={url}
+        title={title}
+        site={site}
+        description={description}
+        thumbnailUrl={this.thumbnailUrl}
+        iconUrl={this.iconUrl}
+        dimensions={dimensions}
+        appearance={appearance}
+        loading={this.isLoading}
+        actions={actions}
+      />
+    );
   }
 
   private renderSmallLink(): JSX.Element {
@@ -92,7 +130,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { dimensions, actions } = this.props;
     const { errorMessage } = this;
 
-    return (
+    return this.renderInLink(
+      url,
       <LinkCardViewSmall
         error={errorMessage}
         linkUrl={url}
@@ -111,7 +150,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     const { status, dimensions, actions, appearance, resizeMode } = this.props;
     const { errorMessage } = this;
 
-    return (
+    return this.renderInLink(
+      url,
       <LinkCardImageView
         error={errorMessage}
         linkUrl={url}

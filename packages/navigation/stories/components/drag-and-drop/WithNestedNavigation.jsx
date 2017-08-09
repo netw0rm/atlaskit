@@ -4,12 +4,15 @@ import Navigation, {
   AkNavigationItem,
   AkContainerTitle,
   AkContainerNavigationNested,
+  AkCollapseOverflow,
 } from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import styled, { injectGlobal } from 'styled-components';
 import reorder from './reorder';
+import reorderingUsageNote from './UsageNote';
+import Container from './Container';
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
@@ -133,7 +136,7 @@ type State = {|
 
 // We want to ensure that the Droppable still takes ups the full
 // height available.
-const Container = styled.div`
+const DroppableContainer = styled.div`
   flex-grow: 1;
 `;
 
@@ -241,72 +244,111 @@ export default class WithNestedNavigation extends Component {
     });
   }
 
-  getGroup = (myGroup: Group, autoFocus?: boolean = false) => (
-    <Droppable droppableId={myGroup.id}>
-      {dropProvided => (
-        <Container innerRef={dropProvided.innerRef}>
-          {myGroup.lists.map((list: List, index: number) => (
-            <Draggable
-              key={list.id}
-              draggableId={list.id}
-            >
-              {(provided: Provided, snapshot: StateSnapshot) => (
-                <div>
-                  <AkNavigationItem
-                    isDragging={snapshot.isDragging}
-                    text={list.content}
-                    dnd={provided}
-                    onClick={() => this.selectList(list)}
-                    onKeyDown={(event: KeyboardEvent) => {
-                      if (event.key === 'Enter') {
-                        this.selectList(list, true);
-                      }
-                    }}
-                    autoFocus={autoFocus && index === 0}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Draggable>
-          ))}
-        </Container>
-      )}
-    </Droppable>
-  );
+  getGroupLists = (lists: List[], autoFocus: boolean) => {
+    const baseNavItemProps = (list: List, index: number) => ({
+      text: list.content,
+      onClick: () => this.selectList(list),
+      onKeyDown: (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          this.selectList(list, true);
+        }
+      },
+      autoFocus: autoFocus && index === 0,
+      key: index,
+    });
 
-  getList = (list: List, autoFocus? : boolean = false) => (
-    <Droppable droppableId={list.id}>
-      {dropProvided => (
-        <Container innerRef={dropProvided.innerRef}>
-          {list.leafs.map((leaf: Leaf, index: number) => (
-            <Draggable
-              key={leaf.id}
-              draggableId={leaf.id}
-            >
-              {(provided: Provided, snapshot: StateSnapshot) => (
-                <div>
-                  <AkNavigationItem
-                    isDragging={snapshot.isDragging}
-                    text={leaf.content}
-                    dnd={provided}
-                    href={leaf.href}
-                    icon={
-                      <Avatar
-                        src={leaf.image}
-                        name={leaf.content}
-                      />
-                    }
-                    autoFocus={autoFocus && index === 0}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Draggable>
-          ))}
-        </Container>
-      )}
-    </Droppable>
-  );
+    return lists.map((list: List, index: number) => (
+      this.isDragEnabled() ? (
+        <Draggable
+          key={list.id}
+          draggableId={list.id}
+        >
+          {(provided: Provided, snapshot: StateSnapshot) => (
+            <div>
+              <AkNavigationItem
+                {...baseNavItemProps(list, index)}
+                isDragging={snapshot.isDragging}
+                dnd={provided}
+              />
+              {provided.placeholder}
+            </div>
+          )}
+        </Draggable>
+      ) : (
+        <AkNavigationItem {...baseNavItemProps(list, index)} />
+      )
+    ));
+  }
+
+  getGroup = (myGroup: Group, autoFocus?: boolean = false) => {
+    const groupLists = this.getGroupLists(myGroup.lists, autoFocus);
+    return this.isDragEnabled() ? (
+      <Droppable droppableId={myGroup.id}>
+        {dropProvided => (
+          <DroppableContainer innerRef={dropProvided.innerRef}>
+            {groupLists}
+          </DroppableContainer>
+        )}
+      </Droppable>
+    ) : (
+      <AkCollapseOverflow>
+        {groupLists}
+      </AkCollapseOverflow>
+    );
+  };
+
+  getListLeafs = (leafs: Leaf[], autoFocus: boolean) => {
+    const baseNavItemProps = (leaf: Leaf, index: number) => ({
+      text: leaf.content,
+      href: leaf.href,
+      icon: (
+        <Avatar
+          src={leaf.image}
+          name={leaf.content}
+        />
+      ),
+      autoFocus: autoFocus && index === 0,
+    });
+
+    return leafs.map((leaf: Leaf, index: number) => (
+      this.isDragEnabled() ? (
+        <Draggable
+          key={leaf.id}
+          draggableId={leaf.id}
+        >
+          {(provided: Provided, snapshot: StateSnapshot) => (
+            <div>
+              <AkNavigationItem
+                {...baseNavItemProps(leaf, index)}
+                isDragging={snapshot.isDragging}
+                dnd={provided}
+              />
+              {provided.placeholder}
+            </div>
+          )}
+        </Draggable>
+      ) : (
+        <AkNavigationItem {...baseNavItemProps(leaf, index)} />
+      )
+    ));
+  }
+
+  getList = (list: List, autoFocus? : boolean = false) => {
+    const listLeafs = this.getListLeafs(list.leafs, autoFocus);
+    return this.isDragEnabled() ? (
+      <Droppable droppableId={list.id}>
+        {dropProvided => (
+          <DroppableContainer innerRef={dropProvided.innerRef}>
+            {listLeafs}
+          </DroppableContainer>
+        )}
+      </Droppable>
+    ) : (
+      <AkCollapseOverflow>
+        {listLeafs}
+      </AkCollapseOverflow>
+    );
+  };
 
   getContainerHeaderComponent = () => (
     <div>
@@ -330,6 +372,13 @@ export default class WithNestedNavigation extends Component {
     </div>
   )
 
+  isDragEnabled = () => {
+    if (!this.state) {
+      return true;
+    }
+    return this.state.isNavOpen;
+  }
+
   selectList = (list: List, autoFocus?: boolean = false) => {
     const stack = Array.from(this.state.stack);
     stack.push(this.getList(list, autoFocus));
@@ -351,20 +400,23 @@ export default class WithNestedNavigation extends Component {
     const isOpen: boolean = this.state.isNavOpen;
 
     return (
-      <Navigation
-        onResize={this.onNavResize}
-        isOpen={isOpen}
-        containerHeaderComponent={this.getContainerHeaderComponent}
-      >
-        <DragDropContext
-          onDragStart={this.onDragStart}
-          onDragEnd={this.onDragEnd}
+      <Container>
+        <Navigation
+          onResize={this.onNavResize}
+          isOpen={isOpen}
+          containerHeaderComponent={this.getContainerHeaderComponent}
         >
-          <AkContainerNavigationNested
-            stack={this.state.stack}
-          />
-        </DragDropContext>
-      </Navigation>
+          <DragDropContext
+            onDragStart={this.onDragStart}
+            onDragEnd={this.onDragEnd}
+          >
+            <AkContainerNavigationNested
+              stack={this.state.stack}
+            />
+          </DragDropContext>
+        </Navigation>
+        {reorderingUsageNote}
+      </Container>
     );
   }
 }

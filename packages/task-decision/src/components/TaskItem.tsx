@@ -18,7 +18,23 @@ export interface Props {
   children?: ReactElement<any>;
 }
 
+let taskCount = 0;
+const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
+
 export default class TaskItem extends PureComponent<Props, {}> {
+
+  private checkBoxId: string;
+
+  constructor(props) {
+    super(props);
+    this.checkBoxId = getCheckBoxId(props.taskId);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.taskId !== this.props.taskId) {
+      this.checkBoxId = getCheckBoxId(nextProps.taskId);
+    }
+  }
 
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
     const { onChange, taskId, isDone } = this.props;
@@ -28,19 +44,19 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { isDone, contentRef, children, taskId } = this.props;
+    const { isDone, contentRef, children } = this.props;
 
     return (
       <Wrapper>
         <CheckBoxWrapper contentEditable={false}>
           <input
-            id={taskId}
-            name={taskId}
+            id={this.checkBoxId}
+            name={this.checkBoxId}
             type="checkbox"
             onChange={this.handleOnChange}
             checked={!!isDone}
           />
-          <label htmlFor={taskId} />
+          <label htmlFor={this.checkBoxId} />
         </CheckBoxWrapper>
         <ContentWrapper innerRef={contentRef}>
           {children}

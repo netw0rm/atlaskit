@@ -32,15 +32,21 @@ import {
 import ProviderFactory from '../../providerFactory';
 import { EventHandlers } from '../../ui/Renderer';
 
+export interface RendererContext {
+  objectAri: string;
+  containerAri: string;
+}
 export default class ReactSerializer implements Serializer<JSX.Element> {
   private providers?: ProviderFactory;
   private eventHandlers?: EventHandlers;
   private portal?: HTMLElement;
+  private rendererContext?: RendererContext;
 
-  constructor(providers?: ProviderFactory, eventHandlers?: EventHandlers, portal?: HTMLElement) {
+  constructor(providers?: ProviderFactory, eventHandlers?: EventHandlers, portal?: HTMLElement, objectContext?: RendererContext) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
     this.portal = portal;
+    this.rendererContext = objectContext;
   }
 
   serializeFragment(fragment: Fragment, props: any = {}, target: ComponentClass<any> = Doc, key: string = 'root-0'): JSX.Element | null {
@@ -94,6 +100,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       providers: this.providers,
       eventHandlers: this.eventHandlers,
       portal: this.portal,
+      rendererContext: this.rendererContext,
       ...node.attrs,
     };
   }

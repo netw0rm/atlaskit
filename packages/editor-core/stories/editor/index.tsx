@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
@@ -176,6 +177,15 @@ export default class Editor extends PureComponent<Props, State> {
 
   get value(): string | undefined {
     return this.props.defaultValue;
+  }
+
+  set doc(newDoc: Node | undefined) {
+    const { editorView } = this.state;
+    assert(editorView, 'EditorView doesn\'t exist yet');
+    assert(newDoc, 'New document cannot be nullable');
+
+    const { tr, doc } = editorView!.state;
+    editorView!.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc!.slice(0, newDoc!.nodeSize - 2)));
   }
 
   get doc(): Node | undefined {

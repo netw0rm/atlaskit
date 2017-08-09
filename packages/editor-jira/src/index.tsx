@@ -24,6 +24,8 @@ import {
   textFormattingStateKey,
   textColorStateKey,
   listsStateKey,
+  tablePlugins,
+  tableStateKey,
   EditorState,
   EditorView,
   Schema,
@@ -72,6 +74,7 @@ import {
   isSchemaWithMedia,
   isSchemaWithTextColor,
   getMediaContextInfo,
+  isSchemaWithTables,
 } from './util';
 
 import { version, name } from './version';
@@ -108,6 +111,7 @@ export interface Props {
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
   allowTextColor?: boolean;
+  allowTables?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
   mediaProvider?: Promise<MediaProvider>;
@@ -143,7 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const {
       allowLists, allowLinks, allowAdvancedTextFormatting,
-      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor,
+      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor, allowTables,
 
       analyticsHandler,
 
@@ -163,6 +167,7 @@ export default class Editor extends PureComponent<Props, State> {
       allowSubSup: !!allowSubSup,
       allowTextColor: !!allowTextColor,
       allowMedia: !!mediaProvider,
+      allowTables: !!allowTables
     });
 
     this.state = { isExpanded, schema, isMediaReady: true };
@@ -315,6 +320,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
+    const tableState = editorState && tableStateKey.getState(editorState);
     const iconAfter = !isMediaReady
       ? <Spinner isCompleting={false} />
       : undefined;
@@ -340,6 +346,7 @@ export default class Editor extends PureComponent<Props, State> {
           pluginStateMentions={mentionsState}
           pluginStateHyperlink={hyperlinkState}
           pluginStateMedia={mediaState}
+          pluginStateTable={tableState}
           packageVersion={version}
           packageName={name}
           saveDisabled={!isMediaReady}
@@ -428,6 +435,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithTables(schema as Schema<any, any>) ? tablePlugins() : []),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(

@@ -10,7 +10,7 @@ export const LinksToExamples = () => (
         target="_blank"
         rel="noopener noreferrer"
         key={i}
-        href={`/patterns/navigation/examples/${getExampleParam(example.title)}`}
+        href={`/components/navigation/examples/${getExampleParam(example.title)}`}
       >
         {example.title}
       </a>

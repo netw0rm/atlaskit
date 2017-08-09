@@ -1,5 +1,8 @@
 # @atlaskit/editor-bitbucket
 
+## 3.0.2 (2017-08-09)
+
+* bug fix; use editor-core's bitbucket transformer for parse/serialize (issues closed: ed-2402) ([11bbd8a](https://bitbucket.org/atlassian/atlaskit/commits/11bbd8a))
 ## 3.0.1 (2017-08-03)
 
 * bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))

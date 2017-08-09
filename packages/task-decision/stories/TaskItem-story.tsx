@@ -1,6 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es2015/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
 import TaskItem from '../src/components/TaskItem';
 import { document } from '../src/support/story-data';

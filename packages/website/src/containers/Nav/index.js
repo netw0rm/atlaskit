@@ -18,9 +18,6 @@ import SearchDrawer from './SearchDrawer';
 import Groups from './Groups';
 
 import { matchNavExample } from '../../pages/Navigation/utils';
-import DefaultNav from './navigations/Default';
-import ComponentNav from './navigations/Component';
-import NavigationNav from './navigations/NavigationPattern';
 
 const Header = () => (
   <Link to="/">
@@ -31,24 +28,14 @@ const Header = () => (
   </Link>
 );
 
-const getIndex = (pathname: string): number => {
-  if (/^\/components/.test(pathname)) return 1;
-  if (/^\/changelog/.test(pathname)) return 1;
-  if (/^\/patterns\/navigation/.test(pathname)) return 2;
-  if (/^\/patterns/.test(pathname)) return 1;
-  return 0;
-};
-
 class StandardNav extends Component {
   static contextTypes = {
     router: PropTypes.object,
   };
 
   render() {
-    const { router } = this.context;
-    const { pathname } = router.route.location;
     const backIcon = <ArrowLeft label="Back icon" />;
-    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
+    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="xlarge" />;
     return (
       <Navigation
         containerHeaderComponent={Header}
@@ -78,26 +65,7 @@ class StandardNav extends Component {
           }
         }}
       >
-        <Groups
-          ref={r => (this.nest = r)}
-          selectedIndex={getIndex(pathname)}
-        >
-          <DefaultNav
-            pathname={pathname}
-            router={router}
-            goToNext={this.nest && this.nest.goToNext}
-          />
-          <ComponentNav
-            backIcon={backIcon}
-            router={router}
-            pathname={pathname}
-          />
-          <NavigationNav
-            pathname={pathname}
-            backIcon={backIcon}
-            router={router}
-          />
-        </Groups>
+        <Groups />
       </Navigation>
     );
   }
@@ -106,7 +74,7 @@ class StandardNav extends Component {
 const Nav = ({ isSearchDrawerOpen, onSearchDrawerToggle }) => (
   <Switch>
     <Route
-      path="/patterns/navigation/examples/:exampleName"
+      path="/components/navigation/examples/:exampleName"
       render={({ match }) => {
         const example = matchNavExample(match.params.exampleName);
         if (example) {

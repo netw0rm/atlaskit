@@ -68,3 +68,12 @@ export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>
 
   return mediaContextInfo;
 }
+
+export function isSchemaWithTables(schema: Schema<any, any>): boolean {
+  return (
+    !!schema.nodes.table &&
+    !!schema.nodes.tableCell &&
+    !!schema.nodes.tableHeader &&
+    !!schema.nodes.tableRow
+  );
+}

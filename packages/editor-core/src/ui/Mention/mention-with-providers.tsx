@@ -6,7 +6,7 @@ import {
 } from '@atlaskit/mention';
 
 import { MentionEventHandlers } from '../Renderer';
-import withProfilecard from './with-profilecard';
+import ResourcedMentionWithProfilecard from './mention-with-profilecard';
 import { ProfilecardProvider } from './types';
 
 export interface Props {
@@ -16,6 +16,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   profilecardProvider?: Promise<ProfilecardProvider>;
   eventHandlers?: MentionEventHandlers;
+  portal?: HTMLElement;
 }
 
 export interface State {
@@ -24,10 +25,8 @@ export interface State {
 
 const GENERIC_USER_IDS = ['HipChat', 'all', 'here'];
 const noop = () => {};
-// tslint:disable-next-line:variable-name
-const ResourcedMentionWithProfilecard = withProfilecard(ResourcedMention);
 
-export default class MentionWithProvider extends PureComponent<Props, State> {
+export default class MentionWithProviders extends PureComponent<Props, State> {
   state: State = { profilecardProvider: null };
 
   constructor(props) {
@@ -60,17 +59,16 @@ export default class MentionWithProvider extends PureComponent<Props, State> {
       eventHandlers,
       id,
       mentionProvider,
+      portal,
       text,
     } = this.props;
 
     const { profilecardProvider } = this.state;
 
     const actionHandlers = {};
-    if (eventHandlers) {
-      ['onClick', 'onMouseEnter', 'onMouseLeave'].forEach(handler => {
-        actionHandlers[handler] = eventHandlers[handler] || noop;
-      });
-    }
+    ['onClick', 'onMouseEnter', 'onMouseLeave'].forEach(handler => {
+      actionHandlers[handler] = eventHandlers && eventHandlers[handler] || noop;
+    });
 
     // tslint:disable-next-line:variable-name
     const MentionComponent = (profilecardProvider && GENERIC_USER_IDS.indexOf(id) === -1)
@@ -84,6 +82,7 @@ export default class MentionWithProvider extends PureComponent<Props, State> {
         accessLevel={accessLevel}
         mentionProvider={mentionProvider}
         profilecardProvider={profilecardProvider}
+        portal={portal}
         {...actionHandlers}
       />
     );

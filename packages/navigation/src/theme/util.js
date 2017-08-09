@@ -18,6 +18,7 @@ export const getProvided = (map?: Object): Provided => {
   return container;
 };
 export const isCollapsed = (map: Object): bool => map[rootKey].isCollapsed;
+export const isInOverflowDropdown = (map: Object): bool => map.isOverflowDropdown;
 
 export const isInCompactGroup = (map: Object): bool => {
   if (!hasOwnProperty(map, groupKey)) {
@@ -28,6 +29,14 @@ export const isInCompactGroup = (map: Object): bool => {
 
 export const whenCollapsed = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')}
+`;
+
+export const whenNotInOverflowDropdown = (...args: Array<mixed>) => css`
+${({ theme }) => (!isInOverflowDropdown(theme) ? css(...args) : '')}
+`;
+
+export const whenCollapsedAndNotInOverflowDropdown = (...args: Array<mixed>) => css`
+  ${({ theme }) => (isCollapsed(theme) && !isInOverflowDropdown(theme) ? css(...args) : '')}
 `;
 
 export class WithRootTheme extends PureComponent {

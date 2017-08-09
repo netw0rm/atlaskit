@@ -22,6 +22,7 @@ export default class BasicNavigation extends PureComponent {
     children: PropTypes.node,
     width: PropTypes.number,
     containerHeaderComponent: PropTypes.func,
+    defaultOpen: PropTypes.bool,
     openDrawer: PropTypes.string,
     searchDrawerContent: PropTypes.node,
     createDrawerContent: PropTypes.node,
@@ -50,6 +51,7 @@ export default class BasicNavigation extends PureComponent {
         text="Item C"
       />
     </div>),
+    defaultOpen: true,
     containerHeaderComponent: () => (
       <AkContainerTitle
         href="#foo"
@@ -146,6 +148,7 @@ export default class BasicNavigation extends PureComponent {
   constructor(...args) {
     super(...args);
     this.state = {
+      isOpen: this.props.defaultOpen,
       openDrawer: this.props.openDrawer,
       width: this.props.width,
     };

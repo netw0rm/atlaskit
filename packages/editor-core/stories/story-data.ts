@@ -1204,6 +1204,152 @@ System.out.println("There are " + count + " values >= 5");`
           ]
         }
       ]
+    },
+    {
+      type: 'table',
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };

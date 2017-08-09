@@ -18,6 +18,7 @@ import {
   h1,
   makeEditor,
   mediaGroup,
+  singleImage,
   media,
   p,
   a,
@@ -599,6 +600,52 @@ describe('Media plugin', () => {
             media({ id: 'media2', type: 'file', collection: testCollectionName }),
           )
         ));
+      });
+    });
+  });
+
+  describe('alignLeft', () => {
+    context('when there is only one image in the media group', () => {
+      context('when selection is a media node', () => {
+        it('changes media group to align left single image', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hello')
+          ));
+
+          setNodeSelection(editorView, 1);
+
+          pluginState.alignLeft();
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            singleImage({ alignment: 'left' })(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+              p('hello')
+            ),
+          ));
+        });
+      });
+
+      context('when selection is not a media node', () => {
+        it('does nothing', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hel{<>}lo')
+          ));
+
+          pluginState.alignLeft();
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+              p('hello')
+            ),
+          ));
+        });
       });
     });
   });

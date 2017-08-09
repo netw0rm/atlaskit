@@ -29,7 +29,7 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
-import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
@@ -313,6 +313,15 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   }
 
+  alignLeft = (): boolean => {
+    if (!this.isMediaNodeSelection()) {
+      return false;
+    }
+    const { selection: { from }, schema, tr } = this.view.state;
+    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment: 'left' }));
+    return true;
+  }
+
   destroy() {
     if (this.destroyed) {
       return;
@@ -525,6 +534,10 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       nodeViews: {
         mediaGroup: nodeViewFactory(options.providerFactory, {
           mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+        singleImage: nodeViewFactory(options.providerFactory, {
+          singleImage: ReactSingleImageNode,
           media: ReactMediaNode,
         }, true),
       },

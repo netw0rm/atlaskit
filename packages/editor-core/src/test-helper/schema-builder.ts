@@ -258,6 +258,7 @@ export const a = (attrs: { href: string, title?: string }) => markFactory(sample
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
+export const singleImage = (attrs = {}) => nodeFactory(sampleSchema.nodes.singleImage, attrs);
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes) => sampleSchema.nodes.media.create(attrs);
 export const textColor = (attrs: { color: string }) => markFactory(sampleSchema.marks.textColor, attrs);

@@ -14,7 +14,8 @@ export {
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   panel, panelNote, mentionQuery, hardBreak, emojiQuery,
-  media, mediaGroup, textColor, table, tr, td, th, tdEmpty, td11, th11, tdCursor, thEmpty,
+  media, mediaGroup, singleImage, textColor, table, tr, td,
+  th, tdEmpty, td11, th11, tdCursor, thEmpty,
   decisionItem, decisionList, taskItem, taskList,
 } from './schema-builder';
 export * from './html-helpers';

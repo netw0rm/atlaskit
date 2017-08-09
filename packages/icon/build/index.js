@@ -30,7 +30,7 @@ fs.emptyDir(path.join(__dirname, config.processedDir))
     return fs.readFile(path.join(__dirname, config.srcDir, 'src', filepath))
       // Optimise the SVG
       .then(rawSVG => cleanSVG(filepath, rawSVG))
-      .then(optimisedSVG =>
+      .then(({ data: optimisedSVG }) =>
         // saved the optimised SVGs to disk for reduced-ui-pack
         fs.outputFile(path.join(__dirname, config.processedDir, filepath), optimisedSVG)
           // customise the SVG to make it JSX ready

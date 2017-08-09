@@ -2,12 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Helmet from 'react-helmet';
 import Media from 'react-media';
 import {
@@ -27,14 +22,12 @@ import Page from '../../components/Page';
 import { NavPackageComponent, StandardComponent } from '../../pages/Component';
 import Changelog from '../../pages/Changelog';
 import Components from '../../pages/Components';
-import Patterns from '../../pages/Patterns';
 import Examples from '../../pages/Examples';
 import ExampleBase from '../../pages/Navigation/ExampleBase';
 import NavExample from '../../pages/Navigation/Example';
 import Home from '../../pages/Home';
 import NoMatch from '../../pages/NoMatch';
 import InstallGuide from '../../pages/InstallGuide';
-import pkgs from '../../data';
 
 import Nav from '../Nav';
 import MobileNav from '../MobileNav';
@@ -48,30 +41,19 @@ const Routes = () =>
     <Route exact path="/" component={Home} />
     <Route path="/install" component={InstallGuide} />
     <Route path="/examples" component={Examples} />
-    <Route exact path="/patterns" component={Patterns} />
-    <Route exact path="/patterns/navigation/examples" component={ExampleBase} />
+    <Route exact path="/components/navigation/examples" component={ExampleBase} />
     <Route
-      path="/patterns/navigation/components/:component"
+      path="/components/navigation/components/:component"
       render={({ match }) => <NavPackageComponent match={match} />}
     />
     <Route
-      path="/patterns/navigation/examples/:exampleName"
+      path="/components/navigation/examples/:exampleName"
       component={NavExample}
     />
     <Route exact path="/components" component={Components} />
     <Route
       path="/components/:component"
-      render={({ match }) =>
-        pkgs[match.params.component] && pkgs[match.params.component].isPattern
-          ? <Redirect to={`/patterns/${match.params.component}`} />
-          : <StandardComponent match={match} />}
-    />
-    <Route
-      path="/patterns/:component"
-      render={({ match }) =>
-        pkgs[match.params.component] && !pkgs[match.params.component].isPattern
-          ? <Redirect to={`/components/${match.params.component}`} />
-          : <StandardComponent match={match} />}
+      render={({ match }) => <StandardComponent match={match} />}
     />
     <Route path="/changelog/:component/:semver?" component={Changelog} />
     <Route component={NoMatch} />

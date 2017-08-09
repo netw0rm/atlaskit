@@ -1,18 +1,16 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-import {
-  AkContainerItem as NavItem,
-  AkContainerItemGroup as NavItemGroup,
-} from '@atlaskit/navigation';
+import { AkNavigationItemGroup as NavItemGroup } from '@atlaskit/navigation';
 
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
+import { RouterNavigationItem } from '../linkComponents';
 import packages from '../../../data';
 
 const componentKeys = Object.keys(packages);
@@ -35,17 +33,17 @@ const ComponentNavItem = withRouter(
     const isSelected = location.pathname.endsWith(`/${componentKey}`);
 
     return (
-      <Link to={url} key={componentKey}>
-        <NavItem
-          icon={
-            component.supportsDarkMode
-              ? <BatmanIcon />
-              : <PackageIcon size="small" label={`${component.name} icon`} />
-          }
-          text={component.name}
-          isSelected={isSelected}
-        />
-      </Link>
+      <RouterNavigationItem
+        href={url}
+        icon={
+          component.supportsDarkMode
+            ? <BatmanIcon />
+            : <PackageIcon size="small" label={`${component.name} icon`} />
+        }
+        isSelected={isSelected}
+        key={componentKey}
+        text={component.name}
+      />
     );
   }
 );
@@ -64,8 +62,6 @@ const NavList = ({ title, filterMethod, destination }) =>
   </NavItemGroup>;
 
 const PackagesNav = ({
-  backIcon,
-  router,
   pathname,
   filterMethod,
   icon,
@@ -74,16 +70,11 @@ const PackagesNav = ({
   navItemText,
 }) =>
   <div style={{ paddingBottom: akGridSizeUnitless * 3 }}>
-    <NavItem
-      icon={backIcon}
-      onClick={() => router.history.push('/')}
-      text="Back"
-    />
-    <NavItem
+    <RouterNavigationItem
+      href={destination}
       icon={icon}
-      onClick={() => router.history.push(destination)}
-      text={navItemText}
       isSelected={pathname === destination}
+      text={navItemText}
     />
     <NavList
       title={title}

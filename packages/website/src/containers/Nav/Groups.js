@@ -2,54 +2,76 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Route, matchPath } from 'react-router-dom';
+
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import { AkContainerNavigationNested as NestedNav } from '@atlaskit/navigation';
 
+import DefaultNav from './navigations/Default';
+import ComponentNav from './navigations/Component';
+import NavigationNav from './navigations/NavigationComponent';
+
+import { RouterNavigationItem } from './linkComponents';
+
 export default class Groups extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
+  static contextTypes = {
+    router: PropTypes.object,
   }
 
-  state = { selectedIndex: this.props.selectedIndex }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedIndex === this.props.selectedIndex) {
-      this.stay();
-    } else if (nextProps.selectedIndex > this.props.selectedIndex) {
-      this.goToNext();
-    } else {
-      this.goToPrev();
-    }
+  state = {
+    parentRoute: null,
+    stack: [[]],
   }
 
-  isNextEnabled = () => this.state.selectedIndex < (this.props.children.length - 1)
-  isPrevEnabled = () => this.state.selectedIndex > 0
-
-  stay = () => {
-    this.setState({ animationDirection: undefined });
+  componentWillMount() {
+    this.resolveRoutes(this.context.router.route.location.pathname);
   }
-  goToNext = () => {
-    if (!this.isNextEnabled()) return;
 
-    const selectedIndex = Math.min(this.state.selectedIndex + 1, this.props.children.length - 1);
-
-    this.setState({ animationDirection: 'left', selectedIndex });
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.resolveRoutes(nextContext.router.route.location.pathname);
   }
-  goToPrev = () => {
-    if (!this.isPrevEnabled()) return;
 
-    const selectedIndex = Math.max(this.state.selectedIndex - 1, 0);
+  resolveRoutes(pathname) {
+    const menus = [
+      <Route path="/">
+        <DefaultNav pathname={pathname} />
+      </Route>,
+      <Route path="/components">
+        <ComponentNav pathname={pathname} />
+      </Route>,
+      <Route path="/changelog">
+        <ComponentNav pathname={pathname} />
+      </Route>,
+      <Route path="/components/navigation">
+        <NavigationNav pathname={pathname} />
+      </Route>,
+    ];
 
-    this.setState({ animationDirection: 'right', selectedIndex });
+    const stack = menus
+      .filter(menu => matchPath(pathname, menu.props))
+      .map(menu => [
+        React.cloneElement(menu, { key: menu.props.path }),
+      ]);
+
+    const parentRoute = stack.length > 1 ? stack[stack.length - 2][0].props.path : null;
+
+    this.setState({ parentRoute, stack });
   }
 
   render() {
-    const { children, selectedIndex } = this.props;
-    const { animationDirection } = this.state;
-
     return (
-      <NestedNav animationDirection={animationDirection}>
-        {children[selectedIndex]}
-      </NestedNav>
+      <div>
+        {this.state.parentRoute ? (
+          <div style={{ marginBottom: '10px' }}>
+            <RouterNavigationItem
+              href={this.state.parentRoute}
+              icon={<ArrowLeftIcon label="Back" />}
+              text="Back"
+            />
+          </div>
+        ) : null}
+        <NestedNav stack={this.state.stack} />
+      </div>
     );
   }
 }

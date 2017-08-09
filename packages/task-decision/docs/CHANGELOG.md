@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 2.4.0 (2017-08-09)
+
+* feature; adding support for placeholders ([d9edd1a](https://bitbucket.org/atlassian/atlaskit/commits/d9edd1a))
 ## 2.3.0 (2017-08-09)
 
 

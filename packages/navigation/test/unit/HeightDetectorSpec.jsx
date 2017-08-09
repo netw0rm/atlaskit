@@ -52,6 +52,6 @@ describe('<HeightDetector />', () => {
     const wrapper = shallow(<HeightDetector shouldDetectResize />);
     expect(
       wrapper.find('HeightDetectorResizeAware').prop('onResize')
-    ).toBe(wrapper.instance().measureHeight);
+    ).toBe(wrapper.instance().triggerMeasureHeight);
   });
 });

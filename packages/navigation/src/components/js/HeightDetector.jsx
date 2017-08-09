@@ -8,7 +8,7 @@ import type { ReactElement } from '../../types';
 
 type Props = {|
   children?: ReactElement,
-  onHeightChange: Function,
+  onHeightChange: (number) => void,
   shouldMeasureImmediately?: bool,
   shouldDetectResize?: bool,
   shouldFillHeight?: bool,
@@ -28,11 +28,23 @@ export default class HeightDetector extends Component {
   }
 
   componentDidMount() {
-    this.measureHeight();
+    this.triggerMeasureHeight();
   }
 
   componentDidUpdate() {
-    this.measureHeight();
+    this.triggerMeasureHeight();
+  }
+
+  componentWillUnmount() {
+    if (this.measureFrameId) {
+      window.cancelAnimationFrame(this.measureFrameId);
+    }
+  }
+
+  measureFrameId: ?number;
+
+  triggerMeasureHeight = () => {
+    this.measureFrameId = this.measureHeight();
   }
 
   nodeToMeasure: ?HTMLElement
@@ -41,6 +53,8 @@ export default class HeightDetector extends Component {
     this.nodeToMeasure = ref;
   }
 
+  // Instead of calling this directly, call triggerMeasureHeight to ensure that the generated
+  // animation frame id is stored and eventually cancelled.
   measureHeight = () => {
     const { nodeToMeasure } = this;
     if (nodeToMeasure) {
@@ -64,7 +78,7 @@ export default class HeightDetector extends Component {
           shouldDetectResize ? (
             <HeightDetectorResizeAware
               onlyEvent
-              onResize={this.measureHeight}
+              onResize={this.triggerMeasureHeight}
             >
               {children}
             </HeightDetectorResizeAware>

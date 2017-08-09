@@ -1,12 +1,12 @@
 import { EditorState, TextSelection } from '../../prosemirror';
 
-export const isInsideCode = (state: EditorState<any>) => {
+export const isInsideCode = (state: EditorState<any>): boolean => {
   const { code } = state.schema.marks;
   const { $cursor } = state.selection as TextSelection;
-  const { storedMarks } = state.tr;
+
   return (
     $cursor &&
-    $cursor.marks().indexOf(code.create()) > -1 ||
-    (storedMarks && storedMarks.indexOf(code.create()) > -1)
+    !!$cursor.marks().filter(mark => mark.type === code).length ||
+    (state.tr.storedMarks || []).indexOf(code.create()) > -1
   );
 };

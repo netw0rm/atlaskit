@@ -307,12 +307,98 @@ describe('text-formatting', () => {
         sendKeyToPm(editorView, 'Backspace');
         expect(pluginState.codeActive).to.equal(true);
       });
+    });
 
-      it('should be able to exit code mark with ArrowRight', () => {
-        const { editorView, pluginState } = editor(doc(p(code('hello{<>}'))));
-        expect(pluginState.codeActive).to.equal(true);
-        sendKeyToPm(editorView, 'ArrowRight');
-        expect(pluginState.codeActive).to.equal(false);
+    context('when exiting code with ArrowRight', () => {
+      context('when code is the last node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('hello{<>}'), '{nextPos}')));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+      context('when code is not the last node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('hello{<>}'), '{nextPos}text')));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+    });
+
+    context('when exiting code with ArrowLeft', () => {
+      context('when code is the first node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('{nextPos}', code('{<>}hello'))));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+
+      context('when code is not the first node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('h{<>}ello'))));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+    });
+
+    context('when entering code with ArrowRight', () => {
+      context('when code is the first node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('{<>}', code('{nextPos}hello'))));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+      context('when code is not the first node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('text{<>}', code('{nextPos}hello'))));
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+    });
+
+    context('when entering code with ArrowLeft', () => {
+      context('when code is the last node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), '{<>}')));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+      context('when code is not the last node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 't{<>}ext')));
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
       });
     });
 

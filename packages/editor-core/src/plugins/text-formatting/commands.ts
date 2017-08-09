@@ -48,7 +48,6 @@ const moveRight = (): Command => {
 
 const moveLeft = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
     if (!empty || !$cursor) {

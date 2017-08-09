@@ -9,14 +9,17 @@ describe('StoredDuplicateLimitedQueue', () => {
   let mockStorage: Storage;
   let mockGetItem: sinon.SinonStub;
   let mockSetItem: sinon.SinonStub;
+  let mockRemoveItem: sinon.SinonSpy;
   let queueOptions: StoredQueueOptions;
 
   beforeEach(() => {
     mockGetItem = sinon.stub();
     mockSetItem = sinon.stub();
+    mockRemoveItem = sinon.spy();
     mockStorage = <Storage> {};
     mockStorage.getItem = mockGetItem;
     mockStorage.setItem = mockSetItem;
+    mockStorage.removeItem = mockRemoveItem;
 
     queueOptions = {
       maxDuplicates: 4,
@@ -104,5 +107,16 @@ describe('StoredDuplicateLimitedQueue', () => {
         expect(queue.getItemsOrderedByDuplicateCount()).to.have.lengthOf(3);
         expect(queue.getItemsOrderedByDuplicateCount()).to.have.members(['a', 'b', 'c']);
     });
+  });
+
+  it('should clear local storage and the queue', () => {
+        const list = ['a', 'b'];
+        mockGetItem.returns(JSON.stringify(list));
+        const queue = new StoredDuplicateLimitedQueue<string>(queueOptions);
+        expect(queue.getItemsOrderedByDuplicateCount()).to.be.lengthOf(2);
+
+        queue.clear();
+        expect(queue.getItemsOrderedByDuplicateCount()).to.be.lengthOf(0);
+        expect(mockRemoveItem.calledOnce).to.equal(true);
   });
 });

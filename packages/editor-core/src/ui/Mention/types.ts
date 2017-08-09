@@ -1,4 +1,4 @@
-import { AkProfileClient } from '../../utils/profilecard';
+import { AkProfileClient } from '@atlaskit/profilecard';
 
 export interface ProfileCardAction {
   callback: () => void;

@@ -9,7 +9,7 @@ import { ProfilecardProvider } from './types';
 import {
   default as AkProfilecardResourced,
   AkProfilecardTriggerActions,
-} from '../../utils/profilecard';
+} from '@atlaskit/profilecard';
 import { MentionEventHandler } from '../Renderer';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';

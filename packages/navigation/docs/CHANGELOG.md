@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 18.3.2 (2017-08-09)
+
+* bug fix; improving the peformance of resizing the navigation by throttling it within a reques (issues closed: ak-3228) ([9db522c](https://bitbucket.org/atlassian/atlaskit/commits/9db522c))
 ## 18.3.1 (2017-08-08)
 
 * bug fix; make navigation GlobalItem href prop optional (issues closed: ak-3220) ([770acc6](https://bitbucket.org/atlassian/atlaskit/commits/770acc6))

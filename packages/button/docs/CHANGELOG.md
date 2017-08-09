@@ -1,6 +1,12 @@
 # @atlaskit/button
 
-## Unreleased
+## 3.6.0 (2017-08-09)
+
+* feature; export ButtonGroup from button package (issues closed: ak-2382) ([61682c6](https://bitbucket.org/atlassian/atlaskit/commits/61682c6))
+
+
+
+
 
 ## 3.5.3 (2017-07-27)
 

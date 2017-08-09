@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.4.1 (2017-08-09)
+
+* bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))
+* bug fix; codeBlock content text chunks should not have a new line between them (issues closed: ed-2399) ([c1ccdac](https://bitbucket.org/atlassian/atlaskit/commits/c1ccdac))
 ## 45.4.0 (2017-08-08)
 
 

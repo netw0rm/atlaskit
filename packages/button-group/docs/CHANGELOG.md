@@ -1,6 +1,12 @@
 # @atlaskit/button-group
 
-## Unreleased
+## 1.5.3 (2017-08-09)
+
+* bug fix; add deprecation warning to button-group ([acffe78](https://bitbucket.org/atlassian/atlaskit/commits/acffe78))
+
+
+
+
 
 ## 1.5.2 (2017-07-27)
 

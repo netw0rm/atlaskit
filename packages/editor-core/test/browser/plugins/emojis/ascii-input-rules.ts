@@ -15,7 +15,7 @@ import {
   emojiQuery,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 const providerFactory = new ProviderFactory();
 const emojiProvider = emojiTestData.getEmojiResourcePromise();

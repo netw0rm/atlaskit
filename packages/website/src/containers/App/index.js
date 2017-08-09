@@ -36,6 +36,8 @@ import NoMatch from '../../pages/NoMatch';
 import InstallGuide from '../../pages/InstallGuide';
 import pkgs from '../../data';
 
+import CSSReset from '../../styles';
+
 import Nav from '../Nav';
 import MobileNav from '../MobileNav';
 
@@ -143,6 +145,7 @@ export default class App extends PureComponent {
     return (
       <Router>
         <AtlasKitThemeProvider mode={themeMode}>
+          <CSSReset />
           <ScrollToTop>
             <Helmet
               defaultTitle="AtlasKit - the official implementation of the Atlassian Design Guidelines"

@@ -2,15 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 
-import { background } from './colors';
-import ThemeReset from './ThemeReset';
-
 import { CHANNEL, DEFAULT_THEME_MODE, THEME_MODES } from './constants';
 
-function getStylesheetResetCSS(state) {
-  return `
-    body { background: ${background(state)}; }
-  `;
+function getStylesheetResetCSS() {
+  return null;
 }
 
 function buildThemeState(mode) {
@@ -66,9 +61,9 @@ export default class AtlasKitThemeProvider extends Component {
     const { children } = this.props;
     return (
       <ThemeProvider theme={this.state.theme}>
-        <ThemeReset>
+        <div>
           {children}
-        </ThemeReset>
+        </div>
       </ThemeProvider>
     );
   }

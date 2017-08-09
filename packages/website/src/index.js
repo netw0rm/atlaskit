@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import '@atlaskit/css-reset'; // eslint-disable-line
-
+// import '@atlaskit/css-reset';
 import App from './containers/App';
 import { CodeBlock } from './components/Docs';
 

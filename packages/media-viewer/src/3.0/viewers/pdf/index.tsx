@@ -67,7 +67,7 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
     if (this.state.error) {
       return (
         <div>We need a view for ERROR</div>
-      )
+      );
     }
     return (
       <Wrapper>

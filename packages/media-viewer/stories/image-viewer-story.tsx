@@ -4,10 +4,11 @@ import { createStorybookContext, wideImageFileId, largeImageFileId } from '@atla
 import {ImageViewer} from '../src/3.0/viewers/image';
 
 const context = createStorybookContext();
+
 const badFileId = {
   ...wideImageFileId,
   id: 'badId'
-}
+};
 
 storiesOf('Image Viewer', {})
  .add('Image View', () => (

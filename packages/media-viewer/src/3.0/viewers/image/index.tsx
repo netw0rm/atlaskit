@@ -73,7 +73,6 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
 
   onError() {
     // TODO: this needs to be implemented
-    console.log('error loading image');
   }
 
   renderEditor() {

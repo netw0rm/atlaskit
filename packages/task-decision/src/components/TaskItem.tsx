@@ -3,7 +3,8 @@ import { PureComponent, ReactElement } from 'react';
 import {
   Wrapper,
   CheckBoxWrapper,
-  ContentWrapper
+  ContentWrapper,
+  Placeholder,
 } from '../styled/TaskItem';
 
 export interface ContentRef {
@@ -16,6 +17,7 @@ export interface Props {
   onChange?: (taskId: string, isChecked: boolean) => void;
   contentRef?: ContentRef;
   children?: ReactElement<any>;
+  showPlaceholder?: boolean;
 }
 
 let taskCount = 0;
@@ -29,6 +31,11 @@ export default class TaskItem extends PureComponent<Props, {}> {
     super(props);
     this.checkBoxId = getCheckBoxId(props.taskId);
   }
+
+  private renderPlaceholder() {
+    return <Placeholder contentEditable={false}>Create a task. @ mention your teammates to assign tasks.</Placeholder>;
+  }
+
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.taskId !== this.props.taskId) {
@@ -44,7 +51,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { isDone, contentRef, children } = this.props;
+    const { isDone, contentRef, children, showPlaceholder } = this.props;
 
     return (
       <Wrapper>
@@ -58,6 +65,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
           />
           <label htmlFor={this.checkBoxId} />
         </CheckBoxWrapper>
+        {showPlaceholder && !children && this.renderPlaceholder()}
         <ContentWrapper innerRef={contentRef}>
           {children}
         </ContentWrapper>

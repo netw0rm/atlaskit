@@ -80,7 +80,7 @@ export class MediaElement extends React.Component<MediaElementProps, MediaElemen
 
   seek(time: number) {
     if (this.mediaElement) {
-      this.mediaElement.fastSeek(time);
+      this.mediaElement.currentTime = time;
     }
   }
 

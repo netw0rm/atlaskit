@@ -116,7 +116,17 @@ const plugins = (schema: Schema<any, any>) => {
     md.use(table);
   }
 
-  atlassianMarkDownParser = new MarkdownParser(schema, md, {
+  const filterMdToPmSchemaMapping = map => Object.keys(map).reduce((newMap, key) => {
+    const value = map[key];
+    const block = value.block || value.node;
+    const mark = value.mark;
+    if ((block && schema.nodes[block]) || (mark && schema.marks[mark])) {
+      newMap[key] = value;
+    }
+    return newMap;
+  }, {});
+
+  atlassianMarkDownParser = new MarkdownParser(schema, md, filterMdToPmSchemaMapping({
     blockquote: { block: 'blockquote' },
     paragraph: { block: 'paragraph' },
     em: { mark: 'em' },
@@ -153,7 +163,7 @@ const plugins = (schema: Schema<any, any>) => {
     th: { block: 'tableHeader' },
     td: { block: 'tableCell' },
     s: { mark: 'strike' },
-  });
+  }));
   return [plugin].filter((plugin) => !!plugin) as Plugin[];
 };
 

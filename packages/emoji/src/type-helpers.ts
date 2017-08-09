@@ -1,6 +1,7 @@
 import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
+  EmojiVariationDescription,
   EmojiId,
   ImageRepresentation,
   MediaApiRepresentation,
@@ -19,6 +20,10 @@ export const isMediaEmoji = (emoji: EmojiDescription) => isMediaRepresentation(e
 
 export const isEmojiDescriptionWithVariations = (emoji): emoji is EmojiDescriptionWithVariations =>
   !!(emoji && (<EmojiDescriptionWithVariations> emoji).skinVariations);
+
+export const isEmojiVariationDescription = (object: any): object is EmojiVariationDescription => {
+  return 'baseId' in object;
+};
 
 export const toEmojiId = (emoji: EmojiDescription): EmojiId => ({
   shortName: emoji.shortName,

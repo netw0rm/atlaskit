@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { customCategory } from '../../../src/constants';
 import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
 import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
+import { isEmojiVariationDescription } from '../../../src/type-helpers';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
 
@@ -86,6 +87,12 @@ describe('EmojiUtils', () => {
         checkFields(skinEmoji0, emoji.skinVariations[0], spriteFields);
         const skinEmoji0Rep = skinEmoji0.representation as SpriteRepresentation;
         checkFields(skinEmoji0Rep.sprite, spriteSheet, spriteSheetFields);
+
+        if (isEmojiVariationDescription(skinEmoji0)) {
+          expect(skinEmoji0.baseId).to.equal(e.id);
+        } else {
+          fail('The skin variation emoji did not contain a baseId');
+        }
       }
     });
 

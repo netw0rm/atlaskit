@@ -15,6 +15,14 @@ describe('DuplicateLimitedQueue', () => {
       // tslint:disable-next-line
       expect(items).to.be.empty;
     });
+
+    it('should empty on clear', () => {
+      const queue = new DuplicateLimitedQueue<string>({ maxDuplicates: 10, minUniqueItems: 5 });
+      queue.enqueue('monkey trousers');
+      expect(queue.getItemsOrderedByDuplicateCount()).to.be.lengthOf(1);
+      queue.clear();
+      expect(queue.getItemsOrderedByDuplicateCount()).to.be.lengthOf(0);
+    });
   });
 
   describe('limits', () => {

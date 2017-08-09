@@ -1,5 +1,9 @@
 # @atlaskit/drag-and-drop
 
+## 4.5.3 (2017-08-08)
+
+
+* bug fix; correctly unbinding event listeners if there is an error during a drag (issues closed: ak-3218) ([d633f85](https://bitbucket.org/atlassian/atlaskit/commits/d633f85))
 ## 4.5.2 (2017-08-03)
 
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))

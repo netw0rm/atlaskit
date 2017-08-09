@@ -9,6 +9,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import { EmojiDescription, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
+import { UsageFrequencyTracker } from '../../../src/api/internal/UsageFrequencyTracker';
 import EmojiResource, {
     EmojiProvider,
     EmojiResourceConfig,
@@ -31,7 +32,6 @@ import {
     missingMediaEmoji,
     missingMediaEmojiId,
     missingMediaServiceEmoji,
-    mockLocalStorage,
     siteServiceEmojis,
     siteUrl,
     standardEmojis,
@@ -160,7 +160,19 @@ class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, u
   }
 }
 
+/**
+ * Extend the EmojiResource to provide access to its underlying usage tracking for testing.
+ */
+class TestEmojiResource extends EmojiResource {
+  constructor(config: EmojiResourceConfig, usageTracker: UsageFrequencyTracker) {
+    super(config);
+    // replace the usageTracker that was just constructed
+    this.usageTracker = usageTracker;
+  }
+}
+
 describe('EmojiResource', () => {
+
   afterEach(() => {
     fetchMock.restore();
   });
@@ -388,7 +400,16 @@ describe('EmojiResource', () => {
   });
 
   describe('#recordMentionSelection', () => {
-    it('should call record endpoint', () => {
+    let mockUsageTracker: UsageFrequencyTracker;
+    let mockRecordUsage: sinon.SinonStub;
+
+    beforeEach(() => {
+      mockUsageTracker = <UsageFrequencyTracker>{};
+      mockRecordUsage = sinon.stub();
+      mockUsageTracker.recordUsage = mockRecordUsage;
+    });
+
+    it('should call record endpoint and local usage tracker', () => {
       fetchMock.mock({
         name: 'record',
         matcher: `begin:${baseUrl}`,
@@ -401,11 +422,18 @@ describe('EmojiResource', () => {
         response: providerServiceData1,
       });
 
-      const resource = new EmojiResource(defaultApiConfig);
+      const resource = new TestEmojiResource(defaultApiConfig, mockUsageTracker);
 
-      return resource.recordSelection({ shortName: ':bacon:', id: '123bacon' }).then(() => {
+      return resource.recordSelection(grinEmoji).then(() => {
         expect(fetchMock.called('record')).to.equal(true);
+        expect(mockRecordUsage.calledWith(grinEmoji)).to.equal(true);
       });
+    });
+
+    it('should perform local usage tracking even when no recordConfig configured', () => {
+      const resource = new TestEmojiResource({ providers: [provider1] },  mockUsageTracker);
+      resource.recordSelection(grinEmoji);
+
     });
   });
 
@@ -1174,31 +1202,41 @@ describe('UploadingEmojiResource', () => {
 });
 
 describe('#toneSelectionStorage', () => {
-  const localStorage = global.window.localStorage;
+  let originalLocalStorage;
+
+  let mockStorage: Storage;
+  let mockGetItem: sinon.SinonStub;
+  let mockSetItem: sinon.SinonStub;
+
+
   beforeEach(() => {
-    global.window.localStorage = mockLocalStorage;
+    originalLocalStorage = global.window.localStorage;
+
+    mockGetItem = sinon.stub();
+    mockSetItem = sinon.stub();
+    mockStorage = <Storage> {};
+    mockStorage.getItem = mockGetItem;
+    mockStorage.setItem = mockSetItem;
+
+    global.window.localStorage = mockStorage;
   });
 
   afterEach(() => {
-    global.window.localStorage.clear();
-    global.window.localStorage = localStorage;
+    global.window.localStorage = originalLocalStorage;
   });
 
   it('retrieves previously stored tone selection upon construction', () => {
-    const getSpy = sinon.spy(global.window.localStorage, 'getItem');
-    const provider = new EmojiResource(defaultApiConfig);
-    // Linter throws an error if nothing done with EmojiResource
-    provider.filter();
-    expect(getSpy.callCount).to.equal(1);
+    // tslint:disable-next-line:no-unused-expression
+    new EmojiResource(defaultApiConfig);
+
+    expect(mockGetItem.calledWith(selectedToneStorageKey)).to.equal(true);
   });
 
   it('calling setSelectedTone calls setItem in localStorage', () => {
-    const setSpy = sinon.spy(global.window.localStorage, 'setItem');
     const resource = new EmojiResource(defaultApiConfig);
-    resource.setSelectedTone(1);
-    expect(setSpy.callCount).to.equal(1);
-    expect(setSpy.getCall(0).args[0]).to.equal(selectedToneStorageKey);
-    expect(setSpy.getCall(0).args[1]).to.equal('1');
+    const tone = 3;
+    resource.setSelectedTone(tone);
+    expect(mockSetItem.calledWith(selectedToneStorageKey, tone));
   });
 });
 

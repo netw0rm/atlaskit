@@ -50,3 +50,4 @@ export default class TriggeredEmojiResource extends EmojiResource {
     }
   }
 }
+

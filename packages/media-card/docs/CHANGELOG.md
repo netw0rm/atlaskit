@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 18.1.0 (2017-08-08)
+
+* feature; added embed cards ([4d8bda3](https://bitbucket.org/atlassian/atlaskit/commits/4d8bda3))
 ## 18.0.2 (2017-08-03)
 
 * bug fix; reduce box-shadow on smart-cards ([ef9658b](https://bitbucket.org/atlassian/atlaskit/commits/ef9658b))

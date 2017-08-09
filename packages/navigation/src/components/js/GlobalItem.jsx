@@ -8,7 +8,7 @@ type Props = {|
   /** Element to be rendered inside the item. Should be an atlaskit icon. */
   children: ReactElement,
   /** href to pass to linkComponent.  */
-  href: string,
+  href?: string,
   /** Set the size of the item's content.  */
   size?: 'small' | 'medium' | 'large',
   /** Component to be used to create the link in the global item. A default

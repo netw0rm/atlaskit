@@ -1,8 +1,8 @@
-import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin } from '../../../../dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { parseHtml as parse } from '../../src/parse-html';
-import schema from '../../src/schema';
+import { BitbucketTransformer } from '../../../../src/transformers';
+import { bitbucketSchema as schema } from '../../../../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
   h3, h4, h5, h6, hr, img, li, emoji, mention,
@@ -11,8 +11,11 @@ import {
 
 chai.use(chaiPlugin);
 
+const transformer = new BitbucketTransformer();
+const parse = (html: string) => transformer.parse(html);
+
 // Based on https://bitbucket.org/tutorials/markdowndemo
-describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
+describe('BitbucketTransformer: parser', () => {
   describe('block elements', () => {
     it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));

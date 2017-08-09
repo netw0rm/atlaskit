@@ -19,7 +19,7 @@ export default class EmojiPickerTextInput extends PureComponent<Props, undefined
     const { emojiProvider, onSelection } = this.props;
 
     return (
-      <div style={{ padding: '10px' }} >
+      <div style={{ padding: '10px', marginBottom: '300px' }} >
         <Layer
           content={
             <EmojiPicker

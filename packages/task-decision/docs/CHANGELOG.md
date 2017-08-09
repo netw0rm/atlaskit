@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 2.2.3 (2017-08-08)
+
+* bug fix; import es5 renderer ([221da82](https://bitbucket.org/atlassian/atlaskit/commits/221da82))
 ## 2.2.2 (2017-08-07)
 
 * bug fix; fix correct dep for @atlaskit/spinner ([155979d](https://bitbucket.org/atlassian/atlaskit/commits/155979d))

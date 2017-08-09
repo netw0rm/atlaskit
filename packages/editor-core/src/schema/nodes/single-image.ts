@@ -1,5 +1,5 @@
 import { NodeSpec, Node } from '../../prosemirror';
-export type Alighment = 'left' | 'right';
+export type Alignment = 'left' | 'right' | 'center';
 
 export const singleImage: NodeSpec = {
   inline: false,

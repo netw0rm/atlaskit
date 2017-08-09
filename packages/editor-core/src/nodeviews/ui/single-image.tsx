@@ -5,6 +5,7 @@ import {
   EditorView,
   Node as PMNode,
 } from '../../prosemirror';
+import { Alignment } from '../../schema/nodes/single-image';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function clearDirection(alignment: string): string {
+function clearDirection(alignment: Alignment): string {
   switch (alignment) {
     case 'left':
       return 'left';

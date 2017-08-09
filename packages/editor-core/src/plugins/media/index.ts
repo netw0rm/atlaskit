@@ -34,6 +34,7 @@ import keymapPlugin from './keymap';
 import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
+import { Alignment } from '../../schema/nodes/single-image';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -313,12 +314,12 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   }
 
-  alignLeft = (): boolean => {
+  align = (alignment: Alignment): boolean => {
     if (!this.isMediaNodeSelection()) {
       return false;
     }
     const { selection: { from }, schema, tr } = this.view.state;
-    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment: 'left' }));
+    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment: alignment }));
     return true;
   }
 

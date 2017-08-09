@@ -604,7 +604,7 @@ describe('Media plugin', () => {
     });
   });
 
-  describe('alignLeft', () => {
+  describe('align', () => {
     context('when there is only one image in the media group', () => {
       context('when selection is a media node', () => {
         it('changes media group to align left single image', () => {
@@ -617,13 +617,13 @@ describe('Media plugin', () => {
 
           setNodeSelection(editorView, 1);
 
-          pluginState.alignLeft();
+          pluginState.align('left');
 
           expect(editorView.state.doc).to.deep.equal(doc(
             singleImage({ alignment: 'left' })(
               media({ id: 'media', type: 'file', collection: testCollectionName }),
-              p('hello')
             ),
+            p('hello')
           ));
         });
       });
@@ -637,13 +637,13 @@ describe('Media plugin', () => {
             p('hel{<>}lo')
           ));
 
-          pluginState.alignLeft();
+          pluginState.align('right');
 
           expect(editorView.state.doc).to.deep.equal(doc(
             mediaGroup(
               media({ id: 'media', type: 'file', collection: testCollectionName }),
-              p('hello')
             ),
+            p('hello')
           ));
         });
       });

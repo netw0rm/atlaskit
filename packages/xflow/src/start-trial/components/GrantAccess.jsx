@@ -398,21 +398,21 @@ export default withXFlowProvider(
     xFlow: {
       config: {
         productLogo,
-    startTrial: {
+        startTrial: {
           grantAccessOptionItems,
-      grantAccessUserSelectPlaceholder,
-      grantAccessUsersOption,
-      grantAccessChooseOption,
-      grantAccessDefaultSelectedRadio,
-      grantAccessHeading,
-      grantAccessDefaultAccess,
+          grantAccessUserSelectPlaceholder,
+          grantAccessUsersOption,
+          grantAccessChooseOption,
+          grantAccessDefaultSelectedRadio,
+          grantAccessHeading,
+          grantAccessDefaultAccess,
         },
       },
-    grantAccessToUsers,
-    retrieveUsers,
-    progress,
-    status,
-    goToLearnMore,
+      grantAccessToUsers,
+      retrieveUsers,
+      progress,
+      status,
+      goToLearnMore,
     },
   }) => ({
     productLogo,

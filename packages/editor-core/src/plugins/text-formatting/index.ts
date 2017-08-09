@@ -286,7 +286,6 @@ export class TextFormattingState {
   handleKeyDown (view: EditorView, event: KeyboardEvent) {
     const { state } = this;
     const { from, to, empty } = state.selection;
-    const { code } = view.state.schema.marks;
     let marks = state.selection.$from.marks();
     let domNodeBefore = view.docView.domFromPos(from - 1);
 
@@ -331,10 +330,6 @@ export class TextFormattingState {
       if (marks.length && (!domNodeBefore || found)) {
         this.marksToRemove = marks.concat(this.marksToRemove || []);
       }
-    }
-
-    if (event.key === 'ArrowRight' && !state.doc.rangeHasMark(from, to, code)) {
-      view.dispatch(view.state.tr.removeStoredMark(code));
     }
   }
 

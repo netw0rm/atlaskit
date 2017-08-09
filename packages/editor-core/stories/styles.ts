@@ -37,6 +37,21 @@ export const Content = styled.div`
       padding: ${akEditorCodeBlockPadding};
       border-radius: ${akBorderRadius};
     }
+    & .code, & code {
+      padding: 1px 3px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background: ${akEditorCodeBackground};
+      font-size: 12px;
+      line-height: 1.4;
+
+      &:before, &:after {
+        vertical-align: text-top;
+        display: inline-block;
+        width: 3px;
+        content: '';
+      }
+    }
   }
 
   & div.toolsDrawer {

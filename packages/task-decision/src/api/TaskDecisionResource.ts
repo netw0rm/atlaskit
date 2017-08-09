@@ -7,8 +7,6 @@ import {
   TaskDecisionProvider,
   ObjectKey,
   Handler,
-  Task,
-  Decision,
   TaskState,
   DecisionState,
   ServiceTask,
@@ -21,7 +19,7 @@ let debouncedTaskToggle: number | null = null;
 export default class TaskDecisionResource implements TaskDecisionProvider {
   private serviceConfig: ServiceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
-  private cachedItems: Map<string, Task | Decision | BaseItem<TaskState | DecisionState>> = new Map();
+  private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
 
   constructor(serviceConfig: ServiceConfig) {

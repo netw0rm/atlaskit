@@ -7,11 +7,9 @@ import {
   TaskDecisionProvider,
   ObjectKey,
   Handler,
-  Task,
-  Decision,
   TaskState,
   DecisionState,
-  GenericItem,
+  BaseItem,
 } from '../types';
 
 let debouncedTaskStateQuery: number | null = null;
@@ -21,7 +19,7 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
   private config?: MockTaskDecisionResourceConfig;
   private fakeCursor = 0;
   private subscribers: Map<string, Handler[]> = new Map();
-  private cachedItems: Map<string, Task | Decision | GenericItem> = new Map();
+  private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
 
   constructor(config?: MockTaskDecisionResourceConfig) {
@@ -58,7 +56,7 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     return Promise.resolve(result);
   }
 
-  getTaskState(keys: ObjectKey[]): Promise<GenericItem[]> {
+  getTaskState(keys: ObjectKey[]): Promise<BaseItem<TaskState>[]> {
     return Promise.resolve([
       {
         containerAri: 'ari:cloud:app.cloud:f7ebe2c0-0309-4687-b913-41d422f2110b:conversation/12e445f8-478c-4902-a556-f4866b273033',

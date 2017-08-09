@@ -32,9 +32,11 @@ export const globalItemSizes = {
 };
 
 export const drawerOffset = gridSize * 2;
+export const drawerContainerHeaderAnimationSpeed = '220ms';
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;
+export const containerTitleBottomMargin = gridSize * 2.5;
 export const standardOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
@@ -43,7 +45,6 @@ export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
-export const nestedNavigationAnimationTime: number = 500;
 export const zIndex = {
   base: akZIndexNavigation,
   // needs to sit on top of navigation and the drawer

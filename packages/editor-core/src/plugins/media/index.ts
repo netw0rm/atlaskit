@@ -1,7 +1,7 @@
-import { Context } from './../../../../media-core/src/context/context';
 import * as assert from 'assert';
 
 import {
+  Context,
   DefaultMediaStateManager,
   MediaProvider,
   MediaState,

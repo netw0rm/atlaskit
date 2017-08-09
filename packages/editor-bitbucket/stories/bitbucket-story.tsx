@@ -3,12 +3,11 @@ import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EmojiProvider, MentionProvider } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/editor-core';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { MockMentionSource } from './_mock-mentionsource';
 
 import { default as Editor, version as editorVersion } from '../src';
-import exampleHTML from './exampleHTML';
 
 import { name } from '../package.json';
 
@@ -45,7 +44,7 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
-const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider) as Promise<MentionProvider>;
+const mentionSource = new MockMentionSource();
 const emojiProvider = emojiStoryData.getEmojiResource() as Promise<EmojiProvider>;
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 
@@ -71,7 +70,7 @@ storiesOf(name, module)
       onCancel={CANCEL_ACTION}
       onChange={CHANGE_ACTION}
       onSave={SAVE_ACTION}
-      mentionProvider={mentionProvider}
+      mentionSource={mentionSource}
     />
   )
   .add('With emoji', () =>
@@ -151,123 +150,6 @@ storiesOf(name, module)
       </div>
     );
   })
-  .add('Markdown preview', () => {
-    type Props = {};
-    type State = { markdown?: string };
-    class Demo extends PureComponent<Props, State> {
-      state: State = { markdown: '' };
-
-      handleChange = (editor: Editor) => {
-        this.setState({ markdown: editor.value });
-      }
-
-      render() {
-        return (
-          <div ref="root">
-            <Editor
-              onCancel={CANCEL_ACTION}
-              onChange={this.handleChange}
-              onSave={SAVE_ACTION}
-              mentionProvider={mentionProvider}
-              emojiProvider={emojiProvider}
-            />
-            <fieldset style={{ marginTop: 20 }}>
-              <legend>Markdown</legend>
-              <pre>{this.state.markdown}</pre>
-            </fieldset>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <Demo />
-    );
-  })
-  .add('Set from HTML', () => {
-    type Props = {};
-    type State = { hasError?: boolean };
-    class Demo extends PureComponent<Props, State> {
-      state: State = { hasError: false };
-      textarea?: HTMLTextAreaElement;
-      editor?: Editor;
-
-      setEditorContentFromHtml = () => {
-        const { textarea, editor } = this;
-
-        if (!textarea || !editor) {
-          return;
-        }
-
-        this.setState({ hasError: false });
-
-        try {
-          editor.setFromHtml(textarea.value);
-        } catch (e) {
-          this.setState({ hasError: true });
-          console.error('Error when setting from HTML', e);
-        }
-      }
-
-      handleTextareaRef = (ref: HTMLTextAreaElement | null) => {
-        if (!ref) {
-          this.textarea = undefined;
-          return;
-        }
-        this.textarea = ref;
-        ref.value = exampleHTML;
-        this.setEditorContentFromHtml();
-      }
-
-      handleEditorRef = (ref: Editor | null) => {
-        if (!ref) {
-          this.editor = undefined;
-          return;
-        }
-
-        this.editor = ref;
-
-        // TODO: we don't currently have a good method of knowing that the editor can receive content
-        setTimeout(() => {
-          this.setEditorContentFromHtml();
-        }, 500);
-      }
-
-      render() {
-        return (
-          <div ref="root" style={{ display: 'flex', alignItems: 'stretch', minHeight: '100%' }}>
-            <div style={{ flex: 3, display: 'flex', alignItems: 'stretch' }}>
-              <textarea
-                style={{
-                  flex: 1,
-                  fontFamily: 'monospace',
-                  fontSize: '90%',
-                  outline: 'none',
-                  border: '0 none',
-                  padding: '5px 10px',
-                  borderRight: '10px solid rgb(247, 247, 247)',
-                  background: this.state.hasError ? 'red' : 'white'
-                }}
-                ref={this.handleTextareaRef}
-                onKeyUp={this.setEditorContentFromHtml}
-              />
-            </div>
-            <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'stretch', alignContent: 'stretch' }}>
-              <Editor
-                ref={this.handleEditorRef}
-                isExpandedByDefault={true}
-                emojiProvider={emojiProvider}
-              />
-            </div>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <Demo />
-    );
-  })
   .add('With feedback button', () => {
     class EditorWithFeedback extends PureComponent<{}, { hasJquery?: boolean }> {
       state = {
@@ -330,7 +212,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
-              mentionProvider={mentionProvider}
+              mentionSource={mentionSource}
               emojiProvider={emojiProvider}
               analyticsHandler = {analyticsHandler}
               imageUploadHandler={imageUploadHandler}

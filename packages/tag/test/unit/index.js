@@ -189,4 +189,21 @@ describe('Tag component', () => {
       expect(spy).not.toHaveBeenCalled();
     });
   });
+
+  describe('color prop', () => {
+    it('should render with a color option', () => {
+      const wrapper = mount(<Tag text="default" color="purple" />);
+      expect(wrapper.props().color).toBe('purple');
+    });
+
+    it('should render the standard color option if no color option is provided', () => {
+      const wrapper = mount(<Tag text="default" />);
+      expect(wrapper.props().color).toBe('standard');
+    });
+
+    it('should render the standard color option if missing color option is provided', () => {
+      const wrapper = mount(<Tag text="gibberish" color="gibberish" />);
+      expect(wrapper.find(Chrome).props().color).toBe('standard');
+    });
+  });
 });

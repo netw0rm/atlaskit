@@ -7,6 +7,7 @@ import ModalPositioner from '../styled/ModalPositioner';
 import ModalContainer from '../styled/ModalContainer';
 import HeaderFooterWrapper from '../styled/HeaderFooterWrapper';
 import ContentContainer from '../styled/ContentContainer';
+import Children from '../styled/Children';
 import KeylineMask from '../styled/KeylineMask';
 
 import { WIDTH_ENUM } from '../shared-variables';
@@ -21,6 +22,15 @@ export default class ModalDialog extends PureComponent {
     children: PropTypes.node,
     /** Elements to render in the footer of the moda.l */
     footer: PropTypes.node,
+    /** Height of the modal. If not set, the modal grows to fit the content until it
+    runs out of vertical space, at which point scrollbars appear. If a number is
+    provided, the height is set to that number in pixels. A string including pixels,
+    or a percentage, will be directly applied as a style. Several size options are
+    also recognised. */
+    height: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
     /** Width of the modal. This can be provided in three different ways.
     If a number is provided, the width is set to that number in pixels.
     A string including pixels, or a percentage, will be directly applied as a style.
@@ -132,11 +142,11 @@ export default class ModalDialog extends PureComponent {
               onAnimationEnd={this.handleAnimationEnd}
               onClick={this.handlePositionerDirectClick}
             >
-              <ModalContainer>
+              <ModalContainer height={this.props.height}>
                 {optionalHeader}
                 <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
                   {headerKeylineMask}
-                  {children}
+                  <Children>{children}</Children>
                   {footerKeylineMask}
                 </ContentContainer>
                 {optionalFooter}

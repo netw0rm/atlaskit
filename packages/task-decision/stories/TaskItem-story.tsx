@@ -1,9 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import Renderer from '@atlaskit/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
 import TaskItem from '../src/components/TaskItem';
-import { document } from './story-data';
+import { document } from '../src/support/story-data';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console

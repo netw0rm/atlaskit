@@ -17,6 +17,7 @@ import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
 import ToolbarButton from '../ToolbarButton';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
+import tableCommands from '../../plugins/table/commands';
 
 export interface Props {
   isDisabled?: boolean;
@@ -31,10 +32,8 @@ export interface Props {
 export interface State {
   isOpen?: boolean;
   tableActive: boolean;
-  tableDisabled: boolean;
   tableHidden: boolean;
   mediaDisabled: boolean;
-  isCodeBlock: boolean;
   availableWrapperBlockTypes?: BlockType[];
 }
 
@@ -48,10 +47,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   state: State = {
     isOpen: false,
     tableActive: false,
-    tableDisabled: false,
     tableHidden: false,
     mediaDisabled: false,
-    isCodeBlock: false,
   };
 
   componentDidMount() {
@@ -64,9 +61,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
     }
     if (pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { isCodeBlock, availableWrapperBlockTypes } = pluginStateBlockType;
+      const { availableWrapperBlockTypes } = pluginStateBlockType;
       this.setState({
-        isCodeBlock,
         availableWrapperBlockTypes,
       });
     }
@@ -87,9 +83,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
     }
     if (!oldPluginStateBlockType && pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { isCodeBlock, availableWrapperBlockTypes } = pluginStateBlockType;
+      const { availableWrapperBlockTypes } = pluginStateBlockType;
       this.setState({
-        isCodeBlock,
         availableWrapperBlockTypes,
       });
     }
@@ -167,17 +162,15 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   }
 
   private createItems = () => {
-    const { isCodeBlock } = this.state;
     const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
     let items: any[] = [];
     if (pluginStateTable) {
-      const { tableHidden, tableActive, tableDisabled } = this.state;
+      const { tableHidden, tableActive } = this.state;
       if (!tableHidden) {
         items.push({
           content: 'Table',
           value: { name: 'table' },
           isActive: tableActive,
-          isDisabled: tableDisabled || isCodeBlock,
           tooltipDescription: tooltip(toggleTable),
           tooltipPosition: 'right',
           elemBefore: <TableIcon label="Insert table"/>,
@@ -188,7 +181,6 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },
-        isDisabled: isCodeBlock,
         tooltipDescription: 'Files and Images',
         tooltipPosition: 'right',
         elemBefore: <MediaIcon label="Insert files and images"/>,
@@ -202,7 +194,6 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
         items.push({
           content: blockType.title,
           value: blockType,
-          isDisabled: isCodeBlock,
           tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
           tooltipPosition: 'right',
           elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`}/>,
@@ -215,8 +206,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   }
 
   private handlePluginStateTableChange = (pluginState: TableState) => {
-    const { tableActive, tableDisabled, tableHidden } = pluginState;
-    this.setState({ tableActive, tableDisabled, tableHidden });
+    const { tableActive, tableHidden } = pluginState;
+    this.setState({ tableActive, tableHidden });
   }
 
   private handlePluginStateMediaChange = (pluginState: MediaPluginState) => {
@@ -227,17 +218,16 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
 
   private handlePluginStateBlockTypeChange = (pluginState: BlockTypeState) => {
     this.setState({
-      isCodeBlock: pluginState.isCodeBlock,
       availableWrapperBlockTypes: pluginState.availableWrapperBlockTypes,
     });
   }
 
   private onItemActivated = ({ item }) => {
-    const { editorView, pluginStateTable, pluginStateMedia } = this.props;
+    const { editorView, pluginStateMedia } = this.props;
     analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
     switch(item.value.name) {
       case 'table':
-        pluginStateTable!.createTable()(editorView.state, editorView.dispatch);
+        tableCommands.createTable()(editorView.state, editorView.dispatch);
         break;
       case 'media':
         pluginStateMedia!.showMediaPicker();

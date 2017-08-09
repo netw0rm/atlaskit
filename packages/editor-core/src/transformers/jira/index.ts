@@ -20,6 +20,7 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
   isSchemaWithMedia,
+  isSchemaWithTables,
 } from './schema';
 
 export type CustomEncoder = (userId: string) => string;
@@ -84,8 +85,14 @@ export default class JIRATransformer implements Transformer<string> {
 
     // Process through nodes in reverse (so deepest child elements are first).
     for (let i = nodes.length - 1; i >= 0; i--) {
-      const node = nodes[i];
-      const content = this.getContent(node, convertedNodes);
+      const node = nodes[i] as Element;
+      // for tables we take tbody content, because tbody is not in schema so the whole bfs thing wouldn't work
+      const targetNode = (
+        node.tagName && node.tagName.toUpperCase() === 'TABLE'
+          ? node.firstChild!
+          : node
+      );
+      const content = this.getContent(targetNode, convertedNodes);
       const candidate = convert(content, node, this.schema);
       if (typeof candidate !== 'undefined') {
         convertedNodes.set(node, candidate);
@@ -134,7 +141,8 @@ export default class JIRATransformer implements Transformer<string> {
       paragraph,
       rule,
       mediaGroup,
-      media
+      media,
+      table
     } = this.schema.nodes;
 
     if (node.isText) {
@@ -177,6 +185,10 @@ export default class JIRATransformer implements Transformer<string> {
       } else if (node.type === media) {
         return this.encodeMedia(node);
       }
+    }
+
+    if (isSchemaWithTables(this.schema) && node.type === table) {
+      return this.encodeTable(node);
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -392,20 +404,27 @@ export default class JIRATransformer implements Transformer<string> {
     return elem;
   }
 
-  private addDataToNode(domNode: HTMLElement, mediaNode: PMNode) {
-    const { id, type, __fileName, __displayType } = mediaNode.attrs;
+  private addDataToNode(domNode: HTMLElement, mediaNode: PMNode, defaultDisplayType = 'thumbnail') {
+    const { id, type, collection, __fileName, __displayType } = mediaNode.attrs;
     // Order of dataset matters in IE Edge, please keep the current order
-    domNode.dataset.attachmentType = __displayType || 'thumbnail';
+    domNode.dataset.attachmentType = __displayType || defaultDisplayType;
     if (__fileName) {
       domNode.dataset.attachmentName = __fileName;
     }
     domNode.dataset.mediaServicesType = type;
     domNode.dataset.mediaServicesId = id;
+    if (collection) {
+      domNode.dataset.mediaServicesCollection = collection;
+    }
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
     const { clientId, serviceHost, token, collection } = contextInfo;
     return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+  }
+
+  private isImageMimeType (mimeType?: string) {
+    return mimeType && mimeType.indexOf('image/') > -1;
   }
 
   private encodeMedia(node: PMNode) {
@@ -414,9 +433,12 @@ export default class JIRATransformer implements Transformer<string> {
     const elem = this.doc.createElement('span');
     const a = this.doc.createElement('a');
 
-    if (node.attrs.__displayType === 'file') {
+    if (
+      node.attrs.__displayType === 'file' ||
+      !(node.attrs.__displayType || this.isImageMimeType(node.attrs.__fileMimeType))
+    ) {
       elem.setAttribute('class', 'nobr');
-      this.addDataToNode(a, node);
+      this.addDataToNode(a, node, 'file');
       a.textContent = node.attrs.__fileName || '';
     } else {
       elem.setAttribute('class', 'image-wrap');
@@ -438,6 +460,33 @@ export default class JIRATransformer implements Transformer<string> {
     }
 
     elem.appendChild(a);
+    return elem;
+  }
+
+  private encodeTable(node: PMNode) {
+    const elem = this.doc.createElement('table');
+    const tbody = this.doc.createElement('tbody');
+
+    node.descendants(rowNode => {
+      const rowElement = this.doc.createElement('tr');
+
+      rowNode.descendants(colNode => {
+        const cellType = colNode.type === this.schema.nodes.tableCell ? 'd' : 'h';
+        const cellElement = this.doc.createElement(`t${cellType}`);
+        cellElement.setAttribute('class', `confluenceT${cellType}`);
+        cellElement.appendChild(this.encodeFragment(colNode.content));
+        rowElement.appendChild(cellElement);
+
+        return false;
+      });
+
+      tbody.appendChild(rowElement);
+      return false;
+    });
+
+    elem.appendChild(tbody);
+    elem.setAttribute('class', 'confluenceTable');
+
     return elem;
   }
 }

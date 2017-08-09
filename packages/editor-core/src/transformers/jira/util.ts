@@ -7,8 +7,10 @@ import {
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
+  isSchemaWithMedia,
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
+  isSchemaWithTables
 } from './schema';
 
 import {
@@ -127,7 +129,7 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
           return null;
         } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
           return null;
-        } else if (isMedia(node)) {
+        } else if (isMedia(node) && isSchemaWithMedia(schema)) {
           const dataNode = node.querySelector('[data-media-services-id]');
           if (dataNode && dataNode instanceof HTMLElement) {
             const {
@@ -180,7 +182,12 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
           if (hasNonMediaChildren) {
             return schema.nodes.paragraph.createChecked({}, content);
           }
-          return schema.nodes.mediaGroup.createChecked({}, Fragment.fromArray(mediaContent));
+
+          if (isSchemaWithMedia(schema)) {
+            return schema.nodes.mediaGroup.createChecked({}, Fragment.fromArray(mediaContent));
+          }
+
+          return null;
         }
 
         return schema.nodes.paragraph.createChecked({}, content);
@@ -235,6 +242,26 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
     if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
       let blockquoteContent = content && (content as any).content.length ? content : schema.nodes.paragraph.create();
       return schema.nodes.blockquote!.createChecked({}, blockquoteContent);
+    }
+
+    // table
+    if (isSchemaWithTables(schema)) {
+      switch (tag) {
+        case 'TABLE':
+          return schema.nodes.table.createChecked({}, content);
+        case 'TR':
+          return schema.nodes.tableRow!.createChecked({}, content);
+        case 'TD':
+          const tdContent = schema.nodes.tableCell.validContent(content)
+            ? content
+            : ensureBlocks(content, schema);
+          return schema.nodes.tableCell.createChecked({}, tdContent);
+        case 'TH':
+          const thContent = schema.nodes.tableHeader.validContent(content)
+            ? content
+            : ensureBlocks(content, schema);
+          return schema.nodes.tableHeader.createChecked({}, thContent);
+      }
     }
   }
 }

@@ -10,6 +10,8 @@ const { global: globalTheme } = presets;
 
 // eslint-disable-next-line import/prefer-default-export
 export const createGlobalTheme = (text: Text, background: Background): Provided => {
+  const active: Background = chromatism.brightness(10, background).hex;
+
   const item: ItemTheme = {
     default: {
       background: 'transparent',
@@ -18,13 +20,16 @@ export const createGlobalTheme = (text: Text, background: Background): Provided 
       background: chromatism.brightness(-10, background).hex,
     },
     active: {
-      background: chromatism.brightness(10, background).hex,
+      background: active,
     },
     selected: {
       background: chromatism.brightness(-20, background).hex,
     },
     focus: {
       outline: text,
+    },
+    dragging: {
+      background: active,
     },
   };
 

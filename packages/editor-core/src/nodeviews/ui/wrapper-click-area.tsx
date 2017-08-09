@@ -10,8 +10,8 @@ import ProviderFactory from '../../providerFactory';
 import {
   EditorView,
   Node as PMNode,
-  NodeSelection,
 } from '../../prosemirror';
+import { setNodeSelection } from '../../utils';
 
 interface Props {
   components: ReactNodeViewComponents;
@@ -63,11 +63,7 @@ export default function wrapComponentWithClickArea(ReactComponent: ReactComponen
 
     private onClick = () => {
       const { getPos, view } = this.props;
-      const { doc, tr } = view.state;
-      const pos = doc.resolve(getPos());
-      const selection = new NodeSelection(pos);
-
-      view.dispatch(tr.setSelection(selection));
+      setNodeSelection(view, getPos());
     }
   };
 }

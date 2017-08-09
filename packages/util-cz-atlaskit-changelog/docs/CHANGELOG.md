@@ -1,20 +1,38 @@
 # @atlaskit/util-cz-atlaskit-changelog
 
+## Unreleased
+
 ## 1.3.0 (2017-07-27)
 
 
-* feature; re-add changelog process under new idea ([8a500b8](https://bitbucket.org/atlassian/atlaskit/commits/8a500b8))
-* feature; revert util-cz-atlaskit-changelog to 1.1 functionality, move changelog changes to b ([6823984](https://bitbucket.org/atlassian/atlaskit/commits/6823984))
 * feature; changelog writing is now in build process for static changelogs ([3b43dbb](https://bitbucket.org/atlassian/atlaskit/commits/3b43dbb))
+* feature; re-add changelog process under new idea ([8a500b8](https://bitbucket.org/atlassian/atlaskit/commits/8a500b8))
 * feature; move changelog updating to pre-deploy ([1caa752](https://bitbucket.org/atlassian/atlaskit/commits/1caa752))
+* feature; revert util-cz-atlaskit-changelog to 1.1 functionality, move changelog changes to b ([6823984](https://bitbucket.org/atlassian/atlaskit/commits/6823984))
+
+## 1.2.4 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 1.2.3 (2017-07-17)
+
+
+* fix; fixes bug in changelog generation to didnt create unreleased sections ([17e1e9f](https://bitbucket.org/atlassian/atlaskit/commits/17e1e9f))
+
+## 1.2.2 (2017-07-13)
+
+
+* fix; fixes bug where colons in messages cause changelog messages to get truncated ([76fda66](https://bitbucket.org/atlassian/atlaskit/commits/76fda66))
+
+## 1.2.1 (2017-07-13)
+
+
+* fix; fixes edge case when committing to more than one package at once ([9a0eead](https://bitbucket.org/atlassian/atlaskit/commits/9a0eead))
 
 ## 1.2.0 (2017-07-13)
 
 
-## 1.2.1 (2017-07-13)
-
-* bug fix; fixes bug where colons in messages cause changelog messages to get truncated (issues closed: ak-2989)
-* bug fix; fixes edge case when committing to more than one package at once
 * feature; write static changelog on npm commit command ([49fab52](https://bitbucket.org/atlassian/atlaskit/commits/49fab52))
 
 ## 1.1.7 (2017-04-27)

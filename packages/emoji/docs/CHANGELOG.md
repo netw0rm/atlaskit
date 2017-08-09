@@ -1,14 +1,72 @@
 # @atlaskit/emoji
 
+## Unreleased
+
 ## 22.3.1 (2017-07-27)
 
-* bug fix; update test/story data to all source from latest prod url. Stop using dev. ([2d223f8](https://bitbucket.org/atlassian/atlaskit/commits/2d223f8))
-* bug fix; ensure :sweat_smile: is in emoji test data for editor tests ([00759bf](https://bitbucket.org/atlassian/atlaskit/commits/00759bf))
 
-* feature; skin tone selection stored in EmojiResource propagated to typeahead (issues closed: fs-1128)
+* fix; ensure :sweat_smile: is in emoji test data for editor tests ([00759bf](https://bitbucket.org/atlassian/atlaskit/commits/00759bf))
+* fix; update test/story data to all source from latest prod url. Stop using dev. ([2d223f8](https://bitbucket.org/atlassian/atlaskit/commits/2d223f8))
+
+## 22.3.0 (2017-07-26)
+
+
+* feature; added test for localStorage use in EmojiResource ([b17b64a](https://bitbucket.org/atlassian/atlaskit/commits/b17b64a))
+
+## 22.2.0 (2017-07-25)
+
+
+* feature; emojiResource uses localStorage to remember tone selection ([5547296](https://bitbucket.org/atlassian/atlaskit/commits/5547296))
+* feature; export test/story data for direct import. Not in bundle. ([bafc231](https://bitbucket.org/atlassian/atlaskit/commits/bafc231))
+
+## 22.1.1 (2017-07-25)
+
+## 22.1.0 (2017-07-24)
+
+
+* feature; switch to util-service-support for service interaction ([2ee3928](https://bitbucket.org/atlassian/atlaskit/commits/2ee3928))
+
+## 22.0.1 (2017-07-21)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; addes in a wrapper for emoji so that it can be parsed by PM editor ([39e8389](https://bitbucket.org/atlassian/atlaskit/commits/39e8389))
+
+## 22.0.0 (2017-07-21)
+
+## 21.0.0 (2017-07-20)
+
+
+* feature; fixed CSS of emoji picker ([d98acb3](https://bitbucket.org/atlassian/atlaskit/commits/d98acb3))
+
+## 19.0.0 (2017-07-19)
+
+
+* fix; don't return non-searchable emoji in searches (and 'getAll') calls ([4e95196](https://bitbucket.org/atlassian/atlaskit/commits/4e95196))
+* fix; emojiDescription in a few test files were missing the searchable field. ([08f31e2](https://bitbucket.org/atlassian/atlaskit/commits/08f31e2))
+* fix; fix flexbox issue when upload panel displayed in FF/IE/Edge. ([aaff6f0](https://bitbucket.org/atlassian/atlaskit/commits/aaff6f0))
+* fix; Tests and minor fixes for media caching/loading. ([7ea11c1](https://bitbucket.org/atlassian/atlaskit/commits/7ea11c1))
+
+
+* feature; emojis with skin variations in the picker ([90af318](https://bitbucket.org/atlassian/atlaskit/commits/90af318))
+* feature; skin tone selection made in the picker is stored in the EmojiResource ([fcdcee8](https://bitbucket.org/atlassian/atlaskit/commits/fcdcee8))
+* feature; skin tone selection stored in EmojiResource propagated to typeahead ([b17570c](https://bitbucket.org/atlassian/atlaskit/commits/b17570c))
+* feature; Performance improvements ([9f5215c](https://bitbucket.org/atlassian/atlaskit/commits/9f5215c))
+
+
+* breaking; The EmojiDescription and EmojiServiceDescription interfaces have an additional mandatory property.
+
+ISSUES CLOSED: FS-1171
 * breaking; EmojiProvider requires getter/setter for remembering tone selection
-* breaking; skin tone selection made in the picker is stored in the EmojiResource (issues closed: fs-1127)
-* feature; emojis with skin variations in the picker (issues closed: fs-1126)
+
+ISSUES CLOSED: FS-1127
+* breaking; - Most EmojiProvider methods now return T | Promise<T> instead of Promise<T>
+- This should still be compatible for implementors of an EmojiProvider, but
+  they can improve rendering speeds in some cases if they return a T instead
+  of a Promise<T>, but old returns will continue to work.
+
+ISSUES CLOSED: FS-1057
+
 ## 18.4.2 (2017-07-10)
 
 

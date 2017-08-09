@@ -1,13 +1,37 @@
 # @atlaskit/editor-hipchat
 
+## 4.17.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+
+
+
+
+
+## 4.17.0 (2017-07-28)
+
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
+## 4.16.0 (2017-07-25)
+
+
+* feature; change es2015 build so it transpiles everything except import/export statements ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
+
+## 4.15.0 (2017-07-24)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+
+* feature; enable decision support via <> syntax in editor-hipchat ([a86f80f](https://bitbucket.org/atlassian/atlaskit/commits/a86f80f))
+
 ## 4.14.1 (2017-07-13)
 
 
-## 4.14.1 (2017-07-13)
-
-* bug fix; re-releasing packages that failed previous release
 * fix; bump editor-core in all editor-* packages ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))
 * fix; bump editor-core to version 39.0.0 ([41a0491](https://bitbucket.org/atlassian/atlaskit/commits/41a0491))
+* fix; re-releasing packages that failed previous release ([bf1ab9c](https://bitbucket.org/atlassian/atlaskit/commits/bf1ab9c))
 
 ## 4.14.0 (2017-07-05)
 

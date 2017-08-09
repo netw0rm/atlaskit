@@ -87,26 +87,4 @@ describe('CardImageView', () => {
       selected: undefined
     });
   });
-
-  it('should fire onClick when component is clicked', () => {
-    const event = 'some-random-event';
-    const handler = jest.fn();
-    const card = shallow(<CardImageView onClick={handler} />);
-
-    card.simulate('click', event);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler.mock.calls[0][0]).toEqual(event);
-  });
-
-  it('should fire onMouseEnter when component is hovered', () => {
-    const event = 'some-random-event';
-    const handler = jest.fn();
-    const card = shallow(<CardImageView onMouseEnter={handler} />);
-
-    card.simulate('mouseEnter', event);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler).toHaveBeenCalledTimes(1);
-    expect(handler.mock.calls[0][0]).toEqual(event);
-  });
 });

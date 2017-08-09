@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentClass } from 'react';
 
 import {
   Fragment,
@@ -31,18 +32,18 @@ import {
 import ProviderFactory from '../../providerFactory';
 import { EventHandlers } from '../../ui/Renderer';
 
-export type ReactComponentConstructor = new () => React.Component<any, any>;
-
 export default class ReactSerializer implements Serializer<JSX.Element> {
   private providers?: ProviderFactory;
   private eventHandlers?: EventHandlers;
+  private portal?: HTMLElement;
 
-  constructor(providers?: ProviderFactory, eventHandlers?: EventHandlers) {
+  constructor(providers?: ProviderFactory, eventHandlers?: EventHandlers, portal?: HTMLElement) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
+    this.portal = portal;
   }
 
-  serializeFragment(fragment: Fragment, props: any = {}, target: ReactComponentConstructor = Doc, key: string = 'root-0'): JSX.Element | null {
+  serializeFragment(fragment: Fragment, props: any = {}, target: ComponentClass<any> = Doc, key: string = 'root-0'): JSX.Element | null {
     const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
       if (isTextWrapper(node.type.name)) {
         return this.serializeTextWrapper((node as TextWrapper).content);
@@ -70,7 +71,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   // tslint:disable-next-line:variable-name
-  private renderNode(Node: ReactComponentConstructor, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
+  private renderNode(Node: ComponentClass<any>, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
     return (
       <Node key={key} {...props}>
         {content}
@@ -79,7 +80,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   // tslint:disable-next-line:variable-name
-  private renderMark(Mark: ReactComponentConstructor, props: any, key: string, content: any) {
+  private renderMark(Mark: ComponentClass<any>, props: any, key: string, content: any) {
     return (
       <Mark key={key} {...props}>
         {content}
@@ -92,6 +93,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       text: node.text,
       providers: this.providers,
       eventHandlers: this.eventHandlers,
+      portal: this.portal,
       ...node.attrs,
     };
   }

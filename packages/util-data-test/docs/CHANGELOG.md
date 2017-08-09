@@ -1,8 +1,43 @@
 # @atlaskit/util-data-test
 
+## 7.1.0 (2017-08-04)
+
+* feature; update mock-profile-client to be able to return custom error responses ([1a99156](https://bitbucket.org/atlassian/atlaskit/commits/1a99156))
+
+
+
+
+## 5.0.0 (2017-07-25)
+
+
+* fix; fix build to not fail copying something that no longer exists. ;) ([ebb411b](https://bitbucket.org/atlassian/atlaskit/commits/ebb411b))
+
+## 5.0.0 (2017-07-25)
+
+
+* feature; remove emoji and mention test data from util-data-test. ([c3604f1](https://bitbucket.org/atlassian/atlaskit/commits/c3604f1))
+
+
+* breaking; Emoji and mention data can now be imported directly from the component.
+
+ISSUES CLOSED: FS-1205
+
+## 4.10.2 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; don't use dev/peer deps as it breaks components on upgrade that don't supply all pee ([52e5249](https://bitbucket.org/atlassian/atlaskit/commits/52e5249))
+
+## 4.10.1 (2017-07-20)
+
+
+* fix; emojiDescription 'duck types' in the test data need to specify the searchable property ([c301d9c](https://bitbucket.org/atlassian/atlaskit/commits/c301d9c))
+
 ## 4.10.0 (2017-07-14)
 
-* feature; move profilecard stories helpers into util-data-test (issues closed: ed-1867)
+
+* feature; move profilecard stories helpers into util-data-test ([b93209b](https://bitbucket.org/atlassian/atlaskit/commits/b93209b))
+
 ## 4.9.1 (2017-07-11)
 
 

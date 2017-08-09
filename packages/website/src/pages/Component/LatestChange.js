@@ -13,7 +13,7 @@ const LatestChange = (
   { changelog, componentKey }:
   { changelog: Array<{ version: string }>, componentKey: string }
 ) => {
-  if (!changelog[0].version) return null;
+  if (!changelog || !changelog[0].version) return null;
   return (
     <LogWrapper>
       <Latest />

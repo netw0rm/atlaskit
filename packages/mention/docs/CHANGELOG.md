@@ -1,8 +1,26 @@
 # @atlaskit/mention
 
+## Unreleased
+
 ## 7.3.1 (2017-07-27)
 
-* bug fix; fix unused expression error throwing test ([22b75b2](https://bitbucket.org/atlassian/atlaskit/commits/22b75b2))
+
+* fix; fix unused expression error throwing test ([22b75b2](https://bitbucket.org/atlassian/atlaskit/commits/22b75b2))
+
+## 7.3.0 (2017-07-25)
+
+
+* feature; export test/story data for direct import. Not in bundle. ([eaa98fb](https://bitbucket.org/atlassian/atlaskit/commits/eaa98fb))
+
+## 7.2.2 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 7.2.1 (2017-07-20)
+
+
+* fix; no user selection in mention list should result in the top item always being selecte ([07fc665](https://bitbucket.org/atlassian/atlaskit/commits/07fc665))
 
 ## 7.2.0 (2017-07-07)
 

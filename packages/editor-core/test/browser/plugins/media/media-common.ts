@@ -13,7 +13,6 @@ import {
   hr,
   mention,
   randomId,
-  setNodeSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import {
@@ -22,8 +21,8 @@ import {
   NodeSelection,
   TextSelection,
 } from '../../../../src/prosemirror';
+import { setNodeSelection} from '../../../../src/utils';
 import { removeMediaNode, splitMediaGroup } from '../../../../src/plugins/media/media-common';
-import { } from '../../../../src/plugins/media/media-common';
 
 chai.use(chaiPlugin);
 

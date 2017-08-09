@@ -12,12 +12,20 @@ import {
 
 import ProviderFactory from '../../src/providerFactory';
 import { document } from '../story-data';
-import Renderer from '../../src/ui/Renderer';
+import {
+  default as Renderer,
+  Props as RendererProps,
+} from '../../src/ui/Renderer';
 
 import {
   AkProfileClient,
   modifyResponse,
 } from '../../src/utils/profilecard';
+
+import {
+  renderDocument,
+  TextSerializer,
+} from '../../src/renderer';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 // tslint:disable-next-line:variable-name
@@ -78,10 +86,15 @@ const eventHandlers = {
   },
 };
 
-type DemoRendererProps = { withProviders: boolean; };
+type DemoRendererProps = {
+  withProviders: boolean;
+  serializer: 'react' | 'text'
+};
+
 type DemoRendererState = { input: string };
 
 export default class RendererDemo extends PureComponent<DemoRendererProps, DemoRendererState> {
+  textSerializer = new TextSerializer();
   state = { input: JSON.stringify(document, null, 2) };
   refs: { input: HTMLTextAreaElement };
 
@@ -106,16 +119,21 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
           />
         </fieldset>
         {this.renderer}
+        {this.text}
       </div>
     );
   }
 
   get renderer() {
-    const props: any = {
-      document: JSON.parse(this.state.input)
-    };
+    if (this.props.serializer !== 'react') {
+      return null;
+    }
 
     try {
+      const props: RendererProps = {
+        document: JSON.parse(this.state.input)
+      };
+
       if (this.props.withProviders) {
         props.eventHandlers = eventHandlers;
         props.dataProviders = providerFactory;
@@ -128,6 +146,25 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
       return (
         <div>Invalid document: {ex.message}</div>
       );
+    }
+  }
+
+  get text() {
+    if (this.props.serializer !== 'text') {
+      return null;
+    }
+
+    try {
+      const doc = JSON.parse(this.state.input);
+
+      return (
+        <div>
+          <h1>Text output</h1>
+          <pre>{renderDocument(doc, this.textSerializer)}</pre>
+        </div>
+      );
+    } catch (ex) {
+      return null;
     }
   }
 

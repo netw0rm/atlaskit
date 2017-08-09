@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "8.4.1",
+  "version": "9.0.0",
   "config": {
     "access": "public"
   },
@@ -15,8 +15,9 @@
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'"
   },
   "files": [
     "dist",

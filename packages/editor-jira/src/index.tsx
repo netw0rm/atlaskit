@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+
 import {
   AnalyticsHandler,
   analyticsService,
@@ -7,6 +9,7 @@ import {
   blockTypePlugins,
   clearFormattingPlugins,
   codeBlockPlugins,
+  createJIRASchema,
   hyperlinkPlugins,
   mentionsPlugins,
   rulePlugins,
@@ -21,6 +24,8 @@ import {
   textFormattingStateKey,
   textColorStateKey,
   listsStateKey,
+  tablePlugins,
+  tableStateKey,
   EditorState,
   EditorView,
   Schema,
@@ -53,7 +58,7 @@ import {
   JIRATransformer,
 } from '@atlaskit/editor-core';
 
-import { JSONSerializer } from '@atlaskit/editor-core/src/renderer';
+import { JSONSerializer } from '@atlaskit/editor-core/dist/es5/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
@@ -61,16 +66,16 @@ import Spinner from '@atlaskit/spinner';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import { encode, parse, MediaContextInfo } from './html';
+
 import {
-  JIRASchema,
   isSchemaWithCodeBlock,
   isSchemaWithLinks,
   isSchemaWithMentions,
   isSchemaWithMedia,
   isSchemaWithTextColor,
-  makeSchema,
-} from './schema';
+  getMediaContextInfo,
+  isSchemaWithTables,
+} from './util';
 
 import { version, name } from './version';
 export { version };
@@ -106,6 +111,7 @@ export interface Props {
   allowBlockQuote?: boolean;
   allowSubSup?: boolean;
   allowTextColor?: boolean;
+  allowTables?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
   mediaProvider?: Promise<MediaProvider>;
@@ -121,12 +127,18 @@ export interface State {
   editorState?: EditorState<any>;
   isMediaReady: boolean;
   isExpanded?: boolean;
-  schema: JIRASchema;
+  schema: Schema<any, any>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
+
+  // we don't need mediaContextInfo for HTML parsing (which must be synchronous)
+  // but we need it for encoding (which is asynchronous)
+  private transformer: JIRATransformer;
+  private transformerWithMediaContext: JIRATransformer;
+
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
 
@@ -135,7 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const {
       allowLists, allowLinks, allowAdvancedTextFormatting,
-      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor,
+      allowCodeBlock, allowBlockQuote, allowSubSup, allowTextColor, allowTables,
 
       analyticsHandler,
 
@@ -145,7 +157,7 @@ export default class Editor extends PureComponent<Props, State> {
       isExpandedByDefault: isExpanded
     } = props;
 
-    const schema = makeSchema({
+    const schema = createJIRASchema({
       allowLists: !!allowLists,
       allowMentions: !!mentionProvider,
       allowLinks: !!allowLinks,
@@ -155,11 +167,12 @@ export default class Editor extends PureComponent<Props, State> {
       allowSubSup: !!allowSubSup,
       allowTextColor: !!allowTextColor,
       allowMedia: !!mediaProvider,
+      allowTables: !!allowTables
     });
 
     this.state = { isExpanded, schema, isMediaReady: true };
-
     this.providerFactory = new ProviderFactory();
+    this.transformer = new JIRATransformer(schema);
 
     if (mentionProvider) {
       this.providerFactory.setProvider('mentionProvider', mentionProvider);
@@ -181,6 +194,14 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     analyticsService.handler = analyticsHandler || ((name) => { });
+  }
+
+  async componentWillMount() {
+    const mediaContextInfo = await getMediaContextInfo();
+    const { mentionEncoder } = this.props;
+    const { schema } = this.state;
+
+    this.transformerWithMediaContext = new JIRATransformer(schema, { mention: mentionEncoder }, mediaContextInfo);
   }
 
   componentWillUnmount() {
@@ -266,7 +287,7 @@ export default class Editor extends PureComponent<Props, State> {
    * The current value of the editor, encoded as HTML.
    */
   get value(): Promise<string | undefined> {
-    const { editorView, schema } = this.state;
+    const { editorView } = this.state;
     const mediaPluginState = editorView && mediaStateKey.getState(editorView.state) as MediaPluginState;
 
     return (async () => {
@@ -274,31 +295,8 @@ export default class Editor extends PureComponent<Props, State> {
         await mediaPluginState.waitForPendingTasks();
       }
 
-      let mediaContextInfo: MediaContextInfo = {};
-      if (this.props.mediaProvider) {
-        const mediaProvider = await this.props.mediaProvider;
-        if (mediaProvider.viewContext) {
-          const viewContext: any = await mediaProvider.viewContext;
-          if (viewContext) {
-            const collection = '';
-            const { clientId, serviceHost, tokenProvider } = viewContext.config || viewContext;
-            const token = await tokenProvider();
-            mediaContextInfo.viewContext = { clientId, serviceHost, token, collection };
-          }
-        }
-        if (mediaProvider.uploadParams && mediaProvider.uploadParams.collection) {
-          const uploadContext = await mediaProvider.uploadContext;
-          if (uploadContext) {
-            const { clientId, serviceHost } = uploadContext;
-            const { collection } = mediaProvider.uploadParams;
-            const token  = await uploadContext.tokenProvider(collection);
-            mediaContextInfo.uploadContext = { clientId, serviceHost, token, collection };
-          }
-        }
-      }
-
       return editorView && editorView.state.doc
-        ? encode(editorView.state.doc, schema, { mention: this.props.mentionEncoder }, mediaContextInfo)
+        ? this.transformerWithMediaContext.encode(editorView.state.doc)
         : this.props.defaultValue;
     })();
   }
@@ -322,6 +320,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const mediaState = editorState && mediaProvider && this.mediaPlugins && mediaStateKey.getState(editorState);
+    const tableState = editorState && tableStateKey.getState(editorState);
     const iconAfter = !isMediaReady
       ? <Spinner isCompleting={false} />
       : undefined;
@@ -347,6 +346,7 @@ export default class Editor extends PureComponent<Props, State> {
           pluginStateMentions={mentionsState}
           pluginStateHyperlink={hyperlinkState}
           pluginStateMedia={mediaState}
+          pluginStateTable={tableState}
           packageVersion={version}
           packageName={name}
           saveDisabled={!isMediaReady}
@@ -416,7 +416,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorState = EditorState.create({
         schema,
-        doc: parse(this.props.defaultValue || '', schema),
+        doc: this.transformer.parse(this.props.defaultValue || ''),
         plugins: [
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
@@ -435,6 +435,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema as Schema<any, any>),
           ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
           ...reactNodeViewPlugins(schema as Schema<any, any>),
+          ...(isSchemaWithTables(schema as Schema<any, any>) ? tablePlugins() : []),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
@@ -472,7 +473,9 @@ export default class Editor extends PureComponent<Props, State> {
   }
 }
 
-export const parseIntoAtlassianDocument = (html: string, schema: JIRASchema) => {
+export const parseIntoAtlassianDocument = (html: string, schema: Schema<any, any>) => {
+  assert.strictEqual(typeof html, 'string', 'First parseIntoAtlassianDocument() argument is not a string');
+
   const serializer = new JSONSerializer();
   const transformer = new JIRATransformer(schema);
   const doc = transformer.parse(html);

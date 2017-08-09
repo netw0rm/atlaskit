@@ -1,10 +1,69 @@
 # @atlaskit/media-card
 
+## 18.1.0 (2017-08-08)
+
+* feature; added embed cards ([4d8bda3](https://bitbucket.org/atlassian/atlaskit/commits/4d8bda3))
+## 18.0.2 (2017-08-03)
+
+* bug fix; reduce box-shadow on smart-cards ([ef9658b](https://bitbucket.org/atlassian/atlaskit/commits/ef9658b))
+## 18.0.1 (2017-08-03)
+
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
+## 18.0.0 (2017-08-01)
+
+* breaking; removed PlayerCard ([1f44d4b](https://bitbucket.org/atlassian/atlaskit/commits/1f44d4b))
+* breaking; unify link wrapping and event handlers in one place ([1f44d4b](https://bitbucket.org/atlassian/atlaskit/commits/1f44d4b))
+
+
+
+
+
+
 ## 17.11.3 (2017-07-27)
 
-* bug fix; update smart-card view to only display for links with appearance="small" or appearan ([7296f99](https://bitbucket.org/atlassian/atlaskit/commits/7296f99))
 
-* bug fix; pass mediaItemType to Card placeholder in order to display right loading state
+* fix; update smart-card view to only display for links with appearance="small" or appearan ([7296f99](https://bitbucket.org/atlassian/atlaskit/commits/7296f99))
+
+## 17.11.2 (2017-07-25)
+
+
+* fix; fix horizontal link appearance when no preview ([914612e](https://bitbucket.org/atlassian/atlaskit/commits/914612e))
+
+## 17.11.1 (2017-07-24)
+
+## 17.11.0 (2017-07-23)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; improve horizontal link cards responsiveness ([7e7f665](https://bitbucket.org/atlassian/atlaskit/commits/7e7f665))
+
+
+* feature; make smart-card a link ([fd2900e](https://bitbucket.org/atlassian/atlaskit/commits/fd2900e))
+
+## 17.10.2 (2017-07-19)
+
+
+* fix; added title/tooltip attribute to icon ([3e84420](https://bitbucket.org/atlassian/atlaskit/commits/3e84420))
+
+## 17.10.1 (2017-07-19)
+
+
+* fix; overlay background color and position ([c4d508b](https://bitbucket.org/atlassian/atlaskit/commits/c4d508b))
+
+## 17.10.0 (2017-07-18)
+
+
+* fix; updates droplist dep 3.x -> 4.x ([fc7ecb0](https://bitbucket.org/atlassian/atlaskit/commits/fc7ecb0))
+
+
+* feature; render smart-cards from the MS API ([0e8f888](https://bitbucket.org/atlassian/atlaskit/commits/0e8f888))
+
+## 17.9.1 (2017-07-17)
+
+
+* fix; pass mediaItemType to Card placeholder in order to display right loading state ([4a8e6ed](https://bitbucket.org/atlassian/atlaskit/commits/4a8e6ed))
+
 ## 17.9.0 (2017-07-12)
 
 

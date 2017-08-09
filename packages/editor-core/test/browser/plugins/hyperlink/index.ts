@@ -4,9 +4,11 @@ import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
-  makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
+  makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -597,6 +599,8 @@ describe('hyperlink', () => {
   describe('Key Press Cmd-K', () => {
     context('when called without any selection in the editor', () => {
       it('should call subscribers', () => {
+        const trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
@@ -604,6 +608,7 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Mod-k');
 
         expect(spy.callCount).to.equal(2);
+        expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.keyboard')).to.equal(true);
       });
     });
 

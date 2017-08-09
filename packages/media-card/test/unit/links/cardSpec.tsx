@@ -1,13 +1,39 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
+import { minimalLinkDetailsContainingASmartCard } from '@atlaskit/media-test-helpers';
 
-import { LinkCard, LinkCardPlayer, LinkCardViewSmall, LinkCardGenericView, LinkCardTrelloBoardView } from '../../../src/links';
+import { LinkCard, LinkCardGenericView } from '../../../src/links';
+import { A } from '../../../src/links/card/styled';
 import { LinkCardImageView } from '../../../src/links/cardImageView';
 import { AppCardView } from '../../../src/app';
 import { Href } from '../../../src/utils/href';
 
 describe('LinkCard', () => {
+  const emptyLinkDetails: UrlPreview = {
+    url: '',
+    type: 'link',
+    title: 'Atlassian',
+    resources: {}
+  };
+  const genericLinkDetails: UrlPreview = {
+    url: 'https://atlassian.com',
+    type: 'link',
+    title: 'Atlassian',
+    resources: {}
+  };
+  const smartLinkDetails: UrlPreview = {
+    url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
+    type: 'link',
+    title: 'Public Trello Boards',
+    resources: {
+      smartCard: {
+        title: {
+          text: 'Public Trello Boards'
+        }
+      }
+    }
+  };
   const imageLink: UrlPreview = {
     type: 'link',
     url: 'http://i.imgur.com/KL5g7xl.png',
@@ -35,48 +61,6 @@ describe('LinkCard', () => {
     expect(linkCard.find(LinkCardGenericView)).toHaveLength(1);
   });
 
-  it('should use cardPlayer component if we have an embed available', () => {
-    const details: UrlPreview = {
-        type: 'media',
-        url: 'https://atlassian.com',
-        title: 'Atlassian',
-        resources: {
-          player: 'https://www.youtube.com/watch?v=zso6jskUaS8',
-        }
-      };
-
-    const linkCard = shallow(<LinkCard details={details} status="complete" />);
-    expect(linkCard.find(LinkCardPlayer)).toHaveLength(1);
-  });
-
-  it('should render a TrelloBoard preview when link contains a trello board url', () => {
-    const details: UrlPreview = {
-      type: 'media',
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      title: 'Atlassian',
-      resources: {
-        app: {
-          type: 'trello_board',
-          name: 'Public Trello boards list',
-          background: 'some-background',
-          shortUrl: 'short-url',
-          url: 'some url',
-          lists: [{
-            name: 'todo',
-            count: 20
-          }],
-          member: [{
-            avatarUrl: 'https://robohash.org/hectorzarco.png?set=set2&size=80x80',
-            username: 'hector'
-          }]
-        }
-      }
-    };
-
-    const linkCard = shallow(<LinkCard details={details} status="complete" />);
-    expect(linkCard.find(LinkCardTrelloBoardView)).toHaveLength(1);
-  });
-
   it('should render right image preview for links images', () => {
     const linkCard = shallow(<LinkCard details={imageLink} status="complete" />);
 
@@ -92,77 +76,18 @@ describe('LinkCard', () => {
     expect(horizontalCard.find(LinkCardGenericView)).toHaveLength(1);
   });
 
-  it('should pass onClick handlers through to root component for appearances "small", "image" and "horizontal/square"', () => {
-    const handler = () => {};
-
-    const smallCard = shallow(<LinkCard status="complete" appearance="small" onClick={handler} />);
-    const imageCard = shallow(<LinkCard status="complete" appearance="image" onClick={handler} />);
-    const horizontalCard = shallow(<LinkCard status="complete" appearance="horizontal" onClick={handler} />);
-    const squareCard = shallow(<LinkCard status="complete" appearance="square" onClick={handler} />);
-
-    expect(smallCard.find(LinkCardViewSmall).props().onClick).toEqual(handler);
-    expect(imageCard.find(LinkCardImageView).props().onClick).toEqual(handler);
-    expect(horizontalCard.find(LinkCardGenericView).props().onClick).toEqual(handler);
-    expect(squareCard.find(LinkCardGenericView).props().onClick).toEqual(handler);
-  });
-
-  it('should pass onMouseEnter handlers through to root component for appearances "small", "image" and "horizontal/square"', () => {
-    const handler = () => {};
-
-    const smallCard = shallow(<LinkCard status="complete" appearance="small" onMouseEnter={handler} />);
-    const imageCard = shallow(<LinkCard status="complete" appearance="image" onMouseEnter={handler} />);
-    const horizontalCard = shallow(<LinkCard status="complete" appearance="horizontal" onMouseEnter={handler} />);
-    const squareCard = shallow(<LinkCard status="complete" appearance="square" onMouseEnter={handler} />);
-
-    expect(smallCard.find(LinkCardViewSmall).props().onMouseEnter).toEqual(handler);
-    expect(imageCard.find(LinkCardImageView).props().onMouseEnter).toEqual(handler);
-    expect(horizontalCard.find(LinkCardGenericView).props().onMouseEnter).toEqual(handler);
-    expect(squareCard.find(LinkCardGenericView).props().onMouseEnter).toEqual(handler);
-  });
-
   it('should render an AppCardView when when details contains smartCard data', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
+    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={smartLinkDetails}/>);
     expect(element.find(AppCardView).exists()).toBeTruthy();
-
   });
 
   it('should not render an AppCardView inside a Href when when details contains smartCard data without a link', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
+    const element = shallow(<LinkCard status="complete" appearance="horizontal" details={smartLinkDetails}/>);
     expect(element.find(Href).exists()).toBeFalsy();
     expect(element.find(AppCardView).exists()).toBeTruthy();
-
   });
 
   it('should render an AppCardView inside a Href when when details contains smartCard data with a link', () => {
-
     const details: UrlPreview = {
       url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
       type: 'link',
@@ -180,67 +105,46 @@ describe('LinkCard', () => {
     };
 
     const element = shallow(<LinkCard status="complete" appearance="horizontal" details={details}/>);
-    expect(element.find(Href).find(AppCardView).exists()).toBeTruthy();
+    expect(element.find(A).find(AppCardView).exists()).toBeTruthy();
+  });
 
+  it('should not render a link tag when status is "loading"', () => {
+    const element = shallow(<LinkCard status="loading" details={genericLinkDetails}/>);
+    expect(element.find(A)).toHaveLength(0);
+  });
+
+  it('should not render a link tag when status is "processing"', () => {
+    const element = shallow(<LinkCard status="processing" details={genericLinkDetails}/>);
+    expect(element.find(A)).toHaveLength(0);
+  });
+
+  it('should not render a link tag when error is truthy', () => {
+    const element = shallow(<LinkCard status="error" details={genericLinkDetails}/>);
+    expect(element.find(A)).toHaveLength(0);
+  });
+
+  it('should render a link tag when status is "complete"', () => {
+    const element = shallow(<LinkCard status="complete" details={genericLinkDetails}/>);
+    expect(element.find(A)).toHaveLength(1);
+  });
+
+  it('should not render a link tag when link is not present', () => {
+    const element = shallow(<LinkCard status="complete" details={emptyLinkDetails}/>);
+    expect(element.find(A)).toHaveLength(0);
   });
 
   it('should not render an AppCardView when appearance=small', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="small"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="small"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 
   it('should not render an AppCardView when appearance=image', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="image"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="image"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 
   it('should not render an AppCardView when appearance=square', () => {
-
-    const details: UrlPreview = {
-      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards',
-      type: 'link',
-      title: 'Public Trello Boards',
-      resources: {
-        smartCard: {
-          title: {
-            text: 'Public Trello Boards'
-          }
-        }
-      }
-    };
-
-    const element = shallow(<LinkCard status="complete" details={details} appearance="square"/>);
+    const element = shallow(<LinkCard status="complete" details={minimalLinkDetailsContainingASmartCard} appearance="square"/>);
     expect(element.find(AppCardView).exists()).toBeFalsy();
-
   });
 });

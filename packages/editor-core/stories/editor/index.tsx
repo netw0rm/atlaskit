@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
@@ -17,6 +18,7 @@ import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins
 import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emojis';
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
+import pastePlugins from '../../src/plugins/paste';
 import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
@@ -177,6 +179,15 @@ export default class Editor extends PureComponent<Props, State> {
     return this.props.defaultValue;
   }
 
+  set doc(newDoc: Node | undefined) {
+    const { editorView } = this.state;
+    assert(editorView, 'EditorView doesn\'t exist yet');
+    assert(newDoc, 'New document cannot be nullable');
+
+    const { tr, doc } = editorView!.state;
+    editorView!.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc!.slice(0, newDoc!.nodeSize - 2)));
+  }
+
   get doc(): Node | undefined {
     const { editorView } = this.state;
     return editorView ? editorView.state.doc : undefined;
@@ -276,6 +287,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          ...pastePlugins(schema),
           ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
           ...emojiPlugins(schema, this.providerFactory),
           ...asciiEmojiPlugins(schema, this.providerFactory),

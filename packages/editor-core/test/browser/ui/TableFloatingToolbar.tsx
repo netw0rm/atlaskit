@@ -3,11 +3,13 @@ import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import tablePlugins, { TableState } from '../../../src/plugins/table';
+import tableCommands from '../../../src/plugins/table/commands';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import TableFloatingToolbar from '../../../src/ui/TableFloatingToolbar';
 import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
+import { analyticsService } from '../../../src/analytics';
 
 import {
   createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
@@ -18,6 +20,11 @@ describe('TableFloatingToolbar', () => {
   const editor = (doc: any) => makeEditor<TableState>({
     doc,
     plugins: tablePlugins(),
+  });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
   });
 
   context('when cellElement is undefined', () => {
@@ -148,18 +155,19 @@ describe('TableFloatingToolbar', () => {
       });
 
       ['cut', 'copy', 'paste'].forEach((command, i) => {
-        it(`should call "pluginState.${command}" when "${command}" item is clicked`, () => {
+        it(`should call "${command}" command when "${command}" item is clicked`, () => {
           const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
           const floatingToolbar = mount(
             <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
           );
-          pluginState[command] = sinon.spy();
+          tableCommands[command] = sinon.spy();
           floatingToolbar.setState({ cellElement: document.createElement('td') });
           floatingToolbar.find(ToolbarButton).at(1).simulate('click');
           expect(floatingToolbar.state('isOpen')).to.equal(true);
           floatingToolbar.find('DropdownMenu span[role="menuitem"]').at(i).simulate('click');
           expect((pluginState[command] as any).callCount).to.equal(1);
           floatingToolbar.unmount();
+          expect(trackEvent.calledWith(`atlassian.editor.format.table.${command}.button`)).to.equal(true);
         });
       });
     });

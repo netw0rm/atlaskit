@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import {
-  AkContainerItem as NavItem,
-  AkContainerItemGroup as NavItemGroup,
+  AkNavigationItem as NavItem,
+  AkNavigationItemGroup as NavItemGroup,
 } from '@atlaskit/navigation';
 
 import ComponentIcon from '@atlaskit/icon/glyph/component';
@@ -13,6 +13,7 @@ import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
+import { RouterLinkComponent } from '../linkComponents';
 import packages from '../../../data';
 
 const componentKeys = Object.keys(packages);
@@ -24,13 +25,14 @@ const ComponentNavItem = withRouter(({ componentKey, location, destination }) =>
   const isSelected = location.pathname.endsWith(`/${componentKey}`);
 
   return (
-    <Link to={url} key={componentKey}>
-      <NavItem
-        icon={<PackageIcon size="small" label={`${component.name} icon`} />}
-        text={component.name}
-        isSelected={isSelected}
-      />
-    </Link>
+    <NavItem
+      href={url}
+      icon={<PackageIcon size="small" label={`${component.name} icon`} />}
+      isSelected={isSelected}
+      key={componentKey}
+      linkComponent={RouterLinkComponent}
+      text={component.name}
+    />
   );
 });
 
@@ -49,8 +51,6 @@ const NavList = ({ title, filterMethod, destination }) => (
 );
 
 const PackagesNav = ({
-  backIcon,
-  router,
   pathname,
   filterMethod,
   icon,
@@ -60,15 +60,11 @@ const PackagesNav = ({
 }) => (
   <div style={{ paddingBottom: akGridSizeUnitless * 3 }}>
     <NavItem
-      icon={backIcon}
-      onClick={() => router.history.push('/')}
-      text="Back"
-    />
-    <NavItem
+      href={destination}
       icon={icon}
-      onClick={() => router.history.push(destination)}
-      text={navItemText}
       isSelected={pathname === destination}
+      linkComponent={RouterLinkComponent}
+      text={navItemText}
     />
     <NavList title={title} filterMethod={filterMethod} destination={destination} />
   </div>
@@ -89,7 +85,6 @@ const ComponentNav = ({ backIcon, router, pathname }) => {
     destination: '/patterns',
     title: 'Patterns',
     navItemText: 'All patterns',
-
   };
   const variables = pathname.includes('/patterns') ? patternVariables : componentVariables;
 

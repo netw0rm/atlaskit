@@ -30,6 +30,12 @@ export default class TaskItem extends PureComponent<Props, {}> {
     this.checkBoxId = getCheckBoxId(props.taskId);
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.taskId !== this.props.taskId) {
+      this.checkBoxId = getCheckBoxId(nextProps.taskId);
+    }
+  }
+
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
     const { onChange, taskId, isDone } = this.props;
     if (onChange) {

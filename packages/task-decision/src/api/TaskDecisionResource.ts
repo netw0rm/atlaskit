@@ -12,7 +12,7 @@ import {
   TaskState,
   DecisionState,
   ServiceTask,
-  GenericItem,
+  BaseItem,
 } from '../types';
 
 let debouncedTaskStateQuery: number | null = null;
@@ -21,7 +21,7 @@ let debouncedTaskToggle: number | null = null;
 export default class TaskDecisionResource implements TaskDecisionProvider {
   private serviceConfig: ServiceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
-  private cachedItems: Map<string, Task | Decision | GenericItem> = new Map();
+  private cachedItems: Map<string, Task | Decision | BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
 
   constructor(serviceConfig: ServiceConfig) {
@@ -98,7 +98,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
       }
     };
 
-    return utils.requestService<GenericItem[]>(this.serviceConfig, options);
+    return utils.requestService<BaseItem<TaskState>[]>(this.serviceConfig, options);
   }
 
   subscribe(objectKey: ObjectKey, handler: Handler) {

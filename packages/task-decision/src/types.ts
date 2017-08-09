@@ -4,6 +4,16 @@ export type DecisionStatus = 'CREATED';
 export type TaskState = 'TODO' | 'DONE';
 export type Cursor = string;
 
+export interface ObjectKey {
+  localId: string;
+  containerAri: string;
+  objectAri: string;
+}
+
+export interface BaseItem<S> extends ObjectKey {
+  state: S;
+}
+
 export interface ServiceDecision {
   containerAri: string;
   creationDate: string;
@@ -32,17 +42,13 @@ export interface ServiceTaskResponse {
   meta: Meta;
 }
 
-export interface Decision {
-  containerAri: string;
+export interface Decision extends BaseItem<DecisionState> {
   creationDate: Date;
   creatorId: string;
   lastUpdateDate: Date;
-  localId: string;
-  objectAri: string;
   participants: any[];
   // Atlassian Document fragment
   content: any;
-  state: DecisionState;
   status: DecisionStatus;
 }
 
@@ -72,30 +78,13 @@ export interface ServiceTask {
   state: TaskState;
 }
 
-export interface Task {
-  containerAri: string;
+export interface Task extends BaseItem<TaskState> {
   creationDate: Date;
   creatorId: string;
   lastUpdateDate: Date;
-  localId: string;
-  objectAri: string;
   participants: any[];
   // Atlassian Document fragment
   content: any;
-  state: TaskState;
-}
-
-export interface ObjectKey {
-  localId: string;
-  containerAri: string;
-  objectAri: string;
-}
-
-export interface GenericItem {
-  containerAri: string;
-  objectAri: string;
-  localId: string;
-  state: TaskState | DecisionState;
 }
 
 export type Handler = (state: TaskState | DecisionState) => void;

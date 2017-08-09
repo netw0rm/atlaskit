@@ -292,44 +292,50 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleRef = (place: Element | null) => {
+  _getEditorConfig() {
     const { schema } = this.state;
     const { mediaPlugins } = this;
     const { tablesEnabled, defaultValue } = this.props;
 
-    if (place) {
-      const doc = parse(defaultValue || '');
-      const cqKeymap = {
-        'Mod-Enter': this.handleSave,
-      };
+    const doc = parse(defaultValue || '');
 
-      const editorState = EditorState.create({
-        schema,
-        doc,
-        plugins: [
-          ...mentionsPlugins(schema, this.providerFactory),
-          ...clearFormattingPlugins(schema),
-          ...hyperlinkPlugins(schema),
-          ...rulePlugins(schema),
-          ...mediaPlugins,
-          ...panelPlugins(schema),
-          // block type plugin needs to be after hyperlink plugin until we implement keymap priority
-          // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
-          // if converting is possible
-          ...blockTypePlugins(schema),
-          // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
-          // this is needed to ensure that all block types are supported inside lists
-          // this is needed until we implement keymap proirity :(
-          ...listsPlugins(schema),
-          ...textFormattingPlugins(schema),
-          ...codeBlockPlugins(schema),
-          ...reactNodeViewPlugins(schema),
-          ...(tablesEnabled ? tablePlugins() : []),
-          history(),
-          keymap(cqKeymap),
-          keymap(baseKeymap),
-        ]
-      });
+    const cqKeymap = {
+      'Mod-Enter': this.handleSave,
+    };
+
+    return {
+      schema,
+      doc,
+      plugins: [
+        ...mentionsPlugins(schema, this.providerFactory),
+        ...clearFormattingPlugins(schema),
+        ...hyperlinkPlugins(schema),
+        ...rulePlugins(schema),
+        ...mediaPlugins,
+        ...panelPlugins(schema),
+        // block type plugin needs to be after hyperlink plugin until we implement keymap priority
+        // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
+        // if converting is possible
+        ...blockTypePlugins(schema),
+        // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
+        // this is needed to ensure that all block types are supported inside lists
+        // this is needed until we implement keymap proirity :(
+        ...listsPlugins(schema),
+        ...textFormattingPlugins(schema),
+        ...codeBlockPlugins(schema),
+        ...reactNodeViewPlugins(schema),
+        ...(tablesEnabled ? tablePlugins() : []),
+        history(),
+        keymap(cqKeymap),
+        keymap(baseKeymap),
+      ]
+    };
+  }
+
+  private handleRef = (place: Element | null) => {
+    if (place) {
+      const config = this._getEditorConfig();
+      const editorState = EditorState.create(config);
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
       codeBlockState.setLanguages(supportedLanguages);
@@ -379,7 +385,7 @@ export default class Editor extends PureComponent<Props, State> {
         this.focus();
       });
 
-      this.sendUnsupportedNodeUsage(doc);
+      this.sendUnsupportedNodeUsage(config.doc);
     } else {
       this.setState({ editorView: undefined });
     }

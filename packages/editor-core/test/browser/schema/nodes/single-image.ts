@@ -9,6 +9,7 @@ describe('@atlaskit/editor-core/schema media node', () => {
         <div
           data-node-type="singleImage"
           data-alignment="left"
+          data-display="inline-block"
         />
         `, schema);
 
@@ -16,6 +17,7 @@ describe('@atlaskit/editor-core/schema media node', () => {
 
       expect(singleImageNode.type).to.equal(schema.nodes.singleImage);
       expect(singleImageNode.attrs.alignment).to.equal('left');
+      expect(singleImageNode.attrs.display).to.equal('inline-block');
     });
 
     it('auto creates a media node inside single image node', () => {
@@ -23,6 +25,7 @@ describe('@atlaskit/editor-core/schema media node', () => {
         <div
           data-node-type="singleImage"
           data-alignment="left"
+          data-display="block"
         />
         `, schema);
 
@@ -36,14 +39,16 @@ describe('@atlaskit/editor-core/schema media node', () => {
   describe('encode node', () => {
     it('converts attributes to related data attribute in html', () => {
       const singleImageNode = schema.nodes.singleImage.create({
-        alignment: 'right'
+        alignment: 'right',
+        display: 'block'
       });
 
       const singleImageDom = toDOM(singleImageNode, schema).firstChild as HTMLElement;
 
-      const { alignment, nodeType } = singleImageDom.dataset;
+      const { alignment, display, nodeType } = singleImageDom.dataset;
 
       expect(alignment).to.equal('right');
+      expect(display).to.equal('block');
       expect(nodeType).to.equal('singleImage');
     });
   });
@@ -51,7 +56,8 @@ describe('@atlaskit/editor-core/schema media node', () => {
   it('encodes and decodes to the same node', () => {
     const { singleImage, media } = schema.nodes;
     const singleImageNode = singleImage.create({
-      alignment: 'center'
+      alignment: 'center',
+      display: 'inline-block'
     }, media.create());
 
     const singleImageDom = toDOM(singleImageNode, schema).firstChild as HTMLElement;

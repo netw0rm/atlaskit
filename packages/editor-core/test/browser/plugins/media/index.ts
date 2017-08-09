@@ -607,7 +607,7 @@ describe('Media plugin', () => {
   describe('align', () => {
     context('when there is only one image in the media group', () => {
       context('when selection is a media node', () => {
-        it('changes media group to align left single image', () => {
+        it('changes media group to single image with layout', () => {
           const { editorView, pluginState } = editor(doc(
             mediaGroup(
               media({ id: 'media', type: 'file', collection: testCollectionName }),
@@ -617,10 +617,10 @@ describe('Media plugin', () => {
 
           setNodeSelection(editorView, 1);
 
-          pluginState.align('left');
+          pluginState.align('left', 'inline-block');
 
           expect(editorView.state.doc).to.deep.equal(doc(
-            singleImage({ alignment: 'left' })(
+            singleImage({ alignment: 'left', display: 'inline-block' })(
               media({ id: 'media', type: 'file', collection: testCollectionName }),
             ),
             p('hello')
@@ -637,7 +637,7 @@ describe('Media plugin', () => {
             p('hel{<>}lo')
           ));
 
-          pluginState.align('right');
+          pluginState.align('right', 'block');
 
           expect(editorView.state.doc).to.deep.equal(doc(
             mediaGroup(

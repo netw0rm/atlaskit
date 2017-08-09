@@ -1,24 +1,29 @@
 import { NodeSpec, Node } from '../../prosemirror';
 export type Alignment = 'left' | 'right' | 'center';
+export type Display = 'inline-block' | 'block';
+
 
 export const singleImage: NodeSpec = {
   inline: false,
   group: 'block',
   content: 'media',
   attrs: {
-    alignment: { default: 'left' }
+    alignment: { default: 'left' },
+    display: { default: 'inline-block' }
   },
   parseDOM: [{
     tag: 'div[data-node-type="singleImage"]',
     getAttrs: (dom: HTMLElement) => ({
-      'alignment': dom.getAttribute('data-alignment')!
+      'alignment': dom.getAttribute('data-alignment'),
+      'display': dom.getAttribute('data-display'),
     })
   }],
   toDOM(node: Node): [string, any, number] {
-    const alignment = node.attrs['alignment'];
+    const { alignment, display } = node.attrs;
     const attrs = {
       'data-node-type': 'singleImage',
       'data-alignment': alignment,
+      'data-display': display,
     };
     return [
       'div',

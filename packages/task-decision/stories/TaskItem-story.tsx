@@ -25,4 +25,9 @@ storiesOf('<TaskItem/>', module)
     <TaskItem taskId="task-3" contentRef={dumpRef} onChange={action('onChange')}>
       <Renderer document={document} />
     </TaskItem>
-  ));
+  ))
+  .add('Simple TaskItem with placeholder', () => (
+    <TaskItem taskId="task-1" contentRef={dumpRef} onChange={action('onChange')} showPlaceholder={true} />
+  ))
+
+  ;

@@ -493,7 +493,7 @@ describe('Media plugin', () => {
         pluginState.ignoreLinks = true;
         pluginState.allowsLinks = true;
 
-        const linksRanges = pluginState.detectLinkRangesInSteps(tr);
+        const linksRanges = pluginState.detectLinkRangesInSteps(tr, state);
 
         expect(linksRanges).to.deep.equal([]);
       });
@@ -505,7 +505,7 @@ describe('Media plugin', () => {
         pluginState.ignoreLinks = true;
         pluginState.allowsLinks = true;
 
-        pluginState.detectLinkRangesInSteps(tr);
+        pluginState.detectLinkRangesInSteps(tr, state);
 
         expect(pluginState.ignoreLinks).to.equal(false);
       });
@@ -516,15 +516,15 @@ describe('Media plugin', () => {
         const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
         const { state } = editorView;
         const nodes = link1.concat(link2);
-        const length = nodes.reduce((length, node) => length + (node.text ? node.text.length : 0), 0);
         const tr = state.tr.replaceWith(sel, sel, nodes);
         pluginState.ignoreLinks = false;
         pluginState.allowsLinks = true;
 
-        pluginState.detectLinkRangesInSteps(tr);
+        pluginState.detectLinkRangesInSteps(tr, state);
 
         expect((pluginState as any).linkRanges).to.deep.equal([
-          { start: sel, end: sel + length, urls: ['www.google.com', 'www.baidu.com'] }
+          { href: 'www.google.com', pos: 1 },
+          { href: 'www.baidu.com', pos: 'google'.length + 1 },
         ]);
       });
     });
@@ -532,8 +532,8 @@ describe('Media plugin', () => {
 
   describe('insertLinks', () => {
     it('creates a link card below linkified text', async () => {
-      const link = 'www.google.com';
-      const { editorView, pluginState, sel } = editor(doc(p(`${link} {<>}`)));
+      const href = 'www.google.com';
+      const { editorView, pluginState } = editor(doc(p(`${href} {<>}`)));
       const mediaProvider = getFreshMediaProvider();
 
       // wait until mediaProvider has been set
@@ -546,7 +546,7 @@ describe('Media plugin', () => {
       await pluginState.setMediaProvider(Promise.resolve(provider));
 
       // way to stub private member
-      (pluginState as any).linkRanges = [{ start: sel - link.length - 1, end: sel, urls: [link] }];
+      (pluginState as any).linkRanges = [{ href, pos: 1 }];
 
       // -1 for space, simulate the scenario of autoformatting link
       const linkIds = await pluginState.insertLinks();
@@ -554,7 +554,7 @@ describe('Media plugin', () => {
       expect(linkIds).to.have.lengthOf(1);
 
       expect(editorView.state.doc).to.deep.equal(doc(
-        p(`${link} `),
+        p(`${href} `),
         mediaGroup(media({ id: `${linkIds![0]}`, type: 'link', collection: testCollectionName })),
         p(),
       ));

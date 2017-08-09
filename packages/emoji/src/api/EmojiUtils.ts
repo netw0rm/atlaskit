@@ -2,6 +2,7 @@ import { KeyValues, RequestServiceOptions, ServiceConfig, utils as serviceUtils 
 import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
+  EmojiVariationDescription,
   EmojiMeta,
   EmojiRepresentation,
   EmojiResponse,
@@ -85,13 +86,18 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   return undefined;
 };
 
-export const denormaliseSkinEmoji = (skinEmojis?: EmojiServiceDescription[], meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
-  if (!skinEmojis) {
+export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariations, meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
+  if (!emoji.skinVariations) {
     return [];
   }
-  return skinEmojis.map((skin): EmojiDescriptionWithVariations => {
+
+  const skinEmoji: EmojiServiceDescription[] = emoji.skinVariations;
+  const baseId = emoji.id;
+
+  return skinEmoji.map((skin): EmojiVariationDescription => {
     const { representation, ...other } = skin;
     return {
+      baseId: baseId,
       ...other,
       representation: denormaliseServiceRepresentation(representation, meta),
     };
@@ -106,7 +112,7 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
     const { id, name, shortName, type, category, order, fallback, ascii, searchable } = emoji;
     const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
-    const skinVariations = denormaliseSkinEmoji(emoji.skinVariations, emojiData.meta);
+    const skinVariations = denormaliseSkinEmoji(emoji, emojiData.meta);
 
     return {
       id,

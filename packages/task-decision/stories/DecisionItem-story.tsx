@@ -20,4 +20,8 @@ storiesOf('<DecisionItem/>', module)
     <DecisionItem contentRef={dumpRef}>
       <Renderer document={document} />
     </DecisionItem>
-  ));
+  ))
+  .add('Simple DecisionItem with placeholder', () => (
+    <DecisionItem contentRef={dumpRef} showPlaceholder={true} />
+  ))
+;

@@ -1,6 +1,14 @@
 # @atlaskit/profilecard
 
-## Unreleased
+## 3.6.4 (2017-08-09)
+
+* bug fix; make profilecard type def also available through lerna link (issues closed: ed-2435) ([fb15d63](https://bitbucket.org/atlassian/atlaskit/commits/fb15d63))
+
+
+* bug fix; Merged in fix/ED-2266-profile-card (pull request #3650) (issues closed: ed-2266) ([2a5b88e](https://bitbucket.org/atlassian/atlaskit/commits/2a5b88e))
+
+
+
 
 ## 3.6.3 (2017-07-27)
 

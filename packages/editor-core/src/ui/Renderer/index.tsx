@@ -6,6 +6,7 @@ import ProviderFactory from '../../providerFactory';
 import {
   ReactSerializer,
   renderDocument,
+  RendererContext,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
 
@@ -30,6 +31,7 @@ export interface Props {
   dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
   schema?: Schema<any, any>;
+  rendererContext?: RendererContext;
 }
 
 export interface State {
@@ -50,9 +52,10 @@ export default class Renderer extends PureComponent<Props, State> {
       document,
       eventHandlers,
       schema,
+      rendererContext,
     } = this.props;
 
-    const serializer = new ReactSerializer(this.providerFactory, eventHandlers, this.state.portal);
+    const serializer = new ReactSerializer(this.providerFactory, eventHandlers, this.state.portal, rendererContext);
 
     return (
       <div>

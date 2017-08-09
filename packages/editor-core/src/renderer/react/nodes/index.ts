@@ -21,6 +21,10 @@ import Paragraph from './paragraph';
 import Rule from './rule';
 import TaskItem from './taskItem';
 import TaskList from './taskList';
+import Table from './table';
+import TableCell from './tableCell';
+import TableHeader from './tableHeader';
+import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
@@ -44,6 +48,10 @@ export const nodeToReact = {
   'rule': Rule,
   'taskItem': TaskItem,
   'taskList': TaskList,
+  'table': Table,
+  'tableCell': TableCell,
+  'tableHeader': TableHeader,
+  'tableRow': TableRow,
   'unknownBlock': UnknownBlock,
 };
 
@@ -161,5 +169,9 @@ export {
   Rule,
   TaskItem,
   TaskList,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
   UnknownBlock,
 };

@@ -7,7 +7,7 @@
     "build": "yarn run build-data && NODE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
     "deploy": "yarn run build && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID -p dist",
     "build-data": "node ./build && prettier --single-quote --trailing-comma es5 --write src/data.js",
-    "prepublish": "yarn run build-data",
+    "prepublish": "./bin/fixHpack.js && yarn run build-data",
     "start": "yarn run build-data && webpack-dev-server"
   },
   "dependencies": {

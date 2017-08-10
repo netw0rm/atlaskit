@@ -92,6 +92,19 @@ describe('tasks and decisions - keymaps', () => {
             )
           );
         });
+
+        it('should delete selection and keep decisionItem', () => {
+          const { editorView } = editor(doc(decisionList(decisionItem('{<}Hello {>}World'))));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              decisionList(
+                decisionItem('World')
+              )
+            )
+          );
+        });
       });
 
     });
@@ -202,6 +215,19 @@ describe('tasks and decisions - keymaps', () => {
           expect(editorView.state.doc).to.deep.equal(
             doc(
               p('Hello World'),
+            )
+          );
+        });
+
+        it('should delete selection and keep taskItem', () => {
+          const { editorView } = editor(doc(taskList(taskItem('{<}Hello {>}World'))));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('World')
+              )
             )
           );
         });

@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 23.0.1 (2017-08-10)
+
+* bug fix; release imports up into src fail in dist ([9846bc5](https://bitbucket.org/atlassian/atlaskit/commits/9846bc5))
+
 ## 23.0.0 (2017-08-09)
 
 * bug fix; make the typeahead and picker call Provider.recordSelection by default ([c801f20](https://bitbucket.org/atlassian/atlaskit/commits/c801f20))

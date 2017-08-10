@@ -2,12 +2,11 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-// tslint:disable-next-line
-const PDFJSViewer = require('pdfjs-dist/web/pdf_viewer.js').PDFJS;
+import {PDFJS as PDFJSViewer} from 'pdfjs-dist/web/pdf_viewer.js';
 import { ViewerContainer } from './styled';
 
 export interface PdfViewerProps {
-  onInit: PropTypes.func;
+  onInit?: PropTypes.func;
   onScaleChanged: PropTypes.func;
 }
 

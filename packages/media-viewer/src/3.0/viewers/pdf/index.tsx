@@ -5,8 +5,7 @@ import {Wrapper} from './styled';
 import {MediaIdentifier} from '../../domain';
 import {ItemTools} from '../../views/itemTools';
 import Viewer from './viewer';
-// tslint:disable-next-line
-const pdfjsLib = require('pdfjs-dist/webpack');
+import * as pdfjsLib from 'pdfjs-dist/webpack';
 
 export interface PdfViewerProps {
   identifier: MediaIdentifier;
@@ -58,9 +57,8 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
   }
 
   loadDocument() {
-    // const loadingTask = pdfjsLib.getDocument(this.state.dataURI);
+    const loadingTask = pdfjsLib.getDocument(this.state.dataURI);
     // const loadingTask = pdfjsLib.getDocument('http://local.atlassian.io:5001/pdf-document-t3n-colors.pdf');
-    const loadingTask = pdfjsLib.getDocument('http://local.atlassian.io:5001/pdf-document-highlight.pdf');
     loadingTask.promise.then((doc) => {
       this.viewer.setState({ doc });
     }, (reason) => {
@@ -68,27 +66,35 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
     });
   }
 
-  displayScaleChanged = (e) => {
+  displayScaleChanged = (e: any) => {
     this.setState({
       scale: e.scale
     });
   }
 
-  zoomIn = (e) => {
+  zoomIn = (e: any) => {
+    const {scale} = this.viewer.state;
+    if (scale >= 8) { return; }
     this.viewer.setState({
-      scale: this.viewer.state.scale + 0.1
+      scale: scale + 0.1
     });
   }
-  zoomOut = (e) => {
+  zoomOut = (e: any) => {
+    const {scale} = this.viewer.state;
+    if (scale <= 0.4) { return; }
     this.viewer.setState({
-      scale: this.viewer.state.scale - 0.1
+      scale: scale - 0.1
     });
   }
 
-  zoomFit = (e) => {
+  zoomFit = (e: any) => {
     this.viewer.setState({
       scale: 1
     });
+  }
+
+  setViewerRef = (ref: any) => {
+    this.viewer = ref;
   }
 
   render() {
@@ -102,24 +108,9 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
         />
         <Viewer
           onScaleChanged={this.displayScaleChanged}
-          ref={ref => this.viewer = ref}
+          ref={this.setViewerRef}
         />
       </Wrapper>
     );
-  }
-
-  onZoomOut = () => {
-    const {scale} = this.state;
-    if (scale <= 0.4) { return; }
-    this.setState({scale: scale - 0.2});
-  }
-
-  onZoomIn = () => {
-    const {scale} = this.state;
-    this.setState({scale: scale + 0.2});
-  }
-
-  onZoomFit = () => {
-    this.setState({scale: this.defaultScale});
   }
 }

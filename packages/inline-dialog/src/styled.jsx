@@ -1,17 +1,18 @@
 import styled from 'styled-components';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
-import {
-  borderRadius,
-  colors,
-  gridSize,
-  math,
-} from '@atlaskit/theme';
-
-import {
-  backgroundColor,
-  borderColor,
-  shadowColor,
-} from '../theme';
+const backgroundColor = themed({
+  light: colors.N0,
+  dark: colors.DN50,
+});
+const borderColor = themed({
+  light: colors.N60A,
+  dark: colors.DN60A,
+});
+const shadowColor = themed({
+  light: colors.N50A,
+  dark: colors.DN50A,
+});
 
 const getBoxShadow = props => {
   const border = `0 0 1px ${borderColor(props)}`;
@@ -20,7 +21,8 @@ const getBoxShadow = props => {
   return [border, shadow].join(',');
 };
 
-export default styled.div`
+// eslint-disable-next-line import/prefer-default-export
+export const Container = styled.div`
   background: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-shadow: ${getBoxShadow};

@@ -42,7 +42,6 @@ export default function getButtonStyles(props) {
    * Variable styles
    */
   let cursor = 'default';
-  let boxShadow = 'none';
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
@@ -59,6 +58,7 @@ export default function getButtonStyles(props) {
   const background = getPropertyAppearance('background', props);
   const color = getPropertyAppearance('color', props);
   const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
+  const boxShadow = boxShadowColor ? `0 0 0 2px ${boxShadowColor(props)}` : null;
   const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact
@@ -88,7 +88,6 @@ export default function getButtonStyles(props) {
 
   // Interaction: Focus
   if (props.isFocus) {
-    boxShadow = `0 0 0 2px ${boxShadowColor}`;
     outline = 'none';
     transitionDuration = '0s, 0.2s';
   }

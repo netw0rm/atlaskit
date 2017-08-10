@@ -1,5 +1,8 @@
 # @atlaskit/editor-hipchat
 
+## 4.18.0 (2017-08-10)
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2446) ([8177e36](https://bitbucket.org/atlassian/atlaskit/commits/8177e36))
 ## 4.17.1 (2017-08-03)
 
 * bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))

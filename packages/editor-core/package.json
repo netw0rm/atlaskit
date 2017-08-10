@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.2.2",
+  "version": "45.5.0",
   "config": {
     "access": "public"
   },
@@ -49,10 +49,10 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^22.3.1",
+    "@atlaskit/emoji": "^23.0.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.1",
-    "@atlaskit/media-card": "^17.11.2",
+    "@atlaskit/media-card": "^18.0.2",
     "@atlaskit/media-core": "^8.4.1",
     "@atlaskit/media-filmstrip": "^5.1.2",
     "@atlaskit/mention": "^7.3.0",

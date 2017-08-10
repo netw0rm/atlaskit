@@ -82,7 +82,13 @@ export default class DragHandle extends Component {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    // TODO: unbind handlers if drag is cancelled some somewhere else in application
+    // if the application cancels a drag we need to unbind the handlers
+    const isDragStopping: boolean = (this.props.isDragging && !nextProps.isDragging);
+    if (isDragStopping && this.state.draggingWith) {
+      this.stopDragging();
+      return;
+    }
+
     if (nextProps.isEnabled) {
       return;
     }
@@ -380,9 +386,6 @@ export default class DragHandle extends Component {
   }
 
   unbindWindowEvents = () => {
-    // using a map to ensure that everything that is added
-    // is always removed. It is easy to add a listener and
-    // to forget about removing it.
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);

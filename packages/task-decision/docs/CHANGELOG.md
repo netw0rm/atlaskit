@@ -1,5 +1,20 @@
 # @atlaskit/task-decision
 
+## 2.4.0 (2017-08-09)
+
+* feature; adding support for placeholders ([d9edd1a](https://bitbucket.org/atlassian/atlaskit/commits/d9edd1a))
+## 2.3.0 (2017-08-09)
+
+
+
+* feature; adding usupport to fetch initial state and toggle state ([416ce4e](https://bitbucket.org/atlassian/atlaskit/commits/416ce4e))
+* feature; adding resourcedtaskitem ([1c8cccb](https://bitbucket.org/atlassian/atlaskit/commits/1c8cccb))
+## 2.2.3 (2017-08-08)
+
+* bug fix; import es5 renderer ([221da82](https://bitbucket.org/atlassian/atlaskit/commits/221da82))
+## 2.2.2 (2017-08-07)
+
+* bug fix; fix correct dep for @atlaskit/spinner ([155979d](https://bitbucket.org/atlassian/atlaskit/commits/155979d))
 ## 2.2.1 (2017-08-03)
 
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))

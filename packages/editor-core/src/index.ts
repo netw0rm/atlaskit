@@ -66,6 +66,7 @@ export {
   JSONDocNode,
   JSONNode,
   toJSON,
+  filterContentByType,
 } from './utils';
 export { colorPalette } from './schema/marks/text-color';
 

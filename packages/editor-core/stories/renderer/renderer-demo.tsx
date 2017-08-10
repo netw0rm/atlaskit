@@ -20,7 +20,7 @@ import {
 import {
   AkProfileClient,
   modifyResponse,
-} from '../../src/utils/profilecard';
+} from '@atlaskit/profilecard';
 
 import {
   renderDocument,

@@ -4,11 +4,18 @@ import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import stringRepeat from '../../src/util/string-repeat';
 
 import { analyticsService, browser, EditorView } from '@atlaskit/editor-core';
 
 import Editor from '../../src/index';
+
+function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
 
 chai.use(chaiPlugin);
 

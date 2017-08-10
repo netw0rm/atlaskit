@@ -24,3 +24,9 @@ export function createInputRule(match: RegExp, handler: InputRuleHandler<any>): 
 // It was introduced because of https://github.com/ProseMirror/prosemirror/issues/262
 // This can be used in an input rule regex to be able to include or exclude such nodes.
 export const leafNodeReplacementCharacter = '\ufffc';
+
+// tslint:disable:no-bitwise
+export const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  const r = Math.random() * 16 | 0;
+  return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+});

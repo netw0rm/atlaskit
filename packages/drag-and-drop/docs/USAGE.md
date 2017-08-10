@@ -138,6 +138,17 @@ Here are a few poor user experiences that can occur if you change things *during
 
 We try very hard to ensure that each `onDragStart` event is paired with a single `onDragEnd` event. However, there maybe a rouge situation where this is not the case. If that occurs - it is a bug. Currently there is no mechanism to tell the library to cancel a current drag externally.
 
+**Style**
+
+During a drag it is recommended that you add two styles to the body:
+
+1. `user-select: none;` and
+2. `cursor: grab;` (or whatever cursor you want to use while dragging)
+
+`user-select: none;` prevents the user drag from selecting text on the page as they drag.
+
+`cursor: [your desired cursor];` is needed because we apply `pointer-events: none;` to the dragging item. This prevents you setting your own cursor style on the Draggable directly based on `snapshot.isDragging` (see `Draggable`).
+
 **Dynamic hooks**
 
 Your *hook* functions will only be captured *once at start up*. Please do not change the function after that. If there is a valid use case for this then dynamic hooks could be supported. However, at this time it is not.
@@ -530,7 +541,7 @@ type StateSnapshot = {|
 |}
 ```
 
-The `children` function is also provided with a small about of state relating to the current drag state. This can be optionally used to enhance your component. A common use case is changing the appearance of a `Draggable` while it is being dragged.
+The `children` function is also provided with a small about of state relating to the current drag state. This can be optionally used to enhance your component. A common use case is changing the appearance of a `Draggable` while it is being dragged. Note: if you want to change the cursor to something like `grab` you will need to add the style to the body. (See `DragDropContext` > **style** above)
 
 ```js
 <Draggable draggableId="draggable-1">

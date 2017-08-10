@@ -97,6 +97,7 @@ storiesOf(name, module)
   .add('Editor (allowTextColor)', () => <Editor onChange={handleChange} allowTextColor={true} />)
   .add('Editor (allowCodeBlock)', () => <Editor onChange={handleChange} allowCodeBlock={true} />)
   .add('Editor (allowBlockQuote)', () => <Editor onChange={handleChange} allowBlockQuote={true} />)
+  .add('Editor (allowTables)', () => <Editor onChange={handleChange} allowTables={true} />)
   .add('Editor (Mentions)', () =>
     <Editor
       onChange={handleChange}
@@ -153,6 +154,7 @@ storiesOf(name, module)
       allowLists={true}
       allowLinks={true}
       allowCodeBlock={true}
+      allowTables={true}
       allowAdvancedTextFormatting={true}
       allowSubSup={true}
       allowTextColor={true}

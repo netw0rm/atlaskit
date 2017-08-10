@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Item from '@atlaskit/item';
+import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';

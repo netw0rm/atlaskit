@@ -1,6 +1,27 @@
 # @atlaskit/emoji
 
-## Unreleased
+## 23.0.0 (2017-08-09)
+
+* bug fix; make the typeahead and picker call Provider.recordSelection by default ([c801f20](https://bitbucket.org/atlassian/atlaskit/commits/c801f20))
+* bug fix; change how skin tone variations are converted back to their 'base' emoji ([ef6fbf3](https://bitbucket.org/atlassian/atlaskit/commits/ef6fbf3))
+
+* bug fix; fixed a bug where the storybook update was happening before the usage had been recor ([eeedf56](https://bitbucket.org/atlassian/atlaskit/commits/eeedf56))
+
+
+
+* breaking; EmojiResource.recordSelection now returns a resolved Promise rather than a rejected Promise when ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+* breaking; keep track of selected emoji so we know most frequently used. (issues closed: fs-1212) ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+
+
+
+
+
+
+
+
+
+
+
 
 ## 22.3.1 (2017-07-27)
 

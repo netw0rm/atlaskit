@@ -1,6 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es2015/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
 import TaskItem from '../src/components/TaskItem';
 import { document } from '../src/support/story-data';
@@ -25,4 +25,9 @@ storiesOf('<TaskItem/>', module)
     <TaskItem taskId="task-3" contentRef={dumpRef} onChange={action('onChange')}>
       <Renderer document={document} />
     </TaskItem>
-  ));
+  ))
+  .add('Simple TaskItem with placeholder', () => (
+    <TaskItem taskId="task-1" contentRef={dumpRef} onChange={action('onChange')} showPlaceholder={true} />
+  ))
+
+  ;

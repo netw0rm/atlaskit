@@ -22,6 +22,7 @@ export default styled.div`
   background: ${akColorN0};
   content: "";
   display: block;
+  flex: 0 0 ${modalShadowInnerSize}px;
   height: ${modalShadowInnerSize}px;
 
   ${getTopOrBottomPosition}

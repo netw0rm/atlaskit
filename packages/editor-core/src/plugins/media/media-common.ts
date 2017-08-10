@@ -3,7 +3,7 @@ import {
   Node as PMNode,
   NodeSelection,
 } from '../../prosemirror';
-import { moveLeft, atTheBeginningOfDoc } from '../../utils';
+import { moveLeft, atTheBeginningOfDoc, isTemporary } from '../../utils';
 import * as commands from '../../commands';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
@@ -15,7 +15,7 @@ export const removeMediaNode = (view: EditorView, node: PMNode, getPos: Prosemir
   const currentMediaNodePos = getPos();
   tr.deleteRange(currentMediaNodePos, currentMediaNodePos + node.nodeSize);
 
-  if (isTemporaryFile(id)) {
+  if (isTemporary(id)) {
     tr.setMeta('addToHistory', false);
   }
 
@@ -30,10 +30,6 @@ export const removeMediaNode = (view: EditorView, node: PMNode, getPos: Prosemir
   if (selection.from === currentMediaNodePos && !isLastMediaNode && !atTheBeginningOfDoc(state)) {
     moveLeft(view);
   }
-};
-
-const isTemporaryFile = (id: string): boolean => {
-  return id.indexOf('temporary:') === 0;
 };
 
 export const splitMediaGroup = (view: EditorView): boolean => {

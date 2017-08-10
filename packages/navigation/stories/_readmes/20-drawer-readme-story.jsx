@@ -16,6 +16,7 @@ const drawerComponentPropDescriptions = {
   width: 'The current width of the Drawer. One of "narrow", "wide" or "full"',
   onBackButton: 'A function to call when the backIcon button is clicked, or when the blanket behind the Drawer is clicked',
   primaryIcon: 'The primary icon in the Drawer – usually the globalPrimaryIcon that was given to the GlobalNavigation component',
+  onKeyDown: 'A function to handle keydown event in drawer. If it is not provided, a default handler that the function provided by onBackButton will be executed on pressing Escape. Otherwise, the provided function will be executed before and along with the default handler. If preventDefault is called in this function, only this function is executed.',
 };
 
 storiesOf(name, module)

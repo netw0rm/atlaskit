@@ -143,6 +143,18 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       id,
     };
 
+    if (id.substr(0, 10) === 'temporary:') {
+      const url = id.substr(id.indexOf(':', 11) + 1);
+      return (
+        <CardView
+          metadata={{type: 'link', url, title: ''}}
+          status="loading"
+          mediaItemType="link"
+          dimensions={cardDimensions}
+        />
+      );
+    }
+
     if (onDelete) {
       (otherProps as any).actions = [ CardDelete(onDelete) ];
     }
@@ -164,11 +176,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { id, cardDimensions } = this.props;
 
     if (!mediaProvider || !viewContext) {
-      return <CardView
-        status="loading"
-        mediaItemType="file"
-        dimensions={cardDimensions}
-      />;
+      return (
+        <CardView
+          status="loading"
+          mediaItemType="file"
+          dimensions={cardDimensions}
+        />
+      );
     }
 
     if (id.substr(0, 10) === 'temporary:') {

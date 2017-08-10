@@ -484,6 +484,46 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         }
         break;
       }
+      case 'table': {
+        if (Array.isArray(content)
+          && content.length > 0
+          && !content.some(e => e.type !== 'tableRow')) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
+      case 'tableRow': {
+        if (Array.isArray(content)
+          && content.length > 0
+          && !content.some(e => e.type !== 'tableCell' && e.type !== 'tableHeader')) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
+      case 'tableCell': {
+        if (content) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
+      case 'tableHeader': {
+        if (content) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
     }
   }
 

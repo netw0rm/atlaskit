@@ -1,5 +1,5 @@
+import { ComponentClass } from 'react';
 import { Mark } from '../../../prosemirror';
-import { ReactComponentConstructor } from '../';
 
 import Code from './code';
 import Em from './em';
@@ -19,7 +19,7 @@ export const markToReact = {
   'underline': Underline,
 };
 
-export const toReact = (mark: Mark): ReactComponentConstructor => {
+export const toReact = (mark: Mark): ComponentClass<any> => {
   return markToReact[mark.type.name];
 };
 

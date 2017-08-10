@@ -34,7 +34,7 @@ import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
-import { Alignment, Display } from '../../schema/nodes/single-image';
+import { Alignment, Display } from './single-image';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 

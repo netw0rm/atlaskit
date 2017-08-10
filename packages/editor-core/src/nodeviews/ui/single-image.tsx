@@ -5,7 +5,7 @@ import {
   EditorView,
   Node as PMNode,
 } from '../../prosemirror';
-import { Alignment, Display } from '../../schema/nodes/single-image';
+import { float, clear, textAlign } from '../../plugins/media/single-image';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -24,41 +24,6 @@ const Wrapper = styled.div`
     padding: 5px 10px 0 0;
   }
 `;
-
-function textAlign(alignment: Alignment, display: Display): string {
-  if (display !== 'block') {
-    return 'left';
-  }
-  return alignment;
-}
-
-function float(alignment: Alignment, display: Display): string {
-  if (display === 'block') {
-    return 'none';
-  }
-
-  switch (alignment) {
-    case 'right':
-      return 'right';
-    default:
-      return 'left';
-  }
-}
-
-function clear(alignment: Alignment, display: Display): string {
-  if (display === 'block') {
-    return 'both';
-  }
-
-  switch (alignment) {
-    case 'left':
-      return 'left';
-    case 'right':
-      return 'right';
-    default:
-      return 'both';
-  }
-}
 
 export default class SingleImageNode extends PureComponent<MediaGroupNodeProps, {}> {
 

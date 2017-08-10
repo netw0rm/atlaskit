@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
 ## 45.5.0 (2017-08-09)
 
 

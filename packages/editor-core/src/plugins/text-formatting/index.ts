@@ -6,14 +6,12 @@ import {
   EditorState,
   EditorView,
   Schema,
-  TextSelection,
 } from '../../prosemirror';
 
 import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { transformToCodeAction } from './transform-to-code';
-import { keyCodes } from '../../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 

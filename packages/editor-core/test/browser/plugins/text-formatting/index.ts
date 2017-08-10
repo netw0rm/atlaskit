@@ -160,14 +160,6 @@ describe('text-formatting', () => {
   });
 
   describe('em', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(em('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle em on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -207,14 +199,6 @@ describe('text-formatting', () => {
   });
 
   describe('strong', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(strong('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle strong on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -254,14 +238,6 @@ describe('text-formatting', () => {
   });
 
   describe('underline', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(underline('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle underline on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -402,14 +378,6 @@ describe('text-formatting', () => {
       });
     });
 
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(code('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle code on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -449,14 +417,6 @@ describe('text-formatting', () => {
   });
 
   describe('strike', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(strike('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle strike on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -496,14 +456,6 @@ describe('text-formatting', () => {
   });
 
   describe('subscript', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(subsup({ type: 'sub' })('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle subscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
@@ -559,14 +511,6 @@ describe('text-formatting', () => {
   });
 
   describe('superscript', () => {
-    it('should be able to remove mark when its the first node of the paragraph', () => {
-      const { editorView } = editor(doc(p(subsup({ type: 'sup' })('{<}text{>}'))));
-
-      sendKeyToPm(editorView, 'Backspace');
-      insertText(editorView, 'text', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
-    });
-
     it('should be able to toggle superscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
       pluginState.toggleSuperscript(editorView);

@@ -6,6 +6,7 @@ import {
   EditorState,
   EditorView,
   Schema,
+  TextSelection,
 } from '../../prosemirror';
 
 import * as commands from '../../commands';
@@ -283,66 +284,6 @@ export class TextFormattingState {
     return state.doc.rangeHasMark(from, to, markType);
   }
 
-  handleKeyDown (view: EditorView, event: KeyboardEvent) {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-    let marks = state.selection.$from.marks();
-    let domNodeBefore = view.docView.domFromPos(from - 1);
-
-    if (!empty) {
-      marks = [];
-      state.doc.nodesBetween(from, to, node => {
-        if (node.marks.length) {
-          marks = marks.concat(node.marks);
-        }
-      });
-    }
-
-    const { storedMarks } = state.tr;
-
-    if (storedMarks && this.marksToRemove) {
-      this.marksToRemove = null;
-      view.dispatch(view.state.tr.setStoredMarks([]));
-    }
-
-    if (event.keyCode === keyCodes.Backspace) {
-      let found = false;
-
-      const nonInclusiveMarks: Mark[] = [];
-      const { nodeBefore } = state.selection.$from;
-      if (nodeBefore) {
-        nodeBefore.marks.forEach(mark => {
-          if (mark.type.spec.inclusive === false) {
-            nonInclusiveMarks.push(mark);
-          }
-        });
-        if (nonInclusiveMarks.length) {
-          this.marksToRemove = nonInclusiveMarks;
-        }
-      }
-
-      marks.forEach(mark => {
-        if (state.doc.rangeHasMark(from - 1, to, mark.type)) {
-          found = true;
-        }
-      });
-
-      if (marks.length && (!domNodeBefore || found)) {
-        this.marksToRemove = marks.concat(this.marksToRemove || []);
-      }
-    }
-  }
-
-  handleTextInput (view: EditorView, event: KeyboardEvent) {
-    const { state } = this;
-    const { storedMarks } = state.tr;
-
-    if (storedMarks && this.marksToRemove) {
-      this.marksToRemove = null;
-      view.dispatch(view.state.tr.setStoredMarks([]));
-    }
-  }
-
   /**
    * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
@@ -410,17 +351,7 @@ export const plugin = new Plugin({
   },
   props: {
     handleKeyDown(view, event) {
-      const pluginState = stateKey.getState(view.state);
-      const result = pluginState.keymapHandler(view, event);
-      pluginState.handleKeyDown(view, event);
-
-      return result;
-    },
-    handleTextInput(view, event) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.handleTextInput(view, event);
-
-      return false;
+      return stateKey.getState(view.state).keymapHandler(view, event);
     }
   }
 });

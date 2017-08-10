@@ -204,17 +204,20 @@ describe('EmojiRepository', () => {
         expect(greenHeartIndex).to.not.equal(-1);
         expect(heartIndex < greenHeartIndex).to.equal(true);
 
-        // usage is recorded asynchronously so give it a chance to happen
+        emojiRepository.used(greenHeart);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
         setTimeout(() => {
           const nextResult: EmojiDescription[] = emojiRepository.search(':hear').emojis;
           heartIndex = nextResult.indexOf(heart);
           greenHeartIndex = nextResult.indexOf(greenHeart);
+
           expect(heartIndex).to.not.equal(-1);
           expect(greenHeartIndex).to.not.equal(-1);
           expect(greenHeartIndex < heartIndex).to.equal(true);
 
           // exact matching shortname should come above usage
-          const exactMatchResult: EmojiDescription[] = emojiRepository.search('heart').emojis;
+          const exactMatchResult: EmojiDescription[] = emojiRepository.search(':heart:').emojis;
           expect(exactMatchResult.indexOf(heart) < exactMatchResult.indexOf(greenHeart)).to.equal(true);
           done();
         });

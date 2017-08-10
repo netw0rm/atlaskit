@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { Route, matchPath } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import { AkContainerNavigationNested as NestedNav } from '@atlaskit/navigation';
+import {
+  AkContainerNavigationNested as NestedNav,
+} from '@atlaskit/navigation';
 
 import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';

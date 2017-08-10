@@ -1,5 +1,31 @@
 # @atlaskit/navigation
 
+## 19.0.0 (2017-08-10)
+
+* breaking; AkContainerNavigation now extends React.Component rather than React.PureComponent - this should ([3afa823](https://bitbucket.org/atlassian/atlaskit/commits/3afa823))
+* breaking; added AkCollapseOverflow helper component (issues closed: ak-2590) ([3afa823](https://bitbucket.org/atlassian/atlaskit/commits/3afa823))
+## 18.3.2 (2017-08-09)
+
+* bug fix; improving the peformance of resizing the navigation by throttling it within a reques (issues closed: ak-3228) ([9db522c](https://bitbucket.org/atlassian/atlaskit/commits/9db522c))
+## 18.3.1 (2017-08-08)
+
+* bug fix; make navigation GlobalItem href prop optional (issues closed: ak-3220) ([770acc6](https://bitbucket.org/atlassian/atlaskit/commits/770acc6))
+## 18.3.0 (2017-08-08)
+
+* bug fix; fix eslint tests (issues closed: ak-3166) ([1743654](https://bitbucket.org/atlassian/atlaskit/commits/1743654))
+* bug fix; fix the fix overhang issue when resizing sidebar, fix truncate issue on IE11 (issues closed: ak-3166) ([c2e297e](https://bitbucket.org/atlassian/atlaskit/commits/c2e297e))
+
+* bug fix; fix padding issue when hover on ContainerTitleDropdown (issues closed: ak-3166) ([85bc2c2](https://bitbucket.org/atlassian/atlaskit/commits/85bc2c2))
+* feature; add AkContainerTitleDropdown to support render dropdown menu in ContainerHeader (issues closed: ak-3166) ([e0dfa45](https://bitbucket.org/atlassian/atlaskit/commits/e0dfa45))
+## 18.2.0 (2017-08-08)
+
+* feature; add onKeyDown to navigation's drawer ([a7cb6ec](https://bitbucket.org/atlassian/atlaskit/commits/a7cb6ec))
+## 18.1.2 (2017-08-07)
+
+* bug fix; change nested navigation animation time to 200ms (issues closed: ak-3207) ([0bc6871](https://bitbucket.org/atlassian/atlaskit/commits/0bc6871))
+## 18.1.1 (2017-08-06)
+
+* bug fix; apply correct styling to AkNavigationItemGroup title (issues closed: ak-3200) ([4e7d6e7](https://bitbucket.org/atlassian/atlaskit/commits/4e7d6e7))
 ## 18.1.0 (2017-08-03)
 
 * feature; improving support and examples for drag and drop in navigation (issues closed: ak-1862) ([c1e0986](https://bitbucket.org/atlassian/atlaskit/commits/c1e0986))

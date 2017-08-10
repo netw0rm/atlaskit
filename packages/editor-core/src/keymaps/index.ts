@@ -36,7 +36,6 @@ export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
 export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
 export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
-export const emptyCells = makeKeyMapWithCommon('Empty cells', 'Backspace');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

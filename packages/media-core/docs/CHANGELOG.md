@@ -1,6 +1,12 @@
 # @atlaskit/media-core
 
-## Unreleased
+## 9.0.0 (2017-08-07)
+
+* breaking; removed trello types ([ce181b4](https://bitbucket.org/atlassian/atlaskit/commits/ce181b4))
+* breaking; remove trello app types and update to adhere to latest api signatures ([ce181b4](https://bitbucket.org/atlassian/atlaskit/commits/ce181b4))
+
+
+
 
 ## 8.4.1 (2017-07-25)
 

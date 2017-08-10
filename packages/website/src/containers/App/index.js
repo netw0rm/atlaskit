@@ -42,18 +42,14 @@ const Routes = () =>
     <Route path="/install" component={InstallGuide} />
     <Route path="/examples" component={Examples} />
     <Route exact path="/components/navigation/examples" component={ExampleBase} />
-    <Route
-      path="/components/navigation/components/:component"
-      render={({ match }) => <NavPackageComponent match={match} />}
-    />
-    <Route
-      path="/components/navigation/examples/:exampleName"
-      component={NavExample}
-    />
+    <Route path="/components/navigation/components/:component" render={({ match }) => <NavPackageComponent match={match} />} />
+    <Route path="/components/navigation/examples/:exampleName" component={NavExample} />
     <Route exact path="/components" component={Components} />
     <Route
       path="/components/:component"
-      render={({ match }) => <StandardComponent match={match} />}
+      render={({ match }) => (
+        <StandardComponent match={match} />
+      )}
     />
     <Route path="/changelog/:component/:semver?" component={Changelog} />
     <Route component={NoMatch} />

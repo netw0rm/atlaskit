@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.1.0 (2017-08-08)
+
+* feature; enable tables in editor-jira (issues closed: ed-2396) ([025f6ec](https://bitbucket.org/atlassian/atlaskit/commits/025f6ec))
 ## 20.0.2 (2017-08-03)
 
 * bug fix; undefined behaviour of parseIntoAtlassianDocument if first argument is nullable (issues closed: ed-2395) ([42cdb5d](https://bitbucket.org/atlassian/atlaskit/commits/42cdb5d))

@@ -4,7 +4,7 @@ import { customCategory, customType } from '../constants';
 import EmojiRepository from '../api/EmojiRepository';
 import TokenManager from '../api/media/TokenManager';
 import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
-import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, MediaApiToken } from '../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, EmojiVariationDescription, MediaApiToken } from '../types';
 import { MockEmojiResourceConfig } from './support-types';
 import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockNonUploadingEmojiResource } from './MockEmojiResource';
 
@@ -202,10 +202,15 @@ export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promi
 
 export const getEmojiResourcePromiseFromRepository = (repo: EmojiRepository, config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(repo, config);
 
-export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiDescription => {
+export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiVariationDescription => {
   const { id, shortName, name } = base;
+  if (!id) {
+    throw new Error('An id is required for generating a skin variation');
+  }
+
   return {
     id: `${id}-${idx}`,
+    baseId: id,
     shortName: `${shortName.substring(0, shortName.length - 1)}-${idx}:`,
     name: `${name} ${idx}`,
     type: 'SITE',
@@ -244,14 +249,4 @@ export const pngFileUploadData = {
   height: 30,
   filename: 'playasateam.png',
   dataURL: pngDataURL,
-};
-
-let data = {};
-export const mockLocalStorage: Storage = {
-  length: Object.keys(data).length,
-  getItem: (key) => data[key],
-  setItem: (key, value) =>  data[key] = value + '',
-  clear: () => data = {},
-  key: (key) => null,
-  removeItem: (key) => data[key] = {},
 };

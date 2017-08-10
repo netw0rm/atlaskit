@@ -321,35 +321,41 @@ describe('table plugin', () => {
   describe('remove()', () => {
     context('when table has 3 columns', () => {
       context('when the first column is selected', () => {
-        it('it should remove the first column and move cursor to the first cell of the first column', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        it('it should remove the first column and move cursor to the first cell of the column to the left', () => {
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectColumn(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
 
       context('when the middle column is selected', () => {
-        it('it should remove the middle column and move cursor to the first cell of the first column', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        it('it should remove the middle column and move cursor to the first cell of the column to the left', () => {
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectColumn(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
 
       context('when the last column is selected', () => {
-        it('it should remove the middle column and move cursor to the first cell of the first column', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
+        it('it should remove the last column and move cursor to the first cell of the previous column', () => {
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor, td({})(p('{nextPos}')), tdCursor))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectColumn(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
     });
@@ -357,34 +363,40 @@ describe('table plugin', () => {
     context('when table has 3 rows', () => {
       context('when the first row is selected', () => {
         it('it should remove the first row and move cursor to the first cell of the first row', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
 
       context('when the middle row is selected', () => {
-        it('it should remove the middle row and move cursor to the first cell of the first row', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+        it('it should remove the middle row and move cursor to the first cell of the next row', () => {
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectRow(1);
           pluginState.remove();
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
 
       context('when the last row is selected', () => {
-        it('it should remove the middle row and move cursor to the first cell of the first row', () => {
-          const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+        it('it should remove the middle row and move cursor to the first cell of the previous row', () => {
+          const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty))));
+          const { nextPos } = refs;
           plugin.props.onFocus!(editorView, event);
           pluginState.selectRow(2);
           pluginState.remove();
-          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_row.button')).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         });
       });
     });

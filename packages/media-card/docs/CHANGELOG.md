@@ -1,5 +1,15 @@
 # @atlaskit/media-card
 
+## 19.0.0 (2017-08-09)
+
+* breaking; bumped media-card to use latest media-core which no-longer supports "trello" cards introduced at a ([0912f65](https://bitbucket.org/atlassian/atlaskit/commits/0912f65))
+* breaking; (revert revert of) added embed cards ([0912f65](https://bitbucket.org/atlassian/atlaskit/commits/0912f65))
+## 18.1.1 (2017-08-09)
+
+* bug fix; revert "added embed cards" ([db17a8f](https://bitbucket.org/atlassian/atlaskit/commits/db17a8f))
+## 18.1.0 (2017-08-08)
+
+* feature; added embed cards ([4d8bda3](https://bitbucket.org/atlassian/atlaskit/commits/4d8bda3))
 ## 18.0.2 (2017-08-03)
 
 * bug fix; reduce box-shadow on smart-cards ([ef9658b](https://bitbucket.org/atlassian/atlaskit/commits/ef9658b))

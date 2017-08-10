@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import Layer from '@atlaskit/layer';
 import Navigation from '@atlaskit/navigation';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItemGroupRadio, DropdownItemRadio } from '@atlaskit/dropdown-menu';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Page from '@atlaskit/page';
 import React from 'react';
@@ -86,6 +86,15 @@ storiesOf(name, module)
   .add('width="x-large"', () => (
     <ModalDemo width="x-large" />
   ))
+  .add('height={300}', () => (
+    <ModalDemo height={300} />
+  ))
+  .add('height="400px"', () => (
+    <ModalDemo height="400px" />
+  ))
+  .add('height="100%"', () => (
+    <ModalDemo height="100%" />
+  ))
   .add('without header or footer', () => (
     <ModalDemo
       header={null}
@@ -134,22 +143,16 @@ storiesOf(name, module)
       >
         <p>
           <DropdownMenu
-            appearance="default"
-            items={[
-              {
-                heading: 'Cities',
-                items: [
-                  { content: 'Sydney', type: 'radio' },
-                  { content: 'Canberra', type: 'radio' },
-                  { content: 'Melbourne', type: 'radio' },
-                  { content: 'Perth', type: 'radio' },
-                ],
-              },
-            ]}
-            position="right middle"
+            trigger="Choose city"
             triggerType="button"
+            position="right middle"
           >
-            Choose
+            <DropdownItemGroupRadio id="cities" title="Cities">
+              <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
+              <DropdownItemRadio id="canberra">Canberra</DropdownItemRadio>
+              <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
+              <DropdownItemRadio id="perth">Perth</DropdownItemRadio>
+            </DropdownItemGroupRadio>
           </DropdownMenu>
         </p>
       </ModalDialog>

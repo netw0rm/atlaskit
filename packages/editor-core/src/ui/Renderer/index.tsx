@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
 import { Schema } from '../../prosemirror';
@@ -5,6 +6,7 @@ import ProviderFactory from '../../providerFactory';
 import {
   ReactSerializer,
   renderDocument,
+  RendererContext,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
 
@@ -29,10 +31,16 @@ export interface Props {
   dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
   schema?: Schema<any, any>;
+  rendererContext?: RendererContext;
 }
 
-export default class Renderer extends PureComponent<Props, {}> {
+export interface State {
+  portal?: HTMLElement;
+}
+
+export default class Renderer extends PureComponent<Props, State> {
   private providerFactory: ProviderFactory;
+  state: State = {};
 
   constructor(props: Props) {
     super(props);
@@ -44,10 +52,17 @@ export default class Renderer extends PureComponent<Props, {}> {
       document,
       eventHandlers,
       schema,
+      rendererContext,
     } = this.props;
 
-    const serializer = new ReactSerializer(this.providerFactory, eventHandlers);
-    return renderDocument(document, serializer, schema || defaultSchema);
+    const serializer = new ReactSerializer(this.providerFactory, eventHandlers, this.state.portal, rendererContext);
+
+    return (
+      <div>
+        {renderDocument(document, serializer, schema || defaultSchema)}
+        <div ref={this.handlePortalRef}/>
+      </div>
+    );
   }
 
   componentWillUnmount() {
@@ -58,5 +73,9 @@ export default class Renderer extends PureComponent<Props, {}> {
     if (!dataProviders) {
       this.providerFactory.destroy();
     }
+  }
+
+  private handlePortalRef = (elem: HTMLElement | null) => {
+    this.setState({ portal: elem || undefined });
   }
 }

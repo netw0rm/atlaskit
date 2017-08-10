@@ -1,5 +1,5 @@
 import { serviceDecision } from '../../../src/support/test-data';
-import { convertServiceDecisionToDecision, decisionsToDocument } from '../../../src/api/TaskDecisionUtils';
+import { convertServiceDecisionToDecision, decisionsToDocument, objectKeyToString } from '../../../src/api/TaskDecisionUtils';
 
 describe('TaskDecisionUtils', () => {
   it('convertServiceDecisionToDecision', () => {
@@ -33,5 +33,11 @@ describe('TaskDecisionUtils', () => {
     expect(decisionItemNode.attrs.localId).toEqual(localId);
     expect(decisionItemNode.attrs.state).toEqual(state);
     expect(decisionItemNode.content).toEqual(content);
+  });
+
+  it('objectKeyToString', () => {
+    const objectKey = { localId: 'task-1', objectAri: 'object', containerAri: 'container' };
+    const key = objectKeyToString(objectKey);
+    expect(key).toEqual('container:object:task-1');
   });
 });

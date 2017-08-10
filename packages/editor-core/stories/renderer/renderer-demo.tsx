@@ -20,7 +20,12 @@ import {
 import {
   AkProfileClient,
   modifyResponse,
-} from '../../src/utils/profilecard';
+} from '@atlaskit/profilecard';
+
+import {
+  renderDocument,
+  TextSerializer,
+} from '../../src/renderer';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 // tslint:disable-next-line:variable-name
@@ -81,10 +86,15 @@ const eventHandlers = {
   },
 };
 
-type DemoRendererProps = { withProviders: boolean; };
+type DemoRendererProps = {
+  withProviders: boolean;
+  serializer: 'react' | 'text'
+};
+
 type DemoRendererState = { input: string };
 
 export default class RendererDemo extends PureComponent<DemoRendererProps, DemoRendererState> {
+  textSerializer = new TextSerializer();
   state = { input: JSON.stringify(document, null, 2) };
   refs: { input: HTMLTextAreaElement };
 
@@ -109,11 +119,16 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
           />
         </fieldset>
         {this.renderer}
+        {this.text}
       </div>
     );
   }
 
   get renderer() {
+    if (this.props.serializer !== 'react') {
+      return null;
+    }
+
     try {
       const props: RendererProps = {
         document: JSON.parse(this.state.input)
@@ -131,6 +146,25 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
       return (
         <div>Invalid document: {ex.message}</div>
       );
+    }
+  }
+
+  get text() {
+    if (this.props.serializer !== 'text') {
+      return null;
+    }
+
+    try {
+      const doc = JSON.parse(this.state.input);
+
+      return (
+        <div>
+          <h1>Text output</h1>
+          <pre>{renderDocument(doc, this.textSerializer)}</pre>
+        </div>
+      );
+    } catch (ex) {
+      return null;
     }
   }
 

@@ -1,6 +1,12 @@
 # @atlaskit/mention
 
-## Unreleased
+## 7.3.2 (2017-08-10)
+
+* bug fix; quick fix to avoid issues accessing support data via npm dependency ([4f9eee7](https://bitbucket.org/atlassian/atlaskit/commits/4f9eee7))
+
+
+
+
 
 ## 7.3.1 (2017-07-27)
 

@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "@types/jquery": "^2.0.41",
+    "pdfjs-dist": "^1.8.618",
     "query-string": "^4.3.2",
     "tslib": "^1.2.0"
   },

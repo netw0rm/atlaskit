@@ -1,11 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import faker from 'faker';
-import Navigation, { AkNavigationItem, AkNavigationItemGroup } from '@atlaskit/navigation';
+import Navigation, {
+  AkNavigationItem,
+  AkNavigationItemGroup,
+  AkCollapseOverflow,
+} from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import { injectGlobal } from 'styled-components';
 import reorder from './reorder';
+import reorderingUsageNote from './UsageNote';
+import Container from './Container';
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
@@ -117,99 +123,114 @@ export default class ListWithGroups extends Component {
     }
   }
 
-  render() {
-    const isOpen: boolean = this.state.isNavOpen;
-    // Only allowing drag and drop when the navigation is open
-    const isDragDisabled: boolean = !isOpen;
-
-    return (
-      <Navigation
-        onResize={this.onNavResize}
-        isOpen={isOpen}
+  renderGroupItem = (
+    { item, isOpen, extraAvatarProps, type } :
+    { item: any, isOpen: boolean, extraAvatarProps?: Function, type: string }
+  ) => {
+    const baseNavItemProps = {
+      text: item.name,
+      isCompact: true,
+      icon: (
+        <Avatar
+          appearance="square"
+          size="small"
+          src={item.avatarUrl}
+          name={item.name}
+          {...extraAvatarProps && extraAvatarProps(item)}
+        />
+      ),
+    };
+    return isOpen ? (
+      <Draggable
+        key={item.id}
+        draggableId={item.id}
+        type={type}
       >
-        <DragDropContext
-          onDragStart={this.onDragStart}
-          onDragEnd={this.onDragEnd}
-        >
+        {(provided: Provided, snapshot: StateSnapshot) => (
           <div>
-            <Droppable droppableId="rooms" type="room">
-              {dropProvided => (
-                <AkNavigationItemGroup
-                  title="Rooms"
-                  innerRef={dropProvided.innerRef}
-                >
-                  {this.state.rooms.map((room: Room) => (
-                    <Draggable
-                      key={room.id}
-                      draggableId={room.id}
-                      type="room"
-                      isDragDisabled={isDragDisabled}
-                    >
-                      {(provided: Provided, snapshot: StateSnapshot) => (
-                        <div>
-                          <AkNavigationItem
-                            isDragging={snapshot.isDragging}
-                            text={room.name}
-                            dnd={provided}
-                            isCompact
-                            icon={
-                              <Avatar
-                                appearance="square"
-                                size="small"
-                                src={room.avatarUrl}
-                                name={room.name}
-                              />
-                            }
-                          />
-                          {provided.placeholder}
-                        </div>
-                    )}
-                    </Draggable>
-                ))}
-                </AkNavigationItemGroup>
-            )}
-            </Droppable>
-            <Droppable droppableId="people" type="people">
-              {dropProvided => (
-                <AkNavigationItemGroup
-                  title="People"
-                  innerRef={dropProvided.innerRef}
-                >
-                  {this.state.people.map((person: Person) => (
-                    <Draggable
-                      key={person.id}
-                      draggableId={person.id}
-                      isDragDisabled={isDragDisabled}
-                      type="people"
-                    >
-                      {(provided: Provided, snapshot: StateSnapshot) => (
-                        <div>
-                          <AkNavigationItem
-                            isDragging={snapshot.isDragging}
-                            text={person.name}
-                            dnd={provided}
-                            isCompact
-                            icon={
-                              <Avatar
-                                size="small"
-                                name={person.name}
-                                src={person.avatarUrl}
-                                presence={person.presence}
-                              />
-                            }
-                          />
-                          {provided.placeholder}
-                        </div>
-                    )}
-                    </Draggable>
-                ))}
-                </AkNavigationItemGroup>
-            )}
-            </Droppable>
+            <AkNavigationItem
+              {...baseNavItemProps}
+              isDragging={snapshot.isDragging}
+              dnd={provided}
+            />
+            {provided.placeholder}
           </div>
+      )}
+      </Draggable>
+    ) : (
+      <AkNavigationItem {...baseNavItemProps} />
+    );
+  }
 
-        </DragDropContext>
-      </Navigation>
+  renderGroup = (
+    { dropProvided, items, groupTitle, type, isOpen, extraAvatarProps } :
+    { dropProvided?: any, items: Person[]|Room[], groupTitle: string, type: string,
+      isOpen: boolean, extraAvatarProps?: Function }
+  ) => (
+    <AkNavigationItemGroup
+      title={groupTitle}
+      innerRef={dropProvided && dropProvided.innerRef}
+    >
+      {items.map(item => (
+        this.renderGroupItem({
+          item,
+          isOpen,
+          extraAvatarProps,
+          type,
+        })
+      ))}
+    </AkNavigationItemGroup>
+  )
+
+  renderContainerContent = () => {
+    const isOpen: boolean = this.state.isNavOpen;
+    const roomOptions = {
+      items: this.state.rooms,
+      groupTitle: 'Rooms',
+      type: 'room',
+      isOpen,
+    };
+    const peopleOptions = {
+      items: this.state.people,
+      groupTitle: 'People',
+      type: 'people',
+      isOpen,
+      extraAvatarProps: person => ({ presence: person.presence }),
+    };
+
+    return isOpen ? (
+      <DragDropContext
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
+      >
+        <div>
+          <Droppable droppableId="rooms" type={roomOptions.type}>
+            {dropProvided => this.renderGroup({ ...roomOptions, dropProvided })}
+          </Droppable>
+          <Droppable droppableId="people" type={peopleOptions.type}>
+            {dropProvided => this.renderGroup({ ...peopleOptions, dropProvided })}
+          </Droppable>
+        </div>
+      </DragDropContext>
+    ) : (
+      <AkCollapseOverflow>
+        {this.renderGroup(roomOptions)}
+        {this.renderGroup(peopleOptions)}
+      </AkCollapseOverflow>
+    );
+  }
+
+  render() {
+    return (
+      <Container>
+        <Navigation
+          onResize={this.onNavResize}
+          isOpen={this.state.isNavOpen}
+        >
+          {this.renderContainerContent()}
+        </Navigation>
+        {reorderingUsageNote}
+      </Container>
     );
   }
 }

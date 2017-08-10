@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
+## 45.5.0 (2017-08-09)
+
+
+
+* bug fix; fix prop types ([406114a](https://bitbucket.org/atlassian/atlaskit/commits/406114a))
+* feature; adding usupport to fetch initial state and toggle state ([416ce4e](https://bitbucket.org/atlassian/atlaskit/commits/416ce4e))
+* feature; add loading state for link card (issues closed: ed-2383) ([a7ed3e0](https://bitbucket.org/atlassian/atlaskit/commits/a7ed3e0))
 ## 45.4.1 (2017-08-09)
 
 * bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))

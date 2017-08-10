@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 19.0.0 (2017-08-10)
+
+* breaking; AkContainerNavigation now extends React.Component rather than React.PureComponent - this should ([3afa823](https://bitbucket.org/atlassian/atlaskit/commits/3afa823))
+* breaking; added AkCollapseOverflow helper component (issues closed: ak-2590) ([3afa823](https://bitbucket.org/atlassian/atlaskit/commits/3afa823))
 ## 18.3.2 (2017-08-09)
 
 * bug fix; improving the peformance of resizing the navigation by throttling it within a reques (issues closed: ak-3228) ([9db522c](https://bitbucket.org/atlassian/atlaskit/commits/9db522c))

@@ -1,13 +1,6 @@
 import { EmojiDescription } from '../types';
 
 /**
- * Construct an EmojiComparator based on the supplied query
- */
-export interface EmojiComparatorFactory {
-  create(query: string): EmojiComparator;
-}
-
-/**
  * Returns a number representing the result of comparing e1 and e2.
  * Compatible with Array.sort, which is to say -
  *   - less than 0 if e1 should come first
@@ -42,6 +35,5 @@ export class ChainedEmojiComparator implements EmojiComparator {
     }
 
     return 0;
-
   }
 }

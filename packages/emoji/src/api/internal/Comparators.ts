@@ -2,73 +2,31 @@ import { EmojiDescription } from '../../types';
 import { isEmojiVariationDescription } from '../../type-helpers';
 import { ChainedEmojiComparator, EmojiComparator } from '../EmojiComparator';
 
-const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // IE doesn't have MAX_VALUE
+const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking since IE doesn't have MAX_VALUE
 
-export function createFrequencyEmojiComparator(query: string, asciiQuery: string, orderedIds: Array<string>): EmojiComparator {
-  const comparators = [
+/**
+ * Create the sort comparator to be used for the issued query.
+ *
+ * @param query the query used in the search to be sorted. Any colons will be stripped from the query and it will be
+ * converted to lowercase.
+ * @param orderedIds the id of emoji ordered by how frequently they are used
+ */
+export function createFrequencyEmojiComparator(query: string, orderedIds: Array<string>): EmojiComparator {
+  query = query.replace(/:/g, '').toLowerCase().trim();
+
+  return new ChainedEmojiComparator(
     new ExactShortNameMatchComparator(query),
     new UsageFrequencyComparator(orderedIds),
     new QueryStringPositionMatchComparator(query, 'shortName'),
     new QueryStringPositionMatchComparator(query, 'name'),
     OrderComparator.Instance,
-    AlphabeticalShortnameComparator.Instance
-  ];
-
-  if (asciiQuery) {
-    comparators.unshift(new AsciiEmoticonMatchComparator(asciiQuery));
-  }
-
-  return new ChainedEmojiComparator(...comparators);
-}
-
-export function createQueryMatchEmojiComparator(query: string, asciiQuery?: string): EmojiComparator {
-  const comparators =[
-    new ExactShortNameMatchComparator(query),
-    new QueryStringPositionMatchComparator(query, 'shortName'),
-    new QueryStringPositionMatchComparator(query, 'name'),
-    OrderComparator.Instance,
-    AlphabeticalShortnameComparator.Instance
-  ];
-
-  if (asciiQuery) {
-    comparators.unshift(new AsciiEmoticonMatchComparator(asciiQuery));
-  }
-
-  return new ChainedEmojiComparator(...comparators);
-}
-
-// TODO create a test to ensure that EmojiDescription have a property called shortName and name
-// TODO unit test each of the comparators
-
-/**
- * Order two emoji such that the one with an ascii representation that equals the query is ordered
- * higher. If neither (or both) emoji have a matching ascii representation then they are considered
- * equal (return zero).
- */
-class AsciiEmoticonMatchComparator implements EmojiComparator {
-
-  private query: string;
-
-  constructor(query: string) {
-    this.query = query;
-  }
-
-  compare(e1: EmojiDescription, e2: EmojiDescription) {
-    let a1 = e1.ascii && e1.ascii.indexOf(this.query) !== -1;
-    let a2 = e2.ascii && e2.ascii.indexOf(this.query) !== -1;
-
-    if (a1 === a2) {
-      return 0; // both emoji have ascii matches (doesn't actually occur) or neither have matches (likely :-) )
-    }
-
-    return a1 ? -1 : 1;
-  }
+    AlphabeticalShortnameComparator.Instance);
 }
 
 /**
  * Orders two emoji such that the one who's shortname matches the query exactly comes first.
  */
-class ExactShortNameMatchComparator implements EmojiComparator {
+export class ExactShortNameMatchComparator implements EmojiComparator {
 
   private colonQuery: string;
 
@@ -111,14 +69,15 @@ class ExactShortNameMatchComparator implements EmojiComparator {
  * Order two emoji such as the one which is more frequently used comes first. If neither have any usage
  * information then leave their order unchanged.
  */
-class UsageFrequencyComparator implements EmojiComparator {
+export class UsageFrequencyComparator implements EmojiComparator {
 
   // A Map of emoji base Id to their order in a least of most frequently used
   private positionLookup: Map<string,number>;
 
   constructor(orderedIds: Array<string>) {
     this.positionLookup = new Map();
-    orderedIds.map((id, index) => this.positionLookup.set(id, index));
+    // Make ordering start from 1 to avoid having zero in the map (which is falsey)
+    orderedIds.map((id, index) => this.positionLookup.set(id, index + 1));
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
@@ -156,7 +115,7 @@ class UsageFrequencyComparator implements EmojiComparator {
  * A comparator that will sort higher an emoji which matches the query string earliest in the indicated
  * property.
  */
-class QueryStringPositionMatchComparator implements EmojiComparator {
+export class QueryStringPositionMatchComparator implements EmojiComparator {
 
   private propertyName: string;
   private query: string;
@@ -166,20 +125,22 @@ class QueryStringPositionMatchComparator implements EmojiComparator {
    * @param propertyToCompare the property of EmojiDescription to check for query within
    */
   constructor(query: string, propertyToCompare: string) {
-    this.propertyName = propertyToCompare;
     this.query = query;
+    this.propertyName = propertyToCompare;
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
-    const i1 = e1[this.propertyName] ? e1[this.propertyName].indexOf(this.query) : MAX_NUMBER;
-    const i2 = e1[this.propertyName] ? e2[this.propertyName].indexOf(this.query) : MAX_NUMBER;
+    let i1 = e1[this.propertyName] ? e1[this.propertyName].indexOf(this.query) : MAX_NUMBER;
+    let i2 = e2[this.propertyName] ? e2[this.propertyName].indexOf(this.query) : MAX_NUMBER;
 
-    // Order used for matching on same index and shorter queries with default value assigned on initialisation
+    i1 = i1 === -1 ? MAX_NUMBER : i1;
+    i2 = i2 === -1 ? MAX_NUMBER : i2;
+
     return i1 - i2;
   }
 }
 
-class OrderComparator implements EmojiComparator {
+export class OrderComparator implements EmojiComparator {
   private static INSTANCE: OrderComparator;
   private constructor() {}
 
@@ -196,7 +157,7 @@ class OrderComparator implements EmojiComparator {
   }
 }
 
-class AlphabeticalShortnameComparator implements EmojiComparator {
+export class AlphabeticalShortnameComparator implements EmojiComparator {
   private static INSTANCE: AlphabeticalShortnameComparator;
   private constructor() {}
 
@@ -205,9 +166,8 @@ class AlphabeticalShortnameComparator implements EmojiComparator {
       return this.INSTANCE || (this.INSTANCE = new this());
   }
 
-
   compare(e1: EmojiDescription, e2: EmojiDescription) {
-    return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
+    return e1.shortName.localeCompare(e2.shortName);
   }
 }
 

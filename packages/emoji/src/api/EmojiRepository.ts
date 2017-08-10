@@ -8,8 +8,8 @@ import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories
 import { customCategory } from '../constants';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
-import { EmojiComparator, EmojiComparatorFactory } from './EmojiComparator';
-import { createQueryMatchEmojiComparator } from './internal/Comparators';
+import { createFrequencyEmojiComparator } from './internal/Comparators';
+import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
@@ -46,7 +46,6 @@ class Tokenizer implements ITokenizer {
     return tokens;
   }
 }
-
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -114,16 +113,8 @@ const splitQuery = (query = ''): SplitQuery => {
   };
 };
 
-/**
- * Apply the specified SearchOptions, in the order sort, limit, skintone
- */
-const applySearchOptions = (query: string, emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
+const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
-    if (options.sortComparator) {
-      const comparator = options.sortComparator.create(query);
-      emojis.sort(comparator.compare);
-    }
-
     if (options.limit && options.limit > 0) {
       emojis = emojis.slice(0, options.limit);
     }
@@ -155,50 +146,50 @@ export default class EmojiRepository {
   private asciiMap: Map<string, EmojiDescription>;
   private static readonly defaultEmojiWeight: number = 1000000;
 
+  protected usageTracker: UsageFrequencyTracker;
+
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
 
     this.initMaps();
     this.initSearchIndex();
+
+    this.usageTracker = new UsageFrequencyTracker();
   }
 
   /**
-   * Returns all available (and searchable) emoji.
+   * Returns all available (and searchable) emoji in some default order.
    */
-  all(options?: SearchOptions): EmojiSearchResult {
-    let filteredEmoji = this.getAllSearchableEmojis();
-    filteredEmoji = applySearchOptions(filteredEmoji);
-
-    return {
-      emojis: filteredEmoji,
-      categories: availableCategories(filteredEmoji)
-    };
+  all(): EmojiSearchResult {
+    return this.search();
   }
 
   /**
    * Text search of emoji shortName and name field for suitable matches.
    *
-   * @param query the query used in the search. If you have no query see the 'all' method instead.
-   * @param options the SearchOptions to apply to the sorted results.
+   * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
    */
-  search(query: string, options?: SearchOptions): EmojiSearchResult {
-    // TODO ensure EmojiRepository calls 'all' in filter when no query
-
+   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
-    const { nameQuery, asciiQuery } = splitQuery(query);
 
-    // TODO ensure that there will always be a query part even after splitQuery
-    filteredEmoji = this.fullSearch.search(nameQuery);
+    const { nameQuery, asciiQuery } = splitQuery(query);
+    if (nameQuery) {
+      filteredEmoji = this.fullSearch.search(nameQuery);
+
+      const comparator = createFrequencyEmojiComparator(nameQuery, this.usageTracker.getOrder());
+      const compare = comparator.compare.bind(comparator);
+      filteredEmoji.sort(compare);
+
+      if (asciiQuery) {
+        filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
+      }
+    } else {
+      filteredEmoji = this.getAllSearchableEmojis();
+    }
+
     if (asciiQuery) {
       filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
     }
-
-    options = this.createLegacySearchBehaviour(query, asciiQuery, options);
-
-
-    this.sortFiltered(filteredEmoji, nameQuery);
-
-    // move the ascii Query part into apply search options
 
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
@@ -249,6 +240,16 @@ export default class EmojiRepository {
     return this.asciiMap;
   }
 
+  /**
+   * Call this on emoji usage to allow the EmojiRepository to track the usage of emoji (which could be useful
+   * in sorting, etc).
+   *
+   * @param emoji the emoji that was just used
+   */
+  used(emoji: EmojiDescription) {
+    this.usageTracker.recordUsage(emoji);
+  }
+
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
     let result = emojis;
     const asciiEmoji = this.findByAsciiRepresentation(ascii);
@@ -259,37 +260,6 @@ export default class EmojiRepository {
       result = [asciiEmoji, ...result];
     }
     return result;
-  }
-
-  /**
-   * In older versions, the sort was not controlled by the SearchOptions. To preserve the default
-   * sorting behaviour, which only applied when there was a query string, we conditionally add a
-   * sortComparator to the SearchOptions here.
-   *
-   * If the SearchOptions already contain a sortComparator then it will be left unchanged.
-   *
-   * @param query
-   */
-  private createLegacySearchBehaviour(query: string, asciiQuery?: string, options?: SearchOptions) {
-    if (query || asciiQuery) {
-      if (options && options.sortComparator) {
-        return options;
-      } else {
-        const factory: EmojiComparatorFactory = {
-          create: (q) => {
-            return createQueryMatchEmojiComparator(query, asciiQuery);
-          }
-        };
-
-        return {
-          skinTone: options ? options.skinTone : undefined,
-          limit: options ? options.limit : undefined,
-          sortComparator: factory
-        };
-      }
-    } else {
-      return options;
-    }
   }
 
   /**
@@ -332,16 +302,5 @@ export default class EmojiRepository {
     if (emoji.ascii) {
       emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
     }
-  }
-
-  /**
-   * Sort emojis return by js-search in to a logical order
-   */
-  private sortFiltered(filteredEmoji: EmojiDescription[], query: string, comparator: EmojiComparator) {
-    query = query.replace(/:/g, '').toLowerCase().trim();
-    const colonQuery = `:${query}:`;
-
-    filteredEmoji.sort(comparator.compare);
-
   }
 }

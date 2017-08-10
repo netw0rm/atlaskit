@@ -1,5 +1,4 @@
 import { SyntheticEvent } from 'react';
-import { EmojiComparatorFactory } from './api/EmojiComparator';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 
@@ -171,7 +170,6 @@ export interface OnCategory {
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
-  sortComparator?: EmojiComparatorFactory;
 }
 
 export type ToneSelection = number | undefined;

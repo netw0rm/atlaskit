@@ -4,8 +4,9 @@ import Layer from '@atlaskit/layer';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
-import { getEmojiResource, lorem } from '../src/support/story-data';
+import { getEmojiResource, getUsagePeekEmojiResource, lorem } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+import UsageShowingEmojiPickerTextInput from './demo-emoji-picker-showing-usage';
 
 storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (
@@ -95,5 +96,9 @@ storiesOf(`${name}/EmojiPicker`, module)
       />
       </Layer>
     </div>
+  ))
+  .add('picker - with display of frequent use', () => (
+      <UsageShowingEmojiPickerTextInput
+        emojiResource={getUsagePeekEmojiResource()}
+      />
   ));
-

@@ -13,7 +13,6 @@ const getPadding = ({ isCompact, theme }): Array<any> => {
 
 // eslint-disable-next-line import/prefer-default-export
 export const GroupTitle = styled.div`
-  align-items: baseline;
   color: ${({ theme }) => getThemeStyle(theme[themeNamespace], 'secondaryText', 'default')};
   display: flex;
   flex: 1 1 auto;

@@ -8,7 +8,7 @@ describe('<NavigationItemGroup />', () => {
       expect(mountWithRootTheme(<NavigationItemGroup title="foo" />).find('NavigationItemGroupTitle').text()).toBe('foo');
     });
     it('action should render in the container item group', () => {
-      expect(mountWithRootTheme(<NavigationItemGroup action={<div className="create">Create button</div>} />).find('.create').length).toBeGreaterThan(0);
+      expect(mountWithRootTheme(<NavigationItemGroup action={<div className="create-button">Create button</div>} />).find('.create-button').length).toBe(1);
     });
     it('separator should render in the container item group', () => {
       expect(mountWithRootTheme(<NavigationItemGroup hasSeparator />).find('NavigationItemGroupSeparator').length).toBe(1);

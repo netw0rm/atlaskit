@@ -3,6 +3,7 @@ import { gridSize } from '../../shared-variables';
 import { whenCollapsed } from '../../theme/util';
 
 const NavigationItemGroupAction = styled.div`
+  display: flex;
   margin-right: ${gridSize}px;
 
   ${whenCollapsed`

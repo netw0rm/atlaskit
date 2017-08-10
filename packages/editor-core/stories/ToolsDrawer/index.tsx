@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MockActivityResource } from '@atlaskit/activity/src/support';
 import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
@@ -12,6 +13,7 @@ import { Content } from './../styles';
 import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';
 import { storyMediaProviderFactory } from '../../src/test-helper';
+
 
 const mediaTestHelpers = {
   defaultClientId,
@@ -47,6 +49,12 @@ const providers = {
     'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
     'undefined' : undefined,
   },
+  activityProvider: {
+    resolved: new MockActivityResource(),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    'undefined' : undefined,
+  }
 };
 rejectedPromise.catch(() => {});
 
@@ -55,6 +63,7 @@ interface State {
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
+  activityProvider: string;
   jsonDocument?: string;
 }
 
@@ -67,6 +76,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
+      activityProvider: 'resolved',
       jsonDocument: '{}',
     };
   }
@@ -88,7 +98,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, jsonDocument, editorEnabled } = this.state;
+    const { mentionProvider, emojiProvider, mediaProvider, activityProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0'}}>
@@ -100,6 +110,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
             mediaProvider: providers.mediaProvider[mediaProvider],
             mentionProvider: providers.mentionProvider[mentionProvider],
             emojiProvider: providers.emojiProvider[emojiProvider],
+            activityProvider: providers.activityProvider[activityProvider],
             onChange: this.onChange
           })) :
           ''
@@ -145,6 +156,22 @@ export default class ToolsDrawer extends React.Component<any, State> {
                   key={`emojiProvider-${providerName}`}
                   onClick={this.switchProvider.bind(this, 'emojiProvider', providerName)}
                   appearance={providerName === emojiProvider ? 'primary' : 'default'}
+                  theme="dark"
+                  spacing="compact"
+                >
+                  {providerName}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </div>
+          <div>
+            <ButtonGroup>
+              <label>Activity provider: </label>
+              {Object.keys(providers.activityProvider).map((providerName) => (
+                <Button
+                  key={`activityProvider-${providerName}`}
+                  onClick={this.switchProvider.bind(this, 'activityProvider', providerName)}
+                  appearance={providerName === activityProvider ? 'primary' : 'default'}
                   theme="dark"
                   spacing="compact"
                 >

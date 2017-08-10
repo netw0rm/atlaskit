@@ -253,6 +253,16 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
     });
 
+    it('permits adding a link to an empty selection using the href and text', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      const href = 'http://www.atlassian.com';
+      const text = 'Atlassian';
+
+      pluginState.addLink({ href, text }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(text))));
+    });
+
     it('should add http:// for a link without protocol', () => {
       const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
       const href = 'www.atlassian.com';

@@ -59,6 +59,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   mediaProvider?: Promise<MediaProvider>;
+  activityProvider?: Promise<any>;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
@@ -123,17 +124,19 @@ export default class Editor extends PureComponent<Props, State> {
     if (
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
-      props.emojiProvider !== nextProps.emojiProvider
+      props.emojiProvider !== nextProps.emojiProvider ||
+      props.activityProvider !== nextProps.activityProvider
     ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, activityProvider } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('activityProvider', activityProvider);
 
     this.setState({
       emojiProvider,
@@ -195,6 +198,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   render() {
     const { mentionProvider, emojiProvider } = this.state;
+    const { activityProvider } = this.props;
 
     const getState = (editorState: EditorState<any> | undefined) => (stateKey: PluginKey) =>
       editorState && stateKey.getState(editorState);
@@ -243,6 +247,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        activityProvider={activityProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
         maxHeight={200}

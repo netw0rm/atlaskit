@@ -2,6 +2,7 @@ import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
@@ -76,6 +77,7 @@ export interface Props {
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  activityProvider?: Promise<ActivityProvider>;
   mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
@@ -163,6 +165,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       saveDisabled,
       popupsMountPoint,
       popupsBoundariesElement,
+      activityProvider,
     } = this.props;
     const { maxHeightStyle } = this.state;
     const iconAfter = saveDisabled
@@ -260,6 +263,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              activityProvider={activityProvider}
             /> : null}
 
           {pluginStateCodeBlock && !disabled ?

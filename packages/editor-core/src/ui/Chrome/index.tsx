@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { BlockTypeState } from '../../plugins/block-type';
@@ -45,6 +46,7 @@ export interface Props {
   presenceResourceProvider?: any; // AbstractPresenceResource
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  activityProvider?: Promise<ActivityProvider>;
   onCollapsedChromeFocus: () => void;
   saveDisabled?: boolean;
   popupsBoundariesElement?: HTMLElement;
@@ -79,6 +81,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         mentionProvider={props.mentionProvider}
         presenceResourceProvider={props.presenceResourceProvider}
         emojiProvider={props.emojiProvider}
+        activityProvider={props.activityProvider}
         editorView={props.editorView}
         packageVersion={props.packageVersion}
         packageName={props.packageName}

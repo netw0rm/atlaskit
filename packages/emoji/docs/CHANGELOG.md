@@ -1,5 +1,19 @@
 # @atlaskit/emoji
 
+## 25.0.0 (2017-08-10)
+
+* bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))
+* bug fix; bumped emoji to next latest version ([79b61ba](https://bitbucket.org/atlassian/atlaskit/commits/79b61ba))
+
+
+
+
+
+
+
+* breaking; EmojiSearchResult no longer has categories field ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* breaking; categorySelector inserts non-standard categories dynamically (issues closed: fs-1201) ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* feature; atlassianEmojiMigrationResource removes Atlassian emojis that have a corresponding (issues closed: fs-1200) ([a95ef0c](https://bitbucket.org/atlassian/atlaskit/commits/a95ef0c))
 ## 23.0.1 (2017-08-10)
 
 * bug fix; release imports up into src fail in dist ([9846bc5](https://bitbucket.org/atlassian/atlaskit/commits/9846bc5))

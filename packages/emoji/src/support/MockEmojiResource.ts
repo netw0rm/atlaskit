@@ -1,12 +1,12 @@
 import * as uid from 'uid';
 import { AbstractResource } from '@atlaskit/util-service-support';
 
-import { customCategory, customType } from '../../src/constants';
-import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
-import { selectedToneStorageKey } from '../../src/constants';
-import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
-import EmojiRepository, { EmojiSearchResult } from '../../src/api/EmojiRepository';
-import debug from '../../src/util/logger';
+import { customCategory, customType } from '../constants';
+import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
+import { selectedToneStorageKey } from '../constants';
+import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../api/EmojiResource';
+import EmojiRepository, { EmojiSearchResult } from '../api/EmojiRepository';
+import debug from '../util/logger';
 
 import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
 

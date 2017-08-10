@@ -10,7 +10,7 @@ const badFileId = {
   id: 'badId'
 };
 
-storiesOf('PDF Viewer', {})
+storiesOf('Viewers: PDF', {})
  .add('PDF View', () => (
     <PdfViewer
       context={context}

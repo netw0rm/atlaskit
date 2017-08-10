@@ -281,7 +281,7 @@ export const youtubeLinkDetails: UrlPreview = {
     player: {
       url: 'https://www.youtube.com/embed/gyTPJho5iyg?feature=oembed',
       type: 'text/html',
-      aspect_ratio: 1.7778,
+      aspect_ratio: '',
       html: '<div><div style=\'left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;\'><iframe src=\'https://www.youtube.com/embed/gyTPJho5iyg?feature=oembed\' style=\'border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;\' allowfullscreen scrolling=\'no\'></iframe></div></div>'
     },
     thumbnail: {

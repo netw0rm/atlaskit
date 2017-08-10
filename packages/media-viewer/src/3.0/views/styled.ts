@@ -38,12 +38,12 @@ export const ArrowLeftWrapper = styled.div`
   display: flex;
   align-items: center;
   min-width: 33%;
+  color: ${style.akColorN900};
 
   > span {
     transition: background .3s;
-    background: rgba(255, 255, 255, 0.8);
+    background: white;
     cursor: pointer;
-    color: #576074;
     border-radius: 100%;
     margin-left: 10px;
 
@@ -62,12 +62,12 @@ export const ArrowRightWrapper = styled.div`
   align-items: center;
   min-width: 33%;
   justify-content: flex-end;
+  color: ${style.akColorN900};
 
   > span {
     transition: background .3s;
-    background: rgba(255, 255, 255, 0.8);
+    background: white;
     cursor: pointer;
-    color: #576074;
     border-radius: 100%;
     margin-right: 10px;
 
@@ -83,7 +83,7 @@ export const ItemToolsWrapper = styled.div`
   min-height: 50px;
   position: absolute;
   width: 100%;
-  bottom: 10px;
+  bottom: 0px;
   left: 0;
   background: linear-gradient(to top, ${style.akColorN900}, rgba(14, 22, 36, 0.0));
 `;
@@ -96,7 +96,6 @@ export const LeftInfo = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-
   > span {
     margin-left: 10px;
   }
@@ -146,7 +145,6 @@ export interface MiniModeIconWrapper {
 }
 
 export const MiniModeIconWrapper = styled.div`
-  margin-right: 10px;
   ${iconBaseStyle}
   ${({isMiniModeActive}: MiniModeIconWrapper) => isMiniModeActive && `
     background: #2B3955;

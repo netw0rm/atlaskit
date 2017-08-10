@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {FileItem, FileDetails} from '@atlaskit/media-core';
-import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ShareIcon from '@atlaskit/icon/glyph/share';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
@@ -37,8 +36,9 @@ export class ItemInfo extends Component<ItemInfoProps, ItemInfoState> {
       <DetailsWrapper>
         <LeftInfo>
           {this.renderMiniModeIcon()}
-          {details.name}
-          <ChevronDownIcon label="down"/>
+          <span>
+            {details.name}
+          </span>
         </LeftInfo>
         <RightIcons>
           <ShareIcon label="share" />

@@ -10,7 +10,7 @@ const badFileId = {
   id: 'badId'
 };
 
-storiesOf('Image Viewer', {})
+storiesOf('Viewers: Image', {})
  .add('Image View', () => (
     <ImageViewer
       context={context}

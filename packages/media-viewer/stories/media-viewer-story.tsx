@@ -19,7 +19,7 @@ storiesOf('MediaViewer', {})
       context={context}
       onPreviewChanged={onPreviewChanged}
       navigation={{
-        initialItem: wideImageFileId
+        initialItem: largeImageFileId
       }}
     />
   ))
@@ -53,17 +53,7 @@ storiesOf('MediaViewer', {})
       }}
     />
   ))
- .add('Large PDF (100MB)', () => (
-    <MediaViewer
-      isVisible={true}
-      context={context}
-      onPreviewChanged={onPreviewChanged}
-      navigation={{
-        initialItem: largePdfFileId
-      }}
-    />
-  ))
-  .add('List using array of items', () => (
+  .add('List as array of media items', () => (
     <MediaViewer
       isVisible={true}
       context={context}
@@ -74,7 +64,7 @@ storiesOf('MediaViewer', {})
       }}
     />
   ))
-  .add('List using collection', () => (
+  .add('List as Collection', () => (
     <MediaViewer
       isVisible={true}
       context={context}

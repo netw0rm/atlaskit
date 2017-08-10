@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 45.7.0 (2017-08-10)
+
+
+* feature; adding placeholders for tasks/decisions ([4d4c5eb](https://bitbucket.org/atlassian/atlaskit/commits/4d4c5eb))
+* bug fix; build Markdown to ProseMirror mapping based on Schema ([2d686af](https://bitbucket.org/atlassian/atlaskit/commits/2d686af))
+## 45.6.1 (2017-08-10)
+
+* bug fix; npmignore fails to work (issues closed: ed-2392) ([beb1872](https://bitbucket.org/atlassian/atlaskit/commits/beb1872))
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
 ## 45.5.0 (2017-08-09)
 
 

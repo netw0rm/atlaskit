@@ -22,11 +22,13 @@ class Task implements NodeView {
   private node: PMNode;
   private view: EditorView;
   private getPos: getPosHandler;
+  private showPlaceholder: boolean = false;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
     this.node = node;
     this.view = view;
     this.getPos = getPos;
+    this.showPlaceholder = node.content.childCount === 0;
     this.renderReactComponent();
   }
 
@@ -65,6 +67,7 @@ class Task implements NodeView {
         contentRef={this.handleRef}
         isDone={node.attrs.state === 'DONE'}
         onChange={this.handleOnChange}
+        showPlaceholder={this.showPlaceholder}
       />,
       this.domRef
     );

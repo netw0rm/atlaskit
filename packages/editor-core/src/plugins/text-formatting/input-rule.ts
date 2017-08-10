@@ -48,22 +48,22 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.marks.strong) {
     // **string** should bold the text
-    rules.push(createInputRule(/(\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, '**')));
+    rules.push(createInputRule(/(\*\*([^\s^\*][^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, '**')));
   }
 
   if (schema.marks.em) {
     // *string* should italic the text
-    rules.push(createInputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, addMark(schema.marks.em, schema, '*')));
+    rules.push(createInputRule(/(?:[^\*]+)(\*([^\s^\*][^\*]+?)\*)$|^(\*([^\s^\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, '*')));
   }
 
   if (schema.marks.strike) {
     // ~~string~~ should strikethrough the text
-    rules.push(createInputRule(/(\~\~([^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, '~~')));
+    rules.push(createInputRule(/(\~\~([^\s^\~][^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, '~~')));
   }
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(createInputRule(/(`([^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
+    rules.push(createInputRule(/(`([^\s^`][^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
   if (rules.length !== 0) {

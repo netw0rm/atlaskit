@@ -1,11 +1,14 @@
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import Layer from '@atlaskit/layer';
+import EmojiRepository from '../src/api/EmojiRepository';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
-import { getEmojiResource, getUsagePeekEmojiResource, lorem } from '../src/support/story-data';
+
+import { getEmojiResource, getStandardEmojis, getUsagePeekEmojiResource, lorem } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+import { mockNonUploadingEmojiResourceFactory } from '../src/support/MockEmojiResource';
 import UsageShowingEmojiPickerTextInput from './demo-emoji-picker-showing-usage';
 
 storiesOf(`${name}/EmojiPicker`, module)
@@ -101,4 +104,26 @@ storiesOf(`${name}/EmojiPicker`, module)
       <UsageShowingEmojiPickerTextInput
         emojiResource={getUsagePeekEmojiResource()}
       />
+  ))
+  .add('picker with only default categories', () => (
+    <div style={{ padding: '10px' }} >
+      <Layer
+        content={
+          <EmojiPicker
+            emojiProvider={mockNonUploadingEmojiResourceFactory(new EmojiRepository(getStandardEmojis()))}
+            onSelection={action('emoji selected')}
+          />
+        }
+        position="bottom left"
+      >
+      <input
+        id="picker-input"
+        style={{
+          height: '20px',
+          margin: '10px',
+        }}
+      />
+      </Layer>
+      <p style={{ width: '400px' }}>{lorem}</p>
+    </div>
   ));

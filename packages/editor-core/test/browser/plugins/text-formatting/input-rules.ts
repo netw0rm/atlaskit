@@ -33,6 +33,14 @@ describe('text-formatting input rules', () => {
       expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
     });
 
+    it('should not convert "** text**" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '** text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('** text**')));
+    });
+
     it('should not convert "**text**" to strong inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
@@ -64,6 +72,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '*text*', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
       expect(trackEvent.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "* text*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '* text*', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('* text*')));
     });
 
     it('should not be inclusive right after autoformatting conversion', () => {
@@ -98,6 +113,13 @@ describe('text-formatting input rules', () => {
       expect(trackEvent.calledWith('atlassian.editor.format.strike.autoformatting')).to.equal(true);
     });
 
+    it('should not convert "~~text~~" to strike', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '~~ text~~', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('~~ text~~')));
+    });
+
     it('should not convert "~~text~~" to strike inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
 
@@ -121,6 +143,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`text`', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
       expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "` text`" to code text', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '` text`', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('` text`')));
     });
 
     it('should convert mention to plaint text', () => {

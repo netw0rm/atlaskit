@@ -6,7 +6,7 @@ import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { EmojiDescription, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
+import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
 import EmojiResource, {
@@ -15,7 +15,7 @@ import EmojiResource, {
     supportsUploadFeature,
     UploadingEmojiProvider,
 } from '../../../src/api/EmojiResource';
-import EmojiRepository, { EmojiSearchResult } from '../../../src/api/EmojiRepository';
+import EmojiRepository from '../../../src/api/EmojiRepository';
 
 import {
     atlassianEmojis,

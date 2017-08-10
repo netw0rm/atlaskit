@@ -1,12 +1,12 @@
 import * as uid from 'uid';
 import { AbstractResource } from '@atlaskit/util-service-support';
 
-import { customCategory, customType } from '../../src/constants';
-import { EmojiDescription, EmojiId, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../../src/types';
-import { selectedToneStorageKey } from '../../src/constants';
-import { addCustomCategoryToResult, EmojiProvider, UploadingEmojiProvider } from '../../src/api/EmojiResource';
-import EmojiRepository, { EmojiSearchResult } from '../../src/api/EmojiRepository';
-import debug from '../../src/util/logger';
+import { customCategory, customType } from '../constants';
+import { EmojiDescription, EmojiId, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
+import { selectedToneStorageKey } from '../constants';
+import { EmojiProvider, UploadingEmojiProvider } from '../api/EmojiResource';
+import EmojiRepository from '../api/EmojiRepository';
+import debug from '../util/logger';
 
 import { MockEmojiResourceConfig, PromiseBuilder } from './support-types';
 
@@ -119,11 +119,17 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
-        console.error('localStorage is full', e);
+        console.error('failed to store selected emoji skin tone', e);
       }
     }
   }
 
+  calculateDynamicCategories(): string[] {
+    if (!this.emojiRepository) {
+      return [];
+    }
+    return this.emojiRepository.getDynamicCategoryList();
+  }
 }
 
 export interface UploadDetail {
@@ -148,9 +154,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   filter(query: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
     this.lastQuery = query;
-    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
-      this.notifyResult(addCustomCategoryToResult(this.uploadSupported, result));
-    });
+    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => this.notifyResult(result));
   }
 
   isUploadSupported(): Promise<boolean> {
@@ -187,6 +191,13 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
       return this.promiseBuilder(emoji, 'loadMediaEmoji');
     }
     return emoji;
+  }
+
+  calculateDynamicCategories(): string[] {
+    if (!this.emojiRepository) {
+      return [];
+    }
+    return this.emojiRepository.getDynamicCategoryList(true);
   }
 }
 

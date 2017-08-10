@@ -26,6 +26,7 @@ import {
   ProviderFactory,
   tasksAndDecisionsPlugin,
   textFormattingPlugins,
+  pastePlugins,
   TextSelection,
   toJSON,
   version as coreVersion,
@@ -351,6 +352,7 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       doc: '',
       plugins: [
+        ...pastePlugins(schema),
         ...mentionsPlugins(schema, this.providerFactory),
         ...mediaPlugins,
         ...emojisPlugins(schema, this.providerFactory),

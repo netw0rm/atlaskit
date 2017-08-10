@@ -5,8 +5,8 @@ import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
 import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
-import { customCategory } from '../constants';
-import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
+import { customCategory, defaultCategories } from '../constants';
+import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import { createFrequencyEmojiComparator } from './internal/Comparators';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
@@ -47,22 +47,11 @@ class Tokenizer implements ITokenizer {
   }
 }
 
-export interface EmojiSearchResult {
-  emojis: EmojiDescription[];
-  categories: AvailableCategories;
-  query?: string;
-}
-
 declare type EmojiByKey = Map<any, EmojiDescription[]>;
 
 interface EmojiToKey {
   (emoji: EmojiDescription): any;
 }
-
-const availableCategories = (emojis: EmojiDescription[]): AvailableCategories => emojis.reduce((categories, emoji) => {
-  categories[emoji.category] = true;
-  return categories;
-}, {});
 
 const addAllVariants = (emoji: EmojiDescription, fnKey: EmojiToKey, map: EmojiByKey): void => {
   const key = fnKey(emoji);
@@ -144,6 +133,7 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private asciiMap: Map<string, EmojiDescription>;
+  private dynamicCategoryList: string[];
   private static readonly defaultEmojiWeight: number = 1000000;
 
   protected usageTracker: UsageFrequencyTracker;
@@ -151,7 +141,7 @@ export default class EmojiRepository {
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
 
-    this.initMaps();
+    this.initRepositoryMetadata();
     this.initSearchIndex();
 
     this.usageTracker = new UsageFrequencyTracker();
@@ -194,7 +184,6 @@ export default class EmojiRepository {
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
-      categories: availableCategories(filteredEmoji),
       query,
     };
   }
@@ -240,6 +229,13 @@ export default class EmojiRepository {
     return this.asciiMap;
   }
 
+  getDynamicCategoryList(includeCustom?: boolean): string[] {
+    if (this.dynamicCategoryList.indexOf(customCategory) === -1 && includeCustom) {
+      this.dynamicCategoryList.push(customCategory);
+    }
+    return this.dynamicCategoryList;
+  }
+
   /**
    * Call this on emoji usage to allow the EmojiRepository to track the usage of emoji (which could be useful
    * in sorting, etc).
@@ -265,14 +261,17 @@ export default class EmojiRepository {
   /**
    * Optimisation to initialise all map member variables in single loop over emojis
    */
-  private initMaps(): void {
+  private initRepositoryMetadata(): void {
     this.shortNameMap  = new Map();
     this.idMap = new Map();
     this.asciiMap = new Map();
+    const categorySet = new Set();
 
     this.emojis.forEach(emoji => {
+      categorySet.add(emoji.category);
       this.addToMaps(emoji);
     });
+    this.dynamicCategoryList = Array.from(categorySet).filter(category => defaultCategories.indexOf(category) === -1);
   }
 
   private initSearchIndex(): void {

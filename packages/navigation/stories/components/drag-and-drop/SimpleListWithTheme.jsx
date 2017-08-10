@@ -6,7 +6,7 @@ import Navigation, {
   presetThemes,
 } from '@atlaskit/navigation';
 import RadioGroup from '@atlaskit/field-radio-group';
-import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
+import { Draggable, Droppable, DragDropContext } from 'react-beautiful-dnd';
 import { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';

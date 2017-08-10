@@ -37,11 +37,7 @@ import EmojiRepository from '../../../../src/api/EmojiRepository';
 import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
-<<<<<<< HEAD
-import { customCategory, selectedToneStorageKey } from '../../../../src/constants';
-=======
 import { customCategory, defaultCategories, selectedToneStorageKey } from '../../../../src/constants';
->>>>>>> 44e7df96c... feat(component): categorySelector inserts non-standard categories dynamically
 
 declare var global: any;
 

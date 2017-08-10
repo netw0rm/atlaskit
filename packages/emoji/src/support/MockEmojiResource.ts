@@ -36,7 +36,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   protected selectedTone: ToneSelection;
   protected optimisticRendering?: boolean;
 
-  recordedSelections: EmojiId[] = [];
+  recordedSelections: EmojiDescription[] = [];
 
   constructor(emojiService: EmojiRepository, config?: MockEmojiResourceConfig) {
     super();
@@ -95,8 +95,9 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(this.emojiRepository.getAsciiMap(), 'getAsciiMap');
   }
 
-  recordSelection?(id: EmojiId): Promise<any> {
-    this.recordedSelections.push(id);
+  recordSelection?(emoji: EmojiDescription): Promise<any> {
+    this.recordedSelections.push(emoji);
+    this.emojiRepository.used(emoji);
     return this.promiseBuilder(undefined, 'recordSelection');
   }
 

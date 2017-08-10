@@ -188,7 +188,7 @@ describe('EmojiRepository', () => {
       });
     });
 
-    it('returns frequently used above others except for an exact shortname match', (done) => {
+    it('returns frequently used before others except for an exact shortname match', (done) => {
       const greenHeart = emojiRepository.findByShortName(':green_heart:');
       const heart = emojiRepository.findByShortName(':heart:');
 

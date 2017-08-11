@@ -1,11 +1,17 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Div from '../styled/Badge';
+import BadgeElement from '../styled/Badge';
 
 export const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
   defaultValue: 'default',
 };
+
+function validAppearance(value) {
+  return value && APPEARANCE_ENUM.values.includes(value)
+    ? value
+    : APPEARANCE_ENUM.defaultValue;
+}
 
 function getValue(value, max) {
   if (value < 0) {
@@ -54,9 +60,9 @@ export default class Badge extends PureComponent {
     const { appearance, max, value } = this.props;
 
     return (
-      <Div appearance={appearance}>
+      <BadgeElement appearance={validAppearance(appearance)}>
         {getValue(value, max)}
-      </Div>
+      </BadgeElement>
     );
   }
 }

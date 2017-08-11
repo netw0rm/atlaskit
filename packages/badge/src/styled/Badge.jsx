@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { backgroundColor, textColor } from '../theme';
 
-export default styled.div`
+const BadgeElement = styled.div`
   background-color: ${backgroundColor};
   border-radius: 2em;
   color: ${textColor};
@@ -14,3 +14,6 @@ export default styled.div`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
+BadgeElement.displayName = 'BadgeElement';
+
+export default BadgeElement;

@@ -32,13 +32,10 @@
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/jquery": "^2.0.41",
-<<<<<<< HEAD
     "@types/node": "^7.0.12",
     "@types/query-string": "^4.3.1",
     "jquery": "^3.2.1",
-=======
     "pdfjs-dist": "^1.8.618",
->>>>>>> d86d24da6fea280b1efc61818dcae7c35681a8db
     "query-string": "^4.3.2",
     "styled-components": "^1.3.0",
     "tslib": "^1.2.0"

@@ -8,7 +8,6 @@ export interface PDFViewProps {
   url?: string;
   error?: string;
   zoomLevel?: number;
-  onLoadError?: () => void;
   onZoomOut?: () => void;
   onZoomIn?: () => void;
   onZoomFit?: () => void;
@@ -26,12 +25,17 @@ export class PDFView extends React.PureComponent<PDFViewProps, PDFViewState> {
   private eventBusRef: any = null;
 
   async fetchDocument(url: string) {
+    const {onLoadError} = this.props;
     const loadingTask = pdfjsLib.getDocument(url);
     // const loadingTask = pdfjsLib.getDocument('http://local.atlassian.io:5001/pdf-document-t3n-colors.pdf');
     loadingTask.promise.then(
       (doc) => this.pdfViewer.setDocument(doc),
-      (reason) => {console.error(`Error during loading: ${reason}`);
-    });
+      () => {
+        if (onLoadError) {
+          onLoadError();
+        }
+      }
+    );
   }
 
   handleContainerMount = element => {
@@ -39,6 +43,24 @@ export class PDFView extends React.PureComponent<PDFViewProps, PDFViewState> {
   }
 
   componentDidMount() {
+
+    // this.eventBus = new PDFJSViewer.EventBus();
+    // eventBus.on('pagesinit', (e) => {
+    //   this.setState({
+    //     scale: this.pdfViewer.currentScale
+    //   });
+    //   if (this.props.onInit) {
+    //     this.props.onInit({});
+    //   }
+    //   if (this.props.onScaleChanged) {
+    //     this.props.onScaleChanged({scale: this.state.scale});
+    //   }
+    // });
+    // eventBus.on('scalechange', (e) => {
+    //   if (this.props.onScaleChanged) {
+    //     this.props.onScaleChanged({scale: e.scale});
+    //   }
+    // });
 
     this.pdfViewer = new PDFJSViewer.PDFViewer({
       container: this.containerElement,

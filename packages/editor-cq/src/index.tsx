@@ -91,6 +91,7 @@ export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
   mentionProvider: Promise<MentionProvider>;
+  editorView?: EditorView;
 
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
@@ -375,6 +376,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       analyticsService.trackEvent('atlassian.editor.start');
 
+      this.editorView = editorView;
       this.setState({ editorView }, () => {
         this.focus();
       });

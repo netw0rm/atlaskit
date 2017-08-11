@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "config": {
     "access": "public"
   },

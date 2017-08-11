@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 19.0.1 (2017-08-11)
+
+* bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))
 ## 19.0.0 (2017-08-10)
 
 * breaking; AkContainerNavigation now extends React.Component rather than React.PureComponent - this should ([3afa823](https://bitbucket.org/atlassian/atlaskit/commits/3afa823))

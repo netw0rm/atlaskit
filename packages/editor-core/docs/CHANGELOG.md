@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.8.0 (2017-08-11)
+
+* bug fix; Merged in fix/ED-2392-ignore-ts-files-package-json (pull request #3794) (issues closed: ed-2392) ([681d5fa](https://bitbucket.org/atlassian/atlaskit/commits/681d5fa))
+* feature; add EditorActions object (issues closed: ed-2413) ([de98577](https://bitbucket.org/atlassian/atlaskit/commits/de98577))
 ## 45.7.0 (2017-08-10)
 
 

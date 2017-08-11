@@ -1,6 +1,11 @@
 # @atlaskit/media-image
 
-## Unreleased
+## 2.1.0 (2017-08-11)
+
+* feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
+
+
+
 
 ## 2.0.1 (2017-07-25)
 

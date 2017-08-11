@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 2.3.0 (2017-08-11)
+
+* feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
 ## 2.2.4 (2017-08-03)
 
 * bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))

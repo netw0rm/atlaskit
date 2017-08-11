@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.9.0 (2017-08-11)
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2442) ([f6155e8](https://bitbucket.org/atlassian/atlaskit/commits/f6155e8))
 ## 45.8.1 (2017-08-11)
 
 * bug fix; aligning keyboard shortcuts for blocktypes to gmail. ([403c1ca](https://bitbucket.org/atlassian/atlaskit/commits/403c1ca))

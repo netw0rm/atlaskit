@@ -87,7 +87,7 @@ describe('Media plugin', () => {
       'test.gif'
     );
 
-    expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
+    sinon.assert.calledOnce(pluginState.binaryPicker!.upload as any);
     collectionFromProvider.restore(); pluginState.destroy();
   });
 

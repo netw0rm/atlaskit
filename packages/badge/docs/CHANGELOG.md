@@ -1,6 +1,18 @@
 # @atlaskit/badge
 
-## Unreleased
+## 5.0.0 (2017-08-11)
+
+
+* bug fix; reimplement appearance prop validation for badges ([25dabe3](https://bitbucket.org/atlassian/atlaskit/commits/25dabe3))
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+
 
 ## 4.5.2 (2017-07-27)
 

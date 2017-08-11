@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import ToolbarButton from '../ToolbarButton';
+import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
@@ -108,6 +109,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       items.push({
         content: blockType.title,
         value: blockType,
+        tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
+        tooltipPosition: 'right',
         isActive: (currentBlockType === blockType),
       });
     });

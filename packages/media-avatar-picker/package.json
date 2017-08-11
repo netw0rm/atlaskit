@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-avatar-picker",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "config": {
     "access": "public"
   },

@@ -21,8 +21,8 @@ export default class Item extends Component {
     children: PropTypes.node,
     /** Secondary text to be shown underneath the main content. */
     description: PropTypes.string,
-    /** Drag and drop props provided by @atlaskit/drag-and-drop. Please do not use this unless
-      * using @atlaskit/drag-and-drop */
+    /** Drag and drop props provided by react-beautiful-dnd. Please do not use this unless
+      * using react-beautiful-dnd */
     dnd: PropTypes.shape({
       draggableStyle: PropTypes.object,
       dragHandleProps: PropTypes.object,
@@ -41,7 +41,7 @@ export default class Item extends Component {
     isCompact: PropTypes.bool,
     /** Causes the item to appear in a disabled state and click behaviours will not be triggered. */
     isDisabled: PropTypes.bool,
-    /** Used to apply correct dragging styles when also using @atlaskit/drag-and-drop. */
+    /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
     isDragging: PropTypes.bool,
     /** Causes the item to still be rendered, but with `display: none` applied. */
     isHidden: PropTypes.bool,

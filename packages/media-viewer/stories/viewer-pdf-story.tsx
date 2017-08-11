@@ -4,12 +4,13 @@ import { createStorybookContext, docFileId, largePdfFileId, passwordProtectedPdf
 import {PdfViewer} from '../src/3.0/viewers/pdf';
 
 const context = createStorybookContext();
+
 const badFileId = {
   ...largePdfFileId,
   id: 'badId'
-}
+};
 
-storiesOf('PDF Viewer', {})
+storiesOf('Viewers: PDF', {})
  .add('PDF View', () => (
     <PdfViewer
       context={context}
@@ -57,4 +58,4 @@ storiesOf('PDF Viewer', {})
         }
       }}
     />
-  ))
+  ));

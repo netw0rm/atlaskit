@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.2.3",
+  "version": "45.4.1",
   "config": {
     "access": "public"
   },
@@ -52,7 +52,7 @@
     "@atlaskit/emoji": "^22.3.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.1",
-    "@atlaskit/media-card": "^17.11.2",
+    "@atlaskit/media-card": "^18.0.2",
     "@atlaskit/media-core": "^8.4.1",
     "@atlaskit/media-filmstrip": "^5.1.2",
     "@atlaskit/mention": "^7.3.0",

@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 45.4.1 (2017-08-09)
+
+* bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))
+* bug fix; codeBlock content text chunks should not have a new line between them (issues closed: ed-2399) ([c1ccdac](https://bitbucket.org/atlassian/atlaskit/commits/c1ccdac))
+## 45.4.0 (2017-08-08)
+
+
+* bug fix; fix cursor position when deleting cols/rows (issues closed: ed-2406) ([30f98d7](https://bitbucket.org/atlassian/atlaskit/commits/30f98d7))
+
+* feature; move Markdown parser and serialiser into editor-core transformers (issues closed: ed-2402) ([8eba5d9](https://bitbucket.org/atlassian/atlaskit/commits/8eba5d9))
+## 45.3.0 (2017-08-08)
+
+
+* bug fix; render profile cards in portal (issues closed: ed-2386) ([f7f6834](https://bitbucket.org/atlassian/atlaskit/commits/f7f6834))
+* feature; added encoder/parser for tables in JIRA (issues closed: ed-2396) ([c2e3d1c](https://bitbucket.org/atlassian/atlaskit/commits/c2e3d1c))
+## 45.2.4 (2017-08-07)
+
+* bug fix; bumped the version of media-card ([4bbfac7](https://bitbucket.org/atlassian/atlaskit/commits/4bbfac7))
 ## 45.2.3 (2017-08-07)
 
 

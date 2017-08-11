@@ -20,6 +20,7 @@ import {
   isSchemaWithCodeBlock,
   isSchemaWithBlockQuotes,
   isSchemaWithMedia,
+  isSchemaWithTables,
 } from './schema';
 
 export type CustomEncoder = (userId: string) => string;
@@ -84,8 +85,14 @@ export default class JIRATransformer implements Transformer<string> {
 
     // Process through nodes in reverse (so deepest child elements are first).
     for (let i = nodes.length - 1; i >= 0; i--) {
-      const node = nodes[i];
-      const content = this.getContent(node, convertedNodes);
+      const node = nodes[i] as Element;
+      // for tables we take tbody content, because tbody is not in schema so the whole bfs thing wouldn't work
+      const targetNode = (
+        node.tagName && node.tagName.toUpperCase() === 'TABLE'
+          ? node.firstChild!
+          : node
+      );
+      const content = this.getContent(targetNode, convertedNodes);
       const candidate = convert(content, node, this.schema);
       if (typeof candidate !== 'undefined') {
         convertedNodes.set(node, candidate);
@@ -134,7 +141,8 @@ export default class JIRATransformer implements Transformer<string> {
       paragraph,
       rule,
       mediaGroup,
-      media
+      media,
+      table
     } = this.schema.nodes;
 
     if (node.isText) {
@@ -177,6 +185,10 @@ export default class JIRATransformer implements Transformer<string> {
       } else if (node.type === media) {
         return this.encodeMedia(node);
       }
+    }
+
+    if (isSchemaWithTables(this.schema) && node.type === table) {
+      return this.encodeTable(node);
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -448,6 +460,33 @@ export default class JIRATransformer implements Transformer<string> {
     }
 
     elem.appendChild(a);
+    return elem;
+  }
+
+  private encodeTable(node: PMNode) {
+    const elem = this.doc.createElement('table');
+    const tbody = this.doc.createElement('tbody');
+
+    node.descendants(rowNode => {
+      const rowElement = this.doc.createElement('tr');
+
+      rowNode.descendants(colNode => {
+        const cellType = colNode.type === this.schema.nodes.tableCell ? 'd' : 'h';
+        const cellElement = this.doc.createElement(`t${cellType}`);
+        cellElement.setAttribute('class', `confluenceT${cellType}`);
+        cellElement.appendChild(this.encodeFragment(colNode.content));
+        rowElement.appendChild(cellElement);
+
+        return false;
+      });
+
+      tbody.appendChild(rowElement);
+      return false;
+    });
+
+    elem.appendChild(tbody);
+    elem.setAttribute('class', 'confluenceTable');
+
     return elem;
   }
 }

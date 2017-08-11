@@ -11,6 +11,7 @@ export interface JIRASchemaConfig {
   allowSubSup?: boolean;
   allowMedia?: boolean;
   allowTextColor?: boolean;
+  allowTables?: boolean;
 }
 
 export default function makeSchema(config: JIRASchemaConfig) {
@@ -54,6 +55,10 @@ export default function makeSchema(config: JIRASchemaConfig) {
     marks.push('textColor');
   }
 
+  if (config.allowTables) {
+    nodes.push('table', 'tableCell', 'tableHeader', 'tableRow');
+  }
+
   return createSchema({ nodes, marks });
 }
 
@@ -91,4 +96,13 @@ export function isSchemaWithMedia(schema: Schema<any, any>): boolean {
 
 export function isSchemaWithTextColor(schema: Schema<any, any>): boolean {
   return !!schema.marks.textColor;
+}
+
+export function isSchemaWithTables(schema: Schema<any, any>): boolean {
+  return (
+    !!schema.nodes.table &&
+    !!schema.nodes.tableCell &&
+    !!schema.nodes.tableHeader &&
+    !!schema.nodes.tableRow
+  );
 }

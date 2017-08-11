@@ -1,5 +1,5 @@
+import { ComponentClass } from 'react';
 import { Node } from '../../../prosemirror';
-import { ReactComponentConstructor } from '../';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
@@ -47,7 +47,7 @@ export const nodeToReact = {
   'unknownBlock': UnknownBlock,
 };
 
-export const toReact = (node: Node): ReactComponentConstructor => {
+export const toReact = (node: Node): ComponentClass<any> => {
   return nodeToReact[node.type.name];
 };
 

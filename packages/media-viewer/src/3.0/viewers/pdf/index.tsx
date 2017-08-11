@@ -6,6 +6,7 @@ import {MediaIdentifier} from '../../domain';
 import {ItemTools} from '../../views/itemTools';
 import PDF from 'react-pdf-js';
 import {getBinaryURL} from '../../utils';
+import Spinner from '@atlaskit/spinner';
 
 export interface PdfViewerProps {
   identifier: MediaIdentifier;
@@ -54,7 +55,9 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
 
   render() {
     const {dataURI, scale} = this.state;
+    const loadingComponent = <Spinner size='large'/>;
     const pdfComponent = <PDF
+      loading={loadingComponent}
       file={dataURI}
       page={this.state.page}
       scale={scale}
@@ -67,7 +70,7 @@ export class PdfViewer extends Component<PdfViewerProps, PdfViewerState> {
     if (this.state.error) {
       return (
         <div>We need a view for ERROR</div>
-      )
+      );
     }
     return (
       <Wrapper>

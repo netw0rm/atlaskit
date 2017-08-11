@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.6.3",
+  "version": "3.6.4",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,8 @@
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "dependencies": {
     "@atlaskit/avatar": "^2.1.0",
@@ -66,5 +67,5 @@
     }
   ],
   "license": "Apache-2.0",
-  "types": "dist/es/index.d.ts"
+  "types": "index.d.ts"
 }

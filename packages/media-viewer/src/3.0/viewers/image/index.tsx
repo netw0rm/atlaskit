@@ -5,6 +5,7 @@ import {Context, FileItem} from '@atlaskit/media-core';
 // import {MediaEditor} from '@atlaskit/media-editor';
 import {ItemTools} from '../../views/itemTools';
 import {MediaIdentifier} from '../../domain';
+import Spinner from '@atlaskit/spinner';
 
 export interface ImageViewerProps {
   identifier: MediaIdentifier;
@@ -16,6 +17,7 @@ export interface ImageViewerState {
   dataURI?: string;
   zoomLevel: number;
   isEditing: boolean;
+  loading: boolean;
 }
 
 // const defaultDimensions = {width: 582, height: 54};
@@ -26,7 +28,8 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
 
   state: ImageViewerState = {
     zoomLevel: 100,
-    isEditing: false
+    isEditing: false,
+    loading: true
   };
 
   fetchDataURI(metadata: FileItem) {
@@ -53,13 +56,14 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
   }
 
   render() {
-    const {dataURI, zoomLevel, isEditing} = this.state;
+    const {dataURI, zoomLevel, isEditing, loading} = this.state;
     const scaleValue = zoomLevel / 100;
     const transform = `scale(${scaleValue}) translateZ(0)`;
-
+    const loadingComponent = loading ? <Spinner size='large' /> : null;
     return (
       <ImageViewerWrapper>
-        {isEditing ? this.renderEditor() : <Img onError={this.onError} src={dataURI} style={{transform}}/>}
+        {loadingComponent}
+        {isEditing ? this.renderEditor() : <Img onLoad={this.onLoad} onError={this.onError} src={dataURI} style={{transform}}/>}
         <ItemTools
           onZoomOut={this.onZoomOut}
           onZoomIn={this.onZoomIn}
@@ -71,9 +75,13 @@ export class ImageViewer extends Component<ImageViewerProps, ImageViewerState> {
     );
   }
 
-  onError() {
+  onLoad = () => {
+    this.setState({ loading: false });
+  }
+
+  onError = () => {
     // TODO: this needs to be implemented
-    console.log('error loading image');
+    alert('error');
   }
 
   renderEditor() {

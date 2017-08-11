@@ -10,6 +10,7 @@ import {
   isSchemaWithMedia,
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
+  isSchemaWithTables
 } from './schema';
 
 import {
@@ -241,6 +242,26 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
     if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
       let blockquoteContent = content && (content as any).content.length ? content : schema.nodes.paragraph.create();
       return schema.nodes.blockquote!.createChecked({}, blockquoteContent);
+    }
+
+    // table
+    if (isSchemaWithTables(schema)) {
+      switch (tag) {
+        case 'TABLE':
+          return schema.nodes.table.createChecked({}, content);
+        case 'TR':
+          return schema.nodes.tableRow!.createChecked({}, content);
+        case 'TD':
+          const tdContent = schema.nodes.tableCell.validContent(content)
+            ? content
+            : ensureBlocks(content, schema);
+          return schema.nodes.tableCell.createChecked({}, tdContent);
+        case 'TH':
+          const thContent = schema.nodes.tableHeader.validContent(content)
+            ? content
+            : ensureBlocks(content, schema);
+          return schema.nodes.tableHeader.createChecked({}, thContent);
+      }
     }
   }
 }

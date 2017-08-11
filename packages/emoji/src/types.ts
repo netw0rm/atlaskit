@@ -78,6 +78,15 @@ export interface EmojiDescriptionWithVariations extends EmojiDescription {
   skinVariations?: EmojiDescription[];
 }
 
+/**
+ * Describes an emoji which is a variant of some base emoji. This is used when you want to promote the
+ * skinVariations in an EmojiDescriptionWithVariations to represent them along side their base representations.
+ */
+export interface EmojiVariationDescription extends EmojiDescription {
+  /** The id of the 'non-variant version of the emoji */
+  baseId: string;
+}
+
 export type OptionalEmojiDescription = EmojiDescription | undefined;
 export type OptionalEmojiDescriptionWithVariations = EmojiDescriptionWithVariations | undefined;
 

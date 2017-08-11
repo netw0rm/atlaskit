@@ -1,13 +1,19 @@
 import { expect } from 'chai';
-import markdownSerializer from '../../src/markdown-serializer';
-import stringRepeat from '../../src/util/string-repeat';
+import {
+  MarkdownSerializer,
+  marks,
+  nodes,
+} from '../../../../src/transformers/bitbucket/serializer';
+import { stringRepeat } from '../../../../src/transformers/bitbucket/util';
 import {
   a, blockquote, br, code_block, doc, em, h1, h2,
   h3, h4, h5, h6, hr, img, li, emoji, emojiQuery, mention,
   mentionQuery, code, ol, p, strike, strong, ul
 } from './_schema-builder';
 
-describe('Bitbucket markdown serializer: ', () => {
+const markdownSerializer = new MarkdownSerializer(nodes, marks);
+
+describe('BitbucketTransformer: serializer', () => {
   const pre = code_block();
 
   it('should serialize paragraphs', () => {

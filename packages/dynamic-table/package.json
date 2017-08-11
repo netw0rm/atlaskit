@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "4.5.2",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },

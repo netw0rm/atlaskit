@@ -27,16 +27,16 @@ const defaultProps = {
       label: 'Everyone in JIRA Software',
     },
     {
-      value: 'siteAdmins',
+      value: 'site-admins',
       label: 'Site admins only',
     },
     {
-      value: 'specificUsers',
+      value: 'specific-users',
       label: 'Specific users',
     },
   ],
   userSelectPlaceholder: 'Start typing a username',
-  usersOption: 'specificUsers',
+  usersOption: 'specific-users',
   chooseOption: 'Choose an option',
   affectBill: 'How will this affect my bill?',
   spinnerActive: false,
@@ -78,11 +78,7 @@ storiesOf('GrantAccess')
   )
   .add('Show Grant Access dialog with site admins only selected', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        changeUsers
-        defaultSelectedRadio="siteAdmins"
-      />
+      <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
     )
   )
   .add('Show Grant Access dialog error state no specific users selected', () =>
@@ -90,7 +86,7 @@ storiesOf('GrantAccess')
       <GrantAccessBase
         {...defaultProps}
         changeUsers
-        defaultSelectedRadio="specificUsers"
+        defaultSelectedRadio="specific-users"
         userSelectInFocus
         userSelectIsInvalid
       />
@@ -102,7 +98,7 @@ storiesOf('GrantAccess')
         {...defaultProps}
         retrieveUsers={() => Promise.reject(new Error('Error retrieving users.'))}
         changeUsers
-        defaultSelectedRadio="specificUsers"
+        defaultSelectedRadio="specific-users"
         userSelectInFocus
         userSelectIsInvalid
       />
@@ -110,11 +106,7 @@ storiesOf('GrantAccess')
   )
   .add('Show Grant Access dialog with perma spinner', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        spinnerActive
-        continueButtonDisabled
-      />
+      <GrantAccessBase {...defaultProps} spinnerActive continueButtonDisabled />
     )
   )
   .add('Show Grant Access dialog with 25% progress', () =>

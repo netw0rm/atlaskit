@@ -1,6 +1,5 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import retreiveJiraUsers from './retrieveJiraUsers';
 import notifyUsersAccessGranted from './notifyUsersAccessGranted';
 
 export const CREATE_GROUP_URL = '/admin/rest/um/1/group';
@@ -45,20 +44,12 @@ async function addUsersToConfluenceUsersGroup(users) {
   return await response.json();
 }
 
-export default async (group, usernames, notifyUsers = true, fetchFn) => {
-  let users = usernames;
-  let fetchedUsers;
-
-  if (group !== 'specificUsers') {
-    fetchedUsers = await (fetchFn || retreiveJiraUsers)(group);
-    users = fetchedUsers.map(user => ({ name: user.name }));
-  }
-
+export default async (users, notifyUsers = true) => {
   await createConfluenceUsersGroup();
-  const data = await addUsersToConfluenceUsersGroup(users);
+  const data = await addUsersToConfluenceUsersGroup(users.map(user => ({ name: user.name })));
 
   if (notifyUsers) {
-    await notifyUsersAccessGranted();
+    await notifyUsersAccessGranted(users);
   }
 
   return data ? data.users : [];

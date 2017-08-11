@@ -121,8 +121,6 @@ class GrantAccess extends Component {
     showSkipLink: false,
     selectItems: [],
     selectedUsers: [],
-    allUsers: null,
-    siteAdmins: null,
     notifyUsers: true,
   };
 
@@ -194,7 +192,7 @@ class GrantAccess extends Component {
     try {
       const users =
         selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
-      await grantAccessToUsers(selectedRadio, users, notifyUsers);
+      await grantAccessToUsers(users, notifyUsers);
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
       onComplete();
     } catch (e) {

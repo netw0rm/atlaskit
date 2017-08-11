@@ -139,7 +139,7 @@ test('GrantAccess should fire an appropriate analytics event when the radio opti
   const mountWrapper = mount(
     withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
   );
-  const mockResponse = { target: 'siteAdmins' };
+  const mockResponse = { target: 'site-admins' };
   const onRadioChange = mountWrapper.find('FieldRadioGroup').prop('onRadioChange');
   expect(spy).not.toHaveBeenCalledWith(
     'xflow.grant-access.radio-option.changed',
@@ -183,7 +183,7 @@ test('GrantAccess should fire an appropriate analytics event when the user selec
 });
 
 test('GrantAccess should fire an appropriate analytics event when the user select is invalid', () => {
-  const userOptionId = 'specificUsers';
+  const userOptionId = 'specific-users';
   const spy = jest.fn();
   const mountWrapper = mount(
     withAnalyticsSpy(

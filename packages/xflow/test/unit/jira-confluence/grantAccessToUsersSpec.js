@@ -1,13 +1,9 @@
-/* eslint-disable jest/no-disabled-tests */
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
-
-import chai, { assert } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import * as notifyUsersAccessGranted from '../../../src/jira-confluence/notifyUsersAccessGranted';
 
 import jiraUsers from './mock-data/jiraUsers.json';
-import jiraServiceDeskUsers from './mock-data/jiraServiceDeskUsers.json';
 
 import grantAccessToUsers, {
   CREATE_GROUP_URL,
@@ -24,12 +20,7 @@ const addUsersToGroupResponse = (url, options) => {
   };
 };
 
-const mockRetrieveJiraUsers = () => Promise.resolve(jiraUsers);
 const mapUsers = users => users.map(user => ({ name: user.name }));
-const grantAccess = (group, usernames) =>
-  grantAccessToUsers(group, usernames && mapUsers(usernames), mockRetrieveJiraUsers);
-
-chai.use(chaiAsPromised);
 
 const mockCreateGroupEndpointWithSuccessStatus = () => {
   fetchMock.mock(CREATE_GROUP_URL, createConfluenceUsersGroupResponse, {
@@ -58,56 +49,99 @@ describe('grantAccessToUsers', () => {
     fetchMock.restore();
   });
 
-  xit('will add all users to the confluence-users group when "everyone" is selected', async () => {
+  it('will add the specified users to the confluence-users group', async () => {
     mockCreateGroupEndpointWithSuccessStatus();
     mockAddUsersEndpointWithSuccessStatus();
 
-    const result = await grantAccess('everyone');
+    const result = await grantAccessToUsers(jiraUsers, false);
 
-    assert.isTrue(fetchMock.done('AddUsers'));
-    assert.deepEqual(result, mapUsers(jiraUsers));
+    expect(fetchMock.done('CreateGroup')).toBe(true);
+
+    const createGroupCalledWith = JSON.parse(fetchMock.calls('CreateGroup')[0][1].body);
+    expect(createGroupCalledWith).toEqual(
+      expect.objectContaining({
+        name: 'confluence-users',
+        description: '',
+        type: 'GROUP',
+      })
+    );
+
+    expect(fetchMock.done('AddUsers')).toBe(true);
+
+    const addUsersCalledWith = JSON.parse(fetchMock.calls('AddUsers')[0][1].body);
+    expect(addUsersCalledWith).toEqual({ users: mapUsers(jiraUsers) });
+
+    expect(result).toEqual(mapUsers(jiraUsers));
   });
 
-  xit(
-    'will add the specified users to the confluence-users group when "specificUsers" is selected',
-    async () => {
-      mockCreateGroupEndpointWithSuccessStatus();
-      mockAddUsersEndpointWithSuccessStatus();
+  it('will notify the users being added to the confluence-users group', async () => {
+    mockCreateGroupEndpointWithSuccessStatus();
+    mockAddUsersEndpointWithSuccessStatus();
 
-      const result = await grantAccess('specificUsers', jiraServiceDeskUsers);
+    notifyUsersAccessGranted.default = jest.fn().mockReturnValue(Promise.resolve());
 
-      assert.isTrue(fetchMock.done('AddUsers'));
-      assert.deepEqual(result, mapUsers(jiraServiceDeskUsers));
+    await grantAccessToUsers(jiraUsers);
+
+    expect(notifyUsersAccessGranted.default).toHaveBeenCalledWith(jiraUsers);
+  });
+
+  it('will reject with an error if the notifying users fails', async () => {
+    expect.assertions(1);
+    mockCreateGroupEndpointWithSuccessStatus();
+    mockAddUsersEndpointWithSuccessStatus();
+
+    notifyUsersAccessGranted.default = jest
+      .fn()
+      .mockReturnValue(Promise.reject(new Error('Failed to notify Users')));
+
+    try {
+      await grantAccessToUsers(jiraUsers);
+    } catch (e) {
+      expect(e).toEqual(new Error('Failed to notify Users'));
     }
-  );
-
-  xit('will do nothing if "siteAdmins" is selected', () => {
-    mockCreateGroupEndpointWithSuccessStatus();
-    mockAddUsersEndpointWithSuccessStatus();
-    return assert.eventually.deepEqual(grantAccess('siteAdmins'), []);
   });
 
-  xit('will return reject with an error if the create group endpoint returns a 404', () => {
+  it('will reject with an error if the create group endpoint returns a 404', async () => {
+    expect.assertions(1);
     mockCreateGroupEndpointWithFailureStatus(404);
     mockAddUsersEndpointWithSuccessStatus();
-    return assert.isRejected(grantAccess('everyone'), /404/);
+    try {
+      await grantAccessToUsers([], false);
+    } catch (e) {
+      expect(e).toEqual(new Error('Unable to create confluence-users group. Status: 404'));
+    }
   });
 
-  xit('will return reject with an error if the create group endpoint returns a 500', () => {
+  it('will reject with an error if the create group endpoint returns a 500', async () => {
+    expect.assertions(1);
     mockCreateGroupEndpointWithFailureStatus(500);
     mockAddUsersEndpointWithSuccessStatus();
-    return assert.isRejected(grantAccess('everyone'), /500/);
+    try {
+      await grantAccessToUsers([], false);
+    } catch (e) {
+      expect(e).toEqual(new Error('Unable to create confluence-users group. Status: 500'));
+    }
   });
 
-  xit('will return reject with an error if the add users endpoint returns a 404', () => {
+  it('will reject with an error if the add users endpoint returns a 404', async () => {
+    expect.assertions(1);
     mockCreateGroupEndpointWithSuccessStatus();
     mockAddUsersEndpointWithFailureStatus(404);
-    return assert.isRejected(grantAccess('everyone'), /404/);
+    try {
+      await grantAccessToUsers([], false);
+    } catch (e) {
+      expect(e).toEqual(new Error('Unable to grant access to users. Status: 404'));
+    }
   });
 
-  xit('will return reject with an error if the add users endpoint returns a 500', () => {
+  it('will reject with an error if the add users endpoint returns a 500', async () => {
+    expect.assertions(1);
     mockCreateGroupEndpointWithSuccessStatus();
     mockAddUsersEndpointWithFailureStatus(500);
-    return assert.isRejected(grantAccess('everyone'), /500/);
+    try {
+      await grantAccessToUsers([], false);
+    } catch (e) {
+      expect(e).toEqual(new Error('Unable to grant access to users. Status: 500'));
+    }
   });
 });

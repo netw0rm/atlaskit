@@ -26,14 +26,14 @@
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "tslib": "^1.2.0",
+    "tslib": "^1.7.1",
     "typestyle": "^0.21.4"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "repository": {
     "type": "git",

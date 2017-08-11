@@ -26,7 +26,7 @@
   "dependencies": {
     "@types/jquery": "^2.0.41",
     "query-string": "^4.3.2",
-    "tslib": "^1.2.0"
+    "tslib": "^1.7.1"
   },
   "devDependencies": {
     "@atlaskit/media-core": "^9.0.0",
@@ -41,7 +41,7 @@
   "peerDependencies": {
     "@atlaskit/media-core": "^8.0.0 || ^9.0.0",
     "jquery": "^3.2.1",
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [

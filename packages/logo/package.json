@@ -24,19 +24,19 @@
     "dist"
   ],
   "dependencies": {
-    "babel-runtime": "^6.11.6",
+    "babel-runtime": "^6.25.0",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/logo": "*",
+    "@atlaskit/logo": "^3.5.2",
     "@atlaskit/util-readme": "^3.1.0",
     "@atlaskit/util-shared-styles": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",

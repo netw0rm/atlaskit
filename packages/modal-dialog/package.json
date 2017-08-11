@@ -25,14 +25,14 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^2.4.2",
+    "@atlaskit/blanket": "^2.4.3",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.25.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -42,12 +42,12 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/button-group": "^1.5.2",
     "@atlaskit/button": "^3.5.3",
+    "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-text": "^3.4.2",
     "@atlaskit/inline-dialog": "^3.6.2",
-    "@atlaskit/layer": "^2.5.2",
+    "@atlaskit/layer": "^2.5.3",
     "@atlaskit/modal-dialog": "*",
     "@atlaskit/navigation": "^18.0.0",
     "@atlaskit/page": "^4.4.2",

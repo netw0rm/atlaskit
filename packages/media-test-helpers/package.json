@@ -24,10 +24,10 @@
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
     "axios": "^0.15.3",
-    "rxjs": "^5.4.0",
+    "rxjs": "^5.4.3",
     "sinon": "^2.2.0",
     "styled-components": "^1.4.6",
-    "tslib": "^1.2.0"
+    "tslib": "^1.7.1"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -44,7 +44,7 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@atlaskit/media-core": "^8.0.0 || ^9.0.0",
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "repository": {
     "type": "git",

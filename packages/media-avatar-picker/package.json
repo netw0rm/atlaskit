@@ -26,13 +26,13 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/icon": "^6.0.0",
     "@atlaskit/media-card": "^8.0.0",
     "@atlaskit/modal-dialog": "^1.2.15",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "@atlaskit/field-range": "^2.0.0",
     "styled-components": "^1.3.0",
-    "tslib": "^1.2.0",
+    "tslib": "^1.7.1",
     "typestyle": "^0.21.4"
   },
   "author": "Atlassian Pty. Ltd",
@@ -53,7 +53,7 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@atlaskit/media-core": "^8.4.1",
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "repository": {
     "type": "git",

@@ -32,12 +32,12 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^45.7.0",
+    "@atlaskit/editor-core": "^45.8.1",
     "classnames": "^2.2.5",
-    "tslib": "^1.2.0"
+    "tslib": "^1.7.1"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "devDependencies": {
     "@atlaskit/button": "^1.1.2",

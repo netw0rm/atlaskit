@@ -22,21 +22,21 @@
   "dependencies": {
     "@atlaskit/icon": "^7.0.1",
     "@atlaskit/util-shared-styles": "^2.10.0",
-    "babel-runtime": "^6.23.0",
+    "babel-runtime": "^6.25.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
     "@atlaskit/dropdown-menu": "^3.4.0",
     "@atlaskit/droplist": "^4.5.0",
-    "@atlaskit/item": "*",
+    "@atlaskit/item": "^2.2.2",
     "@atlaskit/page": "^4.4.0",
     "@atlaskit/tooltip": "^3.4.0",
     "@atlaskit/util-readme": "^3.6.0",
-    "polished": "^1.3.0"
+    "polished": "^1.4.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

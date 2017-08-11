@@ -27,20 +27,20 @@
   "dependencies": {
     "@atlaskit/avatar": "^4.0.6",
     "@atlaskit/icon": "^6.6.0",
-    "@atlaskit/lozenge": "^3.0.2",
+    "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/tooltip": "^1.2.0",
-    "@atlaskit/util-common": "^1.0.0",
+    "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.3.1",
-    "babel-runtime": "^6.11.6",
+    "babel-runtime": "^6.25.0",
     "js-search": "^1.4.2",
     "styled-components": "^1.4.6",
-    "tslib": "^1.2.0",
+    "tslib": "^1.7.1",
     "uid": "^0.0.2",
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",
-    "fetch-mock": "^5.8.0"
+    "fetch-mock": "^5.12.2"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -53,7 +53,7 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2",
+    "react": "^15.6.1",
     "react-dom": "^15.3.2"
   },
   "repository": {

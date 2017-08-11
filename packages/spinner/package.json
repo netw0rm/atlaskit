@@ -32,11 +32,11 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.6.1"
   },
   "dependencies": {
     "@atlaskit/util-shared-styles": "^2.3.1",
-    "babel-runtime": "^6.11.6",
+    "babel-runtime": "^6.25.0",
     "prop-types": "^15.5.10",
     "prop-types-extra": "^1.0.1",
     "react-transition-group": "^1.2.0",

@@ -22,7 +22,7 @@
     "@atlaskit/util-shared-styles": "^2.1.1"
   },
   "peerDependencies": {
-    "@atlaskit/css-reset": "^1.0.0"
+    "@atlaskit/css-reset": "^1.1.5"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -35,12 +35,12 @@
     "@atlaskit/field-text": "^2.0.5",
     "@atlaskit/util-readme": "^1.0.0",
     "cheerio": "^0.22.0",
-    "glob": "^7.1.1",
-    "less": "^2.7.1",
+    "glob": "^7.1.2",
+    "less": "^2.7.2",
     "mkdirp": "^0.5.1",
     "prop-types": "^15.5.10",
     "svg-sprite": "^1.3.6",
-    "uid": "0.0.2"
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",

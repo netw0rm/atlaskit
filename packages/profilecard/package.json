@@ -25,11 +25,11 @@
     "@atlaskit/avatar": "^2.1.0",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^2.5.6",
-    "@atlaskit/layer": "^2.0.0",
+    "@atlaskit/layer": "^2.5.3",
     "@atlaskit/spinner": "^1.0.0",
-    "@atlaskit/util-common": "^1.0.0",
+    "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
+    "babel-runtime": "^6.25.0",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
     "lru-fast": "^0.2.2",
@@ -38,15 +38,15 @@
     "whatwg-fetch": "^1.0.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2",
+    "react": "^15.6.1",
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/profilecard": "*",
+    "@atlaskit/profilecard": "^3.6.4",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-data-test": "^4.10.0",
     "@atlaskit/util-readme": "^1.0.3",
-    "fetch-mock": "^5.9.4",
+    "fetch-mock": "^5.12.2",
     "loader-utils": "^0.2.16",
     "sinon": "^2.2.0",
     "uid": "^0.0.2"

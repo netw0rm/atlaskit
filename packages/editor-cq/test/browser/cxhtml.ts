@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
@@ -692,6 +693,46 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
       expect(parsedMediaNode.attrs.__fileName).to.equal('2017-04-12 07.15.57.jpg');
       expect(parsedMediaNode.attrs.__fileSize).to.equal(95316);
       expect(parsedMediaNode.attrs.__fileMimeType).to.equal('image/jpeg');
+    });
+
+    it('should put media and paragraph text into different block nodes (simple case)', () => {
+      const cxhtml = `<p>
+        my answer with attachment
+        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+        my answer with attachment 2
+        <fab:media media-collection="de7ae355-dcf3-4988-9785-bccb835830c4" media-type="file" media-id="f46de7c0-8b53-49b2-9788-5168361dda1d" file-mime-type="image/jpeg" file-size="95316" file-name="2017-04-12 07.15.57.jpg"/>
+        my answer with attachment 3
+        <fab:link><fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></fab:link>
+      </p>`;
+
+      const parseWrap = () => parse(cxhtml);
+      assert.doesNotThrow(parseWrap, 'Parsing should not throw exception');
+
+      const mediaNode = media({
+        id: 'f46de7c0-8b53-49b2-9788-5168361dda1d',
+        type: 'file',
+        collection: 'de7ae355-dcf3-4988-9785-bccb835830c4',
+        fileName: '2017-04-12 07.15.57.jpg',
+        fileSize: 95316,
+        fileMimeType: 'image/jpeg'
+      });
+
+      const docNode = doc(
+        p('my answer with attachment '),
+        mediaGroup(mediaNode, mediaNode),
+        p('my answer with attachment 2 '),
+        mediaGroup(mediaNode),
+        p(
+          'my answer with attachment 3 ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            text: 'Artur Bodera'
+          })
+        ),
+      );
+
+      expect(docNode).to.deep.equal(parseWrap());
     });
   });
 

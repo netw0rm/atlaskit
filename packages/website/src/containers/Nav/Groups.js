@@ -6,7 +6,6 @@ import { Route, matchPath } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {
-  AkNavigationItem as NavigationItem,
   AkContainerNavigationNested as NestedNav,
 } from '@atlaskit/navigation';
 
@@ -14,7 +13,7 @@ import DefaultNav from './navigations/Default';
 import ComponentNav from './navigations/Component';
 import NavigationNav from './navigations/NavigationComponent';
 
-import { RouterLinkComponent } from './linkComponents';
+import { RouterNavigationItem } from './linkComponents';
 
 export default class Groups extends PureComponent {
   static contextTypes = {
@@ -66,10 +65,9 @@ export default class Groups extends PureComponent {
       <div>
         {this.state.parentRoute ? (
           <div style={{ marginBottom: '10px' }}>
-            <NavigationItem
+            <RouterNavigationItem
               href={this.state.parentRoute}
               icon={<ArrowLeftIcon label="Back" />}
-              linkComponent={RouterLinkComponent}
               text="Back"
             />
           </div>

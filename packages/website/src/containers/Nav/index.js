@@ -20,7 +20,7 @@ import Groups from './Groups';
 import { matchNavExample } from '../../pages/Navigation/utils';
 
 const Header = () => (
-  <Link to="/">
+  <Link to="/" style={{ textDecoration: 'none' }}>
     <NavTitle
       icon={<img alt="AtlasKit Logo" src={atlasKitLogo} />}
       text="AtlasKit"

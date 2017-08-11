@@ -5,18 +5,14 @@ import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
+import LayoutFork from 'react-media';
+
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
-import {
-  akBorderRadius,
-  akColorN20,
-  akColorPrimary1,
-  akColorPrimary2,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 
-import LayoutFork from 'react-media';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+
 import { MOBILE_QUERY, NO_FOOTER_COMPONENT } from '../../../constants';
 
 import { getStorybookURL } from '../../utils';
@@ -196,10 +192,10 @@ export const StandardComponent = ({ match }) => (
 
 // Header
 const Title = styled.header`
-  padding-top: ${akGridSizeUnitless * 3}px;
+  padding-top: ${math.multiply(gridSize, 3)}px;
 
   @media (min-width: 780px) {
-    padding-top: ${akGridSizeUnitless * 6}px;
+    padding-top: ${math.multiply(gridSize, 6)}px;
   }
 `;
 const TitleBar = styled.div`
@@ -208,36 +204,51 @@ const TitleBar = styled.div`
   justify-content: space-between;
 `;
 const Main = styled.main`
-  padding-bottom: ${akGridSizeUnitless * 3}px;
+  padding-bottom: ${math.multiply(gridSize, 3)}px;
 `;
 
 // Footer
 const FooterRoot = styled.footer`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius}px;
   display: flex;
-  margin-bottom: ${akGridSizeUnitless * 3}px;
+  margin-bottom: ${math.multiply(gridSize, 3)}px;
+  margin-top: ${math.multiply(gridSize, 6)}px;
 `;
 const FooterItem = styled(Link)`
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
   flex: 1;
-  padding: ${akGridSizeUnitless * 2}px;
+  padding: ${math.multiply(gridSize, 2)}px;
   text-decoration: none;
 
+  &:first-child {
+    border-top-left-radius: ${borderRadius}px;
+    border-bottom-left-radius: ${borderRadius}px;
+  }
+  &:last-child {
+    border-top-right-radius: ${borderRadius}px;
+    border-bottom-right-radius: ${borderRadius}px;
+  }
+
   &:hover {
+    background-color: ${themed({ light: colors.N30, dark: colors.DN60 })};
+    position: relative;
     text-decoration: none;
 
     > span {
       text-decoration: underline;
     }
   }
+  &:focus {
+    position: relative;
+  }
 `;
 const FooterItemPlaceholder = styled.span`
   flex: 1;
 `;
 const FooterLabel = styled.h5`
-  color: ${akColorPrimary1}
+  color: ${colors.heading};
   margin-bottom: 1em;
 `;
 const FooterTitle = styled.span`
-  color: ${akColorPrimary2}
+  color: ${colors.primary};
 `;

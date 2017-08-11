@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { colors } from '@atlaskit/theme';
 import { BORDER_WIDTH } from './constants';
 
 // set fallbacks for border color/width to protect consumers from invalid values
 export const Outer = styled.span`
   align-content: center;
   align-items: center;
-  background-color: ${props => props.bgColor};
+  background-color: ${props => (props.bgColor || colors.background)};
   border-radius: 50%;
   box-sizing: border-box;
   display: flex;

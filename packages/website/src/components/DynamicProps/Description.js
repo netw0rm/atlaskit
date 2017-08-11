@@ -1,16 +1,13 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-const halfGrid = 4;
+export default function ReadmeDescription(
+  { children }:
+  { children: PropTypes.node }
+) {
+  const style = { marginTop: 12 };
 
-export default class ReadmeDescription extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
-
-  render() {
-    return typeof this.props.children === 'string' ?
-      <p>{this.props.children}</p> :
-      <div style={{ marginTop: 3 * halfGrid }}>{this.props.children}</div>;
-  }
+  return typeof children === 'string'
+    ? <p>{children}</p>
+    : <div style={style}>{children}</div>;
 }

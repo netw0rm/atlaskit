@@ -1,54 +1,57 @@
-import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { mount, shallow } from 'enzyme';
 
 import TabsNav from '../../src/components/TabsNav';
 import { name } from '../../package.json';
 import { sampleTabs } from './_constants';
-import { TabLabels, TabLabel } from '../../src/styled/TabsNav';
+import { Nav, NavItem } from '../../src/styled';
+
+const NOOP = () => {};
+const DefaultNav = ({ onKeyboardNav = NOOP, tabs = sampleTabs }) => (
+  <TabsNav onKeyboardNav={onKeyboardNav} tabs={tabs} />
+);
 
 describe(name, () => {
   describe('TabsNav', () => {
-    const kbNav = () => {};
-
     describe('exports', () => {
       it('the TabsNav component', () => {
         expect(TabsNav).not.toBe(undefined);
-        expect(new TabsNav()).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<TabsNav onKeyboardNav={kbNav} />);
+        const wrapper = shallow(<DefaultNav />);
         expect(wrapper).not.toBe(undefined);
-        expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render a list container', () => {
-        const wrapper = shallow(<TabsNav />);
-        expect(wrapper.type()).toBe('div');
-        const tabLabel = wrapper.find(TabLabels);
-        expect(tabLabel.length).toBe(1);
-        expect(tabLabel.props().role).toBe('tablist');
+        const wrapper = mount(<DefaultNav />);
+        expect(wrapper.getDOMNode().nodeName).toBe('DIV');
+        const navList = wrapper.find(Nav);
+        expect(navList.length).toBe(1);
+        expect(navList.prop('role')).toBe('tablist');
       });
     });
 
     describe('props', () => {
       describe('tabs prop', () => {
         it('should render a matching list item for each tab', () => {
-          const wrapper = shallow(<TabsNav tabs={sampleTabs} onKeyboardNav={kbNav} />);
-          const items = wrapper.find(TabLabel);
+          const wrapper = mount(<DefaultNav />);
+          const items = wrapper.find(NavItem);
           expect(items).toHaveLength(sampleTabs.length);
 
           items.forEach((item, i) => {
-            expect(item.props()['aria-posinset']).toBe(i + 1);
-            expect(item.props()['aria-setsize']).toBe(sampleTabs.length);
-            expect(item.props().role).toBe('tab');
-            expect(item.props().tabIndex).toBe(sampleTabs[i].isSelected ? 0 : -1);
-            expect(item.props().children).toBe(sampleTabs[i].label);
+            expect(item.prop('aria-posinset')).toBe(i + 1);
+            expect(item.prop('aria-setsize')).toBe(sampleTabs.length);
+            expect(item.prop('role')).toBe('tab');
+            expect(item.prop('tabIndex')).toBe(sampleTabs[i].isSelected ? 0 : -1);
+            expect(item.prop('children')[0]).toBe(sampleTabs[i].label);
+
             if (sampleTabs[i].isSelected) {
-              expect(item.props()['aria-selected']).toBe(sampleTabs[i].isSelected);
-              expect(item.props().isSelected).toBe(true);
+              expect(item.prop('aria-selected')).toBe(sampleTabs[i].isSelected);
+              expect(item.prop('isSelected')).toBe(true);
             }
           });
         });
@@ -63,7 +66,7 @@ describe(name, () => {
               onKeyboardNav={spy}
               tabs={sampleTabs}
             />);
-            wrapper.find(TabLabel).at(1).simulate('keyDown', { key });
+            wrapper.find(NavItem).at(1).simulate('keyDown', { key });
             expect(spy).toHaveBeenCalledTimes(1);
             expect(spy.mock.calls[0][0]).toBe(key);
           });

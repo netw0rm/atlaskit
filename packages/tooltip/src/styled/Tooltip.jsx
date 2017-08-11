@@ -1,9 +1,14 @@
+/* eslint-disable no-confusing-arrow */
+
+/* TODO: finish migrating constants from util-shared-styles */
+
 import styled, { keyframes } from 'styled-components';
 import {
   akAnimationMixins,
-  akColorN900,
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
+
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 const { createBold, interpolate } = akAnimationMixins;
 
@@ -55,23 +60,31 @@ const KEYFRAMES_FLIPPED = {
   right: KEYFRAMES.left,
   top: KEYFRAMES.bottom,
 };
-const getKeyframeName = ({ isFlipped, position }) => (isFlipped
+const getKeyframeName = ({ isFlipped, position }) => isFlipped
   ? KEYFRAMES_FLIPPED[position]
-  : KEYFRAMES[position]
-);
+  : KEYFRAMES[position];
+
+const backgroundColor = themed({
+  light: colors.N800,
+  dark: colors.DN0,
+});
+const textColor = themed({
+  light: colors.N0,
+  dark: colors.DN600,
+});
 
 // apply all the things
 export default styled.div`
   animation: ${getKeyframeName} ${animTime}s ${animDelay}s backwards;
-  background-color: ${akColorN900};
-  border-radius: 3px;
+  background-color: ${backgroundColor};
+  border-radius: ${borderRadius}px;
   box-sizing: border-box;
-  color: white;
+  color: ${textColor};
   font-size: ${fontSize}px;
-  line-height: ${(4 * grid) / (fontSize)};
-  margin: ${2 * grid}px;
-  max-width: ${105 * grid}px;
-  padding: ${grid / 2}px ${2 * grid}px;
+  line-height: ${(4 * grid) / fontSize};
+  margin: ${gridSize}px;
+  max-width: ${math.multiply(gridSize, 52)}px;
+  padding: ${math.divide(gridSize, 4)}px ${gridSize}px;
   pointer-events: none;
   white-space: nowrap;
 `;

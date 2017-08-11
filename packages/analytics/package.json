@@ -22,7 +22,9 @@
   "files": [
     "dist"
   ],
-  "devDependencies": {},
+  "devDependencies": {
+    "@atlaskit/theme": "^1.0.0"
+  },
   "dependencies": {
     "prop-types": "^15.5.10"
   },

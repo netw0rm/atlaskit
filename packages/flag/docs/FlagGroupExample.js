@@ -1,37 +1,43 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import Button from '@atlaskit/button';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
+import { getFlagData } from './utils';
 
-const Icon = <WarningIcon label="Info icon" />;
+// NOTE: Temp use internal Portal until LayerManager component is implemented
+import Portal from './Portal';
 
-const SingleFlag = props => (
-  <Flag
-    {...props}
-    icon={Icon}
-    id="flag-1"
-    key="flag-1"
-    title="The Internet seems to be full"
-    description="Somebody forgot to upgrade the storage on the information superhighway."
-  />
-);
+export default class FlagGroupExample extends Component {
+  state = { flags: [] }
+  flagCount = 0
 
-export default class FlagGroupExample extends PureComponent {
-  state = {
-    showFlag: false,
+  addFlag = () => {
+    const flags = this.state.flags.slice();
+    flags.unshift(getFlagData(this.flagCount++));
+    this.setState({ flags });
   }
 
-  toggleFlag = () => {
-    this.setState({ showFlag: !this.state.showFlag });
+  dismissFlag = (flagId) => {
+    console.info(`Flag "${flagId + 1}" dismissed.`);
+    this.setState(state => ({ flags: state.flags.slice(1) }));
+    this.flagCount--;
   }
 
   render() {
+    const actions = [
+      { content: 'Nice one!', onClick: () => console.info('"Nice one!" clicked.') },
+      { content: 'Not right now thanks', onClick: this.dismissFlag },
+    ];
+
     return (
       <div>
-        <FlagGroup onDismissed={this.toggleFlag}>
-          {this.state.showFlag ? <SingleFlag /> : null}
-        </FlagGroup>
-        <Button onClick={this.toggleFlag}>Toggle Flag</Button>
+        <Portal>
+          <FlagGroup onDismissed={this.dismissFlag}>
+            {this.state.flags.map(flag => (
+              <Flag actions={actions} {...flag} />
+            ))}
+          </FlagGroup>
+        </Portal>
+        <Button onClick={this.addFlag}>Add Flag</Button>
       </div>
     );
   }

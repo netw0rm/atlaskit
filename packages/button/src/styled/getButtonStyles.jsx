@@ -1,14 +1,6 @@
 import { css } from 'styled-components';
-import {
-  akGridSizeUnitless,
-  akFontSizeDefault,
-  akBorderRadius,
-} from '@atlaskit/util-shared-styles';
+import { borderRadius, fontSize, gridSize, math } from '@atlaskit/theme';
 import themeDefinitions from './themeDefinitions';
-
-const akFontSizeUnitless = parseInt(akFontSizeDefault, 10);
-const buttonHeight = `${(akGridSizeUnitless * 4) / akFontSizeUnitless}em`;
-const compactButtonHeight = `${(akGridSizeUnitless * 3) / akFontSizeUnitless}em`;
 
 const getState = ({
   disabled,
@@ -26,11 +18,10 @@ const getState = ({
 };
 
 export const getPropertyAppearance = (property, props = {}, definitions = themeDefinitions) => {
-  const { appearance, theme } = props;
-  const { themes, fallbacks } = definitions;
+  const { appearance } = props;
+  const { fallbacks, theme } = definitions;
 
-  const themeStyles = themes[theme] || themes.default;
-  const appearanceStyles = themeStyles[appearance] || themeStyles.default;
+  const appearanceStyles = theme[appearance] || theme.default;
   const propertyStyles = appearanceStyles[property];
 
   if (!propertyStyles) {
@@ -43,15 +34,18 @@ export const getPropertyAppearance = (property, props = {}, definitions = themeD
 };
 
 export default function getButtonStyles(props) {
+  const baseSize = fontSize(props);
+  const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(props)}em`;
+  const compactButtonHeight = `${math.divide(math.multiply(gridSize, 3), baseSize)(props)}em`;
+
   /**
    * Variable styles
    */
   let cursor = 'default';
-  let boxShadow = 'none';
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
-  let padding = `0 ${akGridSizeUnitless}px`;
+  let padding = `0 ${gridSize(props)}px`;
   let pointerEvents = 'auto';
   let transitionDuration = '0.1s, 0.15s';
   let transition = 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)';
@@ -64,6 +58,7 @@ export default function getButtonStyles(props) {
   const background = getPropertyAppearance('background', props);
   const color = getPropertyAppearance('color', props);
   const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
+  const boxShadow = boxShadowColor ? `0 0 0 2px ${boxShadowColor(props)}` : null;
   const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact
@@ -93,7 +88,6 @@ export default function getButtonStyles(props) {
 
   // Interaction: Focus
   if (props.isFocus) {
-    boxShadow = `0 0 0 2px ${boxShadowColor}`;
     outline = 'none';
     transitionDuration = '0s, 0.2s';
   }
@@ -109,15 +103,17 @@ export default function getButtonStyles(props) {
     width = '100%';
   }
 
+  /* Note use of !important to override the ThemeReset on anchor tag styles */
+
   return css`
     align-items: baseline;
     background: ${background};
     box-sizing: border-box;
     box-shadow: ${boxShadow};
-    border-radius: ${akBorderRadius};
+    border-radius: ${borderRadius}px;
     border-width: 0;
     width: ${width};
-    color: ${color};
+    color: ${color} !important;
     cursor: ${cursor};
     display: inline-flex;
     font-style: normal;
@@ -125,7 +121,7 @@ export default function getButtonStyles(props) {
     height: ${height};
     line-height: ${lineHeight};
     margin: 0;
-    outline: ${outline};
+    outline: ${outline} !important;
     padding: ${padding};
     pointer-events: ${pointerEvents};
     text-align: center;

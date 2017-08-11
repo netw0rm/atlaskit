@@ -13,8 +13,18 @@ const ComplexMenuExample = () => (
     onOpenChange={e => console.log('dropdown opened', e)}
   >
     <DropdownItemGroupRadio id="cities">
-      <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
-      <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
+      <DropdownItemGroupRadio title="Australia">
+        <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
+      </DropdownItemGroupRadio>
+      <DropdownItemGroupRadio title="United States">
+        <DropdownItemRadio id="san-francisco">San Francisco</DropdownItemRadio>
+        <DropdownItemRadio id="austin">Austin</DropdownItemRadio>
+      </DropdownItemGroupRadio>
+      <DropdownItemGroupRadio title="Elsewhere">
+        <DropdownItemRadio id="amsterdam">Amsterdam</DropdownItemRadio>
+        <DropdownItemRadio id="yokohama">Yokohama</DropdownItemRadio>
+        <DropdownItemRadio id="manila">Manila</DropdownItemRadio>
+      </DropdownItemGroupRadio>
     </DropdownItemGroupRadio>
   </DropdownMenu>
 );

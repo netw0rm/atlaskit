@@ -42,10 +42,11 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.2",
-    "@atlaskit/util-readme": "^3.2.1",
-    "@atlaskit/multi-select": "*",
+    "@atlaskit/button": "^1.0.0",
     "@atlaskit/code": "2.1.1",
-    "@atlaskit/button": "^1.0.0"
+    "@atlaskit/multi-select": "*",
+    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/util-readme": "^3.2.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

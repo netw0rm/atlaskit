@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Badge"
+    "name": "Badge",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -24,6 +25,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/theme": "^1.0.0",
     "@atlaskit/util-shared-styles": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",

@@ -15,18 +15,19 @@ import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 
 import { size } from '@atlaskit/icon';
-import Button from '@atlaskit/button';
+import Btn from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 
 const IconRow = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-top: 10px;
+  margin-top: 8px;
+  min-height: 60px;
 `;
 
 const IconWrapper = styled.span`
-  margin: 5px;
+  margin: 4px;
 `;
 
 const demoIcons = [
@@ -43,6 +44,8 @@ const demoIcons = [
   ArrowRightIcon,
   ArrowUpIcon,
 ];
+
+const Button = props => <div style={{ marginRight: 4 }}><Btn {...props} /></div>;
 
 class IconSizeExample extends PureComponent {
   state = {

@@ -6,24 +6,17 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-jsx';
 import ToggleIcon from '@atlaskit/icon/glyph/code';
 import 'prismjs/themes/prism-tomorrow.css';
-import {
-  akColorN20,
-  akColorN30,
-  akColorN60,
-  akColorN600,
-  akColorN700,
-  akColorN800,
 
-  akGridSize,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize, themed } from '@atlaskit/theme';
 
 const formatSrc = src => Prism.highlight(src, Prism.languages.jsx);
 
-export const ExampleSource = ({ isSourceClosing = false, handleAnimationEnd = () => {}, src }) => (
-  <Code
-    closing={isSourceClosing}
-    onAnimationEnd={handleAnimationEnd}
-  >
+export const ExampleSource = ({
+  isSourceClosing = false,
+  handleAnimationEnd = () => {},
+  src,
+}) => (
+  <Code closing={isSourceClosing} onAnimationEnd={handleAnimationEnd}>
     <pre>
       <code dangerouslySetInnerHTML={{ __html: formatSrc(src) }} />
     </pre>
@@ -34,7 +27,7 @@ export default class Example extends PureComponent {
   state = {
     isSourceClosing: false,
     isSourceVisible: false,
-  }
+  };
 
   toggleSource = () => {
     const { isSourceClosing, isSourceVisible } = this.state;
@@ -47,7 +40,7 @@ export default class Example extends PureComponent {
     } else {
       this.setState({ isSourceClosing: true });
     }
-  }
+  };
   handleAnimationEnd = () => {
     const { isSourceClosing } = this.state;
 
@@ -57,7 +50,7 @@ export default class Example extends PureComponent {
       isSourceClosing: false,
       isSourceVisible: false,
     });
-  }
+  };
 
   render() {
     const { Component, title, src } = this.props;
@@ -66,24 +59,31 @@ export default class Example extends PureComponent {
       ? 'Hide Code Snippet'
       : 'Show Code Snippet';
 
+    const state = isHover ? 'hover' : 'normal';
+    const mode = isSourceVisible ? 'open' : 'closed';
+
     return (
-      <Wrapper hover={isHover} open={isSourceVisible}>
+      <Wrapper state={state} mode={mode}>
         <Toggle
           onClick={this.toggleSource}
           onMouseOver={() => this.setState({ isHover: true })}
           onMouseOut={() => this.setState({ isHover: false })}
           title={toggleLabel}
-          open={isSourceVisible}
+          mode={mode}
         >
-          <ToggleTitle>{title}</ToggleTitle>
+          <ToggleTitle mode={mode}>
+            {title}
+          </ToggleTitle>
           <ToggleIcon label={toggleLabel} />
         </Toggle>
 
-        {isSourceVisible ? <ExampleSource
-          src={src}
-          handleAnimationEnd={this.handleAnimationEnd}
-          isSourceClosing={isSourceClosing}
-        /> : null}
+        {isSourceVisible
+          ? <ExampleSource
+            src={src}
+            handleAnimationEnd={this.handleAnimationEnd}
+            isSourceClosing={isSourceClosing}
+          />
+          : null}
         <Showcase>
           <Component />
         </Showcase>
@@ -94,35 +94,42 @@ export default class Example extends PureComponent {
 
 const TRANSITION_DURATION = '200ms';
 
-const getWrapperBg = (props) => {
-  let color = akColorN20;
-
-  if (props.open && props.hover) color = akColorN700;
-  else if (props.open) color = akColorN600;
-  else if (props.hover) color = akColorN30;
-
-  return color;
+const exampleBackgroundColor = {
+  open: themed('state', {
+    normal: { light: colors.N600, dark: colors.N700 },
+    hover: { light: colors.N700, dark: colors.N600 },
+  }),
+  closed: themed('state', {
+    normal: { light: colors.N20, dark: colors.DN50 },
+    hover: { light: colors.N30, dark: colors.DN60 },
+  }),
 };
+const toggleColor = themed('mode', {
+  closed: { light: colors.N600, dark: colors.DN100 },
+  open: { light: colors.DN600, dark: colors.DN600 },
+});
 
 const Wrapper = styled.div`
-  background-color: ${getWrapperBg};
+  background-color: ${p => exampleBackgroundColor[p.mode]};
   border-radius: 5px;
+  color: ${toggleColor};
   margin-top: 20px;
-  padding: 0 ${akGridSize} ${akGridSize};
+  padding: 0 ${gridSize}px ${gridSize}px;
   transition: background-color ${TRANSITION_DURATION};
 `;
 
 const Toggle = styled.div`
   align-items: center;
-  color: ${props => (props.open ? 'white' : akColorN600)};
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  padding: ${akGridSize};
+  padding: ${gridSize}px;
   transition: color ${TRANSITION_DURATION}, fill ${TRANSITION_DURATION};
 `;
+
+// NOTE: use of important necessary to override element targeted headings
 const ToggleTitle = styled.h4`
-  color: inherit;
+  color: ${toggleColor} !important;
   margin: 0;
 `;
 
@@ -135,14 +142,15 @@ const animOut = keyframes`
   to { max-height: 0; opacity: 0; }
 `;
 const Code = styled.div`
-  animation: ${props => (props.closing ? animOut : animIn)} ${TRANSITION_DURATION} ease-out;
-  background-color: ${akColorN800};
+  animation: ${props => (props.closing ? animOut : animIn)}
+    ${TRANSITION_DURATION} ease-out;
+  background-color: ${themed({ light: colors.N800, dark: colors.N800 })};
   border-radius: 3px;
-  color: ${akColorN60};
+  color: ${themed({ light: colors.N60, dark: colors.N60 })};
   display: block;
-  margin: 0 0 ${akGridSize};
+  margin: 0 0 ${gridSize}px;
   overflow-x: auto;
-  padding: ${akGridSize};
+  padding: ${gridSize}px;
 
   & code {
     font-family: Monaco, Menlo, monospace;
@@ -151,8 +159,8 @@ const Code = styled.div`
 `;
 
 const Showcase = styled.div`
-  background-color: white;
+  background-color: ${colors.background};
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-  padding: ${akGridSize};
+  padding: ${gridSize}px;
 `;

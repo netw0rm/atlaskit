@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Dropdown Menu"
+    "name": "Dropdown Menu",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -46,6 +47,7 @@
     "@atlaskit/util-readme": "^3.6.1",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^3.4.1",
+    "@atlaskit/theme": "^1.0.0",
     "@atlaskit/tooltip": "^3.4.1"
   },
   "peerDependencies": {

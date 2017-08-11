@@ -47,7 +47,7 @@
     "@atlaskit/util-readme": "^3.6.1",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^3.4.1",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/tooltip": "^3.4.1"
   },
   "peerDependencies": {

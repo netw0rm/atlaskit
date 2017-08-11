@@ -41,7 +41,7 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/field-radio-group": "*",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {

@@ -41,7 +41,7 @@
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/single-select": "*",
     "@atlaskit/tooltip": "^1.2.0",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

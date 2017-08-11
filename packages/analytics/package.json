@@ -23,7 +23,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@atlaskit/theme": "^1.0.0"
+    "@atlaskit/theme": "^2.0.0"
   },
   "dependencies": {
     "prop-types": "^15.5.10"

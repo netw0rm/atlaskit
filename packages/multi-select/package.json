@@ -45,7 +45,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/code": "2.1.1",
     "@atlaskit/multi-select": "*",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^3.2.1"
   },
   "author": "Atlassian Pty Ltd",

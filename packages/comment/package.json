@@ -39,7 +39,7 @@
     "@atlaskit/flag": "^2.2.0",
     "@atlaskit/modal-dialog": "^2.1.2",
     "@atlaskit/tooltip": "^1.1.0",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^3.1.0"
   },
   "author": "Atlassian Pty Ltd",

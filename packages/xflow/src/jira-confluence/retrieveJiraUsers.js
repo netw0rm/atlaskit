@@ -79,17 +79,19 @@ const getUsersInGroup = async (group) => {
 /**
  * Loop over all jira groups, compile user list, and return a sorted list of user items
  */
-export default async (group = 'everyone') => {
+export default async (group = 'everyone', useCache = true) => {
   // Fetching the set of users for the specific users list is the same set as 'everyone'
   const fetchGroup = group === 'specific-users' ? 'everyone' : group;
 
+  if (useCache) {
   // Avoid fetching twice.
-  if (cache.has(fetchGroup)) {
-    const data = cache.get(fetchGroup);
-    if (Date.now() - data.timestamp < CACHE_TIMEOUT) {
-      return await data.promise;
+    if (cache.has(fetchGroup)) {
+      const data = cache.get(fetchGroup);
+      if (Date.now() - data.timestamp < CACHE_TIMEOUT) {
+        return await data.promise;
+      }
+      cache.delete(fetchGroup);
     }
-    cache.delete(fetchGroup);
   }
 
   const p = getUsersInGroup(fetchGroup);

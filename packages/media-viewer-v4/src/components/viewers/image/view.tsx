@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {ImageViewerWrapper, Image} from './styled';
 import {ViewerTools} from '../../viewerTools';
 import {ViewerLoading} from '../../shared/viewerLoading';
 import {ViewerError} from '../../shared/viewerError';
+import {ImageViewerWrapper, Image} from './styled';
 
 export interface ImageViewProps {
-  imageURL?: string;
+  url?: string;
   error?: string;
   zoomLevel?: number;
   onLoadError?: () => void;
@@ -14,35 +14,29 @@ export interface ImageViewProps {
   onZoomFit?: () => void;
 }
 
-export interface ImageViewState {
-}
+export function ImageView(props: ImageViewProps) {
+  const {url, error} = props;
 
-export class ImageView extends React.Component<ImageViewProps, ImageViewState> {
-
-  render() {
-    const {imageURL, error} = this.props;
-
-    if (error) {
-      return <ViewerError error={error}/>;
-    } else if (!imageURL) {
-      return <ViewerLoading/>;
-    } else {
-        const {onLoadError, zoomLevel = 100, onZoomOut, onZoomIn, onZoomFit} = this.props;
-        const scaleValue = zoomLevel / 100;
-        const transform = `scale(${scaleValue}) translateZ(0)`;
-        return (
-        <ImageViewerWrapper>
-          <Image onError={onLoadError} src={imageURL} style={{transform}}/>
-          <ViewerTools
-            onZoomOut={onZoomOut}
-            onZoomIn={onZoomIn}
-            onZoomFit={onZoomFit}
-            zoomLevel={zoomLevel}
-            isEditing={false}
-          />
-        </ImageViewerWrapper>
-      );
-    }
+  if (error) {
+    return <ViewerError error={error}/>;
+  } else if (!url) {
+    return <ViewerLoading/>;
+  } else {
+      const {onLoadError, zoomLevel = 100, onZoomOut, onZoomIn, onZoomFit} = props;
+      const scaleValue = zoomLevel / 100;
+      const transform = `scale(${scaleValue}) translateZ(0)`;
+      return (
+      <ImageViewerWrapper>
+        <Image onError={onLoadError} src={url} style={{transform}}/>
+        <ViewerTools
+          onZoomOut={onZoomOut}
+          onZoomIn={onZoomIn}
+          onZoomFit={onZoomFit}
+          zoomLevel={zoomLevel}
+          isEditing={false}
+        />
+      </ImageViewerWrapper>
+    );
   }
-
 }
+

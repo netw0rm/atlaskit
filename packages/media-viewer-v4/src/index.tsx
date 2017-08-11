@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Context, FileItem, FileDetails, MediaCollection} from '@atlaskit/media-core';
 import {Main} from './components/main';
 import {ImageFetcher} from './components/viewers/image';
+import {PDFFetcher} from './components/viewers/pdf';
 
 // TODO: refactor, this exists in `media-card` too
 export interface MediaIdentifier {
@@ -119,10 +120,12 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     const provider = context.getMediaCollectionProvider(collectionName, 20);
     provider.observable().subscribe({
       next: (collection: MediaCollection) => {
+        console.log('total items:', collection.items.length);
         const items = collection.items
           .filter(item => item.type === 'file')
           .map(item => item.details)
         ;
+        console.log('file items:', items.length);
         this.setState({items});
       },
       error: (error: Error) => this.setState({error})
@@ -171,7 +174,13 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
       return (
         <ImageFetcher context={context} details={details} collectionName={this.currentItemCollectionName}/>
       );
+    } else if (details.mediaType === 'doc') {
+      const {context} = this.props;
+      return (
+        <PDFFetcher context={context} details={details} collectionName={this.currentItemCollectionName}/>
+      );
     }
+
     // } else if (mediaType === 'video') {
     //   viewer = <VideoViewer context={context} metadata={metadata} identifier={identifer} />;
     // } else if (mediaType === 'audio') {

@@ -18,7 +18,7 @@ export function canGoNext() {
 export function image() {
   return (
     <Main>
-      <ImageView imageURL="http://www.australia.com/content/australia/en/places/red-centre/nt-uluru/_jcr_content/hero/image.adapt.1920.medium.jpg"/>
+      <ImageView url="http://www.australia.com/content/australia/en/places/red-centre/nt-uluru/_jcr_content/hero/image.adapt.1920.medium.jpg"/>
     </Main>
   );
 }

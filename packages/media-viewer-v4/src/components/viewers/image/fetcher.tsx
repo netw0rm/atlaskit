@@ -10,7 +10,7 @@ export interface ImageFetcherProps {
 }
 
 export interface ImageFetcherState {
-  imageURL?: string;
+  url?: string;
   error?: string;
   zoomLevel: number;
 }
@@ -34,27 +34,27 @@ export class ImageFetcher extends React.Component<ImageFetcherProps, ImageFetche
   }
 
   handleError = () => {
-    const {imageURL} = this.state;
-    this.setState({error: `Couldn't load ${imageURL}`});
+    const {url} = this.state;
+    this.setState({error: `Couldn't load ${url}`});
   }
 
   async componentDidMount() {
     const {context, details, collectionName} = this.props;
     try {
-      const imageURL = await getFileBinaryUrl(details, context, collectionName);
+      const url = await getFileBinaryUrl(details, context, collectionName);
       setTimeout(() =>{ // TODO: for testing purposed. Please remove before used
-        this.setState({imageURL, error: undefined});
+        this.setState({url, error: undefined});
       }, 500);
     } catch(error) {
-      this.setState({imageURL: undefined, error: 'Error fetching image'});
+      this.setState({url: undefined, error: 'Error fetching image'});
     }
   }
 
   render() {
-    const {imageURL, zoomLevel, error} = this.state;
+    const {url, zoomLevel, error} = this.state;
     return (
       <ImageView
-        imageURL={imageURL}
+        url={url}
         error={error}
         zoomLevel={zoomLevel}
         onLoadError={this.handleError}

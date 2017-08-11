@@ -4,15 +4,15 @@ import {ImageView} from '../../src/components/viewers/image';
 
 const exampleUrl = 'http://www.australia.com/content/australia/en/places/red-centre/nt-uluru/_jcr_content/hero/image.adapt.1920.medium.jpg';
 
-export function success () {
+export function success() {
   return(
     <Main>
-      <ImageView imageURL={exampleUrl} />
+      <ImageView url={exampleUrl} />
     </Main>
   );
 }
 
-export function error () {
+export function error() {
   return(
     <Main>
       <ImageView error="Error loading image" />
@@ -20,7 +20,7 @@ export function error () {
   );
 }
 
-export function loading () {
+export function loading() {
   return(
     <Main>
       <ImageView />
@@ -28,18 +28,18 @@ export function loading () {
   );
 }
 
-export function highZoomLevel () {
+export function highZoomLevel() {
   return(
     <Main>
-      <ImageView zoomLevel={200} imageURL={exampleUrl} />
+      <ImageView zoomLevel={200} url={exampleUrl} />
     </Main>
   );
 }
 
-export function lowZoomLevel () {
+export function lowZoomLevel() {
   return(
     <Main>
-      <ImageView zoomLevel={20} imageURL={exampleUrl} />
+      <ImageView zoomLevel={20} url={exampleUrl} />
     </Main>
   );
 }

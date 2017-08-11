@@ -14,7 +14,8 @@ describe(name, () => {
     let editorView: EditorView;
     beforeEach(() => {
       const editor = createEditor();
-      editorActions = editor.editorActions;
+      editorActions = new EditorActions();
+      editorActions._privateRegisterEditor(editor.editorView);
       editorView = editor.editorView;
     });
 

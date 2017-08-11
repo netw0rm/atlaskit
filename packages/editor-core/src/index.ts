@@ -76,3 +76,5 @@ export {
 export { colorPalette } from './schema/marks/text-color';
 
 export { default as Editor } from './editor';
+export { default as EditorContext } from './editor/ui/EditorContext';
+export { default as WithEditorActions } from './editor/ui/WithEditorActions';

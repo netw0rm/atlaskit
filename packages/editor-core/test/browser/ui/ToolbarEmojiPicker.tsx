@@ -7,7 +7,7 @@ import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
-import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';

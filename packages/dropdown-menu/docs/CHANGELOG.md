@@ -1,6 +1,12 @@
 # @atlaskit/dropdown-menu
 
-## Unreleased
+## 3.5.1 (2017-08-10)
+
+* bug fix; handle missing context in dropdown items gracefully (issues closed: ak-2590) ([5a36eea](https://bitbucket.org/atlassian/atlaskit/commits/5a36eea))
+
+
+
+
 
 ## 3.5.0 (2017-07-28)
 

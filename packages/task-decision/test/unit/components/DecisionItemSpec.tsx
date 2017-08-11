@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import DecisionItem, { ContentWrapper } from '../../../src/components/DecisionItem';
+import DecisionItem from '../../../src/components/DecisionItem';
+import { ContentWrapper, Placeholder } from '../../../src/styled/DecisionItem';
 
 describe('<DecisionItem/>', () => {
   it('should render children', () => {
@@ -21,4 +22,19 @@ describe('<DecisionItem/>', () => {
     expect(contentRef).not.toBe(undefined);
     expect(contentRef!.textContent).toBe('Hello world');
   });
+
+  describe('showPlaceholder', () => {
+    it('shoud render placeholder if decision is empty', () => {
+      const component = mount(<DecisionItem showPlaceholder={true} />);
+      expect(component.find(Placeholder).length).toEqual(1);
+    });
+
+    it('should not render placeholder deciision is not empy', () => {
+      const component = mount(
+        <DecisionItem showPlaceholder={true}>Hello <b>world</b></DecisionItem>
+      );
+      expect(component.find(Placeholder).length).toEqual(0);
+    });
+  });
+
 });

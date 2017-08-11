@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.4.1",
+  "version": "45.8.0",
   "config": {
     "access": "public"
   },
@@ -22,8 +22,10 @@
     "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
-    "dist/es5",
-    "dist/es2015",
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
     "dist/json-schema",
     "src"
   ],
@@ -49,14 +51,14 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^22.3.1",
+    "@atlaskit/emoji": "^23.0.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.1",
     "@atlaskit/media-card": "^18.0.2",
     "@atlaskit/media-core": "^8.4.1",
     "@atlaskit/media-filmstrip": "^5.1.2",
     "@atlaskit/mention": "^7.3.0",
-    "@atlaskit/profilecard": "^3.6.3",
+    "@atlaskit/profilecard": "^3.6.4",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/task-decision": "^2.1.1",

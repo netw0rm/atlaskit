@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 45.8.0 (2017-08-11)
+
+* bug fix; Merged in fix/ED-2392-ignore-ts-files-package-json (pull request #3794) (issues closed: ed-2392) ([681d5fa](https://bitbucket.org/atlassian/atlaskit/commits/681d5fa))
+* feature; add EditorActions object (issues closed: ed-2413) ([de98577](https://bitbucket.org/atlassian/atlaskit/commits/de98577))
+## 45.7.0 (2017-08-10)
+
+
+* feature; adding placeholders for tasks/decisions ([4d4c5eb](https://bitbucket.org/atlassian/atlaskit/commits/4d4c5eb))
+* bug fix; build Markdown to ProseMirror mapping based on Schema ([2d686af](https://bitbucket.org/atlassian/atlaskit/commits/2d686af))
+## 45.6.1 (2017-08-10)
+
+* bug fix; npmignore fails to work (issues closed: ed-2392) ([beb1872](https://bitbucket.org/atlassian/atlaskit/commits/beb1872))
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
+## 45.5.0 (2017-08-09)
+
+
+
+* bug fix; fix prop types ([406114a](https://bitbucket.org/atlassian/atlaskit/commits/406114a))
+* feature; adding usupport to fetch initial state and toggle state ([416ce4e](https://bitbucket.org/atlassian/atlaskit/commits/416ce4e))
+* feature; add loading state for link card (issues closed: ed-2383) ([a7ed3e0](https://bitbucket.org/atlassian/atlaskit/commits/a7ed3e0))
 ## 45.4.1 (2017-08-09)
 
 * bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))

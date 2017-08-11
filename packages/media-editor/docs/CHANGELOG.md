@@ -1,6 +1,12 @@
 # @atlaskit/media-editor
 
-## Unreleased
+## 3.2.0 (2017-08-11)
+
+* feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
+
+
+
+
 
 ## 3.1.1 (2017-07-25)
 

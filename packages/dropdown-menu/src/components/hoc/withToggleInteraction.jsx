@@ -4,6 +4,7 @@ import React, { PropTypes, Component } from 'react';
 import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
 
 import getDisplayName from '../../util/getDisplayName';
+import safeContextCall from '../../util/safeContextCall';
 import { selectionManagerContext } from '../../util/contextNamespace';
 import type { ReactElement, Behaviors } from '../../types';
 
@@ -35,6 +36,8 @@ const withToggleInteraction = (
       return { primary: akColorN40, secondary: akColorN40 };
     }
 
+    callContextFn = safeContextCall(this, selectionManagerContext)
+
     handleKeyboard = (event: KeyboardEvent) => {
       const { key } = event;
       if (key === KEY_ENTER || key === KEY_SPACE) {
@@ -46,11 +49,11 @@ const withToggleInteraction = (
     }
 
     handleItemActivated = () => {
-      this.context[selectionManagerContext].itemClicked(this.props.id);
+      this.callContextFn('itemClicked', this.props.id);
     }
 
     isSelectedInDropdown = () => (
-      this.context[selectionManagerContext].isItemSelected(this.props.id)
+      this.callContextFn('isItemSelected', this.props.id)
     )
 
     render() {

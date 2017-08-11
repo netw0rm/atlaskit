@@ -1,5 +1,10 @@
 # @atlaskit/drag-and-drop
 
+## 4.5.4 (2017-08-11)
+
+* bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))
+
+
 ## 4.5.3 (2017-08-08)
 
 

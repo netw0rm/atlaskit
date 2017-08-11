@@ -22,8 +22,10 @@
     "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
-    "dist/es5",
-    "dist/es2015",
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
     "dist/json-schema",
     "src"
   ],

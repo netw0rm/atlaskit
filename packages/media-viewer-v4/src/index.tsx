@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {Context, FileItem, FileDetails, MediaCollection} from '@atlaskit/media-core';
-import getFileBinaryUrl from './utils/getFileBinaryURL';
-import {Frame} from './components/Frame';
-import {ImageViewer} from './components/ImageViewer';
+import {Main} from './components/main';
+import {ImageFetcher} from './components/viewers/image';
 
 // TODO: refactor, this exists in `media-card` too
 export interface MediaIdentifier {
@@ -22,7 +21,7 @@ function isAnArrayOfMediaIdentifiers(source: Source): source is MediaIdentifier[
   return Boolean(source) && (source as MediaIdentifier[]).forEach !== undefined;
 }
 
-function isACollection(source: Source): source is string {
+function isACollectionName(source: Source): source is string {
   return Boolean(source) && typeof source === 'string';
 }
 
@@ -55,6 +54,25 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
   get canGoNext(): boolean {
     const {index, items} = this.state;
     return index + 1 < items.length;
+  }
+
+  get currentItemCollectionName(): string | undefined {
+    const {source} = this.props;
+    const {index} = this.state;
+
+    if (isAMediaIdentifier(source)) {
+      return source.collectionName;
+    }
+
+    if (isAnArrayOfMediaIdentifiers(source)) {
+      return source[index].collectionName;
+    }
+
+    if (isACollectionName(source)) {
+      return source;
+    }
+
+    return undefined;
   }
 
   handleGoPrev = () => {
@@ -125,7 +143,7 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
       return;
     }
 
-    if (isACollection(source)) {
+    if (isACollectionName(source)) {
       this.fetchCollection(context, source);
       return;
     }
@@ -141,7 +159,7 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     const details = items[index];
 
     if (!details) {
-      return null;
+      return null; // TODO: figure out what to show whilst loading
     }
 
     // const {context, metadata, identifer} = this.props;
@@ -149,14 +167,9 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     // let viewer;
 
     if (details.mediaType === 'image') {
-      // const {context} = this.props;
-      // const imageURL = await getFileBinaryUrl(details, context);
-      const imageURL = 'https://images3.alphacoders.com/823/thumb-1920-82317.jpg';
-      console.log(imageURL);
+      const {context} = this.props;
       return (
-        <ImageViewer
-          imageURL={imageURL}
-        />
+        <ImageFetcher context={context} details={details} collectionName={this.currentItemCollectionName}/>
       );
     }
     // } else if (mediaType === 'video') {
@@ -167,7 +180,7 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     //   viewer = <PdfViewer context={context} metadata={metadata} identifier={identifer} />;
     // }
 
-    return null;
+    return <div>Not implemented</div>;
   }
 
   render() {
@@ -179,14 +192,14 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     }
 
     return (
-      <Frame
+      <Main
         canGoPrev={canGoPrev}
         canGoNext={canGoNext}
         onGoPrev={this.handleGoPrev}
         onGoNext={this.handleGoNext}
       >
         {this.renderViewer()}
-      </Frame>
+      </Main>
     );
   }
 

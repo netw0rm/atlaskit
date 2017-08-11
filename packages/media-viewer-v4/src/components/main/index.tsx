@@ -1,13 +1,13 @@
 import * as React from 'react';
-import Navigation from './components/Navigation';
-import ItemInfo from './components/ItemInfo';
+import Navigation from './navigation';
+import Overlay from './overlay';
 import {Wrapper, ViewerWrapper} from './styled';
 
 interface Item {
   name: string;
 }
 
-interface FrameProps {
+interface MainProps {
   item?: Item;
   canGoPrev?: boolean;
   canGoNext?: boolean;
@@ -16,10 +16,10 @@ interface FrameProps {
   children?: JSX.Element;
 }
 
-interface FrameState {
+interface MainState {
 }
 
-export class Frame extends React.PureComponent<FrameProps, FrameState> {
+export class Main extends React.PureComponent<MainProps, MainState> {
 
   static defaultProps = {
     canGoLeft: false,
@@ -46,7 +46,7 @@ export class Frame extends React.PureComponent<FrameProps, FrameState> {
     }
 
     return (
-      <ItemInfo name={'hello'}/>
+      <Overlay name={'hello'}/>
     );
   }
 

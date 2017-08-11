@@ -18,11 +18,6 @@ const cache = new Map();
  * @param groupName UM group that grants access to products (e.g. jira-software-users)
  * @param currentList current list of users
  * @param startIndex counter for current loop of user group
- * Example:
- * [
- *   {name: 'test2', displayName: 'test 2', email: 'test@example.com'},
- *   {name: 'mtruong', displayName: 'michael truong', email: 'mtruong@example.com'}
- * ]
  */
 const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
   const response = await fetch(usernamesEndpoint(groupName, startIndex), {
@@ -39,10 +34,7 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
 
   return result.length
     ? [
-      ...result.map(user => ({
-        displayName: user['display-name'],
-        ...user,
-      })),
+      ...result,
         // Only fetch more if there are likely to be more to fetch
       ...(result.length >= PAGINATION
           ? await getJiraActiveUsernamesList(groupName, startIndex + PAGINATION)
@@ -71,7 +63,7 @@ const getUsersInGroup = async (group) => {
       // The callback returns true when adding a new username to the set,
       // and false if it's already in there.
       .filter(user => !(usernames.has(user.name) || !usernames.add(user.name)))
-      .sort((a, b) => a.displayName.localeCompare(b.displayName));
+      .sort((a, b) => a['display-name'].localeCompare(b['display-name']));
   }
   return users;
 };

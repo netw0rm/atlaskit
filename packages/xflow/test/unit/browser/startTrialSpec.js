@@ -27,21 +27,24 @@ const noop = () => {};
 // More tests should try to extract actual copy from the ProviderConfig,
 // instead of being hardcoded in the test
 const getXFlowProviderConfig = () =>
-  mount(<JiraToConfluenceXFlowProvider><div /></JiraToConfluenceXFlowProvider>)
+  mount(
+    <JiraToConfluenceXFlowProvider>
+      <div />
+    </JiraToConfluenceXFlowProvider>
+  )
     .find('XFlowProvider')
-    .props()
-    .config;
+    .props().config;
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
-      { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
-      { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
-      { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
-      { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
-      { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
+      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com' },
+      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com' },
+      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com' },
+      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com' },
+      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com' },
     ]),
   startProductTrial: async () => {},
   cancelStartProductTrial: async () => {},
@@ -100,35 +103,44 @@ describe('@atlaskit/xflow', () => {
         });
       }));
 
-    it('should render Grant Access component with options', () =>
+    it('should render Grant Access component with options', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        // click on confirm
-        clickOnText(xflow.find(ConfirmTrial), 'Confirm');
-        return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
-          const grantAccess = xflow.find(GrantAccess);
-          clickOnText(grantAccess, 'Change...');
-          const grantAccessChooseOption = getXFlowProviderConfig()
-            .startTrial
-            .grantAccessChooseOption;
-          expect(grantAccess.text()).to.include(grantAccessChooseOption);
-          const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'everyone')[0].label;
-          expect(grantAccess.text()).to.include(everyoneLabel);
-          const siteAdminsLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'site-admins')[0].label;
-          expect(grantAccess.text()).to.include(siteAdminsLabel);
-          const specificUsersLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'specific-users')[0].label;
-          expect(grantAccess.text()).to.include(specificUsersLabel);
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      // click on confirm
+      clickOnText(xflow.find(ConfirmTrial), 'Confirm');
 
-          expect(grantAccess.text()).to.include('How will this affect my bill?');
+      await waitUntil(() => xflow.find(GrantAccess).length === 1);
 
-          // should render all users in retrieve users request
-          expect(grantAccess.text()).to.include('Lachlan Hunt');
-          expect(grantAccess.text()).to.include('Andrew Wakeling');
-          expect(grantAccess.text()).to.include('Andrew Hammond');
-          expect(grantAccess.text()).to.include('Michael Truong');
-          expect(grantAccess.text()).to.include('George Burrows');
-        });
-      }));
+      const grantAccess = xflow.find(GrantAccess);
+      clickOnText(grantAccess, 'Change...');
+
+      const grantAccessChooseOption = getXFlowProviderConfig().startTrial.grantAccessChooseOption;
+      expect(grantAccess.text()).to.include(grantAccessChooseOption);
+
+      const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'everyone'
+      )[0].label;
+      expect(grantAccess.text()).to.include(everyoneLabel);
+
+      const siteAdminsLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'site-admins'
+      )[0].label;
+      expect(grantAccess.text()).to.include(siteAdminsLabel);
+
+      const specificUsersLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'specific-users'
+      )[0].label;
+      expect(grantAccess.text()).to.include(specificUsersLabel);
+
+      expect(grantAccess.text()).to.include('How will this affect my bill?');
+
+      // should render all users in retrieve users request
+      expect(grantAccess.text()).to.include('Lachlan Hunt');
+      expect(grantAccess.text()).to.include('Andrew Wakeling');
+      expect(grantAccess.text()).to.include('Andrew Hammond');
+      expect(grantAccess.text()).to.include('Michael Truong');
+      expect(grantAccess.text()).to.include('George Burrows');
+    });
 
     it('should render Loading Time component after grant access flow', () =>
       // eventually render to start trial screen
@@ -145,8 +157,7 @@ describe('@atlaskit/xflow', () => {
             expect(waitingScreen.text()).to.include(
               'Hit the menu icon near your profile image to switch between products.'
             );
-            const goToProductButton = getXFlowProviderConfig()
-              .startTrial
+            const goToProductButton = getXFlowProviderConfig().startTrial
               .loadingProductGotoProductButton;
             expect(waitingScreen.text()).to.include(goToProductButton);
           });
@@ -185,8 +196,7 @@ describe('@atlaskit/xflow', () => {
           expect(waitingScreen.text()).to.include(
             'Hit the menu icon near your profile image to switch between products.'
           );
-          const goToProductButton = getXFlowProviderConfig()
-            .startTrial
+          const goToProductButton = getXFlowProviderConfig().startTrial
             .loadingProductGotoProductButton;
           expect(waitingScreen.text()).to.include(goToProductButton);
         });

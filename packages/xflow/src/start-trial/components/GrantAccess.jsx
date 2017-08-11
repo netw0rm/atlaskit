@@ -144,7 +144,7 @@ class GrantAccess extends Component {
         {
           items: selectableUsers.map(user => ({
             value: user.name,
-            content: user.displayName,
+            content: user['display-name'],
             description: user.email,
           })),
         },

@@ -9,18 +9,6 @@ import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
 import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
 import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
 
-const mapUser = user => ({
-  name: user.name,
-  displayName: user['display-name'],
-  'display-name': user['display-name'],
-  email: user.email,
-});
-
-const jiraSoftwareUsersOutput = jiraSoftwareUsersResponse.map(mapUser);
-const jiraServiceDeskUsersOutput = jiraServiceDeskUsersResponse.map(mapUser);
-// const jiraCoreUsersOutput = jiraCoreUsersResponse.map(mapUser);
-const jiraUsersOutput = jiraUsersResponse.map(mapUser);
-
 const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 const JIRA_CORE_GROUP = 'jira-core-users';
 const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
@@ -50,13 +38,17 @@ describe('retrieveJiraUsers', () => {
    * test scenario where there are some JIRA users
    */
   it('should emit array with compiled jira software users', async () => {
-    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 30), { method: 'GET' });
-    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 30), jiraSoftwareUsersResponse.slice(30), { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 30), {
+      method: 'GET',
+    });
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 30), jiraSoftwareUsersResponse.slice(30), {
+      method: 'GET',
+    });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     const response = await retrieveJiraUsers('everyone', false);
-    expect(response).toEqual(jiraSoftwareUsersOutput);
+    expect(response).toEqual(jiraSoftwareUsersResponse);
   });
 
   /**
@@ -65,52 +57,70 @@ describe('retrieveJiraUsers', () => {
   it('should emit array with compiled jira software and jira servicedesk users', async () => {
     // The first 5 users of the set of JSW and JSD users are non-overlapping. This ensures
     // that there are no duplicates in the expected output.
-    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0),
-      jiraSoftwareUsersResponse.slice(0, 5),
-      { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 5), {
+      method: 'GET',
+    });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
-    fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0),
+    fetchMock.mock(
+      usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0),
       jiraServiceDeskUsersResponse.slice(0, 5),
-      { method: 'GET' });
+      { method: 'GET' }
+    );
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     const response = await retrieveJiraUsers('everyone', false);
-    expect(response).toEqual(expect.arrayContaining([
-      ...jiraSoftwareUsersOutput.slice(0, 5),
-      ...jiraServiceDeskUsersOutput.slice(0, 5),
-    ]));
+    expect(response).toEqual(
+      expect.arrayContaining([
+        ...jiraSoftwareUsersResponse.slice(0, 5),
+        ...jiraServiceDeskUsersResponse.slice(0, 5),
+      ])
+    );
   });
 
   /**
    * test scenario where there are users in all groups, including some unique and shared
    */
-  it(
-    'should emit array all unique users from jira software, jira service desk and jira core groups',
-    async () => {
-      fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 30), jiraSoftwareUsersResponse.slice(30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), jiraCoreUsersResponse.slice(0, 30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 30), jiraCoreUsersResponse.slice(30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), jiraServiceDeskUsersResponse.slice(0, 30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 30), jiraServiceDeskUsersResponse.slice(30), { method: 'GET' });
-      fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
-      const response = await retrieveJiraUsers('everyone', false);
-      expect(response).toEqual(jiraUsersOutput);
+  it('should emit array all unique users from jira software, jira service desk and jira core groups', async () => {
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), jiraSoftwareUsersResponse.slice(0, 30), {
+      method: 'GET',
     });
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 30), jiraSoftwareUsersResponse.slice(30), {
+      method: 'GET',
+    });
+    fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), jiraCoreUsersResponse.slice(0, 30), {
+      method: 'GET',
+    });
+    fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 30), jiraCoreUsersResponse.slice(30), {
+      method: 'GET',
+    });
+    fetchMock.mock(
+      usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0),
+      jiraServiceDeskUsersResponse.slice(0, 30),
+      { method: 'GET' }
+    );
+    fetchMock.mock(
+      usersEndpoint(JIRA_SERVICE_DESK_GROUP, 30),
+      jiraServiceDeskUsersResponse.slice(30),
+      { method: 'GET' }
+    );
+    fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
+    const response = await retrieveJiraUsers('everyone', false);
+    expect(response).toEqual(jiraUsersResponse);
+  });
 
   /**
    * Test scenario when one of the requests in the chain fails
    */
-  it(
-    'should emit fetchUsersFailure action with expected payload when the users fail to be fetched',
-    async () => {
-      fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), 500, { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), jiraCoreUsersResponse, { method: 'GET' });
-      fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), jiraServiceDeskUsersResponse, { method: 'GET' });
-      fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
-      try {
-        await retrieveJiraUsers('everyone', false);
-      } catch (e) {
-        expect(e).toEqual(new Error('Unable to retrieve active jira users. Status: 500'));
-      }
+  it('should emit fetchUsersFailure action with expected payload when the users fail to be fetched', async () => {
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), 500, { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), jiraCoreUsersResponse, { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), jiraServiceDeskUsersResponse, {
+      method: 'GET',
     });
+    fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
+    try {
+      await retrieveJiraUsers('everyone', false);
+    } catch (e) {
+      expect(e).toEqual(new Error('Unable to retrieve active jira users. Status: 500'));
+    }
+  });
 });

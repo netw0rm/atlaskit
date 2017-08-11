@@ -22,17 +22,21 @@ function getAvatarUrl({ avatarUrls }) {
 
 function getAtlassianAccountId({ attributes: { attributes } }) {
   if (!attributes) return '';
-  return attributes.find(attr => attr.name === 'atlassianid.openid.identity') || '';
+  const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
+
+  return openIdAttr ? openIdAttr.link.href : '';
 }
 
 export default async (users) => {
   if (users.length === 0) {
-    return;
+    return {
+      status: 'SENT',
+      recipients: [],
+    };
   }
 
   const adminUsername = getCurrentUsername();
   const admin = queryUsername(adminUsername);
-
   const instance = getInstanceName();
 
   const grantedAccessBy = {
@@ -41,9 +45,9 @@ export default async (users) => {
   };
 
   const grantedAccessTo = users.map(user => ({
-    name: user.displayName,
+    name: user['display-name'],
     username: user.name,
-    atlassianAccountId: getAtlassianAccountId(),
+    atlassianAccountId: getAtlassianAccountId(user),
   }));
 
   const response = await fetch(NOTIFY_ENDPOINT, {
@@ -64,4 +68,5 @@ export default async (users) => {
       `Unable to notify users that they were granted access. Status: ${response.status}`
     );
   }
+  return await response.json();
 };

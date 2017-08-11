@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.8.1 (2017-08-11)
+
+* bug fix; aligning keyboard shortcuts for blocktypes to gmail. ([403c1ca](https://bitbucket.org/atlassian/atlaskit/commits/403c1ca))
 ## 45.8.0 (2017-08-11)
 
 * bug fix; Merged in fix/ED-2392-ignore-ts-files-package-json (pull request #3794) (issues closed: ed-2392) ([681d5fa](https://bitbucket.org/atlassian/atlaskit/commits/681d5fa))

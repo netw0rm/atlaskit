@@ -1,5 +1,17 @@
 # @atlaskit/button
 
+## 5.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+* bug fix; button: fix focus box shadow ([9746e73](https://bitbucket.org/atlassian/atlaskit/commits/9746e73))
+* bug fix; button: fix dark link color - default / hover / active ([7b85a29](https://bitbucket.org/atlassian/atlaskit/commits/7b85a29))
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; implement dark mode ([d959bb1](https://bitbucket.org/atlassian/atlaskit/commits/d959bb1))
+
+
 ## 4.0.0 (2017-08-11)
 
 

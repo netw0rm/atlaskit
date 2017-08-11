@@ -1,6 +1,15 @@
 # @atlaskit/inline-edit
 
-## Unreleased
+## 4.4.3 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
 
 ## 4.4.2 (2017-07-27)
 

@@ -21,7 +21,6 @@ import {
   table,
   tr,
   tdEmpty,
-  panel,
   tdCursor,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -56,54 +55,13 @@ describe('codeBlock - keymaps', () => {
     describe('keymap', () => {
     if (browser.mac) {
       context('when on a Mac', () => {
-        context('when hits Cmd-Alt-7', () => {
-          it('toggles paragraph', () => {
+        context('when hits Cmd-Alt-9', () => {
+          it('inserts blockquote', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-7');
+            sendKeyToPm(editorView, 'Cmd-Alt-9');
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
             expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when hits Cmd-Alt-8', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            const code = code_block({ language: null });
-
-            sendKeyToPm(editorView, 'Cmd-Alt-8');
-            expect(editorView.state.doc).to.deep.equal(doc(p('text'), code()));
-            expect(trackEvent.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when hits Cmd-Alt-9', () => {
-          it('toggles panel', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-9');
-            expect(editorView.state.doc).to.deep.equal(doc(panel(p('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.panel.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when panel nodetype is not in schema', () => {
-          it('corresponding keymaps should not work', () => {
-            const schema = createSchema({
-              nodes: [
-                'doc',
-                'paragraph',
-                'text',
-              ]
-            });
-            delete schema.nodes.panel;
-            const editor = (doc: any) => makeEditor({
-              doc,
-              plugins: blockTypePlugins(schema),
-              schema,
-            });
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-9');
-            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
 
@@ -133,38 +91,6 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'Shift-Enter');
             expect(editorView.state.doc).to.deep.equal(doc(h1('t', hardBreak(), 't')));
             expect(trackEvent.calledWith('atlassian.editor.newline.keyboard')).to.equal(true);
-          });
-        });
-      });
-    } else {
-      context('when not on a Mac', () => {
-        context('when hits Ctrl-7', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-7');
-
-            expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when hits Ctrl-8', () => {
-          it('toggles paragraph', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            const code = code_block({ language: null });
-
-            sendKeyToPm(editorView, 'Ctrl-8');
-            expect(editorView.state.doc).to.deep.equal(doc(p('text'), code()));
-            expect(trackEvent.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
-          });
-        });
-
-        context('when hits Ctrl-9', () => {
-          it('toggles panel', () => {
-            const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Ctrl-9');
-            expect(editorView.state.doc).to.deep.equal(doc(panel(p('text'))));
-            expect(trackEvent.calledWith('atlassian.editor.format.panel.keyboard')).to.equal(true);
           });
         });
       });

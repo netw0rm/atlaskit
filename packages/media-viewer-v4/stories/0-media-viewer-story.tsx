@@ -1,6 +1,7 @@
 import {storiesOf} from '@kadira/storybook';
-import render from './MediaViewerStories/render';
+import {image, collection} from './MediaViewerStories/render';
 
 storiesOf('MediaViewer', {})
- .add('default', render)
+ .add('Image', image)
+ .add('Collection', collection)
 ;

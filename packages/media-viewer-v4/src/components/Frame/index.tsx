@@ -19,7 +19,7 @@ interface FrameProps {
 interface FrameState {
 }
 
-export class Frame extends React.Component<FrameProps, FrameState> {
+export class Frame extends React.PureComponent<FrameProps, FrameState> {
 
   static defaultProps = {
     canGoLeft: false,
@@ -46,7 +46,7 @@ export class Frame extends React.Component<FrameProps, FrameState> {
     }
 
     return (
-      <ItemInfo name={"hello"}/>
+      <ItemInfo name={'hello'}/>
     );
   }
 

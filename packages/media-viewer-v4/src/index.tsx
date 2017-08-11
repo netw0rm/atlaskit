@@ -1,24 +1,50 @@
 import * as React from 'react';
+import {Context, FileItem, FileDetails, MediaCollection} from '@atlaskit/media-core';
+import getFileBinaryUrl from './utils/getFileBinaryURL';
 import {Frame} from './components/Frame';
+import {ImageViewer} from './components/ImageViewer';
 
-export interface Item {
-  type: 'file' | 'link';
+// TODO: refactor, this exists in `media-card` too
+export interface MediaIdentifier {
+  readonly mediaItemType: 'file'; // TODO: support links too! e.g. YouTube. MediaItemType
+  readonly id: string;
+  readonly collectionName: string;
+}
+
+export type Source = MediaIdentifier | MediaIdentifier[] | string;
+export type Item = FileDetails;
+
+function isAMediaIdentifier(source: Source): source is MediaIdentifier {
+  return Boolean(source) && (source as MediaIdentifier).id !== undefined;
+}
+
+function isAnArrayOfMediaIdentifiers(source: Source): source is MediaIdentifier[] {
+  return Boolean(source) && (source as MediaIdentifier[]).forEach !== undefined;
+}
+
+function isACollection(source: Source): source is string {
+  return Boolean(source) && typeof source === 'string';
 }
 
 interface MediaViewerProps {
   visible?: boolean;
+  source: Source;
+  context: Context;
 }
 
 interface MediaViewerState {
-  items: Item[];
   index: number;
+  items: Item[];
+  error?: Error;
 }
 
 export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerState> {
 
+  subscription: any;
+
   state: MediaViewerState = {
-    items: [],
-    index: 0
+    index: 0,
+    items: []
   };
 
   get canGoPrev(): boolean {
@@ -27,7 +53,7 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
   }
 
   get canGoNext(): boolean {
-    const {items, index} = this.state;
+    const {index, items} = this.state;
     return index + 1 < items.length;
   }
 
@@ -43,16 +69,95 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     }
   }
 
+  // TODO: this same code exists in `media-card/MediaCard`... refactor!
+  fetchItem(context: Context, identifer: MediaIdentifier) {
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    // TODO: support links too
+    const {id, mediaItemType, collectionName} = identifer;
+    const provider = context.getMediaItemProvider(id, mediaItemType, collectionName);
+    this.subscription = provider.observable().subscribe({
+      next: (fileItem: FileItem) => this.setState({items: [fileItem.details]}),
+      error: (error: Error) => this.setState({error})
+    });
+
+  }
+
+  fetchItems(context: Context, identifers: MediaIdentifier[]) {
+    throw new Error('TODO');
+  }
+
+  // TODO: this same code exists in `media-card/CardList`... refactor!
+  fetchCollection(context: Context, collectionName: string) {
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    // TODO: support links too
+    const provider = context.getMediaCollectionProvider(collectionName, 20);
+    provider.observable().subscribe({
+      next: (collection: MediaCollection) => {
+        const items = collection.items
+          .filter(item => item.type === 'file')
+          .map(item => item.details)
+        ;
+        this.setState({items});
+      },
+      error: (error: Error) => this.setState({error})
+    });
+
+  }
+
+  fetch() {
+    const {context, source} = this.props;
+
+    if (isAMediaIdentifier(source)) {
+      this.fetchItem(context, source);
+      return;
+    }
+
+    if (isAnArrayOfMediaIdentifiers(source)) {
+      this.fetchItems(context, source);
+      return;
+    }
+
+    if (isACollection(source)) {
+      this.fetchCollection(context, source);
+      return;
+    }
+
+  }
+
+  componentDidMount(): void {
+    this.fetch();
+  }
+
   renderViewer() {
-    const {items, index} = this.state;
-    const item = items[index];
-    return null;
+    const {index, items} = this.state;
+    const details = items[index];
+
+    if (!details) {
+      return null;
+    }
+
     // const {context, metadata, identifer} = this.props;
     // const mediaType = metadata.details.mediaType;
     // let viewer;
 
-    if (mediaType === 'image') {
-      viewer = <ImageViewer context={context} metadata={metadata} identifier={identifer} />;
+    if (details.mediaType === 'image') {
+      // const {context} = this.props;
+      // const imageURL = await getFileBinaryUrl(details, context);
+      const imageURL = 'https://images3.alphacoders.com/823/thumb-1920-82317.jpg';
+      console.log(imageURL);
+      return (
+        <ImageViewer
+          imageURL={imageURL}
+        />
+      );
     }
     // } else if (mediaType === 'video') {
     //   viewer = <VideoViewer context={context} metadata={metadata} identifier={identifer} />;
@@ -62,12 +167,11 @@ export class MediaViewer extends React.Component<MediaViewerProps, MediaViewerSt
     //   viewer = <PdfViewer context={context} metadata={metadata} identifier={identifer} />;
     // }
 
-    // return viewer;
+    return null;
   }
 
-  render(); {
+  render() {
     const {visible} = this.props;
-    const {items} = this.state;
     const {canGoPrev, canGoNext} = this;
 
     if (!visible) {

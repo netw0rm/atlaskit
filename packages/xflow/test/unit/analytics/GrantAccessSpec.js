@@ -12,18 +12,20 @@ const defaultProps = {
   progress: 0,
   status: ACTIVATING,
   heading: '',
+
   defaultSelectedRadio: 'everyone',
+  usersOption: 'specific-users',
   optionItems: [
     {
       value: 'everyone',
       label: 'Everyone in JIRA Software',
     },
     {
-      value: 'siteAdmins',
+      value: 'site-admins',
       label: 'Site admins only',
     },
     {
-      value: 'specificUsers',
+      value: 'specific-users',
       label: 'Specific users',
     },
   ],

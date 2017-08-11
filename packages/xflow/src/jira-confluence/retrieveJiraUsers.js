@@ -1,12 +1,16 @@
 // This aligns with User Management's pagination value
-const PAGINGATION = 30;
+const PAGINATION = 30;
 const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 const JIRA_CORE_GROUP = 'jira-core-users';
 const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
+const SITE_ADMINS_GROUP = 'site-admins';
 
 const usernamesEndpoint = (groupName, startIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
-  `&activeFilter=active&start-index=${startIndex}&max-results=${PAGINGATION}`;
+  `&activeFilter=active&start-index=${startIndex}&max-results=${PAGINATION}`;
+
+const CACHE_TIMEOUT = 100000; // 100 seconds
+const cache = new Map();
 
 /**
  * Recursively compile usernames for adding to group
@@ -36,37 +40,62 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
   return result.length
     ? [
       ...result.map(user => ({
-        name: user.name,
         displayName: user['display-name'],
-        email: user.email,
+        ...user,
       })),
         // Only fetch more if there are likely to be more to fetch
-      ...(result.length >= PAGINGATION
-          ? await getJiraActiveUsernamesList(groupName, startIndex + PAGINGATION)
+      ...(result.length >= PAGINATION
+          ? await getJiraActiveUsernamesList(groupName, startIndex + PAGINATION)
           : []),
     ]
     : [];
 };
 
-/**
- * Loop over all jira groups, compile user list, and return a sorted list of user items
- */
-export default async () => {
-  const userLists = await Promise.all([
-    getJiraActiveUsernamesList(JIRA_SOFTWARE_GROUP),
-    getJiraActiveUsernamesList(JIRA_CORE_GROUP),
-    getJiraActiveUsernamesList(JIRA_SERVICE_DESK_GROUP),
-  ]);
+const getUsersInGroup = async (group) => {
+  let users;
+  if (group === 'site-admins') {
+    users = getJiraActiveUsernamesList(SITE_ADMINS_GROUP);
+  } else {
+    const userLists = await Promise.all([
+      getJiraActiveUsernamesList(SITE_ADMINS_GROUP),
+      getJiraActiveUsernamesList(JIRA_SOFTWARE_GROUP),
+      getJiraActiveUsernamesList(JIRA_CORE_GROUP),
+      getJiraActiveUsernamesList(JIRA_SERVICE_DESK_GROUP),
+    ]);
 
-  const usernames = new Set();
+    const usernames = new Set();
 
-  return (
-    []
+    users = []
       .concat(...userLists)
       // Only include unique users.
       // The callback returns true when adding a new username to the set,
       // and false if it's already in there.
       .filter(user => !(usernames.has(user.name) || !usernames.add(user.name)))
-      .sort((a, b) => a.displayName.localeCompare(b.displayName))
-  );
+      .sort((a, b) => a.displayName.localeCompare(b.displayName));
+  }
+  return users;
+};
+
+/**
+ * Loop over all jira groups, compile user list, and return a sorted list of user items
+ */
+export default async (group = 'everyone') => {
+  // Fetching the set of users for the specific users list is the same set as 'everyone'
+  const fetchGroup = group === 'specific-users' ? 'everyone' : group;
+
+  // Avoid fetching twice.
+  if (cache.has(fetchGroup)) {
+    const data = cache.get(fetchGroup);
+    if (Date.now() - data.timestamp < CACHE_TIMEOUT) {
+      return await data.promise;
+    }
+    cache.delete(fetchGroup);
+  }
+
+  const p = getUsersInGroup(fetchGroup);
+  cache.set(fetchGroup, {
+    timestamp: Date.now(),
+    promise: p,
+  });
+  return await p;
 };

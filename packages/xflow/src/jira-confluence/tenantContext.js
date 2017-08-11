@@ -11,10 +11,15 @@ export const getCurrentUsername = () => getMeta('ajs-remote-user') || getMeta('r
  *
  * Returns a promise with data. If a problem occurs, reject the promise.
  */
-const queryUsername = username =>
-  fetch(`/rest/api/latest/user?expand=groups&username=${encodeURIComponent(username || getCurrentUsername())}`, {
-    credentials: 'same-origin',
-  }).then((response) => {
+export const queryUsername = username =>
+  fetch(
+    `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(
+      username || getCurrentUsername()
+    )}`,
+    {
+      credentials: 'same-origin',
+    }
+  ).then((response) => {
     if (response.status !== 200) {
       throw new Error(
         `Unable to determine if the user was a site administrator. Status: ${response.status}`

@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@atlaskit/calendar": "*",
-    "@atlaskit/theme": "^1.0.0"
+    "@atlaskit/theme": "^2.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

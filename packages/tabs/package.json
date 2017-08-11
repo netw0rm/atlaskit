@@ -32,7 +32,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",

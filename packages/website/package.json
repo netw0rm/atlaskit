@@ -22,7 +22,7 @@
     "@atlaskit/lozenge": "^3.0.0",
     "@atlaskit/navigation": "^18.1.2",
     "@atlaskit/page": "^3.0.4",
-    "@atlaskit/theme": "^1.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^1.6.1",
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",

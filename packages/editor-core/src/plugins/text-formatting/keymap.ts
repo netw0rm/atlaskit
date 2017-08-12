@@ -34,7 +34,8 @@ export function keymapHandler(view: EditorView, pluginState: TextFormattingState
   }
 
   keymaps.bindKeymapWithCommand(keymaps.moveRight.common!, commands.moveRight(), list);
-  keymaps.bindKeymapWithCommand(keymaps.moveLeft.common!, commands.moveLeft(), list);
+  keymaps.bindKeymapWithCommand(keymaps.moveLeft.common!, commands.moveLeft(view), list);
+  keymaps.bindKeymapWithCommand(keymaps.backspace.common!, commands.removeIgnoredNodes(view), list);
 
   return keydownHandler(list);
 }

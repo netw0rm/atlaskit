@@ -19,8 +19,10 @@ export interface Props {
 class Decision implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
+  private showPlaceholder: boolean = false;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
+    this.showPlaceholder = node.content.childCount === 0;
     this.renderReactComponent();
   }
 
@@ -34,7 +36,7 @@ class Decision implements NodeView {
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <DecisionItem contentRef={this.handleRef}/>,
+      <DecisionItem contentRef={this.handleRef} showPlaceholder={this.showPlaceholder} />,
       this.domRef
     );
   }

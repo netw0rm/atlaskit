@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "config": {
     "access": "public"
   },
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/logo": "*",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^3.1.0",
     "@atlaskit/util-shared-styles": "^1.0.1"
   },

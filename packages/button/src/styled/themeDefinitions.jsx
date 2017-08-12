@@ -1,20 +1,4 @@
-import {
-  akColorB50,
-  akColorB75,
-  akColorB100,
-  akColorB200,
-  akColorB300,
-  akColorB400,
-  akColorB500,
-  akColorN0,
-  akColorN20,
-  akColorN20A,
-  akColorN30A,
-  akColorN70,
-  akColorN100,
-  akColorN400,
-  akColorN700,
-} from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 
 /**
  * Convert a hex colour code to RGBA.
@@ -26,14 +10,23 @@ import {
 /* eslint-disable no-bitwise */
 const hex2rgba = (hex, alpha = 1) => {
   let color;
+
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     color = hex.substring(1).split('');
+
     if (color.length === 3) {
       color = [color[0], color[0], color[1], color[1], color[2], color[2]];
     }
+
     color = `0x${color.join('')}`;
-    return `rgba(${[(color >> 16) & 255, (color >> 8) & 255, color & 255].join(',')}, ${alpha})`;
+
+    const r = (color >> 16) & 255;
+    const g = (color >> 8) & 255;
+    const b = color & 255;
+
+    return `rgba(${[r, g, b].join(',')}, ${alpha})`;
   }
+
   throw new Error('Bad Hex');
 };
 /* eslint-enable no-bitwise */
@@ -41,215 +34,111 @@ const hex2rgba = (hex, alpha = 1) => {
 export default {
   // Fallbacks
   fallbacks: {
-    background: akColorN20A,
-    color: akColorN400,
+    background: themed({ light: colors.N20A, dark: colors.DN70 }),
+    color: themed({ light: colors.N400, dark: colors.DN400 }),
     textDecoration: 'none',
   },
 
   // Themes
-  themes: {
-    // Default theme
+  theme: {
+    // Default appearance
     default: {
-      // Default appearance
-      default: {
-        background: {
-          default: akColorN20A,
-          hover: akColorN30A,
-          active: hex2rgba(akColorB75, 0.6),
-          selected: akColorN700,
-        },
-        boxShadowColor: {
-          focus: hex2rgba(akColorB200, 0.6),
-        },
-        color: {
-          default: akColorN400,
-          active: akColorB400,
-          disabled: akColorN70,
-          selected: akColorN20,
-        },
+      background: {
+        default: themed({ light: colors.N20A, dark: colors.DN70 }),
+        hover: themed({ light: colors.N30A, dark: colors.DN60 }),
+        active: themed({ light: hex2rgba(colors.B75, 0.6), dark: colors.B75 }),
+        disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
+        selected: themed({ light: colors.N700, dark: colors.DN0 }),
       },
-
-      // Subtle appearance
-      subtle: {
-        background: {
-          default: 'none',
-          hover: akColorN30A,
-          active: hex2rgba(akColorB75, 0.6),
-          disabled: akColorN20A,
-          selected: akColorN700,
-        },
-        boxShadowColor: {
-          focus: hex2rgba(akColorB200, 0.6),
-        },
-        color: {
-          default: akColorN400,
-          active: akColorB400,
-          disabled: akColorN70,
-          selected: akColorN20,
-        },
+      boxShadowColor: {
+        focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
       },
-
-      // Primary appearance
-      primary: {
-        background: {
-          default: akColorB400,
-          hover: akColorB300,
-          active: akColorB500,
-          selected: akColorN700,
-        },
-        boxShadowColor: {
-          focus: hex2rgba(akColorB200, 0.6),
-        },
-        color: {
-          default: akColorN0,
-          disabled: hex2rgba(akColorN0, 0.5),
-          selected: akColorN20,
-        },
-      },
-
-      // Link appearance
-      link: {
-        background: {
-          default: 'none',
-          selected: akColorN700,
-        },
-        boxShadowColor: {
-          focus: hex2rgba(akColorB200, 0.6),
-        },
-        color: {
-          default: akColorB400,
-          hover: akColorB300,
-          active: akColorB500,
-          disabled: akColorN70,
-          selected: akColorN20,
-        },
-        textDecoration: {
-          hover: 'underline',
-        },
-      },
-
-      // Subtle Link appearance
-      'subtle-link': {
-        background: {
-          default: 'none',
-          selected: akColorN700,
-        },
-        boxShadowColor: {
-          focus: hex2rgba(akColorB200, 0.6),
-        },
-        color: {
-          default: akColorN100,
-          hover: akColorB300,
-          active: akColorB500,
-          disabled: akColorN70,
-          selected: akColorN20,
-        },
-        textDecoration: {
-          hover: 'underline',
-        },
+      color: {
+        default: themed({ light: colors.N400, dark: colors.DN400 }),
+        active: themed({ light: colors.B400, dark: colors.B400 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN30 }),
+        selected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
     },
 
-    // Dark theme
-    dark: {
-      // Default appearance
-      default: {
-        background: {
-          default: hex2rgba(akColorN0, 0.08),
-          hover: hex2rgba(akColorN0, 0.12),
-          active: hex2rgba(akColorB100, 0.32),
-          disabled: hex2rgba(akColorN0, 0.04),
-          selected: akColorN20,
-        },
-        boxShadowColor: {
-          focus: akColorB75,
-        },
-        color: {
-          default: akColorN0,
-          disabled: akColorN100,
-          selected: akColorN700,
-        },
+    // Primary appearance
+    primary: {
+      background: {
+        default: themed({ light: colors.B400, dark: colors.B100 }),
+        hover: themed({ light: colors.B300, dark: colors.B75 }),
+        active: themed({ light: colors.B500, dark: colors.B200 }),
+        disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
+        selected: themed({ light: colors.N700, dark: colors.DN0 }),
       },
-
-      // Subtle appearance
-      subtle: {
-        background: {
-          default: 'none',
-          hover: hex2rgba(akColorN0, 0.12),
-          active: hex2rgba(akColorB100, 0.32),
-          disabled: hex2rgba(akColorN0, 0.04),
-          selected: akColorN20,
-        },
-        boxShadowColor: {
-          focus: akColorB75,
-        },
-        color: {
-          default: akColorN0,
-          disabled: akColorN100,
-        },
+      boxShadowColor: {
+        focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
       },
-
-      // Primary appearance
-      primary: {
-        background: {
-          default: akColorB200,
-          hover: akColorB300,
-          active: akColorB400,
-          disabled: akColorB400,
-          selected: akColorN20,
-        },
-        boxShadowColor: {
-          focus: akColorB75,
-        },
-        color: {
-          default: akColorN0,
-          disabled: hex2rgba(akColorN0, 0.5),
-          selected: akColorN700,
-        },
+      color: {
+        default: themed({ light: colors.N0, dark: colors.DN30 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN30 }),
+        selected: themed({ light: colors.N20, dark: colors.DN400 }),
       },
+    },
 
-      // Link appearance
-      link: {
-        background: {
-          default: 'none',
-          selected: akColorN20,
-        },
-        boxShadowColor: {
-          focus: akColorB75,
-        },
-        color: {
-          default: akColorB75,
-          hover: akColorB50,
-          active: akColorB100,
-          disabled: akColorN100,
-          selected: akColorN700,
-        },
-        textDecoration: {
-          hover: 'underline',
-          active: 'underline',
-        },
+    // Link appearance
+    link: {
+      background: {
+        default: themed({ light: 'none', dark: 'none' }),
+        selected: themed({ light: colors.N700, dark: colors.N20 }),
       },
+      boxShadowColor: {
+        focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+      },
+      color: {
+        default: themed({ light: colors.B400, dark: colors.B100 }),
+        hover: themed({ light: colors.B300, dark: colors.B75 }),
+        active: themed({ light: colors.B500, dark: colors.B200 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN100 }),
+        selected: themed({ light: colors.N20, dark: colors.N700 }),
+      },
+      textDecoration: {
+        hover: 'underline',
+      },
+    },
 
-      // Subtle Link appearance
-      'subtle-link': {
-        background: {
-          default: 'none',
-          selected: akColorN20,
-        },
-        boxShadowColor: {
-          focus: akColorB75,
-        },
-        color: {
-          default: akColorN0,
-          hover: akColorB50,
-          active: akColorB100,
-          disabled: akColorN100,
-          selected: akColorN700,
-        },
-        textDecoration: {
-          hover: 'underline',
-          active: 'underline',
-        },
+    // Subtle appearance
+    subtle: {
+      background: {
+        default: themed({ light: 'none', dark: 'none' }),
+        hover: themed({ light: colors.N30A, dark: colors.DN60 }),
+        active: themed({ light: hex2rgba(colors.B75, 0.6), dark: colors.B75 }),
+        disabled: themed({ light: 'none', dark: 'none' }),
+        selected: themed({ light: colors.N700, dark: colors.DN0 }),
+      },
+      boxShadowColor: {
+        focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+      },
+      color: {
+        default: themed({ light: colors.N400, dark: colors.DN400 }),
+        active: themed({ light: colors.B400, dark: colors.B400 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN100 }),
+        selected: themed({ light: colors.N20, dark: colors.DN400 }),
+      },
+    },
+
+    // Subtle Link appearance
+    'subtle-link': {
+      background: {
+        default: themed({ light: 'none', dark: 'none' }),
+        selected: themed({ light: colors.N700, dark: colors.N20 }),
+      },
+      boxShadowColor: {
+        focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
+      },
+      color: {
+        default: themed({ light: colors.N100, dark: colors.DN400 }),
+        hover: themed({ light: colors.B300, dark: colors.B50 }),
+        active: themed({ light: colors.B500, dark: colors.DN300 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN100 }),
+        selected: themed({ light: colors.N20, dark: colors.DN400 }),
+      },
+      textDecoration: {
+        hover: 'underline',
       },
     },
   },

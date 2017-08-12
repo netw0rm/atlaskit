@@ -7,13 +7,16 @@ import { storyDecorator } from '../../src/test-helper';
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
-  .add('renderer', () => {
+  .add('renderer with providers and portal (profile cards)', () => {
+    return <RendererDemo withProviders={true} withPortal={true} serializer="react"/>;
+  })
+  .add('renderer with providers', () => {
     return <RendererDemo withProviders={true} serializer="react"/>;
   })
   .add('renderer without providers', () => {
-    return <RendererDemo withProviders={false} serializer="react"/>;
+    return <RendererDemo serializer="react"/>;
   })
   .add('text renderer', () => {
-    return <RendererDemo withProviders={false} serializer="text"/>;
+    return <RendererDemo serializer="text"/>;
   })
 ;

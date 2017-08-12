@@ -86,17 +86,25 @@ const eventHandlers = {
   },
 };
 
-type DemoRendererProps = {
-  withProviders: boolean;
-  serializer: 'react' | 'text'
-};
+interface DemoRendererProps {
+  withPortal?: boolean;
+  withProviders?: boolean;
+  serializer: 'react' | 'text';
+}
 
-type DemoRendererState = { input: string };
+interface DemoRendererState {
+  input: string;
+  portal?: HTMLElement;
+}
 
 export default class RendererDemo extends PureComponent<DemoRendererProps, DemoRendererState> {
   textSerializer = new TextSerializer();
-  state = { input: JSON.stringify(document, null, 2) };
+  state: DemoRendererState = { input: JSON.stringify(document, null, 2), portal: undefined };
   refs: { input: HTMLTextAreaElement };
+
+  private handlePortalRef = (portal?: HTMLElement) => {
+    this.setState({ portal });
+  }
 
   render() {
     return (
@@ -139,8 +147,15 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
         props.dataProviders = providerFactory;
       }
 
+      if (this.props.withPortal) {
+        props.portal = this.state.portal;
+      }
+
       return (
-        <Renderer {...props}/>
+        <div>
+          <Renderer {...props}/>
+          <div ref={this.handlePortalRef}/>
+        </div>
       );
     } catch (ex) {
       return (

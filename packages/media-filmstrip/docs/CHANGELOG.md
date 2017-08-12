@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 5.2.0 (2017-08-11)
+
+* feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
 ## 5.1.2 (2017-08-03)
 
 * bug fix; moving position of letf and right arrow (issues closed: ed-2052) ([b930e8d](https://bitbucket.org/atlassian/atlaskit/commits/b930e8d))

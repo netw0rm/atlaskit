@@ -25,7 +25,7 @@ type Props = {|
   dropIcon?: ReactElement,
   /** Makes the navigation item appear with reduced padding and font size. */
   isCompact?: boolean,
-  /** Used to apply correct dragging styles when also using @atlaskit/drag-and-drop. */
+  /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
   isDragging?: boolean,
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */

@@ -12,7 +12,7 @@ const createStyledComponent = {
   custom: () => {
     // Override pseudo-state specificity.
     // This is necessary because we don't know what DOM element the custom component will render.
-    const component = styled(CustomComponentProxy)`&,&:hover,&:active,&:focus{${getButtonStyles}}`;
+    const component = styled(CustomComponentProxy)`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
     component.displayName = 'StyledCustomComponent';
     return component;
   },
@@ -79,8 +79,6 @@ export default class Button extends Component {
     tabIndex: PropTypes.number,
     /** Pass target down to a link within the button component, if a href is provided. */
     target: PropTypes.string,
-    /** Change the default styling. */
-    theme: PropTypes.oneOf(['dark', 'default']),
     /** Set whether it is a button or a form submission. */
     type: PropTypes.oneOf(['button', 'submit']),
     /** Option to fit button width to its parent width */
@@ -93,7 +91,6 @@ export default class Button extends Component {
     isSelected: false,
     spacing: 'default',
     tabIndex: null,
-    theme: 'default',
     type: 'button',
     shouldFitContainer: false,
   }

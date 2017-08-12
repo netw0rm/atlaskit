@@ -33,7 +33,6 @@ describe('getButtonProps', () => {
       'isHover',
       'isSelected',
       'spacing',
-      'theme',
       'fit',
     ]));
   });

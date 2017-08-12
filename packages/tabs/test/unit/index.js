@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Tabs, { TabsStateless } from '../../src/index';
 import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './_constants';
 import { name } from '../../package.json';
-import { TabLabel } from '../../src/styled/TabsNav';
+import { NavItem } from '../../src/styled';
 
 describe(name, () => {
   describe('Tabs', () => {
@@ -80,7 +80,7 @@ describe(name, () => {
           );
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
-          wrapper.find(TabLabel).at(2).simulate('click');
+          wrapper.find(NavItem).at(2).simulate('click');
           expect(spy).toHaveBeenCalledTimes(1);
           expect(spy).toHaveBeenCalledWith(2);
         });
@@ -95,7 +95,7 @@ describe(name, () => {
 
           // Triggers right arrow click on the tabs, then checks that handler prop was called
           // with correct new selected tab index
-          wrapper.find(TabLabel).at(1).simulate('keyDown', {
+          wrapper.find(NavItem).at(1).simulate('keyDown', {
             key: 'ArrowRight',
           });
           expect(spy).toHaveBeenCalledTimes(1);
@@ -109,7 +109,7 @@ describe(name, () => {
         describe('with 3 tabs, when the 2nd tab is selected', () => {
           let wrapper;
           const simulateKeyboardNav = (key) => {
-            wrapper.find(TabLabel).findWhere(n => n.prop('isSelected')).simulate('keyDown', { key });
+            wrapper.find(NavItem).findWhere(n => n.prop('isSelected')).simulate('keyDown', { key });
           };
 
           beforeEach(() => {

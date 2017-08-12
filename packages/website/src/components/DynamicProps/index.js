@@ -1,42 +1,35 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import Description from './Description';
-import Heading from './Heading';
+import { H2 } from './Heading';
 import PrettyPropType from './PrettyPropType';
 
-const TypeHeading = styled.h3`
-  margin: 0 0 10px 0;
+const Heading = styled.h3`
+  border-bottom: 2px solid ${themed({ light: colors.N20, dark: colors.DN40 })};
+  font-size: 0.9rem;
+  font-weight: normal;
+  line-height: 1.4;
+  margin: 0 0 ${gridSize}px 0;
+  padding-bottom: ${gridSize}px;
+`;
+const HeadingDefault = styled.code`
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
+`;
+const HeadingRequired = styled.span`
+  color: ${themed({ light: colors.R500, dark: colors.R300 })};
+`;
+const HeadingType = styled.span`
+  background: ${themed({ light: colors.B50, dark: colors.B500 })};
+  border-radius: ${borderRadius}px;
+  color: ${themed({ light: colors.B500, dark: colors.B50 })};
+  display: inline-block;
+  padding: 0 0.2em;
 `;
 const PropTypeWrapper = styled.div`
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #eee;
-`;
-const DefaultValue = styled.code`
-  color: #777;
-`;
-const Required = styled.span`
-  color: #b74242;
-  font-size: 80%;
-  margin-left: 10px;
-`;
-const PropTypeDescription = styled.div`
-  border-radius: 3px;
-  border-left: 3px solid #ccc;
-  padding: 5px 10px;
-  margin-bottom: 10px;
-`;
-const TypeLabel = styled.span`
-  display: inline-block;
-  border: 1px solid #bedcf7;
-  color: #1c4b75;
-  background: #eff7ff;
-  border-radius: 3px;
-  margin-right: 5px;
-  padding: 0 3px;
-  font-size: 80%;
+  margin-top: ${math.multiply(gridSize, 4)}px;
 `;
 
 // Disable prop types validation for internal functional components
@@ -44,23 +37,19 @@ const TypeLabel = styled.span`
 
 const PageWrapper = ({ name, children }) => (
   <div>
-    <Heading type={2}>{name ? `${name} ` : ''}Props</Heading>
+    <H2>{name ? `${name} ` : ''}Props</H2>
     {children}
   </div>
 );
 
-const PropType = ({ children }) => (
-  <TypeLabel>
-    {children}
-  </TypeLabel>
-);
-
 const PropTypeHeading = ({ defaultValue, name, required, type }) => (
-  <TypeHeading>
-    <code><PropType>{type.name}</PropType> {name}</code>
-    {defaultValue ? <DefaultValue> = {defaultValue.value}</DefaultValue> : null}
-    {required ? <Required> required</Required> : null}
-  </TypeHeading>
+  <Heading>
+    <code>
+      <HeadingType>{type.name}</HeadingType> {name}
+      {defaultValue ? <HeadingDefault> = {defaultValue.value}</HeadingDefault> : null}
+      {required ? <HeadingRequired> required</HeadingRequired> : null}
+    </code>
+  </Heading>
 );
 
 /* eslint-enable react/prop-types */
@@ -74,6 +63,7 @@ export default class DynamicProps extends PureComponent {
   }
   render() {
     const { componentName, componentDocs } = this.props;
+
     if (!componentDocs || !componentDocs.props || !!componentDocs.props.length) {
       return (
         <PageWrapper name={componentName}>
@@ -81,6 +71,7 @@ export default class DynamicProps extends PureComponent {
         </PageWrapper>
       );
     }
+
     const propTypes = Object.keys(componentDocs.props);
 
     return (
@@ -94,14 +85,12 @@ export default class DynamicProps extends PureComponent {
           return (
             <PropTypeWrapper key={propName}>
               <PropTypeHeading
+                defaultValue={prop.defaultValue}
                 name={propName}
                 required={prop.required}
-                defaultValue={prop.defaultValue}
                 type={prop.type}
               />
-              {prop.description ? (
-                <PropTypeDescription>{prop.description}</PropTypeDescription>
-              ) : null}
+              {prop.description && <div>{prop.description}</div>}
               <PrettyPropType type={prop.type} />
             </PropTypeWrapper>
           );

@@ -1,6 +1,15 @@
 # @atlaskit/logo
 
-## Unreleased
+## 3.5.3 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
 
 ## 3.5.2 (2017-07-27)
 

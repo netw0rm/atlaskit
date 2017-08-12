@@ -1,6 +1,16 @@
 # @atlaskit/field-radio-group
 
-## Unreleased
+## 1.6.3 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
+
 
 ## 1.6.2 (2017-07-27)
 

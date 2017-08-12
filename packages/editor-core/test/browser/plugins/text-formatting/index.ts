@@ -3,7 +3,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../../src';
 import {
-  sendKeyToPm, insertText, doc, strike, plain, strong, em, underline, code, p,
+  sendKeyToPm, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention
 } from '../../../../src/test-helper';
 import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';

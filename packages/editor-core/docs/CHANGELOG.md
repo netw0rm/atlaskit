@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 45.5.0 (2017-08-09)
+
+
+
+* bug fix; fix prop types ([406114a](https://bitbucket.org/atlassian/atlaskit/commits/406114a))
+* feature; adding usupport to fetch initial state and toggle state ([416ce4e](https://bitbucket.org/atlassian/atlaskit/commits/416ce4e))
+* feature; add loading state for link card (issues closed: ed-2383) ([a7ed3e0](https://bitbucket.org/atlassian/atlaskit/commits/a7ed3e0))
 ## 45.4.1 (2017-08-09)
 
 * bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))

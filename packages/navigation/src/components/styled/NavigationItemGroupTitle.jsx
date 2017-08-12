@@ -1,6 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import { whenCollapsed } from '../../theme/util';
+import { whenCollapsedAndNotInOverflowDropdown } from '../../theme/util';
 import { truncate } from '../../utils/mixins';
 import { gridSize } from '../../shared-variables';
 
@@ -12,7 +12,7 @@ const NavigationItemGroupTitle = styled.div`
   font-weight: 600;
   ${truncate()}
 
-  ${whenCollapsed`
+  ${whenCollapsedAndNotInOverflowDropdown`
     display: none;
   `}
 `;

@@ -60,7 +60,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/badge": "^4.5.2",
-    "@atlaskit/drag-and-drop": "^4.5.2",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-radio-group": "1.6.2",
     "@atlaskit/inline-dialog": "^3.6.0",

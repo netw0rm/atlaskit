@@ -25,12 +25,12 @@ describe('Avatar', () => {
 
   describe('size property', () => {
     SIZES.forEach((size) => {
-      describe(`when is set to ${size}`, () =>
+      describe(`when is set to ${size}`, () => {
         it('should have the correct dimensions', () => {
           const result = getSize({ size });
           expect(result).toBe(AVATAR_SIZES[size]);
-        })
-      );
+        });
+      });
     });
   });
 

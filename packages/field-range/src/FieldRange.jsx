@@ -30,7 +30,10 @@ export default class Slider extends PureComponent {
     },
   };
 
-  constructor(props) {
+  // eslint-disable-next-line
+  inputElement: any
+
+  constructor(props: Props) {
     super(props);
 
     this.inputElement = null;
@@ -41,7 +44,7 @@ export default class Slider extends PureComponent {
 
   state: State;
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({ value: nextProps.value });
   }
 
@@ -52,7 +55,7 @@ export default class Slider extends PureComponent {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  onInputChange = (e) => {
+  onInputChange = (e: any) => {
     const value = parseFloat(e.target.value);
     const { onChange } = this.props;
 
@@ -67,7 +70,7 @@ export default class Slider extends PureComponent {
   // Instead we need to grab the DOM reference and add the right even manually.
   // https://github.com/facebook/react/issues/3096
   // https://github.com/facebook/react/issues/554
-  addEvents = (element) => {
+  addEvents = (element: any) => {
     if (!element) { return; }
 
     this.inputElement = element;

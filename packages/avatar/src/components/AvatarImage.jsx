@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { akColorN50, akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import { HiddenImage, Span, Svg } from '../styled/AvatarImage';
-import { AppearanceType, SizeType } from '../types';
+import type { AppearanceType, SizeType } from '../types';
 
 const ThemeColor = {
   background: akColorN50,

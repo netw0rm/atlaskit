@@ -1,5 +1,5 @@
 // @flow
-
+/* eslint max-len: ["error", 120]*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
@@ -83,15 +83,15 @@ export default class DropdownMenu extends Component {
     items: [...this.props.items],
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: PropTypes) {
     if (nextProps.items !== this.state.items) {
       this.setState({ items: [...nextProps.items] });
     }
   }
 
-  findActivatedGroup = item => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]
+  findActivatedGroup = (item: any) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]
 
-  handleItemActivation = (attrs) => {
+  handleItemActivation = (attrs: any) => {
     const activatedItem = attrs.item;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];

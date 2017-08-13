@@ -162,7 +162,7 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(nextProps);
   }
 
-  onResize = (resizeDelta) => {
+  onResize = (resizeDelta: number) => {
     this.setState({
       isResizing: true,
       resizeDelta,
@@ -198,8 +198,10 @@ export default class Navigation extends PureComponent {
 
   props: Props
 
-  triggerResizeButtonHandler = (resizeState) => {
-    this.props.onResize(resizeState);
+  triggerResizeButtonHandler = (resizeState: resizeObj) => {
+    if (resizeState && this.props.onResize) {
+      this.props.onResize(resizeState);
+    }
   }
 
   render() {

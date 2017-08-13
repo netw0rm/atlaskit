@@ -42,7 +42,7 @@ export default class Search extends PureComponent {
     value: this.props.value,
   }
 
-  onInputKeyDown = (event) => {
+  onInputKeyDown = (event: Event) => {
     const { onKeyDown } = this.props;
     if (controlKeys.indexOf(event.key) === -1) {
       return;
@@ -53,7 +53,7 @@ export default class Search extends PureComponent {
     event.stopPropagation();
   }
 
-  onInput = (event) => {
+  onInput = (event:any) => {
     const { onInput } = this.props;
     this.setState({ value: event.target.value });
     if (onInput) {
@@ -61,7 +61,7 @@ export default class Search extends PureComponent {
     }
   }
 
-  setInputRef = (ref) => {
+  setInputRef = (ref: any) => {
     this.inputRef = ref;
   }
 

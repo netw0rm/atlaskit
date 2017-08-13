@@ -20,7 +20,7 @@ const droplistItemTheme: ItemTheme = {
     default: dropdownPadding,
     compact: dropdownPadding,
   },
-  borderRadius: Theme.$.borderRadius,
+  borderRadius: parseFloat(Theme.$.borderRadius),
   default: {
     background: Theme.Item.background.default,
     text: Theme.Item.primaryText.default,

@@ -13,7 +13,7 @@ export default class Expander extends PureComponent {
   static defaultProps = { isExpanded: false }
   state = { isAnimating: false }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: any) {
     if (this.props.isExpanded !== nextProps.isExpanded) {
       this.setState({ isAnimating: true });
     }

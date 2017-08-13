@@ -14,7 +14,7 @@ export default class FlagAnimationWrapper extends PureComponent {
     isLeaving: false,
   }
 
-  componentWillEnter(callback) {
+  componentWillEnter(callback: any) {
     this.setState({ isEntering: true });
     this.runAfterAnimation(callback);
   }
@@ -23,7 +23,7 @@ export default class FlagAnimationWrapper extends PureComponent {
     this.setState({ isEntering: false });
   }
 
-  componentWillLeave(callback) {
+  componentWillLeave(callback: any) {
     this.setState({ isLeaving: true });
     this.runAfterAnimation(callback);
   }

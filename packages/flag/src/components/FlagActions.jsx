@@ -18,10 +18,10 @@ export default class FlagActions extends PureComponent {
     actions: [],
   }
 
-  getButtonFocusRingColor = a => getProperty(a, 'focusRingColor');
-  getButtonTheme = a => getProperty(a, 'buttonTheme');
-  getButtonAppearance = b => (b ? 'default' : 'subtle-link');
-  getButtonSpacing = b => (b ? 'compact' : 'none');
+  getButtonFocusRingColor = (a: mixed) => getProperty(a, 'focusRingColor');
+  getButtonTheme = (a: mixed) => getProperty(a, 'buttonTheme');
+  getButtonAppearance = (b: mixed) => (b ? 'default' : 'subtle-link');
+  getButtonSpacing = (b: mixed) => (b ? 'compact' : 'none');
 
   render() {
     const { actions, appearance } = this.props;

@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -46,7 +45,7 @@ export default class ItemGroup extends Component {
         ? elemAfter
         : this.headingAfterElement && this.headingAfterElement.textContent;
 
-    return `${title}${afterText ? ` ${afterText}` : ''}`;
+    return `${title}${afterText ? ` ${String(afterText)}` : ''}`;
   }
 
   render() {

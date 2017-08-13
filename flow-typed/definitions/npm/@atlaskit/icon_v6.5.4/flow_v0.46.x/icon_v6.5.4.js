@@ -1,5 +1,5 @@
 declare module '@atlaskit/icon' {
-  declare interface ___Icon extends React$Component {
+  declare interface ___Icon extends React$Component<any, any, any> {
     props: any,
     defaultProps: any,
     state: any

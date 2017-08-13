@@ -21,18 +21,20 @@ export default function (
     return null;
   }
 
+  const logo = application ? logos[application] : '';
+
   return {
     heading: i18n['try.other.apps'],
     items: [
       {
         content: (
           <Item>
-            <LogoContainer>{logos[application]}</LogoContainer>
-            <SuggestedApplicationTagline>{i18n[`suggested.application.description.${application}`]}</SuggestedApplicationTagline>
+            <LogoContainer>{logo}</LogoContainer>
+            <SuggestedApplicationTagline>{i18n[`suggested.application.description.${String(application)}`]}</SuggestedApplicationTagline>
           </Item>
         ),
         href: url,
-        analyticEvent: { key: `appswitcher.discovery.user.select.${application}` },
+        analyticEvent: { key: `appswitcher.discovery.user.select.${String(application)}` },
       },
       {
         content: (

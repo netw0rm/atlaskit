@@ -43,6 +43,7 @@ export default class AppSwitcher extends Component {
     isSiteAdminLinkEnabled: false,
     isLoading: false,
     onAppSwitcherOpen: () => {},
+    suggestedApplication: { onDontShowAgainClick: () => {} },
   };
 
   state = {
@@ -62,7 +63,9 @@ export default class AppSwitcher extends Component {
       // If we remove the suggested application immediately, the droplist component interprets the
       // click as outside the dropdown menu and closes the menu, which isn't the behaviour we want.
       setTimeout(() => this.setState({ suggestedApplicationHiddenByUser: true }), 0);
-      this.props.suggestedApplication.onDontShowAgainClick();
+      if (this.props.suggestedApplication.onDontShowAgainClick) {
+        this.props.suggestedApplication.onDontShowAgainClick();
+      }
     }
   };
 

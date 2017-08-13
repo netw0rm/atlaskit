@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 45.9.1 (2017-08-13)
+
+* bug fix; fix storybooks build ([af0046b](https://bitbucket.org/atlassian/atlaskit/commits/af0046b))
+
+
+
+
+
 ## 45.9.0 (2017-08-11)
 
 * feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2442) ([f6155e8](https://bitbucket.org/atlassian/atlaskit/commits/f6155e8))

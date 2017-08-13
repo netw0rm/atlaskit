@@ -9,6 +9,7 @@ import { customCategory, defaultCategories } from '../constants';
 import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import { createFrequencyEmojiComparator } from './internal/Comparators';
+import { NoSortComparator } from './EmojiComparator';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 XRegExpUnicodeBase(XRegExp);
@@ -104,13 +105,28 @@ const splitQuery = (query = ''): SplitQuery => {
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
   if (options) {
+    // Optimisation - don't apply the NoSortComparator given it returns zero for every comparison anyway
+    if (options.comparator && options.comparator !== NoSortComparator.Instance) {
+      // console.log(`PAC: applySearchOptions: There was a sort configured = ${options.comparator}, with compare method = ${options.comparator.compare} and there are ${emojis.length} emojis`);
+
+      emojis = emojis.sort(options.comparator.compare);
+      // console.log(`PAC: after sort we have ${emojis.length} emojis`);
+    } else {
+      // console.log(`PAC: applySearchOptions: There was no sort to apply. ${options.comparator}`);
+    }
+
     if (options.limit && options.limit > 0) {
+      // console.log('PAC: options.limit being applied.');
       emojis = emojis.slice(0, options.limit);
     }
-    return emojis.map(emoji => {
-      return getEmojiVariation(emoji, options);
-    });
+
+    if (options.skinTone) {
+      return emojis.map(emoji => {
+        return getEmojiVariation(emoji, options);
+      });
+    }
   }
+  // console.log(`PAC: returning from applySearchOptions with ${emojis.length} emojis`);
   return emojis;
 };
 
@@ -151,13 +167,21 @@ export default class EmojiRepository {
    * Returns all available (and searchable) emoji in some default order.
    */
   all(): EmojiSearchResult {
-    return this.search();
+    const options: SearchOptions = {
+      comparator: NoSortComparator.Instance
+    };
+
+    return this.search(undefined, options);
   }
 
   /**
    * Text search of emoji shortName and name field for suitable matches.
    *
-   * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
+   * Returns an array of all (searchable) emoji if query is empty or null, otherwise returns matching emoji.
+   *
+   * You can change how the results are sorted by specifying a custom EmojiComparator in the SearchOptions. If
+   * you don't want any sorting you can also disable via the SearchOptions (this might be a useful optimisation).
+   * If no sort is specified in SearchOptions then a default sorting it applied based on the query.
    */
    search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
@@ -166,10 +190,6 @@ export default class EmojiRepository {
     if (nameQuery) {
       filteredEmoji = this.fullSearch.search(nameQuery);
 
-      const comparator = createFrequencyEmojiComparator(nameQuery, this.usageTracker.getOrder());
-      const compare = comparator.compare.bind(comparator);
-      filteredEmoji.sort(compare);
-
       if (asciiQuery) {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
       }
@@ -177,10 +197,7 @@ export default class EmojiRepository {
       filteredEmoji = this.getAllSearchableEmojis();
     }
 
-    if (asciiQuery) {
-      filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
-    }
-
+    options = this.defaultSearchOptions(query, options);
     filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
@@ -244,6 +261,27 @@ export default class EmojiRepository {
    */
   used(emoji: EmojiDescription) {
     this.usageTracker.recordUsage(emoji);
+  }
+
+  /**
+   * Create default SearchOptions if necessary
+   */
+  private defaultSearchOptions(query?: string, options?: SearchOptions) {
+    if (!options) {
+      // console.log(`PAC: defaultSearchOptions - making new empty SearchOptions`);
+      options = {};
+    }
+
+    if (!options.comparator) {
+      // console.log(`PAC: defaultSearchOptions - making comparator for query ${query}`);
+      const comparator = createFrequencyEmojiComparator(query, this.usageTracker.getOrder());
+      comparator.compare = comparator.compare.bind(comparator);
+      options.comparator = comparator;
+    } else {
+      // console.log(`PAC: defaultSearchOptions - the SearchOptions contained a comparator already`);
+    }
+
+    return options;
   }
 
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {

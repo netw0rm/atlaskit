@@ -16,6 +16,7 @@ import EmojiResource, {
     UploadingEmojiProvider,
 } from '../../../src/api/EmojiResource';
 import EmojiRepository from '../../../src/api/EmojiRepository';
+import { NoSortComparator } from '../../../src/api/EmojiComparator';
 
 import {
     atlassianEmojis,
@@ -271,7 +272,7 @@ describe('EmojiResource', () => {
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
-      resource.filter('');
+      resource.filter('', { comparator: NoSortComparator.Instance });
       return filteredPromise;
     });
 
@@ -311,7 +312,7 @@ describe('EmojiResource', () => {
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
-      resource.filter('');
+      resource.filter('', { comparator: NoSortComparator.Instance });
       return filteredPromiseChain;
     });
 
@@ -338,7 +339,7 @@ describe('EmojiResource', () => {
         expect(onChange.errorCalls.length, 'Errors occurred').to.equal(1);
       });
       resource.subscribe(onChange);
-      resource.filter('');
+      resource.filter('', { comparator: NoSortComparator.Instance });
       return filteredPromise;
     });
 

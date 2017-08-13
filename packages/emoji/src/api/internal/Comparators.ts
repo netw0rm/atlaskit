@@ -5,22 +5,63 @@ import { ChainedEmojiComparator, EmojiComparator } from '../EmojiComparator';
 const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking since IE doesn't have MAX_VALUE
 
 /**
- * Create the sort comparator to be used for the issued query.
+ * Create the default sort comparator to be used for the user queries against emoji
  *
  * @param query the query used in the search to be sorted. Any colons will be stripped from the query and it will be
  * converted to lowercase.
  * @param orderedIds the id of emoji ordered by how frequently they are used
  */
-export function createFrequencyEmojiComparator(query: string, orderedIds: Array<string>): EmojiComparator {
-  query = query.replace(/:/g, '').toLowerCase().trim();
+export function createFrequencyEmojiComparator(query?: string, orderedIds?: Array<string>): EmojiComparator {
+  const textQuery = query ? query.replace(/:/g, '').toLowerCase().trim() : undefined;
 
-  return new ChainedEmojiComparator(
-    new ExactShortNameMatchComparator(query),
-    new UsageFrequencyComparator(orderedIds),
-    new QueryStringPositionMatchComparator(query, 'shortName'),
-    new QueryStringPositionMatchComparator(query, 'name'),
-    OrderComparator.Instance,
-    AlphabeticalShortnameComparator.Instance);
+  const comparators: EmojiComparator[] = [];
+
+  if (query) {
+    comparators.push(new AsciiMatchComparator(query));
+  }
+
+  // Build the comparators for the chain, in the correct order based on the parameters
+  if (textQuery) {
+    comparators.push(new ExactShortNameMatchComparator(textQuery));
+  }
+
+  if (orderedIds && orderedIds.length) {
+    comparators.push(new UsageFrequencyComparator(orderedIds));
+  }
+
+  if (textQuery) {
+    comparators.push(new QueryStringPositionMatchComparator(textQuery, 'shortName'), new QueryStringPositionMatchComparator(textQuery, 'name'));
+  }
+
+  comparators.push(OrderComparator.Instance, AlphabeticalShortnameComparator.Instance);
+
+  return new ChainedEmojiComparator(...comparators);
+}
+
+/**
+ * Orders two emoji such that if one of them has an ascii representation that exactly matches the query then it will
+ * be ordered first.
+ */
+export class AsciiMatchComparator implements EmojiComparator {
+
+  private query: string;
+
+  constructor(query: string) {
+    this.query = query;
+  }
+
+  compare(e1: EmojiDescription, e2: EmojiDescription) {
+    const e1HasAscii = e1.ascii && e1.ascii.indexOf(this.query) !== -1;
+    const e2HasAscii = e2.ascii && e2.ascii.indexOf(this.query) !== -1;
+
+    if (e1HasAscii && !e2HasAscii) {
+      return -1;
+    } else if (!e1HasAscii && e2HasAscii) {
+      return 1;
+    }
+
+    return 0;
+  }
 }
 
 /**
@@ -32,9 +73,11 @@ export class ExactShortNameMatchComparator implements EmojiComparator {
 
   constructor(query: string) {
     this.colonQuery = `:${query}:`;
+    // console.log(`PAC: ExactShortNameMatchComparator#constructor - colonQuery = ${this.colonQuery}`);
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
+    // console.log(`PAC: ExactShortNameMatchComparator#compare = e1.shortName = ${e1.shortName} and e2.shortName = ${e2.shortName}`);
     if (e1.shortName === this.colonQuery && e2.shortName === this.colonQuery) {
       return ExactShortNameMatchComparator.emojiTypeToOrdinal(e1) - ExactShortNameMatchComparator.emojiTypeToOrdinal(e2);
     } else if (e1.shortName === this.colonQuery) {

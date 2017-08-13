@@ -12,6 +12,23 @@ export interface EmojiComparator {
 }
 
 /**
+ * A comparator you can supply if you don't want any specific sorting to be applied.
+ */
+export class NoSortComparator {
+  private static INSTANCE: NoSortComparator;
+  private constructor() {}
+
+  public static get Instance()
+  {
+      return this.INSTANCE || (this.INSTANCE = new this());
+  }
+
+  compare(e1: EmojiDescription, e2: EmojiDescription) {
+    return 0;
+  }
+}
+
+/**
  * A combinator comparator that applies an ordered chained of sub-comparators. The first comparator that
  * returns a non-zero value stops the chain and causes that value to be returned. If a comparator returns a
  * zero then the next one in the chain is tried.

@@ -1,9 +1,11 @@
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 import { customCategory, customType } from '../../../src/constants';
-import { EmojiDescription } from '../../../src/types';
+import { EmojiDescription, SearchOptions } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
 import EmojiRepository from '../../../src/api/EmojiRepository';
+import { EmojiComparator, NoSortComparator } from '../../../src/api/EmojiComparator';
 
 import {
   emojis as allEmojis,
@@ -178,7 +180,7 @@ describe('EmojiRepository', () => {
   });
 
   describe('#search', () => {
-    it('all', () => {
+     it('all', () => {
 
       const expectedEmojis = [
         ...searchableEmojis.slice(0, 10), // upto flag,
@@ -204,7 +206,7 @@ describe('EmojiRepository', () => {
         ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(expectedEmojis);
-      const emojis = repository.search(':').emojis;
+      const emojis = repository.search(':', { comparator: NoSortComparator.Instance }).emojis;
       checkOrder(expectedEmojis, emojis);
     });
 
@@ -221,7 +223,7 @@ describe('EmojiRepository', () => {
       });
     });
 
-    it('returns frequently used before others except for an exact shortname match', (done) => {
+    it('returns frequently used before others except for an exact shortname match', (done, ) => {
       const greenHeart = emojiRepository.findByShortName(':green_heart:');
       const heart = emojiRepository.findByShortName(':heart:');
 
@@ -267,6 +269,7 @@ describe('EmojiRepository', () => {
         // Leave emojis in current order
         return 0;
       });
+
       checkOrder(grinEmojis, emojis);
     });
 
@@ -298,12 +301,12 @@ describe('EmojiRepository', () => {
     });
 
     it('options - limit ignored if missing', () => {
-      const emojis = emojiRepository.search('').emojis;
+      const emojis = emojiRepository.search('', { comparator: NoSortComparator.Instance }).emojis;
       checkOrder(searchableEmojis, emojis);
     });
 
     it('options - limit results', () => {
-      const emojis = emojiRepository.search('', { limit: 10 }).emojis;
+      const emojis = emojiRepository.search('', { limit: 10, comparator: NoSortComparator.Instance }).emojis;
       checkOrder(searchableEmojis.slice(0, 10), emojis);
     });
 
@@ -357,6 +360,30 @@ describe('EmojiRepository', () => {
       const emojis = emojiRepository.search(':police_officer:').emojis;
       expect(emojis.length, 'The :police_officer: emoji should not be returned by a search').to.equal(0);
     });
+
+    describe('SearchOptions', () => {
+      let mockComparator;
+      let mockCompare;
+
+      beforeEach(() => {
+        mockComparator = <EmojiComparator>{};
+        mockCompare = sinon.stub();
+        mockComparator.compare = mockCompare;
+      });
+
+      it('custom sort should be applied', () => {
+        const options: SearchOptions = {
+          comparator: mockComparator
+        };
+
+        mockCompare.returns(0);
+
+        const emojis = emojiRepository.search(':p', options).emojis;
+        expect(emojis.length > 1, 'There needs to be more than one emoji or no sorting is applied').to.equal(true);
+        expect(mockCompare.called).to.equal(true);
+      });
+    });
+
   });
 
   describe('#addCustomEmoji', () => {

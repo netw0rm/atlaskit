@@ -14,6 +14,7 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
+import { NoSortComparator } from '../../api/EmojiComparator';
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -211,6 +212,17 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   private updateEmojis = (query?: string, options?: SearchOptions) => {
+    // if the query is empty then we want the emoji to be in default sorted order, unless specified otherwise
+    if (!query) {
+      if (!options) {
+        options = {};
+      }
+
+      if (!options.comparator) {
+        options.comparator = NoSortComparator.Instance;
+      }
+    }
+
     this.props.emojiProvider.filter(query, options);
   }
 

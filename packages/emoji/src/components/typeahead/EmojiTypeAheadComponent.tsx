@@ -5,13 +5,13 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
-import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
 import { toEmojiId } from '../../type-helpers';
-
-export const defaultListLimit = 50;
+import { defaultListLimit } from './EmojiTypeAhead';
+import { NoSortComparator } from '../../api/EmojiComparator';
 
 export interface OnLifecycle {
   (): void;
@@ -141,10 +141,22 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
 
   private onSearch(query?: string) {
     const { emojiProvider, listLimit } = this.props;
-    emojiProvider.filter(query, {
+    const options: SearchOptions = {
       limit: listLimit || defaultListLimit,
       skinTone: this.state.selectedTone,
-    });
+    };
+
+    // if no query string then we want all emoji, to show in categories. We don't need any potentially expensive
+    // sorting applied
+    // TODO if colon only, supply no sort
+    if (!query) {
+      options.comparator = NoSortComparator.Instance;
+    }
+
+
+    // TODO get frequent emoji and add them to the top of the list, removing from their position later in the list
+
+    emojiProvider.filter(query, options);
   }
 
   private onSearchResult = (result: EmojiSearchResult): void => {

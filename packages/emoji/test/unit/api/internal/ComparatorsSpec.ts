@@ -5,6 +5,7 @@ import { EmojiComparator } from '../../../../src/api//EmojiComparator';
 
 import {
   AlphabeticalShortnameComparator,
+  AsciiMatchComparator,
   ExactShortNameMatchComparator,
   OrderComparator,
   QueryStringPositionMatchComparator,
@@ -44,6 +45,44 @@ describe('EmojiComparator implementations', () => {
     });
 
     it('should return 0 when left and right are identical', () => {
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+  });
+
+  describe('AsciiMatchComparator', () => {
+    beforeEach(() => {
+      comparator = new AsciiMatchComparator(':->');
+    });
+
+    it('should be negative when left matches and emoji and right does not', () => {
+      left.ascii = [ ':>', ':->'];
+      right.ascii = [ 'x-)'];
+
+      expect(comparator.compare(left, right) < 0).to.equal(true);
+    });
+
+    it('should be positive when left does not matches and emoji and right does', () => {
+      left.ascii = [ 'x-)'];
+      right.ascii = [ ':>', ':->'];
+
+      expect(comparator.compare(left, right) > 0).to.equal(true);
+    });
+
+    it('should be zero when both match', () => {
+      left.ascii = [ ':>', ':->'];
+      right.ascii = [ ':->'];
+
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+
+    it('should be zero when neither match', () => {
+      left.ascii = [ ':>', ':-)'];
+      right.ascii = [ 'x-)'];
+
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+
+    it('should be zero when neither have an ascii representation', () => {
       expect(comparator.compare(left, right)).to.equal(0);
     });
   });

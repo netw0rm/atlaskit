@@ -10,7 +10,6 @@ import { ResourcedEmojiList, ResourcedFilteredEmojiList } from './demo-resourced
 import ResourcedEmojiControl from './demo-resource-control';
 import ResourcedEmojiById from './demo-resourced-emoji-by-id';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
-import UsageShowingEmojiPickerTextInput, { UsagePeekEmojiResource } from './demo-emoji-picker-showing-usage';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
 import { getEmojiResource } from '../src/support/story-data';
 
@@ -126,21 +125,5 @@ storiesOf(`${name}/external-emoji`, module)
           children={emojiById}
         />
       </div>
-    );
-  })
-  .add('resourced picker - with recording of selections', () => {
-    const emojiResource = new UsagePeekEmojiResource(emojiConfig);
-
-    const picker = (
-      <UsageShowingEmojiPickerTextInput
-        emojiResource={emojiResource}
-      />
-    );
-
-    return (
-      <ResourcedEmojiControl
-        emojiConfig={emojiConfig}
-        children={picker}
-      />
     );
   });

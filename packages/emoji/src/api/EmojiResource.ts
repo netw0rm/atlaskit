@@ -7,7 +7,6 @@ import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
 import MediaEmojiResource from './media/MediaEmojiResource';
-import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 export interface EmojiResourceConfig {
   /**
@@ -174,12 +173,10 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected mediaEmojiResource?: MediaEmojiResource;
   protected selectedTone: ToneSelection;
-  protected usageTracker?: UsageFrequencyTracker;
 
   constructor(config: EmojiResourceConfig) {
     super();
     this.recordConfig = config.recordConfig;
-    this.usageTracker = new UsageFrequencyTracker();
 
     // Ensure order is retained by tracking until all done.
     const emojiResponses: EmojiResponse[] = [];
@@ -330,7 +327,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   filter(query?: string, options?: SearchOptions): void {
     this.lastQuery = {
-      query: query || '',
+      query,
       options,
     };
     if (this.emojiRepository) {
@@ -408,16 +405,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   /**
    * Record the selection of an emoji to a remote service if 'recordConfig' has been supplied.
-   * Regardless of the recordConfig, emoji selections will always be recorded locally for the
-   * purposes of tracking the frequency of use.
+   * Regardless of the recordConfig, emoji selections will always be recorded on the EmojiRepository
+   * for the purposes of tracking the frequency of use.
    *
    * @param emoji The full description of the emoji to record usage for.
    */
   recordSelection(emoji: EmojiDescription): Promise<any> {
-    const { recordConfig, usageTracker } = this;
+    const { recordConfig } = this;
 
-    if (usageTracker) {
-      usageTracker.recordUsage(emoji);
+    if (this.emojiRepository) {
+      this.emojiRepository.used(emoji);
     }
 
     if (recordConfig) {

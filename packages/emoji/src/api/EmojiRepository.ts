@@ -8,6 +8,8 @@ import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories
 import { customCategory, defaultCategories } from '../constants';
 import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
+import { createFrequencyEmojiComparator } from './internal/Comparators';
+import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
@@ -134,15 +136,19 @@ export default class EmojiRepository {
   private dynamicCategoryList: string[];
   private static readonly defaultEmojiWeight: number = 1000000;
 
+  protected usageTracker: UsageFrequencyTracker;
+
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
 
     this.initRepositoryMetadata();
     this.initSearchIndex();
+
+    this.usageTracker = new UsageFrequencyTracker();
   }
 
   /**
-   * Returns all available (and searchable) emoji.
+   * Returns all available (and searchable) emoji in some default order.
    */
   all(): EmojiSearchResult {
     return this.search();
@@ -153,17 +159,26 @@ export default class EmojiRepository {
    *
    * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
    */
-  search(query?: string, options?: SearchOptions): EmojiSearchResult {
+   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
+
     const { nameQuery, asciiQuery } = splitQuery(query);
     if (nameQuery) {
       filteredEmoji = this.fullSearch.search(nameQuery);
-      this.sortFiltered(filteredEmoji, nameQuery);
+
+      const comparator = createFrequencyEmojiComparator(nameQuery, this.usageTracker.getOrder());
+      const compare = comparator.compare.bind(comparator);
+      filteredEmoji.sort(compare);
+
       if (asciiQuery) {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
       }
     } else {
       filteredEmoji = this.getAllSearchableEmojis();
+    }
+
+    if (asciiQuery) {
+      filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
     }
 
     filteredEmoji = applySearchOptions(filteredEmoji, options);
@@ -221,6 +236,16 @@ export default class EmojiRepository {
     return this.dynamicCategoryList;
   }
 
+  /**
+   * Call this on emoji usage to allow the EmojiRepository to track the usage of emoji (which could be useful
+   * in sorting, etc).
+   *
+   * @param emoji the emoji that was just used
+   */
+  used(emoji: EmojiDescription) {
+    this.usageTracker.recordUsage(emoji);
+  }
+
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
     let result = emojis;
     const asciiEmoji = this.findByAsciiRepresentation(ascii);
@@ -276,72 +301,5 @@ export default class EmojiRepository {
     if (emoji.ascii) {
       emoji.ascii.forEach(a => this.asciiMap.set(a, emoji));
     }
-  }
-
-  /**
-   * Sort emojis return by js-search in to a logical order
-   */
-  private sortFiltered(filteredEmoji: EmojiDescription[], query: string) {
-    query = query.replace(/:/g, '').toLowerCase().trim();
-    const colonQuery = `:${query}:`;
-
-    // Comparator is an internal function within sorter to access the query
-    const emojiComparator = (e1: EmojiDescription, e2: EmojiDescription): number => {
-      // Handle exact matches between query and shortName
-      if (e1.shortName === colonQuery && e2.shortName === colonQuery) {
-        return EmojiRepository.typeToOrder(e1.type) - EmojiRepository.typeToOrder(e2.type);
-      } else if (e1.shortName === colonQuery) {
-        return -1;
-      } else if (e2.shortName === colonQuery) {
-        return 1;
-      }
-
-      // shortName matches should take precedence over full name
-      const short1 = e1.shortName.indexOf(query);
-      const short2 = e2.shortName.indexOf(query);
-
-      // Order used for matching on same index and shorter queries with default value assigned on initialisation
-      if (short1 !== -1 && short1 === short2) {
-        return e1.order! - e2.order!;
-      } else if (short1 !== -1 && short2 !== -1) {
-        return short1 - short2;
-      } else if (short1 !== -1) {
-        return -1;
-      } else if (short2 !== -1) {
-        return 1;
-      }
-
-      // Query matches earliest in the full name
-      if (e1.name && e2.name) {
-        const index1 = e1.name.indexOf(query);
-        const index2 = e2.name.indexOf(query);
-        if (index1 !== index2) {
-          return index1 - index2;
-        }
-      }
-
-      // Use order if full name matches on same index
-      if (e1.order !== e2.order) {
-        return e1.order! - e2.order!;
-      }
-
-      // Default to alphabetical order
-      return e1.shortName.slice(0, -1).localeCompare(e2.shortName.slice(0, -1));
-    };
-
-    filteredEmoji.sort(emojiComparator);
-  }
-
-  // Give precedence when conflicting shortNames occur as defined in Emoji Storage Spec
-  private static typeToOrder(type: string): number {
-    if (type === 'SITE') {
-      return 0;
-    } else if (type === 'ATLASSIAN') {
-      return 1;
-    } else if (type === 'STANDARD') {
-      return 2;
-    }
-    // Push unknown type to bottom of list
-    return 3;
   }
 }

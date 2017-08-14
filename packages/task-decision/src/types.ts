@@ -82,10 +82,13 @@ export interface ItemResponse {
   nextQuery?: Query;
 }
 
+export type SortCriteria = 'lastUpdateDate' | 'creationDate';
+
 export interface Query {
   containerAri: string;
   limit?: number;
   cursor?: Cursor;
+  sortCriteria?: SortCriteria;
 }
 
 export interface ServiceTask {

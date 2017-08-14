@@ -23,6 +23,7 @@ import {
   TaskState,
 } from '../types';
 import { objectKeyToString } from '../type-helpers';
+import * as moment from 'moment';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
@@ -34,6 +35,7 @@ interface BaseResult {
 export default class MockTaskDecisionResource implements TaskDecisionProvider {
   private config?: MockTaskDecisionResourceConfig;
   private fakeCursor = 0;
+  private lastNewItemTime = moment();
   private subscribers: Map<string, Handler[]> = new Map();
   private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
@@ -63,6 +65,12 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     return this.applyConfig(query, result, 'items');
   }
 
+  private getNextDate() {
+    // Random 15 minute chunk earlier
+    this.lastNewItemTime = this.lastNewItemTime.subtract(Math.random() * 50 * 15, 'minutes');
+    return this.lastNewItemTime.toDate();
+  }
+
   private applyConfig<R extends BaseResult>(query: Query, result: R, itemKey: string): Promise<R> {
     let nextQuery: Query | undefined;
     if (this.config && this.config.hasMore) {
@@ -72,12 +80,15 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       };
     }
     const newResult: R = {
-      [itemKey]: result[itemKey].map(item =>
-        ({
+      [itemKey]: result[itemKey].map(item => {
+        const itemDate = this.getNextDate();
+        return {
           ...item,
+          creationDate: itemDate,
+          lastUpdateDate: itemDate,
           localId: `${item.localId}-${this.fakeCursor}`
-        })
-      ),
+        };
+      }),
       nextQuery
     } as R;
 

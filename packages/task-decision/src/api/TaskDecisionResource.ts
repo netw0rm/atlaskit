@@ -58,12 +58,29 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: JSON.stringify(query),
+        body: JSON.stringify(this.apiQueryToServiceQuery(query)),
       }
     };
     return utils.requestService<S>(this.serviceConfig, options).then(serviceResponse => {
       return converters(serviceResponse, query);
     });
+  }
+
+  private apiQueryToServiceQuery(query: Query) {
+    const { sortCriteria, ...other } = query;
+    const serviceQuery: any = {
+      ...other,
+    };
+    switch (sortCriteria) {
+      case 'lastUpdateDate':
+        serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
+        break;
+      case 'creationDate':
+      default:
+        serviceQuery.sortCriteria = 'CREATION_DATE';
+        break;
+    }
+    return serviceQuery;
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {

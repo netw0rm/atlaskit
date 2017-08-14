@@ -18,6 +18,8 @@ import {
   getServiceTasksResponse,
 } from './story-data';
 
+import * as moment from 'moment';
+
 // Just a re-export, but we may change datasets between stories and test at some point.
 export {
   getServiceDecisionsResponse,
@@ -49,8 +51,26 @@ export const getTasksResponse = (hasMore?: boolean): TaskResponse => {
   return convertServiceTaskResponseToTaskResponse(getServiceTasksResponse(), query);
 };
 
-export const getItemsResponse = (hasMore?: boolean, idOffset?: number): ItemResponse => {
+export interface GetItemsResponseOptions {
+  hasMore?: boolean;
+  idOffset?: number;
+  dateField?: string;
+  groupByDateSize?: number;
+}
+
+export const getItemsResponse = (options?: GetItemsResponseOptions): ItemResponse => {
+  const { dateField, groupByDateSize, hasMore, idOffset } = options || {} as GetItemsResponseOptions;
   let query;
+
+  const getDate = (index: number): Date => {
+    const dayOffset = groupByDateSize ? Math.floor(index / groupByDateSize) : 0;
+    const m = moment().subtract(dayOffset, 'day');
+    if (idOffset) {
+      m.subtract('month', idOffset);
+    }
+    return m.toDate();
+  };
+
   if (hasMore) {
     query = {
       containerAri: 'container1',
@@ -68,6 +88,16 @@ export const getItemsResponse = (hasMore?: boolean, idOffset?: number): ItemResp
       nextQuery: itemResponse.nextQuery
     };
   }
+  if (dateField && groupByDateSize) {
+    itemResponse = {
+      items: itemResponse.items.map((item, index) => ({
+        ...item,
+        [dateField]: getDate(index),
+      })),
+      nextQuery: itemResponse.nextQuery
+    };
+  }
+
   return itemResponse;
 };
 

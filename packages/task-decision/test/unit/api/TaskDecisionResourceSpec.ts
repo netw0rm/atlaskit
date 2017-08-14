@@ -3,6 +3,7 @@ import * as fetchMock from 'fetch-mock/src/client';
 
 import { getServiceDecisionsResponse, getServiceTasksResponse, getServiceItemsResponse } from '../../../src/support/test-data';
 import TaskDecisionResource from '../../../src/api/TaskDecisionResource';
+import { Query } from '../../../src/types';
 import { objectKeyToString } from '../../../src/type-helpers';
 
 // patch URLSearchParams API for jsdom tests
@@ -171,6 +172,7 @@ describe('TaskDecisionResource', () => {
         expect(body.containerAri).toEqual('container1');
         expect(body.limit).toEqual(10);
         expect(body.cursor).toEqual('cursor1');
+        expect(body.sortCriteria).toEqual('CREATION_DATE');
       });
     });
 
@@ -190,6 +192,64 @@ describe('TaskDecisionResource', () => {
         fail(`getItems should return rejected promise:\n${JSON.stringify(result, undefined, 2)}`);
       }).catch(err => {
         expect(err.code).toBe(404);
+      });
+    });
+
+    it('sortCriteria - creationDate', () => {
+      const response = getServiceItemsResponse();
+      fetchMock.mock({
+        matcher: `begin:${url}`,
+        response,
+        name: 'items',
+      });
+      const resource = new TaskDecisionResource({ url });
+      const query: Query = {
+        containerAri: 'container1',
+        limit: 10,
+        cursor: 'cursor1',
+        sortCriteria: 'creationDate',
+      };
+      return resource.getItems(query).then(result => {
+        const { nextQuery } = result;
+        expect(nextQuery).toBeDefined();
+        if (nextQuery) {
+          expect(nextQuery.sortCriteria).toEqual(query.sortCriteria);
+        }
+
+        const calls = fetchMock.calls('items');
+        expect(calls.length).toBe(1);
+        const call = calls[0][0];
+        const body = JSON.parse(call._bodyText);
+        expect(body.sortCriteria).toEqual('CREATION_DATE');
+      });
+    });
+
+    it('sortCriteria - lastUpdateDate', () => {
+      const response = getServiceItemsResponse();
+      fetchMock.mock({
+        matcher: `begin:${url}`,
+        response,
+        name: 'items',
+      });
+      const resource = new TaskDecisionResource({ url });
+      const query: Query = {
+        containerAri: 'container1',
+        limit: 10,
+        cursor: 'cursor1',
+        sortCriteria: 'lastUpdateDate',
+      };
+      return resource.getItems(query).then(result => {
+        const { nextQuery } = result;
+        expect(nextQuery).toBeDefined();
+        if (nextQuery) {
+          expect(nextQuery.sortCriteria).toEqual(query.sortCriteria);
+        }
+
+        const calls = fetchMock.calls('items');
+        expect(calls.length).toBe(1);
+        const call = calls[0][0];
+        const body = JSON.parse(call._bodyText);
+        expect(body.sortCriteria).toEqual('LAST_UPDATE_DATE');
       });
     });
   });

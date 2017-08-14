@@ -1,5 +1,6 @@
 import { EditorState, EditorView, Transaction, TextSelection, Selection } from '../../prosemirror';
-import { isInsideCode, removeIgnoredNodesLeft } from './utils';
+import { removeIgnoredNodesLeft } from './utils';
+import { stateKey } from './';
 
 export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
@@ -12,17 +13,16 @@ export const moveRight = (): Command => {
     if (!empty || !$cursor) {
       return false;
     }
-
     const { storedMarks } = state.tr;
-    const insideCode = isInsideCode(state);
+    const insideCode = stateKey.getState(state).markActive(code.create());
     const currentPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos, code);
     const nextPosHasCode = state.doc.rangeHasMark($cursor.pos + 1, $cursor.pos + 1, code);
 
-    const exitingCode = !currentPosHasCode && !nextPosHasCode && (!storedMarks || storedMarks.length);
-    const enteringCode = !currentPosHasCode && nextPosHasCode;
+    const exitingCode = !currentPosHasCode && !nextPosHasCode && (!storedMarks || !!storedMarks.length);
+    const enteringCode = !currentPosHasCode && nextPosHasCode && (!storedMarks || !storedMarks.length);
 
     // entering code mark (from the left edge): don't move the cursor, just add the mark
-    if ((!insideCode || (!storedMarks || !storedMarks.length)) && enteringCode) {
+    if (!insideCode && enteringCode) {
       dispatch(state.tr.addStoredMark(code.create()));
       return true;
     }
@@ -49,7 +49,7 @@ export const moveLeft = (view: EditorView): Command => {
     removeIgnoredNodesLeft(view);
 
     const { storedMarks } = state.tr;
-    const insideCode = isInsideCode(state);
+    const insideCode = stateKey.getState(state).markActive(code.create());
     const currentPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos, code);
     const nextPosHasCode = state.doc.rangeHasMark($cursor.pos - 1, $cursor.pos - 1, code);
     const nextNextPosHasCode = state.doc.rangeHasMark($cursor.pos - 2, $cursor.pos - 2, code);
@@ -67,7 +67,7 @@ export const moveLeft = (view: EditorView): Command => {
     }
 
     // entering code mark (from right edge): don't move the cursor, just add the mark
-    if (insideCode && enteringCode) {
+    if (!insideCode && enteringCode) {
       dispatch(state.tr.addStoredMark(code.create()));
       return true;
     }

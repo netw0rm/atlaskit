@@ -252,40 +252,10 @@ export class TextFormattingState {
     }
   }
 
-  private triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  /**
-   * Determine if a mark of a specific type exists anywhere in the selection.
-   */
-  private anyMarkActive(markType: MarkType): boolean {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-
-    let found = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(mark => {
-        if (mark.type.name === markType.name) {
-          found = true;
-        }
-      });
-    }
-
-    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
-      return false;
-    }
-
-    if (empty) {
-      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
-    }
-    return state.doc.rangeHasMark(from, to, markType);
-  }
-
   /**
    * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
-  private markActive(mark: Mark): boolean {
+  markActive(mark: Mark): boolean {
     const { state } = this;
     const { from, to, empty } = state.selection;
 
@@ -317,6 +287,36 @@ export class TextFormattingState {
     });
 
     return found;
+  }
+
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  /**
+   * Determine if a mark of a specific type exists anywhere in the selection.
+   */
+  private anyMarkActive(markType: MarkType): boolean {
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+
+    let found = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(mark => {
+        if (mark.type.name === markType.name) {
+          found = true;
+        }
+      });
+    }
+
+    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
+      return false;
+    }
+
+    if (empty) {
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+    }
+    return state.doc.rangeHasMark(from, to, markType);
   }
 
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {

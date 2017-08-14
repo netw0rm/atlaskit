@@ -3,7 +3,8 @@ import 'whatwg-fetch';
 
 import { getCurrentUsername, queryUsername, getInstanceName } from './tenantContext';
 
-export const NOTIFY_ENDPOINT = 'https://xflow.us-west-1.prod.atl-paas.net/accessgranted';
+export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.atl-paas.net/accessgranted';
+export const NOTIFY_ENDPOINT_WEST = 'https://xflow.us-west-1.prod.atl-paas.net/accessgranted';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 
@@ -25,6 +26,29 @@ function getAtlassianAccountId({ attributes: { attributes } }) {
   const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
 
   return openIdAttr ? openIdAttr.link.href : '';
+}
+
+async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      instance,
+      grantedAccessBy,
+      grantedAccessTo,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to notify users that they were granted access. Status: ${response.status}`
+    );
+  }
+
+  return await response.json();
 }
 
 export default async (users) => {
@@ -50,23 +74,11 @@ export default async (users) => {
     atlassianAccountId: getAtlassianAccountId(user),
   }));
 
-  const response = await fetch(NOTIFY_ENDPOINT, {
-    method: 'POST',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      instance,
-      grantedAccessBy,
-      grantedAccessTo,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Unable to notify users that they were granted access. Status: ${response.status}`
-    );
+  let data;
+  try {
+    data = await notifyUsers(NOTIFY_ENDPOINT_EAST, instance, grantedAccessBy, grantedAccessTo);
+  } catch (e) {
+    data = await notifyUsers(NOTIFY_ENDPOINT_WEST, instance, grantedAccessBy, grantedAccessTo);
   }
-  return await response.json();
+  return data;
 };

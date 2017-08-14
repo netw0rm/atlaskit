@@ -1,5 +1,5 @@
 {
-  "self": "https://acme.atlassian.net/rest/api/2/user?username=user%40acme.org",
+  "self": "https://example.atlassian.net/rest/api/2/user?username=user%40acme.org",
   "key": "user@acme.org",
   "accountId": "557058:7b50ef24-a364-43da-9083-96927922d0d5",
   "name": "user",
@@ -19,11 +19,11 @@
     "items": [
       {
         "name": "jira-administrators",
-        "self": "https://acme.atlassian.net/rest/api/2/group?groupname=jira-administrators"
+        "self": "https://example.atlassian.net/rest/api/2/group?groupname=jira-administrators"
       },
       {
         "name": "jira-software-users",
-        "self": "https://acme.atlassian.net/rest/api/2/group?groupname=jira-software-users"
+        "self": "https://example.atlassian.net/rest/api/2/group?groupname=jira-software-users"
       }
     ]
   },

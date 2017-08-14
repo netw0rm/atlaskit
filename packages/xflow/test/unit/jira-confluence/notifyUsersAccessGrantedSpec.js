@@ -2,25 +2,46 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import chai, { assert } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import * as tenantContext from '../../../src/jira-confluence/tenantContext';
 
 import notifyUsersAccessGranted, {
-  GLOBAL_ANALYTICS_ENDPOINT,
-  createPayload,
+  NOTIFY_ENDPOINT_EAST,
+  NOTIFY_ENDPOINT_WEST,
 } from '../../../src/jira-confluence/notifyUsersAccessGranted';
 
-import notifyUsersAccessGrantedResponse from './mock-data/notifyUsersAccessGranted.json';
+import userAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
+import accessgrantedJiraUsersResponse from './mock-data/accessgrantedJiraUsers.json';
+import accessgrantedNoUsersResponse from './mock-data/accessgrantedNoUsers.json';
+import jiraUsersResponse from './mock-data/jiraUsers.json';
+// import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
+// import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
+// import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
 
-chai.use(chaiAsPromised);
-
-const TEST_ADMIN_DISPLAY_NAME = 'The Administrator';
-const TEST_INSTANCE_NAME = 'acme.atlassian.net';
-const TEST_USERNAME = 'admin%40acme.org';
-
-const NEVER_CALL_ENDPOINT = 'NEVER_CALL_ENDPOINT';
+const NEVER_CALL = 'NEVER_CALL';
 const shouldNeverContactEndpoint = () => {
-  fetchMock.mock(GLOBAL_ANALYTICS_ENDPOINT, {}, { name: NEVER_CALL_ENDPOINT });
+  fetchMock.mock(NOTIFY_ENDPOINT_EAST, {}, { name: NEVER_CALL });
+};
+
+const mockNotifyEastEndpointWithResponse = (response) => {
+  fetchMock.mock(
+    NOTIFY_ENDPOINT_EAST,
+    { body: response },
+    {
+      method: 'POST',
+      name: 'NOTIFY',
+    }
+  );
+};
+
+const mockNotifyWestEndpointWithResponse = (response) => {
+  fetchMock.mock(
+    NOTIFY_ENDPOINT_WEST,
+    { body: response },
+    {
+      method: 'POST',
+      name: 'NOTIFY',
+    }
+  );
 };
 
 describe('notifyUsersAccessGranted', () => {
@@ -30,40 +51,83 @@ describe('notifyUsersAccessGranted', () => {
 
   it('should return a resolved promise with no value and it should never contact the endpoint', async () => {
     shouldNeverContactEndpoint();
-    const result = await notifyUsersAccessGranted(
-      TEST_ADMIN_DISPLAY_NAME,
-      TEST_INSTANCE_NAME,
-      TEST_USERNAME,
-      []
-    );
-    assert.equal(result, null);
-    assert.isFalse(fetchMock.done(NEVER_CALL_ENDPOINT));
+    const result = await notifyUsersAccessGranted([]);
+    expect(result).toEqual(accessgrantedNoUsersResponse);
+    expect(fetchMock.done(NEVER_CALL)).toBe(false);
   });
 
-  it('should create a payload which has as many events as usernames defined', () => {
-    const usernames = ['a', 'b', 'c'];
-    const payload = createPayload(
-      TEST_ADMIN_DISPLAY_NAME,
-      TEST_INSTANCE_NAME,
-      TEST_USERNAME,
-      usernames
+  it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
+    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('admin');
+    tenantContext.queryUsername = jest.fn().mockReturnValue(userAdminResponse);
+    tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
+
+    mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);
+
+    const result = await notifyUsersAccessGranted(jiraUsersResponse);
+    expect(result).toEqual(accessgrantedJiraUsersResponse);
+    expect(fetchMock.done('NOTIFY')).toBe(true);
+
+    const jsonBody = JSON.parse(fetchMock.calls('NOTIFY')[0][1].body);
+    expect(jsonBody).toEqual(
+      expect.objectContaining({
+        instance: expect.any(String),
+        grantedAccessBy: expect.objectContaining({
+          name: expect.any(String),
+          avatar: expect.any(String),
+        }),
+        grantedAccessTo: expect.arrayContaining([
+          expect.objectContaining({
+            name: expect.any(String),
+            username: expect.any(String),
+            atlassianAccountId: expect.any(String),
+          }),
+        ]),
+      })
     );
-    assert.strictEqual(usernames.length, payload.events.length);
   });
 
-  it('should return a resolved promise with no value if the endpoint returns a 200 response', () => {
-    fetchMock.mock(GLOBAL_ANALYTICS_ENDPOINT, notifyUsersAccessGrantedResponse);
-    return assert.eventually.equal(
-      notifyUsersAccessGranted(TEST_ADMIN_DISPLAY_NAME, TEST_INSTANCE_NAME, TEST_USERNAME, ['a']),
-      null
+  it('should fallback to the west endpoint if the east endpoint returns a 500 response', async () => {
+    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('admin');
+    tenantContext.queryUsername = jest.fn().mockReturnValue(userAdminResponse);
+    tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
+
+    fetchMock.mock(NOTIFY_ENDPOINT_EAST, 500);
+    mockNotifyWestEndpointWithResponse(accessgrantedJiraUsersResponse);
+
+    const result = await notifyUsersAccessGranted(jiraUsersResponse);
+    expect(result).toEqual(accessgrantedJiraUsersResponse);
+    expect(fetchMock.done('NOTIFY')).toBe(true);
+
+    const jsonBody = JSON.parse(fetchMock.calls('NOTIFY')[0][1].body);
+    expect(jsonBody).toEqual(
+      expect.objectContaining({
+        instance: expect.any(String),
+        grantedAccessBy: expect.objectContaining({
+          name: expect.any(String),
+          avatar: expect.any(String),
+        }),
+        grantedAccessTo: expect.arrayContaining([
+          expect.objectContaining({
+            name: expect.any(String),
+            username: expect.any(String),
+            atlassianAccountId: expect.any(String),
+          }),
+        ]),
+      })
     );
   });
 
-  it('should return a rejected promise if the endpoint returns a 400 response', () => {
-    fetchMock.mock(GLOBAL_ANALYTICS_ENDPOINT, 400);
-    return assert.isRejected(
-      notifyUsersAccessGranted(TEST_ADMIN_DISPLAY_NAME, TEST_INSTANCE_NAME, TEST_USERNAME, ['a']),
-      /400/
-    );
+  it('should return a rejected promise if both endpoints return a 500 response', async () => {
+    fetchMock.mock(NOTIFY_ENDPOINT_EAST, 500);
+    fetchMock.mock(NOTIFY_ENDPOINT_WEST, 500);
+    expect.assertions(1);
+
+    try {
+      await notifyUsersAccessGranted(jiraUsersResponse);
+    } catch (e) {
+      expect(e).toEqual(
+        new Error('Unable to notify users that they were granted access. Status: 500')
+      );
+    }
   });
 });

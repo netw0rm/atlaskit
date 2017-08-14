@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 import waitUntil from '../../util/wait-until';
@@ -27,21 +26,24 @@ const noop = () => {};
 // More tests should try to extract actual copy from the ProviderConfig,
 // instead of being hardcoded in the test
 const getXFlowProviderConfig = () =>
-  mount(<JiraToConfluenceXFlowProvider><div /></JiraToConfluenceXFlowProvider>)
+  mount(
+    <JiraToConfluenceXFlowProvider>
+      <div />
+    </JiraToConfluenceXFlowProvider>
+  )
     .find('XFlowProvider')
-    .props()
-    .config;
+    .props().config;
 
 const defaultProps = {
   isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
-      { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
-      { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
-      { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
-      { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
-      { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
+      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com' },
+      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com' },
+      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com' },
+      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com' },
+      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com' },
     ]),
   startProductTrial: async () => {},
   cancelStartProductTrial: async () => {},
@@ -74,84 +76,91 @@ describe('@atlaskit/xflow', () => {
           </MockConfluenceXFlow>
         )
       );
-      expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
+      expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component when user has access', () =>
+    it('should render Start Trial component when user has access', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        const confirmTrialHeading = getXFlowProviderConfig().startTrial.confirmTrialHeading;
-        expect(xflow.find(StartTrial).text()).to.include(confirmTrialHeading);
-      }));
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      const confirmTrialHeading = getXFlowProviderConfig().startTrial.confirmTrialHeading;
+      expect(xflow.find(StartTrial).text()).toMatch(confirmTrialHeading);
+    });
 
-    it('should render Grant Access component when user has not activated Confluence in the past', () =>
+    it('should render Grant Access component when user has not activated Confluence in the past', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        // click on confirm
-        clickOnText(xflow.find(ConfirmTrial), 'Confirm');
-        return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
-          // render grant access screen
-          const grantAccess = xflow.find(GrantAccess);
-          const grantAccessHeading = getXFlowProviderConfig().startTrial.grantAccessHeading;
-          expect(grantAccess.text()).to.include(grantAccessHeading);
-          expect(grantAccess.text()).to.include(
-            getXFlowProviderConfig().startTrial.grantAccessDefaultAccess
-          );
-        });
-      }));
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      // click on confirm
+      clickOnText(xflow.find(ConfirmTrial), 'Confirm');
 
-    it('should render Grant Access component with options', () =>
+      await waitUntil(() => xflow.find(GrantAccess).length === 1);
+      // render grant access screen
+      const grantAccess = xflow.find(GrantAccess);
+      const grantAccessHeading = getXFlowProviderConfig().startTrial.grantAccessHeading;
+      expect(grantAccess.text()).toMatch(grantAccessHeading);
+      expect(grantAccess.text()).toMatch(
+        getXFlowProviderConfig().startTrial.grantAccessDefaultAccess
+      );
+    });
+
+    it('should render Grant Access component with options', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        // click on confirm
-        clickOnText(xflow.find(ConfirmTrial), 'Confirm');
-        return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
-          const grantAccess = xflow.find(GrantAccess);
-          clickOnText(grantAccess, 'Change...');
-          const grantAccessChooseOption = getXFlowProviderConfig()
-            .startTrial
-            .grantAccessChooseOption;
-          expect(grantAccess.text()).to.include(grantAccessChooseOption);
-          const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'everyone')[0].label;
-          expect(grantAccess.text()).to.include(everyoneLabel);
-          const siteAdminsLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'site-admins')[0].label;
-          expect(grantAccess.text()).to.include(siteAdminsLabel);
-          const specificUsersLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(i => i.value === 'specific-users')[0].label;
-          expect(grantAccess.text()).to.include(specificUsersLabel);
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      // click on confirm
+      clickOnText(xflow.find(ConfirmTrial), 'Confirm');
 
-          expect(grantAccess.text()).to.include('How will this affect my bill?');
+      await waitUntil(() => xflow.find(GrantAccess).length === 1);
 
-          // should render all users in retrieve users request
-          expect(grantAccess.text()).to.include('Lachlan Hunt');
-          expect(grantAccess.text()).to.include('Andrew Wakeling');
-          expect(grantAccess.text()).to.include('Andrew Hammond');
-          expect(grantAccess.text()).to.include('Michael Truong');
-          expect(grantAccess.text()).to.include('George Burrows');
-        });
-      }));
+      const grantAccess = xflow.find(GrantAccess);
+      clickOnText(grantAccess, 'Change...');
 
-    it('should render Loading Time component after grant access flow', () =>
+      const grantAccessChooseOption = getXFlowProviderConfig().startTrial.grantAccessChooseOption;
+      expect(grantAccess.text()).toMatch(grantAccessChooseOption);
+
+      const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'everyone'
+      )[0].label;
+      expect(grantAccess.text()).toMatch(everyoneLabel);
+
+      const siteAdminsLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'site-admins'
+      )[0].label;
+      expect(grantAccess.text()).toMatch(siteAdminsLabel);
+
+      const specificUsersLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
+        i => i.value === 'specific-users'
+      )[0].label;
+      expect(grantAccess.text()).toMatch(specificUsersLabel);
+
+      expect(grantAccess.text()).toMatch('How will this affect my bill?');
+
+      // should render all users in retrieve users request
+      expect(grantAccess.text()).toMatch('Lachlan Hunt');
+      expect(grantAccess.text()).toMatch('Andrew Wakeling');
+      expect(grantAccess.text()).toMatch('Andrew Hammond');
+      expect(grantAccess.text()).toMatch('Michael Truong');
+      expect(grantAccess.text()).toMatch('George Burrows');
+    });
+
+    it('should render Loading Time component after grant access flow', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        // click on confirm
-        clickOnText(xflow.find(ConfirmTrial), 'Confirm');
-        return waitUntil(() => xflow.find(GrantAccess).length === 1).then(() => {
-          // click on continue
-          clickOnText(xflow.find(GrantAccess), 'Continue');
-          return waitUntil(() => xflow.find(LoadingTime).length === 1).then(() => {
-            const waitingScreen = xflow.find(LoadingTime);
-            expect(waitingScreen.text()).to.include("We're turning some cogs...");
-            expect(waitingScreen.text()).to.include('Where to find Confluence');
-            expect(waitingScreen.text()).to.include(
-              'Hit the menu icon near your profile image to switch between products.'
-            );
-            const goToProductButton = getXFlowProviderConfig()
-              .startTrial
-              .loadingProductGotoProductButton;
-            expect(waitingScreen.text()).to.include(goToProductButton);
-          });
-        });
-      }));
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      // click on confirm
+      clickOnText(xflow.find(ConfirmTrial), 'Confirm');
+
+      await waitUntil(() => xflow.find(GrantAccess).length === 1);
+      // click on continue
+      clickOnText(xflow.find(GrantAccess), 'Continue');
+
+      await waitUntil(() => xflow.find(LoadingTime).length === 1);
+      const waitingScreen = xflow.find(LoadingTime);
+      expect(waitingScreen.text()).toMatch("We're turning some cogs...");
+      expect(waitingScreen.text()).toMatch('Where to find Confluence');
+      expect(waitingScreen.text()).toMatch(
+        'Hit the menu icon near your profile image to switch between products.'
+      );
+      const goToProductButton = getXFlowProviderConfig().startTrial.loadingProductGotoProductButton;
+      expect(waitingScreen.text()).toMatch(goToProductButton);
+    });
   });
 
   describe('returning to confluence', () => {
@@ -169,28 +178,26 @@ describe('@atlaskit/xflow', () => {
           </MockConfluenceXFlow>
         )
       );
-      expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
+      expect(xflow.length).toBe(1);
     });
 
-    it('should skip Grant Access component when user has activated Confluence in the past', () =>
+    it('should skip Grant Access component when user has activated Confluence in the past', async () => {
       // eventually render to start trial screen
-      waitUntil(() => xflow.find(StartTrial).length === 1).then(() => {
-        // click on confirm
-        clickOnText(xflow.find(ConfirmTrial), 'Confirm');
-        return waitUntil(() => xflow.find(LoadingTime).length === 1).then(() => {
-          // render loading time screen, bypassing grant access screen
-          const waitingScreen = xflow.find(LoadingTime);
-          expect(waitingScreen.text()).to.include("We're turning some cogs...");
-          expect(waitingScreen.text()).to.include('Where to find Confluence');
-          expect(waitingScreen.text()).to.include(
-            'Hit the menu icon near your profile image to switch between products.'
-          );
-          const goToProductButton = getXFlowProviderConfig()
-            .startTrial
-            .loadingProductGotoProductButton;
-          expect(waitingScreen.text()).to.include(goToProductButton);
-        });
-      }));
+      await waitUntil(() => xflow.find(StartTrial).length === 1);
+      // click on confirm
+      clickOnText(xflow.find(ConfirmTrial), 'Confirm');
+
+      await waitUntil(() => xflow.find(LoadingTime).length === 1);
+      // render loading time screen, bypassing grant access screen
+      const waitingScreen = xflow.find(LoadingTime);
+      expect(waitingScreen.text()).toMatch("We're turning some cogs...");
+      expect(waitingScreen.text()).toMatch('Where to find Confluence');
+      expect(waitingScreen.text()).toMatch(
+        'Hit the menu icon near your profile image to switch between products.'
+      );
+      const goToProductButton = getXFlowProviderConfig().startTrial.loadingProductGotoProductButton;
+      expect(waitingScreen.text()).toMatch(goToProductButton);
+    });
   });
 
   describe('already activated confluence', () => {
@@ -208,20 +215,17 @@ describe('@atlaskit/xflow', () => {
           </MockConfluenceXFlow>
         )
       );
-      expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
+      expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', () =>
+    it('should render Start Trial component with already activated message', async () => {
       // eventually render to already started screen
-      waitUntil(() => xflow.find(AlreadyStarted).length === 1).then(() => {
-        expect(xflow.find(AlreadyStarted).text()).to.include(
-          'A site administrator already started a trial.'
-        );
-        expect(xflow.find(ProgressIndicator).length).to.equal(
-          0,
-          'should not render a progress indicator'
-        );
-      }));
+      await waitUntil(() => xflow.find(AlreadyStarted).length === 1);
+      expect(xflow.find(AlreadyStarted).text()).toMatch(
+        'A site administrator already started a trial.'
+      );
+      expect(xflow.find(ProgressIndicator).length).toBe(0);
+    });
   });
 
   describe('currently activating confluence', () => {
@@ -239,20 +243,17 @@ describe('@atlaskit/xflow', () => {
           </MockConfluenceXFlow>
         )
       );
-      expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
+      expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', () =>
+    it('should render Start Trial component with already activated message', async () => {
       // eventually render to already started screen
-      waitUntil(() => xflow.find(AlreadyStarted).length === 1).then(() => {
-        expect(xflow.find(AlreadyStarted).text()).to.include(
-          'A site administrator already started a trial.'
-        );
-        expect(xflow.find(ProgressIndicator).length).to.equal(
-          1,
-          'should render a progress indicator'
-        );
-      }));
+      await waitUntil(() => xflow.find(AlreadyStarted).length === 1);
+      expect(xflow.find(AlreadyStarted).text()).toMatch(
+        'A site administrator already started a trial.'
+      );
+      expect(xflow.find(ProgressIndicator).length).toBe(1);
+    });
   });
 
   describe('error activating confluence', () => {
@@ -271,18 +272,18 @@ describe('@atlaskit/xflow', () => {
           </MockConfluenceXFlow>
         )
       );
-      expect(xflow.length).to.equal(1, 'expect xflow to mount correctly');
+      expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', () =>
+    it('should render Start Trial component with already activated message', async () => {
       // eventually render to error flag
-      waitUntil(() => xflow.find(ErrorFlag).length === 1).then(() => {
-        // should render error messages
-        expect(xflow.find(ErrorFlag).text()).to.include('Error icon');
-        expect(xflow.find(ErrorFlag).text()).to.include('Oops... Something went wrong');
-        expect(xflow.find(ErrorFlag).text()).to.include('Dismiss flag');
-        expect(xflow.find(ErrorFlag).text()).to.include("Let's try again.");
-        expect(xflow.find(ErrorFlag).text()).to.include('Retry');
-      }));
+      await waitUntil(() => xflow.find(ErrorFlag).length === 1);
+      // should render error messages
+      expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Dismiss flag');
+      expect(xflow.find(ErrorFlag).text()).toMatch("Let's try again.");
+      expect(xflow.find(ErrorFlag).text()).toMatch('Retry');
+    });
   });
 });

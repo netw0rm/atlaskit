@@ -1,39 +1,45 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-export const GLOBAL_ANALYTICS_ENDPOINT = 'https://mgas.prod.public.atl-paas.net/v1/events';
-const NOTIFY_EVENT_NAME = 'grow4785.confluence.access.granted';
-const JIRA_PRODUCT = 'jira';
+import { getCurrentUsername, queryUsername, getInstanceName } from './tenantContext';
 
-export const createPayload = (adminDisplayName, instanceName, userId, usernames) => {
-  const now = Date.now();
-  const events = usernames.map(username => ({
-    name: NOTIFY_EVENT_NAME,
-    server: instanceName,
-    product: JIRA_PRODUCT,
-    user: userId,
-    serverTime: now,
-    properties: {
-      granted_to_user: username,
-      send_notification: true,
-      adminDisplayName,
-    },
-  }));
-  return { events };
-};
+export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.atl-paas.net/accessgranted';
+export const NOTIFY_ENDPOINT_WEST = 'https://xflow.us-west-1.prod.atl-paas.net/accessgranted';
+const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
+const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 
-export default async (adminDisplayName, instanceName, userId, usernames) => {
-  if (usernames.length === 0) {
-    return null;
+function getAvatarUrl({ avatarUrls }) {
+  // Find the largest size key
+  const key = Object.keys(avatarUrls || {}).pop();
+
+  if (!key) {
+    return DEFAULT_AVATAR_URL;
   }
 
-  const response = await fetch(GLOBAL_ANALYTICS_ENDPOINT, {
-    credentials: 'same-origin',
+  const baseUrl = (avatarUrls[key].match(AVATAR_REGEXP) || [])[0];
+  const url = baseUrl ? `${baseUrl}?s=128` : avatarUrls[key];
+  return url;
+}
+
+function getAtlassianAccountId({ attributes: { attributes } }) {
+  if (!attributes) return '';
+  const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
+
+  return openIdAttr ? openIdAttr.link.href : '';
+}
+
+async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo) {
+  const response = await fetch(endpoint, {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(createPayload(adminDisplayName, instanceName, userId, usernames)),
+    body: JSON.stringify({
+      instance,
+      grantedAccessBy,
+      grantedAccessTo,
+    }),
   });
 
   if (!response.ok) {
@@ -41,5 +47,38 @@ export default async (adminDisplayName, instanceName, userId, usernames) => {
       `Unable to notify users that they were granted access. Status: ${response.status}`
     );
   }
-  return null;
+
+  return await response.json();
+}
+
+export default async (users) => {
+  if (users.length === 0) {
+    return {
+      status: 'SENT',
+      recipients: [],
+    };
+  }
+
+  const adminUsername = getCurrentUsername();
+  const admin = queryUsername(adminUsername);
+  const instance = getInstanceName();
+
+  const grantedAccessBy = {
+    name: admin.displayName,
+    avatar: getAvatarUrl(admin),
+  };
+
+  const grantedAccessTo = users.map(user => ({
+    name: user['display-name'],
+    username: user.name,
+    atlassianAccountId: getAtlassianAccountId(user),
+  }));
+
+  let data;
+  try {
+    data = await notifyUsers(NOTIFY_ENDPOINT_EAST, instance, grantedAccessBy, grantedAccessTo);
+  } catch (e) {
+    data = await notifyUsers(NOTIFY_ENDPOINT_WEST, instance, grantedAccessBy, grantedAccessTo);
+  }
+  return data;
 };

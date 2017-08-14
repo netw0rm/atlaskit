@@ -1,9 +1,5 @@
 {
   "extends": [
     "../../../../build/config/eslint.test.unit.js"
-  ],
-  "rules": {
-    // required since chai has a valid property "to" on it's version of expect
-    "jest/valid-expect": "off"
-  }
+  ]
 }

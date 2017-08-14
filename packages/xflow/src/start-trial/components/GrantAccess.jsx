@@ -55,6 +55,25 @@ const messages = defineMessages({
   },
 });
 
+function* iterate(it) {
+  yield* it;
+}
+
+// Zip generator from
+// https://github.com/lachlanhunt/generator-utilities
+function* zip(...them) {
+  if (them.length) {
+    const iterators = them.map(iterate);
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const values = iterators.map(iterator => iterator.next());
+      if (values.some(value => value.done)) return;
+      yield values.map(value => value.value);
+    }
+  }
+}
+
 class GrantAccess extends Component {
   static propTypes = {
     intl: intlShape.isRequired,
@@ -86,8 +105,8 @@ class GrantAccess extends Component {
   };
 
   static defaultProps = {
-    retrieveUsers: () => Promise.resolve([{ items: [] }]),
-    grantAccessToUsers: () => Promise.resolve(),
+    retrieveUsers: async () => [],
+    grantAccessToUsers: async () => {},
   };
 
   state = {
@@ -106,28 +125,39 @@ class GrantAccess extends Component {
   };
 
   componentDidMount = async () => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    let users = [];
+    const { firePrivateAnalyticsEvent, optionItems, retrieveUsers, usersOption } = this.props;
+
     try {
-      users = await this.props.retrieveUsers();
+      const userGroups = optionItems.map(option => option.value);
+      const fetchedUsers = await Promise.all(userGroups.map(retrieveUsers));
+      const userSets = new Map([
+        ...zip(
+          userGroups,
+          fetchedUsers.map(users => new Map(users.map(user => [user.name, user])))
+        ),
+      ]);
+
+      const selectableUsers = [...userSets.get(usersOption).values()];
+      const selectItems = [
+        {
+          items: selectableUsers.map(user => ({
+            value: user.name,
+            content: user['display-name'],
+            description: user.email,
+          })),
+        },
+      ];
+
+      this.setState({
+        userSets,
+        selectItems,
+      });
+
+      firePrivateAnalyticsEvent('xflow.grant-access.displayed');
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.retrieving.users.failed', {
         ErrorMessage: e.message,
         ErrorStack: e.stack,
-      });
-    }
-    if (users && users.length > 0) {
-      firePrivateAnalyticsEvent('xflow.grant-access.displayed');
-      this.setState({
-        selectItems: [
-          {
-            items: users.map(user => ({
-              value: user.name,
-              content: user.displayName,
-              description: user.email,
-            })),
-          },
-        ],
       });
     }
   };
@@ -138,9 +168,9 @@ class GrantAccess extends Component {
     this.props.onComplete();
   };
 
-  handleContinueClick = () => {
+  handleContinueClick = async () => {
     const { grantAccessToUsers, onComplete, usersOption, firePrivateAnalyticsEvent } = this.props;
-    const { selectedRadio, selectedUsers } = this.state;
+    const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
     if (selectedRadio === usersOption && selectedUsers.length === 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.user-select.invalid');
       this.setState({
@@ -158,23 +188,22 @@ class GrantAccess extends Component {
       continueButtonDisabled: true,
       failedToGrantAccess: false,
     });
-    Promise.resolve(
-      grantAccessToUsers(selectedRadio, selectedRadio === usersOption ? selectedUsers : null)
-    )
-      // TODO: only trigger stream hub notification if this.state.notifyUsers is true
-      .then(() => {
-        firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
-        onComplete();
-      })
-      .catch(() => {
-        firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
-        this.setState({
-          continueButtonDisabled: false,
-          spinnerActive: false,
-          failedToGrantAccess: true,
-          showSkipLink: true,
-        });
+
+    try {
+      const users =
+        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
+      await grantAccessToUsers(users, notifyUsers);
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
+      onComplete();
+    } catch (e) {
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
+      this.setState({
+        continueButtonDisabled: false,
+        spinnerActive: false,
+        failedToGrantAccess: true,
+        showSkipLink: true,
       });
+    }
   };
 
   handleLearnMoreClick = () => {
@@ -217,11 +246,14 @@ class GrantAccess extends Component {
   };
 
   handleUserSelectChange = (evt) => {
-    const { firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent, usersOption } = this.props;
+    const { userSets } = this.state;
+    const selectedUsers = evt.items.map(user => userSets.get(usersOption).get(user.value));
+
     firePrivateAnalyticsEvent('xflow.grant-access.user-select.changed');
     this.setState({
       userSelectIsInvalid: evt.items.length === 0,
-      selectedUsers: evt.items.map(user => ({ name: user.value })),
+      selectedUsers,
     });
   };
 

@@ -1,5 +1,5 @@
 {
-  "self": "https://acme.atlassian.net/rest/api/2/user?username=user%40acme.org",
+  "self": "https://example.atlassian.net/rest/api/2/user?username=user%40acme.org",
   "key": "user@acme.org",
   "accountId": "557057:46e9c99c-c6c1-4833-8000-b0c754a7aa48",
   "name": "user",
@@ -18,7 +18,7 @@
     "size": 1,
     "items": [{
       "name": "site-admins",
-      "self": "https://acme.atlassian.net/rest/api/2/group?groupname=site-admins"
+      "self": "https://example.atlassian.net/rest/api/2/group?groupname=site-admins"
     }]
   },
   "applicationRoles": {

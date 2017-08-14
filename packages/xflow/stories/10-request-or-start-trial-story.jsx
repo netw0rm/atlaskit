@@ -15,11 +15,11 @@ const defaultProps = {
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
-      { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
-      { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
-      { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
-      { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
-      { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
+      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com' },
+      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com' },
+      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com' },
+      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com' },
+      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com' },
     ]),
   cancelStartProductTrial: async () => {},
   grantAccessToUsers: () => delay(1000),

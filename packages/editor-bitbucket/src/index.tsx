@@ -23,6 +23,7 @@ import {
   listsStateKey,
   textFormattingStateKey,
   clearFormattingStateKey,
+  pastePlugins,
   EditorView,
   EditorState,
   Node,
@@ -318,6 +319,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
             ...emojisPlugins(schema, this.providerFactory),
             ...asciiEmojiPlugins(schema, this.providerFactory),
+            ...pastePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),

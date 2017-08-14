@@ -8,6 +8,7 @@ export interface Props {
   disabled?: boolean;
   href?: string;
   title?: string;
+  titlePosition?: string;
   target?: string;
   theme?: 'dark';
   className?: string;
@@ -53,7 +54,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     return this.props.title
       ? (
         <Tooltip
-          position="top"
+          position={this.props.titlePosition || 'top'}
           description={this.props.title}
           visible={this.state.isTooltipVisible}
           onMouseOver={this.handleMouseOver}

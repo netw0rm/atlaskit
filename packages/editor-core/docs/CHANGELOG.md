@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.10.1 (2017-08-14)
+
+* bug fix; fix parsing of mentions in BB renderer. (issues closed: ed-2465) ([3fb5764](https://bitbucket.org/atlassian/atlaskit/commits/3fb5764))
+* bug fix; workaround for twitter/instagram link creation bug (issues closed: ed-2464) ([ad09f63](https://bitbucket.org/atlassian/atlaskit/commits/ad09f63))
 ## 45.10.0 (2017-08-14)
 
 * feature; adding help dialog to the editor. ([bf09d40](https://bitbucket.org/atlassian/atlaskit/commits/bf09d40))

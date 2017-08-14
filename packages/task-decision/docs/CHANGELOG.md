@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 3.0.0 (2017-08-14)
+
+* breaking; TaskDecisionProvider has new required methods. ([9e48cf4](https://bitbucket.org/atlassian/atlaskit/commits/9e48cf4))
+* breaking; support service integration with tasks and all item types (issues closed: fs-1249) ([9e48cf4](https://bitbucket.org/atlassian/atlaskit/commits/9e48cf4))
+
+
 ## 2.4.0 (2017-08-09)
 
 * feature; adding support for placeholders ([d9edd1a](https://bitbucket.org/atlassian/atlaskit/commits/d9edd1a))

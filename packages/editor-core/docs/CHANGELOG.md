@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.11.0 (2017-08-14)
+
+* feature; upgrade editor to support latest task-decisions. (issues closed: fs-1263) ([6060103](https://bitbucket.org/atlassian/atlaskit/commits/6060103))
 ## 45.10.1 (2017-08-14)
 
 * bug fix; fix parsing of mentions in BB renderer. (issues closed: ed-2465) ([3fb5764](https://bitbucket.org/atlassian/atlaskit/commits/3fb5764))

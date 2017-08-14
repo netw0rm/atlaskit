@@ -3,40 +3,13 @@ import { PureComponent } from 'react';
 
 import Layer from '@atlaskit/layer';
 
-import EmojiResource, { EmojiProvider, EmojiResourceConfig } from '../src/api/EmojiResource';
+import { EmojiProvider } from '../src/api/EmojiResource';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { localStoragePrefix } from '../src/constants';
-import { EmojiDescription, EmojiId, OptionalEmojiDescription } from '../src/types';
+import { EmojiId, OptionalEmojiDescription } from '../src/types';
+import { UsagePeekEmojiResource } from '../src/support/MockEmojiResource';
 
-export class UsagePeekEmojiResource extends EmojiResource {
-  constructor(config: EmojiResourceConfig) {
-    super(config);
-  }
-
-  getFrequentlyUsed(): Array<string> {
-    if (this.usageTracker) {
-      return this.usageTracker.getOrder();
-    } else {
-      return [];
-    }
-  }
-
-  clear() {
-    if (this.usageTracker) {
-      this.usageTracker.clear();
-    }
-  }
-
-  recordSelection(id: EmojiDescription): Promise<any> {
-    if (super.recordSelection) {
-      const promise = super.recordSelection(id);
-      return promise;
-    } else {
-      return Promise.resolve();
-    }
-  }
-}
 
 export interface Props {
   emojiResource: UsagePeekEmojiResource;
@@ -70,7 +43,7 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
 
   clearUsageData() {
     const { emojiResource } = this.props;
-    emojiResource.clear();
+    emojiResource.clearFrequentlyUsed();
     this.setState({
       emojiIdList: emojiResource.getFrequentlyUsed(),
       emojiQueue: this.getEmojiQueue()

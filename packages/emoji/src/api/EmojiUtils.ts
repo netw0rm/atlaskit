@@ -98,8 +98,8 @@ export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariation
     const { representation, ...other } = skin;
     return {
       baseId: baseId,
-      ...other,
       representation: denormaliseServiceRepresentation(representation, meta),
+      ...other
     };
   });
 };

@@ -170,7 +170,12 @@ const frequentTest: EmojiDescription = {
 
 
 describe('EmojiRepository', () => {
-  const emojiRepository = newEmojiRepository();
+  let emojiRepository;
+
+  beforeEach(() => {
+    // emojiRepository has state that can influence search results so make it fresh for each test.
+    emojiRepository = newEmojiRepository();
+  });
 
   describe('#search', () => {
     it('all', () => {
@@ -216,6 +221,42 @@ describe('EmojiRepository', () => {
       });
     });
 
+    it('returns frequently used before others except for an exact shortname match', (done) => {
+      const greenHeart = emojiRepository.findByShortName(':green_heart:');
+      const heart = emojiRepository.findByShortName(':heart:');
+
+      if (!greenHeart || !heart) {
+        fail('The emoji needed for this test were not found in the EmojiRepository');
+        done();
+      } else {
+        const result: EmojiDescription[] = emojiRepository.search(':hear').emojis;
+        let heartIndex = result.indexOf(heart);
+        let greenHeartIndex = result.indexOf(greenHeart);
+
+        expect(heartIndex).to.not.equal(-1);
+        expect(greenHeartIndex).to.not.equal(-1);
+        expect(heartIndex < greenHeartIndex).to.equal(true);
+
+        emojiRepository.used(greenHeart);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          const nextResult: EmojiDescription[] = emojiRepository.search(':hear').emojis;
+          heartIndex = nextResult.indexOf(heart);
+          greenHeartIndex = nextResult.indexOf(greenHeart);
+
+          expect(heartIndex).to.not.equal(-1);
+          expect(greenHeartIndex).to.not.equal(-1);
+          expect(greenHeartIndex < heartIndex).to.equal(true);
+
+          // exact matching shortname should come above usage
+          const exactMatchResult: EmojiDescription[] = emojiRepository.search(':heart:').emojis;
+          expect(exactMatchResult.indexOf(heart) < exactMatchResult.indexOf(greenHeart)).to.equal(true);
+          done();
+        });
+      }
+    });
+
     it('returns exact matches first', () => {
       const emojis = emojiRepository.search(':grin').emojis;
       const grinEmojis = searchableEmojis.filter(emoji => emoji.shortName.indexOf(':grin') === 0).sort((e1, e2) => {
@@ -224,7 +265,7 @@ describe('EmojiRepository', () => {
           return 1;
         }
         // Leave emojis in current order
-        return -1;
+        return 0;
       });
       checkOrder(grinEmojis, emojis);
     });

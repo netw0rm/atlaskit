@@ -1,5 +1,17 @@
 # @atlaskit/emoji
 
+## 26.0.0 (2017-08-13)
+
+
+
+* feature; unit tests for the frequency in search work. ([ab28372](https://bitbucket.org/atlassian/atlaskit/commits/ab28372))
+
+
+* breaking; The usageTracker property is moved from EmojiResource. If you subclassed EmojiResource and relied on ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+* breaking; ensure frequently used emoji are boosted in search results in the typeahead and pick (issues closed: fs-1213) ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+
+
+
 ## 25.0.0 (2017-08-10)
 
 * bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))

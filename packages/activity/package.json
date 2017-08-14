@@ -1,10 +1,10 @@
 {
-  "name": "@atlaskit/emoji",
-  "version": "26.0.0",
+  "name": "@atlaskit/activity",
+  "version": "1.0.0",
   "config": {
     "access": "public"
   },
-  "description": "ak-emoji react component",
+  "description": "Activity APIs and components",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
@@ -18,6 +18,7 @@
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "test:unit:watch": "../../node_modules/.bin/jest --watch -c ../../build/config/jest.config.js",
     "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
@@ -25,53 +26,29 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/field-base": "^5.0.0",
-    "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/layer": "^2.5.0",
-    "@atlaskit/spinner": "^2.0.0",
-    "@atlaskit/tooltip": "^3.1.0",
-    "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-service-support": "^2.0.1",
-    "@atlaskit/util-shared-styles": "^2.0.0",
-    "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "js-search": "^1.4.2",
-    "lru-fast": "^0.2.2",
-    "mediapicker": "^5.0.4",
-    "react-virtualized": "^9.8.0",
-    "tslib": "^1.2.0",
-    "typestyle": "^1.3.2",
-    "uid": "^0.0.2",
-    "url": "^0.11.0",
-    "xregexp": "^3.2.0"
+    "tslib": "^1.7.1"
   },
-  "peerDependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
-  },
-  "author": "Atlassian Pty Ltd",
+  "author": "Atlassian Pty. Ltd",
   "maintainers": [
-    {
-      "name": "Craig P"
-    },
-    {
-      "name": "Julien H"
-    }
+    "David R",
+    "Oscar W"
   ],
   "license": "Apache-2.0",
-  "devDependencies": {
-    "@atlaskit/util-common-test": "^2.0.0",
-    "fetch-mock": "^5.8.0",
-    "react-addons-perf": "^15.3.2",
-    "uid": "^0.0.2"
+  "peerDependencies": {
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
+  "devDependencies": {
+    "@atlaskit/util-common-test": "^2.0.0",
+    "@types/fetch-mock": "^5.8.0",
+    "fetch-mock": "^5.8.0"
+  },
   "keywords": [
     "fabric",
-    "ui"
+    "private"
   ]
 }

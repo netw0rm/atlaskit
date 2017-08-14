@@ -67,7 +67,7 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
 
   private getNextDate() {
     // Random 15 minute chunk earlier
-    this.lastNewItemTime = this.lastNewItemTime.subtract('minutes', Math.random() * 50 * 15);
+    this.lastNewItemTime = this.lastNewItemTime.subtract(Math.random() * 50 * 15, 'minutes');
     return this.lastNewItemTime.toDate();
   }
 

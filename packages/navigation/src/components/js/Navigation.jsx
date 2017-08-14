@@ -1,6 +1,5 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withTheme } from 'styled-components';
 import { getTheme } from '@atlaskit/theme';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
@@ -131,7 +130,7 @@ function defaultGlobalTheme(globalTheme, mode) {
     : presets.global;
 }
 
-export default withTheme(class Navigation extends PureComponent {
+export default class Navigation extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   state: State
@@ -339,4 +338,4 @@ export default withTheme(class Navigation extends PureComponent {
       </div>
     );
   }
-});
+}

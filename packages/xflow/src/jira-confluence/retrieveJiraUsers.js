@@ -87,9 +87,11 @@ export default async (group = 'everyone', useCache = true) => {
   }
 
   const p = getUsersInGroup(fetchGroup);
-  cache.set(fetchGroup, {
-    timestamp: Date.now(),
-    promise: p,
-  });
+  if (useCache) {
+    cache.set(fetchGroup, {
+      timestamp: Date.now(),
+      promise: p,
+    });
+  }
   return await p;
 };

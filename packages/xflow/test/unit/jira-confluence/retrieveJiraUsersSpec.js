@@ -23,7 +23,7 @@ describe('retrieveJiraUsers', () => {
   });
 
   /**
-   * test scenario where there are no JIRA users (i.e. all site-admin instance)
+   * test scenario where there are no JIRA users (i.e. all site-admin instance)`
    */
   it('should emit empty array when no valid users are retrieved', async () => {
     fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), [], { method: 'GET' });
@@ -105,6 +105,22 @@ describe('retrieveJiraUsers', () => {
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     const response = await retrieveJiraUsers('everyone', false);
     expect(response).toEqual(jiraUsersResponse);
+  });
+
+  /**
+   * test scenario where useCache parameter is set to true and should only be called once
+   */
+  it('should only be called once when useCache is set to true', async () => {
+    const spy = jest.fn()
+      .mockReturnValueOnce(jiraCoreUsersResponse)
+      .mockReturnValueOnce(jiraServiceDeskUsersResponse);
+    fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), spy, { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
+    fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
+    fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
+    const [firstResponse, secondResponse] = await Promise.all([retrieveJiraUsers('everyone'), retrieveJiraUsers('everyone')]);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(firstResponse).toEqual(secondResponse);
   });
 
   /**

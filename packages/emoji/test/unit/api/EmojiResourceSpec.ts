@@ -9,13 +9,13 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
-import { UsageFrequencyTracker } from '../../../src/api/internal/UsageFrequencyTracker';
 import EmojiResource, {
     EmojiProvider,
     EmojiResourceConfig,
     supportsUploadFeature,
     UploadingEmojiProvider,
 } from '../../../src/api/EmojiResource';
+import EmojiRepository from '../../../src/api/EmojiRepository';
 
 import {
     atlassianEmojis,
@@ -160,13 +160,13 @@ class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, u
 }
 
 /**
- * Extend the EmojiResource to provide access to its underlying usage tracking for testing.
+ * Extend the EmojiResource to provide access to its underlying EmojiRepository.
  */
-class TestEmojiResource extends EmojiResource {
-  constructor(config: EmojiResourceConfig, usageTracker: UsageFrequencyTracker) {
+class EmojiResourceWithEmojiRepositoryOverride extends EmojiResource {
+  constructor(config: EmojiResourceConfig, emojiRepository: EmojiRepository) {
     super(config);
     // replace the usageTracker that was just constructed
-    this.usageTracker = usageTracker;
+    this.emojiRepository = emojiRepository;
   }
 }
 
@@ -399,16 +399,16 @@ describe('EmojiResource', () => {
   });
 
   describe('#recordMentionSelection', () => {
-    let mockUsageTracker: UsageFrequencyTracker;
+    let mockEmojiRepository: EmojiRepository;
     let mockRecordUsage: sinon.SinonStub;
 
     beforeEach(() => {
-      mockUsageTracker = <UsageFrequencyTracker>{};
+      mockEmojiRepository = <EmojiRepository>{};
       mockRecordUsage = sinon.stub();
-      mockUsageTracker.recordUsage = mockRecordUsage;
+      mockEmojiRepository.used = mockRecordUsage;
     });
 
-    it('should call record endpoint and local usage tracker', () => {
+    it('should call record endpoint and emoji repository', () => {
       fetchMock.mock({
         name: 'record',
         matcher: `begin:${baseUrl}`,
@@ -421,7 +421,7 @@ describe('EmojiResource', () => {
         response: providerServiceData1,
       });
 
-      const resource = new TestEmojiResource(defaultApiConfig, mockUsageTracker);
+      const resource = new EmojiResourceWithEmojiRepositoryOverride(defaultApiConfig, mockEmojiRepository);
 
       return resource.recordSelection(grinEmoji).then(() => {
         expect(fetchMock.called('record')).to.equal(true);
@@ -429,10 +429,11 @@ describe('EmojiResource', () => {
       });
     });
 
-    it('should perform local usage tracking even when no recordConfig configured', () => {
-      const resource = new TestEmojiResource({ providers: [provider1] },  mockUsageTracker);
-      resource.recordSelection(grinEmoji);
-
+    it('should record usage on emoji repository even when no recordConfig configured', () => {
+      const resource = new EmojiResourceWithEmojiRepositoryOverride({ providers: [provider1] }, mockEmojiRepository);
+      resource.recordSelection(grinEmoji).then(() => {
+        expect(mockRecordUsage.calledWith(grinEmoji)).to.equal(true);
+      });
     });
   });
 

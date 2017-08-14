@@ -1,0 +1,90 @@
+{
+  "data": [
+    {
+      "userId": null,
+      "objectId": "ari:cloud:confluence:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:page/24117302",
+      "url": "https://product-fabric.atlassian.net/wiki/display/PRODUCT/Planning+-+2016-10-14",
+      "name": "Planning - 2016-10-14",
+      "container": "Fabric team",
+      "iconUrl": "https://activity-provider.useast.atlassian.io/images/page-icon-v2.svg",
+      "provider": "confluence",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-13T23:38:28.558Z",
+      "contributors": [
+        {
+          "accountId": "655363:2a63e0b5-aae7-429c-83df-292543aad370",
+          "lastAccessedDate": "2016-11-28T01:04:57.608Z"
+        },
+        {
+          "accountId": "655363:ed1e4d32-896e-40bf-be26-fe90b2b203e9",
+          "lastAccessedDate": "2016-11-28T01:04:57.608Z"
+        },
+        {
+          "accountId": "655362:ae66aaa8-f9ef-44e9-8f11-f7457557fb35",
+          "lastAccessedDate": "2016-11-28T01:04:57.608Z"
+        }
+      ],
+      "eventType":  "avi:confluence:updated:page"
+    },
+    {
+      "userId": null,
+      "objectId": "ari:cloud:jira:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:issue/18406",
+      "url": "https://product-fabric.atlassian.net/browse/FAB-1005",
+      "name": "UI: Get cloud id and filter items by site",
+      "container": "Fabric",
+      "iconUrl": "https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg",
+      "provider": "jira",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-10T05:08:21.639Z",
+      "eventType": "avi:jira:created:issue"
+    },
+    {
+      "userId": null,
+      "objectId": "ari:cloud:jira:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:issue/18903",
+      "url": "https://product-fabric.atlassian.net/browse/FAB-1069",
+      "name": "Add Hermant to the experiment to flush analytics queue in JIRA & Confluence as well",
+      "container": "Fabric",
+      "iconUrl": "https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg",
+      "provider": "jira",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-09T23:49:03.872Z",
+      "eventType": "avi:jira:updated:issue"
+    },
+    {
+      "userId": null,
+      "objectId": "ari:cloud:jira:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:issue/19013",
+      "url": "https://product-fabric.atlassian.net/browse/FAB-1092",
+      "name": "Investigate why Zipkin stopped reporting",
+      "container": "Fabric",
+      "iconUrl": "https://product-fabric.atlassian.net/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype",
+      "provider": "jira",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-07T05:36:38.55Z",
+      "eventType": "avi:jira:assigned:issue"
+    },
+    {
+      "userId": null,
+      "objectId": "ari:cloud:jira:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:issue/18905",
+      "url": "https://product-fabric.atlassian.net/browse/FAB-1071",
+      "name": "Make sure all enrolled instances have the connect addon",
+      "container": "Fabric",
+      "iconUrl": "https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg",
+      "provider": "jira",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-05T05:49:14.404Z",
+      "eventType": "avi:jira:updated:issue"
+    },
+    {
+      "userId": null,
+      "objectId": "ari:cloud:confluence:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:page/19333475",
+      "url": "https://product-fabric.atlassian.net/wiki/display/H/Home+opt-in+requests",
+      "name": "Home opt-in requests",
+      "container": "Home",
+      "iconUrl": "https://activity-provider.useast.atlassian.io/images/page-icon-v2.svg",
+      "provider": "confluence",
+      "cloudId": "DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b",
+      "lastAccessedDate": "2016-10-05T05:45:48.571Z",
+      "eventType":  "avi:confluence:created:page"
+    }
+  ]
+}

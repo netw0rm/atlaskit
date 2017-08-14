@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket
 
+## 3.1.0 (2017-08-14)
+
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: 2445) ([382a781](https://bitbucket.org/atlassian/atlaskit/commits/382a781))
+
+
+
 ## 3.0.2 (2017-08-09)
 
 * bug fix; use editor-core's bitbucket transformer for parse/serialize (issues closed: ed-2402) ([11bbd8a](https://bitbucket.org/atlassian/atlaskit/commits/11bbd8a))

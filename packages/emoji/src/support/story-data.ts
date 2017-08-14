@@ -1,7 +1,7 @@
 import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
 import EmojiRepository from '../api/EmojiRepository';
 import { MockEmojiResourceConfig } from './support-types';
-import { mockEmojiResourceFactory, MockEmojiResource } from './MockEmojiResource';
+import { mockEmojiResourceFactory, MockEmojiResource, UsagePeekEmojiResource } from './MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../types';
 
 declare var require: {
@@ -68,3 +68,5 @@ a semper massa dignissim nec.
 export const getEmojiRepository = (): EmojiRepository => new EmojiRepository(getEmojis());
 
 export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiRepository(), config);
+
+export const getUsagePeekEmojiResource = (): UsagePeekEmojiResource => new UsagePeekEmojiResource(getEmojis());

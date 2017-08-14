@@ -32,6 +32,7 @@ export default class ProfilecardResourced extends PureComponent {
     this.state = {
       isLoading: false,
       hasError: false,
+      error: null,
       data: {},
     };
 
@@ -85,7 +86,6 @@ export default class ProfilecardResourced extends PureComponent {
 
   handleClientError(err) {
     if (!this._isMounted) { return; }
-
     this.setState({
       isLoading: false,
       hasError: true,
@@ -97,6 +97,7 @@ export default class ProfilecardResourced extends PureComponent {
     const newProps = {
       isLoading: this.state.isLoading,
       hasError: this.state.hasError,
+      errorType: this.state.error,
       clientFetchProfile: this.clientFetchProfile,
       analytics: this.props.analytics,
       ...this.state.data,

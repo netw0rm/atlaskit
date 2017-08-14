@@ -7,7 +7,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
-import { analyticsDecorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics, analyticsService } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { EmojiState, stateKey as emojiPluginKey } from '../../plugins/emojis';
@@ -30,6 +30,7 @@ import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
+import ToolbarHelp from '../ToolbarHelp';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
@@ -49,12 +50,13 @@ import {
   Toolbar,
   SecondaryToolbar
 } from './styles';
-import { EditorView } from '../../prosemirror';
+import { EditorView, browser } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
   disabled?: boolean;
   feedbackFormUrl?: string;
+  helpDialogPresent?: boolean;
   onCancel?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
@@ -85,13 +87,16 @@ export interface Props {
 
 export interface State {
   maxHeightStyle?: any;
+  showHelp?: boolean;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
   private editorContent: HTMLElement;
   private maxHeightContainer: HTMLElement;
-  state: State = {};
+  state: State = {
+    showHelp: false
+  };
 
   static defaultProps = {
     saveDisabled: false,
@@ -136,12 +141,34 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
+  private toggleHelp = (): void => {
+    const showHelp = !this.state.showHelp;
+    this.setState({
+      showHelp
+    });
+  }
+
+  private onKeyDown = (event: any) => {
+    if(this.props.helpDialogPresent) {
+      const { showHelp } = this.state;
+      if (!showHelp &&
+        (browser.mac && event.metaKey && event.key === '/') ||
+        (!browser.mac && event.ctrlKey && event.key === '/')) {
+        analyticsService.trackEvent('atlassian.editor.help.keyboard');
+        this.toggleHelp();
+      } else if (showHelp && event.key === 'Escape') {
+        this.toggleHelp();
+      }
+    }
+  }
+
   render() {
     const {
       disabled,
       editorView,
       emojiProvider,
       feedbackFormUrl,
+      helpDialogPresent,
       mentionProvider,
       onCancel,
       onSave,
@@ -174,7 +201,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       : 'primary';
 
     return (
-      <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
+      <Container
+        data-editor-chrome={true}
+        tabIndex={-1}
+        innerRef={this.handleEditorContainerRef}
+        onKeyDown={this.onKeyDown}
+      >
         <Toolbar>
           {pluginStateBlockType ?
             <ToolbarBlockType
@@ -245,6 +277,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
+          {helpDialogPresent && <ToolbarHelp showHelp={this.state.showHelp} toggleHelp={this.toggleHelp} />}
         </Toolbar>
         <Content
           innerRef={this.setEditorContent}

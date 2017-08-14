@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.10.0 (2017-08-14)
+
+* feature; adding help dialog to the editor. ([bf09d40](https://bitbucket.org/atlassian/atlaskit/commits/bf09d40))
+* feature; adding more markdown auto-formatting rules for bold, italic, lists, horizontal rule ([76c1caa](https://bitbucket.org/atlassian/atlaskit/commits/76c1caa))
 ## 45.9.2 (2017-08-14)
 
 * bug fix; renderer portal is always positioned to the bottom right (issues closed: ed-2461) ([7afd755](https://bitbucket.org/atlassian/atlaskit/commits/7afd755))

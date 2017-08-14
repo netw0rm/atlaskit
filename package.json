@@ -12,7 +12,7 @@
     "@atlaskit/eslint-config-stories": "*",
     "@atlaskit/eslint-config-tests": "*",
     "@kadira/react-split-pane": "^1.4.7",
-    "@kadira/storybook": "^2.24.0",
+    "@kadira/storybook": "^2.35.3",
     "@types/ajv": "0.0.5",
     "@types/chai": "^3.4.34",
     "@types/chai-as-promised": "0.0.30",

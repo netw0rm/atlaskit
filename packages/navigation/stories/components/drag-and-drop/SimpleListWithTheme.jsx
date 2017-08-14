@@ -1,11 +1,15 @@
 // @flow
+// RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
 import Navigation, { AkNavigationItem, presetThemes } from '@atlaskit/navigation';
 import RadioGroup from '@atlaskit/field-radio-group';
+// $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import styled, { injectGlobal } from 'styled-components';
 import reorder from './reorder';
+// $FlowFixMe
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
+// $FlowFixMe
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
 const Container = styled.div`
@@ -52,7 +56,7 @@ export default class SimpleListWithTheme extends Component {
     `;
   }
 
-  onNavResize = (state: Object) => {
+  onNavResize = (state: any) => {
     this.setState({
       isNavOpen: state.isOpen,
       navWidth: state.width,

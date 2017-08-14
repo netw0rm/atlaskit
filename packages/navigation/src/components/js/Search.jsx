@@ -28,7 +28,7 @@ type Props = {|
 
 type State = {|
   /** Current value of search field. */
-  value: string
+  value?: string
 |}
 
 export default class Search extends PureComponent {
@@ -42,7 +42,7 @@ export default class Search extends PureComponent {
     value: this.props.value,
   }
 
-  onInputKeyDown = (event: Event) => {
+  onInputKeyDown = (event: KeyboardEvent) => {
     const { onKeyDown } = this.props;
     if (controlKeys.indexOf(event.key) === -1) {
       return;
@@ -60,11 +60,13 @@ export default class Search extends PureComponent {
       onInput(event);
     }
   }
+  onSearchBoxMouseDown: mixed
 
   setInputRef = (ref: any) => {
     this.inputRef = ref;
   }
 
+  inputRef: mixed
   props: Props
 
   render() {

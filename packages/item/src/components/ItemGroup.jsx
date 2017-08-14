@@ -8,6 +8,8 @@ import {
   GroupTitleAfter,
 } from '../styled/ItemGroup';
 
+type HTMLElement = any;
+
 export default class ItemGroup extends Component {
   static propTypes = {
     /** Items to be shown inside the item group. */
@@ -21,6 +23,8 @@ export default class ItemGroup extends Component {
     /** A function that returns the DOM ref created by the group */
     innerRef: PropTypes.func,
   }
+  // eslint-disable-next-line
+  headingAfterElement: ?HTMLElement;
 
   state = { ariaLabel: this.props.title }
 

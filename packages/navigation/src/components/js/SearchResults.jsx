@@ -3,12 +3,11 @@ import React, { PureComponent } from 'react';
 import { PersonResult, RoomResult } from './results';
 import { AkNavigationItemGroup } from '../../../src';
 
-const noOp = () => {};
+const noOp = () => { };
 
 /**
  * Enumerate the result types available to SearchResults
  */
-
 const availableResultTypes = {
   person: PersonResult,
   room: RoomResult,
@@ -16,20 +15,20 @@ const availableResultTypes = {
 
 type ResultShape = {|
   resultId: string,
-  type: 'person' | 'room',
+    type: 'person' | 'room',
 |}
 
 type ResultGroup = {|
-  items: Array<ResultShape>,
-  title: string,
+  items: Array < ResultShape >,
+    title: string,
 |}
 
 type Props = {|
   isTabbingDisabled?: boolean,
-  onResultMouseEnter?: () => null,
-  onResultMouseLeave?: () => null,
-  results?: Array<ResultGroup>,
-  selectedItemId?: number | string,
+    onResultMouseEnter ?: () => null,
+    onResultMouseLeave ?: () => null,
+    results ?: Array < ResultGroup >,
+    selectedItemId ?: number | string,
 |}
 
 export default class SearchResults extends PureComponent {
@@ -42,7 +41,8 @@ export default class SearchResults extends PureComponent {
 
   props: Props
 
-  renderResultItem = (props) => {
+  renderResultItem = (props: any) => {
+    // Why not using the props: ResultShape?
     const Result = availableResultTypes[props.type];
     const isSelected = props.resultId === this.props.selectedItemId;
     return Result ? (
@@ -57,7 +57,7 @@ export default class SearchResults extends PureComponent {
         // Individual props take precedence over SearchResult-provided presets
         {...props}
       />
-     ) : null;
+    ) : null;
   }
 
   renderResultGroup = (group: ResultGroup, index: number) => (
@@ -67,12 +67,15 @@ export default class SearchResults extends PureComponent {
       </AkNavigationItemGroup>
     ) : null
   );
-
+  /* eslint-disable*/
+  // RB: To be discussed as rendering nothing may not be a good idea
   render() {
-    return (
-      <div>
-        {this.props.results.map(this.renderResultGroup)}
-      </div>
-    );
+    if (this.props.results) {
+      return (
+        <div>
+          {this.props.results.map(this.renderResultGroup)}
+        </div>
+      );
+    }
   }
 }

@@ -4,7 +4,7 @@ import Wrapper from '../styled/Wrapper';
 import type { ChildrenType } from '../types';
 
 type Props = {
-  children: ChildrenType,
+  children?: ChildrenType,
 };
 
 export default class FlagAnimationWrapper extends PureComponent {

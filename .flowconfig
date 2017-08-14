@@ -1,11 +1,10 @@
 [ignore]
-
 <PROJECT_ROOT>/node_modules/.*
 .*/node_modules/styled-components/.*
 .*/node_modules/polished/.*
 .*/node_modules/fbjs/.*
 .*/node_modules/memoize-one/test/.*
-.*/packages/drag-abd-drop/.*
+.*/packages/drag-and-drop/.*
 
 [include]
 src/
@@ -14,10 +13,10 @@ src/
 flow-typed/
 
 [options]
-
 # Automatically map @atlaskit/* imports to local packages
 module.system=haste
 module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
+module.name_mapper='^@kadira\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
 module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/packages/\1/src/components/'
 module.name_mapper='\(react-redux\)' -> '<PROJECT_ROOT>/node_modules/\1/lib/index'
 

@@ -6,7 +6,7 @@ import type { ChildrenType, FunctionType } from '../types';
 
 type Props = {
   /** Flag elements to be displayed. */
-  children: ChildrenType,
+  children?: ChildrenType,
   /** Handler which will be called when a Flag's dismiss button is clicked.
     * Receives the id of the dismissed Flag as a parameter.
     */

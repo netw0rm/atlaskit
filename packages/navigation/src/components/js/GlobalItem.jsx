@@ -13,7 +13,7 @@ type Props = {|
   size?: 'small' | 'medium' | 'large',
   /** Component to be used to create the link in the global item. A default
   component is used if none is provided. */
-  linkComponent?: ReactClass,
+  linkComponent: ReactClass,
 |}
 
 export default class GlobalItem extends PureComponent {

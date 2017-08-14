@@ -1,6 +1,7 @@
 // @flow
-import React, { PureComponent } from 'react';
+// $FlowFixMe
 import { action } from '@kadira/storybook';
+import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';

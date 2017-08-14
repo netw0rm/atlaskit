@@ -98,7 +98,7 @@ export const globalSecondaryActions = (() => {
     bottom: gridSize * 2,
   };
 
-  const height = (actionCount) => {
+  const height = (actionCount: number) => {
     const innerHeight = itemSizes.medium * actionCount;
     return {
       inner: innerHeight,

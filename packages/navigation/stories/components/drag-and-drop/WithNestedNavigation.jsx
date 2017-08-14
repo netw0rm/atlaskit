@@ -1,4 +1,5 @@
 // @flow
+// RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
 import Navigation, {
   AkNavigationItem,
@@ -7,10 +8,13 @@ import Navigation, {
 } from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+// $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import styled, { injectGlobal } from 'styled-components';
 import reorder from './reorder';
+// $FlowFixMe
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
+// $FlowFixMe
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
 type ReactElement = any;
@@ -148,7 +152,7 @@ export default class WithNestedNavigation extends Component {
   // eslint-disable-next-line react/sort-comp
   state: State
 
-  constructor(props, context) {
+  constructor(props: mixed, context: mixed) {
     super(props, context);
 
     const state: State = {

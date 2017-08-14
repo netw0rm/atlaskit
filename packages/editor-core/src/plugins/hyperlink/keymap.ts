@@ -2,8 +2,7 @@ import { Schema, keymap, Plugin, EditorState, Transaction } from '../../prosemir
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
-import { URL_REGEX } from './regex';
-import { normalizeUrl } from './utils';
+import { Match, getLinkMatch } from './utils';
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   const list = {};
@@ -39,10 +38,10 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
 
   const words = nodeBefore.text!.split(' ');
   const lastWord = words[words.length - 1];
-  const match = new RegExp(`${URL_REGEX.source}$`).exec(lastWord);
+  const match: Match | null = getLinkMatch(lastWord);
 
   if (match) {
-    const hyperlinkedText = match[1];
+    const hyperlinkedText = match.raw;
     const start = state.selection.$from.pos - hyperlinkedText.length;
     const end = state.selection.$from.pos;
 
@@ -50,7 +49,7 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
       return false;
     }
 
-    const url = normalizeUrl(hyperlinkedText);
+    const url = match.url;
     const markType = state.schema.mark('link', { href: url, });
 
     analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');

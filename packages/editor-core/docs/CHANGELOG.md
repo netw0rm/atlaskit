@@ -1,5 +1,76 @@
 # @atlaskit/editor-core
 
+## 45.9.2 (2017-08-14)
+
+* bug fix; renderer portal is always positioned to the bottom right (issues closed: ed-2461) ([7afd755](https://bitbucket.org/atlassian/atlaskit/commits/7afd755))
+
+## 45.9.1 (2017-08-13)
+
+* bug fix; fix storybooks build ([af0046b](https://bitbucket.org/atlassian/atlaskit/commits/af0046b))
+
+
+
+
+
+## 45.9.0 (2017-08-11)
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2442) ([f6155e8](https://bitbucket.org/atlassian/atlaskit/commits/f6155e8))
+## 45.8.1 (2017-08-11)
+
+* bug fix; aligning keyboard shortcuts for blocktypes to gmail. ([403c1ca](https://bitbucket.org/atlassian/atlaskit/commits/403c1ca))
+## 45.8.0 (2017-08-11)
+
+* bug fix; Merged in fix/ED-2392-ignore-ts-files-package-json (pull request #3794) (issues closed: ed-2392) ([681d5fa](https://bitbucket.org/atlassian/atlaskit/commits/681d5fa))
+* feature; add EditorActions object (issues closed: ed-2413) ([de98577](https://bitbucket.org/atlassian/atlaskit/commits/de98577))
+## 45.7.0 (2017-08-10)
+
+
+* feature; adding placeholders for tasks/decisions ([4d4c5eb](https://bitbucket.org/atlassian/atlaskit/commits/4d4c5eb))
+* bug fix; build Markdown to ProseMirror mapping based on Schema ([2d686af](https://bitbucket.org/atlassian/atlaskit/commits/2d686af))
+## 45.6.1 (2017-08-10)
+
+* bug fix; npmignore fails to work (issues closed: ed-2392) ([beb1872](https://bitbucket.org/atlassian/atlaskit/commits/beb1872))
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
+## 45.5.0 (2017-08-09)
+
+
+
+* bug fix; fix prop types ([406114a](https://bitbucket.org/atlassian/atlaskit/commits/406114a))
+* feature; adding usupport to fetch initial state and toggle state ([416ce4e](https://bitbucket.org/atlassian/atlaskit/commits/416ce4e))
+* feature; add loading state for link card (issues closed: ed-2383) ([a7ed3e0](https://bitbucket.org/atlassian/atlaskit/commits/a7ed3e0))
+## 45.4.1 (2017-08-09)
+
+* bug fix; use profilecard definitions (issues closed: ed-2266) ([bdf93dd](https://bitbucket.org/atlassian/atlaskit/commits/bdf93dd))
+* bug fix; codeBlock content text chunks should not have a new line between them (issues closed: ed-2399) ([c1ccdac](https://bitbucket.org/atlassian/atlaskit/commits/c1ccdac))
+## 45.4.0 (2017-08-08)
+
+
+* bug fix; fix cursor position when deleting cols/rows (issues closed: ed-2406) ([30f98d7](https://bitbucket.org/atlassian/atlaskit/commits/30f98d7))
+
+* feature; move Markdown parser and serialiser into editor-core transformers (issues closed: ed-2402) ([8eba5d9](https://bitbucket.org/atlassian/atlaskit/commits/8eba5d9))
+## 45.3.0 (2017-08-08)
+
+
+* bug fix; render profile cards in portal (issues closed: ed-2386) ([f7f6834](https://bitbucket.org/atlassian/atlaskit/commits/f7f6834))
+* feature; added encoder/parser for tables in JIRA (issues closed: ed-2396) ([c2e3d1c](https://bitbucket.org/atlassian/atlaskit/commits/c2e3d1c))
+## 45.2.4 (2017-08-07)
+
+* bug fix; bumped the version of media-card ([4bbfac7](https://bitbucket.org/atlassian/atlaskit/commits/4bbfac7))
+## 45.2.3 (2017-08-07)
+
+
+* bug fix; use text rendering requirements for hipchat notifications (issues closed: ed-2392) ([abb5d28](https://bitbucket.org/atlassian/atlaskit/commits/abb5d28))
+## 45.2.2 (2017-08-07)
+
+* bug fix; udpated isIsolating util for tables ([e7d569c](https://bitbucket.org/atlassian/atlaskit/commits/e7d569c))
+* bug fix; split backspace command into moveCursorBackward and emptyCells ([e93141e](https://bitbucket.org/atlassian/atlaskit/commits/e93141e))
+* bug fix; fix backspace when cursor is after the table (issues closed: ed-2003) ([be160a0](https://bitbucket.org/atlassian/atlaskit/commits/be160a0))
+## 45.2.1 (2017-08-07)
+
+* bug fix; fix linkify plain text links ([5a653cf](https://bitbucket.org/atlassian/atlaskit/commits/5a653cf))
 ## 45.2.0 (2017-08-04)
 
 * bug fix; fix tslint ([04a6c4f](https://bitbucket.org/atlassian/atlaskit/commits/04a6c4f))

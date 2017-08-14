@@ -25,6 +25,10 @@ export {
 } from './error-reporter';
 export { JSONDocNode, JSONNode };
 
+export {
+  filterContentByType
+} from './filter';
+
 function validateNode(node: Node): boolean {
   return false;
 }
@@ -424,3 +428,7 @@ export function areBlockTypesDisabled(state: EditorState<any>): boolean {
   const { panel } = state.schema.nodes;
   return nodesTypes.filter(type => type !== panel).length > 0;
 }
+
+export const isTemporary = (id: string): boolean => {
+  return id.indexOf('temporary:') === 0;
+};

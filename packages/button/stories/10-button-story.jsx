@@ -7,10 +7,10 @@ import Question from '@atlaskit/icon/glyph/question';
 import Expand from '@atlaskit/icon/glyph/expand';
 import Unlink from '@atlaskit/icon/glyph/editor/unlink';
 import Open from '@atlaskit/icon/glyph/editor/open';
-import { akColorN20, akColorN700 } from '@atlaskit/util-shared-styles';
-import { name } from '../package.json';
+import { colors } from '@atlaskit/theme';
 
-import Button from '../src';
+import { name } from '../package.json';
+import Button, { ButtonGroup } from '../src';
 
 const css = `
   .container {
@@ -165,13 +165,7 @@ const buildBackgroundStory = () => {
         }
         {
           createSample({
-            backgroundColor: akColorN20,
-          })
-        }
-        {
-          createSample({
-            backgroundColor: akColorN700,
-            extraProps: { theme: 'dark', onClick: action('clicking the Component') },
+            backgroundColor: colors.N20,
           })
         }
       </div>
@@ -388,10 +382,46 @@ const buildStory = props => (
   )
 );
 
+const Row = props => <div style={{ padding: 8 }} {...props} />;
+
 storiesOf(name, module)
-    .add('standard states', buildStory({ appearance: 'default' }))
-    .add('primary states', buildStory({ appearance: 'primary' }))
-    .add('subtle states', buildStory({ appearance: 'subtle' }))
-    .add('link states', buildStory({ appearance: 'link' }))
-    .add('subtle-link states', buildStory({ appearance: 'subtle-link' }))
-    .add('different backgrounds', buildBackgroundStory);
+  .add('standard states', buildStory({ appearance: 'default' }))
+  .add('primary states', buildStory({ appearance: 'primary' }))
+  .add('subtle states', buildStory({ appearance: 'subtle' }))
+  .add('link states', buildStory({ appearance: 'link' }))
+  .add('subtle-link states', buildStory({ appearance: 'subtle-link' }))
+  .add('different backgrounds', buildBackgroundStory)
+  .add('button group', () => (
+    <Row>
+      <Row>
+        <ButtonGroup>
+          <Button>One</Button>
+          <Button>Two</Button>
+          <Button>Three</Button>
+        </ButtonGroup>
+      </Row>
+      <Row>
+        <ButtonGroup>
+          <Button appearance="primary">Alpha</Button>
+          <Button appearance="default">Beta</Button>
+          <Button appearance="link">Gamma</Button>
+          <Button appearance="link">Delta</Button>
+        </ButtonGroup>
+      </Row>
+      <Row>
+        <ButtonGroup appearance="subtle">
+          <Button>Angular</Button>
+          <Button>Ember</Button>
+          <Button>React</Button>
+        </ButtonGroup>
+      </Row>
+      <Row>
+        <ButtonGroup>
+          <span>children</span>
+          <em>must be of type</em>
+          <strong>Button</strong>
+        </ButtonGroup>
+      </Row>
+    </Row>
+  )
+);

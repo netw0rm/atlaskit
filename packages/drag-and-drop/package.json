@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/drag-and-drop",
-  "version": "4.5.2",
+  "version": "4.5.4",
   "config": {
     "access": "public"
   },
@@ -9,6 +9,9 @@
   "webpack": "dist/bundle-cjs.js",
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.js",
+  "ak:component": {
+    "name": "Drag and drop"
+  },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
     "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",

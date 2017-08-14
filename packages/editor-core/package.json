@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.2.0",
+  "version": "45.9.2",
   "config": {
     "access": "public"
   },
@@ -10,6 +10,7 @@
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "scripts": {
+    "postinstall": "rm -f node_modules/@atlaskit/emoji/dist/es5/support/index.ts",
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
     "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
@@ -22,8 +23,10 @@
     "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
-    "dist/es5",
-    "dist/es2015",
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
     "dist/json-schema",
     "src"
   ],
@@ -49,14 +52,14 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^22.3.1",
+    "@atlaskit/emoji": "^23.0.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.1",
-    "@atlaskit/media-card": "^17.11.2",
+    "@atlaskit/media-card": "^18.0.2",
     "@atlaskit/media-core": "^8.4.1",
     "@atlaskit/media-filmstrip": "^5.1.2",
     "@atlaskit/mention": "^7.3.0",
-    "@atlaskit/profilecard": "^3.6.3",
+    "@atlaskit/profilecard": "^3.6.4",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/task-decision": "^2.1.1",

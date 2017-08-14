@@ -5,6 +5,7 @@ import ProviderFactory from '../../providerFactory';
 import {
   ReactSerializer,
   renderDocument,
+  RendererContext,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
 
@@ -28,26 +29,41 @@ export interface Props {
   document: any;
   dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
+  portal?: HTMLElement;
+  rendererContext?: RendererContext;
   schema?: Schema<any, any>;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
+  private serializer: ReactSerializer;
 
   constructor(props: Props) {
     super(props);
     this.providerFactory = props.dataProviders || new ProviderFactory();
+
+    this.updateSerializer(props);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.portal !== this.props.portal) {
+      this.updateSerializer(nextProps);
+    }
+  }
+
+  private updateSerializer(props: Props) {
+    const {
+      eventHandlers,
+      portal,
+      rendererContext,
+    } = props;
+
+    this.serializer = new ReactSerializer(this.providerFactory, eventHandlers, portal, rendererContext);
   }
 
   render() {
-    const {
-      document,
-      eventHandlers,
-      schema,
-    } = this.props;
-
-    const serializer = new ReactSerializer(this.providerFactory, eventHandlers);
-    return renderDocument(document, serializer, schema || defaultSchema);
+    const { document, schema } = this.props;
+    return renderDocument(document, this.serializer, schema || defaultSchema);
   }
 
   componentWillUnmount() {

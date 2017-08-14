@@ -31,7 +31,13 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
         return false;
       }
 
-      const { $from } = selection;
+      const { $from, $to } = selection;
+
+      // Don't do anything if selection is a range
+      if ($from.pos !== $to.pos) {
+        return false;
+      }
+
       const nodeType = $from.node($from.depth).type;
       const isFirstItemInList = (nodeType === decisionItem || nodeType === taskItem) && $from.index($from.depth - 1) === 0;
 

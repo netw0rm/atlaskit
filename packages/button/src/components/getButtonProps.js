@@ -5,7 +5,6 @@ const getAppearanceProps = (props, state) => {
     isDisabled,
     isSelected,
     spacing,
-    theme,
     shouldFitContainer,
   } = props;
 
@@ -24,7 +23,6 @@ const getAppearanceProps = (props, state) => {
     isHover,
     isSelected,
     spacing,
-    theme,
     fit: shouldFitContainer,
   };
 };

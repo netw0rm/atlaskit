@@ -8,32 +8,30 @@ const Row = ({ row, head, isFixedSize }) => {
 
   return (
     <TableBodyRow {...restRowProps}>
-      {
-        cells.map((cell, cellIndex) => {
-          const { content, ...restCellProps } = cell;
-          const { shouldTruncate, width } = (head || { cells: [] }).cells[cellIndex] || {};
+      {cells.map((cell, cellIndex) => {
+        const { content, ...restCellProps } = cell;
+        const { shouldTruncate, width } = (head || { cells: [] }).cells[cellIndex] || {};
 
-          return (
-            <TableBodyCell
-              {...restCellProps}
-              key={cellIndex}
-              width={width}
-              shouldTruncate={shouldTruncate}
-              isFixedSize={isFixedSize}
-            >
-              {content}
-            </TableBodyCell>
-          );
-        })
-      }
+        return (
+          <TableBodyCell
+            {...restCellProps}
+            isFixedSize={isFixedSize}
+            key={cellIndex}
+            shouldTruncate={shouldTruncate}
+            width={width}
+          >
+            {content}
+          </TableBodyCell>
+        );
+      })}
     </TableBodyRow>
   );
 };
 
 Row.propTypes = {
-  row: props.row,
   head: props.head,
   isFixedSize: PropTypes.bool,
+  row: props.row,
 };
 
 export default Row;

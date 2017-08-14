@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.4.2",
+  "version": "4.4.3",
   "config": {
     "access": "public"
   },
@@ -40,12 +40,13 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/inline-dialog": "1.0.0",
+    "@atlaskit/inline-edit": "*",
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
     "@atlaskit/single-select": "^1.4.0",
+    "@atlaskit/theme": "^2.0.0",
     "react-router-dom": "^4.0.0",
-    "@atlaskit/inline-edit": "*",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

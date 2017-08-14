@@ -5,6 +5,7 @@ import {
   akGridSize,
   akColorN20,
   akColorB100,
+  akColorN80,
 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
@@ -14,6 +15,8 @@ export const Wrapper = styled.div`
   margin: ${akGridSizeUnitless / 2}px 0;
   padding: ${akGridSizeUnitless}px;
   position: relative;
+  min-height: 38px;
+  box-sizing: border-box;
 `;
 
 // tslint:disable-next-line:variable-name
@@ -84,4 +87,12 @@ export const CheckBoxWrapper = styled.span`
       }
     }
   }
+`;
+
+// tslint:disable-next-line:variable-name
+export const Placeholder = styled.span`
+  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
+  position: absolute;
+  color: ${akColorN80};
+  pointer-events: none;
 `;

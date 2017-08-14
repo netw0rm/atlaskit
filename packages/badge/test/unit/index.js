@@ -57,12 +57,4 @@ describe('Badge', () => {
       expect(mount(<Badge appearance="foo" />).find('BadgeElement').prop('appearance')).toBe('default');
     });
   });
-  describe('theme property', () => {
-    it('should not have dark theme when not set', () => {
-      expect(mount(<Badge />).prop('theme')).toBe('default');
-    });
-    it('should apply the dark theme class when the theme is dark', () => {
-      expect(mount(<Badge theme="dark" />).prop('theme')).toBe('dark');
-    });
-  });
 });

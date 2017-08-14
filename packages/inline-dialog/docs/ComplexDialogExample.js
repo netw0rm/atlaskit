@@ -16,8 +16,15 @@ export default class InlineDialogExample extends PureComponent {
     this.setState({ dialogPosition: newPosition });
   }
   render() {
+    const styles = {
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '120px',
+    };
+
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={styles}>
         <div>
           <InlineDialog
             content={

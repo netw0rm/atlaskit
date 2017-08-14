@@ -10,18 +10,20 @@ import {
     getEmojiResourcePromise,
     getNonUploadingEmojiResourcePromise,
     mediaEmoji,
-    mockLocalStorage,
     newEmojiRepository,
     pngDataURL,
-    pngFileUploadData
+    pngFileUploadData,
+    standardEmojis,
 } from '../../../../src/support/test-data';
+import { MockEmojiResource } from '../../../../src/support/MockEmojiResource';
 import { MockEmojiResourceConfig } from '../../../../src/support/support-types';
+import { mockNonUploadingEmojiResourceFactory } from '../../../../src/support/MockEmojiResource';
 
 import EmojiPickerEmojiRow from '../../../../src/components/picker/EmojiPickerEmojiRow';
 import EmojiPlaceholder from '../../../../src/components/common/EmojiPlaceholder';
 import { UploadPromptMessage } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
 import * as commonStyles from '../../../../src/components/common/styles';
-import CategorySelector from '../../../../src/components/picker/CategorySelector';
+import CategorySelector, { CategoryDescriptionMap, sortCategories } from '../../../../src/components/picker/CategorySelector';
 import Emoji from '../../../../src/components/common/Emoji';
 import EmojiButton from '../../../../src/components/common/EmojiButton';
 import EmojiPicker, { Props } from '../../../../src/components/picker/EmojiPicker';
@@ -31,10 +33,11 @@ import EmojiPickerFooter from '../../../../src/components/picker/EmojiPickerFoot
 import EmojiPickerList from '../../../../src/components/picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../../src/components/picker/EmojiPickerListSearch';
 import EmojiPreview from '../../../../src/components/common/EmojiPreview';
+import EmojiRepository from '../../../../src/api/EmojiRepository';
 import FileChooser from '../../../../src/components/common/FileChooser';
 import { OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
-import { customCategory } from '../../../../src/constants';
+import { customCategory, defaultCategories, selectedToneStorageKey } from '../../../../src/constants';
 
 declare var global: any;
 
@@ -153,15 +156,6 @@ const findSearchInput = (component) => component.find(EmojiPickerListSearch).fin
 const searchInputVisible = (component) => findSearchInput(component).length > 0;
 
 describe('<EmojiPicker />', () => {
-  const localStorage = global.window.localStorage;
-  beforeEach(() => {
-    global.window.localStorage = mockLocalStorage;
-  });
-
-  afterEach(() => {
-    global.window.localStorage.clear();
-    global.window.localStorage = localStorage;
-  });
 
   describe('display', () => {
     it('should display first set of emoji in viewport by default', () =>
@@ -177,19 +171,27 @@ describe('<EmojiPicker />', () => {
       })
     );
 
-    it('should display all categories', () =>
-      setupPicker().then(component => {
+    it('should display all categories', () => {
+      const emojiProvider = getEmojiResourcePromise();
+      let expectedCategories = defaultCategories;
+      emojiProvider.then(provider => {
+        if (provider.calculateDynamicCategories) {
+          expectedCategories = expectedCategories.concat(provider.calculateDynamicCategories());
+        }
+      });
+
+      return setupPicker().then(component => {
         const categorySelector = component.find(CategorySelector);
         const buttons = categorySelector.find('button');
-        const expectedCategories = CategorySelector.defaultProps.categories;
-
         expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+        expectedCategories.sort(sortCategories);
+
         for (let i = 0; i < buttons.length; i++) {
           const button = buttons.at(i);
-          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(expectedCategories[i].name);
+          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
         }
-      })
-    );
+      });
+    });
 
     it('should empty preview by default', () =>
       setupPicker().then(component => {
@@ -281,6 +283,45 @@ describe('<EmojiPicker />', () => {
         });
       })
     );
+
+    it('selecting custom category - should show preview with media first emoji loading', () =>
+      setupPicker().then(component => {
+        const list = component.find(EmojiPickerList);
+        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
+
+        return waitUntil(() => emojisVisible(list)).then(() => {
+          expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
+
+          return showCategory(customCategory, component);
+        }).then(() => {
+          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
+            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
+          });
+        });
+      })
+    );
+
+    it('does not add non-standard categories to the selector if there are no emojis in those categories', () =>
+      setupPicker({ emojiProvider: mockNonUploadingEmojiResourceFactory(new EmojiRepository(standardEmojis)) }).then(component => {
+        const categorySelector = component.find(CategorySelector);
+        const buttons = categorySelector.find('button');
+        expect(buttons.length).to.equal(defaultCategories.length);
+        expect(categoryVisible(customCategory, component), 'Custom category is not rendered').to.equal(false);
+        expect(categoryVisible('ATLASSIAN', component), 'Atlassian category is not rendered').to.equal(false);
+      })
+    );
+
+    it('adds non-standard categories to the selector dynamically based on whether they are populated with emojis', () =>
+      setupPicker().then(component => {
+        showCategory(customCategory, component);
+        return waitUntil(() => categoryVisible(customCategory, component)).then(() => {
+          const categorySelector = component.find(CategorySelector);
+          const buttons = categorySelector.find('button');
+          expect(buttons.length).to.equal(defaultCategories.length + 2);
+          expect(categoryVisible('ATLASSIAN', component), 'Atlassian category is rendered').to.equal(true);
+        });
+      })
+    );
   });
 
   describe('selection', () => {
@@ -299,6 +340,35 @@ describe('<EmojiPicker />', () => {
             expect(selection, 'Selected emoji defined').to.not.equal(undefined);
             if (selection) {
               expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
+            }
+          });
+        });
+      });
+    });
+
+    it('selecting emoji should call recordSelection on EmojiProvider', (done) => {
+      let selection: OptionalEmojiDescription;
+      const emojiResourcePromise = getEmojiResourcePromise() as Promise<MockEmojiResource>;
+      const clickOffset = 10;
+
+      return setupPicker({
+        onSelection: (emojiId, emoji) => { selection = emoji; },
+        emojiProvider: emojiResourcePromise,
+      } as Props)
+      .then(component => {
+        const list = component.find(EmojiPickerList);
+        const hoverButton = () => list.find(Emoji).at(clickOffset);
+        return waitUntil(() => hoverButton().exists()).then(() => {
+          hoverButton().simulate('mousedown', leftClick);
+          return waitUntil(() => !!selection).then(() => {
+            expect(selection, 'Selected emoji defined').to.not.equal(undefined);
+            if (selection) {
+              expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
+              emojiResourcePromise.then((provider) => {
+                expect(provider.recordedSelections).to.have.lengthOf(1);
+                expect(provider.recordedSelections[0].shortName).to.equal(allEmojis[clickOffset].shortName);
+                done();
+              });
             }
           });
         });
@@ -357,6 +427,28 @@ describe('<EmojiPicker />', () => {
           expect(emojiDescription.name, 'Automobile emoji displayed').to.equal('automobile');
           expect(emojiDescription.shortName, 'Automobile emoji displayed').to.equal(':red_car:');
         })
+      )
+    );
+
+    it('searching should disable categories in selector', () =>
+      setupPicker().then(component =>
+        waitUntil(() => searchInputVisible(component))
+        .then(() => {
+          // click search
+          const searchInput = findSearchInput(component);
+          searchInput.simulate('focus');
+          // type "al"
+          searchInput.simulate('change', {
+            target: {
+              value: 'al',
+            }
+          });
+
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => findEmoji(list).length === 2);
+        }).then(() =>
+          expect(component.find(CategorySelector).prop('disableCategories'), 'Selector disabled if searching').to.equal(true)
+        )
       )
     );
   });
@@ -840,35 +932,60 @@ describe('<EmojiPicker />', () => {
     });
   });
 
-  it('should use localStorage to remember tone selection between sessions', () => {
-    const setSpy = sinon.spy(window.localStorage, 'setItem');
-    getEmojiResourcePromise().then(provider => provider.setSelectedTone(2));
+  describe('with localStorage available', () => {
+    let originalLocalStorage;
 
-    return waitUntil(() => setSpy.callCount === 1).then(() =>
-      // First picker should have tone set by default
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          const emojis = findEmoji(list);
-          const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
-          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
-        });
-      }) &&
-      // Second picker should have tone set by default
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          const emojis = findEmoji(list);
-          const hoverOffset = findHandEmoji(emojis);
-          expect(hoverOffset).to.not.equal(-1);
-          const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
-          expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
-        });
-      })
+    let mockStorage: Storage;
+    let mockGetItem: sinon.SinonStub;
+    let mockSetItem: sinon.SinonStub;
 
-    );
+
+    beforeEach(() => {
+      originalLocalStorage = global.window.localStorage;
+
+      mockGetItem = sinon.stub();
+      mockSetItem = sinon.stub();
+      mockStorage = {} as Storage;
+      mockStorage.getItem = mockGetItem;
+      mockStorage.setItem = mockSetItem;
+
+      global.window.localStorage = mockStorage;
+    });
+
+    afterEach(() => {
+      global.window.localStorage = originalLocalStorage;
+    });
+
+    it('should use localStorage to remember tone selection between sessions', () => {
+      const tone = '2';
+      getEmojiResourcePromise().then(provider => provider.setSelectedTone(parseInt(tone,10)));
+      mockGetItem.returns(tone);
+
+      return waitUntil(() => mockSetItem.calledWith(selectedToneStorageKey, tone)).then(() =>
+        // First picker should have tone set by default
+        setupPicker().then(component => {
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => emojisVisible(list)).then(() => {
+            const emojis = findEmoji(list);
+            const hoverOffset = findHandEmoji(emojis);
+            expect(hoverOffset).to.not.equal(-1);
+            const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+            expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          });
+        }) &&
+        // Second picker should have tone set by default
+        setupPicker().then(component => {
+          const list = component.find(EmojiPickerList);
+          return waitUntil(() => emojisVisible(list)).then(() => {
+            const emojis = findEmoji(list);
+            const hoverOffset = findHandEmoji(emojis);
+            expect(hoverOffset).to.not.equal(-1);
+            const handEmoji = findEmoji(list).at(hoverOffset).prop('emoji');
+            expect(handEmoji.shortName).to.equal(':raised_hand::skin-tone-3:');
+          });
+        })
+
+      );
+    });
   });
-
 });

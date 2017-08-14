@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
+import { colors } from '../../../theme/src';
 import { name } from '../../package.json';
 import Icon, { size } from '../../src';
+import { Span, spanStyles } from '../../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -49,47 +51,60 @@ describe(name, () => {
 
     describe('size property', () => {
       Object.values(size).forEach((s) => {
+        const span = mount(<Icon glyph={empty} label="My icon" size={s} />).find(Span);
+        const iconSize = spanStyles[5](span.props());
+
         it(`with value ${s}`, () => {
-          const wrapper = shallow(<Icon glyph={empty} label="My icon" size={s} />);
-          expect(wrapper.props().style.height).toBe(sizeValues[s]);
-          expect(wrapper.props().style.width).toBe(sizeValues[s]);
+          expect(iconSize).toBe(sizeValues[s]);
+          expect(iconSize).toBe(sizeValues[s]);
         });
       });
     });
 
     describe('primaryColor property', () => {
       it('is set to inherit the text color by default', () => {
-        const wrapper = mount(<MyIcon label="default primaryColor" />);
+        const span = mount(<MyIcon label="default primaryColor" />).find(Span);
+        const color = spanStyles[1](span.props());
 
-        expect(wrapper.find('span').props().style.color).toBe('currentColor');
+        expect(color).toBe('currentColor');
       });
       it('can be changed to a hex value', () => {
-        const wrapper = mount(<MyIcon label="hex primaryColor" primaryColor="#ff0000" />);
+        const primaryColor = '#ff0000';
+        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />).find(Span);
+        const color = spanStyles[1](span.props());
 
-        expect(wrapper.find('span').props().style.color).toBe('#ff0000');
+        expect(color).toBe(primaryColor);
       });
       it('can be changed to a named color', () => {
-        const wrapper = mount(<MyIcon label="named primaryColor" primaryColor="rebeccapurple" />);
+        const primaryColor = 'rebeccapurple';
+        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />).find(Span);
+        const color = spanStyles[1](span.props());
 
-        expect(wrapper.find('span').props().style.color).toBe('rebeccapurple');
+        expect(color).toBe(primaryColor);
       });
     });
 
     describe('secondaryColor property', () => {
-      it('is set to white by default', () => {
-        const wrapper = mount(<MyIcon label="default secondaryColor" />);
+      it('is set to the default theme background color by default', () => {
+        const span = mount(<MyIcon label="default secondaryColor" />).find(Span);
+        const props = span.props();
+        const fill = spanStyles[3](props)(props);
 
-        expect(wrapper.find('span').props().style.fill).toBe('white');
+        expect(fill).toBe(colors.background(props));
       });
       it('can be changed to a hex value', () => {
-        const wrapper = mount(<MyIcon label="hex secondaryColor" secondaryColor="#ff0000" />);
+        const secondaryColor = '#ff0000';
+        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />).find(Span);
+        const fill = spanStyles[3](span.props());
 
-        expect(wrapper.find('span').props().style.fill).toBe('#ff0000');
+        expect(fill).toBe(secondaryColor);
       });
       it('can be changed to a named color', () => {
-        const wrapper = mount(<MyIcon label="named secondaryColor" secondaryColor="rebeccapurple" />);
+        const secondaryColor = 'rebeccapurple';
+        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />).find(Span);
+        const fill = spanStyles[3](span.props());
 
-        expect(wrapper.find('span').props().style.fill).toBe('rebeccapurple');
+        expect(fill).toBe(secondaryColor);
       });
     });
 
@@ -97,7 +112,7 @@ describe(name, () => {
       it('should set a click handler', () => {
         const handler = jest.fn().mockImplementation(() => {}); // eslint-disable-line no-undef
 
-        const wrapper = shallow(<Icon glyph={empty} label="My icon" onClick={handler} />);
+        const wrapper = mount(<Icon glyph={empty} label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).toBe(handler);
 
         wrapper.find('span').simulate('click');

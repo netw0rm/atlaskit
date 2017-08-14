@@ -31,7 +31,7 @@ import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode } from '../../';
 import keymapPlugin from './keymap';
-import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
+import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 
@@ -62,7 +62,7 @@ export class MediaPluginState {
   private errorReporter: ErrorReporter;
 
   private popupPicker?: PickerFacade;
-  private linkRanges: RangeWithUrls[];
+  private linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -197,7 +197,14 @@ export class MediaPluginState {
       linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
     }
 
-    return insertLinks(this.view, this.linkRanges, linkCreateContextInstance as Context, this.collectionFromProvider());
+    return insertLinks(
+      this.view,
+      this.stateManager,
+      this.handleMediaState,
+      this.linkRanges,
+      linkCreateContextInstance as Context,
+      this.collectionFromProvider()
+    );
   }
 
   splitMediaGroup = (): boolean => {
@@ -344,7 +351,7 @@ export class MediaPluginState {
     }, null);
   }
 
-  detectLinkRangesInSteps = (tr: Transaction) => {
+  detectLinkRangesInSteps = (tr: Transaction, oldState: EditorState<any>) => {
     const { link } = this.view.state.schema.marks;
     this.linkRanges = [];
 
@@ -357,7 +364,7 @@ export class MediaPluginState {
       return this.linkRanges;
     }
 
-    this.linkRanges = detectLinkRangesInSteps(tr, link);
+    this.linkRanges = detectLinkRangesInSteps(tr, link, oldState.selection.$anchor.pos);
   }
 
   private destroyPickers = () => {
@@ -402,12 +409,7 @@ export class MediaPluginState {
   private handleMediaState = (state: MediaState) => {
     switch (state.status) {
       case 'error':
-        // TODO: we would like better error handling and retry support here.
-        const mediaNodeWithPos = this.findMediaNode(state.id);
-        if (mediaNodeWithPos) {
-          removeMediaNode(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
-        }
-
+        this.removeNodeById(state.id);
         const { uploadErrorHandler } = this.options;
 
         if (uploadErrorHandler) {
@@ -424,6 +426,14 @@ export class MediaPluginState {
 
   private notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
+  }
+
+  private removeNodeById = (id: string) => {
+    // TODO: we would like better error handling and retry support here.
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (mediaNodeWithPos) {
+      removeMediaNode(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
+    }
   }
 
   private replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
@@ -492,7 +502,7 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
         return new MediaPluginState(state, options);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
-        pluginState.detectLinkRangesInSteps(tr);
+        pluginState.detectLinkRangesInSteps(tr, oldState);
 
         // Ignore creating link cards during link editing
         const { link } = oldState.schema.marks as { link: Mark };

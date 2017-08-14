@@ -27,6 +27,7 @@ export default class Drawer extends PureComponent {
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
     width: PropTypes.oneOf(['narrow', 'wide', 'full']),
+    onKeyDown: PropTypes.func,
   }
   static defaultProps = {
     iconOffset: 0,
@@ -45,9 +46,17 @@ export default class Drawer extends PureComponent {
   }
 
   handleKeyDown = (event: KeyboardEvent) => {
-    if (event.keyCode === escKeyCode) {
-      event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
-      this.props.onBackButton(event);
+    // The reason we have onKeyDown living together with onBackButton is because
+    // some apps living in Focused task need the ability to handle on key down by itself.
+    // However, some other apps don't really care about it
+    // and leave it to the Focused task to handle.
+    // Calling onKeyDown first can either supplement or override onBackButton.
+    const { onKeyDown, onBackButton } = this.props;
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+    if (!event.defaultPrevented && event.keyCode === escKeyCode) {
+      onBackButton(event);
     }
   }
 

@@ -1,16 +1,20 @@
 import { browser, EditorState, Transaction } from '../prosemirror';
 
-export const toggleOrderedList = makeKeyMapWithCommon('Numbered list', 'Mod-Shift-l');
-export const toggleBulletList = makeKeyMapWithCommon('Bullet list', 'Mod-Shift-b');
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
 export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
 export const toggleUnderline = makeKeyMapWithCommon('Underline', 'Mod-u');
 export const toggleStrikethrough = makeKeyMapWithCommon('Strikethrough', 'Mod-Shift-s');
 export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
 export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
-export const toggleBlockQuote = makeKeymap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
-export const toggleCodeBlock = makeKeymap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
-export const togglePanel = makeKeymap('Panel', 'Ctrl-9', 'Cmd-Alt-9');
+export const setNormalText = makeKeymap('Normal text', '', 'Cmd-Alt-0');
+export const toggleHeading1 = makeKeymap('Heading 1', '', 'Cmd-Alt-1');
+export const toggleHeading2 = makeKeymap('Heading 2', '', 'Cmd-Alt-2');
+export const toggleHeading3 = makeKeymap('Heading 3', '', 'Cmd-Alt-3');
+export const toggleHeading4 = makeKeymap('Heading 4', '', 'Cmd-Alt-4');
+export const toggleHeading5 = makeKeymap('Heading 5', '', 'Cmd-Alt-5');
+export const toggleOrderedList = makeKeymap('Numbered list', '', 'Cmd-Alt-7');
+export const toggleBulletList = makeKeymap('Bullet list', '', 'Cmd-Alt-8');
+export const toggleBlockQuote = makeKeymap('Block quote', '', 'Cmd-Alt-9');
 export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
 export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
@@ -36,7 +40,6 @@ export const toggleTable = makeKeyMapWithCommon('Table', 'Shift-Alt-t');
 export const cut = makeKeyMapWithCommon('Cut', 'Mod-x');
 export const copy = makeKeyMapWithCommon('Copy', 'Mod-c');
 export const paste = makeKeyMapWithCommon('Paste', 'Mod-v');
-export const emptyCells = makeKeyMapWithCommon('Empty cells', 'Backspace');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {
@@ -76,7 +79,8 @@ export function findShortcutByKeymap(keymap: Keymap): string | undefined {
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleCode,
-  toggleBlockQuote, toggleCodeBlock, togglePanel, insertNewLine, insertRule,
+  setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
+  toggleBlockQuote, insertNewLine, insertRule,
   splitCodeBlock, splitListItem, redo, undo];
 
 function makeKeymap(description: string, windows: string, mac: string, common?: string): Keymap {

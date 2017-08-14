@@ -1,4 +1,4 @@
-import { MentionsResult } from '../../src/api/MentionResource';
+import { MentionsResult } from '../api/MentionResource';
 
 declare var require: {
     <T>(path: string): T;

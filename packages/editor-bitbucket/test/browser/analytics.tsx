@@ -4,11 +4,18 @@ import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import stringRepeat from '../../src/util/string-repeat';
 
 import { analyticsService, browser, EditorView } from '@atlaskit/editor-core';
 
 import Editor from '../../src/index';
+
+function stringRepeat(text: string, length: number): string {
+  let result = '';
+  for (let x = 0; x < length; x++) {
+    result += text;
+  }
+  return result;
+}
 
 chai.use(chaiPlugin);
 
@@ -195,8 +202,10 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.list.numbered.keyboard', () => {
-    sendKeyToPm(editorView, 'Shift-Mod-L');
-    expect(handler.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
+    if (browser.mac) {
+      sendKeyToPm(editorView, 'Cmd-Alt-7');
+      expect(handler.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
+    }
   });
 
   it('atlassian.editor.format.list.numbered.autoformatting', () => {
@@ -227,8 +236,10 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.list.bullet.keyboard', () => {
-    sendKeyToPm(editorView, 'Shift-Mod-B');
-    expect(handler.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
+    if (browser.mac) {
+      sendKeyToPm(editorView, 'Cmd-Alt-8');
+      expect(handler.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
+    }
   });
 
   it('atlassian.editor.format.list.bullet.autoformatting', () => {
@@ -384,18 +395,15 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   }
 
   it('atlassian.editor.format.blockquote.keyboard', () => {
-    sendKeyToPm(editorView, browser.mac ? 'Cmd-Alt-7' : 'Ctrl-7');
-    expect(handler.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
+    if (browser.mac) {
+      sendKeyToPm(editorView, 'Cmd-Alt-9');
+      expect(handler.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
+    }
   });
 
   it('atlassian.editor.format.blockquote.autoformatting', () => {
     insertText(editorView, '> ', 1);
     expect(handler.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(true);
-  });
-
-  it('atlassian.editor.format.codeblock.keyboard', () => {
-    sendKeyToPm(editorView, browser.mac ? 'Cmd-Alt-8' : 'Ctrl-8');
-    expect(handler.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
   });
 
   it('atlassian.editor.format.codeblock.autoformatting', () => {

@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
-import PaddedDiv from './components/PaddedDiv';
 import Banner from '../src';
+
+const Padded = props => <div style={{ padding: 16 }} {...props} />;
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AnimationDemo extends PureComponent {
@@ -11,9 +12,7 @@ export default class AnimationDemo extends PureComponent {
     icon: PropTypes.node,
   };
 
-  state = {
-    isOpen: true,
-  };
+  state = { isOpen: false };
 
   toggleBanner = () => {
     this.setState({
@@ -24,18 +23,15 @@ export default class AnimationDemo extends PureComponent {
   render() {
     return (
       <div>
-        <Banner
-          icon={this.props.icon}
-          isOpen={this.state.isOpen}
-        >
+        <Banner icon={this.props.icon} isOpen={this.state.isOpen}>
           {this.props.children}
         </Banner>
-        <PaddedDiv>
+        <Padded>
           <Button
             appearance="primary"
             onClick={this.toggleBanner}
           >Toggle banner</Button>
-        </PaddedDiv>
+        </Padded>
       </div>
     );
   }

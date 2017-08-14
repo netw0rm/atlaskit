@@ -17,14 +17,15 @@ const getChangelog = (src) => {
   try {
     changelog = fs.readFileSync(src, 'utf8').toString();
   } catch (e) {
-    console.log(`DID NOT GET CHANGELOG FOR ${src}`, e);
+    const shortPath = src.substr(src.indexOf('atlaskit/'));
+    console.log(`WARNING: No changelog found at ${shortPath}`);
     changelog = '';
   }
-  const ludicrousString = 'abcdefghijklmnoasdf';
+  const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;
   const toReturn = changelog
   ? changelog
-    .replace(/## /g, `${ludicrousString}## `)
-    .split(ludicrousString)
+    .replace(/## /g, `${splitToken}## `)
+    .split(splitToken)
     .map((md) => {
       // This should only allow us to skip the first chunk which is the name, as
       // well as the unreleased section.
@@ -77,6 +78,7 @@ const packages = fs.readdirSync('..').map((key) => {
   // The name of the component may be in the "ak:component" section; we default
   // to the directory name if it isn't present
   const pkgName = pkg['ak:component'].name || key;
+  const supportsDarkMode = pkg['ak:component'].dark;
   const isPattern = pkg['ak:component'].pattern;
 
   // Some packages have docs, so we test for the presence of a directory and
@@ -122,6 +124,7 @@ const packages = fs.readdirSync('..').map((key) => {
     isPattern,
     key,
     name: pkgName,
+    supportsDarkMode,
     nestedDocs,
     pkg,
     props,

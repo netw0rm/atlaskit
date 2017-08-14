@@ -3,9 +3,9 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
-import { EmojiDescription, OnEmojiEvent, ToneSelection } from '../../types';
+import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
+import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, ToneSelection } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
@@ -162,8 +162,10 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
 
     if (isFullShortName(query)) {
       const matchIndex = uniqueExactShortNameMatchIndex(result, query);
-      if (matchIndex !== undefined && this.props.onSelection) {
-        this.props.onSelection(toEmojiId(result.emojis[matchIndex]), result.emojis[matchIndex]);
+
+      if (matchIndex !== undefined) {
+        const onSelect = createRecordSelectionDefault(this.props.emojiProvider, this.props.onSelection);
+        onSelect(toEmojiId(result.emojis[matchIndex]), result.emojis[matchIndex]);
       }
     }
 
@@ -189,7 +191,9 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
   }
 
   render() {
-    const { onSelection } = this.props;
+    const { emojiProvider, onSelection } = this.props;
+    const recordUsageOnSelection = createRecordSelectionDefault(emojiProvider, onSelection);
+
     const { visible, emojis, loading } = this.state;
     const style = {
       display: visible ? 'block' : 'none',
@@ -204,7 +208,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
       <div style={style} className={classes}>
         <EmojiList
           emojis={emojis}
-          onEmojiSelected={onSelection}
+          onEmojiSelected={recordUsageOnSelection}
           ref={this.onEmojiListRef}
           loading={loading}
         />

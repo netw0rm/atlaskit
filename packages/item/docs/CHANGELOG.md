@@ -1,5 +1,11 @@
 # @atlaskit/item
 
+## 2.2.2 (2017-08-11)
+
+* bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))
+## 2.2.1 (2017-08-07)
+
+* bug fix; moving item spacing responsiblity from middle to before and after icons (issues closed: ak-3211) ([be80f99](https://bitbucket.org/atlassian/atlaskit/commits/be80f99))
 ## 2.2.0 (2017-08-03)
 
 * feature; improving support and examples for drag and drop in navigation (issues closed: ak-1862) ([c1e0986](https://bitbucket.org/atlassian/atlaskit/commits/c1e0986))

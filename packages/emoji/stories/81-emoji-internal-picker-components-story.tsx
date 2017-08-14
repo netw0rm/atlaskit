@@ -32,14 +32,7 @@ storiesOf(`${name}/Internal picker components`, module)
     </div>
   ))
   .add('category selector', () => (
-    <CategorySelector
-      activeCategoryId="OBJECT"
-      availableCategories={{
-        PEOPLE: true,
-        NATURE: true,
-        FOODS: true,
-      }}
-    />
+    <CategorySelector />
     ))
   .add('picker footer', () => (
     <EmojiPickerFooter

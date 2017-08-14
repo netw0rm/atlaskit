@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import {
   StoryBookTokenProvider,
@@ -20,7 +20,12 @@ import {
 import {
   AkProfileClient,
   modifyResponse,
-} from '../../src/utils/profilecard';
+} from '@atlaskit/profilecard';
+
+import {
+  renderDocument,
+  TextSerializer,
+} from '../../src/renderer';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 // tslint:disable-next-line:variable-name
@@ -81,12 +86,25 @@ const eventHandlers = {
   },
 };
 
-type DemoRendererProps = { withProviders: boolean; };
-type DemoRendererState = { input: string };
+interface DemoRendererProps {
+  withPortal?: boolean;
+  withProviders?: boolean;
+  serializer: 'react' | 'text';
+}
+
+interface DemoRendererState {
+  input: string;
+  portal?: HTMLElement;
+}
 
 export default class RendererDemo extends PureComponent<DemoRendererProps, DemoRendererState> {
-  state = { input: JSON.stringify(document, null, 2) };
+  textSerializer = new TextSerializer();
+  state: DemoRendererState = { input: JSON.stringify(document, null, 2), portal: undefined };
   refs: { input: HTMLTextAreaElement };
+
+  private handlePortalRef = (portal?: HTMLElement) => {
+    this.setState({ portal });
+  }
 
   render() {
     return (
@@ -109,11 +127,16 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
           />
         </fieldset>
         {this.renderer}
+        {this.text}
       </div>
     );
   }
 
   get renderer() {
+    if (this.props.serializer !== 'react') {
+      return null;
+    }
+
     try {
       const props: RendererProps = {
         document: JSON.parse(this.state.input)
@@ -124,13 +147,39 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
         props.dataProviders = providerFactory;
       }
 
+      if (this.props.withPortal) {
+        props.portal = this.state.portal;
+      }
+
       return (
-        <Renderer {...props}/>
+        <div>
+          <Renderer {...props}/>
+          <div ref={this.handlePortalRef}/>
+        </div>
       );
     } catch (ex) {
       return (
         <div>Invalid document: {ex.message}</div>
       );
+    }
+  }
+
+  get text() {
+    if (this.props.serializer !== 'text') {
+      return null;
+    }
+
+    try {
+      const doc = JSON.parse(this.state.input);
+
+      return (
+        <div>
+          <h1>Text output</h1>
+          <pre>{renderDocument(doc, this.textSerializer)}</pre>
+        </div>
+      );
+    } catch (ex) {
+      return null;
     }
   }
 

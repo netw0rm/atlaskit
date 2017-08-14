@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { colors } from '@atlaskit/theme';
+
 /* eslint-disable import/no-duplicates, import/first */
 import CommentExample from './CommentExample';
 import commentExampleSrc from '!raw-loader!./CommentExample';
@@ -11,7 +13,7 @@ import nestedCommentsExampleSrc from '!raw-loader!./NestedCommentsExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
-  background-color: #F4F5F7;
+  background-color: ${colors.codeBlock};
   border-radius: 5px;
   margin: 14px 0;
   padding: 8px;

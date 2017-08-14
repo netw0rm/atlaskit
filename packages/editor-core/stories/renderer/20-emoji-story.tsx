@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import { toEmojiId } from '@atlaskit/emoji';
-import { storyData as  emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { storyData as  emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 import * as React from 'react';
 import { name, version } from '../../package.json';

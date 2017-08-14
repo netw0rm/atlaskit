@@ -1,6 +1,23 @@
 # @atlaskit/droplist
 
-## Unreleased
+## 4.9.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+
+
+
+
+## 4.8.0 (2017-08-11)
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+
+
+
+
 
 ## 4.7.0 (2017-07-28)
 

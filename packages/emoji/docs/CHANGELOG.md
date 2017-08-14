@@ -1,6 +1,57 @@
 # @atlaskit/emoji
 
-## Unreleased
+## 26.0.0 (2017-08-13)
+
+
+
+* feature; unit tests for the frequency in search work. ([ab28372](https://bitbucket.org/atlassian/atlaskit/commits/ab28372))
+
+
+* breaking; The usageTracker property is moved from EmojiResource. If you subclassed EmojiResource and relied on ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+* breaking; ensure frequently used emoji are boosted in search results in the typeahead and pick (issues closed: fs-1213) ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+
+
+
+## 25.0.0 (2017-08-10)
+
+* bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))
+* bug fix; bumped emoji to next latest version ([79b61ba](https://bitbucket.org/atlassian/atlaskit/commits/79b61ba))
+
+
+
+
+
+
+
+* breaking; EmojiSearchResult no longer has categories field ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* breaking; categorySelector inserts non-standard categories dynamically (issues closed: fs-1201) ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* feature; atlassianEmojiMigrationResource removes Atlassian emojis that have a corresponding (issues closed: fs-1200) ([a95ef0c](https://bitbucket.org/atlassian/atlaskit/commits/a95ef0c))
+## 23.0.1 (2017-08-10)
+
+* bug fix; release imports up into src fail in dist ([9846bc5](https://bitbucket.org/atlassian/atlaskit/commits/9846bc5))
+
+## 23.0.0 (2017-08-09)
+
+* bug fix; make the typeahead and picker call Provider.recordSelection by default ([c801f20](https://bitbucket.org/atlassian/atlaskit/commits/c801f20))
+* bug fix; change how skin tone variations are converted back to their 'base' emoji ([ef6fbf3](https://bitbucket.org/atlassian/atlaskit/commits/ef6fbf3))
+
+* bug fix; fixed a bug where the storybook update was happening before the usage had been recor ([eeedf56](https://bitbucket.org/atlassian/atlaskit/commits/eeedf56))
+
+
+
+* breaking; EmojiResource.recordSelection now returns a resolved Promise rather than a rejected Promise when ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+* breaking; keep track of selected emoji so we know most frequently used. (issues closed: fs-1212) ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+
+
+
+
+
+
+
+
+
+
+
 
 ## 22.3.1 (2017-07-27)
 

@@ -1,5 +1,27 @@
 # @atlaskit/flag
 
+## 5.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+## 4.0.0 (2017-08-11)
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
 ## 3.4.4 (2017-08-04)
 
 

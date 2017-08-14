@@ -2,6 +2,7 @@ import {
   AnalyticsHandler,
   analyticsService,
   asciiEmojiPlugins,
+  bitbucketSchema as schema,
   Chrome,
   codeBlockPlugins,
   blockTypePlugins,
@@ -22,6 +23,7 @@ import {
   listsStateKey,
   textFormattingStateKey,
   clearFormattingStateKey,
+  pastePlugins,
   EditorView,
   EditorState,
   Node,
@@ -38,16 +40,16 @@ import {
   // error-reporting
   // ErrorReporter,
   ErrorReportingHandler,
+
+  // transformers
+  BitbucketTransformer,
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import markdownSerializer from './markdown-serializer';
-import { parseHtml, transformHtml } from './parse-html';
 import { version, name } from './version';
-import schema from './schema';
 import { MentionResource, MentionSource } from './mention-resource';
 
 export {
@@ -91,6 +93,7 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   providerFactory: ProviderFactory;
+  transformer = new BitbucketTransformer();
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
@@ -207,7 +210,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { tr, doc } = editorView.state;
-    const newDoc = parseHtml(html.trim());
+    const newDoc = this.transformer.parse(html.trim());
 
     editorView.dispatch(tr.replace(0, doc.nodeSize - 2, newDoc.slice(0, newDoc.nodeSize - 2)));
   }
@@ -218,7 +221,7 @@ export default class Editor extends PureComponent<Props, State> {
   get value(): string | undefined {
     const { editorView } = this.state;
     return editorView
-      ? markdownSerializer.serialize(editorView.state.doc)
+      ? this.transformer.encode(editorView.state.doc)
       : this.props.defaultValue;
   }
 
@@ -302,6 +305,8 @@ export default class Editor extends PureComponent<Props, State> {
   private handleRef = (place: Element | null) => {
     if (place) {
       const { imageUploadHandler } = this.props;
+      const transformer = this.transformer;
+
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -309,11 +314,12 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create(
         {
           schema,
-          doc: parseHtml(this.props.defaultValue || ''),
+          doc: transformer.parse(this.props.defaultValue || ''),
           plugins: [
             ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
             ...emojisPlugins(schema, this.providerFactory),
             ...asciiEmojiPlugins(schema, this.providerFactory),
+            ...pastePlugins(schema),
             ...clearFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
@@ -355,7 +361,7 @@ export default class Editor extends PureComponent<Props, State> {
           }
         },
         transformPastedHTML(html: string) {
-          return transformHtml(html).innerHTML;
+          return transformer.buildDOMTree(html).innerHTML;
         }
       });
 

@@ -127,6 +127,18 @@ describe('table keymap', () => {
   });
 
   describe('Backspace keypress', () => {
+    context('when cursor is immediately after the table', () => {
+      it('it should move cursor to the last cell', () => {
+        const { editorView, plugin, refs } = editor(
+          doc(p('text'), table(tr(tdEmpty, td({})(p('hello{nextPos}')))), p('{<>}text'),)
+        );
+        const { nextPos } = refs;
+        plugin.props.onFocus!(editorView, event);
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+      });
+    });
+
     context('when table is selected', () => {
       it('it should empty table cells', () => {
         const { editorView, plugin, pluginState } = editor(

@@ -1,4 +1,4 @@
-import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
@@ -147,7 +147,7 @@ export const document = {
       content: [
         {
           type: 'text',
-          text: 'My name is '
+          text: 'Hi, my name is... My name is... My name is... My name is '
         },
         {
           type: 'mention',
@@ -1200,6 +1200,152 @@ System.out.println("There are " + count + " values >= 5");`
             {
               type: 'text',
               text: 'This is completed'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'table',
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
             }
           ]
         }

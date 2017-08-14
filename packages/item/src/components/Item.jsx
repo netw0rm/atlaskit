@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import styledRootElement from '../styled/Item';
 import {
-  BeforeAfter,
+  Before,
+  After,
   Content,
   ContentWrapper,
   Description,
@@ -20,8 +21,8 @@ export default class Item extends Component {
     children: PropTypes.node,
     /** Secondary text to be shown underneath the main content. */
     description: PropTypes.string,
-    /** Drag and drop props provided by @atlaskit/drag-and-drop. Please do not use this unless
-      * using @atlaskit/drag-and-drop */
+    /** Drag and drop props provided by react-beautiful-dnd. Please do not use this unless
+      * using react-beautiful-dnd */
     dnd: PropTypes.shape({
       draggableStyle: PropTypes.object,
       dragHandleProps: PropTypes.object,
@@ -40,7 +41,7 @@ export default class Item extends Component {
     isCompact: PropTypes.bool,
     /** Causes the item to appear in a disabled state and click behaviours will not be triggered. */
     isDisabled: PropTypes.bool,
-    /** Used to apply correct dragging styles when also using @atlaskit/drag-and-drop. */
+    /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
     isDragging: PropTypes.bool,
     /** Causes the item to still be rendered, but with `display: none` applied. */
     isHidden: PropTypes.bool,
@@ -218,7 +219,7 @@ export default class Item extends Component {
         {...patchedEventHandlers}
         {...otherProps}
       >
-        {!!this.props.elemBefore && <BeforeAfter>{this.props.elemBefore}</BeforeAfter>}
+        {!!this.props.elemBefore && <Before>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}
@@ -230,7 +231,7 @@ export default class Item extends Component {
             >{this.props.description}</Description>
           )}
         </ContentWrapper>
-        {!!this.props.elemAfter && <BeforeAfter>{this.props.elemAfter}</BeforeAfter>}
+        {!!this.props.elemAfter && <After>{this.props.elemAfter}</After>}
       </Root>
     );
   }

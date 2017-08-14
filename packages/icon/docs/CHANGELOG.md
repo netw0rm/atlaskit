@@ -1,6 +1,16 @@
 # @atlaskit/icon
 
-## Unreleased
+## 7.1.0 (2017-08-11)
+
+
+* bug fix; make theme import absolute ([5ef8926](https://bitbucket.org/atlassian/atlaskit/commits/5ef8926))
+* feature; support dark mode ([6701273](https://bitbucket.org/atlassian/atlaskit/commits/6701273))
+
+
+
+
+
+
 
 ## 7.0.3 (2017-07-25)
 

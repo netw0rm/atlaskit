@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import TabPane from '../../src/components/TabPane';
-import TabPaneDiv from '../../src/styled/TabPane';
+import { TabPane } from '../../src/styled';
 import { name } from '../../package.json';
 
 describe(name, () => {
@@ -24,24 +23,7 @@ describe(name, () => {
       it('should render a container wrapping the content', () => {
         const content = <span>My content</span>;
         const wrapper = shallow(<TabPane>{content}</TabPane>);
-        const container = wrapper.find(TabPaneDiv);
-        expect(container.props().children).toBe(content);
-      });
-    });
-
-    describe('props', () => {
-      describe('isSelected prop', () => {
-        it('should default to false and set aria-hidden to true', () => {
-          const wrapper = shallow(<TabPane />);
-          expect(wrapper.props()['aria-hidden']).toBe('true');
-          expect(wrapper.find(TabPaneDiv).props().selected).toBe(false);
-        });
-
-        it('should set aria attribute and styles', () => {
-          const wrapper = shallow(<TabPane isSelected />);
-          expect(wrapper.props()['aria-hidden']).toBe('false');
-          expect(wrapper.find(TabPaneDiv).props().selected).toBe(true);
-        });
+        expect(wrapper.props().children).toBe(content);
       });
     });
   });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import MentionWithProfilecardProvider from './mention-with-profilecard-provider';
+import MentionWithProviders from './mention-with-providers';
 
 import { MentionEventHandlers } from '../Renderer';
 import { ProfilecardProvider } from './types';
@@ -15,6 +15,7 @@ export interface MentionProps {
   eventHandlers?: MentionEventHandlers;
   text: string;
   accessLevel?: string;
+  portal?: HTMLElement;
 }
 
 export interface MentionState {
@@ -42,6 +43,7 @@ export default class Mention extends PureComponent<MentionProps, {}> {
       accessLevel,
       eventHandlers,
       id,
+      portal,
       text,
     } = this.props;
 
@@ -51,13 +53,14 @@ export default class Mention extends PureComponent<MentionProps, {}> {
     } = providers;
 
     return (
-      <MentionWithProfilecardProvider
+      <MentionWithProviders
         id={id}
         text={text}
         accessLevel={accessLevel}
         eventHandlers={eventHandlers}
         mentionProvider={mentionProvider}
         profilecardProvider={profilecardProvider}
+        portal={portal}
       />
     );
   }

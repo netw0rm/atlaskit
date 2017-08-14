@@ -78,6 +78,15 @@ export interface EmojiDescriptionWithVariations extends EmojiDescription {
   skinVariations?: EmojiDescription[];
 }
 
+/**
+ * Describes an emoji which is a variant of some base emoji. This is used when you want to promote the
+ * skinVariations in an EmojiDescriptionWithVariations to represent them along side their base representations.
+ */
+export interface EmojiVariationDescription extends EmojiDescription {
+  /** The id of the 'non-variant version of the emoji */
+  baseId: string;
+}
+
 export type OptionalEmojiDescription = EmojiDescription | undefined;
 export type OptionalEmojiDescriptionWithVariations = EmojiDescriptionWithVariations | undefined;
 
@@ -139,11 +148,7 @@ export interface CategoryDescription {
   id: string;
   name: string;
   icon: any;
-}
-
-export interface AvailableCategories {
-  /** index is a category id */
-  [index: string]: boolean;
+  order: number;
 }
 
 export interface OnToneSelected {
@@ -161,6 +166,11 @@ export interface OnCategory {
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
+}
+
+export interface EmojiSearchResult {
+  emojis: EmojiDescription[];
+  query?: string;
 }
 
 export type ToneSelection = number | undefined;

@@ -7,11 +7,15 @@ export default class AkButtonGroup extends PureComponent {
     /** Button elements to be displayed inside the group. */
     children: PropTypes.node,
   }
+  componentDidMount() {
+    // eslint-disable-next-line no-console
+    console.warn('This package has been deprecated. Please import ButtonGroup from @atlaskit/button package instead.');
+  }
 
   render() {
     return (
       <div className={styles.wrapper}>
-        { this.props.children }
+        {this.props.children}
       </div>
     );
   }

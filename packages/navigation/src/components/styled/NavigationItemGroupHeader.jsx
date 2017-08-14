@@ -1,13 +1,19 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
-import { getProvided, whenCollapsed } from '../../theme/util';
+import {
+  getProvided,
+  whenCollapsedAndNotInOverflowDropdown,
+  whenNotInOverflowDropdown,
+} from '../../theme/util';
 
 const NavigationItemGroupHeader = styled.div`
   display: flex;
-  margin-left: -${gridSize}px;
-  margin-top: ${gridSize}px;
+  ${whenNotInOverflowDropdown`
+    margin-left: -${gridSize}px;
+    margin-top: ${gridSize}px;
+  `}
 
-  ${whenCollapsed`
+  ${whenCollapsedAndNotInOverflowDropdown`
     margin-left: -${gridSize}px;
     margin-right: -${gridSize}px;
     margin-bottom: ${gridSize}px;

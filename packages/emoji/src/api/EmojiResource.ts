@@ -1,16 +1,16 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { customCategory, selectedToneStorageKey } from '../constants';
-import { EmojiDescription, EmojiId, EmojiResponse, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
-import { isMediaEmoji, isPromise } from '../type-helpers';
+import { selectedToneStorageKey } from '../constants';
+import { EmojiDescription, EmojiId, EmojiResponse, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
+import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
-import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
+import EmojiRepository from './EmojiRepository';
 import MediaEmojiResource from './media/MediaEmojiResource';
 
 export interface EmojiResourceConfig {
   /**
-   * The service configuration for recording emoji selections.
+   * The service configuration for remotely recording emoji selections.
    * A post will be performed to this URL with the EmojiId as the body.
    */
   recordConfig?: ServiceConfig;
@@ -80,10 +80,11 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
 
   /**
    * Records an emoji selection, for example for using in tracking recent emoji.
+   * If no recordConfig is configured then a resolved promise should be returned
    *
    * Optional.
    */
-  recordSelection?(id: EmojiId): Promise<any>;
+  recordSelection?(emoji: EmojiDescription): Promise<any>;
 
   /**
    * Load media emoji that may require authentication to download, producing
@@ -117,6 +118,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * has selected a skin tone preference that should be remembered
    */
   setSelectedTone(tone: ToneSelection);
+
+  /**
+   * Returns a list of all the non-standard categories with emojis in the EmojiRepository
+   * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
+   */
+  calculateDynamicCategories?(): string[];
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -157,21 +164,6 @@ export interface LastQuery {
   query?: string;
   options?: SearchOptions;
 }
-
-export const addCustomCategoryToResult = (includeCustom: boolean, searchResult: EmojiSearchResult): EmojiSearchResult => {
-  if (searchResult.categories[customCategory] || !includeCustom) {
-    return searchResult;
-  }
-
-  const categories = {
-    ...searchResult.categories,
-    [customCategory]: true,
-  };
-  return {
-    ...searchResult,
-    categories
-  };
-};
 
 export class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
   protected recordConfig?: ServiceConfig;
@@ -217,7 +209,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
   }
 
-  private initEmojiRepository(emojiResponses: EmojiResponse[]): void {
+  protected initEmojiRepository(emojiResponses: EmojiResponse[]): void {
     let emojis: EmojiDescription[] = [];
     emojiResponses.forEach(emojiResponse => {
       emojis = emojis.concat(emojiResponse.emojis);
@@ -335,12 +327,11 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   filter(query?: string, options?: SearchOptions): void {
     this.lastQuery = {
-      query: query || '',
+      query,
       options,
     };
     if (this.emojiRepository) {
-      const searchResult = this.emojiRepository.search(query, options);
-      this.notifyResult(addCustomCategoryToResult(!!this.mediaEmojiResource, searchResult));
+      this.notifyResult(this.emojiRepository.search(query, options));
     } else {
       // not ready
       this.notifyNotReady();
@@ -412,18 +403,31 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
   }
 
-  recordSelection(id: EmojiId): Promise<any> {
+  /**
+   * Record the selection of an emoji to a remote service if 'recordConfig' has been supplied.
+   * Regardless of the recordConfig, emoji selections will always be recorded on the EmojiRepository
+   * for the purposes of tracking the frequency of use.
+   *
+   * @param emoji The full description of the emoji to record usage for.
+   */
+  recordSelection(emoji: EmojiDescription): Promise<any> {
     const { recordConfig } = this;
+
+    if (this.emojiRepository) {
+      this.emojiRepository.used(emoji);
+    }
+
     if (recordConfig) {
       const queryParams = {
-        emojiId: id,
+        emojiId: toEmojiId(emoji)
       };
       const requestInit = {
         method: 'POST',
       };
       return serviceUtils.requestService(recordConfig, { queryParams, requestInit });
     }
-    return Promise.reject('Resource does not support recordSelection');
+
+    return Promise.resolve();
   }
 
   getSelectedTone(): ToneSelection {
@@ -436,9 +440,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
-        console.error('localStorage is full', e);
+        console.error('failed to store selected emoji skin tone', e);
       }
     }
+  }
+
+  calculateDynamicCategories(): string[] {
+    if (!this.emojiRepository) {
+      return [];
+    }
+    return this.emojiRepository.getDynamicCategoryList(!!this.mediaEmojiResource);
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {

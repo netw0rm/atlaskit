@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
-import { Decision, Query, OnUpdate, RenderDocument, TaskDecisionProvider } from '../types';
-import { decisionsToDocument } from '../api/TaskDecisionUtils';
+import { Task, Query, OnUpdate, RenderDocument, TaskDecisionProvider } from '../types';
+import { tasksToDocument } from '../api/TaskDecisionUtils';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
@@ -15,11 +15,11 @@ export interface Props {
   taskDecisionProvider: TaskDecisionProvider;
   initialQuery: Query;
   renderDocument: RenderDocument;
-  onUpdate?: OnUpdate<Decision>;
+  onUpdate?: OnUpdate<Task>;
 }
 
 export interface State {
-  decisions?: Decision[];
+  tasks?: Task[];
   nextQuery?: Query;
   loading: boolean;
 }
@@ -32,7 +32,7 @@ const LoadingWrapper = styled.div`
 `;
 
 
-export default class ResourcedDecisionList extends PureComponent<Props,State> {
+export default class ResourcedTaskList extends PureComponent<Props,State> {
   private mounted: boolean;
 
   constructor(props: Props) {
@@ -57,23 +57,23 @@ export default class ResourcedDecisionList extends PureComponent<Props,State> {
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getDecisions(query).then(result => {
+    taskDecisionProvider.getTasks(query).then(result => {
       if (!this.mounted) {
         return;
       }
-      const { decisions, nextQuery } = result;
-      const combinedDecisions: Decision[] = [
-        ...this.state.decisions || [],
-        ...decisions,
+      const { tasks, nextQuery } = result;
+      const combinedTasks: Task[] = [
+        ...this.state.tasks || [],
+        ...tasks,
       ];
       this.setState({
-        decisions: combinedDecisions,
+        tasks: combinedTasks,
         nextQuery,
         loading: false,
       });
       const { onUpdate } = this.props;
       if (onUpdate) {
-        onUpdate(combinedDecisions, decisions);
+        onUpdate(combinedTasks, tasks);
       }
     });
   }
@@ -86,14 +86,14 @@ export default class ResourcedDecisionList extends PureComponent<Props,State> {
   }
 
   render() {
-    const { decisions, loading, nextQuery } = this.state;
+    const { tasks, loading, nextQuery } = this.state;
     const { renderDocument } = this.props;
 
-    if (!decisions || !decisions.length) {
+    if (!tasks || !tasks.length) {
       return null;
     }
 
-    const document = decisionsToDocument(decisions);
+    const document = tasksToDocument(tasks);
     let moreOption;
     let loadingSpinner;
 

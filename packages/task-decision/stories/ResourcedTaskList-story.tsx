@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
 import { Query } from '../src/types';
-import ResourcedDecisionList from '../src/components/ResourcedDecisionList';
+import ResourcedTaskList from '../src/components/ResourcedTaskList';
 import { createProviders } from './story-utils';
 
 const initialQuery: Query = {
@@ -10,12 +10,12 @@ const initialQuery: Query = {
   limit: 10,
 };
 
-storiesOf('<ResourcedDecisionList/>', module)
+storiesOf('<ResourcedTaskList/>', module)
   .add('Simple', () => {
     const { renderDocument, taskDecisionProvider } = createProviders();
 
     return (
-      <ResourcedDecisionList
+      <ResourcedTaskList
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
@@ -26,7 +26,7 @@ storiesOf('<ResourcedDecisionList/>', module)
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true });
 
     return (
-      <ResourcedDecisionList
+      <ResourcedTaskList
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
@@ -37,7 +37,7 @@ storiesOf('<ResourcedDecisionList/>', module)
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
 
     return (
-      <ResourcedDecisionList
+      <ResourcedTaskList
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}

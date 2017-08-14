@@ -1,11 +1,29 @@
-import { DecisionResponse, ServiceDecision, ServiceDecisionResponse } from '../types';
-import { convertServiceDecisionResponseToDecisionResponse } from '../api/TaskDecisionUtils';
+import {
+  DecisionResponse,
+  ItemResponse,
+  ServiceDecision,
+  ServiceTask,
+  TaskResponse,
+} from '../types';
 
-declare var require: {
-    <T>(path: string): T;
+import {
+  convertServiceDecisionResponseToDecisionResponse,
+  convertServiceItemResponseToItemResponse,
+  convertServiceTaskResponseToTaskResponse,
+} from '../api/TaskDecisionUtils';
+
+import {
+  getServiceDecisionsResponse,
+  getServiceItemsResponse,
+  getServiceTasksResponse,
+} from './story-data';
+
+// Just a re-export, but we may change datasets between stories and test at some point.
+export {
+  getServiceDecisionsResponse,
+  getServiceItemsResponse,
+  getServiceTasksResponse,
 };
-
-export const getServiceDecisionsResponse = (): ServiceDecisionResponse => require('./sample-decisions.json') as ServiceDecisionResponse;
 
 export const getDecisionsResponse = (hasMore?: boolean): DecisionResponse => {
   let query;
@@ -19,4 +37,39 @@ export const getDecisionsResponse = (hasMore?: boolean): DecisionResponse => {
   return convertServiceDecisionResponseToDecisionResponse(getServiceDecisionsResponse(), query);
 };
 
+export const getTasksResponse = (hasMore?: boolean): TaskResponse => {
+  let query;
+  if (hasMore) {
+    query = {
+      containerAri: 'container1',
+      limit: 10,
+      cursor: 'cheese',
+    };
+  }
+  return convertServiceTaskResponseToTaskResponse(getServiceTasksResponse(), query);
+};
+
+export const getItemsResponse = (hasMore?: boolean, idOffset?: number): ItemResponse => {
+  let query;
+  if (hasMore) {
+    query = {
+      containerAri: 'container1',
+      limit: 10,
+      cursor: 'cheese',
+    };
+  }
+  let itemResponse = convertServiceItemResponseToItemResponse(getServiceItemsResponse(), query);
+  if (idOffset) {
+    itemResponse = {
+      items: itemResponse.items.map(item => ({
+        ...item,
+        localId: `${item.localId}-${idOffset}`
+      })),
+      nextQuery: itemResponse.nextQuery
+    };
+  }
+  return itemResponse;
+};
+
 export const serviceDecision: ServiceDecision = getServiceDecisionsResponse().decisions[0];
+export const serviceTask: ServiceTask = getServiceTasksResponse().tasks[0];

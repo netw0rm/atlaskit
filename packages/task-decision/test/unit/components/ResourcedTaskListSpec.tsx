@@ -5,9 +5,9 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import Button from '@atlaskit/button';
 
 import { Query } from '../../../src/types';
-import ResourcedDecisionList from '../../../src/components/ResourcedDecisionList';
+import ResourcedTaskList from '../../../src/components/ResourcedTaskList';
 
-import { getDecisionsResponse } from '../../../src/support/test-data';
+import { getTasksResponse } from '../../../src/support/test-data';
 
 const query: Query = {
   containerAri: 'cheese',
@@ -17,62 +17,62 @@ const validateDoc = (doc, itemCount: number) => {
   expect(doc.type).toEqual('doc');
   expect(doc.content.length).toBe(1);
   const decisionList = doc.content[0];
-  expect(decisionList.type).toEqual('decisionList');
+  expect(decisionList.type).toEqual('taskList');
   const decisionItems = decisionList.content;
   expect(decisionItems.length).toBe(itemCount);
   decisionItems.forEach(item => {
-    expect(item.type).toEqual('decisionItem');
+    expect(item.type).toEqual('taskItem');
   });
 };
 
-describe('<DecisionList/>', () => {
-  const defaultResponse = getDecisionsResponse();
+describe('<TaskList/>', () => {
+  const defaultResponse = getTasksResponse();
   let provider;
   let renderer;
 
-  const resourcedDecisionListRendered = (renderCount?: number) => renderer.callCount === (renderCount || 1);
+  const resourcedTaskListRendered = (renderCount?: number) => renderer.callCount === (renderCount || 1);
 
   beforeEach(() => {
     provider = {
-      getDecisions: sinon.stub(),
+      getTasks: sinon.stub(),
     };
     renderer = sinon.stub();
     renderer.returns(<div/>);
   });
 
   it('should render generate document and pass to renderer', () => {
-    provider.getDecisions.returns(Promise.resolve(defaultResponse));
+    provider.getTasks.returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedTaskList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
     );
-    return waitUntil(() => resourcedDecisionListRendered(1)).then(() => {
+    return waitUntil(() => resourcedTaskListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);
       const doc = renderer.firstCall.args[0];
-      validateDoc(doc, defaultResponse.decisions.length);
+      validateDoc(doc, defaultResponse.tasks.length);
       const moreButton = component.find(Button);
       expect(moreButton.length).toBe(0);
     });
   });
 
   it('should show more option if response contains nextQuery and call again on selection', () => {
-    provider.getDecisions.onFirstCall().returns(Promise.resolve(getDecisionsResponse(true)));
-    provider.getDecisions.onSecondCall().returns(Promise.resolve(defaultResponse));
+    provider.getTasks.onFirstCall().returns(Promise.resolve(getTasksResponse(true)));
+    provider.getTasks.onSecondCall().returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedTaskList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
     );
-    return waitUntil(() => resourcedDecisionListRendered(1)).then(() => {
+    return waitUntil(() => resourcedTaskListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);
       const doc = renderer.firstCall.args[0];
-      validateDoc(doc, defaultResponse.decisions.length);
+      validateDoc(doc, defaultResponse.tasks.length);
       const moreButton = component.find(Button);
       expect(moreButton.length).toBe(1);
       moreButton.simulate('click');
-      return waitUntil(() => resourcedDecisionListRendered(2));
+      return waitUntil(() => resourcedTaskListRendered(2));
     }).then(() => {
       // One for loading state change + 1 for result = +2 calls
       expect(renderer.callCount).toBe(3);
       const doc = renderer.thirdCall.args[0];
-      validateDoc(doc, defaultResponse.decisions.length * 2);
+      validateDoc(doc, defaultResponse.tasks.length * 2);
       const moreButton = component.find(Button);
       expect(moreButton.length).toBe(0);
     });

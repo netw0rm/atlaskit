@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.9.2 (2017-08-14)
+
+* bug fix; renderer portal is always positioned to the bottom right (issues closed: ed-2461) ([7afd755](https://bitbucket.org/atlassian/atlaskit/commits/7afd755))
+
 ## 45.9.1 (2017-08-13)
 
 * bug fix; fix storybooks build ([af0046b](https://bitbucket.org/atlassian/atlaskit/commits/af0046b))

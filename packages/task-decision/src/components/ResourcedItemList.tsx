@@ -6,6 +6,11 @@ import Spinner from '@atlaskit/spinner';
 
 import { contentToDocument } from '../api/TaskDecisionUtils';
 import ListWrapper from '../styled/ListWrapper';
+import DateGroup from '../styled/DateGroup';
+import DateGroupHeader from '../styled/DateGroupHeader';
+
+import { isDateSortCriteria } from '../type-helpers';
+import { getFormattedDate, getStartOfDate, isSameDate } from '../util/date';
 
 import {
   Item,
@@ -33,12 +38,18 @@ export interface Props {
   initialQuery: Query;
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Item>;
+  groupItems?: boolean;
 }
 
 export interface State {
   items?: Item[];
   nextQuery?: Query;
   loading: boolean;
+}
+
+interface ItemsByDate {
+  date: Date;
+  items: Item[];
 }
 
 // tslint:disable-next-line:variable-name
@@ -103,14 +114,23 @@ export default class ResourcedList extends PureComponent<Props,State> {
     }
   }
 
-  renderItems() {
-    const { renderDocument, taskDecisionProvider } = this.props;
+  private renderItems() {
+    const { groupItems, initialQuery } = this.props;
     const { items } = this.state;
 
     if (!items) {
       return null;
     }
 
+    if (groupItems && isDateSortCriteria(initialQuery.sortCriteria)) {
+      return this.renderItemsGroupedByDate(items);
+    }
+
+    return this.renderItemsUngrouped(items);
+  }
+
+  private renderItemsUngrouped(items: Item[]) {
+    const { renderDocument, taskDecisionProvider } = this.props;
     return (
       <ListWrapper>
         {items.map(item => {
@@ -142,6 +162,39 @@ export default class ResourcedList extends PureComponent<Props,State> {
         })}
       </ListWrapper>
     );
+  }
+
+  private renderItemsGroupedByDate(items: Item[]) {
+    const itemsByDate = this.groupItemsByDate(items);
+    return (
+      <DateGroup>
+        {itemsByDate.map(({ date, items }) =>
+          <li key={date.toISOString()}>
+            <DateGroupHeader>{getFormattedDate(date)}</DateGroupHeader>
+            {this.renderItemsUngrouped(items)}
+          </li>
+        )}
+      </DateGroup>
+    );
+  }
+
+  private groupItemsByDate(items: Item[]): ItemsByDate[] {
+    const groupByField = this.props.initialQuery.sortCriteria!;
+    let lastDate;
+    return items.reduce<ItemsByDate[]>((groups, item) => {
+      const currentDate = getStartOfDate(item[groupByField]);
+      if (isSameDate(lastDate, currentDate)) {
+        const lastGroup = groups[groups.length - 1];
+        lastGroup.items.push(item);
+      } else {
+        lastDate = currentDate;
+        groups.push({
+          date: currentDate,
+          items: [item]
+        });
+      }
+      return groups;
+    }, []);
   }
 
   render() {

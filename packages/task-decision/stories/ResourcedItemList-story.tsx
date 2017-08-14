@@ -10,6 +10,11 @@ const initialQuery: Query = {
   limit: 10,
 };
 
+const initialQueryByLastUpdateDate: Query = {
+  ...initialQuery,
+  sortCriteria: 'lastUpdateDate',
+};
+
 storiesOf('<ResourcedItemList/>', module)
   .add('Simple', () => {
     const { renderDocument, taskDecisionProvider } = createProviders();
@@ -43,4 +48,38 @@ storiesOf('<ResourcedItemList/>', module)
         taskDecisionProvider={taskDecisionProvider}
       />
     );
+  })
+  .add('Group by last update date', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders();
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQueryByLastUpdateDate}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+      />
+    );
+  })
+  .add('Group by last update date - Infinite loading', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQueryByLastUpdateDate}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+      />
+    );
+  })
+  .add('Group by last update date - Infinite loading slow 500ms', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQueryByLastUpdateDate}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+      />
+    );
   });
+

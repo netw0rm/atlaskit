@@ -32,47 +32,7 @@ function isCode(str) {
   return 4 <= weight && weight >= 0.5 * lines.length;
 }
 
-let atlassianMarkDownParser: MarkdownParser;
-
 export const stateKey = new PluginKey('pastePlugin');
-
-const plugin = new Plugin({
-  key: stateKey,
-  props: {
-    handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
-      if (!event.clipboardData) {
-        return false;
-      }
-      const text = event.clipboardData.getData('text/plain');
-      const html = event.clipboardData.getData('text/html');
-      const node = slice.content.firstChild;
-      const { schema } = view.state;
-
-      if (
-        (text && isCode(text)) ||
-        (text && html && node && node.type === schema.nodes.codeBlock)
-      ) {
-        const codeBlockNode = schema.nodes.codeBlock.create(node ? node.attrs : {}, schema.text(text));
-        const tr = view.state.tr.replaceSelectionWith(codeBlockNode);
-        view.dispatch(tr.scrollIntoView());
-        return true;
-      }
-
-      if (text && !html && atlassianMarkDownParser) {
-        const doc = atlassianMarkDownParser.parse(text);
-        if (doc && doc.content) {
-          const tr = view.state.tr.replaceSelection(
-            new Slice(doc.content, slice.openStart, slice.openEnd)
-          );
-          view.dispatch(tr.scrollIntoView());
-          return true;
-        }
-      }
-
-      return false;
-    },
-  }
-});
 
 const pmSchemaToMdMapping = {
   nodes: {
@@ -94,7 +54,9 @@ const pmSchemaToMdMapping = {
   }
 };
 
-const plugins = (schema: Schema<any, any>) => {
+export const createPlugin = (schema: Schema<any, any>) => {
+  let atlassianMarkDownParser: MarkdownParser;
+
   const md = MarkdownIt('zero', { html: false, linkify: true });
   md.enable([
     // Process html entity - &#123;, &#xAF;, &quot;, ...
@@ -164,7 +126,44 @@ const plugins = (schema: Schema<any, any>) => {
     td: { block: 'tableCell' },
     s: { mark: 'strike' },
   }));
-  return [plugin].filter((plugin) => !!plugin) as Plugin[];
+
+  return new Plugin({
+    key: stateKey,
+    props: {
+      handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
+        if (!event.clipboardData) {
+          return false;
+        }
+        const text = event.clipboardData.getData('text/plain');
+        const html = event.clipboardData.getData('text/html');
+        const node = slice.content.firstChild;
+        const { schema } = view.state;
+
+        if (
+          (text && isCode(text)) ||
+          (text && html && node && node.type === schema.nodes.codeBlock)
+        ) {
+          const codeBlockNode = schema.nodes.codeBlock.create(node ? node.attrs : {}, schema.text(text));
+          const tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+          view.dispatch(tr.scrollIntoView());
+          return true;
+        }
+
+        if (text && !html && atlassianMarkDownParser) {
+          const doc = atlassianMarkDownParser.parse(text);
+          if (doc && doc.content) {
+            const tr = view.state.tr.replaceSelection(
+              new Slice(doc.content, slice.openStart, slice.openEnd)
+            );
+            view.dispatch(tr.scrollIntoView());
+            return true;
+          }
+        }
+
+        return false;
+      },
+    }
+  });
 };
 
-export default plugins;
+export default (schema: Schema<any, any>) => [createPlugin(schema)];

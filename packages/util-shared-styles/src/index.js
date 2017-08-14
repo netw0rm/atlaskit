@@ -28,7 +28,7 @@ Object.keys(lessVarsAsJS).forEach((varName) => {
 const { default: akAnimationMixins } = require('./mixins/animation');
 const { default: akElevationMixins } = require('./mixins/elevation');
 const { default: akHelperMixins } = require('./mixins/helpers');
-const { default: akTypographyMixins } = require('./mixins/tyopgraphy');
+const { default: akTypographyMixins } = require('./mixins/typography');
 
 module.exports = Object.assign(
   module.exports,

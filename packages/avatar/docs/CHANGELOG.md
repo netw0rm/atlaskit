@@ -1,5 +1,21 @@
 # @atlaskit/avatar
 
+## 8.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for avatar ([3eb7531](https://bitbucket.org/atlassian/atlaskit/commits/3eb7531))
+
+## 7.0.0 (2017-08-11)
+
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for avatar ([3eb7531](https://bitbucket.org/atlassian/atlaskit/commits/3eb7531))
+
 ## 6.4.5 (2017-08-04)
 
 

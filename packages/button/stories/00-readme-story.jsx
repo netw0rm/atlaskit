@@ -17,7 +17,6 @@ const buttonPropDescriptions = {
   isDisabled: 'Option to disable button and every click event',
   spacing: 'Option to change button\'s padding. One of: \'none\', \'compact\', \'default\'',
   isSelected: 'Option to make a button selected',
-  theme: 'Option to have a dark look and feel of a button.',
   iconBefore: 'An @atlaskit/icon to be placed on the left of the button text',
   iconAfter: 'An @atlaskit/icon to be placed on the right of the button text',
   className: 'A custom class to be added to the button',

@@ -1,6 +1,11 @@
 # @atlaskit/eslint-config-base
 
-## Unreleased
+## 2.0.7 (2017-08-11)
+
+
+
+
+* bug fix; relax arrow-parens rule for better compatibilty with prettier ([0823593](https://bitbucket.org/atlassian/atlaskit/commits/0823593))
 
 ## 2.0.6 (2017-07-25)
 

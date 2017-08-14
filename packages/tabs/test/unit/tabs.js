@@ -3,16 +3,16 @@ import { shallow, mount } from 'enzyme';
 
 import { TabsStateless } from '../../src/index';
 import TabsNav from '../../src/components/TabsNav';
-import TabPane from '../../src/components/TabPane';
+import { TabPane } from '../../src/styled';
 import { sampleTabs, sampleTabsNoSelection } from './_constants';
 import { name } from '../../package.json';
 
-describe(name, () => {
-  describe('StatelessTabs', () => {
-    const kbNav = () => {};
+const NOOP = () => {};
 
+describe(name, () => {
+  describe('TabsStateless', () => {
     describe('exports', () => {
-      it('the StatelessTabs component', () => {
+      it('the TabsStateless component', () => {
         expect(TabsStateless).not.toBe(undefined);
         expect(new TabsStateless()).toBeInstanceOf(Component);
       });
@@ -20,19 +20,19 @@ describe(name, () => {
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<TabsStateless onKeyboardNav={kbNav} />);
+        const wrapper = shallow(<TabsStateless onKeyboardNav={NOOP} />);
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render the TabsNav element', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const tabsNav = wrapper.find(TabsNav);
         expect(tabsNav).toHaveLength(1);
       });
 
       it('should render tabs inside the TabsNav element', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const tabsNav = wrapper.find(TabsNav);
         tabsNav.props().tabs.forEach((tab, i) => {
           const sampleTab = sampleTabs[i];
@@ -42,19 +42,18 @@ describe(name, () => {
       });
 
       it('should render the selected TabPane item', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={kbNav} />);
+        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const selectedTab = sampleTabs[1];
 
         const tab = wrapper.find(TabPane);
         expect(tab).toHaveLength(1);
 
-        expect(tab.props().isSelected).toBe(selectedTab.isSelected);
         expect(tab.props().children).toBe(selectedTab.content);
       });
 
       it('should not render a TabPane item if there is no selected tab', () => {
         const wrapper = shallow(
-          <TabsStateless tabs={sampleTabsNoSelection} onKeyboardNav={kbNav} />
+          <TabsStateless tabs={sampleTabsNoSelection} onKeyboardNav={NOOP} />
         );
         const tab = wrapper.find(TabPane);
         expect(tab.length).toBe(0);

@@ -7,7 +7,7 @@ import Navigation, {
   AkCollapseOverflow,
 } from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
-import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
+import { Draggable, Droppable, DragDropContext } from 'react-beautiful-dnd';
 import { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';

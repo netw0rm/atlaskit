@@ -1,7 +1,6 @@
 // @flow
-import { akColorPrimary3, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-export const ThemeColor = { border: akColorPrimary3 };
 export const TRANSITION_DURATION = '200ms';
 
 export const AVATAR_SIZES: {

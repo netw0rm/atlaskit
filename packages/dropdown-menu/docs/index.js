@@ -1,4 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import DefaultDropdownExample from './DefaultDropdownExample';
@@ -9,13 +11,16 @@ import ComplexDropdownExample from './ComplexDropdownExample';
 import complexDropdownExampleSrc from '!raw-loader!./ComplexDropdownExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const preStyles = {
-  backgroundColor: '#F4F5F7',
-  borderRadius: 5,
-  marginBottom: 14,
-  marginTop: 14,
-  padding: 8,
-};
+const Pre = styled.pre`
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  border-radius: ${borderRadius}px;
+  box-sizing: border-box;
+  font-family: Monaco, Menlo, monospace;
+  font-size: 0.9em;
+  margin: ${math.multiply(gridSize, 2)}px 0;
+  overflow-x: auto;
+  padding: ${gridSize}px;
+`;
 
 export const description = (
   <div>
@@ -24,9 +29,9 @@ export const description = (
       and a stateless component when you want to have more direct control over
       all actions.
     </p>
-    <pre style={preStyles}>
+    <Pre>
       {'import DropdownMenu, { DropdownMenuStateless } from @atlaskit/dropdown-menu'}
-    </pre>
+    </Pre>
     <p>
       The stateful component handles selection for you, while
       still providing several functions that allow you to retrieve information

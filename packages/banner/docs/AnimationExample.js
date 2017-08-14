@@ -1,42 +1,30 @@
 import React, { PureComponent } from 'react';
-import HelpIcon from '@atlaskit/icon/glyph/help';
-import Banner from '@atlaskit/banner';
+import styled from 'styled-components';
 import Button from '@atlaskit/button';
+import WarningBanner from './WarningBanner';
 
-const Icon = <HelpIcon label="Info icon" />;
+const ButtonWrapper = styled.div`
+  padding-bottom: ${p => (p.isOpen ? 8 : 0)}px;
+  transition: padding 0.25s ease-in-out;
+  will-change: padding;
+`;
+
 export default class ToggleBanner extends PureComponent {
-  state = {
-    isOpen: true,
-  };
+  state = { isOpen: false };
 
-  toggleBanner = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
-  }
+  toggleBanner = () => this.setState(state => ({ isOpen: !state.isOpen }));
 
   render() {
+    const { isOpen } = this.state;
+
     return (
       <div>
-        <Banner
-          icon={Icon}
-          isOpen={this.state.isOpen}
-        >
-          The opening and closing of the banner is animated
-        </Banner>
-        <div
-          style={{
-            'padding-top': '5px',
-            'text-align': 'center',
-          }}
-        >
-          <Button
-            appearance="primary"
-            onClick={this.toggleBanner}
-          >
-            Toggle banner
+        <ButtonWrapper isOpen={isOpen}>
+          <Button appearance="primary" onClick={this.toggleBanner}>
+            {isOpen ? 'Hide' : 'Show'} banner
           </Button>
-        </div>
+        </ButtonWrapper>
+        <WarningBanner isOpen={isOpen} />
       </div>
     );
   }

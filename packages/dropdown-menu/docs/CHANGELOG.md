@@ -1,5 +1,19 @@
 # @atlaskit/dropdown-menu
 
+## 3.7.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+## 3.6.0 (2017-08-11)
+
+
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
 ## 3.5.1 (2017-08-10)
 
 * bug fix; handle missing context in dropdown items gracefully (issues closed: ak-2590) ([5a36eea](https://bitbucket.org/atlassian/atlaskit/commits/5a36eea))

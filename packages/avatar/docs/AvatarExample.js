@@ -1,29 +1,24 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import Avatar from '@atlaskit/avatar';
+import { Block, Gap } from './helpers';
 
-const Spacer = () => <span style={{ marginRight: 10 }} />;
-
-export default class AvatarExample extends PureComponent {
-  render() {
-    return (
-      <div>
-        <Avatar
-          src="https://design.atlassian.com/images/avatars/project-128.png"
-          presence="online"
-          size="large"
-        />
-        <Spacer />
-        <Avatar
-          src="https://design.atlassian.com/images/avatars/project-128.png"
-          size="medium"
-          presence="offline"
-        />
-        <Spacer />
-        <Avatar
-          src="https://design.atlassian.com/images/avatars/project-128.png"
-          size="small"
-        />
-      </div>
-    );
-  }
-}
+export default () => (
+  <div>
+    <Block heading="Circle">
+      <Avatar name="xxlarge" size="xxlarge" /><Gap />
+      <Avatar name="xlarge" size="xlarge" presence="online" /><Gap />
+      <Avatar name="large" size="large" presence="offline" /><Gap />
+      <Avatar name="medium" size="medium" presence="busy" /><Gap />
+      <Avatar name="small" size="small" /><Gap />
+      <Avatar name="xsmall" size="xsmall" />
+    </Block>
+    <Block heading="Square">
+      <Avatar appearance="square" name="xxlarge" size="xxlarge" /><Gap />
+      <Avatar appearance="square" name="xlarge" size="xlarge" status="approved" /><Gap />
+      <Avatar appearance="square" name="large" size="large" status="declined" /><Gap />
+      <Avatar appearance="square" name="medium" size="medium" status="locked" /><Gap />
+      <Avatar appearance="square" name="small" size="small" /><Gap />
+      <Avatar appearance="square" name="xsmall" size="xsmall" />
+    </Block>
+  </div>
+);

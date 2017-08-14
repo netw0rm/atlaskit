@@ -126,13 +126,54 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
             : ensureBlocks(content)
         );
       case 'P':
-        // Media groups are currently encoded as paragraphs containing 1 or more media items
-        if (node.firstChild && (getNodeName(node.firstChild) === 'FAB:MEDIA')){
-          return schema.nodes.mediaGroup.createChecked({}, content);
+        let output: Fragment = Fragment.from([]);
+        let textNodes: PMNode[] = [];
+        let mediaNodes: PMNode[] = [];
+
+        if (!node.childNodes.length) {
+          return schema.nodes.paragraph.createChecked({}, content);
         }
 
-        // This looks like a normal paragraph
-        return schema.nodes.paragraph.createChecked({}, content);
+        content.forEach((childNode, offset) => {
+          if (childNode.type === schema.nodes.media) {
+            // if there were text nodes before this node
+            // combine them into one paragraph and empty the list
+            if (textNodes.length) {
+              const paragraph = schema.nodes.paragraph.createChecked({}, textNodes);
+              output = output.addToEnd(paragraph);
+
+              textNodes = [];
+            }
+
+            mediaNodes.push(childNode);
+          } else {
+            // if there were media nodes before this node
+            // combine them into one mediaGroup and empty the list
+            if (mediaNodes.length) {
+              const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
+              output = output.addToEnd(mediaGroup);
+
+              mediaNodes = [];
+            }
+
+            textNodes.push(childNode);
+          }
+        });
+
+        // combine remaining text nodes
+        if (textNodes.length) {
+          const paragraph = schema.nodes.paragraph.createChecked({}, textNodes);
+          output = output.addToEnd(paragraph);
+        }
+
+        // combine remaining media nodes
+        if (mediaNodes.length) {
+          const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
+          output = output.addToEnd(mediaGroup);
+        }
+
+        return output;
+
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node) || unsupportedInline;
       case 'FAB:LINK':

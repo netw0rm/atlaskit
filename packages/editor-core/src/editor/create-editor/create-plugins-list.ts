@@ -12,14 +12,15 @@ import {
   mediaPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
-  codeBlockPlugin
+  codeBlockPlugin,
+  pastePlugin,
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [analyticsPastePlugin, basePlugin, blockTypePlugin];
+  return [analyticsPastePlugin, pastePlugin, basePlugin, blockTypePlugin];
 }
 
 /**

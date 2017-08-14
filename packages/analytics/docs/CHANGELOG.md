@@ -1,5 +1,11 @@
 # @atlaskit/analytics
 
+## 1.1.1 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
 ## 1.1.0 (2017-08-03)
 
 

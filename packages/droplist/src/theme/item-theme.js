@@ -1,18 +1,15 @@
 // @flow
 
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { itemThemeNamespace } from '@atlaskit/item';
-import Theme from '../styled/theme';
+import { colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { ItemTheme } from '../types';
 
-const itemHeightWithoutPadding = 17;
-const itemVerticalPadding = akGridSizeUnitless;
-
-export const itemHeight = itemHeightWithoutPadding + (itemVerticalPadding * 2);
+const itemVerticalPadding = gridSize;
+const height = math.add(math.multiply(itemVerticalPadding, 2), 17);
 
 const dropdownPadding = {
-  x: Theme.Item.padding.x,
-  y: Theme.Item.padding.y,
+  x: math.multiply(gridSize, 1.5),
+  y: gridSize,
 };
 
 const droplistItemTheme: ItemTheme = {
@@ -20,34 +17,38 @@ const droplistItemTheme: ItemTheme = {
     default: dropdownPadding,
     compact: dropdownPadding,
   },
-  borderRadius: Theme.$.borderRadius,
+  height: {
+    default: height,
+    compact: height,
+  },
+  borderRadius: () => 0,
   default: {
-    background: Theme.Item.background.default,
-    text: Theme.Item.primaryText.default,
-    secondaryText: Theme.Item.secondaryText.default,
+    background: 'transparent',
+    text: themed({ light: colors.N800, dark: colors.DN600 }),
+    secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
   },
   hover: {
-    background: Theme.Item.background.hover,
-    text: Theme.Item.primaryText.hover,
-    secondaryText: Theme.Item.secondaryText.hover,
-  },
-  selected: {
-    background: Theme.Item.background.selected,
-    text: Theme.Item.primaryText.selected,
-    secondaryText: Theme.Item.secondaryText.selected,
-  },
-  disabled: {
-    background: Theme.Item.background.disabled,
-    text: Theme.Item.primaryText.disabled,
-    secondaryText: Theme.Item.secondaryText.disabled,
+    background: themed({ light: colors.N20, dark: colors.DN70 }),
+    text: themed({ light: colors.N800, dark: colors.DN600 }),
+    secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
   },
   active: {
-    background: Theme.Item.background.active,
-    text: Theme.Item.primaryText.active,
-    secondaryText: Theme.Item.secondaryText.active,
+    background: themed({ light: colors.B75, dark: colors.B75 }),
+    text: themed({ light: colors.N800, dark: colors.B400 }),
+    secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
+  },
+  selected: {
+    background: themed({ light: colors.N0, dark: colors.DN10 }),
+    text: themed({ light: colors.N800, dark: colors.DN600 }),
+    secondaryText: themed({ light: colors.N200, dark: colors.DN300 }),
+  },
+  disabled: {
+    background: 'transparent',
+    text: themed({ light: colors.N70, dark: colors.DN80 }),
+    secondaryText: themed({ light: colors.N50, dark: colors.DN70 }),
   },
   focus: {
-    outline: Theme.Item.boxShadow.focus,
+    outline: themed({ light: colors.B100, dark: colors.B75 }),
   },
 };
 

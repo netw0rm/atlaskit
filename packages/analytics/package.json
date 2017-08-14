@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,9 @@
   "files": [
     "dist"
   ],
-  "devDependencies": {},
+  "devDependencies": {
+    "@atlaskit/theme": "^2.0.0"
+  },
   "dependencies": {
     "prop-types": "^15.5.10"
   },

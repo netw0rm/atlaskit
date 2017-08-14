@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { colors } from '@atlaskit/theme';
+
 /* eslint-disable import/no-duplicates, import/first */
 import EditExamples from './EditExamples';
 import editExamplesSrc from '!raw-loader!./EditExamples';
@@ -14,7 +16,7 @@ import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
-  background-color: #F4F5F7;
+  background-color: ${colors.codeBlock};
   border-radius: 5px;
   margin: 14px 0;
   padding: 8px;

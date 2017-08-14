@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "3.4.2",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },
@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Tooltip"
+    "name": "Tooltip",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -31,6 +32,7 @@
   },
   "dependencies": {
     "@atlaskit/layer": "^2.1.3",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.2.1",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",

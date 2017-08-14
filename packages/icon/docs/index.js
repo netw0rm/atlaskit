@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { akBorderRadius, akColorN20, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { borderRadius, colors, gridSize, math, themed } from /* '@atlaskit/theme' */ '../../theme/src';
 
 import IconSizeExample from './examples/IconSizeExample';
 import IconSizeExampleSrc from '!raw-loader!./examples/IconSizeExample';
@@ -10,14 +10,14 @@ import IconAllExample from './examples/IconAllExample';
 import IconAllExampleSrc from '!raw-loader!./examples/IconAllExample';
 
 const Pre = styled.pre`
-  background-color: ${akColorN20};
-  border-radius: ${akBorderRadius};
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  border-radius: ${borderRadius}px;
   box-sizing: border-box;
   font-family: Monaco, Menlo, monospace;
   font-size: 0.9em;
-  margin: ${akGridSizeUnitless * 2}px 0;
+  margin: ${math.multiply(gridSize, 2)}px 0;
   overflow-x: auto;
-  padding: ${akGridSize};
+  padding: ${gridSize}px;
 `;
 
 export const description = (

@@ -1,16 +1,14 @@
 // @flow
 import { css } from 'styled-components';
-import { akColorB200, akColorN70A, akColorN200A } from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 import { AVATAR_RADIUS, AVATAR_SIZES, BORDER_WIDTH, TRANSITION_DURATION } from './constants';
 import type { AppearanceType, SizeType } from '../types';
 
-const ThemeColor = {
-  backgroundFocus: akColorB200,
-  overlayDefault: 'transparent',
-  overlayHover: akColorN70A,
-  overlaySelected: akColorN200A,
-  overlayDisabled: 'rgba(255, 255, 255, 0.7)',
-};
+const backgroundColorFocus = colors.B200;
+const overlayColorDefault = 'transparent';
+const overlayColorHover = colors.N70A;
+const overlayColorSelected = colors.N200A;
+const overlayColorDisabled = themed({ light: 'rgba(255, 255, 255, 0.7)', dark: colors.DN80A });
 
 // "square" avatars are explicit
 export function getBorderRadius(
@@ -41,12 +39,12 @@ export function getAvatarDimensions(
 export function getInnerStyles(props: any) {
   const boxSizing: string = 'content-box';
   const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
-  const isInteractive: boolean = props.href || props.onClick;
+  const isInteractive: boolean = props.isInteractive || props.href || props.onClick;
 
-  let backgroundColor = props.borderColor;
+  let backgroundColor = props.borderColor || colors.background;
   let cursor = 'default';
   let outline = 'none';
-  let overlayShade = ThemeColor.overlayDefault;
+  let overlayShade = overlayColorDefault;
   let overlayOpacity = 0;
   let pointerEvents = 'auto';
   let position = 'static';
@@ -55,7 +53,7 @@ export function getInnerStyles(props: any) {
 
   // Interaction: Hover
   if (isInteractive && (props.isActive || props.isHover)) {
-    overlayShade = ThemeColor.overlayHover;
+    overlayShade = overlayColorHover;
     overlayOpacity = 1;
   }
 
@@ -67,14 +65,14 @@ export function getInnerStyles(props: any) {
   // Interaction: Focus
   if (isInteractive && props.isFocus && !props.isActive) {
     outline = 'none';
-    backgroundColor = ThemeColor.backgroundFocus;
+    backgroundColor = backgroundColorFocus;
     transitionDuration = TRANSITION_DURATION;
   }
 
   // Disabled
   if (props.isDisabled) {
     cursor = 'not-allowed';
-    overlayShade = ThemeColor.overlayDisabled;
+    overlayShade = overlayColorDisabled;
     overlayOpacity = 1;
     pointerEvents = 'none';
   }
@@ -86,7 +84,7 @@ export function getInnerStyles(props: any) {
 
   // Loading
   if (props.isSelected) {
-    overlayShade = ThemeColor.overlaySelected;
+    overlayShade = overlayColorSelected;
     overlayOpacity = 1;
   }
 
@@ -125,6 +123,7 @@ export function getInnerStyles(props: any) {
       content: " ";
       left: ${borderWidth};
       opacity: ${overlayOpacity}
+      pointer-events: none;
       position: absolute;
       right: ${borderWidth};
       top: ${borderWidth};

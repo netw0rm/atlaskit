@@ -1,6 +1,29 @@
 # @atlaskit/banner
 
-## Unreleased
+## 4.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for Banner, plus loads of cleanup in docs/stories ([3f03b9a](https://bitbucket.org/atlassian/atlaskit/commits/3f03b9a))
+* bug fix; remove ak-icon and update @atlaskit/icon to latest in package.json ([8018cf0](https://bitbucket.org/atlassian/atlaskit/commits/8018cf0))
+
+
+
+
+
+## 3.0.0 (2017-08-11)
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for Banner, plus loads of cleanup in docs/stories ([3f03b9a](https://bitbucket.org/atlassian/atlaskit/commits/3f03b9a))
+* bug fix; remove ak-icon and update @atlaskit/icon to latest in package.json ([8018cf0](https://bitbucket.org/atlassian/atlaskit/commits/8018cf0))
+
+
+
+
+
 
 ## 2.4.2 (2017-07-27)
 

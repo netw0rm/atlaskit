@@ -23,6 +23,7 @@ const components = {${components.map(component => `
     versions: [${component.versions.map(v => `'${v}'`).join(', ')}],
     storybooks: [${component.storybooks.map(v => `'${v}'`).join(', ')}],
     isPattern: ${!!component.isPattern},
+    supportsDarkMode: ${!!component.supportsDarkMode},
     ${component.nestedDocs
       ? `components: {
         ${component.props.map(({ name }) => `${name}: require('../../${component.key}/docs/components/${name}')`)}

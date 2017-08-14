@@ -1,6 +1,15 @@
 # @atlaskit/single-select
 
-## Unreleased
+## 1.17.3 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
 
 ## 1.17.2 (2017-07-27)
 

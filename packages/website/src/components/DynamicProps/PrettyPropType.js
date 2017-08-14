@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+
 const Wrapper = styled.code`
   display: inline-block;
-  background: white;
-  color: #333;
-  border-radius: 3px;
-  border-left: 3px solid #eee;
-  padding: 5px 10px;
-  margin-bottom: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin-bottom: ${gridSize}px;
+  margin-top: ${gridSize}px;
 `;
 const Block = styled.span`
   display: block;
@@ -19,44 +19,35 @@ const TypeMinWidth = styled.span`
   min-width: 60px;
 `;
 const Type = styled.span`
+  background-color: ${themed({ light: colors.P50, dark: colors.P500 })};
+  border-radius: ${borderRadius}px;
+  color: ${themed({ light: colors.P500, dark: colors.P50 })};
   display: inline-block;
-  border: 1px solid #bedcf7;
-  color: #1c4b75;
-  background: #eff7ff;
-  border-radius: 3px;
-  margin: 0 2px;
-  padding: 0 3px;
-  font-size: 90%;
+  margin: 2px 0;
+  padding: 0 0.2em;
 `;
 const TypeMeta = styled(Type)`
-  border: 1px solid #ddd;
-  color: #666;
-  background: #f3f3f3;
-  margin: 2px;
+  background-color: ${themed({ light: colors.N20, dark: colors.DN50 })};
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
 `;
 const StringType = styled(Type)`
-  color: #30874d;
-  border-color: #ace0be;
-  background: #effff4;
+  background-color: ${themed({ light: colors.G50, dark: colors.G500 })};
+  color: ${themed({ light: colors.G500, dark: colors.G100 })};
 `;
 const InstanceType = styled(Type)`
-  color: #453087;
-  border-color: #906bba;
-  background: #ede0fc;
+  background-color: ${themed({ light: colors.Y50, dark: colors.G500 })};
+  color: ${themed({ light: colors.Y500, dark: colors.G100 })};
 `;
 const Required = styled.span`
-  color: #b74242;
+  color: ${themed({ light: colors.R500, dark: colors.R300 })};
 `;
 const Outline = styled.span`
-  color: #666;
-  font-size: 110%;
+  color: ${themed({ light: colors.subtleText, dark: colors.subtleText })};
   line-height: 1;
-  -webkit-text-stroke: 1px #666;
 `;
 const Invalid = styled.span`
-  color: #999;
-  border: 1px solid #eee;
-  margin: 5px;
+  color: ${themed({ light: colors.N80, dark: colors.DN80 })};
+  margin: ${math.divide(gridSize, 2)}px;
 `;
 
 const SIMPLE_TYPES = ['array', 'bool', 'func', 'number', 'object', 'string',
@@ -75,7 +66,7 @@ function printComplexType(type) {
 
 function print(type, depth = 1) {
   const Indent = ({ children }) => (
-    <div style={{ paddingLeft: depth * 10 }}>{children}</div>
+    <div style={{ paddingLeft: '1.3em' }}>{children}</div>
   );
   Indent.propTypes = { children: PropTypes.node };
 

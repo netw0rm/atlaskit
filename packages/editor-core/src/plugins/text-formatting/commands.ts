@@ -5,7 +5,7 @@ export interface Command {
   (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }
 
-const moveRight = (): Command => {
+export const moveRight = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
@@ -37,7 +37,7 @@ const moveRight = (): Command => {
   };
 };
 
-const moveLeft = (view: EditorView): Command => {
+export const moveLeft = (view: EditorView): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
@@ -95,10 +95,4 @@ export const removeIgnoredNodes = (view: EditorView): Command => {
     removeIgnoredNodesLeft(view);
     return false;
   };
-};
-
-export default {
-  moveRight,
-  moveLeft,
-  removeIgnoredNodes
 };

@@ -38,20 +38,23 @@ export default class ErrorMessage extends PureComponent {
     </div>
   );
 
-  render() {
+  renderErrorContent() {
     const { reason } = this.props.errorType;
-    let content = null;
 
-    if (reason === 'NotFound') {
-      content = this.renderNotFound();
-    } else {
-      content = this.renderDefault();
+    switch (reason) {
+      case 'NotFound':
+        return this.renderNotFound();
+
+      default:
+        return this.renderDefault();
     }
+  }
 
+  render() {
     return (
       <div className={styles.errorMessage}>
         <CrossCircleIcon label="icon error" size="large" />
-        {content}
+        {this.renderErrorContent()}
       </div>
     );
   }

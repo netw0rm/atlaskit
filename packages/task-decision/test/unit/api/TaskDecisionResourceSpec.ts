@@ -172,7 +172,7 @@ describe('TaskDecisionResource', () => {
         expect(body.containerAri).toEqual('container1');
         expect(body.limit).toEqual(10);
         expect(body.cursor).toEqual('cursor1');
-        expect(body.sortCriteria).toEqual(undefined);
+        expect(body.sortCriteria).toEqual('CREATION_DATE');
       });
     });
 

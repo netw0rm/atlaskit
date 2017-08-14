@@ -75,86 +75,64 @@ describe('<ResourcedItemList/>', () => {
     // });
   });
 
-  describe('group by creationDate', () => {
-    it('should render both types of items in groups', () => {
+  describe('group by', () => {
+    const performDateTest = (testQuery: Query, dateField: string) => {
+      const response = getItemsResponse({ groupByDateSize: 4, dateField });
+      provider.getItems.returns(Promise.resolve(response));
+      const component = mount(
+        <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={provider} renderDocument={renderer} groupItems={true} />
+      );
+      const decisionCount = countType(defaultResponse.items, 'DECISION');
+      const typeCount = countType(defaultResponse.items, 'TASK');
+      expect(decisionCount).toBe(5);
+      expect(typeCount).toBe(5);
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        expect(component.find(DecisionItem).length).toBe(decisionCount);
+        expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
+        const moreButton = component.find(Button);
+        expect(moreButton.length).toBe(0);
+
+        const dateGroups = component.find('ol').find('li');
+        expect(dateGroups.length).toBe(3);
+        // Group 1 - Today
+        const dateGroup1 = dateGroups.at(0);
+        expect(dateGroup1.find('div').first().text()).toBe('Today');
+        expect(dateGroup1.find(DecisionItem).length).toBe(4);
+
+        // Group 2 - Yesterday
+        const dateGroup2 = dateGroups.at(1);
+        expect(dateGroup2.find('div').first().text()).toBe('Yesterday');
+        expect(dateGroup2.find(DecisionItem).length).toBe(1);
+        expect(dateGroup2.find(ResourcedTaskItem).length).toBe(3);
+
+        // Group 3 - Two dates ahead
+        const dateGroup3 = dateGroups.at(2);
+        expect(dateGroup3.find('div').first().text()).toBe(getFormattedDate(response.items[8][dateField]));
+        expect(dateGroup3.find(ResourcedTaskItem).length).toBe(2);
+      });
+    };
+
+    it('should group by creationDate, by default', () => {
+      const groupByQuery: Query = {
+        ...query,
+      };
+      performDateTest(groupByQuery, 'creationDate');
+    });
+
+    it('should group by creationDate, when specified', () => {
       const groupByQuery: Query = {
         ...query,
         sortCriteria: 'creationDate',
       };
-      const response = getItemsResponse({ groupByDateSize: 4, dateField: 'creationDate' });
-      provider.getItems.returns(Promise.resolve(response));
-      const component = mount(
-        <ResourcedItemList initialQuery={groupByQuery} taskDecisionProvider={provider} renderDocument={renderer} groupItems={true} />
-      );
-      const decisionCount = countType(defaultResponse.items, 'DECISION');
-      const typeCount = countType(defaultResponse.items, 'TASK');
-      expect(decisionCount).toBe(5);
-      expect(typeCount).toBe(5);
-      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
-        expect(component.find(DecisionItem).length).toBe(decisionCount);
-        expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
-        const moreButton = component.find(Button);
-        expect(moreButton.length).toBe(0);
-
-        const dateGroups = component.find('ol').find('li');
-        expect(dateGroups.length).toBe(3);
-        // Group 1 - Today
-        const dateGroup1 = dateGroups.at(0);
-        expect(dateGroup1.find('div').first().text()).toBe('Today');
-        expect(dateGroup1.find(DecisionItem).length).toBe(4);
-
-        // Group 2 - Yesterday
-        const dateGroup2 = dateGroups.at(1);
-        expect(dateGroup2.find('div').first().text()).toBe('Yesterday');
-        expect(dateGroup2.find(DecisionItem).length).toBe(1);
-        expect(dateGroup2.find(ResourcedTaskItem).length).toBe(3);
-
-        // Group 3 - Two dates ahead
-        const dateGroup3 = dateGroups.at(2);
-        expect(dateGroup3.find('div').first().text()).toBe(getFormattedDate(response.items[8].creationDate));
-        expect(dateGroup3.find(ResourcedTaskItem).length).toBe(2);
-      });
+      performDateTest(groupByQuery, 'creationDate');
     });
-  });
 
-  describe('group by lastUpdateDate', () => {
-    it('should render both types of items in groups', () => {
+    it('should group by lastUpdateDate, when specified', () => {
       const groupByQuery: Query = {
         ...query,
         sortCriteria: 'lastUpdateDate',
       };
-      const response = getItemsResponse({ groupByDateSize: 4, dateField: 'lastUpdateDate' });
-      provider.getItems.returns(Promise.resolve(response));
-      const component = mount(
-        <ResourcedItemList initialQuery={groupByQuery} taskDecisionProvider={provider} renderDocument={renderer} groupItems={true} />
-      );
-      const decisionCount = countType(defaultResponse.items, 'DECISION');
-      const typeCount = countType(defaultResponse.items, 'TASK');
-      expect(decisionCount).toBe(5);
-      expect(typeCount).toBe(5);
-      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
-        expect(component.find(DecisionItem).length).toBe(decisionCount);
-        expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
-        const moreButton = component.find(Button);
-        expect(moreButton.length).toBe(0);
-
-        const dateGroups = component.find('ol').find('li');
-        expect(dateGroups.length).toBe(3);
-        // Group 1 - Today
-        const dateGroup1 = dateGroups.at(0);
-        expect(dateGroup1.find('div').first().text()).toBe('Today');
-        expect(dateGroup1.find(DecisionItem).length).toBe(4);
-
-        // Group 2 - Yesterday
-        const dateGroup2 = dateGroups.at(1);
-        expect(dateGroup2.find('div').first().text()).toBe('Yesterday');
-        expect(dateGroup2.find(DecisionItem).length).toBe(1);
-        expect(dateGroup2.find(ResourcedTaskItem).length).toBe(3);
-
-        // Group 3 - Two dates ahead
-        const dateGroup3 = dateGroups.at(2);
-        expect(dateGroup3.find('div').first().text()).toBe(getFormattedDate(response.items[8].lastUpdateDate));
-        expect(dateGroup3.find(ResourcedTaskItem).length).toBe(2);
-      });
+      performDateTest(groupByQuery, 'lastUpdateDate');
     });
-  });});
+  });
+});

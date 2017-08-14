@@ -72,11 +72,12 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
       ...other,
     };
     switch (sortCriteria) {
-      case 'creationDate':
-        serviceQuery.sortCriteria = 'CREATION_DATE';
-        break;
       case 'lastUpdateDate':
         serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
+        break;
+      case 'creationDate':
+      default:
+        serviceQuery.sortCriteria = 'CREATION_DATE';
         break;
     }
     return serviceQuery;

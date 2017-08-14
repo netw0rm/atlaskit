@@ -15,7 +15,7 @@ export const isTask = (item: Item): item is Task => !!(item && item.type === 'TA
 export const isServiceDecision = (item: ServiceItem): item is ServiceDecision => !!(item && item.type === 'DECISION');
 export const isServiceTask = (item: ServiceItem): item is ServiceTask => !!(item && item.type === 'TASK');
 
-export const isDateSortCriteria = (sortCriteria?: SortCriteria) => sortCriteria === 'creationDate' || sortCriteria === 'lastUpdateDate';
+export const isDateSortCriteria = (sortCriteria?: SortCriteria) => !sortCriteria || sortCriteria === 'creationDate' || sortCriteria === 'lastUpdateDate';
 
 export const toObjectKey = (item: Item): ObjectKey => {
   const { containerAri, localId, objectAri } = item;

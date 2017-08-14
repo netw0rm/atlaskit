@@ -81,5 +81,15 @@ storiesOf('<ResourcedItemList/>', module)
         groupItems={true}
       />
     );
+  })
+  .add('Group by (default) creation date', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders();
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+      />
+    );
   });
-

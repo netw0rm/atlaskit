@@ -122,7 +122,9 @@ export default class ResourcedList extends PureComponent<Props,State> {
       return null;
     }
 
-    if (groupItems && isDateSortCriteria(initialQuery.sortCriteria)) {
+    const { sortCriteria } = initialQuery;
+
+    if (groupItems && isDateSortCriteria(sortCriteria)) {
       return this.renderItemsGroupedByDate(items);
     }
 
@@ -179,7 +181,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   private groupItemsByDate(items: Item[]): ItemsByDate[] {
-    const groupByField = this.props.initialQuery.sortCriteria!;
+    const groupByField = this.props.initialQuery.sortCriteria || 'creationDate';
     let lastDate;
     return items.reduce<ItemsByDate[]>((groups, item) => {
       const currentDate = getStartOfDate(item[groupByField]);

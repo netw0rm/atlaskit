@@ -1,5 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { withTheme } from 'styled-components';
+import { getTheme } from '@atlaskit/theme';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -118,16 +120,25 @@ type State = {|
   isTogglingIsOpen: boolean,
 |}
 
-export default class Navigation extends PureComponent {
+function defaultContainerTheme(containerTheme, mode) {
+  return containerTheme || mode === 'dark'
+    ? presets.dark
+    : presets.container;
+}
+function defaultGlobalTheme(globalTheme, mode) {
+  return globalTheme || mode === 'dark'
+    ? presets.dark
+    : presets.global;
+}
+
+export default withTheme(class Navigation extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   state: State
   /* eslint-enable */
 
   static defaultProps = {
-    containerTheme: presets.container,
     drawers: [],
-    globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -145,7 +156,12 @@ export default class Navigation extends PureComponent {
   constructor(props: Props, context: mixed) {
     super(props, context);
 
+    const { containerTheme, globalTheme } = props;
+    const { mode } = getTheme(props);
+
     this.state = {
+      containerTheme: defaultContainerTheme(containerTheme, mode),
+      globalTheme: defaultGlobalTheme(globalTheme, mode),
       resizeDelta: 0,
       isResizing: false,
       isTogglingIsOpen: false,
@@ -155,7 +171,12 @@ export default class Navigation extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    const { containerTheme, globalTheme } = nextProps;
+    const { mode } = getTheme(nextProps);
+
     this.setState({
+      containerTheme: defaultContainerTheme(containerTheme, mode),
+      globalTheme: defaultGlobalTheme(globalTheme, mode),
       isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
     });
 
@@ -205,10 +226,8 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerTheme,
       containerHeaderComponent,
       drawers,
-      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
@@ -224,6 +243,8 @@ export default class Navigation extends PureComponent {
     } = this.props;
 
     const {
+      containerTheme,
+      globalTheme,
       isTogglingIsOpen,
       isResizing,
     } = this.state;
@@ -318,4 +339,4 @@ export default class Navigation extends PureComponent {
       </div>
     );
   }
-}
+});

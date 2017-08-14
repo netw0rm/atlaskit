@@ -57,7 +57,7 @@ export function transformHtml(html: string): HTMLElement {
       const usernameMatch = title.match(/^@(.*?)$/);
       if (usernameMatch) {
         const username = usernameMatch[1];
-        span.setAttribute('mention-id', username);
+        span.setAttribute('data-mention-id', username);
       }
     }
 

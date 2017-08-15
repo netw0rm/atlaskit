@@ -53,11 +53,15 @@ export const moveLeft = (view: EditorView): Command => {
 
     const exitingCode = currentPosHasCode && !nextPosHasCode && Array.isArray(storedMarks);
     const atLeftEdge = nextPosHasCode && !nextNextPosHasCode && (storedMarks === null || Array.isArray(storedMarks) && !!storedMarks.length);
-    const atRightEdge = !currentPosHasCode && !nextPosHasCode && nextNextPosHasCode && storedMarks === null;
+    const atRightEdge = (
+      ((exitingCode && Array.isArray(storedMarks) && !storedMarks.length) ||
+      !exitingCode && storedMarks === null) &&
+      !nextPosHasCode && nextNextPosHasCode
+    );
     const enteringCode = !currentPosHasCode && nextPosHasCode && Array.isArray(storedMarks) && !storedMarks.length;
 
     // removing ignored nodes (cursor wrapper) to make sure cursor isn't stuck
-    if (view.cursorWrapper && !atLeftEdge) {
+    if (view.cursorWrapper && !atLeftEdge && !atRightEdge) {
       removeIgnoredNodesLeft(view);
     }
 
@@ -81,8 +85,9 @@ export const moveLeft = (view: EditorView): Command => {
       return true;
     }
 
-    // // exiting code mark (or at the beginning of the line): don't move the cursor, just remove the mark
-    if (insideCode && (exitingCode || !$cursor.nodeBefore)) {
+    // exiting code mark (or at the beginning of the line): don't move the cursor, just remove the mark
+    const isFirstChild = $cursor.index($cursor.depth - 1) === 0;
+    if (insideCode && (exitingCode || (!$cursor.nodeBefore && isFirstChild))) {
       dispatch(state.tr.removeStoredMark(code));
       return true;
     }
@@ -94,7 +99,10 @@ export const moveLeft = (view: EditorView): Command => {
 // removing ignored nodes (cursor wrapper) when pressing Backspace to make sure cursor isn't stuck
 export const removeIgnoredNodes = (view: EditorView): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-    removeIgnoredNodesLeft(view);
+    const { empty, $cursor } = state.selection as TextSelection;
+    if (empty && $cursor && $cursor.nodeBefore) {
+      removeIgnoredNodesLeft(view);
+    }
     return false;
   };
 };

@@ -285,6 +285,24 @@ describe('text-formatting', () => {
       });
     });
 
+    context('when two code nodes separated with one non-code character', () => {
+      context('when moving between two code nodes with ArrowLeft', () => {
+        it('should disable code for the first node and then enable for the second node', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 'x',  code('h{<>}ello'))));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+    });
+
     context('when exiting code with ArrowRight', () => {
       context('when code is the last node', () => {
         it('should disable code and preserve the cursor position', () => {

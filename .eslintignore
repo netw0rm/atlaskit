@@ -7,3 +7,4 @@ packages/icon/glyph
 packages/icon/lib
 packages/icon/tmp
 flow-typed
+packages/navigation/stories/components/drag-and-drop

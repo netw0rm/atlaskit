@@ -5,6 +5,8 @@ import { Href, HrefProps } from '../../utils/href';
 
 export const A = styled(Href)`
   color: initial;
+  // Explicitly setting display here to avoid links getting all available width
+  display: inline-block;
   // We need to do this to make TS happy
   ${(props: HrefProps) => ''}
   &:hover {

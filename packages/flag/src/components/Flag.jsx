@@ -55,6 +55,13 @@ export default class Flag extends PureComponent {
 
   state = { isExpanded: false }
 
+  componentWillReceiveProps(nextProps: Props) {
+    const { actions, description } = nextProps;
+    if (this.isBold() && this.state.isExpanded && !description && !actions.length) {
+      this.toggleExpand();
+    }
+  }
+
   dismissFlag = () => {
     if (this.props.isDismissAllowed && this.props.onDismissed) {
       this.props.onDismissed(this.props.id);
@@ -68,15 +75,20 @@ export default class Flag extends PureComponent {
   }
 
   renderToggleOrDismissButton = () => {
-    const { appearance, isDismissAllowed, onDismissed } = this.props;
-    if (!isDismissAllowed || (!this.isBold() && !onDismissed)) {
+    const { appearance, description, actions, isDismissAllowed, onDismissed } = this.props;
+    const isBold = this.isBold();
+    if (
+      !isDismissAllowed ||
+      (!isBold && !onDismissed) ||
+      (isBold && !description && !actions.length)
+    ) {
       return null;
     }
 
     const ChevronIcon = this.state.isExpanded ? ChevronUpIcon : ChevronDownIcon;
-    const ButtonIcon = this.isBold() ? ChevronIcon : CrossIcon;
-    const buttonLabel = this.isBold() ? 'Toggle flag body' : 'Dismiss flag';
-    const buttonAction = this.isBold() ? this.toggleExpand : this.dismissFlag;
+    const ButtonIcon = isBold ? ChevronIcon : CrossIcon;
+    const buttonLabel = isBold ? 'Toggle flag body' : 'Dismiss flag';
+    const buttonAction = isBold ? this.toggleExpand : this.dismissFlag;
 
     return (
       <DismissButton

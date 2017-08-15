@@ -18,6 +18,7 @@ export type ItemTheme = {|
   height?: {|
     compact: number,
     default: number,
+    title: number,
   |},
   focus: {|
     outline: Color,
@@ -25,6 +26,7 @@ export type ItemTheme = {|
   padding: {|
     compact: Padding,
     default: Padding,
+    title: Padding,
   |},
   default: ItemState,
   selected: ItemState,

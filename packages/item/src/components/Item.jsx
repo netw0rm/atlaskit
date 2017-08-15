@@ -59,6 +59,7 @@ export default class Item extends Component {
     /** Allows the role attribute of the item to be altered from it's default of
      *  `role="presentation"` */
     role: PropTypes.string,
+    spacing: PropTypes.oneOf(['default', 'compact', 'title']),
     /** Allows the `children` content to break onto a new line, rather than truncating the
      *  content. */
     shouldAllowMultiline: PropTypes.bool,
@@ -71,13 +72,14 @@ export default class Item extends Component {
   }
 
   static defaultProps = {
+    autoFocus: false,
     description: '',
     isCompact: false,
     isDisabled: false,
     isHidden: false,
-    role: 'presentation',
+    role: 'button',
     shouldAllowMultiline: false,
-    autoFocus: false,
+    spacing: 'default',
   }
 
   // eslint-disable-next-line react/sort-comp
@@ -124,6 +126,7 @@ export default class Item extends Component {
       onMouseLeave,
       role,
       dnd,
+      spacing,
       ...otherProps
     } = this.props;
 
@@ -210,16 +213,17 @@ export default class Item extends Component {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role={role}
-        tabIndex={isDisabled || isHidden ? null : 0}
+        tabIndex={isDisabled || isHidden || this.href() ? null : 0}
         target={this.props.target}
         title={this.props.title}
+        spacing={spacing}
         style={dnd ? dnd.draggableStyle : null}
         innerRef={patchedInnerRef}
         {...dragHandleProps}
         {...patchedEventHandlers}
         {...otherProps}
       >
-        {!!this.props.elemBefore && <Before>{this.props.elemBefore}</Before>}
+        {!!this.props.elemBefore && <Before spacing={spacing}>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}

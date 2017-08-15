@@ -28,6 +28,12 @@ export const defaultTheme: ItemTheme = {
   height: {
     compact: 0,
     default: 0,
+    title: 0,
+  },
+  beforeItemSpacing: {
+    default: akGridSizeUnitless * 2,
+    compact: akGridSizeUnitless * 2,
+    title: akGridSizeUnitless,
   },
   padding: {
     default: {
@@ -36,6 +42,10 @@ export const defaultTheme: ItemTheme = {
     },
     compact: {
       x: akGridSizeUnitless,
+      y: akGridSizeUnitless,
+    },
+    title: {
+      x: akGridSizeUnitless * 0.75,
       y: akGridSizeUnitless,
     },
   },

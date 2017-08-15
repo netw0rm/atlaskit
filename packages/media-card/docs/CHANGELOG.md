@@ -1,5 +1,10 @@
 # @atlaskit/media-card
 
+## 19.0.1 (2017-08-15)
+
+* bug fix; fix sizing regression in small cards (issues closed: msw-146) ([d065ad8](https://bitbucket.org/atlassian/atlaskit/commits/d065ad8))
+
+
 ## 19.0.0 (2017-08-09)
 
 * breaking; bumped media-card to use latest media-core which no-longer supports "trello" cards introduced at a ([0912f65](https://bitbucket.org/atlassian/atlaskit/commits/0912f65))

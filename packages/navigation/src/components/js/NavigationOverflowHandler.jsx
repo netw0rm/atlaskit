@@ -1,5 +1,5 @@
 // @flow
-
+// RB: TODO -> Fix flow errors in this file
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import HeightDetector from './HeightDetector';
@@ -94,6 +94,7 @@ export default class NavigationOverflowHandler extends Component {
 
     const nonDropdownItems = React.Children.map(children, (child, childIndex) => (
       childIndex <= maxChildToRender ? (
+        // $FlowFixMe
         <HeightDetector
           onHeightChange={this.handleChildHeight(childIndex)}
           shouldMeasureImmediately
@@ -112,6 +113,7 @@ export default class NavigationOverflowHandler extends Component {
     ) : null;
 
     return (
+      // $FlowFixMe
       <HeightDetector
         onHeightChange={this.handleAvailableHeight}
         shouldDetectResize

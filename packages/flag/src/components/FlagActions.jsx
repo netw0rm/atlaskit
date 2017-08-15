@@ -15,8 +15,10 @@ export default class FlagActions extends PureComponent {
     appearance: DEFAULT_APPEARANCE,
     actions: [],
   }
-
+  /* eslint-disable no-undef */
+  // $FlowFixMe
   getButtonFocusRingColor = (a: mixed) => getProperty(a, 'focusRingColor');
+  // $FlowFixMe
   getButtonTheme = (a: mixed) => getProperty(a, 'buttonTheme');
   getButtonAppearance = (b: mixed) => (b ? 'default' : 'subtle-link');
   getButtonSpacing = (b: mixed) => (b ? 'compact' : 'none');

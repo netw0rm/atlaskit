@@ -11,7 +11,7 @@ export default class TabsStateless extends PureComponent {
   static defaultProps = { tabs: [] }
 
   render() {
-    const { onKeyboardNav, tabs } = this.props;
+    const { onKeyboardNav, tabs } : any = this.props;
     const selectedTabs = tabs.filter(tab => tab.isSelected);
     const selectedTab = selectedTabs.length ? (
       <TabPane role="tabpanel">

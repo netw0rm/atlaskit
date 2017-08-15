@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-undef */
 // RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
 import Navigation, {

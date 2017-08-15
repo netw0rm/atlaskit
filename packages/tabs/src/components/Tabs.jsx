@@ -6,56 +6,62 @@ import type { ChildrenType } from '../types';
 
 type Props = {
   /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
-  onSelect?: (number) => void,
+  onSelect: (number) => void,
   /** The tabs to display, with content being hidden unless the tab is selected. */
-  tabs?: Array<{
+  tabs: Array<{
     content?: ChildrenType,
     defaultSelected?: boolean,
+    selectedTab?: boolean,
     label: ChildrenType,
   }>,
 };
+type State = {|
+  selectedIndex?: number
+  |}
 
 export default class Tabs extends PureComponent {
   props: Props
+  state: State
   static defaultProps = {
     onSelect: () => {},
     tabs: [],
   }
 
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    const { tabs } = this.props;
+
+    if (!tabs || !tabs.length) return;
+
+    let selectedIndex = 0;
 
     // Set the selected tab to the first tab with defaultSelected provided
-    let defaultSelectedIndex = null;
-    if (props) {
-      for (let i = 0; i < props.tabs.length; i++) {
-        if (props.tabs[i].defaultSelected) {
-          defaultSelectedIndex = i;
-          break;
-        }
+
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].defaultSelected) {
+        selectedIndex = i;
+        break;
       }
     }
 
-    this.state = {
-      selectedTab: defaultSelectedIndex,
-    };
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ selectedIndex });
   }
 
   getTabs = () => this.props.tabs.map((tab, index) => ({
     ...tab,
-    isSelected: index === this.state.selectedTab,
+    isSelected: index === this.state.selectedIndex,
     onKeyboardNav: this.tabKeyboardNavHandler,
     onSelect: () => this.tabSelectHandler(index),
   }));
 
-  tabSelectHandler = (selectedTabIndex) => {
-    this.props.onSelect(selectedTabIndex);
-    this.setState({ selectedTab: selectedTabIndex });
+  tabSelectHandler = (selectedIndex: number) => {
+    this.props.onSelect(selectedIndex);
+    this.setState({ selectedIndex });
   }
 
-  tabKeyboardNavHandler = (key) => {
+  tabKeyboardNavHandler = (key: string) => {
     // Handle left and right arrow key presses by selecting the previous or next tab
-    const selectedIndex = this.state.selectedTab;
+    const selectedIndex = this.state.selectedIndex || 0;
     if (selectedIndex !== null) {
       let nextIndex = selectedIndex;
 

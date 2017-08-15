@@ -19,6 +19,11 @@ type Props = {
   onClick?: () => mixed,
   /** Defines the size of the indicator */
   size?: SizeType,
+  /** Todo */
+  appearance?: string,
+  isActive?: boolean,
+  isFocus?: boolean,
+  isHover?: boolean
 };
 
 const MAX_DISPLAY_COUNT = 99;

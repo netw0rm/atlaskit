@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-undef */
 // RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
 // $FlowFixMe
@@ -167,7 +169,7 @@ export default class ListWithGroups extends Component {
 
   renderGroup = (
     { dropProvided, items, groupTitle, type, isOpen, extraAvatarProps } :
-    { dropProvided?: any, items: Person[]|Room[], groupTitle: string, type: string,
+    { dropProvided: any, items: Person[]|Room[], groupTitle: string, type: string,
       isOpen: boolean, extraAvatarProps?: Function }
   ) => (
     <AkNavigationItemGroup

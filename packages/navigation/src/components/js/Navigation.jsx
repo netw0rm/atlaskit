@@ -1,4 +1,5 @@
 // @flow
+/* eslint- disable import/no-extraneous-dependencies*/
 import React, { PureComponent } from 'react';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';

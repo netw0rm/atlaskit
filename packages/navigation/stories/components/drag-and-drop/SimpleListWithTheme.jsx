@@ -9,7 +9,6 @@ import Navigation, {
 import RadioGroup from '@atlaskit/field-radio-group';
 // $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
-import styled, { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 // $FlowFixMe
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
@@ -48,6 +47,7 @@ export default class SimpleListWithTheme extends Component {
 
   componentDidMount() {
     // eslint-disable-next-line no-unused-expressions
+    // $FlowFixMe
     injectGlobal`
       body.${isDraggingClassName} {
         cursor: grabbing;

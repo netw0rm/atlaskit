@@ -1,4 +1,5 @@
 // @flow
+/* eslint- disable import/no-extraneous-dependencies*/
 import React, { PureComponent } from 'react';
 import GlobalItemInner from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';

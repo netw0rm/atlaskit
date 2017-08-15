@@ -8,7 +8,7 @@ import type { ReactElement } from '../../types';
 
 type Props = {|
   children?: ReactElement,
-  onHeightChange: (number) => void,
+  onHeightChange: () => void,
   shouldMeasureImmediately?: bool,
   shouldDetectResize?: bool,
   shouldFillHeight?: bool,

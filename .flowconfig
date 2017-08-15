@@ -5,6 +5,7 @@
 .*/node_modules/fbjs/.*
 .*/node_modules/memoize-one/test/.*
 .*/packages/drag-and-drop/.*
+.*/navigation/stories/components/drag-and-drop/.*
 
 [include]
 src/

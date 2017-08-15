@@ -47,7 +47,7 @@ export default class Badge extends PureComponent {
     value: 0,
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     const { onValueUpdated, value: oldValue } = this.props;
     const { value: newValue } = nextProps;
 

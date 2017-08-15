@@ -26,7 +26,7 @@ export default class NavigationOverflowDropdown extends Component {
   state: State
   props: Props
 
-  handleDropdownToggle = ({ isOpen }) => {
+  handleDropdownToggle = ({ isOpen }: any) => {
     this.setState({ isOpen });
   }
 

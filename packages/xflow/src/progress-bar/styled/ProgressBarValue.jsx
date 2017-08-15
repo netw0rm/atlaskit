@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
+import { colors } from '@atlaskit/theme';
+
+// NOTE: border-radius should be half height of ProgressBarBackground
+
 const ProgressBarValue = styled.div`
-  background: #162b4d;
+  background: ${colors.blue};
   height: 6px;
   width: 50%;
   border-radius: 3px;

@@ -1,5 +1,5 @@
 import { EditorState, EditorView, Transaction, TextSelection, Selection } from '../../prosemirror';
-import { removeIgnoredNodesLeft } from './utils';
+import { removeIgnoredNodesLeft, hasCode } from './utils';
 import { stateKey } from './';
 
 export interface Command {
@@ -16,7 +16,7 @@ export const moveRight = (): Command => {
     const { storedMarks } = state.tr;
     const insideCode = stateKey.getState(state).markActive(code.create());
     const currentPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos, code);
-    const nextPosHasCode = state.doc.rangeHasMark($cursor.pos + 1, $cursor.pos + 1, code);
+    const nextPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos + 1, code);
 
     const exitingCode = !currentPosHasCode && !nextPosHasCode && (!storedMarks || !!storedMarks.length);
     const enteringCode = !currentPosHasCode && nextPosHasCode && (!storedMarks || !storedMarks.length);
@@ -45,19 +45,21 @@ export const moveLeft = (view: EditorView): Command => {
       return false;
     }
 
-    // removing ignored nodes (cursor wrapper) to make sure cursor isn't stuck
-    removeIgnoredNodesLeft(view);
-
     const { storedMarks } = state.tr;
     const insideCode = stateKey.getState(state).markActive(code.create());
-    const currentPosHasCode = state.doc.rangeHasMark($cursor.pos, $cursor.pos, code);
-    const nextPosHasCode = state.doc.rangeHasMark($cursor.pos - 1, $cursor.pos - 1, code);
-    const nextNextPosHasCode = state.doc.rangeHasMark($cursor.pos - 2, $cursor.pos - 2, code);
+    const currentPosHasCode = hasCode(state, $cursor.pos);
+    const nextPosHasCode = hasCode(state, $cursor.pos - 1);
+    const nextNextPosHasCode = hasCode(state, $cursor.pos - 2);
 
-    const exitingCode = !currentPosHasCode && !nextPosHasCode && Array.isArray(storedMarks);
-    const atLeftEdge = currentPosHasCode && !nextPosHasCode && storedMarks === null;
+    const exitingCode = currentPosHasCode && !nextPosHasCode && Array.isArray(storedMarks);
+    const atLeftEdge = nextPosHasCode && !nextNextPosHasCode && (storedMarks === null || Array.isArray(storedMarks) && !!storedMarks.length);
     const atRightEdge = !currentPosHasCode && !nextPosHasCode && nextNextPosHasCode && storedMarks === null;
     const enteringCode = !currentPosHasCode && nextPosHasCode && Array.isArray(storedMarks) && !storedMarks.length;
+
+    // removing ignored nodes (cursor wrapper) to make sure cursor isn't stuck
+    if (view.cursorWrapper && !atLeftEdge) {
+      removeIgnoredNodesLeft(view);
+    }
 
     // at the right edge: remove code mark and move the cursor to the left
     if (!insideCode && atRightEdge) {
@@ -72,16 +74,16 @@ export const moveLeft = (view: EditorView): Command => {
       return true;
     }
 
-    // // exiting code mark (or at the beginning of the line): don't move the cursor, just remove the mark
-    if (insideCode && (exitingCode || !$cursor.nodeBefore)) {
-      dispatch(state.tr.removeStoredMark(code));
-      return true;
-    }
-
     // at the left edge: add code mark and move the cursor to the left
     if (insideCode && atLeftEdge) {
       const tr = state.tr.setSelection(Selection.near(state.doc.resolve($cursor.pos - 1)));
       dispatch(tr.addStoredMark(code.create()));
+      return true;
+    }
+
+    // // exiting code mark (or at the beginning of the line): don't move the cursor, just remove the mark
+    if (insideCode && (exitingCode || !$cursor.nodeBefore)) {
+      dispatch(state.tr.removeStoredMark(code));
       return true;
     }
 

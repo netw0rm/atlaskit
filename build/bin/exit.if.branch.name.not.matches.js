@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 /*
     This script simply returns a non-zero exit code if the current branch name does not match a

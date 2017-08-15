@@ -15,7 +15,7 @@ describe(name, () => {
     expect(items).toBe(null);
   });
 
-  it('should return null if there are no containers provided', () => {
+  it('should return null if there are no containers provided 2', () => {
     const items = getRecentContainers({}, true, [container]);
 
     expect(items).toBe(null);

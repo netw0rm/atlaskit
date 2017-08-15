@@ -17,15 +17,15 @@ export const getAnimation = ({ isEntering, isLeaving, traversalDirection }) => (
 
 const NestedNavigationPage = styled.div`
   ${getAnimation}
-  flex-shrink: 0;
-  width: 100%;
-
-  /* as a flex child - take up the full height */
-  flex-grow: 1;
-
-  /* create a new flex container to take up the full height */
   display: flex;
+  /* all pages should take up 100% of the container width */
+  flex-basis: 100%;
   flex-direction: column;
+  /* take up the full height - desirable when using drag-and-drop in nested nav */
+  flex-grow: 1;
+  flex-shrink: 0;
+  /* we want each page to have internal scrolling */
+  overflow-y: auto;
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

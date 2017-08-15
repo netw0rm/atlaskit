@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.11.1 (2017-08-15)
+
+* bug fix; fix ts/js build problem ([62855ff](https://bitbucket.org/atlassian/atlaskit/commits/62855ff))
 ## 45.11.0 (2017-08-14)
 
 * feature; upgrade editor to support latest task-decisions. (issues closed: fs-1263) ([6060103](https://bitbucket.org/atlassian/atlaskit/commits/6060103))

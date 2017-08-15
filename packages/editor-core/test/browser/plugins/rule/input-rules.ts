@@ -25,6 +25,17 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.not.equal(doc(p(), hr, p()));
     });
 
+    it('should convert "***" in the start of a line to a horizontal rule', () => {
+      let trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '***', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(), hr, p()));
+      expect(trackEvent.calledWith('atlassian.editor.format.horizontalrule.autoformatting')).to.equal(true);
+    });
+
     it('should convert "---" at the start of a line to horizontal rule', () => {
       let trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;

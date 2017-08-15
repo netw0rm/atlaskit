@@ -17,6 +17,11 @@ export {
   PresenceResource,
 } from '@atlaskit/mention';
 
+export {
+  TaskDecisionProvider,
+  TaskDecisionResource
+} from '@atlaskit/task-decision';
+
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
 export * from './config';

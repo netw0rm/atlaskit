@@ -1,5 +1,17 @@
 # @atlaskit/task-decision
 
+## 3.1.0 (2017-08-14)
+
+* feature; make default query ordering CREATION_DATE (issues closed: fs-1259) ([96e546d](https://bitbucket.org/atlassian/atlaskit/commits/96e546d))
+
+* bug fix; export ResourcedItemList ([4385f29](https://bitbucket.org/atlassian/atlaskit/commits/4385f29))
+* feature; add support for grouping items by sort date in ResourcedItemList. (issues closed: fs-1259) ([dbff6cf](https://bitbucket.org/atlassian/atlaskit/commits/dbff6cf))
+## 3.0.0 (2017-08-14)
+
+* breaking; TaskDecisionProvider has new required methods. ([9e48cf4](https://bitbucket.org/atlassian/atlaskit/commits/9e48cf4))
+* breaking; support service integration with tasks and all item types (issues closed: fs-1249) ([9e48cf4](https://bitbucket.org/atlassian/atlaskit/commits/9e48cf4))
+
+
 ## 2.4.0 (2017-08-09)
 
 * feature; adding support for placeholders ([d9edd1a](https://bitbucket.org/atlassian/atlaskit/commits/d9edd1a))

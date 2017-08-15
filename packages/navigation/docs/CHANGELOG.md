@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 19.0.2 (2017-08-15)
+
+* bug fix; nested nav pages have their own scroll containers (issues closed: ak-3222) ([865623d](https://bitbucket.org/atlassian/atlaskit/commits/865623d))
+
+
+
 ## 19.0.1 (2017-08-11)
 
 * bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))

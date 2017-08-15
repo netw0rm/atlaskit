@@ -1,5 +1,5 @@
-import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 
 export const mentionProvider = Promise.resolve(mentionStoryData.resourceProvider);
 export const emojiProvider = Promise.resolve(emojiStoryData.getEmojiResource());

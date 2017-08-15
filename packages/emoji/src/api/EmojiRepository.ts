@@ -124,6 +124,7 @@ export default class EmojiRepository {
   private dynamicCategoryList: string[];
   private static readonly defaultEmojiWeight: number = 1000000;
 
+  // protected to allow subclasses to access (for testing and storybooks).
   protected usageTracker: UsageFrequencyTracker;
 
   constructor(emojis: EmojiDescription[]) {
@@ -155,7 +156,7 @@ export default class EmojiRepository {
    * you don't want any sorting you can also disable via the SearchOptions (this might be a useful optimisation).
    * If no sort is specified in SearchOptions then a default sorting it applied based on the query.
    */
-   search(query?: string, options?: SearchOptions): EmojiSearchResult {
+  search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
 
     const { nameQuery, asciiQuery } = splitQuery(query);

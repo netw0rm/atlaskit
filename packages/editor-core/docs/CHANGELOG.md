@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 45.11.1 (2017-08-15)
+
+* bug fix; fix ts/js build problem ([62855ff](https://bitbucket.org/atlassian/atlaskit/commits/62855ff))
+## 45.11.0 (2017-08-14)
+
+* feature; upgrade editor to support latest task-decisions. (issues closed: fs-1263) ([6060103](https://bitbucket.org/atlassian/atlaskit/commits/6060103))
+## 45.10.1 (2017-08-14)
+
+* bug fix; fix parsing of mentions in BB renderer. (issues closed: ed-2465) ([3fb5764](https://bitbucket.org/atlassian/atlaskit/commits/3fb5764))
+* bug fix; workaround for twitter/instagram link creation bug (issues closed: ed-2464) ([ad09f63](https://bitbucket.org/atlassian/atlaskit/commits/ad09f63))
+## 45.10.0 (2017-08-14)
+
+* feature; adding help dialog to the editor. ([bf09d40](https://bitbucket.org/atlassian/atlaskit/commits/bf09d40))
+* feature; adding more markdown auto-formatting rules for bold, italic, lists, horizontal rule ([76c1caa](https://bitbucket.org/atlassian/atlaskit/commits/76c1caa))
 ## 45.9.2 (2017-08-14)
 
 * bug fix; renderer portal is always positioned to the bottom right (issues closed: ed-2461) ([7afd755](https://bitbucket.org/atlassian/atlaskit/commits/7afd755))

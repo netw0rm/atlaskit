@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 26.0.1 (2017-08-14)
+
+* bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))
 ## 26.0.0 (2017-08-13)
 
 

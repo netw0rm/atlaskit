@@ -34,11 +34,15 @@ export function createSearchEmojiComparator(query?: string, orderedIds?: Array<s
 
   comparators.push(OrderComparator.Instance, AlphabeticalShortnameComparator.Instance);
 
-  return new ChainedEmojiComparator(...comparators);
+  const comparator = new ChainedEmojiComparator(...comparators);
+  comparator.compare = comparator.compare.bind(comparator);
+  return comparator;
 }
 
 export function createUsageOnlyEmojiComparator(orderedIds: Array<string>): EmojiComparator {
-  return new ChainedEmojiComparator(new UsageFrequencyComparator(orderedIds), new EmojiTypeComparator(), OrderComparator.Instance);
+  const comparator = new ChainedEmojiComparator(new UsageFrequencyComparator(orderedIds), new EmojiTypeComparator(), OrderComparator.Instance);
+  comparator.compare = comparator.compare.bind(comparator);
+  return comparator;
 }
 
 /**

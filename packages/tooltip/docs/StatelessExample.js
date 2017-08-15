@@ -1,32 +1,41 @@
 import React, { PureComponent } from 'react';
 import { TooltipStateless as Tooltip } from '@atlaskit/tooltip';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 
-export default class FourWayTooltip extends PureComponent {
-  state = { tooltipIsVisible: false }
+export default class StatelessExample extends PureComponent {
+  state = { clickIsVisible: false, hoverIsVisible: false }
 
-  toggleTooltip = () => this.setState(state => ({ tooltipIsVisible: !state.tooltipIsVisible }))
+  toggleClickTooltip = () => this.setState(state => ({
+    clickIsVisible: !state.clickIsVisible,
+  }))
+  toggleHoverTooltip = () => this.setState(state => ({
+    hoverIsVisible: !state.hoverIsVisible,
+  }))
 
   render() {
-    const { tooltipIsVisible } = this.state;
+    const { clickIsVisible, hoverIsVisible } = this.state;
 
     return (
       <ButtonGroup>
         <Tooltip
-          description="Toggling Tooltip on click"
-          onMouseOut={() => console.log('Mouse left button')}
-          onMouseOver={() => console.log('Mouse entered button')}
+          description="Toggle on Click"
+          isVisible={clickIsVisible}
           position="right"
         >
-          <Button>I have mouseover handlers</Button>
+          <Button onClick={this.toggleClickTooltip}>
+            Click to Toggle
+          </Button>
         </Tooltip>
         <Tooltip
-          description="Toggling Tooltip on click"
-          isVisible={tooltipIsVisible}
+          description="Toggle on Hover"
+          isVisible={hoverIsVisible}
+          onMouseOver={this.toggleHoverTooltip}
+          onMouseOut={this.toggleHoverTooltip}
           position="right"
         >
-          <Button onClick={this.toggleTooltip}>Click to toggle tooltip</Button>
+          <Button>
+            Hover to Toggle
+          </Button>
         </Tooltip>
       </ButtonGroup>
     );

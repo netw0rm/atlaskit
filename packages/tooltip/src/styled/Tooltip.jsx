@@ -3,12 +3,8 @@
 /* TODO: finish migrating constants from util-shared-styles */
 
 import styled, { keyframes } from 'styled-components';
-import {
-  akAnimationMixins,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
-
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { akAnimationMixins, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const { createBold, interpolate } = akAnimationMixins;
 

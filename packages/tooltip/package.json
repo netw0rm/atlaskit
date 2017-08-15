@@ -26,8 +26,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/button": "^5.0.0",
     "@atlaskit/tooltip": "*"
   },
   "dependencies": {

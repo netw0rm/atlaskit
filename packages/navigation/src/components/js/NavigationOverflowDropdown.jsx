@@ -7,6 +7,7 @@ import Item from '@atlaskit/item';
 import MoreVerticalIcon from '@atlaskit/icon/glyph/more-vertical';
 import Tooltip from '@atlaskit/tooltip';
 import OverflowDropdownButtonWrapper from '../styled/OverflowDropdownButtonWrapper';
+import { isDropdownOverflowKey } from '../../theme/util';
 import type { ReactElement } from '../../types';
 
 type State = {|
@@ -44,7 +45,7 @@ export default class NavigationOverflowDropdown extends Component {
     );
 
     return (
-      <ThemeProvider theme={{ isOverflowDropdown: true }}>
+      <ThemeProvider theme={{ [isDropdownOverflowKey]: true }}>
         <DropdownMenu
           onOpenChange={this.handleDropdownToggle}
           trigger={

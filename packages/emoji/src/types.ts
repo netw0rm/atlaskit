@@ -1,5 +1,4 @@
 import { SyntheticEvent } from 'react';
-import { EmojiComparator } from './api/EmojiComparator';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 
@@ -164,10 +163,19 @@ export interface OnCategory {
   (categoryId: string | null): void;
 }
 
+export const enum SearchSort {
+  // no sort - just the default ordering of emoji
+  None,
+  // a sort taking into account a number of factors including, usage, closeness of match to the query, etc
+  Default,
+  // sort such that the most frequently used emoji come first
+  UsageFrequencyOnly,
+}
+
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
-  comparator?: EmojiComparator;
+  sort?: SearchSort;
 }
 
 export interface EmojiSearchResult {

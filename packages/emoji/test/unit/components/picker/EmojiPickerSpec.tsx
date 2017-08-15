@@ -522,11 +522,13 @@ describe('<EmojiPicker />', () => {
           .then(() => waitUntil(() => startEmojiUploadVisible(component))
           ).then(() => {
             // click add
+            // console.log(`PAC 01 =================================`);
             const addEmoji = findStartEmojiUpload(component);
             addEmoji.simulate('click');
             return waitUntil(() => emojiNameInputVisible(component));
           }).then(() => {
             // type name
+            // console.log(`PAC 02 =================================`);
             const nameInput = findEmojiNameInput(component);
             nameInput.simulate('focus');
             nameInput.simulate('change', {
@@ -534,11 +536,13 @@ describe('<EmojiPicker />', () => {
                 value: ':cheese burger:',
               }
             });
+            // console.log(`PAC 03 =================================`);
             expect(nameInput.prop('value'), 'emoji name filtered').to.equal('cheese_burger');
 
             // choose file
             const fileChooser = component.find(FileChooser);
             const fileOnChange = fileChooser.prop('onChange');
+            // console.log(`PAC 04 =================================`);
             expect(fileOnChange, 'FileChooser exists with onChange prop').to.not.equal(undefined);
             if (fileOnChange) {
               fileOnChange({
@@ -552,11 +556,13 @@ describe('<EmojiPicker />', () => {
             return waitUntil(() => addEmojiButtonVisible(component));
           }).then(() => {
             // upload preview shown
+            // console.log(`PAC 05 =================================`);
             const uploadPreview = findUploadPreview(component);
             expect(uploadPreview.length, 'Upload preview visible').to.equal(1);
             const previewEmoji = uploadPreview.find(Emoji);
             expect(previewEmoji.length, 'Preview emoji inside preview').to.equal(1);
             const emoji = previewEmoji.prop('emoji');
+            // console.log(`PAC 06 =================================`);
             expect(emoji.shortName).to.equal(':cheese_burger:');
             expect(emoji.representation.imagePath).to.equal(pngDataURL);
 
@@ -568,9 +574,12 @@ describe('<EmojiPicker />', () => {
             return waitUntil(() => provider.getUploads().length > 0);
           }).then(() => {
             // upload called on provider
+            // console.log(`PAC 07 =================================`);
             const uploads = provider.getUploads();
             expect(uploads.length, 'One upload occurred').to.equal(1);
             const upload = uploads[0];
+            // console.log(`PAC 08 =================================`);
+            // console.log(`PAC: upload.name = ${upload.upload.name}, shortName = ${upload.upload.shortName}`);
             expect(upload.upload).to.deep.equal({
               name: 'Cheese burger',
               shortName: ':cheese_burger:',
@@ -580,14 +589,18 @@ describe('<EmojiPicker />', () => {
             });
 
             const newEmojiDescription = upload.emoji;
+            // console.log(`PAC 08.5 =================================`);
+            // console.log(`PAC: newEmojiDescription.id = ${newEmojiDescription.id}`);
             return waitUntil(() => emojiWithIdVisible(component, newEmojiDescription.id));
           }).then(() => {
             // new emoji in view
+            // console.log(`PAC 09 =================================`);
             const newEmojiDescription = provider.getUploads()[0].emoji;
             const emoji = findEmojiWithId(component, newEmojiDescription.id);
             expect(emoji.length, 'Emoji found').to.equal(1);
 
             const { name, shortName, fallback } = emoji.prop('emoji');
+            // console.log(`PAC 10 =================================`);
             expect(name, 'name').to.equal('Cheese burger');
             expect(shortName, 'shortName').to.equal(':cheese_burger:');
             expect(fallback, 'fallback').to.equal(':cheese_burger:');
@@ -595,6 +608,7 @@ describe('<EmojiPicker />', () => {
             return waitUntil(() => previewVisible(component));
           }).then(() => {
             // preview is back with new emoji shown by default
+            // console.log(`PAC 11 =================================`);
             const preview = findPreview(component);
             expect(preview.length, 'Single preview visible').to.equal(1);
 
@@ -602,6 +616,7 @@ describe('<EmojiPicker />', () => {
             expect(previewEmoji.length, 'Emoji shown in preview').to.equal(1);
 
             const { name, shortName, fallback } = previewEmoji.prop('emoji');
+            // console.log(`PAC 12 =================================`);
             expect(name, 'name').to.equal('Cheese burger');
             expect(shortName, 'shortName').to.equal(':cheese_burger:');
             expect(fallback, 'fallback').to.equal(':cheese_burger:');

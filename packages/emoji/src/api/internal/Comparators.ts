@@ -1,8 +1,7 @@
 import { EmojiDescription } from '../../types';
 import { isEmojiVariationDescription } from '../../type-helpers';
-import { ChainedEmojiComparator, EmojiComparator } from '../EmojiComparator';
 
-const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking since IE doesn't have MAX_VALUE
+const MAX_NUMBER = 1000000;
 
 /**
  * Create the default sort comparator to be used for the user queries against emoji
@@ -11,7 +10,7 @@ const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking s
  * converted to lowercase.
  * @param orderedIds the id of emoji ordered by how frequently they are used
  */
-export function createFrequencyEmojiComparator(query?: string, orderedIds?: Array<string>): EmojiComparator {
+export function createSearchEmojiComparator(query?: string, orderedIds?: Array<string>): EmojiComparator {
   const textQuery = query ? query.replace(/:/g, '').toLowerCase().trim() : undefined;
 
   const comparators: EmojiComparator[] = [];
@@ -36,6 +35,48 @@ export function createFrequencyEmojiComparator(query?: string, orderedIds?: Arra
   comparators.push(OrderComparator.Instance, AlphabeticalShortnameComparator.Instance);
 
   return new ChainedEmojiComparator(...comparators);
+}
+
+export function createUsageOnlyEmojiComparator(orderedIds: Array<string>): EmojiComparator {
+  return new ChainedEmojiComparator(new UsageFrequencyComparator(orderedIds), new EmojiTypeComparator(), OrderComparator.Instance);
+}
+
+/**
+ * Returns a number representing the result of comparing e1 and e2.
+ * Compatible with Array.sort, which is to say -
+ *   - less than 0 if e1 should come first
+ *   - 0 if they are equal; e1 and e2 will be unchanged in position relative to each other
+ *   - greater than 0 if e2 should come first.
+ */
+export interface EmojiComparator {
+  compare(e1: EmojiDescription, e2: EmojiDescription): number;
+}
+
+/**
+ * A combinator comparator that applies an ordered chained of sub-comparators. The first comparator that
+ * returns a non-zero value stops the chain and causes that value to be returned. If a comparator returns a
+ * zero then the next one in the chain is tried.
+ *
+ * If no comparators in the chain return a non-zero value then zero will be returned.
+ */
+export class ChainedEmojiComparator implements EmojiComparator {
+
+  private chain: EmojiComparator[];
+
+  constructor(...comparators: EmojiComparator[]) {
+    this.chain = comparators;
+  }
+
+  compare(e1: EmojiDescription, e2: EmojiDescription): number {
+    for (let i = 0; i < this.chain.length; i++) {
+      const result = this.chain[i].compare(e1, e2);
+      if (result !== 0) {
+        return result;
+      }
+    }
+
+    return 0;
+  }
 }
 
 /**
@@ -65,21 +106,22 @@ export class AsciiMatchComparator implements EmojiComparator {
 }
 
 /**
- * Orders two emoji such that the one who's shortname matches the query exactly comes first.
+ * Orders two emoji such that the one who's shortname matches the query exactly comes first. If there are matching
+ * shortnames then the type of emoji is taken into account with SITE emoji coming first.
  */
 export class ExactShortNameMatchComparator implements EmojiComparator {
 
   private colonQuery: string;
+  private typeComparator: EmojiComparator;
 
   constructor(query: string) {
     this.colonQuery = `:${query}:`;
-    // console.log(`PAC: ExactShortNameMatchComparator#constructor - colonQuery = ${this.colonQuery}`);
+    this.typeComparator = new EmojiTypeComparator(true);
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
-    // console.log(`PAC: ExactShortNameMatchComparator#compare = e1.shortName = ${e1.shortName} and e2.shortName = ${e2.shortName}`);
     if (e1.shortName === this.colonQuery && e2.shortName === this.colonQuery) {
-      return ExactShortNameMatchComparator.emojiTypeToOrdinal(e1) - ExactShortNameMatchComparator.emojiTypeToOrdinal(e2);
+      return this.typeComparator.compare(e1, e2);
     } else if (e1.shortName === this.colonQuery) {
       return -1;
     } else if (e2.shortName === this.colonQuery) {
@@ -88,23 +130,36 @@ export class ExactShortNameMatchComparator implements EmojiComparator {
 
     return 0;
   }
+}
 
-  /**
-   * Returns a number for the type of emoji to ensure that site, comes before, atlassian,
-   * comes before standard. If the type is unknown it is given a high number to ensure that emoji will be
-   * orderered last.
-   */
-  private static emojiTypeToOrdinal(emoji: EmojiDescription): number {
-    switch (emoji.type) {
-      case 'SITE':
-        return 0;
-      case 'ATLASSIAN':
-        return 1;
-      case 'STANDARD':
-        return 2;
-      default:
-        return 3;
+/**
+ * Orders two emoji based on their type, with the types being STANDARD, ATLASSIAN and SITE (in that order).
+ * If the comparator is configured to 'reverse' then the order will be SITE, ATLASSIAN, STANDARD.
+ *
+ * Regardless of the reverse setting, an unknown type will always come last.
+ */
+export class EmojiTypeComparator implements EmojiComparator {
+  private typeToNumber: Map<string,number>;
+
+  constructor(reverse?: boolean) {
+    if (reverse) {
+      this.typeToNumber = new Map<string,number>([['SITE',0], ['ATLASSIAN',1], ['STANDARD', 2]]);
+    } else {
+      this.typeToNumber = new Map<string,number>([['STANDARD', 0], ['ATLASSIAN',1], ['SITE',2]]);
     }
+  }
+
+  compare(e1: EmojiDescription, e2: EmojiDescription) {
+    return this.emojiTypeToOrdinal(e1) - this.emojiTypeToOrdinal(e2);
+  }
+
+  private emojiTypeToOrdinal(emoji: EmojiDescription): number {
+    let ordinal = this.typeToNumber.get(emoji.type);
+    if (ordinal === undefined) {
+      ordinal = 10;
+    }
+
+    return ordinal;
   }
 }
 

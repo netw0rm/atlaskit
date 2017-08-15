@@ -6,7 +6,7 @@ import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation } from '../../../src/types';
+import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation, SearchSort } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
 import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
 import EmojiResource, {
@@ -16,7 +16,6 @@ import EmojiResource, {
     UploadingEmojiProvider,
 } from '../../../src/api/EmojiResource';
 import EmojiRepository from '../../../src/api/EmojiRepository';
-import { NoSortComparator } from '../../../src/api/EmojiComparator';
 
 import {
     atlassianEmojis,
@@ -272,7 +271,7 @@ describe('EmojiResource', () => {
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
-      resource.filter('', { comparator: NoSortComparator.Instance });
+      resource.filter('', { sort: SearchSort.None });
       return filteredPromise;
     });
 
@@ -312,7 +311,7 @@ describe('EmojiResource', () => {
         checkOrder([ ...providerData1, ...providerData2 ], emojis);
       });
       resource.subscribe(onChange);
-      resource.filter('', { comparator: NoSortComparator.Instance });
+      resource.filter('', { sort: SearchSort.None });
       return filteredPromiseChain;
     });
 
@@ -339,7 +338,7 @@ describe('EmojiResource', () => {
         expect(onChange.errorCalls.length, 'Errors occurred').to.equal(1);
       });
       resource.subscribe(onChange);
-      resource.filter('', { comparator: NoSortComparator.Instance });
+      resource.filter('', { sort: SearchSort.None });
       return filteredPromise;
     });
 

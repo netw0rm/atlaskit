@@ -7,6 +7,7 @@ import * as styles from './styles';
 import { customCategory } from '../../constants';
 import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
+import { SearchSort } from '../../types';
 import { getToneEmoji } from '../../util/filters';
 import { EmojiContext } from '../common/internal-types';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
@@ -14,7 +15,6 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
-import { NoSortComparator } from '../../api/EmojiComparator';
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -212,14 +212,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   private updateEmojis = (query?: string, options?: SearchOptions) => {
-    // if the query is empty then we want the emoji to be in default sorted order, unless specified otherwise
+    // if the query is empty then we want the emoji to be in service defined order, unless specified otherwise
     if (!query) {
       if (!options) {
         options = {};
       }
 
-      if (!options.comparator) {
-        options.comparator = NoSortComparator.Instance;
+      if (!options.sort) {
+        options.sort = SearchSort.None;
       }
     }
 

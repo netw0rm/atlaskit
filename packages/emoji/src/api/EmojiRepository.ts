@@ -6,10 +6,9 @@ import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
 import { customCategory, defaultCategories } from '../constants';
-import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
+import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchSort, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
-import { createFrequencyEmojiComparator } from './internal/Comparators';
-import { NoSortComparator } from './EmojiComparator';
+import { createSearchEmojiComparator, createUsageOnlyEmojiComparator } from './internal/Comparators';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 XRegExpUnicodeBase(XRegExp);
@@ -103,33 +102,6 @@ const splitQuery = (query = ''): SplitQuery => {
   };
 };
 
-const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
-  if (options) {
-    // Optimisation - don't apply the NoSortComparator given it returns zero for every comparison anyway
-    if (options.comparator && options.comparator !== NoSortComparator.Instance) {
-      // console.log(`PAC: applySearchOptions: There was a sort configured = ${options.comparator}, with compare method = ${options.comparator.compare} and there are ${emojis.length} emojis`);
-
-      emojis = emojis.sort(options.comparator.compare);
-      // console.log(`PAC: after sort we have ${emojis.length} emojis`);
-    } else {
-      // console.log(`PAC: applySearchOptions: There was no sort to apply. ${options.comparator}`);
-    }
-
-    if (options.limit && options.limit > 0) {
-      // console.log('PAC: options.limit being applied.');
-      emojis = emojis.slice(0, options.limit);
-    }
-
-    if (options.skinTone) {
-      return emojis.map(emoji => {
-        return getEmojiVariation(emoji, options);
-      });
-    }
-  }
-  // console.log(`PAC: returning from applySearchOptions with ${emojis.length} emojis`);
-  return emojis;
-};
-
 export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptions): EmojiDescription => {
   if (isEmojiDescriptionWithVariations(emoji) && options) {
     const skinTone = options.skinTone;
@@ -168,7 +140,7 @@ export default class EmojiRepository {
    */
   all(): EmojiSearchResult {
     const options: SearchOptions = {
-      comparator: NoSortComparator.Instance
+      sort: SearchSort.None
     };
 
     return this.search(undefined, options);
@@ -197,8 +169,8 @@ export default class EmojiRepository {
       filteredEmoji = this.getAllSearchableEmojis();
     }
 
-    options = this.defaultSearchOptions(query, options);
-    filteredEmoji = applySearchOptions(filteredEmoji, options);
+    filteredEmoji = this.applySearchOptions(filteredEmoji, query, options);
+
     return {
       emojis: filteredEmoji,
       query,
@@ -263,27 +235,6 @@ export default class EmojiRepository {
     this.usageTracker.recordUsage(emoji);
   }
 
-  /**
-   * Create default SearchOptions if necessary
-   */
-  private defaultSearchOptions(query?: string, options?: SearchOptions) {
-    if (!options) {
-      // console.log(`PAC: defaultSearchOptions - making new empty SearchOptions`);
-      options = {};
-    }
-
-    if (!options.comparator) {
-      // console.log(`PAC: defaultSearchOptions - making comparator for query ${query}`);
-      const comparator = createFrequencyEmojiComparator(query, this.usageTracker.getOrder());
-      comparator.compare = comparator.compare.bind(comparator);
-      options.comparator = comparator;
-    } else {
-      // console.log(`PAC: defaultSearchOptions - the SearchOptions contained a comparator already`);
-    }
-
-    return options;
-  }
-
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
     let result = emojis;
     const asciiEmoji = this.findByAsciiRepresentation(ascii);
@@ -294,6 +245,38 @@ export default class EmojiRepository {
       result = [asciiEmoji, ...result];
     }
     return result;
+  }
+
+  private applySearchOptions(emojis: EmojiDescription[], query?: string, options?: SearchOptions): EmojiDescription[] {
+    if (!options) {
+      options = <SearchOptions>{
+        sort: SearchSort.Default
+      };
+    }
+
+    let comparator;
+    if (options.sort === SearchSort.Default) {
+      comparator = createSearchEmojiComparator(query, this.usageTracker.getOrder());
+    } else if (options.sort === SearchSort.UsageFrequencyOnly) {
+      comparator = createUsageOnlyEmojiComparator(this.usageTracker.getOrder());
+    }
+
+    if (comparator) {
+      comparator.compare = comparator.compare.bind(comparator); // TODO bind at a better place
+      emojis = emojis.sort(comparator.compare);
+    }
+
+    if (options.limit && options.limit > 0) {
+      emojis = emojis.slice(0, options.limit);
+    }
+
+    if (options.skinTone) {
+      return emojis.map(emoji => {
+        return getEmojiVariation(emoji, options);
+      });
+    }
+
+    return emojis;
   }
 
   /**

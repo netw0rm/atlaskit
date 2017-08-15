@@ -1,34 +1,32 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import Layer from '@atlaskit/layer';
-
-import EmojiPicker from '../src/components/picker/EmojiPicker';
-import { localStoragePrefix } from '../src/constants';
 import { EmojiId, OptionalEmojiDescription } from '../src/types';
+import { localStoragePrefix } from '../src/constants';
 import { UsagePeekEmojiResource } from '../src/support/MockEmojiResource';
+import EmojiTextInput from './demo-emoji-typeahead-text-input';
 import { EmojiUsageList, LocalStorageView } from './demo-emoji-usage-components';
 
 
-export interface Props {
+export interface UsagingShowingProps {
   emojiResource: UsagePeekEmojiResource;
 }
 
-export interface State {
+export interface UsageShowingState {
   emojiIdList: Array<string>;
   emojiQueue: Array<string>;
 }
 
-export default class UsageShowingEmojiPickerTextInput extends PureComponent<Props, State> {
+export default class UsageShowingEmojiTypeAheadTextInput extends PureComponent<UsagingShowingProps, UsageShowingState> {
   constructor(props) {
     super(props);
     this.state = this.getFreshState();
   }
 
-  getFreshState(): State {
+  getFreshState(): UsageShowingState {
     return {
       emojiIdList: this.props.emojiResource.getFrequentlyUsed(),
-      emojiQueue: this.getEmojiQueue()
+      emojiQueue: this.getEmojiQueue(),
     };
   }
 
@@ -45,7 +43,7 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
     emojiResource.clearFrequentlyUsed();
     this.setState({
       emojiIdList: emojiResource.getFrequentlyUsed(),
-      emojiQueue: this.getEmojiQueue()
+      emojiQueue: this.getEmojiQueue(),
     });
   }
 
@@ -64,42 +62,37 @@ export default class UsageShowingEmojiPickerTextInput extends PureComponent<Prop
 
   render() {
     const { emojiResource } = this.props;
+
     const onSelectionHandler = this.onSelection.bind(this);
     const clearHandler = this.clearUsageData.bind(this);
 
+    const typeahead = (
+      <EmojiTextInput
+        label="Emoji search"
+        onSelection={onSelectionHandler}
+        emojiProvider={Promise.resolve(emojiResource)}
+        position="below"
+      />
+    );
+
     return (
       <div style={{ padding: '10px' }} >
-        <Layer
-          content={
-            <EmojiPicker
-              onSelection={onSelectionHandler}
-              emojiProvider={Promise.resolve(emojiResource)}
-            />
-          }
-          position="bottom left"
-        >
-        <input
-          id="picker-input"
-          style={{
-            height: '20px',
-            marginBottom: '320px',
-          }}
-        />
-        </Layer>
-        <div>
-          <button onClick={clearHandler}>Clear All Usage</button>
+        {typeahead}
+        <div style={{marginTop: '300px '}}>
+          <div>
+            <button onClick={clearHandler}>Clear All Usage</button>
+          </div>
+          <EmojiUsageList
+            emojiProvider={emojiResource}
+            emojiIdList={this.state.emojiIdList}
+            emojiQueue={this.state.emojiQueue}
+          />
+          <LocalStorageView
+            emojiProvider={emojiResource}
+            emojiQueue={this.state.emojiQueue}
+          />
         </div>
-        <EmojiUsageList
-          emojiProvider={emojiResource}
-          emojiIdList={this.state.emojiIdList}
-          emojiQueue={this.state.emojiQueue}
-        />
-        <LocalStorageView
-          emojiProvider={emojiResource}
-          emojiQueue={this.state.emojiQueue}
-        />
       </div>
     );
   }
 }
-

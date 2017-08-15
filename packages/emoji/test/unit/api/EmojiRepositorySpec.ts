@@ -1,11 +1,9 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 
 import { customCategory, customType } from '../../../src/constants';
-import { EmojiDescription, SearchOptions } from '../../../src/types';
+import { EmojiDescription, SearchSort } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
-import EmojiRepository from '../../../src/api/EmojiRepository';
-import { EmojiComparator, NoSortComparator } from '../../../src/api/EmojiComparator';
+import EmojiRepository, { getEmojiVariation } from '../../../src/api/EmojiRepository';
 
 import {
   emojis as allEmojis,
@@ -206,7 +204,7 @@ describe('EmojiRepository', () => {
         ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(expectedEmojis);
-      const emojis = repository.search(':', { comparator: NoSortComparator.Instance }).emojis;
+      const emojis = repository.search(':', { sort: SearchSort.None }).emojis;
       checkOrder(expectedEmojis, emojis);
     });
 
@@ -301,12 +299,12 @@ describe('EmojiRepository', () => {
     });
 
     it('options - limit ignored if missing', () => {
-      const emojis = emojiRepository.search('', { comparator: NoSortComparator.Instance }).emojis;
+      const emojis = emojiRepository.search('', { sort: SearchSort.None }).emojis;
       checkOrder(searchableEmojis, emojis);
     });
 
     it('options - limit results', () => {
-      const emojis = emojiRepository.search('', { limit: 10, comparator: NoSortComparator.Instance }).emojis;
+      const emojis = emojiRepository.search('', { limit: 10, sort: SearchSort.None }).emojis;
       checkOrder(searchableEmojis.slice(0, 10), emojis);
     });
 
@@ -360,30 +358,6 @@ describe('EmojiRepository', () => {
       const emojis = emojiRepository.search(':police_officer:').emojis;
       expect(emojis.length, 'The :police_officer: emoji should not be returned by a search').to.equal(0);
     });
-
-    describe('SearchOptions', () => {
-      let mockComparator;
-      let mockCompare;
-
-      beforeEach(() => {
-        mockComparator = <EmojiComparator>{};
-        mockCompare = sinon.stub();
-        mockComparator.compare = mockCompare;
-      });
-
-      it('custom sort should be applied', () => {
-        const options: SearchOptions = {
-          comparator: mockComparator
-        };
-
-        mockCompare.returns(0);
-
-        const emojis = emojiRepository.search(':p', options).emojis;
-        expect(emojis.length > 1, 'There needs to be more than one emoji or no sorting is applied').to.equal(true);
-        expect(mockCompare.called).to.equal(true);
-      });
-    });
-
   });
 
   describe('#addCustomEmoji', () => {
@@ -445,6 +419,16 @@ describe('EmojiRepository', () => {
     it('adds customCategory to the list of dynamic categories if includeCustom flag is present', () => {
       const repository = new EmojiRepository(standardEmojis);
       expect(repository.getDynamicCategoryList(true)).to.deep.equal([customCategory]);
+    });
+  });
+
+  describe('getEmojiVariation', () => {
+    it('should return the supplied emoji if invalid skintone provided', () => {
+      let variation = getEmojiVariation(thumbsupEmoji, { skinTone: 9 });
+      expect(variation.shortName).to.equal(':thumbsup:');
+
+      variation = getEmojiVariation(thumbsupEmoji, { skinTone: 0 });
+      expect(variation.shortName).to.equal(':thumbsup:');
     });
   });
 });

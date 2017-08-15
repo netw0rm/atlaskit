@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
-  strong, code_block
+  strong, code_block, sendKeyToPm
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -159,6 +159,14 @@ describe('hyperlink', () => {
       insertText(editorView, 'www.baidu.com ', sel, sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(firstLink, br, p(secondLink, ' '))));
+    });
+
+    it('should be able to remove hyperlink when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(link({ href: 'http://www.google.com' })('{<}www.google.com{>}'))));
+
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
   });
 });

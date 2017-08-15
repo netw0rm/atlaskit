@@ -2,7 +2,7 @@ import { EmojiDescription } from '../../types';
 import { isEmojiVariationDescription } from '../../type-helpers';
 import { ChainedEmojiComparator, EmojiComparator } from '../EmojiComparator';
 
-const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking since IE doesn't have MAX_VALUE
+const MAX_NUMBER = Number.MAX_VALUE || 100000;  // checking since IE doesn't have MAX_VALUE
 
 /**
  * Create the sort comparator to be used for the issued query.
@@ -14,13 +14,17 @@ const MAX_NUMBER = Number.MAX_VALUE ? Number.MAX_VALUE : 100000;  // chercking s
 export function createFrequencyEmojiComparator(query: string, orderedIds: Array<string>): EmojiComparator {
   query = query.replace(/:/g, '').toLowerCase().trim();
 
-  return new ChainedEmojiComparator(
+  const comparator = new ChainedEmojiComparator(
     new ExactShortNameMatchComparator(query),
     new UsageFrequencyComparator(orderedIds),
     new QueryStringPositionMatchComparator(query, 'shortName'),
     new QueryStringPositionMatchComparator(query, 'name'),
     OrderComparator.Instance,
     AlphabeticalShortnameComparator.Instance);
+
+  comparator.compare = comparator.compare.bind(comparator);
+
+  return comparator;
 }
 
 /**

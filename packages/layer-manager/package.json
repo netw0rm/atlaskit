@@ -31,10 +31,10 @@
     "tabbable": "^1.0.6"
   },
   "devDependencies": {
-
     "@atlaskit/util-readme": "^3.0.0",
     "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/button": "^3.0.0",
+    "@atlaskit/modal-dialog": "^2.6.0",
     "@atlaskit/dropdown-menu": "^3.0.1",
     "@atlaskit/field-text": "^3.0.0",
     "@atlaskit/inline-dialog": "^3.2.0",

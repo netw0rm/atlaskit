@@ -2,7 +2,7 @@ import React from 'react';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
-import { Modal } from '../../src';
+import Modal from '@atlaskit/modal-dialog';
 
 export default class ShowHideDemo extends React.PureComponent {
   state = {

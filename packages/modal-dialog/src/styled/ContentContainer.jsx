@@ -19,9 +19,7 @@ const getBoxShadows = ({ hasHeader, hasFooter }) => {
 
 export default styled.div`
   box-shadow: ${getBoxShadows};
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   overflow-y: auto;
   padding: 0 ${akGridSizeUnitless * 2}px;
   position: relative;

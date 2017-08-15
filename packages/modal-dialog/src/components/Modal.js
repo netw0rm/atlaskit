@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import tabbable from 'tabbable';
 
 import { Gateway, GatewayRegistry } from '../../gateway';
-import Portal from '../../portal';
+import Portal from './Portal';
 import { WIDTH_ENUM } from '../shared-variables';
 
 import * as focusScope from '../utils/focus-scope';

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import LayerManager, { Modal } from '../../src';
+import Modal from '@atlaskit/modal-dialog';
+import LayerManager from '../../src';
 
 export default class ExampleSingleModal extends Component {
   state = { modalIsOpen: false }
@@ -24,7 +25,7 @@ export default class ExampleSingleModal extends Component {
             </button>
           </p>
           {!!modalIsOpen && (
-            <Modal isOpen onRequestClose={this.closeModal}>
+            <Modal onRequestClose={this.closeModal}>
               <h1>Modal Title</h1>
               <p>Modal Body</p>
               <p>

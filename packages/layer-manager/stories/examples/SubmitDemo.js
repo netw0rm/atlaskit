@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import AkFieldText from '@atlaskit/field-text';
-import { Modal } from '../../src';
+import Modal from '@atlaskit/modal-dialog';
 
 const testFormId = 'test-form';
 

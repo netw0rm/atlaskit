@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Button from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';
-import { Modal } from '../../src';
+import Modal from '@atlaskit/modal-dialog';
 
 function doSomethingOnDismiss() {
   action('the "onDialogDismissed" handler is fired')();

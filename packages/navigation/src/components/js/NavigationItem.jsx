@@ -1,5 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
+// NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
+// which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
+// would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
+// but this is not possible because the children could be either a NavigationItem or a
+// NavigationItemGroup so we cannot reliably map over the children to wrap them.
 import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';

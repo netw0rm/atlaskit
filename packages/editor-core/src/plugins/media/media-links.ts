@@ -66,6 +66,10 @@ export const insertLinks = async (
 
         // Unfurl URL using media API
         linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(metadata => {
+          stateManager.updateState(id, {
+            id,
+            status: 'unfinalized'
+          });
           // Workaround for problem with missing fields preventing Twitter links from working
           if(isAppWithoutURL(metadata))  {
             (metadata as any).resources.app.url = metadata.url;

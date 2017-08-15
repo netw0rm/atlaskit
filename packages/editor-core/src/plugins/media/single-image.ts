@@ -1,4 +1,3 @@
-
 export type Alignment = 'left' | 'right' | 'center';
 export type Display = 'inline-block' | 'block';
 
@@ -14,12 +13,7 @@ export function float(alignment: Alignment, display: Display): string {
     return 'none';
   }
 
-  switch (alignment) {
-    case 'right':
-      return 'right';
-    default:
-      return 'left';
-  }
+  return alignment === 'right' ? 'right' : 'left';
 }
 
 export function clear(alignment: Alignment, display: Display): string {
@@ -27,12 +21,5 @@ export function clear(alignment: Alignment, display: Display): string {
     return 'both';
   }
 
-  switch (alignment) {
-    case 'left':
-      return 'left';
-    case 'right':
-      return 'right';
-    default:
-      return 'both';
-  }
+  return alignment === 'center' ? 'both' : alignment;
 }

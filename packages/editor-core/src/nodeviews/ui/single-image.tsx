@@ -14,7 +14,7 @@ export interface MediaGroupNodeProps {
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
-  padding: 0 0 8px 0;
+  padding-bottom: 8px;
   display: block;
   float: ${props => float(props['data-alignment'], props['data-display'])};
   clear: ${props => clear(props['data-alignment'], props['data-display'])};

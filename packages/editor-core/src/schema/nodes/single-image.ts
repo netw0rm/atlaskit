@@ -1,6 +1,5 @@
 import { NodeSpec, Node } from '../../prosemirror';
 
-
 export const singleImage: NodeSpec = {
   inline: false,
   group: 'block',
@@ -12,8 +11,8 @@ export const singleImage: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="singleImage"]',
     getAttrs: (dom: HTMLElement) => ({
-      'alignment': dom.getAttribute('data-alignment'),
-      'display': dom.getAttribute('data-display'),
+      'alignment': dom.dataset.alignment,
+      'display': dom.dataset.display,
     })
   }],
   toDOM(node: Node): [string, any, number] {

@@ -43,17 +43,8 @@ describe('codeBlock - keymaps', () => {
     analyticsService.trackEvent = trackEvent;
   });
 
-  describe('Cmd-z keypress', () => {
-    it('should undo last autoformatting', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
-      insertText(editorView, '# ', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(h1()));
-      sendKeyToPm(editorView, 'Mod-z');
-      expect(editorView.state.doc).to.deep.equal(doc(p('# ')));
-      expect(trackEvent.calledWith('atlassian.editor.undo.keyboard')).to.equal(true);
-    });
 
-    describe('keymap', () => {
+  describe('keymap', () => {
     if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-7', () => {
@@ -169,6 +160,17 @@ describe('codeBlock - keymaps', () => {
         });
       });
     }
+
+    context('when hits cmd-z', () => {
+      it('should undo last autoformatting', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, '# ', sel);
+        expect(editorView.state.doc).to.deep.equal(doc(h1()));
+        sendKeyToPm(editorView, 'Mod-z');
+        expect(editorView.state.doc).to.deep.equal(doc(p('# ')));
+        expect(trackEvent.calledWith('atlassian.editor.undo.keyboard')).to.equal(true);
+      });
+    });
 
     context('when hits enter', () => {
       context('when it matches fence format', () => {
@@ -540,5 +542,4 @@ describe('codeBlock - keymaps', () => {
       });
     });
   });
-});
 });

@@ -59,7 +59,6 @@
     "element-closest": "^2.0.2",
     "enzyme": "^2.7.1",
     "enzyme-to-json": "^1.5.1",
-    "es-promise": "^4.0.5",
     "eslint": "^3.7.1",
     "eslint-friendly-formatter": "^2.0.6",
     "eslint-import-resolver-webpack": "^0.7.0",

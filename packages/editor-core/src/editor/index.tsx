@@ -78,7 +78,6 @@ export default class Editor extends React.Component<EditorProps, State> {
     if (!place) {
       return;
     }
-
     const plugins = createPluginsList(this.props);
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
     this.registerEditorForActions(editor);
@@ -120,6 +119,10 @@ export default class Editor extends React.Component<EditorProps, State> {
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}
+
+        customContentComponents={this.props.contentComponents}
+        customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
+        customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
       />
     );
   }

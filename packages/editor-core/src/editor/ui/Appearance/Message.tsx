@@ -85,13 +85,21 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
   }
 
   private renderChrome = ({ maxContentSize }) => {
-    const { editorView, contentComponents, secondaryToolbarComponents, providerFactory } = this.props;
+    const {
+      editorView,
+      contentComponents,
+      secondaryToolbarComponents,
+      providerFactory,
+      customContentComponents,
+      customSecondaryToolbarComponents
+    } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
       <MessageEditor className={this.flashToggle ? '-flash' : ''} isMaxContentSizeReached={maxContentSizeReached}>
         <ContentArea innerRef={this.handleRef}>
+          {customContentComponents}
           <PluginSlot
             editorView={editorView}
             providerFactory={providerFactory}
@@ -106,6 +114,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             appearance={this.appearance}
             items={secondaryToolbarComponents}
           />
+          {customSecondaryToolbarComponents}
         </SecondaryToolbarContainer>
       </MessageEditor>
     );

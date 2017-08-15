@@ -34,6 +34,33 @@ storiesOf(name, module)
           onSave={SAVE_ACTION}
         />}
     />)
+  .add('Message Editor with dot menu', () =>
+    <ToolsDrawer
+      // tslint:disable-next-line:jsx-no-lambda
+      renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
+        <Editor
+          appearance="message"
+          analyticsHandler={analyticsHandler}
+
+          allowTextFormatting={true}
+          allowTasksAndDecisions={true}
+          allowHyperlinks={true}
+          allowCodeBlocks={true}
+
+          saveOnEnter={true}
+
+          mentionProvider={mentionProvider}
+          emojiProvider={emojiProvider}
+          mediaProvider={mediaProvider}
+
+          onChange={onChange}
+          onSave={SAVE_ACTION}
+
+          secondaryToolbarComponents={[
+
+          ]}
+        />}
+    />)
   .add('Message Editor with Max Length', () =>
     <Editor
       appearance="message"

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
 import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
@@ -8,6 +9,10 @@ export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'ful
 export interface EditorProps {
   appearance?: EditorAppearance;
   analyticsHandler?: AnalyticsHandler;
+
+  contentComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+  primaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+  secondaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;

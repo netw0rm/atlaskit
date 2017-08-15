@@ -22,16 +22,21 @@ type Props = {
 };
 /* eslint-enable react/no-unused-prop-types */
 
-const INTERNAL_HANDLERS = [
-  'onBlur',
-  'onFocus',
-  'onKeyDown',
-  'onKeyUp',
-  'onMouseDown',
-  'onMouseEnter',
-  'onMouseLeave',
-  'onMouseUp',
-];
+const INTERNAL_HANDLERS_MAP = {
+  onBlur: true,
+  onFocus: true,
+  onKeyDown: true,
+  onKeyUp: true,
+  onMouseDown: true,
+  onMouseEnter: true,
+  onMouseLeave: true,
+  onMouseUp: true,
+};
+
+const INTERNAL_HANDLERS = Object.keys(INTERNAL_HANDLERS_MAP);
+
+/* eslint-disable no-undef*/
+type InternalHandlers = $Keys<typeof INTERNAL_HANDLERS_MAP>;
 
 function getInitialState({ href, isActive, isFocus, isHover, isInteractive, onClick }: {
   href?: string,
@@ -93,20 +98,22 @@ export default function withPseudoState(WrappedComponent: ComponentType) {
 
     getProps = () => {
       const { isInteractive } = this.state;
+      const instance: any = this;
 
       // strip the consumer's handlers off props, then merge with our handlers
       // if the element is interactive
-      const props: {} = omit(this.props, ...INTERNAL_HANDLERS);
+      const props: Props = omit(this.props, ...INTERNAL_HANDLERS);
 
       if (isInteractive) {
-        INTERNAL_HANDLERS.forEach((handler: string) => {
-          if (this.props[handler]) {
+        INTERNAL_HANDLERS.forEach((handler: InternalHandlers) => {
+          const originalHandler = this.props[handler];
+          if (originalHandler) {
             props[handler] = (...args) => {
-              this[handler](...args);
-              this.props[handler](...args);
+              instance[handler](...args);
+              originalHandler(...args);
             };
           } else {
-            props[handler] = this[handler];
+            props[handler] = instance[handler];
           }
         });
       }

@@ -62,14 +62,14 @@ type Props = {|
   /** Elements to be displayed in the ContainerNavigationComponent */
   children?: ReactElement,
   /** Theme object to be used to color the navigation container. */
-  containerTheme?: Provided,
+  containerTheme: Provided,
   /** Component(s) to be rendered as the header of the container.  */
-  containerHeaderComponent?: () => ReactElement[],
+  containerHeaderComponent?: () => ReactElement | ReactElement[],
   /** Location to pass in an array of AkSearchDrawers to be rendered. There is no
   decoration done to the components passed in here. */
-  drawers?: ReactElement[],
+  drawers: ReactElement[],
   /** Theme object to be used to color the global container. */
-  globalTheme?: Provided,
+  globalTheme: Provided,
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
   is clicked. */
   globalCreateIcon?: ReactElement,
@@ -84,32 +84,36 @@ type Props = {|
   /** An array of elements to be displayed at the bottom of the global component.
   These should be icons or other small elements. There should be no more than four.
   Secondary Actions will not be visible when nav is collapsed. */
-  globalSecondaryActions?: ReactElement[],
+  globalSecondaryActions: ReactElement[],
   /** Set whether collapse should be allowed. If false, the nav cannot be dragged
   to be smaller. */
-  isCollapsible?: boolean,
+  isCollapsible: boolean,
   /** Set whether the nav is collapsed or not. Note that this is never controlled
   internally as state, so if it is collapsible, you need to manually listen to onResize
   to determine when to change this if you are letting users manually collapse the
   nav. */
-  isOpen?: boolean,
+  isOpen: boolean,
   /** Sets whether to disable all resize prompts. */
-  isResizeable?: boolean,
+  isResizeable: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: ReactClass,
+  linkComponent: ReactClass,
   /** Function called at the end of a resize event. It is called with an object
   containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize?: (obj: resizeObj) => void,
+  onResize: (obj: resizeObj) => void,
   /** Function to be called when a resize event starts. */
-  onResizeStart?: () => void,
+  onResizeStart: () => void,
   /** Function called when the globalCreateIcon is clicked. */
-  onCreateDrawerOpen?: () => void,
+  onCreateDrawerOpen: () => void,
   /** Function called when the globalSearchIcon is clicked. */
-  onSearchDrawerOpen?: () => void,
+  onSearchDrawerOpen: () => void,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
-  width?: number,
+  width: number,
+
+  /** todo */
+  // isCreateDrawerOpen: boolean,
+  // isSearchDrawerOpen: boolean,
 |}
 
 type State = {|
@@ -130,13 +134,14 @@ export default class Navigation extends PureComponent {
     globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
-    isCreateDrawerOpen: false,
+    // isCreateDrawerOpen: false,
     isOpen: true,
     isResizeable: true,
-    isSearchDrawerOpen: false,
+    // isSearchDrawerOpen: false,
     linkComponent: DefaultLinkComponent,
     onCreateDrawerOpen: () => { },
-    onResize: () => { },
+    /* eslint-disable no-unused-vars*/
+    onResize: (state) => { },
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
     width: globalOpenWidth + containerOpenWidth,

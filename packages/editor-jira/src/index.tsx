@@ -376,8 +376,8 @@ export default class Editor extends PureComponent<Props, State> {
             <FooterWrapper>
               {(onSave || onCancel) && (
                 <ButtonGroup>
-                  {onSave && <Button isDisabled={!isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
-                  {onCancel && <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
+                  {onSave && <Button isDisabled={isDisabled || !isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
+                  {onCancel && <Button isDisabled={isDisabled} appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
                 </ButtonGroup>
               )}
 

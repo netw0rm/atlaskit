@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.2.1 (2017-08-15)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([f86eef0](https://bitbucket.org/atlassian/atlaskit/commits/f86eef0))
 ## 20.2.0 (2017-08-15)
 
 * feature; disable footer buttons if isDisabled is set to true ([8a8f1be](https://bitbucket.org/atlassian/atlaskit/commits/8a8f1be))

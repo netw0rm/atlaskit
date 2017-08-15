@@ -1,5 +1,18 @@
 # @atlaskit/editor-core
 
+## 45.11.2 (2017-08-15)
+
+* bug fix; fix cursor position when two code nodes separated by one non-code character ([7d165c3](https://bitbucket.org/atlassian/atlaskit/commits/7d165c3))
+* bug fix; added more tests for inline code, updated hascode util ([2d2c2e7](https://bitbucket.org/atlassian/atlaskit/commits/2d2c2e7))
+* bug fix; fixed cursor position inside code when code has only 1 character ([5f0a0d8](https://bitbucket.org/atlassian/atlaskit/commits/5f0a0d8))
+* bug fix; fix stuck issue in chrome when jumping with opt key ([5ec6138](https://bitbucket.org/atlassian/atlaskit/commits/5ec6138))
+* bug fix; refactored text-formatting commands ([5d51ccc](https://bitbucket.org/atlassian/atlaskit/commits/5d51ccc))
+* bug fix; cleanup ([eed92d6](https://bitbucket.org/atlassian/atlaskit/commits/eed92d6))
+* bug fix; fix cursor wrapper problem in Firefox ([3198ff8](https://bitbucket.org/atlassian/atlaskit/commits/3198ff8))
+* bug fix; cleanup ([d30ca4c](https://bitbucket.org/atlassian/atlaskit/commits/d30ca4c))
+* bug fix; removed unnecessary hack for text formatting ([760ef9e](https://bitbucket.org/atlassian/atlaskit/commits/760ef9e))
+
+* bug fix; fixed cursor position with inline code (issues closed: ed-2084) ([a495ae9](https://bitbucket.org/atlassian/atlaskit/commits/a495ae9))
 ## 45.11.1 (2017-08-15)
 
 * bug fix; fix ts/js build problem ([62855ff](https://bitbucket.org/atlassian/atlaskit/commits/62855ff))

@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 19.0.3 (2017-08-15)
+
+* bug fix; Add namespace to internal theming; clean up component internals (issues closed: ak-3255) ([a8cf551](https://bitbucket.org/atlassian/atlaskit/commits/a8cf551))
 ## 19.0.2 (2017-08-15)
 
 * bug fix; nested nav pages have their own scroll containers (issues closed: ak-3222) ([865623d](https://bitbucket.org/atlassian/atlaskit/commits/865623d))

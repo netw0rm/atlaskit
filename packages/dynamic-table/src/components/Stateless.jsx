@@ -6,7 +6,7 @@ import { ASC, DESC } from '../internal/constants';
 import props from '../internal/props';
 import TableHead from './TableHead';
 import Body from './Body';
-import EmptyBody from './EmptyBody';
+import EmptyBody from '../styled/EmptyBody';
 
 import { Table, Caption } from '../styled/DynamicTable';
 

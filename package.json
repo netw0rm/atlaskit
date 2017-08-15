@@ -8,6 +8,7 @@
     }
   },
   "dependencies": {
+    "@atlaskit/atlaskit-registry": "^1.0.0",
     "@atlaskit/eslint-config-base": "*",
     "@atlaskit/eslint-config-stories": "*",
     "@atlaskit/eslint-config-tests": "*",

@@ -1,6 +1,5 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { ThemeColor } from '../styled/constants';
 import { Outer } from '../styled/Icon';
 import getStatusSVG from '../helpers/getStatusSVG';
 import type { ChildrenType, StatusType, SizeType } from '../types';
@@ -21,10 +20,6 @@ type Props = {
 
 export default class Status extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
-
-  static defaultProps = {
-    borderColor: ThemeColor.border,
-  }
 
   render() {
     const { borderColor, children, status, size } = this.props;

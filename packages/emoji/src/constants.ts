@@ -9,3 +9,4 @@ export const emojiPickerHeight = 295;
 
 export const localStoragePrefix = 'fabric.emoji';
 export const selectedToneStorageKey = `${localStoragePrefix}.selectedTone`;
+export const defaultCategories = ['PEOPLE', 'NATURE', 'FOODS', 'ACTIVITY', 'PLACES', 'OBJECTS', 'SYMBOLS', 'FLAGS'];

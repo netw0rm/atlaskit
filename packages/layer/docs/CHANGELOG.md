@@ -1,6 +1,12 @@
 # @atlaskit/layer
 
-## Unreleased
+## 2.5.3 (2017-08-09)
+
+* bug fix; bump util-shared-styles dependency to latest to reduce app bundle sizes (issues closed: ak-3252) ([dbc406c](https://bitbucket.org/atlassian/atlaskit/commits/dbc406c))
+
+
+
+
 
 ## 2.5.2 (2017-07-27)
 

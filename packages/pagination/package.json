@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/pagination",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "config": {
     "access": "public"
   },
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@atlaskit/pagination": "*",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {

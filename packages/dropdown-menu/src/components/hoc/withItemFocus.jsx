@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import uid from 'uid';
 
 import getDisplayName from '../../util/getDisplayName';
+import safeContextCall from '../../util/safeContextCall';
 import { focusManagerContext } from '../../util/contextNamespace';
 import type { ItemId } from '../../types';
 
@@ -24,7 +25,7 @@ const withItemFocus = WrappedComponent => (
     }
 
     static contextTypes = {
-      [focusManagerContext]: PropTypes.object.isRequired,
+      [focusManagerContext]: PropTypes.object,
     };
 
     contextId: ItemId
@@ -35,11 +36,8 @@ const withItemFocus = WrappedComponent => (
       }
 
       this.contextId = uid();
-      this.context[focusManagerContext].registerItem(
-        this.contextId,
-        // eslint-disable-next-line react/no-find-dom-node
-        ReactDOM.findDOMNode(this)
-      );
+      // eslint-disable-next-line react/no-find-dom-node
+      this.callContextFn('registerItem', this.contextId, ReactDOM.findDOMNode(this));
     }
 
     componentDidUpdate() {
@@ -47,24 +45,23 @@ const withItemFocus = WrappedComponent => (
         return;
       }
 
-      this.context[focusManagerContext].updateItem(
-        this.contextId,
-        // eslint-disable-next-line react/no-find-dom-node
-        ReactDOM.findDOMNode(this)
-      );
+      // eslint-disable-next-line react/no-find-dom-node
+      this.callContextFn('updateItem', this.contextId, ReactDOM.findDOMNode(this));
     }
 
     componentWillUnmount() {
       if (this.isFocusable()) {
-        this.context[focusManagerContext].deregisterItem(this.contextId);
+        this.callContextFn('deregisterItem', this.contextId);
       }
     }
+
+    callContextFn = safeContextCall(this, focusManagerContext)
 
     isFocusable = () => !this.props.isDisabled && !this.props.isHidden
 
     handleFocus = () => {
       if (this.isFocusable()) {
-        this.context[focusManagerContext].itemFocused(this.contextId);
+        this.callContextFn('itemFocused', this.contextId);
       }
     }
 

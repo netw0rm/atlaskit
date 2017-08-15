@@ -3,10 +3,34 @@ import React, { cloneElement, Component } from 'react';
 
 import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
-import { bgActiveColor, bgHoverColor, getStyles, Content, SecondaryText, PrimaryText } from '../styled/AvatarItem';
+import {
+  activeBackgroundColor,
+  hoverBackgroundColor,
+  getStyles,
+  Content,
+  PrimaryText,
+  SecondaryText,
+} from '../styled/AvatarItem';
 import { getProps, getStyledComponent } from '../helpers';
 import { withPseudoState } from '../hoc';
-import type { AvatarClickType, ComponentType, ElementType, FunctionType, StyledComponentType } from '../types';
+import type {
+  AvatarClickType,
+  ComponentType,
+  ElementType,
+  FunctionType,
+  StyledComponentType,
+} from '../types';
+
+function getBorderColor(props) {
+  const { href, isActive, isHover, isSelected, onClick } = props;
+  const isInteractive = href || onClick;
+  let borderColor: string;
+
+  if (isInteractive && (isHover || isSelected)) borderColor = hoverBackgroundColor(props);
+  if (isInteractive && isActive) borderColor = activeBackgroundColor(props);
+
+  return borderColor;
+}
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -65,16 +89,6 @@ class AvatarItem extends Component {
 
     return this.getCachedComponent(node);
   }
-  getBorderColor = () => {
-    const { href, isActive, isHover, isSelected, onClick } = this.props;
-    const isInteractive = href || onClick;
-    let borderColor: string;
-
-    if (isInteractive && (isHover || isSelected)) borderColor = bgHoverColor;
-    if (isInteractive && isActive) borderColor = bgActiveColor;
-
-    return borderColor;
-  }
 
   // expose blur/focus to consumers via ref
   blur = (e: FocusEvent) => {
@@ -99,7 +113,7 @@ class AvatarItem extends Component {
     const { avatar, enableTextTruncate, onClick, primaryText, secondaryText } = this.props;
 
     // maintain the illusion of a mask around presence/status
-    const borderColor = this.getBorderColor();
+    const borderColor = getBorderColor(this.props);
 
     // distill props from context, props, and state
     const props = getProps(this);

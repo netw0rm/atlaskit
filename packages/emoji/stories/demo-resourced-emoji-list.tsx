@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { EmojiDescription, EmojiId } from '../src/types';
+import { EmojiDescription, EmojiId, EmojiSearchResult } from '../src/types';
 import { toEmojiId } from '../src/type-helpers';
-import { EmojiSearchResult } from '../src/api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../src/api/EmojiResource';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 

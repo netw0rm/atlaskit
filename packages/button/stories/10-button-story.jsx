@@ -7,9 +7,9 @@ import Question from '@atlaskit/icon/glyph/question';
 import Expand from '@atlaskit/icon/glyph/expand';
 import Unlink from '@atlaskit/icon/glyph/editor/unlink';
 import Open from '@atlaskit/icon/glyph/editor/open';
-import { akColorN20, akColorN700 } from '@atlaskit/util-shared-styles';
-import { name } from '../package.json';
+import { colors } from '@atlaskit/theme';
 
+import { name } from '../package.json';
 import Button, { ButtonGroup } from '../src';
 
 const css = `
@@ -165,13 +165,7 @@ const buildBackgroundStory = () => {
         }
         {
           createSample({
-            backgroundColor: akColorN20,
-          })
-        }
-        {
-          createSample({
-            backgroundColor: akColorN700,
-            extraProps: { theme: 'dark', onClick: action('clicking the Component') },
+            backgroundColor: colors.N20,
           })
         }
       </div>

@@ -1,6 +1,37 @@
 # @atlaskit/tooltip
 
-## Unreleased
+## 5.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; updated dark colors for Tooltip ([8fbbb8c](https://bitbucket.org/atlassian/atlaskit/commits/8fbbb8c))
+
+
+
+
+
+
+* feature; new theme methods ([3656ee3](https://bitbucket.org/atlassian/atlaskit/commits/3656ee3))
+
+
+* feature; add dark mode support to tooltip ([aa87b89](https://bitbucket.org/atlassian/atlaskit/commits/aa87b89))
+## 4.0.0 (2017-08-11)
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; updated dark colors for Tooltip ([8fbbb8c](https://bitbucket.org/atlassian/atlaskit/commits/8fbbb8c))
+
+
+
+
+
+
+* feature; new theme methods ([3656ee3](https://bitbucket.org/atlassian/atlaskit/commits/3656ee3))
+
+
+* feature; add dark mode support to tooltip ([aa87b89](https://bitbucket.org/atlassian/atlaskit/commits/aa87b89))
 
 ## 3.4.2 (2017-07-27)
 

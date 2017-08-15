@@ -7,7 +7,6 @@ import Image from './AvatarImage';
 import Status from './Status';
 
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-import { ThemeColor } from '../styled/constants';
 import { getInnerStyles } from '../styled/utils';
 import Tooltip from '../styled/Tooltip';
 
@@ -25,7 +24,6 @@ import type {
 
 export const AvatarDefaultProps = {
   appearance: 'circle',
-  borderColor: ThemeColor.border,
   enableTooltip: true,
   size: 'medium',
 };

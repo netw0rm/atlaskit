@@ -5,7 +5,16 @@ import { EmojiDescription } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
 import EmojiRepository from '../../../src/api/EmojiRepository';
 
-import { emojis as allEmojis, searchableEmojis, newEmojiRepository, thumbsupEmoji, thumbsdownEmoji, smileyEmoji, openMouthEmoji } from '../../../src/support/test-data';
+import {
+  emojis as allEmojis,
+  newEmojiRepository,
+  openMouthEmoji,
+  searchableEmojis,
+  standardEmojis,
+  smileyEmoji,
+  thumbsupEmoji,
+  thumbsdownEmoji
+} from '../../../src/support/test-data';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -135,9 +144,38 @@ const allNumberTest: EmojiDescription = {
   searchable: true,
 };
 
+const frequentTest: EmojiDescription = {
+  id: '1f43c',
+  name: 'panda face',
+  shortName: ':panda:',
+  type: 'FREQUENT',
+  category: 'FREQUENT',
+  representation: {
+    sprite: {
+      url: 'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
+      row: 23,
+      column: 25,
+      height: 782,
+      width: 850
+    },
+    x: 238,
+    y: 0,
+    height: 32,
+    width: 32,
+    xIndex: 7,
+    yIndex: 0,
+  },
+  searchable: true,
+};
+
 
 describe('EmojiRepository', () => {
-  const emojiRepository = newEmojiRepository();
+  let emojiRepository;
+
+  beforeEach(() => {
+    // emojiRepository has state that can influence search results so make it fresh for each test.
+    emojiRepository = newEmojiRepository();
+  });
 
   describe('#search', () => {
     it('all', () => {
@@ -183,6 +221,42 @@ describe('EmojiRepository', () => {
       });
     });
 
+    it('returns frequently used before others except for an exact shortname match', (done) => {
+      const greenHeart = emojiRepository.findByShortName(':green_heart:');
+      const heart = emojiRepository.findByShortName(':heart:');
+
+      if (!greenHeart || !heart) {
+        fail('The emoji needed for this test were not found in the EmojiRepository');
+        done();
+      } else {
+        const result: EmojiDescription[] = emojiRepository.search(':hear').emojis;
+        let heartIndex = result.indexOf(heart);
+        let greenHeartIndex = result.indexOf(greenHeart);
+
+        expect(heartIndex).to.not.equal(-1);
+        expect(greenHeartIndex).to.not.equal(-1);
+        expect(heartIndex < greenHeartIndex).to.equal(true);
+
+        emojiRepository.used(greenHeart);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          const nextResult: EmojiDescription[] = emojiRepository.search(':hear').emojis;
+          heartIndex = nextResult.indexOf(heart);
+          greenHeartIndex = nextResult.indexOf(greenHeart);
+
+          expect(heartIndex).to.not.equal(-1);
+          expect(greenHeartIndex).to.not.equal(-1);
+          expect(greenHeartIndex < heartIndex).to.equal(true);
+
+          // exact matching shortname should come above usage
+          const exactMatchResult: EmojiDescription[] = emojiRepository.search(':heart:').emojis;
+          expect(exactMatchResult.indexOf(heart) < exactMatchResult.indexOf(greenHeart)).to.equal(true);
+          done();
+        });
+      }
+    });
+
     it('returns exact matches first', () => {
       const emojis = emojiRepository.search(':grin').emojis;
       const grinEmojis = searchableEmojis.filter(emoji => emoji.shortName.indexOf(':grin') === 0).sort((e1, e2) => {
@@ -191,7 +265,7 @@ describe('EmojiRepository', () => {
           return 1;
         }
         // Leave emojis in current order
-        return -1;
+        return 0;
       });
       checkOrder(grinEmojis, emojis);
     });
@@ -323,6 +397,27 @@ describe('EmojiRepository', () => {
     it('returns undefined when there is no matching ascii representation', () => {
       const emoji = emojiRepository.findByAsciiRepresentation('not-ascii');
       expect(emoji).to.equal(undefined);
+    });
+  });
+
+  describe('#getDynamicCategories', () => {
+    it('returns an empty list if only standard emojis', () => {
+      const repository = new EmojiRepository(standardEmojis);
+      expect(repository.getDynamicCategoryList()).to.deep.equal([]);
+    });
+
+    it('returns all dynamic categories present in list of stored emojis', () => {
+      const allCategoryEmojis = [
+        ...allEmojis,
+        frequentTest
+      ];
+      const repository = new EmojiRepository(allCategoryEmojis);
+      expect(repository.getDynamicCategoryList()).to.deep.equal(['ATLASSIAN', 'CUSTOM', 'FREQUENT']);
+    });
+
+    it('adds customCategory to the list of dynamic categories if includeCustom flag is present', () => {
+      const repository = new EmojiRepository(standardEmojis);
+      expect(repository.getDynamicCategoryList(true)).to.deep.equal([customCategory]);
     });
   });
 });

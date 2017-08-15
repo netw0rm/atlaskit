@@ -2,22 +2,14 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
-import { EditorView} from '../prosemirror';
-import { EventDispatcher } from './event-dispatcher';
 
 import ProviderFactory from '../providerFactory';
 
-import { EditorProps, UIComponentFactory } from './types';
+import { EditorProps, EditorInstance } from './types';
 export * from './types';
 
 export interface State {
-  editor?: {
-    editorView?: EditorView;
-    eventDispatcher?: EventDispatcher;
-    contentComponents?: UIComponentFactory[];
-    primaryToolbarComponents?: UIComponentFactory[];
-    secondaryToolbarComponents?: UIComponentFactory[];
-  };
+  editor?: EditorInstance;
   component?: React.ComponentClass<any>;
 }
 
@@ -48,7 +40,6 @@ export default class Editor extends PureComponent<EditorProps, State> {
       this.state.editor.eventDispatcher.destroy();
     }
   }
-
 
   private initUi() {
     const component = getUiComponent(this.props.appearance);
@@ -82,7 +73,7 @@ export default class Editor extends PureComponent<EditorProps, State> {
       primaryToolbarComponents,
       secondaryToolbarComponents,
       eventDispatcher
-    } = editor;
+    } = editor as EditorInstance;
 
     return (
       <Component

@@ -304,7 +304,7 @@ describe('BitbucketTransformer: parser', () => {
   });
 
   describe('mentions', () => {
-    it.skip('should be parsed preserving display name and user id', () => {
+    it('should be parsed preserving display name and user id', () => {
       expect(parse(
         '<p>' +
           'foo ' +

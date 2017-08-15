@@ -1,5 +1,53 @@
 # @atlaskit/editor-core
 
+## 45.11.1 (2017-08-15)
+
+* bug fix; fix ts/js build problem ([62855ff](https://bitbucket.org/atlassian/atlaskit/commits/62855ff))
+## 45.11.0 (2017-08-14)
+
+* feature; upgrade editor to support latest task-decisions. (issues closed: fs-1263) ([6060103](https://bitbucket.org/atlassian/atlaskit/commits/6060103))
+## 45.10.1 (2017-08-14)
+
+* bug fix; fix parsing of mentions in BB renderer. (issues closed: ed-2465) ([3fb5764](https://bitbucket.org/atlassian/atlaskit/commits/3fb5764))
+* bug fix; workaround for twitter/instagram link creation bug (issues closed: ed-2464) ([ad09f63](https://bitbucket.org/atlassian/atlaskit/commits/ad09f63))
+## 45.10.0 (2017-08-14)
+
+* feature; adding help dialog to the editor. ([bf09d40](https://bitbucket.org/atlassian/atlaskit/commits/bf09d40))
+* feature; adding more markdown auto-formatting rules for bold, italic, lists, horizontal rule ([76c1caa](https://bitbucket.org/atlassian/atlaskit/commits/76c1caa))
+## 45.9.2 (2017-08-14)
+
+* bug fix; renderer portal is always positioned to the bottom right (issues closed: ed-2461) ([7afd755](https://bitbucket.org/atlassian/atlaskit/commits/7afd755))
+
+## 45.9.1 (2017-08-13)
+
+* bug fix; fix storybooks build ([af0046b](https://bitbucket.org/atlassian/atlaskit/commits/af0046b))
+
+
+
+
+
+## 45.9.0 (2017-08-11)
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2442) ([f6155e8](https://bitbucket.org/atlassian/atlaskit/commits/f6155e8))
+## 45.8.1 (2017-08-11)
+
+* bug fix; aligning keyboard shortcuts for blocktypes to gmail. ([403c1ca](https://bitbucket.org/atlassian/atlaskit/commits/403c1ca))
+## 45.8.0 (2017-08-11)
+
+* bug fix; Merged in fix/ED-2392-ignore-ts-files-package-json (pull request #3794) (issues closed: ed-2392) ([681d5fa](https://bitbucket.org/atlassian/atlaskit/commits/681d5fa))
+* feature; add EditorActions object (issues closed: ed-2413) ([de98577](https://bitbucket.org/atlassian/atlaskit/commits/de98577))
+## 45.7.0 (2017-08-10)
+
+
+* feature; adding placeholders for tasks/decisions ([4d4c5eb](https://bitbucket.org/atlassian/atlaskit/commits/4d4c5eb))
+* bug fix; build Markdown to ProseMirror mapping based on Schema ([2d686af](https://bitbucket.org/atlassian/atlaskit/commits/2d686af))
+## 45.6.1 (2017-08-10)
+
+* bug fix; npmignore fails to work (issues closed: ed-2392) ([beb1872](https://bitbucket.org/atlassian/atlaskit/commits/beb1872))
+## 45.6.0 (2017-08-10)
+
+* feature; new prop for renderer: portal (HTMLElement). Use it for popups (issues closed: ed-1867) ([2d1bf87](https://bitbucket.org/atlassian/atlaskit/commits/2d1bf87))
+* bug fix; autoformatting rules for inline styles should not work is first character is a blank ([81aa879](https://bitbucket.org/atlassian/atlaskit/commits/81aa879))
 ## 45.5.0 (2017-08-09)
 
 

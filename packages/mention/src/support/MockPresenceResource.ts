@@ -1,5 +1,5 @@
-import { AbstractPresenceResource } from '../../src/api/PresenceResource';
-import debug from '../../src/util/logger';
+import { AbstractPresenceResource } from '../api/PresenceResource';
+import debug from '../util/logger';
 
 export default class MockPresenceProvider extends AbstractPresenceResource {
   private minTimeout: number;

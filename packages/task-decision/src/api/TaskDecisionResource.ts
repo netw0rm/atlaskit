@@ -1,17 +1,26 @@
 import { RequestServiceOptions, ServiceConfig, utils } from '@atlaskit/util-service-support';
-import { convertServiceDecisionResponseToDecisionResponse, objectKeyToString, findIndex, convertServiceTaskToTask } from './TaskDecisionUtils';
 import {
-  DecisionQuery,
-  DecisionResponse,
-  ServiceDecisionResponse,
-  TaskDecisionProvider,
-  ObjectKey,
-  Handler,
-  TaskState,
-  DecisionState,
-  ServiceTask,
+  convertServiceDecisionResponseToDecisionResponse,
+  convertServiceItemResponseToItemResponse,
+  convertServiceTaskResponseToTaskResponse,
+  convertServiceTaskToTask,
+  findIndex,
+  ResponseConverter
+} from './TaskDecisionUtils';
+import {
   BaseItem,
+  DecisionResponse,
+  DecisionState,
+  Handler,
+  ItemResponse,
+  ObjectKey,
+  Query,
+  ServiceTask,
+  TaskDecisionProvider,
+  TaskResponse,
+  TaskState,
 } from '../types';
+import { objectKeyToString } from '../type-helpers';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
@@ -29,20 +38,49 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     this.batchedKeys.clear();
   }
 
-  getDecisions(query: DecisionQuery): Promise<DecisionResponse> {
+  getDecisions(query: Query): Promise<DecisionResponse> {
+    return this.query(query, 'decisions/query', convertServiceDecisionResponseToDecisionResponse);
+  }
+
+  getTasks(query: Query): Promise<TaskResponse> {
+    return this.query(query, 'tasks/query', convertServiceTaskResponseToTaskResponse);
+  }
+
+  getItems(query: Query): Promise<ItemResponse> {
+    return this.query(query, 'elements/query', convertServiceItemResponseToItemResponse);
+  }
+
+  private query<S,R>(query: Query, path: string, converters: ResponseConverter<S,R>): Promise<R> {
     const options: RequestServiceOptions = {
-      path: 'decision',
+      path,
       requestInit: {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         },
-        body: JSON.stringify(query),
+        body: JSON.stringify(this.apiQueryToServiceQuery(query)),
       }
     };
-    return utils.requestService<ServiceDecisionResponse>(this.serviceConfig, options).then(serviceDecisionResponse => {
-      return convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse, query);
+    return utils.requestService<S>(this.serviceConfig, options).then(serviceResponse => {
+      return converters(serviceResponse, query);
     });
+  }
+
+  private apiQueryToServiceQuery(query: Query) {
+    const { sortCriteria, ...other } = query;
+    const serviceQuery: any = {
+      ...other,
+    };
+    switch (sortCriteria) {
+      case 'lastUpdateDate':
+        serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
+        break;
+      case 'creationDate':
+      default:
+        serviceQuery.sortCriteria = 'CREATION_DATE';
+        break;
+    }
+    return serviceQuery;
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {

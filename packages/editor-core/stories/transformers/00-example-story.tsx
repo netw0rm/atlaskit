@@ -1,6 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/src/support';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import * as React from 'react';
 import { PureComponent } from 'react';
 

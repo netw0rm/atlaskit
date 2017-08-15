@@ -1,25 +1,18 @@
 import styled, { css } from 'styled-components';
-import {
-  akBorderRadius,
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
-  akColorB50,
-  akColorB200,
-  akColorN30,
-  akColorN100,
-  akColorN800,
-
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
-
-const ThemeColor = {
-  backgroundActive: akColorB50,
-  backgroundHover: akColorN30,
-  borderFocus: akColorB200,
-  primaryText: akColorN800,
-  secondaryText: akColorN100,
-};
-
-const gutter = akGridSizeUnitless / 2;
+export const activeBackgroundColor = themed({
+  light: colors.B50,
+  dark: colors.DN40,
+});
+export const hoverBackgroundColor = themed({
+  light: colors.N30,
+  dark: colors.DN50,
+});
+const focusBorderColor = themed({
+  light: colors.B200,
+  dark: colors.B100,
+});
 
 export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSelected, onClick }) {
   const isInteractive = href || onClick;
@@ -33,18 +26,18 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    backgroundColor = ThemeColor.backgroundHover;
+    backgroundColor = hoverBackgroundColor;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    backgroundColor = ThemeColor.backgroundActive;
+    backgroundColor = activeBackgroundColor;
   }
 
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
     outline = 'none';
-    borderColor = ThemeColor.borderFocus;
+    borderColor = focusBorderColor;
   }
 
   // Disabled
@@ -61,7 +54,7 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
   return css`
     align-items: center;
     background-color: ${backgroundColor};
-    border-radius: ${akBorderRadius};
+    border-radius: ${borderRadius}px;
     border: 2px solid ${borderColor};
     box-sizing: content-box;
     color: inherit;
@@ -74,7 +67,7 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
     opacity: ${opacity};
     outline: ${outline};
     margin: 0;
-    padding: ${gutter}px;
+    padding: ${math.divide(gridSize, 2)}px;
     pointer-events: ${pointerEvents};
     text-align: left;
     text-decoration: none;
@@ -96,14 +89,14 @@ export const Content = styled.div`
   ${truncateTextFlexParent}
   flex: 1;
   line-height: 1.4;
-  padding-left: ${gutter * 2}px;
+  padding-left: ${gridSize}px;
 `;
 export const PrimaryText = styled.div`
   ${truncateText}
-  color: ${ThemeColor.primaryText};
+  color: ${colors.text};
 `;
 export const SecondaryText = styled.div`
   ${truncateText}
-  color: ${ThemeColor.secondaryText};
+  color: ${colors.subtleText};
   font-size: 0.85em;
 `;

@@ -1,16 +1,11 @@
 import React from 'react';
-import HelpIcon from '@atlaskit/icon/glyph/help';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Banner from '@atlaskit/banner';
 
-const Icon = <HelpIcon label="Info icon" />;
-const WarningBanner = () => (
-  <Banner
-    icon={Icon}
-    isOpen
-  >
-    This is a warning banner
+const Icon = <WarningIcon label="Warning icon" />;
+
+export default ({ isOpen = true }) => (
+  <Banner icon={Icon} isOpen={isOpen} appearance="warning">
+    This is an warning banner
   </Banner>
-
 );
-
-export default WarningBanner;

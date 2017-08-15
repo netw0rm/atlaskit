@@ -4,12 +4,12 @@ import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import Button from '@atlaskit/button';
 
-import { DecisionQuery } from '../../../src/types';
+import { Query } from '../../../src/types';
 import ResourcedDecisionList from '../../../src/components/ResourcedDecisionList';
 
 import { getDecisionsResponse } from '../../../src/support/test-data';
 
-const query: DecisionQuery = {
+const query: Query = {
   containerAri: 'cheese',
 };
 

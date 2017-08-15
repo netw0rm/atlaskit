@@ -1,6 +1,33 @@
 # @atlaskit/inline-dialog
 
-## Unreleased
+## 5.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* bug fix; inline-dialog: fix vertical padding ([49d8c5d](https://bitbucket.org/atlassian/atlaskit/commits/49d8c5d))
+* bug fix; inline-dialog: updates from design review ([ff38fa2](https://bitbucket.org/atlassian/atlaskit/commits/ff38fa2))
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+
+## 4.0.0 (2017-08-11)
+
+* bug fix; inline-dialog: fix vertical padding ([49d8c5d](https://bitbucket.org/atlassian/atlaskit/commits/49d8c5d))
+* bug fix; inline-dialog: updates from design review ([ff38fa2](https://bitbucket.org/atlassian/atlaskit/commits/ff38fa2))
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+
 
 ## 3.6.2 (2017-07-27)
 

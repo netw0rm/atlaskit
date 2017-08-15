@@ -1,34 +1,21 @@
 import React, { PureComponent } from 'react';
 import { TabsStateless } from '@atlaskit/tabs';
-
-const tabs2 = [
-  { label: 'Tab a', content: 'Tab a content' },
-  { label: 'Tab b', content: 'Tab b content' },
-  { label: 'Tab c', content: 'Tab c content' },
-  { label: 'Tab d', content: 'Tab d content' },
-];
+import { tabs } from './Example';
 
 export default class TabsStatelessExample extends PureComponent {
-  state = {
-    selectedTab: null,
-    tabs: tabs2,
-  }
+  state = { tabs, selectedIndex: 0 }
 
   getTabs = () => this.state.tabs.map((tab, index) => ({
     ...tab,
-    ...{
-      isSelected: index === this.state.selectedTab,
-      onKeyboardNav: this.tabKeyboardNavHandler,
-      onSelect: () => this.tabSelectHandler(index),
-    },
+    isSelected: index === this.state.selectedIndex,
+    onKeyboardNav: this.handleKeyPress,
+    onSelect: () => this.handleSelect(index),
   }));
 
-  tabSelectHandler = (selectedTabIndex) => {
-    this.setState({ selectedTab: selectedTabIndex });
-  }
+  handleSelect = selectedIndex => this.setState({ selectedIndex })
+  handleKeyPress = (key) => {
+    const selectedIndex = this.state.selectedIndex;
 
-  tabKeyboardNavHandler = (key) => {
-    const selectedIndex = this.state.selectedTab;
     if (selectedIndex !== null) {
       let nextIndex = selectedIndex;
 
@@ -41,7 +28,7 @@ export default class TabsStatelessExample extends PureComponent {
       }
 
       if (nextIndex !== selectedIndex) {
-        this.tabSelectHandler(nextIndex);
+        this.handleSelect(nextIndex);
       }
     }
   }
@@ -50,7 +37,7 @@ export default class TabsStatelessExample extends PureComponent {
     return (
       <TabsStateless
         tabs={this.getTabs()}
-        onKeyboardNav={this.tabKeyboardNavHandler}
+        onKeyboardNav={this.handleKeyPress}
       />
     );
   }

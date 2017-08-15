@@ -54,15 +54,23 @@ export const categorySelector = style({
   $nest: {
     ul: {
       listStyle: 'none',
-      margin: '0 3px',
+      margin: '0 4px',
       padding: '3px 0',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-around',
     },
 
     li: {
       display: 'inline-block',
       margin: 0,
       padding: 0,
-      verticalAlign: 'middle',
+
+      $nest: {
+        button: {
+          verticalAlign: 'middle',
+        }
+      }
     },
 
     [`.${addButton}`]: {
@@ -78,7 +86,7 @@ export const category = style({
   border: 0,
   color: akColorN100A,
   cursor: 'pointer',
-  margin: '0 3px 0 4px',
+  margin: '2px 0',
   padding: 0,
   transition: 'color 0.2s ease',
 
@@ -146,7 +154,7 @@ export const input = 'input';
 
 export const pickerSearch = style({
   boxSizing: 'border-box',
-  padding: '10px 25px 10px 8px',
+  padding: '10px',
   flex: '0 0 auto',
 
   $nest: {
@@ -197,14 +205,8 @@ export const emojiPickerSpinner = style({
 
 //// Category/Result
 
-export const emojiPickerSection = style({
-  flex: '1 0 auto',
-});
-
 export const emojiPickerRow = style({
-  boxSizing: 'border-box',
-  padding: '0 8px',
-  flex: '1 1 auto',
+  marginLeft: '8px',
 });
 
 export const emojiCategoryTitle = style({

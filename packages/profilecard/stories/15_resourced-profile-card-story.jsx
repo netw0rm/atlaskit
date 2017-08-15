@@ -68,7 +68,7 @@ class AkProfilecardMultiProfiles extends PureComponent {
         &nbsp;
         <button onClick={() => this.reloadCardData('1')}>Set card data to profile</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData('404')}>Set card data to error</button>
+        <button onClick={() => this.reloadCardData('error:NotFound')}>Set card data to error</button>
         &nbsp;
         <button onClick={this.flushStoryCache}>Delete cache</button>
       </div>
@@ -102,7 +102,7 @@ storiesOf(`${name}-resourced`, module)
       <AkProfilecardResourced
         cloudId="bogus-cloud-id"
         resourceClient={mockClient}
-        userId="404"
+        userId="error:NotFound"
       />
     </div>
   ));

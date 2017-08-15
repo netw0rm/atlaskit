@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -60,7 +60,7 @@ type State = {|
   isInitiallyRendered: bool,
 |}
 
-export default class ContainerNavigation extends PureComponent {
+export default class ContainerNavigation extends Component {
   static defaultProps = {
     showGlobalActions: false,
     globalSecondaryActions: [],

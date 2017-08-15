@@ -1,7 +1,11 @@
 // @flow
 // RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
-import Navigation, { AkNavigationItem, presetThemes } from '@atlaskit/navigation';
+import Navigation, {
+  AkNavigationItem,
+  AkCollapseOverflow,
+  presetThemes,
+} from '@atlaskit/navigation';
 import RadioGroup from '@atlaskit/field-radio-group';
 // $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
@@ -11,10 +15,6 @@ import reorder from './reorder';
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
 // $FlowFixMe
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
-
-const Container = styled.div`
-  display: flex;
-`;
 
 const isDraggingClassName = 'is-dragging';
 
@@ -103,10 +103,62 @@ export default class SimpleListWithTheme extends Component {
     });
   }
 
+  renderContainerItems = () => {
+    // Only allowing drag and drop when the navigation is open
+    const isDragDisabled: boolean = !this.state.isNavOpen;
+    return this.state.items.map((item: Item) => (
+      !isDragDisabled ? (
+        <Draggable
+          key={item.id}
+          draggableId={item.id}
+          isDragDisabled={isDragDisabled}
+        >
+          {(provided: Provided, snapshot: StateSnapshot) => (
+            <div>
+              <AkNavigationItem
+                isDragging={snapshot.isDragging}
+                onClick={() => console.log(`clicking on ${item.content}`)}
+                text={item.content}
+                dnd={provided}
+              />
+              {provided.placeholder}
+            </div>
+          )}
+        </Draggable>
+      ) : (
+        <AkNavigationItem
+          onClick={() => console.log(`clicking on ${item.content}`)}
+          text={item.content}
+        />
+      )
+    ));
+  }
+
+  renderContainerContent = () => {
+    const isOpen: boolean = this.state.isNavOpen;
+    const containerItems = this.renderContainerItems();
+    return isOpen ? (
+      <DragDropContext
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}
+      >
+        <Droppable droppableId="list">
+          {dropProvided => (
+            <div ref={dropProvided.innerRef}>
+              {containerItems}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    ) : (
+      <AkCollapseOverflow>
+        {containerItems}
+      </AkCollapseOverflow>
+    );
+  }
+
   render() {
     const isOpen: boolean = this.state.isNavOpen;
-    // Only allowing drag and drop when the navigation is open
-    const isDragDisabled: boolean = !isOpen;
 
     return (
       <Container>
@@ -115,47 +167,21 @@ export default class SimpleListWithTheme extends Component {
           isOpen={isOpen}
           containerTheme={presetThemes[this.state.containerThemeName]}
         >
-          <DragDropContext
-            onDragStart={this.onDragStart}
-            onDragEnd={this.onDragEnd}
-          >
-            <Droppable droppableId="list">
-              {dropProvided => (
-                <div ref={dropProvided.innerRef}>
-                  {this.state.items.map((item: Item) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      isDragDisabled={isDragDisabled}
-                    >
-                      {(provided: Provided, snapshot: StateSnapshot) => (
-                        <div>
-                          <AkNavigationItem
-                            isDragging={snapshot.isDragging}
-                            onClick={() => console.log(`clicking on ${item.content}`)}
-                            text={item.content}
-                            dnd={provided}
-                          />
-                          {provided.placeholder}
-                        </div>
-                    )}
-                    </Draggable>
-                ))}
-                </div>
-            )}
-            </Droppable>
-          </DragDropContext>
+          {this.renderContainerContent()}
         </Navigation>
-        <RadioGroup
-          label="Container theme"
-          items={Object.keys(presetThemes).map((key: string) => ({
-            name: key,
-            value: key,
-            label: key,
-            defaultSelected: key === 'container',
-          }))}
-          onRadioChange={this.changeContainerTheme}
-        />
+        <div>
+          <RadioGroup
+            label="Container theme"
+            items={Object.keys(presetThemes).map((key: string) => ({
+              name: key,
+              value: key,
+              label: key,
+              defaultSelected: key === 'container',
+            }))}
+            onRadioChange={this.changeContainerTheme}
+          />
+          {reorderingUsageNote}
+        </div>
       </Container>
     );
   }

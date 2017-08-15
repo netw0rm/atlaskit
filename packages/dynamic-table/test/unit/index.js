@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../../src/components/TableHead';
-import EmptyBody from '../../src/components/EmptyBody';
+import EmptyBody from '../../src/styled/EmptyBody';
 import Body from '../../src/components/Body';
 import { Caption } from '../../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../../src';

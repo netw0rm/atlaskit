@@ -1,6 +1,17 @@
 # @atlaskit/multi-select
 
-## Unreleased
+## 6.9.2 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
+
+
 
 ## 6.9.1 (2017-07-27)
 

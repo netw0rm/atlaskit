@@ -1,5 +1,11 @@
 # @atlaskit/profilecard
 
+## 3.7.0 (2017-08-14)
+
+
+* feature; add not-found error state to profilecard (issues closed: dir-340) ([8021368](https://bitbucket.org/atlassian/atlaskit/commits/8021368))
+
+
 ## 3.6.4 (2017-08-09)
 
 * bug fix; make profilecard type def also available through lerna link (issues closed: ed-2435) ([fb15d63](https://bitbucket.org/atlassian/atlaskit/commits/fb15d63))

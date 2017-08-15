@@ -4,6 +4,9 @@ export type DecisionStatus = 'CREATED';
 export type TaskState = 'TODO' | 'DONE';
 export type Cursor = string;
 
+export type DecisionType = 'DECISION';
+export type TaskType = 'TASK';
+
 export interface ObjectKey {
   localId: string;
   containerAri: string;
@@ -12,6 +15,7 @@ export interface ObjectKey {
 
 export interface BaseItem<S> extends ObjectKey {
   state: S;
+  type: DecisionType | TaskType;
 }
 
 export interface ServiceDecision {
@@ -26,6 +30,7 @@ export interface ServiceDecision {
   rawContent: string;
   state: DecisionState;
   status: DecisionStatus;
+  type: DecisionType;
 }
 
 export interface Meta {
@@ -37,8 +42,15 @@ export interface ServiceDecisionResponse {
   meta: Meta;
 }
 
+export type ServiceItem = ServiceDecision | ServiceTask;
+
+export interface ServiceItemResponse {
+  elements: ServiceItem[];
+  meta: Meta;
+}
+
 export interface ServiceTaskResponse {
-  decisions: ServiceTask[];
+  tasks: ServiceTask[];
   meta: Meta;
 }
 
@@ -50,17 +62,33 @@ export interface Decision extends BaseItem<DecisionState> {
   // Atlassian Document fragment
   content: any;
   status: DecisionStatus;
+  type: DecisionType;
 }
 
 export interface DecisionResponse {
   decisions: Decision[];
-  nextQuery?: DecisionQuery;
+  nextQuery?: Query;
 }
 
-export interface DecisionQuery {
+export interface TaskResponse {
+  tasks: Task[];
+  nextQuery?: Query;
+}
+
+export type Item = Decision | Task;
+
+export interface ItemResponse {
+  items: Item[];
+  nextQuery?: Query;
+}
+
+export type SortCriteria = 'lastUpdateDate' | 'creationDate';
+
+export interface Query {
   containerAri: string;
   limit?: number;
   cursor?: Cursor;
+  sortCriteria?: SortCriteria;
 }
 
 export interface ServiceTask {
@@ -76,21 +104,27 @@ export interface ServiceTask {
   // Atlassian Document fragment (json string)
   rawContent: string;
   state: TaskState;
+  type: TaskType;
 }
 
 export interface Task extends BaseItem<TaskState> {
   creationDate: Date;
   creatorId: string;
   lastUpdateDate: Date;
+  parentLocalId: string;
   participants: any[];
+  position: number;
   // Atlassian Document fragment
   content: any;
+  type: TaskType;
 }
 
 export type Handler = (state: TaskState | DecisionState) => void;
 
 export interface TaskDecisionProvider {
-  getDecisions(query: DecisionQuery): Promise<DecisionResponse>;
+  getDecisions(query: Query): Promise<DecisionResponse>;
+  getTasks(query: Query): Promise<TaskResponse>;
+  getItems(query: Query): Promise<ItemResponse>;
 
   // Tasks
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
@@ -102,6 +136,6 @@ export interface RenderDocument {
   (document: any): JSX.Element;
 }
 
-export interface OnUpdate {
-  (allDecisions: Decision[], newDecisions: Decision[]): void;
+export interface OnUpdate<T> {
+  (allDecisions: T[], newDecisions: T[]): void;
 }

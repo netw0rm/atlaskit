@@ -1,5 +1,11 @@
 # @atlaskit/editor-cq
 
+## 4.6.0 (2017-08-11)
+
+* feature; expose EditorView from editor-cq (issues closed: ed-2463) ([1312b8d](https://bitbucket.org/atlassian/atlaskit/commits/1312b8d))
+## 4.5.2 (2017-08-11)
+
+* bug fix; cxHTML decoder doesn't support media in a non-empty <p> (issues closed: ed-2438) ([e7d78be](https://bitbucket.org/atlassian/atlaskit/commits/e7d78be))
 ## 4.5.1 (2017-08-03)
 
 * bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))

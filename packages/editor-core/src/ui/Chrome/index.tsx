@@ -29,6 +29,7 @@ export interface Props {
   packageVersion?: string;
   packageName?: string;
   feedbackFormUrl?: string;
+  helpDialogPresent?: boolean;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
@@ -63,6 +64,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         saveDisabled={props.saveDisabled}
         disabled={props.disabled}
         feedbackFormUrl={props.feedbackFormUrl}
+        helpDialogPresent={props.helpDialogPresent}
         pluginStateBlockType={props.pluginStateBlockType}
         pluginStateCodeBlock={props.pluginStateCodeBlock}
         pluginStateHyperlink={props.pluginStateHyperlink}

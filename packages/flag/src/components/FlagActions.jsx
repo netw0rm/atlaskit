@@ -1,8 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Container, { Action } from '../styled/Actions';
-import Button from '../styled/CustomFocusButton';
-import { getProperty } from '../theme';
+import Container, { Action, Button } from '../styled/Actions';
 import type { ActionsType, AppearanceTypes } from '../types';
 import { DEFAULT_APPEARANCE } from './Flag';
 
@@ -31,13 +29,7 @@ export default class FlagActions extends PureComponent {
 
     const items = actions.map((action, index) => (
       <Action key={index} hasDivider={!!index} useMidDot={!isBold}>
-        <Button
-          appearance={this.getButtonAppearance(isBold)}
-          focusRingColor={this.getButtonFocusRingColor(appearance)}
-          onClick={action.onClick}
-          spacing={this.getButtonSpacing(isBold)}
-          theme={this.getButtonTheme(appearance)}
-        >
+        <Button onClick={action.onClick} appearance={appearance}>
           {action.content}
         </Button>
       </Action>

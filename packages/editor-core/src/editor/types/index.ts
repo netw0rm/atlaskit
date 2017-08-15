@@ -1,3 +1,4 @@
+export * from './editor-instance';
 export * from './editor-config';
 export * from './editor-plugin';
 export * from './editor-props';

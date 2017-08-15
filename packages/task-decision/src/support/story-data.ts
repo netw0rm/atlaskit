@@ -1,4 +1,4 @@
-import { ServiceDecisionResponse } from '../types';
+import { ServiceDecisionResponse, ServiceItemResponse,ServiceTaskResponse } from '../types';
 import { MockTaskDecisionResourceConfig } from './support-types';
 import MockTaskDecisionResource from './MockTaskDecisionResource';
 
@@ -7,6 +7,19 @@ declare var require: {
 };
 
 export const getServiceDecisionsResponse = (): ServiceDecisionResponse => require('./sample-decisions.json') as ServiceDecisionResponse;
+export const getServiceTasksResponse = (): ServiceTaskResponse => require('./sample-tasks.json') as ServiceTaskResponse;
+export const getServiceItemsResponse = (): ServiceItemResponse => {
+  const decisions = getServiceDecisionsResponse();
+  const tasks = getServiceTasksResponse();
+
+  return {
+    elements: [
+      ...decisions.decisions,
+      ...tasks.tasks,
+    ],
+    meta: decisions.meta
+  };
+};
 
 export const getMockTaskDecisionResource = (config?: MockTaskDecisionResourceConfig) => new MockTaskDecisionResource(config);
 

@@ -304,6 +304,16 @@ describe('text-formatting', () => {
           expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
         });
       });
+
+      context('when code has only one character long', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('x{<>}'), '{nextPos}text')));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
     });
 
     context('when exiting code with ArrowLeft', () => {
@@ -320,6 +330,18 @@ describe('text-formatting', () => {
       context('when code is not the first node', () => {
         it('should disable code and preserve the cursor position', () => {
           const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('h{<>}ello'))));
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+
+      context('when code has only one character long', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('text{nextPos}', code('x{<>}'))));
           expect(pluginState.codeActive).to.equal(true);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).to.equal(true);
@@ -351,6 +373,16 @@ describe('text-formatting', () => {
           expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
         });
       });
+
+      context('when code has only one character long', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p('text{<>}', code('{nextPos}x'))));
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
     });
 
     context('when entering code with ArrowLeft', () => {
@@ -368,6 +400,17 @@ describe('text-formatting', () => {
       context('when code is not the last node', () => {
         it('should enable code and preserve the cursor position', () => {
           const { editorView, pluginState, refs } = editor(doc(p(code('hello{nextPos}'), 't{<>}ext')));
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(pluginState.codeActive).to.equal(true);
+          expect(editorView.state.selection.$from.pos).to.equal(refs.nextPos);
+        });
+      });
+      context('when code has only one character long', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, pluginState, refs } = editor(doc(p(code('x{nextPos}'), 't{<>}ext')));
           expect(pluginState.codeActive).to.equal(false);
           sendKeyToPm(editorView, 'ArrowLeft');
           expect(pluginState.codeActive).to.equal(false);

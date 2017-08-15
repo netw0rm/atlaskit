@@ -30,6 +30,9 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   let offset = sel.anchorOffset;
   let removeNode;
   let removeOffset;
+  if (!node) {
+    return;
+  }
   for (;;) {
     if (offset > 0) {
       if (node.nodeType !== 1) {
@@ -76,7 +79,7 @@ export const hasCode = (state: EditorState<any>, pos: number) : boolean => {
   const { code } = state.schema.marks;
   const node = pos >= 0 && state.doc.nodeAt(pos);
   if (node) {
-    return node.marks.indexOf(code.create()) > -1;
+    return !!node.marks.filter(mark => mark.type === code).length;
   }
 
   return false;

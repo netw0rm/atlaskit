@@ -36,7 +36,7 @@ type Props = {
     */
   icon: ElementType,
   /** A unique identifier used for rendering and onDismissed callbacks. */
-  id?: number | string,
+  id: number | string,
   /** Private, do not use. */
   isDismissAllowed?: boolean,
   /** Private, do not use. Use the FlagGroup onDismissed handler. */

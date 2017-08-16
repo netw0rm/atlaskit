@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.12.0 (2017-08-16)
+
+* feature; add EditorContext and WithEditorActions components (issues closed: ed-2443) ([b718487](https://bitbucket.org/atlassian/atlaskit/commits/b718487))
 ## 45.11.2 (2017-08-15)
 
 * bug fix; fix cursor position when two code nodes separated by one non-code character ([7d165c3](https://bitbucket.org/atlassian/atlaskit/commits/7d165c3))

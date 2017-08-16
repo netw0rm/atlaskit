@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.0.1 (2017-08-16)
+
+* bug fix; fix react warning about PropTypes ([6b4cd29](https://bitbucket.org/atlassian/atlaskit/commits/6b4cd29))
 ## 5.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

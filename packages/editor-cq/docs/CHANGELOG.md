@@ -1,5 +1,13 @@
 # @atlaskit/editor-cq
 
+## 4.6.1 (2017-08-16)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([00385bd](https://bitbucket.org/atlassian/atlaskit/commits/00385bd))
+
+
+
+
+
 ## 4.6.0 (2017-08-11)
 
 * feature; expose EditorView from editor-cq (issues closed: ed-2463) ([1312b8d](https://bitbucket.org/atlassian/atlaskit/commits/1312b8d))

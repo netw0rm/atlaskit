@@ -3,6 +3,7 @@ import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import MockTaskDecisionResource from '@atlaskit/task-decision/dist/es5/support/MockTaskDecisionResource';
 
 import {
   StoryBookTokenProvider,
@@ -69,11 +70,14 @@ const profilecardProvider = Promise.resolve({
   },
 });
 
+const taskDecisionsProvider = Promise.resolve(new MockTaskDecisionResource());
+
 const providerFactory = new ProviderFactory();
 providerFactory.setProvider('mentionProvider', mentionProvider);
 providerFactory.setProvider('mediaProvider', mediaProvider);
 providerFactory.setProvider('emojiProvider', emojiProvider);
 providerFactory.setProvider('profilecardProvider', profilecardProvider);
+providerFactory.setProvider('taskDecisionProvider', taskDecisionsProvider);
 
 const eventHandlers = {
   mention: {

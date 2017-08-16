@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.1.1 (2017-08-16)
+
+* bug fix; fix incorrect prop type for taskDecisionProvider - it should be a Promise<TaskDecisi (issues closed: fs-1274) ([6a11027](https://bitbucket.org/atlassian/atlaskit/commits/6a11027))
 ## 3.1.0 (2017-08-14)
 
 * feature; make default query ordering CREATION_DATE (issues closed: fs-1259) ([96e546d](https://bitbucket.org/atlassian/atlaskit/commits/96e546d))

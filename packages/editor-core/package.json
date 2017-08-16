@@ -46,7 +46,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/activity": "^1.0.0",
+    "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/button-group": "^1.0.7",
     "@atlaskit/code": "^2.1.2",

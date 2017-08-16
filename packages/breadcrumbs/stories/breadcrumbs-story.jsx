@@ -134,7 +134,7 @@ storiesOf(name, module)
       </div>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with items with href and onClick handler', () => (
+  .addCodeExampleStory('ak-breadcrumbs with items having href and onClick handler', () => (
     <div>
       <Breadcrumbs>
         <BreadcrumbsItem
@@ -150,7 +150,7 @@ storiesOf(name, module)
       </Breadcrumbs>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs onClick handler and no href', () => (
+  .addCodeExampleStory('ak-breadcrumbs with items having onClick handler and no href', () => (
     <div>
       <Breadcrumbs>
         <BreadcrumbsItem onClick={action('Item1 click')} text="Item1 with onClick" />

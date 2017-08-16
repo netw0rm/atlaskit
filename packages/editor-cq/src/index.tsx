@@ -17,6 +17,7 @@ import {
   mentionsPlugins,
   tablePlugins,
   tableStateKey,
+  pastePlugins,
   blockTypeStateKey,
   codeBlockStateKey,
   hyperlinkStateKey,
@@ -308,6 +309,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          ...pastePlugins(schema),
           ...mentionsPlugins(schema, this.providerFactory),
           ...clearFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
@@ -320,7 +322,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...blockTypePlugins(schema),
           // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
           // this is needed to ensure that all block types are supported inside lists
-          // this is needed until we implement keymap proirity :(
+          // this is needed until we implement keymap priority :(
           ...listsPlugins(schema),
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),

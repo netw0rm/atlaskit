@@ -15,7 +15,7 @@ const minHeight = (props) => {
     return 0;
   }
   // the height of the container icon and the margin below it
-  return `${padding.bottom + padding.top + globalItemSizes.medium}px`;
+  return `${padding.bottom + padding.top + globalItemSizes.medium + containerTitleBottomMargin}px`;
 };
 
 const flexBasis = (props) => {

@@ -13,8 +13,6 @@ import styled, { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';
 import Container from './Container';
-import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
-import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
 type ReactElement = any;
 
@@ -180,13 +178,13 @@ export default class WithNestedNavigation extends Component {
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result: DropResult) => {
+  onDragEnd = (result) => {
     console.log('result', result);
     // $ExpectError - body might be null
     document.body.classList.remove(isDraggingClassName);
 
-    const source: DraggableLocation = result.source;
-    const destination: ?DraggableLocation = result.destination;
+    const source = result.source;
+    const destination = result.destination;
 
     // nothing to do here!
     if (destination == null) {
@@ -263,7 +261,7 @@ export default class WithNestedNavigation extends Component {
           key={list.id}
           draggableId={list.id}
         >
-          {(provided: Provided, snapshot: StateSnapshot) => (
+          {(provided, snapshot) => (
             <div>
               <AkNavigationItem
                 {...baseNavItemProps(list, index)}
@@ -316,7 +314,7 @@ export default class WithNestedNavigation extends Component {
           key={leaf.id}
           draggableId={leaf.id}
         >
-          {(provided: Provided, snapshot: StateSnapshot) => (
+          {(provided, snapshot) => (
             <div>
               <AkNavigationItem
                 {...baseNavItemProps(leaf, index)}

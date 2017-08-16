@@ -216,7 +216,6 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
   private onAddEmoji = () => {
     const { onUploadEmoji } = this.props;
     const { filename, name, previewImage } = this.state;
-    // console.log(`PAC: onAddEmoji. filename = ${filename} and name = ${name}`);
     if (filename && name && previewImage) {
       const notifyUpload = (size) => {
         const { width, height } = size;

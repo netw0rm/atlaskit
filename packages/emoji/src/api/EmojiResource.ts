@@ -277,7 +277,6 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected refreshLastFilter(): void {
     if (typeof this.lastQuery !== 'undefined') {
       const { query, options } = this.lastQuery;
-      // console.log(`PAC: refreshLastFilter with query ${query} and sort ${!options ? 'none' : options.sort}`);
       this.filter(query, options);
     }
   }

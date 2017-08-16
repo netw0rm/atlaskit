@@ -250,9 +250,11 @@ export default class EmojiRepository {
 
   private applySearchOptions(emojis: EmojiDescription[], query?: string, options?: SearchOptions): EmojiDescription[] {
     if (!options) {
-      options = <SearchOptions>{
-        sort: SearchSort.Default
-      };
+      options = <SearchOptions>{};
+    }
+
+    if (options.sort === undefined) {
+      options.sort = SearchSort.Default;
     }
 
     let comparator;

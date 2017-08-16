@@ -15,6 +15,7 @@ import { name } from '../package.json';
 import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
 import ProgrammaticFlagDismissExample from './examples/ProgrammaticFlagDismissExample';
+import AutoDismissExample from './examples/AutoDismissExample';
 
 const StoryPadding = styled.div`
   padding: ${akGridSizeUnitless * 3}px;
@@ -154,4 +155,7 @@ storiesOf(name, module)
   ))
   .add('programatically dismissing a Flag', () => (
     <ProgrammaticFlagDismissExample />
+  ))
+  .add('AutoDismissFlag example', () => (
+    <AutoDismissExample />
   ));

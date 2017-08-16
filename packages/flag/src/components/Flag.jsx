@@ -14,39 +14,12 @@ import Container, {
 import Expander from './Expander';
 import Actions from './FlagActions';
 import { flagFocusRingColor } from '../theme';
-import type { ActionsType, AppearanceTypes, ChildrenType, ElementType, FunctionType } from '../types';
+import type { FlagProps } from '../types';
 
 export const DEFAULT_APPEARANCE = 'normal';
 
-type Props = {
-  /** Array of clickable actions to be shown at the bottom of the flag. For flags where appearance
-    * is 'normal', actions will be shown as links. For all other appearance values, actions will
-    * shown as buttons.
-    */
-  actions?: ActionsType,
-  /** Makes the flag appearance bold. Setting this to anything other than 'normal' hides the
-    * dismiss button.
-    */
-  appearance?: AppearanceTypes,
-  /** The secondary content shown below the flag title */
-  description?: ChildrenType,
-  /** The icon displayed in the top-left of the flag. Should be an instance of `@atlaskit/icon`.
-    * Your icon will receive the appropriate default color, which you can override by wrapping the
-    * icon in a containing element with CSS `color` set to your preferred icon color.
-    */
-  icon: ElementType,
-  /** A unique identifier used for rendering and onDismissed callbacks. */
-  id: number | string,
-  /** Private, do not use. */
-  isDismissAllowed?: boolean,
-  /** Private, do not use. Use the FlagGroup onDismissed handler. */
-  onDismissed?: FunctionType,
-  /** The bold text shown at the top of the flag. */
-  title: string,
-};
-
 export default class Flag extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
+  props: FlagProps; // eslint-disable-line react/sort-comp
   static defaultProps = {
     actions: [],
     appearance: DEFAULT_APPEARANCE,
@@ -118,13 +91,26 @@ export default class Flag extends PureComponent {
     );
   }
 
+  // We prevent default on mouse down to avoid focus ring when the flag is clicked,
+  // while still allowing it to be focused with the keyboard.
+  handleMouseDown = (e) => {
+    e.preventDefault();
+  }
+
   render() {
-    const { appearance, icon, title } = this.props;
+    const { appearance, icon, title, onMouseOver, onFocus, onMouseOut, onBlur } = this.props;
+    const autoDismissProps = { onMouseOver, onFocus, onMouseOut, onBlur };
     const OptionalDismissButton = this.renderToggleOrDismissButton;
     const Body = this.renderBody;
 
     return (
-      <Container appearance={appearance} role="alert" tabIndex="0">
+      <Container
+        appearance={appearance}
+        role="alert"
+        tabIndex="0"
+        onMouseDown={this.handleMouseDown}
+        {...autoDismissProps}
+      >
         <Icon>{icon}</Icon>
         <Content>
           <Header>

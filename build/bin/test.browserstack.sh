@@ -6,12 +6,9 @@ GITHEAD_SHORT=$BITBUCKET_COMMIT
 CURRENT_BRANCH=$BITBUCKET_BRANCH
 CHALK="`yarn bin`/chalk"
 
-# $RUN_BROWSERSTACK_IN_BRANCH is used to disable browserstack tests in CI without having to merge
-# a build. We can set to "*" or empty to have it run always, or set to a specific branch to whitelist
-# the attempted fixing branch
-if [[ "$RUN_BROWSERSTACK_IN_BRANCH" = "*"  ||
-      "$RUN_BROWSERSTACK_IN_BRANCH" = "$CURRENT_BRANCH" ||
-      -z "$RUN_BROWSERSTACK_IN_BRANCH" ]] ; then
+# $BRANCHES_ALLOWED_TO_RUN_BS is used to disable browserstack tests in CI
+# It is an env var stored in pipelines (a js regex string)
+$BASEDIR/exit.if.branch.name.not.matches.js "$BRANCHES_ALLOWED_TO_RUN_BS" || exit 0
   # Run the Browserstack tests
   echo
   $CHALK --no-stdin -t "{blue Running browserstack test with all stages}"

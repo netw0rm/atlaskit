@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
 import applyDevTools from 'prosemirror-dev-tools';
 
 import { Chrome } from '../../';
@@ -60,6 +61,7 @@ export interface Props {
   emojiProvider?: Promise<EmojiProvider>;
   mediaProvider?: Promise<MediaProvider>;
   activityProvider?: Promise<any>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
@@ -72,6 +74,7 @@ export interface State {
   isExpanded?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -125,22 +128,25 @@ export default class Editor extends PureComponent<Props, State> {
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
       props.emojiProvider !== nextProps.emojiProvider ||
-      props.activityProvider !== nextProps.activityProvider
+      props.activityProvider !== nextProps.activityProvider ||
+      props.taskDecisionProvider !== nextProps.taskDecisionProvider
     ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider, activityProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, activityProvider, taskDecisionProvider } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
+    this.providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
 
     this.setState({
       emojiProvider,
-      mentionProvider
+      mentionProvider,
+      taskDecisionProvider
     });
   }
 

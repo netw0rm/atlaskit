@@ -20,7 +20,7 @@ describe(`${name} - DropdownItemFocusManager`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <DropdownItemFocusManager>
+        <DropdownItemFocusManager wasOpenedViaKeyboard>
           <DropdownItem isDisabled>Item zero</DropdownItem>
           <DropdownItem isHidden>Item one</DropdownItem>
           <DropdownItem>Item two</DropdownItem>
@@ -77,6 +77,25 @@ describe(`${name} - DropdownItemFocusManager`, () => {
     });
   });
 
+  describe('when opened with mouse', () => {
+    it('should not focus on first item', () => {
+      const wrapper = mount(
+        <DropdownItemFocusManager>
+          <DropdownItemGroup>
+            <DropdownItem isDisabled>Item zero</DropdownItem>
+            <DropdownItem isHidden>Item one</DropdownItem>
+            <DropdownItem>Item two</DropdownItem>
+            <DropdownItem>Item three</DropdownItem>
+            <DropdownItem isDisabled>Item four</DropdownItem>
+            <DropdownItem isHidden>Item five</DropdownItem>
+          </DropdownItemGroup>
+          <DropdownItem>Item six</DropdownItem>
+        </DropdownItemFocusManager>
+      );
+      expect(wrapper.instance().focusedItemIndex()).toBe(-1);
+    });
+  });
+
   describe('with DropdownItemGroup', () => {
     let wrapper;
     let items;
@@ -86,7 +105,7 @@ describe(`${name} - DropdownItemFocusManager`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <DropdownItemFocusManager>
+        <DropdownItemFocusManager wasOpenedViaKeyboard>
           <DropdownItemGroup>
             <DropdownItem isDisabled>Item zero</DropdownItem>
             <DropdownItem isHidden>Item one</DropdownItem>

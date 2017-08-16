@@ -9,6 +9,7 @@ import { KEY_DOWN, KEY_UP } from '../../util/keys';
 export default class DropdownItemFocusManager extends Component {
   static propTypes = {
     children: PropTypes.node,
+    wasOpenedViaKeyboard: PropTypes.bool,
   }
 
   static childContextTypes = {
@@ -33,7 +34,7 @@ export default class DropdownItemFocusManager extends Component {
   handleItemRegistered = (itemId: ItemId, itemNode: HTMLElement) => {
     this.registeredItems.push({ itemId, itemNode });
 
-    if (this.registeredItems.length === 1) {
+    if (this.props.wasOpenedViaKeyboard && this.registeredItems.length === 1) {
       this.focusedItemId = itemId;
       itemNode.focus();
     }

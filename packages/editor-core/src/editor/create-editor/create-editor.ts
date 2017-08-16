@@ -4,7 +4,6 @@ import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../type
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
 import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
-import EditorActions from '../actions';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
@@ -128,12 +127,9 @@ export default function createEditor(
   const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
   const state = EditorState.create({ schema, plugins });
   const editorView = new EditorView(place, { state });
-  const editorActions = new EditorActions();
-  editorActions._privateRegisterEditor(editorView);
 
   return {
     editorView,
-    editorActions,
     eventDispatcher,
     contentComponents,
     primaryToolbarComponents,

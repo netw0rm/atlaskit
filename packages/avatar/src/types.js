@@ -13,7 +13,6 @@ export type SizeType = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxl
 export type StatusType = 'approved' | 'declined' | 'locked';
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
-// $FlowFixMe
 export type AvatarClickType = ({ event: KeyboardEvent | MouseEvent, item: {} }) => void;
 
 /* eslint-disable react/no-unused-prop-types */

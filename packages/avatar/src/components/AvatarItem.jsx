@@ -77,7 +77,7 @@ class AvatarItem extends Component {
     if (!this.cache[type]) {
       this.cache[type] = getStyledComponent[type](getStyles);
     }
-    return (this.cache[type]: ElementType | ComponentType);
+    return this.cache[type];
   }
   getStyledComponent() {
     const { component, href, onClick } = this.props;

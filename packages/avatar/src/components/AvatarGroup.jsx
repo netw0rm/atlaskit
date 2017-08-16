@@ -20,7 +20,7 @@ type Props = {
   can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar: ComponentType,
+  avatar?: ComponentType,
   /** Typically the background color that the avatar is presented on.
   Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
@@ -104,14 +104,14 @@ export default class AvatarGroup extends Component {
         index={idx}
         onClick={avatar.onClick || onAvatarClick}
         size={size}
-        stackIndex={+max - idx}
+        stackIndex={max - idx}
       />
     ));
 
     return (
       <Group size={size}>
         {items}
-        {this.renderMoreDropdown(+max, total)}
+        {this.renderMoreDropdown(max, total)}
       </Group>
     );
   }

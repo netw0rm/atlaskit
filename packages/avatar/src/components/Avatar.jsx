@@ -44,7 +44,7 @@ class Avatar extends Component {
     if (!this.cache[type]) {
       this.cache[type] = getStyledComponent[type](getInnerStyles);
     }
-    return (this.cache[type]: ElementType | ComponentType);
+    return this.cache[type];
   }
   getStyledComponent() {
     const { component, href, onClick } = this.props;
@@ -67,14 +67,14 @@ class Avatar extends Component {
 
   // disallow click on disabled avatars
   // only return avatar data properties
-  guardedClick = (event: KeyboardEvent | MouseEvent) => {
+  guardedClick = (event: {}) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled || (typeof onClick !== 'function')) return;
 
     const item: {} = omit(this.props, ...propsOmittedFromClickData);
 
-    onClick({ event, item });
+    onClick({ item, event });
   }
 
   // enforce status / presence rules
@@ -86,7 +86,7 @@ class Avatar extends Component {
 
     // add warnings for various invalid states
     if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
-      console.warn(`Avatar size ${String(size)} does NOT support ${showPresence ? 'presence' : 'status'}`);
+      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`);
       return null;
     }
     if (showPresence && showStatus) {

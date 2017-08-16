@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "config": {
     "access": "public"
   },
@@ -47,6 +47,7 @@
     "@atlaskit/modal-dialog": "^2.1.2",
     "@atlaskit/navigation": "^13.4.1",
     "@atlaskit/page": "^4.0.1",
+    "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/util-readme": "^3.2.0",
     "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
   },

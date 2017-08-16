@@ -1,5 +1,5 @@
 // @flow
-// RB: TODO -> Fix flow errors in this file
+// TODO -> Fix flow errors in this file
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import HeightDetector from './HeightDetector';
@@ -9,7 +9,7 @@ import { gridSize } from '../../shared-variables';
 import type { ReactElement } from '../../types';
 
 type State = {|
-  maxChildToRender: number,
+  indexOfLastVisibleChild: number,
 |}
 
 type Props = {|
@@ -24,7 +24,7 @@ export default class NavigationOverflowHandler extends Component {
     super(props, context);
     this.availableHeight = 0;
     this.childHeights = [];
-    this.state = { maxChildToRender: React.Children.count(props.children) - 1 };
+    this.state = { indexOfLastVisibleChild: React.Children.count(props.children) - 1 };
   }
 
   state: State
@@ -40,7 +40,7 @@ export default class NavigationOverflowHandler extends Component {
 
     const adjustedHeight = availableHeight - buttonHeight - reservedGapHeight;
     this.availableHeight = adjustedHeight;
-    this.calculateMaxChildToRender();
+    this.calculateIndexOfLastVisibleChild();
   }
 
   handleChildHeight = (childIndex: number) => (childHeight: number) => {
@@ -55,50 +55,48 @@ export default class NavigationOverflowHandler extends Component {
       newHeights[childIndex] = childHeight;
     }
     this.childHeights = newHeights;
-    this.calculateMaxChildToRender();
+    this.calculateIndexOfLastVisibleChild();
   }
 
   // Using the known height of the container area, and the known heights of each child
   // NavigationItem, finds the index of the last child that can fit without causing
   // scrollbars to appear.
-  calculateMaxChildToRender = () => {
+  calculateIndexOfLastVisibleChild = () => {
     const { children } = this.props;
     const { availableHeight, childHeights } = this;
     const childrenCount = React.Children.count(children);
 
     if (availableHeight === 0 || childrenCount !== childHeights.length) {
-      this.setMaxChildToRender(childrenCount - 1);
+      this.setIndexOfLastVisibleChild(childrenCount - 1);
       return;
     }
     let cumulativeHeight = 0;
     for (let i = 0; i < childHeights.length; i++) {
       cumulativeHeight += childHeights[i];
       if (cumulativeHeight > availableHeight) {
-        this.setMaxChildToRender(i - 1);
+        this.setIndexOfLastVisibleChild(i - 1);
         return;
       }
     }
 
-    this.setMaxChildToRender(childrenCount - 1);
+    this.setIndexOfLastVisibleChild(childrenCount - 1);
   }
 
-  setMaxChildToRender = memoizeOne((maxChildToRender) => {
-    this.setState({ maxChildToRender });
+  setIndexOfLastVisibleChild = memoizeOne((indexOfLastVisibleChild) => {
+    this.setState({ indexOfLastVisibleChild });
   })
 
-  needsDropdown = () => React.Children.count(this.props.children) - 1 > this.state.maxChildToRender
+  needsDropdown = () =>
+    React.Children.count(this.props.children) - 1 > this.state.indexOfLastVisibleChild
 
   render() {
     const { children } = this.props;
-    const { maxChildToRender } = this.state;
+    const { indexOfLastVisibleChild } = this.state;
 
     const nonDropdownItems = React.Children.map(children, (child, childIndex) => (
-      childIndex <= maxChildToRender ? (
+      childIndex <= indexOfLastVisibleChild ? (
         // $FlowFixMe
-        <HeightDetector
-          onHeightChange={this.handleChildHeight(childIndex)}
-          shouldMeasureImmediately
-        >
+        <HeightDetector onHeightChange={this.handleChildHeight(childIndex)}>
           {child}
         </HeightDetector>
       ) : null
@@ -107,7 +105,7 @@ export default class NavigationOverflowHandler extends Component {
     const dropdown = this.needsDropdown() ? (
       <OverflowDropdown>{
         React.Children.map(children, (child, childIndex) => (
-          childIndex > maxChildToRender ? child : null
+          childIndex > indexOfLastVisibleChild ? child : null
         ))
       }</OverflowDropdown>
     ) : null;

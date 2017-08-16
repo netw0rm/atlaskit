@@ -12,12 +12,12 @@ const NestedNavigationWrapper = styled(
 )`
   display: flex;
   flex-direction: ${({ traversalDirection }) => (traversalDirection === 'up' ? 'row' : 'row-reverse')};
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  width: 100%;
-
-  /* as a flex child - take up the full height */
+  /* take up the full height - desirable when using drag-and-drop in nested nav */
   flex-grow: 1;
+  flex-wrap: nowrap;
+  max-height: 100%;
+  /* make sure the wrapper doesn't scroll - each page should be an independent scroll container */
+  overflow: hidden;
 `;
 
 NestedNavigationWrapper.displayName = 'NestedNavigationWrapper';

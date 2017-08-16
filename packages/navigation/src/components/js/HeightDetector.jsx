@@ -8,8 +8,7 @@ import type { ReactElement } from '../../types';
 
 type Props = {|
   children?: ReactElement,
-  onHeightChange: () => void,
-  shouldMeasureImmediately?: bool,
+  onHeightChange: (number) => void,
   shouldDetectResize?: bool,
   shouldFillHeight?: bool,
 |}
@@ -22,7 +21,9 @@ export default class HeightDetector extends Component {
   constructor(props: Props, context: mixed) {
     super(props, context);
 
-    if (!props.shouldMeasureImmediately) {
+    // If we are detecting resize of the root component, we use requestAnimationFrame to
+    // debounce the events for improved performance.
+    if (props.shouldDetectResize) {
       this.measureHeight = rafScheduler(this.measureHeight);
     }
   }

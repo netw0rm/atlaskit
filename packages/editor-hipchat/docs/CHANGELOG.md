@@ -1,5 +1,11 @@
 # @atlaskit/editor-hipchat
 
+## 4.18.1 (2017-08-15)
+
+* bug fix; fix storybooks for editor-hipchat ([43c6200](https://bitbucket.org/atlassian/atlaskit/commits/43c6200))
+
+
+
 ## 4.18.0 (2017-08-10)
 
 * feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2446) ([8177e36](https://bitbucket.org/atlassian/atlaskit/commits/8177e36))

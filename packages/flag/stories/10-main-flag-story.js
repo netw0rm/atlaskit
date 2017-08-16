@@ -10,6 +10,7 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 
 import AnimationDemo from './components/AnimationDemo';
+import ConnectionDemo from './components/ConnectionDemo';
 import { name } from '../package.json';
 import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
@@ -111,6 +112,11 @@ storiesOf(name, module)
           ]}
         />
       </FlagGroup>
+    </StoryPadding>
+  ))
+  .add('Flag changing appearance and content', () => (
+    <StoryPadding>
+      <ConnectionDemo />
     </StoryPadding>
   ))
   .add('Flag on top of Modal', () => (

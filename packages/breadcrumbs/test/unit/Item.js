@@ -48,26 +48,33 @@ describe('BreadcrumbsItem', () => {
         const wrapper = mount(<Item href={href} />);
         expect(wrapper.find(Button).prop('href')).toBe(href);
       });
-      describe('iconAfter prop', () => {
-        it('should be reflected to the Button', () => {
-          const icon = <AtlassianIcon label="icon" />;
-          const wrapper = mount(<Item iconAfter={icon} />);
-          expect(wrapper.find(Button).prop('iconAfter')).toBe(icon);
-        });
+    });
+    describe('iconAfter prop', () => {
+      it('should be reflected to the Button', () => {
+        const icon = <AtlassianIcon label="icon" />;
+        const wrapper = mount(<Item iconAfter={icon} />);
+        expect(wrapper.find(Button).prop('iconAfter')).toBe(icon);
       });
-      describe('iconBefore prop', () => {
-        it('should be reflected to the Button', () => {
-          const icon = <AtlassianIcon label="icon" />;
-          const wrapper = mount(<Item iconBefore={icon} />);
-          expect(wrapper.find(Button).prop('iconBefore')).toBe(icon);
-        });
+    });
+    describe('iconBefore prop', () => {
+      it('should be reflected to the Button', () => {
+        const icon = <AtlassianIcon label="icon" />;
+        const wrapper = mount(<Item iconBefore={icon} />);
+        expect(wrapper.find(Button).prop('iconBefore')).toBe(icon);
       });
-      describe('target prop', () => {
-        it('should be reflected to the Button', () => {
-          const target = '_top';
-          const wrapper = mount(<Item target={target} />);
-          expect(wrapper.find(Button).prop('target')).toBe(target);
-        });
+    });
+    describe('target prop', () => {
+      it('should be reflected to the Button', () => {
+        const target = '_top';
+        const wrapper = mount(<Item target={target} />);
+        expect(wrapper.find(Button).prop('target')).toBe(target);
+      });
+    });
+    describe('onClick prop', () => {
+      it('should be reflected to the Button', () => {
+        const onClick = () => 'onClickFn';
+        const wrapper = mount(<Item onClick={onClick} />);
+        expect(wrapper.find(Button).prop('onClick')).toBe(onClick);
       });
     });
   });

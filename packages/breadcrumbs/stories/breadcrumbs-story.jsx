@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
@@ -9,6 +9,12 @@ const imports = [
   ['React', 'react'],
   ['Breadcrumbs, { BreadcrumbsItem }', 'ak-breadcrumbs'],
 ];
+
+const clickPreventDefaultHandler = (e) => {
+  e.preventDefault();
+  action('Click with prevent default')();
+};
+
 storiesOf(name, module)
   .addCodeExampleStory('simple ak-breadcrumbs', () => (
     <Breadcrumbs>
@@ -126,5 +132,29 @@ storiesOf(name, module)
           <BreadcrumbsItem href="/item" text="A sixth item" />
         </Breadcrumbs>
       </div>
+    </div>
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with items with href and onClick handler', () => (
+    <div>
+      <Breadcrumbs>
+        <BreadcrumbsItem
+          href="/item1"
+          onClick={clickPreventDefaultHandler}
+          text="Item1 with onClick which prevents default"
+        />
+        <BreadcrumbsItem
+          href="/item2"
+          onClick={clickPreventDefaultHandler}
+          text="Item2 with onClick which prevents default"
+        />
+      </Breadcrumbs>
+    </div>
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs onClick handler and no href', () => (
+    <div>
+      <Breadcrumbs>
+        <BreadcrumbsItem onClick={action('Item1 click')} text="Item1 with onClick" />
+        <BreadcrumbsItem onClick={action('Item2 Click')} text="Item2 with onClick" />
+      </Breadcrumbs>
     </div>
   ), { imports });

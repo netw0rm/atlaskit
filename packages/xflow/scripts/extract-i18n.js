@@ -1,3 +1,13 @@
+/**
+ * This script will extract i18n identifiers and their associated default message
+ * (which will be in English).
+ *
+ * This script will populate identifiers/messages to "extracted-i18n-strings.json",
+ * so that other translations for non-English can be performed.
+ *
+ * The current expectation is that translations are manually exported to Transifex,
+ * and manually imported into "language-packs.json".
+ */
 const Observable = require('rxjs').Observable;
 const path = require('path');
 const fs = require('fs');

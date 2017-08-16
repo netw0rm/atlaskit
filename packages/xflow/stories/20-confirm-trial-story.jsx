@@ -25,7 +25,7 @@ const defaultProps = {
 };
 
 storiesOf('ConfirmTrial')
-  .add('Show Confirm Trial dialog', () =>
+  .add('Confirm Trial dialog', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}
@@ -35,7 +35,7 @@ storiesOf('ConfirmTrial')
       />
     )
   )
-  .add('Show Confirm Trial dialog with perma spinner', () =>
+  .add('Confirm Trial dialog with spinner', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}
@@ -47,7 +47,7 @@ storiesOf('ConfirmTrial')
       />
     )
   )
-  .add('Show Confirm Trial dialog with error state for confirm', () =>
+  .add('Confirm Trial dialog with confirmation error', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}

@@ -381,8 +381,8 @@ describe(`${name} - Item`, () => {
     });
 
     describe('role', () => {
-      it('root element should have role="presentation"', () => {
-        expect(rootElem.find('[role="presentation"]').length).toBe(1);
+      it('root element should have role="button"', () => {
+        expect(rootElem.find('[role="button"]').length).toBe(1);
       });
 
       it('should accept role as an optional prop', () => {

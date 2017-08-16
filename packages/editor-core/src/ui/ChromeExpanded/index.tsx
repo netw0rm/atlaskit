@@ -82,6 +82,7 @@ export interface Props {
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  height?: number;
   maxHeight?: number | undefined;
 }
 
@@ -129,9 +130,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   private handleSpinnerComplete() {}
 
   private addBorders = () => {
-    const { maxHeight } = this.props;
+    const { height, maxHeight } = this.props;
     if (maxHeight) {
       let { maxHeightStyle } = this.state;
+
+      if (height) {
+        maxHeightStyle.height = `${height}px`;
+      }
+
       if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
       } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {

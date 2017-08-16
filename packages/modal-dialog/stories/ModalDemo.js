@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';

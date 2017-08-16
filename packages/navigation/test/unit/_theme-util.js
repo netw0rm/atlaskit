@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { mount, shallow } from 'enzyme';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../../src/theme/util';
@@ -64,4 +64,3 @@ export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) =
   }
   );
 };
-

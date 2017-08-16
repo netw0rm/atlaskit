@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';

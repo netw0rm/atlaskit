@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import { gridSize, math } from '@atlaskit/theme';
+
 const WhereToFindConfluenceImg = styled.img`
-  height: 129px;
-  width: 129px;
+  height: ${math.multiply(gridSize, 16)}px;
+  width: ${math.multiply(gridSize, 16)}px;
 `;
 
 WhereToFindConfluenceImg.displayName = 'WhereToFindConfluenceImg';

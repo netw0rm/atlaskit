@@ -36,7 +36,6 @@ class StartTrial extends Component {
             <ConfirmTrial
               onComplete={async () => {
                 await onTrialActivating();
-                // TODO: We need to capture failures from hasProductBeenEvaluated check.
                 if (showGrantAccess) {
                   firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.true.skipping-grant-access');
                 } else {

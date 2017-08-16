@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import { colors } from '@atlaskit/theme';
 
-const Icon = <ErrorIcon label="Error icon" primaryColor="#ff7451" />;
+const Icon = <ErrorIcon label="Error icon" primaryColor={colors.R200} />;
 
 export default class ErrorFlag extends Component {
   static propTypes = {

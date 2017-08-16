@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import { colors } from '@atlaskit/theme';
 
 import ProgressBarContainer from '../styled/ProgressBarContainer';
 import ProgressBar from '../../progress-bar/components/ProgressBar';
@@ -44,8 +45,8 @@ export default class ProgressIndicator extends Component {
     if (showIcon) {
       icon =
         status === ACTIVE
-          ? <CheckCircleIcon label="Complete" primaryColor="#36B37E" />
-          : <CrossCircleIcon label="Error" primaryColor="#FF5630" />;
+          ? <CheckCircleIcon label="Complete" primaryColor={colors.G300} />
+          : <CrossCircleIcon label="Error" primaryColor={colors.R300} />;
     }
 
     return (

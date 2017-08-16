@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
+import { gridSize, math } from '@atlaskit/theme';
+
 const SpinnerDiv = styled.div`
   display: inline-block;
-  margin-right: 10px;
+  margin-right: ${math.multiply(gridSize, 1.25)}px;
   position: relative;
-  top: 6px;
+  top: ${math.multiply(gridSize, 0.75)}px;
 `;
 
 SpinnerDiv.displayName = 'SpinnerDiv';

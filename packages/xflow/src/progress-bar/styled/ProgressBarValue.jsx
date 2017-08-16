@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 
-import { colors } from '@atlaskit/theme';
+import { colors, themed } from '@atlaskit/theme';
+
+const progressBarColor = themed({ light: colors.N800, dark: colors.N40 });
 
 // NOTE: border-radius should be half height of ProgressBarBackground
 
 const ProgressBarValue = styled.div`
-  background: ${colors.blue};
+  background: ${progressBarColor};
   height: 6px;
   width: 50%;
-  border-radius: 3px;
+  border-radius: 3px 0px 0px 3px;
   transition: width 5s linear;
 `;
 

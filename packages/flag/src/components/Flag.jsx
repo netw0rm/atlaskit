@@ -28,7 +28,7 @@ export default class Flag extends PureComponent {
 
   state = { isExpanded: false }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: FlagProps) {
     const { actions, description } = nextProps;
     if (this.isBold() && this.state.isExpanded && !description && !actions.length) {
       this.toggleExpand();

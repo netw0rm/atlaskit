@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   StyledTable
-} from '../../../ui/ChromeExpanded/styles';
+} from '../../../editor/ui/ContentStyles';
 
 // tslint:disable-next-line:variable-name
 const Table = (props) => <StyledTable><tbody>{props.children}</tbody></StyledTable>;

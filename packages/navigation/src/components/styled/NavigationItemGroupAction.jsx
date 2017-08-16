@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import { gridSize } from '../../shared-variables';
-import { whenCollapsed } from '../../theme/util';
+import { whenCollapsed, whenNotInOverflowDropdown } from '../../theme/util';
 
 const NavigationItemGroupAction = styled.div`
-  margin-right: ${gridSize}px;
+  display: flex;
+  margin-left: ${gridSize / 2}px;
 
   ${whenCollapsed`
-    visibility: hidden;
+    display: none;
+  `}
+
+  ${whenNotInOverflowDropdown`
+    margin-top: ${gridSize}px;
   `}
 `;
 

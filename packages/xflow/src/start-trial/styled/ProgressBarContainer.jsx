@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import { gridSize, math } from '@atlaskit/theme';
+
 const ProgressBarContainer = styled.div`
   display: grid;
-  height: 24px;
+  height: ${math.multiply(gridSize, 3)}px;
   grid-template-columns: ${({ showIcon }) => (showIcon ? '1fr 32px' : '1fr')};
 `;
 

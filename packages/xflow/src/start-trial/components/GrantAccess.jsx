@@ -12,14 +12,12 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from './ErrorFlag';
 
-import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
-import GrantAccessTextDiv from '../styled/GrantAccessTextDiv';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
@@ -322,7 +320,7 @@ class GrantAccess extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog id="xflow-grant-access">
+        <div id="xflow-grant-access">
           <StartTrialHeader>
             {heading}
           </StartTrialHeader>
@@ -378,9 +376,9 @@ class GrantAccess extends Component {
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
             : <GrantAccessDefaultAccessDiv>
-              <GrantAccessTextDiv>
+              <div>
                 {defaultAccess}
-              </GrantAccessTextDiv>
+              </div>
               <ChangeButton>
                 <Button
                   id="xflow-grant-access-change-button"
@@ -410,7 +408,7 @@ class GrantAccess extends Component {
               />
             </InputLabel>
           </StartTrialProgressDiv>
-        </StartTrialDialog>
+        </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

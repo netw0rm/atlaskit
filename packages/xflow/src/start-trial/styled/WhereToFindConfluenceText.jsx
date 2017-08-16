@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-const WhereToFindConfluenceText = styled.p`color: #5e6c84;`;
+import { colors } from '@atlaskit/theme';
+
+const WhereToFindConfluenceText = styled.p`color: ${colors.N300};`;
 
 WhereToFindConfluenceText.displayName = 'WhereToFindConfluenceText';
 export default WhereToFindConfluenceText;

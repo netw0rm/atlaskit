@@ -5,10 +5,8 @@ import { withAnalytics } from '@atlaskit/analytics';
 import App from './App';
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import RequestTrial from '../../request-trial/components/RequestTrial';
-import StartTrial from '../../start-trial/components/StartTrial';
-import AlreadyStarted from '../../start-trial/components/AlreadyStarted';
-import ErrorFlag from '../../start-trial/components/ErrorFlag';
+import { StartTrial, AlreadyStarted, ErrorFlag } from '../../start-trial/';
+import RequestTrial from '../../request-trial/';
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';

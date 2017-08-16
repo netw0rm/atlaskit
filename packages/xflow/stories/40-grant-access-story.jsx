@@ -1,26 +1,14 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import { ConfluenceLogo } from '@atlaskit/logo';
 
 import { GrantAccessBase } from '../src/start-trial/components/GrantAccess';
-
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
-import { ConfluenceLogo } from '@atlaskit/logo';
+import { ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,
-  userSelectInFocus: false,
-  userSelectIsInvalid: false,
-  changeUsers: false,
-  defaultSelectedRadio: 'everyone',
-  heading: 'Who should have access?',
-  defaultAccess: (
-    <p>
-      <strong>Everyone in JIRA Software</strong> will have <br /> access to Confluence.
-    </p>
-  ),
-  learnMoreLinkText: 'Learn more',
-  notifyUsers: 'Notify these users',
   optionItems: [
     {
       value: 'everyone',
@@ -38,23 +26,33 @@ const defaultProps = {
   userSelectPlaceholder: 'Start typing a username',
   usersOption: 'specific-users',
   chooseOption: 'Choose an option',
-  affectBill: 'How will this affect my bill?',
+  defaultSelectedRadio: 'everyone',
+  progress: 0,
+  status: ACTIVATING,
+  heading: 'Who should have access?',
+  defaultAccess: 'Everyone in JIRA will have access to Confluence.',
+
+  userSelectInFocus: false,
+  userSelectIsInvalid: false,
+  changeUsers: false,
   spinnerActive: false,
   continueButtonDisabled: false,
-  goToLearnMore: () => {
-    console.log('Go to Learn More!');
-  },
-  retrieveUsers: () =>
-    Promise.resolve([
-      { name: 'lhunt', displayName: 'Lachlan Hunt', email: 'lhunt@example.com' },
-      { name: 'awakeling', displayName: 'Andrew Wakeling', email: 'awakeling@example.com' },
-      { name: 'ahammond', displayName: 'Andrew Hammond', email: 'ahammond@example.com' },
-      { name: 'mtruong', displayName: 'Michael Truong', email: 'mtruong@example.com' },
-      { name: 'gburrows', displayName: 'George Burrows', email: 'gburrows@example.com' },
-    ]),
 
   grantAccessToUsers: async (...args) => {
     console.log('grantAccessToUsers', ...args);
+  },
+
+  retrieveUsers: () =>
+    Promise.resolve([
+      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com' },
+      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com' },
+      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com' },
+      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com' },
+      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com' },
+    ]),
+
+  goToLearnMore: () => {
+    console.log('Go to Learn More!');
   },
 
   onComplete: () => {
@@ -63,10 +61,10 @@ const defaultProps = {
 };
 
 storiesOf('GrantAccess')
-  .add('Show Grant Access dialog', () =>
+  .add('Grant Access dialog', () =>
     setupStorybookAnalytics(<GrantAccessBase {...defaultProps} analyticsId="growth.happy" />)
   )
-  .add('Show Grant Access dialog with change users open', () =>
+  .add('Grant Access dialog, Change... ("everyone" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -76,12 +74,22 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Show Grant Access dialog with site admins only selected', () =>
+  .add('Grant Access dialog, Change... ("site-admins" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
     )
   )
-  .add('Show Grant Access dialog error state no specific users selected', () =>
+  .add('Grant Access dialog, Change... ("specific-users" selected)', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase
+        {...defaultProps}
+        changeUsers
+        defaultSelectedRadio="specific-users"
+        userSelectInFocus
+      />
+    )
+  )
+  .add('Grant Access dialog, Change... ("specific-users" selected, error)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -92,7 +100,7 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Show Grant Access dialog, error retrieving users', () =>
+  .add('Grant Access dialog, error retrieving users', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -104,33 +112,36 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Show Grant Access dialog with perma spinner', () =>
+  .add('Grant Access dialog with spinner', () =>
     setupStorybookAnalytics(
       <GrantAccessBase {...defaultProps} spinnerActive continueButtonDisabled />
     )
   )
-  .add('Show Grant Access dialog with 25% progress', () =>
+  .add('Grant Access dialog (ACTIVATING) progress bar (25%)', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={25} />
+      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={0.25} />
     )
   )
-  .add('Show Grant Access dialog with 100% progress', () =>
+  .add('Grant Access dialog (ACTIVATING Error) progress bar (100%)', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={100} />
+      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={1} />
     )
   )
-  .add(
-    'Show Grant Access dialog with change users open and error state if failing to grant access',
-    () =>
-      setupStorybookAnalytics(
-        <GrantAccessBase
-          {...defaultProps}
-          changeUsers
-          defaultSelectedRadio="everyone"
-          grantAccessToUsers={() => {
-            console.log('grantAccessToUsers', ...arguments);
-            return new Promise((_, reject) => setTimeout(reject, 1500));
-          }}
-        />
-      )
+  .add('Grant Access dialog (ACTIVE) progress bar (100%)', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={1} status={ACTIVE} />
+    )
+  )
+  .add('Grant Access dialog, Change... Error flag after Continue', () =>
+    setupStorybookAnalytics(
+      <GrantAccessBase
+        {...defaultProps}
+        changeUsers
+        defaultSelectedRadio="everyone"
+        grantAccessToUsers={() => {
+          console.log('grantAccessToUsers', ...arguments);
+          return new Promise((_, reject) => setTimeout(reject, 1500));
+        }}
+      />
+    )
   );

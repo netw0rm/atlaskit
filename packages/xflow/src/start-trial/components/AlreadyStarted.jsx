@@ -38,8 +38,8 @@ class AlreadyStarted extends Component {
   };
 
   static defaultProps = {
-    startProductTrial: () => Promise.resolve(),
-    cancelStartProductTrial: () => Promise.resolve(),
+    startProductTrial: async () => {},
+    closeAlreadyStartedDialog: async () => {},
   };
 
   state = {
@@ -55,10 +55,10 @@ class AlreadyStarted extends Component {
 
   handleProgressComplete = () => {
     const { status, firePrivateAnalyticsEvent } = this.props;
-    this.setState({
-      isReady: true,
-    });
     if (status === ACTIVE) {
+      this.setState({
+        isReady: true,
+      });
       firePrivateAnalyticsEvent('xflow.already-started.loading.finished');
     }
   };
@@ -82,7 +82,7 @@ class AlreadyStarted extends Component {
 
   render() {
     const { productLogo, heading, message, getStartedButtonText, progress, status } = this.props;
-    const { initialActivationState } = this.state;
+    const { initialActivationState, isReady, isLoading } = this.state;
 
     return (
       <ModalDialog
@@ -103,12 +103,12 @@ class AlreadyStarted extends Component {
         footer={
           <StartTrialFooter>
             <SpinnerDiv>
-              <Spinner isCompleting={!this.state.isLoading} />
+              <Spinner isCompleting={!isLoading} />
             </SpinnerDiv>
             <Button
               onClick={this.handleGetStartedClick}
               appearance="primary"
-              isDisabled={!this.state.isReady || this.state.isLoading}
+              isDisabled={!isReady || isLoading}
             >
               {getStartedButtonText}
             </Button>

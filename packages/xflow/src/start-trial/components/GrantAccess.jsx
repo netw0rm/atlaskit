@@ -74,15 +74,7 @@ function* zip(...them) {
 
 class GrantAccess extends Component {
   static propTypes = {
-    intl: intlShape.isRequired,
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    progress: PropTypes.number.isRequired,
-    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
-    userSelectInFocus: PropTypes.bool,
-    userSelectIsInvalid: PropTypes.bool,
-    changeUsers: PropTypes.bool,
-    defaultSelectedRadio: PropTypes.string,
     optionItems: PropTypes.arrayOf(
       PropTypes.shape({
         value: PropTypes.string,
@@ -92,19 +84,31 @@ class GrantAccess extends Component {
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
     chooseOption: PropTypes.string,
-    spinnerActive: PropTypes.bool,
-    continueButtonDisabled: PropTypes.bool,
-    onComplete: PropTypes.func.isRequired,
-    grantAccessToUsers: PropTypes.func,
-    retrieveUsers: PropTypes.func,
+    defaultSelectedRadio: PropTypes.string,
+    progress: PropTypes.number.isRequired,
+    status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     heading: PropTypes.string,
     defaultAccess: PropTypes.string,
+
+    intl: intlShape.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+
+    userSelectInFocus: PropTypes.bool,
+    userSelectIsInvalid: PropTypes.bool,
+    changeUsers: PropTypes.bool,
+    spinnerActive: PropTypes.bool,
+    continueButtonDisabled: PropTypes.bool,
+
+    grantAccessToUsers: PropTypes.func,
+    retrieveUsers: PropTypes.func,
     goToLearnMore: PropTypes.func,
+    onComplete: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    retrieveUsers: async () => [],
     grantAccessToUsers: async () => {},
+    retrieveUsers: async () => [],
+    goToLearnMore: async () => {},
   };
 
   state = {

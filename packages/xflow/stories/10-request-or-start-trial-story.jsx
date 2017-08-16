@@ -105,7 +105,7 @@ storiesOf('RequestOrStartTrial')
       </MockConfluenceXFlow>
     )
   )
-  .add('Initialisation error, Error flag', () =>
+  .add('Initialisation error, Error flag after failed initialisation', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps}

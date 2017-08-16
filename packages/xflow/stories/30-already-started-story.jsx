@@ -47,7 +47,6 @@ storiesOf('AlreadyStarted')
       <AlreadyStartedBase
         {...defaultProps}
         progress={1}
-        initialStatus={ACTIVATING}
         status={ACTIVATING}
         onComplete={() => Promise.resolve(true)}
       />

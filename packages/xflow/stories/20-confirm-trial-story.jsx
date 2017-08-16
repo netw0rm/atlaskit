@@ -47,7 +47,7 @@ storiesOf('ConfirmTrial')
       />
     )
   )
-  .add('Confirm Trial dialog with confirmation error', () =>
+  .add('Confirm Trial dialog, Error flag after Confirm', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}

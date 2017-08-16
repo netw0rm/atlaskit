@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import Flag from './Flag';
-import type { FlagProps } from '../types';
+import type { AutoDismissFlagProps } from '../types';
 
 export const AUTO_DISMISS_SECONDS = 15;
 
 export default class AutoDismissFlag extends Component {
-  props: FlagProps; // eslint-disable-line react/sort-comp
+  props: AutoDismissFlagProps; // eslint-disable-line react/sort-comp
 
   autoDismissTimer: ?number
 
@@ -18,7 +18,7 @@ export default class AutoDismissFlag extends Component {
     this.stopAutoDismissTimer();
   }
 
-  componentDidUpdate(prevProps: FlagProps) {
+  componentDidUpdate(prevProps: AutoDismissFlagProps) {
     if (this.props.isDismissAllowed && !prevProps.isDismissAllowed) {
       this.startAutoDismissTimer();
     } else if (!this.props.isDismissAllowed && prevProps.isDismissAllowed) {

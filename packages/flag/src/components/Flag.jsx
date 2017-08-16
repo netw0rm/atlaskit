@@ -20,6 +20,7 @@ export const DEFAULT_APPEARANCE = 'normal';
 
 export default class Flag extends PureComponent {
   props: FlagProps; // eslint-disable-line react/sort-comp
+
   static defaultProps = {
     actions: [],
     appearance: DEFAULT_APPEARANCE,
@@ -30,7 +31,7 @@ export default class Flag extends PureComponent {
 
   componentWillReceiveProps(nextProps: FlagProps) {
     const { actions, description } = nextProps;
-    if (this.isBold() && this.state.isExpanded && !description && !actions.length) {
+    if (this.isBold() && this.state.isExpanded && !description && (!actions || !actions.length)) {
       this.toggleExpand();
     }
   }
@@ -53,7 +54,7 @@ export default class Flag extends PureComponent {
     if (
       !isDismissAllowed ||
       (!isBold && !onDismissed) ||
-      (isBold && !description && !actions.length)
+      (isBold && !description && (!actions || !actions.length))
     ) {
       return null;
     }
@@ -93,7 +94,7 @@ export default class Flag extends PureComponent {
 
   // We prevent default on mouse down to avoid focus ring when the flag is clicked,
   // while still allowing it to be focused with the keyboard.
-  handleMouseDown = (e) => {
+  handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
   }
 

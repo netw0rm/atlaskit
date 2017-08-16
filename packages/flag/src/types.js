@@ -8,6 +8,8 @@ import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // 
 export type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
 export type ElementType = PropType<Element<mixed>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
+export type MouseEventFunctionType = (event: MouseEvent) => any;
+export type GenericEventFunctionType = (event: Event) => any;
 
 export type AppearanceTypes = 'error' | 'info' | 'normal' | 'success' | 'warning';
 export type ActionsType = Array<{
@@ -18,8 +20,7 @@ export type ActionsType = Array<{
 // exported for testing - keep in sync from `type AppearanceTypes`
 export const AppearanceArray = ['error', 'info', 'normal', 'success', 'warning'];
 
-// exported as Flag.props is used in Flag and AutoDismissFlag
-export type FlagProps = {
+export type AutoDismissFlagProps = {
   /** Array of clickable actions to be shown at the bottom of the flag. For flags where appearance
     * is 'normal', actions will be shown as links. For all other appearance values, actions will
     * shown as buttons.
@@ -44,4 +45,15 @@ export type FlagProps = {
   onDismissed?: FunctionType,
   /** The bold text shown at the top of the flag. */
   title: string,
+};
+
+export type FlagProps = AutoDismissFlagProps & {
+  /** Standard onBlur event, applied to Flag by AutoDismissFlag */
+  onBlur?: GenericEventFunctionType,
+  /** Standard onFocus event, applied to Flag by AutoDismissFlag */
+  onFocus?: GenericEventFunctionType,
+  /** Standard onMouseOut event, applied to Flag by AutoDismissFlag */
+  onMouseOut?: MouseEventFunctionType,
+  /** Standard onMouseOver event, applied to Flag by AutoDismissFlag */
+  onMouseOver?: MouseEventFunctionType,
 };

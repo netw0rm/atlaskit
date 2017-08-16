@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
+import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 
@@ -42,6 +43,7 @@ export default class AutoDismissExample extends PureComponent {
             <AutoDismissFlag
               appearance={appearances[flagId % appearances.length]}
               id={flagId}
+              icon={<SuccessIcon label="Success" size="medium" />}
               key={flagId}
               title={`Flag #${flagId}`}
               description="I will auto dismiss after 15 seconds"

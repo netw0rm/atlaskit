@@ -34,7 +34,7 @@ export interface ContentRef {
 }
 
 export interface Props {
-  taskDecisionProvider: TaskDecisionProvider;
+  taskDecisionProvider: Promise<TaskDecisionProvider>;
   initialQuery: Query;
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Item>;
@@ -85,25 +85,27 @@ export default class ResourcedList extends PureComponent<Props,State> {
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getItems(query).then(result => {
-      if (!this.mounted) {
-        return;
-      }
-      const { items, nextQuery } = result;
-      const combinedItems: Item[] = [
-        ...this.state.items || [],
-        ...items,
-      ];
+    taskDecisionProvider.then(provider => {
+      provider.getItems(query).then(result => {
+        if (!this.mounted) {
+          return;
+        }
+        const { items, nextQuery } = result;
+        const combinedItems: Item[] = [
+          ...this.state.items || [],
+          ...items,
+        ];
 
-      this.setState({
-        items: combinedItems,
-        nextQuery,
-        loading: false,
+        this.setState({
+          items: combinedItems,
+          nextQuery,
+          loading: false,
+        });
+        const { onUpdate } = this.props;
+        if (onUpdate) {
+          onUpdate(combinedItems, items);
+        }
       });
-      const { onUpdate } = this.props;
-      if (onUpdate) {
-        onUpdate(combinedItems, items);
-      }
     });
   }
 

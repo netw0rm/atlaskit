@@ -5,9 +5,9 @@ import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/render
 import { getMockTaskDecisionResource } from '../src/support/story-data';
 
 export const createProviders = (options?) => {
-  const taskDecisionProvider = getMockTaskDecisionResource(options);
+  const taskDecisionProvider = Promise.resolve(getMockTaskDecisionResource(options));
   const providerFactory = new ProviderFactory();
-  providerFactory.setProvider('taskDecisionProvider', Promise.resolve(taskDecisionProvider));
+  providerFactory.setProvider('taskDecisionProvider', taskDecisionProvider);
   const renderDocument = (document: any) => (
     <Renderer document={document} dataProviders={providerFactory}/>
   );

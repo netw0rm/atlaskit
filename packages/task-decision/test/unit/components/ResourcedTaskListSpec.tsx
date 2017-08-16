@@ -25,7 +25,7 @@ const validateDoc = (doc, itemCount: number) => {
   });
 };
 
-describe('<TaskList/>', () => {
+describe('<ResourcedTaskList/>', () => {
   const defaultResponse = getTasksResponse();
   let provider;
   let renderer;
@@ -43,7 +43,7 @@ describe('<TaskList/>', () => {
   it('should render generate document and pass to renderer', () => {
     provider.getTasks.returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedTaskList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedTaskList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
     );
     return waitUntil(() => resourcedTaskListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);
@@ -58,7 +58,7 @@ describe('<TaskList/>', () => {
     provider.getTasks.onFirstCall().returns(Promise.resolve(getTasksResponse(true)));
     provider.getTasks.onSecondCall().returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedTaskList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedTaskList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
     );
     return waitUntil(() => resourcedTaskListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);

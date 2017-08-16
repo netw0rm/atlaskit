@@ -27,7 +27,7 @@ class DemoEditor extends React.PureComponent<any, any> {
   }
 
   render() {
-    const {mediaProvider, mentionProvider, emojiProvider} = this.props;
+    const {mediaProvider, mentionProvider, emojiProvider, taskDecisionProvider } = this.props;
     return (
       <Editor
         analyticsHandler={analyticsHandler}
@@ -37,6 +37,7 @@ class DemoEditor extends React.PureComponent<any, any> {
         mediaProvider={mediaProvider}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        taskDecisionProvider={taskDecisionProvider}
         isExpandedByDefault={true}
         ref={this.handleEditorRef}
         devTools={true}
@@ -50,12 +51,13 @@ storiesOf(name, module)
   .add('Example editor', () => (
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mediaProvider, mentionProvider, emojiProvider, onChange}) =>
+      renderEditor={({mediaProvider, mentionProvider, emojiProvider, taskDecisionProvider, onChange}) =>
         <DemoEditor
           onChange={onChange}
           mediaProvider={mediaProvider}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
+          taskDecisionProvider={taskDecisionProvider}
         />}
     />
   ))

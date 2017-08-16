@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { storyData as taskDecisionStoryData } from '@atlaskit/task-decision/dist/es5/support';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
@@ -47,6 +48,12 @@ const providers = {
     'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
     'undefined' : undefined,
   },
+  taskDecisionProvider: {
+    resolved: taskDecisionStoryData.getMockTaskDecisionResource(),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    'undefined' : undefined,
+  }
 };
 rejectedPromise.catch(() => {});
 
@@ -55,6 +62,7 @@ interface State {
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
+  taskDecisionProvider: string;
   jsonDocument?: string;
 }
 
@@ -67,6 +75,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
+      taskDecisionProvider: 'resolved',
       jsonDocument: '{}',
     };
   }
@@ -88,7 +97,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, jsonDocument, editorEnabled } = this.state;
+    const { mentionProvider, emojiProvider, mediaProvider, taskDecisionProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0'}}>
@@ -100,6 +109,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
             mediaProvider: providers.mediaProvider[mediaProvider],
             mentionProvider: providers.mentionProvider[mentionProvider],
             emojiProvider: providers.emojiProvider[emojiProvider],
+            taskDecisionProvider: providers.taskDecisionProvider[taskDecisionProvider],
             onChange: this.onChange
           })) :
           ''
@@ -145,6 +155,22 @@ export default class ToolsDrawer extends React.Component<any, State> {
                   key={`emojiProvider-${providerName}`}
                   onClick={this.switchProvider.bind(this, 'emojiProvider', providerName)}
                   appearance={providerName === emojiProvider ? 'primary' : 'default'}
+                  theme="dark"
+                  spacing="compact"
+                >
+                  {providerName}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </div>
+          <div>
+            <ButtonGroup>
+              <label>Task/decision provider: </label>
+              {Object.keys(providers.taskDecisionProvider).map((providerName) => (
+                <Button
+                  key={`taskDecisionProvider-${providerName}`}
+                  onClick={this.switchProvider.bind(this, 'taskDecisionProvider', providerName)}
+                  appearance={providerName === taskDecisionProvider ? 'primary' : 'default'}
                   theme="dark"
                   spacing="compact"
                 >

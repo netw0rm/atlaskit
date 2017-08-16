@@ -59,7 +59,7 @@ export default class Item extends Component {
     /** Allows the role attribute of the item to be altered from it's default of
      *  `role="presentation"` */
     role: PropTypes.string,
-    spacing: PropTypes.oneOf(['default', 'compact', 'title']),
+    spacing: PropTypes.oneOf(['compact', 'default', 'title']),
     /** Allows the `children` content to break onto a new line, rather than truncating the
      *  content. */
     shouldAllowMultiline: PropTypes.bool,

@@ -20,6 +20,11 @@ export type ItemTheme = {|
     default: number,
     title: number,
   |},
+  beforeItemSpacing: {|
+    compact: number,
+    default: number,
+    title: number,
+  |},
   focus: {|
     outline: Color,
   |},

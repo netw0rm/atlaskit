@@ -31,18 +31,18 @@ export const defaultTheme: ItemTheme = {
     title: 0,
   },
   beforeItemSpacing: {
-    default: akGridSizeUnitless * 2,
-    compact: akGridSizeUnitless * 2,
+    compact: akGridSizeUnitless * 2.25,
+    default: akGridSizeUnitless * 2.25,
     title: akGridSizeUnitless,
   },
   padding: {
-    default: {
-      x: akGridSizeUnitless / 2,
-      y: akGridSizeUnitless / 2,
-    },
     compact: {
       x: akGridSizeUnitless,
       y: akGridSizeUnitless,
+    },
+    default: {
+      x: akGridSizeUnitless / 2,
+      y: akGridSizeUnitless / 2,
     },
     title: {
       x: akGridSizeUnitless * 0.75,

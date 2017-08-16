@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { withTheme } from 'styled-components';
 // NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
 // which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
 // would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
@@ -35,7 +36,7 @@ type Props = {|
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
-  /** Set whether the item should be used to trigger a dropdown. If this is strue,
+  /** Set whether the item should be used to trigger a dropdown. If this is true,
   The href property will be disabled. */
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
@@ -53,6 +54,7 @@ type Props = {|
   onMouseEnter?: (e: MouseEvent) => void,
   /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
+  spacing?: 'default' | 'compact' | 'title',
   /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. Accepts a react component but in most
@@ -64,7 +66,7 @@ type Props = {|
   autoFocus?: boolean
 |}
 
-export default class NavigationItem extends PureComponent {
+class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
@@ -74,15 +76,17 @@ export default class NavigationItem extends PureComponent {
   props: Props
 
   render() {
+    /* eslint-disable react/prop-types */
+    // theme is passed in via context and not part of the props API for this component
+    const { theme } = this.props;
+    /* eslint-enable react/prop-types */
+
     const icon = this.props.icon
-      ? <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
+      ? <NavigationItemIcon theme={theme}>{this.props.icon}</NavigationItemIcon>
       : null;
 
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
-      <NavigationItemIcon
-        isDropdownTrigger
-        hasNoPadding
-      >
+      <NavigationItemIcon isDropdownTrigger>
         {this.props.dropIcon}
       </NavigationItemIcon>
     ) : null;
@@ -138,6 +142,7 @@ export default class NavigationItem extends PureComponent {
         isCompact={this.props.isCompact}
         dnd={this.props.dnd}
         autoFocus={this.props.autoFocus}
+        spacing={this.props.spacing}
         {...interactiveWrapperProps}
       >
         {this.props.text}
@@ -146,3 +151,5 @@ export default class NavigationItem extends PureComponent {
     );
   }
 }
+
+export default withTheme(NavigationItem);

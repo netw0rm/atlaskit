@@ -5,7 +5,7 @@ import { itemThemeNamespace } from '@atlaskit/item';
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, RootTheme } from '../theme/types';
 import { container } from './presets';
-import createItemTheme from './create-item-theme';
+import createItemTheme from './map-navigation-theme-to-item-theme';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
 const rootKey = prefix('root');

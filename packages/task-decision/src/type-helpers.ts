@@ -17,7 +17,7 @@ export const isServiceTask = (item: ServiceItem): item is ServiceTask => !!(item
 
 export const isDateSortCriteria = (sortCriteria?: SortCriteria) => !sortCriteria || sortCriteria === 'creationDate' || sortCriteria === 'lastUpdateDate';
 
-export const toObjectKey = (item: Item): ObjectKey => {
+export const toObjectKey = (item: Item | ServiceDecision | ServiceTask): ObjectKey => {
   const { containerAri, localId, objectAri } = item;
   return {
     containerAri,

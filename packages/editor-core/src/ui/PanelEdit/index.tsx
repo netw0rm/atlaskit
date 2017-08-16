@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import FloatingToolbar from '../FloatingToolbar';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
@@ -9,7 +8,7 @@ import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { ToolbarButton, ToolbarButtonSelected, RemoveButtonWrapper } from './styles';
+import { ToolbarButton, Seperator, FloatingToolbar } from './styles';
 
 const icons = {
   info: InfoIcon,
@@ -55,13 +54,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
           {availablePanelType.map((panelType, index) => {
             // tslint:disable-next-line:variable-name
             const Icon = icons[panelType.panelType];
-            // tslint:disable-next-line:variable-name
-            const Button = activePanelType === panelType.panelType
-              ? ToolbarButtonSelected
-              : ToolbarButton;
-
             return (
-              <Button
+              <ToolbarButton
                 key={index}
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
@@ -69,12 +63,11 @@ export default class PanelEdit extends PureComponent<Props, State> {
               />
             );
           })}
-          <RemoveButtonWrapper>
-            <ToolbarButton
-              onClick={this.handleRemovePanel}
-              iconBefore={<RemoveIcon label="Remove panel type" />}
-            />
-          </RemoveButtonWrapper>
+          <Seperator />
+          <ToolbarButton
+            onClick={this.handleRemovePanel}
+            iconBefore={<RemoveIcon label="Remove panel type" />}
+          />
         </FloatingToolbar>
       );
     } else {

@@ -25,6 +25,7 @@ export default createSchema({
     'image',
     'media',
     'mediaGroup',
+    'singleImage',
     'plain',
     'table',
     'tableCell',

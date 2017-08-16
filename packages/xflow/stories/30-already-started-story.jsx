@@ -20,6 +20,7 @@ const defaultProps = {
   spinnerActive: false,
   getStartedButtonDisabled: false,
   status: ACTIVATING,
+  progress: 0,
   onComplete: () => {},
   goToProduct: () => {
     console.log('Go to Confluence!');
@@ -27,19 +28,49 @@ const defaultProps = {
 };
 
 storiesOf('AlreadyStarted')
-  .add('Show Already Have Product Trial dialog with progress bar', () =>
+  .add('Already Started (ACTIVATING) progress bar (0%)', () =>
+    setupStorybookAnalytics(
+      <AlreadyStartedBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+    )
+  )
+  .add('Already Started (ACTIVATING) progress bar (50%)', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase
         {...defaultProps}
+        progress={0.5}
         onComplete={() => Promise.resolve(true)}
       />
     )
   )
-  .add('Show Loading dialog when product is ready', () =>
+  .add('Already Started (ACTIVATING Error) progress bar (100%)', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase
         {...defaultProps}
+        progress={1}
+        initialStatus={ACTIVATING}
+        status={ACTIVATING}
+        onComplete={() => Promise.resolve(true)}
+      />
+    )
+  )
+  .add('Already Started (ACTIVATING) progress bar (100%)', () =>
+    setupStorybookAnalytics(
+      <AlreadyStartedBase
+        {...defaultProps}
+        progress={1}
+        initialStatus={ACTIVATING}
         status={ACTIVE}
+        onComplete={() => Promise.resolve(true)}
+      />
+    )
+  )
+  .add('Already Started (ACTIVE)', () =>
+    setupStorybookAnalytics(
+      <AlreadyStartedBase
+        {...defaultProps}
+        progress={1}
+        status={ACTIVE}
+        onComplete={() => Promise.resolve(true)}
       />
     )
   );

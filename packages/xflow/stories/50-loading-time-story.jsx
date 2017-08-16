@@ -18,42 +18,22 @@ const defaultProps = {
   gotoButton: 'Go to Confluence',
   goToProduct: noop,
   status: ACTIVATING,
-  svgImg: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg',
+  svgImg:
+    'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg',
 };
 
-storiesOf('StartTrialLoading')
+storiesOf('LoadingTime')
   .add('Show Loading dialog', () =>
-    setupStorybookAnalytics(
-      <LoadingTimeBase
-        {...defaultProps}
-        progress={0}
-      />
-    )
+    setupStorybookAnalytics(<LoadingTimeBase {...defaultProps} progress={0} />)
   )
   .add('Show Loading dialog with 25% complete', () =>
-    setupStorybookAnalytics(
-      <LoadingTimeBase
-        {...defaultProps}
-        progress={0.25}
-      />
-    )
+    setupStorybookAnalytics(<LoadingTimeBase {...defaultProps} progress={0.25} />)
   )
   .add('Show Loading dialog when complete', () =>
-    setupStorybookAnalytics(
-      <LoadingTimeBase
-        {...defaultProps}
-        status={ACTIVE}
-        progress={1}
-      />
-    )
+    setupStorybookAnalytics(<LoadingTimeBase {...defaultProps} status={ACTIVE} progress={1} />)
   )
   .add('Show Loading dialog when timed out', () =>
     setupStorybookAnalytics(
-      <LoadingTimeBase
-        {...defaultProps}
-        status={UNKNOWN}
-        progress={1}
-        confluenceTimedOut
-      />
+      <LoadingTimeBase {...defaultProps} status={UNKNOWN} progress={1} confluenceTimedOut />
     )
   );

@@ -34,6 +34,7 @@ class AlreadyStarted extends Component {
     closeAlreadyStartedDialog: PropTypes.func,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
+    initialStatus: PropTypes.oneOf([ACTIVE, ACTIVATING]),
   };
 
   static defaultProps = {
@@ -43,7 +44,7 @@ class AlreadyStarted extends Component {
 
   state = {
     isLoading: false,
-    initialActivationState: this.props.status,
+    initialActivationState: this.props.initialStatus || this.props.status,
     isReady: this.props.status === ACTIVE,
   };
 

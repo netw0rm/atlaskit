@@ -1,3 +1,5 @@
+import * as subtractDays from 'date-fns/sub_days';
+import * as subtractMonths from 'date-fns/sub_months';
 import {
   Decision,
   DecisionResponse,
@@ -26,7 +28,6 @@ import {
   getServiceTasksResponse,
 } from './story-data';
 
-import * as moment from 'moment';
 
 // Just a re-export, but we may change datasets between stories and test at some point.
 export {
@@ -72,11 +73,11 @@ export const getItemsResponse = (options?: GetItemsResponseOptions): ItemRespons
 
   const getDate = (index: number): Date => {
     const dayOffset = groupByDateSize ? Math.floor(index / groupByDateSize) : 0;
-    const m = moment().subtract(dayOffset, 'day');
+    const m = subtractDays(new Date(), dayOffset);
     if (idOffset) {
-      m.subtract('month', idOffset);
+      return subtractMonths(m, idOffset);
     }
-    return m.toDate();
+    return m;
   };
 
   if (hasMore) {

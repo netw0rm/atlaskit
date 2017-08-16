@@ -130,13 +130,9 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
   private handleSpinnerComplete() {}
 
   private addBorders = () => {
-    const { height, maxHeight } = this.props;
+    const { maxHeight } = this.props;
     if (maxHeight) {
       let { maxHeightStyle } = this.state;
-
-      if (height) {
-        maxHeightStyle.height = `${height}px`;
-      }
 
       if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
@@ -174,6 +170,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       editorView,
       emojiProvider,
       feedbackFormUrl,
+      height,
       helpDialogPresent,
       mentionProvider,
       onCancel,
@@ -197,7 +194,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       popupsMountPoint,
       popupsBoundariesElement,
     } = this.props;
+
     const { maxHeightStyle } = this.state;
+    const style = {...maxHeightStyle};
+
+    if (height) {
+      style.height = `${height}px`;
+    }
+
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
@@ -290,7 +294,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           onPaste={this.addBorders}
           onKeyDown={this.addBorders}
         >
-          <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
+          <div style={style} ref={this.handleMaxHeightContainer}>
             {this.props.children}
           </div>
           {pluginStateHyperlink && !disabled ?

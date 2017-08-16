@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
+
 import { itemThemeNamespace } from '@atlaskit/item';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { ItemTheme } from '../types';
@@ -12,14 +12,13 @@ const dropdownPadding = {
   x: math.multiply(gridSize, 1.5),
   y: gridSize,
 };
-
+// $FlowFixMe
 const droplistItemTheme: ItemTheme = {
   padding: {
     default: dropdownPadding,
     compact: dropdownPadding,
   },
-  // $FlowFixMe
-  borderRadius: parseFloat(Theme.$.borderRadius),
+  borderRadius: () => 0,
   default: {
     background: 'transparent',
     text: themed({ light: colors.N800, dark: colors.DN600 }),

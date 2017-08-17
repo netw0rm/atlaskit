@@ -33,7 +33,8 @@
     "@atlaskit/util-shared-styles": "^2.1.0",
     "moment": "^2.18.1",
     "styled-components": "^1.4.6",
-    "tslib": "^1.2.0"
+    "tslib": "^1.2.0",
+    "uid": "^0.0.2"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [

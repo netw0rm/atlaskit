@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
+import { defaultSortCriteria } from '../constants';
 import { contentToDocument } from '../api/TaskDecisionUtils';
+import { loadLatestItems } from '../api/TaskDecisionLoader';
 import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
@@ -16,9 +18,11 @@ import {
   Item,
   OnUpdate,
   Query,
+  RecentUpdatesListener,
   RenderDocument,
   TaskDecisionProvider
 } from '../types';
+
 import {
   isDecision,
   isTask,
@@ -60,8 +64,9 @@ const LoadingWrapper = styled.div`
 `;
 
 
-export default class ResourcedList extends PureComponent<Props,State> {
+export default class ResourcedItemList extends PureComponent<Props,State> {
   private mounted: boolean;
+  private recentUpdatesId: string | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -71,30 +76,76 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   componentDidMount() {
-    const { initialQuery } = this.props;
     this.mounted = true;
-    this.performQuery(initialQuery);
+    this.performInitialQuery(this.props);
   }
 
   componentWillUnmount() {
     this.mounted = false;
+    this.unsubscribeRecentUpdates();
   }
 
-  private performQuery(query: Query) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.initialQuery !== nextProps.initialQuery || this.props.taskDecisionProvider !== nextProps.taskDecisionProvider) {
+      this.unsubscribeRecentUpdates();
+      this.performInitialQuery(nextProps);
+    }
+  }
+
+  private unsubscribeRecentUpdates() {
+    const { recentUpdatesId } = this;
+    if (recentUpdatesId) {
+      this.props.taskDecisionProvider.then(provider => {
+        provider.unsubscribeRecentUpdates(recentUpdatesId);
+      });
+    }
+    this.recentUpdatesId = undefined;
+  }
+
+  private loadLatest = () => {
+    const { initialQuery, taskDecisionProvider } = this.props;
+    const { items } = this.state;
+    taskDecisionProvider.then(provider => {
+      loadLatestItems(initialQuery, items || [], provider).then(latestItems => {
+        if (this.mounted) {
+          this.setState({
+            items: latestItems,
+          });
+        }
+      });
+    });
+  }
+
+  private performInitialQuery(props: Props) {
+    const { initialQuery } = this.props;
+    this.performQuery(initialQuery, true, {
+      id: id => {
+        this.recentUpdatesId = id;
+      },
+      recentUpdates: this.loadLatest
+    });
+  }
+
+  private performQuery(query: Query, replaceAll: boolean, recentUpdatesListener?: RecentUpdatesListener) {
     const { taskDecisionProvider } = this.props;
     this.setState({
       loading: true,
     });
     taskDecisionProvider.then(provider => {
-      provider.getItems(query).then(result => {
+      provider.getItems(query, recentUpdatesListener).then(result => {
         if (!this.mounted) {
           return;
         }
         const { items, nextQuery } = result;
-        const combinedItems: Item[] = [
-          ...this.state.items || [],
-          ...items,
-        ];
+        let combinedItems: Item[];
+        if (replaceAll) {
+          combinedItems = items;
+        } else {
+          combinedItems = [
+            ...this.state.items || [],
+            ...items,
+          ];
+        }
 
         this.setState({
           items: combinedItems,
@@ -112,7 +163,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
   private loadMore = () => {
     const { nextQuery } = this.state;
     if (nextQuery) {
-      this.performQuery(nextQuery);
+      this.performQuery(nextQuery, false);
     }
   }
 
@@ -183,7 +234,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   private groupItemsByDate(items: Item[]): ItemsByDate[] {
-    const groupByField = this.props.initialQuery.sortCriteria || 'creationDate';
+    const groupByField = this.props.initialQuery.sortCriteria || defaultSortCriteria;
     let lastDate;
     return items.reduce<ItemsByDate[]>((groups, item) => {
       const currentDate = getStartOfDate(item[groupByField]);

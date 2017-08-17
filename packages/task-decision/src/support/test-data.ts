@@ -1,15 +1,23 @@
 import {
+  Decision,
   DecisionResponse,
+  Item,
   ItemResponse,
+  Meta,
+  Query,
   ServiceDecision,
   ServiceTask,
+  ServiceItemResponse,
+  Task,
   TaskResponse,
 } from '../types';
 
 import {
   convertServiceDecisionResponseToDecisionResponse,
+  convertServiceDecisionToDecision,
   convertServiceItemResponseToItemResponse,
   convertServiceTaskResponseToTaskResponse,
+  convertServiceTaskToTask,
 } from '../api/TaskDecisionUtils';
 
 import {
@@ -103,3 +111,57 @@ export const getItemsResponse = (options?: GetItemsResponseOptions): ItemRespons
 
 export const serviceDecision: ServiceDecision = getServiceDecisionsResponse().decisions[0];
 export const serviceTask: ServiceTask = getServiceTasksResponse().tasks[0];
+
+export const buildServiceDecision = (part: Partial<ServiceDecision>): ServiceDecision => {
+  return {
+    ...serviceDecision,
+    ...part
+  };
+};
+
+export const buildServiceTask = (part: Partial<ServiceTask>): ServiceTask => {
+  return {
+    ...serviceTask,
+    ...part
+  };
+};
+
+export const buildItemServiceResponse = (items: (ServiceTask | ServiceDecision)[], meta: Meta): ServiceItemResponse => {
+  return {
+    elements: items,
+    meta,
+  };
+};
+
+export const decision: Decision = convertServiceDecisionToDecision(serviceDecision);
+export const task: Task = convertServiceTaskToTask(serviceTask);
+
+export const buildDecision = (part: Partial<Decision>): Decision => {
+  return {
+    ...decision,
+    ...part
+  };
+};
+
+export const buildTask = (part: Partial<Task>): Task => {
+  return {
+    ...task,
+    ...part
+  };
+};
+
+export const buildItemResponse = (items: Item[], nextQuery?: Query): ItemResponse => {
+  return {
+    items,
+    nextQuery
+  };
+};
+
+export const content = (text: string): any => [
+  {
+    type: 'text',
+    text,
+  }
+];
+
+export const datePlus = (minutes: number): Date => moment().add(minutes, 'minute').toDate();

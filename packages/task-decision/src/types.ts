@@ -121,10 +121,32 @@ export interface Task extends BaseItem<TaskState> {
 
 export type Handler = (state: TaskState | DecisionState) => void;
 
+export type RecentUpdatesId = string;
+
+/**
+ * A subscriber interface that can be called back if there are new decisions/tasks/items
+ * available as the result of an external change.
+ */
+export interface RecentUpdatesListener {
+  /**
+   * An id that can be used to unsubscribe
+   */
+  id(id: RecentUpdatesId);
+
+  /**
+   * Indicates there are recent updates, and the listener should refresh
+   * the latest items from the TaskDecisionProvider.
+   */
+  recentUpdates();
+}
+
 export interface TaskDecisionProvider {
-  getDecisions(query: Query): Promise<DecisionResponse>;
-  getTasks(query: Query): Promise<TaskResponse>;
-  getItems(query: Query): Promise<ItemResponse>;
+  getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse>;
+  getTasks(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<TaskResponse>;
+  getItems(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<ItemResponse>;
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId);
+  notifyRecentUpdates(containerAri: string);
 
   // Tasks
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;

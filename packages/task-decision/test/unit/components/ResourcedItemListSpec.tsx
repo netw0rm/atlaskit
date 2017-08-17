@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import Button from '@atlaskit/button';
 
@@ -10,7 +9,14 @@ import ResourcedItemList from '../../../src/components/ResourcedItemList';
 import DecisionItem from '../../../src/components/DecisionItem';
 import ResourcedTaskItem from '../../../src/components/ResourcedTaskItem';
 
-import { getItemsResponse } from '../../../src/support/test-data';
+import {
+  buildDecision,
+  buildItemResponse,
+  buildTask,
+  content,
+  datePlus,
+  getItemsResponse,
+} from '../../../src/support/test-data';
 
 const query: Query = {
   containerAri: 'cheese',
@@ -27,17 +33,17 @@ describe('<ResourcedItemList/>', () => {
 
   beforeEach(() => {
     provider = {
-      getItems: sinon.stub(),
-      subscribe: sinon.stub(),
-      unsubscribe: sinon.stub(),
+      getItems: jest.fn(),
+      subscribe: jest.fn(),
+      unsubscribe: jest.fn(),
     };
-    renderer = sinon.stub();
-    renderer.returns(<div/>);
+    renderer = jest.fn(),
+    renderer.mockImplementation(() => <div/>);
   });
 
   describe('ungrouped', () => {
     it('should render both types of items', () => {
-      provider.getItems.returns(Promise.resolve(defaultResponse));
+      provider.getItems.mockImplementation(() => Promise.resolve(defaultResponse));
       const component = mount(
         <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
@@ -80,7 +86,7 @@ describe('<ResourcedItemList/>', () => {
   describe('group by', () => {
     const performDateTest = (testQuery: Query, dateField: string) => {
       const response = getItemsResponse({ groupByDateSize: 4, dateField });
-      provider.getItems.returns(Promise.resolve(response));
+      provider.getItems.mockImplementation(() => Promise.resolve(response));
       const component = mount(
         <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} groupItems={true} />
       );
@@ -135,6 +141,51 @@ describe('<ResourcedItemList/>', () => {
         sortCriteria: 'lastUpdateDate',
       };
       performDateTest(groupByQuery, 'lastUpdateDate');
+    });
+  });
+
+  describe('recent updates', () => {
+    it('notifyRecentItems should refresh item list', () => {
+      // Initial render
+      // notifyRecent items on TaskDecisionResource
+      // New render with new items + new task state
+      const d1 = buildDecision({ localId: 'd1', lastUpdateDate: datePlus(2), content: content('d1') });
+      const t1 = buildTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(1), content: content('t1') });
+      const initialResponse = buildItemResponse([d1, t1]);
+
+      const d2 = buildDecision({ localId: 'd2', lastUpdateDate: datePlus(4), content: content('d2') });
+      const t1update = buildTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(3), content: content('t1update') });
+      const recentUpdatesResponse = buildItemResponse([ d2, t1update ]);
+
+      const renderer = (doc) => doc.content[0].content[0].text;
+
+      provider.getItems.mockReturnValueOnce(Promise.resolve(initialResponse));
+      provider.getItems.mockReturnValueOnce(Promise.resolve(recentUpdatesResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => decisionItemsRendered(component, 1)).then(() => {
+        expect(component.find(DecisionItem).length).toBe(1);
+        expect(component.find(ResourcedTaskItem).length).toBe(1);
+        const recentUpdatesListener = provider.getItems.mock.calls[0][1];
+        expect(recentUpdatesListener).toBeDefined();
+        const recentUpdatesCallback = recentUpdatesListener.recentUpdates;
+        expect(recentUpdatesCallback).toBeDefined();
+        recentUpdatesCallback();
+        return waitUntil(() => decisionItemsRendered(component, 2));
+      }).then(() => {
+        const items = component.findWhere(n => n.is(DecisionItem) || n.is(ResourcedTaskItem));
+        expect(items.length).toBe(3);
+        const item1 = items.at(0);
+        expect(item1.type()).toBe(DecisionItem);
+        expect(item1.prop('children')).toBe('d2');
+        const item2 = items.at(1);
+        expect(item2.type()).toBe(ResourcedTaskItem);
+        expect(item2.prop('children')).toBe('t1update');
+        const item3 = items.at(2);
+        expect(item3.type()).toBe(DecisionItem);
+        expect(item3.prop('children')).toBe('d1');
+      });
     });
   });
 });

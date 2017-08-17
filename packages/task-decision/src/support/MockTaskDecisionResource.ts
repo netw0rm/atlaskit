@@ -18,6 +18,7 @@ import {
   ItemResponse,
   ObjectKey,
   Query,
+  RecentUpdatesId,
   TaskDecisionProvider,
   TaskResponse,
   TaskState,
@@ -63,6 +64,14 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     const serviceItemResponse = getServiceItemsResponse();
     const result = convertServiceItemResponseToItemResponse(serviceItemResponse);
     return this.applyConfig(query, result, 'items');
+  }
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId) {
+
+  }
+
+  notifyRecentUpdates(containerAri: string) {
+
   }
 
   private getNextDate() {

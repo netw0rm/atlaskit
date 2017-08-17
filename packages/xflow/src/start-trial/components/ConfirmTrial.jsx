@@ -11,6 +11,7 @@ import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
+import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
 
 const messages = defineMessages({
   errorFlagTitle: {
@@ -34,8 +35,11 @@ class ConfirmTrial extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
-    heading: PropTypes.string.isRequired,
-    message: PropTypes.node.isRequired,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+    trialHeading: PropTypes.string.isRequired,
+    trialMessage: PropTypes.node.isRequired,
+    reactivateHeading: PropTypes.string.isRequired,
+    reactivateMessage: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -81,12 +85,19 @@ class ConfirmTrial extends Component {
   handleCancelClick = () => {
     const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.confirm-trial.cancel-button.clicked');
-    cancelStartProductTrial()
-      .then(onCancel);
+    cancelStartProductTrial().then(onCancel);
   };
 
   render() {
-    const { intl, productLogo, heading, message } = this.props;
+    const {
+      intl,
+      productLogo,
+      status,
+      trialHeading,
+      trialMessage,
+      reactivateHeading,
+      reactivateMessage,
+    } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -123,9 +134,9 @@ class ConfirmTrial extends Component {
       >
         <StartTrialDialog id="xflow-confirm-trial">
           <StartTrialHeader>
-            {heading}
+            {status === INACTIVE ? trialHeading : reactivateHeading}
           </StartTrialHeader>
-          {message}
+          {status === INACTIVE ? trialMessage : reactivateMessage}
         </StartTrialDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
@@ -144,7 +155,16 @@ export default withXFlowProvider(
   ConfirmTrialBase,
   ({
     xFlow: {
-      config: { productLogo, startTrial: { confirmTrialHeading, confirmTrialMessage } },
+      config: {
+        productLogo,
+        startTrial: {
+          confirmTrialHeading,
+          confirmTrialMessage,
+          confirmReactivateHeading,
+          confirmReactivateMessage,
+        },
+      },
+      status,
       startProductTrial,
       cancelStartProductTrial,
     },
@@ -152,7 +172,10 @@ export default withXFlowProvider(
     productLogo,
     startProductTrial,
     cancelStartProductTrial,
-    heading: confirmTrialHeading,
-    message: confirmTrialMessage,
+    status,
+    trialHeading: confirmTrialHeading,
+    trialMessage: confirmTrialMessage,
+    reactivateHeading: confirmReactivateHeading,
+    reactivateMessage: confirmReactivateMessage,
   })
 );

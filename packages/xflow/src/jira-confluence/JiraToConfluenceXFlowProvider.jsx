@@ -27,6 +27,10 @@ const messages = defineMessages({
     id: 'xflow.j2c.start-trial.confirm-trial.heading',
     defaultMessage: 'Start your 30 day trial',
   },
+  confirmReactivateHeading: {
+    id: 'xflow.j2c.start-trial.reactivate-trial.heading',
+    defaultMessage: '[PLACEHOLDER] Reactivate Confluence',
+  },
 
   // - Grant Access dialog
   grantAccessHeading: {
@@ -126,6 +130,16 @@ export const defaultProps = intl => ({
           id="xflow.j2c.start-trial.confirm-trial.message"
           tagName="p"
           defaultMessage="Once your trial finishes, billing will start.{br}Easily cancel at any time in Manage application.{br}We'll email your billing contact 3 days in advance."
+          values={{ br: <br /> }}
+        />
+      ),
+
+      confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
+      confirmReactivateMessage: (
+        <FormattedMessage
+          id="xflow.j2c.start-trial.confirm-trial.message"
+          tagName="p"
+          defaultMessage="[PLACEHOLDER] text about product reactivation.{br}We'll email your billing contact 3 days in advance."
           values={{ br: <br /> }}
         />
       ),

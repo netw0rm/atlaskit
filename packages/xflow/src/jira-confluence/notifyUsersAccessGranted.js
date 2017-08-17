@@ -24,7 +24,7 @@ function getAtlassianAccountId({ attributes: { attributes } }) {
   if (!attributes) return '';
   const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
 
-  return openIdAttr ? openIdAttr.link.href : '';
+  return openIdAttr ? openIdAttr.values[0] : '';
 }
 
 async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo) {

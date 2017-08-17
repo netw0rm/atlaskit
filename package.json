@@ -104,7 +104,7 @@
     "npm-run": "^4.1.2",
     "npm-run-all": "^4.0.1",
     "npmconf": "^2.1.2",
-    "package-json-validator": "^0.6.1",
+    "package-json-validator-with-gooder-semver": "^2.0.0",
     "pascal-case": "^2.0.0",
     "pkg-up": "^2.0.0",
     "postcss-loader": "^1.0.0",

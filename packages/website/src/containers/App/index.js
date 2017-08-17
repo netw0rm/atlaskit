@@ -129,12 +129,16 @@ export default class App extends PureComponent {
             <Media query={MOBILE_QUERY}>
               {matches => (matches ? <MobileView /> : <DesktopView />)}
             </Media>
-            <SwitchThemeButton onClick={this.switchTheme} title={`Theme: "${themeMode}"`}>
-              {themeMode === 'dark'
-                ? <LightbulbIcon label="Light off" />
-                : <LightbulbFilledIcon label="Light on" />
-              }
-            </SwitchThemeButton>
+            {
+              process.env.ATLASKIT_SITE_ENV !== 'production' ? (
+                <SwitchThemeButton onClick={this.switchTheme} title={`Theme: "${themeMode}"`}>
+                  {themeMode === 'dark'
+                    ? <LightbulbIcon label="Light off" />
+                    : <LightbulbFilledIcon label="Light on" />
+                  }
+                </SwitchThemeButton>
+              ) : null
+            }
           </ScrollToTop>
         </AtlasKitThemeProvider>
       </Router>

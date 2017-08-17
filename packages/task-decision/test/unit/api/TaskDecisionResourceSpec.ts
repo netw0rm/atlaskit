@@ -1,16 +1,37 @@
 import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
+import { waitUntil } from '@atlaskit/util-common-test';
 
-import { getServiceDecisionsResponse, getServiceTasksResponse, getServiceItemsResponse } from '../../../src/support/test-data';
-import TaskDecisionResource from '../../../src/api/TaskDecisionResource';
-import { Query } from '../../../src/types';
-import { objectKeyToString } from '../../../src/type-helpers';
+import {
+  buildItemServiceResponse,
+  buildServiceDecision,
+  buildServiceTask,
+  datePlus,
+  getServiceDecisionsResponse,
+  getServiceItemsResponse,
+  getServiceTasksResponse,
+} from '../../../src/support/test-data';
+
+import TaskDecisionResource, { ItemStateManager } from '../../../src/api/TaskDecisionResource';
+
+import {
+  BaseItem,
+  Query,
+  TaskState,
+} from '../../../src/types';
+
+import {
+  objectKeyToString,
+  toObjectKey,
+} from '../../../src/type-helpers';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;
 global.URLSearchParams = URLSearchParams;
 
 const url = 'https://cheese/';
+
+const getItemStateManager = (resource: TaskDecisionResource): ItemStateManager => (resource as any).itemStateManager;
 
 describe('TaskDecisionResource', () => {
 
@@ -289,7 +310,7 @@ describe('TaskDecisionResource', () => {
         response: tasks
       });
 
-      return resource.getTaskState(tasks).then(response => {
+      return (resource as any).itemStateManager.getTaskState(tasks).then(response => {
         expect(response).toEqual(tasks);
       });
     });
@@ -306,13 +327,13 @@ describe('TaskDecisionResource', () => {
       it('should add handlers to subscriptions-map', () => {
         resource.subscribe(objectKey, mockHandler);
         resource.subscribe(objectKey, mockHandler2);
-        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler, mockHandler2]);
+        expect((getItemStateManager(resource) as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler, mockHandler2]);
       });
     });
 
     describe('notifyUpdated', () => {
       it('should call all subscribers', () => {
-        resource.notifyUpdated(objectKey, 'DONE');
+        getItemStateManager(resource).notifyUpdated(objectKey, 'DONE');
         expect(mockHandler).toBeCalledWith('DONE');
         expect(mockHandler2).toBeCalledWith('DONE');
       });
@@ -321,15 +342,92 @@ describe('TaskDecisionResource', () => {
     describe('unsubscribe', () => {
       it('should remove handler from subscriptions-map', () => {
         resource.unsubscribe(objectKey, mockHandler);
-        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler2]);
+        expect((getItemStateManager(resource) as any).subscribers.get(objectKeyToString(objectKey))).toEqual([mockHandler2]);
       });
 
       it('should delete the key from subscriptions-map if empty', () => {
         resource.unsubscribe(objectKey, mockHandler2);
-        expect((resource as any).subscribers.get(objectKeyToString(objectKey))).toEqual(undefined);
+        expect((getItemStateManager(resource) as any).subscribers.get(objectKeyToString(objectKey))).toEqual(undefined);
       });
     });
 
   });
 
+  describe('recent updates', () => {
+    describe('items', () => {
+      afterEach(() => {
+        fetchMock.restore();
+      });
+
+      it('notified of recent updates', () => {
+        const resource = new TaskDecisionResource({ url });
+        const d1 = buildServiceDecision({ localId: 'd1', lastUpdateDate: datePlus(4).toISOString() });
+        const t1 = buildServiceTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(3).toISOString() });
+        const d2 = buildServiceDecision({ localId: 'd2', lastUpdateDate: datePlus(2).toISOString() });
+        const t2 = buildServiceTask({ localId: 't2', state: 'DONE', lastUpdateDate: datePlus(1).toISOString() });
+        const response = buildItemServiceResponse([
+          d1,
+          t1,
+          d2,
+          t2,
+        ], {});
+
+        const t1update = buildServiceTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(5).toISOString() });
+        const stateUpdateResponse: BaseItem<TaskState>[] = [
+          {
+            ...toObjectKey(t1update),
+            state: t1update.state, // match service update
+            type: 'TASK',
+          },
+        ];
+
+        fetchMock.mock({
+          matcher: `begin:${url}elements/query`,
+          response,
+          times: 1,
+        }).mock({
+          matcher: `begin:${url}tasks/state`,
+          response: stateUpdateResponse,
+          times: 1,
+        });
+
+        const idMock = jest.fn();
+        const recentUpdatesMock = jest.fn();
+        const handlerT1 = jest.fn();
+
+        resource.subscribe(toObjectKey(t1), handlerT1);
+
+        return resource.getItems({
+          containerAri: 'cheese',
+          sortCriteria: 'lastUpdateDate',
+        }, {
+          id: idMock,
+          recentUpdates: recentUpdatesMock,
+        }).then(response => {
+          expect(idMock.mock.calls.length).toBe(1);
+          expect(recentUpdatesMock.mock.calls.length).toBe(0);
+          expect(response.items.length).toBe(4);
+          const context = {
+            containerAri: 'cheese',
+            localId: 'bacon',
+          };
+          resource.notifyRecentUpdates(context);
+          expect(recentUpdatesMock.mock.calls.length).toBe(1);
+          expect(recentUpdatesMock.mock.calls[0][0]).toEqual(context);
+          return waitUntil(() => handlerT1.mock.calls.length === 1);
+        }).then(() => {
+          expect(handlerT1.mock.calls.length).toBe(1);
+
+          const recentUpdatedId = idMock.mock.calls[0][0];
+          resource.unsubscribeRecentUpdates(recentUpdatedId);
+          resource.notifyRecentUpdates({
+            containerAri: 'cheese'
+          });
+          // No new callback as unsubscribed
+          expect(recentUpdatesMock.mock.calls.length).toBe(1);
+        });
+      });
+    });
+
+  });
 });

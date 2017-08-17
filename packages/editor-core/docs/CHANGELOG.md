@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 45.16.0 (2017-08-17)
+
+* feature; upgrade for latest task and decisions support. (issues closed: fs-1274) ([f12d384](https://bitbucket.org/atlassian/atlaskit/commits/f12d384))
+* bug fix; fix ChromeExpanded height/maxHeight behaviour ([9aa5219](https://bitbucket.org/atlassian/atlaskit/commits/9aa5219))
+
+
+
+
+* bug fix; render height style if props.height is set ([3d30885](https://bitbucket.org/atlassian/atlaskit/commits/3d30885))
+
+* feature; add height prop to ChromeExpanded to have a fixed-height editor ([a5e0238](https://bitbucket.org/atlassian/atlaskit/commits/a5e0238))
+## 45.15.0 (2017-08-17)
+
+
+
+* feature; show recently viewed in the insert link dialog. ([e11e348](https://bitbucket.org/atlassian/atlaskit/commits/e11e348))
+## 45.14.0 (2017-08-17)
+
+
+* feature; show recently viewed in the insert link dialog. ([e11e348](https://bitbucket.org/atlassian/atlaskit/commits/e11e348))
+## 45.13.1 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
 ## 45.13.0 (2017-08-16)
 
 * bug fix; style fixes in panel toolbar. ([a51ffa6](https://bitbucket.org/atlassian/atlaskit/commits/a51ffa6))

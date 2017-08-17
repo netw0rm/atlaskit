@@ -121,10 +121,41 @@ export interface Task extends BaseItem<TaskState> {
 
 export type Handler = (state: TaskState | DecisionState) => void;
 
+export type RecentUpdatesId = string;
+
+export interface RecentUpdateContext {
+  containerAri: string;
+  localId?: string;
+}
+
+/**
+ * A subscriber interface that can be called back if there are new decisions/tasks/items
+ * available as the result of an external change.
+ */
+export interface RecentUpdatesListener {
+  /**
+   * An id that can be used to unsubscribe
+   */
+  id(id: RecentUpdatesId);
+
+  /**
+   * Indicates there are recent updates, and the listener should refresh
+   * the latest items from the TaskDecisionProvider.
+   *
+   * There will be a number of retries until expectedLocalId, if passed.
+   *
+   * @param the expectedLocalId expected to be found in updates
+   */
+  recentUpdates(updateContext: RecentUpdateContext);
+}
+
 export interface TaskDecisionProvider {
-  getDecisions(query: Query): Promise<DecisionResponse>;
-  getTasks(query: Query): Promise<TaskResponse>;
-  getItems(query: Query): Promise<ItemResponse>;
+  getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse>;
+  getTasks(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<TaskResponse>;
+  getItems(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<ItemResponse>;
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId);
+  notifyRecentUpdates(updateContext: RecentUpdateContext);
 
   // Tasks
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
@@ -132,8 +163,16 @@ export interface TaskDecisionProvider {
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
 }
 
+/**
+ * Same as RendererContext in editor-core (don't want an direct dep though)
+ */
+export interface RendererContext {
+  objectAri: string;
+  containerAri: string;
+}
+
 export interface RenderDocument {
-  (document: any): JSX.Element;
+  (document: any, rendererContext?: RendererContext): JSX.Element;
 }
 
 export interface OnUpdate<T> {

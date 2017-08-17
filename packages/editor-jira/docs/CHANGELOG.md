@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.3.0 (2017-08-17)
+
+* feature; update minimum editor-core version ([f6a1e09](https://bitbucket.org/atlassian/atlaskit/commits/f6a1e09))
 ## 20.2.1 (2017-08-15)
 
 * bug fix; fix plaintext link detection, enable markdown and code detection on paste ([f86eef0](https://bitbucket.org/atlassian/atlaskit/commits/f86eef0))

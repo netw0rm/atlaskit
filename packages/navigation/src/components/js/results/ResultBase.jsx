@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { AkNavigationItem } from '../../../../src';
 
+const BASE_RESULT_TYPE = 'base';
+
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
 // All "-Result" components (PersonResult, RoomResult, etc.) should extend this class to-
@@ -29,6 +31,7 @@ export default class ResultBase extends PureComponent {
     isSelected: false,
     isTabbingDisabled: false,
     onClick: () => {},
+    type: BASE_RESULT_TYPE,
   }
 
   handleClick = () => this.props.onClick({

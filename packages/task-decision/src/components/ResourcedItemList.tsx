@@ -11,7 +11,7 @@ import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
 
-import { isDateSortCriteria } from '../type-helpers';
+import { isDateSortCriteria, toRendererContext } from '../type-helpers';
 import { getFormattedDate, getStartOfDate, isSameDate } from '../util/date';
 
 import {
@@ -205,7 +205,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
           if (isDecision(item)) {
             return (
               <DecisionItem key={objectKeyToString(objectKey)}>
-                {renderDocument(contentToDocument(item.content))}
+                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
               </DecisionItem>
             );
           }
@@ -219,7 +219,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
                 objectAri={objectKey.objectAri}
                 containerAri={objectKey.containerAri}
               >
-                {renderDocument(contentToDocument(item.content))}
+                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
               </ResourcedTaskItem>
             );
           }

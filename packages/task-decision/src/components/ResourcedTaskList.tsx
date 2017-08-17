@@ -111,6 +111,11 @@ export default class ResourcedTaskList extends PureComponent<Props,State> {
       );
     }
 
+    // FIXME FS-1283
+    // Either:
+    //  - render per task, and pass rendererContext
+    //  - delegate to ResourcedItemList (or extract common renderering)
+    //  - remove this class if not used.
     return (
       <div>
         {renderDocument(document)}

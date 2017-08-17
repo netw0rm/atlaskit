@@ -34,6 +34,7 @@ async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo)
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
+      product: 'confluence',
       instance,
       grantedAccessBy,
       grantedAccessTo,
@@ -58,7 +59,7 @@ export default async (users) => {
   }
 
   const adminUsername = getCurrentUsername();
-  const admin = queryUsername(adminUsername);
+  const admin = await queryUsername(adminUsername);
   const instance = getInstanceName();
 
   const grantedAccessBy = {

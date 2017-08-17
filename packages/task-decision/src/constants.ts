@@ -1,2 +1,2 @@
-export const defaultLimit = 20;
+export const defaultLimit = 100;
 export const defaultSortCriteria = 'creationDate';

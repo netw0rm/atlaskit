@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
 import { defaultSortCriteria } from '../constants';
 import { contentToDocument } from '../api/TaskDecisionUtils';
 import { loadLatestItems } from '../api/TaskDecisionLoader';
+import InfiniteScroll from './InfiniteScroll';
 import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
@@ -43,6 +43,17 @@ export interface Props {
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Item>;
   groupItems?: boolean;
+
+  /**
+   * Infinite scrolling is only enabled when height has also been specified.
+   *
+   * Note infinite scrolling will not work if the initial data set does not fill the container.
+   *
+   * It's recommend to set the limit to at least 100 in the initialQuery (this is the default) to
+   * workaround this limitation.
+   */
+  useInfiniteScroll?: boolean;
+  height?: number | string;
 }
 
 export interface State {
@@ -253,13 +264,13 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
   }
 
   render() {
-    const { items, loading, nextQuery } = this.state;
+    const { height, useInfiniteScroll } = this.props;
+    const { items, loading } = this.state;
 
     if (!items || !items.length) {
       return null;
     }
 
-    let moreOption;
     let loadingSpinner;
 
     if (loading) {
@@ -268,16 +279,23 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
           <Spinner appearance=""/>
         </LoadingWrapper>
       );
-    } else if (nextQuery) {
-      moreOption = (
-        <div><Button appearance="link" onClick={this.loadMore}>More...</Button></div>
+    }
+
+    if (height && useInfiniteScroll) {
+      return (
+        <InfiniteScroll
+          height={height}
+          onThresholdReached={this.loadMore}
+        >
+          {this.renderItems()}
+          {loadingSpinner}
+        </InfiniteScroll>
       );
     }
 
     return (
       <div>
         {this.renderItems()}
-        {moreOption}
         {loadingSpinner}
       </div>
     );

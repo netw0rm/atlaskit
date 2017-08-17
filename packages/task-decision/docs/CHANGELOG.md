@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.3.0 (2017-08-17)
+
+* feature; support infinite scroll for ResourcedItemList (issues closed: fs-1268) ([a7bbfe2](https://bitbucket.org/atlassian/atlaskit/commits/a7bbfe2))
 ## 3.2.0 (2017-08-17)
 
 * feature; support refreshing of ResourcedItemList and task state updates from an external tri (issues closed: fs-1267) ([bc2d4f1](https://bitbucket.org/atlassian/atlaskit/commits/bc2d4f1))

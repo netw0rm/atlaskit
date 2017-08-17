@@ -6,6 +6,7 @@ import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from './ErrorFlag';
+
 import SpinnerDiv from '../styled/SpinnerDiv';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';

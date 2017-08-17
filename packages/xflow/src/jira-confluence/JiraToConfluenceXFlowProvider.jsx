@@ -29,7 +29,21 @@ const messages = defineMessages({
   },
   confirmReactivateHeading: {
     id: 'xflow.j2c.start-trial.reactivate-trial.heading',
-    defaultMessage: '[PLACEHOLDER] Reactivate Confluence',
+    defaultMessage: 'Welcome back',
+  },
+  confirmReactivateMessage0: {
+    id: 'xflow.j2c.start-trial.reactivate-trial.message.p0',
+    defaultMessage:
+      'If your instance is eligible for a trial, Confluence will be free for 30 days.',
+  },
+  confirmReactivateMessage1: {
+    id: 'xflow.j2c.start-trial.reactivate-trial.message.p1',
+    defaultMessage: 'Otherwise, billing will start immediately.',
+  },
+  confirmReactivateMessage2: {
+    id: 'xflow.j2c.start-trial.reactivate-trial.message.p1',
+    defaultMessage:
+      "We'll email your billing contact 3 days prior to the due date with any new charges.",
   },
 
   // - Grant Access dialog
@@ -136,12 +150,17 @@ export const defaultProps = intl => ({
 
       confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
       confirmReactivateMessage: (
-        <FormattedMessage
-          id="xflow.j2c.start-trial.confirm-trial.message"
-          tagName="p"
-          defaultMessage="[PLACEHOLDER] text about product reactivation.{br}We'll email your billing contact 3 days in advance."
-          values={{ br: <br /> }}
-        />
+        <div>
+          <p>
+            {intl.formatMessage(messages.confirmReactivateMessage0)}
+          </p>
+          <p>
+            {intl.formatMessage(messages.confirmReactivateMessage1)}
+          </p>
+          <p>
+            {intl.formatMessage(messages.confirmReactivateMessage2)}
+          </p>
+        </div>
       ),
 
       grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
@@ -176,11 +195,15 @@ export const defaultProps = intl => ({
       alreadyStartedHeading: intl.formatMessage(messages.alreadyStartedHeading),
 
       alreadyStartedMessage: (
-        <FormattedMessage
-          id="xflow.already-started.message"
-          defaultMessage="A site administrator already started a trial.{br}{br}You’re all set to create vital project documentation with your team."
-          values={{ br: <br /> }}
-        />
+        <div>
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage0)}
+          </p>
+
+          <p>
+            {intl.formatMessage(messages.alreadyStartedMessage1)}
+          </p>
+        </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
         messages.alreadyStartedGetStartedButtonText

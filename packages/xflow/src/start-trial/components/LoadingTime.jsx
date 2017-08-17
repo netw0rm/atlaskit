@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import ModalDialog from '@atlaskit/modal-dialog';
+import ErrorFlag from './ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialDialog from '../styled/StartTrialDialog';
@@ -29,9 +30,22 @@ import {
   UNKNOWN,
 } from '../../common/productProvisioningStates';
 
+const messages = defineMessages({
+  errorFlagTitle: {
+    id: 'xflow.generic.loading-time.error-flag.title',
+    defaultMessage: 'Leave it with us',
+  },
+  errorFlagDescription: {
+    id: 'xflow.generic.loading-time.error-flag.description',
+    defaultMessage:
+      "It's taking longer than usual to set you up, we'll email you when you're good to go.",
+  },
+});
+
 class LoadingTime extends Component {
   static propTypes = {
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
     onComplete: PropTypes.func.isRequired,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, DEACTIVATED, INACTIVE, UNKNOWN]).isRequired,
@@ -92,6 +106,7 @@ class LoadingTime extends Component {
     const { status, firePrivateAnalyticsEvent } = this.props;
     this.setState({
       isReady: true,
+      showErrorFlag: status !== ACTIVE,
     });
     if (status === ACTIVE) {
       firePrivateAnalyticsEvent('xflow.loading-product-trial.loading.finished');
@@ -101,6 +116,9 @@ class LoadingTime extends Component {
   handleCloseClick = async () => {
     const { firePrivateAnalyticsEvent, status, closeLoadingDialog, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { status });
+    this.setState({
+      showErrorFlag: false,
+    });
     await closeLoadingDialog();
     return onComplete();
   };
@@ -116,9 +134,18 @@ class LoadingTime extends Component {
   };
 
   render() {
-    const { productLogo, progress, status, gotoButton, heading, message, headerImage } = this.props;
+    const {
+      productLogo,
+      progress,
+      status,
+      gotoButton,
+      heading,
+      message,
+      headerImage,
+      intl,
+    } = this.props;
 
-    const { isReady } = this.state;
+    const { isReady, showErrorFlag } = this.state;
 
     return (
       <ModalDialog
@@ -178,6 +205,12 @@ class LoadingTime extends Component {
             </WhereToFindConfluenceDiv>
           </LoadingTimeTextDiv>
         </StartTrialDialog>
+        <ErrorFlag
+          title={intl.formatMessage(messages.errorFlagTitle)}
+          description={intl.formatMessage(messages.errorFlagDescription)}
+          showFlag={showErrorFlag}
+          onDismissed={() => this.setState({ showErrorFlag: false })}
+        />
       </ModalDialog>
     );
   }

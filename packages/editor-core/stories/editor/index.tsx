@@ -294,15 +294,15 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...pastePlugins(schema),
-          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
-          ...emojiPlugins(schema, this.providerFactory),
-          ...asciiEmojiPlugins(schema, this.providerFactory),
+          ...(schema.nodes.mention ? mentionsPlugins(schema, this.providerFactory) : []), // mentions and emoji needs to be first
+          ...(schema.nodes.emoji ? emojiPlugins(schema, this.providerFactory) : []),
+          ...(schema.nodes.emoji ? asciiEmojiPlugins(schema, this.providerFactory) : []),
           ...clearFormattingPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
-          ...textColorPlugins(schema),
-          ...mediaPlugins,
+          ...(schema.marks.textColor ? textColorPlugins(schema) : []),
+          ...(schema.nodes.media ? mediaPlugins : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible.
@@ -315,9 +315,9 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...codeBlockPlugins(schema),
           ...panelPlugins(schema),
-          ...tablePlugins(),
+          ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
-          ...tasksAndDecisionsPlugin(schema),
+          ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema) : []),
           history(),
           keymap(baseKeymap) // should be last :(
         ]

@@ -64,13 +64,13 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       expect(props.style!.height).to.equal(undefined);
     });
 
-    it('should set height if props.height is not undefined', () => {
+    it('should not set borders if only props.height is set', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} height={75} />);
 
       const wrapper = chrome.find(Content).find('div').at(1);
       const props = wrapper.props()!;
-      expect(props.style!.height).to.equal('75px');
+      expect(props.style!.borderBottom).to.equal(undefined);
     });
 
     it('should render disabled save button if saveDisabled=true', () => {

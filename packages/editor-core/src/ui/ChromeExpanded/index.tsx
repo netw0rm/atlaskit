@@ -93,7 +93,6 @@ export interface State {
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
-  private editorContent: HTMLElement;
   private maxHeightContainer: HTMLElement;
   state: State = {
     showHelp: false
@@ -108,6 +107,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     if (maxHeight) {
       this.setState({
         maxHeightStyle: {
+          boxSizing: 'border-box',
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
           position: 'relative'
@@ -123,28 +123,36 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
-  setEditorContent = (ref) => {
-    this.editorContent = ref;
-  }
-
   private handleSpinnerComplete() {}
+
+  private getEditorHeight() {
+    const { editorView } = this.props;
+
+    return editorView
+      ? editorView.dom.offsetHeight
+      : 0;
+  }
 
   private addBorders = () => {
     const { maxHeight } = this.props;
+
     if (maxHeight) {
+      const editorHeight = this.getEditorHeight();
       let { maxHeightStyle } = this.state;
 
-      if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
+      if (editorHeight >= maxHeight && !maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
-      } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
+      } else if (editorHeight < maxHeight && maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
+
       this.setState({ maxHeightStyle });
     }
   }
 
   private toggleHelp = (): void => {
     const showHelp = !this.state.showHelp;
+
     this.setState({
       showHelp
     });
@@ -290,7 +298,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           {helpDialogPresent && <ToolbarHelp showHelp={this.state.showHelp} toggleHelp={this.toggleHelp} />}
         </Toolbar>
         <Content
-          innerRef={this.setEditorContent}
           onPaste={this.addBorders}
           onKeyDown={this.addBorders}
         >

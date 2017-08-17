@@ -18,6 +18,7 @@ import {
   ItemResponse,
   ObjectKey,
   Query,
+  RecentUpdateContext,
   RecentUpdatesId,
   TaskDecisionProvider,
   TaskResponse,
@@ -70,7 +71,7 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
 
   }
 
-  notifyRecentUpdates(containerAri: string) {
+  notifyRecentUpdates(updateContext?: RecentUpdateContext) {
 
   }
 

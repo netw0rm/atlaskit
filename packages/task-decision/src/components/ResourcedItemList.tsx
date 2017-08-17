@@ -18,6 +18,7 @@ import {
   Item,
   OnUpdate,
   Query,
+  RecentUpdateContext,
   RecentUpdatesListener,
   RenderDocument,
   TaskDecisionProvider
@@ -113,11 +114,11 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
     this.recentUpdatesId = undefined;
   }
 
-  private loadLatest = () => {
+  private loadLatest = (recentUpdateContext: RecentUpdateContext) => {
     const { initialQuery, taskDecisionProvider } = this.props;
     const { items } = this.state;
     taskDecisionProvider.then(provider => {
-      loadLatestItems(initialQuery, items || [], provider).then(latestItems => {
+      loadLatestItems(initialQuery, items || [], provider, recentUpdateContext).then(latestItems => {
         if (this.mounted) {
           this.setState({
             items: latestItems,
@@ -128,7 +129,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
   }
 
   private performInitialQuery(props: Props) {
-    const { initialQuery } = this.props;
+    const { initialQuery } = props;
     this.performQuery(initialQuery, true, {
       id: id => {
         this.recentUpdatesId = id;

@@ -19,6 +19,7 @@ import {
   ItemResponse,
   ObjectKey,
   Query,
+  RecentUpdateContext,
   RecentUpdatesId,
   RecentUpdatesListener,
   ServiceTask,
@@ -70,14 +71,15 @@ export class RecentUpdates {
 
   }
 
-  notify(containerAri: string) {
+  notify(recentUpdateContext: RecentUpdateContext) {
+    const { containerAri } = recentUpdateContext;
     const subscriberIds = this.idsByContainer.get(containerAri);
     if (subscriberIds) {
       subscriberIds.forEach(subscriberId => {
         const listenerDetail = this.listenersById.get(subscriberId);
         if (listenerDetail) {
           const { listener } = listenerDetail;
-          listener.recentUpdates();
+          listener.recentUpdates(recentUpdateContext);
         }
       });
     }
@@ -270,8 +272,8 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     this.recentUpdates.unsubscribe(id);
   }
 
-  notifyRecentUpdates(containerAri: string) {
-    this.recentUpdates.notify(containerAri);
+  notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {
+    this.recentUpdates.notify(recentUpdateContext);
     this.itemStateManager.refreshAllTasks();
   }
 

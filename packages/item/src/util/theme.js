@@ -21,6 +21,8 @@ export const smallFontSize = 12;
 export const compactSmallFontSize = 10;
 
 export const defaultTheme: ItemTheme = {
+  afterItemSpacing: akGridSizeUnitless,
+  beforeItemSpacing: akGridSizeUnitless,
   borderRadius: parseInt(akBorderRadius, 10),
   focus: {
     outline: akColorB100,
@@ -28,24 +30,14 @@ export const defaultTheme: ItemTheme = {
   height: {
     compact: 0,
     default: 0,
-    title: 0,
-  },
-  beforeItemSpacing: {
-    compact: akGridSizeUnitless * 2.25,
-    default: akGridSizeUnitless * 2.25,
-    title: akGridSizeUnitless,
   },
   padding: {
-    compact: {
-      x: akGridSizeUnitless,
-      y: akGridSizeUnitless,
-    },
     default: {
       x: akGridSizeUnitless / 2,
       y: akGridSizeUnitless / 2,
     },
-    title: {
-      x: akGridSizeUnitless * 0.75,
+    compact: {
+      x: akGridSizeUnitless,
       y: akGridSizeUnitless,
     },
   },

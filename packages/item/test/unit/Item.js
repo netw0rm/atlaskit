@@ -409,6 +409,10 @@ describe(`${name} - Item`, () => {
       it('should be applied by default', () => {
         expect(hasTabIndex()).toBe(true);
       });
+      it('should not be applied if props.href has a value', () => {
+        wrapper.setProps({ href: '#foo' });
+        expect(hasTabIndex()).toBe(false);
+      });
       it('should not be applied if props.isDisabled = true', () => {
         wrapper.setProps({ isDisabled: true });
         expect(hasTabIndex()).toBe(false);

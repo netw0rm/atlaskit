@@ -13,8 +13,8 @@ const getItemState = stateName => ({ theme }) => {
   `;
 };
 
-const getPadding = ({ spacing, theme }) => {
-  const paddingKey = spacing;
+const getPadding = ({ isCompact, theme }) => {
+  const paddingKey = isCompact ? 'compact' : 'default';
   const padding = getThemeStyle(theme[themeNamespace], paddingKey, 'padding');
 
   return css`
@@ -22,8 +22,9 @@ const getPadding = ({ spacing, theme }) => {
   `;
 };
 
-const getHeightStyles = ({ spacing, theme }) => {
-  const height = getThemeStyle(theme[themeNamespace], spacing, 'height');
+const getHeightStyles = ({ isCompact, theme }) => {
+  const heightKey = isCompact ? 'compact' : 'default';
+  const height = getThemeStyle(theme[themeNamespace], heightKey, 'height');
   return height ? css`
     height: ${height}px;
   ` : '';

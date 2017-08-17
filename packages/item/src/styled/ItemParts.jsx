@@ -1,16 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { getThemeStyle, themeNamespace, smallFontSize, compactSmallFontSize } from '../util/theme';
-
-const getBeforeSpacing = ({ spacing, theme }) => {
-  const space = getThemeStyle(theme[themeNamespace], spacing, 'beforeItemSpacing');
-
-  return spacing ? css`
-    margin-right: ${space}px;
-  ` : '';
-};
 
 // Checkbox/Radio wrapper -- sits left of the children
 export const InputWrapper = styled.span`
@@ -25,12 +16,24 @@ const BeforeAfterBase = styled.span`
   flex-shrink: 0;
 `;
 
+const getBeforeSpacing = ({ theme }) => {
+  const space = getThemeStyle(theme[themeNamespace], 'beforeItemSpacing');
+  return css`
+    margin-right: ${space}px;
+  `;
+};
 export const Before = styled(BeforeAfterBase)`
   ${getBeforeSpacing};
 `;
 
+const getAfterSpacing = ({ theme }) => {
+  const space = getThemeStyle(theme[themeNamespace], 'afterItemSpacing');
+  return css`
+    margin-left: ${space}px;
+  `;
+};
 export const After = styled(BeforeAfterBase)`
-  margin-left: ${akGridSizeUnitless}px;
+  ${getAfterSpacing};
 `;
 
 // Alignment and layout for the children

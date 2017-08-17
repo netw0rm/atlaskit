@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.4.0 (2017-08-17)
+
+* feature; support retry for recentUpdates if expecting item is not found. (issues closed: fs-1284) ([ed9af1e](https://bitbucket.org/atlassian/atlaskit/commits/ed9af1e))
 ## 3.3.1 (2017-08-17)
 
 * bug fix; ensure RendererContext is passed to renderDocument prop when rendering a ResourcedIt (issues closed: fs-1282) ([ec2a02a](https://bitbucket.org/atlassian/atlaskit/commits/ec2a02a))

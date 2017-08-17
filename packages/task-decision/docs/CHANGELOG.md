@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.3.1 (2017-08-17)
+
+* bug fix; ensure RendererContext is passed to renderDocument prop when rendering a ResourcedIt (issues closed: fs-1282) ([ec2a02a](https://bitbucket.org/atlassian/atlaskit/commits/ec2a02a))
 ## 3.3.0 (2017-08-17)
 
 * feature; support infinite scroll for ResourcedItemList (issues closed: fs-1268) ([a7bbfe2](https://bitbucket.org/atlassian/atlaskit/commits/a7bbfe2))

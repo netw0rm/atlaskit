@@ -8,8 +8,8 @@ import { container } from './presets';
 import createItemTheme from './map-navigation-theme-to-item-theme';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
-const rootKey = prefix('root');
-const groupKey = prefix('group');
+export const rootKey = prefix('root');
+export const groupKey = prefix('group');
 export const isDropdownOverflowKey = prefix('isDropdownOverflow');
 
 export const getProvided = (map?: Object): Provided => {

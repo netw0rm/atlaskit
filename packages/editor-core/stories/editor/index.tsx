@@ -20,6 +20,7 @@ import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import pastePlugins from '../../src/plugins/paste';
 import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
+import { Schema } from '../../src/prosemirror';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
@@ -32,7 +33,7 @@ import {
   TextSelection,
   PluginKey,
 } from '../../src/prosemirror';
-import schema from '../schema';
+import { default as schemaFull } from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
@@ -65,6 +66,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   height?: number;
+  schema?: Schema<any, any>;
 }
 
 export interface State {
@@ -76,6 +78,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   private mediaPlugins: Plugin[];
+  private schema: Schema<any, any>;
 
   state: State;
   providerFactory: ProviderFactory;
@@ -83,10 +86,10 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+    this.schema = props.schema || schemaFull;
 
     analyticsService.handler = props.analyticsHandler || (name => { });
     this.providerFactory = new ProviderFactory();
-
 
     const errorReporter = new ErrorReporter();
     if (props.errorReporter) {
@@ -94,7 +97,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { uploadErrorHandler } = props;
-    this.mediaPlugins = mediaPluginFactory(schema, {
+    this.mediaPlugins = mediaPluginFactory(this.schema, {
       uploadErrorHandler,
       errorReporter,
       providerFactory: this.providerFactory,
@@ -275,7 +278,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
-    const { mediaPlugins } = this;
+    const { mediaPlugins, schema } = this;
     const { defaultValue } = this.props;
 
     let doc;

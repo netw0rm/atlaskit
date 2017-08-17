@@ -1,8 +1,8 @@
 // @flow
-/* eslint-disable import/no-extraneous-dependencies*/
+/* eslint-disable*/
 import type { HasDefaultProp } from 'babel-plugin-react-flow-props-to-prop-types';
-/* eslint-enable */
 import type { Position, ReactElement } from '../../types';
+/* eslint-enable */
 
 export type Speed = 'INSTANT' | 'STANDARD' | 'FAST';
 

@@ -17,5 +17,6 @@ hpackJson.main = 'lib/hpack.js';
 
 // write the file back to disk
 fs.writeFileSync(hpackJsonPath, JSON.stringify(hpackJson));
-
+ /* eslint-disable no-console */
 console.log('hpack.js main field fixed!');
+

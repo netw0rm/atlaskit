@@ -10,15 +10,8 @@ import RadioGroup from '@atlaskit/field-radio-group';
 // $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import reorder from './reorder';
-<<<<<<< HEAD
-// $FlowFixMe
-import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
-// $FlowFixMe
-import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
-=======
 import reorderingUsageNote from './UsageNote';
 import Container from './Container';
->>>>>>> master
 
 const isDraggingClassName = 'is-dragging';
 

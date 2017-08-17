@@ -51,7 +51,11 @@ export default class ProgressIndicator extends Component {
 
     return (
       <ProgressBarContainer showIcon={showIcon}>
-        <ProgressBar progress={progress} onComplete={this.handleProgressComplete} />
+        <ProgressBar
+          progress={progress}
+          indeterminate={showIcon && status !== ACTIVE}
+          onComplete={this.handleProgressComplete}
+        />
         {icon}
       </ProgressBarContainer>
     );

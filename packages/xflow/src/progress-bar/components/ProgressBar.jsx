@@ -13,11 +13,13 @@ function calculateWidth(progress) {
 export default class ProgressBar extends Component {
   static propTypes = {
     progress: PropTypes.number.isRequired,
+    indeterminate: PropTypes.bool,
     onComplete: PropTypes.func,
   };
 
   static defaultProps = {
     progress: 0,
+    indeterminate: false,
     onComplete: () => {},
   };
 
@@ -45,19 +47,23 @@ export default class ProgressBar extends Component {
   }
 
   render() {
+    const { indeterminate } = this.props;
     const { width } = this.state;
+
     return (
       <ProgressBarBackground>
-        <ProgressBarValue
-          onTransitionEnd={() => {
-            if (width === '100%') {
-              this.props.onComplete();
-            }
-          }}
-          style={{
-            width,
-          }}
-        />
+        {indeterminate
+          ? null
+          : <ProgressBarValue
+            onTransitionEnd={() => {
+              if (width === '100%') {
+                this.props.onComplete();
+              }
+            }}
+            style={{
+              width,
+            }}
+          />}
       </ProgressBarBackground>
     );
   }

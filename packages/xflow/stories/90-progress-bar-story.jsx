@@ -13,5 +13,8 @@ storiesOf('ProgressBar')
       <ProgressBar progress={1} onComplete={() => console.log('Progress completed')} />
     )
   )
+  .add('Indeterminate state', () =>
+    setupStorybookAnalytics(<ProgressBar progress={1} indeterminate />)
+  )
   .add('Negative', () => setupStorybookAnalytics(<ProgressBar progress={-1} />))
   .add('Over 100%', () => setupStorybookAnalytics(<ProgressBar progress={2} />));

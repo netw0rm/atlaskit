@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import { gridSize, fontSize, themed } from '@atlaskit/theme';
 import theme from './theme';
 
 const borderRadius = '5px';
@@ -7,12 +7,12 @@ const borderWidth = 1;
 const borderWidthFocused = 2;
 const borderWidthSubtle = 0;
 
-const fontSize = 14;
+const spacing = gridSize();
 const heightBase = spacing * 5;
 const heightCompact = spacing * 4;
 const horizontalPadding = spacing;
 const innerHeight = spacing * 2.5;
-const lineHeight = innerHeight / fontSize;
+const lineHeight = innerHeight / fontSize();
 const transitionDuration = '0.2s';
 
 const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtle, none }) => {
@@ -65,21 +65,23 @@ const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
   return css`margin: -${margin}px`;
 };
 
-const getBackgroundColor = ({ appearance, focused }) => {
-  const state = focused ? 'focus' : 'default';
-  return theme.field[appearance].background[state];
-};
-
-const getBorderColor = ({ appearance, focused }) => {
-  const state = focused ? 'focus' : 'default';
-  return theme.field[appearance].border[state];
-};
-
 export const Content = styled.div`
+  ${p => {
+    // console.log(p);
+    const thisish = themed('appearance', {
+      invalid: {
+        light: 'LIGHT ALIGHT A LIGHT',
+        dark: 'Darkness, two which the universe shall return',
+      },
+    })
+    // console.log(thisish);
+    const something = thisish(p);
+    console.log(something);
+  }}
   ${p => getBorderAndPadding(p)}
   ${p => getMargin(p)}
-  background-color: ${p => getBackgroundColor(p)};
-  border-color: ${p => getBorderColor(p)};
+  background-color: ${({ appearance, focused }) => theme.field[appearance].background[focused]};
+  border-color: ${({ appearance, focused }) => theme.field[appearance].border[focused]};
   border-radius: ${borderRadius};
   border-style: ${p => (p.appearance === 'none' ? 'none' : 'solid')};
   box-sizing: border-box;

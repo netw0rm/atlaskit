@@ -1,52 +1,115 @@
-import {
-  akColorB100,
-  akColorN0,
-  akColorN10,
-  akColorN20,
-  akColorN200,
-  akColorN20A,
-  akColorN60,
-  akColorY300,
-} from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 
-const invalidColor = akColorY300;
+const invalidColor = colors.Y300;
+
+const getBackgroundColor = themed('appearance', {
+
+})
+
+const field = themed('appearance', {
+  standard: {
+    background: {
+      default: colors.N10,
+      focus: colors.N0,
+      hover: colors.N20,
+    },
+    border: {
+      default: colors.N20,
+      focus: colors.B100,
+      hover: colors.N20,
+    },
+  },
+  disabled: {
+    background: {
+      default: colors.N20,
+      focus: colors.N20,
+      hover: colors.N20,
+    },
+    border: {
+      default: colors.N20A,
+      focus: colors.N20A,
+      hover: colors.N20A,
+    },
+    text: {
+      default: colors.N60,
+      focus: colors.N60,
+      hover: colors.N60,
+    },
+  },
+  invalid: {
+    background: {
+      default: colors.N10,
+      focus: colors.N0,
+      hover: colors.N20,
+    },
+    border: {
+      default: invalidColor,
+      hover: invalidColor,
+      focus: invalidColor,
+    },
+  },
+  subtle: {
+    background: {
+      default: 'transparent',
+      focus: colors.N0,
+      hover: colors.N20,
+    },
+    border: {
+      default: 'transparent',
+      focus: colors.B100,
+      hover: colors.N20,
+    },
+  },
+  none: {
+    background: {
+      default: 'transparent',
+      focus: 'transparent',
+      hover: 'transparent',
+    },
+    border: {
+      default: 'transparent',
+      focus: 'transparent',
+      hover: 'transparent',
+    },
+  },
+});
 
 export default {
   field: {
     standard: {
       background: {
-        default: akColorN10,
-        focus: akColorN0,
-        hover: akColorN20,
+        default: colors.N10,
+        focus: colors.N0,
+        hover: colors.N20,
       },
       border: {
-        default: akColorN20,
-        focus: akColorB100,
-        hover: akColorN20,
+        default: colors.N20,
+        focus: colors.B100,
+        hover: colors.N20,
       },
     },
     disabled: {
       background: {
-        default: akColorN20,
-        focus: akColorN20,
-        hover: akColorN20,
+        default: colors.N20,
+        focus: colors.N20,
+        hover: colors.N20,
       },
       border: {
-        default: akColorN20A,
-        focus: akColorN20A,
-        hover: akColorN20A,
+        default: colors.N20A,
+        focus: colors.N20A,
+        hover: colors.N20A,
       },
       text: {
-        default: akColorN60,
-        focus: akColorN60,
-        hover: akColorN60,
+        default: colors.N60,
+        focus: colors.N60,
+        hover: colors.N60,
       },
     },
     invalid: {
       background: {
-        default: akColorN10,
-        focus: akColorN0,
-        hover: akColorN20,
+        default: colors.N10,
+        focus: colors.N0,
+        hover: colors.N20,
       },
       border: {
         default: invalidColor,
@@ -57,13 +120,13 @@ export default {
     subtle: {
       background: {
         default: 'transparent',
-        focus: akColorN0,
-        hover: akColorN20,
+        focus: colors.N0,
+        hover: colors.N20,
       },
       border: {
         default: 'transparent',
-        focus: akColorB100,
-        hover: akColorN20,
+        focus: colors.B100,
+        hover: colors.N20,
       },
     },
     none: {
@@ -85,6 +148,6 @@ export default {
   },
 
   label: {
-    color: akColorN200,
+    color: colors.N200,
   },
 };

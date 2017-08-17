@@ -28,6 +28,7 @@
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/inline-dialog": "^3.0.0",
     "@atlaskit/spinner": "^2.2.1",
+    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
@@ -37,10 +38,10 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/calendar": "^2.0.13",
     "@atlaskit/field-base": "*",
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/util-readme": "^3.1.0",
-    "@atlaskit/calendar": "^2.0.13",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

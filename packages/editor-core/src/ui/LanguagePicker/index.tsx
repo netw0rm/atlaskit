@@ -5,8 +5,7 @@ import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import { EditorView } from '../../prosemirror';
-import ToolbarButton from '../ToolbarButton';
-import { FloatingToolbar } from './styles';
+import { TrashToolbarButton, FloatingToolbar, Separator } from './styles';
 
 import {
   createLanguageList,
@@ -81,7 +80,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
 
     if (toolbarVisible || languageSelectFocused) {
-      return (
+        return (
         <FloatingToolbar
           target={element}
           offset={[0, 3]}
@@ -103,7 +102,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
               defaultSelected={{ content: language, value: language }}
               placeholder="Select language"
             />
-            <ToolbarButton
+            <Separator />
+            <TrashToolbarButton
               onClick={this.handleRemoveCodeBlock}
               iconBefore={<RemoveIcon label="Reset block type" />}
             />

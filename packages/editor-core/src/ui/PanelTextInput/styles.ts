@@ -1,4 +1,4 @@
-import { akEditorPopupText } from '../../styles';
+import { akColorN400 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:variable-name
@@ -9,7 +9,7 @@ export const Input = styled.input`
     border: 0;
     border-radius: 0;
     box-sizing: content-box;
-    color: ${akEditorPopupText};
+    color: ${akColorN400};
     flex-grow: 1;
     font-size: 13px;
     line-height: 20px;
@@ -29,7 +29,7 @@ export const Input = styled.input`
     }
 
     &::placeholder {
-      color: ${akEditorPopupText};
+      color: ${akColorN400};
       opacity: 0.5;
     }
   }

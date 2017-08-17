@@ -4,10 +4,8 @@ import { ActivityProvider } from '@atlaskit/activity';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
-import ToolbarButton from '../ToolbarButton';
-import { Seperator, Container } from './styles';
+import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
 import { EditorView } from '../../prosemirror';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 import RecentSearch from '../RecentSearch';
@@ -155,26 +153,19 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               <ToolbarButton
                 href={href}
                 target="_blank"
-                theme="dark"
                 title="Open link in new tab"
-              >
-                <OpenIcon label="Open link" />
-              </ToolbarButton>
-            }
-            {!showOpenButton ? null :
-              <Seperator />
+                iconBefore={<OpenIcon label="Open link" />}
+              />
             }
             {!showUnlinkButton ? null :
               <ToolbarButton
-                theme="dark"
                 title="Unlink"
                 onClick={this.handleUnlink}
-              >
-                <UnlinkIcon label="Unlink" />
-              </ToolbarButton>
+                iconBefore={<UnlinkIcon label="Unlink" />}
+              />
             }
             {!showUnlinkButton ? null :
-              <Seperator />
+              <Separator />
             }
             {this.renderInput()}
           </Container>

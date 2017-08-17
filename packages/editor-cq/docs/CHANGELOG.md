@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq
 
+## 4.6.2 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
 ## 4.6.1 (2017-08-16)
 
 * bug fix; fix plaintext link detection, enable markdown and code detection on paste ([00385bd](https://bitbucket.org/atlassian/atlaskit/commits/00385bd))

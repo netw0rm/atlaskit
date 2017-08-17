@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.13.1 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
 ## 45.13.0 (2017-08-16)
 
 * bug fix; style fixes in panel toolbar. ([a51ffa6](https://bitbucket.org/atlassian/atlaskit/commits/a51ffa6))

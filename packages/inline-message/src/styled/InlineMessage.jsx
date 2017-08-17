@@ -1,9 +1,20 @@
 import styled, { css } from 'styled-components';
-import { akColorN600, akColorN300 } from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 import itemSpacing from './constants';
+
+const getFocusColor = themed('appearance', {
+  connectivity: { light: colors.B500, dark: colors.B200 },
+  confirmation: { light: colors.G400, dark: colors.G400 },
+  info: { light: colors.P500, dark: colors.P300 },
+  warning: { light: colors.Y500, dark: colors.Y500 },
+  error: { light: colors.R500, dark: colors.R500 },
+});
 
 export const Root = styled.div`
   display: inline-block;
+  &:focus {
+    outline: 1px solid ${getFocusColor}
+  }
 `;
 
 export const ButtonContents = styled.div`
@@ -11,13 +22,20 @@ export const ButtonContents = styled.div`
   display: flex;
   text-decoration: none;
   ${({ isHovered }) => (isHovered && css`
-    color: ${akColorN600};
+    color: ${colors.N600};
     text-decoration: underline
   `)};
 `;
 
+const getTitleColor = themed({ light: colors.N600, dark: colors.DN600 });
+const getTextColor = themed({ light: colors.N300, dark: colors.DN100 });
+
+export const Title = styled.span`
+  color: ${getTitleColor}
+  font-weight: 500;
+`;
+
 export const Text = styled.span`
-  color: ${({ title }) => (title ? akColorN600 : akColorN300)}
-  ${({ title }) => (title ? css`font-weight: 500;` : '')}
+  color: ${getTextColor}
   padding: 0 ${itemSpacing}px;
 `;

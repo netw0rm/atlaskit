@@ -11,6 +11,7 @@ const Input = styled.input`
   border: 0;
   background: none;
   align-self: center;
+  font-size: 14px;
 
   &::placeholder {
     font-size: 14px;

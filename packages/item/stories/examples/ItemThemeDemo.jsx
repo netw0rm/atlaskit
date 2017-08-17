@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 // $FlowFixMe
 import { darken, mix } from 'polished';
+// $FlowFixMe
 import Avatar from '@atlaskit/avatar';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import {

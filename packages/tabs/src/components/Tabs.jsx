@@ -1,5 +1,6 @@
 // @flow
 /* eslint-disable react/sort-comp */
+// TODO: fix flow errors
 import React, { PureComponent } from 'react';
 import TabsStateless from './TabsStateless';
 import type { ChildrenType } from '../types';
@@ -8,7 +9,7 @@ type Props = {
   /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
   onSelect?: (number) => void,
   /** The tabs to display, with content being hidden unless the tab is selected. */
-  tabs?: Array<{
+  tabs: Array<{
     content?: ChildrenType,
     defaultSelected?: boolean,
     label: ChildrenType,
@@ -22,7 +23,7 @@ export default class Tabs extends PureComponent {
     tabs: [],
   }
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     // Set the selected tab to the first tab with defaultSelected provided
@@ -35,7 +36,7 @@ export default class Tabs extends PureComponent {
         }
       }
     }
-
+// $FlowFixMe
     this.state = {
       selectedTab: defaultSelectedIndex,
     };
@@ -43,18 +44,22 @@ export default class Tabs extends PureComponent {
 
   getTabs = () => this.props.tabs.map((tab, index) => ({
     ...tab,
+    // $FlowFixMe
     isSelected: index === this.state.selectedTab,
     onKeyboardNav: this.tabKeyboardNavHandler,
     onSelect: () => this.tabSelectHandler(index),
   }));
 
-  tabSelectHandler = (selectedTabIndex) => {
+  tabSelectHandler = (selectedTabIndex: number) => {
+    // $FlowFixMe
     this.props.onSelect(selectedTabIndex);
+    // $FlowFixMe
     this.setState({ selectedTab: selectedTabIndex });
   }
 
-  tabKeyboardNavHandler = (key) => {
+  tabKeyboardNavHandler = (key: string) => {
     // Handle left and right arrow key presses by selecting the previous or next tab
+    // $FlowFixMe
     const selectedIndex = this.state.selectedTab;
     if (selectedIndex !== null) {
       let nextIndex = selectedIndex;

@@ -1,17 +1,16 @@
 // @flow
-
-export function add(fn: (props: Object) => number, addend: number): number {
-  return Number(props => fn(props) + addend);
+export function add<P: Object>(fn: (props: P) => number, addend: number) {
+  return (props: P) => fn(props) + addend;
 }
 
-export function subtract(fn: (props: Object) => number, subtrahend: number): number {
-  return Number(props => fn(props) - subtrahend);
+export function subtract<P: Object>(fn: (props: P) => number, subtrahend: number) {
+  return (props: P) => fn(props) - subtrahend;
 }
 
-export function multiply(fn: (props: Object) => number, factor: number): number {
-  return Number(props => fn(props) * factor);
+export function multiply<P: Object>(fn: (props: P) => number, factor: number) {
+  return (props: P) => fn(props) * factor;
 }
 
-export function divide(fn: (props: Object) => number, divisor: number): number {
-  return Number(props => fn(props) / divisor);
+export function divide<P: Object>(fn: (props: P) => number, divisor: number) {
+  return (props: P) => fn(props) / divisor;
 }

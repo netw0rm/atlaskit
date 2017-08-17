@@ -67,7 +67,7 @@ class Avatar extends Component {
 
   // disallow click on disabled avatars
   // only return avatar data properties
-  guardedClick = (event: {}) => {
+  guardedClick = (event: KeyboardEvent | MouseEvent) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled || (typeof onClick !== 'function')) return;
@@ -86,7 +86,7 @@ class Avatar extends Component {
 
     // add warnings for various invalid states
     if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
-      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`);
+      console.warn(`Avatar size "${String(size)}" does NOT support ${showPresence ? 'presence' : 'status'}`);
       return null;
     }
     if (showPresence && showStatus) {

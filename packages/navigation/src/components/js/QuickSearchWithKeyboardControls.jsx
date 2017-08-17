@@ -1,37 +1,46 @@
 import React, { Component } from 'react';
-
-import { AkQuickSearch } from '../../../src';
+import PropTypes from 'prop-types';
+import { AkSearch } from '../../../src';
 
 const noOp = () => {};
 
-const flattenResults = results => (
-  results.reduce((flatArray, group) => (
-    flatArray.concat(group.items)
-  ), [])
+/** Flatten a AkNavigationItemGroups of results into a plain array of results */
+const flattenChildren = children => (
+  React.Children
+    .toArray(children)
+    .reduce((flatArray, childGroup) => (
+      flatArray.concat(React.Children.toArray(childGroup.props.children))
+    ), [])
 );
 
 /**
- * Get the result ID of an item by its index in the flatResults array
+ * Get the result ID of a result by its index in the flatResults array
  * Returns null for a failed index or if resultId is empty|undefined
  */
-const getItemIdByIndex = (array, index) => (array && array[index] && array[index].resultId) || null;
+const getResultIdByIndex = (array, index) => (
+  (array && array[index] && array[index].props && array[index].props.resultId)
+  ? array[index].props.resultId
+  : null
+);
 
 /**
- * Find an item in the flatResults array by its ID
- * Returns the item object or null
+ * Find a result in the flatResults array by its ID
+ * Returns the result object or null
  */
-const getItemById = (array, id) => (array && array.find(item => item.resultId === id)) || null;
+const getResultById = (array, id) => (
+  array && array.find(result => result.props && (result.props.resultId === id))
+  ) || null;
 
 /**
- * Get an item's index in the flatResults array by its ID
+ * Get a result's index in the flatResults array by its ID
  * Returns a numberic index or null
  */
-const getItemIndexById = (array, id) => {
+const getResultIndexById = (array, id) => {
   if (!array) {
     return null;
   }
-  const item = getItemById(array, id);
-  const index = array.indexOf(item);
+  const result = getResultById(array, id);
+  const index = array.indexOf(result);
   return index >= 0 ? index : null;
 };
 
@@ -55,118 +64,177 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
 
 /**
  * The value, null, is used to represent 'no selection'.  Please remember to
- * appropriately check for null when using the selectedItemId state
+ * appropriately check for null when using the selectedResultId state
  */
 
-export const withKeyboardControls = QuickSearchComp => (
-  class WithKeyboardControls extends Component {
-    static propTypes = {
-      onResultMouseEnter: AkQuickSearch.propTypes.onResultMouseEnter,
-      onResultMouseLeave: AkQuickSearch.propTypes.onResultMouseLeave,
-      onSearchBlur: AkQuickSearch.propTypes.onSearchBlur,
-      onSearchKeyDown: AkQuickSearch.propTypes.onSearchKeyDown,
-      results: AkQuickSearch.propTypes.results,
-      selectedItemId: AkQuickSearch.propTypes.selectedItemId,
-    }
+export default class QuickSearch extends Component {
+  static propTypes = {
+    /** Search results in the form of AkNavigationItemGroups containing Result components */
+    children: PropTypes.node,
+    /** Set search loading state */
+    isLoading: PropTypes.bool,
+    /** onBlur callback for search input */
+    onSearchBlur: PropTypes.func,
+    /** onInput callback for search input */
+    onSearchInput: PropTypes.func.isRequired,
+    /** onKeyDown callback for search input */
+    onSearchKeyDown: PropTypes.func,
+    /** Placeholder text for search input field */
+    placeholder: PropTypes.string,
+    /** Value of the search input field */
+    value: PropTypes.string,
+    /** Corresponds to the `resultId` of the selected result */
+    selectedResultId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  }
 
-    static defaultProps = {
-      onResultMouseEnter: noOp,
-      onResultMouseLeave: noOp,
-      onSearchBlur: noOp,
-      onSearchKeyDown: noOp,
-      results: [],
-    }
+  static defaultProps = {
+    chidlren: [],
+    isLoading: false,
+    onSearchBlur: noOp,
+    onSearchKeyDown: noOp,
+    placeholder: 'Search',
+    value: '',
+  }
 
-    flatResults = flattenResults(this.props.results);
+  // eslint-disable-next-line react/sort-comp
+  flatResults = flattenChildren(this.props.children);
 
-    state = {
-      selectedItemId: this.props.selectedItemId || getItemIdByIndex(this.flatResults, 0),
-    }
+  /** Select first result by default if `selectedResultId` prop is not provider */
+  state = {
+    selectedResultId: this.props.selectedResultId || getResultIdByIndex(this.flatResults, 0),
+  }
 
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.results) {
-        this.flatResults = flattenResults(nextProps.results);
-        this.setState({
-          selectedItemId: nextProps.selectedItemId || getItemIdByIndex(this.flatResults, 0),
-        });
-      }
-    }
-
-    /**
-     * Uses the virtual list, this.flatResults, to move the selection across grouped results as if
-     * results were in a single, circular list.
-     *
-     * Process:
-     * 1. Finds the index of the selected item in the flatResults array,
-     * 2. Increments or decrements this index by the supplied adjustment amount,
-     * 3. Sets the new selectedItemId based on the modifed index
-     */
-    adjustSelectedItemIndex = (adjustment) => {
-      const currentIndex = getItemIndexById(this.flatResults, this.state.selectedItemId);
-      const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
+  /** Update flatResults array whenever `children` prop changes */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.children) {
+      this.flatResults = flattenChildren(nextProps.children);
       this.setState({
-        selectedItemId: getItemIdByIndex(this.flatResults, newIndex),
+        selectedResultId: nextProps.selectedResultId || getResultIdByIndex(this.flatResults, 0),
       });
     }
+  }
 
-    selectNext = () => { this.adjustSelectedItemIndex(+1); };
+  /**
+   * Uses the virtual list, this.flatResults, to move the selection across grouped results as if
+   * results were in a single, circular list.
+   *
+   * Process:
+   * 1. Finds the index of the selected result in the flatResults array,
+   * 2. Increments or decrements this index by the supplied adjustment amount,
+   * 3. Sets the new selectedResultId based on the modifed index
+   */
+  adjustSelectedResuldIndex = (adjustment) => {
+    const currentIndex = getResultIndexById(this.flatResults, this.state.selectedResultId);
+    const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
+    this.setState({
+      selectedResultId: getResultIdByIndex(this.flatResults, newIndex),
+    });
+  }
 
-    selectPrevious = () => { this.adjustSelectedItemIndex(-1); };
+  /** Select next result */
+  selectNext = () => { this.adjustSelectedResuldIndex(+1); };
 
-    handleResultMouseEnter = (itemData) => {
-      this.props.onResultMouseEnter();
-      this.setState({ selectedItemId: itemData && itemData.resultId });
-    }
+  /** Select previous result */
+  selectPrevious = () => { this.adjustSelectedResuldIndex(-1); };
 
-    handleResultMouseLeave = () => {
-      this.props.onResultMouseLeave();
-      this.setState({ selectedItemId: null });
-    }
+  /**
+   * Callback for mouseEnter events on individual results
+   * Move selection to hovered result
+   */
+  handleResultMouseEnter = (resultData) => {
+    this.setState({ selectedResultId: resultData && resultData.resultId });
+  }
 
-    handleSearchBlur = () => {
-      this.props.onSearchBlur();
-      this.setState({ selectedItemId: null });
-    }
+  /**
+   * Callback for mouseLeave events on individual results
+   * Clear result selection
+   */
+  handleResultMouseLeave = () => {
+    this.setState({ selectedResultId: null });
+  }
 
-    handleSearchKeyDown = (event) => {
-      this.props.onSearchKeyDown();
-      if (event.key === 'ArrowUp') {
-        event.preventDefault(); // Don't move cursor around in search input field
-        this.selectPrevious();
-      } else if (event.key === 'ArrowDown') {
-        event.preventDefault(); // Don't move cursor around in search input field
-        this.selectNext();
-      } else if (event.key === 'Enter' && this.state.selectedItemId) {
-        event.preventDefault(); // Don't fire submit event from input
-        const itemData = getItemById(this.flatResults, this.state.selectedItemId);
-        if (itemData.href) {
-          window.location.assign(itemData.href);
-        } else if (itemData.onClick) {
-          itemData.onClick({
-            resultId: itemData.resultId,
-            type: itemData.type,
-          });
-        }
+  /**
+   * Clear result selection when search input is blurred
+   */
+  handleSearchBlur = () => {
+    this.props.onSearchBlur();
+    this.setState({ selectedResultId: null });
+  }
+
+  /**
+   * Keyboard controls
+   * Up - Select previous result
+   * Down - Select next result
+   * Enter - Submit selected result
+   */
+  handleSearchKeyDown = (event) => {
+    this.props.onSearchKeyDown();
+    if (event.key === 'ArrowUp') {
+      event.preventDefault(); // Don't move cursor around in search input field
+      this.selectPrevious();
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault(); // Don't move cursor around in search input field
+      this.selectNext();
+    } else if (event.key === 'Enter' && this.state.selectedResultId) {
+      event.preventDefault(); // Don't fire submit event from input
+      const result = getResultById(this.flatResults, this.state.selectedResultId);
+      if (!result.props) {
+        return;
       }
+      if (result.props.onClick) {
+        result.props.onClick({
+          resultId: result.props.resultId,
+          type: result.props.type,
+        });
+      }
+      if (result.props.href) {
+        window.location.assign(result.props.href);
+      }
+    }
+  };
+
+  /**
+   * Render QuickSearch's children, attaching extra props for interactions
+   */
+  renderChildren() {
+    /** Attach mouse interaction handlers and determine whether this result is selected */
+    const renderResult = (result) => {
+      const isSelected = Boolean(result.props) &&
+        result.props.resultId === this.state.selectedResultId;
+      return React.cloneElement(
+        result,
+        {
+          isSelected,
+          onMouseEnter: this.handleResultMouseEnter,
+          onMouseLeave: this.handleResultMouseLeave,
+        }
+      );
     };
 
-    render() {
-      return (
-        <QuickSearchComp
-          // Default settings, overridable by this.props
-          isResultHoverStylesDisabled
+    /** Process a group of results */
+    const renderGroup = group => (
+      React.cloneElement(
+        group,
+        null,
+        React.Children.map(group.props.children, renderResult)
+      )
+    );
 
-          {...this.props}
-
-          // Augmented props and hard settings, not to be overridden by this.props
-          onResultMouseEnter={this.handleResultMouseEnter}
-          onResultMouseLeave={this.handleResultMouseLeave}
-          onSearchBlur={this.handleSearchBlur}
-          onSearchKeyDown={this.handleSearchKeyDown}
-          selectedItemId={this.state.selectedItemId}
-        />
-      );
-    }
+    return React.Children.map(this.props.children, renderGroup);
   }
-);
-export default withKeyboardControls(AkQuickSearch);
+
+  render() {
+    return (
+      <AkSearch
+        isLoading={this.props.isLoading}
+        onBlur={this.handleSearchBlur}
+        onInput={this.props.onSearchInput}
+        onKeyDown={this.handleSearchKeyDown}
+        placeholder={this.props.placeholder}
+        value={this.props.value}
+      >
+        {this.renderChildren()}
+      </AkSearch>
+    );
+  }
+}

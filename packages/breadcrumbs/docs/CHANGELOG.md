@@ -1,5 +1,10 @@
 # @atlaskit/breadcrumbs
 
+## 2.5.0 (2017-08-17)
+
+
+
+* feature; adds an onClick prop to the BreadcrumbsItem component. (issues closed: ak-3259) ([61fee5a](https://bitbucket.org/atlassian/atlaskit/commits/61fee5a))
 ## 2.4.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.2.0 (2017-08-17)
+
+* feature; support refreshing of ResourcedItemList and task state updates from an external tri (issues closed: fs-1267) ([bc2d4f1](https://bitbucket.org/atlassian/atlaskit/commits/bc2d4f1))
 ## 3.1.2 (2017-08-17)
 
 * bug fix; fix exporting of support json data (issues closed: fs-1274) ([b1ec12f](https://bitbucket.org/atlassian/atlaskit/commits/b1ec12f))

@@ -30,7 +30,7 @@ class ConfirmTrial extends Component {
     intl: intlShape.isRequired,
     productLogo: PropTypes.node.isRequired,
     spinnerActive: PropTypes.bool,
-    confirmButtonDisabled: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
@@ -49,7 +49,7 @@ class ConfirmTrial extends Component {
 
   state = {
     spinnerActive: this.props.spinnerActive,
-    confirmButtonDisabled: this.props.confirmButtonDisabled,
+    buttonsDisabled: this.props.buttonsDisabled,
     confluenceFailedToStart: false,
   };
 
@@ -63,7 +63,7 @@ class ConfirmTrial extends Component {
     firePrivateAnalyticsEvent('xflow.confirm-trial.confirm-button.clicked');
     this.setState({
       spinnerActive: true,
-      confirmButtonDisabled: true,
+      buttonsDisabled: true,
       confluenceFailedToStart: false,
     });
 
@@ -77,7 +77,7 @@ class ConfirmTrial extends Component {
         this.setState({
           confluenceFailedToStart: true,
           spinnerActive: false,
-          confirmButtonDisabled: false,
+          buttonsDisabled: false,
         });
       });
   };
@@ -112,7 +112,7 @@ class ConfirmTrial extends Component {
               id="xflow-confirm-trial-confirm-button"
               onClick={this.handleConfirmClick}
               appearance="primary"
-              isDisabled={this.state.confirmButtonDisabled}
+              isDisabled={this.state.buttonsDisabled}
             >
               <FormattedMessage
                 id="xflow.generic.confirm-trial.confirm-button"
@@ -123,6 +123,7 @@ class ConfirmTrial extends Component {
               id="xflow-confirm-trial-cancel-button"
               onClick={this.handleCancelClick}
               appearance="subtle-link"
+              isDisabled={this.state.buttonsDisabled}
             >
               <FormattedMessage
                 id="xflow.generic.confirm-trial.cancel-button"

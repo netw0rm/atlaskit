@@ -53,7 +53,7 @@ storiesOf('ConfirmTrial')
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
         spinnerActive
-        confirmButtonDisabled
+        buttonsDisabled
       />
     )
   )
@@ -88,7 +88,7 @@ storiesOf('ConfirmTrial')
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
         spinnerActive
-        confirmButtonDisabled
+        buttonsDisabled
       />
     )
   )

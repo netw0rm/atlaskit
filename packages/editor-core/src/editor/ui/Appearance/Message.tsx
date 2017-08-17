@@ -2,8 +2,13 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
-import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
+import {
+  EditorAppearanceComponentProps,
+  EditorAppearanceComponentState,
+  EditorAppearance
+} from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
@@ -72,8 +77,10 @@ const SecondaryToolbarContainer = styled.div`
   display: flex;
 `;
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
   static displayName = 'MessageEditor';
+  state: EditorAppearanceComponentState = {};
+
   private flashToggle = false;
 
   private appearance: EditorAppearance = 'message';
@@ -84,6 +91,10 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     }
   }
 
+  private handleEditorRef = ref => {
+    this.setState({ editorRef: ref });
+  }
+
   private renderChrome = ({ maxContentSize }) => {
     const {
       editorView,
@@ -91,13 +102,18 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       secondaryToolbarComponents,
       providerFactory,
       customContentComponents,
-      customSecondaryToolbarComponents
+      customSecondaryToolbarComponents,
+      addonToolbarComponents
     } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <MessageEditor className={this.flashToggle ? '-flash' : ''} isMaxContentSizeReached={maxContentSizeReached}>
+      <MessageEditor
+        innerRef={this.handleEditorRef}
+        className={this.flashToggle ? '-flash' : ''}
+        isMaxContentSizeReached={maxContentSizeReached}
+      >
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
@@ -115,6 +131,11 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             items={secondaryToolbarComponents}
           />
           {customSecondaryToolbarComponents}
+          <AddonToolbar
+            dropdownItems={addonToolbarComponents}
+            popupsMountPoint={this.state.editorRef}
+            popupsBoundariesElement={this.state.editorRef}
+          />
         </SecondaryToolbarContainer>
       </MessageEditor>
     );

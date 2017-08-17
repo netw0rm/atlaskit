@@ -5,6 +5,10 @@ import Editor from './../src/editor';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
+import { Addon, AddonConfiguration } from '../src/editor/ui/Addon';
+import DocumentIcon from '@atlaskit/icon/glyph/document';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import styled from 'styled-components';
 
 const SAVE_ACTION = () => action('Save')();
 const analyticsHandler = (actionName, props) => action(actionName)(props);
@@ -34,34 +38,76 @@ storiesOf(name, module)
           onSave={SAVE_ACTION}
         />}
     />)
-  .add('Message Editor with dot menu', () =>
-    <ToolsDrawer
-      // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
-        <Editor
-          appearance="message"
-          analyticsHandler={analyticsHandler}
+  .add('Message Editor with Addons', () => {
+    // tslint:disable-next-line:variable-name
+    const AddonComponentExample = styled.div`
+      background: #ff0088;
+      border-radius: 5px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: white;
 
-          allowTextFormatting={true}
-          allowTasksAndDecisions={true}
-          allowHyperlinks={true}
-          allowCodeBlocks={true}
+      > button {
+        padding: 6px 10px;
+        margin: 8px auto 0;
+        width: 50%;
+      }
+    `;
 
-          saveOnEnter={true}
+    /**
+     * List of addon configuration objects
+     */
+    const addonConfigs: AddonConfiguration[] = [
+      {
+        text: 'Item one',
+        icon: <DocumentIcon label="Item 1" />,
+        renderOnClick: togglePopup => (
+          <AddonComponentExample>
+            Rendered on click
+            <button onClick={togglePopup}>close</button>
+          </AddonComponentExample>
+        )
+      },
+      {
+        text: 'Item two',
+        icon: <AtlassianIcon label="Item 2" />,
+        action: editorActions => editorActions.clear()
+      }
+    ];
 
-          mentionProvider={mentionProvider}
-          emojiProvider={emojiProvider}
-          mediaProvider={mediaProvider}
+    const addons = addonConfigs.map((item, i) => <Addon key={i} {...item}>{item.text}</Addon>);
 
-          onChange={onChange}
-          onSave={SAVE_ACTION}
+    return (
+      <ToolsDrawer
+        // tslint:disable-next-line:jsx-no-lambda
+        renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
+          <Editor
+            appearance="message"
+            analyticsHandler={analyticsHandler}
 
-          secondaryToolbarComponents={[
+            allowTextFormatting={true}
+            allowTasksAndDecisions={true}
+            allowHyperlinks={true}
+            allowCodeBlocks={true}
 
-          ]}
-        />}
-    />)
-  .add('Message Editor with Max Length', () =>
+            saveOnEnter={true}
+
+            mentionProvider={mentionProvider}
+            emojiProvider={emojiProvider}
+            mediaProvider={mediaProvider}
+
+            onChange={onChange}
+            onSave={SAVE_ACTION}
+
+            addonToolbarComponents={addons}
+          />}
+      />
+    );
+  })
+  .add('Tray Editor with Max Length', () =>
     <Editor
       appearance="message"
       saveOnEnter={true}

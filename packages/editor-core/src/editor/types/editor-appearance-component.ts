@@ -15,4 +15,9 @@ export interface EditorAppearanceComponentProps {
   customContentComponents?: React.ReactElement<any> | React.ReactElement<any>[];
   customPrimaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
   customSecondaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+  addonToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+}
+
+export interface EditorAppearanceComponentState {
+  editorRef?: HTMLElement;
 }

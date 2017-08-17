@@ -123,6 +123,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
         customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
+        addonToolbarComponents={this.props.addonToolbarComponents}
       />
     );
   }

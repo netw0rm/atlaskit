@@ -13,6 +13,7 @@ export interface EditorProps {
   contentComponents?: React.ReactElement<any> | React.ReactElement<any>[];
   primaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
   secondaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+  addonToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;

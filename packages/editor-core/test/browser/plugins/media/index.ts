@@ -31,6 +31,7 @@ import {
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { setNodeSelection } from '../../../../src/utils';
+import { AnalyticsHandler, analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -351,6 +352,44 @@ describe('Media plugin', () => {
       expect((picker.setUploadParams as any).calledOnce).to.equal(true);
     });
   });
+
+  it('should trigger analytics events for picking', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = sinon.spy();
+    analyticsService.handler = (spy as AnalyticsHandler);
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    expect(pluginState.binaryPicker!).to.be.an('object');
+
+    const testFileData = {
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test'
+      }
+    };
+
+    // Warning: calling private methods below
+    (pluginState as any).dropzonePicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.drop', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).clipboardPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.paste', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).popupPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.popup', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).binaryPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.binary', { fileMimeType: 'file/test' })).to.eq(true);
+  });
+
 
   describe('handleMediaNodeRemove', () => {
     it('removes media node', () => {

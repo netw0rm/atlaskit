@@ -9,6 +9,7 @@ import {
 import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
 import { uuid } from '../utils';
+import analyticsService from '../../analytics/service';
 
 export interface URLInfo {
   href: string;
@@ -55,6 +56,7 @@ export const insertLinks = async (
         tr.replaceWith(insertPos, insertPos, node);
         trQueue.push(tr);
         dispatch(tr);
+        analyticsService.trackEvent('atlassian.editor.media.link');
 
         const updateStateWithError = error => stateManager.updateState(id, {
           id,

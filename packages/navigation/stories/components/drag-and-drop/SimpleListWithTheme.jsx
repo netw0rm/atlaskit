@@ -7,8 +7,6 @@ import Navigation, {
   presetThemes,
 } from '@atlaskit/navigation';
 import RadioGroup from '@atlaskit/field-radio-group';
-// $FlowFixMe
-import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';
 import Container from './Container';

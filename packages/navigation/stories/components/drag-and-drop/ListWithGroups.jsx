@@ -11,8 +11,6 @@ import Navigation, {
   AkCollapseOverflow,
 } from '@atlaskit/navigation';
 import Avatar from '@atlaskit/avatar';
-// $FlowFixMe
-import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';

@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.1.2 (2017-08-17)
+
+* bug fix; fix exporting of support json data (issues closed: fs-1274) ([b1ec12f](https://bitbucket.org/atlassian/atlaskit/commits/b1ec12f))
 ## 3.1.1 (2017-08-16)
 
 * bug fix; fix incorrect prop type for taskDecisionProvider - it should be a Promise<TaskDecisi (issues closed: fs-1274) ([6a11027](https://bitbucket.org/atlassian/atlaskit/commits/6a11027))

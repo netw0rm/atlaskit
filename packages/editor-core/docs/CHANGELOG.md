@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 45.15.0 (2017-08-17)
+
+
+
+* feature; show recently viewed in the insert link dialog. ([e11e348](https://bitbucket.org/atlassian/atlaskit/commits/e11e348))
 ## 45.14.0 (2017-08-17)
 
 

@@ -11,7 +11,6 @@ import ErrorFlag from './ErrorFlag';
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
-import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
@@ -152,14 +151,14 @@ class LoadingTime extends Component {
         isOpen
         width="small"
         header={
-          <StartTrialHeaderDiv>
+          <div>
             {productLogo}
             <ProgressIndicator
               progress={progress}
               status={status}
               onComplete={this.handleProgressComplete}
             />
-          </StartTrialHeaderDiv>
+          </div>
         }
         footer={
           <StartTrialFooter>

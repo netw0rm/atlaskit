@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { colors, gridSize, themed, math } from '@atlaskit/theme';
+import { colors, themed } from '@atlaskit/theme';
 
 const backgroundColor = themed({ light: colors.N30, dark: colors.N700 });
 
@@ -9,7 +9,6 @@ const backgroundColor = themed({ light: colors.N30, dark: colors.N700 });
 
 const ProgressBarBackground = styled.div`
   align-self: center;
-  margin-top: ${math.divide(gridSize, 2)}px;
   background: ${backgroundColor};
   height: 6px;
   width: 100%;

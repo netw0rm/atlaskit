@@ -13,15 +13,15 @@ import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from './ErrorFlag';
 
 import StartTrialHeader from '../styled/StartTrialHeader';
-import StartTrialFooter from '../styled/StartTrialFooter';
+import GrantAccessFooter from '../styled/GrantAccessFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
-import StartTrialHeaderDiv from '../styled/StartTrialHeaderDiv';
 import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
+import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
-import ChangeButton from '../styled/ChangeButton';
+import ChangeButtonDiv from '../styled/ChangeButtonDiv';
 import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -287,13 +287,13 @@ class GrantAccess extends Component {
         isOpen
         width="small"
         header={
-          <StartTrialHeaderDiv>
+          <div>
             {productLogo}
             <ProgressIndicator progress={progress} status={status} />
-          </StartTrialHeaderDiv>
+          </div>
         }
         footer={
-          <StartTrialFooter>
+          <GrantAccessFooter>
             <SpinnerDiv>
               <Spinner isCompleting={!this.state.spinnerActive} />
             </SpinnerDiv>
@@ -321,7 +321,7 @@ class GrantAccess extends Component {
                 />
               </Button>
               : null}
-          </StartTrialFooter>
+          </GrantAccessFooter>
         }
       >
         <div id="xflow-grant-access">
@@ -367,23 +367,25 @@ class GrantAccess extends Component {
                   id="xflow.generic.grant-access.affect-bill"
                   defaultMessage="How will this affect my bill?"
                 />
-                <Button
-                  id="xflow-grant-access-learn-more-button"
-                  onClick={this.handleLearnMoreClick}
-                  appearance="link"
-                >
-                  <FormattedMessage
-                    id="xflow.generic.grant-access.learn-more"
-                    defaultMessage="Learn more"
-                  />
-                </Button>
+                <GrantAccessLearnMoreSpan>
+                  <Button
+                    id="xflow-grant-access-learn-more-button"
+                    onClick={this.handleLearnMoreClick}
+                    appearance="link"
+                  >
+                    <FormattedMessage
+                      id="xflow.generic.grant-access.learn-more"
+                      defaultMessage="Learn more"
+                    />
+                  </Button>
+                </GrantAccessLearnMoreSpan>
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
             : <GrantAccessDefaultAccessDiv>
               <div>
                 {defaultAccess}
               </div>
-              <ChangeButton>
+              <ChangeButtonDiv>
                 <Button
                   id="xflow-grant-access-change-button"
                   onClick={this.handleChangeClick}
@@ -394,7 +396,7 @@ class GrantAccess extends Component {
                     defaultMessage="Change..."
                   />
                 </Button>
-              </ChangeButton>
+              </ChangeButtonDiv>
             </GrantAccessDefaultAccessDiv>}
 
           <StartTrialProgressDiv>

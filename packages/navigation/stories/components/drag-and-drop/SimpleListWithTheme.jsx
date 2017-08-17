@@ -10,10 +10,15 @@ import RadioGroup from '@atlaskit/field-radio-group';
 // $FlowFixMe
 import { Draggable, Droppable, DragDropContext } from '@atlaskit/drag-and-drop';
 import reorder from './reorder';
+<<<<<<< HEAD
 // $FlowFixMe
 import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
 // $FlowFixMe
 import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
+=======
+import reorderingUsageNote from './UsageNote';
+import Container from './Container';
+>>>>>>> master
 
 const isDraggingClassName = 'is-dragging';
 
@@ -68,12 +73,12 @@ export default class SimpleListWithTheme extends Component {
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result: DropResult) => {
+  onDragEnd = (result) => {
     // $ExpectError
     document.body.classList.remove(isDraggingClassName);
 
-    const source: DraggableLocation = result.source;
-    const destination: ?DraggableLocation = result.destination;
+    const source = result.source;
+    const destination = result.destination;
 
     // nothing to do here!
     if (destination == null) {
@@ -113,7 +118,7 @@ export default class SimpleListWithTheme extends Component {
           draggableId={item.id}
           isDragDisabled={isDragDisabled}
         >
-          {(provided: Provided, snapshot: StateSnapshot) => (
+          {(provided, snapshot) => (
             <div>
               <AkNavigationItem
                 isDragging={snapshot.isDragging}

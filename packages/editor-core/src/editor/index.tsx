@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PropTypes } from 'react';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
+import EditorActions from './actions';
 
 import ProviderFactory from '../providerFactory';
 
@@ -13,9 +14,17 @@ export interface State {
   component?: React.ComponentClass<any>;
 }
 
-export default class Editor extends PureComponent<EditorProps, State> {
+export default class Editor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
     appearance: 'message'
+  };
+
+  static contextTypes = {
+    editorActions: PropTypes.object
+  };
+
+  context: {
+    editorActions?: EditorActions;
   };
 
   private providerFactory: ProviderFactory;
@@ -36,8 +45,27 @@ export default class Editor extends PureComponent<EditorProps, State> {
   }
 
   componentWillUnmount() {
-    if (this.state.editor && this.state.editor.eventDispatcher) {
+    if (!this.state.editor) {
+      return;
+    }
+
+    this.unregisterEditorFromActions();
+    this.state.editor.editorView.destroy();
+
+    if (this.state.editor.eventDispatcher) {
       this.state.editor.eventDispatcher.destroy();
+    }
+  }
+
+  private registerEditorForActions(editor: EditorInstance) {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateRegisterEditor(editor.editorView);
+    }
+  }
+
+  private unregisterEditorFromActions() {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateUnregisterEditor();
     }
   }
 
@@ -47,8 +75,13 @@ export default class Editor extends PureComponent<EditorProps, State> {
   }
 
   private initEditor = place => {
+    if (!place) {
+      return;
+    }
+
     const plugins = createPluginsList(this.props);
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
+    this.registerEditorForActions(editor);
     this.setState({ editor });
   }
 

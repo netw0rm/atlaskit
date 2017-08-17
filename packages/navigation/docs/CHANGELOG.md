@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 19.0.4 (2017-08-16)
+
+* bug fix; removing deprecated @atlaskit/drag-and-drop. Project can now be found at react-beaut ([c323890](https://bitbucket.org/atlassian/atlaskit/commits/c323890))
 ## 19.0.3 (2017-08-15)
 
 * bug fix; Add namespace to internal theming; clean up component internals (issues closed: ak-3255) ([a8cf551](https://bitbucket.org/atlassian/atlaskit/commits/a8cf551))

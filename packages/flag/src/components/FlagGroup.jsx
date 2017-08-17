@@ -21,10 +21,10 @@ export default class FlagGroup extends PureComponent {
 
     return Children.map(children, (flag, idx) => {
       const isDismissAllowed = idx === 0;
-      const { id, key } = flag.props;
+      const { id } = flag.props;
 
       return (
-        <FlagAnimationWrapper key={id || key}>
+        <FlagAnimationWrapper key={id}>
           {cloneElement(flag, { onDismissed, isDismissAllowed })}
         </FlagAnimationWrapper>
       );

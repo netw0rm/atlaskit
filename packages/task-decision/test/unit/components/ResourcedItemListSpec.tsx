@@ -28,6 +28,8 @@ describe('<ResourcedItemList/>', () => {
   beforeEach(() => {
     provider = {
       getItems: sinon.stub(),
+      subscribe: sinon.stub(),
+      unsubscribe: sinon.stub(),
     };
     renderer = sinon.stub();
     renderer.returns(<div/>);
@@ -37,7 +39,7 @@ describe('<ResourcedItemList/>', () => {
     it('should render both types of items', () => {
       provider.getItems.returns(Promise.resolve(defaultResponse));
       const component = mount(
-        <ResourcedItemList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
       const typeCount = countType(defaultResponse.items, 'TASK');
@@ -80,7 +82,7 @@ describe('<ResourcedItemList/>', () => {
       const response = getItemsResponse({ groupByDateSize: 4, dateField });
       provider.getItems.returns(Promise.resolve(response));
       const component = mount(
-        <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={provider} renderDocument={renderer} groupItems={true} />
+        <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} groupItems={true} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
       const typeCount = countType(defaultResponse.items, 'TASK');

@@ -34,7 +34,7 @@ storiesOf(name, module)
           onSave={SAVE_ACTION}
         />}
     />)
-  .add('Tray Editor with Max Length', () =>
+  .add('Message Editor with Max Length', () =>
     <Editor
       appearance="message"
       saveOnEnter={true}

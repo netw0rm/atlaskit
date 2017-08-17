@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 45.13.0 (2017-08-16)
+
+* bug fix; style fixes in panel toolbar. ([a51ffa6](https://bitbucket.org/atlassian/atlaskit/commits/a51ffa6))
+
+
+* feature; allowed block left, right, center for single image. ([b6f10f0](https://bitbucket.org/atlassian/atlaskit/commits/b6f10f0))
+* feature; allowed aligned right. ([dee2c5e](https://bitbucket.org/atlassian/atlaskit/commits/dee2c5e))
+* bug fix; fixed bug that cannot copy paste media group. ([bd03f9d](https://bitbucket.org/atlassian/atlaskit/commits/bd03f9d))
+* feature; clear left when image is align left. ([09481f6](https://bitbucket.org/atlassian/atlaskit/commits/09481f6))
+* feature; allowed single image displayed inline and aligned left ([6f1eec5](https://bitbucket.org/atlassian/atlaskit/commits/6f1eec5))
+* feature; added single image node. ([a3b00c4](https://bitbucket.org/atlassian/atlaskit/commits/a3b00c4))
+## 45.12.0 (2017-08-16)
+
+* feature; add EditorContext and WithEditorActions components (issues closed: ed-2443) ([b718487](https://bitbucket.org/atlassian/atlaskit/commits/b718487))
 ## 45.11.2 (2017-08-15)
 
 * bug fix; fix cursor position when two code nodes separated by one non-code character ([7d165c3](https://bitbucket.org/atlassian/atlaskit/commits/7d165c3))

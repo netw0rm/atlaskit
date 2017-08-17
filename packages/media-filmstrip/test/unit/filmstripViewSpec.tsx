@@ -177,8 +177,7 @@ describe('FilmstripView', () => {
       const onScroll = jest.fn();
       const element = shallow(<FilmstripView offset={14} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
-      const instance = element.instance() as FilmstripView;
-      instance.handleLeftClick();
+      element.find(LeftArrow).simulate('click', {stopPropagation() {}});
       expect(onScroll).toBeCalledWith({
         direction: 'left',
         offset: 0,
@@ -194,8 +193,7 @@ describe('FilmstripView', () => {
       const onScroll = jest.fn();
       const element = shallow(<FilmstripView offset={4} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
-      const instance = element.instance() as FilmstripView;
-      instance.handleRightClick();
+      element.find(RightArrow).simulate('click', {stopPropagation() {}});
       expect(onScroll).toBeCalledWith({
         direction: 'right',
         offset: 18,

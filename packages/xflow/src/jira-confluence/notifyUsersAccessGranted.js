@@ -30,7 +30,6 @@ function getAtlassianAccountId({ attributes: { attributes } }) {
 async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo) {
   const response = await fetch(endpoint, {
     method: 'POST',
-    credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
     },

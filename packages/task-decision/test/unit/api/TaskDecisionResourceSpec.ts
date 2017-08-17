@@ -372,15 +372,7 @@ describe('TaskDecisionResource', () => {
           t2,
         ], {});
 
-        // const d3 = buildServiceDecision({ localId: 'd3', lastUpdateDate: datePlus(7) });
-        // const d2update = buildServiceDecision({ localId: 'd2', lastUpdateDate: datePlus(6) });
         const t1update = buildServiceTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(5).toISOString() });
-        // const updateResponse = buildItemServiceResponse([
-        //   d3,
-        //   d2update,
-        //   t1update,
-        // ], {});
-
         const stateUpdateResponse: BaseItem<TaskState>[] = [
           {
             ...toObjectKey(t1update),
@@ -393,10 +385,6 @@ describe('TaskDecisionResource', () => {
           matcher: `begin:${url}elements/query`,
           response,
           times: 1,
-        // }).mock({
-        //   matcher: `begin:${url}elements/query`,
-        //   response: updateResponse,
-        //   times: 1,
         }).mock({
           matcher: `begin:${url}tasks/state`,
           response: stateUpdateResponse,
@@ -419,15 +407,22 @@ describe('TaskDecisionResource', () => {
           expect(idMock.mock.calls.length).toBe(1);
           expect(recentUpdatesMock.mock.calls.length).toBe(0);
           expect(response.items.length).toBe(4);
-          resource.notifyRecentUpdates('cheese');
+          const context = {
+            containerAri: 'cheese',
+            localId: 'bacon',
+          };
+          resource.notifyRecentUpdates(context);
           expect(recentUpdatesMock.mock.calls.length).toBe(1);
+          expect(recentUpdatesMock.mock.calls[0][0]).toEqual(context);
           return waitUntil(() => handlerT1.mock.calls.length === 1);
         }).then(() => {
           expect(handlerT1.mock.calls.length).toBe(1);
 
           const recentUpdatedId = idMock.mock.calls[0][0];
           resource.unsubscribeRecentUpdates(recentUpdatedId);
-          resource.notifyRecentUpdates('cheese');
+          resource.notifyRecentUpdates({
+            containerAri: 'cheese'
+          });
           // No new callback as unsubscribed
           expect(recentUpdatesMock.mock.calls.length).toBe(1);
         });

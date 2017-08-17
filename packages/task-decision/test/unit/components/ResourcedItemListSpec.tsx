@@ -154,8 +154,6 @@ describe('<ResourcedItemList/>', () => {
   describe('recent updates', () => {
     it('notifyRecentItems should refresh item list', () => {
       // Initial render
-      // notifyRecent items on TaskDecisionResource
-      // New render with new items + new task state
       const d1 = buildDecision({ localId: 'd1', lastUpdateDate: datePlus(2), content: content('d1') });
       const t1 = buildTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(1), content: content('t1') });
       const initialResponse = buildItemResponse([d1, t1]);
@@ -178,9 +176,15 @@ describe('<ResourcedItemList/>', () => {
         expect(recentUpdatesListener).toBeDefined();
         const recentUpdatesCallback = recentUpdatesListener.recentUpdates;
         expect(recentUpdatesCallback).toBeDefined();
-        recentUpdatesCallback();
+
+        // notifyRecent items on TaskDecisionResource
+        recentUpdatesCallback({
+          containerAri: d2.containerAri,
+          localId: d2.localId,
+        });
         return waitUntil(() => decisionItemsRendered(component, 2));
       }).then(() => {
+        // New render with new items + new task state
         const items = component.findWhere(n => n.is(DecisionItem) || n.is(ResourcedTaskItem));
         expect(items.length).toBe(3);
         const item1 = items.at(0);
@@ -192,6 +196,56 @@ describe('<ResourcedItemList/>', () => {
         const item3 = items.at(2);
         expect(item3.type()).toBe(DecisionItem);
         expect(item3.prop('children')).toBe('d1');
+      });
+    });
+
+    it('notifyRecentItems should refresh and wait for new item', () => {
+      // Initial render
+      const d1 = buildDecision({ localId: 'd1', lastUpdateDate: datePlus(2), content: content('d1') });
+      const t1 = buildTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(1), content: content('t1') });
+      const initialResponse = buildItemResponse([d1, t1]);
+
+      const d2 = buildDecision({ localId: 'd2', lastUpdateDate: datePlus(4), content: content('d2') });
+      const t1update = buildTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(3), content: content('t1update') });
+      const recentUpdatesResponse = buildItemResponse([ d2, t1update ]);
+
+      const renderer = (doc) => doc.content[0].content[0].text;
+
+      let currentResponse = initialResponse;
+      provider.getItems.mockImplementation(() => {
+        return Promise.resolve(currentResponse);
+      });
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => decisionItemsRendered(component, 1)).then(() => {
+        expect(component.find(DecisionItem).length).toBe(1);
+        expect(component.find(ResourcedTaskItem).length).toBe(1);
+
+        const recentUpdatesListener = provider.getItems.mock.calls[0][1];
+        expect(recentUpdatesListener).toBeDefined();
+        const recentUpdatesCallback = recentUpdatesListener.recentUpdates;
+        expect(recentUpdatesCallback).toBeDefined();
+
+        recentUpdatesCallback({
+          containerAri: d2.containerAri,
+          localId: d2.localId,
+        });
+
+        // Wait for second call to getItems due to recentUpdate
+        return waitUntil(() => provider.getItems.mock.calls.length > 1);
+      }).then(() => {
+        // notifyRecent items on TaskDecisionResource
+        const numGetItemsCalled = provider.getItems.mock.calls.length;
+        currentResponse = recentUpdatesResponse;
+
+        return waitUntil(() => provider.getItems.mock.calls.length === numGetItemsCalled + 1);
+      }).then(() => {
+        return waitUntil(() => decisionItemsRendered(component, 2));
+      }).then(() => {
+        // New render with new items + new task state
+        const items = component.findWhere(n => n.is(DecisionItem) || n.is(ResourcedTaskItem));
+        expect(items.length).toBe(3);
       });
     });
   });

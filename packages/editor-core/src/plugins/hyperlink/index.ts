@@ -66,11 +66,11 @@ export class HyperlinkState {
   addLink(options: HyperlinkOptions, view: EditorView) {
     if (this.linkable && !this.active) {
       const { state } = this;
-      const { href } = options;
+      const { href, text } = options;
       const { empty, $from, $to } = state.selection;
       const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
-        ? state.tr.insert($from.pos, state.schema.text(href, [mark]))
+        ? state.tr.insert($from.pos, state.schema.text(text || href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
       view.dispatch(tr);

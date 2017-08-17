@@ -1,5 +1,6 @@
 import OpenIcon from '@atlaskit/icon/glyph/editor/open';
 import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
+import { ActivityProvider } from '@atlaskit/activity';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
@@ -9,12 +10,14 @@ import ToolbarButton from '../ToolbarButton';
 import { Seperator, Container } from './styles';
 import { EditorView } from '../../prosemirror';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
+import RecentSearch from '../RecentSearch';
 
 const TEXT_NODE = 3;
 
 export interface Props {
   pluginState: HyperlinkState;
   editorView: EditorView;
+  activityProvider?: Promise<ActivityProvider>;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }
@@ -127,11 +130,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   render() {
-    const { href, oldHref, text, oldText, unlinkable, active,
-      editorFocused, inputActive, showToolbarPanel
-    } = this.state;
-    const normalizedOldText = oldText && normalizeUrl(oldText);
-
+    const { href, oldHref, unlinkable, active, editorFocused, inputActive, showToolbarPanel } = this.state;
     const popupTarget = this.getPopupTarget();
 
     if (!popupTarget) {
@@ -177,30 +176,57 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             {!showUnlinkButton ? null :
               <Seperator />
             }
-            {normalizedOldText && href === normalizedOldText ?
-              <PanelTextInput
-                placeholder="Text to display"
-                defaultValue={!text && href === normalizedOldText ? '' : text}
-                onSubmit={this.updateLinkText}
-                onChange={this.updateText}
-                onMouseDown={this.setInputActive}
-                onBlur={this.handleOnBlur}
-              /> :
-              <PanelTextInput
-                placeholder="Paste link"
-                autoFocus={!href || href.length === 0}
-                defaultValue={href}
-                onSubmit={this.updateLinkHref}
-                onChange={this.updateHref}
-                onMouseDown={this.setInputActive}
-                onBlur={this.handleOnBlur}
-              />}
+            {this.renderInput()}
           </Container>
         </FloatingToolbar>
       );
     } else {
       return null;
     }
+  }
+
+  private renderInput() {
+    const { href, oldHref, text, oldText } = this.state;
+    const { editorView, pluginState, activityProvider } = this.props;
+    const normalizedOldText = oldText && normalizeUrl(oldText);
+
+     // insert new link with recently viewed dropdown
+    if (activityProvider && !oldHref) {
+      return (
+        <RecentSearch
+          editorView={editorView}
+          pluginState={pluginState}
+          activityProvider={activityProvider}
+        />
+      );
+    }
+
+    // edit link text
+    if (normalizedOldText && href === normalizedOldText) {
+      return (
+        <PanelTextInput
+          placeholder="Text to display"
+          defaultValue={!text && href === normalizedOldText ? '' : text}
+          onSubmit={this.updateLinkText}
+          onChange={this.updateText}
+          onMouseDown={this.setInputActive}
+          onBlur={this.handleOnBlur}
+        />
+      );
+    }
+
+    // edit link href when text has not been set
+    return (
+      <PanelTextInput
+        placeholder="Paste link"
+        autoFocus={!href || href.length === 0}
+        defaultValue={href}
+        onSubmit={this.updateLinkHref}
+        onChange={this.updateHref}
+        onMouseDown={this.setInputActive}
+        onBlur={this.handleOnBlur}
+      />
+    );
   }
 
   // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue

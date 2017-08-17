@@ -2,6 +2,7 @@ import {
   Decision,
   Item,
   ObjectKey,
+  RendererContext,
   ServiceDecision,
   ServiceItem,
   ServiceTask,
@@ -22,6 +23,14 @@ export const toObjectKey = (item: Item | ServiceDecision | ServiceTask): ObjectK
   return {
     containerAri,
     localId,
+    objectAri
+  };
+};
+
+export const toRendererContext = (item: Item | ObjectKey): RendererContext => {
+  const { containerAri, objectAri} = item;
+  return {
+    containerAri,
     objectAri
   };
 };

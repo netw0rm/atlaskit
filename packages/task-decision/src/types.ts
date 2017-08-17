@@ -154,8 +154,16 @@ export interface TaskDecisionProvider {
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
 }
 
+/**
+ * Same as RendererContext in editor-core (don't want an direct dep though)
+ */
+export interface RendererContext {
+  objectAri: string;
+  containerAri: string;
+}
+
 export interface RenderDocument {
-  (document: any): JSX.Element;
+  (document: any, rendererContext?: RendererContext): JSX.Element;
 }
 
 export interface OnUpdate<T> {

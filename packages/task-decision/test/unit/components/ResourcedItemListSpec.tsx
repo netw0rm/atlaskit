@@ -54,6 +54,13 @@ describe('<ResourcedItemList/>', () => {
         expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
         const moreButton = component.find(Button);
         expect(moreButton.length).toBe(0);
+        expect(renderer.mock.calls.length > 0).toBe(true);
+        const firstRenderCall = renderer.mock.calls[0];
+        const context = firstRenderCall[1];
+        expect(context).toEqual({
+          containerAri: defaultResponse.items[0].containerAri,
+          objectAri: defaultResponse.items[0].objectAri,
+        });
       });
     });
 

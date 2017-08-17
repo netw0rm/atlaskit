@@ -1,6 +1,7 @@
 // @flow
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
 
 import getDisplayName from '../../util/getDisplayName';

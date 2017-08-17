@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // This was originally used in Nav storybooks but has been removed now as they were not kept up
 // to date. Leaving here as we might choose to come back to these later.

@@ -6,12 +6,12 @@ export default class FilledIconExample extends Component {
     fill: '#ff0000',
   }
 
-  iconStyles = {
-    color: this.state.color,
-    fill: this.state.fill,
-  }
-
   render() {
+    const iconStyles = {
+      color: this.state.color,
+      fill: this.state.fill,
+    };
+
     return (
       <form>
         <div className="ak-field-group">
@@ -39,7 +39,7 @@ export default class FilledIconExample extends Component {
           />
         </div>
         <p>
-          <svg focusable="false" className="ak-icon ak-icon__size-xlarge" style={this.iconStyles} aria-label="Text colour">
+          <svg focusable="false" className="ak-icon ak-icon__size-xlarge" style={iconStyles} aria-label="Text colour">
             <use xlinkHref="#ak-icon-editor/text-color" />
           </svg>
         </p>

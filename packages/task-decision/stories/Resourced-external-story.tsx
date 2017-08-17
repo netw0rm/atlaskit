@@ -19,6 +19,8 @@ try {
 
 interface NotifyChangesProps {
   taskDecisionProvider: TaskDecisionProvider;
+  height?: number | string;
+  useInfiniteScroll?: boolean;
 }
 
 class NotifyChanges extends PureComponent<NotifyChangesProps,{}> {
@@ -51,16 +53,27 @@ class NotifyChanges extends PureComponent<NotifyChangesProps,{}> {
       return null;
     }
 
+    const { height, taskDecisionProvider, useInfiniteScroll } = this.props;
+
     return (
       <div>
         <div>
           Select <button onClick={this.handleNotify}>notify</button> to look for newest items from service.
         </div>
-        <ResourcedItemList
-          renderDocument={this.renderDocument}
-          initialQuery={tdConfig.initialQuery}
-          taskDecisionProvider={Promise.resolve(this.props.taskDecisionProvider)}
-        />
+        <div
+          style={{
+            border: '1px solid #ccc',
+            margin: '8px'
+          }}
+        >
+          <ResourcedItemList
+            renderDocument={this.renderDocument}
+            initialQuery={tdConfig.initialQuery}
+            taskDecisionProvider={Promise.resolve(taskDecisionProvider)}
+            useInfiniteScroll={useInfiniteScroll}
+            height={height}
+          />
+        </div>
       </div>
     );
   }
@@ -72,5 +85,22 @@ storiesOf('<ResourcedItemList/> - External', module)
 
     return (
       <NotifyChanges taskDecisionProvider={taskDecisionProvider} />
+    );
+  })
+  .add('Real data - infinite scroll', () => {
+    const taskDecisionProvider = new TaskDecisionResource(tdConfig.serviceConfig);
+
+    return (
+      <div
+        style={{
+          width: '400px',
+        }}
+      >
+        <NotifyChanges
+          taskDecisionProvider={taskDecisionProvider}
+          height="400px"
+          useInfiniteScroll={true}
+        />
+      </div>
     );
   });

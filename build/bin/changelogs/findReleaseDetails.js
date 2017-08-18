@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { default: io } = require('lerna-semantic-release-io');
 const srRegistry = require('semantic-release/src/lib/get-registry');
 const npmconf = require('npmconf');

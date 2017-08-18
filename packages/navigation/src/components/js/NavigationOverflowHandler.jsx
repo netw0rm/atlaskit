@@ -1,7 +1,5 @@
 // @flow
-// TODO -> Fix flow errors in this file
 import React, { Component } from 'react';
-// $FlowFixMe
 import memoizeOne from 'memoize-one';
 import HeightDetector from './HeightDetector';
 import OverflowDropdown from './NavigationOverflowDropdown';

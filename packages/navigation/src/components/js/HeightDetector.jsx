@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-// $FlowFixMe
 import memoizeOne from 'memoize-one';
 import rafScheduler from 'raf-schd';
 import { HeightDetectorRoot, HeightDetectorResizeAware } from '../styled/HeightDetector';

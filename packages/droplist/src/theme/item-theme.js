@@ -1,12 +1,7 @@
 // @flow
-/* eslint-disable no-unused-vars */
-
 import { itemThemeNamespace } from '@atlaskit/item';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { ItemTheme } from '../types';
-
-const itemVerticalPadding = gridSize;
-const height = math.add(math.multiply(itemVerticalPadding, 2), 17);
 
 const dropdownPadding = {
   x: math.multiply(gridSize, 1.5),

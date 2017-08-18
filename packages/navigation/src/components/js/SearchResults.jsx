@@ -67,8 +67,7 @@ export default class SearchResults extends PureComponent {
       </AkNavigationItemGroup>
     ) : null
   );
-  /* eslint-disable*/
-  // RB: To be discussed as rendering nothing may not be a good idea
+  /* eslint-disable consistent-return*/
   render() {
     if (this.props.results) {
       return (

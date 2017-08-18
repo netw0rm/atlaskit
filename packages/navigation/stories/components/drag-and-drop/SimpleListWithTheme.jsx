@@ -1,5 +1,4 @@
 // @flow
-// RB: this has to be revisited when drag and drop will be removed
 import React, { Component } from 'react';
 import Navigation, {
   AkNavigationItem,

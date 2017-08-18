@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable*/
 import type { HasDefaultProp } from 'babel-plugin-react-flow-props-to-prop-types';
+// $FlowFixMe
 import type { Position, ReactElement } from '../../types';
 /* eslint-enable */
 

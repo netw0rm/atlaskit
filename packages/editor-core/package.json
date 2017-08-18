@@ -71,7 +71,7 @@
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^5.3.7",
+    "mediapicker": "^7.0.1",
     "orderedmap": "^1.0.0",
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",

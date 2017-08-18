@@ -79,7 +79,11 @@ storiesOf(name, module)
       }
     ];
 
-    const addons = addonConfigs.map((item, i) => <Addon key={i} {...item}>{item.text}</Addon>);
+    const addons = addonConfigs.map(({ text, icon, action, renderOnClick }, i) => (
+      <Addon key={i} icon={icon} action={action} renderOnClick={renderOnClick}>
+        {text}
+      </Addon>
+    ));
 
     return (
       <EditorContext>

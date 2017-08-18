@@ -2,13 +2,12 @@ import * as React from 'react';
 import { DropdownItem } from './styles';
 import { AddonProps } from '../types';
 
-export default class DropdownItemWrapper extends React.Component<AddonProps, any> {
-  render() {
-    return (
-      <DropdownItem onClick={this.props.onClick}>
-        <span>{this.props.icon}</span>
-        {this.props.children}
-      </DropdownItem>
-    );
-  }
-}
+// tslint:disable-next-line:variable-name
+const DropdownItemWrapper = (props: AddonProps) => (
+  <DropdownItem onClick={props.onClick}>
+    <span>{props.icon}</span>
+    {props.children}
+  </DropdownItem>
+);
+
+export default DropdownItemWrapper;

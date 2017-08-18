@@ -1,9 +1,13 @@
 import * as React from 'react';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import { AddonPopup } from '../';
 import { Dropdown, RenderOnClickHandler } from '../';
 import WithEditorActions from '../../WithEditorActions';
+import withOuterListeners from '../../../../ui/with-outer-listeners';
+import Popup from '../../../../ui/Popup';
+
+// tslint:disable-next-line:variable-name
+const AddonPopup = withOuterListeners(Popup);
 
 const POPUP_HEIGHT = 188;
 const POPUP_WIDTH = 136;
@@ -68,21 +72,23 @@ export default class AddonToolbar extends React.Component<Props, State> {
             fitHeight={POPUP_HEIGHT}
             fitWidth={POPUP_WIDTH}
           >
-            {addon
-              ? addon
-              : <WithEditorActions
-                  // tslint:disable-next-line:jsx-no-lambda
-                  render={actions =>
-                    <Dropdown
-                      onClick={this.handleDropdownClick}
-                      togglePopup={this.togglePopup}
-                      actions={actions}
-                    >
-                      {dropdownItems}
-                    </Dropdown>
-                  }
-              />
-            }
+            <span onClick={this.handlePopupClick}>
+              {addon
+                ? addon
+                : <WithEditorActions
+                    // tslint:disable-next-line:jsx-no-lambda
+                    render={actions =>
+                      <Dropdown
+                        onClick={this.handleDropdownClick}
+                        togglePopup={this.togglePopup}
+                        actions={actions}
+                      >
+                        {dropdownItems}
+                      </Dropdown>
+                    }
+                />
+              }
+            </span>
           </AddonPopup>
         }
       </div>
@@ -92,4 +98,9 @@ export default class AddonToolbar extends React.Component<Props, State> {
   private handleRef = (target: HTMLElement) => {
     this.setState({ target });
   }
+
+  // cancel bubbling to fix clickOutside logic:
+  // popup re-renders its content before the click event bubbles up to the document
+  // therefore click target element would be different from the popup content
+  private handlePopupClick = event => event.nativeEvent.stopImmediatePropagation();
 }

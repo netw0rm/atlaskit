@@ -30,8 +30,8 @@ export class Story extends React.Component<StoryProps, StoryState> {
         <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
 
           {/* I added this to demonstrate the line-height + color issue. See https://product-fabric.atlassian.net/browse/MSW-98 */}
-          <CardView status="complete" metadata={minimalLinkDetailsContainingASmartCard}/>
-          <CardView status="complete" metadata={minimalLinkDetailsContainingASmartCard}/>
+          <CardView appearance="horizontal" status="complete" metadata={minimalLinkDetailsContainingASmartCard}/>
+          <CardView appearance="horizontal" status="complete" metadata={minimalLinkDetailsContainingASmartCard}/>
 
         </FilmstripView>
       </div>

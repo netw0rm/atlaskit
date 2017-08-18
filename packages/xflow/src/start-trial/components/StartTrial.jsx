@@ -37,9 +37,9 @@ class StartTrial extends Component {
               onComplete={async () => {
                 await onTrialActivating();
                 if (showGrantAccess) {
-                  firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.true.skipping-grant-access');
-                } else {
                   firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.false.showing-grant-access');
+                } else {
+                  firePrivateAnalyticsEvent('xflow.start-trial.previously-evaluated.true.skipping-grant-access');
                 }
                 nextStep(showGrantAccess ? 1 : 2);
               }}

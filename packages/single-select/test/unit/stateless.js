@@ -78,6 +78,15 @@ describe(name, () => {
       expect(labelProps.htmlFor).toBe('test2');
     });
 
+    describe('shouldFocus prop', () => {
+      it('should focus inputNode when set to true', () => {
+        const select = mount(<StatelessSelect />);
+        expect(document.activeElement).not.toBe(select.instance().triggerNode);
+        select.setProps({ shouldFocus: true });
+        expect(document.activeElement).toBe(select.instance().triggerNode);
+      });
+    });
+
     it('should pass props to Droplist', () => {
       const func = () => {};
       const select = mount(<StatelessSelect

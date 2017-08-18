@@ -39,6 +39,12 @@ import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
 import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
 import SelectNoPositionFlip from './examples/SelectNoPositionFlip';
 import SelectNoPositionFlipRaw from '!raw!./examples/SelectNoPositionFlip';
+
+import ShouldFocus from './examples/ShouldFocus';
+import ShouldFocusRaw from '!raw!./examples/ShouldFocus';
+
+import ShouldFocusStateful from './examples/ShouldFocusStateful';
+import ShouldFocusStatefulRaw from '!raw!./examples/ShouldFocusStateful';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -161,6 +167,28 @@ storiesOf(name, module)
         {DefaultSelectedItemRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Single select with should focus', () => (
+    <Chrome title="With should focus">
+      <Description>
+        <p style={{ marginBottom: '12px' }}>Should focus</p>
+      </Description>
+      {ShouldFocus}
+      <Code>
+        {ShouldFocusRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Single select (stateful) with should focus', () => (
+    <Chrome title="With should focus">
+      <Description>
+        <p style={{ marginBottom: '12px' }}>Should focus (stateful)</p>
+      </Description>
+      {ShouldFocusStateful}
+      <Code>
+        {ShouldFocusStatefulRaw}
+      </Code>
     </Chrome>
   ))
   .add('Select that fills all available space', () => (

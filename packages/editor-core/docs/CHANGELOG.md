@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.17.0 (2017-08-18)
+
+* feature; latest task/decision support (issues closed: fs-1284) ([e7bb445](https://bitbucket.org/atlassian/atlaskit/commits/e7bb445))
 ## 45.16.0 (2017-08-17)
 
 * feature; upgrade for latest task and decisions support. (issues closed: fs-1274) ([f12d384](https://bitbucket.org/atlassian/atlaskit/commits/f12d384))

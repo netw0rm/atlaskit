@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withTheme } from 'styled-components';
+import { ThemeProvider, withTheme } from 'styled-components';
 import { AkNavigationItem } from '../../../src/index';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
@@ -39,6 +39,28 @@ type Props = {|
 class ContainerTitle extends PureComponent {
   props: Props;
 
+  overrideItemTheme = (outerTheme): ItemTheme => {
+    // TODO: override 
+    const original: ItemTheme = outerTheme['@atlaskit-shared-theme/item'];
+
+    if(!original || !original.padding) {
+      // we are in trouble.
+    }
+
+    const updated: ItemTheme = {
+      ...original,
+      padding: {
+        ...original.padding,
+        default: {
+          ...original.padding.default,
+          x: 4,
+        }
+      }
+    };
+
+    return updated;
+  }
+
   render() {
     const {
       text,
@@ -63,15 +85,18 @@ class ContainerTitle extends PureComponent {
     };
 
     return (
+      <ThemeProvider
+        theme={theme => this.overrideItemTheme(theme)}
+      >
       <AkNavigationItem
         icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
-        spacing="title"
         subText={isNavCollapsed ? null : subText}
         text={isNavCollapsed ?
           <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
           : <ContainerTitleText>{text}</ContainerTitleText>}
         {...interactiveWrapperProps}
       />
+      </ThemeProvider>
     );
   }
 }

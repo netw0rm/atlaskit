@@ -1,6 +1,5 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withTheme } from 'styled-components';
 // NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
 // which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
 // would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
@@ -54,7 +53,6 @@ type Props = {|
   onMouseEnter?: (e: MouseEvent) => void,
   /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
-  spacing?: 'default' | 'compact' | 'title',
   /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. Accepts a react component but in most
@@ -66,7 +64,7 @@ type Props = {|
   autoFocus?: boolean
 |}
 
-class NavigationItem extends PureComponent {
+export default class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
@@ -76,13 +74,8 @@ class NavigationItem extends PureComponent {
   props: Props
 
   render() {
-    /* eslint-disable react/prop-types */
-    // theme is passed in via context and not part of the props API for this component
-    const { theme } = this.props;
-    /* eslint-enable react/prop-types */
-
     const icon = this.props.icon
-      ? <NavigationItemIcon theme={theme}>{this.props.icon}</NavigationItemIcon>
+      ? <NavigationItemIcon>{this.props.icon}</NavigationItemIcon>
       : null;
 
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
@@ -142,7 +135,6 @@ class NavigationItem extends PureComponent {
         isCompact={this.props.isCompact}
         dnd={this.props.dnd}
         autoFocus={this.props.autoFocus}
-        spacing={this.props.spacing}
         {...interactiveWrapperProps}
       >
         {this.props.text}
@@ -151,5 +143,3 @@ class NavigationItem extends PureComponent {
     );
   }
 }
-
-export default withTheme(NavigationItem);

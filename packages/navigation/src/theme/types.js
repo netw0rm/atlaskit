@@ -64,7 +64,6 @@ export type GenericItemTheme = {|
   height?: {|
     compact: number,
     default: number,
-    title: number,
   |},
   focus: {|
     outline: Color,
@@ -72,7 +71,6 @@ export type GenericItemTheme = {|
   padding: {|
     compact: GenericItemPadding,
     default: GenericItemPadding,
-    title: GenericItemPadding,
   |},
   default: GenericItemState,
   selected: GenericItemState,

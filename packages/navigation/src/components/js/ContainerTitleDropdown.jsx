@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { withTheme } from 'styled-components';
+import { ThemeProvider, withTheme } from 'styled-components';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { AkNavigationItem } from '../../../src/index';
@@ -21,9 +21,31 @@ type Props = {|
   text: string,
 |}
 
+const key = '@atlaskit-shared-theme/item';
+
 class ContainerTitleDropdown extends PureComponent {
   props: Props
+  
+  overrideItemTheme = (outerTheme): ItemTheme => {
+    const original: ItemTheme = outerTheme[key];
 
+    if(!original || !original.padding) {
+      console.error(`could not find theme with key '${key}' to modifiy it for title`);
+      return outerTheme;
+    }
+
+    const updated: ItemTheme = JSON.parse(JSON.stringify(original));
+
+    updated.padding.default.x = 4;
+    updated.height.default = 0;
+    updated.beforeItemSpacing.default = 8;
+
+    return {
+      ...outerTheme,
+      [key]: updated,
+    }
+  }
+  
   render() {
     const {
       children,
@@ -46,16 +68,18 @@ class ContainerTitleDropdown extends PureComponent {
         position={isNavCollapsed ? 'right top' : 'bottom left'}
         shouldFlip={false}
         trigger={(
-          <AkNavigationItem
-            dropIcon={isNavCollapsed ? null : <ExpandIcon />}
-            isDropdownTrigger
-            icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
-            spacing="title"
-            subText={isNavCollapsed ? null : subText}
-            text={isNavCollapsed ?
-              <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
-              : <ContainerTitleText>{text}</ContainerTitleText>}
-          />
+          <ThemeProvider theme={theme => this.overrideItemTheme(theme)}>
+            <AkNavigationItem
+              dropIcon={isNavCollapsed ? null : <ExpandIcon />}
+              isDropdownTrigger
+              icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
+              spacing="title"
+              subText={isNavCollapsed ? null : subText}
+              text={isNavCollapsed ?
+                <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
+                : <ContainerTitleText>{text}</ContainerTitleText>}
+            />
+          </ThemeProvider>
         )}
       >
         {children}

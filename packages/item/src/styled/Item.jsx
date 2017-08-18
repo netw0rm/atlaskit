@@ -84,6 +84,8 @@ export const ItemBase = ({ isSelected, theme }) => css`
   ${getInteractiveStyles}
   ${getHeightStyles}
 
+  ${({theme}) => console.log('item theme', theme)}
+
   &:focus {
     /* focus shadow drawn by getInteractiveStyles */
 

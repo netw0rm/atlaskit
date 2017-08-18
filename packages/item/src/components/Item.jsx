@@ -219,7 +219,7 @@ export default class Item extends Component {
         {...patchedEventHandlers}
         {...otherProps}
       >
-        {!!this.props.elemBefore && <Before>{this.props.elemBefore}</Before>}
+        {!!this.props.elemBefore && <Before isCompact={isCompact}>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}
@@ -231,7 +231,7 @@ export default class Item extends Component {
             >{this.props.description}</Description>
           )}
         </ContentWrapper>
-        {!!this.props.elemAfter && <After>{this.props.elemAfter}</After>}
+        {!!this.props.elemAfter && <After isCompact={isCompact}>{this.props.elemAfter}</After>}
       </Root>
     );
   }

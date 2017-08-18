@@ -18,7 +18,9 @@ export const getProvided = (map?: Object): Provided => {
   }
   return container;
 };
-export const isCollapsed = (map: Object): bool => map[rootKey].isCollapsed;
+export const isCollapsed = (map: Object): bool => {
+  return map[rootKey].isCollapsed;
+}
 export const isInOverflowDropdown = (map: Object): bool =>
   hasOwnProperty(map, isDropdownOverflowKey);
 

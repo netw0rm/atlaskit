@@ -16,24 +16,26 @@ const BeforeAfterBase = styled.span`
   flex-shrink: 0;
 `;
 
-const getBeforeSpacing = ({ theme }) => {
-  const space = getThemeStyle(theme[themeNamespace], 'beforeItemSpacing');
+const getBeforeSpacing = ({ isCompact, theme }) => {
+  const spaceKey = isCompact ? 'compact' : 'default';
+  const space = getThemeStyle(theme[themeNamespace], spaceKey, 'beforeItemSpacing');
   return css`
     margin-right: ${space}px;
   `;
 };
 export const Before = styled(BeforeAfterBase)`
-  ${getBeforeSpacing};
+  ${getBeforeSpacing}
 `;
 
-const getAfterSpacing = ({ theme }) => {
-  const space = getThemeStyle(theme[themeNamespace], 'afterItemSpacing');
+const getAfterSpacing = ({ isCompact, theme }) => {
+  const spaceKey = isCompact ? 'compact' : 'default';
+  const space = getThemeStyle(theme[themeNamespace], spaceKey, 'afterItemSpacing');
   return css`
     margin-left: ${space}px;
   `;
 };
 export const After = styled(BeforeAfterBase)`
-  ${getAfterSpacing};
+  ${getAfterSpacing}
 `;
 
 // Alignment and layout for the children

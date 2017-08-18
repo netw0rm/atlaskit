@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Dropdown } from './styles';
 import { RenderOnClickHandler } from '../../Addon';
+import EditorActions from '../../../actions';
 
 export interface Props {
   onClick: (renderOnClick: RenderOnClickHandler) => void;
+  actions: EditorActions;
+  togglePopup: () => void;
 }
 
 export default class DropdownWrapper extends React.Component<Props, any> {
@@ -27,9 +30,9 @@ export default class DropdownWrapper extends React.Component<Props, any> {
   private handleClick = (dropdownItem: React.ReactElement<any>) => {
     const { action, renderOnClick } = dropdownItem.props;
     if (action) {
-      return action();
-    }
-    if (renderOnClick) {
+      action(this.props.actions);
+      this.props.togglePopup();
+    } else if (renderOnClick) {
       this.props.onClick(renderOnClick);
     }
   }

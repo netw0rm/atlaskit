@@ -3,6 +3,7 @@ import MoreIcon from '@atlaskit/icon/glyph/more';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { AddonPopup } from '../';
 import { Dropdown, RenderOnClickHandler } from '../';
+import WithEditorActions from '../../WithEditorActions';
 
 const POPUP_HEIGHT = 188;
 const POPUP_WIDTH = 136;
@@ -50,7 +51,7 @@ export default class AddonToolbar extends React.Component<Props, State> {
     const { dropdownItems, popupsMountPoint, popupsBoundariesElement } = this.props;
     const { addon, isOpen } = this.state;
 
-    if (!dropdownItems) {
+    if (!dropdownItems || (Array.isArray(dropdownItems) && !dropdownItems.length)) {
       return null;
     }
 
@@ -72,15 +73,24 @@ export default class AddonToolbar extends React.Component<Props, State> {
           >
             {addon
               ? addon
-              : <Dropdown onClick={this.handleDropdownClick}>
-                  {dropdownItems}
-                </Dropdown>}
+              : <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions =>
+                    <Dropdown
+                      onClick={this.handleDropdownClick}
+                      togglePopup={this.togglePopup}
+                      actions={actions}
+                    >
+                      {dropdownItems}
+                    </Dropdown>
+                  }
+              />
+            }
           </AddonPopup>
         }
       </div>
     );
   }
-
 
   private handleRef = (target: HTMLElement) => {
     this.setState({ target });

@@ -1,6 +1,6 @@
 import EditorActions from '../../actions';
 
-export type RenderOnClickHandler = (togglePopup: () => void) => React.ReactElement<any>;
+export type RenderOnClickHandler = (closePopup: () => void) => React.ReactElement<any>;
 
 export interface AddonCommonProps {
   icon: React.ReactElement<any>;

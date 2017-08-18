@@ -2,6 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
 import Editor from './../src/editor';
+import EditorContext from './../src/editor/ui/EditorContext';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
@@ -64,10 +65,10 @@ storiesOf(name, module)
       {
         text: 'Item one',
         icon: <DocumentIcon label="Item 1" />,
-        renderOnClick: togglePopup => (
+        renderOnClick: closePopup => (
           <AddonComponentExample>
             Rendered on click
-            <button onClick={togglePopup}>close</button>
+            <button onClick={closePopup}>close</button>
           </AddonComponentExample>
         )
       },
@@ -81,30 +82,32 @@ storiesOf(name, module)
     const addons = addonConfigs.map((item, i) => <Addon key={i} {...item}>{item.text}</Addon>);
 
     return (
-      <ToolsDrawer
-        // tslint:disable-next-line:jsx-no-lambda
-        renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
-          <Editor
-            appearance="message"
-            analyticsHandler={analyticsHandler}
+      <EditorContext>
+        <ToolsDrawer
+          // tslint:disable-next-line:jsx-no-lambda
+          renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
+            <Editor
+              appearance="message"
+              analyticsHandler={analyticsHandler}
 
-            allowTextFormatting={true}
-            allowTasksAndDecisions={true}
-            allowHyperlinks={true}
-            allowCodeBlocks={true}
+              allowTextFormatting={true}
+              allowTasksAndDecisions={true}
+              allowHyperlinks={true}
+              allowCodeBlocks={true}
 
-            saveOnEnter={true}
+              saveOnEnter={true}
 
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-            mediaProvider={mediaProvider}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              mediaProvider={mediaProvider}
 
-            onChange={onChange}
-            onSave={SAVE_ACTION}
+              onChange={onChange}
+              onSave={SAVE_ACTION}
 
-            addonToolbarComponents={addons}
-          />}
-      />
+              addonToolbarComponents={addons}
+            />}
+        />
+      </EditorContext>
     );
   })
   .add('Tray Editor with Max Length', () =>

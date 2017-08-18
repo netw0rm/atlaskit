@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import AtlassianContainerResult from './AtlassianContainerResult';
 
-const noOp = () => {};
-
 const ROOM_RESULT_TYPE = 'room';
 
 // ===================================================================
@@ -32,26 +30,24 @@ export default class RoomResult extends PureComponent {
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** Name of the container.  Provides the main text to be displayed as the item. */
+    /** Name of the container. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
-    /** Triggered by mouseclick event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
     onClick: PropTypes.func,
-    /** Triggered by mouseenter event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
     onMouseEnter: PropTypes.func.isRequired,
-    /** Standard onmouseleave event. */
+    /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,
-    /** Unique ID of the result.  This is passed as a parameter to certain callbacks */
+    /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Topic line of the room. Shown alongside the main `name` text. */
     topic: PropTypes.string,
-    /** Type of the result.  This is passed as a parameter to certain callbacks. */
+    /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
-    onClick: noOp,
-    onMouseEnter: noOp,
-    onMouseLeave: noOp,
+    onClick: () => {},
     privacy: 'none',
     type: ROOM_RESULT_TYPE,
   }

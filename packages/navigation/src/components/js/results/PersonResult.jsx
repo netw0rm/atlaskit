@@ -5,8 +5,6 @@ import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
 
-const noOp = () => {};
-
 const PERSON_RESULT_TYPE = 'person';
 
 // ===================================================================
@@ -30,36 +28,35 @@ export default class PersonResult extends PureComponent {
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** A user's custom handle. Appears to the right of their `name`. It has a lower font-weight. */
+    /** A user's custom handle. Appears to the right of their `name`. It has a lower
+    font-weight. */
     mentionName: PropTypes.string,
-    /** A character with which to prefix the `mentionName`.  Defaults to '@' */
+    /** A character with which to prefix the `mentionName`. Defaults to '@' */
     mentionPrefix: PropTypes.string,
-    /** Name of the container.  Provides the main text to be displayed as the item. */
+    /** Name of the container. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
-    /** Triggered by mouseclick event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
     onClick: PropTypes.func,
-    /** Triggered by mouseenter event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
     onMouseEnter: PropTypes.func.isRequired,
-    /** Standard onmouseleave event. */
+    /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,
     /** Text to be shown alongside the main `text`. */
     presenceMessage: PropTypes.string,
     /** Sets the appearance of the presence indicator */
     presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
-    /** Unique ID of the result.  This is passed as a parameter to certain callbacks */
+    /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    /** Type of the result.  This is passed as a parameter to certain callbacks. */
+    /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string.isRequired,
-    // isTabbingDisabled: PropTypes.bool,
   }
 
   static defaultProps = {
     mentionPrefix: '@',
-    onClick: noOp,
-    onMouseEnter: noOp,
-    onMouseLeave: noOp,
+    onClick: () => {},
     type: PERSON_RESULT_TYPE,
-  }
+    presenceState: null, // No presence indicator by default
+  };
 
   getMention = () => (
     this.props.mentionName

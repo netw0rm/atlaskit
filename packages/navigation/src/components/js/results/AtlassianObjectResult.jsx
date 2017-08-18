@@ -29,32 +29,35 @@ export default class AtlassianObjectResult extends PureComponent {
     /** Reduces padding and font size. */
     isCompact: PropTypes.bool,
     /** Set whether to display a lock on the result's icon */
-    isPrivate: PropTypes.boolean,
+    isPrivate: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** Name of the object.  Provides the main text to be displayed as the item. */
+    /** Name of the object. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
-    /** A key or identifier of the object.  Ajoined to the `containerName` when provided. */
+    /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
     objectKey: PropTypes.string,
-    /** Triggered by mouseclick event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
     onClick: PropTypes.func,
-    /** Triggered by mouseenter event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
     onMouseEnter: PropTypes.func.isRequired,
-    /** Standard onmouseleave event. */
+    /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,
-    /** Unique ID of the result.  This is passed as a parameter to certain callbacks */
+    /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    /** Type of the result.  This is passed as a parameter to certain callbacks. */
+    /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string.isRequired,
-    // isTabbingDisabled: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    onClick: () => {},
   }
 
   getAvatar = () => (
     <Avatar
       src={this.props.avatarUrl}
       appearance="square"
-      status={this.props.isPrivate && 'locked'}
+      status={this.props.isPrivate ? 'locked' : null}
     />
   )
 

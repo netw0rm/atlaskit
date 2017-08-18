@@ -27,21 +27,20 @@ export default class ResultBase extends PureComponent {
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** Triggered by mouseclick event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
     onClick: PropTypes.func,
-    /** Triggered by mouseenter event.  Is called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
     onMouseEnter: PropTypes.func.isRequired,
-    /** Standard onmouseleave event. */
+    /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,
-    /** Unique ID of the result.  This is passed as a parameter to certain callbacks */
+    /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Text to be shown alongside the main `text`. */
     subText: PropTypes.string,
     /** Main text to be displayed as the item. */
     text: PropTypes.string.isRequired,
-    /** Type of the result.  This is passed as a parameter to certain callbacks. */
+    /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string.isRequired,
-    // isTabbingDisabled: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -70,7 +69,6 @@ export default class ResultBase extends PureComponent {
       icon,
       isCompact,
       isSelected,
-      // isTabbingDisabled,
       onMouseLeave,
       resultId,
       subText,
@@ -89,7 +87,6 @@ export default class ResultBase extends PureComponent {
         onMouseLeave={onMouseLeave}
         resultId={resultId}
         subText={subText}
-        // tabIndex={isTabbingDisabled ? -1 : null}
         text={text}
         textAfter={elemAfter}
         type={type}

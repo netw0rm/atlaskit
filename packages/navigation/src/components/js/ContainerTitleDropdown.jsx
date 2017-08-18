@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
+import { itemThemeNamespace } from '@atlaskit/item';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { AkNavigationItem } from '../../../src/index';
@@ -8,6 +9,7 @@ import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import { ReactElement } from '../../types';
 import { rootKey } from '../../theme/util';
+import overrideItemTheme from '../../theme/create-container-title-item-theme';
 
 type Props = {|
   /** Content that will be rendered inside the layer element. Should typically be
@@ -21,31 +23,11 @@ type Props = {|
   text: string,
 |}
 
-const key = '@atlaskit-shared-theme/item';
+const key = itemThemeNamespace;
 
 class ContainerTitleDropdown extends PureComponent {
   props: Props
-  
-  overrideItemTheme = (outerTheme): ItemTheme => {
-    const original: ItemTheme = outerTheme[key];
 
-    if(!original || !original.padding) {
-      console.error(`could not find theme with key '${key}' to modifiy it for title`);
-      return outerTheme;
-    }
-
-    const updated: ItemTheme = JSON.parse(JSON.stringify(original));
-
-    updated.padding.default.x = 4;
-    updated.height.default = 0;
-    updated.beforeItemSpacing.default = 8;
-
-    return {
-      ...outerTheme,
-      [key]: updated,
-    }
-  }
-  
   render() {
     const {
       children,
@@ -68,7 +50,7 @@ class ContainerTitleDropdown extends PureComponent {
         position={isNavCollapsed ? 'right top' : 'bottom left'}
         shouldFlip={false}
         trigger={(
-          <ThemeProvider theme={theme => this.overrideItemTheme(theme)}>
+          <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
             <AkNavigationItem
               dropIcon={isNavCollapsed ? null : <ExpandIcon />}
               isDropdownTrigger

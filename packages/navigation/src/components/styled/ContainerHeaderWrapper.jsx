@@ -42,6 +42,7 @@ const ContainerHeaderWrapper = styled.div`
     flex-basis: auto;
     flex-direction: column;
     justify-content: center;
+    min-height: 0;
     padding: 0 ${gridSize}px 0 ${gridSize}px;
   `}
 

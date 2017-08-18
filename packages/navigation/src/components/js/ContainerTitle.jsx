@@ -1,11 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
+import { itemThemeNamespace } from '@atlaskit/item';
 import { AkNavigationItem } from '../../../src/index';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import type { ReactElement, ReactClass } from '../../types';
 import { rootKey } from '../../theme/util';
+import overrideItemTheme from '../../theme/create-container-title-item-theme';
 
 type Props = {|
   /** Location to link out to on click. This is passed down to the custom link
@@ -36,30 +38,10 @@ type Props = {|
   text?: ReactElement,
 |}
 
+const key = itemThemeNamespace;
+
 class ContainerTitle extends PureComponent {
   props: Props;
-
-  overrideItemTheme = (outerTheme): ItemTheme => {
-    // TODO: override 
-    const original: ItemTheme = outerTheme['@atlaskit-shared-theme/item'];
-
-    if(!original || !original.padding) {
-      // we are in trouble.
-    }
-
-    const updated: ItemTheme = {
-      ...original,
-      padding: {
-        ...original.padding,
-        default: {
-          ...original.padding.default,
-          x: 4,
-        }
-      }
-    };
-
-    return updated;
-  }
 
   render() {
     const {
@@ -85,17 +67,15 @@ class ContainerTitle extends PureComponent {
     };
 
     return (
-      <ThemeProvider
-        theme={theme => this.overrideItemTheme(theme)}
-      >
-      <AkNavigationItem
-        icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
-        subText={isNavCollapsed ? null : subText}
-        text={isNavCollapsed ?
-          <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
-          : <ContainerTitleText>{text}</ContainerTitleText>}
-        {...interactiveWrapperProps}
-      />
+      <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
+        <AkNavigationItem
+          icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
+          subText={isNavCollapsed ? null : subText}
+          text={isNavCollapsed ?
+            <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
+            : <ContainerTitleText>{text}</ContainerTitleText>}
+          {...interactiveWrapperProps}
+        />
       </ThemeProvider>
     );
   }

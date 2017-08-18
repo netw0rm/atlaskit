@@ -11,13 +11,13 @@ describe('<GlobalPrimaryActions />', () => {
       expect(shallowWithTheme(<GlobalPrimaryActions primaryIcon={<img alt="foo" />} />).find('GlobalItem').length).toBe(1);
     });
     it('renders 2 GlobalItems with a primaryIcon and a search icon', () => {
-      expect(shallowWithTheme(<GlobalPrimaryActions
+      expect(mountWithRootTheme(<GlobalPrimaryActions
         primaryIcon={<img alt="foo" />}
         searchIcon={<img alt="foo" />}
       />).find('GlobalItem').length).toBe(2);
     });
     it('renders 3 GlobalItems with a primaryIcon, searchIcon and a createIcon', () => {
-      expect(shallowWithTheme(<GlobalPrimaryActions
+      expect(mountWithRootTheme(<GlobalPrimaryActions
         primaryIcon={<img alt="foo" />}
         searchIcon={<img alt="foo" />}
         createIcon={<img alt="foo" />}

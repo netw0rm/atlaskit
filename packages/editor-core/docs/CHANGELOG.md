@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.18.0 (2017-08-18)
+
+* feature; bumped mediapicker to the latest in editor-core ([ef771f8](https://bitbucket.org/atlassian/atlaskit/commits/ef771f8))
 ## 45.17.0 (2017-08-18)
 
 * feature; latest task/decision support (issues closed: fs-1284) ([e7bb445](https://bitbucket.org/atlassian/atlaskit/commits/e7bb445))

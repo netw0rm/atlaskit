@@ -6,8 +6,7 @@ import { gridSize } from '../shared-variables';
 // Converts the top-level 'Provided' container navigation theme into the
 // format the @atlaskit/item expects.
 const itemThemeFromNavTheme = (
-  navigationTheme: NavigationTheme,
-  isCollapsed?: boolean = false
+  navigationTheme: NavigationTheme
 ): GenericItemTheme => ({
   padding: {
     compact: {

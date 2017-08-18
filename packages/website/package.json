@@ -8,7 +8,7 @@
     "build-data": "node ./build && prettier --single-quote --trailing-comma es5 --write src/data.js",
     "build-staging": "yarn run build-data && NODE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
     "deploy": "yarn run build && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID -p dist",
-    "deploy-staging": "yarn run build-staging && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID -p dist",
+    "deploy-staging": "yarn run build-staging && netlify -t $NETLIFY_TOKEN deploy -s $NETLIFY_SITE_ID_STAGING -p dist",
     "prepublish": "./bin/fixHpack.js && yarn run build-data",
     "serve": "webpack-dev-server",
     "serve-dist": "http-server dist -p 8888",

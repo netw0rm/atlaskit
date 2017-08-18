@@ -1,11 +1,12 @@
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/startWith';
 import { MediaItemProvider, MediaCollectionProvider, MediaUrlPreviewProvider } from '../providers/';
-import {RemoteMediaCollectionProviderFactory} from '../providers/remoteMediaCollectionProviderFactory';
+import { RemoteMediaCollectionProviderFactory } from '../providers/remoteMediaCollectionProviderFactory';
 import { JwtTokenProvider, MediaItemType, MediaItem, UrlPreview } from '../';
 import { MediaDataUriService, DataUriService } from '../services/dataUriService';
 import { MediaLinkService } from '../services/linkService';
+import { UploadService } from '../services/uploadService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 
@@ -16,6 +17,7 @@ export interface Context {
   getMediaCollectionProvider(collectionName: string, pageSize: number): MediaCollectionProvider;
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
   getDataUriService(collectionName?: string): DataUriService;
+  getUploadService(): UploadService;
   addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
   refreshCollection(collectionName: string, pageSize: number): void;
   readonly config: ContextConfig;
@@ -39,6 +41,7 @@ class ContextImpl implements Context {
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly lruCache: LRUCache<string, MediaItem>;
+  private uploadService?: UploadService;
 
   constructor(readonly config: ContextConfig) {
     this.lruCache = new LRUCache<string, MediaItem>(config.cacheSize || DEFAULT_CACHE_SIZE);
@@ -79,6 +82,14 @@ class ContextImpl implements Context {
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
     return MediaUrlPreviewProvider.fromPool(this.urlPreviewPool, this.apiConfig, url, this.config.clientId);
+  }
+
+  getUploadService(): UploadService {
+    if (!this.uploadService) {
+      this.uploadService = new UploadService(this.apiConfig, this.config.clientId);
+    }
+
+    return this.uploadService;
   }
 
   addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string> {

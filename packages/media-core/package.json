@@ -53,8 +53,9 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
-    "tslib": "^1.2.0",
-    "lru-fast": "^0.2.2"
+    "lru-fast": "^0.2.2",
+    "rusha": "^0.8.6",
+    "tslib": "^1.2.0"
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^1.0.0"

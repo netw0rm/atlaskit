@@ -4,9 +4,9 @@ import { whenCollapsed } from '../../theme/util';
 
 const padding = {
   top: gridSize,
-  right: gridSize,
-  bottom: gridSize / 2,
-  left: gridSize,
+  right: gridSize * 2,
+  bottom: gridSize,
+  left: gridSize * 2,
 };
 
 const minHeight = (props) => {
@@ -15,14 +15,14 @@ const minHeight = (props) => {
     return 0;
   }
   // the height of the container icon and the margin below it
-  return `${padding.bottom + globalItemSizes.medium}px`;
+  return `${padding.bottom + padding.top + globalItemSizes.medium + containerTitleBottomMargin}px`;
 };
 
 const flexBasis = (props) => {
   if (props.isFullWidth) {
     return 0;
   } else if (props.isInDrawer) {
-    return css`${props.iconOffset - padding.top - padding.bottom - layout.padding.top}px`;
+    return css`${props.iconOffset - layout.padding.top}px`;
   }
   return 'auto';
 };
@@ -31,8 +31,10 @@ const ContainerHeaderWrapper = styled.div`
   flex-basis: ${flexBasis};
   flex-shrink: 0;
   min-height: ${minHeight};
-  padding: ${padding.top}px ${padding.right}px ${padding.bottom}px ${padding.left}px;
-  transition: flex-basis ${drawerContainerHeaderAnimationSpeed};
+  overflow: hidden;
+  padding: 0 ${padding.right}px 0 ${padding.left}px;
+  transition: flex-basis ${drawerContainerHeaderAnimationSpeed},
+              padding ${drawerContainerHeaderAnimationSpeed};
 
   ${whenCollapsed`
     /* centering the icon */
@@ -40,10 +42,12 @@ const ContainerHeaderWrapper = styled.div`
     flex-basis: auto;
     flex-direction: column;
     justify-content: center;
+    min-height: 0;
+    padding: 0 ${gridSize}px 0 ${gridSize}px;
   `}
 
   /* the gap between the container title and the next item like a dropdown */
-  > *:first-child + * { margin-top: ${containerTitleBottomMargin}; }
+  > *:first-child { margin-bottom: ${containerTitleBottomMargin}px; }
 `;
 
 ContainerHeaderWrapper.displayName = 'ContainerHeaderWrapper';

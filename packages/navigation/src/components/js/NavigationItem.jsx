@@ -35,7 +35,7 @@ type Props = {|
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
-  /** Set whether the item should be used to trigger a dropdown. If this is strue,
+  /** Set whether the item should be used to trigger a dropdown. If this is true,
   The href property will be disabled. */
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
@@ -79,10 +79,7 @@ export default class NavigationItem extends PureComponent {
       : null;
 
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
-      <NavigationItemIcon
-        isDropdownTrigger
-        hasNoPadding
-      >
+      <NavigationItemIcon isDropdownTrigger>
         {this.props.dropIcon}
       </NavigationItemIcon>
     ) : null;

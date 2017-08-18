@@ -34,25 +34,13 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
         containerTheme={this.props.containerTheme}
         onResizeCallback={this.onResize}
         containerHeaderComponent={() => (
-          this.state.isNavigationOpen ? (
-            <BasicProjectSwitcher
-              text="Project Switcher very long text"
-              icon={<NucleusIcon />}
-              subText="Software project"
-              shouldFitContainer={this.state.isNavigationOpen}
-              position="bottom left"
-            >
-              {this.props.dropdownItems}
-            </BasicProjectSwitcher>
-          ) : (
-            <BasicProjectSwitcher
-              shouldFitContainer={this.state.isNavigationOpen}
-              position="right top"
-              icon={<NucleusIcon />}
-            >
-              {this.props.dropdownItems}
-            </BasicProjectSwitcher>
-          )
+          <BasicProjectSwitcher
+            text="Project Switcher very long text"
+            icon={<NucleusIcon />}
+            subText="Software project"
+          >
+            {this.props.dropdownItems}
+          </BasicProjectSwitcher>
         )}
       >
         <NavigationItem

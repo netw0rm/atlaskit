@@ -6,7 +6,7 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
 import DropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
-import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup, AkContainerLogo, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -170,7 +170,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         containerTheme={presetThemes.global}
-        containerHeaderComponent={AtlassianLogo}
+        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo /></AkContainerLogo>)}
       >
         <AkNavigationItemGroup>
           <AkNavigationItem

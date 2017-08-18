@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.4.1 (2017-08-18)
+
+* bug fix; add missing dependency from InfiniteScroll ([e43126c](https://bitbucket.org/atlassian/atlaskit/commits/e43126c))
 ## 3.4.0 (2017-08-17)
 
 * feature; support retry for recentUpdates if expecting item is not found. (issues closed: fs-1284) ([ed9af1e](https://bitbucket.org/atlassian/atlaskit/commits/ed9af1e))

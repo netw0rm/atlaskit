@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 19.0.5 (2017-08-18)
+
+* bug fix; fix navigation group title rendering action button twice (issues closed: ak-3219) ([b82bc4c](https://bitbucket.org/atlassian/atlaskit/commits/b82bc4c))
 ## 19.0.4 (2017-08-16)
 
 * bug fix; removing deprecated @atlaskit/drag-and-drop. Project can now be found at react-beaut ([c323890](https://bitbucket.org/atlassian/atlaskit/commits/c323890))

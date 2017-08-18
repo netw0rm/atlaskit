@@ -14,23 +14,23 @@ describe(`${name} - DropdownMenuStateless`, () => {
     });
 
     ['ArrowDown', 'Enter'].forEach((triggerKey) => {
-      test(`should set DropdownItemFocusManager.wasOpenedViaKeyboard when opened via "${triggerKey}" key on trigger`, () => {
+      test(`should set DropdownItemFocusManager.autoFocus when opened via "${triggerKey}" key on trigger`, () => {
         const wrapper = mount(
           <DropdownMenuStateless trigger={<button className="my-trigger" />} />
         );
         wrapper.find('.my-trigger').simulate('keydown', { key: 'ArrowDown' });
         wrapper.setProps({ isOpen: true });
-        expect(wrapper.find(DropdownItemFocusManager).prop('wasOpenedViaKeyboard')).toBe(true);
+        expect(wrapper.find(DropdownItemFocusManager).prop('autoFocus')).toBe(true);
       });
     });
 
-    test('should NOT set DropdownItemFocusManager.wasOpenedViaKeyboard when opened via click on trigger', () => {
+    test('should NOT set DropdownItemFocusManager.autoFocus when opened via click on trigger', () => {
       const wrapper = mount(
         <DropdownMenuStateless trigger={<button className="my-trigger" />} />
       );
       wrapper.find('.my-trigger').simulate('click');
       wrapper.setProps({ isOpen: true });
-      expect(wrapper.find(DropdownItemFocusManager).prop('wasOpenedViaKeyboard')).toBe(false);
+      expect(wrapper.find(DropdownItemFocusManager).prop('autoFocus')).toBe(false);
     });
   });
 });

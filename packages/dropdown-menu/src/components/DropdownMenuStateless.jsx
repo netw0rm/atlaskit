@@ -346,7 +346,7 @@ export default class DropdownMenuStateless extends Component {
                 role="menu"
                 shouldFitContainer={shouldFitContainer}
               >
-                <DropdownItemFocusManager wasOpenedViaKeyboard={this.sourceOfIsOpen === 'keydown'}>
+                <DropdownItemFocusManager autoFocus={this.sourceOfIsOpen === 'keydown'}>
                   {children}
                 </DropdownItemFocusManager>
               </WidthConstrainer>

@@ -20,7 +20,7 @@ describe(`${name} - DropdownItemFocusManager`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <DropdownItemFocusManager wasOpenedViaKeyboard>
+        <DropdownItemFocusManager autoFocus>
           <DropdownItem isDisabled>Item zero</DropdownItem>
           <DropdownItem isHidden>Item one</DropdownItem>
           <DropdownItem>Item two</DropdownItem>
@@ -105,7 +105,7 @@ describe(`${name} - DropdownItemFocusManager`, () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <DropdownItemFocusManager wasOpenedViaKeyboard>
+        <DropdownItemFocusManager autoFocus>
           <DropdownItemGroup>
             <DropdownItem isDisabled>Item zero</DropdownItem>
             <DropdownItem isHidden>Item one</DropdownItem>

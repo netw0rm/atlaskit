@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.1.0 (2017-08-17)
+
+* feature; adding new AutoDismissFlag component (issues closed: ak-2974 ak-1503) ([9aa91c0](https://bitbucket.org/atlassian/atlaskit/commits/9aa91c0))
 ## 6.0.0 (2017-08-16)
 
 * breaking; The Flag.id prop has been changed from optional to required. ([91f8dc4](https://bitbucket.org/atlassian/atlaskit/commits/91f8dc4))

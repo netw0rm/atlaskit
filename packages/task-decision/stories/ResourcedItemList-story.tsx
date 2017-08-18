@@ -7,7 +7,7 @@ import { createProviders } from './story-utils';
 
 const initialQuery: Query = {
   containerAri: 'cheese',
-  limit: 10,
+  limit: 100,
 };
 
 const initialQueryByLastUpdateDate: Query = {
@@ -35,6 +35,8 @@ storiesOf('<ResourcedItemList/>', module)
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -46,6 +48,8 @@ storiesOf('<ResourcedItemList/>', module)
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -68,6 +72,8 @@ storiesOf('<ResourcedItemList/>', module)
         initialQuery={initialQueryByLastUpdateDate}
         taskDecisionProvider={taskDecisionProvider}
         groupItems={true}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -79,6 +85,8 @@ storiesOf('<ResourcedItemList/>', module)
         initialQuery={initialQueryByLastUpdateDate}
         taskDecisionProvider={taskDecisionProvider}
         groupItems={true}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })

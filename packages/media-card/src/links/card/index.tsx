@@ -31,11 +31,8 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         return this.renderLinkCardImage();
 
       case 'horizontal':
-        if (smartCard) {
-          return this.renderSmartCard();
-        } else {
-          return this.renderGenericLink();
-        }
+        // https://product-fabric.atlassian.net/browse/MSW-155
+        return this.renderGenericLink();
 
       case 'square':
         return this.renderGenericLink();

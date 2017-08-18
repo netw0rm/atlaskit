@@ -1,5 +1,11 @@
 # @atlaskit/item
 
+## 2.2.3 (2017-08-18)
+
+* bug fix; fix navigation group title rendering action button twice (issues closed: ak-3219) ([b82bc4c](https://bitbucket.org/atlassian/atlaskit/commits/b82bc4c))
+
+
+
 ## 2.2.2 (2017-08-11)
 
 * bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))

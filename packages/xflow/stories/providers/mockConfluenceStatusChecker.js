@@ -1,3 +1,5 @@
+import bezier from 'cubic-bezier';
+
 import {
   ACTIVE,
   // ACTIVATING,
@@ -10,9 +12,11 @@ import {
  * has come up.
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
-const MOCK_ACTIVATION_TIME = 30000; // milliseconds
-
 const POLLING_TIMEOUT = 300000; // milliseconds;
+const MOCK_ACTIVATION_TIME = 60000; // milliseconds
+
+// Used to caculate progress from time non-linearly
+const easeOutFn = bezier(0, 1, 0, 1, 1000);
 
 let interval = null;
 let startTime = 0;
@@ -38,7 +42,9 @@ export default initialState => ({
       const poll = async () => {
         const status = await checkStatus();
         const timeElapsed = Date.now() - startTime;
-        const progress = status === ACTIVE ? 1 : Math.min(timeElapsed / POLLING_TIMEOUT, 1);
+        const progress =
+          status === ACTIVE ? 1 : easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
+
         if (progressHandler) {
           progressHandler({
             status,

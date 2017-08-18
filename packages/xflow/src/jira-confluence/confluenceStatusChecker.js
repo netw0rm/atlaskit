@@ -1,3 +1,5 @@
+import bezier from 'cubic-bezier';
+
 import {
   ACTIVE,
   ACTIVATING,
@@ -11,6 +13,9 @@ import {
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
+
+// Used to caculate progress from time non-linearly
+const easeOutFn = bezier(0.075, 0.82, 0.165, 1.0, 1000);
 
 export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';
 export const PRICING_URL = '/admin/rest/billing/api/instance/pricing';
@@ -112,7 +117,8 @@ export default {
       const poll = async () => {
         const status = await updateStatus();
         const timeElapsed = Date.now() - startTime;
-        const progress = status === ACTIVE ? 1 : Math.min(timeElapsed / POLLING_TIMEOUT, 1);
+        const progress =
+          status === ACTIVE ? 1 : easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
 
         if (progress === 1) {
           this.stop();

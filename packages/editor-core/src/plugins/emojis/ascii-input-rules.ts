@@ -52,8 +52,8 @@ function isEnabled(state: EditorState<Schema<any, any>>) {
 
 type AsciiEmojiMatch = {
   emoji: EmojiDescription;
-  leadingCharacter: string;
-  trailingCharacter: string;
+  leadingString: string;
+  trailingString: string;
 };
 
 class AsciiEmojiMatcher {
@@ -62,26 +62,31 @@ class AsciiEmojiMatcher {
    * 1. an emoticon starting with a colon character (e.g. :D => 😃)
    * 2. an emoticon not starting with a colon character (e.g. 8-D => 😎)
    *
-   * The following describes the different parts of the regex from left to right:
-   *   (^|${leafNodeReplacementCharacter}| )
-   *     must be preceded by the start of a line, a whitespace or a leaf node, regardless of scenario #1 or #2
+   * Explanation (${leafNodeReplacementCharacter} is replaced with character \ufffc)
    *
-   *   ([^: ]\S{1,3}|:\S{1,3} )
-   *     alternation between scenario #1 and #2
-   *       #1 - `[^: ]\S{1,3}`
-   *         must not start with a colon and any additional whitespace or leaf node is ignored (as already matched by previous capture)
-   *         following characters must be non-whitespace
-   *         only matches emoticons that are between 2 and 4 characters long
-   *       #2 - :\S{1,3}
-   *         must start with a colon character
-   *         following characters must be non-whitespace
-   *         only matches emoticons that are between 2 and 4 characters long
-   *         must be trailed by a space character
+   *   1st Capturing Group ((?:^|[\s\ufffc])(?:\(*?))
+   *     Non-capturing group (?:^|[\s\ufffc])
+   *       1st Alternative ^
+   *         ^ asserts position at start of the string
+   *       2nd Alternative [\s\ufffc]
+   *         Match a single character present in [\s\ufffc]
+   *     Non-capturing group (?:\(*?)
+   *       matches the character ( literally (case sensitive) between zero and unlimited times, as few times as possible, expanding as needed (lazy)
+   *   2nd Capturing Group (\(y\)|[^:\s\ufffc\(]\S{1,3}|:\S{1,3}( ))
+   *     1st Alternative \(y\)
+   *       matches the string (y) literally (case sensitive)
+   *     2nd Alternative [^:\s\ufffc\(]\S{1,3}
+   *       matches a single character not present in [^:\s\ufffc\(] between 1 and 3 times, as many times as possible, giving back as needed (greedy)
+   *     3rd Alternative :\S{1,3}( )
+   *       : matches the character : literally (case sensitive)
+   *       \S{1,3} matches any non-whitespace character between 1 and 3 times, as many times as possible, giving back as needed (greedy)
+   *       3rd Capturing Group ( )
+   *         matches the character [space] literally (case sensitive)
+   *   $ asserts position at the end of the string
    *
-   *    $
-   *      anchors the end of the match to the cursor position
+   * See https://regex101.com/r/HRS9O2/2
    */
-  static REGEX = new RegExp(`(^|[\\s${leafNodeReplacementCharacter}])([^:\\s${leafNodeReplacementCharacter}]\\S{1,3}|:\\S{1,3}( ))$`);
+  static REGEX = new RegExp(`((?:^|[\\s${leafNodeReplacementCharacter}])(?:\\(*?))(\\(y\\)|[^:\\s${leafNodeReplacementCharacter}\\(]\\S{1,3}|:\\S{1,3}( ))$`);
 
   private static REGEX_LEADING_CAPTURE_INDEX = 1;
   private static REGEX_EMOJI_ASCII_CAPTURE_INDEX = 2;
@@ -98,8 +103,8 @@ class AsciiEmojiMatcher {
     if (emoji) {
       return {
         emoji: emoji,
-        leadingCharacter: AsciiEmojiMatcher.getLeadingCharacter(matchParts),
-        trailingCharacter: AsciiEmojiMatcher.getTrailingCharacter(matchParts),
+        leadingString: AsciiEmojiMatcher.getLeadingString(matchParts),
+        trailingString: AsciiEmojiMatcher.getTrailingString(matchParts),
       };
     }
   }
@@ -112,11 +117,11 @@ class AsciiEmojiMatcher {
     return undefined;
   }
 
-  private static getLeadingCharacter(match: string[]): string {
+  private static getLeadingString(match: string[]): string {
     return match[AsciiEmojiMatcher.REGEX_LEADING_CAPTURE_INDEX];
   }
 
-  private static getTrailingCharacter(match: string[]): string {
+  private static getTrailingString(match: string[]): string {
     return match[AsciiEmojiMatcher.REGEX_TRAILING_CAPTURE_INDEX] || '';
   }
 }
@@ -143,7 +148,7 @@ class AsciiEmojiTransactionCreator {
   }
 
   private get from(): number {
-    return this.start + this.match.leadingCharacter.length;
+    return this.start + this.match.leadingString.length;
   }
 
   private get to(): number {
@@ -173,11 +178,11 @@ class AsciiEmojiTransactionCreator {
   }
 
   private trailingTextNodeRequired(): boolean {
-    return this.match.trailingCharacter.length > 0;
+    return this.match.trailingString.length > 0;
   }
 
   private createTrailingTextNode(): Node {
-    return this.state.schema.text(this.match.trailingCharacter);
+    return this.state.schema.text(this.match.trailingString);
   }
 }
 

@@ -95,6 +95,10 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(this.emojiRepository.getAsciiMap(), 'getAsciiMap');
   }
 
+  getFrequentlyUsed(): Promise<EmojiDescription[]> {
+    return this.promiseBuilder(this.emojiRepository.getFrequentlyUsed(), 'getFrequentlyUsed');
+  }
+
   recordSelection?(emoji: EmojiDescription): Promise<any> {
     this.recordedSelections.push(emoji);
     this.emojiRepository.used(emoji);
@@ -201,13 +205,9 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
   }
 }
 
-class UsagePeekEmojiRepository extends EmojiRepository {
+class UsageClearEmojiRepository extends EmojiRepository {
   constructor(emojis: EmojiDescription[]) {
     super(emojis);
-  }
-
-  getFrequentlyUsed(): Array<string> {
-    return this.usageTracker.getOrder();
   }
 
   clear() {
@@ -215,25 +215,17 @@ class UsagePeekEmojiRepository extends EmojiRepository {
   }
 }
 
-const isUsagePeekEmojiRepository = (object: any): object is UsagePeekEmojiRepository => {
-  return 'getFrequentlyUsed' in object && 'clear' in object;
+const isUsageClearEmojiRepository = (object: any): object is UsageClearEmojiRepository => {
+  return 'clear' in object;
 };
 
-export class UsagePeekEmojiResource extends MockNonUploadingEmojiResource {
+export class UsageClearEmojiResource extends MockNonUploadingEmojiResource {
   constructor(emojis: EmojiDescription[]) {
-    super(new UsagePeekEmojiRepository(emojis));
-  }
-
-  getFrequentlyUsed(): Array<string> {
-    if (this.emojiRepository && isUsagePeekEmojiRepository(this.emojiRepository)) {
-      return this.emojiRepository.getFrequentlyUsed();
-    } else {
-      return [];
-    }
+    super(new UsageClearEmojiRepository(emojis));
   }
 
   clearFrequentlyUsed() {
-    if (isUsagePeekEmojiRepository(this.emojiRepository)) {
+    if (isUsageClearEmojiRepository(this.emojiRepository)) {
       this.emojiRepository.clear();
     }
   }

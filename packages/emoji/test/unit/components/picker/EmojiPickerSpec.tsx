@@ -174,22 +174,22 @@ describe('<EmojiPicker />', () => {
     it('should display all categories', () => {
       const emojiProvider = getEmojiResourcePromise();
       let expectedCategories = defaultCategories;
-      emojiProvider.then(provider => {
+      return emojiProvider.then(provider => {
         if (provider.calculateDynamicCategories) {
           expectedCategories = expectedCategories.concat(provider.calculateDynamicCategories());
         }
-      });
 
-      return setupPicker().then(component => {
-        const categorySelector = component.find(CategorySelector);
-        const buttons = categorySelector.find('button');
-        expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
-        expectedCategories.sort(sortCategories);
+        return setupPicker().then(component => {
+          const categorySelector = component.find(CategorySelector);
+          const buttons = categorySelector.find('button');
+          expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+          expectedCategories.sort(sortCategories);
 
-        for (let i = 0; i < buttons.length; i++) {
-          const button = buttons.at(i);
-          expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
-        }
+          for (let i = 0; i < buttons.length; i++) {
+            const button = buttons.at(i);
+            expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
+          }
+        });
       });
     });
 

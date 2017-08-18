@@ -5,7 +5,7 @@ import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
 import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
-import { customCategory, defaultCategories } from '../constants';
+import { customCategory, defaultCategories, frequentCategory } from '../constants';
 import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchSort, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 import { createSearchEmojiComparator, createUsageOnlyEmojiComparator } from './internal/Comparators';
@@ -129,11 +129,11 @@ export default class EmojiRepository {
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
+    this.usageTracker = new UsageFrequencyTracker();
 
     this.initRepositoryMetadata();
     this.initSearchIndex();
 
-    this.usageTracker = new UsageFrequencyTracker();
   }
 
   /**
@@ -219,11 +219,30 @@ export default class EmojiRepository {
     return this.asciiMap;
   }
 
+  /**
+   * Return the most frequently used emoji, ordered from most frequent to least frequent. Return an empty array if
+   * there are none.
+   */
+  getFrequentlyUsed(): EmojiDescription[] {
+    const emojiIds = this.usageTracker.getOrder();
+
+    const emoji: EmojiDescription[] = [];
+    emojiIds.forEach((id) => {
+      const e = this.findById(id);
+      if (e !== undefined) {
+        emoji.push(e);
+      }
+    });
+
+    return emoji;
+  }
+
   getDynamicCategoryList(includeCustom?: boolean): string[] {
+    const categories = this.dynamicCategoryList.slice();
     if (this.dynamicCategoryList.indexOf(customCategory) === -1 && includeCustom) {
-      this.dynamicCategoryList.push(customCategory);
+      categories.push(customCategory);
     }
-    return this.dynamicCategoryList;
+    return categories;
   }
 
   /**
@@ -234,6 +253,14 @@ export default class EmojiRepository {
    */
   used(emoji: EmojiDescription) {
     this.usageTracker.recordUsage(emoji);
+
+    // if this is the first usage ensure that we update the dynamic categories (on the next tick to give the
+    // tracker time to record the usage)
+    if (this.dynamicCategoryList.indexOf(frequentCategory) === -1) {
+      setTimeout(() => {
+        this.dynamicCategoryList.push(frequentCategory);
+      });
+    }
   }
 
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
@@ -295,6 +322,11 @@ export default class EmojiRepository {
       categorySet.add(emoji.category);
       this.addToMaps(emoji);
     });
+
+    if (this.usageTracker.getOrder().length) {
+      categorySet.add(frequentCategory);
+    }
+
     this.dynamicCategoryList = Array.from(categorySet).filter(category => defaultCategories.indexOf(category) === -1);
   }
 

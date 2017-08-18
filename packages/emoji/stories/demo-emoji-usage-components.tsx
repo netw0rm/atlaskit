@@ -3,10 +3,13 @@ import { PureComponent } from 'react';
 
 import { EmojiProvider } from '../src/api/EmojiResource';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
+import { EmojiId, EmojiDescription, OptionalEmojiDescription } from '../src/types';
+import { UsageClearEmojiResource } from '../src/support/MockEmojiResource';
+import { localStoragePrefix } from '../src/constants';
 
 export interface EmojiUsageProps {
   emojiProvider: EmojiProvider;
-  emojiIdList: Array<string>;
+  emojiList: Array<EmojiDescription>;
   emojiQueue: Array<string>;
 }
 
@@ -18,17 +21,17 @@ export class EmojiUsageList extends PureComponent<EmojiUsageProps,any> {
   render() {
     let emojiUsageList;
 
-    if (this.props.emojiIdList.length === 0) {
+    if (this.props.emojiList.length === 0) {
       emojiUsageList = (<span>None</span>);
     } else {
       emojiUsageList = (<span>
         {
-          this.props.emojiIdList.map((id) => {
+          this.props.emojiList.map((emoji) => {
             return (
-                <span key={id} style={{marginRight: '15px'}}>
-                  <span style={{marginRight: '3px'}}>({this.props.emojiQueue.filter(emojiId => emojiId === id).length})</span>
+                <span key={emoji.id} style={{marginRight: '15px'}}>
+                  <span style={{marginRight: '3px'}}>({this.props.emojiQueue.filter(emojiId => emojiId === emoji.id).length})</span>
                   <ResourcedEmoji
-                    emojiId={{id: id, shortName: 'unknown'}}
+                    emojiId={emoji}
                     emojiProvider={Promise.resolve(this.props.emojiProvider)}
                     showTooltip={true}
                   />
@@ -85,6 +88,97 @@ export class LocalStorageView extends PureComponent<LocalStorageViewProps,any> {
       <div style={{ paddingTop: '10px', paddingBottom: '10px'}}>
         <h4>Emoji Queue (from localStorage)</h4>
         <pre style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>{renderedQueue}</pre>
+      </div>
+    );
+  }
+}
+
+export interface UsagingShowingProps {
+  emojiResource: UsageClearEmojiResource;
+}
+
+export interface UsageShowingState {
+  emojiList: Array<EmojiDescription>;
+  emojiQueue: Array<string>;
+}
+
+/**
+ * Extend this class if you want to wrap an emoji component such that emoji usage is displayed after it.
+ */
+export abstract class UsageShowAndClearComponent extends PureComponent<UsagingShowingProps, UsageShowingState> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      emojiList: [],
+      emojiQueue: this.getEmojiQueue()
+    };
+  }
+
+  componentDidMount() {
+    this.refreshFrequentlyUsedList();
+  }
+
+  onSelection = (emojiId: EmojiId, emoji: OptionalEmojiDescription): void => {
+    // give the tracker a chance to write to the queue and local storage before updating state
+    setTimeout(() => {
+      this.refreshFrequentlyUsedList();
+    });
+  }
+
+  clearUsageData = (): void => {
+    const { emojiResource } = this.props;
+    emojiResource.clearFrequentlyUsed();
+    this.refreshFrequentlyUsedList();
+  }
+
+  protected refreshFrequentlyUsedList() {
+    this.props.emojiResource.getFrequentlyUsed().then(this.onRefreshedFrequentlyUsedList);
+  }
+
+  protected onRefreshedFrequentlyUsedList = (emojiList: EmojiDescription[]): void => {
+    this.setState({
+      emojiList,
+      emojiQueue: this.getEmojiQueue()
+    });
+  }
+
+  protected abstract getWrappedComponent(): JSX.Element;
+
+  getEmojiQueue(): Array<string> {
+    const json =  window.localStorage.getItem(`${localStoragePrefix}.lastUsed`);
+    if (json) {
+      try {
+        return JSON.parse(json);
+      } catch (e) {
+        // swallow any parse exception
+      }
+    }
+
+    return new Array<string>();
+  }
+
+  render() {
+    const { emojiResource } = this.props;
+    const { emojiList, emojiQueue } = this.state;
+
+    const wrappedComponent = this.getWrappedComponent();
+
+    return (
+      <div style={{ padding: '10px' }} >
+        {wrappedComponent}
+        <div>
+          <button onClick={this.clearUsageData}>Clear All Usage</button>
+        </div>
+        <EmojiUsageList
+          emojiProvider={emojiResource}
+          emojiList={emojiList}
+          emojiQueue={emojiQueue}
+        />
+        <LocalStorageView
+          emojiProvider={emojiResource}
+          emojiQueue={emojiQueue}
+        />
       </div>
     );
   }

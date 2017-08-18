@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import { getEmojiResource, getUsagePeekEmojiResource } from '../src/support/story-data';
+import { getEmojiResource, getUsageClearEmojiResource } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 import UsageShowingEmojiTypeAheadTextInput from './demo-emoji-typeahead-showing-usage';
 
@@ -116,7 +116,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
   .add('typeahead - with display of frequent use', () => {
     return (
       <UsageShowingEmojiTypeAheadTextInput
-        emojiResource={getUsagePeekEmojiResource()}
+        emojiResource={getUsageClearEmojiResource()}
       />
     );
   });

@@ -1254,6 +1254,7 @@ describe('helpers', () => {
     unsubscribe = onChange => {};
     loadMediaEmoji = () => undefined;
     optimisticMediaRendering = () => false;
+    getFrequentlyUsed = () => Promise.resolve([]);
   }
 
   class TestUploadingEmojiProvider extends TestEmojiProvider implements UploadingEmojiProvider {

@@ -420,6 +420,24 @@ describe('EmojiRepository', () => {
       const repository = new EmojiRepository(standardEmojis);
       expect(repository.getDynamicCategoryList(true)).to.deep.equal([customCategory]);
     });
+
+    it('should return FREQUENT as a category if there is emoji use tracked', (done) => {
+      const repository = new EmojiRepository(standardEmojis);
+      const heart = repository.findByShortName(':heart:');
+
+      if (!heart) {
+        fail('The emoji needed for this test were not found in the EmojiRepository');
+        done();
+      } else {
+        repository.used(heart);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          expect(repository.getDynamicCategoryList()).to.deep.equal(['FREQUENT']);
+          done();
+        });
+      }
+    });
   });
 
   describe('getEmojiVariation', () => {

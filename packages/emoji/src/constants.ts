@@ -1,5 +1,6 @@
 export const customCategory = 'CUSTOM';
 export const atlassianCategory = 'ATLASSIAN';
+export const frequentCategory = 'FREQUENT';
 export const customType = 'SITE';
 
 export const defaultEmojiHeight = 20;

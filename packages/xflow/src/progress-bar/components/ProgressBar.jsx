@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import ProgressBarBackground from '../styled/ProgressBarBackground';
 import ProgressBarValue from '../styled/ProgressBarValue';
 
-function calculateWidth(progress) {
+function toPercentage(progress) {
   // 0 <= progress <= 1
-  // 0% <= width <= 100%
-  return `${Math.min(Math.max(0, progress), 1) * 100}%`;
+  // 0 <= percentage <= 100, calculated to 1 decimal place
+  return `${(Math.min(Math.max(0, progress), 1) * 100).toFixed(1)}%`;
 }
 
 export default class ProgressBar extends Component {
@@ -25,23 +25,28 @@ export default class ProgressBar extends Component {
 
   constructor(props) {
     super(props);
+    const width = toPercentage(this.props.progress);
 
     // Set initial width before rendering occurs
     this.state = {
-      width: calculateWidth(this.props.progress),
+      width,
     };
   }
 
   componentDidMount() {
-    if (this.state.width === '100%') {
+    if (this.state.width === toPercentage(1)) {
       this.props.onComplete();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.progress !== nextProps.progress) {
+    const { progress: oldProgress } = this.props;
+    const { progress: newProgress } = nextProps;
+
+    if (oldProgress !== newProgress) {
+      const width = toPercentage(newProgress);
       this.setState({
-        width: calculateWidth(nextProps.progress),
+        width,
       });
     }
   }
@@ -56,7 +61,7 @@ export default class ProgressBar extends Component {
           ? null
           : <ProgressBarValue
             onTransitionEnd={() => {
-              if (width === '100%') {
+              if (width === toPercentage(1)) {
                 this.props.onComplete();
               }
             }}
@@ -64,6 +69,9 @@ export default class ProgressBar extends Component {
               width,
             }}
           />}
+        <span aria-live="polite">
+          {indeterminate ? '' : width}
+        </span>
       </ProgressBarBackground>
     );
   }

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.18.1 (2017-08-18)
+
+* bug fix; import media components from plugins ([6a06355](https://bitbucket.org/atlassian/atlaskit/commits/6a06355))
 ## 45.18.0 (2017-08-18)
 
 * feature; bumped mediapicker to the latest in editor-core ([ef771f8](https://bitbucket.org/atlassian/atlaskit/commits/ef771f8))

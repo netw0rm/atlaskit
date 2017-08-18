@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentClass, PureComponent } from 'react';
+import { ComponentClass, StatelessComponent, PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 
 export type SimpleEventHandler = () => void;
@@ -10,7 +10,7 @@ export interface WithOutsideClickProps {
 }
 
 // tslint:disable:next-line variable-name
-export default function withOuterListeners<P>(Component: ComponentClass<P>): ComponentClass<P & WithOutsideClickProps> {
+export default function withOuterListeners<P>(Component: ComponentClass<P> | StatelessComponent<P>): ComponentClass<P & WithOutsideClickProps> {
   return class WithOutsideClick extends PureComponent<P & WithOutsideClickProps, {}> {
     componentDidMount() {
       if (this.props.handleClickOutside) {

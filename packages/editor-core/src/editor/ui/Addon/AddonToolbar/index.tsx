@@ -33,10 +33,6 @@ export default class AddonToolbar extends React.Component<Props, State> {
     });
   }
 
-  handleClickOutside = () => {
-    this.setState({ isOpen: false, addon: null });
-  }
-
   handleDropdownClick = (renderOnClick: RenderOnClickHandler) => {
     if (renderOnClick) {
       // popup stays open, we just change its content to the component that is returned from renderOnClick()
@@ -64,7 +60,8 @@ export default class AddonToolbar extends React.Component<Props, State> {
         />
         {isOpen &&
           <AddonPopup
-            handleClickOutside={this.handleClickOutside}
+            handleClickOutside={this.togglePopup}
+            handleEscapeKeydown={this.togglePopup}
             target={this.state.target}
             mountTo={popupsMountPoint}
             boundariesElement={popupsBoundariesElement}

@@ -13,6 +13,7 @@ import { Definition as MediaGroup } from './media-group';
 import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
+import { Definition as ConfluenceUnsupportedBlock } from './confluence-unsupported-block';
 import { Table } from './tableNodes';
 
 import { Definition as Text } from './text';
@@ -37,7 +38,7 @@ import { Definition as TextColor } from '../marks/text-color';
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList | Table
+  DecisionList | TaskList | Table | ConfluenceUnsupportedBlock
 >;
 
 /**

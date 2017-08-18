@@ -1,6 +1,18 @@
-import { NodeSpec } from '../../';
+import { NodeSpec } from '../../prosemirror';
 
-const name = 'confluenceUnsupportedBlock';
+/**
+ * @name confluenceUnsupportedBlock_node
+ * @additionalProperties false
+ */
+export interface Definition {
+  type: 'confluenceUnsupportedBlock';
+  /**
+   * @additionalProperties false
+   */
+  attrs: {
+    cxhtml: string
+  };
+}
 
 export const confluenceUnsupportedBlock = {
   group: 'block',

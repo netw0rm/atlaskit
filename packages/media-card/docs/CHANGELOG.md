@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 19.0.3 (2017-08-18)
+
+* bug fix; use LinkCard for horizonal smart cards (issues closed: msw-155) ([1d5070e](https://bitbucket.org/atlassian/atlaskit/commits/1d5070e))
 ## 19.0.2 (2017-08-17)
 
 * bug fix; address code review comments ([eda0d46](https://bitbucket.org/atlassian/atlaskit/commits/eda0d46))

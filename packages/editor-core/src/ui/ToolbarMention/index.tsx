@@ -33,7 +33,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
     this.pluginState.subscribe(this.handlePluginStateChange);
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 

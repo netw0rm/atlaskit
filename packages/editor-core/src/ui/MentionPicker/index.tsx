@@ -42,7 +42,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.resolveResourceProvider(this.props.mentionProvider);
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 

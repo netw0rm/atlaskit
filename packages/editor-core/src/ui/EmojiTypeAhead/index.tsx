@@ -40,7 +40,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     pluginState.onSelectCurrent = this.handleSelectCurrent;
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     this.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 

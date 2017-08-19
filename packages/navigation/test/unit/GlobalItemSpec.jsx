@@ -3,26 +3,125 @@ import GlobalItem from '../../src/components/js/GlobalItem';
 import { shallowWithTheme, mountWithRootTheme } from './_theme-util';
 
 describe('<GlobalItem />', () => {
+  describe('rendering', () => {
+    it('if no href prop supplied, renders a GlobalItemInner (with tabIndex 0) and no DefaultLinkComponent', () => {
+      const wrapper = mountWithRootTheme(<GlobalItem />);
+      expect(wrapper.find('GlobalItemInner').prop('tabIndex')).toBe(0);
+      expect(wrapper.find('DefaultLinkComponent').exists()).toBe(false);
+    });
+    it('if href prop supplied, renders a DefaultLinkComponent containing a GlobalItemInner (without tabIndex', () => {
+      const wrapper = mountWithRootTheme(<GlobalItem href="/" />);
+      expect(wrapper.find('DefaultLinkComponent GlobalItemInner').exists()).toBe(true);
+      expect(wrapper.find('DefaultLinkComponent GlobalItemInner').prop('tabIndex')).toBe(undefined);
+    });
+  });
+
   describe('props', () => {
-    it('default size prop is small', () => {
-      expect((shallowWithTheme(<GlobalItem />).find('GlobalItemInner').props().size)).toBe('small');
+    describe('size', () => {
+      it('default size prop is small', () => {
+        expect((shallowWithTheme(<GlobalItem />).find('GlobalItemInner').props().size)).toBe('small');
+      });
+
+      ['small', 'medium', 'large'].forEach((supportedSize) => {
+        it(`${supportedSize} size prop renders small global item`, () => {
+          const wrapper = shallowWithTheme(<GlobalItem size={supportedSize} />);
+          expect(wrapper.find('GlobalItemInner').prop('size')).toBe(supportedSize);
+        });
+      });
     });
-    it('small size prop renders small global item', () => {
-      expect((shallowWithTheme(<GlobalItem size="small" />).find('GlobalItemInner').props().size)).toBe('small');
+
+    describe('linkComponent', () => {
+      it('defaults to the internal DefaultLinkComponent', () => {
+        const item = mountWithRootTheme(<GlobalItem href="http://google.com" />);
+        expect(item.find('DefaultLinkComponent').prop('href')).toBe('http://google.com');
+      });
+
+      it('can be used to render an arbitrary link', () => {
+        const item = mountWithRootTheme(<GlobalItem
+          href="http://google.com"
+          linkComponent={({ href, children }) => <a href={href} data-foo="foo">{children}</a>}
+          role="button"
+          aria-haspopup="true"
+        />);
+        expect(item.find('[data-foo]').length).toBe(1);
+        expect(item.find('linkComponent').prop('href')).toBe('http://google.com');
+        expect(item.find('linkComponent').prop('role')).toBe('button');
+        expect(item.find('linkComponent').prop('aria-haspopup')).toBe('true');
+      });
     });
-    it('medium size prop renders medium global item', () => {
-      expect((shallowWithTheme(<GlobalItem size="medium" />).find('GlobalItemInner').props().size)).toBe('medium');
+
+    describe('aria-haspopup', () => {
+      it('is not applied by default', () => {
+        const wrapper = mountWithRootTheme(<GlobalItem />);
+        expect(wrapper.find('GlobalItemInner').prop('aria-haspopup')).toBe(undefined);
+      });
+      it('is applied by to GlobalItemInner if no href prop supplied', () => {
+        const wrapper = mountWithRootTheme(<GlobalItem aria-haspopup="true" />);
+        expect(wrapper.find('GlobalItemInner').prop('aria-haspopup')).toBe('true');
+      });
+      it('is applied by to DefaultLinkComponent if href prop supplied', () => {
+        const wrapper = mountWithRootTheme(<GlobalItem href="/" aria-haspopup="true" />);
+        expect(wrapper.find('DefaultLinkComponent').prop('aria-haspopup')).toBe('true');
+      });
     });
-    it('large size prop renders large global item', () => {
-      expect((shallowWithTheme(<GlobalItem size="large" />).find('GlobalItemInner').props().size)).toBe('large');
+
+    describe('role', () => {
+      it('is not applied by default', () => {
+        const wrapper = mountWithRootTheme(<GlobalItem />);
+        expect(wrapper.find('GlobalItemInner').prop('role')).toBe(undefined);
+      });
+      it('is applied by to GlobalItemInner if no href prop supplied', () => {
+        // eslint-disable-next-line jsx-a11y/aria-role
+        const wrapper = mountWithRootTheme(<GlobalItem role="button" />);
+        expect(wrapper.find('GlobalItemInner').prop('role')).toBe('button');
+      });
+      it('is applied by to DefaultLinkComponent if href prop supplied', () => {
+        // eslint-disable-next-line jsx-a11y/aria-role
+        const wrapper = mountWithRootTheme(<GlobalItem href="/" role="button" />);
+        expect(wrapper.find('DefaultLinkComponent').prop('role')).toBe('button');
+      });
     });
-    it('linkComponent can be used to render an arbitrary link', () => {
-      const item = mountWithRootTheme(<GlobalItem
-        href="http://google.com"
-        linkComponent={({ href, children }) => <a href={href} data-foo="foo">{children}</a>}
-      />);
-      expect(item.find('[data-foo]').length).toBe(1);
-      expect(item.find('linkComponent').props().href).toBe('http://google.com');
+
+    describe('onClick', () => {
+      it('is called when GlobalItemInner is clicked if no href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem onClick={spy} />);
+        wrapper.find('GlobalItemInner').simulate('click');
+        expect(spy).toHaveBeenCalled();
+      });
+      it('is called when DefaultLinkComponent is clicked if href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem href="/" onClick={spy} />);
+        wrapper.find('DefaultLinkComponent').simulate('click');
+        expect(spy).toHaveBeenCalled();
+      });
+      it('is called when Enter pressed on GlobalItemInner if no href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem onClick={spy} />);
+        wrapper.find('GlobalItemInner').simulate('keydown', { key: 'Enter' });
+        expect(spy).toHaveBeenCalled();
+      });
+      it('is called when Enter pressed on DefaultLinkComponent if href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem href="/" onClick={spy} />);
+        wrapper.find('DefaultLinkComponent').simulate('keydown', { key: 'Enter' });
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    describe('onMouseDown', () => {
+      it('is called when GlobalItemInner is clicked if no href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem onMouseDown={spy} />);
+        wrapper.find('GlobalItemInner').simulate('mousedown');
+        expect(spy).toHaveBeenCalled();
+      });
+      it('is called when DefaultLinkComponent is clicked if href prop supplied', () => {
+        const spy = jest.fn();
+        const wrapper = mountWithRootTheme(<GlobalItem href="/" onMouseDown={spy} />);
+        wrapper.find('DefaultLinkComponent').simulate('mousedown');
+        expect(spy).toHaveBeenCalled();
+      });
     });
   });
 });

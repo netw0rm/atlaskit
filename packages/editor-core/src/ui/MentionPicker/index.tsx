@@ -25,30 +25,53 @@ export interface State {
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   content?: HTMLElement;
-  private pluginState: MentionsState;
+  private pluginState?: MentionsState;
   private picker?: AkMentionPicker;
 
   constructor(props: Props) {
     super(props);
-    this.pluginState = props.editorView && props.pluginKey.getState(props.editorView.state);
+    this.setPluginState(this.props);
   }
 
   componentDidMount() {
-    const pluginState = this.pluginState;
-    pluginState.subscribe(this.handlePluginStateChange);
-    pluginState.onSelectPrevious = this.handleSelectPrevious;
-    pluginState.onSelectNext = this.handleSelectNext;
-    pluginState.onSelectCurrent = this.handleSelectCurrent;
     this.resolveResourceProvider(this.props.mentionProvider);
   }
 
   componentWillUnmount() {
-    this.pluginState.unsubscribe(this.handlePluginStateChange);
+    const { pluginState } = this;
+
+    if (pluginState) {
+      pluginState.unsubscribe(this.handlePluginStateChange);
+    }
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    if (!this.pluginState) {
+      this.setPluginState(nextProps);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.mentionProvider !== this.props.mentionProvider) {
       this.resolveResourceProvider(nextProps.mentionProvider);
+    }
+  }
+
+  private setPluginState(props: Props) {
+    const { editorView, pluginKey } = props;
+    if (!editorView) {
+      return;
+    }
+
+    const pluginState: MentionsState = pluginKey.getState(editorView.state);
+
+    if (pluginState) {
+      this.pluginState = pluginState;
+
+      pluginState.subscribe(this.handlePluginStateChange);
+      pluginState.onSelectPrevious = this.handleSelectPrevious;
+      pluginState.onSelectNext = this.handleSelectNext;
+      pluginState.onSelectCurrent = this.handleSelectCurrent;
     }
   }
 
@@ -100,7 +123,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   private handleSelectedMention = (mention: MentionDescription) => {
-    this.pluginState.insertMention(mention);
+    this.pluginState!.insertMention(mention);
   }
 
   private handleSelectPrevious = (): boolean => {
@@ -123,7 +146,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.getMentionsCount() > 0 && this.picker) {
       (this.picker as AkMentionPicker).chooseCurrentSelection();
     } else {
-      this.pluginState.dismiss();
+      this.pluginState!.dismiss();
     }
 
     return true;

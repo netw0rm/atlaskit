@@ -1,5 +1,9 @@
 # @atlaskit/multi-select
 
+## 6.9.3 (2017-08-19)
+
+* bug fix; aK-2249 use variables from utils-shared-styles instead of hard-coding font-size and (issues closed: ak-2249) ([77e32f8](https://bitbucket.org/atlassian/atlaskit/commits/77e32f8))
+* bug fix; aK-2249 add font-size to multi-select input style to fix placeholder clipping in saf (issues closed: ak-2249) ([3048e4a](https://bitbucket.org/atlassian/atlaskit/commits/3048e4a))
 ## 6.9.2 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

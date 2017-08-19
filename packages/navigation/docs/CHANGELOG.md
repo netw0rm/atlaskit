@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 20.0.1 (2017-08-19)
+
+* bug fix; global navigation items without href are now tabbable again (issues closed: ak-3333) ([e2e2781](https://bitbucket.org/atlassian/atlaskit/commits/e2e2781))
 ## 20.0.0 (2017-08-18)
 
 * bug fix; fixed lint errors ([628f453](https://bitbucket.org/atlassian/atlaskit/commits/628f453))

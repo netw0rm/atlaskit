@@ -4,6 +4,7 @@ import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import applyDevTools from 'prosemirror-dev-tools';
+import { gapCursor as gapCursorPlugin } from 'prosemirror-gapcursor';
 
 import { Chrome } from '../../';
 import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
@@ -329,6 +330,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
           ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema) : []),
+          gapCursorPlugin(),
           history(),
           keymap(baseKeymap) // should be last :(
         ]

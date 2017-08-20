@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
   akEditorBlockquoteBorderColor,
   akEditorSubtleAccent,
@@ -102,6 +102,10 @@ const tableStyle = `
 
 // tslint:disable-next-line:variable-name
 export const StyledTable = styled.table`${tableStyle}`;
+
+const cursorBlink = keyframes`
+  to { visibility: hidden; }
+`;
 
 // tslint:disable-next-line:variable-name
 export const Content = styled.div`
@@ -211,6 +215,26 @@ export const Content = styled.div`
     display: inline-table;
   }
   .ProseMirror table ${tableStyle}
+
+  .ProseMirror-gapcursor {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .ProseMirror-gapcursor:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -2px;
+    width: 20px;
+    border-top: 1px solid black;
+    animation: ${cursorBlink} 1.1s steps(2, start) infinite;
+  }
+
+  .ProseMirror-focused .ProseMirror-gapcursor {
+    display: block;
+  }
 `;
 
 // tslint:disable-next-line:variable-name

@@ -22,26 +22,46 @@ export interface State {
 }
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
-  private pluginState?: any;
-
+  private pluginState?: EmojiState;
   state: State = {};
   typeAhead?: AkEmojiTypeAhead;
 
   constructor(props: Props) {
     super(props);
-    this.pluginState = props.editorView && props.pluginKey.getState(props.editorView.state);
+    this.setPluginState(this.props);
   }
 
-  componentDidMount() {
-    const pluginState = this.pluginState;
-    pluginState.subscribe(this.handlePluginStateChange);
-    pluginState.onSelectPrevious = this.handleSelectPrevious;
-    pluginState.onSelectNext = this.handleSelectNext;
-    pluginState.onSelectCurrent = this.handleSelectCurrent;
+  componentWillUpdate(nextProps: Props) {
+    if (!this.pluginState) {
+      this.setPluginState(nextProps);
+    }
   }
 
-  componentWillUmount() {
-    this.pluginState.unsubscribe(this.handlePluginStateChange);
+  componentWillUnmount() {
+    const { pluginState } = this;
+
+    if (pluginState) {
+      pluginState.unsubscribe(this.handlePluginStateChange);
+    }
+  }
+
+  private setPluginState(props: Props) {
+    const { editorView, pluginKey } = props;
+
+    if (!editorView) {
+      return;
+    }
+
+    const pluginState = pluginKey.getState(editorView.state);
+
+    if (pluginState) {
+      this.pluginState = pluginState;
+
+      pluginState.subscribe(this.handlePluginStateChange);
+      pluginState.onSelectPrevious = this.handleSelectPrevious;
+      pluginState.onSelectNext = this.handleSelectNext;
+      pluginState.onSelectCurrent = this.handleSelectCurrent;
+    }
   }
 
   private handlePluginStateChange = (state: EmojiState) => {
@@ -57,7 +77,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     const { anchorElement, query, queryActive } = this.state;
     const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
 
-    if (!anchorElement || !queryActive || !emojiProvider) {
+    if (!this.pluginState || !anchorElement || !queryActive || !emojiProvider) {
       return null;
     }
 
@@ -81,7 +101,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handleSelectedEmoji = (emojiId: any, emoji: any) => {
-    this.pluginState.insertEmoji(emojiId);
+    this.pluginState!.insertEmoji(emojiId);
   }
 
   private handleSelectPrevious = (): boolean => {
@@ -104,7 +124,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     if (this.getEmojisCount() > 0) {
       (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     } else {
-      this.pluginState.dismiss();
+      this.pluginState!.dismiss();
     }
 
     return true;

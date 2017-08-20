@@ -90,7 +90,7 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
     }
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
     if (pluginStateTable) {
       pluginStateTable.unsubscribe(this.handlePluginStateTableChange);

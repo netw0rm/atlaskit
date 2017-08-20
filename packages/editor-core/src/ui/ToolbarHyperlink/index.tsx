@@ -28,7 +28,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 

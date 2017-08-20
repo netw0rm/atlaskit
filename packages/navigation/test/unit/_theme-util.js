@@ -64,4 +64,3 @@ export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) =
   }
   );
 };
-

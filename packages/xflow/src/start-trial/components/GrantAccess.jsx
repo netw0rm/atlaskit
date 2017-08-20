@@ -84,6 +84,7 @@ class GrantAccess extends Component {
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
     chooseOption: PropTypes.string,
+    // selectLabel: PropTypes.string,
     defaultSelectedRadio: PropTypes.string,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
@@ -222,7 +223,7 @@ class GrantAccess extends Component {
     });
   };
 
-  handleRadioChange = (evt) => {
+  handleRadioChange = evt => {
     const { usersOption, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.radio-option.changed', {
       selectedRadio: evt.target.value,
@@ -234,7 +235,7 @@ class GrantAccess extends Component {
     });
   };
 
-  handleUserSelectOpen = (evt) => {
+  handleUserSelectOpen = evt => {
     const { usersOption, intl, firePrivateAnalyticsEvent } = this.props;
     if (evt.isOpen) {
       firePrivateAnalyticsEvent('xflow.grant-access.user-select.opened');
@@ -247,7 +248,7 @@ class GrantAccess extends Component {
     }
   };
 
-  handleUserSelectChange = (evt) => {
+  handleUserSelectChange = evt => {
     const { firePrivateAnalyticsEvent, usersOption } = this.props;
     const { userSets } = this.state;
     const selectedUsers = evt.items.map(user => userSets.get(usersOption).get(user.value));
@@ -259,7 +260,7 @@ class GrantAccess extends Component {
     });
   };
 
-  handleCheckboxChange = (evt) => {
+  handleCheckboxChange = evt => {
     const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.notify-users.changed', {
       notifyUsers: evt.target.checked,
@@ -276,6 +277,7 @@ class GrantAccess extends Component {
       optionItems,
       userSelectPlaceholder,
       chooseOption,
+      // selectLabel,
       progress,
       status,
       heading,
@@ -332,7 +334,7 @@ class GrantAccess extends Component {
           {this.state.changeUsers
             ? <GrantAccessChangeUsersDiv>
               <AkFieldRadioGroup
-                ref={(radioGroup) => {
+                ref={radioGroup => {
                   this.radioGroup = radioGroup;
                 }}
                 onRadioChange={this.handleRadioChange}
@@ -346,7 +348,7 @@ class GrantAccess extends Component {
               />
               <UserSelectDiv>
                 <MultiSelect
-                  ref={(userSelect) => {
+                  ref={userSelect => {
                     this.userSelect = userSelect;
                   }}
                   id="xflow-grant-access-user-select"
@@ -439,6 +441,7 @@ export default withXFlowProvider(
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
           grantAccessChooseOption,
+          // grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
           grantAccessHeading,
           grantAccessDefaultAccess,
@@ -456,6 +459,7 @@ export default withXFlowProvider(
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
     chooseOption: grantAccessChooseOption,
+    // selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,
     grantAccessToUsers,
     retrieveUsers,

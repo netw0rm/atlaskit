@@ -26,6 +26,7 @@ const defaultProps = {
   userSelectPlaceholder: 'Start typing a username',
   usersOption: 'specific-users',
   chooseOption: 'Choose an option',
+  // selectLabel: 'Select users',
   defaultSelectedRadio: 'everyone',
   progress: 0,
   status: ACTIVATING,

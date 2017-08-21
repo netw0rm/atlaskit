@@ -11,21 +11,23 @@ import MentionPicker from '../../../src/ui/MentionPicker';
 import EmojiTypeAhead from '../../../src/ui/EmojiTypeAhead';
 import PanelEdit from '../../../src/ui/PanelEdit';
 import ToolbarMention from '../../../src/ui/ToolbarMention';
+import ToolbarHelp from '../../../src/ui/ToolbarHelp';
+import HelpDialog from '../../../src/ui/HelpDialog';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
 import { Content } from '../../../src/ui/ChromeExpanded/styles';
 import { analyticsService } from '../../../src/analytics';
+import { browser } from '../../../src/prosemirror';
 
 const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
+  const editor = (doc: any) => makeEditor({
+    doc,
+  });
 
   describe('props', () => {
-    const editor = (doc: any) => makeEditor({
-      doc,
-    });
-
     it('should render enabled save button by default', () => {
       const { editorView } = editor(doc(p()));
       const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop}/>);
@@ -51,6 +53,24 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const props = wrapper.props();
       expect(!!props['style']).to.equal(true);
       expect(props['style']!.maxHeight).to.equal('75px');
+    });
+
+    it('should not set height if props.height is undefined', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} />);
+
+      const wrapper = chrome.find(Content).find('div').at(1);
+      const props = wrapper.props()!;
+      expect(props.style!.height).to.equal(undefined);
+    });
+
+    it('should not set borders if only props.height is set', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} height={75} />);
+
+      const wrapper = chrome.find(Content).find('div').at(1);
+      const props = wrapper.props()!;
+      expect(props.style!.borderBottom).to.equal(undefined);
     });
 
     it('should render disabled save button if saveDisabled=true', () => {
@@ -91,12 +111,12 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       });
 
       it('should trigger analyticsService.trackEvent when save button is clicked', () => {
-        toolbarOption.find(AkButton).first().simulate('click');
+        toolbarOption.find(AkButton).filterWhere(n => n.text() === 'Save').simulate('click');
         expect(trackEvent.calledWith('atlassian.editor.stop.save')).to.equal(true);
       });
 
       it('should trigger analyticsService.trackEvent when cancel button is clicked', () => {
-        toolbarOption.find(AkButton).at(1).simulate('click');
+        toolbarOption.find(AkButton).filterWhere(n => n.text() === 'Cancel').simulate('click');
         expect(trackEvent.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
       });
     });
@@ -129,4 +149,55 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
     });
   });
 
+  describe('helpDialog', () => {
+    let keyEvent;
+    beforeEach(() => {
+      if (browser.mac) {
+        keyEvent = { metaKey: true, key: '/' };
+      } else {
+        keyEvent = { ctrlKey: true, key: '/' };
+      }
+    });
+
+    it('should set state variable showHelp true if help dialog is present and Cmd-/ is entered', () => {
+      const { editorView } = editor(doc(p()));
+      const chromeExpanded = mount(<ChromeExpanded editorView={editorView} helpDialogPresent={true} onSave={noop} onCancel={noop} saveDisabled={true} />);
+      expect(chromeExpanded.state('showHelp')).to.equal(false);
+      chromeExpanded.simulate('keyDown', keyEvent);
+      expect(chromeExpanded.state('showHelp')).to.equal(true);
+      const toolbarHelp = chromeExpanded.find(ToolbarHelp);
+      expect(toolbarHelp.prop('showHelp')).to.equal(true);
+    });
+
+    it('should set state variable showHelp true when open help dialog button is clicked', () => {
+      const { editorView } = editor(doc(p()));
+      const chromeExpanded = mount(<ChromeExpanded editorView={editorView} helpDialogPresent={true} onSave={noop} onCancel={noop} saveDisabled={true} />);
+      expect(chromeExpanded.state('showHelp')).to.equal(false);
+      const toolbarHelp = chromeExpanded.find(ToolbarHelp);
+      toolbarHelp.find(AkButton).simulate('click');
+      expect(chromeExpanded.state('showHelp')).to.equal(true);
+      const helpDialog = toolbarHelp.find(HelpDialog);
+      expect(helpDialog.isEmpty()).to.equal(false);
+    });
+
+    it('should track analytics when helpDialog is opened using key event Cmd-/', () => {
+      const { editorView } = editor(doc(p()));
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+      const chromeExpanded = mount(<ChromeExpanded editorView={editorView} helpDialogPresent={true} onSave={noop} onCancel={noop} saveDisabled={true} />);
+      chromeExpanded.simulate('keyDown', keyEvent);
+      expect(trackEvent.calledWith('atlassian.editor.help.keyboard')).to.equal(true);
+    });
+
+    it('should reset state variable showHelp if help dialog is present and Escape is entered', () => {
+      const { editorView } = editor(doc(p()));
+      const chromeExpanded = mount(<ChromeExpanded editorView={editorView} helpDialogPresent={true} onSave={noop} onCancel={noop} saveDisabled={true} />);
+      chromeExpanded.setState({'showHelp': true});
+      expect(chromeExpanded.state('showHelp')).to.equal(true);
+      chromeExpanded.simulate('keyDown', { key: 'Escape' });
+      expect(chromeExpanded.state('showHelp')).to.equal(false);
+      const toolbarHelp = chromeExpanded.find(ToolbarHelp);
+      expect(toolbarHelp.prop('showHelp')).to.equal(false);
+    });
+  });
 });

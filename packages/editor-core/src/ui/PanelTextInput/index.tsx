@@ -10,6 +10,7 @@ export interface Props {
   onCancel?: () => void;
   placeholder?: string;
   onMouseDown?: Function;
+  onKeyDown?: (e: KeyboardEvent<any>) => void;
   onBlur?: Function;
 }
 
@@ -91,6 +92,10 @@ export default class PanelTextInput extends PureComponent<Props, State> {
       this.props.onSubmit(this.input!.value);
     } else if (e.keyCode === 27 && this.props.onCancel) {
       this.props.onCancel();
+    }
+
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(e);
     }
   }
 

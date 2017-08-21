@@ -28,7 +28,7 @@ export const description = (
       the loading and unloading of flags.
     </p>
     <CodeBlock>
-      {'import Flag, { FlagGroup } from @atlaskit/flag'}
+      {'import Flag, { AutoDismissFlag, FlagGroup } from @atlaskit/flag'}
     </CodeBlock>
   </div>
 );

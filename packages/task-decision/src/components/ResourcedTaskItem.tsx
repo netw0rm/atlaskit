@@ -8,7 +8,7 @@ export interface Props {
   isDone?: boolean;
   onChange?: (taskId: string, isChecked: boolean) => void;
   children?: ReactElement<any>;
-  taskDecisionProvider?: TaskDecisionProvider;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   objectAri: string;
   containerAri: string;
 }
@@ -18,6 +18,7 @@ export interface State {
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
+  private mounted: boolean;
 
   constructor(props: Props) {
     super(props);
@@ -28,6 +29,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.subscribe(this.props.taskDecisionProvider);
   }
 
@@ -40,19 +42,27 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.unsubscribe();
+    this.mounted = false;
   }
 
-  private subscribe(provider?: TaskDecisionProvider) {
-    if (provider) {
-      const { taskId, objectAri, containerAri } = this.props;
-      provider.subscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
+  private subscribe(taskDecisionProvider?: Promise<TaskDecisionProvider>) {
+    if (taskDecisionProvider) {
+      taskDecisionProvider.then(provider => {
+        if (!this.mounted) {
+          return;
+        }
+        const { taskId, objectAri, containerAri } = this.props;
+        provider.subscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
+      });
     }
   }
 
   private unsubscribe() {
     const { taskDecisionProvider, taskId, objectAri, containerAri } = this.props;
     if (taskDecisionProvider) {
-      taskDecisionProvider.unsubscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
+      taskDecisionProvider.then(provider => {
+        provider.unsubscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
+      });
     }
   }
 
@@ -67,17 +77,27 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
       this.setState({ isDone });
 
       // Call provider to update task
-      taskDecisionProvider
-        .toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO')
+      taskDecisionProvider.then(provider => {
+        if (!this.mounted) {
+          return;
+        }
+        provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO')
         .then(result => {
-          const newState = result === 'DONE';
+          if (!this.mounted) {
+            return;
+          }
+            const newState = result === 'DONE';
           if (newState !== isDone) { // Avoid unnecessary re-render
             this.setState({ isDone: newState });
           }
         })
         .catch(() => {
+          if (!this.mounted) {
+            return;
+          }
           this.setState({ isDone: this.props.isDone }); // Roll-back when something goes wrong
         });
+      });
     }
   }
 

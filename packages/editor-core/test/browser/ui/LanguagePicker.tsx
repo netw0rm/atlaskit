@@ -4,7 +4,7 @@ import * as React from 'react';
 import codeBlockPlugins, { CodeBlockState } from '../../../src/plugins/code-block';
 import { FloatingToolbar } from '../../../src/ui/LanguagePicker/styles';
 import Select from '@atlaskit/single-select';
-import ToolbarButton from '../../../src/ui/ToolbarButton';
+import { TrashToolbarButton } from '../../../src/ui/LanguagePicker/styles';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -119,7 +119,7 @@ describe('LanguagePicker', () => {
       const languagePicker = shallow(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
       languagePicker.setState({ languageSelectFocused: true, toolbarVisible: false });
 
-      expect(languagePicker.find(ToolbarButton)).to.have.length(1);
+      expect(languagePicker.find(TrashToolbarButton)).to.have.length(1);
     });
   });
 });

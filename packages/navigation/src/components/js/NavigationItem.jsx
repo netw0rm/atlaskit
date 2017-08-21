@@ -1,5 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
+// NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
+// which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
+// would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
+// but this is not possible because the children could be either a NavigationItem or a
+// NavigationItemGroup so we cannot reliably map over the children to wrap them.
 import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
 import NavigationItemAction from '../styled/NavigationItemAction';
 import NavigationItemAfter from '../styled/NavigationItemAfter';
@@ -30,7 +35,7 @@ type Props = {|
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
-  /** Set whether the item should be used to trigger a dropdown. If this is strue,
+  /** Set whether the item should be used to trigger a dropdown. If this is true,
   The href property will be disabled. */
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
@@ -74,10 +79,7 @@ export default class NavigationItem extends PureComponent {
       : null;
 
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
-      <NavigationItemIcon
-        isDropdownTrigger
-        hasNoPadding
-      >
+      <NavigationItemIcon isDropdownTrigger>
         {this.props.dropIcon}
       </NavigationItemIcon>
     ) : null;

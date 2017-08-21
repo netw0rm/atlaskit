@@ -26,6 +26,7 @@ import {
   listsStateKey,
   tablePlugins,
   tableStateKey,
+  pastePlugins,
   EditorState,
   EditorView,
   Schema,
@@ -96,6 +97,7 @@ export interface FooterProps {
 }
 
 export interface Props {
+  isDisabled?: boolean;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -204,6 +206,19 @@ export default class Editor extends PureComponent<Props, State> {
     this.transformerWithMediaContext = new JIRATransformer(schema, { mention: mentionEncoder }, mediaContextInfo);
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.isDisabled !== this.props.isDisabled) {
+      const { editorView } = this.state;
+      if (editorView) {
+        editorView.dom.contentEditable = String(!nextProps.isDisabled);
+
+        if (!nextProps.isDisabled && !editorView.hasFocus()) {
+          editorView.focus();
+        }
+      }
+    }
+  }
+
   componentWillUnmount() {
     const { editorView } = this.state;
 
@@ -227,8 +242,10 @@ export default class Editor extends PureComponent<Props, State> {
   focus(): void {
     const { editorView } = this.state;
 
-    if (editorView && !editorView.hasFocus()) {
-      editorView.focus();
+    if (editorView && !editorView.hasFocus() && !this.props.isDisabled) {
+      try {
+        editorView.focus();
+      } catch (err) {}
     }
   }
 
@@ -304,6 +321,7 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const { editorView, isExpanded, isMediaReady } = this.state;
     const {
+      isDisabled = false,
       mentionProvider, mediaProvider,
       popupsBoundariesElement, popupsMountPoint,
       renderFooter,
@@ -331,6 +349,7 @@ export default class Editor extends PureComponent<Props, State> {
     return (
       <div>
         <Chrome
+          disabled={isDisabled}
           children={<div ref={this.handleRef} />}
           editorView={editorView!}
           isExpanded={isExpanded}
@@ -358,8 +377,8 @@ export default class Editor extends PureComponent<Props, State> {
             <FooterWrapper>
               {(onSave || onCancel) && (
                 <ButtonGroup>
-                  {onSave && <Button isDisabled={!isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
-                  {onCancel && <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
+                  {onSave && <Button isDisabled={isDisabled || !isMediaReady} iconAfter={iconAfter} appearance={saveButtonAppearance} onClick={this.handleSave}>Save</Button>}
+                  {onCancel && <Button isDisabled={isDisabled} appearance="subtle" onClick={this.handleCancel}>Cancel</Button>}
                 </ButtonGroup>
               )}
 
@@ -418,6 +437,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc: this.transformer.parse(this.props.defaultValue || ''),
         plugins: [
+          ...pastePlugins(schema),
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),
@@ -444,6 +464,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
+        editable: (state: EditorState<any>) => !this.props.isDisabled,
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);

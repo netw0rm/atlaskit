@@ -71,7 +71,13 @@ storiesOf(`${name}/ProjectSwitcher`, module)
                 theme={presets[key]}
                 themeName={key}
                 headerComponent={() => (
-                  <BasicProjectSwitcher>{dropdownItems}</BasicProjectSwitcher>
+                  <BasicProjectSwitcher
+                    text="Project Switcher very long text"
+                    icon={<NucleusIcon />}
+                    subText="Software project"
+                  >
+                    {dropdownItems}
+                  </BasicProjectSwitcher>
                 )}
               >
                 <AkNavigationItem

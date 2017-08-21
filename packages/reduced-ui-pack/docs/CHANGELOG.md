@@ -1,6 +1,15 @@
 # @atlaskit/reduced-ui-pack
 
-## Unreleased
+## 6.0.0 (2017-08-17)
+
+* bug fix; fixing interactive coloured icon example ([8086a2c](https://bitbucket.org/atlassian/atlaskit/commits/8086a2c))
+* feature; updated stories for icons and updated the build step for reduced-ui-pack icons ([0ad9eea](https://bitbucket.org/atlassian/atlaskit/commits/0ad9eea))
+* breaking; syncing reduced UI pack icons with the ones from the Icon package ([d78804a](https://bitbucket.org/atlassian/atlaskit/commits/d78804a))
+
+
+
+
+
 
 ## 5.5.1 (2017-07-25)
 

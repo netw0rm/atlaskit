@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import {ReactNode, WheelEvent} from 'react';
+import {ReactNode, WheelEvent, MouseEvent} from 'react';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 import {
@@ -50,7 +50,7 @@ export interface FilmstripViewState {
 }
 
 export interface ArrowProps {
-  onClick: () => void;
+  onClick: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
 export const LeftArrow: React.SFC<ArrowProps> = ({onClick}: ArrowProps) => (
@@ -233,7 +233,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.handleSizeChange();
   }
 
-  handleLeftClick = () => {
+  handleLeftClick = event => {
+
+    // Stop the click event from bubling up and being handled by other components
+    // See https://product-fabric.atlassian.net/browse/MSW-165
+    event.stopPropagation();
+
     const {onScroll} = this.props;
     if (onScroll) {
       const newOffset = this.getClosestForLeft(this.offset - this.windowWidth);
@@ -245,7 +250,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     }
   }
 
-  handleRightClick = () => {
+  handleRightClick = event => {
+
+    // Stop the click event from bubling up and being handled by other components
+    // See https://product-fabric.atlassian.net/browse/MSW-165
+    event.stopPropagation();
+
     const {onScroll} = this.props;
     if (onScroll) {
       const newOffset = this.getClosestForRight(this.offset + this.windowWidth);

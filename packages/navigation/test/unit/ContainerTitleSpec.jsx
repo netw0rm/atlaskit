@@ -1,11 +1,11 @@
 import React from 'react';
 import ContainerTitle from '../../src/components/js/ContainerTitle';
-import { mountWithRootTheme, shallowWithTheme } from './_theme-util';
+import { mountWithRootTheme } from './_theme-util';
 
 describe('<ContainerTitle />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
-      expect(shallowWithTheme(<ContainerTitle icon={<img alt="foo" />} />).find('img')).toHaveLength(1);
+      expect(mountWithRootTheme(<ContainerTitle icon={<img alt="foo" />} />).find('img')).toHaveLength(1);
     });
 
     it('linkComponent can be used to render an arbitrary link', () => {

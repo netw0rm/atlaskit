@@ -31,6 +31,18 @@ describe('hyperink - keymaps', () => {
           expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
         });
 
+        it('converts possible mailto link text to hyperlink', () => {
+          const trackEvent = sinon.spy();
+          analyticsService.trackEvent = trackEvent;
+          const { editorView } = editor(doc(p('hello test@atlassian.com{<>}')));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          const a = link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com');
+          expect(editorView.state.doc).to.deep.equal(doc(p('hello ', a), p()));
+          expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
+        });
+
         it('preserves other mark', () => {
           const { editorView } = editor(doc(p(em('hello www.atlassian.com{<>}'))));
 

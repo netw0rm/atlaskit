@@ -1,5 +1,15 @@
 # @atlaskit/flag
 
+## 6.1.0 (2017-08-17)
+
+* feature; adding new AutoDismissFlag component (issues closed: ak-2974 ak-1503) ([9aa91c0](https://bitbucket.org/atlassian/atlaskit/commits/9aa91c0))
+## 6.0.0 (2017-08-16)
+
+* breaking; The Flag.id prop has been changed from optional to required. ([91f8dc4](https://bitbucket.org/atlassian/atlaskit/commits/91f8dc4))
+* breaking; FlagGroup no longer illegally reads Flag.props.key ([91f8dc4](https://bitbucket.org/atlassian/atlaskit/commits/91f8dc4))
+## 5.0.1 (2017-08-15)
+
+* bug fix; flag transitions between appearances smoothly, hides expand icon if not needed (issues closed: ak-2973 ak-3155) ([0766202](https://bitbucket.org/atlassian/atlaskit/commits/0766202))
 ## 5.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

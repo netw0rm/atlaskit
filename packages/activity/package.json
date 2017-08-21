@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/activity",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,12 @@
     "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
-    "dist",
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es5/**/*.json",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
+    "dist/es2015/**/*.json",
     "src"
   ],
   "dependencies": {

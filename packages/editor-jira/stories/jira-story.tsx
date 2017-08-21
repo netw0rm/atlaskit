@@ -146,6 +146,36 @@ storiesOf(name, module)
       />
     </div>
   )
+  .add('Editor (isDisabled)', () => {
+    type Props = {};
+    type State = { isDisabled: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { isDisabled: true };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              isDisabled={this.state.isDisabled}
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleDisabled = () => this.setState({ isDisabled: !this.state.isDisabled });
+    }
+
+    return <Demo />;
+  })
   .add('Editor (All flags)', () =>
     <Editor
       onChange={handleChange}

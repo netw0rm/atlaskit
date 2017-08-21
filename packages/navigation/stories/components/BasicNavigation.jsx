@@ -9,7 +9,7 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import AkDropdownMenu from '@atlaskit/dropdown-menu';
+import AkDropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import BasicSearch from './BasicSearch';
@@ -82,65 +82,54 @@ export default class BasicNavigation extends PureComponent {
     globalSecondaryActions: [
       <AkDropdownMenu
         appearance="tall"
-        items={[
-          {
-            heading: 'Help',
-            items: [
-              { content: 'Documentation' },
-              { content: 'Learn Git' },
-              { content: 'Keyboard shortcuts' },
-              { content: 'Bitbucket tutorials' },
-              { content: 'API' },
-              { content: 'Support' },
-            ],
-          },
-          {
-            heading: 'Information',
-            items: [
-              { content: 'Latest features' },
-              { content: 'Blog' },
-              { content: 'Plans & pricing' },
-              { content: 'Site status' },
-              { content: 'Version info' },
-            ],
-          },
-          {
-            heading: 'Legal',
-            items: [
-              { content: 'Terms of service' },
-              { content: 'Privacy policy' },
-            ],
-          },
-        ]}
         position="right bottom"
+        trigger={
+          <AkGlobalItem>
+            <QuestionCircleIcon
+              label="Help icon"
+              secondaryColor="inherit"
+              size="medium"
+            />
+          </AkGlobalItem>
+        }
       >
-        <AkGlobalItem>
-          <QuestionCircleIcon
-            label="Help icon"
-            secondaryColor="inherit"
-            size="medium"
-          />
-        </AkGlobalItem>
+        <DropdownItemGroup title="Help">
+          <DropdownItem>Documentation</DropdownItem>
+          <DropdownItem>Learn Git</DropdownItem>
+          <DropdownItem>Keyboard shortcuts</DropdownItem>
+          <DropdownItem>Bitbucket tutorials</DropdownItem>
+          <DropdownItem>API</DropdownItem>
+          <DropdownItem>Support</DropdownItem>
+        </DropdownItemGroup>
+        <DropdownItemGroup title="Information">
+          <DropdownItem>Latest features</DropdownItem>
+          <DropdownItem>Blog</DropdownItem>
+          <DropdownItem>Plans & pricing</DropdownItem>
+          <DropdownItem>Site status</DropdownItem>
+          <DropdownItem>Version info</DropdownItem>
+        </DropdownItemGroup>
+        <DropdownItemGroup title="Legal">
+          <DropdownItem>Terms of service</DropdownItem>
+          <DropdownItem>Privacy policy</DropdownItem>
+        </DropdownItemGroup>
       </AkDropdownMenu>,
       <AkDropdownMenu
         appearance="tall"
-        items={[
-          {
-            heading: 'Luke Skywalker',
-            items: [
-              { content: 'View profile' },
-              { content: 'Manage Atlassian account' },
-              { content: 'Bitbucket settings' },
-              { content: 'Integrations' },
-              { content: 'Bitbucket labs' },
-              { content: 'Log out' },
-            ],
-          },
-        ]}
+        position="right bottom"
+        trigger={
+          <AkGlobalItem>
+            <AkAvatar size="small" name="User profile" src={emmaAvatar} />
+          </AkGlobalItem>
+        }
       >
-        <AkGlobalItem>
-          <AkAvatar size="small" src={emmaAvatar} />
-        </AkGlobalItem>
+        <DropdownItemGroup title="Luke Skywalker">
+          <DropdownItem>View profile</DropdownItem>
+          <DropdownItem>Manage Atlassian account</DropdownItem>
+          <DropdownItem>Bitbucket settings</DropdownItem>
+          <DropdownItem>Integrations</DropdownItem>
+          <DropdownItem>Bitbucket labs</DropdownItem>
+          <DropdownItem>Log out</DropdownItem>
+        </DropdownItemGroup>
       </AkDropdownMenu>,
     ],
   }

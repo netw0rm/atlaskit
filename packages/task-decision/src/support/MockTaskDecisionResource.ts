@@ -1,23 +1,43 @@
 import { MockTaskDecisionResourceConfig } from './support-types';
-import { getServiceDecisionsResponse } from './story-data';
-import { convertServiceDecisionToDecision, objectKeyToString, findIndex } from '../api/TaskDecisionUtils';
 import {
-  DecisionQuery,
-  DecisionResponse,
-  TaskDecisionProvider,
-  ObjectKey,
-  Handler,
-  TaskState,
-  DecisionState,
+  getServiceDecisionsResponse,
+  getServiceItemsResponse,
+  getServiceTasksResponse,
+} from './story-data';
+import {
+  convertServiceDecisionResponseToDecisionResponse,
+  convertServiceItemResponseToItemResponse,
+  convertServiceTaskResponseToTaskResponse,
+  findIndex,
+} from '../api/TaskDecisionUtils';
+import {
   BaseItem,
+  DecisionResponse,
+  DecisionState,
+  Handler,
+  ItemResponse,
+  ObjectKey,
+  Query,
+  RecentUpdateContext,
+  RecentUpdatesId,
+  TaskDecisionProvider,
+  TaskResponse,
+  TaskState,
 } from '../types';
+import { objectKeyToString } from '../type-helpers';
+import * as moment from 'moment';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
 
+interface BaseResult {
+  nextQuery?: Query;
+}
+
 export default class MockTaskDecisionResource implements TaskDecisionProvider {
   private config?: MockTaskDecisionResourceConfig;
   private fakeCursor = 0;
+  private lastNewItemTime = moment();
   private subscribers: Map<string, Handler[]> = new Map();
   private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
@@ -29,31 +49,69 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     this.batchedKeys.clear();
   }
 
-  getDecisions(query: DecisionQuery): Promise<DecisionResponse> {
+  getDecisions(query: Query): Promise<DecisionResponse> {
     const serviceDecisionResponse = getServiceDecisionsResponse();
-    const decisions = serviceDecisionResponse.decisions.map(convertServiceDecisionToDecision);
-    let nextQuery: DecisionQuery | undefined;
+    const result = convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse);
+    return this.applyConfig(query, result, 'decisions');
+  }
+
+  getTasks(query: Query): Promise<TaskResponse> {
+    const serviceTasksResponse = getServiceTasksResponse();
+    const result = convertServiceTaskResponseToTaskResponse(serviceTasksResponse);
+    return this.applyConfig(query, result, 'tasks');
+  }
+
+  getItems(query: Query): Promise<ItemResponse> {
+    const serviceItemResponse = getServiceItemsResponse();
+    const result = convertServiceItemResponseToItemResponse(serviceItemResponse);
+    return this.applyConfig(query, result, 'items');
+  }
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId) {
+
+  }
+
+  notifyRecentUpdates(updateContext?: RecentUpdateContext) {
+
+  }
+
+  private getNextDate() {
+    // Random 15 minute chunk earlier
+    this.lastNewItemTime = this.lastNewItemTime.subtract(Math.random() * 50 * 15, 'minutes');
+    return this.lastNewItemTime.toDate();
+  }
+
+  private applyConfig<R extends BaseResult>(query: Query, result: R, itemKey: string): Promise<R> {
+    let nextQuery: Query | undefined;
     if (this.config && this.config.hasMore) {
       nextQuery = {
         ...query,
-        cursor: `${this.fakeCursor++}`,
+        cursor: `${++this.fakeCursor}`,
       };
     }
-    const result = {
-      decisions,
-      nextQuery,
-    };
+    const newResult: R = {
+      [itemKey]: result[itemKey].map(item => {
+        const itemDate = this.getNextDate();
+        return {
+          ...item,
+          creationDate: itemDate,
+          lastUpdateDate: itemDate,
+          localId: `${item.localId}-${this.fakeCursor}`
+        };
+      }),
+      nextQuery
+    } as R;
 
     const lag = this.config && this.config.lag;
 
     if (lag) {
       return new Promise(resolve => {
         setTimeout(() => {
-          resolve(result);
+          resolve(newResult);
         }, lag);
       });
     }
-    return Promise.resolve(result);
+    return Promise.resolve(newResult);
   }
 
   getTaskState(keys: ObjectKey[]): Promise<BaseItem<TaskState>[]> {
@@ -62,8 +120,9 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
         containerAri: 'ari:cloud:app.cloud:f7ebe2c0-0309-4687-b913-41d422f2110b:conversation/12e445f8-478c-4902-a556-f4866b273033',
         objectAri: 'ari:cloud:app.cloud:f7ebe2c0-0309-4687-b913-41d422f2110b:message/f1328342-7c28-11e7-a5e8-02420aff0003',
         localId: 'bff0c423-3bba-45c4-a310-d49f7a95003e',
-        state: 'DONE'
-      }
+        state: 'DONE',
+        type: 'TASK',
+      } as BaseItem<TaskState>
     ]);
   }
 
@@ -82,7 +141,7 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
         this.cachedItems.set(key, {
           ...objectKey,
           state
-        });
+        } as BaseItem<DecisionState | TaskState>);
       }
 
       resolve(state);

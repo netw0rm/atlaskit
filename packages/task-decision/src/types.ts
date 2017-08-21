@@ -4,6 +4,9 @@ export type DecisionStatus = 'CREATED';
 export type TaskState = 'TODO' | 'DONE';
 export type Cursor = string;
 
+export type DecisionType = 'DECISION';
+export type TaskType = 'TASK';
+
 export interface ObjectKey {
   localId: string;
   containerAri: string;
@@ -12,6 +15,7 @@ export interface ObjectKey {
 
 export interface BaseItem<S> extends ObjectKey {
   state: S;
+  type: DecisionType | TaskType;
 }
 
 export interface ServiceDecision {
@@ -26,6 +30,7 @@ export interface ServiceDecision {
   rawContent: string;
   state: DecisionState;
   status: DecisionStatus;
+  type: DecisionType;
 }
 
 export interface Meta {
@@ -37,8 +42,15 @@ export interface ServiceDecisionResponse {
   meta: Meta;
 }
 
+export type ServiceItem = ServiceDecision | ServiceTask;
+
+export interface ServiceItemResponse {
+  elements: ServiceItem[];
+  meta: Meta;
+}
+
 export interface ServiceTaskResponse {
-  decisions: ServiceTask[];
+  tasks: ServiceTask[];
   meta: Meta;
 }
 
@@ -50,17 +62,33 @@ export interface Decision extends BaseItem<DecisionState> {
   // Atlassian Document fragment
   content: any;
   status: DecisionStatus;
+  type: DecisionType;
 }
 
 export interface DecisionResponse {
   decisions: Decision[];
-  nextQuery?: DecisionQuery;
+  nextQuery?: Query;
 }
 
-export interface DecisionQuery {
+export interface TaskResponse {
+  tasks: Task[];
+  nextQuery?: Query;
+}
+
+export type Item = Decision | Task;
+
+export interface ItemResponse {
+  items: Item[];
+  nextQuery?: Query;
+}
+
+export type SortCriteria = 'lastUpdateDate' | 'creationDate';
+
+export interface Query {
   containerAri: string;
   limit?: number;
   cursor?: Cursor;
+  sortCriteria?: SortCriteria;
 }
 
 export interface ServiceTask {
@@ -76,21 +104,58 @@ export interface ServiceTask {
   // Atlassian Document fragment (json string)
   rawContent: string;
   state: TaskState;
+  type: TaskType;
 }
 
 export interface Task extends BaseItem<TaskState> {
   creationDate: Date;
   creatorId: string;
   lastUpdateDate: Date;
+  parentLocalId: string;
   participants: any[];
+  position: number;
   // Atlassian Document fragment
   content: any;
+  type: TaskType;
 }
 
 export type Handler = (state: TaskState | DecisionState) => void;
 
+export type RecentUpdatesId = string;
+
+export interface RecentUpdateContext {
+  containerAri: string;
+  localId?: string;
+}
+
+/**
+ * A subscriber interface that can be called back if there are new decisions/tasks/items
+ * available as the result of an external change.
+ */
+export interface RecentUpdatesListener {
+  /**
+   * An id that can be used to unsubscribe
+   */
+  id(id: RecentUpdatesId);
+
+  /**
+   * Indicates there are recent updates, and the listener should refresh
+   * the latest items from the TaskDecisionProvider.
+   *
+   * There will be a number of retries until expectedLocalId, if passed.
+   *
+   * @param the expectedLocalId expected to be found in updates
+   */
+  recentUpdates(updateContext: RecentUpdateContext);
+}
+
 export interface TaskDecisionProvider {
-  getDecisions(query: DecisionQuery): Promise<DecisionResponse>;
+  getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse>;
+  getTasks(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<TaskResponse>;
+  getItems(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<ItemResponse>;
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId);
+  notifyRecentUpdates(updateContext: RecentUpdateContext);
 
   // Tasks
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
@@ -98,10 +163,18 @@ export interface TaskDecisionProvider {
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
 }
 
-export interface RenderDocument {
-  (document: any): JSX.Element;
+/**
+ * Same as RendererContext in editor-core (don't want an direct dep though)
+ */
+export interface RendererContext {
+  objectAri: string;
+  containerAri: string;
 }
 
-export interface OnUpdate {
-  (allDecisions: Decision[], newDecisions: Decision[]): void;
+export interface RenderDocument {
+  (document: any, rendererContext?: RendererContext): JSX.Element;
+}
+
+export interface OnUpdate<T> {
+  (allDecisions: T[], newDecisions: T[]): void;
 }

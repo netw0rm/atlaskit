@@ -1,57 +1,73 @@
+// @flow
 import React, { PureComponent } from 'react';
+import { ThemeProvider, withTheme } from 'styled-components';
+import { itemThemeNamespace } from '@atlaskit/item';
+import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
-import { AkContainerTitle } from '../../../src/index';
-import ContainerTitleDropdownWrapper from '../styled/ContainerTitleDropdownWrapper';
-import ContainerTitleDropdownIcon from '../styled/ContainerTitleDropdownIcon';
+import { AkNavigationItem } from '../../../src/index';
+import ContainerTitleIcon from '../styled/ContainerTitleIcon';
+import ContainerTitleText from '../styled/ContainerTitleText';
 import { ReactElement } from '../../types';
+import { rootKey } from '../../theme/util';
+import overrideItemTheme from '../../theme/create-container-title-item-theme';
 
 type Props = {|
-  /** Content to use as a custom presence indicator. Accepts any React element.
-  For best results, it is recommended to use square content with height and
-  width of 100%. */
-  icon: ReactElement,
-  /** Text to appear as the title. This is placed at the top and bolded. */
-  text: string,
+  /** Content that will be rendered inside the layer element. Should typically be
+    * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
+  children: ReactElement,
+  /** Image appear to the left of the text. */
+  icon?: ReactElement,
   /** Text to appear below the title. */
   subText?: string,
-  /** The destination of the title if clicked. If no href is provided, the
-  title will not be a link. */
-  href?: string,
-  /** A component to be used as a link. By Default this is an anchor. when a href
-  is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  /** Text to appear as the title. This is placed at the top and bolded. */
+  text: string,
 |}
 
-export default class ContainerTitleDropdown extends PureComponent {
+const key = itemThemeNamespace;
+
+class ContainerTitleDropdown extends PureComponent {
   props: Props
 
   render() {
     const {
+      children,
       icon,
-      text,
       subText,
-      href,
-      linkComponent,
+      text,
     } = this.props;
 
+    /* eslint-disable react/prop-types */
+    // theme is passed in via context and not part of the props API for this component
+    const isNavCollapsed = this.props.theme[rootKey] ?
+      this.props.theme[rootKey].isCollapsed
+      : false;
+    /* eslint-enable react/prop-types */
+
     return (
-      <ContainerTitleDropdownWrapper tabIndex="0">
-        <AkContainerTitle
-          icon={icon}
-          text={text}
-          subText={subText}
-          href={href}
-          linkComponent={linkComponent}
-        />
-        {
-          /* this should be removed when droplist.js remove its display inline-flex style*/
-          text && !icon ? (
-            <ContainerTitleDropdownIcon>
-              <ExpandIcon size="medium" label={text} />
-            </ContainerTitleDropdownIcon>
-          ) : null
-        }
-      </ContainerTitleDropdownWrapper>
+      <AkDropdownMenu
+        appearance="tall"
+        shouldFitContainer={!isNavCollapsed}
+        position={isNavCollapsed ? 'right top' : 'bottom left'}
+        shouldFlip={false}
+        trigger={(
+          <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
+            <AkNavigationItem
+              dropIcon={isNavCollapsed ? null : <ExpandIcon />}
+              isDropdownTrigger
+              icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
+              spacing="title"
+              subText={isNavCollapsed ? null : subText}
+              text={isNavCollapsed ?
+                <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
+                : <ContainerTitleText>{text}</ContainerTitleText>}
+            />
+          </ThemeProvider>
+        )}
+      >
+        {children}
+      </AkDropdownMenu>
     );
   }
 }
+
+export default withTheme(ContainerTitleDropdown);

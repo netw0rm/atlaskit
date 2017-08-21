@@ -15,8 +15,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { normalizeUrl, linkifyContent } from './utils';
-import { URL_REGEX } from './regex';
+import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -66,11 +65,11 @@ export class HyperlinkState {
   addLink(options: HyperlinkOptions, view: EditorView) {
     if (this.linkable && !this.active) {
       const { state } = this;
-      const { href } = options;
+      const { href, text } = options;
       const { empty, $from, $to } = state.selection;
       const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
-        ? state.tr.insert($from.pos, state.schema.text(href, [mark]))
+        ? state.tr.insert($from.pos, state.schema.text(text || href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
       view.dispatch(tr);
@@ -279,7 +278,6 @@ function isReplaceStep(step?: Step): step is ReplaceStep {
   return !!step && step instanceof ReplaceStep;
 }
 const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
-const isURILike = (str: string) => /^[a-z]+:\/\//i.test(str) || URL_REGEX.test(str);
 
 function updateLinkOnChange(
   transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>
@@ -327,10 +325,11 @@ function updateLinkOnChange(
       }
     }
 
-    if (href && isURILike(href)) {
-      const markType = schema.mark('link', { href: normalizeUrl(href) });
+    const match: Match | null = getLinkMatch(href);
+    if (match || /^[a-z]+:\/\//i.test(href)) {
       const tr = newState.tr.removeMark(start, end, schema.marks.link);
-      if (URL_REGEX.test(href)) {
+      if (match) {
+        const markType = schema.mark('link', { href: match.url });
         tr.addMark(start, end, markType);
       }
       return tr;

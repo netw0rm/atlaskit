@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
-import { Decision, DecisionQuery, OnUpdate, RenderDocument, TaskDecisionProvider } from '../types';
+import { Decision, Query, OnUpdate, RenderDocument, TaskDecisionProvider } from '../types';
 import { decisionsToDocument } from '../api/TaskDecisionUtils';
 
 export interface ContentRef {
@@ -12,15 +12,15 @@ export interface ContentRef {
 }
 
 export interface Props {
-  taskDecisionProvider: TaskDecisionProvider;
-  initialQuery: DecisionQuery;
+  taskDecisionProvider: Promise<TaskDecisionProvider>;
+  initialQuery: Query;
   renderDocument: RenderDocument;
-  onUpdate?: OnUpdate;
+  onUpdate?: OnUpdate<Decision>;
 }
 
 export interface State {
   decisions?: Decision[];
-  nextQuery?: DecisionQuery;
+  nextQuery?: Query;
   loading: boolean;
 }
 
@@ -52,29 +52,31 @@ export default class ResourcedDecisionList extends PureComponent<Props,State> {
     this.mounted = false;
   }
 
-  private performQuery(query: DecisionQuery) {
+  private performQuery(query: Query) {
     const { taskDecisionProvider } = this.props;
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getDecisions(query).then(result => {
-      if (!this.mounted) {
-        return;
-      }
-      const { decisions, nextQuery } = result;
-      const combinedDecisions: Decision[] = [
-        ...this.state.decisions || [],
-        ...decisions,
-      ];
-      this.setState({
-        decisions: combinedDecisions,
-        nextQuery,
-        loading: false,
+    taskDecisionProvider.then(provider => {
+      provider.getDecisions(query).then(result => {
+        if (!this.mounted) {
+          return;
+        }
+        const { decisions, nextQuery } = result;
+        const combinedDecisions: Decision[] = [
+          ...this.state.decisions || [],
+          ...decisions,
+        ];
+        this.setState({
+          decisions: combinedDecisions,
+          nextQuery,
+          loading: false,
+        });
+        const { onUpdate } = this.props;
+        if (onUpdate) {
+          onUpdate(combinedDecisions, decisions);
+        }
       });
-      const { onUpdate } = this.props;
-      if (onUpdate) {
-        onUpdate(combinedDecisions, decisions);
-      }
     });
   }
 

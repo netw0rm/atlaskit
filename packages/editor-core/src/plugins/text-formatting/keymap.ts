@@ -2,6 +2,7 @@ import { EditorView, MarkType, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import { trackAndInvoke } from '../../analytics';
 import { TextFormattingState } from './';
+import * as commands from './commands';
 
 export function keymapHandler(view: EditorView, pluginState: TextFormattingState): Function {
   const list = {};
@@ -31,6 +32,10 @@ export function keymapHandler(view: EditorView, pluginState: TextFormattingState
     const eventName = analyticsEventName(schema.marks.underline);
     keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, () => pluginState.toggleUnderline(view)), list);
   }
+
+  keymaps.bindKeymapWithCommand(keymaps.moveRight.common!, commands.moveRight(), list);
+  keymaps.bindKeymapWithCommand(keymaps.moveLeft.common!, commands.moveLeft(view), list);
+  keymaps.bindKeymapWithCommand(keymaps.backspace.common!, commands.removeIgnoredNodes(view), list);
 
   return keydownHandler(list);
 }

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { akGridSize } from '@atlaskit/util-shared-styles';
 import { Props as MediaProps } from '../../../ui/Media/MediaComponent';
 
 export interface MediaGroupProps {
-  children?: any; /* @see https://github.com/Microsoft/TypeScript/issues/6471 */
+  children?: React.ReactNode;
 }
 
 export interface MediaGroupState {
@@ -13,9 +14,28 @@ export interface MediaGroupState {
   offset: number;
 }
 
+export const SINGLE_FILE_HEIGHT = 180;
+export const SINGLE_LINK_HEIGHT = 116;
+
+const padding = css`
+  padding: ${akGridSize} 0;
+`;
+
 // tslint:disable-next-line
-export const FilmStripWrapper = styled.div`
-  padding: 5px 0;
+const FilmStripWrapper = styled.div`
+  ${padding}
+`;
+
+// tslint:disable-next-line
+const SingleFileWrapper = styled.div`
+  ${padding}
+  min-height: ${SINGLE_FILE_HEIGHT}px;
+`;
+
+// tslint:disable-next-line
+const SingleLinkWrapper = styled.div`
+  ${padding}
+  min-height: ${SINGLE_LINK_HEIGHT}px;
 `;
 
 export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGroupState> {
@@ -48,21 +68,30 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   }
 
   renderSingleFile(child: ReactElement<MediaProps>) {
-    return React.cloneElement(child, {
-      cardDimensions: {
-        width: 275,
-        height: 180,
-      },
-      resizeMode: 'full-fit'
-    } as MediaProps);
+    return (
+      <SingleFileWrapper>{
+        React.cloneElement(child, {
+          cardDimensions: {
+            width: 275,
+            height: SINGLE_FILE_HEIGHT,
+          },
+          resizeMode: 'full-fit'
+        } as MediaProps)
+      }</SingleFileWrapper>
+    );
   }
 
   renderSingleLink(child: ReactElement<MediaProps>) {
-    return React.cloneElement(child, {
-      cardDimensions: {
-        width: 432,
-      },
-    } as MediaProps);
+    return (
+      <SingleLinkWrapper>{
+        React.cloneElement(child, {
+          cardDimensions: {
+            width: 432,
+            height: SINGLE_LINK_HEIGHT,
+          },
+        } as MediaProps)
+      }</SingleLinkWrapper>
+    );
   }
 
   renderStrip() {

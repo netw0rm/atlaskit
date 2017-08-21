@@ -33,6 +33,7 @@ export {
   Attributes as MediaAttributes, DisplayType as MediaDisplayType
 } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { singleImage } from './nodes/single-image';
 export { table, tableCell, tableHeader, tableRow } from './nodes/tableNodes';
 export { applicationCard } from './nodes/applicationCard';
 export { decisionList } from './nodes/decision-list';

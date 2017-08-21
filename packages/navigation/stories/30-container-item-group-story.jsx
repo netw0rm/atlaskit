@@ -7,6 +7,8 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
 import AkButton from '@atlaskit/button';
+import Badge from '@atlaskit/badge';
+import Lozenge from '@atlaskit/lozenge';
 import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -61,4 +63,92 @@ storiesOf(name, module)
         </AkNavigationItemGroup>
       </BasicNavigation>
     </HtmlPage>
-  ));
+)).add('container item groups with various actions', () => (
+  <HtmlPage>
+    <BasicNavigation>
+      <AkNavigationItem
+        icon={<SearchIcon label="Search" />}
+        isCompact
+        text="Search"
+      />
+      <AkNavigationItemGroup title="No action">
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
+          isCompact
+          text="Settings"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          isCompact
+          text="Issues"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup
+        action={
+          <AkButton
+            appearance="subtle"
+            iconBefore={<EmojiCustomIcon label="add" />}
+            spacing="none"
+          />
+        }
+        title="Button, also I have a long title"
+      >
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
+          isCompact
+          text="Settings"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          isCompact
+          text="Issues"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup
+        action={<Badge appearance="primary" value={5} />}
+        title="Badge"
+      >
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
+          isCompact
+          text="Settings"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          isCompact
+          text="Issues"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup
+        action={<Lozenge appearance="success" isBold>New</Lozenge>}
+        title="Lozenge"
+      >
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
+          isCompact
+          text="Settings"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          isCompact
+          text="Issues"
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup
+        action="hello :)"
+        title="Arbitrary text"
+      >
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
+          isCompact
+          text="Settings"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          isCompact
+          text="Issues"
+        />
+      </AkNavigationItemGroup>
+    </BasicNavigation>
+  </HtmlPage>
+));

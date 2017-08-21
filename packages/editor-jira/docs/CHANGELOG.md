@@ -1,5 +1,17 @@
 # @atlaskit/editor-jira
 
+## 20.3.0 (2017-08-17)
+
+* feature; update minimum editor-core version ([f6a1e09](https://bitbucket.org/atlassian/atlaskit/commits/f6a1e09))
+## 20.2.1 (2017-08-15)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([f86eef0](https://bitbucket.org/atlassian/atlaskit/commits/f86eef0))
+## 20.2.0 (2017-08-15)
+
+* feature; disable footer buttons if isDisabled is set to true ([8a8f1be](https://bitbucket.org/atlassian/atlaskit/commits/8a8f1be))
+* feature; introduce disabled (boolean) property for editor-jira (issues closed: ed-2385) ([db18d42](https://bitbucket.org/atlassian/atlaskit/commits/db18d42))
+
+
 ## 20.1.0 (2017-08-08)
 
 * feature; enable tables in editor-jira (issues closed: ed-2396) ([025f6ec](https://bitbucket.org/atlassian/atlaskit/commits/025f6ec))

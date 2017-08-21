@@ -1,5 +1,12 @@
 # @atlaskit/mention
 
+## 7.3.4 (2017-08-14)
+
+* bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))
+
+
+
+
 ## 7.3.3 (2017-08-10)
 
 * bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))

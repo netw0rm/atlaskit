@@ -136,6 +136,7 @@ export default class EmojiRepository {
   private dynamicCategoryList: string[];
   private static readonly defaultEmojiWeight: number = 1000000;
 
+  // protected to allow subclasses to access (for testing and storybooks).
   protected usageTracker: UsageFrequencyTracker;
 
   constructor(emojis: EmojiDescription[]) {
@@ -159,7 +160,7 @@ export default class EmojiRepository {
    *
    * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
    */
-   search(query?: string, options?: SearchOptions): EmojiSearchResult {
+  search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
 
     const { nameQuery, asciiQuery } = splitQuery(query);
@@ -167,8 +168,7 @@ export default class EmojiRepository {
       filteredEmoji = this.fullSearch.search(nameQuery);
 
       const comparator = createFrequencyEmojiComparator(nameQuery, this.usageTracker.getOrder());
-      const compare = comparator.compare.bind(comparator);
-      filteredEmoji.sort(compare);
+      filteredEmoji.sort(comparator.compare);
 
       if (asciiQuery) {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);

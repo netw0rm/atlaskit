@@ -1,48 +1,100 @@
+import * as uid from 'uid';
 import { RequestServiceOptions, ServiceConfig, utils } from '@atlaskit/util-service-support';
-import { convertServiceDecisionResponseToDecisionResponse, objectKeyToString, findIndex, convertServiceTaskToTask } from './TaskDecisionUtils';
+import { defaultLimit } from '../constants';
+
 import {
-  DecisionQuery,
-  DecisionResponse,
-  ServiceDecisionResponse,
-  TaskDecisionProvider,
-  ObjectKey,
-  Handler,
-  TaskState,
-  DecisionState,
-  ServiceTask,
+  convertServiceDecisionResponseToDecisionResponse,
+  convertServiceItemResponseToItemResponse,
+  convertServiceTaskResponseToTaskResponse,
+  convertServiceTaskToTask,
+  findIndex,
+  ResponseConverter
+} from './TaskDecisionUtils';
+
+import {
   BaseItem,
+  DecisionResponse,
+  DecisionState,
+  Handler,
+  ItemResponse,
+  ObjectKey,
+  Query,
+  RecentUpdateContext,
+  RecentUpdatesId,
+  RecentUpdatesListener,
+  ServiceTask,
+  TaskDecisionProvider,
+  TaskResponse,
+  TaskState,
 } from '../types';
+
+import { objectKeyToString } from '../type-helpers';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
 
-export default class TaskDecisionResource implements TaskDecisionProvider {
+interface RecentUpdateByIdValue {
+  listener: RecentUpdatesListener;
+  containerAri: string;
+}
+
+export class RecentUpdates {
+  private idsByContainer: Map<string, string[]> = new Map();
+  private listenersById: Map<string, RecentUpdateByIdValue> = new Map();
+
+  subscribe(containerAri: string, recentUpdatesListener: RecentUpdatesListener) {
+    const id = uid();
+    let containerIds = this.idsByContainer.get(containerAri);
+    if (!containerIds) {
+      containerIds = [];
+      this.idsByContainer.set(containerAri, containerIds);
+    }
+    containerIds.push(id);
+    this.listenersById.set(id, {
+      listener: recentUpdatesListener,
+      containerAri,
+    });
+    // Notify of id
+    recentUpdatesListener.id(id);
+  }
+
+  unsubscribe(unsubscribeId: RecentUpdatesId) {
+    const listenerDetail = this.listenersById.get(unsubscribeId);
+    if (listenerDetail) {
+      this.listenersById.delete(unsubscribeId);
+      const { containerAri } = listenerDetail;
+      const idsToFilter = this.idsByContainer.get(containerAri);
+      if (idsToFilter) {
+        this.idsByContainer.set(containerAri, idsToFilter.filter(id => id !== unsubscribeId));
+      }
+    }
+
+  }
+
+  notify(recentUpdateContext: RecentUpdateContext) {
+    const { containerAri } = recentUpdateContext;
+    const subscriberIds = this.idsByContainer.get(containerAri);
+    if (subscriberIds) {
+      subscriberIds.forEach(subscriberId => {
+        const listenerDetail = this.listenersById.get(subscriberId);
+        if (listenerDetail) {
+          const { listener } = listenerDetail;
+          listener.recentUpdates(recentUpdateContext);
+        }
+      });
+    }
+  }
+}
+
+export class ItemStateManager {
   private serviceConfig: ServiceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
+  private trackedObjectKeys: Map<string, ObjectKey> = new Map();
   private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
 
   constructor(serviceConfig: ServiceConfig) {
     this.serviceConfig = serviceConfig;
-    this.subscribers.clear();
-    this.cachedItems.clear();
-    this.batchedKeys.clear();
-  }
-
-  getDecisions(query: DecisionQuery): Promise<DecisionResponse> {
-    const options: RequestServiceOptions = {
-      path: 'decision',
-      requestInit: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(query),
-      }
-    };
-    return utils.requestService<ServiceDecisionResponse>(this.serviceConfig, options).then(serviceDecisionResponse => {
-      return convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse, query);
-    });
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
@@ -82,21 +134,9 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  getTaskState(keys: ObjectKey[]) {
-    const options: RequestServiceOptions = {
-      path: 'tasks/state',
-      requestInit: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify({
-          'taskKeys': keys
-        }),
-      }
-    };
-
-    return utils.requestService<BaseItem<TaskState>[]>(this.serviceConfig, options);
+  refreshAllTasks() {
+    this.queueAllItems();
+    this.scheduleGetTaskState();
   }
 
   subscribe(objectKey: ObjectKey, handler: Handler) {
@@ -104,6 +144,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     const handlers = this.subscribers.get(key) || [];
     handlers.push(handler);
     this.subscribers.set(key, handlers);
+    this.trackedObjectKeys.set(key, objectKey);
 
     const cached = this.cachedItems.get(key);
     if (cached) {
@@ -111,25 +152,9 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
       return;
     }
 
-    if (debouncedTaskStateQuery) {
-      clearTimeout(debouncedTaskStateQuery);
-    }
-
     this.queueItem(objectKey);
 
-    debouncedTaskStateQuery = setTimeout(() => {
-      this.getTaskState(Array.from(this.batchedKeys.values()))
-        .then(tasks => {
-          tasks.forEach(task => {
-            const { containerAri, objectAri, localId } = task;
-            const objectKey = { containerAri, objectAri, localId };
-            this.cachedItems.set(objectKeyToString(objectKey), task);
-
-            this.dequeueItem(objectKey);
-            this.notifyUpdated(objectKey, task.state);
-          });
-        });
-    }, 1);
+    this.scheduleGetTaskState();
   }
 
   unsubscribe(objectKey: ObjectKey, handler: Handler) {
@@ -147,9 +172,27 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
 
     if (handlers.length === 0) {
       this.subscribers.delete(key);
+      this.trackedObjectKeys.delete(key);
     } else {
       this.subscribers.set(key, handlers);
     }
+  }
+
+  getTaskState(keys: ObjectKey[]) {
+    const options: RequestServiceOptions = {
+      path: 'tasks/state',
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          'taskKeys': keys
+        }),
+      }
+    };
+
+    return utils.requestService<BaseItem<TaskState>[]>(this.serviceConfig, options);
   }
 
   notifyUpdated(objectKey: ObjectKey, state: TaskState | DecisionState) {
@@ -162,6 +205,10 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     handlers.forEach(handler => {
       handler(state);
     });
+  }
+
+  private queueAllItems() {
+    this.batchedKeys = new Map(this.trackedObjectKeys);
   }
 
   private queueItem(objectKey: ObjectKey) {
@@ -178,4 +225,104 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     this.batchedKeys.delete(key);
   }
 
+  private scheduleGetTaskState() {
+    if (debouncedTaskStateQuery) {
+      clearTimeout(debouncedTaskStateQuery);
+    }
+
+    debouncedTaskStateQuery = setTimeout(() => {
+      this.getTaskState(Array.from(this.batchedKeys.values()))
+        .then(tasks => {
+          tasks.forEach(task => {
+            const { containerAri, objectAri, localId } = task;
+            const objectKey = { containerAri, objectAri, localId };
+            this.cachedItems.set(objectKeyToString(objectKey), task);
+
+            this.dequeueItem(objectKey);
+            this.notifyUpdated(objectKey, task.state);
+          });
+        });
+    }, 1);
+  }
+}
+
+export default class TaskDecisionResource implements TaskDecisionProvider {
+  private serviceConfig: ServiceConfig;
+  private recentUpdates = new RecentUpdates();
+  private itemStateManager: ItemStateManager;
+
+  constructor(serviceConfig: ServiceConfig) {
+    this.serviceConfig = serviceConfig;
+    this.itemStateManager = new ItemStateManager(serviceConfig);
+  }
+
+  getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse> {
+    return this.query(query, 'decisions/query', convertServiceDecisionResponseToDecisionResponse, recentUpdatesListener);
+  }
+
+  getTasks(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<TaskResponse> {
+    return this.query(query, 'tasks/query', convertServiceTaskResponseToTaskResponse, recentUpdatesListener);
+  }
+
+  getItems(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<ItemResponse> {
+    return this.query(query, 'elements/query', convertServiceItemResponseToItemResponse, recentUpdatesListener);
+  }
+
+  unsubscribeRecentUpdates(id: RecentUpdatesId) {
+    this.recentUpdates.unsubscribe(id);
+  }
+
+  notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {
+    this.recentUpdates.notify(recentUpdateContext);
+    this.itemStateManager.refreshAllTasks();
+  }
+
+  private query<S,R>(query: Query, path: string, converter: ResponseConverter<S,R>, recentUpdatesListener?: RecentUpdatesListener): Promise<R> {
+    const options: RequestServiceOptions = {
+      path,
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(this.apiQueryToServiceQuery(query)),
+      }
+    };
+    if (recentUpdatesListener) {
+      this.recentUpdates.subscribe(query.containerAri, recentUpdatesListener);
+    }
+    return utils.requestService<S>(this.serviceConfig, options).then(serviceResponse => {
+      return converter(serviceResponse, query);
+    });
+  }
+
+  private apiQueryToServiceQuery(query: Query) {
+    const { sortCriteria, limit, ...other } = query;
+    const serviceQuery: any = {
+      ...other,
+      limit: limit || defaultLimit
+    };
+    switch (sortCriteria) {
+      case 'lastUpdateDate':
+        serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
+        break;
+      case 'creationDate':
+      default:
+        serviceQuery.sortCriteria = 'CREATION_DATE';
+        break;
+    }
+    return serviceQuery;
+  }
+
+  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
+    return this.itemStateManager.toggleTask(objectKey, state);
+  }
+
+  subscribe(objectKey: ObjectKey, handler: Handler) {
+    this.itemStateManager.subscribe(objectKey, handler);
+  }
+
+  unsubscribe(objectKey: ObjectKey, handler: Handler) {
+    this.itemStateManager.unsubscribe(objectKey, handler);
+  }
 }

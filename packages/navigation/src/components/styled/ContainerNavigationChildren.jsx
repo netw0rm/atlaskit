@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { gridSize, layout, scrollbar } from '../../shared-variables';
+import { drawerContainerHeaderAnimationSpeed, gridSize, scrollbar } from '../../shared-variables';
+import { whenCollapsed } from '../../theme/util';
 
 const ContainerNavigationChildren = styled.div`
   display: flex;
@@ -7,7 +8,12 @@ const ContainerNavigationChildren = styled.div`
   flex: 1 1 100%;
   justify-content: flex-start;
   overflow-y: ${props => (props.isCollapsed ? 'hidden' : 'auto')};
-  padding: ${gridSize}px ${layout.padding.side}px;
+  padding: 0 ${gridSize * 2}px ${gridSize}px ${gridSize * 2}px;
+  transition: padding ${drawerContainerHeaderAnimationSpeed};
+
+  ${whenCollapsed`
+    padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;
+  `}
 
   /* The following styles are to style scrollbars when there is long/wide content*/
   -ms-overflow-style: -ms-autohiding-scrollbar;

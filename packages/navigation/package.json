@@ -27,6 +27,7 @@
   "dependencies": {
     "@atlaskit/avatar": "^4.0.6",
     "@atlaskit/blanket": "^2.4.2",
+    "@atlaskit/button": "^3.5.3",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-base": "^7.4.2",
     "@atlaskit/icon": "^7.0.3",

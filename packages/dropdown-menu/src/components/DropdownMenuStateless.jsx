@@ -37,8 +37,10 @@ export default class DropdownMenuStateless extends Component {
 
   componentDidMount = () => {
     if (this.isUsingDeprecatedAPI()) {
-      // eslint-disable-next-line no-console
-      console.log('DropdownMenu.items is deprecated. Please switch to the declarative API.');
+      if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.log('DropdownMenu.items is deprecated. Please switch to the declarative API.');
+      }
 
       if (this.domItemsList) {
         this.focusFirstItem();

@@ -57,6 +57,9 @@ export default class AppSwitcher extends Component {
         activated.item.analyticEvent.properties
       );
     }
+    if (typeof activated.item.onClick === 'function') {
+      setTimeout(activated.item.onClick, 0);
+    }
 
     if (activated.item.action === 'suggestedApplicationDontShowAgainClick') {
       // If we remove the suggested application immediately, the droplist component interprets the

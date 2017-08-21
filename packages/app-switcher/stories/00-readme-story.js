@@ -83,6 +83,28 @@ const linkedApplicationsPropDescriptions = [
     ],
   },
   {
+    name: 'suggested',
+    type: 'Array',
+    description: 'An array of suggested application links to display. Each array item is a map with the folowing keys:',
+    children: [
+      {
+        name: 'name',
+        type: 'String',
+        description: 'Display name of the suggested application.',
+      },
+      {
+        name: 'product',
+        type: 'String',
+        description: 'A product identifier for the suggested application, for analytics.',
+      },
+      {
+        name: 'onClick',
+        type: 'Function',
+        description: 'Called when the suggested application is clicked.',
+      },
+    ],
+  },
+  {
     name: 'error',
     type: 'Boolean',
     description: 'If true the app switcher will display an error message.',
@@ -156,6 +178,10 @@ const i18nPropDescriptions = [
   {
     name: 'suggested.application.description.jira',
     description: 'Issue & project tracking software',
+  },
+  {
+    name: 'try.lozenge',
+    description: 'Lozenge text for suggested applications',
   },
 ];
 

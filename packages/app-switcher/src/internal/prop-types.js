@@ -6,6 +6,12 @@ const applications = PropTypes.arrayOf(PropTypes.shape({
   product: PropTypes.string.isRequired,
 }));
 
+const suggestedApplications = PropTypes.arrayOf(PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+}));
+
 const configureLink = PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired;
 
 export default {
@@ -19,6 +25,7 @@ export default {
   linkedApplications: PropTypes.shape({
     configureLink,
     apps: applications,
+    suggested: suggestedApplications,
     error: PropTypes.bool.isRequired,
   }),
 
@@ -34,6 +41,11 @@ export default {
     'suggested.application.description.confluence': PropTypes.node.isRequired,
     'suggested.application.description.jira': PropTypes.node.isRequired,
   }),
+
+  applicationsToTry: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+  })),
 
   suggestedApplication: PropTypes.shape({
     show: PropTypes.bool.isRequired,

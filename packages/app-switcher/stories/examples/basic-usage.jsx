@@ -27,6 +27,13 @@ const data = {
         product: 'confluence',
       },
     ],
+    suggested: [
+      {
+        name: 'Bitbucket',
+        product: 'bitbucket',
+        onClick: () => {},
+      },
+    ],
     error: false,
   },
   isAnonymousUser: false,
@@ -47,6 +54,7 @@ const data = {
     'suggested.application.description.confluence': 'Collaboration and content sharing',
     'suggested.application.description.jira': 'Issue & project tracking software',
     'applinks.error': 'Unable to load linked applications.',
+    'try.lozenge': 'try',
   },
   isDropdownOpenInitially: false,
   trigger: isSelected => (<Button isSelected={isSelected}>...</Button>),

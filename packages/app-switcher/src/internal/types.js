@@ -7,6 +7,12 @@ export type Applications = Array<{
   product: string,
 }>;
 
+export type SuggestedApplications = Array<{
+  name: string,
+  product: string,
+  onClick: Function,
+}>;
+
 export type ConfigureLink = string | boolean;
 
 export type RecentContainers = Array<{
@@ -18,6 +24,7 @@ export type RecentContainers = Array<{
 
 export type LinkedApplications = {
   configureLink: ConfigureLink,
+  suggested: SuggestedApplications,
   apps: Applications,
   error: boolean,
 };

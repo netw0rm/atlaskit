@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';
@@ -57,21 +57,48 @@ storiesOf(name, module)
     </Chrome>
   ))
 
-  .add('with JIRA as suggested application', () => (
+  .add('with Confluence as suggested application', () => (
     <Chrome>
       <AppSwitcher
         {...{
           ...data,
-          suggestedApplication: {
-            show: true,
-            application: 'jira',
-            url: 'http://www.atlassian.com/jira',
+          linkedApplications: {
+            configureLink: 'https://www.atlassian.com',
+            apps: [],
+            suggested: [{
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => { action('confluence.suggestion.clicked'); },
+            }],
+            error: false,
           },
         }}
       />
     </Chrome>
   ))
-
+  .add('with JIRA & Confluence as suggested applications', () => (
+    <Chrome>
+      <AppSwitcher
+        {...{
+          ...data,
+          linkedApplications: {
+            configureLink: 'https://www.atlassian.com',
+            apps: [],
+            suggested: [{
+              name: 'JIRA',
+              product: 'jira',
+              onClick: () => { action('jira.suggestion.clicked'); },
+            }, {
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => { action('confluence.suggestion.clicked'); },
+            }],
+            error: false,
+          },
+        }}
+      />
+    </Chrome>
+  ))
   .add('with anonymous mode', () => (
     <Chrome>
       <AppSwitcher

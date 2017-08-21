@@ -47,6 +47,7 @@ const data = {
     'container.jira-project': 'Project',
     'suggested.application.description.confluence': 'Collaboration and content sharing',
     'suggested.application.description.jira': 'Issue & project tracking software',
+    'try.lozenge': 'try',
   },
   isDropdownOpenInitially: false,
   trigger: () => {},

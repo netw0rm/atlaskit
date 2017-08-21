@@ -93,3 +93,7 @@ export const AppSwitcherContainer = styled.span`
     max-height: 85vh;
   }
 `;
+
+export const LozengeContainer = styled.span`
+  padding-left: 8px;
+`;

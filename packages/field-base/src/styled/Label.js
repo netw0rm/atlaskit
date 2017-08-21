@@ -1,10 +1,12 @@
 import styled, { css } from 'styled-components';
 import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import { akColorR300 } from '@atlaskit/util-shared-styles';
 import theme from './theme';
 
 const fontSize = 12;
 const innerHeight = spacing * 2; // 16px
 const lineHeight = innerHeight / fontSize;
+const requiredIndicatorColor = akColorR300;
 
 const getPadding = ({ firstChild, inlineEdit }) => {
   const right = 0;
@@ -39,5 +41,6 @@ export const LabelInner = styled.div`
 `;
 
 export const RequiredIndicator = styled.span`
+  color: ${requiredIndicatorColor};
   padding-left: 2px;
 `;

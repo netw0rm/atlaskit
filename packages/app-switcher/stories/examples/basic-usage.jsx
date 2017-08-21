@@ -37,11 +37,6 @@ const data = {
     error: false,
   },
   isAnonymousUser: false,
-  suggestedApplication: {
-    show: true,
-    application: 'confluence',
-    url: 'https://www.atlassian.com/confluence',
-  },
   i18n: {
     home: 'Home',
     apps: 'Apps',
@@ -51,8 +46,6 @@ const data = {
     'don\'t.show.this.again': 'Don’t show this again',
     'container.confluence-space': 'Space',
     'container.jira-project': 'Project',
-    'suggested.application.description.confluence': 'Collaboration and content sharing',
-    'suggested.application.description.jira': 'Issue & project tracking software',
     'applinks.error': 'Unable to load linked applications.',
     'try.lozenge': 'try',
   },

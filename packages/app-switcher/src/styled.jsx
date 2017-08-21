@@ -2,7 +2,6 @@
 import styled from 'styled-components';
 import {
   akColorB400,
-  akColorN90,
   akColorN100,
   akColorN200,
   akGridSize,
@@ -48,16 +47,6 @@ export const ItemWithIcon = styled.div`
   min-width: 160px;
 
   ${ellipsis}
-`;
-
-export const SuggestedApplicationTagline = styled.div`
-  color: ${akColorN90};
-  font-size: 12px;
-  line-height: 1.666666667;
-`;
-
-export const LogoContainer = styled.div`
-  color: ${akColorB400};
 `;
 
 export const TopLinkContainer = styled(ItemWithIcon)`

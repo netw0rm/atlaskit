@@ -24,7 +24,7 @@ export type RecentContainers = Array<{
 
 export type LinkedApplications = {
   configureLink: ConfigureLink,
-  suggested: SuggestedApplications,
+  suggested?: SuggestedApplications,
   apps: Applications,
   error: boolean,
 };
@@ -39,16 +39,8 @@ export type Translations = {
   "don't.show.this.again": ReactNode,
   'container.confluence-space': ReactNode,
   'container.jira-project': ReactNode,
-  'suggested.application.description.confluence': ReactNode,
-  'suggested.application.description.jira': ReactNode,
   'applinks.error': ReactNode,
-};
-
-export type SuggestedApplication = {
-  show: boolean,
-  application?: 'jira' | 'confluence',
-  url?: string,
-  onDontShowAgainClick?: Function,
+  'try.lozenge': ReactNode,
 };
 
 export type DropdownOptions = {

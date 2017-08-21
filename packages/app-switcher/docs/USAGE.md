@@ -57,13 +57,12 @@ const data = {
        "name": "Other application",
        "url": "https://other.application.com"
      }
-   ]
- },
- "suggestedApplication": {
-   "show": true,
-   "application": "confluence",
-   "description": "Issue & project tracking software",
-   "url": "https://www.atlassian.com"
+   ],
+   "suggested": [
+    "name": "Bitbucket",
+    "product": "bitbucket",
+    "toClick": () => {},
+   ],
  },
  "i18n": {
    "home": "Home",

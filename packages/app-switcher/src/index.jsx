@@ -5,7 +5,6 @@ import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import type {
   RecentContainers,
   LinkedApplications,
-  SuggestedApplication,
   DropdownOptions,
   Translations,
   DropdownItem,
@@ -14,7 +13,6 @@ import type {
 import getTopLinks from './items/top-links';
 import getRecentContainers from './items/recent-containers';
 import getLinkedApplications from './items/linked-applications';
-import getSuggestedApplication from './items/suggested-application';
 
 import { AppSwitcherContainer } from './styled';
 
@@ -25,7 +23,6 @@ export default class AppSwitcher extends Component {
     isAnonymousUser: boolean,
     isHomeLinkEnabled: boolean,
     isSiteAdminLinkEnabled?: boolean,
-    suggestedApplication: SuggestedApplication,
     i18n: Translations,
     trigger: Function,
     analytics: Function,
@@ -47,7 +44,6 @@ export default class AppSwitcher extends Component {
 
   state = {
     isDropdownOpen: this.props.isDropdownOpenInitially,
-    suggestedApplicationHiddenByUser: false,
   };
 
   onItemActivated = (activated: { item: DropdownItem }) => {
@@ -59,13 +55,6 @@ export default class AppSwitcher extends Component {
     }
     if (typeof activated.item.onClick === 'function') {
       setTimeout(activated.item.onClick, 0);
-    }
-
-    if (activated.item.action === 'suggestedApplicationDontShowAgainClick') {
-      // If we remove the suggested application immediately, the droplist component interprets the
-      // click as outside the dropdown menu and closes the menu, which isn't the behaviour we want.
-      setTimeout(() => this.setState({ suggestedApplicationHiddenByUser: true }), 0);
-      this.props.suggestedApplication.onDontShowAgainClick();
     }
   };
 
@@ -87,7 +76,6 @@ export default class AppSwitcher extends Component {
       isLoading,
       recentContainers,
       linkedApplications,
-      suggestedApplication,
       trigger,
       dropdownOptions,
     } = this.props;
@@ -99,8 +87,6 @@ export default class AppSwitcher extends Component {
       getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
-      getSuggestedApplication(i18n, isAnonymousUser, suggestedApplication,
-        this.state.suggestedApplicationHiddenByUser),
     ].filter(item => item != null);
 
     return (

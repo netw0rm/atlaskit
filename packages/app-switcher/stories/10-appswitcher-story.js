@@ -9,7 +9,6 @@ import { name } from '../package.json';
 import data from './data.json';
 
 data.analytics = (key, props) => console.log(key, props);
-data.suggestedApplication.onDontShowAgainClick = () => {};
 data.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)
@@ -35,9 +34,6 @@ storiesOf(name, module)
       <AppSwitcher
         {...{
           ...data,
-          suggestedApplication: {
-            show: false,
-          },
         }}
       />
     </Chrome>
@@ -48,9 +44,6 @@ storiesOf(name, module)
       <AppSwitcher
         {...{
           ...data,
-          suggestedApplication: {
-            show: false,
-          },
           recentContainers: [],
         }}
       />
@@ -64,7 +57,11 @@ storiesOf(name, module)
           ...data,
           linkedApplications: {
             configureLink: 'https://www.atlassian.com',
-            apps: [],
+            apps: [{
+              name: 'JIRA',
+              url: 'https://www.atlassian.com/#4',
+              product: 'jira',
+            }],
             suggested: [{
               name: 'Confluence',
               product: 'confluence',
@@ -104,9 +101,6 @@ storiesOf(name, module)
       <AppSwitcher
         {...{
           ...data,
-          suggestedApplication: {
-            show: false,
-          },
           recentContainers: [],
           isAnonymousUser: true,
         }}
@@ -141,9 +135,6 @@ storiesOf(name, module)
       <AppSwitcher
         {...{
           ...data,
-          suggestedApplication: {
-            show: false,
-          },
           linkedApplications: {
             configureLink: 'https://www.atlassian.com',
             apps: [],

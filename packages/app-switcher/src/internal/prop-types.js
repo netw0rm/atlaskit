@@ -38,21 +38,13 @@ export default {
     "don't.show.this.again": PropTypes.node.isRequired,
     'container.confluence-space': PropTypes.node.isRequired,
     'container.jira-project': PropTypes.node.isRequired,
-    'suggested.application.description.confluence': PropTypes.node.isRequired,
-    'suggested.application.description.jira': PropTypes.node.isRequired,
+    'try.lozenge': PropTypes.node.isRequired,
   }),
 
   applicationsToTry: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
   })),
-
-  suggestedApplication: PropTypes.shape({
-    show: PropTypes.bool.isRequired,
-    application: PropTypes.oneOf(['jira', 'confluence']),
-    url: PropTypes.string,
-    onDontShowAgainClick: PropTypes.func,
-  }),
 
   dropdownOptions: PropTypes.shape({
     appearance: PropTypes.oneOf(['default', 'tall']),

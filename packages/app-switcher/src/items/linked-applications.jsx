@@ -24,18 +24,18 @@ export default function (
     analyticEvent: { key: 'appswitcher.app.link.click', properties: { product: application.product } },
   }));
 
-  if (linkedApplications.suggested) {
+  if (!isAnonymousUser && linkedApplications.suggested) {
     linkedApplications.suggested.forEach(({ name, product, onClick }) => {
       items.push({
         content: (
-          <Item>
+          <Item className="app-switcher-suggested-application">
             {name}
             <LozengeContainer>
               <Lozenge appearance="inprogress">{i18n['try.lozenge'] || 'try'}</Lozenge>
             </LozengeContainer>
           </Item>
         ),
-        analyticEvent: { key: `appswitcher.discovery.user.try.${product}` },
+        analyticEvent: { key: 'appswitcher.discovery.user.try.clicked', properties: { product } },
         onClick,
       });
     });

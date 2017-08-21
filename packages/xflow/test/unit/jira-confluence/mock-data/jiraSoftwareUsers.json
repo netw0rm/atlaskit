@@ -1,0 +1,2674 @@
+[{
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=bratac",
+    "rel": "self"
+  },
+  "name": "bratac",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=bratac",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:c1104693-9662-493d-b640-ac3e06c4c8cf"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028244760"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423444760"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=bratac",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "bratac@example.com",
+  "display-name": "Bra'tac",
+  "email": "bratac@example.com",
+  "created-date": 1502423444802
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=cameronmitchell",
+    "rel": "self"
+  },
+  "name": "cameronmitchell",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=cameronmitchell",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:0a955fef-8484-4094-80c8-eaa125af11ce"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028253563"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423453563"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=cameronmitchell",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "cameronmitchell@example.com",
+  "display-name": "Cameron Mitchell",
+  "email": "cameronmitchell@example.com",
+  "created-date": 1502423453588
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=camillewray",
+    "rel": "self"
+  },
+  "name": "camillewray",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=camillewray",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:dfbcd506-091b-484e-9c98-03f5eda652a2"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028261035"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423461035"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=camillewray",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "camillewray@example.com",
+  "display-name": "Camille Wray",
+  "email": "camillewray@example.com",
+  "created-date": 1502423461066
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=carsonbeckett",
+    "rel": "self"
+  },
+  "name": "carsonbeckett",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=carsonbeckett",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:173d3bf0-41a8-4ec3-a100-dd492aeb0f99"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028264759"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423464759"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=carsonbeckett",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "carsonbeckett@example.com",
+  "display-name": "Carson Beckett",
+  "email": "carsonbeckett@example.com",
+  "created-date": 1502423464784
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=chloearmstrong",
+    "rel": "self"
+  },
+  "name": "chloearmstrong",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=chloearmstrong",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:3dfcffac-5869-4eaa-9146-9c6c32c31ee0"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028241790"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423441790"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=chloearmstrong",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "chloearmstrong@example.com",
+  "display-name": "Chloe Armstrong",
+  "email": "chloearmstrong@example.com",
+  "created-date": 1502423441820
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=danieljackson",
+    "rel": "self"
+  },
+  "name": "danieljackson",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=danieljackson",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:5d1fb947-dde2-4513-bc94-3d888ee95640"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028256380"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423456380"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=danieljackson",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "danieljackson@example.com",
+  "display-name": "Daniel Jackson",
+  "email": "danieljackson@example.com",
+  "created-date": 1502423456404
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=eliwallace",
+    "rel": "self"
+  },
+  "name": "eliwallace",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=eliwallace",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:d9759aa4-5e8a-46ef-bfb6-166698652f51"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028259611"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423459611"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=eliwallace",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "eliwallace@example.com",
+  "display-name": "Eli Wallace",
+  "email": "eliwallace@example.com",
+  "created-date": 1502423459636
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=elizabethweir",
+    "rel": "self"
+  },
+  "name": "elizabethweir",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=elizabethweir",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:efe5938a-0e66-4f86-bed7-5372815a5c51"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028270565"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423470565"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=elizabethweir",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "elizabethweir@example.com",
+  "display-name": "Elizabeth Weir",
+  "email": "elizabethweir@example.com",
+  "created-date": 1502423470589
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=everettyoung",
+    "rel": "self"
+  },
+  "name": "everettyoung",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=everettyoung",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:f3f3be25-856d-4996-8b67-e81a94f00d8a"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028246292"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423446292"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=everettyoung",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "everettyoung@example.com",
+  "display-name": "Everett Young",
+  "email": "everettyoung@example.com",
+  "created-date": 1502423446317
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=georgehammond",
+    "rel": "self"
+  },
+  "name": "georgehammond",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=georgehammond",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:4697e2f7-2d4c-4e39-9952-1fd419773271"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028275061"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423475061"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=georgehammond",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "georgehammond@example.com",
+  "display-name": "George Hammond",
+  "email": "georgehammond@example.com",
+  "created-date": 1502423475085
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=hanklandry",
+    "rel": "self"
+  },
+  "name": "hanklandry",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=hanklandry",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:950c8c80-fd25-418d-8e88-0d3c1870fd89"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028267646"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423467646"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=hanklandry",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "hanklandry@example.com",
+  "display-name": "Hank Landry",
+  "email": "hanklandry@example.com",
+  "created-date": 1502423467686
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=haroldmaybourne",
+    "rel": "self"
+  },
+  "name": "haroldmaybourne",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=haroldmaybourne",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:d84264d4-d02d-4575-a952-41b17362a185"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028255019"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423455019"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=haroldmaybourne",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "haroldmaybourne@example.com",
+  "display-name": "Harold Maybourne",
+  "email": "haroldmaybourne@example.com",
+  "created-date": 1502423455046
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=jackoneill",
+    "rel": "self"
+  },
+  "name": "jackoneill",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=jackoneill",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:04273c65-ee01-4546-9aa4-ffdbb4d3df3a"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028250476"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423450476"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jackoneill",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "jackoneill@example.com",
+  "display-name": "Jack O'Neill",
+  "email": "jackoneill@example.com",
+  "created-date": 1502423450505
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=jenniferkeller",
+    "rel": "self"
+  },
+  "name": "jenniferkeller",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=jenniferkeller",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:eb89cb10-3c02-4a52-93fa-ae04cacbe2d4"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028247671"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423447671"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jenniferkeller",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "jenniferkeller@example.com",
+  "display-name": "Jennifer Keller",
+  "email": "jenniferkeller@example.com",
+  "created-date": 1502423447696
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=johnsheppard",
+    "rel": "self"
+  },
+  "name": "johnsheppard",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=johnsheppard",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:343fbbe2-6bd9-40f4-a953-de66c01f45a5"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028243277"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423443277"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=johnsheppard",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "johnsheppard@example.com",
+  "display-name": "John Sheppard",
+  "email": "johnsheppard@example.com",
+  "created-date": 1502423443305
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=jonasquinn",
+    "rel": "self"
+  },
+  "name": "jonasquinn",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=jonasquinn",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:82f04ec7-8050-4726-9de0-8c1c99639f4e"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028273430"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423473430"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=jonasquinn",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "jonasquinn@example.com",
+  "display-name": "Jonas Quinn",
+  "email": "jonasquinn@example.com",
+  "created-date": 1502423473462
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=malcolmbarrett",
+    "rel": "self"
+  },
+  "name": "malcolmbarrett",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=malcolmbarrett",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:1d966219-83d4-4ab2-8e1d-e34be6539ef2"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028269069"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423469069"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=malcolmbarrett",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "malcolmbarrett@example.com",
+  "display-name": "Malcolm Barrett",
+  "email": "malcolmbarrett@example.com",
+  "created-date": 1502423469094
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=martinlloyd",
+    "rel": "self"
+  },
+  "name": "martinlloyd",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=martinlloyd",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:b12c1651-807e-4329-befb-3fa7362c90b3"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028263375"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423463375"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=martinlloyd",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "martinlloyd@example.com",
+  "display-name": "Martin Lloyd",
+  "email": "martinlloyd@example.com",
+  "created-date": 1502423463397
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=matthewscott",
+    "rel": "self"
+  },
+  "name": "matthewscott",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=matthewscott",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:25aab352-645a-4dfc-9573-c83ea7f9e04a"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028266172"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423466172"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=matthewscott",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "matthewscott@example.com",
+  "display-name": "Matthew Scott",
+  "email": "matthewscott@example.com",
+  "created-date": 1502423466195
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=nicholasrush",
+    "rel": "self"
+  },
+  "name": "nicholasrush",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=nicholasrush",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:32dbe1da-6cea-45a8-9cc7-be8db58559d4"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028258106"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423458106"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=nicholasrush",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "nicholasrush@example.com",
+  "display-name": "Nicholas Rush",
+  "email": "nicholasrush@example.com",
+  "created-date": 1502423458145
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=peteshanahan",
+    "rel": "self"
+  },
+  "name": "peteshanahan",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=peteshanahan",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:dcc8675e-3522-4f76-9479-4505faca814c"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028249111"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423449111"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=peteshanahan",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "peteshanahan@example.com",
+  "display-name": "Pete Shanahan",
+  "email": "peteshanahan@example.com",
+  "created-date": 1502423449135
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=richardwoolsey",
+    "rel": "self"
+  },
+  "name": "richardwoolsey",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=richardwoolsey",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:1a2ad3f6-2c75-4cde-bb9d-be3850283b3d"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028276412"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423476412"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=richardwoolsey",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "richardwoolsey@example.com",
+  "display-name": "Richard Woolsey",
+  "email": "richardwoolsey@example.com",
+  "created-date": 1502423476437
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=rodneymckay",
+    "rel": "self"
+  },
+  "name": "rodneymckay",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=rodneymckay",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:dbecf614-67bd-4b1f-bb64-64191f64dab6"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028252117"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423452117"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=rodneymckay",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "rodneymckay@example.com",
+  "display-name": "Rodney McKay",
+  "email": "rodneymckay@example.com",
+  "created-date": 1502423452151
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=ronaldgreer",
+    "rel": "self"
+  },
+  "name": "ronaldgreer",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=ronaldgreer",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:200d667e-07ea-4cf4-a519-b4e78e89acd6"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028303396"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423503396"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronaldgreer",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "ronaldgreer@example.com",
+  "display-name": "Ronald Greer",
+  "email": "ronaldgreer@example.com",
+  "created-date": 1502423503428
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=ronondex",
+    "rel": "self"
+  },
+  "name": "ronondex",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=ronondex",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:92a79367-52fc-4b26-898c-02d2e326bc36"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028306358"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423506358"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=ronondex",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "ronondex@example.com",
+  "display-name": "Ronon Dex",
+  "email": "ronondex@example.com",
+  "created-date": 1502423506387
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=samanthacarter",
+    "rel": "self"
+  },
+  "name": "samanthacarter",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=samanthacarter",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:38e8482b-df53-4e60-86d7-4ba21828e680"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028310918"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423510918"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=samanthacarter",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "samanthacarter@example.com",
+  "display-name": "Samantha Carter",
+  "email": "samanthacarter@example.com",
+  "created-date": 1502423510945
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=tamarajohansen",
+    "rel": "self"
+  },
+  "name": "tamarajohansen",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=tamarajohansen",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:6e93f190-6e10-472f-8961-ce170c8bbbc2"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028315031"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423515031"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tamarajohansen",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "tamarajohansen@example.com",
+  "display-name": "Tamara Johansen",
+  "email": "tamarajohansen@example.com",
+  "created-date": 1502423515064
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=tealc",
+    "rel": "self"
+  },
+  "name": "tealc",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=tealc",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:8f0d802e-7059-40e0-9fe6-c53d67030eca"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028312337"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423512337"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tealc",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "tealc@example.com",
+  "display-name": "Teal'c",
+  "email": "tealc@example.com",
+  "created-date": 1502423512365
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=telford",
+    "rel": "self"
+  },
+  "name": "telford",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=telford",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:a3af7ae5-6147-4c3c-929c-85451cc31892"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028309545"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423509545"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=telford",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "telford@example.com",
+  "display-name": "Telford",
+  "email": "telford@example.com",
+  "created-date": 1502423509590
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=teylaemmagan",
+    "rel": "self"
+  },
+  "name": "teylaemmagan",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=teylaemmagan",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:bd515b9a-abf4-4f65-a571-2a846cc02455"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028304721"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423504721"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=teylaemmagan",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "teylaemmagan@example.com",
+  "display-name": "Teyla Emmagan",
+  "email": "teylaemmagan@example.com",
+  "created-date": 1502423504753
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=tyler",
+    "rel": "self"
+  },
+  "name": "tyler",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=tyler",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:eab5c6ec-5850-4220-b51c-c66728d2f438"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028316501"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423516501"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=tyler",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "tyler@example.com",
+  "display-name": "Tyler",
+  "email": "tyler@example.com",
+  "created-date": 1502423516528
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=valamaldoran",
+    "rel": "self"
+  },
+  "name": "valamaldoran",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=valamaldoran",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:56d8f414-c82c-4793-b44e-8e82b9cf4a66"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028313596"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423513596"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=valamaldoran",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "valamaldoran@example.com",
+  "display-name": "Vala Mal Doran",
+  "email": "valamaldoran@example.com",
+  "created-date": 1502423513643
+}, {
+  "link": {
+    "href": "https://example.atlassian.net/rest/um/1/user?username=walterharriman",
+    "rel": "self"
+  },
+  "name": "walterharriman",
+  "password": {
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/password?username=walterharriman",
+      "rel": "edit"
+    }
+  },
+  "active": true,
+  "attributes": {
+    "attributes": [{
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=atlassianid.openid.identity",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity",
+      "values": ["https://id.atlassian.com/openid/v2/u/557058:caf34405-0a3a-47a0-bb93-1598ffd7614e"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=atlassianid.openid.identity.previous",
+        "rel": "self"
+      },
+      "name": "atlassianid.openid.identity.previous",
+      "values": [""]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=invitationExpiryDate",
+        "rel": "self"
+      },
+      "name": "invitationExpiryDate",
+      "values": ["1503028307915"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=invitationSendDate",
+        "rel": "self"
+      },
+      "name": "invitationSendDate",
+      "values": ["1502423507915"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=inviter.name",
+        "rel": "self"
+      },
+      "name": "inviter.name",
+      "values": ["Lachlan Hunt"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=synch.atlassian.account.associated",
+        "rel": "self"
+      },
+      "name": "synch.atlassian.account.associated",
+      "values": ["true"]
+    }, {
+      "link": {
+        "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman&attributename=synch.censored",
+        "rel": "self"
+      },
+      "name": "synch.censored",
+      "values": ["false"]
+    }],
+    "link": {
+      "href": "https://example.atlassian.net/rest/um/1/user/attribute?username=walterharriman",
+      "rel": "self"
+    }
+  },
+  "unmodifiableMemberships": false,
+  "unmodifiableDetails": false,
+  "disabledReason": "",
+  "lozenges": [],
+  "isSelf": false,
+  "hidden": false,
+  "productPresenceList": [],
+  "first-name": "",
+  "last-name": "walterharriman@example.com",
+  "display-name": "Walter Harriman",
+  "email": "walterharriman@example.com",
+  "created-date": 1502423507946
+}]

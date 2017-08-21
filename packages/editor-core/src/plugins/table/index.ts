@@ -569,6 +569,7 @@ const plugin = new Plugin({
         pluginState.updateEditorFocused(false);
         pluginState.update(view.docView, true);
       }
+      pluginState.resetHoverSelection();
     },
   }
 });

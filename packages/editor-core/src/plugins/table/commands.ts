@@ -61,7 +61,10 @@ const goToNextCell = (direction: number): Command => {
       return true;
     }
 
-    return tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    const result = tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    const latestState = pluginState.view.state;
+    dispatch(latestState.tr.setSelection(Selection.near(latestState.selection.$from)));
+    return result;
   };
 };
 

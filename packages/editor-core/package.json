@@ -70,6 +70,7 @@
     "codemirror": "^5.26.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
+    "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
     "mediapicker": "^7.0.1",
     "orderedmap": "^1.0.0",

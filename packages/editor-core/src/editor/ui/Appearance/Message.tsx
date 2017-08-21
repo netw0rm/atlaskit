@@ -4,7 +4,6 @@ import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import {
   EditorAppearanceComponentProps,
-  EditorAppearanceComponentState,
   EditorAppearance
 } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
@@ -77,9 +76,8 @@ const SecondaryToolbarContainer = styled.div`
   display: flex;
 `;
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
+export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
   static displayName = 'MessageEditor';
-  state: EditorAppearanceComponentState = {};
 
   private flashToggle = false;
 
@@ -89,10 +87,6 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
-  }
-
-  private handleEditorRef = ref => {
-    this.setState({ editorRef: ref });
   }
 
   private renderChrome = ({ maxContentSize }) => {
@@ -109,11 +103,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <MessageEditor
-        innerRef={this.handleEditorRef}
-        className={this.flashToggle ? '-flash' : ''}
-        isMaxContentSizeReached={maxContentSizeReached}
-      >
+      <MessageEditor className={this.flashToggle ? '-flash' : ''} isMaxContentSizeReached={maxContentSizeReached}>
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
@@ -131,11 +121,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             items={secondaryToolbarComponents}
           />
           {customSecondaryToolbarComponents}
-          <AddonToolbar
-            dropdownItems={addonToolbarComponents}
-            popupsMountPoint={this.state.editorRef}
-            popupsBoundariesElement={this.state.editorRef}
-          />
+          <AddonToolbar dropdownItems={addonToolbarComponents} />
         </SecondaryToolbarContainer>
       </MessageEditor>
     );

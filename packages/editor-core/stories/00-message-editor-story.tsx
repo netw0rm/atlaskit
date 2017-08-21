@@ -65,7 +65,7 @@ storiesOf(name, module)
       {
         text: 'Item one',
         icon: <DocumentIcon label="Item 1" />,
-        renderOnClick: closePopup => (
+        renderOnClick: (editorActions, closePopup) => (
           <AddonComponentExample>
             Rendered on click
             <button onClick={closePopup}>close</button>
@@ -75,12 +75,12 @@ storiesOf(name, module)
       {
         text: 'Item two',
         icon: <AtlassianIcon label="Item 2" />,
-        action: editorActions => editorActions.clear()
+        actionOnClick: editorActions => editorActions.clear()
       }
     ];
 
-    const addons = addonConfigs.map(({ text, icon, action, renderOnClick }, i) => (
-      <Addon key={i} icon={icon} action={action} renderOnClick={renderOnClick}>
+    const addons = addonConfigs.map(({ text, icon, actionOnClick, renderOnClick }, i) => (
+      <Addon key={i} icon={icon} actionOnClick={actionOnClick} renderOnClick={renderOnClick}>
         {text}
       </Addon>
     ));

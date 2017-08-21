@@ -5,6 +5,7 @@ import { Dropdown, RenderOnClickHandler } from '../';
 import WithEditorActions from '../../WithEditorActions';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
 import Popup from '../../../../ui/Popup';
+import EditorActions from '../../../actions';
 
 // tslint:disable-next-line:variable-name
 const AddonPopup = withOuterListeners(Popup);
@@ -14,33 +15,31 @@ const POPUP_WIDTH = 136;
 
 export interface Props {
   dropdownItems?: React.ReactElement<any> | React.ReactElement<any>[];
-  popupsMountPoint?: HTMLElement;
-  popupsBoundariesElement?: HTMLElement;
 }
 
 export interface State {
   isOpen: boolean;
   target?: HTMLElement;
-  addon?: React.ReactElement<any> | null;
+  addonDropdownContent?: React.ReactElement<any> | null;
 }
 
 export default class AddonToolbar extends React.Component<Props, State> {
   state: State = {
     isOpen: false,
-    addon: null
+    addonDropdownContent: null
   };
 
   togglePopup = () => {
     this.setState({
       isOpen: !this.state.isOpen,
-      addon: null
+      addonDropdownContent: null
     });
   }
 
-  handleDropdownClick = (renderOnClick: RenderOnClickHandler) => {
+  handleDropdownClick = (editorActions: EditorActions, renderOnClick: RenderOnClickHandler) => {
     if (renderOnClick) {
       // popup stays open, we just change its content to the component that is returned from renderOnClick()
-      this.setState({ addon: renderOnClick(this.togglePopup) });
+      this.setState({ addonDropdownContent: renderOnClick(editorActions, this.togglePopup) });
     } else {
       // close popup
       this.togglePopup();
@@ -48,8 +47,8 @@ export default class AddonToolbar extends React.Component<Props, State> {
   }
 
   render() {
-    const { dropdownItems, popupsMountPoint, popupsBoundariesElement } = this.props;
-    const { addon, isOpen } = this.state;
+    const { dropdownItems } = this.props;
+    const { addonDropdownContent, isOpen } = this.state;
 
     if (!dropdownItems || (Array.isArray(dropdownItems) && !dropdownItems.length)) {
       return null;
@@ -67,21 +66,20 @@ export default class AddonToolbar extends React.Component<Props, State> {
             handleClickOutside={this.togglePopup}
             handleEscapeKeydown={this.togglePopup}
             target={this.state.target}
-            mountTo={popupsMountPoint}
-            boundariesElement={popupsBoundariesElement}
             fitHeight={POPUP_HEIGHT}
             fitWidth={POPUP_WIDTH}
+            alignY="top"
           >
             <span onClick={this.handlePopupClick}>
-              {addon
-                ? addon
+              {addonDropdownContent
+                ? addonDropdownContent
                 : <WithEditorActions
                     // tslint:disable-next-line:jsx-no-lambda
-                    render={actions =>
+                    render={editorActions =>
                       <Dropdown
                         onClick={this.handleDropdownClick}
                         togglePopup={this.togglePopup}
-                        actions={actions}
+                        editorActions={editorActions}
                       >
                         {dropdownItems}
                       </Dropdown>

@@ -4,8 +4,8 @@ import { RenderOnClickHandler } from '../../Addon';
 import EditorActions from '../../../actions';
 
 export interface Props {
-  onClick: (renderOnClick: RenderOnClickHandler) => void;
-  actions: EditorActions;
+  onClick: (actionOnClick: EditorActions, renderOnClick: RenderOnClickHandler) => void;
+  editorActions: EditorActions;
   togglePopup: () => void;
 }
 
@@ -26,12 +26,13 @@ export default class DropdownWrapper extends React.Component<Props, any> {
   }
 
   private handleClick = (dropdownItem: React.ReactElement<any>) => {
-    const { action, renderOnClick } = dropdownItem.props;
-    if (action) {
-      action(this.props.actions);
+    const { actionOnClick, renderOnClick } = dropdownItem.props;
+    const { editorActions } = this.props;
+    if (actionOnClick) {
+      actionOnClick(editorActions);
       this.props.togglePopup();
     } else if (renderOnClick) {
-      this.props.onClick(renderOnClick);
+      this.props.onClick(editorActions, renderOnClick);
     }
   }
 }

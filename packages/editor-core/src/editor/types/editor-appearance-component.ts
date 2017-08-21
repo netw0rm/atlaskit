@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { EditorView } from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
 import { EventDispatcher } from '../event-dispatcher';
-import { UIComponentFactory } from '../types';
+import { UIComponentFactory, ReactElement } from '../types';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
@@ -12,12 +11,8 @@ export interface EditorAppearanceComponentProps {
   contentComponents?: UIComponentFactory[];
   primaryToolbarComponents?: UIComponentFactory[];
   secondaryToolbarComponents?: UIComponentFactory[];
-  customContentComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-  customPrimaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-  customSecondaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-  addonToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-}
-
-export interface EditorAppearanceComponentState {
-  editorRef?: HTMLElement;
+  customContentComponents?: ReactElement;
+  customPrimaryToolbarComponents?: ReactElement;
+  customSecondaryToolbarComponents?: ReactElement;
+  addonToolbarComponents?: ReactElement;
 }

@@ -23,7 +23,7 @@ export const ButtonContents = styled.div`
   text-decoration: none;
   ${({ isHovered }) => (isHovered && css`
     color: ${colors.N600};
-    text-decoration: underline
+    text-decoration: underline;
   `)};
 `;
 
@@ -31,11 +31,12 @@ const getTitleColor = themed({ light: colors.N600, dark: colors.DN600 });
 const getTextColor = themed({ light: colors.N300, dark: colors.DN100 });
 
 export const Title = styled.span`
-  color: ${getTitleColor}
+  color: ${getTitleColor};
   font-weight: 500;
+  padding: 0 ${itemSpacing}px;
 `;
 
 export const Text = styled.span`
-  color: ${getTextColor}
+  color: ${getTextColor};
   padding: 0 ${itemSpacing}px;
 `;

@@ -37,7 +37,7 @@ const IconWrapper = styled.span`
   display: flex;
   flex: 0 0 auto;
   padding: 0 ${itemSpacing};
-  color: ${getColor}
+  color: ${getColor};
 `;
 
 export default IconWrapper;

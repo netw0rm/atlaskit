@@ -127,7 +127,7 @@ export default class FieldBaseStateless extends PureComponent {
               compact={isCompact}
               disabled={isDisabled}
               fitContainerWidth={isFitContainerWidthEnabled}
-              focused={isFocused ? 'focus' : 'default'}
+              isFocused={isFocused}
               invalid={isInvalid && !isFocused}
               none={appearance === 'none'}
               onBlurCapture={onBlur}

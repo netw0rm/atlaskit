@@ -1,6 +1,13 @@
 import styled, { css } from 'styled-components';
-import { gridSize, fontSize, themed } from '@atlaskit/theme';
-import theme from './theme';
+import { gridSize, fontSize, colors, themed } from '@atlaskit/theme';
+import {
+  getBackgroundColor,
+  getBackgroundColorFocus,
+  getBackgroundColorHover,
+  getBorderColor,
+  getBorderColorFocus,
+  getBorderColorHover,
+} from './theme';
 
 const borderRadius = '5px';
 const borderWidth = 1;
@@ -15,11 +22,11 @@ const innerHeight = spacing * 2.5;
 const lineHeight = innerHeight / fontSize();
 const transitionDuration = '0.2s';
 
-const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtle, none }) => {
+const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, subtle, none }) => {
   let border;
   const height = compact ? heightCompact : heightBase;
 
-  if (invalid || focused || none) border = borderWidthFocused;
+  if (invalid || isFocused || none) border = borderWidthFocused;
   else if (subtle) border = borderWidthSubtle;
   else border = borderWidth;
 
@@ -33,25 +40,27 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtl
   `;
 };
 
-const getDisabledState = ({ disabled }) => disabled && css`
-  color: ${theme.field.disabled.text.default};
+const getDisabledColor = themed({ light: colors.N60, dark: colors.N60 });
+
+const getDisabledState = (p) => p.disabled && css`
+  color: ${getDisabledColor(p)};
   pointer-events: none;
 `;
 
-const getHoverState = ({ appearance, readOnly, focused, none }) => {
-  if (readOnly || focused || none) return null;
+const getHoverState = (p) => {
+  if (p.readOnly || p.isFocused || p.none) return null;
 
   return css`
     &:hover {
-      background-color: ${theme.field[appearance].background.hover};
-      border-color: ${theme.field[appearance].border.hover};
+      background-color: ${getBackgroundColorHover(p)};
+      border-color: ${getBorderColorHover(p)};
     }
   `;
 };
 
-const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
+const getMargin = ({ appearance, isFocused, paddingDisabled, readOnly }) => {
   if (
-    !focused ||
+    !isFocused ||
     appearance !== 'invalid' ||
     appearance === 'none' ||
     !paddingDisabled ||
@@ -66,22 +75,10 @@ const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
 };
 
 export const Content = styled.div`
-  ${p => {
-    // console.log(p);
-    const thisish = themed('appearance', {
-      invalid: {
-        light: 'LIGHT ALIGHT A LIGHT',
-        dark: 'Darkness, two which the universe shall return',
-      },
-    })
-    // console.log(thisish);
-    const something = thisish(p);
-    console.log(something);
-  }}
   ${p => getBorderAndPadding(p)}
   ${p => getMargin(p)}
-  background-color: ${({ appearance, focused }) => theme.field[appearance].background[focused]};
-  border-color: ${({ appearance, focused }) => theme.field[appearance].border[focused]};
+  background-color: ${p => (p.isFocused ? getBackgroundColorFocus(p) : getBackgroundColor(p))};
+  border-color: ${p => (p.isFocused ? getBorderColorFocus(p) : getBorderColor(p))};
   border-radius: ${borderRadius};
   border-style: ${p => (p.appearance === 'none' ? 'none' : 'solid')};
   box-sizing: border-box;

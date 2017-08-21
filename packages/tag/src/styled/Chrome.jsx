@@ -24,6 +24,7 @@ export default styled.span`
   margin: ${gridSizeUnitless / 2}px;
   padding: 0;
   overflow: ${({ isRemoved, isRemoving }) => ((isRemoved || isRemoving) ? 'hidden' : 'initial')};
+
   &:hover {
     box-shadow: none;
     background-color: ${p => (p.markedForRemoval ? backgroundColorRemoval(p) : backgroundColorHover(p))};

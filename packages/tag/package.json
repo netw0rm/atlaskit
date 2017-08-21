@@ -25,7 +25,6 @@
   ],
   "dependencies": {
     "@atlaskit/icon": "^3.0.0",
-    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-common": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "create-error": "^0.3.1",
@@ -35,10 +34,10 @@
   },
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
-    "@atlaskit/tag": "*",
     "@atlaskit/tag-group": "^3.4.2",
+    "@atlaskit/tag": "*",
     "@atlaskit/util-common-test": "^1.0.0",
-    "react-router-dom": "^4.0.0"
+    "react-router-dom": "^4.0.0",
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

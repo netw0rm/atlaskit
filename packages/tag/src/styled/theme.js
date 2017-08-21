@@ -24,21 +24,8 @@ type property = {|
   yellowLight: color,
 |}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 const textColors: property = themed('color', {
   standard: { light: colors.N700, dark: colors.DN600 },
-=======
-const textColors: property = {
-  standard: { light: colors.N700, dark: colors.N700 },
->>>>>>> WIP
-=======
-// colors stolen from @atlaskit/theme
-const codeBlock = { light: colors.N20, dark: colors.DN50 };
-
-const textColors: property = themed('color', {
-  standard: { light: colors.N700, dark: colors.DN600 },
->>>>>>> feat(component): blah blah styled components
   green: { light: colors.N800, dark: colors.N800 },
   purple: { light: colors.N800, dark: colors.N800 },
   red: { light: colors.N800, dark: colors.N800 },
@@ -53,8 +40,6 @@ const textColors: property = themed('color', {
   redLight: { light: colors.N500, dark: colors.N500 },
   yellowLight: { light: colors.N500, dark: colors.N500 },
   greyLight: { light: colors.N500, dark: colors.N500 },
-<<<<<<< HEAD
-<<<<<<< HEAD
 });
 
 const backgroundColors: property = themed('color', {
@@ -80,40 +65,6 @@ export const backgroundColor = backgroundColors;
 
 export const textColorHover: property = themed('color', {
   standard: { light: colors.N700, dark: colors.B75 },
-=======
-};
-=======
-});
->>>>>>> feat(component): blah blah styled components
-
-const backgroundColors: property = themed('color', {
-  standard: codeBlock,
-  green: { light: colors.G200, dark: colors.G200 },
-  purple: { light: colors.P100, dark: colors.P100 },
-  red: { light: colors.R100, dark: colors.R100 },
-  yellow: { light: colors.Y200, dark: colors.Y200 },
-  grey: { light: colors.N500, dark: colors.N500 },
-  teal: { light: colors.T200, dark: colors.T200 },
-  blue: { light: colors.B100, dark: colors.B100 },
-  tealLight: { light: colors.T100, dark: colors.T100 },
-  blueLight: { light: colors.B75, dark: colors.B75 },
-  greenLight: { light: colors.G100, dark: colors.G100 },
-  purpleLight: { light: colors.P75, dark: colors.P75 },
-  redLight: { light: colors.R75, dark: colors.R75 },
-  yellowLight: { light: colors.Y100, dark: colors.Y100 },
-  greyLight: { light: colors.N30, dark: colors.N30 },
-});
-
-export const textColor = textColors;
-export const backgroundColor = backgroundColors;
-
-export const textColorHover: property = themed('color', {
-<<<<<<< HEAD
-  standard: { light: colors.N700, dark: colors.N700 },
->>>>>>> WIP
-=======
-  standard: { light: colors.N700, dark: colors.DN700 },
->>>>>>> feat(component): blah blah styled components
   green: { light: colors.B400, dark: colors.B400 },
   purple: { light: colors.B400, dark: colors.B400 },
   red: { light: colors.B400, dark: colors.B400 },
@@ -131,15 +82,7 @@ export const textColorHover: property = themed('color', {
 });
 
 export const backgroundColorHover: property = themed('color', {
-<<<<<<< HEAD
-<<<<<<< HEAD
   standard: { light: colors.N30, dark: colors.DN60 },
-=======
-  standard: { light: colors.N30, dark: colors.N30 },
->>>>>>> WIP
-=======
-  standard: { light: colors.N30, dark: colors.DN90 },
->>>>>>> feat(component): blah blah styled components
   green: { light: colors.G100, dark: colors.G100 },
   purple: { light: colors.P75, dark: colors.P75 },
   red: { light: colors.R75, dark: colors.R75 },
@@ -153,13 +96,5 @@ export const backgroundColorHover: property = themed('color', {
   purpleLight: { light: colors.P50, dark: colors.P50 },
   redLight: { light: colors.R50, dark: colors.R50 },
   yellowLight: { light: colors.Y75, dark: colors.Y75 },
-<<<<<<< HEAD
-<<<<<<< HEAD
   greyLight: { light: colors.N30, dark: colors.DN90 },
-=======
-  greyLight: { light: colors.N20, dark: colors.N20 },
->>>>>>> WIP
-=======
-  greyLight: { light: colors.N30, dark: colors.DN90 },
->>>>>>> feat(component): blah blah styled components
 });

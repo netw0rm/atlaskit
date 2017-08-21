@@ -22,7 +22,7 @@ yarn add @NAME@
 Import the component in your React app as follows:
 ```js
 import MentionPicker, { MentionResource } from '@NAME@';
-const mentionProvider = new MentionResource({
+const resourceProvider = new MentionResource({
   url: 'http://example-mention-server/service',
   securityProvider: () => {
     return {

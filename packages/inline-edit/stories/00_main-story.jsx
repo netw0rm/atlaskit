@@ -1,6 +1,8 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
+import Tag from '@atlaskit/tag';
+import Group from '@atlaskit/tag-group';
 import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
@@ -135,6 +137,24 @@ storiesOf(name, module)
   .add('with slow confirmation', () => (
     <div style={containerStyle}>
       <SlowInlineEdit />
+    </div>
+  ))
+  .add('with tag-group view', () => (
+    <div style={containerStyle}>
+      <InlineEdit
+        editView={<div>Edit view</div>}
+        readView={(
+          <Group>
+            <Tag text="Apple" />
+            <Tag text="Banana" />
+            <Tag text="Cherry" />
+            <Tag text="Mango" />
+            <Tag text="Orange" />
+            <Tag text="Strawberry" />
+            <Tag text="Watermelon" />
+          </Group>
+        )}
+      />
     </div>
   ))
   .add('with mention list', () => (

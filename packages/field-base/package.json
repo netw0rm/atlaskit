@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/inline-dialog": "^3.0.0",
+    "@atlaskit/inline-dialog": "^5.0.0",
     "@atlaskit/spinner": "^2.2.1",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.0.1",

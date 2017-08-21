@@ -5,7 +5,8 @@ import { colors, themed } from '@atlaskit/theme';
 const background = { light: colors.N0, dark: colors.DN30 };
 const codeBlock = { light: colors.N20, dark: colors.DN50 };
 const yellow = { light: colors.Y300, dark: colors.Y300 };
-const linkOutline = { light: colors.B100, dark: colors.B200 };
+// linkOutline has been altered based on the colors in
+const linkOutline = { light: colors.B100, dark: colors.B75 };
 // The following do not yet have a darkmode 'map': N20A, N10
 
 export const getBackgroundColor = themed('appearance', {

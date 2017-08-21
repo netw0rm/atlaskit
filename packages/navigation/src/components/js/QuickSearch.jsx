@@ -19,8 +19,6 @@ const flattenChildren = children => (
  */
 const getResultIdByIndex = (array, index) => (
   (array && array[index] && array[index].props && array[index].props.resultId)
-  ? array[index].props.resultId
-  : null
 );
 
 /**
@@ -53,7 +51,7 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   }
 
   // If nothing is selected, select the element on the end
-  if (currentIndex === null) {
+  if (currentIndex == null) {
     return adjustment > 0 ? 0 : arrayLength - 1;
   }
   // Adjust current index, wrapping around if necessary
@@ -61,11 +59,6 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   // Correct for negative indices
   return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + arrayLength;
 };
-
-/**
- * The value, null, is used to represent 'no selection'.  Please remember to
- * appropriately check for null when using the selectedResultId state
- */
 
 export default class QuickSearch extends Component {
   static propTypes = {

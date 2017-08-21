@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 8.0.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
 ## 8.0.0 (2017-08-17)
 
 

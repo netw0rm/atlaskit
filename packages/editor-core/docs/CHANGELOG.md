@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 45.18.2 (2017-08-21)
+
+* bug fix; fix broken storybooks for editor-core ([605689b](https://bitbucket.org/atlassian/atlaskit/commits/605689b))
+* bug fix; typo: componentWillUmount -> componentWillUnmount ([dfe28fd](https://bitbucket.org/atlassian/atlaskit/commits/dfe28fd))
+* bug fix; fix content jump in renderer (issues closed: ed-2298) ([c062a13](https://bitbucket.org/atlassian/atlaskit/commits/c062a13))
 ## 45.18.1 (2017-08-18)
 
 * bug fix; import media components from plugins ([6a06355](https://bitbucket.org/atlassian/atlaskit/commits/6a06355))

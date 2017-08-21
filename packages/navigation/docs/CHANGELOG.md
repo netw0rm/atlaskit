@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 20.0.2 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
 ## 20.0.1 (2017-08-19)
 
 * bug fix; global navigation items without href are now tabbable again (issues closed: ak-3333) ([e2e2781](https://bitbucket.org/atlassian/atlaskit/commits/e2e2781))

@@ -10,7 +10,8 @@ import InlineDialog from '@atlaskit/inline-dialog';
 import Page from '@atlaskit/page';
 import ModalDialog from '../src';
 
-import SingleModal from './examples/single-modal';
+import WithLayerManager from './examples/with-layer-manager';
+import WithoutLayerManager from './examples/without-layer-manager';
 import ModalDemo from './examples/ModalDemo';
 import ShowHideDemo from './examples/ShowHideDemo';
 import SubmitDemo from './examples/SubmitDemo';
@@ -18,9 +19,8 @@ import SubmitDemo from './examples/SubmitDemo';
 const imports = [['React', 'react'], ['LayerManager', '@atlaskit/TEST']];
 
 storiesOf(name, module)
-  .addCodeExampleStory('LayerManager', () => (
-    <SingleModal />
-  ), { imports })
+  .add('With a LayerManager', () => <WithLayerManager />)
+  .add('Without a LayerManager', () => <WithoutLayerManager />)
   .addCodeExampleStory('Modal Demo', () => (
     <ModalDemo />
   ), { imports })

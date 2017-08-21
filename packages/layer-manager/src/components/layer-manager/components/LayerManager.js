@@ -1,5 +1,4 @@
 import React, { Children, PureComponent } from 'react';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import PropTypes from 'prop-types';
 import { GatewayDest, GatewayProvider } from '../../gateway';
 
@@ -29,7 +28,7 @@ export default class LayerManager extends PureComponent {
           <div id={this.appId} style={{ position: 'relative', zIndex: 0 }}>
             {Children.only(children)}
           </div>
-          <GatewayDest name="modal" component={TransitionGroup} />
+          <GatewayDest name="modal" id="gateway-destination-modal" />
         </div>
       </GatewayProvider>
     );

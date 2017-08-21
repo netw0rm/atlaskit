@@ -1,39 +1,38 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import tabbable from 'tabbable';
 
 import { Gateway, GatewayRegistry } from '../../gateway';
-import Portal from './Portal';
 import { WIDTH_ENUM } from '../shared-variables';
 
-import * as focusScope from '../utils/focus-scope';
-import * as focusStore from '../utils/focus-store';
-import { TabLoopTerminal } from '../styled/Modal';
-import ContentContainer from '../styled/ContentContainer';
-import ModalContainer from '../styled/ModalContainer';
-import HeaderFooterWrapper from '../styled/HeaderFooterWrapper';
-import KeylineMask from '../styled/KeylineMask';
+import { Dialog as StyledDialog, Overlay as StyledOverlay } from '../styled/Modal';
+import { Fade, SlideUp } from './Animation';
+import Content from './Content';
+import Portal from './Portal';
 
-import AnimationContainer from './AnimationContainer';
+// Rename animation imports for easier parsing of the render method
+const Dialog = props => <SlideUp component={StyledDialog} {...props} />;
+const Overlay = props => <Fade component={StyledOverlay} {...props} />;
 
 function getInitialState() {
   return {
-    tabbableElements: [],
+    dialogNode: null,
+    isBackground: false,
     tabDirection: null,
   };
 }
 
 export default class Modal extends Component {
   static propTypes = {
-    /**
-      Function that returns the element you want "aria-hidden=true" attributed to when mounted
-    */
-    // ariaHideElement: PropTypes.func, // TODO: consider removing
-    /**
-      String indicating how the content container should be announced to screenreaders
-    */
-    // ariaLabel: PropTypes.string, // TODO: consider removing
+    /** Buttons to render in the footer */
+    actions: PropTypes.arrayOf([
+      PropTypes.shape({
+        onClick: PropTypes.function,
+        text: PropTypes.string,
+      }),
+    ]),
+    /** Appearance of the modal */
+    appearance: PropTypes.oneOf(['error', 'warning']),
     /**
       Boolean OR Function indicating which element to focus when the component mounts
       TRUE will automatically find the first "tabbable" element within the modal
@@ -51,6 +50,17 @@ export default class Modal extends Component {
     header: PropTypes.node,
     /** Elements to render in the footer of the moda.l */
     footer: PropTypes.node,
+    /** Whether or not the modal is visible */
+    isOpen: PropTypes.bool,
+    /** Height of the modal. If not set, the modal grows to fit the content until it
+    runs out of vertical space, at which point scrollbars appear. If a number is
+    provided, the height is set to that number in pixels. A string including pixels,
+    or a percentage, will be directly applied as a style. Several size options are
+    also recognised. */
+    height: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
     /** Width of the modal. This can be provided in three different ways.
     If a number is provided, the width is set to that number in pixels.
     A string including pixels, or a percentage, will be directly applied as a style.
@@ -80,12 +90,18 @@ export default class Modal extends Component {
       Boolean indicating if pressing the `esc` key should close the modal
     */
     shouldCloseOnEscapePress: PropTypes.bool,
+    /** The header title */
+    title: PropTypes.string,
+    /**
+      Number representing where in the stack of modals, this modal sits
+    */
+    stackIndex: PropTypes.number,
   }
   static defaultProps = {
-    ariaHideElement: null,
     autoFocus: false,
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
+    stackIndex: 0,
     width: WIDTH_ENUM.defaultValue,
   }
   static contextTypes = {
@@ -96,76 +112,21 @@ export default class Modal extends Component {
   state = getInitialState();
 
   componentDidMount() {
-    focusStore.storeFocus();
     this._isMounted = true;
 
     const hideEl = document.getElementById(this.context.appId);
     if (hideEl) hideEl.setAttribute('aria-hidden', true);
-
-    this.initialiseFocus();
   }
   componentWillUnmount() {
     this._isMounted = false;
     const hideEl = document.getElementById(this.context.appId);
 
     if (hideEl) hideEl.removeAttribute('aria-hidden');
-    focusScope.unscopeFocus();
-    setTimeout(() => focusStore.restoreFocus());
+  }
+  getDialogNode = (dialogNode) => {
+    this.setState(state => !state.dialogNode && ({ dialogNode }));
   }
 
-  setTabbableElements = () => {
-    const tabbableElements = tabbable(this.dialog);
-
-    if (tabbableElements.length !== this.state.tabbableElements.length) {
-      this.setState({ tabbableElements });
-    }
-  }
-  // If a custom width (number of percentage) is supplied, set inline style
-  getCustomWidth = () => (
-    WIDTH_ENUM.values.indexOf(this.props.width) === -1 ? (
-      { style: { width: this.props.width } }
-    ) : {}
-  )
-  initialiseFocus() {
-    const { autoFocus } = this.props;
-    const hasFocusFunc = typeof autoFocus === 'function';
-
-    // DOCS: explain deferral of focus to allow for refs to be resolved
-    setTimeout(() => {
-      if (!this._isMounted) return;
-
-      this.setTabbableElements();
-
-      focusScope.scopeFocus(this.dialog, autoFocus && !hasFocusFunc);
-
-      if (hasFocusFunc) {
-        const focusTarget = autoFocus();
-
-        // DOCS: we've been given a focusTarget so assume it should work, and
-        // if not we should warn the consumer
-        if (!focusTarget || typeof focusTarget.focus !== 'function') {
-          console.warn('Invalid `autoFocus` provided:', focusTarget); // eslint-disable-line no-console
-          return;
-        }
-
-        focusTarget.focus();
-      }
-    });
-  }
-
-  handleKeyDown = (event) => {
-    if (!this._isMounted) return;
-
-    if (event.key === 'Escape' && this.props.shouldCloseOnEscapePress) {
-      this.props.onDialogDismissed();
-    } else if (event.key === 'Tab') {
-      const tabDirection = event.shiftKey ? 'prev' : 'next';
-
-      if (this._isMounted && (tabDirection !== this.state.tabDirection)) {
-        this.setState({ tabDirection });
-      }
-    }
-  }
   handleOverlayClick = () => {
     if (this.props.shouldCloseOnOverlayClick) {
       this.props.onDialogDismissed();
@@ -175,91 +136,59 @@ export default class Modal extends Component {
     event.stopPropagation();
   }
 
-  handleTabLoopEnd = () => {
-    const { tabbableElements } = this.state;
-    tabbableElements[0].focus();
-  }
-  handleTabLoopStart = () => {
-    const { tabbableElements } = this.state;
-
-    // handle case where user can tab from the dialog to the first element
-    const targetIdx = this.state.tabDirection === 'prev'
-      ? tabbableElements.length - 1
-      : 0;
-
-    const tabTarget = tabbableElements[targetIdx];
-
-    tabTarget.focus();
-  }
-
-  handleStackChange = (stackIndex) => {
-    const { onStackChange } = this.props;
-
-    if (onStackChange) onStackChange(stackIndex);
-
-    if (stackIndex === 0) {
-      focusScope.unscopeFocus();
-    } else {
-      focusScope.unscopeFocus(this.dialog);
-    }
-  }
-
   render() {
-    const { children, onOpenComplete, header, footer, width } = this.props;
-    const { tabbableElements, tabDirection } = this.state;
+    const {
+      actions, appearance, autoFocus, children, header, height, footer, isOpen,
+      onOpenComplete, onDialogDismissed, onStackChange, shouldCloseOnEscapePress,
+      stackIndex, width, title,
+    } = this.props;
+    const { dialogNode } = this.state;
     const { gatewayRegistry } = this.context;
 
+    const isBackground = stackIndex > 0;
     const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
-    const canTab = !!tabbableElements.length;
-    const gatewayDestination = gatewayRegistry ? 'modal' : null;
-    const tabStartIsAvailable = canTab && tabDirection && tabDirection === 'prev';
-    const tabEndIsAvailable = canTab && tabDirection && tabDirection === 'next';
 
-    const hasHeader = !!header;
-    const hasFooter = !!footer;
-
-    const optionalHeader = hasHeader ? (
-      <HeaderFooterWrapper headerOrFooter="header">{header}</HeaderFooterWrapper>
-    ) : null;
-
-    const optionalFooter = hasFooter ? (
-      <HeaderFooterWrapper headerOrFooter="footer">{footer}</HeaderFooterWrapper>
-    ) : null;
-
-    const headerKeylineMask = hasHeader ? (
-      <KeylineMask headerOrFooter="header" />
-    ) : null;
-
-    const footerKeylineMask = hasFooter ? (
-      <KeylineMask headerOrFooter="footer" />
-    ) : null;
+    // If a custom width (number or percentage) is supplied, set inline style
+    // otherwise allow styled component to consume as named prop
+    const namedWidth = WIDTH_ENUM.values.includes(width) ? width : null;
+    const dialogStyle = namedWidth ? null : { width };
 
     return (
-      <GatewayOrPortal into={gatewayDestination}>
-        <AnimationContainer
-          dialogRef={r => (this.dialog = r)}
-          overlayOnClick={this.handleOverlayClick}
-          onOpenComplete={onOpenComplete}
-          onStackChange={this.handleStackChange}
-          onKeyDown={this.handleKeyDown}
-          width={width}
+      <GatewayOrPortal into="modal">
+        <Overlay
+          aria-hidden={isBackground}
+          onClick={this.handleOverlayClick}
+          in={isOpen}
         >
-          <ModalContainer onClick={this.handleDialogClick} >
-            {tabStartIsAvailable && (
-              <TabLoopTerminal onFocus={this.handleTabLoopStart} />
-            )}
-            {optionalHeader}
-            <ContentContainer hasHeader={hasHeader} hasFooter={hasFooter}>
-              {headerKeylineMask}
+          <Dialog
+            autoFocus={autoFocus}
+            height={height}
+            in={isOpen}
+            innerRef={this.getDialogNode}
+            isBackground={isBackground}
+            onClick={this.handleDialogClick}
+            onEnterComplete={onOpenComplete}
+            role="dialog"
+            stackIndex={stackIndex}
+            style={dialogStyle}
+            tabIndex="-1"
+            width={namedWidth}
+          >
+            <Content
+              actions={actions}
+              appearance={appearance}
+              dialogNode={dialogNode}
+              footer={footer}
+              title={title}
+              header={header}
+              onClose={shouldCloseOnEscapePress && onDialogDismissed}
+              onStackChange={onStackChange}
+              stackIndex={stackIndex}
+            >
               {children}
-              {footerKeylineMask}
-            </ContentContainer>
-            {optionalFooter}
-            {tabEndIsAvailable && (
-              <TabLoopTerminal onFocus={this.handleTabLoopEnd} />
-            )}
-          </ModalContainer>
-        </AnimationContainer>
+            </Content>
+          </Dialog>
+        </Overlay>
       </GatewayOrPortal>
     );
   }

@@ -13,7 +13,7 @@ export type FocusItem = {|
   itemNode: HTMLElement,
 |};
 
-export type Behaviors = 'checkbox' | 'radio';
+export type Behaviors = 'checkbox' | 'radio' | 'menuitemcheckbox' | 'menuitemradio';
 
 export type OpenChangeObj = {|
   isOpen: boolean,

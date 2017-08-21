@@ -60,7 +60,9 @@ describe(`${name} - DropdownItemCheckbox`, () => {
     expect(wrapper.find(CheckboxIcon).prop('secondaryColor')).toBe(akColorN40);
   });
 
-  test('should have role="checkbox"', () => {
-    expect(wrapper.find(Item).prop('role')).toBe('checkbox');
+  // Cannot seem to mock window.navigator.userAgent in jest reliably. If/when possible, another
+  // test for non-VoiceOver browsers would expect role="checkbox"
+  test('should have role="menuitemcheckbox" on a browser that does not support VoiceOver', () => {
+    expect(wrapper.find(Item).prop('role')).toBe('menuitemcheckbox');
   });
 });

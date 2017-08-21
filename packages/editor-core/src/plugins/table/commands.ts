@@ -62,6 +62,7 @@ const goToNextCell = (direction: number): Command => {
     }
 
     const result = tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    // cancel text selection that is created by default
     const latestState = pluginState.view.state;
     dispatch(latestState.tr.setSelection(Selection.near(latestState.selection.$from)));
     return result;

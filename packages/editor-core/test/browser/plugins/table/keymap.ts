@@ -32,6 +32,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -47,6 +48,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -63,6 +65,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(32);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -77,6 +80,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
@@ -92,6 +96,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
@@ -108,6 +113,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(4);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });

@@ -16,6 +16,8 @@ import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
 
+const FREQUENTLY_USED_MAX = 16;
+
 export interface PickerRefHandler {
   (ref: any): any;
 }
@@ -180,6 +182,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
   private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
     const { query, searchEmojis } = this.state;
+
+    frequentEmoji = frequentEmoji.slice(0, FREQUENTLY_USED_MAX);
 
     // change the category of each of the featured emoji
     const recategorised = frequentEmoji.map((emoji) => {

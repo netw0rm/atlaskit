@@ -69,19 +69,19 @@ class AsciiEmojiMatcher {
    *       1st Alternative ^
    *         ^ asserts position at start of the string
    *       2nd Alternative [\s\ufffc]
-   *         Match a single character present in [\s\ufffc]
+   *         matches a single character present in [\s\ufffc]
    *     Non-capturing group (?:\(*?)
-   *       matches the character ( literally (case sensitive) between zero and unlimited times, as few times as possible, expanding as needed (lazy)
+   *       matches the character ( literally between zero and unlimited times, as few times as possible, expanding as needed (lazy)
    *   2nd Capturing Group (\(y\)|[^:\s\ufffc\(]\S{1,3}|:\S{1,3}( ))
    *     1st Alternative \(y\)
    *       matches the string (y) literally (case sensitive)
    *     2nd Alternative [^:\s\ufffc\(]\S{1,3}
    *       matches a single character not present in [^:\s\ufffc\(] between 1 and 3 times, as many times as possible, giving back as needed (greedy)
    *     3rd Alternative :\S{1,3}( )
-   *       : matches the character : literally (case sensitive)
+   *       : matches the character : literally
    *       \S{1,3} matches any non-whitespace character between 1 and 3 times, as many times as possible, giving back as needed (greedy)
    *       3rd Capturing Group ( )
-   *         matches the character [space] literally (case sensitive)
+   *         matches the character [space] literally
    *   $ asserts position at the end of the string
    *
    * See https://regex101.com/r/HRS9O2/2

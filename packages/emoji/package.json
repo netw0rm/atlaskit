@@ -30,10 +30,10 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^1.0.10",
     "@atlaskit/field-base": "^5.0.0",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/layer": "^2.5.0",
+    "@atlaskit/layer": "^2.5.1",
     "@atlaskit/spinner": "^2.0.0",
     "@atlaskit/tooltip": "^3.1.0",
     "@atlaskit/util-common": "^1.0.0",
@@ -43,7 +43,7 @@
     "classnames": "^2.2.5",
     "js-search": "^1.4.2",
     "lru-fast": "^0.2.2",
-    "mediapicker": "^5.0.4",
+    "mediapicker": "^7.0.1",
     "react-virtualized": "^9.8.0",
     "tslib": "^1.2.0",
     "typestyle": "^1.3.2",

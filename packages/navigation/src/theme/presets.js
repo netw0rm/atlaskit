@@ -65,20 +65,22 @@ export const dark: Provided = ((): Provided => {
       background: 'transparent',
     },
     hover: {
-      background: colors.DN50,
+      background: colors.DN40,
     },
     active: {
       // Currently there is no ramp for white opacity
-      background: colors.DN60,
+      background: colors.DN50,
     },
     selected: {
       background: colors.DN40,
       text: colors.B100,
     },
-    focus,
+    focus: {
+      outline: colors.B75,
+    },
     dragging: {
       // Similar to active colour - but without opacity
-      background: colors.DN60,
+      background: colors.DN50,
     },
   };
 

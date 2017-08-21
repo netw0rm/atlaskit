@@ -59,9 +59,14 @@ describe(`${name} - ItemGroup`, () => {
   });
 
   describe('accessibility', () => {
-    it('root element should always have role="group"', () => {
+    it('root element should have role="group" by default', () => {
       const wrapper = shallow(<ItemGroup />);
       expect(wrapper.prop('role')).toBe('group');
+    });
+
+    it('root element should apply role prop if supplied', () => {
+      const wrapper = shallow(<ItemGroup role="menu" />);
+      expect(wrapper.prop('role')).toBe('menu');
     });
 
     it('title should always have aria-hidden="true" because we use aria-label', () => {

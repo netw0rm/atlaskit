@@ -72,6 +72,7 @@ const withItemFocus = WrappedComponent => (
       return (
         <WrappedComponent
           onFocus={this.handleFocus}
+          role="menuitem"
           {...otherProps}
         >
           {children}

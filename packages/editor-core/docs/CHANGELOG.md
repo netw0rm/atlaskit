@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.18.5 (2017-08-21)
+
+* bug fix; bump layer to align with transitive dependencies ([e0041c3](https://bitbucket.org/atlassian/atlaskit/commits/e0041c3))
 ## 45.18.4 (2017-08-21)
 
 * bug fix; bump emoji to align the mediapicker transitive dependency ([1c0c37f](https://bitbucket.org/atlassian/atlaskit/commits/1c0c37f))

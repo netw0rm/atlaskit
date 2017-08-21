@@ -96,16 +96,19 @@ export default class MediaEmojiResource {
           }).catch(httpError => {
             reject(httpError.reason || httpError);
           });
-        }).on('upload-error', (errorResult: MediaUploadError) => {
+        });
+        mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
           reject(errorResult.error);
-        }).on('upload-status-update', (statusUpdate: MediaUploadStatusUpdate) => {
+        });
+        mpBinary.on('upload-status-update', (statusUpdate: MediaUploadStatusUpdate) => {
           debug('upload progress', statusUpdate.progress);
           if (progressCallback) {
             progressCallback({
               percent: statusUpdate.progress.portion * mediaProportionOfProgress,
             });
           }
-        }).upload(upload.dataURL, upload.filename);
+        });
+        mpBinary.upload(upload.dataURL, upload.filename);
       });
     });
   }

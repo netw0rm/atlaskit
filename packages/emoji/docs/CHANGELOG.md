@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 26.0.2 (2017-08-21)
+
+* bug fix; no longer chain calls to mediapicker (no longer supported). ([14b4e6c](https://bitbucket.org/atlassian/atlaskit/commits/14b4e6c))
+* bug fix; bump media picker and other dependencies to align with editor-core ([d3c9668](https://bitbucket.org/atlassian/atlaskit/commits/d3c9668))
+
 ## 26.0.1 (2017-08-14)
 
 * bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))

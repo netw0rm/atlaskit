@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 45.18.3 (2017-08-21)
+
+* bug fix; fix styles of hyperlink and and language picker floating toolbars. ([0dd88f0](https://bitbucket.org/atlassian/atlaskit/commits/0dd88f0))
+* bug fix; text without a prefixing www should be linkified. ([11fbfee](https://bitbucket.org/atlassian/atlaskit/commits/11fbfee))
 ## 45.18.2 (2017-08-21)
 
 * bug fix; fix broken storybooks for editor-core ([605689b](https://bitbucket.org/atlassian/atlaskit/commits/605689b))

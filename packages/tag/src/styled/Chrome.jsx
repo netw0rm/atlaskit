@@ -1,23 +1,16 @@
 import styled from 'styled-components';
 import {
-  akColorR50,
-  akColorR500,
-
   akGridSizeUnitless,
   akHelperMixins,
 } from '@atlaskit/util-shared-styles';
-
+import { colors } from '@atlaskit/theme';
 import { buttonWidthUnitless, borderRadius, tagHeight } from './constants';
-import theme from './theme';
-
-const getColor = ({ markedForRemoval, color }) => (
-  markedForRemoval ? akColorR500 : theme.tag[color].normal.text
-);
+import { backgroundColor, backgroundColorHover, textColor, textColorHover } from './theme';
 
 export default styled.span`
   ${akHelperMixins.focusRing.default};
-  background-color: ${({ markedForRemoval, color }) => (markedForRemoval ? akColorR50 : theme.tag[color].normal.background)};
-  color: ${getColor};
+  background-color: ${p => (p.markedForRemoval ? colors.R50 : backgroundColor(p))};
+  color: ${p => (p.markedForRemoval ? colors.R500 : textColor(p))};
   border-radius: ${({ isRounded }) => (isRounded ? `${buttonWidthUnitless / 2}px` : borderRadius)};
   cursor: default;
   display: flex;
@@ -26,10 +19,9 @@ export default styled.span`
   margin: ${akGridSizeUnitless / 2}px;
   padding: 0;
   overflow: ${({ isRemoved, isRemoving }) => ((isRemoved || isRemoving) ? 'hidden' : 'initial')};
-
   &:hover {
     ${akHelperMixins.focusRing.none};
-    background-color: ${({ markedForRemoval, color }) => (markedForRemoval ? akColorR50 : theme.tag[color].hover.background)};
-    color: ${({ color }) => theme.tag[color].hover.text};
+    background-color: ${p => (p.markedForRemoval ? colors.R50 : backgroundColorHover(p))};
+    color: ${textColorHover};
   }
 `;

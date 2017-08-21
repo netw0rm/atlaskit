@@ -1,5 +1,21 @@
 # @atlaskit/navigation
 
+## 20.0.2 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+## 20.0.1 (2017-08-19)
+
+* bug fix; global navigation items without href are now tabbable again (issues closed: ak-3333) ([e2e2781](https://bitbucket.org/atlassian/atlaskit/commits/e2e2781))
+## 20.0.0 (2017-08-18)
+
+* bug fix; fixed lint errors ([628f453](https://bitbucket.org/atlassian/atlaskit/commits/628f453))
+* bug fix; removing log command and moved some things to variables. ([0ec36f2](https://bitbucket.org/atlassian/atlaskit/commits/0ec36f2))
+* bug fix; refactored ContainerTitle and ContainerLogo components ([92f2930](https://bitbucket.org/atlassian/atlaskit/commits/92f2930))
+* bug fix; exporting keys so ContainerTitleDropdown can respond to nav state ([73109e7](https://bitbucket.org/atlassian/atlaskit/commits/73109e7))
+* bug fix; fixing offset for drawers ([4bf6cdf](https://bitbucket.org/atlassian/atlaskit/commits/4bf6cdf))
+
+* breaking; ContainerTitleDropdown rebuilt to use Item and Dropdown under the hood. No longer accepts a ([026ea83](https://bitbucket.org/atlassian/atlaskit/commits/026ea83))
+* breaking; refactor of Item and Navigation to support Project Switcher dropdown menus ([026ea83](https://bitbucket.org/atlassian/atlaskit/commits/026ea83))
 ## 19.0.5 (2017-08-18)
 
 * bug fix; fix navigation group title rendering action button twice (issues closed: ak-3219) ([b82bc4c](https://bitbucket.org/atlassian/atlaskit/commits/b82bc4c))

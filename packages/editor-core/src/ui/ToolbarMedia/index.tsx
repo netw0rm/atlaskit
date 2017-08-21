@@ -17,21 +17,24 @@ export interface State {
 
 export default class ToolbarMedia extends PureComponent<Props, State> {
   state: State = {disabled: false};
-  pluginState: MediaPluginState;
-
-  constructor(props) {
-    super(props);
-
-    const { editorView, pluginKey } = this.props;
-    this.pluginState = pluginKey.getState(editorView.state);
-  }
+  private pluginState?: MediaPluginState;
 
   componentDidMount() {
-    this.pluginState.subscribe(this.handlePluginStateChange);
+    this.setPluginState(this.props);
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    if (!this.pluginState) {
+      this.setPluginState(nextProps);
+    }
   }
 
   componentWillUnmount() {
-    this.pluginState.unsubscribe(this.handlePluginStateChange);
+    const { pluginState } = this;
+
+    if (pluginState) {
+      pluginState.unsubscribe(this.handlePluginStateChange);
+    }
   }
 
   render() {
@@ -48,6 +51,16 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
     );
   }
 
+  private setPluginState(props: Props) {
+    const { editorView, pluginKey } = props;
+    const pluginState = pluginKey.getState(editorView.state);
+
+    if (pluginState) {
+      this.pluginState = pluginState;
+      pluginState.subscribe(this.handlePluginStateChange);
+    }
+  }
+
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     this.setState({
       disabled: !pluginState.allowsUploads
@@ -56,7 +69,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.media.button')
   private handleClickMediaButton = () => {
-    this.pluginState.showMediaPicker();
+    this.pluginState!.showMediaPicker();
     return true;
   }
 }

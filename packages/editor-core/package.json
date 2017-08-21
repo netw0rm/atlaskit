@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.17.0",
+  "version": "45.18.5",
   "config": {
     "access": "public"
   },
@@ -52,9 +52,9 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^26.0.1",
+    "@atlaskit/emoji": "^26.0.2",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/layer": "^2.5.1",
+    "@atlaskit/layer": "^2.5.3",
     "@atlaskit/media-card": "^19.0.3",
     "@atlaskit/media-core": "^9.0.0",
     "@atlaskit/media-filmstrip": "^5.2.1",
@@ -70,8 +70,9 @@
     "codemirror": "^5.26.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
+    "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
-    "mediapicker": "^5.3.7",
+    "mediapicker": "^7.0.1",
     "orderedmap": "^1.0.0",
     "prosemirror-commands": "^0.22.0",
     "prosemirror-history": "^0.22.0",

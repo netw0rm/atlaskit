@@ -116,7 +116,7 @@ export default class StatelessSelect extends PureComponent {
   state = { }
 
   componentDidMount = () => {
-    if (this.props.isOpen) {
+    if (this.props.isOpen || this.props.shouldFocus) {
       this.focus();
     }
 

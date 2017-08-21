@@ -94,12 +94,6 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('@example ')));
     });
 
-    it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
-      insertText(editorView, 'Abc.example.com ', sel, sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example.com ')));
-    });
-
     it('should not convert invalid emails like to a mailto link (double dot)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'john.doe@example..com ', sel, sel);

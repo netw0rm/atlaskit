@@ -48,16 +48,12 @@ export default class GlobalPrimaryActions extends PureComponent {
         <GlobalPrimaryActionsItemsWrapper>
           {searchIcon ?
             <DrawerTrigger onActivate={onSearchActivate}>
-              <GlobalItem size="medium">
-                {searchIcon}
-              </GlobalItem>
+              {searchIcon}
             </DrawerTrigger>
           : null}
           {createIcon ?
             <DrawerTrigger onActivate={onCreateActivate}>
-              <GlobalItem size="medium">
-                {createIcon}
-              </GlobalItem>
+              {createIcon}
             </DrawerTrigger>
           : null}
         </GlobalPrimaryActionsItemsWrapper>

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 45.18.4 (2017-08-21)
+
+* bug fix; bump emoji to align the mediapicker transitive dependency ([1c0c37f](https://bitbucket.org/atlassian/atlaskit/commits/1c0c37f))
 ## 45.18.3 (2017-08-21)
 
 * bug fix; fix styles of hyperlink and and language picker floating toolbars. ([0dd88f0](https://bitbucket.org/atlassian/atlaskit/commits/0dd88f0))

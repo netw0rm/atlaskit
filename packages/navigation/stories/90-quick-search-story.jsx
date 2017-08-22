@@ -2,13 +2,14 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 
-import PersonResult from '../src/components/js/results/PersonResult';
-import RoomResult from '../src/components/js/results/RoomResult';
 import BasicNavigation from './components/BasicNavigation';
 import BasicQuickSearch from './components/BasicQuickSearch';
-import { AkNavigationItemGroup } from '../src';
+import { AkNavigationItemGroup, resultTypes } from '../src';
 import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
+import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
+
+const { PersonResult, RoomResult } = resultTypes;
 
 const withRootTheme = children => (
   <WithRootTheme provided={presets.container}>
@@ -20,17 +21,20 @@ const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${ident
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
 
 storiesOf(`${name}/QuickSearch`, module)
-  .add('Quick search', () => withRootTheme(
+  .add('Example implementation', () => withRootTheme(
     <BasicNavigation
       openDrawer="search"
       searchDrawerContent={<BasicQuickSearch />}
     />
   ))
-  .add('Quick search w/ 500ms latency', () => withRootTheme(
+  .add('Example with search latency', () => withRootTheme(
     <BasicNavigation
       openDrawer="search"
       searchDrawerContent={<BasicQuickSearch fakeNetworkLatency={500} />}
     />
+  ))
+  .add('Example with custom result types', () => withRootTheme(
+    CustomQuickSearchResults
   ))
   .add('Person Result', () => withRootTheme(
     <div>

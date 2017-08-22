@@ -4,9 +4,11 @@ import {
   AkNavigationItem,
   AkNavigationItemGroup,
   AkSearch,
-  PersonResult,
+  resultTypes,
 } from '../../src';
 import { mountWithRootTheme } from './_theme-util';
+
+const { PersonResult } = resultTypes;
 
 const noOp = () => {};
 

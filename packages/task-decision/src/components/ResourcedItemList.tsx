@@ -55,12 +55,16 @@ export interface Props {
    */
   useInfiniteScroll?: boolean;
   height?: number | string;
+
+  emptyComponent?: JSX.Element;
+  errorComponent?: JSX.Element;
 }
 
 export interface State {
   items?: Item[];
   nextQuery?: Query;
   loading: boolean;
+  error: boolean;
 }
 
 interface ItemsByDate {
@@ -84,6 +88,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
     super(props);
     this.state = {
       loading: true,
+      error: false,
     };
   }
 
@@ -142,6 +147,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
     const { taskDecisionProvider } = this.props;
     this.setState({
       loading: true,
+      error: false,
     });
     taskDecisionProvider.then(provider => {
       provider.getItems(query, recentUpdatesListener).then(result => {
@@ -168,6 +174,15 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
         if (onUpdate) {
           onUpdate(combinedItems, items);
         }
+      }).catch(err => {
+        if (!this.mounted) {
+          return;
+        }
+
+        this.setState({
+          loading: false,
+          error: true
+        });
       });
     });
   }
@@ -265,14 +280,14 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
   }
 
   render() {
-    const { height, useInfiniteScroll } = this.props;
-    const { items, loading } = this.state;
-
-    if (!items || !items.length) {
-      return null;
-    }
+    const { emptyComponent, errorComponent, height, useInfiniteScroll } = this.props;
+    const { error, items, loading } = this.state;
 
     let loadingSpinner;
+
+    if (error && errorComponent) {
+      return errorComponent || null;
+    }
 
     if (loading) {
       loadingSpinner = (
@@ -280,6 +295,8 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
           <Spinner appearance=""/>
         </LoadingWrapper>
       );
+    } else if (!items || !items.length) {
+      return emptyComponent || null;
     }
 
     if (height && useInfiniteScroll) {

@@ -12,8 +12,8 @@ const codeBlockPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 600, plugin: () => plugin },
-      { rank: 620, plugin: (schema) => keymap(schema) },
+      { rank: 700, plugin: () => plugin },
+      { rank: 720, plugin: (schema) => keymap(schema) },
     ];
   },
 

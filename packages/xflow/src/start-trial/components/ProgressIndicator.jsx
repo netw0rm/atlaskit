@@ -5,6 +5,7 @@ import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import { colors } from '@atlaskit/theme';
 
 import ProgressBarContainer from '../styled/ProgressBarContainer';
+import ProgressBarIconDiv from '../styled/ProgressBarIconDiv';
 import ProgressBar from '../../progress-bar/components/ProgressBar';
 
 import {
@@ -56,7 +57,9 @@ export default class ProgressIndicator extends Component {
           indeterminate={showIcon && status !== ACTIVE}
           onComplete={this.handleProgressComplete}
         />
-        {icon}
+        <ProgressBarIconDiv>
+          {icon}
+        </ProgressBarIconDiv>
       </ProgressBarContainer>
     );
   }

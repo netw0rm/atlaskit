@@ -9,7 +9,6 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import ErrorFlag from './ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
-import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
@@ -73,7 +72,7 @@ class LoadingTime extends Component {
   }
 
   showHeading = () => {
-    const { status, firePrivateAnalyticsEvent } = this.props;
+    const { status } = this.props;
     const { isReady } = this.state;
 
     if (isReady) {
@@ -85,7 +84,6 @@ class LoadingTime extends Component {
           />
         );
       }
-      firePrivateAnalyticsEvent('xflow.loading-product-trial.timed.out');
       return (
         <FormattedMessage
           id="xflow.generic.loading-product-trial.error-heading"
@@ -109,12 +107,15 @@ class LoadingTime extends Component {
     });
     if (status === ACTIVE) {
       firePrivateAnalyticsEvent('xflow.loading-product-trial.loading.finished');
+    } else {
+      firePrivateAnalyticsEvent('xflow.loading-product-trial.timed.out');
     }
   };
 
   handleCloseClick = async () => {
     const { firePrivateAnalyticsEvent, status, closeLoadingDialog, onComplete } = this.props;
-    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { status });
+    const convertStatusFromSymbolToString = String(status).slice(7, -1);
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { convertStatusFromSymbolToString });
     this.setState({
       showErrorFlag: false,
     });
@@ -130,6 +131,14 @@ class LoadingTime extends Component {
     });
     await goToProduct();
     onComplete();
+  };
+
+  handleErrorFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.error-flag.dismissed');
+    this.setState({
+      showErrorFlag: false,
+    });
   };
 
   render() {
@@ -186,7 +195,7 @@ class LoadingTime extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog id="xflow-loading-time">
+        <div id="xflow-loading-time">
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>
@@ -203,12 +212,12 @@ class LoadingTime extends Component {
               </WhereToFindConfluenceText>
             </WhereToFindConfluenceDiv>
           </LoadingTimeTextDiv>
-        </StartTrialDialog>
+        </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={showErrorFlag}
-          onDismissed={() => this.setState({ showErrorFlag: false })}
+          onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>
     );

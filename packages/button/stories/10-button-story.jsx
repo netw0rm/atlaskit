@@ -387,6 +387,8 @@ const Row = props => <div style={{ padding: 8 }} {...props} />;
 storiesOf(name, module)
   .add('standard states', buildStory({ appearance: 'default' }))
   .add('primary states', buildStory({ appearance: 'primary' }))
+  .add('warning states', buildStory({ appearance: 'warning' }))
+  .add('destruct states', buildStory({ appearance: 'destruct' }))
   .add('subtle states', buildStory({ appearance: 'subtle' }))
   .add('link states', buildStory({ appearance: 'link' }))
   .add('subtle-link states', buildStory({ appearance: 'subtle-link' }))

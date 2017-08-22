@@ -1,7 +1,7 @@
 import React from 'react';
 import Btn from '@atlaskit/button';
 
-const appearances = ['default', 'primary', 'link', 'subtle', 'subtle-link'];
+const appearances = ['default', 'primary', 'link', 'subtle', 'subtle-link', 'warning', 'destruct'];
 const selectableAppearances = ['default', 'primary'];
 
 const Table = props => <div style={{ display: 'table' }} {...props} />;

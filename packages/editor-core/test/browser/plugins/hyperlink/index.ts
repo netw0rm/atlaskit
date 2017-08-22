@@ -113,6 +113,16 @@ describe('hyperlink', () => {
       });
     });
 
+    context('when hitting backspace in a link', () => {
+      it('removes link mark when its not more valid link', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
+        sendKeyToPm(editorView, 'Backspace');
+        sendKeyToPm(editorView, 'Backspace');
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
+      });
+    });
+
     context('when select the whole hyperlink text from end to start', () => {
       it('returns link element', () => {
         const { editorView, pluginState, refs } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
@@ -251,6 +261,16 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
+    });
+
+    it('permits adding a link to an empty selection using the href and text', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      const href = 'http://www.atlassian.com';
+      const text = 'Atlassian';
+
+      pluginState.addLink({ href, text }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(text))));
     });
 
     it('should add http:// for a link without protocol', () => {

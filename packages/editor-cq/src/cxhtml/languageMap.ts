@@ -23,7 +23,7 @@ export const LANGUAGE_MAP = {
   'SQL': 'sql',
   'Sass': 'sass',
   'Scala': 'scala',
-  'VisualBasic': 'vb'
+  'VisualBasic': 'vb',
 };
 
 export const supportedLanguages = Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name]);

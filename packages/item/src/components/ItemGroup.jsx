@@ -21,6 +21,12 @@ export default class ItemGroup extends Component {
     elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     /** A function that returns the DOM ref created by the group */
     innerRef: PropTypes.func,
+    /** Accessibility role to be applied to the root component */
+    role: PropTypes.string,
+  }
+
+  static defaultProps = {
+    role: 'group',
   }
 
   state = { ariaLabel: this.props.title }
@@ -50,11 +56,11 @@ export default class ItemGroup extends Component {
   }
 
   render() {
-    const { children, elemAfter, isCompact, title, innerRef } = this.props;
+    const { children, elemAfter, isCompact, title, innerRef, role } = this.props;
     const { ariaLabel } = this.state;
 
     return (
-      <div aria-label={ariaLabel} role="group" ref={innerRef}>
+      <div aria-label={ariaLabel} role={role} ref={innerRef}>
         {
           title ? (
             <GroupTitle aria-hidden="true" isCompact={isCompact}>

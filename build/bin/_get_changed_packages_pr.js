@@ -39,11 +39,11 @@ function getChangedPackages() {
       changedPackages = changedPackages.filter(packageExists);
       const lernaGlob = changedPackagesToLernaGlob(changedPackages);
       if (lernaGlob.length !== 0) {
-        console.log(lernaGlob); // eslint-disable-line no-console
+        console.log(lernaGlob);
       }
     })
     .catch((err) => {
-      console.error(err); // eslint-disable-line no-console
+      console.error(err);
       process.exit(1);
     });
 }

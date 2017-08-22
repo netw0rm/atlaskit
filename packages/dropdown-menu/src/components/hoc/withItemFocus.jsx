@@ -1,6 +1,7 @@
 // @flow
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import uid from 'uid';
 
@@ -71,6 +72,7 @@ const withItemFocus = WrappedComponent => (
       return (
         <WrappedComponent
           onFocus={this.handleFocus}
+          role="menuitem"
           {...otherProps}
         >
           {children}

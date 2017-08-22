@@ -1,5 +1,15 @@
 # @atlaskit/media-card
 
+## 19.0.3 (2017-08-18)
+
+* bug fix; use LinkCard for horizonal smart cards (issues closed: msw-155) ([1d5070e](https://bitbucket.org/atlassian/atlaskit/commits/1d5070e))
+## 19.0.2 (2017-08-17)
+
+* bug fix; address code review comments ([eda0d46](https://bitbucket.org/atlassian/atlaskit/commits/eda0d46))
+* bug fix; make sure link card expands to parent container ([926abe4](https://bitbucket.org/atlassian/atlaskit/commits/926abe4))
+* bug fix; make sure the strings and numbers can be passed as width ([e8bf028](https://bitbucket.org/atlassian/atlaskit/commits/e8bf028))
+* bug fix; pass dimensions property to the root wrapping component to small cards expand to fit (issues closed: msw-146) ([341e47d](https://bitbucket.org/atlassian/atlaskit/commits/341e47d))
+* bug fix; fix compiler errors ([cb2bf50](https://bitbucket.org/atlassian/atlaskit/commits/cb2bf50))
 ## 19.0.1 (2017-08-15)
 
 * bug fix; fix sizing regression in small cards (issues closed: msw-146) ([d065ad8](https://bitbucket.org/atlassian/atlaskit/commits/d065ad8))

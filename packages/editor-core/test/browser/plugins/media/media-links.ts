@@ -5,6 +5,8 @@ import { DefaultMediaStateManager } from '@atlaskit/media-core';
 
 import {
   MediaPluginState,
+  AnalyticsHandler,
+  analyticsService
 } from '../../../../src';
 import {
   chaiPlugin,
@@ -309,6 +311,27 @@ describe('media-links', () => {
               p('hello'),
             ));
           });
+        });
+
+        it('triggers an analytics event', async () => {
+          const href = 'www.google.com';
+          const { editorView } = editor(doc(p(`${href} {<>}`)));
+          const spy = sinon.spy();
+          analyticsService.handler = (spy as AnalyticsHandler);
+
+          afterEach(() => {
+            analyticsService.handler = null;
+          });
+          await insertLinks(
+            editorView,
+            mediaStateManager,
+            () => {},
+            [{ href, pos: 1 }],
+            linkCreateContextMock,
+            testCollectionName
+          );
+
+          sinon.assert.alwaysCalledWithExactly(spy, 'atlassian.editor.media.link');
         });
       });
 

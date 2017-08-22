@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
-const BlockNode = styled.div`
+const InlineNode = styled.span`
   align-items: center;
   background: ${akColorN30};
   border: 1px dashed ${akColorN50};
@@ -33,7 +33,7 @@ const BlockNode = styled.div`
 export default class UnsupportedInlineNode extends PureComponent<{}, {}> {
   render() {
     return (
-      <BlockNode>Unsupported content</BlockNode>
+      <InlineNode>Unsupported content</InlineNode>
     );
   }
 }

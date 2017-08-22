@@ -12,7 +12,7 @@ export interface ContentRef {
 }
 
 export interface Props {
-  taskDecisionProvider: TaskDecisionProvider;
+  taskDecisionProvider: Promise<TaskDecisionProvider>;
   initialQuery: Query;
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Decision>;
@@ -57,24 +57,26 @@ export default class ResourcedDecisionList extends PureComponent<Props,State> {
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getDecisions(query).then(result => {
-      if (!this.mounted) {
-        return;
-      }
-      const { decisions, nextQuery } = result;
-      const combinedDecisions: Decision[] = [
-        ...this.state.decisions || [],
-        ...decisions,
-      ];
-      this.setState({
-        decisions: combinedDecisions,
-        nextQuery,
-        loading: false,
+    taskDecisionProvider.then(provider => {
+      provider.getDecisions(query).then(result => {
+        if (!this.mounted) {
+          return;
+        }
+        const { decisions, nextQuery } = result;
+        const combinedDecisions: Decision[] = [
+          ...this.state.decisions || [],
+          ...decisions,
+        ];
+        this.setState({
+          decisions: combinedDecisions,
+          nextQuery,
+          loading: false,
+        });
+        const { onUpdate } = this.props;
+        if (onUpdate) {
+          onUpdate(combinedDecisions, decisions);
+        }
       });
-      const { onUpdate } = this.props;
-      if (onUpdate) {
-        onUpdate(combinedDecisions, decisions);
-      }
     });
   }
 

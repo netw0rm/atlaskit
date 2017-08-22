@@ -1,5 +1,79 @@
 # @atlaskit/editor-core
 
+## 45.18.5 (2017-08-21)
+
+* bug fix; bump layer to align with transitive dependencies ([e0041c3](https://bitbucket.org/atlassian/atlaskit/commits/e0041c3))
+## 45.18.4 (2017-08-21)
+
+* bug fix; bump emoji to align the mediapicker transitive dependency ([1c0c37f](https://bitbucket.org/atlassian/atlaskit/commits/1c0c37f))
+## 45.18.3 (2017-08-21)
+
+* bug fix; fix styles of hyperlink and and language picker floating toolbars. ([0dd88f0](https://bitbucket.org/atlassian/atlaskit/commits/0dd88f0))
+* bug fix; text without a prefixing www should be linkified. ([11fbfee](https://bitbucket.org/atlassian/atlaskit/commits/11fbfee))
+## 45.18.2 (2017-08-21)
+
+* bug fix; fix broken storybooks for editor-core ([605689b](https://bitbucket.org/atlassian/atlaskit/commits/605689b))
+* bug fix; typo: componentWillUmount -> componentWillUnmount ([dfe28fd](https://bitbucket.org/atlassian/atlaskit/commits/dfe28fd))
+* bug fix; fix content jump in renderer (issues closed: ed-2298) ([c062a13](https://bitbucket.org/atlassian/atlaskit/commits/c062a13))
+## 45.18.1 (2017-08-18)
+
+* bug fix; import media components from plugins ([6a06355](https://bitbucket.org/atlassian/atlaskit/commits/6a06355))
+## 45.18.0 (2017-08-18)
+
+* feature; bumped mediapicker to the latest in editor-core ([ef771f8](https://bitbucket.org/atlassian/atlaskit/commits/ef771f8))
+## 45.17.0 (2017-08-18)
+
+* feature; latest task/decision support (issues closed: fs-1284) ([e7bb445](https://bitbucket.org/atlassian/atlaskit/commits/e7bb445))
+## 45.16.0 (2017-08-17)
+
+* feature; upgrade for latest task and decisions support. (issues closed: fs-1274) ([f12d384](https://bitbucket.org/atlassian/atlaskit/commits/f12d384))
+* bug fix; fix ChromeExpanded height/maxHeight behaviour ([9aa5219](https://bitbucket.org/atlassian/atlaskit/commits/9aa5219))
+
+
+
+
+* bug fix; render height style if props.height is set ([3d30885](https://bitbucket.org/atlassian/atlaskit/commits/3d30885))
+
+* feature; add height prop to ChromeExpanded to have a fixed-height editor ([a5e0238](https://bitbucket.org/atlassian/atlaskit/commits/a5e0238))
+## 45.15.0 (2017-08-17)
+
+
+
+* feature; show recently viewed in the insert link dialog. ([e11e348](https://bitbucket.org/atlassian/atlaskit/commits/e11e348))
+## 45.14.0 (2017-08-17)
+
+
+* feature; show recently viewed in the insert link dialog. ([e11e348](https://bitbucket.org/atlassian/atlaskit/commits/e11e348))
+## 45.13.1 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
+## 45.13.0 (2017-08-16)
+
+* bug fix; style fixes in panel toolbar. ([a51ffa6](https://bitbucket.org/atlassian/atlaskit/commits/a51ffa6))
+
+
+* feature; allowed block left, right, center for single image. ([b6f10f0](https://bitbucket.org/atlassian/atlaskit/commits/b6f10f0))
+* feature; allowed aligned right. ([dee2c5e](https://bitbucket.org/atlassian/atlaskit/commits/dee2c5e))
+* bug fix; fixed bug that cannot copy paste media group. ([bd03f9d](https://bitbucket.org/atlassian/atlaskit/commits/bd03f9d))
+* feature; clear left when image is align left. ([09481f6](https://bitbucket.org/atlassian/atlaskit/commits/09481f6))
+* feature; allowed single image displayed inline and aligned left ([6f1eec5](https://bitbucket.org/atlassian/atlaskit/commits/6f1eec5))
+* feature; added single image node. ([a3b00c4](https://bitbucket.org/atlassian/atlaskit/commits/a3b00c4))
+## 45.12.0 (2017-08-16)
+
+* feature; add EditorContext and WithEditorActions components (issues closed: ed-2443) ([b718487](https://bitbucket.org/atlassian/atlaskit/commits/b718487))
+## 45.11.2 (2017-08-15)
+
+* bug fix; fix cursor position when two code nodes separated by one non-code character ([7d165c3](https://bitbucket.org/atlassian/atlaskit/commits/7d165c3))
+* bug fix; added more tests for inline code, updated hascode util ([2d2c2e7](https://bitbucket.org/atlassian/atlaskit/commits/2d2c2e7))
+* bug fix; fixed cursor position inside code when code has only 1 character ([5f0a0d8](https://bitbucket.org/atlassian/atlaskit/commits/5f0a0d8))
+* bug fix; fix stuck issue in chrome when jumping with opt key ([5ec6138](https://bitbucket.org/atlassian/atlaskit/commits/5ec6138))
+* bug fix; refactored text-formatting commands ([5d51ccc](https://bitbucket.org/atlassian/atlaskit/commits/5d51ccc))
+* bug fix; cleanup ([eed92d6](https://bitbucket.org/atlassian/atlaskit/commits/eed92d6))
+* bug fix; fix cursor wrapper problem in Firefox ([3198ff8](https://bitbucket.org/atlassian/atlaskit/commits/3198ff8))
+* bug fix; cleanup ([d30ca4c](https://bitbucket.org/atlassian/atlaskit/commits/d30ca4c))
+* bug fix; removed unnecessary hack for text formatting ([760ef9e](https://bitbucket.org/atlassian/atlaskit/commits/760ef9e))
+
+* bug fix; fixed cursor position with inline code (issues closed: ed-2084) ([a495ae9](https://bitbucket.org/atlassian/atlaskit/commits/a495ae9))
 ## 45.11.1 (2017-08-15)
 
 * bug fix; fix ts/js build problem ([62855ff](https://bitbucket.org/atlassian/atlaskit/commits/62855ff))

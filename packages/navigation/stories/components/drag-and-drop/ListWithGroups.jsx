@@ -12,8 +12,6 @@ import { injectGlobal } from 'styled-components';
 import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';
 import Container from './Container';
-import type { Provided, StateSnapshot } from '../../../../drag-and-drop/src/view/draggable/draggable-types';
-import type { DropResult, DraggableLocation } from '../../../../drag-and-drop/src/types';
 
 const isDraggingClassName = 'is-dragging';
 
@@ -95,12 +93,12 @@ export default class ListWithGroups extends Component {
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result: DropResult) => {
+  onDragEnd = (result) => {
     // $ExpectError
     document.body.classList.remove(isDraggingClassName);
 
-    const source: DraggableLocation = result.source;
-    const destination: ?DraggableLocation = result.destination;
+    const source = result.source;
+    const destination = result.destination;
 
     // nothing to do here!
     if (destination == null) {
@@ -146,7 +144,7 @@ export default class ListWithGroups extends Component {
         draggableId={item.id}
         type={type}
       >
-        {(provided: Provided, snapshot: StateSnapshot) => (
+        {(provided, snapshot) => (
           <div>
             <AkNavigationItem
               {...baseNavItemProps}

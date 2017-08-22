@@ -25,7 +25,7 @@ const validateDoc = (doc, itemCount: number) => {
   });
 };
 
-describe('<DecisionList/>', () => {
+describe('<ResourcedDecisionList/>', () => {
   const defaultResponse = getDecisionsResponse();
   let provider;
   let renderer;
@@ -43,7 +43,7 @@ describe('<DecisionList/>', () => {
   it('should render generate document and pass to renderer', () => {
     provider.getDecisions.returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
     );
     return waitUntil(() => resourcedDecisionListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);
@@ -58,7 +58,7 @@ describe('<DecisionList/>', () => {
     provider.getDecisions.onFirstCall().returns(Promise.resolve(getDecisionsResponse(true)));
     provider.getDecisions.onSecondCall().returns(Promise.resolve(defaultResponse));
     const component = mount(
-      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+      <ResourcedDecisionList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
     );
     return waitUntil(() => resourcedDecisionListRendered(1)).then(() => {
       expect(renderer.callCount).toBe(1);

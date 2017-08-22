@@ -64,8 +64,10 @@ export class PanelState {
     const { dispatch, state } = view;
     let { tr } = state;
     let { $from, $to } = state.selection;
-    let newFrom = tr.doc.resolve($from.start($from.depth) - 2);
-    let newTo = tr.doc.resolve($to.end($to.depth) - 2);
+    const node = $from.node($from.depth);
+    const depthFactor = node.textContent ? 2 : 1;
+    let newFrom = tr.doc.resolve($from.start($from.depth) - depthFactor);
+    let newTo = tr.doc.resolve($to.end($to.depth) - depthFactor);
     let range = newFrom.blockRange(newTo)!;
     tr = tr.delete(range!.start, range!.end);
     dispatch(tr);

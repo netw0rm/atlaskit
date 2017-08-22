@@ -1,6 +1,13 @@
 # @atlaskit/field-base
 
-## Unreleased
+## 7.4.3 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+
+
+
+
+
 
 ## 7.4.2 (2017-07-27)
 

@@ -41,8 +41,8 @@ describe('util/date', () => {
 
   describe('isSameDate', () => {
     it('Same date with two different times are same', () => {
-      const d1 = new Date();
-      const d2 = moment(d1).set('hour', (d1.getHours() + 1 % 24)).toDate();
+      const d1 = moment(new Date()).set('hour', 12).toDate();
+      const d2 = moment(d1).set('hour', 13).toDate();
       expect(isSameDate(d1, d2)).toBe(true);
     });
 

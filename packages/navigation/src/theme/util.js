@@ -5,11 +5,12 @@ import { itemThemeNamespace } from '@atlaskit/item';
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, RootTheme } from '../theme/types';
 import { container } from './presets';
-import createItemTheme from './create-item-theme';
+import createItemTheme from './map-navigation-theme-to-item-theme';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
-const rootKey = prefix('root');
-const groupKey = prefix('group');
+export const rootKey = prefix('root');
+export const groupKey = prefix('group');
+export const isDropdownOverflowKey = prefix('isDropdownOverflow');
 
 export const getProvided = (map?: Object): Provided => {
   if (map !== undefined && hasOwnProperty(map, rootKey)) {
@@ -18,7 +19,10 @@ export const getProvided = (map?: Object): Provided => {
   return container;
 };
 export const isCollapsed = (map: Object): bool => map[rootKey].isCollapsed;
-export const isInOverflowDropdown = (map: Object): bool => map.isOverflowDropdown;
+
+export const isInOverflowDropdown = (map: Object): bool => (
+  hasOwnProperty(map, isDropdownOverflowKey)
+);
 
 export const isInCompactGroup = (map: Object): bool => {
   if (!hasOwnProperty(map, groupKey)) {

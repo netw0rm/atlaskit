@@ -60,7 +60,9 @@ describe(`${name} - DropdownItemRadio`, () => {
     expect(wrapper.find(RadioIcon).prop('secondaryColor')).toBe(akColorN40);
   });
 
-  test('should have role="radio"', () => {
-    expect(wrapper.find(Item).prop('role')).toBe('radio');
+  // Cannot seem to mock window.navigator.userAgent in jest reliably. If/when possible, another
+  // test for non-VoiceOver browsers would expect role="radio"
+  test('should have role="menuitemradio" on a browser that does not support VoiceOver', () => {
+    expect(wrapper.find(Item).prop('role')).toBe('menuitemradio');
   });
 });

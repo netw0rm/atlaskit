@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const spawn = require('child_process').spawn;
-/* eslint-disable no-console */
 const findReleaseDetails = require('./findReleaseDetails');
 const updateChangelog = require('./updateChangelog');
 

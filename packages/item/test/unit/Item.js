@@ -381,8 +381,8 @@ describe(`${name} - Item`, () => {
     });
 
     describe('role', () => {
-      it('root element should have role="presentation"', () => {
-        expect(rootElem.find('[role="presentation"]').length).toBe(1);
+      it('root element should have role="button"', () => {
+        expect(rootElem.find('[role="button"]').length).toBe(1);
       });
 
       it('should accept role as an optional prop', () => {
@@ -408,6 +408,10 @@ describe(`${name} - Item`, () => {
       const hasTabIndex = () => rootElem.find('[tabIndex=0]').length === 1;
       it('should be applied by default', () => {
         expect(hasTabIndex()).toBe(true);
+      });
+      it('should not be applied if props.href has a value', () => {
+        wrapper.setProps({ href: '#foo' });
+        expect(hasTabIndex()).toBe(false);
       });
       it('should not be applied if props.isDisabled = true', () => {
         wrapper.setProps({ isDisabled: true });

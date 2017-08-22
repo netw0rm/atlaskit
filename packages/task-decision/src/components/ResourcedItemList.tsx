@@ -1,24 +1,29 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 
+import { defaultSortCriteria } from '../constants';
 import { contentToDocument } from '../api/TaskDecisionUtils';
+import { loadLatestItems } from '../api/TaskDecisionLoader';
+import InfiniteScroll from './InfiniteScroll';
 import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
 
-import { isDateSortCriteria } from '../type-helpers';
+import { isDateSortCriteria, toRendererContext } from '../type-helpers';
 import { getFormattedDate, getStartOfDate, isSameDate } from '../util/date';
 
 import {
   Item,
   OnUpdate,
   Query,
+  RecentUpdateContext,
+  RecentUpdatesListener,
   RenderDocument,
   TaskDecisionProvider
 } from '../types';
+
 import {
   isDecision,
   isTask,
@@ -34,11 +39,22 @@ export interface ContentRef {
 }
 
 export interface Props {
-  taskDecisionProvider: TaskDecisionProvider;
+  taskDecisionProvider: Promise<TaskDecisionProvider>;
   initialQuery: Query;
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Item>;
   groupItems?: boolean;
+
+  /**
+   * Infinite scrolling is only enabled when height has also been specified.
+   *
+   * Note infinite scrolling will not work if the initial data set does not fill the container.
+   *
+   * It's recommend to set the limit to at least 100 in the initialQuery (this is the default) to
+   * workaround this limitation.
+   */
+  useInfiniteScroll?: boolean;
+  height?: number | string;
 }
 
 export interface State {
@@ -60,8 +76,9 @@ const LoadingWrapper = styled.div`
 `;
 
 
-export default class ResourcedList extends PureComponent<Props,State> {
+export default class ResourcedItemList extends PureComponent<Props,State> {
   private mounted: boolean;
+  private recentUpdatesId: string | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -71,46 +88,94 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   componentDidMount() {
-    const { initialQuery } = this.props;
     this.mounted = true;
-    this.performQuery(initialQuery);
+    this.performInitialQuery(this.props);
   }
 
   componentWillUnmount() {
     this.mounted = false;
+    this.unsubscribeRecentUpdates();
   }
 
-  private performQuery(query: Query) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.initialQuery !== nextProps.initialQuery || this.props.taskDecisionProvider !== nextProps.taskDecisionProvider) {
+      this.unsubscribeRecentUpdates();
+      this.performInitialQuery(nextProps);
+    }
+  }
+
+  private unsubscribeRecentUpdates() {
+    const { recentUpdatesId } = this;
+    if (recentUpdatesId) {
+      this.props.taskDecisionProvider.then(provider => {
+        provider.unsubscribeRecentUpdates(recentUpdatesId);
+      });
+    }
+    this.recentUpdatesId = undefined;
+  }
+
+  private loadLatest = (recentUpdateContext: RecentUpdateContext) => {
+    const { initialQuery, taskDecisionProvider } = this.props;
+    const { items } = this.state;
+    taskDecisionProvider.then(provider => {
+      loadLatestItems(initialQuery, items || [], provider, recentUpdateContext).then(latestItems => {
+        if (this.mounted) {
+          this.setState({
+            items: latestItems,
+          });
+        }
+      });
+    });
+  }
+
+  private performInitialQuery(props: Props) {
+    const { initialQuery } = props;
+    this.performQuery(initialQuery, true, {
+      id: id => {
+        this.recentUpdatesId = id;
+      },
+      recentUpdates: this.loadLatest
+    });
+  }
+
+  private performQuery(query: Query, replaceAll: boolean, recentUpdatesListener?: RecentUpdatesListener) {
     const { taskDecisionProvider } = this.props;
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getItems(query).then(result => {
-      if (!this.mounted) {
-        return;
-      }
-      const { items, nextQuery } = result;
-      const combinedItems: Item[] = [
-        ...this.state.items || [],
-        ...items,
-      ];
+    taskDecisionProvider.then(provider => {
+      provider.getItems(query, recentUpdatesListener).then(result => {
+        if (!this.mounted) {
+          return;
+        }
+        const { items, nextQuery } = result;
+        let combinedItems: Item[];
+        if (replaceAll) {
+          combinedItems = items;
+        } else {
+          combinedItems = [
+            ...this.state.items || [],
+            ...items,
+          ];
+        }
 
-      this.setState({
-        items: combinedItems,
-        nextQuery,
-        loading: false,
+        this.setState({
+          items: combinedItems,
+          nextQuery,
+          loading: false,
+        });
+        const { onUpdate } = this.props;
+        if (onUpdate) {
+          onUpdate(combinedItems, items);
+        }
       });
-      const { onUpdate } = this.props;
-      if (onUpdate) {
-        onUpdate(combinedItems, items);
-      }
     });
   }
 
   private loadMore = () => {
     const { nextQuery } = this.state;
     if (nextQuery) {
-      this.performQuery(nextQuery);
+      this.performQuery(nextQuery, false);
     }
   }
 
@@ -141,7 +206,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
           if (isDecision(item)) {
             return (
               <DecisionItem key={objectKeyToString(objectKey)}>
-                {renderDocument(contentToDocument(item.content))}
+                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
               </DecisionItem>
             );
           }
@@ -155,7 +220,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
                 objectAri={objectKey.objectAri}
                 containerAri={objectKey.containerAri}
               >
-                {renderDocument(contentToDocument(item.content))}
+                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
               </ResourcedTaskItem>
             );
           }
@@ -181,7 +246,7 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   private groupItemsByDate(items: Item[]): ItemsByDate[] {
-    const groupByField = this.props.initialQuery.sortCriteria || 'creationDate';
+    const groupByField = this.props.initialQuery.sortCriteria || defaultSortCriteria;
     let lastDate;
     return items.reduce<ItemsByDate[]>((groups, item) => {
       const currentDate = getStartOfDate(item[groupByField]);
@@ -200,13 +265,13 @@ export default class ResourcedList extends PureComponent<Props,State> {
   }
 
   render() {
-    const { items, loading, nextQuery } = this.state;
+    const { height, useInfiniteScroll } = this.props;
+    const { items, loading } = this.state;
 
     if (!items || !items.length) {
       return null;
     }
 
-    let moreOption;
     let loadingSpinner;
 
     if (loading) {
@@ -215,16 +280,23 @@ export default class ResourcedList extends PureComponent<Props,State> {
           <Spinner appearance=""/>
         </LoadingWrapper>
       );
-    } else if (nextQuery) {
-      moreOption = (
-        <div><Button appearance="link" onClick={this.loadMore}>More...</Button></div>
+    }
+
+    if (height && useInfiniteScroll) {
+      return (
+        <InfiniteScroll
+          height={height}
+          onThresholdReached={this.loadMore}
+        >
+          {this.renderItems()}
+          {loadingSpinner}
+        </InfiniteScroll>
       );
     }
 
     return (
       <div>
         {this.renderItems()}
-        {moreOption}
         {loadingSpinner}
       </div>
     );

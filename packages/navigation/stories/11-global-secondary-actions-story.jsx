@@ -10,6 +10,7 @@ import { name } from '../package.json';
 import { AkGlobalItem, presetThemes } from '../src/';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
+import ToggleBannerPage from './components/withBannerAndTopOffset';
 import emmaAvatar from './emma.png';
 
 storiesOf(name, module)
@@ -53,4 +54,7 @@ storiesOf(name, module)
         ]}
       />
     </HtmlPage>
+  ))
+  .add('with a banner at the top of the page', () => (
+    <ToggleBannerPage />
   ));

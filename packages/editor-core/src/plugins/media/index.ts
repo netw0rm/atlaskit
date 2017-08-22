@@ -1,3 +1,4 @@
+import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
 
 import {
@@ -8,7 +9,7 @@ import {
   MediaStateManager,
   UploadParams,
   ContextConfig,
-  ContextFactory,
+  ContextFactory
 } from '@atlaskit/media-core';
 
 import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
@@ -29,11 +30,12 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
-import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
+import { Alignment, Display } from './single-image';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -60,8 +62,9 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-
   private popupPicker?: PickerFacade;
+  private clipboardPicker?: PickerFacade;
+  private dropzonePicker?: PickerFacade;
   private linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
@@ -320,6 +323,15 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   }
 
+  align = (alignment: Alignment, display: Display = 'block'): boolean => {
+    if (!this.isMediaNodeSelection()) {
+      return false;
+    }
+    const { selection: { from }, schema, tr } = this.view.state;
+    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment, display }));
+    return true;
+  }
+
   destroy() {
     if (this.destroyed) {
       return;
@@ -392,10 +404,15 @@ export class MediaPluginState {
     if (!pickers.length) {
       pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
       pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
-      pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
-      pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
       pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+
+      this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
     }
 
     // set new upload params for the pickers
@@ -535,6 +552,10 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       nodeViews: {
         mediaGroup: nodeViewFactory(options.providerFactory, {
           mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+        singleImage: nodeViewFactory(options.providerFactory, {
+          singleImage: ReactSingleImageNode,
           media: ReactMediaNode,
         }, true),
       },

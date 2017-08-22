@@ -323,6 +323,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         this.setState({
           uploadErrorMessage: 'Upload failed.',
         });
+        console.error('Unable to upload emoji', err);
       });
     }
   }

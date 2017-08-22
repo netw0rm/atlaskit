@@ -9,7 +9,6 @@ import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import {
   findTraversalPath,
-  ensureBlocks,
   getNodeName,
   addMarks,
   getAcName,
@@ -23,8 +22,17 @@ import {
   marksFromStyle,
   getContent,
 } from './utils';
+import {
+  blockquoteContentWrapper,
+  listContentWrapper,
+  listItemContentWrapper,
+  ensureInline,
+  docContentWrapper,
+} from './content-wrapper';
 
-const convertedNodes = new WeakMap();
+const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
+// This reverted mapping is used to map Unsupported Node back to it's original cxhtml
+const convertedNodesReverted = new WeakMap<Fragment | PMNode, Node>();
 
 export default function(cxhtml: string) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
@@ -39,8 +47,9 @@ function parseDomNode(dom: Element): PMNode {
     const node = nodes[i];
     const content = getContent(node, convertedNodes);
     const candidate = converter(content, node);
-    if (typeof candidate !== 'undefined') {
+    if (typeof candidate !== 'undefined' && candidate !== null) {
       convertedNodes.set(node, candidate);
+      convertedNodesReverted.set(candidate, node);
     }
   }
 
@@ -50,7 +59,7 @@ function parseDomNode(dom: Element): PMNode {
     // we attempt to wrap in a paragraph.
     ? schema.nodes.doc.validContent(content)
       ? content
-      : ensureBlocks(content)
+      : docContentWrapper(content, convertedNodesReverted)
     // The document must have at least one block element.
     : schema.nodes.paragraph.createChecked({});
 
@@ -64,8 +73,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
     return text ? schema.text(text) : null;
   }
 
-  // All unsupported content is wrapped in an `unsupportedInline` node. Converting
-  // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
+  // All unsupported content is wrapped in an `unsupportedInline` node. Wrapping
+  // `unsupportedInline` inside `paragraph` where appropriate is handled when
   // the content is inserted into a parent.
   const unsupportedInline = schema.nodes.confluenceUnsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
@@ -99,7 +108,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.blockquote.createChecked({},
           schema.nodes.blockquote.validContent(content)
             ? content
-            : ensureBlocks(content)
+            : blockquoteContentWrapper(content, convertedNodesReverted)
         );
       case 'SPAN':
         return addMarks(content, marksFromStyle((node as HTMLSpanElement).style));
@@ -110,21 +119,33 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'H5':
       case 'H6':
         const level = Number(tag.charAt(1));
-        return schema.nodes.heading.createChecked({ level }, content);
+        return schema.nodes.heading.createChecked({ level },
+          schema.nodes.heading.validContent(content)
+            ? content
+            : ensureInline(content, convertedNodesReverted)
+        );
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
       case 'HR':
         return schema.nodes.rule.createChecked();
       case 'UL':
-        return schema.nodes.bulletList.createChecked({}, content);
-      case 'OL':
-        return schema.nodes.orderedList.createChecked({}, content);
-      case 'LI':
-        return schema.nodes.listItem.createChecked({},
-          schema.nodes.listItem.validContent(content)
+        return schema.nodes.bulletList.createChecked({},
+          schema.nodes.bulletList.validContent(content)
             ? content
-            : ensureBlocks(content)
+            : listContentWrapper(content, convertedNodesReverted)
         );
+      case 'OL':
+        return schema.nodes.orderedList.createChecked({},
+          schema.nodes.orderedList.validContent(content)
+            ? content
+            : listContentWrapper(content, convertedNodesReverted)
+        );
+      case 'LI':
+          return schema.nodes.listItem.createChecked({},
+            schema.nodes.listItem.validContent(content)
+              ? content
+              : listItemContentWrapper(content, convertedNodesReverted)
+          );
       case 'P':
         let output: Fragment = Fragment.from([]);
         let textNodes: PMNode[] = [];
@@ -162,7 +183,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
         // combine remaining text nodes
         if (textNodes.length) {
-          const paragraph = schema.nodes.paragraph.createChecked({}, textNodes);
+          const paragraph = schema.nodes.paragraph.createChecked({}, ensureInline(Fragment.fromArray(textNodes), convertedNodesReverted));
           output = output.addToEnd(paragraph);
         }
 

@@ -107,6 +107,11 @@ type Props = {|
   onCreateDrawerOpen?: () => void,
   /** Function called when the globalSearchIcon is clicked. */
   onSearchDrawerOpen?: () => void,
+  /** The offset at the top of the page before the navigation begins. This allows
+  absolute items such as a banner to be placed above nav, without lower nav items
+  being pushed off the screen. **DO NOT** use this outside of this use-case. Changes
+  are animated. The string is any valid css height value */
+  topOffset?: number,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
   width?: number,
@@ -140,6 +145,7 @@ export default class Navigation extends PureComponent {
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
     width: globalOpenWidth + containerOpenWidth,
+    topOffset: 0,
   };
 
   constructor(props: Props, context: mixed) {
@@ -205,22 +211,23 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerTheme,
       containerHeaderComponent,
+      containerTheme,
       drawers,
-      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
+      globalTheme,
       isCollapsible,
-      isResizeable,
       isOpen,
+      isResizeable,
       linkComponent,
       onCreateDrawerOpen,
       onResizeStart,
       onSearchDrawerOpen,
+      topOffset,
     } = this.props;
 
     const {
@@ -289,7 +296,7 @@ export default class Navigation extends PureComponent {
           shouldAnimate={shouldAnimateContainer}
           width={renderedWidth}
         >
-          <NavigationFixedContainer>
+          <NavigationFixedContainer topOffset={topOffset} >
             {globalNavigation}
             <NavigationContainerNavigationWrapper
               horizontalOffset={containerOffsetX}

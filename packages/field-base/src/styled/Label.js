@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless as spacing, akColorR300 } from '@atlaskit/util-shared-styles';
 import theme from './theme';
 
 const fontSize = 12;
@@ -39,5 +39,6 @@ export const LabelInner = styled.div`
 `;
 
 export const RequiredIndicator = styled.span`
+  color: ${akColorR300};
   padding-left: 2px;
 `;

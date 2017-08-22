@@ -34,7 +34,7 @@ describe('<AkCollapseOverflow />', () => {
       expect(instance.childHeights).toEqual([30, 20, 40, 50]);
     });
   });
-  describe('calculateMaxChildToRender', () => {
+  describe('calculateIndexOfLastVisibleChild', () => {
     let instance;
 
     beforeEach(() => {
@@ -54,23 +54,23 @@ describe('<AkCollapseOverflow />', () => {
     });
 
     it('should include all children if availableHeight is zero', () => {
-      instance.calculateMaxChildToRender();
-      expect(instance.state.maxChildToRender).toBe(6);
+      instance.calculateIndexOfLastVisibleChild();
+      expect(instance.state.indexOfLastVisibleChild).toBe(6);
     });
     it('should include all children if not all children heights have been detected', () => {
       instance.childHeights = [10, 10, 10];
-      instance.calculateMaxChildToRender();
-      expect(instance.state.maxChildToRender).toBe(6);
+      instance.calculateIndexOfLastVisibleChild();
+      expect(instance.state.indexOfLastVisibleChild).toBe(6);
     });
     it('should include as many children that will fit in availableHeight', () => {
       instance.availableHeight = 45;
-      instance.calculateMaxChildToRender();
-      expect(instance.state.maxChildToRender).toBe(3);
+      instance.calculateIndexOfLastVisibleChild();
+      expect(instance.state.indexOfLastVisibleChild).toBe(3);
     });
     it('should include all children if they will all fit', () => {
       instance.availableHeight = 70;
-      instance.calculateMaxChildToRender();
-      expect(instance.state.maxChildToRender).toBe(6);
+      instance.calculateIndexOfLastVisibleChild();
+      expect(instance.state.indexOfLastVisibleChild).toBe(6);
     });
   });
 
@@ -90,13 +90,13 @@ describe('<AkCollapseOverflow />', () => {
     });
 
     it('should be true if there are more children than can fit', () => {
-      instance.calculateMaxChildToRender();
+      instance.calculateIndexOfLastVisibleChild();
       expect(instance.needsDropdown()).toBe(true);
     });
 
     it('should be false if all children can fit', () => {
       instance.availableHeight = 40;
-      instance.calculateMaxChildToRender();
+      instance.calculateIndexOfLastVisibleChild();
       expect(instance.needsDropdown()).toBe(false);
     });
   });
@@ -133,9 +133,6 @@ describe('<AkCollapseOverflow />', () => {
           </NavigationOverflowHandler>
         );
         const detectors = wrapper.find('HeightDetector');
-
-        expect(detectors.at(0).prop('shouldMeasureImmediately')).toBe(undefined);
-        expect(detectors.at(1).prop('shouldMeasureImmediately')).toBe(true);
 
         expect(detectors.at(0).prop('shouldDetectResize')).toBe(true);
         expect(detectors.at(1).prop('shouldDetectResize')).toBe(undefined);

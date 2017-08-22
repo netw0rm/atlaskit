@@ -19,8 +19,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
   state: State = { disabled: false };
   private pluginState?: MentionsState;
 
-  constructor(props: Props) {
-    super(props);
+  componentWillMount() {
     this.setPluginState(this.props);
   }
 

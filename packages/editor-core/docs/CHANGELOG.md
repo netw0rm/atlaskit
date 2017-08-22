@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 46.1.1 (2017-08-22)
+
+* bug fix; multiple react warnings for UI components when pluginState is changed before compone (issues closed: ed-2535) ([1f77a58](https://bitbucket.org/atlassian/atlaskit/commits/1f77a58))
+## 46.1.0 (2017-08-22)
+
+* bug fix; ensure getValidNode does not mutate the original node. (issues closed: fs-1295) ([0df91e2](https://bitbucket.org/atlassian/atlaskit/commits/0df91e2))
+
+* feature; emoticons now auto-convert after an opening rounded bracket (issues closed: fs-1247) ([3d8e28c](https://bitbucket.org/atlassian/atlaskit/commits/3d8e28c))
+* feature; emoji and mention typeaheads now trigger after a round bracket (issues closed: fs-1247) ([91496d0](https://bitbucket.org/atlassian/atlaskit/commits/91496d0))
+* bug fix; style fixes in panel floating toolbar. ([a85aaad](https://bitbucket.org/atlassian/atlaskit/commits/a85aaad))
 ## 46.0.0 (2017-08-22)
 
 * feature; bump media packages ([f7f6704](https://bitbucket.org/atlassian/atlaskit/commits/f7f6704))

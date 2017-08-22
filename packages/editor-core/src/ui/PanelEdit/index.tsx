@@ -5,10 +5,11 @@ import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { ToolbarButton, Seperator, FloatingToolbar } from './styles';
+import { TrashToolbarButton, Separator, FloatingToolbar } from './styles';
 
 const icons = {
   info: InfoIcon,
@@ -46,7 +47,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
   render() {
     const { target, activePanelType, toolbarVisible } = this.state;
     if (toolbarVisible) {
-      return (
+        return (
         <FloatingToolbar
           target={target}
           offset={[0, 3]}
@@ -63,8 +64,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
               />
             );
           })}
-          <Seperator />
-          <ToolbarButton
+          <Separator />
+          <TrashToolbarButton
             onClick={this.handleRemovePanel}
             iconBefore={<RemoveIcon label="Remove panel type" />}
           />

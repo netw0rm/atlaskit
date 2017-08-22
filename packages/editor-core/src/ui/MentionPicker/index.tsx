@@ -28,8 +28,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private pluginState?: MentionsState;
   private picker?: AkMentionPicker;
 
-  constructor(props: Props) {
-    super(props);
+  componentWillMount() {
     this.setPluginState(this.props);
   }
 

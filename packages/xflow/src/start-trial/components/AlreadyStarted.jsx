@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import SpinnerDiv from '../styled/SpinnerDiv';
-import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -121,12 +120,12 @@ class AlreadyStarted extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog id="xflow-already-started">
+        <div id="xflow-already-started">
           <StartTrialHeader>
             {heading}
           </StartTrialHeader>
           {message}
-        </StartTrialDialog>
+        </div>
       </ModalDialog>
     );
   }

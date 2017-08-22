@@ -5,12 +5,66 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import ListIcon from '@atlaskit/icon/glyph/list';
 import SignInIcon from '@atlaskit/icon/glyph/sign-in';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
+import AkAppSwitcher from '@atlaskit/app-switcher';
 import { name } from '../package.json';
 import { AkGlobalItem, presetThemes } from '../src/';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import emmaAvatar from './emma.png';
+import nucleus from './nucleus.png';
+
+const appswitcherProps = {
+  recentContainers: [
+    {
+      name: 'Recent container',
+      url: 'https://instance.atlassian.net/view/container',
+      iconUrl: nucleus,
+      type: 'confluence-space',
+    },
+  ],
+  linkedApplications: {
+    configureLink: 'https://www.atlassian.com',
+    apps: [
+      {
+        name: 'JIRA',
+        url: 'https://instance.atlassian.net/',
+        product: 'jira',
+      },
+      {
+        name: 'Confluence',
+        url: 'https://instance.atlassian.net/wiki',
+        product: 'confluence',
+      },
+    ],
+    error: false,
+  },
+  isAnonymousUser: false,
+  suggestedApplication: {
+    show: true,
+    application: 'confluence',
+    url: 'https://www.atlassian.com/confluence',
+  },
+  i18n: {
+    home: 'Home',
+    apps: 'Apps',
+    configure: 'Configure',
+    recent: 'Recent',
+    'try.other.apps': 'Try Other Atlassian Apps',
+    'don\'t.show.this.again': 'Don’t show this again',
+    'container.confluence-space': 'Space',
+    'container.jira-project': 'Project',
+    'suggested.application.description.confluence': 'Collaboration and content sharing',
+    'suggested.application.description.jira': 'Issue & project tracking software',
+    'applinks.error': 'Unable to load linked applications.',
+  },
+  isDropdownOpenInitially: true,
+  trigger: () => <MenuIcon label="App Switcher" />,
+  dropdownOptions: {
+    position: 'right bottom',
+  },
+};
 
 storiesOf(name, module)
   .add('with no secondary actions', () => (
@@ -50,6 +104,26 @@ storiesOf(name, module)
               <SignInIcon label="Sign in" size="medium" />
             </AkGlobalItem>
           </Tooltip>,
+        ]}
+      />
+    </HtmlPage>
+  ))
+  .add('with app-switcher', () => (
+    <HtmlPage>
+      <BasicNavigation
+        globalSecondaryActions={[
+          <AkGlobalItem>
+            <SettingsIcon label="Settings" secondaryColor="inherit" />
+          </AkGlobalItem>,
+          <AkGlobalItem>
+            <AkAppSwitcher {...appswitcherProps} />
+          </AkGlobalItem>,
+          <AkGlobalItem>
+            <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
+          </AkGlobalItem>,
+          <AkGlobalItem>
+            <AkAvatar size="small" src={emmaAvatar} />
+          </AkGlobalItem>,
         ]}
       />
     </HtmlPage>

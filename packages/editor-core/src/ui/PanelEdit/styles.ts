@@ -1,26 +1,28 @@
-import { akColorN10, akColorN400 } from '@atlaskit/util-shared-styles';
+import { akColorN10, akColorN30, akColorR400 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { ComponentClass } from 'react';
 import ToolbarButtonDefault from '../ToolbarButton';
 import FloatingToolbarDefault from '../FloatingToolbar';
 
 // tslint:disable-next-line:variable-name
-export const FloatingToolbar: any = styled(FloatingToolbarDefault)`
+export const FloatingToolbar: ComponentClass<any> = styled(FloatingToolbarDefault)`
   background-color: ${akColorN10};
   padding: 4px 8px;
+  height: 24px;
 `;
 
 // tslint:disable-next-line:variable-name
-export const ToolbarButton: any = styled(ToolbarButtonDefault)`
-  > span {
-    padding: 6px;
+export const TrashToolbarButton: ComponentClass<any> = styled(ToolbarButtonDefault)`
+  &:hover {
+    color: ${akColorR400};
   }
 `;
 
 // tslint:disable-next-line:variable-name
-export const Seperator = styled.span`
-  background: ${akColorN400};
+export const Separator = styled.span`
+  background: ${akColorN30};
   width: 1px;
   height: 24px;
   display: inline-block;
-  margin: 0 4px;
+  margin: 0 8px;
 `;

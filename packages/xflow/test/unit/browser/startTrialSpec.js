@@ -111,10 +111,7 @@ describe('@atlaskit/xflow', () => {
       await waitUntil(() => xflow.find(GrantAccess).length === 1);
 
       const grantAccess = xflow.find(GrantAccess);
-      clickOnText(grantAccess, 'Change...');
-
-      const grantAccessChooseOption = getXFlowProviderConfig().startTrial.grantAccessChooseOption;
-      expect(grantAccess.text()).toMatch(grantAccessChooseOption);
+      clickOnText(grantAccess, 'Manage');
 
       const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(
         i => i.value === 'everyone'

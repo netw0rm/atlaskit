@@ -67,10 +67,6 @@ const messages = defineMessages({
     id: 'xflow.j2c.start-trial.grant-access.option.specific-users',
     defaultMessage: 'Specific users',
   },
-  grantAccessChooseOption: {
-    id: 'xflow.j2c.start-trial.grant-access.choose-option',
-    defaultMessage: 'Choose an option',
-  },
   // grantAccessSelectLabel: {
   //   id: 'xflow.j2c.start-trial.grant-access.select-label',
   //   defaultMessage: ' ',
@@ -169,7 +165,6 @@ export const defaultProps = intl => ({
 
       grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
       grantAccessDefaultAccess: intl.formatMessage(messages.grantAccessDefaultAccess),
-      grantAccessChooseOption: intl.formatMessage(messages.grantAccessChooseOption),
       // grantAccessSelectLabel: intl.formatMessage(messages.grantAccessSelectLabel),
       grantAccessUserSelectPlaceholder: intl.formatMessage(
         messages.grantAccessUserSelectPlaceholder

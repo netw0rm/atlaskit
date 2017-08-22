@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 46.0.0 (2017-08-22)
+
+* feature; bump media packages ([f7f6704](https://bitbucket.org/atlassian/atlaskit/commits/f7f6704))
+* breaking; bumped media-core from v18 to v19 ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
+* breaking; bump media packages ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
 ## 45.18.5 (2017-08-21)
 
 * bug fix; bump layer to align with transitive dependencies ([e0041c3](https://bitbucket.org/atlassian/atlaskit/commits/e0041c3))

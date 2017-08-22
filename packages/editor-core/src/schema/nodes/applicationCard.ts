@@ -36,27 +36,46 @@ export interface Attributes {
   };
   title: {
     text: string;
+    user?: {
+      icon: Icon;
+    };
+    lozenge?: AppCardLozenge;
   };
   description?: {
+    title?: string;
     text: string;
   };
   details?: Array<Detail>;
+  context?: {
+    text: string;
+    icon?: Icon;
+  };
+  actions?: Array<AppCardAction>;
+}
+
+export interface AppCardAction {
+  title: string;
+}
+
+export interface AppCardLozenge {
+  text: string;
+  bold?: boolean;
+  appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
+}
+
+export interface AppCardBadge {
+  value: number;
+  max?: number;
+  theme?: 'default' | 'dark';
+  appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
 }
 
 export interface Detail {
   title?: string;
   text?: string;
   icon?: Icon;
-  badge?: {
-    value: number;
-    max?: number;
-    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
-  };
-  lozenge?: {
-    text: string,
-    bold?: boolean;
-    appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
-  };
+  badge?: AppCardBadge;
+  lozenge?: AppCardLozenge;
   users?: Array<User>;
 }
 

@@ -61,6 +61,7 @@ import {
 
 import { JSONSerializer } from '@atlaskit/editor-core/dist/es5/renderer';
 import { MentionProvider } from '@atlaskit/mention';
+import { ActivityProvider } from '@atlaskit/activity';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Spinner from '@atlaskit/spinner';
@@ -117,6 +118,7 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
   mediaProvider?: Promise<MediaProvider>;
+  activityProvider?: Promise<ActivityProvider>;
   uploadErrorHandler?: (state: MediaState) => void;
   errorReporter?: ErrorReportingHandler;
   popupsBoundariesElement?: HTMLElement;
@@ -322,7 +324,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView, isExpanded, isMediaReady } = this.state;
     const {
       isDisabled = false,
-      mentionProvider, mediaProvider,
+      mentionProvider, mediaProvider, activityProvider,
       popupsBoundariesElement, popupsMountPoint,
       renderFooter,
       onSave, onCancel
@@ -354,6 +356,7 @@ export default class Editor extends PureComponent<Props, State> {
           editorView={editorView!}
           isExpanded={isExpanded}
           mentionProvider={mentionProvider}
+          activityProvider={activityProvider}
           onCollapsedChromeFocus={this.expand}
           placeholder={this.props.placeholder}
           pluginStateBlockType={blockTypeState}

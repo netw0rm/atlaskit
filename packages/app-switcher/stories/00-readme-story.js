@@ -92,7 +92,7 @@ const linkedApplicationsPropDescriptions = [
       {
         name: 'product',
         type: 'String',
-        description: 'A product identifier for the suggested application, for analytics.',
+        description: 'A product identifier for the suggested application. Used in an analytics event. e.g. "jira", "confluence", "bitbucket", etc',
       },
       {
         name: 'onClick',

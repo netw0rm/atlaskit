@@ -61,7 +61,7 @@ const data = {
    "suggested": [
     "name": "Bitbucket",
     "product": "bitbucket",
-    "toClick": () => {},
+    "onClick": () => {},
    ],
  },
  "i18n": {

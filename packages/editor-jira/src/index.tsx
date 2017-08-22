@@ -26,7 +26,6 @@ import {
   listsStateKey,
   tablePlugins,
   tableStateKey,
-  pastePlugins,
   EditorState,
   EditorView,
   Schema,
@@ -437,7 +436,6 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc: this.transformer.parse(this.props.defaultValue || ''),
         plugins: [
-          ...pastePlugins(schema),
           ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
           ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
           ...clearFormattingPlugins(schema as Schema<any, any>),

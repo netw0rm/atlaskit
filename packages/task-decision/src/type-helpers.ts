@@ -8,6 +8,7 @@ import {
   ServiceTask,
   SortCriteria,
   Task,
+  TaskState,
 } from './types';
 
 export const isDecision = (item: Item): item is Decision => !!(item && item.type === 'DECISION');
@@ -39,3 +40,5 @@ export const objectKeyToString = (objectKey: ObjectKey) => {
   const { containerAri, objectAri, localId } = objectKey;
   return `${containerAri}:${objectAri}:${localId}`;
 };
+
+export const toggleTaskState = (state: TaskState): TaskState => state === 'DONE' ? 'TODO' : 'DONE';

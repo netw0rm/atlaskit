@@ -46,6 +46,29 @@ describe('<ResourcedTaskItem/>', () => {
     });
   });
 
+  it('should update on subscription callback to updates', () => {
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-1"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        taskDecisionProvider={Promise.resolve(provider)}
+        isDone={false}
+      >
+        Hello World
+      </ResourcedTaskItem>
+    );
+    return waitUntil(() => provider.subscribe.mock.calls.length).then(() => {
+      expect(provider.subscribe).toBeCalled();
+      expect(component.state('isDone')).toBe(false);
+      const subscribeCallback = provider.subscribe.mock.calls[0][1];
+      subscribeCallback('DONE');
+      return waitUntil(() => component.state('isDone'));
+    }).then(() => {
+      expect(component.state('isDone')).toBe(true);
+    });
+  });
+
   it('should call "toggleTask" when toggled', () => {
     component = mount(
       <ResourcedTaskItem

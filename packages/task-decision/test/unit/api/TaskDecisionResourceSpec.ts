@@ -16,7 +16,9 @@ import TaskDecisionResource, { ItemStateManager } from '../../../src/api/TaskDec
 
 import {
   BaseItem,
+  ObjectKey,
   Query,
+  ServiceTask,
   TaskState,
 } from '../../../src/types';
 
@@ -353,6 +355,138 @@ describe('TaskDecisionResource', () => {
 
   });
 
+  describe('toggleTask', () => {
+    const key1 = {
+      localId: '1',
+      containerAri: 'c1',
+      objectAri: 'o1',
+    };
+    const key2 = {
+      localId: '2',
+      containerAri: 'c1',
+      objectAri: 'o2',
+    };
+
+    const serviceTask = (key: ObjectKey, state?: TaskState) : ServiceTask => ({
+      ...key,
+      creationDate: new Date().toISOString(),
+      creatorId: 'c1',
+      lastUpdateDate: new Date().toISOString(),
+      parentLocalId: '123',
+      participants: [],
+      position: 1,
+      rawContent: '[]',
+      state: state || 'TODO',
+      type: 'TASK',
+    });
+
+    let resource: TaskDecisionResource;
+    beforeEach(() => {
+      resource = new TaskDecisionResource({ url });
+    });
+
+    afterEach(() => {
+      fetchMock.restore();
+      resource.destroy();
+    });
+
+    it('optimistic update', () => {
+      fetchMock.mock({
+        matcher: 'end:tasks',
+        method: 'PUT',
+        name: 'set-task',
+        response: serviceTask(key1, 'DONE'),
+      }).mock({
+        matcher: 'end:tasks/state',
+        response: [serviceTask(key1)],
+      });
+
+      let latestState;
+      const handler = (state) => { latestState = state; };
+      resource.subscribe(key1, handler);
+      return waitUntil(() => latestState === 'TODO').then(() => {
+        resource.toggleTask(key1, 'DONE');
+        return waitUntil(() => latestState === 'DONE');
+      }).then(() => {
+        expect(latestState).toBe('DONE');
+        return waitUntil(() => fetchMock.called('set-task'));
+      }).then(() => {
+        expect(latestState).toBe('DONE');
+      });
+    });
+
+    it('optimistic update - with error', () => {
+      fetchMock.mock({
+        matcher: 'end:tasks',
+        method: 'PUT',
+        response: 400,
+        name: 'set-task',
+      }).mock({
+        matcher: 'end:tasks/state',
+        response: [serviceTask(key1, 'TODO')],
+      });
+
+      let latestState;
+      const handler = (state) => { latestState = state; };
+      resource.subscribe(key1, handler);
+      return waitUntil(() => latestState === 'TODO').then(() => {
+        resource.toggleTask(key1, 'DONE');
+        return waitUntil(() => latestState === 'DONE');
+      }).then(() => {
+        expect(latestState).toBe('DONE');
+        // failure will reset state
+        return waitUntil(() => fetchMock.called('set-task'));
+      }).then(() => {
+        expect(latestState).toBe('TODO');
+      });
+    });
+
+    it('two at same time update', () => {
+      fetchMock.mock({
+        matcher: 'end:tasks',
+        method: 'PUT',
+        name: 'set-task',
+        response: (req) => {
+          const body = JSON.parse(req._bodyInit);
+          const { localId } = body;
+
+          if (localId === '1') {
+            return serviceTask(key1, 'DONE');
+          }
+
+          if (localId === '2') {
+            return serviceTask(key2, 'TODO');
+          }
+
+          return 500;
+        },
+      }).mock({
+        matcher: 'end:tasks/state',
+        response: [serviceTask(key1), serviceTask(key2, 'DONE')],
+      });
+
+      let latestState1;
+      let latestState2;
+      const handler1 = (state) => { latestState1 = state; };
+      const handler2 = (state) => { latestState2 = state; };
+      resource.subscribe(key1, handler1);
+      resource.subscribe(key2, handler2);
+      return waitUntil(() => latestState1 === 'TODO' && latestState2 === 'DONE').then(() => {
+        resource.toggleTask(key1, 'DONE');
+        resource.toggleTask(key2, 'TODO');
+        return waitUntil(() => latestState1 === 'DONE' && latestState2 === 'TODO');
+      }).then(() => {
+        expect(latestState1).toBe('DONE');
+        expect(latestState2).toBe('TODO');
+        // Wait for calls to service...
+        return waitUntil(() => fetchMock.calls('set-task').length === 2);
+      }).then(() => {
+        expect(latestState1).toBe('DONE');
+        expect(latestState2).toBe('TODO');
+      });
+    });
+  });
+
   describe('recent updates', () => {
     describe('items', () => {
       afterEach(() => {
@@ -388,7 +522,6 @@ describe('TaskDecisionResource', () => {
         }).mock({
           matcher: `begin:${url}tasks/state`,
           response: stateUpdateResponse,
-          times: 1,
         });
 
         const idMock = jest.fn();

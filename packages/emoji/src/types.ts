@@ -168,8 +168,8 @@ export const enum SearchSort {
   None,
   // a sort taking into account a number of factors including, usage, closeness of match to the query, etc
   Default,
-  // sort such that the most frequently used emoji come first
-  UsageFrequencyOnly,
+  // sort such that the most frequently used emoji come first, and then standard, service defined ordering is preserved.
+  UsageFrequency,
 }
 
 export interface SearchOptions {

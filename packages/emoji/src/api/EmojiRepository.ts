@@ -287,7 +287,7 @@ export default class EmojiRepository {
     let comparator;
     if (options.sort === SearchSort.Default) {
       comparator = createSearchEmojiComparator(query, this.usageTracker.getOrder());
-    } else if (options.sort === SearchSort.UsageFrequencyOnly) {
+    } else if (options.sort === SearchSort.UsageFrequency) {
       comparator = createUsageOnlyEmojiComparator(this.usageTracker.getOrder());
     }
 

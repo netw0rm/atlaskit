@@ -149,7 +149,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
       options.sort = SearchSort.Default;
     } else {
       // if empty query (i.e. typeahead triggered only) then only sort by usage
-      options.sort = SearchSort.UsageFrequencyOnly;
+      options.sort = SearchSort.UsageFrequency;
     }
 
     emojiProvider.filter(query, options);

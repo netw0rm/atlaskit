@@ -17,3 +17,4 @@ export { default as listsPlugin } from './lists';
 export { default as textColorPlugin } from './text-color';
 export { default as tablesPlugin } from './tables';
 export { default as insertBlockPlugin } from './insert-block';
+export { default as collabEditPlugin } from './collab-edit';

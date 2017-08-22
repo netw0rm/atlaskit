@@ -4,6 +4,8 @@ import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 
+import { CollabEditProvider } from '../plugins/collab-edit';
+
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
@@ -35,6 +37,7 @@ export interface EditorProps {
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+  collabEditProvider?: Promise<CollabEditProvider>;
 
   maxContentSize?: number;
   placeholder?: string;

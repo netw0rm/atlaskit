@@ -88,10 +88,11 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   private handleProviders(props: EditorProps) {
-    const { emojiProvider, mentionProvider, mediaProvider } = props;
+    const { emojiProvider, mentionProvider, mediaProvider, collabEditProvider } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
   }
 
   render() {

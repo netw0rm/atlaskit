@@ -5,14 +5,19 @@ import PropTypes from 'prop-types';
 import { Gateway, GatewayRegistry } from '../../gateway';
 import { WIDTH_ENUM } from '../shared-variables';
 
-import { Dialog as StyledDialog, Overlay as StyledOverlay } from '../styled/Modal';
+import {
+  DialogPositioner as StyledDialogPositioner,
+  Dialog,
+  FillScreen as StyledFillScreen,
+  Overlay,
+} from '../styled/Modal';
 import { Fade, SlideUp } from './Animation';
 import Content from './Content';
 import Portal from './Portal';
 
 // Rename animation imports for easier parsing of the render method
-const Dialog = props => <SlideUp component={StyledDialog} {...props} />;
-const Overlay = props => <Fade component={StyledOverlay} {...props} />;
+const DialogPositioner = props => <SlideUp component={StyledDialogPositioner} {...props} />;
+const FillScreen = props => <Fade component={StyledFillScreen} {...props} />;
 
 function getInitialState() {
   return {
@@ -25,12 +30,10 @@ function getInitialState() {
 export default class Modal extends Component {
   static propTypes = {
     /** Buttons to render in the footer */
-    actions: PropTypes.arrayOf([
-      PropTypes.shape({
-        onClick: PropTypes.function,
-        text: PropTypes.string,
-      }),
-    ]),
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      onClick: PropTypes.function,
+      text: PropTypes.string,
+    })),
     /** Appearance of the modal */
     appearance: PropTypes.oneOf(['error', 'warning']),
     /**
@@ -105,26 +108,15 @@ export default class Modal extends Component {
     width: WIDTH_ENUM.defaultValue,
   }
   static contextTypes = {
-    appId: PropTypes.string.isRequired,
     gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),
   }
 
   state = getInitialState();
 
-  componentDidMount() {
-    this._isMounted = true;
-
-    const hideEl = document.getElementById(this.context.appId);
-    if (hideEl) hideEl.setAttribute('aria-hidden', true);
-  }
-  componentWillUnmount() {
-    this._isMounted = false;
-    const hideEl = document.getElementById(this.context.appId);
-
-    if (hideEl) hideEl.removeAttribute('aria-hidden');
-  }
   getDialogNode = (dialogNode) => {
-    this.setState(state => !state.dialogNode && ({ dialogNode }));
+    if (dialogNode) {
+      this.setState(state => !state.dialogNode && ({ dialogNode }));
+    }
   }
 
   handleOverlayClick = () => {
@@ -155,40 +147,45 @@ export default class Modal extends Component {
 
     return (
       <GatewayOrPortal into="modal">
-        <Overlay
-          aria-hidden={isBackground}
-          onClick={this.handleOverlayClick}
-          in={isOpen}
-        >
-          <Dialog
-            autoFocus={autoFocus}
-            height={height}
+        <FillScreen in={isOpen}>
+          <Overlay
+            key="overlay"
+            aria-hidden={isBackground}
+            onClick={this.handleOverlayClick}
+          />
+          <DialogPositioner
             in={isOpen}
-            innerRef={this.getDialogNode}
-            isBackground={isBackground}
-            onClick={this.handleDialogClick}
-            onEnterComplete={onOpenComplete}
-            role="dialog"
-            stackIndex={stackIndex}
-            style={dialogStyle}
-            tabIndex="-1"
+            height={height}
             width={namedWidth}
+            onClick={this.handleOverlayClick}
           >
-            <Content
-              actions={actions}
-              appearance={appearance}
-              dialogNode={dialogNode}
-              footer={footer}
-              title={title}
-              header={header}
-              onClose={shouldCloseOnEscapePress && onDialogDismissed}
-              onStackChange={onStackChange}
+            <Dialog
+              autoFocus={autoFocus}
+              innerRef={this.getDialogNode}
+              isBackground={isBackground}
+              onClick={this.handleDialogClick}
+              onEnterComplete={onOpenComplete}
+              role="dialog"
               stackIndex={stackIndex}
+              style={dialogStyle}
+              tabIndex="-1"
             >
-              {children}
-            </Content>
-          </Dialog>
-        </Overlay>
+              <Content
+                actions={actions}
+                appearance={appearance}
+                dialogNode={dialogNode}
+                footer={footer}
+                title={title}
+                header={header}
+                onClose={shouldCloseOnEscapePress && onDialogDismissed}
+                onStackChange={onStackChange}
+                stackIndex={stackIndex}
+              >
+                {children}
+              </Content>
+            </Dialog>
+          </DialogPositioner>
+        </FillScreen>
       </GatewayOrPortal>
     );
   }

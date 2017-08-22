@@ -2,12 +2,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import ModalDialog from '../../src';
-
-import ModalWrapper from '../../src/styled/ModalWrapper';
-import ModalPositioner from '../../src/styled/ModalPositioner';
-import HeaderFooterWrapper from '../../src/styled/HeaderFooterWrapper';
-import KeylineMask from '../../src/styled/KeylineMask';
-import ModalContainer, { getHeight } from '../../src/styled/ModalContainer';
+import { KeylineMask, Header } from '../../src/styled/Content';
+import { FillScreen, DialogPositioner, Dialog, dialogHeight } from '../../src/styled/Modal';
 
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
@@ -19,46 +15,46 @@ describe('ak-modal-dialog', () => {
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        expect(shallow(<ModalDialog />).find(ModalPositioner).length).toBe(0);
+        expect(shallow(<ModalDialog />).find(DialogPositioner).length).toBe(0);
       });
       it('should be visible when open = true', () => {
-        expect(shallow(<ModalDialog isOpen />).find(ModalPositioner).length).toBe(1);
+        expect(shallow(<ModalDialog isOpen />).find(DialogPositioner).length).toBe(1);
       });
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = mount(<ModalDialog isOpen />);
-        expect(wrapper.find(ModalPositioner).length).toBe(1);
+        expect(wrapper.find(DialogPositioner).length).toBe(1);
         wrapper.setProps({ isOpen: false });
         // need to simulate onAnimationEnd it doesn't seem to fire after setProps
-        wrapper.find(ModalPositioner).simulate('animationEnd');
-        expect(wrapper.find(ModalPositioner).length).toBe(0);
+        wrapper.find(DialogPositioner).simulate('animationEnd');
+        expect(wrapper.find(DialogPositioner).length).toBe(0);
       });
     });
 
     describe('height', () => {
-      it('should be passed to ModalContainer', () => {
+      it('should be passed to Dialog', () => {
         expect(
-          shallow(<ModalDialog height="42%" isOpen />).find(ModalContainer).prop('height')
+          shallow(<ModalDialog height="42%" isOpen />).find(Dialog).prop('height')
         ).toBe('42%');
       });
 
       it('should return px if number', () => {
-        expect(getHeight({ height: 42 })).toBe('42px');
+        expect(dialogHeight({ height: 42 })).toBe('42px');
       });
 
       it('should return raw value if string', () => {
-        expect(getHeight({ height: '42%' })).toBe('42%');
-        expect(getHeight({ height: '42em' })).toBe('42em');
-        expect(getHeight({ height: 'initial' })).toBe('initial');
+        expect(dialogHeight({ height: '42%' })).toBe('42%');
+        expect(dialogHeight({ height: '42em' })).toBe('42em');
+        expect(dialogHeight({ height: 'initial' })).toBe('initial');
       });
 
       it('should return "auto" if not supplied', () => {
-        expect(getHeight({})).toBe('auto');
+        expect(dialogHeight({})).toBe('auto');
       });
     });
 
     describe('width', () => {
       const allowedWidths = ['small', 'medium', 'large', 'x-large'];
-      const hasWidth = (wrapper, expectedWidth) => wrapper.find(ModalPositioner).prop('width') === expectedWidth;
+      const hasWidth = (wrapper, expectedWidth) => wrapper.find(DialogPositioner).prop('width') === expectedWidth;
 
       it('should be "medium" by default', () => {
         expect(hasWidth(shallow(<ModalDialog isOpen />), 'medium')).toBe(true);
@@ -70,7 +66,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="300px"
           />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: '300px' });
+        ).find(DialogPositioner).prop('style')).toEqual({ width: '300px' });
       });
 
       it('should support a custom pixel width as string (percent)', () => {
@@ -79,7 +75,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="75%"
           />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: '75%' });
+        ).find(DialogPositioner).prop('style')).toEqual({ width: '75%' });
       });
 
       it('should support a custom integer width', () => {
@@ -88,7 +84,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width={300}
           />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: 300 });
+        ).find(DialogPositioner).prop('style')).toEqual({ width: 300 });
       });
 
       allowedWidths.forEach((width) => {
@@ -107,7 +103,7 @@ describe('ak-modal-dialog', () => {
     describe('header', () => {
       it('should render when set', () => {
         const wrapper = mount(<ModalDialog header={<span>My header</span>} isOpen />);
-        expect(wrapper.find(HeaderFooterWrapper).contains(<span>My header</span>)).toBe(true);
+        expect(wrapper.find(Header).contains(<span>My header</span>)).toBe(true);
       });
     });
 
@@ -131,14 +127,14 @@ describe('ak-modal-dialog', () => {
       it('should trigger when blanket clicked', () => {
         const spy = jest.fn();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(ModalWrapper).children().first().simulate('click');
+        wrapper.find(FillScreen).children().first().simulate('click');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = jest.fn();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(ModalPositioner).simulate('click');
+        wrapper.find(DialogPositioner).simulate('click');
         expect(spy).toHaveBeenCalledTimes(1);
       });
 
@@ -162,7 +158,7 @@ describe('ak-modal-dialog', () => {
       wrapper.setProps({ header: 'Header' });
       const keyline = wrapper.find(KeylineMask);
       expect(keyline.length).toBe(1);
-      expect(keyline.prop('headerOrFooter')).toBe('header');
+      expect(keyline.prop('position')).toBe('header');
     });
 
     it('should enable footer keyline only when footer provided', () => {
@@ -171,7 +167,7 @@ describe('ak-modal-dialog', () => {
       wrapper.setProps({ footer: 'Header' });
       const keyline = wrapper.find(KeylineMask);
       expect(keyline.length).toBe(1);
-      expect(keyline.prop('headerOrFooter')).toBe('footer');
+      expect(keyline.prop('position')).toBe('footer');
     });
   });
 });

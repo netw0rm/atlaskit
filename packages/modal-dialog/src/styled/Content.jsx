@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import { colors, gridSize, math } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
+import { colors, gridSize, math, themed } from '@atlaskit/theme';
 import { modalShadowInnerSize } from '../shared-variables';
+import { dialogBgColor } from './Modal';
 
 // Wrapper
 export const Wrapper = styled.div`
@@ -9,15 +10,20 @@ export const Wrapper = styled.div`
 `;
 
 // Header/Footer
+const gutterInterior = math.multiply(gridSize, 2);
+const gutterExterior = math.multiply(gridSize, 2.5);
 const HeaderOrFooter = styled.div`
   align-items: center;
   display: flex;
   flex: 0 0 auto;
   justify-content: space-between;
-  padding: ${math.multiply(gridSize, 2)}px;
 `;
-export const Header = HeaderOrFooter;
-export const Footer = HeaderOrFooter;
+export const Header = styled(HeaderOrFooter)`
+  padding: ${gutterExterior}px ${gutterExterior}px ${gutterInterior}px;
+`;
+export const Footer = styled(HeaderOrFooter)`
+  padding: ${gutterInterior}px ${gutterExterior}px ${gutterExterior}px;
+`;
 
 export const Title = styled.h4`
   align-items: center;
@@ -40,16 +46,16 @@ export const TitleIcon = styled.span`
 
 // Keyline mask for the header/footer
 const keylinePosition = (props) => {
-  const { headerOrFooter } = props;
-  if (headerOrFooter === 'header') {
+  const { position } = props;
+  if (position === 'header') {
     return `
       left: 0;
       position: absolute;
       right: 0;
       top: 0;
     `;
-  } else if (headerOrFooter === 'footer') {
-    return `margin: 0 -${math.multiply(gridSize, 2)(props)}px;`;
+  } else if (position === 'footer') {
+    return `margin: 0 -${gutterInterior(props)}px;`;
   }
 
   return null;
@@ -57,24 +63,23 @@ const keylinePosition = (props) => {
 
 export const KeylineMask = styled.div`
   ${keylinePosition}
-  background: ${colors.background};
-  display: block;
-  height: ${modalShadowInnerSize}px;
+  border-top: ${modalShadowInnerSize}px solid ${dialogBgColor};
 `;
 
 // Body
 
-const shadow = (invert) => (
-  `inset 0 ${modalShadowInnerSize * (invert ? -1 : 1)}px 0 0 ${colors.N30}`
-);
+const keylineColor = themed({ light: colors.N30, dark: colors.DN30 });
 
 const bodyShadow = ({ hasHeader, hasFooter }) => {
   if (hasHeader && hasFooter) {
-    return `${shadow()}, ${shadow(true)}`;
+    return css`
+      inset 0 ${modalShadowInnerSize}px 0 0 ${keylineColor},
+      inset 0 -${modalShadowInnerSize}px 0 0 ${keylineColor}
+      `;
   } else if (hasHeader) {
-    return shadow();
+    return css`inset 0 ${modalShadowInnerSize}px 0 0 ${keylineColor}`;
   } else if (hasFooter) {
-    return shadow(true);
+    return css`inset 0 -${modalShadowInnerSize}px 0 0 ${keylineColor}`;
   }
 
   return 'none';
@@ -84,15 +89,20 @@ const bodyShadow = ({ hasHeader, hasFooter }) => {
 
 export const Body = styled.div`
   box-shadow: ${bodyShadow};
-  flex: 0 1 auto;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
   overflow-y: auto;
-  padding: 0 ${math.multiply(gridSize, 2)}px;
+  padding: 0 ${gutterExterior}px;
   position: relative;
+`;
+export const BodyInner = styled.div`
+  flex: 1 0 auto;
 `;
 
 // Focus management
 
-export const TabLoopTerminal = styled.span`
+export const TabTerminal = styled.span`
   background: 0;
   border: 0;
   clip-path: inset(1px);
@@ -107,4 +117,4 @@ export const TabLoopTerminal = styled.span`
   width: 1px;
 `;
 
-TabLoopTerminal.defaultProps = { tabIndex: 0 };
+TabTerminal.defaultProps = { tabIndex: 0 };

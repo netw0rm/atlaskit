@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Lorem from 'react-lorem-component';
+import Button from '@atlaskit/button';
 import Modal from '@atlaskit/modal-dialog';
 
 export default class ExampleSingleModal extends Component {
@@ -18,28 +20,24 @@ export default class ExampleSingleModal extends Component {
       <div style={{ padding: '1em' }}>
         <h1>Without a LayerManager</h1>
         <p>
-          <button onClick={this.openModal}>
+          Mounted in a portal, that&apos;s injected before close of body.
+        </p>
+        <p>
+          <Button onClick={this.openModal}>
             Open modal
-          </button>
+          </Button>
         </p>
 
         <Modal
           isOpen={modalIsOpen}
           onDialogDismissed={this.closeModal}
-          key="modal"
-          header={<h2>Modal Title</h2>}
-          footer={(
-            <div>
-              <button onClick={this.closeModal} autoFocus>
-                Close modal
-              </button>
-              <button>
-                button two
-              </button>
-            </div>
-            )}
+          title="Modal Title"
+          actions={[
+            { text: 'Close Modal', onClick: this.closeModal },
+            { text: 'No Action', onClick: () => {} },
+          ]}
         >
-          <p>Modal Body</p>
+          <Lorem count={1} />
         </Modal>
       </div>
     );

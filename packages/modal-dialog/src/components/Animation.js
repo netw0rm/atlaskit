@@ -1,12 +1,7 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import Transition from 'react-transition-group/Transition';
-import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // eslint-disable-line import/no-extraneous-dependencies
-
-type ChildrenType = PropType<Array<Element<any>> | Element<any>, any>;
-type ComponentType = PropType<Component<{}, {}, {}>, any>;
-// type ElementType = PropType<Element<mixed>, any>;
-// type FunctionType = (...args: Array<any>) => mixed;
+import { ChildrenType, ComponentType } from '../types';
 
 const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)';
@@ -31,6 +26,17 @@ const DefaultProps = {
 };
 
 // BASE
+// ==============================
+
+/**
+  To achieve a "lazy mount" and clean up our component after unmounting,
+  the following props must be set to true:
+  - appear
+  - mountOnEnter
+  - unmountOnExit
+
+  Read more https://reactcommunity.org/react-transition-group/#Transition-prop-mountOnEnter
+*/
 
 function Animation({
   component: Tag,
@@ -42,10 +48,11 @@ function Animation({
   ...props
 }: Props) {
   const transitionProps = {
-    onEntered,
+    appear: true,
     in: hasEntered,
     mountOnEnter: true,
-    timeout: duration,
+    onEntered,
+    timeout: { enter: 0, exit: duration },
     unmountOnExit: true,
   };
 
@@ -66,37 +73,37 @@ function Animation({
 Animation.defaultProps = DefaultProps;
 
 // FADE
+// ==============================
 
-export function Fade(props) {
-  return (
-    <Animation
-      styleDefault={{
-        transition: `opacity ${duration}ms ${easing}`,
-        opacity: 0,
-      }}
-      transition={{
-        entering: { opacity: 1 },
-        entered: { opacity: 1 },
-      }}
-      {...props}
-    />
-  );
-}
+export const Fade = props => (
+  <Animation
+    styleDefault={{
+      opacity: 0,
+      transition: `opacity ${duration}ms`,
+    }}
+    transition={{
+      entered: { opacity: 1 },
+    }}
+    {...props}
+  />
+);
 
 // SLIDE UP
+// ==============================
 
-export function SlideUp(props) {
-  return (
-    <Animation
-      styleDefault={{
-        transition: `transform ${duration}ms ${easing}`,
-        transform: `translate3d(0, ${verticalOffset}px, 0)`,
-      }}
-      transition={{
-        entering: { transform: 'translate3d(0, 0, 0)' },
-        entered: { transform: 'translate3d(0, 0, 0)' },
-      }}
-      {...props}
-    />
-  );
-}
+export const SlideUp = props => (
+  <Animation
+    styleDefault={{
+      opacity: 0,
+      transition: `transform ${duration}ms ${easing}, opacity ${duration}ms ${easing}`,
+      transform: `translate3d(0, ${verticalOffset}px, 0)`,
+    }}
+    transition={{
+      entered: {
+        opacity: 1,
+        transform: 'translate3d(0, 0, 0)',
+      },
+    }}
+    {...props}
+  />
+);

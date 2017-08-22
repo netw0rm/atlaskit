@@ -6,14 +6,16 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
+import { ChildrenType, ElementType, FunctionType } from '../types';
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
 import {
   Body,
+  BodyInner,
   Footer as StyledFooter,
   Header as StyledHeader,
   KeylineMask,
-  TabLoopTerminal,
+  TabTerminal,
   Title,
   TitleIcon,
   Wrapper,
@@ -30,7 +32,7 @@ const icon = {
   error: ErrorIcon,
   warning: WarningIcon,
 };
-const Icon = ({ appearance }) => {
+const Icon = ({ appearance }: { appearance: 'error' | 'warning' }) => {
   if (!appearance) return null;
 
   const IconType = icon[appearance];
@@ -42,78 +44,88 @@ const Icon = ({ appearance }) => {
   );
 };
 
-const Shim = props => <span {...props} />;
+const JustifyShim = props => <span {...props} />;
+type Props = {
+  /** Buttons to render in the footer */
+  actions?: Array<{
+    onClick?: FunctionType,
+    text?: string,
+  }>,
+  /** Appearance of the primary button. Also adds an icon to the title, if provided. */
+  appearance?: 'danger' | 'warning',
+  /**
+    Boolean OR Function indicating which element to focus when the component mounts
+    TRUE will automatically find the first "tabbable" element within the modal
+    Providing a function should return the element you want to focus
+  */
+  autoFocus?: boolean | FunctionType,
+  /** Content of the modal */
+  children?: ChildrenType,
+  /** HTMLElement representing the dialog, used for focus scope bounds */
+  dialogNode: ElementType,
+  /** Component to render in the header of the modal. */
+  header?: FunctionType,
+  /** Component to render in the footer of the moda.l */
+  footer?: FunctionType,
+  /** Function that will be run when the modal changes position in the stack */
+  onStackChange?: FunctionType,
+  /** Function to close the dialog */
+  onClose: FunctionType,
+  /** Number representing where in the stack of modals, this modal sits */
+  stackIndex?: number,
+  /** The header title */
+  title?: string,
+};
 
 export default class Content extends Component {
-  static propTypes = {
-    /** Buttons to render in the footer */
-    actions: PropTypes.arrayOf([
-      PropTypes.shape({
-        onClick: PropTypes.function,
-        text: PropTypes.string,
-      }),
-    ]),
-    /** Appearance of the content */
-    appearance: PropTypes.oneOf(['error', 'warning']),
-    /**
-      Boolean OR Function indicating which element to focus when the component mounts
-      TRUE will automatically find the first "tabbable" element within the modal
-      Providing a function should return the element you want to focus
-    */
-    autoFocus: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.func,
-    ]),
-    /** Content of the modal */
-    children: PropTypes.node,
-    /** HTMLElement representing the dialog, used for focus scope bounds */
-    dialogNode: PropTypes.node.isRequired,
-    /** Component to render in the header of the modal. */
-    header: PropTypes.function,
-    /** Component to render in the footer of the moda.l */
-    footer: PropTypes.function,
-    /** Function that will be run when the modal changes position in the stack */
-    onStackChange: PropTypes.func,
-    /** Function to close the dialog */
-    onClose: PropTypes.func.isRequired,
-    /** Number representing where in the stack of modals, this modal sits */
-    stackIndex: PropTypes.number,
-    /** The header title */
-    title: PropTypes.string,
-  }
+  props: Props // eslint-disable-line react/sort-comp
   static defaultProps = {
     autoFocus: false,
     stackIndex: 0,
+  }
+  static contextTypes = {
+    /** available when invoked within @atlaskit/layer-manager */
+    appId: PropTypes.string,
   }
 
   state = getInitialState();
 
   componentDidMount() {
+    this._isMounted = true;
+    this._hideElement = document.getElementById(this.context.appId);
+
     document.addEventListener('keydown', this.handleKeyDown);
+
     focusStore.storeFocus();
     this.initialiseFocus();
-    this._isMounted = true;
+
+    if (this._hideElement) this._hideElement.setAttribute('aria-hidden', true);
   }
   componentWillReceiveProps(nextProps) {
     const { stackIndex } = this.props;
 
-    // stack index has changed
+    // update focus scope and let consumer know when stack index has changed
     if (nextProps.stackIndex !== stackIndex) {
       this.handleStackChange(nextProps.stackIndex);
     }
   }
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyDown);
     this._isMounted = false;
+
+    document.removeEventListener('keydown', this.handleKeyDown);
+
+    if (this._hideElement) this._hideElement.removeAttribute('aria-hidden');
+
     focusScope.unscopeFocus();
     setTimeout(() => focusStore.restoreFocus());
   }
 
   setTabbableElements = () => {
     const { dialogNode } = this.props;
+
     const tabbableElements = tabbable(dialogNode);
 
-    if (!this.state.tabbableElements) {
+    if (tabbableElements.length) {
       this.setState({ tabbableElements });
     }
   }
@@ -123,9 +135,8 @@ export default class Content extends Component {
 
     // DOCS: explain deferral of focus to allow for refs to be resolved
     setTimeout(() => {
-      const { dialogNode } = this.props;
-
       if (!this._isMounted) return;
+      const { dialogNode } = this.props;
 
       this.setTabbableElements();
 
@@ -209,14 +220,14 @@ export default class Content extends Component {
 
     return (
       <StyledFooter>
-        <Shim />
+        <JustifyShim />
         <ButtonGroup>
-          {actions.map((action, idx) => {
+          {actions.map(({ text, ...rest }, idx) => {
             const variant = idx ? 'default' : (appearance || 'primary');
 
             return (
-              <Button appearance={variant} key={idx} onClick={action.onClick}>
-                {action.text}
+              <Button appearance={variant} key={idx} autoFocus={!idx} {...rest}>
+                {text}
               </Button>
             );
           })}
@@ -229,34 +240,35 @@ export default class Content extends Component {
     const { actions, children, header, footer, title } = this.props;
     const { tabbableElements, tabDirection } = this.state;
 
-    const canTab = !!tabbableElements.length;
-    const tabStart = canTab && tabDirection && tabDirection === 'prev'
-      ? <TabLoopTerminal onFocus={this.handleTabLoopStart} />
-      : null;
-    const tabEnd = canTab && tabDirection && tabDirection === 'next'
-      ? <TabLoopTerminal onFocus={this.handleTabLoopEnd} />
-      : null;
+    const canTab = Boolean(tabbableElements.length);
+    const tabStart = (canTab && tabDirection && tabDirection === 'prev') ? 0 : -1;
+    const tabEnd = (canTab && tabDirection && tabDirection === 'next') ? 0 : -1;
 
     const hasHeader = Boolean(header || title);
     const hasFooter = Boolean(footer || actions);
-
-    const keylineHeader = hasHeader && <KeylineMask headerOrFooter="header" />;
-    const keylineFooter = hasFooter && <KeylineMask headerOrFooter="footer" />;
 
     const Header = this.renderHeader;
     const Footer = this.renderFooter;
 
     return (
       <Wrapper>
-        {tabStart}
+        <TabTerminal
+          onFocus={this.handleTabLoopStart}
+          tabIndex={tabStart}
+        />
         <Header />
         <Body hasHeader={hasHeader} hasFooter={hasFooter}>
-          {keylineHeader}
-          {children}
-          {keylineFooter}
+          {hasHeader && <KeylineMask position="header" />}
+          <BodyInner>
+            {children}
+          </BodyInner>
+          {hasFooter && <KeylineMask position="footer" />}
         </Body>
         <Footer />
-        {tabEnd}
+        <TabTerminal
+          onFocus={this.handleTabLoopEnd}
+          tabIndex={tabEnd}
+        />
       </Wrapper>
     );
   }

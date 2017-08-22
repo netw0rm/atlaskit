@@ -31,7 +31,7 @@
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-base": "^7.4.2",
     "@atlaskit/icon": "^7.0.3",
-    "@atlaskit/item": "^2.2.1",
+    "@atlaskit/item": "^3.0.0",
     "@atlaskit/tooltip": "^3.4.2",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",

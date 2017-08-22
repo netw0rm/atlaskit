@@ -26,8 +26,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   state: State = {};
   typeAhead?: AkEmojiTypeAhead;
 
-  constructor(props: Props) {
-    super(props);
+  componentWillMount() {
     this.setPluginState(this.props);
   }
 

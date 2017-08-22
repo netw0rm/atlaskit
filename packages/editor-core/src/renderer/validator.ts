@@ -228,7 +228,12 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details } = attrs;
-        if (typeof text !== 'string' || !title || !title.text) { break; }
+        if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
+
+        // title must contain only one key "text"
+        const titleKeys = Object.keys(title);
+        if (titleKeys.length > 1) { break; }
+
         if (
           (link && !link.url) ||
           (background && !background.url) ||
@@ -243,9 +248,12 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
           if (users && !Array.isArray(users)) { return true; }
 
           if (users && users.some(user => {
-            if (!user.icon) {
+            if (typeof user.icon !== 'object') {
               return true;
             }
+
+            const { url, label } = user.icon;
+            return (typeof url !== 'string' || typeof label !== 'string');
           })) { return true; }
         })) { break; }
 

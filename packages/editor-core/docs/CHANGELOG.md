@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.1.1 (2017-08-22)
+
+* bug fix; multiple react warnings for UI components when pluginState is changed before compone (issues closed: ed-2535) ([1f77a58](https://bitbucket.org/atlassian/atlaskit/commits/1f77a58))
 ## 46.1.0 (2017-08-22)
 
 * bug fix; ensure getValidNode does not mutate the original node. (issues closed: fs-1295) ([0df91e2](https://bitbucket.org/atlassian/atlaskit/commits/0df91e2))

@@ -169,9 +169,9 @@ export default {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
       },
       color: {
-        default: themed({ light: colors.N100, dark: colors.DN400 }),
-        hover: themed({ light: colors.B300, dark: colors.B50 }),
-        active: themed({ light: colors.B500, dark: colors.DN300 }),
+        default: themed({ light: colors.N200, dark: colors.DN400 }),
+        hover: themed({ light: colors.N90, dark: colors.B50 }),
+        active: themed({ light: colors.N400, dark: colors.DN300 }),
         disabled: themed({ light: colors.N70, dark: colors.DN100 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
       },

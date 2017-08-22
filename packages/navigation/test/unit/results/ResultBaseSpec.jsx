@@ -10,14 +10,14 @@ describe('Result Base', () => {
     );
   });
 
-  it('should pass `resultId` and `type` to onClick handler', () => {
+  it('should pass { `resultId`,  `type` } to onClick handler', () => {
     const spy = jest.fn();
     resultWrapper.setProps({ onClick: spy });
     resultWrapper.simulate('click');
     expect(spy).toBeCalledWith({ resultId: 'testResult', type: 'base' });
   });
 
-  it('should pass `resultId` and `type` to onMouseEnter handler', () => {
+  it('should pass { `resultId`,  `type` } to onMouseEnter handler', () => {
     const spy = jest.fn();
     resultWrapper.setProps({ onMouseEnter: spy });
     resultWrapper.simulate('mouseenter');

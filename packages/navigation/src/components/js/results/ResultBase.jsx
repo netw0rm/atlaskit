@@ -27,9 +27,9 @@ export default class ResultBase extends PureComponent {
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
-    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
     onMouseEnter: PropTypes.func.isRequired,
     /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,

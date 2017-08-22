@@ -35,9 +35,9 @@ export default class PersonResult extends PureComponent {
     mentionPrefix: PropTypes.string,
     /** Name of the container. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
-    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with { `resultId`, `type` }. */
     onClick: PropTypes.func,
-    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
     onMouseEnter: PropTypes.func.isRequired,
     /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,

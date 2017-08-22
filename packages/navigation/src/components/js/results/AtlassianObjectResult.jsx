@@ -19,7 +19,7 @@ export default class AtlassianObjectResult extends PureComponent {
     avatarUrl: PropTypes.string,
     /** Name of the container to which the object belongs. Displayed alongside the name */
     containerName: PropTypes.string.isRequired,
-    /** Text to appear to the right of the text. It has a lower font-weight. */
+    /** Text to appear to the right of the `name`. It has a lower font-weight. */
     caption: PropTypes.string,
     /** Content to be shown after the main content. Shown to the right of content
     (or to the left in RTL mode). */
@@ -37,9 +37,9 @@ export default class AtlassianObjectResult extends PureComponent {
     name: PropTypes.string.isRequired,
     /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
     objectKey: PropTypes.string,
-    /** Triggered by mouseClick event. Called with `resultId` and `type`. */
+    /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
-    /** Triggered by mouseEnter event. Called with `resultId` and `type`. */
+    /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
     onMouseEnter: PropTypes.func.isRequired,
     /** Standard onMouseLeave event. */
     onMouseLeave: PropTypes.func.isRequired,

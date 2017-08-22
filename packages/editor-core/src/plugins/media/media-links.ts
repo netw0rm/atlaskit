@@ -5,6 +5,7 @@ import {
   ReplaceStep,
   Transaction,
   MarkType,
+  Node as PMNode,
 } from '../../prosemirror';
 import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
@@ -15,6 +16,41 @@ import analyticsService from '../../analytics/service';
 export interface URLInfo {
   href: string;
   pos: number;
+}
+
+export async function appendLinkCards(
+  view: EditorView,
+  linkCreateContext: Context,
+  collection: string
+): Promise<PMNode> {
+  const { schema, doc, tr } = view.state;
+  const { marks: { link }  } = schema;
+  const hrefs = new Array<string>();
+  doc.descendants(node => {
+    const linkMark = link.isInSet(node.marks);
+    if (linkMark) {
+      hrefs.push(linkMark.attrs.href);
+    }
+  });
+
+  const linkNodes = (await Promise.all(hrefs.map(href => new Promise<PMNode | undefined>(resolve => {
+    linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(async (metadata) => {
+      try {
+        const publicId = await linkCreateContext.addLinkItem(href, collection, metadata);
+        const linkNode = schema.nodes.media.createChecked({ id: publicId, type: 'link', collection });
+        resolve(linkNode);
+      } catch (error) {
+        resolve(undefined);
+      }
+    }, () => resolve(undefined));
+  })))).filter(node => !!node);
+
+  if (linkNodes.length) {
+    const mediaGroup = schema.nodes.mediaGroup.createChecked({}, linkNodes);
+    return tr.insert(doc.nodeSize - 2, mediaGroup).doc;
+  } else {
+    return doc;
+  }
 }
 
 export const insertLinks = async (
@@ -86,7 +122,7 @@ export const insertLinks = async (
               stateManager.updateState(id, {
                 id,
                 publicId,
-                status: 'ready'
+                status: 'unfinalized'
               }) || resolve(publicId)
             )
             .catch(updateStateWithError);

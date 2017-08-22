@@ -10,8 +10,6 @@ import {
 } from '../../../../src';
 
 import {
-  a,
-  blockquote,
   chaiPlugin,
   decisionItem,
   decisionList,
@@ -21,13 +19,16 @@ import {
   media,
   mediaGroup,
   p,
+  a,
+  strong,
+  blockquote,
   randomId,
   taskItem,
   taskList,
 } from '../../../../src/test-helper';
 
 import defaultSchema from '../../../../src/test-helper/schema';
-import { insertLinks, detectLinkRangesInSteps } from '../../../../src/plugins/media/media-links';
+import { insertLinks, detectLinkRangesInSteps, appendLinkCards } from '../../../../src/plugins/media/media-links';
 import * as utils from '../../../../src/plugins/utils';
 
 chai.use(chaiPlugin);
@@ -464,7 +465,8 @@ describe('media-links', () => {
       const handle = sinon.spy();
 
       const id = createTempId(href);
-      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem').returns(Promise.reject('error message'));
+      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem')
+        .returns(Promise.reject('error message'));
       await insertLinks(
         editorView,
         mediaStateManager,
@@ -525,4 +527,87 @@ describe('media-links', () => {
       expect(editorView.state.doc).to.deep.equal(decisionDoc);
     });
   });
+
+  // tslint:disable-next-line:no-only-tests
+  describe.only('appendLinkCards', () => {
+    it('should append link card at the end of the document', async () => {
+      const { editorView } = editor(doc(
+        p(a({ href: 'https://www.google.com' })('www.google.com'))
+      ));
+
+      const newDoc = await appendLinkCards(editorView, linkCreateContextMock, testCollectionName);
+
+      expect(newDoc).to.deep.equal(doc(
+        p(a({href: 'https://www.google.com'})('www.google.com')),
+        mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
+      ));
+    });
+
+    it('should append link cards at the end of the document', async () => {
+      const href1 = 'https://www.atlassian.com';
+      const href2 = 'https://www.google.com';
+      const { editorView } = editor(doc(
+        p(strong(a({ href: href1 })(href1))),
+        p('Hello'),
+        p(strong(a({ href: href2 })(href2))),
+        p('World!'),
+      ));
+
+      const tempLinkContext = getLinkCreateContextMock(url => Promise.resolve(url));
+      const newDoc = await appendLinkCards(editorView, tempLinkContext, testCollectionName);
+
+      expect(newDoc).to.deep.equal(doc(
+        p(strong(a({ href: href1 })(href1))),
+        p('Hello'),
+        p(strong(a({ href: href2 })(href2))),
+        p('World!'),
+        mediaGroup(
+          media({ id: href1, type: 'link', collection: testCollectionName }),
+          media({ id: href2, type: 'link', collection: testCollectionName }),
+        ),
+      ));
+    });
+
+    it('should not append filmstrip for private links', async () => {
+      const { editorView } = editor(doc(
+        p(a({ href: 'https://localhost'})('www.google.com'))
+      ));
+
+      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem')
+        .returns(Promise.reject('error message'));
+      const newDoc = await appendLinkCards(editorView, linkCreateContextMock, testCollectionName);
+      addLinkItemStub.restore();
+
+      expect(newDoc).to.deep.equal(doc(
+        p(a({ href: 'https://localhost' })('www.google.com'))
+      ));
+    });
+
+    it('should not create link cards for private links', async () => {
+      const href1 = 'https://www.atlassian.com';
+      const href2 = 'https://localhost';
+      const { editorView } = editor(doc(
+        p(strong(a({ href: href1 })(href1))),
+        p('Hello'),
+        p(strong(a({ href: href2 })(href2))),
+        p('World!'),
+      ));
+
+      const tempLinkContext = getLinkCreateContextMock(url =>
+        url === href1 ? Promise.resolve(url) : Promise.reject(href2)
+      );
+      const newDoc = await appendLinkCards(editorView, tempLinkContext, testCollectionName);
+
+      expect(newDoc).to.deep.equal(doc(
+        p(strong(a({ href: href1 })(href1))),
+        p('Hello'),
+        p(strong(a({ href: href2 })(href2))),
+        p('World!'),
+        mediaGroup(
+          media({ id: href1, type: 'link', collection: testCollectionName }),
+        ),
+      ));
+    });
+  });
+
 });

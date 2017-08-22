@@ -36,7 +36,6 @@ const data = {
     'applinks.error': 'Applinks error',
     configure: 'Configure',
     recent: 'Recent',
-    'try.other.apps': 'Try Other Atlassian Apps',
     'don\'t.show.this.again': 'Don’t show this again',
     'container.confluence-space': 'Space',
     'container.jira-project': 'Project',

@@ -34,8 +34,6 @@ export default {
     apps: PropTypes.node.isRequired,
     configure: PropTypes.node.isRequired,
     recent: PropTypes.node.isRequired,
-    'try.other.apps': PropTypes.node.isRequired,
-    "don't.show.this.again": PropTypes.node.isRequired,
     'container.confluence-space': PropTypes.node.isRequired,
     'container.jira-project': PropTypes.node.isRequired,
     'try.lozenge': PropTypes.node.isRequired,

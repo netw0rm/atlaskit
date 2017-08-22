@@ -130,10 +130,6 @@ const i18nPropDescriptions = [
     description: 'Recent',
   },
   {
-    name: 'try.other.apps',
-    description: 'Try Other Atlassian Apps',
-  },
-  {
     name: 'don\'t.show.this.again',
     description: 'Don’t show this again',
   },

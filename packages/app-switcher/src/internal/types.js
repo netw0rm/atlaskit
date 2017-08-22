@@ -35,8 +35,6 @@ export type Translations = {
   apps: ReactNode,
   configure: ReactNode,
   recent: ReactNode,
-  'try.other.apps': ReactNode,
-  "don't.show.this.again": ReactNode,
   'container.confluence-space': ReactNode,
   'container.jira-project': ReactNode,
   'applinks.error': ReactNode,

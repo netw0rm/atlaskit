@@ -68,8 +68,6 @@ const data = {
    "home": "Home",
    "apps": "Apps",
    "configure": "Configure",
-   "try.other.apps": "Try Other Atlassian Apps",
-   "don't.show.this.again": "Don’t show this again"
  }
 }
 

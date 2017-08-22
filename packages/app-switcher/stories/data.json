@@ -42,8 +42,6 @@
     "apps": "Apps",
     "recent": "Recent",
     "configure": "Configure",
-    "try.other.apps": "Try other Atlassian apps",
-    "don't.show.this.again": "Don’t show this again",
     "container.confluence-space": "Space",
     "container.jira-project": "Project",
     "applinks.error": "Unable to load linked applications.",

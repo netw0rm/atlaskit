@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "22.3.0",
+  "version": "26.0.2",
   "config": {
     "access": "public"
   },
@@ -13,21 +13,27 @@
     "build": "npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "jest/watch": "../../node_modules/.bin/jest --watch -c ../../build/config/jest.config.js"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
-    "dist",
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es5/**/*.json",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
+    "dist/es2015/**/*.json",
     "src"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^1.0.10",
     "@atlaskit/field-base": "^5.0.0",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/layer": "^2.5.0",
+    "@atlaskit/layer": "^2.5.1",
     "@atlaskit/spinner": "^2.0.0",
     "@atlaskit/tooltip": "^3.1.0",
     "@atlaskit/util-common": "^1.0.0",
@@ -37,7 +43,7 @@
     "classnames": "^2.2.5",
     "js-search": "^1.4.2",
     "lru-fast": "^0.2.2",
-    "mediapicker": "^5.0.4",
+    "mediapicker": "^7.0.1",
     "react-virtualized": "^9.8.0",
     "tslib": "^1.2.0",
     "typestyle": "^1.3.2",

@@ -1,6 +1,46 @@
 # @atlaskit/mention
 
-## Unreleased
+## 7.3.5 (2017-08-21)
+
+* bug fix; based on PR comment, update the variable name ([4517be5](https://bitbucket.org/atlassian/atlaskit/commits/4517be5))
+* bug fix; the name of the variable was not correct - cf AK-1433 (issues closed: ak-1433) ([85fe651](https://bitbucket.org/atlassian/atlaskit/commits/85fe651))
+## 7.3.4 (2017-08-14)
+
+* bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))
+
+
+
+
+## 7.3.3 (2017-08-10)
+
+* bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))
+## 7.3.2 (2017-08-10)
+
+* bug fix; quick fix to avoid issues accessing support data via npm dependency ([4f9eee7](https://bitbucket.org/atlassian/atlaskit/commits/4f9eee7))
+
+
+
+
+
+## 7.3.1 (2017-07-27)
+
+
+* fix; fix unused expression error throwing test ([22b75b2](https://bitbucket.org/atlassian/atlaskit/commits/22b75b2))
+
+## 7.3.0 (2017-07-25)
+
+
+* feature; export test/story data for direct import. Not in bundle. ([eaa98fb](https://bitbucket.org/atlassian/atlaskit/commits/eaa98fb))
+
+## 7.2.2 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 7.2.1 (2017-07-20)
+
+
+* fix; no user selection in mention list should result in the top item always being selecte ([07fc665](https://bitbucket.org/atlassian/atlaskit/commits/07fc665))
 
 ## 7.2.0 (2017-07-07)
 

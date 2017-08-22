@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import rafSchedule from 'raf-schd';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
@@ -24,35 +25,50 @@ export default class Resizer extends PureComponent {
     navigationWidth: standardOpenWidth,
     showResizeButton: true,
   }
-  constructor(props) {
-    super(props);
-    this.state = {
-      startScreenX: 0,
-      isHovering: false,
-      isResizing: false,
-    };
+  state = {
+    startScreenX: 0,
+    isHovering: false,
+    isResizing: false,
   }
+
+  scheduleResize = rafSchedule((delta) => {
+    if (this.state.isResizing) {
+      this.props.onResize(delta);
+    }
+  })
+
   mouseDownHandler = (e) => {
     e.preventDefault();
     if (!this.resizerNode || e.target !== this.resizerNode) {
       return;
     }
-    this.props.onResizeStart();
+
+    if (this.state.isResizing) {
+      // eslint-disable-next-line no-console
+      console.error('attempting to start a resize when another is occurring');
+      return;
+    }
+
     this.setState({
+      isResizing: true,
       startScreenX: e.screenX,
     });
-    document.addEventListener('mousemove', this.mouseMoveHandler);
-    document.addEventListener('mouseup', this.mouseUpHandler);
+    this.props.onResizeStart();
+    window.addEventListener('mousemove', this.mouseMoveHandler);
+    window.addEventListener('mouseup', this.mouseUpHandler);
   }
 
   mouseUpHandler = (e) => {
+    window.removeEventListener('mousemove', this.mouseMoveHandler);
+    window.removeEventListener('mouseup', this.mouseUpHandler);
+    this.setState({
+      isResizing: false,
+    });
     this.props.onResizeEnd(e.screenX - this.state.startScreenX);
-    document.removeEventListener('mousemove', this.mouseMoveHandler);
-    document.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
   mouseMoveHandler = (e) => {
-    this.props.onResize(e.screenX - this.state.startScreenX);
+    this.scheduleResize(e.screenX - this.state.startScreenX);
   }
 
   mouseEnterHandler = () => {

@@ -1,1 +1,1 @@
-export default from './InlineDialog';
+export { default } from './InlineDialog';

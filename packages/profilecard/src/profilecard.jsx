@@ -29,6 +29,9 @@ export default class Profilecard extends PureComponent {
     })),
     isLoading: PropTypes.bool,
     hasError: PropTypes.bool,
+    errorType: PropTypes.shape({
+      reason: PropTypes.string,
+    }),
     clientFetchProfile: PropTypes.func,
     analytics: PropTypes.func,
   }
@@ -90,6 +93,7 @@ export default class Profilecard extends PureComponent {
   renderErrorMessage() {
     return (<ErrorMessage
       reload={this.props.clientFetchProfile && this.clientFetchProfile}
+      errorType={this.props.errorType}
     />);
   }
 

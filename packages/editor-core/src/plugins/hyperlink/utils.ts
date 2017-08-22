@@ -1,55 +1,74 @@
-import { EMAIL_REGEX, URL_REGEX_G, EMAIL_REGEX_G } from './regex';
 import { Slice, Fragment, Node, Schema } from '../../prosemirror';
+import * as LinkifyIt from 'linkify-it';
 
-export function isEmail(url: string): boolean {
-  return EMAIL_REGEX.test(url);
+export interface Match {
+  schema: any;
+  index: number;
+  lastIndex: number;
+  raw: string;
+  text: string;
+  url: string;
+  length?: number;
 }
 
-// http:, https:, ftp:, mailto:
-export function hasProtocol(url: string): boolean {
-  return /^[a-zA-Z0-9]+:(\/\/)?/.test(url);
+const linkify = LinkifyIt();
+linkify.add('#', {
+  validate: (text: string, pos: number) => {
+    const tail = text.slice(pos);
+    if (/[#]+/.test(tail)) {
+      return false;
+    }
+    const match = /[a-zA-Z0-9\.\$\-_\+!\*',\/\?:@=&%#~;()]+/.exec(tail);
+    if (match) {
+      return match[0].length;
+    }
+    return 0;
+  },
+});
+const validateFileText = (text: string, pos: number) => {
+  const tail = text.slice(pos);
+  const match = /[a-zA-Z0-9\.\$\-_\+!\*',\/\?:@=&%#~;()]+\.[a-zA-Z0-9-]+/.exec(tail);
+  if (match) {
+    return match[0].length;
+  }
+  return 0;
+};
+linkify.add('/', { validate: validateFileText });
+linkify.add('./', { validate: validateFileText });
+linkify.add('../', { validate: validateFileText });
+linkify.add('sourcetree:', 'http:');
+
+export function getLinkMatch(str: string): Match | null {
+  const match = str && linkify.match(str);
+  return match && match[0];
 }
 
-// #hash, /path, ./path
-export function isRelative(url: string) {
-  return /^[#\/]|(\.\/)/.test(url);
+/**
+ * Instance of class LinkMatcher are used in autoformatting in place of Regex.
+ * Hence it has been made similar to regex with an exec method.
+ * Extending it directly from class Regex was introducing some issues, thus that has been avoided.
+ */
+export class LinkMatcher {
+  exec(str): Match[] | null {
+    if (str[str.length - 1] === ' ') {
+      const strSplit: string = str.slice(0, str.length - 1).split(' ');
+      const match: Match[] = linkify.match(strSplit[strSplit.length - 1]);
+      if (match && match.length > 0) {
+        const lastMatch: Match = match[match.length - 1];
+        lastMatch.length = lastMatch.lastIndex - lastMatch.index + 1;
+        return [lastMatch];
+      }
+    }
+    return null;
+  }
 }
 
 /**
  * Adds protocol to url if needed.
  */
 export function normalizeUrl(url: string) {
-  if (!url || hasProtocol(url) || isRelative(url)) {
-    return url;
-  }
-
-  if (isEmail(url)) {
-    return `mailto:${url}`;
-  }
-
-  return `http://${url}`;
-}
-
-export function linkifyText(schema: Schema<any, any>, text: string): Slice|undefined {
-  const matches: any[] = findLinkMatches(text);
-  if (matches.length === 0) {
-    return undefined;
-  }
-  matches.sort((m1, m2) => (m1.start - m2.start));
-  let start = 0;
-  const fragments: any = [];
-  matches.forEach(match => {
-    if (match.start > start) {
-      fragments.push(schema.text(text.slice(start, match.start)));
-    }
-    fragments.push(schema.text(match.title, [schema.marks.link.create({ href: match.href })]));
-    start = match.end;
-  });
-  if (start < text.length) {
-    fragments.push(schema.text(text.slice(start, text.length)));
-  }
-  const combinedFragment = Fragment.fromArray(fragments);
-  return new Slice(combinedFragment, 0, 0);
+  const match = getLinkMatch(url);
+  return match && match.url;
 }
 
 export function linkifyContent(schema: Schema<any, any>, slice: Slice): Slice | undefined {
@@ -76,7 +95,7 @@ function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragmen
           linkified.push(child.cut(pos, match.start));
         }
         linkified.push(
-          child.cut(match.start, match.end).mark(link.create({href: match.href}).addToSet(child.marks))
+          child.cut(match.start, match.end).mark(link.create({href: normalizeUrl(match.href)}).addToSet(child.marks))
         );
         pos = match.end;
       });
@@ -90,54 +109,25 @@ function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragmen
   return Fragment.fromArray(linkified);
 }
 
-interface Match {
+interface LinkMatch {
   start: number;
   end: number;
   title: string;
   href: string;
 }
 
-function findLinkMatches(text: string): Match[] {
-  const matches: Match[] = [];
-  let match: RegExpExecArray | null;
-  while(match = URL_REGEX_G.exec(text)) {
-    if (!isMatchOverlapping(matches, match)) {
+function findLinkMatches(text: string): LinkMatch[] {
+  const matches: LinkMatch[] = [];
+  let linkMatches: Match[] = text && linkify.match(text);
+  if (linkMatches && linkMatches.length > 0) {
+    linkMatches.forEach(match => {
       matches.push({
         start: match.index,
-        end: match.index + match[0].length,
-        title: match[0],
-        href: match[0],
+        end: match.lastIndex,
+        title: match.raw,
+        href: match.url,
       });
-    }
-  }
-  while(match = EMAIL_REGEX_G.exec(text)) {
-    if (!isMatchOverlapping(matches, match)) {
-      matches.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        title: match[0],
-        href: `mailto:${match[0]}`,
-      });
-    }
+    });
   }
   return matches;
-}
-
-/**
- * The function check that the regex match for url or email does not overlap an existing url or email.
- * This is required as letter separator like / . are valid characters in url,
- * and that can reasult in multiple marks being added for 1 link.
- */
-function isMatchOverlapping(matches: Match[], match: RegExpExecArray | null): boolean {
-  let isOverlapping: boolean = false;
-  if(match) {
-    if (matches.some(m => match.index >= m.start && match.index <= m.end)) {
-      isOverlapping = true;
-    }
-    const matchEnd = match.index + match[0].length;
-    if (matches.some(m => matchEnd >= m.start && matchEnd <= m.end)) {
-      isOverlapping = true;
-    }
-  }
-  return isOverlapping;
 }

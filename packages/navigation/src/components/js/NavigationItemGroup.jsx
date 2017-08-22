@@ -1,12 +1,11 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { ItemGroup } from '@atlaskit/item';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
-import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
-import { WithGroupTheme } from '../../theme/util';
-import type { ReactElement } from '../../types';
+import type { ReactElement, HTMLElement } from '../../types';
 
 type Props = {|
   /** React element to be displayed to the right of the group header. */
@@ -20,6 +19,8 @@ type Props = {|
   hasSeparator?: boolean,
   /** Text to appear as heading above group. Will be auto-capitalised. */
   title?: string,
+  /** A function that returns the DOM ref created by the group */
+  innerRef?: (HTMLElement) => void,
 |};
 
 export default class NavigationItemGroup extends PureComponent {
@@ -37,6 +38,7 @@ export default class NavigationItemGroup extends PureComponent {
       isCompact,
       hasSeparator,
       children,
+      innerRef,
     } = this.props;
 
     const wrappedTitle = title ?
@@ -56,22 +58,22 @@ export default class NavigationItemGroup extends PureComponent {
     const header = title || action ? (
       <NavigationItemGroupHeader>
         {wrappedTitle}
-        {wrappedAction}
       </NavigationItemGroupHeader>
     ) : null;
 
+    const groupHeading = separator || header ? (
+      <div>{separator}{header}</div>
+    ) : null;
+
     return (
-      <WithGroupTheme
+      <ItemGroup
+        title={groupHeading}
+        elemAfter={wrappedAction}
         isCompact={isCompact}
+        innerRef={innerRef}
       >
-        <div>
-          <NavigationItemGroupInner hasHeaderContent={(separator || header)}>
-            {separator}
-            {header}
-            {children}
-          </NavigationItemGroupInner>
-        </div>
-      </WithGroupTheme>
+        {children}
+      </ItemGroup>
     );
   }
 }

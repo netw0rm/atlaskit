@@ -2,10 +2,11 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../../src';
-import { TextSelection } from '../../../../src/prosemirror';
 import listsPlugins, { ListsState } from '../../../../src/plugins/lists';
-import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel, blockquote, code_block } from '../../../../src/test-helper';
+import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -16,6 +17,12 @@ describe('lists', () => {
   });
 
   describe('keymap', () => {
+    let trackEvent;
+    beforeEach(() => {
+      trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+    });
+
     context('when hit enter', () => {
       it('should split list item', () => {
         const { editorView } = editor(doc(ul(li(p('text{<>}')))));
@@ -24,39 +31,39 @@ describe('lists', () => {
       });
     });
 
+    context('when hit Tab', () => {
+      it('should call indent analytics event', () => {
+        const { editorView } = editor(doc(ol(li(p('text')), li(p('text{<>}')))));
+        sendKeyToPm(editorView, 'Tab');
+        expect(trackEvent.calledWith('atlassian.editor.format.list.indent.keyboard')).to.equal(true);
+      });
+    });
+
+    context('when hit Shift-Tab', () => {
+      it('should call outdent analytics event', () => {
+        const { editorView } = editor(doc(ol(li(p('One'), ul(li(p('Two{<>}')))))));
+        sendKeyToPm(editorView, 'Shift-Tab');
+        expect(trackEvent.calledWith('atlassian.editor.format.list.outdent.keyboard')).to.equal(true);
+      });
+    });
+
     if (browser.mac) {
       context('when on a mac', () => {
-        context('when hit Shift-Cmd-L', () => {
+        context('when hit Cmd-Alt-7', () => {
           it('should toggle ordered list', () => {
             const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Cmd-L');
+            sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.keyboard')).to.equal(true);
           });
         });
 
-        context('when hit Shift-Cmd-B', () => {
+        context('when hit Cmd-Alt-8', () => {
           it('should toggle bullet list', () => {
             const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Cmd-B');
+            sendKeyToPm(editorView, 'Cmd-Alt-8');
             expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
-          });
-        });
-      });
-    } else {
-      context('when not on a mac', () => {
-        context('when hit Shift-Ctrl-L', () => {
-          it('should toggle ordered list', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Ctrl-L');
-            expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
-          });
-        });
-
-        context('when hit Shift-Ctrl-B', () => {
-          it('should toggle bullet list', () => {
-            const { editorView } = editor(doc(p('text{<>}')));
-            sendKeyToPm(editorView, 'Shift-Ctrl-B');
-            expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text')))));
+            expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.keyboard')).to.equal(true);
           });
         });
       });
@@ -92,13 +99,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ex{end}t')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });
@@ -106,13 +111,11 @@ describe('lists', () => {
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
       const { editorView, pluginState, refs } = editor(doc(ol(li(p('t{<>}ext{end}')))));
       const { end } = refs;
-      const pos = editorView.state.doc.resolve(end);
 
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      const tr = editorView.state.tr.setSelection(new TextSelection(pos));
-      editorView.dispatch(tr);
+      setTextSelection(editorView, end);
 
       expect(spy.callCount).to.equal(1);
     });
@@ -181,14 +184,14 @@ describe('lists', () => {
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
-    it('should be enabled when selecting h1', () => {
+    it('should be disabled when selecting h1', () => {
       const { pluginState } = editor(doc(h1('te{<>}xt')));
 
       expect(pluginState).to.have.property('orderedListActive', false);
-      expect(pluginState).to.have.property('orderedListDisabled', false);
+      expect(pluginState).to.have.property('orderedListDisabled', true);
       expect(pluginState).to.have.property('orderedListHidden', false);
       expect(pluginState).to.have.property('bulletListActive', false);
-      expect(pluginState).to.have.property('bulletListDisabled', false);
+      expect(pluginState).to.have.property('bulletListDisabled', true);
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
@@ -209,18 +212,11 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(doc(p('One'), p('Two'), p(), p('Three')));
       });
 
-      it('should untoggle list item inside a blockquote', () => {
-        const { editorView, pluginState } = editor(doc(blockquote(ol(li(p('One')), li(p('{<>}Two')), li(p('Three'))))));
-
-        pluginState.toggleOrderedList(editorView);
-        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))), p('Two'), ol(li(p('Three'))))));
-      });
-
       it('should untoggle all list items with different ancestors in selection', () => {
-        const { editorView, pluginState } = editor(doc(blockquote(ol(li(p('One')), li(p('{<}Two')), li(p('Three')))), ol(li(p('One{>}')), li(p('Two')))));
+        const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('{<}Two')), li(p('Three'))), ol(li(p('One{>}')), li(p('Two')))));
 
         pluginState.toggleOrderedList(editorView);
-        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ol(li(p('One'))), p('Two'), p('Three')), p('One'), ol(li(p('Two')))));
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One'))), p('Two'), p('Three'), p('One'), ol(li(p('Two')))));
       });
     });
 
@@ -279,13 +275,6 @@ describe('lists', () => {
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
-      });
-
-      it('should convert selection to list when selection is inside blockquote', () => {
-        const { editorView, pluginState } = editor(doc(blockquote(p('{<}One'), p('Two'), p('Three{>}'))));
-
-        pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ul(li(p('One')), li(p('Two')), li(p('Three'))))));
       });
 
       it('should convert selection to list when there is an empty paragraph between non empty two', () => {
@@ -429,25 +418,6 @@ describe('lists', () => {
 
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
       });
-
-      it('should create new list item when Enter key is pressed twice in panel in list', () => {
-        const { editorView } = editor(doc(ol(li(panel(p('text{<>}'))))));
-
-        sendKeyToPm(editorView, 'Enter');
-        sendKeyToPm(editorView, 'Enter');
-
-        expect(editorView.state.doc).to.deep.equal(doc(ol(li(panel(p('text{<>}'))), li(p('')))));
-      });
-
-      it('should create new list item when Enter key is pressed three times in code block in list', () => {
-        const { editorView } = editor(doc(ol(li(code_block({ language: 'java' })('codeBlock{<>}')))));
-
-        sendKeyToPm(editorView, 'Enter');
-        sendKeyToPm(editorView, 'Enter');
-        sendKeyToPm(editorView, 'Enter');
-
-        expect(editorView.state.doc).to.deep.equal(doc(ol(li(code_block({ language: 'java' })('codeBlock')), li(p('')))));
-      });
     });
 
     describe('Enter key-press', () => {
@@ -482,6 +452,16 @@ describe('lists', () => {
         });
       });
 
+      context('when Enter key is pressed on non-empty top level list item inside panel', () => {
+        it('should created new list item at top level', () => {
+          const { editorView } = editor(doc(panel(ol(li(p('text')), li(p('test{<>}')), li(p('text'))))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(panel(ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text'))))));
+        });
+      });
+
       context('when Enter key is pressed on empty top level list item', () => {
         it('should create new paragraph outside the list', () => {
           const { editorView } = editor(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
@@ -489,6 +469,16 @@ describe('lists', () => {
           sendKeyToPm(editorView, 'Enter');
 
           expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))));
+        });
+      });
+
+      context('when Enter key is pressed on empty top level list item inside panel', () => {
+        it('should create new paragraph outside the list', () => {
+          const { editorView } = editor(doc(panel(ol(li(p('text')), li(p('{<>}')), li(p('text'))))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(panel(ol(li(p('text'))), p('{<>}'), ol(li(p('text'))))));
         });
       });
     });
@@ -525,14 +515,6 @@ describe('lists', () => {
         pluginState.toggleOrderedList(editorView);
 
         expect(editorView.state.doc).to.deep.equal(doc(p('te{<}xt'), p('text'), p('te{>}xt'), ol(li(p('text')))));
-      });
-
-      it('should be possible to toggle a nested list inside a blockquote to the level of block-quote', () => {
-        const { editorView, pluginState } = editor(doc(blockquote(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('te{<}xt'))))));
-
-        pluginState.toggleOrderedList(editorView);
-
-        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ol(li(p('text'))), p('te{<>}xt'), ol(li(p('text'))))));
       });
 
       it('should be create a new list for children of lifted list item', () => {

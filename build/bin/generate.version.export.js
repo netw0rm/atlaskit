@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable import/newline-after-import, global-require, import/no-dynamic-require, no-console, max-len */
+/* eslint-disable import/newline-after-import, global-require, import/no-dynamic-require */
 const fs = require('fs');
 const scriptName = require('path').basename(__filename);
 const packageJsonPath = process.argv[2];

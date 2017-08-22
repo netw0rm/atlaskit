@@ -1,25 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import { borderRadius, colors, gridSize } from '@atlaskit/theme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import FlagExample from './FlagExample';
-import flagExampleSrc from '!raw-loader!./FlagExample';
-/*
-=============================================
-NOTE: Flag group example is commented out as it does not display correctly.
-We need to come back to this once the component is easier to make display correctly.
-Currently it is mostly hidden behind the left navbar.
-=============================================
-*/
-// import FlagGroupExample from './FlagGroupExample';
-// import flagGroupExampleSrc from '!raw-loader!./FlagGroupExample';
+import flagExampleSource from '!raw-loader!./FlagExample';
+
+import FlagBoldExample from './FlagBoldExample';
+import flagBoldExampleSource from '!raw-loader!./FlagBoldExample';
+
+import FlagGroupExample from './FlagGroupExample';
+import flagGroupExampleSource from '!raw-loader!./FlagGroupExample';
 /* eslint-enable import/no-duplicates, import/first */
 
-const Usage = styled.pre`
-  background-color: #F4F5F7;
-  border-radius: 5px;
-  margin: 14px 0;
-  padding: 8px;
+const CodeBlock = styled.pre`
+  background-color: ${colors.codeBlock};
+  border-radius: ${borderRadius}px;
+  margin: ${gridSize * 2}px 0;
+  padding: ${gridSize}px;
 `;
 
 export const description = (
@@ -29,9 +27,9 @@ export const description = (
       The <code>Flag</code> component applies styling, while <code>FlagGroup</code> animates
       the loading and unloading of flags.
     </p>
-    <Usage>
-      {'import Flag, { FlagGroup } from @atlaskit/flag'}
-    </Usage>
+    <CodeBlock>
+      {'import Flag, { AutoDismissFlag, FlagGroup } from @atlaskit/flag'}
+    </CodeBlock>
   </div>
 );
 
@@ -39,11 +37,16 @@ export const examples = [
   {
     title: 'Flag Component',
     Component: FlagExample,
-    src: flagExampleSrc,
+    src: flagExampleSource,
   },
-  // {
-  //   title: 'Flag Group Example',
-  //   Component: FlagGroupExample,
-  //   src: flagGroupExampleSrc,
-  // },
+  {
+    title: 'Bold Flag Component',
+    Component: FlagBoldExample,
+    src: flagBoldExampleSource,
+  },
+  {
+    title: 'Flag Group Example',
+    Component: FlagGroupExample,
+    src: flagGroupExampleSource,
+  },
 ];

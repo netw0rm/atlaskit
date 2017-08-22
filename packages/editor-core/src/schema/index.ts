@@ -33,13 +33,18 @@ export {
   Attributes as MediaAttributes, DisplayType as MediaDisplayType
 } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';
+export { singleImage } from './nodes/single-image';
 export { table, tableCell, tableHeader, tableRow } from './nodes/tableNodes';
 export { applicationCard } from './nodes/applicationCard';
 export { decisionList } from './nodes/decision-list';
 export { decisionItem } from './nodes/decision-item';
+export { taskList } from './nodes/task-list';
+export { taskItem } from './nodes/task-item';
 
 export { createSchema } from './create-schema';
 export { bitbucketSchema } from './bitbucket-schema';
 export { confluenceSchema } from './confluence-schema';
 export { defaultSchema } from './default-schema';
 export { hipchatSchema } from './hipchat-schema';
+
+export { default as createJIRASchema } from './jira-schema';

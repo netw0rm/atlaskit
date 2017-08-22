@@ -1,6 +1,60 @@
 # @atlaskit/editor-cq
 
-## Unreleased
+## 4.6.2 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
+## 4.6.1 (2017-08-16)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([00385bd](https://bitbucket.org/atlassian/atlaskit/commits/00385bd))
+
+
+
+
+
+## 4.6.0 (2017-08-11)
+
+* feature; expose EditorView from editor-cq (issues closed: ed-2463) ([1312b8d](https://bitbucket.org/atlassian/atlaskit/commits/1312b8d))
+## 4.5.2 (2017-08-11)
+
+* bug fix; cxHTML decoder doesn't support media in a non-empty <p> (issues closed: ed-2438) ([e7d78be](https://bitbucket.org/atlassian/atlaskit/commits/e7d78be))
+## 4.5.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+
+
+
+
+
+## 4.5.0 (2017-07-28)
+
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
+## 4.4.0 (2017-07-28)
+
+
+* feature; added tablesEnabled prop to editor-cq ([bb727d6](https://bitbucket.org/atlassian/atlaskit/commits/bb727d6))
+
+## 4.3.1 (2017-07-26)
+
+## 4.3.0 (2017-07-26)
+
+
+* fix; fix media node to comply with editor-core breaking changes ([771dbdb](https://bitbucket.org/atlassian/atlaskit/commits/771dbdb))
+* fix; fixed table parser for CQ ([1ed29af](https://bitbucket.org/atlassian/atlaskit/commits/1ed29af))
+
+
+* feature; added parser for tables ([5fc4a0b](https://bitbucket.org/atlassian/atlaskit/commits/5fc4a0b))
+* feature; added tables encoder for cq ([54414b8](https://bitbucket.org/atlassian/atlaskit/commits/54414b8))
+* feature; made weakmap with parsed nodes global ([81b3244](https://bitbucket.org/atlassian/atlaskit/commits/81b3244))
+
+## 4.2.0 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+
+* feature; change es2015 build so it transpiles everything except import/export statements ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
 
 ## 4.1.4 (2017-07-12)
 

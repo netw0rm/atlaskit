@@ -13,7 +13,7 @@ import {
 describe(`${name} - ItemGroup`, () => {
   describe('props', () => {
     describe('children', () => {
-      test('should render provided children', () => {
+      it('should render provided children', () => {
         const wrapper = shallow(
           <ItemGroup>
             <Item>Item one</Item>
@@ -24,29 +24,29 @@ describe(`${name} - ItemGroup`, () => {
       });
     });
     describe('title', () => {
-      test('should render title if provided', () => {
+      it('should render title if provided', () => {
         const wrapper = mount(<ItemGroup title="Hello" />);
         expect(wrapper.find(GroupTitleText).text()).toBe('Hello');
       });
-      test('should not render title if omitted', () => {
+      it('should not render title if omitted', () => {
         const wrapper = mount(<ItemGroup />);
         expect(wrapper.find(GroupTitle).length).toBe(0);
       });
     });
     describe('elemAfter', () => {
-      test('should not be rendered if title is omitted', () => {
+      it('should not be rendered if title is omitted', () => {
         const wrapper = mount(<ItemGroup elemAfter="Hello" />);
         expect(wrapper.find(GroupTitleAfter).length).toBe(0);
       });
-      test('should be rendered if title is provided', () => {
+      it('should be rendered if title is provided', () => {
         const wrapper = mount(<ItemGroup elemAfter="Hello" title="Hello" />);
         expect(wrapper.find(GroupTitleAfter).length).toBe(1);
       });
-      test('should accept a string value', () => {
+      it('should accept a string value', () => {
         const wrapper = mount(<ItemGroup elemAfter="Hello there" title="Hi" />);
         expect(wrapper.find(GroupTitleAfter).text()).toBe('Hello there');
       });
-      test('should accept a node value', () => {
+      it('should accept a node value', () => {
         const wrapper = mount(
           <ItemGroup
             elemAfter={<span className="after-custom" />}
@@ -59,12 +59,17 @@ describe(`${name} - ItemGroup`, () => {
   });
 
   describe('accessibility', () => {
-    test('root element should always have role="group"', () => {
+    it('root element should have role="group" by default', () => {
       const wrapper = shallow(<ItemGroup />);
       expect(wrapper.prop('role')).toBe('group');
     });
 
-    test('title should always have aria-hidden="true" because we use aria-label', () => {
+    it('root element should apply role prop if supplied', () => {
+      const wrapper = shallow(<ItemGroup role="menu" />);
+      expect(wrapper.prop('role')).toBe('menu');
+    });
+
+    it('title should always have aria-hidden="true" because we use aria-label', () => {
       const wrapper = shallow(<ItemGroup title="Hello" />);
       expect(wrapper.find(GroupTitle).prop('aria-hidden')).toBe('true');
     });
@@ -78,14 +83,14 @@ describe(`${name} - ItemGroup`, () => {
         currentLabel = () => (wrapper.find('[aria-label]').prop('aria-label'));
       });
 
-      test('should match title prop if no elemAfter provided', () => {
+      it('should match title prop if no elemAfter provided', () => {
         expect(currentLabel()).toBe('Hello');
       });
-      test('should contain title and elemAfter if elemAfter is a string', () => {
+      it('should contain title and elemAfter if elemAfter is a string', () => {
         wrapper.setProps({ elemAfter: 'AK-1234' });
         expect(currentLabel()).toBe('Hello AK-1234');
       });
-      test('should contain title and elemAfter text content if elemAfter is JSX', () => {
+      it('should contain title and elemAfter text content if elemAfter is JSX', () => {
         wrapper.setProps({
           elemAfter: (
             <div>

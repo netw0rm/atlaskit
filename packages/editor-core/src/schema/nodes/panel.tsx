@@ -50,7 +50,7 @@ export interface DOMAttributes {
 
 export const panel: NodeSpec = {
   group: 'block',
-  content: 'block+',
+  content: '(paragraph | heading | bulletList | orderedList)*',
   attrs: {
     panelType: { default: 'info' }
   },

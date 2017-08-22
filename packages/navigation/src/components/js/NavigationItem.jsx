@@ -1,24 +1,24 @@
 // @flow
 import React, { PureComponent } from 'react';
-import DefaultLinkComponent from './DefaultLinkComponent';
-import InteractiveWrapper from './InteractiveWrapper';
-
-import NavigationItemIcon from '../styled/NavigationItemIcon';
-import NavigationItemAfter from '../styled/NavigationItemAfter';
+// NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
+// which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
+// would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
+// but this is not possible because the children could be either a NavigationItem or a
+// NavigationItemGroup so we cannot reliably map over the children to wrap them.
+import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
 import NavigationItemAction from '../styled/NavigationItemAction';
+import NavigationItemAfter from '../styled/NavigationItemAfter';
 import NavigationItemCaption from '../styled/NavigationItemCaption';
-import NavigationItemText from '../styled/NavigationItemText';
+import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
-import NavigationItemInner from '../styled/NavigationItemInner';
-import NavigationItemMainText from '../styled/NavigationItemMainText';
-import NavigationItemOuter from '../styled/NavigationItemOuter';
-import NavigationItemSubText from '../styled/NavigationItemSubText';
-import type { ReactElement } from '../../types';
+import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
+import type { ReactElement, ReactClass, DragProvided } from '../../types';
 
 type Props = {|
   action?: ReactElement,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
+  dnd?: DragProvided,
   /** Location to link out to on click. This is passed down to the custom link
   component if one is provided. */
   href?: string,
@@ -28,48 +28,47 @@ type Props = {|
   /** Element displayed to the right of the item. The dropIcon should generally be
   an appropriate @atlaskit icon, such as the ExpandIcon. */
   dropIcon?: ReactElement,
-  /** Set whether to disable the hover styling */
-  isHoverStylesDisabled?: boolean,
+  /** Makes the navigation item appear with reduced padding and font size. */
+  isCompact?: boolean,
+  /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
+  isDragging?: boolean,
   /** Set whether the icon should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
-  /** Set whether the item should be used to trigger a dropdown. If this is strue,
+  /** Set whether the item should be used to trigger a dropdown. If this is true,
   The href property will be disabled. */
   isDropdownTrigger?: boolean,
   /** Component to be used as link, if default link component does not suit, such
   as if you are using a different router. Component is passed a href prop, and the content
-  of the title as children. This will be wrapped in a component to style it. */
-  linkComponent?: () => mixed,
+  of the title as children. Any custom link component must accept a className prop so that
+  it can be styled. */
+  linkComponent?: ReactClass,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
-  onClick?: (e: MouseEvent) => void,
-  /** Function to be called on mouse enter. */
+  onClick ?: (e: MouseEvent) => void,
+  /** Function to be called on click. This is passed down to a custom link component,
+  if one is provided.  */
+  onKeyDown?: (e: KeyboardEvent) => void,
+  /** Standard onmouseenter event */
   onMouseEnter?: (e: MouseEvent) => void,
-  /** Function to be called on mouse leave. */
+  /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
-  /** Text to be displayed beneath the main text. */
+  /** Text to be shown alongside the main `text`. */
   subText?: string,
-  /** Tab index of the component */
-  tabIndex?: number,
   /** Main text to be displayed as the item. Accepts a react component but in most
   cases this should just be a string. */
-  text: ReactElement,
+  text?: ReactElement,
   /** React component to be placed to the right of the main text. */
-  textAfter?: ReactElement,
+  textAfter ?: ReactElement,
+  /** Whether the Item should attempt to gain browser focus when mounted */
+  autoFocus?: boolean
 |}
 
 export default class NavigationItem extends PureComponent {
   static defaultProps = {
-    isHoverStylesDisabled: false,
     isSelected: false,
-    linkComponent: DefaultLinkComponent,
     isDropdownTrigger: false,
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-  }
-
-  onMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
+    autoFocus: false,
   }
 
   props: Props
@@ -80,10 +79,7 @@ export default class NavigationItem extends PureComponent {
       : null;
 
     const dropIcon = this.props.dropIcon && this.props.isDropdownTrigger ? (
-      <NavigationItemIcon
-        isDropdownTrigger
-        hasNoPadding={this.props.isDropdownTrigger}
-      >
+      <NavigationItemIcon isDropdownTrigger>
         {this.props.dropIcon}
       </NavigationItemIcon>
     ) : null;
@@ -105,49 +101,45 @@ export default class NavigationItem extends PureComponent {
       </NavigationItemAfter>
     ) : null;
 
+    // There are various 'after' elements which are all optional. If any of them are present we
+    // render those inside a shared wrapper.
+    const allAfter = (after || dropIcon || action) ? (
+      <NavigationItemAfterWrapper>
+        {after}
+        {dropIcon}
+        {action}
+      </NavigationItemAfterWrapper>
+    ) : null;
+
     const wrappedCaption = this.props.caption
       ? <NavigationItemCaption>{this.props.caption}</NavigationItemCaption>
       : null;
 
     const interactiveWrapperProps = {
-      onMouseDown: this.onMouseDown,
       onClick: this.props.onClick,
+      onKeyDown: this.props.onKeyDown,
       onMouseEnter: this.props.onMouseEnter,
       onMouseLeave: this.props.onMouseLeave,
-      tabIndex: this.props.tabIndex,
+      href: this.props.href,
+      linkComponent: this.props.linkComponent,
     };
 
-    if (!this.props.isDropdownTrigger) {
-      interactiveWrapperProps.href = this.props.href;
-      interactiveWrapperProps.linkComponent = this.props.linkComponent;
-    }
-
     return (
-      <NavigationItemOuter
-        isDropdown={this.props.isDropdownTrigger}
-        isHoverStylesEnabled={!this.props.isHoverStylesDisabled}
+      <Item
+        elemBefore={icon}
+        elemAfter={allAfter}
+        description={this.props.subText}
         isSelected={this.props.isSelected}
+        isDragging={this.props.isDragging}
+        isDropdown={this.props.isDropdownTrigger}
+        isCompact={this.props.isCompact}
+        dnd={this.props.dnd}
+        autoFocus={this.props.autoFocus}
+        {...interactiveWrapperProps}
       >
-        <InteractiveWrapper
-          {...interactiveWrapperProps}
-        >
-          <NavigationItemInner>
-            {icon}
-            <NavigationItemText isDropdown={this.props.isDropdownTrigger}>
-              <NavigationItemMainText>
-                {this.props.text}
-                {wrappedCaption}
-              </NavigationItemMainText>
-              <NavigationItemSubText>
-                {this.props.subText}
-              </NavigationItemSubText>
-            </NavigationItemText>
-            {after}
-            {dropIcon}
-            {action}
-          </NavigationItemInner>
-        </InteractiveWrapper>
-      </NavigationItemOuter>
+        {this.props.text}
+        {wrappedCaption}
+      </Item>
     );
   }
 }

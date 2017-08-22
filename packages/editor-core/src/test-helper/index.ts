@@ -14,11 +14,12 @@ export {
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   panel, panelNote, mentionQuery, hardBreak, emojiQuery,
-  media, mediaGroup, textColor, table, tr, td, th, tdEmpty, td11, th11, tdCursor, thEmpty,
-  decisionItem, decisionList,
+  media, mediaGroup, singleImage, textColor, table, tr, td,
+  th, tdEmpty, td11, th11, tdCursor, thEmpty,
+  decisionItem, decisionList, taskItem, taskList,
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';
-export { storyMediaProviderFactory } from './media-provider';
+export { storyMediaProviderFactory, getLinkCreateContextMock } from './media-provider';
 export { default as randomId } from './random-id';
 export { default as sleep } from './sleep';

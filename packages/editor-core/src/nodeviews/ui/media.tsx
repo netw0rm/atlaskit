@@ -12,6 +12,7 @@ import {
   EditorView,
   Node as PMNode,
 } from '../../prosemirror';
+import { CardDimensions } from '@atlaskit/media-card';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -28,6 +29,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   view: EditorView;
   node: PMNode;
   providerFactory: ProviderFactory;
+  cardDimensions: CardDimensions;
 }
 
 export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
@@ -55,7 +57,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
   }
 
   render() {
-    const { node, providerFactory, selected, view } = this.props;
+    const { node, providerFactory, selected, view, cardDimensions } = this.props;
     const { id, type, collection } = node.attrs;
 
     return (
@@ -67,6 +69,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
           type={type!}
           collection={collection!}
           providers={providerFactory}
+          cardDimensions={cardDimensions}
           onDelete={this.handleRemove}
         />
       </Wrapper>
@@ -75,7 +78,7 @@ export default class MediaNode extends PureComponent<MediaNodeProps, {}> {
 
   private handleRemove = (item?: any, event?: Event) => {
     const { getPos, node } = this.props;
-    this.pluginState.handleMediaNodeRemove(node, getPos);
+    this.pluginState.handleMediaNodeRemoval(node, getPos);
 
     if (event) {
       event.stopPropagation();

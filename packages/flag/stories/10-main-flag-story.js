@@ -10,10 +10,12 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 
 import AnimationDemo from './components/AnimationDemo';
+import ConnectionDemo from './components/ConnectionDemo';
 import { name } from '../package.json';
 import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
 import ProgrammaticFlagDismissExample from './examples/ProgrammaticFlagDismissExample';
+import AutoDismissExample from './examples/AutoDismissExample';
 
 const StoryPadding = styled.div`
   padding: ${akGridSizeUnitless * 3}px;
@@ -113,6 +115,11 @@ storiesOf(name, module)
       </FlagGroup>
     </StoryPadding>
   ))
+  .add('Flag changing appearance and content', () => (
+    <StoryPadding>
+      <ConnectionDemo />
+    </StoryPadding>
+  ))
   .add('Flag on top of Modal', () => (
     <StoryPadding>
       <Modal header="Modal" isOpen>
@@ -148,4 +155,7 @@ storiesOf(name, module)
   ))
   .add('programatically dismissing a Flag', () => (
     <ProgrammaticFlagDismissExample />
+  ))
+  .add('AutoDismissFlag example', () => (
+    <AutoDismissExample />
   ));

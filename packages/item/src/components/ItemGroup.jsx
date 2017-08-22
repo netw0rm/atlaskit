@@ -16,9 +16,17 @@ export default class ItemGroup extends Component {
     /** Causes the group title to be rendered with reduced spacing. */
     isCompact: PropTypes.bool,
     /** Optional heading text to be shown above the items. */
-    title: PropTypes.string,
+    title: PropTypes.node,
     /** Content to be shown to the right of the heading */
     elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    /** A function that returns the DOM ref created by the group */
+    innerRef: PropTypes.func,
+    /** Accessibility role to be applied to the root component */
+    role: PropTypes.string,
+  }
+
+  static defaultProps = {
+    role: 'group',
   }
 
   state = { ariaLabel: this.props.title }
@@ -48,11 +56,11 @@ export default class ItemGroup extends Component {
   }
 
   render() {
-    const { children, elemAfter, isCompact, title } = this.props;
+    const { children, elemAfter, isCompact, title, innerRef, role } = this.props;
     const { ariaLabel } = this.state;
 
     return (
-      <div aria-label={ariaLabel} role="group">
+      <div aria-label={ariaLabel} role={role} ref={innerRef}>
         {
           title ? (
             <GroupTitle aria-hidden="true" isCompact={isCompact}>

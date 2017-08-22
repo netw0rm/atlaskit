@@ -1,22 +1,25 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "3.6.1",
+  "version": "5.0.1",
   "config": {
     "access": "public"
   },
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Inline Dialog"
+    "name": "Inline Dialog",
+    "dark": true
   },
   "scripts": {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-dialog; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "eslint": "../../build/bin/lint.eslint.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -33,7 +36,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/layer": "^2.0.0",
-    "@atlaskit/util-shared-styles": "^2.0.3",
+    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"

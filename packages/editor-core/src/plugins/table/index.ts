@@ -9,20 +9,22 @@ import {
   Selection,
   TableMap,
   Node,
-  Transaction,
-  Fragment,
   Slice,
   Decoration,
   DecorationSet,
 } from '../../prosemirror';
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
-import { getColumnPos, getRowPos, getTablePos } from './utils';
-export type TableStateSubscriber = (state: TableState) => any;
+import {
+  getColumnPos,
+  getRowPos,
+  getTablePos,
+  getSelectedColumn,
+  getSelectedRow
+} from './utils';
+import { analyticsService } from '../../analytics';
 
-export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
-}
+export type TableStateSubscriber = (state: TableState) => any;
 
 export interface SelectedCell {
   pos: number;
@@ -53,39 +55,6 @@ export class TableState {
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
   }
 
-  goToNextCell(direction: number): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (!this.tableNode) {
-        return false;
-      }
-      const offset = this.tableStartPos();
-      if (!offset) {
-        return false;
-      }
-      const map = TableMap.get(this.tableNode);
-      const lastCellPos =  map.positionAt(map.height - 1, map.width - 1, this.tableNode) + offset + 1;
-      if (lastCellPos ===  this.getCurrentCellStartPos() && direction === 1) {
-        this.insertRow(map.height);
-        return true;
-      }
-      return tableBaseCommands.goToNextCell(direction)(state, dispatch);
-    };
-  }
-
-  createTable (): Command {
-    return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-      if (this.tableDisabled || this.tableElement) {
-        return false;
-      }
-      this.focusEditor();
-      const table = this.createTableNode(3, 3);
-      const tr = state.tr.replaceSelectionWith(table);
-      tr.setSelection(Selection.near(tr.doc.resolve(state.selection.from)));
-      dispatch(tr.scrollIntoView());
-      return true;
-    };
-  }
-
   insertColumn = (column: number): void => {
     if (this.tableNode) {
       const map = TableMap.get(this.tableNode);
@@ -106,6 +75,8 @@ export class TableState {
         tableBaseCommands.addColumnBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
+
+      analyticsService.trackEvent('atlassian.editor.format.table.column.button');
     }
   }
 
@@ -127,6 +98,8 @@ export class TableState {
         tableBaseCommands.addRowBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
+
+      analyticsService.trackEvent('atlassian.editor.format.table.row.button');
     }
   }
 
@@ -142,16 +115,37 @@ export class TableState {
     if (isRowSelected && isColumnSelected) {
       tableBaseCommands.deleteTable(state, dispatch);
       this.focusEditor();
+      analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
     } else if (isColumnSelected) {
+      analyticsService.trackEvent('atlassian.editor.format.table.delete_column.button');
+
+      // move the cursor in the column to the left of the deleted column(s)
+      const map = TableMap.get(this.tableNode!);
+      const { anchor, head } = getSelectedColumn(this.view.state, map);
+      const column = Math.min(anchor, head);
+      const nextPos =  map.positionAt(0, column > 0 ? column - 1 : 0, this.tableNode!);
       tableBaseCommands.deleteColumn(state, dispatch);
-      this.moveCursorToFirstCell();
+      this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
+      const { tableHeader } = this.view.state.schema.nodes;
+      const cell = this.getCurrentCell();
+      const event = cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
+      analyticsService.trackEvent(`atlassian.editor.format.table.${event}.button`);
+
+      // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
+      const { anchor, head } = getSelectedRow(this.view.state);
+      const map = TableMap.get(this.tableNode!);
+      const minRow = Math.min(anchor, head);
+      const maxRow = Math.max(anchor, head);
+      const isRemovingLastRow = maxRow === (map.height - 1);
       tableBaseCommands.deleteRow(state, dispatch);
-      this.moveCursorToFirstCell();
+      const nextPos =  map.positionAt(isRemovingLastRow ? minRow - 1 : minRow, 0, this.tableNode!);
+      this.moveCursorTo(nextPos);
     } else {
       // replace selected cells with empty cells
       this.emptySelectedCells();
       this.moveCursorInsideTableTo(state.selection.from);
+      analyticsService.trackEvent('atlassian.editor.format.table.delete_content.button');
     }
   }
 
@@ -254,6 +248,7 @@ export class TableState {
 
   update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
+    const { cellSelection } = this;
 
     const tableElement = this.getTableElement(docView);
     if (domEvent && tableElement || tableElement !== this.tableElement) {
@@ -268,7 +263,14 @@ export class TableState {
       dirty = true;
     }
 
-    const cellElement = this.cellSelection ? this.getFirstSelectedCellElement(docView) : undefined;
+    // show floating toolbar only when the whole row, column or table is selected
+    const toolbarVisible = (
+      cellSelection && (cellSelection.isColSelection() || cellSelection.isRowSelection())
+        ? true
+        : false
+    );
+
+    const cellElement = toolbarVisible ? this.getFirstSelectedCellElement(docView) : undefined;
     if (cellElement !== this.cellElement) {
       this.cellElement = cellElement;
       dirty = true;
@@ -305,21 +307,31 @@ export class TableState {
     }
   }
 
-  cut (): void {
-    this.closeFloatingToolbar();
-  }
-
-  copy (): void {
-    this.closeFloatingToolbar();
-  }
-
-  paste (): void {
-    this.closeFloatingToolbar();
-  }
-
-  private closeFloatingToolbar (): void {
+  closeFloatingToolbar (): void {
     this.clearSelection();
     this.triggerOnChange();
+  }
+
+  getCurrentCellStartPos(): number | undefined {
+    const { $from } = this.view.state.selection;
+    const { tableCell, tableHeader } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === tableCell || node.type === tableHeader) {
+        return $from.start(i);
+      }
+    }
+  }
+
+  private getCurrentCell(): Node | undefined {
+    const { $from } = this.view.state.selection;
+    const { tableCell, tableHeader } = this.view.state.schema.nodes;
+    for (let i = $from.depth; i > 0; i--) {
+      const node = $from.node(i);
+      if(node.type === tableCell || node.type === tableHeader) {
+        return node;
+      }
+    }
   }
 
   private createHoverSelection (from: number, to: number): void {
@@ -389,17 +401,6 @@ export class TableState {
     }
   }
 
-  private getCurrentCellStartPos(): number | undefined {
-    const { $from } = this.view.state.selection;
-    const { tableCell, tableHeader } = this.view.state.schema.nodes;
-    for (let i = $from.depth; i > 0; i--) {
-      const node = $from.node(i);
-      if(node.type === tableCell || node.type === tableHeader) {
-        return $from.start(i);
-      }
-    }
-  }
-
   private getTableNode(): Node | undefined {
     const { $from } = this.view.state.selection;
     for (let i = $from.depth; i > 0; i--) {
@@ -456,22 +457,6 @@ export class TableState {
     this.view.dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
   }
 
-  private createTableNode (rows: number, columns: number): Node {
-    const { state } = this.view;
-    const { table, tableRow, tableCell, tableHeader } = state.schema.nodes;
-    const rowNodes: Node[] = [];
-
-    for (let i = 0; i < rows; i ++) {
-      const cell = i === 0 ? tableHeader : tableCell;
-      const cellNodes: Node[] = [];
-      for (let j = 0; j < columns; j ++) {
-        cellNodes.push(cell.createAndFill());
-      }
-      rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
-    }
-    return table.create(null, Fragment.from(rowNodes));
-  }
-
   private canInsertTable (): boolean {
     const { state } = this.view;
     const { $from, to } = state.selection;
@@ -521,14 +506,6 @@ export class TableState {
     const offset = this.tableStartPos();
     if (offset) {
       this.moveCursorInsideTableTo(pos + offset);
-    }
-  }
-
-  private moveCursorToFirstCell (): void {
-    if (this.tableNode) {
-      const map = TableMap.get(this.tableNode);
-      const pos =  map.positionAt(0, 0, this.tableNode);
-      this.moveCursorTo(pos);
     }
   }
 }

@@ -1,26 +1,30 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PropTypes } from 'react';
 import { createEditor, getUiComponent } from './create-editor';
-import { EditorView} from '../prosemirror';
+import { createPluginsList } from './create-editor';
+import EditorActions from './actions';
 
 import ProviderFactory from '../providerFactory';
 
-import { EditorProps, UIComponentFactory } from './types';
+import { EditorProps, EditorInstance } from './types';
 export * from './types';
 
 export interface State {
-  editor?: {
-    editorView?: EditorView;
-    contentComponents?: UIComponentFactory[];
-    primaryToolbarComponents?: UIComponentFactory[];
-    secondaryToolbarComponents?: UIComponentFactory[];
-  };
+  editor?: EditorInstance;
   component?: React.ComponentClass<any>;
 }
 
-export default class Editor extends PureComponent<EditorProps, State> {
+export default class Editor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
     appearance: 'message'
+  };
+
+  static contextTypes = {
+    editorActions: PropTypes.object
+  };
+
+  context: {
+    editorActions?: EditorActions;
   };
 
   private providerFactory: ProviderFactory;
@@ -40,13 +44,44 @@ export default class Editor extends PureComponent<EditorProps, State> {
     this.handleProviders(nextProps);
   }
 
+  componentWillUnmount() {
+    if (!this.state.editor) {
+      return;
+    }
+
+    this.unregisterEditorFromActions();
+    this.state.editor.editorView.destroy();
+
+    if (this.state.editor.eventDispatcher) {
+      this.state.editor.eventDispatcher.destroy();
+    }
+  }
+
+  private registerEditorForActions(editor: EditorInstance) {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateRegisterEditor(editor.editorView);
+    }
+  }
+
+  private unregisterEditorFromActions() {
+    if (this.context && this.context.editorActions) {
+      this.context.editorActions._privateUnregisterEditor();
+    }
+  }
+
   private initUi() {
     const component = getUiComponent(this.props.appearance);
     this.setState({ component });
   }
 
   private initEditor = place => {
-    const editor = createEditor(place, this.props, this.providerFactory);
+    if (!place) {
+      return;
+    }
+
+    const plugins = createPluginsList(this.props);
+    const editor = createEditor(place, plugins, this.props, this.providerFactory);
+    this.registerEditorForActions(editor);
     this.setState({ editor });
   }
 
@@ -69,8 +104,9 @@ export default class Editor extends PureComponent<EditorProps, State> {
       editorView,
       contentComponents,
       primaryToolbarComponents,
-      secondaryToolbarComponents
-    } = editor;
+      secondaryToolbarComponents,
+      eventDispatcher
+    } = editor as EditorInstance;
 
     return (
       <Component
@@ -78,6 +114,8 @@ export default class Editor extends PureComponent<EditorProps, State> {
 
         editorView={editorView}
         providerFactory={this.providerFactory}
+
+        eventDispatcher={eventDispatcher}
 
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}

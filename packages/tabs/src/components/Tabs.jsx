@@ -1,19 +1,22 @@
+// @flow
+/* eslint-disable react/sort-comp */
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import TabsStateless from './TabsStateless';
+import type { ChildrenType } from '../types';
+
+type Props = {
+  /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
+  onSelect?: (number) => void,
+  /** The tabs to display, with content being hidden unless the tab is selected. */
+  tabs?: Array<{
+    content?: ChildrenType,
+    defaultSelected?: boolean,
+    label: ChildrenType,
+  }>,
+};
 
 export default class Tabs extends PureComponent {
-  static propTypes = {
-    /** Handler for selecting a new tab. Called with the number of the tab, zero-indexed */
-    onSelect: PropTypes.func,
-    /** The tabs to display, with content being hidden unless the tab is selected. */
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.node,
-      defaultSelected: PropTypes.bool,
-      label: PropTypes.node.isRequired,
-    })),
-  }
-
+  props: Props
   static defaultProps = {
     onSelect: () => {},
     tabs: [],

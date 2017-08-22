@@ -1,6 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
-import memoizeOne from 'memoize-one';
+import React, { Component } from 'react';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -15,7 +14,8 @@ import {
   globalSecondaryActions as globalSecondaryActionsSizes,
 } from '../../shared-variables';
 import { container } from '../../theme/presets';
-import type { ReactElement, Provided } from '../../types';
+import type { ReactClass, ReactElement } from '../../types';
+import type { Provided } from '../../theme/types';
 
 type Props = {|
   children: ReactElement,
@@ -35,17 +35,17 @@ type Props = {|
   globalSearchIcon?: ReactElement,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
   component is designed to be used as the headerComponent. */
-  headerComponent: () => mixed,
+  headerComponent?: () => mixed,
   /** Set to determine whether the ContainerNavigation should be rendered in its
   open state or closed state. Passed through to the headerComponent. */
   isCollapsed?: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** Function to be called when the globalCreateIcon is clicked on. */
-  onGlobalCreateActivate: () => void,
+  onGlobalCreateActivate?: () => void,
   /** Function to be called when the globalSearchIcon is clicked on. */
-  onGlobalSearchActivate: () => void,
+  onGlobalSearchActivate?: () => void,
   /** Sets whether the globalyPrimaryActions should be displayed. These should be
   components shared with the GlobalNavigation component, so they can be included
   in the ContainerNavigation when Navigation is collapsed. */
@@ -56,7 +56,11 @@ type Props = {|
   globalSecondaryActions: Array<ReactElement>,
 |}
 
-export default class ContainerNavigation extends PureComponent {
+type State = {|
+  isInitiallyRendered: bool,
+|}
+
+export default class ContainerNavigation extends Component {
   static defaultProps = {
     showGlobalActions: false,
     globalSecondaryActions: [],
@@ -65,18 +69,15 @@ export default class ContainerNavigation extends PureComponent {
     theme: container,
   }
 
-  constructor(props: Props, context) {
+  constructor(props: Props, context: any) {
     super(props, context);
 
     this.state = {
       isInitiallyRendered: false,
     };
-
-    // Memoizing this function so that it will only be called
-    // when the underlying DOM node is changing OR if it is
-    // unmounting (in which case it will be `null`).
-    this.onRefChange = memoizeOne(this.onRefChange);
   }
+
+  state: State
 
   componentWillReceiveProps() {
     // After any update we are going to start animating.
@@ -112,11 +113,6 @@ export default class ContainerNavigation extends PureComponent {
     // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
 
-    const header = headerComponent ? (
-      <ContainerHeader>
-        {headerComponent({ isCollapsed })}
-      </ContainerHeader>) : null;
-
     return (
       <WithRootTheme
         provided={theme}
@@ -140,7 +136,9 @@ export default class ContainerNavigation extends PureComponent {
               searchIcon={globalSearchIcon}
             />
           </Reveal>
-          {header}
+          <ContainerHeader>
+            {headerComponent ? headerComponent({ isCollapsed }) : null}
+          </ContainerHeader>
           <ContainerNavigationChildren>
             {children}
           </ContainerNavigationChildren>

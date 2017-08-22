@@ -19,8 +19,11 @@ export const themeNamespace = '@atlaskit-shared-theme/item';
 // Used for Group titles and Item descriptions
 export const smallFontSize = 12;
 export const compactSmallFontSize = 10;
+export const gridSize: number = akGridSizeUnitless;
 
 export const defaultTheme: ItemTheme = {
+  afterItemSpacing: akGridSizeUnitless,
+  beforeItemSpacing: akGridSizeUnitless,
   borderRadius: parseInt(akBorderRadius, 10),
   focus: {
     outline: akColorB100,
@@ -62,6 +65,12 @@ export const defaultTheme: ItemTheme = {
   disabled: {
     background: akColorN0,
     text: akColorN200,
+    secondaryText: akColorN200,
+  },
+  // same as hover in this case
+  dragging: {
+    background: akColorN20,
+    text: akColorN800,
     secondaryText: akColorN200,
   },
 };

@@ -31,7 +31,12 @@ export const globalItemSizes = {
   large: gridSize * 6,
 };
 
+export const containerTitleBottomMargin = gridSize;
+export const containerTitleHorizontalPadding = gridSize / 2;
+export const containerTitleIconSpacing = gridSize;
+
 export const drawerOffset = gridSize * 2;
+export const drawerContainerHeaderAnimationSpeed = '220ms';
 export const globalOpenWidth = layout.width.closed;
 export const containerClosedWidth = globalOpenWidth;
 export const containerOpenWidth = 240;
@@ -43,7 +48,6 @@ export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
-export const nestedNavigationAnimationTime: number = 500;
 export const zIndex = {
   base: akZIndexNavigation,
   // needs to sit on top of navigation and the drawer
@@ -54,6 +58,15 @@ export const zIndex = {
 export const unthemedColors = {
   resizer: akColorB200,
   presenceIconBg: akColorPrimary3,
+  scrollbarBackground: 'rgba(0,0,0,0.2)',
+  scrollbarHoverBackground: 'rgba(0,0,0,0.4)',
+};
+
+// these colours are for the scrollbars in ContainerNavigationChildren
+export const scrollbar = {
+  size: gridSize,
+  background: unthemedColors.scrollbarBackground,
+  hoverBackground: unthemedColors.scrollbarHoverBackground,
 };
 
 export const globalPrimaryActions = (() => {
@@ -102,14 +115,6 @@ export const globalSecondaryActions = (() => {
     itemSizes,
   };
 })();
-
-export const item = {
-  borderRadius: 3,
-  width: {
-    compact: gridSize * 4.5,
-    standard: gridSize * 5,
-  },
-};
 
 export const search = {
   layout: {

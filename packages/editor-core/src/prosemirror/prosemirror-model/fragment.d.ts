@@ -1,6 +1,8 @@
 import { Node, Schema } from './';
 
 export class Fragment {
+  nodesBetween(from: number | null, to: number | null, f: (node: Node, pos: number, parent: Node, index: number) => void): void;
+  descendants(f: (node: Node, pos: number, parent: Node) => void): void;
   textBetween(from: number, to: number, blockSeparator?: string, leafText?: string): string;
   append(other: Fragment): Fragment;
   cut(from: number, to?: number): Fragment;

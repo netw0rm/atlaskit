@@ -2,6 +2,7 @@
 import styled, {css} from 'styled-components';
 import {akGridSizeUnitless, akFontFamily, akColorN0, akColorN20, akColorN800, akColorN900} from '@atlaskit/util-shared-styles';
 import {colorWithAlpha} from '../../utils/colorWithAlpha';
+import {borderRadius, cardShadow} from '../../styles';
 
 const previewWidth = 116;
 
@@ -72,11 +73,8 @@ export const Card = styled.div`
   font-size: 12px;
   font-family: ${akFontFamily};
 
-  /* TODO: reuse existing card wrapper */
-  border-radius: 3px;
-
-  /* TODO: reuse */
-  box-shadow: 0 2px 4px 0 ${colorWithAlpha(akColorN900, 0.5)};
+  ${borderRadius}
+  ${cardShadow}
 
 `;
 

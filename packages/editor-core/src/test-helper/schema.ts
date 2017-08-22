@@ -8,6 +8,7 @@ export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
   nodes: [
     'doc',
+    'applicationCard',
     'paragraph',
     'text',
     'bulletList',
@@ -24,6 +25,7 @@ export default createSchema({
     'image',
     'media',
     'mediaGroup',
+    'singleImage',
     'plain',
     'table',
     'tableCell',
@@ -31,6 +33,8 @@ export default createSchema({
     'tableRow',
     'decisionList',
     'decisionItem',
+    'taskList',
+    'taskItem',
   ],
   marks: [
     'em',

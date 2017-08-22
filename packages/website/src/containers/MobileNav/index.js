@@ -59,7 +59,6 @@ export default class MobileNavigation extends PureComponent {
                 <MenuIcon
                   label={navIsOpen ? 'Close Navigation' : 'Open Navigation'}
                   size="small"
-                  style={{ marginLeft: 10, marginRight: 10 }}
                 />
               </Hamburger>
             )}

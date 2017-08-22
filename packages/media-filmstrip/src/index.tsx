@@ -1,2 +1,1 @@
-export * from './filmstrip-view';
-export * from './filmstrip-navigator';
+export * from './filmstripView';

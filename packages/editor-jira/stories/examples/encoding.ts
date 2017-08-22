@@ -1,9 +1,11 @@
 import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { Node } from '@atlaskit/editor-core';
-import { makeSchema } from '../../src/schema';
-import { encode } from '../../src/html';
+import {
+  createJIRASchema,
+  JIRATransformer,
+  Node,
+} from '@atlaskit/editor-core';
 
-const schema = makeSchema({
+const schema = createJIRASchema({
   allowLists: true,
   allowLinks: true,
   allowMentions: true,
@@ -12,6 +14,9 @@ const schema = makeSchema({
   allowBlockQuote: true,
   allowSubSup: true,
 });
+
+const transformer = new JIRATransformer(schema);
+const encode = (doc: Node) => transformer.encode(doc);
 
 // Nodes
 const br = nodeFactory(schema.nodes.hardBreak);
@@ -173,5 +178,5 @@ interface Example {
 export default seeds.map(seed => ({
   description: seed.description,
   editor: seed.doc.toString(),
-  jira: encode(seed.doc, schema),
+  jira: encode(seed.doc),
 })) as Example[];

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize, math } from '@atlaskit/theme';
 
-const getAlignment = ({ followsIcon }) => (followsIcon ? 'baseline' : 'center');
-
-const getMargin = ({ spacing }) => (spacing === 'none' ? '0' : `0 ${akGridSizeUnitless / 2}px`);
+const getAlignment = p => (p.followsIcon ? 'baseline' : 'center');
+const getMargin = p => (p.spacing === 'none'
+  ? 0
+  : `0 ${math.divide(gridSize, 2)(p)}px`
+);
 
 const ButtonContent = styled.span`
   align-items: ${getAlignment};

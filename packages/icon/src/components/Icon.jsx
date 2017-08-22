@@ -1,4 +1,7 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
+import { colors } from '../../../theme/src';
 
 const sizes = {
   small: '16px',
@@ -6,6 +9,21 @@ const sizes = {
   large: '32px',
   xlarge: '48px',
 };
+
+// NOTE: spanStyles is exported for testing
+// Once styled-components is bumped > 2.X.X we can enjoy `toHaveStyleRule` from
+// https://github.com/styled-components/jest-styled-components#tohavestylerule
+
+export const spanStyles = css`
+  color: ${p => p.primaryColor || 'currentColor'};
+  display: inline-block;
+  fill: ${p => p.secondaryColor || colors.background};
+  height: ${p => p.size};
+  line-height: 1;
+  width: ${p => p.size};
+`;
+
+export const Span = styled.span`${spanStyles}`;
 
 class Icon extends PureComponent {
   static propTypes = {
@@ -25,8 +43,6 @@ class Icon extends PureComponent {
 
   static defaultProps = {
     onClick: () => {},
-    primaryColor: 'currentColor',
-    secondaryColor: 'white',
   }
 
   render() {
@@ -39,29 +55,30 @@ class Icon extends PureComponent {
       ...svgProps
     } = this.props;
 
-    const wrapperStyles = {
-      display: 'inline-block',
-      lineHeight: 1,
-      width: sizes[size],
-      height: sizes[size],
-      color: primaryColor,
-      fill: secondaryColor,
-    };
-
+    const dimensions = sizes[size];
     const svgStyles = {
-      height: sizes[size],
+      height: dimensions,
       maxHeight: '100%',
       maxWidth: '100%',
       overflow: 'hidden',
       verticalAlign: 'bottom',
-      width: sizes[size],
+      width: dimensions,
     };
 
     return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <span onClick={onClick} style={wrapperStyles}>
-        <Glyph title={this.props.label} style={svgStyles} role="img" {...svgProps} />
-      </span>
+      <Span
+        onClick={onClick}
+        primaryColor={primaryColor}
+        secondaryColor={secondaryColor}
+        size={dimensions}
+      >
+        <Glyph
+          role="img"
+          style={svgStyles}
+          title={this.props.label}
+          {...svgProps}
+        />
+      </Span>
     );
   }
 }

@@ -1,8 +1,63 @@
 # @atlaskit/avatar
 
-## Unreleased
+## 8.0.0 (2017-08-11)
 
-## 6.0.0 (2017-07-12)
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for avatar ([3eb7531](https://bitbucket.org/atlassian/atlaskit/commits/3eb7531))
+
+## 7.0.0 (2017-08-11)
+
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for avatar ([3eb7531](https://bitbucket.org/atlassian/atlaskit/commits/3eb7531))
+
+## 6.4.5 (2017-08-04)
+
+
+* bug fix; moves babel-plugin-react-flow-props-to-prop-types to a devDependency ([6378b88](https://bitbucket.org/atlassian/atlaskit/commits/6378b88))
+## 6.4.4 (2017-08-03)
+
+* bug fix; fixes uncaught type error in avatar by consuming latest util-shared-styles (issues closed: ak-3067) ([be705fa](https://bitbucket.org/atlassian/atlaskit/commits/be705fa))
+
+
+
+
+
+## 6.4.3 (2017-07-28)
+
+
+* fix; fixes avatars devDeps to include lozenge and button-group ([d9ae05f](https://bitbucket.org/atlassian/atlaskit/commits/d9ae05f))
+
+## 6.4.2 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+## 6.4.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 6.1.0 (2017-07-17)
+
+## 6.1.0 (2017-07-17)
+
+## 6.1.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 6.1.0 (2017-07-17)
+
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
+## 5.0.0 (2017-07-12)
 
 
 * feature; added the xxlarge size to Avatar ([5cfbfb5](https://bitbucket.org/atlassian/atlaskit/commits/5cfbfb5))

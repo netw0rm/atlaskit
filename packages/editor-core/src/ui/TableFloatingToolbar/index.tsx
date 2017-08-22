@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
+import tableCommands from '../../plugins/table/commands';
 import { EditorView, CellSelection } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
@@ -11,6 +12,7 @@ import DropdownMenu from '../DropdownMenu';
 import { cut, copy, paste } from '../../keymaps';
 import AdvanceMenuItem from './AdvanceMenuItem';
 import { getShortcut } from './utils';
+import { analyticsService as analytics } from '../../analytics';
 
 export interface Props {
   editorView: EditorView;
@@ -26,6 +28,7 @@ export interface State {
   cutDisabled: boolean;
   copyDisabled: boolean;
   pasteDisabled: boolean;
+  advancedMenuDisabled: boolean;
 }
 
 export default class TableFloatingToolbar extends PureComponent<Props, State> {
@@ -34,6 +37,8 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     cutDisabled: false,
     copyDisabled: false,
     pasteDisabled: false,
+    // disabled for the first version of tables
+    advancedMenuDisabled: true
   };
 
   componentDidMount() {
@@ -51,7 +56,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   render() {
-    const { cellElement, isOpen } = this.state;
+    const { cellElement, isOpen, advancedMenuDisabled } = this.state;
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const items = this.createItems();
 
@@ -69,7 +74,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
               onClick={this.handleRemove}
               iconBefore={<RemoveIcon label="Remove selected cells" />}
             />
-            {items[0].items.length > 0 &&
+            {!advancedMenuDisabled && items[0].items.length > 0 &&
               <DropdownMenu
                 items={items}
                 isOpen={isOpen}
@@ -121,15 +126,19 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
   }
 
   private onItemActivated = ({ item }) => {
+    const { editorView } = this.props;
     switch(item.value) {
       case 'cut':
-        this.props.pluginState.cut();
+        analytics.trackEvent('atlassian.editor.format.table.cut.button');
+        tableCommands.cut()(editorView.state, editorView.dispatch);
         break;
       case 'copy':
-        this.props.pluginState.copy();
+        analytics.trackEvent('atlassian.editor.format.table.copy.button');
+        tableCommands.copy()(editorView.state, editorView.dispatch);
         break;
       case 'paste':
-        this.props.pluginState.paste();
+        analytics.trackEvent('atlassian.editor.format.table.paste.button');
+        tableCommands.paste()(editorView.state, editorView.dispatch);
         break;
     }
   }

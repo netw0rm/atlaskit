@@ -1,6 +1,27 @@
 # @atlaskit/media-core
 
-## Unreleased
+## 9.0.0 (2017-08-07)
+
+* breaking; removed trello types ([ce181b4](https://bitbucket.org/atlassian/atlaskit/commits/ce181b4))
+* breaking; remove trello app types and update to adhere to latest api signatures ([ce181b4](https://bitbucket.org/atlassian/atlaskit/commits/ce181b4))
+
+
+
+
+## 8.4.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 8.4.0 (2017-07-19)
+
+
+* feature; add support for smart-card links from the API ([ff95bc6](https://bitbucket.org/atlassian/atlaskit/commits/ff95bc6))
+
+## 8.3.0 (2017-07-18)
+
+
+* feature; added smart card payload ([3f1691e](https://bitbucket.org/atlassian/atlaskit/commits/3f1691e))
 
 ## 8.2.0 (2017-06-28)
 

@@ -4,7 +4,7 @@ import {
   CardStatus,
   CardView,
   CardDimensions,
-  UrlPreviewIdentifier,
+  MediaIdentifier,
 } from '@atlaskit/media-card';
 
 import {
@@ -100,7 +100,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   public componentWillUnmount() {
     this.destroyed = true;
 
-    const { editorView, id } = this.props;
+    const { id } = this.props;
     const { mediaProvider } = this.state;
 
     if (mediaProvider) {
@@ -110,11 +110,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
     }
 
-    if (editorView) {
-      const stateManager = this.getStateManagerFromEditorPlugin(editorView);
-      if (stateManager) {
-        stateManager.unsubscribe(id, this.handleMediaStateChange);
-      }
+    const stateManager = this.getStateManagerFromEditorPlugin();
+    if (stateManager) {
+      stateManager.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -133,25 +131,32 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext } = this.state;
-    const { id, collection, cardDimensions, onDelete } = this.props;
-    const url = id;
-    const otherProps: any = {};
+    const { id, collection, cardDimensions, onDelete, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
     }
 
-    linkCreateContext.getUrlPreviewProvider(url).observable().subscribe(
-      metadata => linkCreateContext.addLinkItem(url, collection, metadata)
-    );
-
-    const identifier: UrlPreviewIdentifier = {
+    const identifier: MediaIdentifier = {
       mediaItemType: 'link',
-      url
+      collectionName: collection,
+      id,
     };
 
+    if (id.substr(0, 10) === 'temporary:') {
+      const url = id.substr(id.indexOf(':', 11) + 1);
+      return (
+        <CardView
+          metadata={{type: 'link', url, title: ''}}
+          status="loading"
+          mediaItemType="link"
+          dimensions={cardDimensions}
+        />
+      );
+    }
+
     if (onDelete) {
-      otherProps.actions = [ CardDelete(onDelete) ];
+      (otherProps as any).actions = [ CardDelete(onDelete) ];
     }
 
     return (
@@ -159,9 +164,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         context={linkCreateContext}
         dimensions={cardDimensions}
         identifier={identifier}
-        appearance="image"
+        appearance="horizontal"
         resizeMode={this.resizeMode}
-        {...otherProps}
+        {...otherProps as any}
       />
     );
   }
@@ -171,11 +176,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { id, cardDimensions } = this.props;
 
     if (!mediaProvider || !viewContext) {
-      return <CardView
-        status="loading"
-        mediaItemType="file"
-        dimensions={cardDimensions}
-      />;
+      return (
+        <CardView
+          status="loading"
+          mediaItemType="file"
+          dimensions={cardDimensions}
+        />
+      );
     }
 
     if (id.substr(0, 10) === 'temporary:') {
@@ -277,16 +284,16 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { editorView, id } = this.props;
+    const { id } = this.props;
 
     if (this.destroyed) {
       return;
     }
 
     /**
-     * Try to get stateManager from Editor Plugin first, if not, try MediaProvider
+     * Try to get stateManager from MediaProvider first, if not, try Editor Plugin
      */
-    const stateManager = this.getStateManagerFromEditorPlugin(editorView) || mediaProvider.stateManager;
+    const stateManager = mediaProvider.stateManager || this.getStateManagerFromEditorPlugin();
 
     this.setState({ mediaProvider });
 
@@ -294,7 +301,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       const mediaState = stateManager.getState(id);
 
       stateManager.subscribe(id, this.handleMediaStateChange);
-      this.setState({ ...mediaState });
+      this.setState({id,  ...mediaState });
     }
 
     await this.setContext('viewContext', mediaProvider);
@@ -315,8 +322,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     this.setState({ [contextName as any]: context as Context });
   }
 
-  getStateManagerFromEditorPlugin(editorView): MediaStateManager | undefined {
-
+  getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
+    const { editorView } = this.props;
     if (!editorView) {
       return;
     }

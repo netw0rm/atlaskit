@@ -3,9 +3,8 @@ import { analyticsService } from '../../analytics';
 import { transformToCodeAction } from './transform-to-code';
 import { InputRuleHandler, createInputRule } from '../utils';
 
-function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): InputRuleHandler<any> {
+function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number): InputRuleHandler<any> {
   return (state, match, start, end): Transaction | undefined => {
-    const charSize = specialChar.length;
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
     // because we want ** to work for strong text
@@ -47,23 +46,27 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.marks.strong) {
-    // **string** should bold the text
-    rules.push(createInputRule(/(\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, '**')));
+    // **string** or __strong__ should bold the text
+    const markLength = 2;
+    rules.push(createInputRule(/(\*\*([^\s^\*][^\*]+)\*\*)$|(\_\_([^\s^\_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
   }
 
   if (schema.marks.em) {
-    // *string* should italic the text
-    rules.push(createInputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, addMark(schema.marks.em, schema, '*')));
+    // *string* or _string_ should italic the text
+    const markLength = 1;
+    rules.push(createInputRule(/(?:[^\*]+)(\*([^\s^\*][^\*]+?)\*)$|^(\*([^\s^\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, markLength)));
+    rules.push(createInputRule(/(?:[^\_]+)(\_([^\s^\_][^\_]+?)\_)$|^(\_([^\s^\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
   }
 
   if (schema.marks.strike) {
     // ~~string~~ should strikethrough the text
-    rules.push(createInputRule(/(\~\~([^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, '~~')));
+    const markLength = 2;
+    rules.push(createInputRule(/(\~\~([^\s^\~][^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, markLength)));
   }
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(createInputRule(/(`([^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
+    rules.push(createInputRule(/(`([^\s^`][^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
   if (rules.length !== 0) {

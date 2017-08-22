@@ -1,8 +1,56 @@
 # @atlaskit/droplist
 
-## Unreleased
+## 4.9.0 (2017-08-11)
 
-* feature; adds maxHeight prop to droplist
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+
+
+
+
+## 4.8.0 (2017-08-11)
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+
+
+
+
+
+## 4.7.0 (2017-07-28)
+
+## 4.6.2 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+
+* feature; convert dropdown-menu and droplist to declarative API ([f6e0292](https://bitbucket.org/atlassian/atlaskit/commits/f6e0292))
+
+## 4.6.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 4.6.0 (2017-07-19)
+
+## 4.2.0 (2017-07-17)
+
+## 4.2.0 (2017-07-17)
+
+## 4.2.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 4.2.0 (2017-07-17)
+
+
+* feature; adds maxHeight prop to droplist ([9a25a5a](https://bitbucket.org/atlassian/atlaskit/commits/9a25a5a))
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
 ## 4.1.0 (2017-06-21)
 
 

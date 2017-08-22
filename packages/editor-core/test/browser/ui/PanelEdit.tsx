@@ -1,9 +1,12 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../../src/plugins/panel';
 import PanelEdit from '../../../src/ui/PanelEdit';
 import { ToolbarButton } from '../../../src/ui/PanelEdit/styles';
+import AkButton from '@atlaskit/button';
+import { analyticsService } from '../../../src/analytics';
 
 import { doc, panel, p, makeEditor, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -66,5 +69,24 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     plugin.props.onFocus!(editorView, event);
     pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(false);
+  });
+
+  describe('analytics', () => {
+    let trackEvent;
+    let toolbarOption;
+    beforeEach(() => {
+      const { plugin, editorView, pluginState, sel } = editor(doc(panel(p('text{<>}'))));
+      toolbarOption = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
+      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleClick!(editorView, sel, event);
+      trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
+    });
+    ['info', 'note', 'tip', 'warning'].forEach((panelType, index) => {
+      it(`should trigger analyticsService.trackEvent when ${panelType} button is clicked`, () => {
+        toolbarOption.find(AkButton).at(index).simulate('click');
+        expect(trackEvent.calledWith(`atlassian.editor.format.${panelType}.button`)).to.equal(true);
+      });
+    });
   });
 });

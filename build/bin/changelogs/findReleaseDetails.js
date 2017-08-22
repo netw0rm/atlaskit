@@ -1,7 +1,7 @@
-/* eslint-disable no-console */
 const { default: io } = require('lerna-semantic-release-io');
 const srRegistry = require('semantic-release/src/lib/get-registry');
 const npmconf = require('npmconf');
+const analyzeCommits = require('./analyzeCommits');
 
 const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
   // eslint-disable-next-line
@@ -28,7 +28,7 @@ const getNextRelease = (pkg, sharedConfig, npmConfig, location) => {
     ));
   }).catch((e) => {
     if (e.code === 'ENOCHANGE') return null;
-    console.log('ERROR ERROR ERROR', e);
+    console.error('Unexpected Error getting package details', e);
     throw e;
   });
 };
@@ -41,9 +41,12 @@ function findNextReleaseInfoForAk() {
   });
 
   return npmConfPromise.then((npmConfig) => {
+    const plugins = io.semanticRelease.plugins;
+    plugins.analyzeCommits = analyzeCommits;
+
     const sharedConfig = {
       env: process.env,
-      plugins: io.semanticRelease.plugins,
+      plugins,
       npm: {
         auth: {
           token: process.env.NPM_TOKEN,

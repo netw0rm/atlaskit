@@ -3,27 +3,6 @@ const path = require('path');
 const glob = require('glob'); // eslint-disable-line import/no-extraneous-dependencies
 const SVGSpriter = require('svg-sprite'); // eslint-disable-line import/no-extraneous-dependencies
 const mkdirp = require('mkdirp'); // eslint-disable-line import/no-extraneous-dependencies
-const uid = require('uid'); // eslint-disable-line import/no-extraneous-dependencies
-const cheerio = require('cheerio'); // eslint-disable-line import/no-extraneous-dependencies
-
-const addTitleIds = {
-  type: 'perItem',
-  active: true,
-  fn: (item) => {
-    if (item.isElem('svg')) {
-      const titleElem = item.content.find(subItem => subItem.isElem('title'));
-      if (titleElem) {
-        const id = `title-${uid()}`;
-        titleElem.addAttr({
-          name: 'id',
-          local: 'id',
-          prefix: '',
-          value: id,
-        });
-      }
-    }
-  },
-};
 
 const spriterConfig = {
   dest: './dist',
@@ -31,13 +10,10 @@ const spriterConfig = {
   shape: {
     id: {
       generator: (name, file) => {
-        const iconName = file.path.replace('../icon/icons/src/', '').replace('.svg', '');
+        const iconName = file.path.replace('../icon/icons/processed/', '').replace('.svg', '');
         return `ak-icon-${iconName}`;
       },
     },
-    transform: [
-      { svgo: { plugins: [{ addTitleIds }] } },
-    ],
   },
   // this puts an inline style on the sprite to prevent it from being displayed on the page
   mode: {
@@ -52,8 +28,9 @@ const spriterConfig = {
 const spriter = new SVGSpriter(spriterConfig);
 
 // Add SVG source files from 'ak-icon'
-glob.sync('../icon/icons/src/**/*.svg', {}).forEach((svgFile) => {
-  spriter.add(svgFile, path.basename(svgFile), fs.readFileSync(svgFile, { encoding: 'utf-8' }));
+glob.sync('../icon/icons/processed/**/*.svg', {}).forEach((svgFile) => {
+  const svgContents = fs.readFileSync(svgFile, { encoding: 'utf-8' });
+  spriter.add(svgFile, path.basename(svgFile), svgContents);
 });
 
 // Compile the sprite
@@ -66,16 +43,5 @@ spriter.compile((error, result) => {
   const { path: spritePath, contents } = result.symbol.sprite;
   mkdirp.sync(path.dirname(spritePath));
 
-  // Some post-processing to link <title> to symbol.aria-labelledby
-  // and set focusable=false (for IE11)
-  // Note: tried to do this with SVGO plugins above but no dice.
-  const $ = cheerio.load(contents);
-
-  $('symbol').each((i, sym) => {
-    const titleId = $(sym).find('title').attr('id');
-    $(sym).attr('aria-labelledby', titleId);
-    $(sym).attr('focusable', 'false');
-  });
-
-  fs.writeFileSync(spritePath, $.html());
+  fs.writeFileSync(spritePath, contents);
 });

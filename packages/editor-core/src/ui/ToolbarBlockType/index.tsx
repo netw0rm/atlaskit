@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import ToolbarButton from '../ToolbarButton';
+import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
@@ -21,7 +22,7 @@ export interface State {
   active: boolean;
   availableBlockTypes: BlockType[];
   currentBlockType: BlockType;
-  isCodeBlock: boolean;
+  blockTypesDisabled: boolean;
 }
 
 export default class ToolbarBlockType extends PureComponent<Props, State> {
@@ -33,7 +34,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       active: false,
       availableBlockTypes: pluginState.availableBlockTypes,
       currentBlockType: pluginState.currentBlockType,
-      isCodeBlock: pluginState.isCodeBlock,
+      blockTypesDisabled: pluginState.blockTypesDisabled,
     };
   }
 
@@ -52,7 +53,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, currentBlockType, isCodeBlock, availableBlockTypes } = this.state;
+    const { active, currentBlockType, blockTypesDisabled, availableBlockTypes } = this.state;
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
@@ -69,11 +70,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           </ExpandIconWrapper>
         }
       >
-        <ButtonContent>{blockTypeTitles[0] || 'Other...'}</ButtonContent>
+        <ButtonContent>{blockTypeTitles[0] || 'Normal text'}</ButtonContent>
       </ToolbarButton>
     );
 
-    if (!this.props.isDisabled && !isCodeBlock) {
+    if (!this.props.isDisabled && !blockTypesDisabled) {
       const items = this.createItems();
       return (
         <DropdownMenu
@@ -108,6 +109,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       items.push({
         content: blockType.title,
         value: blockType,
+        tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
+        tooltipPosition: 'right',
         isActive: (currentBlockType === blockType),
       });
     });
@@ -121,7 +124,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       active: this.state.active,
       availableBlockTypes: pluginState.availableBlockTypes,
       currentBlockType: pluginState.currentBlockType,
-      isCodeBlock: pluginState.isCodeBlock,
+      blockTypesDisabled: pluginState.blockTypesDisabled,
     });
   }
 

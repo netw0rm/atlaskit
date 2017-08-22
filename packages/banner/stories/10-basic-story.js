@@ -1,11 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import WarningIcon from 'ak-icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 
 import Banner from '../src';
 import AnimationDemo from './AnimationDemo';
-import PaddedDiv from './components/PaddedDiv';
 import { name } from '../package.json';
+
+const Padded = props => <div style={{ padding: 16 }} {...props} />;
 
 storiesOf(name, module)
   .addCodeExampleStory('a warning banner', () => (
@@ -33,9 +34,9 @@ storiesOf(name, module)
       >
         JIRA Service Desk pricing has been updated. Please migrate within 3 months.
       </Banner>
-      <PaddedDiv>
+      <Padded>
         There should only be 1 line of text, with elipsis (…) shown when text overflows.
-      </PaddedDiv>
+      </Padded>
     </div>
   ))
   .add('animation demo', () => (

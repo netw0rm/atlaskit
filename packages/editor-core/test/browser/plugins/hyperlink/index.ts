@@ -4,9 +4,11 @@ import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
-  makeEditor, p as paragraph, sendKeyToPm, setTextSelection, dispatchPasteEvent
+  makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setTextSelection } from '../../../../src/utils';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -108,6 +110,16 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element!.tagName).to.eq('A');
+      });
+    });
+
+    context('when hitting backspace in a link', () => {
+      it('removes link mark when its not more valid link', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
+        sendKeyToPm(editorView, 'Backspace');
+        sendKeyToPm(editorView, 'Backspace');
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
       });
     });
 
@@ -249,6 +261,16 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
+    });
+
+    it('permits adding a link to an empty selection using the href and text', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      const href = 'http://www.atlassian.com';
+      const text = 'Atlassian';
+
+      pluginState.addLink({ href, text }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(text))));
     });
 
     it('should add http:// for a link without protocol', () => {
@@ -475,9 +497,60 @@ describe('hyperlink', () => {
 
       expect(pluginState.element!.textContent).to.eq('dsorin');
     });
+
+    context('should update both href and text on edit if they were same before edit', () => {
+      it('inserts a character inside a link', () => {
+        const { editorView, sel } = editor(doc(paragraph(link({ href: 'http://example.co' })('http://example.c{<>}o'))));
+        insertText(editorView, 'x', sel);
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.cxo' })('http://example.cxo'))));
+      });
+
+      it('inserts a character at the end of a link', () => {
+        const { editorView, sel } = editor(doc(paragraph(link({ href: 'http://example.com' })('http://example.com{<>}'))));
+        insertText(editorView, 'x', sel);
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('http://example.com'), 'x')));
+      });
+
+      it('inserts a character at the beginning of a link', () => {
+        const { editorView, sel } = editor(doc(paragraph(link({ href: 'http://example.com' })('{<>}http://example.com'))));
+        insertText(editorView, 'x', sel);
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('x', link({ href: 'http://example.com' })('http://example.com'))));
+      });
+
+      // Sending Backspace with a empty selection doesn't work
+      it.skip('removes a character from the end of a link', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://example.com' })('http://example.com{<>}'))));
+        sendKeyToPm(editorView, 'Backspace');
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.co' })('http://example.co'))));
+      });
+
+      it('replaces a character inside a link', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://example.com' })('http://exampl{<}e{>}.com'))));
+        sendKeyToPm(editorView, 'Backspace');
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://exampl.com' })('http://exampl.com'))));
+      });
+
+      it('replaces end of the link with extended content', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://example.com' })('http://example.co{<}m{>}'))));
+        insert(editorView, [' Atlassian']);
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.co' })('http://example.co'), ' Atlassian')));
+      });
+
+      it('works with valid URLs without scheme', () => {
+        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.example.com' })('www.exampl{<}e{>}.com'))));
+        sendKeyToPm(editorView, 'Backspace');
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.exampl.com' })('www.exampl.com'))));
+      });
+    });
   });
 
-  describe('editorFocued', () => {
+  describe('editorFocused', () => {
     context('when editor is focused', () => {
       it('it is true', () => {
         const { editorView, plugin, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
@@ -546,6 +619,8 @@ describe('hyperlink', () => {
   describe('Key Press Cmd-K', () => {
     context('when called without any selection in the editor', () => {
       it('should call subscribers', () => {
+        const trackEvent = sinon.spy();
+        analyticsService.trackEvent = trackEvent;
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
@@ -553,6 +628,7 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Mod-k');
 
         expect(spy.callCount).to.equal(2);
+        expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.keyboard')).to.equal(true);
       });
     });
 

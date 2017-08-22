@@ -1,8 +1,8 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { nestedNavigationAnimationTime } from '../../shared-variables';
+import { animationTimeUnitless } from '../../shared-variables';
 
-const animationTime = nestedNavigationAnimationTime / 1000;
+const animationTime = animationTimeUnitless / 1000;
 
 export const getAnimation = ({ isEntering, isLeaving, traversalDirection }) => (
   (isEntering || isLeaving) ? (
@@ -17,8 +17,15 @@ export const getAnimation = ({ isEntering, isLeaving, traversalDirection }) => (
 
 const NestedNavigationPage = styled.div`
   ${getAnimation}
+  display: flex;
+  /* all pages should take up 100% of the container width */
+  flex-basis: 100%;
+  flex-direction: column;
+  /* take up the full height - desirable when using drag-and-drop in nested nav */
+  flex-grow: 1;
   flex-shrink: 0;
-  width: 100%;
+  /* we want each page to have internal scrolling */
+  overflow-y: auto;
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

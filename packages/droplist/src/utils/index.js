@@ -1,11 +1,11 @@
 import {
-  akColorB400,
-  akColorN0,
-  akColorN20,
-  akColorB200,
-  akColorN40,
-  akColorN50,
-  akColorN600,
+akColorB400,
+akColorN0,
+akColorN20,
+akColorB200,
+akColorN40,
+akColorN50,
+akColorN600,
 } from '@atlaskit/util-shared-styles';
 
 export function getInputBackground({ isChecked, isDisabled, isHovered, isPressed }) {

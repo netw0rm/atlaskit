@@ -5,25 +5,23 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import { AtlassianLogo } from '@atlaskit/logo';
-import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle, presetThemes } from '../src/index';
+import DropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
+import { AkNavigationItem, AkNavigationItemGroup, AkContainerLogo, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
-import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
+import NucleusIcon from './components/NucleusIcon';
 
-const dropdownItemsSample = [
-  {
-    heading: 'Cities',
-    items: [
-      { content: 'Sydney', value: 1 },
-      { content: 'Canberra', value: 2 },
-      { content: 'Melbourne', value: 3 },
-      { content: 'Perth', value: 4 },
-    ],
-  },
-];
+const dropdownItemsSample = (
+  <DropdownItemGroup title="Cities">
+    <DropdownItem>Sydney</DropdownItem>
+    <DropdownItem>Canberra</DropdownItem>
+    <DropdownItem>Melbourne</DropdownItem>
+    <DropdownItem>Perth</DropdownItem>
+  </DropdownItemGroup>
+);
 
 const manyNavigationItems = () => {
   const items = [];
@@ -48,23 +46,23 @@ storiesOf(name, module)
           href="#1"
         />
         <AkNavigationItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<NucleusIcon />}
           text="Item with an icon"
           href="#2"
         />
         <AkNavigationItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<NucleusIcon />}
           text="Item with two lines"
           subText="Another line of text, which could possibly be long"
           href="#3"
         />
         <AkNavigationItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<NucleusIcon />}
           text="A really, really, quite long, actually super long container name"
           href="#4"
         />
         <AkNavigationItem
-          icon={<img src={nucleusLogo} alt="icon" />}
+          icon={<NucleusIcon />}
           text="A really, really, quite long, actually super long container name with action"
           subText="Another line of text, which could possibly be long"
           action={<span>text</span>}
@@ -77,7 +75,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
-          icon={<img alt="icon" src={nucleusLogo} />}
+          icon={<NucleusIcon />}
           isSelected
           text="This one is selected"
         />
@@ -88,7 +86,7 @@ storiesOf(name, module)
   .add('with a dropdown trigger item', () => (
     <HtmlPage>
       <NavigationWithDropdown
-        dropdownProps={{ items: dropdownItemsSample }}
+        dropdownItems={dropdownItemsSample}
       >
         <AkNavigationItem
           text="Test page 1"
@@ -108,7 +106,7 @@ storiesOf(name, module)
   .add('with a dropdown trigger item + after text', () => (
     <HtmlPage>
       <NavigationWithDropdown
-        dropdownProps={{ items: dropdownItemsSample }}
+        dropdownItems={dropdownItemsSample}
         navigationItemProps={{ textAfter: 'text', text: 'Menu' }}
       >
         <AkNavigationItem
@@ -133,10 +131,38 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation>
         <AkNavigationItem
-          icon={<img alt="icon" src={nucleusLogo} />}
+          href="#"
+          text="Test page"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
           isSelected
           text="Nucleus"
         />
+      </BasicNavigation>
+    </HtmlPage>
+  ))
+  .add('with a dropdown', () => (
+    <HtmlPage>
+      <BasicNavigation>
+        <AkNavigationItem
+          href="#"
+          text="Item one"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="Item two"
+        />
+        <DropdownMenu
+          shouldFitContainer
+          triggerType="button"
+          trigger="Test"
+        >
+          <AkNavigationItem
+            icon={<NucleusIcon />}
+            text="Item three"
+          />
+        </DropdownMenu>
       </BasicNavigation>
     </HtmlPage>
   ))
@@ -144,7 +170,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         containerTheme={presetThemes.global}
-        containerHeaderComponent={AtlassianLogo}
+        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo /></AkContainerLogo>)}
       >
         <AkNavigationItemGroup>
           <AkNavigationItem
@@ -193,12 +219,12 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation isOpen={false}>
         <AkNavigationItem
-          icon={<img alt="icon" src={nucleusLogo} />}
+          icion={<NucleusIcon />}
           isSelected
           text="This one is selected"
         />
         <AkNavigationItem
-          icon={<img alt="icon" src={nucleusLogo} />}
+          icion={<NucleusIcon />}
           text="This one is not selected"
         />
       </BasicNavigation>
@@ -227,9 +253,7 @@ storiesOf(name, module)
         containerHeaderComponent={() => (
           <AkContainerTitle
             href="#foo"
-            icon={
-              <img alt="nucleus" src={nucleusLogo} />
-            }
+            icon={<NucleusIcon />}
             text="A long long time ago, I can still remember"
             subText="How that music used to make me smile"
           />
@@ -243,9 +267,7 @@ storiesOf(name, module)
         containerHeaderComponent={() => (
           <AkContainerTitle
             href="#foo"
-            icon={
-              <img alt="nucleus" src={nucleusLogo} />
-            }
+            icon={<NucleusIcon />}
             text="AtlasKit"
           />
         )}

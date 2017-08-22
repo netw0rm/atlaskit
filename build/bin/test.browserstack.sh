@@ -22,7 +22,5 @@ if [[ "$RUN_BROWSERSTACK_IN_BRANCH" = "*"  ||
   --retries=$MAX_RETRIES \
   -- \
   node --max-old-space-size=4096 node_modules/.bin/karma start \
-  ./build/karma/browserstack/browserstackAll.js
+  ./build/config/karma/config.js --browserstack
 fi
-
-

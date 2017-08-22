@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { emoji as emojiNode } from '../../../../src';
 import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
@@ -187,7 +187,7 @@ describe('emojis', () => {
         const spy = sinon.spy(pluginState, 'insertEmoji');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
-        pluginState.onSearchResult({categories: {}, emojis: [grinEmoji]});
+        pluginState.onSearchResult({emojis: [grinEmoji]});
 
         sendKeyToPm(editorView, 'Space');
         expect(spy.calledWith(grinEmoji), 'was called').to.equal(true);

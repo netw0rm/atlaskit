@@ -1,17 +1,75 @@
 # @atlaskit/editor-jira
 
+## 20.3.0 (2017-08-17)
+
+* feature; update minimum editor-core version ([f6a1e09](https://bitbucket.org/atlassian/atlaskit/commits/f6a1e09))
+## 20.2.1 (2017-08-15)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([f86eef0](https://bitbucket.org/atlassian/atlaskit/commits/f86eef0))
+## 20.2.0 (2017-08-15)
+
+* feature; disable footer buttons if isDisabled is set to true ([8a8f1be](https://bitbucket.org/atlassian/atlaskit/commits/8a8f1be))
+* feature; introduce disabled (boolean) property for editor-jira (issues closed: ed-2385) ([db18d42](https://bitbucket.org/atlassian/atlaskit/commits/db18d42))
+
+
+## 20.1.0 (2017-08-08)
+
+* feature; enable tables in editor-jira (issues closed: ed-2396) ([025f6ec](https://bitbucket.org/atlassian/atlaskit/commits/025f6ec))
+## 20.0.2 (2017-08-03)
+
+* bug fix; undefined behaviour of parseIntoAtlassianDocument if first argument is nullable (issues closed: ed-2395) ([42cdb5d](https://bitbucket.org/atlassian/atlaskit/commits/42cdb5d))
+## 20.0.1 (2017-08-03)
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
+
+
+## 20.0.0 (2017-08-01)
+
+* breaking; editor-jira doesn't produce ES5 build anymore ([b0acf07](https://bitbucket.org/atlassian/atlaskit/commits/b0acf07))
+* breaking; remove ES5 build for editor-jira ([b0acf07](https://bitbucket.org/atlassian/atlaskit/commits/b0acf07))
+## 19.0.1 (2017-08-01)
+
+* bug fix; import renderer from es2015 code ([3aa4ab4](https://bitbucket.org/atlassian/atlaskit/commits/3aa4ab4))
+
+
+
+## 18.5.0 (2017-07-28)
+
+
+* feature; bump editor-core in all editor-* packages ([afff5ab](https://bitbucket.org/atlassian/atlaskit/commits/afff5ab))
+
+## 18.4.1 (2017-07-28)
+
+
+* fix; enabled jira media tests and proved better error message when htmls not match. ([7668506](https://bitbucket.org/atlassian/atlaskit/commits/7668506))
+
+
+* feature; export parseIntoAtlassianDocument function from editor-jira ([45dccef](https://bitbucket.org/atlassian/atlaskit/commits/45dccef))
+
+## 18.4.0 (2017-07-25)
+
+
+* feature; change es2015 build so it transpiles everything except import/export statements ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
+
+## 18.3.0 (2017-07-24)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+
+* feature; added new property to render custom footer for the editor-jira ([bd986c4](https://bitbucket.org/atlassian/atlaskit/commits/bd986c4))
+
 ## 18.2.4 (2017-07-14)
 
-* fix; media plugin was not being destroyed with the editor
-
 ## 18.2.3 (2017-07-13)
 
 
-## 18.2.3 (2017-07-13)
-
-* bug fix; re-releasing packages that failed previous release
 * fix; bump editor-core in all editor-* packages ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))
+* fix; media plugin was not being destroyed with the editor. ([087d1f4](https://bitbucket.org/atlassian/atlaskit/commits/087d1f4))
 * fix; bump editor-core to version 39.0.0 ([41a0491](https://bitbucket.org/atlassian/atlaskit/commits/41a0491))
+* fix; re-releasing packages that failed previous release ([bf1ab9c](https://bitbucket.org/atlassian/atlaskit/commits/bf1ab9c))
 
 ## 18.2.2 (2017-07-07)
 

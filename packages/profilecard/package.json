@@ -1,22 +1,25 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.6.2",
+  "version": "3.7.0",
   "config": {
     "access": "public"
   },
   "description": "A React component to display a card with user information.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/profilecard; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "eslint": "../../build/bin/lint.eslint.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "dependencies": {
     "@atlaskit/avatar": "^2.1.0",
@@ -41,7 +44,7 @@
   "devDependencies": {
     "@atlaskit/profilecard": "*",
     "@atlaskit/util-common-test": "*",
-    "@atlaskit/util-data-test": "^4.10.0",
+    "@atlaskit/util-data-test": "^7.1.0",
     "@atlaskit/util-readme": "^1.0.3",
     "fetch-mock": "^5.9.4",
     "loader-utils": "^0.2.16",
@@ -63,5 +66,6 @@
       "name": "Thorsten B"
     }
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "types": "index.d.ts"
 }

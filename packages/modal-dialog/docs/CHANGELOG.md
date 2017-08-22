@@ -1,6 +1,28 @@
 # @atlaskit/modal-dialog
 
-## Unreleased
+## 2.6.0 (2017-08-07)
+
+* feature; Added support for custom modal heights, with the new `ModalDialog.height` prop. It accepts a number (converted to `px`) or string (not converted to `px`, so you can use any unit you like such as `%`, `vh`, etc). (issues closed: ak-1723) ([3c1f537](https://bitbucket.org/atlassian/atlaskit/commits/3c1f537))
+
+## 2.5.2 (2017-07-27)
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+## 2.5.1 (2017-07-25)
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 2.2.0 (2017-07-17)
+
+## 2.2.0 (2017-07-17)
+
+## 2.2.0 (2017-07-17)
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 2.2.0 (2017-07-17)
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
 ## 2.1.2 (2017-06-15)
 

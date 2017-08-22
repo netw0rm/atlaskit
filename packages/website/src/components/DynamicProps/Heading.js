@@ -1,41 +1,34 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const style = {
   h1: {
-    borderBottom: '1px solid #ddd',
-    color: '#333',
-    marginBottom: 10,
-    paddingBottom: 10,
+    marginTop: 0,
   },
   h2: {
-    borderBottom: '1px solid #ddd',
-    color: '#333',
-    marginBottom: 10,
-    marginTop: 20,
-    paddingBottom: 10,
-    paddingTop: 10,
+    marginTop: '2em',
   },
   h3: {
-    color: '#444',
-    marginBottom: 10,
-    marginTop: 20,
-    paddingBottom: 10,
-    paddingTop: 10,
+    marginTop: '2em',
   },
 };
 
-export default class Heading extends PureComponent {
-  static propTypes = {
+export default function Heading(
+  { children, level = 1 }:
+  {
     children: PropTypes.node.isRequired,
-    type: PropTypes.number,
+    level: PropTypes.number,
   }
-  static defaultProps = {
-    type: 1,
-  }
-  render() {
-    const { children, type } = this.props;
-    const HeadingTag = `h${type}`;
-    return <HeadingTag style={style[HeadingTag]}>{children}</HeadingTag>;
-  }
+) {
+  const Tag = `h${level}`;
+
+  return (
+    <Tag style={style[Tag]}>
+      {children}
+    </Tag>
+  );
 }
+
+export const H1 = props => <Heading level={1} {...props} />;
+export const H2 = props => <Heading level={2} {...props} />;
+export const H3 = props => <Heading level={3} {...props} />;

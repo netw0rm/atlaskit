@@ -5,10 +5,8 @@ import ButtonAppearances from './ButtonAppearances';
 import buttonAppearancesSrc from '!raw-loader!./ButtonAppearances';
 import ButtonOptions from './ButtonOptions';
 import buttonOptionsSrc from '!raw-loader!./ButtonOptions';
-import ButtonSelect from './ButtonSelect';
-import buttonSelectSrc from '!raw-loader!./ButtonSelect';
-import ButtonDark from './ButtonDark';
-import buttonDarkSrc from '!raw-loader!./ButtonDark';
+import ButtonSpacing from './ButtonSpacing';
+import buttonSpacingSrc from '!raw-loader!./ButtonSpacing';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -32,14 +30,9 @@ export const examples = [
     src: buttonAppearancesSrc,
   },
   {
-    title: 'Dark Themed Buttons',
-    Component: ButtonDark,
-    src: buttonDarkSrc,
-  },
-  {
-    title: 'Selectable button',
-    Component: ButtonSelect,
-    src: buttonSelectSrc,
+    title: 'Spacing Options',
+    Component: ButtonSpacing,
+    src: buttonSpacingSrc,
   },
   {
     title: 'Other Options',

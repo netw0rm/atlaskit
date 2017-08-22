@@ -1,6 +1,39 @@
 # @atlaskit/icon
 
-## Unreleased
+## 8.0.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+## 8.0.0 (2017-08-17)
+
+
+
+* bug fix; fixing the devDep for icon on itself ([b3db177](https://bitbucket.org/atlassian/atlaskit/commits/b3db177))
+* bug fix; fixed icon build script ([10aea52](https://bitbucket.org/atlassian/atlaskit/commits/10aea52))
+
+
+* feature; updated stories for icons and updated the build step for reduced-ui-pack icons ([0ad9eea](https://bitbucket.org/atlassian/atlaskit/commits/0ad9eea))
+
+* breaking; Some icons have been deleted, and some are now 2-colours ([733dbd3](https://bitbucket.org/atlassian/atlaskit/commits/733dbd3))
+* breaking; icon audit and improvement ([733dbd3](https://bitbucket.org/atlassian/atlaskit/commits/733dbd3))
+## 7.1.0 (2017-08-11)
+
+
+* bug fix; make theme import absolute ([5ef8926](https://bitbucket.org/atlassian/atlaskit/commits/5ef8926))
+* feature; support dark mode ([6701273](https://bitbucket.org/atlassian/atlaskit/commits/6701273))
+
+
+
+
+
+
+
+## 7.0.3 (2017-07-25)
+
+## 7.0.2 (2017-07-24)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; icons no longer grow massively in Webkit or when font size bumped ([adfb57e](https://bitbucket.org/atlassian/atlaskit/commits/adfb57e))
 
 ## 7.0.1 (2017-06-28)
 

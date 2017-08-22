@@ -1,5 +1,5 @@
+import { ComponentClass } from 'react';
 import { Node } from '../../../prosemirror';
-import { ReactComponentConstructor } from '../';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';
@@ -19,6 +19,12 @@ import OrderedList from './orderedList';
 import Panel from './panel';
 import Paragraph from './paragraph';
 import Rule from './rule';
+import TaskItem from './taskItem';
+import TaskList from './taskList';
+import Table from './table';
+import TableCell from './tableCell';
+import TableHeader from './tableHeader';
+import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
@@ -40,10 +46,16 @@ export const nodeToReact = {
   'panel': Panel,
   'paragraph': Paragraph,
   'rule': Rule,
+  'taskItem': TaskItem,
+  'taskList': TaskList,
+  'table': Table,
+  'tableCell': TableCell,
+  'tableHeader': TableHeader,
+  'tableRow': TableRow,
   'unknownBlock': UnknownBlock,
 };
 
-export const toReact = (node: Node): ReactComponentConstructor => {
+export const toReact = (node: Node): ComponentClass<any> => {
   return nodeToReact[node.type.name];
 };
 
@@ -155,5 +167,11 @@ export {
   Panel,
   Paragraph,
   Rule,
+  TaskItem,
+  TaskList,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
   UnknownBlock,
 };

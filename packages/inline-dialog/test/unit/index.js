@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';
 
 import InlineDialog from '../../src';
-import Container from '../../src/styled/Container';
+import { Container } from '../../src/styled';
 
 describe('inline-dialog', () => {
   describe('default', () => {

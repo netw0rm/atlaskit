@@ -16,7 +16,6 @@ storiesOf(name, module)
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
-          // TODO: rename this to align with decision on naming.
           appearance="message"
           analyticsHandler={analyticsHandler}
 
@@ -30,7 +29,14 @@ storiesOf(name, module)
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           mediaProvider={mediaProvider}
+
           onChange={onChange}
           onSave={SAVE_ACTION}
         />}
+    />)
+  .add('Message Editor with Max Length', () =>
+    <Editor
+      appearance="message"
+      saveOnEnter={true}
+      maxContentSize={10}
     />);

@@ -21,6 +21,9 @@ export type ItemTheme = {|
     background: Background,
     text?: Text,
   |},
+  dragging: {|
+    background: Background,
+  |}
 |}
 
 export type Provided = {|
@@ -42,6 +45,37 @@ export type RootTheme = {|
   isCollapsed: bool,
 |}
 
-export type GroupTheme = {|
-  isCompact: bool
+// Ideally GenericItemTheme would be imported from @atlaskit/item.
+// I've tried it locally and not working at the moment, can revisit
+// once Flow is fully supported and documented in the repo.
+type GenericItemState = {|
+  background: Color,
+  text: Color,
+  secondaryText: Color
 |}
+
+type GenericItemPadding = {|
+  x: number,
+  y: number,
+|}
+
+export type GenericItemTheme = {|
+  borderRadius: number,
+  height?: {|
+    compact: number,
+    default: number,
+  |},
+  focus: {|
+    outline: Color,
+  |},
+  padding: {|
+    compact: GenericItemPadding,
+    default: GenericItemPadding,
+  |},
+  default: GenericItemState,
+  selected: GenericItemState,
+  hover: GenericItemState,
+  active: GenericItemState,
+  dragging: GenericItemState,
+  disabled?: GenericItemState,
+|};

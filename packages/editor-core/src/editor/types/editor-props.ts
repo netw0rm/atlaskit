@@ -3,10 +3,10 @@ import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 
-export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page';
+export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
 export interface EditorProps {
-  appearance: EditorAppearance;
+  appearance?: EditorAppearance;
   analyticsHandler?: AnalyticsHandler;
 
   allowTextFormatting?: boolean;
@@ -23,6 +23,8 @@ export interface EditorProps {
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+
+  maxContentSize?: number;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

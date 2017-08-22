@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 import {
@@ -7,6 +8,7 @@ import {
 
 import textFormattingPlugins from '../../../../src/plugins/text-formatting';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -14,6 +16,11 @@ describe('text-formatting input rules', () => {
   const editor = (doc: any, schema: any = defaultSchema) => makeEditor({
     doc,
     plugins: textFormattingPlugins(schema),
+  });
+  let trackEvent;
+  beforeEach(() => {
+    trackEvent = sinon.spy();
+    analyticsService.trackEvent = trackEvent;
   });
 
   describe('strong rule', () => {
@@ -23,6 +30,24 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '**text**', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "** text**" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '** text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('** text**')));
+    });
+
+    it('should convert "__text__" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '__text__', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
     });
 
     it('should not convert "**text**" to strong inside a code_block', () => {
@@ -55,6 +80,22 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '*text*', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "* text*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '* text*', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('* text*')));
+    });
+    
+    it('should convert "_text_" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '_text_', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
     });
 
     it('should not be inclusive right after autoformatting conversion', () => {
@@ -86,6 +127,14 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '~~text~~', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strike.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "~~text~~" to strike', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '~~ text~~', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('~~ text~~')));
     });
 
     it('should not convert "~~text~~" to strike inside a code_block', () => {
@@ -110,6 +159,14 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '`text`', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
+    });
+
+    it('should not convert "` text`" to code text', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '` text`', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p('` text`')));
     });
 
     it('should convert mention to plaint text', () => {
@@ -190,6 +247,8 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('~~', strong('text'))));
       insertText(editorView, '~~', editorView.state.selection.from);
       expect(editorView.state.doc).to.deep.equal(doc(p(strike(strong('text')))));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(true);
+      expect(trackEvent.calledWith('atlassian.editor.format.strike.autoformatting')).to.equal(true);
     });
   });
 });

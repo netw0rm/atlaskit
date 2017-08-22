@@ -2,7 +2,7 @@ import { EditorView, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
-import { BLOCK_QUOTE, CODE_BLOCK, PANEL } from './types';
+import { NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5, BLOCK_QUOTE } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
 import { undoInputRule } from '../../prosemirror/prosemirror-inputrules';
 import { BlockTypeState } from './';
@@ -14,20 +14,20 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow(view)), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
-  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.redo.keyboard', redo), list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', cmdUndo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
   const nodes = view.state.schema.nodes;
 
-  [BLOCK_QUOTE, CODE_BLOCK, PANEL].forEach((blockType) => {
+  [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5, BLOCK_QUOTE].forEach((blockType) => {
     if (nodes[blockType.nodeName]) {
       const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)
+          trackAndInvoke(eventName, () => pluginState.insertBlockType(blockType.name, view)
         ), list);
       }
     }

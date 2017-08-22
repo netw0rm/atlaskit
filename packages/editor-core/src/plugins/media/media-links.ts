@@ -1,124 +1,127 @@
-import {
-  atTheEndOfDoc,
-  endPositionOfParent
-} from '../../utils';
+import { Context, MediaStateManager, MediaState } from '@atlaskit/media-core';
 import {
   EditorView,
   AddMarkStep,
   ReplaceStep,
   Transaction,
-  Fragment,
-  Mark,
   MarkType,
 } from '../../prosemirror';
+import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
+import { uuid } from '../utils';
+import analyticsService from '../../analytics/service';
 
-export interface RangeWithUrls {
-  start: number;
-  end: number;
-  urls: string[];
+export interface URLInfo {
+  href: string;
+  pos: number;
 }
 
-export const insertLinks = (view: EditorView, linkRanges: RangeWithUrls[], collection?: string): void => {
+export const insertLinks = async (
+  view: EditorView,
+  stateManager: MediaStateManager,
+  handleMediaState: (state: MediaState) => void,
+  linkRanges: Array<URLInfo>,
+  linkCreateContext: Context,
+  collection?: string
+) : Promise<Array<string | undefined> | undefined> => {
   if (linkRanges.length <= 0 || !collection) {
     return;
   }
 
-  const { state, dispatch } = view;
-  const { tr } = state;
+  const trQueue = new Array<Transaction>();
+  return Promise.all(
+    linkRanges.map(({ href, pos }) => {
+      return new Promise<string | undefined>(resolve => {
+        const { state, dispatch } = view;
+        const posAtTheEndOfDoc = state.doc.nodeSize - 4;
 
-  const linksInfo = reduceLinksInfo(state, linkRanges);
+        const { tr } = state;
+        const id = `temporary:${uuid()}:${href}`;
+        const node = state.schema.nodes.media.create({ id, type: 'link', collection });
+        stateManager.subscribe(id, handleMediaState);
 
-  const linkNodes = linksInfo.urls.map((url) => {
-    return state.schema.nodes.media.create({ id: url, type: 'link', collection: collection });
-  });
+        // If there's multiple replace steps, make sure subsequent transactions are mapped onto new positions
+        trQueue.forEach(tr => pos = tr.mapping.map(pos));
 
-  const $latestPos = tr.doc.resolve(linksInfo.latestPos);
+        const $latestPos = tr.doc.resolve(pos > posAtTheEndOfDoc ? posAtTheEndOfDoc : pos);
+        const insertPos = posOfMediaGroupBelow(state, $latestPos, false)
+          || posOfParentMediaGroup(state, $latestPos, false)
+          || endPositionOfParent($latestPos);
 
-  const insertPos = posOfMediaGroupBelow(state, $latestPos, false)
-    || posOfParentMediaGroup(state, $latestPos, false)
-    || endPositionOfParent($latestPos);
+        // Insert an empty paragraph in case we've reached the end of the document
+        if (insertPos === state.doc.nodeSize - 2) {
+          tr.insert(insertPos, state.schema.nodes.paragraph.create());
+        }
 
-  // insert a paragraph after if reach the end of doc
-  if (atTheEndOfDoc(state)) {
-    tr.insert(insertPos, state.schema.nodes.paragraph.create());
-  }
+        tr.replaceWith(insertPos, insertPos, node);
+        trQueue.push(tr);
+        dispatch(tr);
+        analyticsService.trackEvent('atlassian.editor.media.link');
 
-  tr.replaceWith(insertPos, insertPos, linkNodes);
-  dispatch(tr);
+        const updateStateWithError = error => stateManager.updateState(id, {
+          id,
+          status: 'error',
+          error,
+        }) || resolve();
+
+        const isAppWithoutURL = metadata => metadata && metadata.resources && metadata.resources.app && !metadata.resources.app.url;
+
+        // Unfurl URL using media API
+        linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(metadata => {
+          // Workaround for problem with missing fields preventing Twitter links from working
+          if(isAppWithoutURL(metadata))  {
+            (metadata as any).resources.app.url = metadata.url;
+          }
+          linkCreateContext.addLinkItem(href, collection, metadata)
+            .then(publicId =>
+              stateManager.updateState(id, {
+                id,
+                publicId,
+                status: 'ready'
+              }) || resolve(publicId)
+            )
+            .catch(updateStateWithError);
+        }, updateStateWithError);
+      });
+    })
+  );
 };
 
-export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType): RangeWithUrls[] => {
-  const linkRanges: RangeWithUrls[] = [];
-
-  tr.steps.forEach((step) => {
+export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType, offset: number): Array<URLInfo> => {
+  return tr.steps.reduce((linkRanges, step) => {
     let rangeWithUrls;
     if (step instanceof AddMarkStep) {
-      rangeWithUrls = findRangesWithUrlsInAddMarkStep(step as AddMarkStep, link);
+      rangeWithUrls = findRangesWithUrlsInAddMarkStep(step, link);
     } else if (step instanceof ReplaceStep) {
-      rangeWithUrls = findRangesWithUrlsInReplaceStep(step as ReplaceStep, link);
+      rangeWithUrls = findRangesWithUrlsInReplaceStep(step, link, offset);
     }
 
-    if (rangeWithUrls) {
-      linkRanges.push(rangeWithUrls);
-    }
-  });
-
-  return linkRanges;
+    return linkRanges.concat(rangeWithUrls || []);
+  }, []);
 };
 
-const reduceLinksInfo = (state, linkRanges: RangeWithUrls[]): { latestPos: number, urls: string[] } => {
-  const posAtTheEndOfDoc = state.doc.nodeSize - 4;
-
-  const linksInfo = linkRanges.reduce((linksInfo, rangeWithUrl) => {
-    linksInfo.urls = linksInfo.urls.concat(rangeWithUrl.urls);
-    if (rangeWithUrl.end > linksInfo.latestPos) {
-      linksInfo.latestPos = rangeWithUrl.end;
-    }
-
-    if (posAtTheEndOfDoc < linksInfo.latestPos) {
-      linksInfo.latestPos = posAtTheEndOfDoc;
-    }
-    return linksInfo;
-  }, { latestPos: 0, urls: [] as string[] });
-
-  return linksInfo;
-};
-
-const findRangesWithUrlsInAddMarkStep = (step: AddMarkStep, link: MarkType): RangeWithUrls | undefined => {
+const findRangesWithUrlsInAddMarkStep = (step: AddMarkStep, link: MarkType): Array<URLInfo> | undefined => {
   const { mark } = step;
-  if (isValidLinkMark(mark, link)) {
-    return { start: step.from, end: step.to, urls: [mark.attrs.href] };
+
+  if (link.isInSet([ mark ]) && mark.attrs.href) {
+    return [{
+      href: mark.attrs.href,
+      pos: step.from,
+    }];
   }
 };
 
-const isValidLinkMark = (mark: Mark, link: MarkType): boolean => {
-  return mark.type === link && mark.attrs.href.length;
-};
+const findRangesWithUrlsInReplaceStep = (step: ReplaceStep, link: MarkType, offset: number): Array<URLInfo> | undefined => {
+  const urls = new Array<URLInfo>();
+  step.slice.content.descendants((child, pos, parent) => {
+    const linkMark = link.isInSet(child.marks);
 
-const findRangesWithUrlsInReplaceStep = (step: ReplaceStep, link: MarkType): RangeWithUrls | undefined => {
-  const { slice } = step;
-  const urls: string[] = findLinksInNodeContent([], slice.content, link);
-  if (urls.length > 0) {
-    // The end position is step.from + slice.size || step.to is because
-    // it can be replaced by a smaller size content
-    // if simply use step.to, it might be out of range later.
-    return { start: step.from, end: Math.min(step.from + slice.size, step.to), urls: urls };
-  }
-};
-
-const findLinksInNodeContent = (urls: string[], content: Fragment, link: MarkType) => {
-  content.forEach((child) => {
-    const linkMarks = child.marks.filter((mark) => {
-      return isValidLinkMark(mark, link);
-    });
-
-    if (linkMarks.length > 0) {
-      urls.push(linkMarks[0].attrs.href);
+    if (linkMark && linkMark.attrs.href) {
+      urls.push({
+        href: linkMark.attrs.href,
+        pos: pos + offset,
+      });
     }
-
-    findLinksInNodeContent(urls, child.content, link);
   });
-
   return urls;
 };

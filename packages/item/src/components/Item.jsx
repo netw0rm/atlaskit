@@ -1,15 +1,16 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import styledRootElement from '../styled/Item';
 import {
-  BeforeAfter,
+  Before,
+  After,
   Content,
   ContentWrapper,
   Description,
 } from '../styled/ItemParts';
+import type { ReactElement, HTMLElement } from '../types';
 
 export default class Item extends Component {
   static propTypes = {
@@ -20,6 +21,13 @@ export default class Item extends Component {
     children: PropTypes.node,
     /** Secondary text to be shown underneath the main content. */
     description: PropTypes.string,
+    /** Drag and drop props provided by react-beautiful-dnd. Please do not use this unless
+      * using react-beautiful-dnd */
+    dnd: PropTypes.shape({
+      draggableStyle: PropTypes.object,
+      dragHandleProps: PropTypes.object,
+      innerRef: PropTypes.func,
+    }),
     /** Content to be shown before to the left of the main content (shown to the right of content
       * in RTL mode). */
     elemAfter: PropTypes.node,
@@ -33,15 +41,23 @@ export default class Item extends Component {
     isCompact: PropTypes.bool,
     /** Causes the item to appear in a disabled state and click behaviours will not be triggered. */
     isDisabled: PropTypes.bool,
+    /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
+    isDragging: PropTypes.bool,
     /** Causes the item to still be rendered, but with `display: none` applied. */
     isHidden: PropTypes.bool,
     /** Causes the item to appear with a persistent selected background state. */
     isSelected: PropTypes.bool,
-    /** Function to be called when the item is activated, either via a click or via keyboard
-     *  interaction. Receives an object with `item` and `event` keys. */
+    /** Function to be called when the item is clicked, Receives the MouseEvent. */
     onClick: PropTypes.func,
+    /** Function to be called when the item is pressed with a keyboard,
+    * Receives the KeyboardEvent. */
+    onKeyDown: PropTypes.func,
+    /** Standard onmouseenter event */
+    onMouseEnter: PropTypes.func,
+    /** Standard onmouseleave event */
+    onMouseLeave: PropTypes.func,
     /** Allows the role attribute of the item to be altered from it's default of
-     *  `role="presentation"` */
+     *  `role="button"` */
     role: PropTypes.string,
     /** Allows the `children` content to break onto a new line, rather than truncating the
      *  content. */
@@ -50,58 +66,160 @@ export default class Item extends Component {
     target: PropTypes.string,
     /** Standard browser title to be displayed on the item when hovered. */
     title: PropTypes.string,
+    /** Whether the Item should attempt to gain browser focus when mounted */
+    autoFocus: PropTypes.bool,
   }
 
   static defaultProps = {
+    autoFocus: false,
     description: '',
     isCompact: false,
     isDisabled: false,
     isHidden: false,
-    onClick: () => {},
-    role: 'presentation',
+    role: 'button',
     shouldAllowMultiline: false,
   }
 
-  // We want to prevent the item from getting focus when clicked
-  handleMouseDown = (e: Event) => {
-    e.preventDefault();
+  // eslint-disable-next-line react/sort-comp
+  ref: ?HTMLElement
+
+  // $FlowFixMe
+  constructor(props) {
+    super(props);
+
+    // The type of element rendered at the root of render() can vary based on the `href`
+    // and `linkComponent` props provided. We generate this component here to avoid re-
+    // generating the component inside render(). This is for performance reasons, and also
+    // allows us to avoid generating a new `ref` for the root element each render().
+    this.rootComponent = styledRootElement({
+      href: this.href(),
+      linkComponent: props.linkComponent,
+    });
   }
+
+  componentDidMount() {
+    if (this.ref && this.props.autoFocus) {
+      this.ref.focus();
+    }
+  }
+
+  setRef = (ref: ?HTMLElement) => {
+    this.ref = ref;
+  }
+
+  rootComponent: ReactElement
 
   href = () => (this.props.isDisabled ? null : this.props.href);
 
   render() {
     const {
-      linkComponent,
+      onClick,
+      onKeyDown,
       isCompact,
       isDisabled,
+      isDragging,
       isHidden,
       isSelected,
+      onMouseEnter,
+      onMouseLeave,
       role,
+      dnd,
       ...otherProps
     } = this.props;
 
-    const Root = styledRootElement({
-      href: this.href(),
-      linkComponent,
-    });
+    const { rootComponent: Root } = this;
+    const dragHandleProps: ?Object = (dnd && dnd.dragHandleProps) || null;
+
+    const patchedEventHandlers = {
+      onClick: (event: MouseEvent) => {
+        const original = () => {
+          if (!isDisabled && onClick) {
+            onClick(event);
+          }
+        };
+
+        if (!dragHandleProps || !dragHandleProps.onClick) {
+          original();
+          return;
+        }
+
+        // Drag and drop has its own disabled mechansim
+        // So not checking for isDisabled
+        dragHandleProps.onClick(event);
+
+        // if default is prevent - do not fire the onClick prop
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        original();
+      },
+      onMouseDown: (event: MouseEvent) => {
+        if (dragHandleProps && dragHandleProps.onMouseDown) {
+          dragHandleProps.onMouseDown(event);
+        }
+
+        // We want to prevent the item from getting focus when clicked
+        event.preventDefault();
+      },
+      onKeyDown: (event: KeyboardEvent) => {
+        const original = () => {
+          if (!isDisabled && onKeyDown) {
+            onKeyDown(event);
+          }
+        };
+
+        if (!dragHandleProps || !dragHandleProps.onKeyDown) {
+          original();
+          return;
+        }
+
+        dragHandleProps.onKeyDown(event);
+
+        // if default is prevent - do not fire other handlers
+        if (event.defaultPrevented) {
+          return;
+        }
+
+        // not allowing keyboard events on the element while dragging
+        if (isDragging) {
+          return;
+        }
+
+        original();
+      },
+    };
+
+    const patchedInnerRef = (ref) => {
+      this.setRef(ref);
+
+      if (dnd) {
+        dnd.innerRef(ref);
+      }
+    };
 
     return (
       <Root
-        {...otherProps}
         aria-disabled={isDisabled}
         href={this.href()}
         isCompact={isCompact}
         isDisabled={isDisabled}
+        isDragging={isDragging}
         isHidden={isHidden}
         isSelected={isSelected}
-        onClick={isDisabled ? null : this.props.onClick}
-        onMouseDown={this.handleMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         role={role}
-        tabIndex={isDisabled || isHidden ? null : 0}
+        tabIndex={isDisabled || isHidden || this.props.href ? null : 0}
         target={this.props.target}
         title={this.props.title}
+        style={dnd ? dnd.draggableStyle : null}
+        innerRef={patchedInnerRef}
+        {...dragHandleProps}
+        {...patchedEventHandlers}
+        {...otherProps}
       >
-        {!!this.props.elemBefore && <BeforeAfter>{this.props.elemBefore}</BeforeAfter>}
+        {!!this.props.elemBefore && <Before isCompact={isCompact}>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}
@@ -113,7 +231,7 @@ export default class Item extends Component {
             >{this.props.description}</Description>
           )}
         </ContentWrapper>
-        {!!this.props.elemAfter && <BeforeAfter>{this.props.elemAfter}</BeforeAfter>}
+        {!!this.props.elemAfter && <After isCompact={isCompact}>{this.props.elemAfter}</After>}
       </Root>
     );
   }

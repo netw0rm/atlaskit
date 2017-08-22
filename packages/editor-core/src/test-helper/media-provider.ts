@@ -85,3 +85,16 @@ export function fileToBase64(blob) {
 export function isImage(type: string) {
   return ['image/jpeg', 'image/png'].indexOf(type) > -1;
 }
+
+export function getLinkCreateContextMock(testLinkId: string) {
+  return {
+    getUrlPreviewProvider: (url) => ({
+      observable: () => ({
+        subscribe: (cb) => cb({})
+      })
+    }),
+    addLinkItem: (url, collection, metadata) => {
+      return Promise.resolve(testLinkId);
+    }
+  } as any;
+}

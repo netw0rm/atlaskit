@@ -1,11 +1,13 @@
 import * as chai from 'chai';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
 import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
 import {
   insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
-  strong, code_block
+  strong, code_block, sendKeyToPm
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -17,11 +19,14 @@ describe('hyperlink', () => {
 
   describe('input rules', () => {
     it('should convert "www.atlassian.com" to hyperlink', () => {
+      const trackEvent = sinon.spy();
+      analyticsService.trackEvent = trackEvent;
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com ', sel, sel);
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
       expect(editorView.state.doc).to.deep.equal(doc(p(a, ' ')));
+      expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
 
     it('should not convert "www.atlassian.com" to a hyperlink when we haven not hit space afterward', () => {
@@ -89,12 +94,6 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('@example ')));
     });
 
-    it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
-      insertText(editorView, 'Abc.example.com ', sel, sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p('Abc.example.com ')));
-    });
-
     it('should not convert invalid emails like to a mailto link (double dot)', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'john.doe@example..com ', sel, sel);
@@ -154,6 +153,14 @@ describe('hyperlink', () => {
       insertText(editorView, 'www.baidu.com ', sel, sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(firstLink, br, p(secondLink, ' '))));
+    });
+
+    it('should be able to remove hyperlink when its the first node of the paragraph', () => {
+      const { editorView } = editor(doc(p(link({ href: 'http://www.google.com' })('{<}www.google.com{>}'))));
+
+      sendKeyToPm(editorView, 'Backspace');
+      insertText(editorView, 'text', editorView.state.selection.from);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
   });
 });

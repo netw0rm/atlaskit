@@ -42,6 +42,17 @@ describe('media - keymaps', () => {
     });
   });
 
+  describe('Backspace keypress', () => {
+    it('calls media plugin state to remove media node', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
+      const removeMediaNodeSpy = sinon.spy(pluginState, 'removeSelectedMediaNode');
+
+      sendKeyToPm(editorView, 'Backspace');
+
+      expect(removeMediaNodeSpy.calledOnce).to.equal(true);
+    });
+  });
+
   describe('Enter keypress', () => {
     it('splits media group', () => {
       const { editorView, pluginState } = editor(doc(p('{<>}')));

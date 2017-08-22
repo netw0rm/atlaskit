@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {MouseEvent} from 'react';
-import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview, ImageResizeMode} from '@atlaskit/media-core';
+import {MediaItemType, MediaItemDetails, LinkDetails, FileDetails, UrlPreview, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus, CardEvent, OnSelectChangeFuncResult} from '..';
 import {LinkCard} from '../links';
 import {FileCard} from '../files';
 import {isLinkDetails} from '../utils/isLinkDetails';
+import {Wrapper} from './styled';
 
 export interface CardViewProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -44,15 +45,23 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   }
 
   render() {
-    const {mediaItemType} = this.props;
+    const {onClick, onMouseEnter} = this;
+    const {mediaItemType, dimensions} = this.props;
+    let card;
 
     if (mediaItemType === 'link') {
-      return this.renderLink();
+      card = this.renderLink();
     } else if (mediaItemType === 'file') {
-      return this.renderFile();
+      card = this.renderFile();
+    } else {
+      card = this.renderCardFromDetails();
     }
 
-    return this.renderCardFromDetails();
+    return (
+      <Wrapper dimensions={dimensions} onClick={onClick} onMouseEnter={onMouseEnter}>
+        {card}
+      </Wrapper>
+    );
   }
 
   private renderCardFromDetails = () => {
@@ -73,9 +82,6 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
         {...otherProps}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
-
-        onClick={this.onClick}
-        onMouseEnter={this.onMouseEnter}
       />
     );
   }
@@ -87,10 +93,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
       <FileCard
         {...otherProps}
         status={status}
-        details={metadata}
-
-        onClick={this.onClick}
-        onMouseEnter={this.onMouseEnter}
+        details={metadata as FileDetails}
       />
     );
   }

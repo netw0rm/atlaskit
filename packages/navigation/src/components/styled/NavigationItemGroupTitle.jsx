@@ -1,24 +1,19 @@
 // @flow
 import styled from 'styled-components';
-import {
-  akTypographyMixins,
-} from '@atlaskit/util-shared-styles';
-import { getProvided, whenCollapsed } from '../../theme/util';
+import { whenCollapsedAndNotInOverflowDropdown } from '../../theme/util';
 import { truncate } from '../../utils/mixins';
+import { gridSize } from '../../shared-variables';
+
+const groupTitleFontSize = 11;
 
 const NavigationItemGroupTitle = styled.div`
-  ${akTypographyMixins.h300}
-  margin-top: 0;
-  align-self: center;
-  color: ${({ theme }) => getProvided(theme).subText};
-  display: flex;
-  flex-grow: 1;
-  font-size: 12px;
-  text-transform: uppercase;
+  font-size: ${groupTitleFontSize}px;
+  line-height: ${(gridSize * 2) / groupTitleFontSize};
+  font-weight: 600;
   ${truncate()}
 
-  ${whenCollapsed`
-    visibility: hidden;
+  ${whenCollapsedAndNotInOverflowDropdown`
+    display: none;
   `}
 `;
 

@@ -7,7 +7,8 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, Provided } from '../../types';
+import type { ReactElement, ReactClass } from '../../types';
+import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
   containerClosedWidth,
@@ -62,8 +63,8 @@ type Props = {|
   children?: ReactElement,
   /** Theme object to be used to color the navigation container. */
   containerTheme?: Provided,
-  /** Component to be rendered as the header of the container.  */
-  containerHeaderComponent?: () => ReactElement,
+  /** Component(s) to be rendered as the header of the container.  */
+  containerHeaderComponent?: () => ReactElement[],
   /** Location to pass in an array of AkSearchDrawers to be rendered. There is no
   decoration done to the components passed in here. */
   drawers?: ReactElement[],
@@ -96,22 +97,38 @@ type Props = {|
   isResizeable?: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
-  linkComponent?: () => mixed,
+  linkComponent?: ReactClass,
   /** Function called at the end of a resize event. It is called with an object
   containing a width and an isOpen. These can be used to update the props of Navigation. */
-  onResize?: (obj: resizeObj) => mixed,
+  onResize?: (obj: resizeObj) => void,
   /** Function to be called when a resize event starts. */
-  onResizeStart?: () => mixed,
+  onResizeStart?: () => void,
   /** Function called when the globalCreateIcon is clicked. */
-  onCreateDrawerOpen?: () => mixed,
+  onCreateDrawerOpen?: () => void,
   /** Function called when the globalSearchIcon is clicked. */
-  onSearchDrawerOpen?: () => mixed,
+  onSearchDrawerOpen?: () => void,
+  /** The offset at the top of the page before the navigation begins. This allows
+  absolute items such as a banner to be placed above nav, without lower nav items
+  being pushed off the screen. **DO NOT** use this outside of this use-case. Changes
+  are animated. The string is any valid css height value */
+  topOffset?: number,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
   width?: number,
 |}
 
+type State = {|
+  resizeDelta: number,
+  isResizing: boolean,
+  isTogglingIsOpen: boolean,
+|}
+
 export default class Navigation extends PureComponent {
+  /* eslint-disable react/sort-comp */
+  props: Props
+  state: State
+  /* eslint-enable */
+
   static defaultProps = {
     containerTheme: presets.container,
     drawers: [],
@@ -128,9 +145,10 @@ export default class Navigation extends PureComponent {
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
     width: globalOpenWidth + containerOpenWidth,
+    topOffset: 0,
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: mixed) {
     super(props, context);
 
     this.state = {
@@ -193,22 +211,23 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
-      containerTheme,
       containerHeaderComponent,
+      containerTheme,
       drawers,
-      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
+      globalTheme,
       isCollapsible,
-      isResizeable,
       isOpen,
+      isResizeable,
       linkComponent,
       onCreateDrawerOpen,
       onResizeStart,
       onSearchDrawerOpen,
+      topOffset,
     } = this.props;
 
     const {
@@ -277,7 +296,7 @@ export default class Navigation extends PureComponent {
           shouldAnimate={shouldAnimateContainer}
           width={renderedWidth}
         >
-          <NavigationFixedContainer>
+          <NavigationFixedContainer topOffset={topOffset} >
             {globalNavigation}
             <NavigationContainerNavigationWrapper
               horizontalOffset={containerOffsetX}

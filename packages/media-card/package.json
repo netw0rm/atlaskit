@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "17.11.2",
+  "version": "19.0.3",
   "config": {
     "access": "public"
   },
@@ -13,10 +13,12 @@
     "build": "npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
-    "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "validate/typescript": "../../build/bin/validate.typescript.sh"
   },
   "files": [
     "dist",
@@ -58,7 +60,7 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@atlaskit/media-core": "^8.0.0",
+    "@atlaskit/media-core": "^9.0.0",
     "react": "^15.3.2",
     "rxjs": "^5.1.0"
   },
@@ -70,8 +72,8 @@
     "@atlaskit/droplist": "^4.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
-    "@atlaskit/media-core": "^8.0.0",
-    "@atlaskit/media-test-helpers": "^6.0.0",
+    "@atlaskit/media-core": "^9.0.0",
+    "@atlaskit/media-test-helpers": "^7.0.0",
     "@atlaskit/toggle": "^2.0.4",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"

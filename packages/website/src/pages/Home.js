@@ -2,20 +2,17 @@
 
 import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import Media from 'react-media';
 import { Link } from 'react-router-dom';
 import { Grid, GridColumn } from '@atlaskit/page';
 import Button from '@atlaskit/button';
 import {
-  akBorderRadius,
-  akColorN300,
-  akColorB500,
   akElevationMixins,
-  akGridSize,
-  akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+
+import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 
 import { DESKTOP_QUERY, MOBILE_QUERY } from '../../constants';
 
@@ -44,24 +41,24 @@ const GettingInvolvedContent = () => (
   </Section>
 );
 
-const Message = ({ children, title, ...props }) => (
+const Message = withTheme(({ children, title, ...props }) => (
   <MessageRoot {...props}>
     <MessageIcon>
-      <WarningIcon label="Blue alert icon" primaryColor={akColorB500} />
+      <WarningIcon label="Blue alert icon" primaryColor={colors.blue(props)} />
     </MessageIcon>
     <MessageContent>
       <MessageTitle>{title}</MessageTitle>
       <MessageText>{children}</MessageText>
     </MessageContent>
   </MessageRoot>
-);
+));
 
-const Mobile = () => (
+const Mobile = withTheme((props) => (
   <MobileIntro>
-    <Heading style={{ marginLeft: akGridSizeUnitless * 2 }}>Welcome</Heading>
+    <Heading style={{ marginLeft: math.multiply(gridSize, 2) }}>Welcome</Heading>
     <Row>
       <Col width="60%">
-        <IntroContent style={{ marginBottom: 40 }} />
+        <IntroContent style={{ marginBottom: math.multiply(gridSize, 4)(props) }} />
         <Button component={Link} to="/components" appearance="primary">
           View Components
         </Button>
@@ -75,7 +72,7 @@ const Mobile = () => (
       <GettingInvolvedContent />
     </Container>
   </MobileIntro>
-);
+));
 
 const DesktopContent = () => (
   <div>
@@ -90,7 +87,7 @@ const DesktopContent = () => (
     </Section>
   </div>
 );
-const Desktop = () => (
+const Desktop = withTheme((props) => (
   <Media query={DESKTOP_QUERY}>
     {matches => matches ? (
       <Grid spacing="comfortable">
@@ -104,7 +101,7 @@ const Desktop = () => (
               src={landingHero}
               style={{
                 height: 'auto',
-                marginTop: 48,
+                marginTop: math.multiply(gridSize, 6)(props),
                 maxWidth: '100%',
               }}
             />
@@ -118,7 +115,7 @@ const Desktop = () => (
     )
   }
   </Media>
-);
+));
 
 export default class WelcomePage extends PureComponent {
   render() {
@@ -139,7 +136,7 @@ const MobileIntro = styled.div`
 `;
 const Row = styled.div`
   display: flex;
-  padding-left: ${akGridSizeUnitless * 2}px;
+  padding-left: ${math.multiply(gridSize, 2)}px;
   padding-top: 40px;
   overflow: hidden;
 `;
@@ -148,7 +145,7 @@ const Col = styled.div`
 `;
 const MobileHero = styled.img`
   height: auto;
-  margin-left: -${akGridSizeUnitless * 2}px;
+  margin-left: -${math.multiply(gridSize, 2)}px;
   margin-right: -40px;
   margin-top: -40px;
   width: 290px; /* arbitrary */
@@ -157,13 +154,13 @@ const MobileHero = styled.img`
 // Message
 const MessageRoot = styled.div`
   ${akElevationMixins.e100}
-  border-radius: ${akBorderRadius}
+  border-radius: ${borderRadius}px;
   display: flex;
-  padding: ${akGridSizeUnitless * 2}px;
+  padding: ${math.multiply(gridSize, 2)}px;
 `;
 const MessageIcon = styled.div`
   flex-shrink: 0;
-  margin-right: ${akGridSize};
+  margin-right: ${gridSize}px;
 `;
 const MessageContent = styled.div`
 `;
@@ -171,9 +168,8 @@ const MessageTitle = styled.h5`
   display: block;
   height: 24px;
   line-height: 24px;
-  margin-bottom: ${akGridSize};
+  margin-bottom: ${gridSize}px;
 `;
 const MessageText = styled.p`
-  color: ${akColorN300};
-  margin: 0 0 ${akGridSize};
+  margin: 0 0 ${gridSize}px;
 `;

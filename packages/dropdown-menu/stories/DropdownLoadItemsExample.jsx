@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '../src';
 
-import DropdownMenu from '../src';
-import { simpleDropdownItems } from './DropdownsData';
-
-export default class DropWithBut extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isDropdownOpen: false,
-      items: simpleDropdownItems,
-    };
-  }
+export default class LoadItemsExample extends Component {
+  state = {
+    isDropdownOpen: false,
+    items: [],
+  };
 
   render() {
-    return (<div style={{ padding: '40px' }}>
-      <button
-        onClick={() => {
-          const newItems = [].concat(simpleDropdownItems[0].items.push({ content: 'new item!!' }));
-          this.setState({
-            items: newItems,
-          });
-        }}
-      >Load more items!</button>
-      <div style={{ padding: '20px 0' }}>
-        <DropdownMenu
-          items={simpleDropdownItems}
-          onOpenChange={(attrs) => {
-            this.setState({ isDropdownOpen: attrs.isOpen });
+    return (
+      <div style={{ padding: '40px' }}>
+        <button
+          onClick={() => {
+            const items = this.state.items.slice();
+            items.push(
+              <DropdownItem>New item!</DropdownItem>
+            );
+            this.setState({ items });
           }}
-        >
-          <Button isSelected={this.state.isDropdownOpen}>Click me, I&#39;m just a button</Button>
-        </DropdownMenu>
+        >Load more items!</button>
+        <div style={{ padding: '20px 0' }}>
+          <DropdownMenu
+            onOpenChange={(attrs) => {
+              this.setState({ isDropdownOpen: attrs.isOpen });
+            }}
+            trigger={
+              <Button isSelected={this.state.isDropdownOpen}>Click me, I am just a button</Button>
+            }
+          >
+            <DropdownItemGroup>
+              {this.state.items}
+            </DropdownItemGroup>
+          </DropdownMenu>
+        </div>
       </div>
-    </div>);
+    );
   }
 }

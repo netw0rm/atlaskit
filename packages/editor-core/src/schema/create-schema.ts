@@ -20,6 +20,7 @@ import {
   mention,
   media,
   mediaGroup,
+  singleImage,
   hardBreak,
   emoji,
   table,
@@ -29,6 +30,8 @@ import {
   applicationCard,
   decisionList,
   decisionItem,
+  taskList,
+  taskItem,
   unknownBlock,
 
   // Marks
@@ -116,6 +119,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'mention', spec: mention },
   { name: 'media', spec: media },
   { name: 'mediaGroup', spec: mediaGroup },
+  { name: 'singleImage', spec: singleImage },
   { name: 'hardBreak', spec: hardBreak },
   { name: 'emoji', spec: emoji },
   { name: 'table', spec: table },
@@ -128,6 +132,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'applicationCard', spec: applicationCard },
   { name: 'decisionList', spec: decisionList },
   { name: 'decisionItem', spec: decisionItem },
+  { name: 'taskList', spec: taskList },
+  { name: 'taskItem', spec: taskItem },
   { name: 'unknownBlock', spec: unknownBlock },
 ];
 

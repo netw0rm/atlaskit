@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "7.0.3",
+  "version": "8.0.1",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,8 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Icon"
+    "name": "Icon",
+    "dark": true
   },
   "scripts": {
     "build": "node ./build/index.js",
@@ -47,7 +48,7 @@
     "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/dynamic-table": "^3.0.0",
     "@atlaskit/field-text": "^2.7.0",
-    "@atlaskit/icon": "*",
+    "@atlaskit/icon": "* || > 8.0.0-beta",
     "@atlaskit/modal-dialog": "^2.1.1",
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-readme": "^3.1.0",

@@ -1,5 +1,54 @@
 # @atlaskit/banner
 
+## 4.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for Banner, plus loads of cleanup in docs/stories ([3f03b9a](https://bitbucket.org/atlassian/atlaskit/commits/3f03b9a))
+* bug fix; remove ak-icon and update @atlaskit/icon to latest in package.json ([8018cf0](https://bitbucket.org/atlassian/atlaskit/commits/8018cf0))
+
+
+
+
+
+## 3.0.0 (2017-08-11)
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* feature; dark mode for Banner, plus loads of cleanup in docs/stories ([3f03b9a](https://bitbucket.org/atlassian/atlaskit/commits/3f03b9a))
+* bug fix; remove ak-icon and update @atlaskit/icon to latest in package.json ([8018cf0](https://bitbucket.org/atlassian/atlaskit/commits/8018cf0))
+
+
+
+
+
+
+## 2.4.2 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+## 2.4.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 2.1.0 (2017-07-17)
+
+## 2.1.0 (2017-07-17)
+
+## 2.1.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 2.1.0 (2017-07-17)
+
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
 ## 2.0.5 (2017-07-13)
 
 

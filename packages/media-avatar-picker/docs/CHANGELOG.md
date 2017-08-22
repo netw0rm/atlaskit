@@ -1,6 +1,26 @@
 # @atlaskit/media-avatar-picker
 
-## Unreleased
+## 2.3.0 (2017-08-11)
+
+* feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))
+## 2.2.4 (2017-08-03)
+
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
+## 2.2.3 (2017-08-01)
+
+* bug fix; bumping media-core ([6488cfc](https://bitbucket.org/atlassian/atlaskit/commits/6488cfc))
+
+
+
+
+## 2.2.2 (2017-07-25)
+
+## 2.2.1 (2017-07-21)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; remove SC from peerDependencies to dependencies ([568161b](https://bitbucket.org/atlassian/atlaskit/commits/568161b))
 
 ## 2.2.0 (2017-07-10)
 

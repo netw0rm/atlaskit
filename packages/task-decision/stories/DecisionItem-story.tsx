@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import Renderer from '@atlaskit/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
 import DecisionItem from '../src/components/DecisionItem';
-import { document } from './story-data';
+import { document } from '../src/support/story-data';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console
@@ -20,4 +20,8 @@ storiesOf('<DecisionItem/>', module)
     <DecisionItem contentRef={dumpRef}>
       <Renderer document={document} />
     </DecisionItem>
-  ));
+  ))
+  .add('Simple DecisionItem with placeholder', () => (
+    <DecisionItem contentRef={dumpRef} showPlaceholder={true} />
+  ))
+;

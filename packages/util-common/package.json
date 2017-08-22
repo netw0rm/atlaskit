@@ -1,17 +1,18 @@
 {
   "name": "@atlaskit/util-common",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "config": {
     "access": "public"
   },
   "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/util-common; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'"
   },
   "files": [
     "dist"

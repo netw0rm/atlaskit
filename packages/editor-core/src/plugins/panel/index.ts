@@ -64,16 +64,12 @@ export class PanelState {
     const { dispatch, state } = view;
     let { tr } = state;
     let { $from, $to } = state.selection;
-    let newFrom = tr.doc.resolve($from.start($from.depth - 1));
-    let newTo = tr.doc.resolve($to.end($to.depth - 1));
+    const node = $from.node($from.depth);
+    const depthFactor = node.textContent ? 2 : 1;
+    let newFrom = tr.doc.resolve($from.start($from.depth) - depthFactor);
+    let newTo = tr.doc.resolve($to.end($to.depth) - depthFactor);
     let range = newFrom.blockRange(newTo)!;
     tr = tr.delete(range!.start, range!.end);
-    $from = tr.selection.$from;
-    $to = tr.selection.$to;
-    newFrom = tr.doc.resolve($from.start($from.depth));
-    newTo = tr.doc.resolve($to.end($to.depth));
-    range = newFrom.blockRange(newTo)!;
-    tr = tr.lift(range, newFrom.depth - 2);
     dispatch(tr);
   }
 

@@ -14,6 +14,8 @@ type Padding = {|
 |}
 
 export type ItemTheme = {|
+  afterSpacing: number,
+  beforeSpacing: number,
   borderRadius: number,
   height?: {|
     compact: number,
@@ -31,4 +33,8 @@ export type ItemTheme = {|
   hover: ItemState,
   active: ItemState,
   disabled: ItemState,
+  dragging?: ItemState,
 |}
+
+export type ReactElement = any;
+export type HTMLElement = any;

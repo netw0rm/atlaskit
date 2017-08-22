@@ -15,7 +15,7 @@ import {
   emojiQuery,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 const providerFactory = new ProviderFactory();
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
@@ -74,7 +74,7 @@ describe('ascii emojis - input rules', () => {
         });
       });
 
-      it.skip('should replace a matching emoticon even when containing a colon', () => {
+      it('should replace a matching emoticon even when containing a colon', () => {
         return assert(`text ':D`, p('{<>}'), (state) => {
           const emoji = emojiNode({
             id: '1f605',

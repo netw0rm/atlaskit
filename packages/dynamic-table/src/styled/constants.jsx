@@ -1,26 +1,30 @@
 import { css } from 'styled-components';
+import { gridSize, math } from '@atlaskit/theme';
 import { ASC, DESC } from '../internal/constants';
-import Theme from './theme';
-
-export const { spacing } = Theme.$;
-export const baselineUnit = spacing / 2;
+import { arrow } from '../theme';
 
 export const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
   ${width ? css`width: ${width}%;` : ''}
   ${isFixedSize ? css`overflow: hidden;` : ''};
-  ${isFixedSize && shouldTruncate ? css`
+  ${isFixedSize && shouldTruncate
+    ? css`
     text-overflow: ellipsis;
     white-space: nowrap;
-  ` : ''}
+  `
+    : ''}
 `;
 
-export const onClickStyle = ({ onClick }) => onClick && css`
+export const onClickStyle = ({ onClick }) =>
+  onClick &&
+  css`
   &:hover {
     cursor: pointer;
   }
 `;
 
-export const arrowsStyle = ({ isSortable, sortOrder }) => {
+export const arrowsStyle = props => {
+  const { isSortable, sortOrder } = props;
+
   if (!isSortable) return '';
 
   const pseudoBase = css`
@@ -28,7 +32,7 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
     display: block;
     height: 0;
     position: absolute;
-    right: -${spacing}px;
+    right: -${gridSize}px;
     width: 0;
   `;
 
@@ -38,18 +42,16 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
         &:before {
           ${pseudoBase};
             border-bottom: 3px solid ${sortOrder === ASC
-              ? Theme.arrow.color.selected
-              : Theme.arrow.color.default
-            };
+              ? arrow.selectedColor(props)
+              : arrow.defaultColor(props)};
             bottom: 8px;
             content: ' ';
           };
         &:after {
           ${pseudoBase};
           border-top: 3px solid ${sortOrder === DESC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.default
-          };
+            ? arrow.selectedColor(props)
+            : arrow.defaultColor(props)};
           bottom: 0;
           content: ' ';
         };
@@ -58,15 +60,13 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
       &:hover > span {
         &:before {
           border-bottom: 3px solid ${sortOrder === ASC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.hover
-          };
+            ? arrow.selectedColor(props)
+            : arrow.hoverColor(props)};
         }
         &:after {
           border-top: 3px solid ${sortOrder === DESC
-            ? Theme.arrow.color.selected
-            : Theme.arrow.color.hover
-          };
+            ? arrow.selectedColor(props)
+            : arrow.hoverColor(props)};
         }
       }
     `;
@@ -74,7 +74,7 @@ export const arrowsStyle = ({ isSortable, sortOrder }) => {
 
 export const cellStyle = css`
     border: none;
-    padding: ${baselineUnit}px ${spacing}px;
+    padding: ${math.divide(gridSize, 2)}px ${gridSize}px;
     text-align: left;
 
     &:first-child { padding-left: 0; }

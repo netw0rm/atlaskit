@@ -1,20 +1,17 @@
 import { PropTypes } from 'react';
 import { mount, shallow } from 'enzyme';
+import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../../src/theme/util';
 import * as presets from '../../src/theme/presets';
 import type { RootTheme, Provided } from '../../src/theme/types';
+import createItemTheme from '../../src/theme/map-navigation-theme-to-item-theme';
 
 export const getRootTheme = (provided: Provided, isCollapsed?: boolean = false) => ({
   [prefix('root')]: {
     provided,
     isCollapsed,
   },
-});
-
-export const getGroupTheme = (isCompact?: boolean = false) => ({
-  [prefix('group')]: {
-    isCompact,
-  },
+  [itemThemeNamespace]: createItemTheme(provided, isCollapsed),
 });
 
 const defaultTheme = getRootTheme(presets.container);
@@ -67,4 +64,3 @@ export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) =
   }
   );
 };
-

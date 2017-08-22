@@ -97,6 +97,7 @@ storiesOf(name, module)
   .add('Editor (allowTextColor)', () => <Editor onChange={handleChange} allowTextColor={true} />)
   .add('Editor (allowCodeBlock)', () => <Editor onChange={handleChange} allowCodeBlock={true} />)
   .add('Editor (allowBlockQuote)', () => <Editor onChange={handleChange} allowBlockQuote={true} />)
+  .add('Editor (allowTables)', () => <Editor onChange={handleChange} allowTables={true} />)
   .add('Editor (Mentions)', () =>
     <Editor
       onChange={handleChange}
@@ -145,6 +146,36 @@ storiesOf(name, module)
       />
     </div>
   )
+  .add('Editor (isDisabled)', () => {
+    type Props = {};
+    type State = { isDisabled: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { isDisabled: true };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              isDisabled={this.state.isDisabled}
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleDisabled = () => this.setState({ isDisabled: !this.state.isDisabled });
+    }
+
+    return <Demo />;
+  })
   .add('Editor (All flags)', () =>
     <Editor
       onChange={handleChange}
@@ -153,6 +184,7 @@ storiesOf(name, module)
       allowLists={true}
       allowLinks={true}
       allowCodeBlock={true}
+      allowTables={true}
       allowAdvancedTextFormatting={true}
       allowSubSup={true}
       allowTextColor={true}

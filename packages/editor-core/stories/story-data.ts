@@ -1,4 +1,4 @@
-import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/src/support';
+import { storyData as emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 const toEmojiAttrs = (emoji) => {
   const { shortName, id, fallback } = emoji;
@@ -147,7 +147,7 @@ export const document = {
       content: [
         {
           type: 'text',
-          text: 'My name is '
+          text: 'Hi, my name is... My name is... My name is... My name is '
         },
         {
           type: 'mention',
@@ -1052,6 +1052,9 @@ System.out.println("There are " + count + " values >= 5");`
     },
     {
       type: 'decisionList',
+      attrs: {
+        localId: ''
+      },
       content: [
         {
           type: 'decisionItem',
@@ -1136,6 +1139,213 @@ System.out.println("There are " + count + " values >= 5");`
             {
               type: 'text',
               text: 'decision 2'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'taskList',
+      attrs: {
+        localId: ''
+      },
+      content: [
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'task-1',
+            state: 'TODO'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'Could you please'
+            },
+            {
+              type: 'hardBreak'
+            },
+            {
+              type: 'text',
+              text: 'do this '
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: '0',
+                text: '@Carolyn',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'emoji',
+              attrs: {
+                shortName: ':wink:',
+                id: '1f609',
+                text: '😉'
+              }
+            },
+          ]
+        },
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'task-2',
+            state: 'DONE'
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'This is completed'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'table',
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableHeader',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colspan: 1,
+                rowspan: 1,
+                background: null
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: []
+                }
+              ]
             }
           ]
         }

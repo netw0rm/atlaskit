@@ -1,6 +1,63 @@
 # @atlaskit/dropdown-menu
 
-## Unreleased
+## 3.7.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+## 3.7.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+## 3.6.0 (2017-08-11)
+
+
+
+* feature; implement darkmode for droplist ([35f9281](https://bitbucket.org/atlassian/atlaskit/commits/35f9281))
+
+## 3.5.1 (2017-08-10)
+
+* bug fix; handle missing context in dropdown items gracefully (issues closed: ak-2590) ([5a36eea](https://bitbucket.org/atlassian/atlaskit/commits/5a36eea))
+
+
+
+
+
+## 3.5.0 (2017-07-28)
+
+## 3.4.2 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+
+* feature; convert dropdown-menu and droplist to declarative API ([f6e0292](https://bitbucket.org/atlassian/atlaskit/commits/f6e0292))
+
+## 3.4.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 3.1.0 (2017-07-17)
+
+## 3.1.0 (2017-07-17)
+
+## 3.1.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 3.1.0 (2017-07-17)
+
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
+## 3.0.2 (2017-07-17)
+
+
+* fix; replace "*" with last version of tooltip "1.2.0" ([89ba989](https://bitbucket.org/atlassian/atlaskit/commits/89ba989))
 
 ## 3.0.1 (2017-06-14)
 

@@ -24,10 +24,10 @@ export default class Drawer extends PureComponent {
     header: PropTypes.node,
     isOpen: PropTypes.bool,
     iconOffset: PropTypes.number,
-    isFullWidth: PropTypes.bool,
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
     width: PropTypes.oneOf(['narrow', 'wide', 'full']),
+    onKeyDown: PropTypes.func,
   }
   static defaultProps = {
     iconOffset: 0,
@@ -46,9 +46,17 @@ export default class Drawer extends PureComponent {
   }
 
   handleKeyDown = (event: KeyboardEvent) => {
-    if (event.keyCode === escKeyCode) {
-      event.stopPropagation(); // Don't propagate lest one esc keystroke causes many views to close
-      this.props.onBackButton(event);
+    // The reason we have onKeyDown living together with onBackButton is because
+    // some apps living in Focused task need the ability to handle on key down by itself.
+    // However, some other apps don't really care about it
+    // and leave it to the Focused task to handle.
+    // Calling onKeyDown first can either supplement or override onBackButton.
+    const { onKeyDown, onBackButton } = this.props;
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+    if (!event.defaultPrevented && event.keyCode === escKeyCode) {
+      onBackButton(event);
     }
   }
 
@@ -61,8 +69,9 @@ export default class Drawer extends PureComponent {
       primaryIcon,
       width,
       iconOffset,
-      isFullWidth,
     } = this.props;
+
+    const actualFullWidth = width === 'full';
 
     const backIconWrapperStyle = {
       top: `${iconOffset}px`,
@@ -85,11 +94,11 @@ export default class Drawer extends PureComponent {
 
     const content = isOpen ? (
       <DrawerMain>
-        {(width !== 'full' && header) ?
-          <ContainerHeader>{header}</ContainerHeader>
-        : null}
+        <ContainerHeader isInDrawer iconOffset={iconOffset} isFullWidth={actualFullWidth}>
+          {(width !== 'full') ? header : null}
+        </ContainerHeader>
         <DrawerContent>
-          <ContentArea iconOffset={iconOffset} isFullWidth={isFullWidth} >
+          <ContentArea>
             {this.props.children}
           </ContentArea>
         </DrawerContent>

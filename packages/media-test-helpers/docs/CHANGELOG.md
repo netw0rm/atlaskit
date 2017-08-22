@@ -1,6 +1,24 @@
 # @atlaskit/media-test-helpers
 
-## Unreleased
+## 7.2.0 (2017-08-08)
+
+* feature; add password protected PDF ([5afbf6a](https://bitbucket.org/atlassian/atlaskit/commits/5afbf6a))
+## 7.1.0 (2017-08-08)
+
+* feature; add large pdf file ([695e4d1](https://bitbucket.org/atlassian/atlaskit/commits/695e4d1))
+* feature; added link details ([ed1c4aa](https://bitbucket.org/atlassian/atlaskit/commits/ed1c4aa))
+
+
+
+## 6.3.0 (2017-07-31)
+
+
+* feature; added minimal link details which contain a smart card ([e016c4b](https://bitbucket.org/atlassian/atlaskit/commits/e016c4b))
+
+## 6.2.1 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
 
 ## 6.2.0 (2017-06-29)
 

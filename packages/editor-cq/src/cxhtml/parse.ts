@@ -9,7 +9,6 @@ import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import {
   findTraversalPath,
-  ensureBlocks,
   getNodeName,
   addMarks,
   getAcName,
@@ -23,8 +22,17 @@ import {
   marksFromStyle,
   getContent,
 } from './utils';
+import {
+  blockquoteContentWrapper,
+  listContentWrapper,
+  listItemContentWrapper,
+  ensureInline,
+  docContentWrapper,
+} from './content-wrapper';
 
-const convertedNodes = new WeakMap();
+const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
+// This reverted mapping is used to map Unsupported Node back to it's original cxhtml
+const convertedNodesReverted = new WeakMap<Fragment | PMNode, Node>();
 
 export default function(cxhtml: string) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
@@ -39,8 +47,9 @@ function parseDomNode(dom: Element): PMNode {
     const node = nodes[i];
     const content = getContent(node, convertedNodes);
     const candidate = converter(content, node);
-    if (typeof candidate !== 'undefined') {
+    if (typeof candidate !== 'undefined' && candidate !== null) {
       convertedNodes.set(node, candidate);
+      convertedNodesReverted.set(candidate, node);
     }
   }
 
@@ -50,7 +59,7 @@ function parseDomNode(dom: Element): PMNode {
     // we attempt to wrap in a paragraph.
     ? schema.nodes.doc.validContent(content)
       ? content
-      : ensureBlocks(content)
+      : docContentWrapper(content, convertedNodesReverted)
     // The document must have at least one block element.
     : schema.nodes.paragraph.createChecked({});
 
@@ -64,8 +73,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
     return text ? schema.text(text) : null;
   }
 
-  // All unsupported content is wrapped in an `unsupportedInline` node. Converting
-  // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
+  // All unsupported content is wrapped in an `unsupportedInline` node. Wrapping
+  // `unsupportedInline` inside `paragraph` where appropriate is handled when
   // the content is inserted into a parent.
   const unsupportedInline = schema.nodes.confluenceUnsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 
@@ -99,7 +108,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.blockquote.createChecked({},
           schema.nodes.blockquote.validContent(content)
             ? content
-            : ensureBlocks(content)
+            : blockquoteContentWrapper(content, convertedNodesReverted)
         );
       case 'SPAN':
         return addMarks(content, marksFromStyle((node as HTMLSpanElement).style));
@@ -110,29 +119,82 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'H5':
       case 'H6':
         const level = Number(tag.charAt(1));
-        return schema.nodes.heading.createChecked({ level }, content);
+        return schema.nodes.heading.createChecked({ level },
+          schema.nodes.heading.validContent(content)
+            ? content
+            : ensureInline(content, convertedNodesReverted)
+        );
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
       case 'HR':
         return schema.nodes.rule.createChecked();
       case 'UL':
-        return schema.nodes.bulletList.createChecked({}, content);
-      case 'OL':
-        return schema.nodes.orderedList.createChecked({}, content);
-      case 'LI':
-        return schema.nodes.listItem.createChecked({},
-          schema.nodes.listItem.validContent(content)
+        return schema.nodes.bulletList.createChecked({},
+          schema.nodes.bulletList.validContent(content)
             ? content
-            : ensureBlocks(content)
+            : listContentWrapper(content, convertedNodesReverted)
         );
+      case 'OL':
+        return schema.nodes.orderedList.createChecked({},
+          schema.nodes.orderedList.validContent(content)
+            ? content
+            : listContentWrapper(content, convertedNodesReverted)
+        );
+      case 'LI':
+          return schema.nodes.listItem.createChecked({},
+            schema.nodes.listItem.validContent(content)
+              ? content
+              : listItemContentWrapper(content, convertedNodesReverted)
+          );
       case 'P':
-        // Media groups are currently encoded as paragraphs containing 1 or more media items
-        if (node.firstChild && (getNodeName(node.firstChild) === 'FAB:MEDIA')){
-          return schema.nodes.mediaGroup.createChecked({}, content);
+        let output: Fragment = Fragment.from([]);
+        let textNodes: PMNode[] = [];
+        let mediaNodes: PMNode[] = [];
+
+        if (!node.childNodes.length) {
+          return schema.nodes.paragraph.createChecked({}, content);
         }
 
-        // This looks like a normal paragraph
-        return schema.nodes.paragraph.createChecked({}, content);
+        content.forEach((childNode, offset) => {
+          if (childNode.type === schema.nodes.media) {
+            // if there were text nodes before this node
+            // combine them into one paragraph and empty the list
+            if (textNodes.length) {
+              const paragraph = schema.nodes.paragraph.createChecked({}, textNodes);
+              output = output.addToEnd(paragraph);
+
+              textNodes = [];
+            }
+
+            mediaNodes.push(childNode);
+          } else {
+            // if there were media nodes before this node
+            // combine them into one mediaGroup and empty the list
+            if (mediaNodes.length) {
+              const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
+              output = output.addToEnd(mediaGroup);
+
+              mediaNodes = [];
+            }
+
+            textNodes.push(childNode);
+          }
+        });
+
+        // combine remaining text nodes
+        if (textNodes.length) {
+          const paragraph = schema.nodes.paragraph.createChecked({}, ensureInline(Fragment.fromArray(textNodes), convertedNodesReverted));
+          output = output.addToEnd(paragraph);
+        }
+
+        // combine remaining media nodes
+        if (mediaNodes.length) {
+          const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
+          output = output.addToEnd(mediaGroup);
+        }
+
+        return output;
+
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node) || unsupportedInline;
       case 'FAB:LINK':

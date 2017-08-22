@@ -1,11 +1,131 @@
 # @atlaskit/emoji
 
-## Unreleased
+## 26.0.2 (2017-08-21)
 
-* feature; skin tone selection stored in EmojiResource propagated to typeahead (issues closed: fs-1128)
+* bug fix; no longer chain calls to mediapicker (no longer supported). ([14b4e6c](https://bitbucket.org/atlassian/atlaskit/commits/14b4e6c))
+* bug fix; bump media picker and other dependencies to align with editor-core ([d3c9668](https://bitbucket.org/atlassian/atlaskit/commits/d3c9668))
+
+## 26.0.1 (2017-08-14)
+
+* bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))
+## 26.0.0 (2017-08-13)
+
+
+
+* feature; unit tests for the frequency in search work. ([ab28372](https://bitbucket.org/atlassian/atlaskit/commits/ab28372))
+
+
+* breaking; The usageTracker property is moved from EmojiResource. If you subclassed EmojiResource and relied on ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+* breaking; ensure frequently used emoji are boosted in search results in the typeahead and pick (issues closed: fs-1213) ([b495c56](https://bitbucket.org/atlassian/atlaskit/commits/b495c56))
+
+
+
+## 25.0.0 (2017-08-10)
+
+* bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))
+* bug fix; bumped emoji to next latest version ([79b61ba](https://bitbucket.org/atlassian/atlaskit/commits/79b61ba))
+
+
+
+
+
+
+
+* breaking; EmojiSearchResult no longer has categories field ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* breaking; categorySelector inserts non-standard categories dynamically (issues closed: fs-1201) ([cbc47eb](https://bitbucket.org/atlassian/atlaskit/commits/cbc47eb))
+* feature; atlassianEmojiMigrationResource removes Atlassian emojis that have a corresponding (issues closed: fs-1200) ([a95ef0c](https://bitbucket.org/atlassian/atlaskit/commits/a95ef0c))
+## 23.0.1 (2017-08-10)
+
+* bug fix; release imports up into src fail in dist ([9846bc5](https://bitbucket.org/atlassian/atlaskit/commits/9846bc5))
+
+## 23.0.0 (2017-08-09)
+
+* bug fix; make the typeahead and picker call Provider.recordSelection by default ([c801f20](https://bitbucket.org/atlassian/atlaskit/commits/c801f20))
+* bug fix; change how skin tone variations are converted back to their 'base' emoji ([ef6fbf3](https://bitbucket.org/atlassian/atlaskit/commits/ef6fbf3))
+
+* bug fix; fixed a bug where the storybook update was happening before the usage had been recor ([eeedf56](https://bitbucket.org/atlassian/atlaskit/commits/eeedf56))
+
+
+
+* breaking; EmojiResource.recordSelection now returns a resolved Promise rather than a rejected Promise when ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+* breaking; keep track of selected emoji so we know most frequently used. (issues closed: fs-1212) ([e7680d0](https://bitbucket.org/atlassian/atlaskit/commits/e7680d0))
+
+
+
+
+
+
+
+
+
+
+
+
+## 22.3.1 (2017-07-27)
+
+
+* fix; ensure :sweat_smile: is in emoji test data for editor tests ([00759bf](https://bitbucket.org/atlassian/atlaskit/commits/00759bf))
+* fix; update test/story data to all source from latest prod url. Stop using dev. ([2d223f8](https://bitbucket.org/atlassian/atlaskit/commits/2d223f8))
+
+## 22.3.0 (2017-07-26)
+
+
+* feature; added test for localStorage use in EmojiResource ([b17b64a](https://bitbucket.org/atlassian/atlaskit/commits/b17b64a))
+
+## 22.2.0 (2017-07-25)
+
+
+* feature; emojiResource uses localStorage to remember tone selection ([5547296](https://bitbucket.org/atlassian/atlaskit/commits/5547296))
+* feature; export test/story data for direct import. Not in bundle. ([bafc231](https://bitbucket.org/atlassian/atlaskit/commits/bafc231))
+
+## 22.1.1 (2017-07-25)
+
+## 22.1.0 (2017-07-24)
+
+
+* feature; switch to util-service-support for service interaction ([2ee3928](https://bitbucket.org/atlassian/atlaskit/commits/2ee3928))
+
+## 22.0.1 (2017-07-21)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+* fix; addes in a wrapper for emoji so that it can be parsed by PM editor ([39e8389](https://bitbucket.org/atlassian/atlaskit/commits/39e8389))
+
+## 22.0.0 (2017-07-21)
+
+## 21.0.0 (2017-07-20)
+
+
+* feature; fixed CSS of emoji picker ([d98acb3](https://bitbucket.org/atlassian/atlaskit/commits/d98acb3))
+
+## 19.0.0 (2017-07-19)
+
+
+* fix; don't return non-searchable emoji in searches (and 'getAll') calls ([4e95196](https://bitbucket.org/atlassian/atlaskit/commits/4e95196))
+* fix; emojiDescription in a few test files were missing the searchable field. ([08f31e2](https://bitbucket.org/atlassian/atlaskit/commits/08f31e2))
+* fix; fix flexbox issue when upload panel displayed in FF/IE/Edge. ([aaff6f0](https://bitbucket.org/atlassian/atlaskit/commits/aaff6f0))
+* fix; Tests and minor fixes for media caching/loading. ([7ea11c1](https://bitbucket.org/atlassian/atlaskit/commits/7ea11c1))
+
+
+* feature; emojis with skin variations in the picker ([90af318](https://bitbucket.org/atlassian/atlaskit/commits/90af318))
+* feature; skin tone selection made in the picker is stored in the EmojiResource ([fcdcee8](https://bitbucket.org/atlassian/atlaskit/commits/fcdcee8))
+* feature; skin tone selection stored in EmojiResource propagated to typeahead ([b17570c](https://bitbucket.org/atlassian/atlaskit/commits/b17570c))
+* feature; Performance improvements ([9f5215c](https://bitbucket.org/atlassian/atlaskit/commits/9f5215c))
+
+
+* breaking; The EmojiDescription and EmojiServiceDescription interfaces have an additional mandatory property.
+
+ISSUES CLOSED: FS-1171
 * breaking; EmojiProvider requires getter/setter for remembering tone selection
-* breaking; skin tone selection made in the picker is stored in the EmojiResource (issues closed: fs-1127)
-* feature; emojis with skin variations in the picker (issues closed: fs-1126)
+
+ISSUES CLOSED: FS-1127
+* breaking; - Most EmojiProvider methods now return T | Promise<T> instead of Promise<T>
+- This should still be compatible for implementors of an EmojiProvider, but
+  they can improve rendering speeds in some cases if they return a T instead
+  of a Promise<T>, but old returns will continue to work.
+
+ISSUES CLOSED: FS-1057
+
 ## 18.4.2 (2017-07-10)
 
 

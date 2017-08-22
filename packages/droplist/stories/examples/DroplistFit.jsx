@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
-import DropdownList, { Group, Item } from '@atlaskit/droplist';
-import { akColorN800 } from '@atlaskit/util-shared-styles';
+import DropdownList from '@atlaskit/droplist';
+import Item, { ItemGroup } from '@atlaskit/item';
+import { BlockTrigger } from '../styled/StoryHelpers';
 
 const DroplistOverview = class extends Component {
   render() {
-    return (<DropdownList
-      isOpen
-      shouldFitContainer
-      trigger={<div style={{ border: `1px solid ${akColorN800}` }}>This is the wide trigger</div>}
-    >
-      <Group heading="Australia">
-        <Item>Sydney</Item>
-        <Item>Canberra</Item>
-        <Item>Melbourne</Item>
-      </Group>
-    </DropdownList>);
+    return (
+      <DropdownList
+        isOpen
+        shouldFitContainer
+        trigger={
+          <BlockTrigger>This is the wide trigger</BlockTrigger>
+        }
+      >
+        <ItemGroup title="Australia">
+          <Item>Sydney</Item>
+          <Item isHidden>Darwin</Item>
+          <Item isDisabled>Brisbane</Item>
+          <Item>Canberra</Item>
+          <Item>Melbourne</Item>
+        </ItemGroup>
+      </DropdownList>
+    );
   }
 };
 

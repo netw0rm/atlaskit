@@ -1,22 +1,24 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.4.1",
+  "version": "4.4.4",
   "config": {
     "access": "public"
   },
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:main": "dist/es/index.js",
+  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Inline Edit"
   },
   "scripts": {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-edit; } || ../../node_modules/.bin/not-in-publish",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
-    "storybook": "../../build/bin/storybook.single.sh",
-    "eslint": "../../build/bin/lint.eslint.sh"
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"
@@ -38,12 +40,13 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/inline-dialog": "1.0.0",
+    "@atlaskit/inline-edit": "*",
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
     "@atlaskit/single-select": "^1.4.0",
+    "@atlaskit/theme": "^2.0.0",
     "react-router-dom": "^4.0.0",
-    "@atlaskit/inline-edit": "*",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

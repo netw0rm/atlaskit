@@ -19,7 +19,7 @@ export default class CodeBlock extends PureComponent<Props, {}> {
 
     const codeProps = {
       language,
-      text: React.Children.map(children, identity).join('\n')
+      text: React.Children.map(children, identity).join('')
     };
 
     return (

@@ -1,11 +1,15 @@
+import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
 
 import {
+  Context,
   DefaultMediaStateManager,
   MediaProvider,
   MediaState,
   MediaStateManager,
   UploadParams,
+  ContextConfig,
+  ContextFactory
 } from '@atlaskit/media-core';
 
 import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
@@ -17,19 +21,21 @@ import {
   Node as PMNode,
   Schema,
   Transaction,
+  NodeSelection,
+  Mark,
 } from '../../prosemirror';
 import PickerFacade from './picker-facade';
-import { ContextConfig } from '@atlaskit/media-core';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
-import { ReactMediaGroupNode, ReactMediaNode } from '../../';
+import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../';
 import keymapPlugin from './keymap';
-import { insertLinks, RangeWithUrls, detectLinkRangesInSteps } from './media-links';
+import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
-import { splitMediaGroup } from './media-common';
+import { removeMediaNode, splitMediaGroup } from './media-common';
+import { Alignment, Display } from './single-image';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -56,9 +62,10 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-
   private popupPicker?: PickerFacade;
-  private linkRanges: RangeWithUrls[];
+  private clipboardPicker?: PickerFacade;
+  private dropzonePicker?: PickerFacade;
+  private linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
@@ -171,8 +178,36 @@ export class MediaPluginState {
     }
   }
 
-  insertLinks = (): void => {
-    insertLinks(this.view, this.linkRanges, this.collectionFromProvider());
+  insertLinks = async () => {
+    const { mediaProvider } = this;
+
+    if (!mediaProvider) {
+      return;
+    }
+
+    const { linkCreateContext } = this.mediaProvider;
+
+    if (!linkCreateContext) {
+      return;
+    }
+
+    let linkCreateContextInstance = await linkCreateContext;
+    if (!linkCreateContextInstance) {
+      return;
+    }
+
+    if (!(linkCreateContextInstance as Context).addLinkItem) {
+      linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
+    }
+
+    return insertLinks(
+      this.view,
+      this.stateManager,
+      this.handleMediaState,
+      this.linkRanges,
+      linkCreateContextInstance as Context,
+      this.collectionFromProvider()
+    );
   }
 
   splitMediaGroup = (): boolean => {
@@ -252,23 +287,25 @@ export class MediaPluginState {
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
    */
-  handleMediaNodeRemove = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
-    this.handleMediaNodeRemoval(node, getPos, true);
+  handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+    removeMediaNode(this.view, node, getPos);
   }
 
   /**
-   * Nodes can be removed not only by user action but also from PM transform.
-   * For example when some plugin or even user manually calls "state.tr.deleteRange(...)"
-   * This function is called in this case
+   * This is called when media node is removed from media group node view
    */
-  handleMediaNodeOutsideRemove = (id: string) => {
+  cancelInFlightUpload(id: string) {
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
     }
+    const status = this.getMediaNodeStateStatus(id);
 
-    const { node, getPos } = mediaNodeWithPos;
-    this.handleMediaNodeRemoval(node, getPos, false);
+    switch (status) {
+      case 'uploading':
+      case 'processing':
+        this.pickers.forEach(picker => picker.cancel(id));
+    }
   }
 
   /**
@@ -284,6 +321,15 @@ export class MediaPluginState {
    */
   handleMediaNodeUnmount = (oldNode: PMNode) => {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
+  }
+
+  align = (alignment: Alignment, display: Display = 'block'): boolean => {
+    if (!this.isMediaNodeSelection()) {
+      return false;
+    }
+    const { selection: { from }, schema, tr } = this.view.state;
+    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment, display }));
+    return true;
   }
 
   destroy() {
@@ -317,7 +363,7 @@ export class MediaPluginState {
     }, null);
   }
 
-  detectLinkRangesInSteps = (tr: Transaction) => {
+  detectLinkRangesInSteps = (tr: Transaction, oldState: EditorState<any>) => {
     const { link } = this.view.state.schema.marks;
     this.linkRanges = [];
 
@@ -325,11 +371,12 @@ export class MediaPluginState {
       this.ignoreLinks = false;
       return this.linkRanges;
     }
+
     if (!link || !this.allowsLinks) {
       return this.linkRanges;
     }
 
-    this.linkRanges = detectLinkRangesInSteps(tr, link);
+    this.linkRanges = detectLinkRangesInSteps(tr, link, oldState.selection.$anchor.pos);
   }
 
   private destroyPickers = () => {
@@ -357,10 +404,15 @@ export class MediaPluginState {
     if (!pickers.length) {
       pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
       pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
-      pickers.push(new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
-      pickers.push(new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
+      pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
       pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+
+      this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
     }
 
     // set new upload params for the pickers
@@ -371,42 +423,10 @@ export class MediaPluginState {
     return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
-  private handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler, activeUserAction: boolean) => {
-    const { id } = node.attrs;
-    const status = this.getMediaNodeStateStatus(id);
-
-    switch (status) {
-      case 'uploading':
-      case 'processing':
-        this.pickers.forEach(picker => picker.cancel(id));
-
-        if (!activeUserAction) {
-          return;
-        }
-
-        this.removeMediaNode(id);
-        break;
-
-      default:
-        if (!activeUserAction) {
-          return;
-        }
-
-        const { view } = this;
-        const nodePos = getPos();
-        const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-
-        view.dispatch(tr);
-        break;
-    }
-  }
-
   private handleMediaState = (state: MediaState) => {
     switch (state.status) {
       case 'error':
-        // TODO: we would like better error handling and retry support here.
-        this.removeMediaNode(state.id);
-
+        this.removeNodeById(state.id);
         const { uploadErrorHandler } = this.options;
 
         if (uploadErrorHandler) {
@@ -423,6 +443,14 @@ export class MediaPluginState {
 
   private notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
+  }
+
+  private removeNodeById = (id: string) => {
+    // TODO: we would like better error handling and retry support here.
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (mediaNodeWithPos) {
+      removeMediaNode(this.view, mediaNodeWithPos.node, mediaNodeWithPos.getPos);
+    }
   }
 
   private replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
@@ -455,27 +483,19 @@ export class MediaPluginState {
     view.dispatch(tr.setMeta('addToHistory', false));
   }
 
-  /**
-   * Called when:
-   * 1) user wants to delete the node when is hasn't been finalized (not ready) from UI
-   * 2) when upload process finished with "error" status
-   * In both cases we just delete the PM node from the document
-   */
-  private removeMediaNode = (id: string) => {
+  removeSelectedMediaNode = (): boolean => {
     const { view } = this;
-    if (!view) {
-      return;
+    if (this.isMediaNodeSelection()) {
+      const { from, node } = view.state.selection as NodeSelection;
+      removeMediaNode(view, node, () => from);
+      return true;
     }
+    return false;
+  }
 
-    const mediaNodeWithPos = this.findMediaNode(id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-
-    const { node, getPos } = mediaNodeWithPos;
-    const nodePos = getPos();
-    const tr = view.state.tr.deleteRange(nodePos, nodePos + node.nodeSize);
-    view.dispatch(tr.setMeta('addToHistory', false));
+  private isMediaNodeSelection() {
+    const { selection, schema } = this.view.state;
+    return selection instanceof NodeSelection && selection.node.type === schema.nodes.media;
   }
 
   /**
@@ -499,7 +519,17 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
         return new MediaPluginState(state, options);
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
-        pluginState.detectLinkRangesInSteps(tr);
+        pluginState.detectLinkRangesInSteps(tr, oldState);
+
+        // Ignore creating link cards during link editing
+        const { link } = oldState.schema.marks as { link: Mark };
+        const { nodeAfter, nodeBefore } = oldState.selection.$from;
+
+        if ((nodeAfter && link.isInSet(nodeAfter.marks)) ||
+          (nodeBefore && link.isInSet(nodeBefore.marks))
+        ) {
+          pluginState.ignoreLinks = true;
+        }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
         //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
@@ -522,6 +552,10 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       nodeViews: {
         mediaGroup: nodeViewFactory(options.providerFactory, {
           mediaGroup: ReactMediaGroupNode,
+          media: ReactMediaNode,
+        }, true),
+        singleImage: nodeViewFactory(options.providerFactory, {
+          singleImage: ReactSingleImageNode,
           media: ReactMediaNode,
         }, true),
       },

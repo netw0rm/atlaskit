@@ -4,9 +4,9 @@ import * as sinon from 'sinon';
 import imageUploadPlugins, { ImageUploadState } from '../../../../src/plugins/image-upload';
 import {
   chaiPlugin, makeEditor, img, doc, p, code_block,
-  setNodeSelection, setTextSelection,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { setNodeSelection, setTextSelection } from '../../../../src/utils';
 
 chai.use(chaiPlugin);
 

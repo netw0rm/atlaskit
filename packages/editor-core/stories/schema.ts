@@ -18,6 +18,7 @@ export default createSchema({
     'mention',
     'hardBreak',
     'emoji',
+    'singleImage',
     'mediaGroup',
     'media',
     'table',
@@ -26,6 +27,8 @@ export default createSchema({
     'tableRow',
     'decisionList',
     'decisionItem',
+    'taskList',
+    'taskItem',
   ],
   marks: [
     'em',

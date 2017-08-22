@@ -2,15 +2,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import Container from './styled/Container';
-
-// this offset is passed to popper as two space separated numbers representing
-// the offset from the target the first is distance along the same axis you are
-// on (top or bottom aligned would move left/right) and the second is on the
-// perpendicular axis (how far 'away' you are from the target) both are measured
-// in pixels
-const dialogOffset = `0 ${akGridSizeUnitless}`;
+import { gridSize } from '@atlaskit/theme';
+import { Container } from './styled';
 
 // TODO: expose positions and flipPositions from Layer and pull in here
 const positions = [
@@ -82,6 +75,13 @@ export default class InlineDialog extends PureComponent {
       children, content, isOpen, onContentBlur, onContentClick, onContentFocus,
       position, shouldFlip,
     } = this.props;
+
+    // this offset is passed to popper as two space separated numbers representing
+    // the offset from the target the first is distance along the same axis you are
+    // on (top or bottom aligned would move left/right) and the second is on the
+    // perpendicular axis (how far 'away' you are from the target) both are measured
+    // in pixels
+    const dialogOffset = `0 ${gridSize(this.props)}`;
 
     const layerContent = isOpen ? (
       <Container

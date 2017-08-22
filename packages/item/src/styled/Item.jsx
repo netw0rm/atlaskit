@@ -1,6 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
+import { akColorN60A } from '@atlaskit/util-shared-styles';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -24,23 +25,33 @@ const getPadding = ({ isCompact, theme }) => {
 const getHeightStyles = ({ isCompact, theme }) => {
   const heightKey = isCompact ? 'compact' : 'default';
   const height = getThemeStyle(theme[themeNamespace], heightKey, 'height');
-  return height ? (
-    css`
-      height: ${height}px;
-      box-sizing: border-box;
-    `
-  ) : (
-    css`
-      box-sizing: border-box;
-    `
-  );
+  return height ? css`
+    height: ${height}px;
+  ` : '';
 };
 
-const getInteractiveStyles = ({ isDisabled }) => {
+// This function is responsible for drawing any focus styles for the element
+const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
+  if (isDragging) {
+    return css`
+      ${getItemState('dragging')}
+      /* e200 but without zindex */
+      /* using the same colour for all themes */
+      box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+    `;
+  }
+
+  const standardFocus = css`
+    &:focus {
+      box-shadow: 0 0 0 2px ${getThemeStyle(theme[themeNamespace], 'outline', 'focus')} inset;
+    }
+  `;
+
   if (isDisabled) {
     return css`
       cursor: not-allowed;
       ${getItemState('disabled')}
+      ${standardFocus}
     `;
   }
 
@@ -52,6 +63,8 @@ const getInteractiveStyles = ({ isDisabled }) => {
     &:active {
       ${getItemState('active')}
     }
+
+    ${standardFocus}
   `;
 };
 
@@ -62,18 +75,21 @@ const getInteractiveStyles = ({ isDisabled }) => {
 export const ItemBase = ({ isSelected, theme }) => css`
   align-items: center;
   border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
+  box-sizing: border-box;
   cursor: pointer;
   display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
+  flex: none;
   ${getItemState(isSelected ? 'selected' : 'default')}
   ${getPadding}
   ${getInteractiveStyles}
   ${getHeightStyles}
 
   &:focus {
-    box-shadow: 0 0 0 2px ${getThemeStyle(theme[themeNamespace], 'outline', 'focus')} inset;
+    /* focus shadow drawn by getInteractiveStyles */
+
     outline: none;
-    /* relative position prevents bgcolor of a hovered element from obfuscating focus ring of
-       a focused sibling element */
+    /* relative position prevents bgcolor of a hovered element from
+    obfuscating focus ring of a focused sibling element */
     position: relative;
   }
 `;
@@ -90,9 +106,9 @@ const styledRootElement = (
   if (href) {
     return linkComponent
       ? styled(linkComponent)`${ItemBase}`
-      : styled.a`${ItemBase};`;
+      : styled.a`${ItemBase}`;
   }
-  return styled.span`${ItemBase};`;
+  return styled.span`${ItemBase}`;
 };
 
 export default styledRootElement;

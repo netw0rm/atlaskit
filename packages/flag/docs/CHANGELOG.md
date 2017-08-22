@@ -1,6 +1,74 @@
 # @atlaskit/flag
 
-## Unreleased
+## 6.1.0 (2017-08-17)
+
+* feature; adding new AutoDismissFlag component (issues closed: ak-2974 ak-1503) ([9aa91c0](https://bitbucket.org/atlassian/atlaskit/commits/9aa91c0))
+## 6.0.0 (2017-08-16)
+
+* breaking; The Flag.id prop has been changed from optional to required. ([91f8dc4](https://bitbucket.org/atlassian/atlaskit/commits/91f8dc4))
+* breaking; FlagGroup no longer illegally reads Flag.props.key ([91f8dc4](https://bitbucket.org/atlassian/atlaskit/commits/91f8dc4))
+## 5.0.1 (2017-08-15)
+
+* bug fix; flag transitions between appearances smoothly, hides expand icon if not needed (issues closed: ak-2973 ak-3155) ([0766202](https://bitbucket.org/atlassian/atlaskit/commits/0766202))
+## 5.0.0 (2017-08-11)
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+## 4.0.0 (2017-08-11)
+
+* breaking; affects internal styled-components implementation ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+* breaking; implement dark mode theme ([d14522a](https://bitbucket.org/atlassian/atlaskit/commits/d14522a))
+
+
+
+
+
+
+## 3.4.4 (2017-08-04)
+
+
+* bug fix; moves babel-plugin-react-flow-props-to-prop-types to a devDependency ([6378b88](https://bitbucket.org/atlassian/atlaskit/commits/6378b88))
+
+
+
+
+
+## 3.4.3 (2017-07-27)
+
+
+* fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+## 3.4.2 (2017-07-25)
+
+
+* fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+## 3.4.1 (2017-07-19)
+
+## 3.1.0 (2017-07-17)
+
+## 3.1.0 (2017-07-17)
+
+## 3.1.0 (2017-07-17)
+
+
+* fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+## 3.1.0 (2017-07-17)
+
+
+* fix; replace incorrect component description in Flag storybook ([2c42255](https://bitbucket.org/atlassian/atlaskit/commits/2c42255))
+
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
 
 ## 3.0.0 (2017-07-06)
 

@@ -1,13 +1,16 @@
 import { expect } from 'chai';
 import {
+  Doc,
   isSafeUrl,
   isSubSupType,
+  getValidDocument,
   getValidNode,
   getValidMark,
   getValidUnknownNode,
   getMarksByOrder,
   isSameMark,
   markOrder,
+  Node,
 } from '../../../src/renderer/validator';
 
 import schema from '../../../stories/schema';
@@ -480,6 +483,67 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('decisions', () => {
+      it('should pass through attrs for decisionList', () => {
+        const listAttrs = { localId: 'cheese' };
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'decisionList', attrs: listAttrs, content: listContent });
+        expect(type).to.equal('decisionList');
+        expect(attrs).to.deep.equal(listAttrs);
+        expect(content).to.deep.equal(listContent);
+      });
+
+      it('should pass through attrs for decisionItem', () => {
+        const itemAttrs = { localId: 'cheese', state: 'DECIDED' };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'decisionItem', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('decisionItem');
+        expect(attrs).to.deep.equal(itemAttrs);
+        expect(content).to.deep.equal(itemContent);
+      });
+    });
+
+    describe('tasks', () => {
+      it('should pass through attrs for taskList', () => {
+        const listAttrs = { localId: 'cheese' };
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'taskList', attrs: listAttrs, content: listContent });
+        expect(type).to.equal('taskList');
+        expect(attrs).to.deep.equal(listAttrs);
+        expect(content).to.deep.equal(listContent);
+      });
+
+      it('should pass through attrs for taskItem', () => {
+        const itemAttrs = { localId: 'cheese', state: 'DONE' };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'taskItem', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('taskItem');
+        expect(attrs).to.deep.equal(itemAttrs);
+        expect(content).to.deep.equal(itemContent);
+      });
+    });
+
+
     it('should overwrite the default schema if it gets a docSchema parameter', () => {
       // rule is taken out in following schema
       const schema = createSchema({
@@ -896,5 +960,88 @@ describe('Renderer - Validator', () => {
       expect(isSameMark(linkMark1, linkMark1)).to.equal(true);
     });
 
+  });
+
+  describe('getValidDocument', () => {
+    it('should not mutate original document', () => {
+      const original: Doc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'decisionList',
+            attrs: {
+              localId: 'dl1',
+              mysteryAttr: 'cheese'
+            },
+            content: [
+              {
+                type: 'decisionItem',
+                attrs: {
+                  localId: 'di1',
+                  state: 'DECIDED',
+                  mysteryAttr2: 'bacon'
+                },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'We decided'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'mysteryType',
+            content: [
+              {
+                type: 'text',
+                text: 'mystery text',
+              }
+            ]
+          }
+        ]
+      };
+      const expectedValidDoc: Node = {
+        type: 'doc',
+        content: [
+          {
+            type: 'decisionList',
+            attrs: {
+              localId: 'dl1',
+            },
+            content: [
+              {
+                type: 'decisionItem',
+                attrs: {
+                  localId: 'di1',
+                  state: 'DECIDED',
+                },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'We decided'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'unknownBlock',
+            content: [
+              {
+                type: 'text',
+                text: 'mystery text'
+              }
+            ]
+          }
+        ]
+      };
+      const originalCopy = JSON.parse(JSON.stringify(original));
+      const newDoc = getValidDocument(original);
+      // Ensure original is not mutated
+      expect(originalCopy, 'Original unchanged').to.deep.equal(original);
+      expect(newDoc, 'New doc valid').to.deep.equal(expectedValidDoc);
+    });
   });
 });

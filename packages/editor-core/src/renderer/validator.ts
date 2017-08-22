@@ -203,9 +203,16 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
-  const { attrs, text, type } = node;
-  let { content } = node;
+export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
+  const { attrs, marks, text, type } = originalNode;
+  let { content } = originalNode;
+
+  const node: Node = {
+    attrs,
+    marks,
+    text,
+    type
+  };
 
   if (content) {
     node.content = content = getValidContent(content, schema);
@@ -249,7 +256,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         };
       }
       case 'doc': {
-        const { version } = node as Doc;
+        const { version } = originalNode as Doc;
         if (version && content && content.length) {
           return {
             type,
@@ -449,6 +456,9 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+            },
           };
         }
         break;
@@ -458,6 +468,10 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+              state: attrs.state
+            },
           };
         }
         break;
@@ -467,6 +481,9 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+            },
           };
         }
         break;

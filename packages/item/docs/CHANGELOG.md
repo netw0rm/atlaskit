@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 3.1.0 (2017-08-22)
+
+* feature; accept new ItemGroup.role prop (still defaults to "group") (issues closed: ak-3325) ([747d3da](https://bitbucket.org/atlassian/atlaskit/commits/747d3da))
 ## 3.0.0 (2017-08-18)
 
 * bug fix; removing log command and moved some things to variables. ([0ec36f2](https://bitbucket.org/atlassian/atlaskit/commits/0ec36f2))

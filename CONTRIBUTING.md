@@ -6,7 +6,7 @@ This project is bound by a [Code of Conduct][CODEOFCONDUCT].
 
 ## Reporting Issues
 
-This section guides you through submitting a bug report for AtlasKit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
+This sectionasdf asdfkj hasdf guides you through submitting a bug report for AtlasKit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
 
 When you are creating an issue, please include as many details as possible. Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks helps us resolve issues faster.
 

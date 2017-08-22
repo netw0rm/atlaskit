@@ -56,7 +56,7 @@ export default class SearchResults extends PureComponent {
   renderResultItem = (props) => {
     const Result = availableResultTypes[props.type] || ResultBase;
     const isSelected = props.resultId === this.props.selectedItemId;
-    return Result ? (
+    return (
       <Result
         // SearchResult-provided props
         isSelected={isSelected}
@@ -68,7 +68,7 @@ export default class SearchResults extends PureComponent {
         // Individual props take precedence over SearchResult-provided presets
         {...props}
       />
-     ) : null;
+    );
   }
 
   renderResultGroup = (group: ResultGroup, index: number) => (

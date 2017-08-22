@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { ConfirmTrialBase } from '../../../src/start-trial/components/ConfirmTrial';
 import { withAnalyticsSpy, waitFor } from '../../util';
+
 import { INACTIVE } from '../../../src/common/productProvisioningStates';
 
 const noop = () => {};

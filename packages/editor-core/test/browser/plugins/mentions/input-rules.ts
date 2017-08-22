@@ -94,4 +94,8 @@ describe('mentions - input rules', () => {
   it('should not replace non empty selection with mentionQuery mark if selection starts with an excluding mark', () => {
     return assert('@', false, p(code('{<}text{>}')));
   });
+
+  it('should replace "@" when preceded by an open round bracket', () => {
+    return assert('(@', true);
+  });
 });

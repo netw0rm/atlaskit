@@ -1,7 +1,7 @@
 import { Component, ReactElement } from 'react';
 
 interface Props {
-  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'destruct';
+  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger';
   shouldFitContainer?: boolean;
   type?: 'button' | 'submit';
   href?: string;

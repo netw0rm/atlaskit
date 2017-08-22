@@ -41,7 +41,7 @@ export default class Button extends Component {
     /** The base styling to apply to the button. */
     appearance: PropTypes.oneOf([
       'default',
-      'destruct',
+      'danger',
       'link',
       'primary',
       'subtle',

@@ -99,8 +99,8 @@ export default {
       },
     },
 
-    // Warning appearance
-    destruct: {
+    // Danger appearance
+    danger: {
       background: {
         default: themed({ light: colors.R400, dark: colors.R400 }),
         hover: themed({ light: colors.R300, dark: colors.R300 }),

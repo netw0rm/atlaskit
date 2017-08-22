@@ -24,9 +24,6 @@ type property = {|
   yellowLight: color,
 |}
 
-// colors stolen from @atlaskit/theme
-const codeBlock = { light: colors.N20, dark: colors.DN50 };
-
 const textColors: property = themed('color', {
   standard: { light: colors.N700, dark: colors.DN600 },
   green: { light: colors.N800, dark: colors.N800 },
@@ -46,7 +43,7 @@ const textColors: property = themed('color', {
 });
 
 const backgroundColors: property = themed('color', {
-  standard: codeBlock,
+  standard: { light: colors.N20, dark: colors.DN100A },
   green: { light: colors.G200, dark: colors.G200 },
   purple: { light: colors.P100, dark: colors.P100 },
   red: { light: colors.R100, dark: colors.R100 },
@@ -67,7 +64,7 @@ export const textColor = textColors;
 export const backgroundColor = backgroundColors;
 
 export const textColorHover: property = themed('color', {
-  standard: { light: colors.N700, dark: colors.DN700 },
+  standard: { light: colors.N700, dark: colors.B75 },
   green: { light: colors.B400, dark: colors.B400 },
   purple: { light: colors.B400, dark: colors.B400 },
   red: { light: colors.B400, dark: colors.B400 },
@@ -85,7 +82,7 @@ export const textColorHover: property = themed('color', {
 });
 
 export const backgroundColorHover: property = themed('color', {
-  standard: { light: colors.N30, dark: colors.DN90 },
+  standard: { light: colors.N30, dark: colors.DN60 },
   green: { light: colors.G100, dark: colors.G100 },
   purple: { light: colors.P75, dark: colors.P75 },
   red: { light: colors.R75, dark: colors.R75 },

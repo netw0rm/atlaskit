@@ -1,4 +1,5 @@
 import React from 'react';
+import { ItemGroup } from '@atlaskit/item';
 import NavigationItemGroup from '../../src/components/js/NavigationItemGroup';
 import { mountWithRootTheme } from './_theme-util';
 
@@ -8,7 +9,9 @@ describe('<NavigationItemGroup />', () => {
       expect(mountWithRootTheme(<NavigationItemGroup title="foo" />).find('NavigationItemGroupTitle').text()).toBe('foo');
     });
     it('action should render in the container item group', () => {
-      expect(mountWithRootTheme(<NavigationItemGroup action={<div className="create">Create button</div>} />).find('ItemGroupTitleAfter').find('.create').length).toBe(1);
+      const nav = mountWithRootTheme(<NavigationItemGroup action={<div className="create">Create button</div>} />);
+      expect(nav.find('.create').length).toBe(1); // ensure that only one is rendered
+      expect(nav.find(ItemGroup).find('.create').length).toBe(1); // ensure that it's delegated to the Item component
     });
     it('separator should render in the container item group', () => {
       expect(mountWithRootTheme(<NavigationItemGroup hasSeparator />).find('NavigationItemGroupSeparator').length).toBe(1);

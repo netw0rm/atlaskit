@@ -35,39 +35,39 @@ describe('emojis - input rules', () => {
   };
 
   it('should replace a standalone ":" with emoji-query-mark', () => {
-    return assert('foo :', true);
+    assert('foo :', true);
   });
 
   it('should not replace a ":" when part of a word', () => {
-    return assert('foo:', false);
+    assert('foo:', false);
   });
 
   it('should not replace a ":" after the "`"', () => {
-    return assert('`:', false);
+    assert('`:', false);
   });
 
   it('should replace ":" at the start of the content', () => {
-    return assert(':', true);
+    assert(':', true);
   });
 
   it('should replace ":" if there are multiple spaces in front of it', () => {
-    return assert('  :', true);
+    assert('  :', true);
   });
 
   it('should replace ":" if there is a hardbreak node in front of it', () => {
-    return assert(':', true, p(hardBreak(), '{<>}'));
+    assert(':', true, p(hardBreak(), '{<>}'));
   });
 
   it.skip('should replace ":" if there is another emoji node in front of it', () => {
-    return assert(':', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
+    assert(':', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
   });
 
   it('should replace ":" if there is a mention node in front of it', () => {
-    return assert(':', true, p(mention({ id: '1234', text: '@SpongeBob' }), '{<>}'));
+    assert(':', true, p(mention({ id: '1234', text: '@SpongeBob' }), '{<>}'));
   });
 
   it('should not replace ":" when in an unsupported node', () => {
-    return assert(':', false, code_block()('{<>}'));
+    assert(':', false, code_block()('{<>}'));
   });
 
   it('should not replace ": when there is an unsupported stored mark', () => {
@@ -83,6 +83,10 @@ describe('emojis - input rules', () => {
   });
 
   it('should not replace a ":" preceded by a special character', () => {
-    return assert('>:', false);
+    assert('>:', false);
+  });
+
+  it('should replace a ":" when preceded by an opening round bracket', () => {
+    assert('(:', true);
   });
 });

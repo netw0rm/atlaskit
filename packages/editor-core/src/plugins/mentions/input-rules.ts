@@ -9,7 +9,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
-    const regex = new RegExp(`(^|[\\s${leafNodeReplacementCharacter}])@$`);
+    const regex = new RegExp(`(^|[\\s\(${leafNodeReplacementCharacter}])@$`);
     const mentionQueryRule = createInputRule(regex, (state, match, start, end): Transaction | undefined => {
       const mentionsState = pluginKey.getState(state) as MentionsState;
 

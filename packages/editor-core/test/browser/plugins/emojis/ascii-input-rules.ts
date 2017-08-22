@@ -41,6 +41,11 @@ describe('ascii emojis - input rules', () => {
     shortName: ':thumbsup:',
     text: '👍'
   });
+  const sweatSmileEmoji = emojiNode({
+    id: '1f605',
+    shortName: ':sweat_smile:',
+    text: '😅'
+  });
 
   const assert = (what: string, docContents: any, expectation: (state) => void) => {
     return emojiProvider.then(() => {
@@ -151,6 +156,26 @@ describe('ascii emojis - input rules', () => {
     it('should replace a matching emoticon not starting with a colon', () => {
       return assert('(y)', p(smileyEmoji, '{<>}'), (state) => {
         expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, thumbsupEmoji));
+      });
+    });
+  });
+
+  context('when preceded by an opening round bracket', () => {
+    it('should replace a matching emoticon starting with a colon', () => {
+      return assert(':D ', p('({<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(textNode('('), smileyEmoji, textNode(' ')));
+      });
+    });
+
+    it('should replace the thumbsup emoticon', () => {
+      return assert('(y)', p('({<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(textNode('('), thumbsupEmoji));
+      });
+    });
+
+    it('should replace a matching emoticon ending with a closing rounded bracket', () => {
+      return assert('\'=)', p('({<>}'), (state) => {
+        expect(state.doc.content.child(0)).to.deep.equal(p(textNode('('), sweatSmileEmoji));
       });
     });
   });

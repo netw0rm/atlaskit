@@ -31,7 +31,7 @@ const getResultById = (array, id) => (
 
 /**
  * Get a result's index in the flatResults array by its ID
- * Returns a numberic index or null
+ * Returns a numeric index or null
  */
 const getResultIndexById = (array, id) => {
   if (!array) {
@@ -81,7 +81,7 @@ export default class QuickSearch extends Component {
   }
 
   static defaultProps = {
-    chidlren: [],
+    children: [],
     isLoading: false,
     onSearchBlur: noOp,
     onSearchKeyDown: noOp,
@@ -116,7 +116,7 @@ export default class QuickSearch extends Component {
    * 2. Increments or decrements this index by the supplied adjustment amount,
    * 3. Sets the new selectedResultId based on the modifed index
    */
-  adjustSelectedResuldIndex = (adjustment) => {
+  adjustSelectedResultIndex = (adjustment) => {
     const currentIndex = getResultIndexById(this.flatResults, this.state.selectedResultId);
     const newIndex = adjustIndex(this.flatResults.length, currentIndex, adjustment);
     this.setState({
@@ -125,10 +125,10 @@ export default class QuickSearch extends Component {
   }
 
   /** Select next result */
-  selectNext = () => { this.adjustSelectedResuldIndex(+1); };
+  selectNext = () => { this.adjustSelectedResultIndex(+1); };
 
   /** Select previous result */
-  selectPrevious = () => { this.adjustSelectedResuldIndex(-1); };
+  selectPrevious = () => { this.adjustSelectedResultIndex(-1); };
 
   /**
    * Callback for mouseEnter events on individual results

@@ -1,5 +1,5 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
-const itemSpacing: number = akGridSizeUnitless / 2;
+const itemSpacing: number = gridSize() / 2;
 
 export default itemSpacing;

@@ -100,6 +100,13 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p()));
     });
 
+    it('should be able to remove panel having multiple paragraphs', () => {
+      const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'), p('te{<>}xt'), p('te{<>}xt'))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+
     it('should be possible to remove panel inside table', () => {
       const editorTable = (doc: any) => makeEditor<PanelState>({
         doc,

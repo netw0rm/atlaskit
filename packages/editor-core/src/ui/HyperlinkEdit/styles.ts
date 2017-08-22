@@ -8,7 +8,7 @@ import { ComponentClass } from 'react';
 export const FloatingToolbar: ComponentClass<any> = styled(FloatingToolbarDefault)`
   background-color: ${akColorN10};
   padding: 4px 8px 4px 4px;
-  height: 24px;
+  min-height: 24px;
 `;
 
 // tslint:disable-next-line:variable-name

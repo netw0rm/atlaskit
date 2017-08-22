@@ -11,6 +11,7 @@ import RecentList from './RecentList';
 // tslint:disable-next-line:variable-name
 const Container = styled.span`
   width: 500px;
+  padding-left: 4px;
   display: flex;
   flex-direction: column;
 `;

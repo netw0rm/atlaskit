@@ -35,9 +35,9 @@ import EmojiPickerListSearch from '../../../../src/components/picker/EmojiPicker
 import EmojiPreview from '../../../../src/components/common/EmojiPreview';
 import EmojiRepository from '../../../../src/api/EmojiRepository';
 import FileChooser from '../../../../src/components/common/FileChooser';
-import { OptionalEmojiDescription } from '../../../../src/types';
+import { EmojiDescription, OptionalEmojiDescription } from '../../../../src/types';
 import { addEmojiClassName } from '../../../../src/components/picker/EmojiPickerUploadPrompts';
-import { customCategory, defaultCategories, selectedToneStorageKey } from '../../../../src/constants';
+import { customCategory, defaultCategories, frequentCategory, selectedToneStorageKey } from '../../../../src/constants';
 
 declare var global: any;
 
@@ -311,6 +311,54 @@ describe('<EmojiPicker />', () => {
       })
     );
 
+    it('should display frequent category when there are frequently used emoji', () => {
+      const frequent: EmojiDescription = {
+        ...standardEmojis[0],
+        category: frequentCategory
+      };
+      const emojiWithFrequent: EmojiDescription[] = [...standardEmojis, frequent];
+
+      return setupPicker({ emojiProvider: mockNonUploadingEmojiResourceFactory(new EmojiRepository(emojiWithFrequent))}).then(component => {
+        const categorySelector = component.find(CategorySelector);
+        const buttons = categorySelector.find('button');
+
+        expect(buttons.length).to.equal(defaultCategories.length + 1);
+        expect(categoryVisible(frequentCategory, component)).to.equal(true);
+      });
+    });
+
+    it('should show frequent emoji first', () => {
+      const frequent: EmojiDescription[] = [];
+      for (let i = 0; i < 8; i++) {
+        const emoji = {
+          ...standardEmojis[i],
+          category: frequentCategory
+        };
+
+        frequent.push(emoji);
+      }
+
+      const emojiWithFrequent: EmojiDescription[] = [...standardEmojis, ...frequent];
+
+      return setupPicker({ emojiProvider: mockNonUploadingEmojiResourceFactory(new EmojiRepository(emojiWithFrequent))}).then(component => {
+        const list = component.find(EmojiPickerList);
+
+        return waitUntil(() => emojisVisible(list)).then(() => {
+          // get Emoji with a particular property
+          const displayedEmoji = list.find(Emoji);
+
+          displayedEmoji.forEach((node, index) => {
+            const props = node.props();
+            if (index < 8) {
+              expect(props.emoji.category).to.equal(frequentCategory);
+            } else {
+              expect(props.emoji.category).to.not.equal(frequentCategory);
+            }
+          });
+        });
+      });
+    });
+
     it('adds non-standard categories to the selector dynamically based on whether they are populated with emojis', () =>
       setupPicker().then(component => {
         showCategory(customCategory, component);
@@ -377,7 +425,7 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('search', () => {
-    it('searching for al should match emoji via description', () =>
+    it('searching for all should match emoji via description', () =>
       setupPicker().then(component =>
         waitUntil(() => searchInputVisible(component))
         .then(() => {

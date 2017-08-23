@@ -163,16 +163,16 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
   });
 });
 
-test('GrantAccess should fire an appropriate analytics event when the change button is clicked', () => {
+test('GrantAccess should fire an appropriate analytics event when the manage button is clicked', () => {
   const spy = jest.fn();
   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
   expect(spy).not.toHaveBeenCalledWith(
-    'xflow.grant-access.change-button.clicked',
+    'xflow.grant-access.manage-button.clicked',
     expect.any(Object)
   );
-  mountWrapper.find('#xflow-grant-access-change-button').simulate('click');
+  mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
   return waitFor(() =>
-    expect(spy).toHaveBeenCalledWith('xflow.grant-access.change-button.clicked', expect.any(Object))
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.manage-button.clicked', expect.any(Object))
   );
 });
 

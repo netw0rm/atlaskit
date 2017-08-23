@@ -64,7 +64,7 @@ storiesOf('GrantAccess')
   .add('Grant Access dialog', () =>
     setupStorybookAnalytics(<GrantAccessBase {...defaultProps} analyticsId="growth.happy" />)
   )
-  .add('Grant Access dialog, Change... ("everyone" selected)', () =>
+  .add('Grant Access dialog, Manage ("everyone" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -74,12 +74,12 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Grant Access dialog, Change... ("site-admins" selected)', () =>
+  .add('Grant Access dialog, Manage ("site-admins" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
     )
   )
-  .add('Grant Access dialog, Change... ("specific-users" selected)', () =>
+  .add('Grant Access dialog, Manage ("specific-users" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -89,7 +89,7 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Grant Access dialog, Change... ("specific-users" selected, error)', () =>
+  .add('Grant Access dialog, Manage ("specific-users" selected, error)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -132,7 +132,7 @@ storiesOf('GrantAccess')
       <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={1} status={ACTIVE} />
     )
   )
-  .add('Grant Access dialog, Change... Error flag after Continue', () =>
+  .add('Grant Access dialog, Manage Error flag after Continue', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}

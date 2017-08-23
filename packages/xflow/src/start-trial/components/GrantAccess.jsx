@@ -221,9 +221,9 @@ class GrantAccess extends Component {
     goToLearnMore();
   };
 
-  handleChangeClick = () => {
+  handleManageClick = () => {
     const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.grant-access.change-button.clicked');
+    firePrivateAnalyticsEvent('xflow.grant-access.manage-button.clicked');
     this.setState({
       changeUsers: true,
     });
@@ -336,12 +336,12 @@ class GrantAccess extends Component {
                 />
               </Button>
               : !this.state.changeUsers && <Button
-                id="xflow-grant-access-change-button"
-                onClick={this.handleChangeClick}
+                id="xflow-grant-access-manage-button"
+                onClick={this.handleManageClick}
                 appearance="link"
               >
                 <FormattedMessage
-                  id="xflow.generic.grant-access.change"
+                  id="xflow.generic.grant-access.manage"
                   defaultMessage="Manage"
                 />
               </Button>}

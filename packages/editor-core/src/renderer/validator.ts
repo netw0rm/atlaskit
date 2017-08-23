@@ -5,6 +5,8 @@ import {
   Schema
 } from '../prosemirror';
 
+import { uuid } from '../plugins/utils';
+
 export interface Doc {
   version: 1;
   type: 'doc';
@@ -465,7 +467,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid(),
             },
           };
         }
@@ -477,8 +479,8 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'DECIDED'
             },
           };
         }
@@ -490,20 +492,20 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid()
             },
           };
         }
         break;
       }
       case 'taskItem': {
-        if (content && attrs && attrs.localId) {
+        if (content) {
           return {
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'TODO'
             },
           };
         }

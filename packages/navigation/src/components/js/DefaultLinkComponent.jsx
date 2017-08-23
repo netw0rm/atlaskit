@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import type { ReactElement } from '../../types';
 
 type Props = {|
-  children: ReactElement,
+  children?: ReactElement,
   className?: string,
   href?: string,
   onClick?: () => mixed,

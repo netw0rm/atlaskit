@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import { withTheme } from 'styled-components';
 import rafSchedule from 'raf-schd';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
@@ -7,23 +7,29 @@ import {
   globalOpenWidth,
   standardOpenWidth,
 } from '../../shared-variables';
+import { isElectronMac } from '../../theme/util';
 
-export default class Resizer extends PureComponent {
-  static propTypes = {
-    onResizeStart: PropTypes.func,
-    onResizeEnd: PropTypes.func,
-    onResizeButton: PropTypes.func,
-    onResize: PropTypes.func,
-    navigationWidth: PropTypes.number,
-    showResizeButton: PropTypes.bool,
-  }
+type Props = {
+  onResizeStart?: () => {},
+  onResizeEnd?: (resizeDelta: number) => {},
+  onResizeButton?: () => {},
+  onResize?: (resizeDelta: number) => {},
+  navigationWidth?: number,
+  showResizeButton?: boolean,
+  theme?: {},
+}
+
+class Resizer extends PureComponent {
+  props: Props // eslint-disable-line react/sort-comp
+
   static defaultProps = {
     onResizeStart: () => {},
     onResizeEnd: () => {},
     onResizeButton: () => {},
     onResize: () => {},
-    navigationWidth: standardOpenWidth,
+    navigationWidth: standardOpenWidth(false),
     showResizeButton: true,
+    theme: {},
   }
   state = {
     startScreenX: 0,
@@ -83,21 +89,27 @@ export default class Resizer extends PureComponent {
     });
   }
 
-  isPointingRight = () => this.props.navigationWidth < standardOpenWidth
+  isElectronMac = () => isElectronMac(this.props.theme)
+
+  isPointingRight = () =>
+    this.props.navigationWidth < standardOpenWidth(this.isElectronMac())
 
   resizeButtonHandler = () => {
-    const isExpanded = (this.props.navigationWidth > standardOpenWidth);
+    const isElectron = this.isElectronMac();
+    const { navigationWidth, onResizeButton } = this.props;
+    const standardOpenWidthResult = standardOpenWidth(isElectron);
+    const isExpanded = navigationWidth > standardOpenWidthResult;
     const isPointingRight = this.isPointingRight();
 
     if (isPointingRight || isExpanded) {
-      this.props.onResizeButton({
+      onResizeButton({
         isOpen: true,
-        width: standardOpenWidth,
+        width: standardOpenWidthResult,
       });
     } else {
-      this.props.onResizeButton({
+      onResizeButton({
         isOpen: false,
-        width: globalOpenWidth,
+        width: globalOpenWidth(isElectron),
       });
     }
   }
@@ -125,3 +137,7 @@ export default class Resizer extends PureComponent {
     );
   }
 }
+
+// We use the isElectronMac theme value in Resizer's calculation methods, so need access to
+// the theme props which withTheme provides.
+export default withTheme(Resizer);

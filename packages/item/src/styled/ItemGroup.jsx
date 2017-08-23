@@ -23,7 +23,7 @@ GroupTitle.displayName = 'ItemGroupTitle';
 
 const GroupTitleAfter = styled.div`
   flex: 0 0 auto;
-  margin-right: -${gridSize}px;
+  margin-right: -${gridSize / 2}px;
 `;
 GroupTitleAfter.displayName = 'ItemGroupTitleAfter';
 

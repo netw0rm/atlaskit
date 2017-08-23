@@ -31,6 +31,8 @@ export default class ItemGroup extends Component {
 
   state = { ariaLabel: this.props.title }
 
+  headingAfterElement: Node // eslint-disable-line react/sort-comp
+
   componentDidMount = () => {
     if (this.props.title || this.props.elemAfter) {
       this.setState({ ariaLabel: this.getAriaLabel() });

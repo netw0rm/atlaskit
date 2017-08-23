@@ -11,7 +11,7 @@ import NavigationWithDropdown from './components/NavigationWithDropdown';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { name } from '../package.json';
-import RandomBadge from './components/RandomBadge';
+import randomBadge from './components/RandomBadge';
 import NucleusIcon from './components/NucleusIcon';
 
 const dropdownItemsSample = (
@@ -177,21 +177,21 @@ storiesOf(name, module)
             icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
             isSelected
             text="Selected"
-            textAfter={<RandomBadge theme="dark" />}
+            textAfter={randomBadge('dark')}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup>
           <AkNavigationItem
             icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
             text="Item B"
-            textAfter={<RandomBadge theme="dark" />}
+            textAfter={randomBadge('dark')}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="one section">
           <AkNavigationItem
             icon={<TrayIcon label="Tray" secondaryColor="inherit" />}
             text="Item C"
-            textAfter={<RandomBadge theme="dark" />}
+            textAfter={randomBadge('dark')}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup hasSeparator>
@@ -199,7 +199,7 @@ storiesOf(name, module)
             icon={<CalendarIcon label="Calendar" secondaryColor="inherit" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
-            textAfter={<RandomBadge />}
+            textAfter={randomBadge('dark')}
           />
         </AkNavigationItemGroup>
       </BasicNavigation>

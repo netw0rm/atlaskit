@@ -163,10 +163,10 @@ class GrantAccess extends Component {
     }
   };
 
-  handleSkipClick = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.grant-access.skip-button.clicked');
-    this.props.onComplete();
+  getAtlassianAccountId = ({ attributes: { attributes } }) => {
+    if (!attributes) return '';
+    const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
+    return openIdAttr ? openIdAttr.values[0] : '';
   };
 
   handleContinueClick = async () => {
@@ -194,7 +194,10 @@ class GrantAccess extends Component {
       const users =
         selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
-      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
+      const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
+        cloudIds: grantedAccessTo,
+      });
       onComplete();
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
@@ -205,6 +208,12 @@ class GrantAccess extends Component {
         showSkipLink: true,
       });
     }
+  };
+
+  handleSkipClick = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.grant-access.skip-button.clicked');
+    this.props.onComplete();
   };
 
   handleLearnMoreClick = () => {

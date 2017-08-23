@@ -1,5 +1,9 @@
 # @atlaskit/editor-cq
 
+## 4.6.3 (2017-08-23)
+
+* bug fix; trigger a release for editor-cq (issues closed: ed-2359) ([9ac1dae](https://bitbucket.org/atlassian/atlaskit/commits/9ac1dae))
+* bug fix; Merged in ED-2359/just-trigger-the-release (pull request #3899) (issues closed: ed-2359) ([6693362](https://bitbucket.org/atlassian/atlaskit/commits/6693362))
 ## 4.6.2 (2017-08-17)
 
 * bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))

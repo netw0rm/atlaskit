@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.5.0 (2017-08-23)
+
+* feature; support emptyComponent and errorComponent for ResourceItemList (issues closed: fs-1292) ([4b012e2](https://bitbucket.org/atlassian/atlaskit/commits/4b012e2))
 ## 3.4.1 (2017-08-18)
 
 * bug fix; add missing dependency from InfiniteScroll ([e43126c](https://bitbucket.org/atlassian/atlaskit/commits/e43126c))

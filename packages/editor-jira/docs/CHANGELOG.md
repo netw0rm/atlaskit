@@ -1,5 +1,9 @@
 # @atlaskit/editor-jira
 
+## 20.5.0 (2017-08-23)
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
 ## 20.4.0 (2017-08-23)
 
 * feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))

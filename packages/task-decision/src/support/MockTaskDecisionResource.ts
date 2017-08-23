@@ -24,7 +24,7 @@ import {
   TaskResponse,
   TaskState,
 } from '../types';
-import { objectKeyToString } from '../type-helpers';
+import { objectKeyToString, toggleTaskState } from '../type-helpers';
 import * as moment from 'moment';
 
 let debouncedTaskStateQuery: number | null = null;
@@ -161,6 +161,9 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       clearTimeout(debouncedTaskToggle);
     }
 
+    // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
+    this.notifyUpdated(objectKey, state);
+
     return new Promise<TaskState>(resolve => {
       const key = objectKeyToString(objectKey);
       const cached = this.cachedItems.get(key);
@@ -175,9 +178,16 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       }
 
       resolve(state);
+
+      const lag = this.config && this.config.lag || 0;
       setTimeout(() => {
-        this.notifyUpdated(objectKey, state);
-      }, 200);
+        if (this.config && this.config.error) {
+          // Undo optimistic change
+          this.notifyUpdated(objectKey, toggleTaskState(state));
+        } else {
+          this.notifyUpdated(objectKey, state);
+        }
+      }, 500 + lag);
     });
   }
 

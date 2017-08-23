@@ -8,7 +8,6 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from './ErrorFlag';
 
 import SpinnerDiv from '../styled/SpinnerDiv';
-import StartTrialDialog from '../styled/StartTrialDialog';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -89,6 +88,14 @@ class ConfirmTrial extends Component {
     cancelStartProductTrial().then(onCancel);
   };
 
+  handleErrorFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.confirm-trial.error-flag.dismissed');
+    this.setState({
+      confluenceFailedToStart: false,
+    });
+  };
+
   render() {
     const {
       intl,
@@ -134,17 +141,17 @@ class ConfirmTrial extends Component {
           </StartTrialFooter>
         }
       >
-        <StartTrialDialog id="xflow-confirm-trial">
+        <div id="xflow-confirm-trial">
           <StartTrialHeader>
             {status === INACTIVE ? trialHeading : reactivateHeading}
           </StartTrialHeader>
           {status === INACTIVE ? trialMessage : reactivateMessage}
-        </StartTrialDialog>
+        </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.confluenceFailedToStart}
-          onDismissed={() => this.setState({ confluenceFailedToStart: false })}
+          onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>
     );

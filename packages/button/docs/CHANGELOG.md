@@ -1,5 +1,10 @@
 # @atlaskit/button
 
+## 5.1.0 (2017-08-23)
+
+
+* bug fix; subtle-link button font colour is slightly updated (issues closed: ak-2480) ([510393a](https://bitbucket.org/atlassian/atlaskit/commits/510393a))
+* feature; added warning (yellow) and destruct (red) options to Button.appearance prop (issues closed: ak-2480) ([ba4cfde](https://bitbucket.org/atlassian/atlaskit/commits/ba4cfde))
 ## 5.0.1 (2017-08-16)
 
 * bug fix; fix react warning about PropTypes ([6b4cd29](https://bitbucket.org/atlassian/atlaskit/commits/6b4cd29))

@@ -207,7 +207,7 @@ export class TextColorState {
 
 export const stateKey = new PluginKey('textColorPlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       const palette = new Map<string, string>([

@@ -57,6 +57,7 @@ export function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
 }
 
 /**
+ *
  * Traverse the DOM node and build an array of the breadth-first-search traversal
  * through the tree.
  *

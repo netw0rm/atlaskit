@@ -10,14 +10,11 @@ import BasicUsageExample from './examples/basic-usage';
 import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
 /* eslint-enable import/first, import/no-duplicates */
 
-const AppSwitcherDescription = (<Description>
-  <p>This component provides the app switcher used in Atlassian Cloud products.</p>
-</Description>);
+const AppSwitcherDescription = 'This component provides the app switcher used in Atlassian Cloud products.';
 
 const propDescriptions = {
   recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
-  suggestedApplication: 'Map containing which application to suggest to the user.',
   i18n: 'Mapping of i18n keys to translations.',
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
   isHomeLinkEnabled: 'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
@@ -83,32 +80,31 @@ const linkedApplicationsPropDescriptions = [
     ],
   },
   {
+    name: 'suggested',
+    type: 'Array',
+    description: 'An array of suggested application links to display. Each array item is a map with the following keys:',
+    children: [
+      {
+        name: 'name',
+        type: 'String',
+        description: 'Display name of the suggested application.',
+      },
+      {
+        name: 'product',
+        type: 'String',
+        description: 'A product identifier for the suggested application. Used in an analytics event. e.g. "jira", "confluence", "bitbucket", etc',
+      },
+      {
+        name: 'onClick',
+        type: 'Function',
+        description: 'Called when the suggested application is clicked. The AppSwitcher will close if the item is selected.',
+      },
+    ],
+  },
+  {
     name: 'error',
     type: 'Boolean',
     description: 'If true the app switcher will display an error message.',
-  },
-];
-
-const suggestedApplicationPropDescriptions = [
-  {
-    name: 'show',
-    type: 'Boolean',
-    description: 'Whether to show the suggested application section.',
-  },
-  {
-    name: 'application',
-    type: 'String',
-    description: 'Application to suggest. "jira" and "confluence" are currently supported.',
-  },
-  {
-    name: 'url',
-    type: 'String',
-    description: 'Link for the suggested application.',
-  },
-  {
-    name: 'onDontShowAgainClick',
-    type: 'Function',
-    description: 'Called when the "Don\'t show this again" link is clicked.',
   },
 ];
 
@@ -134,10 +130,6 @@ const i18nPropDescriptions = [
     description: 'Recent',
   },
   {
-    name: 'try.other.apps',
-    description: 'Try Other Atlassian Apps',
-  },
-  {
     name: 'don\'t.show.this.again',
     description: 'Don’t show this again',
   },
@@ -150,12 +142,8 @@ const i18nPropDescriptions = [
     description: 'Project',
   },
   {
-    name: 'suggested.application.description.confluence',
-    description: 'Collaboration and content sharing',
-  },
-  {
-    name: 'suggested.application.description.jira',
-    description: 'Issue & project tracking software',
+    name: 'try.lozenge',
+    description: 'Lozenge text for suggested applications',
   },
 ];
 
@@ -225,12 +213,6 @@ storiesOf(name, module)
             The linkedApplications property is a map with the following format:
           </p>
           {propDescriptionList(linkedApplicationsPropDescriptions)}
-
-          <Heading type="3">suggestedApplication property</Heading>
-          <p>
-            The suggestedApplication property is a map with the following format:
-          </p>
-          {propDescriptionList(suggestedApplicationPropDescriptions)}
 
           <Heading type="3">i18n property</Heading>
           <p>

@@ -1,12 +1,13 @@
 // @flow
 import React from 'react';
-import { Item, Link } from '../styled';
+import Lozenge from '@atlaskit/lozenge';
+import { Item, Link, LozengeContainer } from '../styled';
 import type { Translations, LinkedApplications, DropdownConfig } from '../internal/types';
 
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
-  linkedApplications: LinkedApplications
+  linkedApplications: LinkedApplications,
 ): DropdownConfig {
   if (linkedApplications.error) {
     return {
@@ -23,6 +24,22 @@ export default function (
     analyticEvent: { key: 'appswitcher.app.link.click', properties: { product: application.product } },
   }));
 
+  if (!isAnonymousUser && linkedApplications.suggested) {
+    linkedApplications.suggested.forEach(({ name, product, onClick }) => {
+      items.push({
+        content: (
+          <Item className="app-switcher-suggested-application">
+            {name}
+            <LozengeContainer>
+              <Lozenge appearance="inprogress">{i18n['try.lozenge'] || 'try'}</Lozenge>
+            </LozengeContainer>
+          </Item>
+        ),
+        analyticEvent: { key: 'appswitcher.discovery.user.try.clicked', properties: { product } },
+        onClick,
+      });
+    });
+  }
   if (linkedApplications.configureLink && !isAnonymousUser) {
     items.push({
       content: (<Item><Link>{i18n.configure}</Link></Item>),

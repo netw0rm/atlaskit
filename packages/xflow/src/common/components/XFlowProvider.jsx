@@ -22,7 +22,6 @@ export const xFlowShape = PropTypes.shape({
 
       grantAccessHeading: PropTypes.string,
       grantAccessDefaultAccess: PropTypes.string,
-      grantAccessChooseOption: PropTypes.string,
       grantAccessSelectLabel: PropTypes.string,
       grantAccessUserSelectPlaceholder: PropTypes.string,
       grantAccessDefaultSelectedRadio: PropTypes.string,

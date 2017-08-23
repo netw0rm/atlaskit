@@ -1,6 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import NavigationOverflowHandler from '../../src/components/js/NavigationOverflowHandler';
+import NavigationOverflowDropdown from '../../src/components/js/NavigationOverflowDropdown';
+import HeightDetector from '../../src/components/js/HeightDetector';
 
 describe('<AkCollapseOverflow />', () => {
   describe('height detector handling', () => {
@@ -116,12 +118,12 @@ describe('<AkCollapseOverflow />', () => {
 
       it('should be rendered if dropdown is needed', () => {
         wrapper.instance().handleAvailableHeight(10);
-        expect(wrapper.find('NavigationOverflowDropdown').length).toBe(1);
+        expect(wrapper.find(NavigationOverflowDropdown).length).toBe(1);
       });
 
       it('should not be rendered if no dropdown is needed', () => {
         wrapper.instance().handleAvailableHeight(100);
-        expect(wrapper.find('NavigationOverflowDropdown').length).toBe(0);
+        expect(wrapper.find(NavigationOverflowDropdown).length).toBe(0);
       });
     });
 
@@ -132,7 +134,7 @@ describe('<AkCollapseOverflow />', () => {
             <span />
           </NavigationOverflowHandler>
         );
-        const detectors = wrapper.find('HeightDetector');
+        const detectors = wrapper.find(HeightDetector);
 
         expect(detectors.at(0).prop('shouldDetectResize')).toBe(true);
         expect(detectors.at(1).prop('shouldDetectResize')).toBe(undefined);

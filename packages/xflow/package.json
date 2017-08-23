@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/xflow",
-  "version": "2.0.0",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/xflow; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
@@ -17,18 +17,19 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^1.0.3",
-    "@atlaskit/button": "^3.0.0",
-    "@atlaskit/field-radio-group": "^1.2.1",
-    "@atlaskit/flag": "^3.0.0",
-    "@atlaskit/icon": "^7.0.0",
-    "@atlaskit/logo": "^3.1.0",
-    "@atlaskit/modal-dialog": "^2.1.1",
-    "@atlaskit/multi-select": "^6.2.0",
-    "@atlaskit/spinner": "^2.2.5",
+    "@atlaskit/analytics": "^1.1.1",
+    "@atlaskit/button": "^5.0.1",
+    "@atlaskit/field-radio-group": "^1.6.3",
+    "@atlaskit/flag": "^6.1.0",
+    "@atlaskit/icon": "^8.0.1",
+    "@atlaskit/logo": "^3.5.3",
+    "@atlaskit/modal-dialog": "^2.6.0",
+    "@atlaskit/multi-select": "^6.9.3",
+    "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",
-    "@atlaskit/util-shared-styles": "^2.1.1",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
+    "cubic-bezier": "0.1.2",
     "es6-promise": "^4.1.1",
     "glob": "^7.1.2",
     "prop-types": "^15.5.10",
@@ -36,8 +37,7 @@
     "rxjs": "^5.4.2",
     "styled-components": "^2.1.0",
     "tslib": "^1.2.0",
-    "whatwg-fetch": "^2.0.3",
-    "cubic-bezier": "0.1.2"
+    "whatwg-fetch": "^2.0.3"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -59,8 +59,8 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2",
-    "babel-core": "^6.17.0"
+    "babel-core": "^6.17.0",
+    "react": "^15.3.2"
   },
   "repository": {
     "type": "git",

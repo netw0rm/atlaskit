@@ -28,10 +28,7 @@ import {
   TaskState,
 } from '../types';
 
-import { objectKeyToString } from '../type-helpers';
-
-let debouncedTaskStateQuery: number | null = null;
-let debouncedTaskToggle: number | null = null;
+import { objectKeyToString, toggleTaskState } from '../type-helpers';
 
 interface RecentUpdateByIdValue {
   listener: RecentUpdatesListener;
@@ -87,6 +84,8 @@ export class RecentUpdates {
 }
 
 export class ItemStateManager {
+  private debouncedTaskStateQuery: number | null = null;
+  private debouncedTaskToggle: Map<string,number> = new Map();
   private serviceConfig: ServiceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
   private trackedObjectKeys: Map<string, ObjectKey> = new Map();
@@ -97,13 +96,27 @@ export class ItemStateManager {
     this.serviceConfig = serviceConfig;
   }
 
-  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
-    if (debouncedTaskToggle) {
-      clearTimeout(debouncedTaskToggle);
+  destroy() {
+    if (this.debouncedTaskStateQuery) {
+      clearTimeout(this.debouncedTaskStateQuery);
     }
 
+    this.debouncedTaskToggle.forEach(timeout => { clearTimeout(timeout); });
+  }
+
+  toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
+    const stringKey = objectKeyToString(objectKey);
+    const timeout = this.debouncedTaskToggle.get(stringKey);
+    if (timeout) {
+      clearTimeout(timeout);
+      this.debouncedTaskToggle.delete(stringKey);
+    }
+
+    // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
+    this.notifyUpdated(objectKey, state);
+
     return new Promise<TaskState>((resolve, reject) => {
-      debouncedTaskToggle = setTimeout(() => {
+      this.debouncedTaskToggle.set(stringKey, setTimeout(() => {
         const options: RequestServiceOptions = {
           path: 'tasks',
           requestInit: {
@@ -129,8 +142,12 @@ export class ItemStateManager {
             // Notify subscribers that the task have been updated so that they can re-render accordingly
             this.notifyUpdated(objectKey, state);
           })
-          .catch(() => reject());
-      }, 500);
+          .catch(() => {
+            // Undo optimistic change
+            this.notifyUpdated(objectKey, toggleTaskState(state));
+            reject();
+          });
+      }, 500));
     });
   }
 
@@ -226,11 +243,11 @@ export class ItemStateManager {
   }
 
   private scheduleGetTaskState() {
-    if (debouncedTaskStateQuery) {
-      clearTimeout(debouncedTaskStateQuery);
+    if (this.debouncedTaskStateQuery) {
+      clearTimeout(this.debouncedTaskStateQuery);
     }
 
-    debouncedTaskStateQuery = setTimeout(() => {
+    this.debouncedTaskStateQuery = setTimeout(() => {
       this.getTaskState(Array.from(this.batchedKeys.values()))
         .then(tasks => {
           tasks.forEach(task => {
@@ -324,5 +341,13 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
 
   unsubscribe(objectKey: ObjectKey, handler: Handler) {
     this.itemStateManager.unsubscribe(objectKey, handler);
+  }
+
+  /**
+   * Usually only needed for testing to ensure no outstanding requests
+   * are sent to a server (typically mocked).
+   */
+  destroy() {
+    this.itemStateManager.destroy();
   }
 }

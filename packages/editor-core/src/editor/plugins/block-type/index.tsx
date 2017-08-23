@@ -1,11 +1,12 @@
+import * as React from 'react';
 import { EditorPlugin } from '../../types';
-
-import { plugin } from '../../../plugins/block-type';
+import { plugin, stateKey } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
 import { heading } from '../../../schema/nodes/heading';
 import { blockquote } from '../../../schema/nodes/blockquote';
 import { rule } from '../../../schema/nodes/rule';
 import { hardBreak } from '../../../schema/nodes/hard-break';
+import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 
 const blockType: EditorPlugin = {
   nodes() {
@@ -22,6 +23,11 @@ const blockType: EditorPlugin = {
       { rank: 500, plugin: () => plugin },
       { rank: 510, plugin: schema => inputRulePlugin(schema) }
     ];
+  },
+
+  primaryToolbarComponent(editorView) {
+    const pluginState = stateKey.getState(editorView.state);
+    return <ToolbarBlockType editorView={editorView} pluginState={pluginState} />;
   }
 };
 

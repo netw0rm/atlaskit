@@ -1,5 +1,39 @@
 # @atlaskit/editor-core
 
+## 46.2.4 (2017-08-23)
+
+* bug fix; tolerate missing attributes for task/decision nodes. (issues closed: fs-1303) ([deab934](https://bitbucket.org/atlassian/atlaskit/commits/deab934))
+## 46.2.3 (2017-08-23)
+
+
+* bug fix; fixed tabbing when the whole row/col is selected ([33a123e](https://bitbucket.org/atlassian/atlaskit/commits/33a123e))
+
+* bug fix; fixed tabbing in tables ([79956ea](https://bitbucket.org/atlassian/atlaskit/commits/79956ea))
+## 46.2.2 (2017-08-23)
+
+* bug fix; fix broken CSS in recent search in link dialog ([f99a729](https://bitbucket.org/atlassian/atlaskit/commits/f99a729))
+## 46.2.1 (2017-08-23)
+
+* bug fix; applicationCard with wrong attribute makes Banana unusable (Media) (issues closed: ed-2531) ([3693ba0](https://bitbucket.org/atlassian/atlaskit/commits/3693ba0))
+
+## 46.2.0 (2017-08-23)
+
+* feature; add FullPage apppearance for Editor (issues closed: ed-2337) ([bcd93ea](https://bitbucket.org/atlassian/atlaskit/commits/bcd93ea))
+## 46.1.1 (2017-08-22)
+
+* bug fix; multiple react warnings for UI components when pluginState is changed before compone (issues closed: ed-2535) ([1f77a58](https://bitbucket.org/atlassian/atlaskit/commits/1f77a58))
+## 46.1.0 (2017-08-22)
+
+* bug fix; ensure getValidNode does not mutate the original node. (issues closed: fs-1295) ([0df91e2](https://bitbucket.org/atlassian/atlaskit/commits/0df91e2))
+
+* feature; emoticons now auto-convert after an opening rounded bracket (issues closed: fs-1247) ([3d8e28c](https://bitbucket.org/atlassian/atlaskit/commits/3d8e28c))
+* feature; emoji and mention typeaheads now trigger after a round bracket (issues closed: fs-1247) ([91496d0](https://bitbucket.org/atlassian/atlaskit/commits/91496d0))
+* bug fix; style fixes in panel floating toolbar. ([a85aaad](https://bitbucket.org/atlassian/atlaskit/commits/a85aaad))
+## 46.0.0 (2017-08-22)
+
+* feature; bump media packages ([f7f6704](https://bitbucket.org/atlassian/atlaskit/commits/f7f6704))
+* breaking; bumped media-core from v18 to v19 ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
+* breaking; bump media packages ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
 ## 45.18.5 (2017-08-21)
 
 * bug fix; bump layer to align with transitive dependencies ([e0041c3](https://bitbucket.org/atlassian/atlaskit/commits/e0041c3))

@@ -81,7 +81,7 @@ export class ClearFormattingState {
 
 export const stateKey = new PluginKey('clearFormattingPlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new ClearFormattingState(state);
@@ -91,10 +91,7 @@ const plugin = new Plugin({
       return pluginState;
     }
   },
-  key: stateKey,
-  view: (view: EditorView) => {
-    return {};
-  }
+  key: stateKey
 });
 
 const plugins = (schema: Schema<any, any>) => {

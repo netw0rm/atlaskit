@@ -3,16 +3,16 @@ import { shallow, mount } from 'enzyme';
 import LazyLoad from 'react-lazy-load-zz';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
-import { Card, UrlPreviewIdentifier, MediaIdentifier, CardEvent } from '../../src';
+import { Card, UrlPreviewIdentifier, FileIdentifier, LinkIdentifier, CardEvent } from '../../src';
 import { MediaCard } from '../../src/root/mediaCard';
 
 describe('Card', () => {
-  const linkIdentifier: MediaIdentifier = {
+  const linkIdentifier: LinkIdentifier = {
     id: 'some-random-id',
     mediaItemType: 'link',
     collectionName: 'some-collection-name'
   };
-  const fileIdentifier: MediaIdentifier = {
+  const fileIdentifier: FileIdentifier = {
     id: 'some-random-id',
     mediaItemType: 'file',
     collectionName: 'some-collection-name'
@@ -105,8 +105,8 @@ describe('Card', () => {
   });
 
   it('should render media card with a new MediaItemProvider when the identifier changes', () => {
-    const firstIdentifier: MediaIdentifier = fileIdentifier;
-    const secondIdentifier: MediaIdentifier = linkIdentifier;
+    const firstIdentifier: FileIdentifier = fileIdentifier;
+    const secondIdentifier: LinkIdentifier = linkIdentifier;
 
     const dummyProvider = {observable: 'dummy provider ftw!'};
 

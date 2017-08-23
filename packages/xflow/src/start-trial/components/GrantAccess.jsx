@@ -21,7 +21,6 @@ import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
-import ChangeButtonDiv from '../styled/ChangeButtonDiv';
 import SpinnerDiv from '../styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -83,7 +82,6 @@ class GrantAccess extends Component {
     ).isRequired,
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
-    chooseOption: PropTypes.string,
     // selectLabel: PropTypes.string,
     defaultSelectedRadio: PropTypes.string,
     progress: PropTypes.number.isRequired,
@@ -270,13 +268,20 @@ class GrantAccess extends Component {
     });
   };
 
+  handleErrorFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.grant-access.error-flag.dismissed');
+    this.setState({
+      failedToGrantAccess: false,
+    });
+  };
+
   render() {
     const {
       intl,
       productLogo,
       optionItems,
       userSelectPlaceholder,
-      chooseOption,
       // selectLabel,
       progress,
       status,
@@ -322,13 +327,24 @@ class GrantAccess extends Component {
                   defaultMessage="Skip"
                 />
               </Button>
-              : null}
+              : !this.state.changeUsers && <Button
+                id="xflow-grant-access-change-button"
+                onClick={this.handleChangeClick}
+                appearance="link"
+              >
+                <FormattedMessage
+                  id="xflow.generic.grant-access.change"
+                  defaultMessage="Manage"
+                />
+              </Button>}
           </GrantAccessFooter>
         }
       >
         <div id="xflow-grant-access">
           <StartTrialHeader>
-            {heading}
+            <div>
+              {heading}
+            </div>
           </StartTrialHeader>
 
           {this.state.changeUsers
@@ -344,7 +360,6 @@ class GrantAccess extends Component {
                   key: item.value,
                   isSelected: this.state.selectedRadio === item.value,
                 }))}
-                label={chooseOption}
               />
               <UserSelectDiv>
                 <MultiSelect
@@ -387,18 +402,6 @@ class GrantAccess extends Component {
               <div>
                 {defaultAccess}
               </div>
-              <ChangeButtonDiv>
-                <Button
-                  id="xflow-grant-access-change-button"
-                  onClick={this.handleChangeClick}
-                  appearance="link"
-                >
-                  <FormattedMessage
-                    id="xflow.generic.grant-access.change"
-                    defaultMessage="Change..."
-                  />
-                </Button>
-              </ChangeButtonDiv>
             </GrantAccessDefaultAccessDiv>}
 
           <StartTrialProgressDiv>
@@ -421,7 +424,7 @@ class GrantAccess extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.failedToGrantAccess}
-          onDismissed={() => this.setState({ failedToGrantAccess: false })}
+          onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>
     );
@@ -440,7 +443,6 @@ export default withXFlowProvider(
           grantAccessOptionItems,
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
-          grantAccessChooseOption,
           // grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
           grantAccessHeading,
@@ -458,7 +460,6 @@ export default withXFlowProvider(
     optionItems: grantAccessOptionItems,
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
-    chooseOption: grantAccessChooseOption,
     // selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,
     grantAccessToUsers,

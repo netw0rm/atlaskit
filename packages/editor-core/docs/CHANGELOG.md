@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.2.4 (2017-08-23)
+
+* bug fix; tolerate missing attributes for task/decision nodes. (issues closed: fs-1303) ([deab934](https://bitbucket.org/atlassian/atlaskit/commits/deab934))
 ## 46.2.3 (2017-08-23)
 
 

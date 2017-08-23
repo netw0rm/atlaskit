@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.2.1 (2017-08-23)
+
+* bug fix; applicationCard with wrong attribute makes Banana unusable (Media) (issues closed: ed-2531) ([3693ba0](https://bitbucket.org/atlassian/atlaskit/commits/3693ba0))
+
 ## 46.2.0 (2017-08-23)
 
 * feature; add FullPage apppearance for Editor (issues closed: ed-2337) ([bcd93ea](https://bitbucket.org/atlassian/atlaskit/commits/bcd93ea))

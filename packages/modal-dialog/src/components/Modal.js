@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Gateway, GatewayRegistry } from '../../gateway';
+import { Gateway, GatewayRegistry } from '@atlaskit/layer-manager';
 import { WIDTH_ENUM } from '../shared-variables';
 
 import {
@@ -160,7 +160,6 @@ export default class Modal extends Component {
             onClick={this.handleOverlayClick}
           >
             <Dialog
-              autoFocus={autoFocus}
               innerRef={this.getDialogNode}
               isBackground={isBackground}
               onClick={this.handleDialogClick}
@@ -173,6 +172,7 @@ export default class Modal extends Component {
               <Content
                 actions={actions}
                 appearance={appearance}
+                autoFocus={autoFocus}
                 dialogNode={dialogNode}
                 footer={footer}
                 title={title}

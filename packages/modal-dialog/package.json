@@ -28,6 +28,7 @@
     "@atlaskit/blanket": "^2.4.2",
     "@atlaskit/button": "^5.0.1",
     "@atlaskit/icon": "^8.0.1",
+    "@atlaskit/layer-manager": "^1.0.0",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.25.0",

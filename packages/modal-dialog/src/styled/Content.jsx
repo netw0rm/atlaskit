@@ -3,15 +3,20 @@ import { colors, gridSize, math, themed } from '@atlaskit/theme';
 import { modalShadowInnerSize } from '../shared-variables';
 import { dialogBgColor } from './Modal';
 
+// Constants
+// ==============================
+const gutterInterior = math.multiply(gridSize, 2);
+const gutterExterior = math.multiply(gridSize, 2.5);
+
 // Wrapper
+// ==============================
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-// Header/Footer
-const gutterInterior = math.multiply(gridSize, 2);
-const gutterExterior = math.multiply(gridSize, 2.5);
+// Header
+// ==============================
 const HeaderOrFooter = styled.div`
   align-items: center;
   display: flex;
@@ -21,10 +26,8 @@ const HeaderOrFooter = styled.div`
 export const Header = styled(HeaderOrFooter)`
   padding: ${gutterExterior}px ${gutterExterior}px ${gutterInterior}px;
 `;
-export const Footer = styled(HeaderOrFooter)`
-  padding: ${gutterInterior}px ${gutterExterior}px ${gutterExterior}px;
-`;
 
+// Title
 export const Title = styled.h4`
   align-items: center;
   display: flex;
@@ -45,6 +48,7 @@ export const TitleIcon = styled.span`
 `;
 
 // Keyline mask for the header/footer
+// ==============================
 const keylinePosition = (props) => {
   const { position } = props;
   if (position === 'header') {
@@ -67,9 +71,9 @@ export const KeylineMask = styled.div`
 `;
 
 // Body
+// ==============================
 
 const keylineColor = themed({ light: colors.N30, dark: colors.DN30 });
-
 const bodyShadow = ({ hasHeader, hasFooter }) => {
   if (hasHeader && hasFooter) {
     return css`
@@ -84,9 +88,6 @@ const bodyShadow = ({ hasHeader, hasFooter }) => {
 
   return 'none';
 };
-
-// Body
-
 export const Body = styled.div`
   box-shadow: ${bodyShadow};
   display: flex;
@@ -100,21 +101,18 @@ export const BodyInner = styled.div`
   flex: 1 0 auto;
 `;
 
-// Focus management
-
-export const TabTerminal = styled.span`
-  background: 0;
-  border: 0;
-  clip-path: inset(1px);
-  clip: rect(1px, 1px, 1px, 1px);
-  height: 1px;
-  outline: 0;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  text-align: left;
-  white-space: nowrap;
-  width: 1px;
+// Footer
+// ==============================
+export const Footer = styled(HeaderOrFooter)`
+  padding: ${gutterInterior}px ${gutterExterior}px ${gutterExterior}px;
 `;
 
-TabTerminal.defaultProps = { tabIndex: 0 };
+const actionGutter = 8;
+export const Actions = styled.div`
+  display: inline-flex;
+  margin: 0 -${actionGutter / 2}px;
+`;
+export const ActionItem = styled.div`
+  flex: 1 0 auto;
+  margin: 0 ${actionGutter / 2}px;
+`;

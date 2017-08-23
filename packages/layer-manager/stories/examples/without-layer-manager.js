@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 import Button from '@atlaskit/button';
+import InlineDialog from '@atlaskit/inline-dialog';
 import Modal from '@atlaskit/modal-dialog';
 
 export default class ExampleSingleModal extends Component {
-  state = { modalIsOpen: false }
+  state = { dialogOpen: false, modalIsOpen: false }
 
   componentDidMount() { this._isMounted = true; }
   componentWillUnmount() { this._isMounted = false; }
@@ -14,7 +15,7 @@ export default class ExampleSingleModal extends Component {
   closeModal = () => this.toggleModal(false)
 
   render() {
-    const { modalIsOpen } = this.state;
+    const { dialogOpen, modalIsOpen } = this.state;
 
     return (
       <div style={{ padding: '1em' }}>
@@ -37,6 +38,17 @@ export default class ExampleSingleModal extends Component {
             { text: 'No Action', onClick: () => {} },
           ]}
         >
+          <div style={{ position: 'relative' }}>
+            <InlineDialog
+              content={<div>Dialog Content</div>}
+              isOpen={dialogOpen}
+              position="left top"
+            >
+              <Button onClick={() => this.setState({ dialogOpen: !dialogOpen })}>
+                Toggle Dialog
+              </Button>
+            </InlineDialog>
+          </div>
           <Lorem count={1} />
         </Modal>
       </div>

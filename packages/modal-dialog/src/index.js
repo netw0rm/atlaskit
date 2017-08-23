@@ -1,2 +1,2 @@
 export { default } from './components/Modal';
-export { default as Portal } from './components/Portal';
+export { Header, Footer } from './styled/Content';

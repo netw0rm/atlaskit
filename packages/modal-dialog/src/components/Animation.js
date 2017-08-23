@@ -5,7 +5,7 @@ import { ChildrenType, ComponentType } from '../types';
 
 const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)';
-const verticalOffset = 40;
+const verticalOffset = 20;
 
 type Props = {
   children: ChildrenType,
@@ -78,11 +78,12 @@ Animation.defaultProps = DefaultProps;
 export const Fade = props => (
   <Animation
     styleDefault={{
-      opacity: 0,
       transition: `opacity ${duration}ms`,
     }}
     transition={{
+      entering: { opacity: 0 },
       entered: { opacity: 1 },
+      exiting: { opacity: 0 },
     }}
     {...props}
   />
@@ -94,14 +95,21 @@ export const Fade = props => (
 export const SlideUp = props => (
   <Animation
     styleDefault={{
-      opacity: 0,
       transition: `transform ${duration}ms ${easing}, opacity ${duration}ms ${easing}`,
-      transform: `translate3d(0, ${verticalOffset}px, 0)`,
+      transform: 'translate3d(0, 0, 0)',
     }}
     transition={{
+      entering: {
+        opacity: 0.2,
+        transform: `translate3d(0, ${verticalOffset}px, 0)`,
+      },
       entered: {
         opacity: 1,
         transform: 'translate3d(0, 0, 0)',
+      },
+      exiting: {
+        opacity: 0,
+        transform: `translate3d(0, -${verticalOffset}px, 0)`,
       },
     }}
     {...props}

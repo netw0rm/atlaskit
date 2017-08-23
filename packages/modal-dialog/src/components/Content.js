@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import tabbable from 'tabbable';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
@@ -10,12 +10,13 @@ import { ChildrenType, ElementType, FunctionType } from '../types';
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
 import {
+  Actions,
+  ActionItem,
   Body,
   BodyInner,
   Footer as StyledFooter,
   Header as StyledHeader,
   KeylineMask,
-  TabTerminal,
   Title,
   TitleIcon,
   Wrapper,
@@ -24,7 +25,6 @@ import {
 function getInitialState() {
   return {
     tabbableElements: [],
-    tabDirection: null,
   };
 }
 
@@ -94,7 +94,7 @@ export default class Content extends Component {
     this._isMounted = true;
     this._hideElement = document.getElementById(this.context.appId);
 
-    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keydown', this.handleKeyDown, false);
 
     focusStore.storeFocus();
     this.initialiseFocus();
@@ -112,7 +112,7 @@ export default class Content extends Component {
   componentWillUnmount() {
     this._isMounted = false;
 
-    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keydown', this.handleKeyDown, false);
 
     if (this._hideElement) this._hideElement.removeAttribute('aria-hidden');
 
@@ -120,9 +120,7 @@ export default class Content extends Component {
     setTimeout(() => focusStore.restoreFocus());
   }
 
-  setTabbableElements = () => {
-    const { dialogNode } = this.props;
-
+  setTabbableElements = (dialogNode) => {
     const tabbableElements = tabbable(dialogNode);
 
     if (tabbableElements.length) {
@@ -131,16 +129,18 @@ export default class Content extends Component {
   }
   initialiseFocus() {
     const { autoFocus } = this.props;
-    const hasFocusFunc = typeof autoFocus === 'function';
 
     // DOCS: explain deferral of focus to allow for refs to be resolved
     setTimeout(() => {
       if (!this._isMounted) return;
+
       const { dialogNode } = this.props;
+      const hasFocusFunc = typeof autoFocus === 'function';
+      const focusFirstAvailable = autoFocus && !hasFocusFunc;
 
-      this.setTabbableElements();
+      this.setTabbableElements(dialogNode);
 
-      focusScope.scopeFocus(dialogNode, autoFocus && !hasFocusFunc);
+      focusScope.scopeFocus(dialogNode, focusFirstAvailable);
 
       if (hasFocusFunc) {
         const focusTarget = autoFocus();
@@ -156,33 +156,29 @@ export default class Content extends Component {
       }
     });
   }
+  handleTabLoop = (event) => {
+    const { tabbableElements: nodes } = this.state;
+    const { target, shiftKey } = event;
 
-  handleTabLoopEnd = () => {
-    const { tabbableElements } = this.state;
-    tabbableElements[0].focus();
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+
+    if (target === last && !shiftKey) {
+      first.focus();
+      event.preventDefault();
+    } else if (target === first && shiftKey) {
+      last.focus();
+      event.preventDefault();
+    }
   }
-  handleTabLoopStart = () => {
-    const { tabbableElements } = this.state;
 
-    // handle case where user can tab from the dialog to the first element
-    const targetIdx = this.state.tabDirection === 'prev'
-      ? tabbableElements.length - 1
-      : 0;
-
-    const tabTarget = tabbableElements[targetIdx];
-
-    tabTarget.focus();
-  }
   handleKeyDown = (event) => {
     if (!this._isMounted) return;
 
     if (event.key === 'Escape' && this.props.onClose) {
       this.props.onClose();
     } else if (event.key === 'Tab') {
-      const tabDirection = event.shiftKey ? 'prev' : 'next';
-      const tabDirectionHasChanged = tabDirection !== this.state.tabDirection;
-
-      if (tabDirectionHasChanged) this.setState({ tabDirection });
+      this.handleTabLoop(event);
     }
   }
   handleStackChange = (stackIndex) => {
@@ -221,28 +217,24 @@ export default class Content extends Component {
     return (
       <StyledFooter>
         <JustifyShim />
-        <ButtonGroup>
+        <Actions>
           {actions.map(({ text, ...rest }, idx) => {
             const variant = idx ? 'default' : (appearance || 'primary');
-
             return (
-              <Button appearance={variant} key={idx} autoFocus={!idx} {...rest}>
-                {text}
-              </Button>
+              <ActionItem key={idx}>
+                <Button appearance={variant} autoFocus={!idx} {...rest}>
+                  {text}
+                </Button>
+              </ActionItem>
             );
           })}
-        </ButtonGroup>
+        </Actions>
       </StyledFooter>
     );
   }
 
   render() {
     const { actions, children, header, footer, title } = this.props;
-    const { tabbableElements, tabDirection } = this.state;
-
-    const canTab = Boolean(tabbableElements.length);
-    const tabStart = (canTab && tabDirection && tabDirection === 'prev') ? 0 : -1;
-    const tabEnd = (canTab && tabDirection && tabDirection === 'next') ? 0 : -1;
 
     const hasHeader = Boolean(header || title);
     const hasFooter = Boolean(footer || actions);
@@ -252,10 +244,6 @@ export default class Content extends Component {
 
     return (
       <Wrapper>
-        <TabTerminal
-          onFocus={this.handleTabLoopStart}
-          tabIndex={tabStart}
-        />
         <Header />
         <Body hasHeader={hasHeader} hasFooter={hasFooter}>
           {hasHeader && <KeylineMask position="header" />}
@@ -265,10 +253,6 @@ export default class Content extends Component {
           {hasFooter && <KeylineMask position="footer" />}
         </Body>
         <Footer />
-        <TabTerminal
-          onFocus={this.handleTabLoopEnd}
-          tabIndex={tabEnd}
-        />
       </Wrapper>
     );
   }

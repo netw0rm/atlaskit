@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 46.2.3 (2017-08-23)
+
+
+* bug fix; fixed tabbing when the whole row/col is selected ([33a123e](https://bitbucket.org/atlassian/atlaskit/commits/33a123e))
+
+* bug fix; fixed tabbing in tables ([79956ea](https://bitbucket.org/atlassian/atlaskit/commits/79956ea))
 ## 46.2.2 (2017-08-23)
 
 * bug fix; fix broken CSS in recent search in link dialog ([f99a729](https://bitbucket.org/atlassian/atlaskit/commits/f99a729))

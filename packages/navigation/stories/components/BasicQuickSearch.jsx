@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { action } from '@kadira/storybook';
-import { AkQuickSearch, AkNavigationItemGroup } from '../../src/index';
-import { resultTypes } from '../../src';
+import { AkQuickSearch, AkNavigationItemGroup, quickSearchResultTypes } from '../../src';
 
-const { PersonResult, RoomResult } = resultTypes;
+const { PersonResult, RoomResult } = quickSearchResultTypes;
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import AkAvatar from '@atlaskit/avatar';
-import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, resultTypes } from '../../src';
+import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../src';
 
-const { ResultBase } = resultTypes;
+const { ResultBase } = quickSearchResultTypes;
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 

@@ -4,11 +4,11 @@ import {
   AkNavigationItem,
   AkNavigationItemGroup,
   AkSearch,
-  resultTypes,
+  quickSearchResultTypes,
 } from '../../src';
 import { mountWithRootTheme } from './_theme-util';
 
-const { PersonResult } = resultTypes;
+const { PersonResult } = quickSearchResultTypes;
 
 const noOp = () => {};
 
@@ -101,7 +101,7 @@ describe('<QuickSearch />', () => {
       searchInput.simulate('keydown', { key: 'Enter' });
       const paramsKeyboard = onClickSpy.args;
       onClickSpy.mockClear();
-      wrapper.find('Item').at(0).simulate('click');
+      wrapper.find(AkNavigationItem).at(0).simulate('click');
       expect(onClickSpy.args).toEqual(paramsKeyboard);
     });
     it('should run the onClick callback with the result\'s data on ENTER keystroke', () => {
@@ -123,11 +123,11 @@ describe('<QuickSearch />', () => {
     it('should let mouseEnter override keyboard selection', () => {
       // First result is selected by default as established by previous test.
       // Mouse over the third result.
-      wrapper.find(AkNavigationItem).at(2).find('Item').simulate('mouseenter');
+      wrapper.find(AkNavigationItem).at(2).find(AkNavigationItem).simulate('mouseenter');
       expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected')).prop('text')).toBe('three');
     });
     it('should clear selection onMouseLeave', () => {
-      wrapper.find(AkNavigationItem).at(2).find('Item').simulate('mouseleave');
+      wrapper.find(AkNavigationItem).at(2).find(AkNavigationItem).simulate('mouseleave');
       expect(wrapper.find(AkNavigationItem).filterWhere(n => n.prop('isSelected'))).toHaveLength(0);
     });
     it('should remove selection on search input blur', () => {

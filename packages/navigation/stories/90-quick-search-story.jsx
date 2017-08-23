@@ -4,12 +4,12 @@ import { name } from '../package.json';
 
 import BasicNavigation from './components/BasicNavigation';
 import BasicQuickSearch from './components/BasicQuickSearch';
-import { AkNavigationItemGroup, resultTypes } from '../src';
+import { AkNavigationItemGroup, quickSearchResultTypes } from '../src';
 import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
 import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
 
-const { PersonResult, RoomResult } = resultTypes;
+const { PersonResult, RoomResult } = quickSearchResultTypes;
 
 const withRootTheme = children => (
   <WithRootTheme provided={presets.container}>

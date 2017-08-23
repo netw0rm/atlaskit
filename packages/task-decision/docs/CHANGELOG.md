@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.5.1 (2017-08-23)
+
+* bug fix; optimistically notify when a task state changes. (issues closed: fs-1285) ([d9a4557](https://bitbucket.org/atlassian/atlaskit/commits/d9a4557))
 ## 3.5.0 (2017-08-23)
 
 * feature; support emptyComponent and errorComponent for ResourceItemList (issues closed: fs-1292) ([4b012e2](https://bitbucket.org/atlassian/atlaskit/commits/4b012e2))

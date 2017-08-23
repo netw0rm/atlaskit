@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.2.2 (2017-08-23)
+
+* bug fix; fix broken CSS in recent search in link dialog ([f99a729](https://bitbucket.org/atlassian/atlaskit/commits/f99a729))
 ## 46.2.1 (2017-08-23)
 
 * bug fix; applicationCard with wrong attribute makes Banana unusable (Media) (issues closed: ed-2531) ([3693ba0](https://bitbucket.org/atlassian/atlaskit/commits/3693ba0))

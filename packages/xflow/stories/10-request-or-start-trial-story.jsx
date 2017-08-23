@@ -6,7 +6,7 @@ import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceXFlow from './providers/MockConfluenceXFlowProvider';
 
 import mockConfluenceStatusChecker from './providers/mockConfluenceStatusChecker';
-import { ACTIVE, ACTIVATING, DEACTIVATED } from '../src/common/productProvisioningStates';
+import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
@@ -14,11 +14,71 @@ const defaultProps = {
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
-      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/1'] }] } },
-      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/2'] }] } },
-      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/3'] }] } },
-      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/4'] }] } },
-      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
+      {
+        name: 'lhunt',
+        'display-name': 'Lachlan Hunt',
+        email: 'lhunt@example.com',
+        attributes: {
+          attributes: [
+            {
+              name: 'atlassianid.openid.identity',
+              values: ['https://id.atlassian.com/openid/v2/u/1'],
+            },
+          ],
+        },
+      },
+      {
+        name: 'awakeling',
+        'display-name': 'Andrew Wakeling',
+        email: 'awakeling@example.com',
+        attributes: {
+          attributes: [
+            {
+              name: 'atlassianid.openid.identity',
+              values: ['https://id.atlassian.com/openid/v2/u/2'],
+            },
+          ],
+        },
+      },
+      {
+        name: 'ahammond',
+        'display-name': 'Andrew Hammond',
+        email: 'ahammond@example.com',
+        attributes: {
+          attributes: [
+            {
+              name: 'atlassianid.openid.identity',
+              values: ['https://id.atlassian.com/openid/v2/u/3'],
+            },
+          ],
+        },
+      },
+      {
+        name: 'mtruong',
+        'display-name': 'Michael Truong',
+        email: 'mtruong@example.com',
+        attributes: {
+          attributes: [
+            {
+              name: 'atlassianid.openid.identity',
+              values: ['https://id.atlassian.com/openid/v2/u/4'],
+            },
+          ],
+        },
+      },
+      {
+        name: 'gburrows',
+        'display-name': 'George Burrows',
+        email: 'gburrows@example.com',
+        attributes: {
+          attributes: [
+            {
+              name: 'atlassianid.openid.identity',
+              values: ['https://id.atlassian.com/openid/v2/u/5'],
+            },
+          ],
+        },
+      },
     ]),
   cancelStartProductTrial: async () => {},
   grantAccessToUsers: () => delay(1000),
@@ -89,7 +149,7 @@ storiesOf('RequestOrStartTrial')
       </MockConfluenceXFlow>
     )
   )
-  .add('Initializing dialog, awaiting current product status', () =>
+  .add('Initializing dialog, awaiting current product status (never resolves)', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps}
@@ -105,12 +165,28 @@ storiesOf('RequestOrStartTrial')
       </MockConfluenceXFlow>
     )
   )
-  .add('Initialisation error, Error flag after failed initialisation', () =>
+  .add('Initializing dialog, Error flag after product status check fails (UNKNOWN)', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlow
+        {...defaultProps}
+        productStatusChecker={{
+          check() {
+            return new Promise(resolve => setTimeout(() => resolve(UNKNOWN), 500));
+          },
+          start() {},
+          stop() {},
+        }}
+      >
+        <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
+      </MockConfluenceXFlow>
+    )
+  )
+  .add('Initialisation error, Error flag after trusted user check failed', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlow
         {...defaultProps}
         canCurrentUserAddProduct={() =>
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 1500))}
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 500))}
         requestTrialAccess={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />

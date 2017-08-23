@@ -498,6 +498,20 @@ describe('Renderer - Validator', () => {
         expect(content).to.deep.equal(listContent);
       });
 
+      it('should generate localId for decisionList if missing', () => {
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'decisionList', content: listContent });
+        expect(type).to.equal('decisionList');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.localId).to.not.equal(undefined);
+        expect(content).to.deep.equal(listContent);
+      });
+
       it('should pass through attrs for decisionItem', () => {
         const itemAttrs = { localId: 'cheese', state: 'DECIDED' };
         const itemContent = [
@@ -509,6 +523,22 @@ describe('Renderer - Validator', () => {
         const { type, attrs, content } = getValidNode({ type: 'decisionItem', attrs: itemAttrs, content: itemContent });
         expect(type).to.equal('decisionItem');
         expect(attrs).to.deep.equal(itemAttrs);
+        expect(content).to.deep.equal(itemContent);
+      });
+
+      it('should generate localId for decisionItem if missing', () => {
+        const itemAttrs = { state: 'DECIDED' };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'decisionItem', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('decisionItem');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.state).to.equal('DECIDED');
+        expect(attrs.localId).to.not.equal(undefined);
         expect(content).to.deep.equal(itemContent);
       });
     });
@@ -528,6 +558,20 @@ describe('Renderer - Validator', () => {
         expect(content).to.deep.equal(listContent);
       });
 
+      it('should generate localId for taskList if missing', () => {
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'taskList', content: listContent });
+        expect(type).to.equal('taskList');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.localId).to.not.equal(undefined);
+        expect(content).to.deep.equal(listContent);
+      });
+
       it('should pass through attrs for taskItem', () => {
         const itemAttrs = { localId: 'cheese', state: 'DONE' };
         const itemContent = [
@@ -539,6 +583,22 @@ describe('Renderer - Validator', () => {
         const { type, attrs, content } = getValidNode({ type: 'taskItem', attrs: itemAttrs, content: itemContent });
         expect(type).to.equal('taskItem');
         expect(attrs).to.deep.equal(itemAttrs);
+        expect(content).to.deep.equal(itemContent);
+      });
+
+      it('should generate localId for taskItem if missing', () => {
+        const itemAttrs = { state: 'DONE' };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'taskItem', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('taskItem');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.state).to.equal('DONE');
+        expect(attrs.localId).to.not.equal(undefined);
         expect(content).to.deep.equal(itemContent);
       });
     });

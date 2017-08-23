@@ -10,7 +10,7 @@ import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
-import RandomBadge from './components/RandomBadge';
+import randomBadge from './components/RandomBadge';
 
 const RandomAvatar = props => <AkAvatar
   {...props}
@@ -24,7 +24,7 @@ const CompactItem = ({ children }) => (
     icon={<RandomAvatar />}
     isCompact
     text={children}
-    textAfter={<RandomBadge />}
+    textAfter={randomBadge()}
     subText={Math.random() > 0.5 && 'This is some really long sub text'}
   />
 );

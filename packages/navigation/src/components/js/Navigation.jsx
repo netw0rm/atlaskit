@@ -119,15 +119,18 @@ type State = {|
   isTogglingIsOpen: boolean,
 |}
 
+// NOTE: Dark mode is a user preference that takes precedence over provided themes
 function defaultContainerTheme(containerTheme, mode) {
-  return containerTheme || mode === 'dark'
-    ? presets.dark
-    : presets.container;
+  if (mode === 'dark') {
+    return presets.dark;
+  }
+  return containerTheme || presets.container;
 }
 function defaultGlobalTheme(globalTheme, mode) {
-  return globalTheme || mode === 'dark'
-    ? presets.dark
-    : presets.global;
+  if (mode === 'dark') {
+    return presets.dark;
+  }
+  return globalTheme || presets.global;
 }
 
 export default class Navigation extends PureComponent {

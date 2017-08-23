@@ -249,4 +249,50 @@ describe('<ResourcedItemList/>', () => {
       });
     });
   });
+
+  describe('empty state', () => {
+    it('should render empty state component if no results', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve({ items: [] }));
+      const emptyComponent = <div className="empty-component" />;
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} emptyComponent={emptyComponent} />
+      );
+      return waitUntil(() => component.find('.empty-component').length > 0).then(() => {
+        expect(component.find('.empty-component').length).toBe(1);
+      });
+    });
+
+    it('should render no content in component if no results and no emptyState', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve({ items: [] }));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => component.isEmptyRender()).then(() => {
+        expect(component.isEmptyRender()).toBe(true);
+      });
+    });
+  });
+
+  describe('error state', () => {
+    it('should render error state component on error', () => {
+      provider.getItems.mockImplementation(() => Promise.reject('bad times'));
+      const errorComponent = <div className="error-component" />;
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} errorComponent={errorComponent} />
+      );
+      return waitUntil(() => component.find('.error-component').length > 0).then(() => {
+        expect(component.find('.error-component').length).toBe(1);
+      });
+    });
+
+    it('should render no content in component if no results and error', () => {
+      provider.getItems.mockImplementation(() => Promise.reject('bad times'));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => component.isEmptyRender()).then(() => {
+        expect(component.isEmptyRender()).toBe(true);
+      });
+    });
+  });
 });

@@ -1,6 +1,7 @@
 // @flow
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import getDisplayName from '../../util/getDisplayName';
 import DropdownItemSelectionManager from '../context/DropdownItemSelectionManager';
 import type { Behaviors } from '../../types';

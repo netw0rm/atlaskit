@@ -46,7 +46,7 @@ const mentionProvider = new MentionResource({
 
 ReactDOM.render(
   <MentionPicker
-    resourceProvider={mentionResource}
+    resourceProvider={mentionProvider}
     query="John"
     onSelection={(mention) => { /* do something */ }}
   />, container);

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 const chalk = require('chalk');
 
 const getPackagesWithStaleDeps = require('../utility/get.packages.with.stale.dependencies');
@@ -31,4 +30,3 @@ getPackagesWithStaleDeps(depsToCheck)
     }
   });
 
-/* eslint-enable no-console */

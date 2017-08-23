@@ -57,6 +57,7 @@ export function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
 }
 
 /**
+ *
  * Traverse the DOM node and build an array of the breadth-first-search traversal
  * through the tree.
  *
@@ -109,7 +110,7 @@ export function children(fragment: Fragment): PMNode[] {
  * schema).
  *
  * When a node is not supported, its children are not traversed — instead the entire node content
- * is stored inside an `unsupportedInline` or `unsupportedBlock` node.
+ * is stored inside an `unsupportedInline`.
  *
  * @param node
  */
@@ -154,68 +155,6 @@ function isNodeSupportedContent(node: Node): boolean {
   }
 
   return false;
-}
-
-/**
- * Ensure that each node in the fragment is a block, wrapping
- * in a block node if necessary.
- */
-export function ensureBlocks(fragment: Fragment): Fragment {
-  // This algorithm is fairly simple:
-  //
-  // 1. When a block is encountered, keep it as-is.
-  // 2. When an unsupported inline is encountered, convert it to an unsupported block.
-  // 3. When a sequence of supported (i.e. *not* `unsupportedInline`) inlines is encountered,
-  //     wrap it in a a paragraph.
-  //
-  // There's an assumption/guess in step #2 that all unsupported nodes should be treated as
-  // blocks if they exist in the content at a point where blocks are expected.
-  //
-  // It's seems possible for CXHTML documents to be poorly formed, where inline content exists
-  // in positions where block content is expected. For example the top-level content is not wrapped
-  // in a paragraph, but is expected to be a top-level block node.
-  //
-  //     Foo bar baz
-  //
-  // In this scenario it's effectively wrapped in a paragraph:
-  //
-  //     <p>Foo bar baz</p>
-  //
-  // This is more common in places like list items, or block quotes:
-  //
-  //     <ul>
-  //       <li>Foo bar</li>
-  //     </ul>
-  //     <blockquote>Foo bar</blockquote>
-  //
-  // Both `<li>` (`listItem`) and `<blockquote>` (`blockQuote`) expect *block* content, and so
-  // in both cases `Foo bar` is wrapped in a paragraph.
-  const nodes = children(fragment);
-  const blocks: PMNode[] = [];
-
-  let i;
-  for (i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    if (node.isBlock) {
-      blocks.push(node);
-    } else if (node.type === schema.nodes.confluenceUnsupportedInline) {
-      blocks.push(schema.nodes.confluenceUnsupportedBlock.create(node.attrs));
-    } else {
-      // An inline node is found. Now step through until we find the last inline
-      // node, then throw everything in a paragraph.
-      let j;
-      for (j = i + 1; j < nodes.length; j++) {
-        const node = nodes[j];
-        if (node.isBlock || node.type === schema.nodes.confluenceUnsupportedInline) {
-          break;
-        }
-      }
-      blocks.push(schema.nodes.paragraph.createChecked({}, nodes.slice(i, j)));
-      i = j;
-    }
-  }
-
-  return Fragment.fromArray(blocks);
 }
 
 export function getAcName(node: Element): string | undefined {
@@ -311,10 +250,9 @@ export function hasClass(node: Element, className: string): boolean {
 /*
  * Contructs a struct string of replacement blocks and marks for a given node
  */
-export function getContent(node: Node, convertedNodes: WeakMap<any, any>): Fragment {
+export function getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | PMNode>): Fragment {
   let fragment = Fragment.fromArray([]);
-  let childIndex;
-  for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
+  for (let childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
     const child = node.childNodes[childIndex];
     const thing = convertedNodes.get(child);
     if (thing instanceof Fragment || thing instanceof PMNode) {

@@ -1,5 +1,47 @@
 # @atlaskit/editor-core
 
+## 46.2.0 (2017-08-23)
+
+* feature; add FullPage apppearance for Editor (issues closed: ed-2337) ([bcd93ea](https://bitbucket.org/atlassian/atlaskit/commits/bcd93ea))
+## 46.1.1 (2017-08-22)
+
+* bug fix; multiple react warnings for UI components when pluginState is changed before compone (issues closed: ed-2535) ([1f77a58](https://bitbucket.org/atlassian/atlaskit/commits/1f77a58))
+## 46.1.0 (2017-08-22)
+
+* bug fix; ensure getValidNode does not mutate the original node. (issues closed: fs-1295) ([0df91e2](https://bitbucket.org/atlassian/atlaskit/commits/0df91e2))
+
+* feature; emoticons now auto-convert after an opening rounded bracket (issues closed: fs-1247) ([3d8e28c](https://bitbucket.org/atlassian/atlaskit/commits/3d8e28c))
+* feature; emoji and mention typeaheads now trigger after a round bracket (issues closed: fs-1247) ([91496d0](https://bitbucket.org/atlassian/atlaskit/commits/91496d0))
+* bug fix; style fixes in panel floating toolbar. ([a85aaad](https://bitbucket.org/atlassian/atlaskit/commits/a85aaad))
+## 46.0.0 (2017-08-22)
+
+* feature; bump media packages ([f7f6704](https://bitbucket.org/atlassian/atlaskit/commits/f7f6704))
+* breaking; bumped media-core from v18 to v19 ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
+* breaking; bump media packages ([fcb8100](https://bitbucket.org/atlassian/atlaskit/commits/fcb8100))
+## 45.18.5 (2017-08-21)
+
+* bug fix; bump layer to align with transitive dependencies ([e0041c3](https://bitbucket.org/atlassian/atlaskit/commits/e0041c3))
+## 45.18.4 (2017-08-21)
+
+* bug fix; bump emoji to align the mediapicker transitive dependency ([1c0c37f](https://bitbucket.org/atlassian/atlaskit/commits/1c0c37f))
+## 45.18.3 (2017-08-21)
+
+* bug fix; fix styles of hyperlink and and language picker floating toolbars. ([0dd88f0](https://bitbucket.org/atlassian/atlaskit/commits/0dd88f0))
+* bug fix; text without a prefixing www should be linkified. ([11fbfee](https://bitbucket.org/atlassian/atlaskit/commits/11fbfee))
+## 45.18.2 (2017-08-21)
+
+* bug fix; fix broken storybooks for editor-core ([605689b](https://bitbucket.org/atlassian/atlaskit/commits/605689b))
+* bug fix; typo: componentWillUmount -> componentWillUnmount ([dfe28fd](https://bitbucket.org/atlassian/atlaskit/commits/dfe28fd))
+* bug fix; fix content jump in renderer (issues closed: ed-2298) ([c062a13](https://bitbucket.org/atlassian/atlaskit/commits/c062a13))
+## 45.18.1 (2017-08-18)
+
+* bug fix; import media components from plugins ([6a06355](https://bitbucket.org/atlassian/atlaskit/commits/6a06355))
+## 45.18.0 (2017-08-18)
+
+* feature; bumped mediapicker to the latest in editor-core ([ef771f8](https://bitbucket.org/atlassian/atlaskit/commits/ef771f8))
+## 45.17.0 (2017-08-18)
+
+* feature; latest task/decision support (issues closed: fs-1284) ([e7bb445](https://bitbucket.org/atlassian/atlaskit/commits/e7bb445))
 ## 45.16.0 (2017-08-17)
 
 * feature; upgrade for latest task and decisions support. (issues closed: fs-1274) ([f12d384](https://bitbucket.org/atlassian/atlaskit/commits/f12d384))

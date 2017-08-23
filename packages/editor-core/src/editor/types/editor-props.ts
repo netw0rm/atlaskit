@@ -22,8 +22,12 @@ export interface EditorProps {
   allowTasksAndDecisions?: boolean;
   allowHyperlinks?: boolean;
   allowCodeBlocks?: boolean;
+  allowLists?: boolean;
+  allowTextColor?: boolean;
+  allowTables?: boolean;
 
   saveOnEnter?: boolean;
+  shouldFocus?: boolean;
 
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
@@ -33,6 +37,7 @@ export interface EditorProps {
   mediaProvider?: Promise<any>;
 
   maxContentSize?: number;
+  placeholder?: string;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

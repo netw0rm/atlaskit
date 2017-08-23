@@ -3,15 +3,13 @@ import { PropTypes } from 'react';
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
-
 import ProviderFactory from '../providerFactory';
-
-import { EditorProps, EditorInstance } from './types';
+import { EditorProps, EditorInstance, EditorAppearanceComponentProps } from './types';
 export * from './types';
 
 export interface State {
   editor?: EditorInstance;
-  component?: React.ComponentClass<any>;
+  component?: React.ComponentClass<EditorAppearanceComponentProps>;
 }
 
 export default class Editor extends React.Component<EditorProps, State> {
@@ -82,6 +80,11 @@ export default class Editor extends React.Component<EditorProps, State> {
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
     this.registerEditorForActions(editor);
     this.setState({ editor });
+
+    // Focus editor first time we create it if shouldFocus prop is set to true.
+    if (this.props.shouldFocus && !editor.editorView.hasFocus()) {
+      editor.editorView.focus();
+    }
   }
 
   private handleProviders(props: EditorProps) {

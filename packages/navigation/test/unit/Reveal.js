@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { shallow, mount } from 'enzyme';
 import Reveal from '../../src/components/js/Reveal';
+import RevealInner from '../../src/components/styled/RevealInner';
 
 class Child extends PureComponent {
   render() {
@@ -29,11 +30,11 @@ describe('Reveal', () => {
     });
 
     it('should not animate the growth of the children', () => {
-      expect(wrapper.find('RevealInner').props().shouldAnimate).toBe(false);
+      expect(wrapper.find(RevealInner).props().shouldAnimate).toBe(false);
     });
 
     it('should open to the open height', () => {
-      expect(wrapper.find('RevealInner').props().openHeight).toBe(100);
+      expect(wrapper.find(RevealInner).props().openHeight).toBe(100);
     });
   });
 
@@ -63,7 +64,7 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find('RevealInner').props().isOpen).toBe(false);
+      expect(wrapper.find(RevealInner).props().isOpen).toBe(false);
     });
 
     it('should then open async after mounting', () => {
@@ -80,12 +81,12 @@ describe('Reveal', () => {
         </Reveal>
       );
 
-      expect(wrapper.find('RevealInner').props().isOpen).toBe(false);
+      expect(wrapper.find(RevealInner).props().isOpen).toBe(false);
 
       jest.runOnlyPendingTimers();
       requestAnimationFrame.step();
 
-      expect(wrapper.find('RevealInner').props().isOpen).toBe(true);
+      expect(wrapper.find(RevealInner).props().isOpen).toBe(true);
 
       // restore system clock
       jest.useRealTimers();
@@ -151,7 +152,7 @@ describe('Reveal', () => {
       });
 
       // mocking a transition end
-      wrapper.find('RevealInner').simulate('transitionEnd');
+      wrapper.find(RevealInner).simulate('transitionEnd');
 
       expect(wrapper.find(Child).length).toBe(0);
     });

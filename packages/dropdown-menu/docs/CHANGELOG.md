@@ -1,5 +1,13 @@
 # @atlaskit/dropdown-menu
 
+## 3.7.2 (2017-08-22)
+
+* bug fix; dropdownItem and DropdownItemGroup now get correct a11y role (issues closed: ak-3325) ([2dbfe85](https://bitbucket.org/atlassian/atlaskit/commits/2dbfe85))
+
+* bug fix; dropdown now only focuses on first item when opened via keyboard (issues closed: ak-3311) ([4381e96](https://bitbucket.org/atlassian/atlaskit/commits/4381e96))
+## 3.7.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
 ## 3.7.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -17,28 +17,32 @@ export interface State {
 
 export default class ToolbarMention extends PureComponent<Props, State> {
   state: State = { disabled: false };
-  private pluginState?: any;
+  private pluginState?: MentionsState;
 
   componentWillMount() {
-    const { editorView, pluginKey } = this.props;
+    this.setPluginState(this.props);
+  }
 
-    if (!editorView) {
-      return;
+  componentWillUpdate(nextProps: Props) {
+    if (!this.pluginState) {
+      this.setPluginState(nextProps);
     }
-
-    this.pluginState = pluginKey.getState(editorView.state);
   }
 
-  componentDidMount() {
-    this.pluginState.subscribe(this.handlePluginStateChange);
-  }
+  componentWillUnmount() {
+    const { pluginState } = this;
 
-  componentWillUmount() {
-    this.pluginState.unsubscribe(this.handlePluginStateChange);
+    if (pluginState) {
+      pluginState.unsubscribe(this.handlePluginStateChange);
+    }
   }
 
   render() {
     const { disabled } = this.state;
+
+    if (!this.pluginState) {
+      return null;
+    }
 
     return (
       <ToolbarButton
@@ -50,6 +54,21 @@ export default class ToolbarMention extends PureComponent<Props, State> {
     );
   }
 
+  private setPluginState(props: Props) {
+    const { editorView, pluginKey } = props;
+
+    if (!editorView) {
+      return;
+    }
+
+    const pluginState = pluginKey.getState(editorView.state);
+
+    if (pluginState) {
+      this.pluginState = pluginState;
+      pluginState.subscribe(this.handlePluginStateChange);
+    }
+  }
+
   private handlePluginStateChange = (pluginState: MentionsState) => {
     this.setState({
       disabled: !pluginState.enabled,
@@ -58,7 +77,7 @@ export default class ToolbarMention extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.mention.button')
   private handleInsertMention = (): boolean => {
-    this.pluginState.insertMentionQuery();
+    this.pluginState!.insertMentionQuery();
     return true;
   }
 }

@@ -50,18 +50,48 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
   }
 
   getDecisions(query: Query): Promise<DecisionResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          decisions: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceDecisionResponse = getServiceDecisionsResponse();
     const result = convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse);
     return this.applyConfig(query, result, 'decisions');
   }
 
   getTasks(query: Query): Promise<TaskResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          tasks: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceTasksResponse = getServiceTasksResponse();
     const result = convertServiceTaskResponseToTaskResponse(serviceTasksResponse);
     return this.applyConfig(query, result, 'tasks');
   }
 
   getItems(query: Query): Promise<ItemResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          items: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceItemResponse = getServiceItemsResponse();
     const result = convertServiceItemResponseToItemResponse(serviceItemResponse);
     return this.applyConfig(query, result, 'items');

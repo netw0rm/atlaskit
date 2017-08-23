@@ -203,9 +203,16 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
-  const { attrs, text, type } = node;
-  let { content } = node;
+export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
+  const { attrs, marks, text, type } = originalNode;
+  let { content } = originalNode;
+
+  const node: Node = {
+    attrs,
+    marks,
+    text,
+    type
+  };
 
   if (content) {
     node.content = content = getValidContent(content, schema);
@@ -221,7 +228,12 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details } = attrs;
-        if (typeof text !== 'string' || !title || !title.text) { break; }
+        if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
+
+        // title must contain only one key "text"
+        const titleKeys = Object.keys(title);
+        if (titleKeys.length > 1) { break; }
+
         if (
           (link && !link.url) ||
           (background && !background.url) ||
@@ -236,9 +248,12 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           if (users && !Array.isArray(users)) { return true; }
 
           if (users && users.some(user => {
-            if (!user.icon) {
+            if (typeof user.icon !== 'object') {
               return true;
             }
+
+            const { url, label } = user.icon;
+            return (typeof url !== 'string' || typeof label !== 'string');
           })) { return true; }
         })) { break; }
 
@@ -249,7 +264,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         };
       }
       case 'doc': {
-        const { version } = node as Doc;
+        const { version } = originalNode as Doc;
         if (version && content && content.length) {
           return {
             type,
@@ -449,6 +464,9 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+            },
           };
         }
         break;
@@ -458,6 +476,10 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+              state: attrs.state
+            },
           };
         }
         break;
@@ -467,6 +489,9 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs.localId,
+            },
           };
         }
         break;

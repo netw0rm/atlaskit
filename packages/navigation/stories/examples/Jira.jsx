@@ -75,6 +75,7 @@ export default class JIRAExample extends PureComponent {
     ) : (
       () => console.log(`Link item clicked: '${item.component.props.text}'`)
     );
+    console.log(item);
     const key = item.component.props.text;
 
     return !this.props.withtootips ?

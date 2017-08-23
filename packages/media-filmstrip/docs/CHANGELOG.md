@@ -1,5 +1,10 @@
 # @atlaskit/media-filmstrip
 
+## 5.2.1 (2017-08-18)
+
+* bug fix; stop click events from propagating up (issues closed: msw-165) ([7ffc2b2](https://bitbucket.org/atlassian/atlaskit/commits/7ffc2b2))
+
+
 ## 5.2.0 (2017-08-11)
 
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))

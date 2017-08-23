@@ -1,6 +1,17 @@
 # @atlaskit/field-base
 
-## Unreleased
+## 7.4.4 (2017-08-22)
+
+* bug fix; after discussing the implementation ([27e1963](https://bitbucket.org/atlassian/atlaskit/commits/27e1963))
+* bug fix; fieldbase required asterisk was not red - it is now ([943a17c](https://bitbucket.org/atlassian/atlaskit/commits/943a17c))
+## 7.4.3 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+
+
+
+
+
 
 ## 7.4.2 (2017-07-27)
 

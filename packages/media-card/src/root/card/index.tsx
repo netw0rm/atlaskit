@@ -8,13 +8,19 @@ import {MediaCard} from '../mediaCard';
 import {CardView} from '../cardView';
 import {LazyContent} from '../../utils';
 
-export type Identifier = UrlPreviewIdentifier | MediaIdentifier;
+export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
 
-export interface MediaIdentifier {
-  readonly mediaItemType: MediaItemType;
+export interface FileIdentifier {
+  readonly mediaItemType: 'file';
   readonly id: string;
-  readonly collectionName: string;
+  readonly collectionName?: string; // files can exist outside of a collection
+}
+
+export interface LinkIdentifier {
+  readonly mediaItemType: 'link';
+  readonly id: string;
+  readonly collectionName: string; // links always exist within a collection
 }
 
 export interface UrlPreviewIdentifier {

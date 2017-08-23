@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket
 
+## 3.3.0 (2017-08-23)
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+## 3.2.0 (2017-08-23)
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
 ## 3.1.0 (2017-08-14)
 
 

@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 3.1.0 (2017-08-23)
+
+* feature; aK-3356 Allow the AppSwitcher to close on click (issues closed: ak-3356) ([2710d52](https://bitbucket.org/atlassian/atlaskit/commits/2710d52))
 ## 3.0.0 (2017-08-22)
 
 * feature; modify presentation and API of suggested applications. (issues closed: ak-3337) ([b8b650f](https://bitbucket.org/atlassian/atlaskit/commits/b8b650f))

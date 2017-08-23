@@ -502,6 +502,29 @@ describe(name, () => {
         wrapper.setProps({ selectedItem: items[0] });
         expect(instance.filterItems(items)).toEqual([items[1], items[2]]);
       });
+
+      describe('with filterValues', () => {
+        it('should filter using filterValues instead of props, if available', () => {
+          const items = [
+            { content: 'One', value: '1', filterValues: ['1'] },
+            { content: 'Two', value: '2', filterValues: ['2', 'three'] },
+            { content: 'Three', value: '3' },
+          ];
+          wrapper.setProps({ selectedItem: {} });
+
+          wrapper.setProps({ filterValue: '1' });
+          expect(instance.filterItems(items)).toEqual([items[0]]);
+
+          wrapper.setProps({ filterValue: 'One' });
+          expect(instance.filterItems(items)).toEqual([]);
+
+          wrapper.setProps({ filterValue: 'three' });
+          expect(instance.filterItems(items)).toEqual([items[1], items[2]]);
+
+          wrapper.setProps({ filterValue: '3' });
+          expect(instance.filterItems(items)).toEqual([]);
+        });
+      });
     });
 
     describe('handleItemSelect', () => {

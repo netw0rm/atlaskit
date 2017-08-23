@@ -1,5 +1,13 @@
 # @atlaskit/navigation
 
+## 20.1.2 (2017-08-23)
+
+* bug fix; random badge in stories is no longer passed if it is empty (issues closed: ak-3353) ([6da4718](https://bitbucket.org/atlassian/atlaskit/commits/6da4718))
+## 20.1.1 (2017-08-23)
+
+* bug fix; navigation now uses a carat dep for react-beautiful-dnd ([20df7cb](https://bitbucket.org/atlassian/atlaskit/commits/20df7cb))
+
+
 ## 20.1.0 (2017-08-22)
 
 

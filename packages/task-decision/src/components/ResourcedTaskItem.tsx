@@ -81,22 +81,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         if (!this.mounted) {
           return;
         }
-        provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO')
-        .then(result => {
-          if (!this.mounted) {
-            return;
-          }
-            const newState = result === 'DONE';
-          if (newState !== isDone) { // Avoid unnecessary re-render
-            this.setState({ isDone: newState });
-          }
-        })
-        .catch(() => {
-          if (!this.mounted) {
-            return;
-          }
-          this.setState({ isDone: this.props.isDone }); // Roll-back when something goes wrong
-        });
+        provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO');
       });
     }
   }

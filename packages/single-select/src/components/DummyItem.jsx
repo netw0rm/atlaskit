@@ -12,7 +12,8 @@ export default class DummyItem extends PureComponent {
     description: PropTypes.string,
     tooltipDescription: PropTypes.string,
     tooltipPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // eslint-disable-line react/no-unused-prop-types, max-len
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    filterValues: PropTypes.arrayOf(PropTypes.string),
     isDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     elemBefore: PropTypes.node,

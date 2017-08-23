@@ -100,4 +100,28 @@ storiesOf('<ResourcedItemList/>', module)
         groupItems={true}
       />
     );
+  })
+  .add('Empty stage', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ empty: true });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+        emptyComponent={<div>Empty result</div>}
+      />
+    );
+  })
+  .add('Error stage', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ error: true });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+        errorComponent={<div>Error result</div>}
+      />
+    );
   });

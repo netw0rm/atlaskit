@@ -1,5 +1,27 @@
 # @atlaskit/editor-core
 
+## 46.2.4 (2017-08-23)
+
+* bug fix; tolerate missing attributes for task/decision nodes. (issues closed: fs-1303) ([deab934](https://bitbucket.org/atlassian/atlaskit/commits/deab934))
+## 46.2.3 (2017-08-23)
+
+
+* bug fix; fixed tabbing when the whole row/col is selected ([33a123e](https://bitbucket.org/atlassian/atlaskit/commits/33a123e))
+
+* bug fix; fixed tabbing in tables ([79956ea](https://bitbucket.org/atlassian/atlaskit/commits/79956ea))
+## 46.2.2 (2017-08-23)
+
+* bug fix; fix broken CSS in recent search in link dialog ([f99a729](https://bitbucket.org/atlassian/atlaskit/commits/f99a729))
+## 46.2.1 (2017-08-23)
+
+* bug fix; applicationCard with wrong attribute makes Banana unusable (Media) (issues closed: ed-2531) ([3693ba0](https://bitbucket.org/atlassian/atlaskit/commits/3693ba0))
+
+## 46.2.0 (2017-08-23)
+
+* feature; add FullPage apppearance for Editor (issues closed: ed-2337) ([bcd93ea](https://bitbucket.org/atlassian/atlaskit/commits/bcd93ea))
+## 46.1.1 (2017-08-22)
+
+* bug fix; multiple react warnings for UI components when pluginState is changed before compone (issues closed: ed-2535) ([1f77a58](https://bitbucket.org/atlassian/atlaskit/commits/1f77a58))
 ## 46.1.0 (2017-08-22)
 
 * bug fix; ensure getValidNode does not mutate the original node. (issues closed: fs-1295) ([0df91e2](https://bitbucket.org/atlassian/atlaskit/commits/0df91e2))

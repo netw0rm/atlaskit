@@ -5,6 +5,8 @@ import {
   Schema
 } from '../prosemirror';
 
+import { uuid } from '../plugins/utils';
+
 export interface Doc {
   version: 1;
   type: 'doc';
@@ -228,7 +230,12 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details } = attrs;
-        if (typeof text !== 'string' || !title || !title.text) { break; }
+        if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
+
+        // title must contain only one key "text"
+        const titleKeys = Object.keys(title);
+        if (titleKeys.length > 1) { break; }
+
         if (
           (link && !link.url) ||
           (background && !background.url) ||
@@ -243,9 +250,12 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
           if (users && !Array.isArray(users)) { return true; }
 
           if (users && users.some(user => {
-            if (!user.icon) {
+            if (typeof user.icon !== 'object') {
               return true;
             }
+
+            const { url, label } = user.icon;
+            return (typeof url !== 'string' || typeof label !== 'string');
           })) { return true; }
         })) { break; }
 
@@ -457,7 +467,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid(),
             },
           };
         }
@@ -469,8 +479,8 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'DECIDED'
             },
           };
         }
@@ -482,20 +492,20 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid()
             },
           };
         }
         break;
       }
       case 'taskItem': {
-        if (content && attrs && attrs.localId) {
+        if (content) {
           return {
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'TODO'
             },
           };
         }

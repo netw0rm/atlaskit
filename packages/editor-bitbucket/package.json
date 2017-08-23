@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "3.1.0",
+  "version": "3.3.0",
   "config": {
     "access": "public"
   },
@@ -32,7 +32,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^45.7.0",
+    "@atlaskit/editor-core": "^46.2.2",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

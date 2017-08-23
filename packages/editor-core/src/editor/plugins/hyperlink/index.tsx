@@ -6,6 +6,7 @@ import keymap from '../../../plugins/hyperlink/keymap';
 import { link } from '../../../schema/marks/link';
 import pluginKey from '../../../plugins/hyperlink/plugin-key';
 import HyperlinkEdit from '../../../ui/HyperlinkEdit';
+import ToolbarHyperlink from '../../../ui/ToolbarHyperlink';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {
@@ -18,6 +19,11 @@ const hyperlinkPlugin: EditorPlugin = {
       { rank: 910, plugin: (schema) => inputRulePlugin(schema) },
       { rank: 920, plugin: (schema) => keymap(schema) },
     ];
+  },
+
+  primaryToolbarComponent(editorView) {
+    const pluginState = pluginKey.getState(editorView.state);
+    return <ToolbarHyperlink editorView={editorView} pluginState={pluginState} />;
   },
 
   contentComponent(editorView, dispatch, providerFactory, appearance) {

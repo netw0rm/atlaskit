@@ -29,6 +29,8 @@ import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 import SelectWithDescriptions from './examples/SelectWithDescriptions';
 import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
+import SelectWithFilterValues from './examples/SelectWithFilterValues';
+import SelectWithFilterValuesRaw from '!raw!./examples/SelectWithFilterValues';
 import SelectWithLongDescriptions from './examples/SelectWithLongDescriptions';
 import SelectWithLongDescriptionsRaw from '!raw!./examples/SelectWithLongDescriptions';
 import SelectWithTooltips from './examples/SelectWithTooltips';
@@ -282,6 +284,17 @@ storiesOf(name, module)
       {SelectWithAutocomplete}
       <Code>
         {SelectWithAutocompleteRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with filter values', () => (
+    <Chrome title="Select with filter values">
+      <div style={{ width: '300px' }}>
+        {SelectWithFilterValues}
+      </div>
+      <Code>
+        {SelectWithFilterValuesRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

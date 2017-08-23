@@ -14,6 +14,8 @@ type Padding = {|
 |}
 
 export type ItemTheme = {|
+  afterSpacing: number,
+  beforeSpacing: number,
   borderRadius: number,
   height?: {|
     compact: number,

@@ -1,6 +1,6 @@
 // @flow
 import React, { Children, PureComponent } from 'react';
-// $FlowFixMe
+
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
 import styled, { css } from 'styled-components';

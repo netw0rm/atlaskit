@@ -38,14 +38,17 @@ import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 import {
-  mediaPluginFactory,
-  mediaStateKey,
   MediaProvider,
   MediaState,
   Plugin,
   ErrorReporter,
   ErrorReportingHandler,
 } from '../../src';
+
+import {
+  mediaPluginFactory,
+  mediaStateKey,
+} from '../../src/plugins';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {

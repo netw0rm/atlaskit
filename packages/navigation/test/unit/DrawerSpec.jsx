@@ -120,7 +120,8 @@ describe('<Drawer />', () => {
 
       it('should trigger onBackButton when the DrawerTrigger is clicked', () => {
         const spy = jest.fn();
-        mount(<Drawer isOpen onBackButton={spy} />).find('DrawerTrigger').simulate('click');
+        mount(<Drawer isOpen onBackButton={spy} />)
+          .find('DrawerTrigger').find('GlobalItem').simulate('click');
         expect(spy).toHaveBeenCalled();
       });
 
@@ -137,8 +138,11 @@ describe('<Drawer />', () => {
       });
 
       it('should wrap a DrawerBackIcon in a DrawerTrigger', () => {
-        expect(mount(<Drawer isOpen />).find('DrawerTrigger')
-          .childAt(0).is('DrawerBackIcon')).toBe(true);
+        expect(
+          mount(<Drawer isOpen />)
+            .find('DrawerTrigger DrawerBackIcon')
+            .exists()
+        ).toBe(true);
       });
     });
 

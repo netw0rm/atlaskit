@@ -72,6 +72,10 @@ export type GenericItemTheme = {|
     compact: GenericItemPadding,
     default: GenericItemPadding,
   |},
+  beforeItemSpacing: {|
+    compact: number,
+    default: number,
+  |},
   default: GenericItemState,
   selected: GenericItemState,
   hover: GenericItemState,

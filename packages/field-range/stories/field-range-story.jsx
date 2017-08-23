@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @flow
-// $FlowFixMe
+
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import styled from 'styled-components';

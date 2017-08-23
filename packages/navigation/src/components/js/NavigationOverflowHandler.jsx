@@ -94,7 +94,7 @@ export default class NavigationOverflowHandler extends Component {
 
     const nonDropdownItems = React.Children.map(children, (child, childIndex) => (
       childIndex <= indexOfLastVisibleChild ? (
-        // $FlowFixMe
+
         <HeightDetector onHeightChange={this.handleChildHeight(childIndex)}>
           {child}
         </HeightDetector>
@@ -110,7 +110,7 @@ export default class NavigationOverflowHandler extends Component {
     ) : null;
 
     return (
-      // $FlowFixMe
+
       <HeightDetector
         onHeightChange={this.handleAvailableHeight}
         shouldDetectResize

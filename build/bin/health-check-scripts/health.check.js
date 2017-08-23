@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 const chalk = require('chalk');
 const Table = require('cli-table2');
 const fs = require('fs');
@@ -113,5 +112,3 @@ getPackagesFromNpm(localPackages)
 
     console.log(table.toString());
   });
-
-/* eslint-enable no-console */

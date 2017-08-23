@@ -22,7 +22,7 @@ export default class ToolbarImage extends PureComponent<Props, State> {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 

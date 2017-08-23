@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from '../styled/Button';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Separator from '../styled/Separator';

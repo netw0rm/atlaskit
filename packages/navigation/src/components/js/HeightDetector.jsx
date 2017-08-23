@@ -14,7 +14,7 @@ type Props = {|
 
 export default class HeightDetector extends Component {
   static defaultProps = {
-    onHeightChange: () => {},
+    onHeightChange: (num) => {}, // eslint-disable-line
   }
 
   constructor(props: Props, context: mixed) {

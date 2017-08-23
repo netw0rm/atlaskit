@@ -1,6 +1,5 @@
 // @flow
 /* eslint-disable react/sort-comp */
-// TODO: fix flow errors
 import React, { PureComponent } from 'react';
 import TabsStateless from './TabsStateless';
 import type { ChildrenType } from '../types';
@@ -22,7 +21,9 @@ export default class Tabs extends PureComponent {
     onSelect: () => {},
     tabs: [],
   }
-
+  state: {
+    selectedTab: ?number;
+  }
   constructor(props: Props) {
     super(props);
 
@@ -36,7 +37,7 @@ export default class Tabs extends PureComponent {
         }
       }
     }
-// $FlowFixMe
+
     this.state = {
       selectedTab: defaultSelectedIndex,
     };
@@ -44,28 +45,29 @@ export default class Tabs extends PureComponent {
 
   getTabs = () => this.props.tabs.map((tab, index) => ({
     ...tab,
-    // $FlowFixMe
+
     isSelected: index === this.state.selectedTab,
     onKeyboardNav: this.tabKeyboardNavHandler,
     onSelect: () => this.tabSelectHandler(index),
   }));
 
   tabSelectHandler = (selectedTabIndex: number) => {
-    // $FlowFixMe
-    this.props.onSelect(selectedTabIndex);
-    // $FlowFixMe
+    if (this.props.onSelect) {
+      this.props.onSelect(selectedTabIndex);
+    }
+
     this.setState({ selectedTab: selectedTabIndex });
   }
 
   tabKeyboardNavHandler = (key: string) => {
     // Handle left and right arrow key presses by selecting the previous or next tab
-    // $FlowFixMe
+
     const selectedIndex = this.state.selectedTab;
     if (selectedIndex !== null) {
       let nextIndex = selectedIndex;
 
       if (key === 'ArrowLeft') {
-        nextIndex = selectedIndex - 1 < 0 ? 0 : selectedIndex - 1;
+        nextIndex = Number(selectedIndex) - 1 < 0 ? 0 : Number(selectedIndex) - 1;
       } else if (key === 'ArrowRight') {
         nextIndex = selectedIndex + 1 > this.props.tabs.length - 1
           ? this.props.tabs.length - 1
@@ -73,7 +75,7 @@ export default class Tabs extends PureComponent {
       }
 
       if (nextIndex !== selectedIndex) {
-        this.tabSelectHandler(nextIndex);
+        this.tabSelectHandler(Number(nextIndex));
       }
     }
   }

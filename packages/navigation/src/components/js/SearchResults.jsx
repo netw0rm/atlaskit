@@ -42,7 +42,6 @@ export default class SearchResults extends PureComponent {
   props: Props
 
   renderResultItem = (props: any) => {
-    // Why not using the props: ResultShape?
     const Result = availableResultTypes[props.type];
     const isSelected = props.resultId === this.props.selectedItemId;
     return Result ? (

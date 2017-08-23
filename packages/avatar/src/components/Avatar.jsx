@@ -67,7 +67,7 @@ class Avatar extends Component {
 
   // disallow click on disabled avatars
   // only return avatar data properties
-  guardedClick = (event: KeyboardEvent | MouseEvent) => {
+  guardedClick = (event: Object) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled || (typeof onClick !== 'function')) return;
@@ -135,7 +135,7 @@ class Avatar extends Component {
     const props: AvatarPropTypes = getProps(this);
 
     // provide element type based on props
-    const Inner = this.getStyledComponent();
+    const Inner: any = this.getStyledComponent();
 
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;

@@ -1,14 +1,14 @@
 // @flow
 import { itemThemeNamespace } from '@atlaskit/item';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
-import type { ItemTheme } from '../types';
+// import type { ItemTheme } from '../types';
 
 const dropdownPadding = {
   x: math.multiply(gridSize, 1.5),
   y: gridSize,
 };
-// $FlowFixMe
-const droplistItemTheme: ItemTheme = {
+
+const droplistItemTheme: any = {
   padding: {
     default: dropdownPadding,
     compact: dropdownPadding,

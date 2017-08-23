@@ -72,7 +72,7 @@ export default class DropdownMenuStateless extends Component {
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: () => {},
+    onItemActivated: (a) => {}, // eslint-disable-line
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,
@@ -97,15 +97,13 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  // $FlowFixMe
-  componentDidUpdate = (prevProp) => {
+  componentDidUpdate = (prevProp: Object) => {
     if (this.isUsingDeprecatedAPI() && this.props.isOpen && !prevProp.isOpen) {
       this.focusFirstItem();
     }
   }
 
-  // $FlowFixMe
-  getNextFocusable = (indexItem, available) => {
+  getNextFocusable = (indexItem: number | void, available: number | void) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
 
@@ -122,12 +120,10 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable;
   }
 
-  // $FlowFixMe
-  getPrevFocusable = (indexItem, available) => {
-    let currentItem = indexItem;
+  getPrevFocusable = (indexItem: number | void, available: number| void) => {
+    let currentItem = indexItem === undefined ? -1 : indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
-
-    if (currentItem > 0) {
+    if (currentItem && currentItem > 0) {
       currentItem--;
 
       if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
@@ -152,7 +148,7 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  focusedItem: number
+  focusedItem: number | void
 
   focusNextItem = () => {
     this.focusItem(this.getNextFocusable(this.focusedItem));
@@ -167,8 +163,7 @@ export default class DropdownMenuStateless extends Component {
     this.domItemsList[this.focusedItem].focus();
   }
 
-  // $FlowFixMe
-  isTargetChildItem = (target) => {
+  isTargetChildItem = (target: any) => {
     if (!target) return false;
 
     const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
@@ -239,7 +234,7 @@ export default class DropdownMenuStateless extends Component {
   handleClickDeprecated = (event: MouseEvent) => {
     const menuContainer = this.domMenuContainer;
     // checking whether click was outside of the menu container.
-    // $FlowFixMe - not flow typing existing code
+    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
     if (!menuContainer || (menuContainer && !menuContainer.contains(event.target))) {
       this.toggle({ source: 'click', event });
     }
@@ -254,7 +249,7 @@ export default class DropdownMenuStateless extends Component {
     }
 
     const { triggerContainer } = this;
-    // $FlowFixMe - existing code that works fine but flow doesn't like for some reason
+    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
     if (triggerContainer && triggerContainer.contains(event.target)) {
       const { isOpen } = this.props;
       this.props.onOpenChange({ isOpen: !isOpen, event });
@@ -286,20 +281,17 @@ export default class DropdownMenuStateless extends Component {
     );
   }
 
-  // $FlowFixMe
-  open = (attrs) => {
+  open = (attrs: any) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  // $FlowFixMe
-  close = (attrs) => {
+  close = (attrs: any) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
-  // $FlowFixMe
-  toggle = (attrs) => {
+  toggle = (attrs: any) => {
     if (attrs.source === 'keydown') return;
 
     if (this.props.isOpen) {
@@ -318,8 +310,7 @@ export default class DropdownMenuStateless extends Component {
     );
   };
 
-  // $FlowFixMe
-  renderItems = items => items.map((item, itemIndex) =>
+  renderItems = (items: any) => items.map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}
@@ -331,8 +322,7 @@ export default class DropdownMenuStateless extends Component {
     </Item>
   )
 
-  // $FlowFixMe
-  renderGroups = groups => groups.map((group, groupIndex) =>
+  renderGroups = (groups: any) => groups.map((group, groupIndex) =>
     <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
       {this.renderItems(group.items)}
     </Group>

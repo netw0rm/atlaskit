@@ -1,5 +1,5 @@
 // @flow
-// $FlowFixMe
+
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';

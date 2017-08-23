@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.17.3",
+  "version": "1.17.4",
   "config": {
     "access": "public"
   },

@@ -58,7 +58,6 @@ export default class NavigationItemGroup extends PureComponent {
     const header = title || action ? (
       <NavigationItemGroupHeader>
         {wrappedTitle}
-        {wrappedAction}
       </NavigationItemGroupHeader>
     ) : null;
 

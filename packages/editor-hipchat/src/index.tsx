@@ -12,6 +12,7 @@ import {
   history,
   hyperlinkPlugins,
   codeBlockPlugins,
+  listsPlugins,
   keymap,
   mediaPluginFactory,
   mediaStateKey,
@@ -365,6 +366,7 @@ export default class Editor extends PureComponent<Props, State> {
         // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
         // if converting is possible
         ...blockTypePlugins(schema),
+        ...listsPlugins(schema),
         history(),
         keymap(hcKeymap),
         // After hcKeyMap to ensure 'ENTER' is not taken by task/decision (which will create a new task/decision)

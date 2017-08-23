@@ -11,8 +11,7 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
     if (wrapper.type === listItem) {
-      const wrapperParent = $from.node($from.depth - 3);
-      if (node.textContent.length === 0 && wrapperParent.type === listItem) {
+      if (node.textContent.length === 0) {
         return commands.outdentList()(state, dispatch);
       } else {
         return baseListCommand.splitListItem(listItem)(state, dispatch);

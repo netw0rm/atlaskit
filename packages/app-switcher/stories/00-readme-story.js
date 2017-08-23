@@ -97,7 +97,7 @@ const linkedApplicationsPropDescriptions = [
       {
         name: 'onClick',
         type: 'Function',
-        description: 'Called when the suggested application is clicked.',
+        description: 'Called when the suggested application is clicked. The AppSwitcher will close if the item is selected.',
       },
     ],
   },

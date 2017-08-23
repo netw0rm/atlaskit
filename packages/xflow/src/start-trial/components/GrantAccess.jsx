@@ -157,8 +157,7 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent('xflow.grant-access.displayed');
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.retrieving.users.failed', {
-        ErrorMessage: e.message,
-        ErrorStack: e.stack,
+        errorMessage: e.message,
       });
     }
   };

@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Droplist from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import { name } from '../../package.json';
 
@@ -150,8 +150,8 @@ describe(name, () => {
     test('interacting with checkbox item should not close the menu', () => {
       const wrapper = mount(
         <Menu defaultOpen>
-          <DropdownItemGroupCheckbox title="Items">
-            <DropdownItemCheckbox>Option</DropdownItemCheckbox>
+          <DropdownItemGroupCheckbox id="check-items" title="Items">
+            <DropdownItemCheckbox id="option-one">Option</DropdownItemCheckbox>
           </DropdownItemGroupCheckbox>
         </Menu>
       );

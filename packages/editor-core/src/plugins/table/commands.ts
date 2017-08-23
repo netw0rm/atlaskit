@@ -76,6 +76,10 @@ const goToNextCell = (direction: number): Command => {
 const cut = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
+    if (document.queryCommandSupported('copy')) {
+      document.execCommand('copy');
+      pluginState.remove();
+    }
     pluginState.closeFloatingToolbar();
     return true;
   };
@@ -84,6 +88,9 @@ const cut = (): Command => {
 const copy = (): Command => {
   return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
+    if (document.queryCommandSupported('copy')) {
+      document.execCommand('copy');
+    }
     pluginState.closeFloatingToolbar();
     return true;
   };

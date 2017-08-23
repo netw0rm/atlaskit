@@ -9,10 +9,11 @@ import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Popup from '../Popup';
 import { Toolbar } from './styles';
 import DropdownMenu from '../DropdownMenu';
-import { cut, copy, paste } from '../../keymaps';
+import { cut, copy } from '../../keymaps';
 import AdvanceMenuItem from './AdvanceMenuItem';
 import { getShortcut } from './utils';
 import { analyticsService as analytics } from '../../analytics';
+import { isMobileBrowser } from '../../utils';
 
 export interface Props {
   editorView: EditorView;
@@ -38,7 +39,7 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
     copyDisabled: false,
     pasteDisabled: false,
     // disabled for the first version of tables
-    advancedMenuDisabled: true
+    advancedMenuDisabled: false
   };
 
   componentDidMount() {
@@ -110,9 +111,11 @@ export default class TableFloatingToolbar extends PureComponent<Props, State> {
 
   private createItems = () => {
     const items: any[] = [];
-    this.addRecordToItems(items, 'Cut', getShortcut(cut));
-    this.addRecordToItems(items, 'Copy', getShortcut(copy));
-    this.addRecordToItems(items, 'Paste', getShortcut(paste));
+    if (!isMobileBrowser()) {
+      this.addRecordToItems(items, 'Cut', getShortcut(cut));
+      this.addRecordToItems(items, 'Copy', getShortcut(copy));
+      // this.addRecordToItems(items, 'Paste', getShortcut(paste));
+    }
     return [{ items }];
   }
 

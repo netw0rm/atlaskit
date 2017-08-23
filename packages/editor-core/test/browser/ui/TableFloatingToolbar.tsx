@@ -10,6 +10,7 @@ import { Toolbar } from '../../../src/ui/TableFloatingToolbar/styles';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { analyticsService } from '../../../src/analytics';
+import { isMobileBrowser } from '../../../src/utils';
 
 import {
   createEvent, doc, p, makeEditor, table, tr, tdEmpty, tdCursor
@@ -168,6 +169,37 @@ describe('TableFloatingToolbar', () => {
           expect((pluginState[command] as any).callCount).to.equal(1);
           floatingToolbar.unmount();
           expect(trackEvent.calledWith(`atlassian.editor.format.table.${command}.button`)).to.equal(true);
+        });
+      });
+
+      describe('Cut', () => {
+        it('should remove selected cells if browser is not mobile', () => {
+          if (!isMobileBrowser()) {
+            const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+            const floatingToolbar = mount(
+              <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+            );
+            floatingToolbar.setState({ cellElement: document.createElement('td') });
+            floatingToolbar.find(ToolbarButton).at(1).simulate('click');
+            expect(floatingToolbar.state('isOpen')).to.equal(true);
+            floatingToolbar.find('Item').filterWhere(n => n.text() === 'Cut').simulate('click');
+            expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdEmpty))));
+            floatingToolbar.unmount();
+          }
+        });
+        it('should not be visible if browser is mobile', () => {
+          if (isMobileBrowser()) {
+            const { pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
+            const floatingToolbar = mount(
+              <TableFloatingToolbar pluginState={pluginState} editorView={editorView} />
+            );
+            floatingToolbar.setState({ cellElement: document.createElement('td') });
+            floatingToolbar.find(ToolbarButton).at(1).simulate('click');
+            expect(floatingToolbar.state('isOpen')).to.equal(true);
+            const cutOption = floatingToolbar.find('Item').filterWhere(n => n.text() === 'Cut');
+            expect(cutOption.length).to.deep.equal(1);
+            floatingToolbar.unmount();
+          }
         });
       });
     });

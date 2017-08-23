@@ -84,6 +84,10 @@ const eventHandlers = {
   media: {
     onClick: action('onClick'),
   },
+  applicationCard: {
+    onClick: action('onClick'),
+    onActionClick: action('onActionClick'),
+  },
 };
 
 interface DemoRendererProps {

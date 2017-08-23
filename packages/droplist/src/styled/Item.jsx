@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 import { colors, fontSize, gridSize, math, themed } from '@atlaskit/theme';
 
-const activeBackgroundColor = themed({ light: colors.B75, dark: colors.B75 });
-const hoverBackgroundColor = themed({ light: colors.N20, dark: colors.N20 });
-const selectedBackgroundColor = themed({ light: colors.N0, dark: colors.N0 });
+const activeBackgroundColor = themed({ light: colors.B75, dark: colors.DN30 });
+const hoverBackgroundColor = themed({ light: colors.N20, dark: colors.DN60 });
+const selectedBackgroundColor = themed({ light: colors.N0, dark: colors.DN30 });
 
-const activePrimaryTextColor = themed({ light: colors.N800, dark: colors.N800 });
-const defaultPrimaryTextColor = themed({ light: colors.N800, dark: colors.N800 });
-const disabledPrimaryTextColor = themed({ light: colors.N70, dark: colors.N70 });
+const activePrimaryTextColor = themed({ light: colors.N800, dark: colors.DN300 });
+const defaultPrimaryTextColor = themed({ light: colors.N800, dark: colors.DN600 });
+const disabledPrimaryTextColor = themed({ light: colors.N70, dark: colors.DN70 });
 const primaryPrimaryTextColor = themed({ light: colors.B400, dark: colors.B400 });
 const selectedPrimaryTextColor = themed({ light: colors.N800, dark: colors.N800 });
 

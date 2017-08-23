@@ -10,9 +10,6 @@ export const WarningIcon = styled.div`
   align-items: center;
   color: ${colors.Y300};
   display: flex;
-  /* Height is set to center it within the field. The original value of
-  lineHeight pushed it up from center */
-  height: 18px;
 `;
 
 const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {

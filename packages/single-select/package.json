@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/droplist": "^4.1.0",
+    "@atlaskit/droplist": "^4.9.0",
     "@atlaskit/field-base": "^7.0.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/util-shared-styles": "^2.1.0",

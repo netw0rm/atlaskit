@@ -40,7 +40,7 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, sub
   `;
 };
 
-const getDisabledColor = themed({ light: colors.N60, dark: colors.N60 });
+const getDisabledColor = themed({ light: colors.N60, dark: colors.DN80 });
 
 const getDisabledState = (p) => p.disabled && css`
   color: ${getDisabledColor(p)};
@@ -74,9 +74,12 @@ const getMargin = ({ appearance, isFocused, paddingDisabled, readOnly }) => {
   return css`margin: -${margin}px`;
 };
 
+const getColor = themed({ light: colors.N900, dark: colors.DN100 });
+
 export const Content = styled.div`
-  ${p => getBorderAndPadding(p)}
-  ${p => getMargin(p)}
+  ${p => getBorderAndPadding(p)};
+  ${p => getMargin(p)};
+  color: ${getColor};
   background-color: ${p => (p.isFocused ? getBackgroundColorFocus(p) : getBackgroundColor(p))};
   border-color: ${p => (p.isFocused ? getBorderColorFocus(p) : getBorderColor(p))};
   border-radius: ${borderRadius};

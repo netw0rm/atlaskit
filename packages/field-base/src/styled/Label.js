@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
-import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
+import { colors, themed, gridSize } from '@atlaskit/theme';
 
+const spacing = gridSize();
 const fontSize = 12;
 const innerHeight = spacing * 2; // 16px
 const lineHeight = innerHeight / fontSize;

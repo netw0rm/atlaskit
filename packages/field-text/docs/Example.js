@@ -6,7 +6,7 @@ const Example = () => (
     <TextField label="hidden label" isLabelHidden />
     <TextField autoFocus label="autofocused" />
     <TextField value="candy" label="With default value" />
-    <TextField disabled label="disabled" />
+    <TextField disabled label="disabled" value="no touching" />
     <TextField required label="Required" />
     <TextField isInvalid label="Is Invalid" />
     <TextField placeholder="Click here to input" label="With Placeholder" />

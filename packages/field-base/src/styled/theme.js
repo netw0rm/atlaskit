@@ -1,7 +1,7 @@
 import { colors, themed } from '@atlaskit/theme';
 
 // The following are the name for color mappings in @atlaskit/themes
-// The exports are the functions, not the actual code snippets
+// The exports are the functions, not the objects, so could not be used here
 const background = { light: colors.N0, dark: colors.DN30 };
 const codeBlock = { light: colors.N20, dark: colors.DN50 };
 const yellow = { light: colors.Y300, dark: colors.Y300 };

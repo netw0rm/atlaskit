@@ -24,7 +24,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/droplist": "^4.0.0",
+    "@atlaskit/droplist": "^4.9.0",
     "@atlaskit/field-base": "^7.0.1",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/tag": "^2.1.3",

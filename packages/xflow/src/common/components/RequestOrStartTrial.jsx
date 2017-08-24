@@ -94,7 +94,10 @@ class RequestOrStartTrial extends Component {
       });
     } else {
       firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
-      this.setState({ initializingCheckFailed: true });
+      this.setState({
+        initializingCheckFailed: true,
+        showInitializationError: true,
+      });
     }
   };
 
@@ -102,7 +105,10 @@ class RequestOrStartTrial extends Component {
     {
       content: 'Retry',
       onClick: () => {
-        this.setState({ initializingCheckFailed: false });
+        this.setState({
+          initializingCheckFailed: false,
+          showInitializationError: false,
+        });
         return this.resetRequestOrStartTrial();
       },
     },
@@ -110,7 +116,7 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const { onAnalyticsEvent, onComplete, onTrialRequested, onTrialActivating } = this.props;
-    const { activationState } = this.state;
+    const { activationState, initializingCheckFailed, showInitializationError } = this.state;
 
     return (
       <App onAnalyticsEvent={onAnalyticsEvent}>
@@ -120,14 +126,19 @@ class RequestOrStartTrial extends Component {
               case Screens.INITIALIZING: {
                 return (
                   <div>
-                    <InitializingScreen isOpen={!this.state.initializingCheckFailed} />
+                    <InitializingScreen isOpen={!initializingCheckFailed} />
                     <ErrorFlag
                       flagRetry
                       flagActions={this.flagActions}
                       title="Oops... Something went wrong"
                       description="Let's try again."
-                      showFlag={this.state.initializingCheckFailed}
-                      onDismissed={() => this.setState({ initializingCheckFailed: false })}
+                      showFlag={showInitializationError}
+                      onDismissed={() => {
+                        this.setState({
+                          showInitializationError: false,
+                        });
+                        return onComplete();
+                      }}
                     />
                   </div>
                 );

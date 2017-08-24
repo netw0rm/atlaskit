@@ -20,6 +20,7 @@ import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import pastePlugins from '../../src/plugins/paste';
 import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
+import { Schema } from '../../src/prosemirror';
 
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
 import {
@@ -32,19 +33,22 @@ import {
   TextSelection,
   PluginKey,
 } from '../../src/prosemirror';
-import schema from '../schema';
+import { default as schemaFull } from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 import {
-  mediaPluginFactory,
-  mediaStateKey,
   MediaProvider,
   MediaState,
   Plugin,
   ErrorReporter,
   ErrorReportingHandler,
 } from '../../src';
+
+import {
+  mediaPluginFactory,
+  mediaStateKey,
+} from '../../src/plugins';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -59,11 +63,14 @@ export interface Props {
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   mediaProvider?: Promise<MediaProvider>;
+  activityProvider?: Promise<any>;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  height?: number;
+  schema?: Schema<any, any>;
 }
 
 export interface State {
@@ -75,6 +82,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   private mediaPlugins: Plugin[];
+  private schema: Schema<any, any>;
 
   state: State;
   providerFactory: ProviderFactory;
@@ -82,10 +90,10 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+    this.schema = props.schema || schemaFull;
 
     analyticsService.handler = props.analyticsHandler || (name => { });
     this.providerFactory = new ProviderFactory();
-
 
     const errorReporter = new ErrorReporter();
     if (props.errorReporter) {
@@ -93,7 +101,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { uploadErrorHandler } = props;
-    this.mediaPlugins = mediaPluginFactory(schema, {
+    this.mediaPlugins = mediaPluginFactory(this.schema, {
       uploadErrorHandler,
       errorReporter,
       providerFactory: this.providerFactory,
@@ -110,7 +118,10 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
-        mediaStateKey.getState(editorView.state).destroy();
+        const mediaPluginState = mediaStateKey.getState(editorView.state);
+        if (mediaPluginState) {
+          mediaPluginState.destroy();
+        }
       }
 
       editorView.destroy();
@@ -123,17 +134,19 @@ export default class Editor extends PureComponent<Props, State> {
     if (
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
-      props.emojiProvider !== nextProps.emojiProvider
+      props.emojiProvider !== nextProps.emojiProvider ||
+      props.activityProvider !== nextProps.activityProvider
     ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, activityProvider } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('activityProvider', activityProvider);
 
     this.setState({
       emojiProvider,
@@ -195,6 +208,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   render() {
     const { mentionProvider, emojiProvider } = this.state;
+    const { activityProvider } = this.props;
 
     const getState = (editorState: EditorState<any> | undefined) => (stateKey: PluginKey) =>
       editorState && stateKey.getState(editorState);
@@ -243,9 +257,12 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
+        activityProvider={activityProvider}
         popupsMountPoint={this.props.popupsMountPoint}
         popupsBoundariesElement={this.props.popupsBoundariesElement}
+        helpDialogPresent={true}
         maxHeight={200}
+        height={this.props.height}
       />
     );
   }
@@ -272,7 +289,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
-    const { mediaPlugins } = this;
+    const { mediaPlugins, schema } = this;
     const { defaultValue } = this.props;
 
     let doc;
@@ -288,15 +305,15 @@ export default class Editor extends PureComponent<Props, State> {
         doc,
         plugins: [
           ...pastePlugins(schema),
-          ...mentionsPlugins(schema, this.providerFactory), // mentions and emoji needs to be first
-          ...emojiPlugins(schema, this.providerFactory),
-          ...asciiEmojiPlugins(schema, this.providerFactory),
+          ...(schema.nodes.mention ? mentionsPlugins(schema, this.providerFactory) : []), // mentions and emoji needs to be first
+          ...(schema.nodes.emoji ? emojiPlugins(schema, this.providerFactory) : []),
+          ...(schema.nodes.emoji ? asciiEmojiPlugins(schema, this.providerFactory) : []),
           ...clearFormattingPlugins(schema),
           ...textFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
           ...rulePlugins(schema),
-          ...textColorPlugins(schema),
-          ...mediaPlugins,
+          ...(schema.marks.textColor ? textColorPlugins(schema) : []),
+          ...(schema.nodes.media ? mediaPlugins : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible.
@@ -309,9 +326,9 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...codeBlockPlugins(schema),
           ...panelPlugins(schema),
-          ...tablePlugins(),
+          ...(schema.nodes.table ? tablePlugins() : []),
           ...reactNodeViewPlugins(schema),
-          ...tasksAndDecisionsPlugin(schema),
+          ...(schema.nodes.taskList && schema.nodes.decisionList ? tasksAndDecisionsPlugin(schema) : []),
           history(),
           keymap(baseKeymap) // should be last :(
         ]

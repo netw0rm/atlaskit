@@ -1,4 +1,5 @@
 export { default as basePlugin } from './base';
+export { default as placeholderPlugin } from './placeholder';
 export { default as analyticsPastePlugin } from './analytics-paste';
 export { default as blockTypePlugin } from './block-type';
 export { default as textFormattingPlugin } from './text-formatting';
@@ -12,3 +13,7 @@ export { default as hyperlinkPlugin } from './hyperlink';
 export { default as codeBlockPlugin } from './code-block';
 export { default as maxContentSizePlugin } from './max-content-size';
 export { default as pastePlugin } from './paste';
+export { default as listsPlugin } from './lists';
+export { default as textColorPlugin } from './text-color';
+export { default as tablesPlugin } from './tables';
+export { default as insertBlockPlugin } from './insert-block';

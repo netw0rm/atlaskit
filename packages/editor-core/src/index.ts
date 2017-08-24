@@ -17,6 +17,11 @@ export {
   PresenceResource,
 } from '@atlaskit/mention';
 
+export {
+  TaskDecisionProvider,
+  TaskDecisionResource
+} from '@atlaskit/task-decision';
+
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
 export * from './config';
@@ -71,3 +76,5 @@ export {
 export { colorPalette } from './schema/marks/text-color';
 
 export { default as Editor } from './editor';
+export { default as EditorContext } from './editor/ui/EditorContext';
+export { default as WithEditorActions } from './editor/ui/WithEditorActions';

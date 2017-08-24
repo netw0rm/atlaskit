@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "2.4.0",
+  "version": "3.5.1",
   "config": {
     "access": "public"
   },
@@ -31,8 +31,11 @@
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/util-service-support": "^2.0.1",
     "@atlaskit/util-shared-styles": "^2.1.0",
+    "lodash.debounce": "^4.0.8",
+    "moment": "^2.18.1",
     "styled-components": "^1.4.6",
-    "tslib": "^1.2.0"
+    "tslib": "^1.2.0",
+    "uid": "^0.0.2"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [

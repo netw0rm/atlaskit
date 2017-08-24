@@ -14,6 +14,7 @@ export class EditorView {
   state: EditorState<any>;
   dom: dom.Element;
   props: EditorProps;
+  cursorWrapper: Decoration | null;
   update(props: EditorProps): void;
   setProps(props: EditorProps): void;
   updateState(state: EditorState<any>): void;

@@ -31,6 +31,13 @@ describe('inputrules', () => {
       expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
     });
 
+    it('should convert "- " to a bullet list item', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '- ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(p()))));
+      expect(trackEvent.calledWith('atlassian.editor.format.list.bullet.autoformatting')).to.equal(true);
+    });
+
     it('should be not be possible to convert a code_clock to a list item', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
       insertText(editorView, '* ', sel);
@@ -43,6 +50,14 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '1. ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(ol(li(p()))));
+      expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
+    });
+
+    it('should convert "[number]) " to a ordered list item', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '1) ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ol(li(p()))));
       expect(trackEvent.calledWith('atlassian.editor.format.list.numbered.autoformatting')).to.equal(true);
     });

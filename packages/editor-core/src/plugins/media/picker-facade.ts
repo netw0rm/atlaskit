@@ -87,7 +87,13 @@ export default class PickerFacade {
       return;
     }
 
-    picker.removeAllListeners();
+    picker.removeAllListeners('upload-start');
+    picker.removeAllListeners('upload-preview-update');
+    picker.removeAllListeners('upload-status-update');
+    picker.removeAllListeners('upload-processing');
+    picker.removeAllListeners('upload-finalize-ready');
+    picker.removeAllListeners('upload-error');
+    picker.removeAllListeners('upload-end');
 
     try {
       if (picker.deactivate) {

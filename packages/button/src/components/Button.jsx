@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import getButtonProps from './getButtonProps';
@@ -40,10 +41,12 @@ export default class Button extends Component {
     /** The base styling to apply to the button. */
     appearance: PropTypes.oneOf([
       'default',
+      'danger',
       'link',
       'primary',
       'subtle',
       'subtle-link',
+      'warning',
     ]),
     /** Pass aria-controls to underlying html button. */
     ariaControls: PropTypes.string,

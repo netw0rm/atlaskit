@@ -512,7 +512,7 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new TableState(state);
@@ -569,6 +569,7 @@ const plugin = new Plugin({
         pluginState.updateEditorFocused(false);
         pluginState.update(view.docView, true);
       }
+      pluginState.resetHoverSelection();
     },
   }
 });

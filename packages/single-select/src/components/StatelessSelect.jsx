@@ -32,6 +32,15 @@ const appearances = {
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
 
+const isMatched = (item, matchingValue) => {
+  const filterValues = item.filterValues;
+  if (filterValues && filterValues.length > 0) {
+    return filterValues.some(value => value.toLowerCase().indexOf(matchingValue) > -1);
+  }
+
+  return item.content.toLowerCase().indexOf(matchingValue) > -1;
+};
+
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     /** Subtle items do not have a background color. */
@@ -61,7 +70,7 @@ export default class StatelessSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
-    content being the displayed text. */
+    content being the displayed text, and can optionally have a list of filterValues. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     /** Label to be displayed above select. */
     label: PropTypes.string,
@@ -116,7 +125,7 @@ export default class StatelessSelect extends PureComponent {
   state = { }
 
   componentDidMount = () => {
-    if (this.props.isOpen) {
+    if (this.props.isOpen || this.props.shouldFocus) {
       this.focus();
     }
 
@@ -225,9 +234,10 @@ export default class StatelessSelect extends PureComponent {
     const trimmedValue = value && value.toLowerCase().trim();
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(item => selectedItem.value !== item.value);
-    return trimmedValue &&
-      (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
-      unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+    const selectedItemContent = selectedItem.content && selectedItem.content.toLowerCase();
+
+    return trimmedValue && (trimmedValue !== selectedItemContent) ?
+      unselectedItems.filter(item => isMatched(item, trimmedValue)) :
       unselectedItems;
   }
 

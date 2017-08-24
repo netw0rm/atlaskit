@@ -1,5 +1,15 @@
 # @atlaskit/editor-hipchat
 
+## 5.0.0 (2017-08-23)
+
+* breaking; Upgrade to next major editor-core and other deps ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
+* breaking; upgrade editor-core and other dependencies. (issues closed: fs-1298) ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
+## 4.18.1 (2017-08-15)
+
+* bug fix; fix storybooks for editor-hipchat ([43c6200](https://bitbucket.org/atlassian/atlaskit/commits/43c6200))
+
+
+
 ## 4.18.0 (2017-08-10)
 
 * feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2446) ([8177e36](https://bitbucket.org/atlassian/atlaskit/commits/8177e36))

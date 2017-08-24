@@ -94,9 +94,9 @@ const requestService = (serviceUrl, cloudId, userId) => {
     }
 
     return response.json().then((json) => {
-      if (json.data.User === null) {
+      if (json.errors) {
         return Promise.reject({
-          reason: (json.errors && json.errors[0]) || 'Empty User data',
+          reason: json.errors[0].category || 'default',
         });
       }
 

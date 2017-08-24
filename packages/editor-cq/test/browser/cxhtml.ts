@@ -35,6 +35,21 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   });
 
   describe('basic formatting:', () => {
+
+    describe('doc:', () => {
+      check('it should generate a valid document',
+        '<p>a</p>',
+        doc(p('a'))
+      );
+
+      check('if doc content is not valid, it will be converted to UnsupportedBlock',
+        '<li>a</li>',
+        doc(
+          confluenceUnsupportedBlock('<li>a</li>')
+        )
+      );
+    });
+
     describe('text:', () => {
       check('basic text',
         'War and peace',
@@ -66,6 +81,13 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
         doc(
           p('Text on two', br, 'lines.'),
         ));
+
+      check('a paragraph with unsupported content',
+        '<p><li>a</li></p>',
+        doc(
+          p(confluenceUnsupportedInline('<li>a</li>'))
+        )
+      );
     });
 
     describe('breaks:', () => {
@@ -257,6 +279,15 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
             ' it!'
           )
         ));
+
+      check('heading with invalid block content',
+        '<h1><p>heading</p></h1>',
+        doc(
+          h1(
+            confluenceUnsupportedInline('<p>heading</p>')
+          )
+        )
+      );
     });
 
     describe('horizontal rule', () => {
@@ -296,6 +327,22 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
           )
         ));
 
+      check('bullet list with direct paragraph',
+        '<ul><p>a</p></ul>',
+        doc(
+          ul(
+            li(p('a'))
+          )
+        ));
+
+      check('bullet list with non listItem child, it will try to wrap it with listItem',
+        '<ul>a</ul>',
+        doc(
+          ul(
+            li(p('a'))
+          )
+        ));
+
       check('ordered list',
         '<ol><li>A piggy</li></ol>',
         doc(
@@ -310,6 +357,22 @@ describe('@atlaskit/editor-cq encode-cxhtml:', () => {
           ol(
             li(p('A piggy')),
             li(p(strong('Bigger'), ' piggy'))
+          )
+        ));
+
+      check('ordered list with direct paragraph',
+        '<ol><p>a</p></ol>',
+        doc(
+          ol(
+            li(p('a'))
+          )
+        ));
+
+      check('ordered list with non listItem child, it will try to wrap it with listItem',
+        '<ol>a</ol>',
+        doc(
+          ol(
+            li(p('a'))
           )
         ));
     });

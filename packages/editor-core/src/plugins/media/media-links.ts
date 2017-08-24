@@ -9,6 +9,7 @@ import {
 import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
 import { uuid } from '../utils';
+import analyticsService from '../../analytics/service';
 
 export interface URLInfo {
   href: string;
@@ -55,6 +56,7 @@ export const insertLinks = async (
         tr.replaceWith(insertPos, insertPos, node);
         trQueue.push(tr);
         dispatch(tr);
+        analyticsService.trackEvent('atlassian.editor.media.link');
 
         const updateStateWithError = error => stateManager.updateState(id, {
           id,
@@ -62,8 +64,14 @@ export const insertLinks = async (
           error,
         }) || resolve();
 
+        const isAppWithoutURL = metadata => metadata && metadata.resources && metadata.resources.app && !metadata.resources.app.url;
+
         // Unfurl URL using media API
         linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(metadata => {
+          // Workaround for problem with missing fields preventing Twitter links from working
+          if(isAppWithoutURL(metadata))  {
+            (metadata as any).resources.app.url = metadata.url;
+          }
           linkCreateContext.addLinkItem(href, collection, metadata)
             .then(publicId =>
               stateManager.updateState(id, {

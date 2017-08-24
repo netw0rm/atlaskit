@@ -1,5 +1,11 @@
 # @atlaskit/single-select
 
+## 1.18.0 (2017-08-22)
+
+* feature; single select items now support filterValues which, when present, are used instead (issues closed: ak-3348) ([523f485](https://bitbucket.org/atlassian/atlaskit/commits/523f485))
+## 1.17.4 (2017-08-21)
+
+* bug fix; fixes bug in single select that would cause the shouldFocus prop to not work on initia ([1a13257](https://bitbucket.org/atlassian/atlaskit/commits/1a13257))
 ## 1.17.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -12,7 +12,6 @@ import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { transformToCodeAction } from './transform-to-code';
-import { keyCodes } from '../../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -253,105 +252,10 @@ export class TextFormattingState {
     }
   }
 
-  private triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  /**
-   * Determine if a mark of a specific type exists anywhere in the selection.
-   */
-  private anyMarkActive(markType: MarkType): boolean {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-
-    let found = false;
-    if (this.marksToRemove) {
-      this.marksToRemove.forEach(mark => {
-        if (mark.type.name === markType.name) {
-          found = true;
-        }
-      });
-    }
-
-    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
-      return false;
-    }
-
-    if (empty) {
-      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
-    }
-    return state.doc.rangeHasMark(from, to, markType);
-  }
-
-  handleKeyDown (view: EditorView, event: KeyboardEvent) {
-    const { state } = this;
-    const { from, to, empty } = state.selection;
-    const { code } = view.state.schema.marks;
-    let marks = state.selection.$from.marks();
-    let domNodeBefore = view.docView.domFromPos(from - 1);
-
-    if (!empty) {
-      marks = [];
-      state.doc.nodesBetween(from, to, node => {
-        if (node.marks.length) {
-          marks = marks.concat(node.marks);
-        }
-      });
-    }
-
-    const { storedMarks } = state.tr;
-
-    if (storedMarks && this.marksToRemove) {
-      this.marksToRemove = null;
-      view.dispatch(view.state.tr.setStoredMarks([]));
-    }
-
-    if (event.keyCode === keyCodes.Backspace) {
-      let found = false;
-
-      const nonInclusiveMarks: Mark[] = [];
-      const { nodeBefore } = state.selection.$from;
-      if (nodeBefore) {
-        nodeBefore.marks.forEach(mark => {
-          if (mark.type.spec.inclusive === false) {
-            nonInclusiveMarks.push(mark);
-          }
-        });
-        if (nonInclusiveMarks.length) {
-          this.marksToRemove = nonInclusiveMarks;
-        }
-      }
-
-      marks.forEach(mark => {
-        if (state.doc.rangeHasMark(from - 1, to, mark.type)) {
-          found = true;
-        }
-      });
-
-      if (marks.length && (!domNodeBefore || found)) {
-        this.marksToRemove = marks.concat(this.marksToRemove || []);
-      }
-    }
-
-    if (event.key === 'ArrowRight' && !state.doc.rangeHasMark(from, to, code)) {
-      view.dispatch(view.state.tr.removeStoredMark(code));
-    }
-  }
-
-  handleTextInput (view: EditorView, event: KeyboardEvent) {
-    const { state } = this;
-    const { storedMarks } = state.tr;
-
-    if (storedMarks && this.marksToRemove) {
-      this.marksToRemove = null;
-      view.dispatch(view.state.tr.setStoredMarks([]));
-    }
-  }
-
   /**
    * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
-  private markActive(mark: Mark): boolean {
+  markActive(mark: Mark): boolean {
     const { state } = this;
     const { from, to, empty } = state.selection;
 
@@ -385,6 +289,36 @@ export class TextFormattingState {
     return found;
   }
 
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  /**
+   * Determine if a mark of a specific type exists anywhere in the selection.
+   */
+  private anyMarkActive(markType: MarkType): boolean {
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+
+    let found = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(mark => {
+        if (mark.type.name === markType.name) {
+          found = true;
+        }
+      });
+    }
+
+    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
+      return false;
+    }
+
+    if (empty) {
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+    }
+    return state.doc.rangeHasMark(from, to, markType);
+  }
+
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
@@ -415,17 +349,7 @@ export const plugin = new Plugin({
   },
   props: {
     handleKeyDown(view, event) {
-      const pluginState = stateKey.getState(view.state);
-      const result = pluginState.keymapHandler(view, event);
-      pluginState.handleKeyDown(view, event);
-
-      return result;
-    },
-    handleTextInput(view, event) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.handleTextInput(view, event);
-
-      return false;
+      return stateKey.getState(view.state).keymapHandler(view, event);
     }
   }
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {MouseEvent} from 'react';
-import {MediaItemType, MediaItemDetails, LinkDetails, UrlPreview, ImageResizeMode} from '@atlaskit/media-core';
+import {MediaItemType, MediaItemDetails, LinkDetails, FileDetails, UrlPreview, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus, CardEvent, OnSelectChangeFuncResult} from '..';
 import {LinkCard} from '../links';
@@ -46,7 +46,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
 
   render() {
     const {onClick, onMouseEnter} = this;
-    const {mediaItemType} = this.props;
+    const {mediaItemType, dimensions} = this.props;
     let card;
 
     if (mediaItemType === 'link') {
@@ -58,7 +58,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
     }
 
     return (
-      <Wrapper onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper dimensions={dimensions} onClick={onClick} onMouseEnter={onMouseEnter}>
         {card}
       </Wrapper>
     );
@@ -93,7 +93,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
       <FileCard
         {...otherProps}
         status={status}
-        details={metadata}
+        details={metadata as FileDetails}
       />
     );
   }

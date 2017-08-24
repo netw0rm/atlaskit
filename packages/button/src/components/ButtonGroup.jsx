@@ -26,6 +26,8 @@ export default class ButtonGroup extends PureComponent {
       'primary',
       'subtle',
       'subtle-link',
+      'warning',
+      'danger',
     ]),
     /** The buttons to render. */
     children: ValidateChildren,

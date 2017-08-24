@@ -49,4 +49,14 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
 
     expect(onCancelHandler.called).to.equal(true);
   });
+
+  it('should call onKeyDown when a key is pressed', () => {
+    const onKeyDownHandler = sinon.stub();
+    const panel = mount(<PanelTextInput onKeyDown={onKeyDownHandler} />);
+
+    const input = panel.find('input');
+    input.simulate('keydown', { which: 'a', keyCode: 65 });
+
+    expect(onKeyDownHandler.called).to.equal(true);
+  });
 });

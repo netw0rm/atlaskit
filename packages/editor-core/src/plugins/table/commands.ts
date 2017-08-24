@@ -60,8 +60,16 @@ const goToNextCell = (direction: number): Command => {
       pluginState.insertRow(map.height);
       return true;
     }
-
-    return tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    if (!pluginState.view.hasFocus()) {
+      pluginState.view.focus();
+    }
+    const result = tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    // cancel text selection that is created by default
+    if (result) {
+      const latestState = pluginState.view.state;
+      dispatch(latestState.tr.setSelection(Selection.near(latestState.selection.$from)));
+    }
+    return result;
   };
 };
 

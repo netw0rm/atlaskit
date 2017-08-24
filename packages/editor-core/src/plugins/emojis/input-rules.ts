@@ -6,7 +6,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
-    const regex = new RegExp(`(^|[\\s${leafNodeReplacementCharacter}]):$`);
+    const regex = new RegExp(`(^|[\\s\(${leafNodeReplacementCharacter}]):$`);
     const emojiQueryRule = createInputRule(regex, (state, match, start, end): Transaction | undefined => {
       const emojisState = stateKey.getState(state) as EmojiState;
 

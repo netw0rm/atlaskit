@@ -52,7 +52,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     }
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
     if (pluginStateTextFormatting) {
       pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);

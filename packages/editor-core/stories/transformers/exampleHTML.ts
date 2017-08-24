@@ -2,6 +2,7 @@ const html =
 `<p>Regular,
   <strong>Strong</strong>,
   <em>Italic</em>,
+  <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>,
   <em><strong>Strong Italic</strong></em>
 </p>
 

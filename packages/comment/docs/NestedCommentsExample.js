@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PropTypes, PureComponent } from 'react';
 import Comment, { CommentAuthor } from '@atlaskit/comment';
 import Avatar from '@atlaskit/avatar';
 import avatarImg from './sample-avatar.png';

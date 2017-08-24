@@ -18,6 +18,7 @@ import {
   h1,
   makeEditor,
   mediaGroup,
+  singleImage,
   media,
   p,
   a,
@@ -30,6 +31,7 @@ import {
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { setNodeSelection } from '../../../../src/utils';
+import { AnalyticsHandler, analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
@@ -85,7 +87,7 @@ describe('Media plugin', () => {
       'test.gif'
     );
 
-    expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
+    sinon.assert.calledOnce(pluginState.binaryPicker!.upload as any);
     collectionFromProvider.restore(); pluginState.destroy();
   });
 
@@ -350,6 +352,44 @@ describe('Media plugin', () => {
       expect((picker.setUploadParams as any).calledOnce).to.equal(true);
     });
   });
+
+  it('should trigger analytics events for picking', async () => {
+    const { pluginState } = editor(doc(p('{<>}')));
+    const spy = sinon.spy();
+    analyticsService.handler = (spy as AnalyticsHandler);
+
+    afterEach(() => {
+      analyticsService.handler = null;
+    });
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    expect(pluginState.binaryPicker!).to.be.an('object');
+
+    const testFileData = {
+      file: {
+        id: 'test',
+        name: 'test.png',
+        size: 1,
+        type: 'file/test'
+      }
+    };
+
+    // Warning: calling private methods below
+    (pluginState as any).dropzonePicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.drop', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).clipboardPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.paste', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).popupPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.popup', { fileMimeType: 'file/test' })).to.eq(true);
+
+    (pluginState as any).binaryPicker!.handleUploadStart(testFileData);
+    expect(spy.calledWithExactly('atlassian.editor.media.file.binary', { fileMimeType: 'file/test' })).to.eq(true);
+  });
+
 
   describe('handleMediaNodeRemove', () => {
     it('removes media node', () => {
@@ -619,6 +659,52 @@ describe('Media plugin', () => {
       expect(pluginState.ignoreLinks).to.equal(true);
       insertText(editorView, ' ', sel);
       expect(pluginState.ignoreLinks).to.equal(false);
+    });
+  });
+
+  describe('align', () => {
+    context('when there is only one image in the media group', () => {
+      context('when selection is a media node', () => {
+        it('changes media group to single image with layout', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hello')
+          ));
+
+          setNodeSelection(editorView, 1);
+
+          pluginState.align('left', 'inline-block');
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            singleImage({ alignment: 'left', display: 'inline-block' })(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hello')
+          ));
+        });
+      });
+
+      context('when selection is not a media node', () => {
+        it('does nothing', () => {
+          const { editorView, pluginState } = editor(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hel{<>}lo')
+          ));
+
+          pluginState.align('right', 'block');
+
+          expect(editorView.state.doc).to.deep.equal(doc(
+            mediaGroup(
+              media({ id: 'media', type: 'file', collection: testCollectionName }),
+            ),
+            p('hello')
+          ));
+        });
+      });
     });
   });
 });

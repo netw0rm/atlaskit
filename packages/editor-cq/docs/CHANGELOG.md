@@ -1,5 +1,27 @@
 # @atlaskit/editor-cq
 
+## 4.8.0 (2017-08-23)
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+## 4.7.0 (2017-08-23)
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+## 4.6.3 (2017-08-23)
+
+* bug fix; trigger a release for editor-cq (issues closed: ed-2359) ([9ac1dae](https://bitbucket.org/atlassian/atlaskit/commits/9ac1dae))
+* bug fix; Merged in ED-2359/just-trigger-the-release (pull request #3899) (issues closed: ed-2359) ([6693362](https://bitbucket.org/atlassian/atlaskit/commits/6693362))
+## 4.6.2 (2017-08-17)
+
+* bug fix; analytics' events for media not being sent. (issues closed: ed-2422) ([dec1fb4](https://bitbucket.org/atlassian/atlaskit/commits/dec1fb4))
+## 4.6.1 (2017-08-16)
+
+* bug fix; fix plaintext link detection, enable markdown and code detection on paste ([00385bd](https://bitbucket.org/atlassian/atlaskit/commits/00385bd))
+
+
+
+
+
 ## 4.6.0 (2017-08-11)
 
 * feature; expose EditorView from editor-cq (issues closed: ed-2463) ([1312b8d](https://bitbucket.org/atlassian/atlaskit/commits/1312b8d))

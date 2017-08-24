@@ -7,7 +7,6 @@ const title = process.argv[3];
 
 const directories = fs.readdirSync(dir).filter(f => fs.statSync(`${dir}/${f}`).isDirectory());
 
-// eslint-disable-next-line no-console
 console.log(`
   <html>
     <head>

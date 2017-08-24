@@ -3,8 +3,9 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import { getEmojiResource } from '../src/support/story-data';
+import { getEmojiResource, getUsageClearEmojiResource } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+import UsageShowingEmojiTypeAheadTextInput from './demo-emoji-typeahead-showing-usage';
 
 const bottomStyle = {
   position: 'absolute',
@@ -110,6 +111,13 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
           afterContent={true}
         />
       </div>
+    );
+  })
+  .add('typeahead - with display of frequent use', () => {
+    return (
+      <UsageShowingEmojiTypeAheadTextInput
+        emojiResource={getUsageClearEmojiResource()}
+      />
     );
   });
 

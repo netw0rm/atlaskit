@@ -6,7 +6,7 @@ import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
 
-import { getEmojiResource, getStandardEmojis, getUsagePeekEmojiResource, lorem } from '../src/support/story-data';
+import { getEmojiResource, getStandardEmojis, getUsageClearEmojiResource, lorem } from '../src/support/story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 import { mockNonUploadingEmojiResourceFactory } from '../src/support/MockEmojiResource';
 import UsageShowingEmojiPickerTextInput from './demo-emoji-picker-showing-usage';
@@ -102,7 +102,7 @@ storiesOf(`${name}/EmojiPicker`, module)
   ))
   .add('picker - with display of frequent use', () => (
       <UsageShowingEmojiPickerTextInput
-        emojiResource={getUsagePeekEmojiResource()}
+        emojiResource={getUsageClearEmojiResource()}
       />
   ))
   .add('picker with only default categories', () => (

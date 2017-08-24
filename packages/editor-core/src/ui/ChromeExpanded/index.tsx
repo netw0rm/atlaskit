@@ -2,12 +2,13 @@ import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
-import { analyticsDecorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics, analyticsService } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { EmojiState, stateKey as emojiPluginKey } from '../../plugins/emojis';
@@ -30,6 +31,7 @@ import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
+import ToolbarHelp from '../ToolbarHelp';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
@@ -49,12 +51,13 @@ import {
   Toolbar,
   SecondaryToolbar
 } from './styles';
-import { EditorView } from '../../prosemirror';
+import { EditorView, browser } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
   disabled?: boolean;
   feedbackFormUrl?: string;
+  helpDialogPresent?: boolean;
   onCancel?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
@@ -76,22 +79,26 @@ export interface Props {
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  activityProvider?: Promise<ActivityProvider>;
   mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  height?: number;
   maxHeight?: number | undefined;
 }
 
 export interface State {
   maxHeightStyle?: any;
+  showHelp?: boolean;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
-  private editorContent: HTMLElement;
   private maxHeightContainer: HTMLElement;
-  state: State = {};
+  state: State = {
+    showHelp: false
+  };
 
   static defaultProps = {
     saveDisabled: false,
@@ -102,6 +109,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     if (maxHeight) {
       this.setState({
         maxHeightStyle: {
+          boxSizing: 'border-box',
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
           position: 'relative'
@@ -117,22 +125,52 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
-  setEditorContent = (ref) => {
-    this.editorContent = ref;
-  }
-
   private handleSpinnerComplete() {}
+
+  private getEditorHeight() {
+    const { editorView } = this.props;
+
+    return editorView
+      ? editorView.dom.offsetHeight
+      : 0;
+  }
 
   private addBorders = () => {
     const { maxHeight } = this.props;
+
     if (maxHeight) {
+      const editorHeight = this.getEditorHeight();
       let { maxHeightStyle } = this.state;
-      if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
+
+      if (editorHeight >= maxHeight && !maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
-      } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
+      } else if (editorHeight < maxHeight && maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
+
       this.setState({ maxHeightStyle });
+    }
+  }
+
+  private toggleHelp = (): void => {
+    const showHelp = !this.state.showHelp;
+
+    this.setState({
+      showHelp
+    });
+  }
+
+  private onKeyDown = (event: any) => {
+    if(this.props.helpDialogPresent) {
+      const { showHelp } = this.state;
+      if (!showHelp &&
+        (browser.mac && event.metaKey && event.key === '/') ||
+        (!browser.mac && event.ctrlKey && event.key === '/')) {
+        analyticsService.trackEvent('atlassian.editor.help.keyboard');
+        this.toggleHelp();
+      } else if (showHelp && event.key === 'Escape') {
+        this.toggleHelp();
+      }
     }
   }
 
@@ -142,6 +180,8 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       editorView,
       emojiProvider,
       feedbackFormUrl,
+      height,
+      helpDialogPresent,
       mentionProvider,
       onCancel,
       onSave,
@@ -163,8 +203,16 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       saveDisabled,
       popupsMountPoint,
       popupsBoundariesElement,
+      activityProvider,
     } = this.props;
+
     const { maxHeightStyle } = this.state;
+    const style = {...maxHeightStyle};
+
+    if (height) {
+      style.height = `${height}px`;
+    }
+
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
@@ -174,7 +222,12 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       : 'primary';
 
     return (
-      <Container data-editor-chrome={true} tabIndex={-1} innerRef={this.handleEditorContainerRef}>
+      <Container
+        data-editor-chrome={true}
+        tabIndex={-1}
+        innerRef={this.handleEditorContainerRef}
+        onKeyDown={this.onKeyDown}
+      >
         <Toolbar>
           {pluginStateBlockType ?
             <ToolbarBlockType
@@ -245,13 +298,13 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           }
           <span style={{ flexGrow: 1 }} />
           {feedbackFormUrl ? <ToolbarFeedback packageVersion={packageVersion} packageName={packageName} /> : null}
+          {helpDialogPresent && <ToolbarHelp showHelp={this.state.showHelp} toggleHelp={this.toggleHelp} />}
         </Toolbar>
         <Content
-          innerRef={this.setEditorContent}
           onPaste={this.addBorders}
           onKeyDown={this.addBorders}
         >
-          <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
+          <div style={style} ref={this.handleMaxHeightContainer}>
             {this.props.children}
           </div>
           {pluginStateHyperlink && !disabled ?
@@ -260,6 +313,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              activityProvider={activityProvider}
             /> : null}
 
           {pluginStateCodeBlock && !disabled ?

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 
 import { customCategory, customType } from '../../../src/constants';
-import { EmojiDescription } from '../../../src/types';
+import { EmojiDescription, SearchSort } from '../../../src/types';
 import { containsEmojiId, toEmojiId } from '../../../src/type-helpers';
-import EmojiRepository from '../../../src/api/EmojiRepository';
+import EmojiRepository, { getEmojiVariation } from '../../../src/api/EmojiRepository';
 
 import {
   emojis as allEmojis,
@@ -178,7 +178,7 @@ describe('EmojiRepository', () => {
   });
 
   describe('#search', () => {
-    it('all', () => {
+     it('all', () => {
 
       const expectedEmojis = [
         ...searchableEmojis.slice(0, 10), // upto flag,
@@ -204,7 +204,7 @@ describe('EmojiRepository', () => {
         ...searchableEmojis.slice(10), // rest...
       ];
       const repository = new EmojiRepository(expectedEmojis);
-      const emojis = repository.search(':').emojis;
+      const emojis = repository.search(':', { sort: SearchSort.None }).emojis;
       checkOrder(expectedEmojis, emojis);
     });
 
@@ -267,6 +267,7 @@ describe('EmojiRepository', () => {
         // Leave emojis in current order
         return 0;
       });
+
       checkOrder(grinEmojis, emojis);
     });
 
@@ -298,12 +299,12 @@ describe('EmojiRepository', () => {
     });
 
     it('options - limit ignored if missing', () => {
-      const emojis = emojiRepository.search('').emojis;
+      const emojis = emojiRepository.search('', { sort: SearchSort.None }).emojis;
       checkOrder(searchableEmojis, emojis);
     });
 
     it('options - limit results', () => {
-      const emojis = emojiRepository.search('', { limit: 10 }).emojis;
+      const emojis = emojiRepository.search('', { limit: 10, sort: SearchSort.None }).emojis;
       checkOrder(searchableEmojis.slice(0, 10), emojis);
     });
 
@@ -418,6 +419,34 @@ describe('EmojiRepository', () => {
     it('adds customCategory to the list of dynamic categories if includeCustom flag is present', () => {
       const repository = new EmojiRepository(standardEmojis);
       expect(repository.getDynamicCategoryList(true)).to.deep.equal([customCategory]);
+    });
+
+    it('should return FREQUENT as a category if there is emoji use tracked', (done) => {
+      const repository = new EmojiRepository(standardEmojis);
+      const heart = repository.findByShortName(':heart:');
+
+      if (!heart) {
+        fail('The emoji needed for this test were not found in the EmojiRepository');
+        done();
+      } else {
+        repository.used(heart);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          expect(repository.getDynamicCategoryList()).to.deep.equal(['FREQUENT']);
+          done();
+        });
+      }
+    });
+  });
+
+  describe('getEmojiVariation', () => {
+    it('should return the supplied emoji if invalid skintone provided', () => {
+      let variation = getEmojiVariation(thumbsupEmoji, { skinTone: 9 });
+      expect(variation.shortName).to.equal(':thumbsup:');
+
+      variation = getEmojiVariation(thumbsupEmoji, { skinTone: 0 });
+      expect(variation.shortName).to.equal(':thumbsup:');
     });
   });
 });

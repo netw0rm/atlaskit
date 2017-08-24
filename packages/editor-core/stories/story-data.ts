@@ -147,7 +147,7 @@ export const document = {
       content: [
         {
           type: 'text',
-          text: 'My name is '
+          text: 'Hi, my name is... My name is... My name is... My name is '
         },
         {
           type: 'mention',

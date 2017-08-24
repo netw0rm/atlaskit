@@ -33,7 +33,7 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
       <div className={styles.emojiPickerRow}>
         {emojis.map((emoji) => {
           const { shortName, category, id } = emoji;
-          const key = id || `${shortName}-${category}`;
+          const key = id ? `${id}-${category}` : `${shortName}-${category}`;
 
           return (
             <span

@@ -1,6 +1,7 @@
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
+  placeholderPlugin,
   analyticsPastePlugin,
   blockTypePlugin,
   textFormattingPlugin,
@@ -14,13 +15,17 @@ import {
   hyperlinkPlugin,
   codeBlockPlugin,
   pastePlugin,
+  listsPlugin,
+  textColorPlugin,
+  insertBlockPlugin,
+  tablesPlugin
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [analyticsPastePlugin, pastePlugin, basePlugin, blockTypePlugin];
+  return [analyticsPastePlugin, pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
 }
 
 /**
@@ -33,12 +38,24 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(textFormattingPlugin);
   }
 
+  if (props.allowTextColor) {
+    plugins.push(textColorPlugin);
+  }
+
   if (props.allowHyperlinks) {
     plugins.push(hyperlinkPlugin);
   }
 
+  if (props.allowLists) {
+    plugins.push(listsPlugin);
+  }
+
   if (props.allowCodeBlocks) {
     plugins.push(codeBlockPlugin);
+  }
+
+  if (props.allowTables) {
+    plugins.push(tablesPlugin);
   }
 
   if (props.mentionProvider) {
@@ -68,6 +85,9 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   if(props.maxContentSize) {
     plugins.push(maxContentSizePlugin);
   }
+
+  // UI only plugins
+  plugins.push(insertBlockPlugin);
 
   return plugins;
 }

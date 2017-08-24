@@ -1,6 +1,6 @@
 import React from 'react';
 import DropdownMenu from '@atlaskit/dropdown-menu';
-import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
+import Arrow from '@atlaskit/icon/glyph/arrow-right';
 import Lozenge from '@atlaskit/lozenge';
 
 export default (

@@ -1,5 +1,16 @@
 # @atlaskit/mention
 
+## 7.3.5 (2017-08-21)
+
+* bug fix; based on PR comment, update the variable name ([4517be5](https://bitbucket.org/atlassian/atlaskit/commits/4517be5))
+* bug fix; the name of the variable was not correct - cf AK-1433 (issues closed: ak-1433) ([85fe651](https://bitbucket.org/atlassian/atlaskit/commits/85fe651))
+## 7.3.4 (2017-08-14)
+
+* bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))
+
+
+
+
 ## 7.3.3 (2017-08-10)
 
 * bug fix; fix .npm-ingore for fabric ts packages. ([f6f2edd](https://bitbucket.org/atlassian/atlaskit/commits/f6f2edd))

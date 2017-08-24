@@ -125,7 +125,7 @@ export class ListsState {
 
 export const stateKey = new PluginKey('listsPlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new ListsState(state);

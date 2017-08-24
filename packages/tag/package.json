@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index",
   "ak:component": {
-    "name": "Tag"
+    "name": "Tag",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

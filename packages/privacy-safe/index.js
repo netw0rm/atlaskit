@@ -3,4 +3,4 @@
    file before looking in package.json:main
 */
 
-module.exports = require('./src/PrivacySafeString.js');
+module.exports = require('./src/index.js');

@@ -1,5 +1,9 @@
 # @atlaskit/editor-hipchat
 
+## 5.0.0 (2017-08-23)
+
+* breaking; Upgrade to next major editor-core and other deps ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
+* breaking; upgrade editor-core and other dependencies. (issues closed: fs-1298) ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
 ## 4.18.1 (2017-08-15)
 
 * bug fix; fix storybooks for editor-hipchat ([43c6200](https://bitbucket.org/atlassian/atlaskit/commits/43c6200))

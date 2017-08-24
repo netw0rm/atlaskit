@@ -11,7 +11,7 @@ import { isDropdownOverflowKey } from '../../theme/util';
 import type { ReactElement } from '../../types';
 
 type State = {|
-  isOpen: bool,
+  isOpen: boolean,
 |}
 
 type Props = {|

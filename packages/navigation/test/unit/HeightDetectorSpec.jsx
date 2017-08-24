@@ -1,15 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import ResizeAware from 'react-resize-aware';
 import HeightDetector from '../../src/components/js/HeightDetector';
+import { HeightDetectorResizeAware } from '../../src/components/styled/HeightDetector';
 
 describe('<HeightDetector />', () => {
   it('should not render ResizeAware by default', () => {
     const wrapper = shallow(<HeightDetector />);
-    expect(wrapper.find('ResizeAware').length).toBe(0);
+    expect(wrapper.find(ResizeAware).length).toBe(0);
   });
   it('should render ResizeAware if shouldDetectResize prop is true', () => {
     const wrapper = shallow(<HeightDetector shouldDetectResize />);
-    expect(wrapper.find('HeightDetectorResizeAware').length).toBe(1);
+    expect(wrapper.find(HeightDetectorResizeAware).length).toBe(1);
   });
   it('should measure height on initial mount', () => {
     const spy = jest.fn();
@@ -51,7 +53,7 @@ describe('<HeightDetector />', () => {
   it('should measure height when ResizeAware component detects resize', () => {
     const wrapper = shallow(<HeightDetector shouldDetectResize />);
     expect(
-      wrapper.find('HeightDetectorResizeAware').prop('onResize')
+      wrapper.find(HeightDetectorResizeAware).prop('onResize')
     ).toBe(wrapper.instance().triggerMeasureHeight);
   });
 });

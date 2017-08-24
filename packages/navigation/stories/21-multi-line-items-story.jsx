@@ -8,7 +8,7 @@ import { name } from '../package.json';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
-import RandomBadge from './components/RandomBadge';
+import randomBadge from './components/RandomBadge';
 
 storiesOf(name, module)
   .add('with multi line items', () => (
@@ -49,14 +49,14 @@ storiesOf(name, module)
             icon={<DashboardIcon label="Dashboard" />}
             subText="And two lines"
             text="With an action"
-            textAfter={<RandomBadge />}
+            textAfter={randomBadge()}
           />
           <AkNavigationItem
             action={<CrossIcon label="close" size="small" />}
             icon={<EmojiNatureIcon label="Nature" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
-            textAfter={<RandomBadge />}
+            textAfter={randomBadge()}
           />
         </AkNavigationItemGroup>
         <AkNavigationItemGroup title="With compact items">
@@ -65,13 +65,13 @@ storiesOf(name, module)
             isCompact
             subText="Text with y, q, etc."
             text="Should have even smaller subText"
-            textAfter={<RandomBadge />}
+            textAfter={randomBadge()}
           />
           <AkNavigationItem
             isCompact
             subText="There's nothing quite like Parkay's squeeze™"
             text="Should have even smaller subText"
-            textAfter={<RandomBadge />}
+            textAfter={randomBadge()}
           />
         </AkNavigationItemGroup>
       </BasicNavigation>

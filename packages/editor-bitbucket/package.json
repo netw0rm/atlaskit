@@ -32,7 +32,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^45.7.0",
+    "@atlaskit/editor-core": "^46.2.2",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

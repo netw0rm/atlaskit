@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "45.18.2",
+  "version": "46.2.3",
   "config": {
     "access": "public"
   },
@@ -52,12 +52,12 @@
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
-    "@atlaskit/emoji": "^26.0.1",
+    "@atlaskit/emoji": "^26.0.2",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/layer": "^2.5.1",
-    "@atlaskit/media-card": "^18.0.2",
-    "@atlaskit/media-core": "^8.4.1",
-    "@atlaskit/media-filmstrip": "^5.1.2",
+    "@atlaskit/layer": "^2.5.3",
+    "@atlaskit/media-card": "^19.0.3",
+    "@atlaskit/media-core": "^9.0.0",
+    "@atlaskit/media-filmstrip": "^5.2.1",
     "@atlaskit/mention": "^7.3.4",
     "@atlaskit/profilecard": "^3.6.4",
     "@atlaskit/single-select": "^1.10.0",
@@ -70,6 +70,7 @@
     "codemirror": "^5.26.0",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
+    "linkify-it": "^2.0.3",
     "markdown-it-table": "^1.0.0",
     "mediapicker": "^7.0.1",
     "orderedmap": "^1.0.0",
@@ -95,7 +96,7 @@
   "devDependencies": {
     "@atlaskit/button": "^3.0.0",
     "@atlaskit/button-group": "^1.1.0",
-    "@atlaskit/media-test-helpers": "^6.0.2",
+    "@atlaskit/media-test-helpers": "^7.0.0",
     "@atlaskit/util-data-test": "^7.0.0",
     "ajv": "^4.11.3",
     "chai-as-promised": "^6.0.0",

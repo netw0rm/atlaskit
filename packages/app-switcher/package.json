@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-switcher",
-  "version": "2.5.1",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
@@ -24,6 +24,7 @@
     "@atlaskit/dropdown-menu": "^3.0.0",
     "@atlaskit/droplist": "^3.3.2",
     "@atlaskit/logo": "^3.0.0",
+    "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/spinner": "^2.1.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",

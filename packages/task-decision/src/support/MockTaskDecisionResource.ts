@@ -24,7 +24,7 @@ import {
   TaskResponse,
   TaskState,
 } from '../types';
-import { objectKeyToString } from '../type-helpers';
+import { objectKeyToString, toggleTaskState } from '../type-helpers';
 import * as moment from 'moment';
 
 let debouncedTaskStateQuery: number | null = null;
@@ -50,18 +50,48 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
   }
 
   getDecisions(query: Query): Promise<DecisionResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          decisions: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceDecisionResponse = getServiceDecisionsResponse();
     const result = convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse);
     return this.applyConfig(query, result, 'decisions');
   }
 
   getTasks(query: Query): Promise<TaskResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          tasks: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceTasksResponse = getServiceTasksResponse();
     const result = convertServiceTaskResponseToTaskResponse(serviceTasksResponse);
     return this.applyConfig(query, result, 'tasks');
   }
 
   getItems(query: Query): Promise<ItemResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          items: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceItemResponse = getServiceItemsResponse();
     const result = convertServiceItemResponseToItemResponse(serviceItemResponse);
     return this.applyConfig(query, result, 'items');
@@ -131,6 +161,9 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       clearTimeout(debouncedTaskToggle);
     }
 
+    // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
+    this.notifyUpdated(objectKey, state);
+
     return new Promise<TaskState>(resolve => {
       const key = objectKeyToString(objectKey);
       const cached = this.cachedItems.get(key);
@@ -145,9 +178,16 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       }
 
       resolve(state);
+
+      const lag = this.config && this.config.lag || 0;
       setTimeout(() => {
-        this.notifyUpdated(objectKey, state);
-      }, 200);
+        if (this.config && this.config.error) {
+          // Undo optimistic change
+          this.notifyUpdated(objectKey, toggleTaskState(state));
+        } else {
+          this.notifyUpdated(objectKey, state);
+        }
+      }, 500 + lag);
     });
   }
 

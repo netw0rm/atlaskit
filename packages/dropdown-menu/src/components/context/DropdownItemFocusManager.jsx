@@ -8,6 +8,8 @@ import { KEY_DOWN, KEY_UP } from '../../util/keys';
 
 export default class DropdownItemFocusManager extends Component {
   static propTypes = {
+    /** Causes first registered item to receive focus */
+    autoFocus: PropTypes.bool,
     children: PropTypes.node,
   }
 
@@ -33,7 +35,7 @@ export default class DropdownItemFocusManager extends Component {
   handleItemRegistered = (itemId: ItemId, itemNode: HTMLElement) => {
     this.registeredItems.push({ itemId, itemNode });
 
-    if (this.registeredItems.length === 1) {
+    if (this.props.autoFocus && this.registeredItems.length === 1) {
       this.focusedItemId = itemId;
       itemNode.focus();
     }

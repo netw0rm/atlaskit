@@ -90,7 +90,7 @@ export default {
         selected: themed({ light: colors.Y400, dark: colors.Y400 }),
       },
       boxShadowColor: {
-        focus: themed({ light: colors.Y200, dark: colors.Y200 }),
+        focus: themed({ light: colors.Y500, dark: colors.Y500 }),
       },
       color: {
         default: themed({ light: colors.N800, dark: colors.N800 }),
@@ -109,7 +109,7 @@ export default {
         selected: themed({ light: colors.R600, dark: colors.R600 }),
       },
       boxShadowColor: {
-        focus: themed({ light: colors.R200, dark: colors.R200 }),
+        focus: themed({ light: colors.R100, dark: colors.R100 }),
       },
       color: {
         default: themed({ light: colors.N0, dark: colors.N0 }),

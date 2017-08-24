@@ -22,17 +22,14 @@
     }
   ],
   "license": "Apache-2.0",
-  "dependencies": {
-  },
-  "devDependencies": {
-    "@atlaskit/privacy-safe": "*"
-  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
     "atlaskit",
-    "internal"
+    "internal",
+    "privacy",
+    "safe"
   ]
 }

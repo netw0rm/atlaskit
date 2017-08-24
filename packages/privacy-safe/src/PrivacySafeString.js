@@ -5,20 +5,27 @@ const SafeString = value => ({
   set value(x) {
     // do nothing
   },
+
+  get isPrivacySafeString() {
+    return typeof value === 'string';
+  },
+  set isPrivacySafeString(x) {
+    // do nothing
+  },
+
   valueOf: () => value,
   toString: () => value,
-  isPrivacySafeString: typeof value === 'string',
 });
 
-export const privacySafeString = value => SafeString(value);
+export const isPrivacySafeString = object => Boolean(Boolean(object) && typeof object === 'object' && object.isPrivacySafeString);
+
+export const privacySafeString = value => (isPrivacySafeString(value) ? value : SafeString(value));
 
 /**
  * Use this when you explicitly need to collect user entered data. Such as NPS survey responses.
  * @param value
  */
-export const dangerouslyCreateSafeString = (value) => SafeString(value);
-
-export const isPrivacySafeString = object => Boolean(Boolean(object) && typeof object === 'object' && object.isPrivacySafeString);
+export const dangerouslyCreateSafeString = privacySafeString;
 
 /**
  * Provide a list of acceptable values to ensure we do not unintentionally capture user data

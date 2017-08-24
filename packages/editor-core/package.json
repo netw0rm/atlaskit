@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "46.4.1",
+  "version": "46.4.2",
   "config": {
     "access": "public"
   },

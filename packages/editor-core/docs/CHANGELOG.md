@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.4.2 (2017-08-24)
+
+* bug fix; update the storybook for editor-core rnderer ([ce2ac94](https://bitbucket.org/atlassian/atlaskit/commits/ce2ac94))
+* bug fix; handle onClick events for application cards - open the link ([a70b447](https://bitbucket.org/atlassian/atlaskit/commits/a70b447))
 ## 46.4.1 (2017-08-24)
 
 * bug fix; group mentions and "self" mentions are not rendered in blue anymore (issues closed: ed-2553) ([b8aab4d](https://bitbucket.org/atlassian/atlaskit/commits/b8aab4d))

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
 
+import SelectionIconSpacer from '../../styled/SelectionIconSpacer';
 import getDisplayName from '../../util/getDisplayName';
 import safeContextCall from '../../util/safeContextCall';
 import { selectionManagerContext } from '../../util/contextNamespace';
@@ -24,6 +25,12 @@ const withToggleInteraction = (
       /** Unique identifier for the item, so that selection state can be tracked when the dropdown
         * is opened/closed. */
       id: PropTypes.string.isRequired,
+      /** Standard optional onClick handler */
+      onClick: PropTypes.func,
+    }
+
+    static defaultProps = {
+      onClick: () => {},
     }
 
     static contextTypes = {
@@ -45,11 +52,12 @@ const withToggleInteraction = (
         // We prevent default here to avoid page scroll
         event.preventDefault();
 
-        this.handleItemActivated();
+        this.handleItemActivated(event);
       }
     }
 
-    handleItemActivated = () => {
+    handleItemActivated = (event: Event) => {
+      this.props.onClick(event);
       this.callContextFn('itemClicked', this.props.id);
     }
 
@@ -64,20 +72,22 @@ const withToggleInteraction = (
 
       return (
         <WrappedComponent
+          {...otherProps}
           role={ariaRole}
           aria-checked={isSelected}
           isSelected={isSelected}
           onClick={this.handleItemActivated}
           onKeyDown={this.handleKeyboard}
           elemBefore={
-            <SelectionIcon
-              primaryColor={iconColors.primary}
-              secondaryColor={iconColors.secondary}
-              size="medium"
-              label=""
-            />
+            <SelectionIconSpacer>
+              <SelectionIcon
+                primaryColor={iconColors.primary}
+                secondaryColor={iconColors.secondary}
+                size="medium"
+                label=""
+              />
+            </SelectionIconSpacer>
           }
-          {...otherProps}
         >
           {children}
         </WrappedComponent>

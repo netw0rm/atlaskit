@@ -5,7 +5,7 @@ import { findDOMNode } from 'react-dom';
 import uid from 'uid';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
@@ -37,7 +37,7 @@ export default class DropdownMenuStateless extends Component {
 
   componentDidMount = () => {
     if (this.isUsingDeprecatedAPI()) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line no-console
         console.log('DropdownMenu.items is deprecated. Please switch to the declarative API.');
       }

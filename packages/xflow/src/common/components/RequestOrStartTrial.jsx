@@ -21,6 +21,8 @@ const Screens = {
 
 class RequestOrStartTrial extends Component {
   static propTypes = {
+    sourceComponent: PropTypes.string.isRequired,
+    sourceContext: PropTypes.string.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
@@ -115,11 +117,22 @@ class RequestOrStartTrial extends Component {
   ];
 
   render() {
-    const { onAnalyticsEvent, onComplete, onTrialRequested, onTrialActivating } = this.props;
+    const {
+      onAnalyticsEvent,
+      onComplete,
+      onTrialRequested,
+      onTrialActivating,
+      sourceComponent,
+      sourceContext,
+    } = this.props;
     const { activationState, initializingCheckFailed, showInitializationError } = this.state;
 
     return (
-      <App onAnalyticsEvent={onAnalyticsEvent}>
+      <App
+        onAnalyticsEvent={onAnalyticsEvent}
+        sourceComponent={sourceComponent}
+        sourceContext={sourceContext}
+      >
         <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
           {(() => {
             switch (this.state.screen) {

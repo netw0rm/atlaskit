@@ -25,6 +25,7 @@
     "@atlaskit/logo": "^3.5.3",
     "@atlaskit/modal-dialog": "^2.6.0",
     "@atlaskit/multi-select": "^6.9.3",
+    "@atlaskit/privacy-safe": "^1.0.0",
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

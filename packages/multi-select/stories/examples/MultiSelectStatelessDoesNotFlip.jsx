@@ -30,6 +30,9 @@ export default (
     onSelectedChange={(item) => {
       console.log(item);
     }}
+    onOpenChange={() => {
+      console.log('onOpenChange');
+    }}
     shouldFitContainer
   />
 );

@@ -1,5 +1,6 @@
 import React from 'react';
 import Spinner from '@atlaskit/spinner';
+import { colors } from '@atlaskit/theme';
 
 const SpinnerExample = () => (
   <div>
@@ -9,7 +10,8 @@ const SpinnerExample = () => (
     <Spinner size="small" />
     <span
       style={{
-        backgroundColor: 'rgb(37, 56, 88)',
+        padding: '7px',
+        backgroundColor: colors.DN30,
         display: 'inline-block',
       }}
     >

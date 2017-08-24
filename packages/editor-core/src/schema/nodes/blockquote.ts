@@ -3,7 +3,6 @@ import { TopLevel } from './doc';
 
 /**
  * @name blockQuote_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'blockQuote';

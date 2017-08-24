@@ -5,13 +5,11 @@ export type DisplayType = 'file' | 'thumbnail';
 
 /**
  * @name media_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'media';
   /**
    * @minItems 1
-   * @additionalProperties false
    */
   attrs: Attributes;
 }

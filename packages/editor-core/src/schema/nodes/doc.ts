@@ -50,8 +50,21 @@ export type TableCellContent = Array<
   DecisionList | TaskList
 >;
 
+/**
+ * @additionalProperties true
+ */
 export interface MarksObject<T> {
   marks?: Array<T>;
+}
+
+/**
+ * @additionalProperties true
+ */
+export interface NoMark {
+  /**
+   * @maxItems 0
+   */
+  marks?: Array<any>;
 }
 
 /**
@@ -83,7 +96,6 @@ export type Inline = InlineFormattedText | InlineCode | InlineAtomic;
 
 /**
  * @name doc_node
- * @additionalProperties false
  */
 export interface Doc {
   version: 1;

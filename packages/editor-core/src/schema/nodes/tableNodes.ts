@@ -3,7 +3,6 @@ import { TableCellContent } from './doc';
 
 /**
  * @name table_node
- * @additionalProperties false
  */
 export interface Table {
   type: 'table';
@@ -15,7 +14,6 @@ export interface Table {
 
 /**
  * @name table_row_node
- * @additionalProperties false
  */
 export interface TableRow {
   type: 'tableRow';
@@ -27,13 +25,9 @@ export interface TableRow {
 
 /**
  * @name table_cell_node
- * @additionalProperties false
  */
 export interface TableCell {
   type: 'tableCell';
-  /**
-   * @additionalProperties false
-   */
   attrs: CellAttributes;
   /**
    * @minItems 1
@@ -43,13 +37,9 @@ export interface TableCell {
 
 /**
  * @name table_header_node
- * @additionalProperties false
  */
 export interface TableHeader {
   type: 'tableHeader';
-  /**
-   * @additionalProperties false
-   */
   attrs: CellAttributes;
   /**
    * @minItems 1

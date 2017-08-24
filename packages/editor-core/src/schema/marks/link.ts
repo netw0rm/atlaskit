@@ -5,13 +5,9 @@ import { normalizeUrl } from '../../plugins/hyperlink/utils';
 
 /**
  * @name link_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'link';
-  /**
-   * @additionalProperties false
-   */
   attrs: {
     href: string;
     title?: string;

@@ -18,7 +18,7 @@ const getStyles = (
     display: 'inline-block',
     height: `${fullHeight}px`,
     margin: '2px',
-    opacity: 0,
+    opacity: 1,
     position: 'relative',
     'vertical-align': 'middle',
     width: `${fullWidth}px`,

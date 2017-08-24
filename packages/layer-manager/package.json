@@ -19,8 +19,6 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^2.0.4",
-    "@atlaskit/util-shared-styles": "^2.1.0",
     "a11y-focus-store": "^1.0.0",
     "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
@@ -32,14 +30,11 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/button-group": "^1.0.0",
-    "@atlaskit/button": "^3.0.0",
+    "@atlaskit/button": "^5.1.0",
     "@atlaskit/modal-dialog": "^2.6.0",
-    "@atlaskit/dropdown-menu": "^3.0.1",
-    "@atlaskit/field-text": "^3.0.0",
+    "@atlaskit/dropdown-menu": "^3.7.2",
     "@atlaskit/inline-dialog": "^3.2.0",
-    "@atlaskit/layer": "^2.1.4",
-    "@atlaskit/modal-dialog": "*",
+    "@atlaskit/layer-manager": "*",
     "@atlaskit/navigation": "^13.3.0",
     "@atlaskit/page": "^4.0.1",
     "react-lorem-component": "0.11.0"

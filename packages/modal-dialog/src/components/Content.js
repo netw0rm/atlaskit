@@ -1,12 +1,12 @@
 // @flow
-import React, { Component } from 'react';
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import tabbable from 'tabbable';
 import Button from '@atlaskit/button';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
+import ErrorTitleIcon from '@atlaskit/icon/glyph/error';
+import WarningTitleIcon from '@atlaskit/icon/glyph/warning';
 
-import { ChildrenType, ElementType, FunctionType } from '../types';
+import { ChildrenType, ComponentType, ElementType, FunctionType } from '../types';
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
 import {
@@ -18,7 +18,7 @@ import {
   Header as StyledHeader,
   KeylineMask,
   Title,
-  TitleIcon,
+  TitleTitleIcon,
   Wrapper,
 } from '../styled/Content';
 
@@ -29,18 +29,18 @@ function getInitialState() {
 }
 
 const icon = {
-  error: ErrorIcon,
-  warning: WarningIcon,
+  error: ErrorTitleIcon,
+  warning: WarningTitleIcon,
 };
-const Icon = ({ appearance }: { appearance: 'error' | 'warning' }) => {
+const TitleIcon = ({ appearance }: { appearance: 'error' | 'warning' }) => {
   if (!appearance) return null;
 
-  const IconType = icon[appearance];
+  const TitleIconType = icon[appearance];
 
   return (
-    <TitleIcon appearance={appearance}>
-      <IconType />
-    </TitleIcon>
+    <TitleTitleIcon appearance={appearance}>
+      <TitleIconType />
+    </TitleTitleIcon>
   );
 };
 
@@ -63,10 +63,10 @@ type Props = {
   children?: ChildrenType,
   /** HTMLElement representing the dialog, used for focus scope bounds */
   dialogNode: ElementType,
-  /** Component to render in the header of the modal. */
-  header?: FunctionType,
-  /** Component to render in the footer of the moda.l */
-  footer?: FunctionType,
+  /** Component to render the header of the modal. */
+  header?: ComponentType,
+  /** Component to render the footer of the moda.l */
+  footer?: ComponentType,
   /** Function that will be run when the modal changes position in the stack */
   onStackChange?: FunctionType,
   /** Function to close the dialog */
@@ -190,29 +190,29 @@ export default class Content extends Component {
   }
 
   renderHeader = () => {
-    const { appearance, header: ConsumerHeader, title } = this.props;
+    const { appearance, header, onClose, title } = this.props;
     const warning = 'You can provide `header` OR `title`, not both.';
 
-    if (!ConsumerHeader && !title) return null;
-    if (ConsumerHeader && title) return console.warn(warning); // eslint-disable-line no-console
-    if (ConsumerHeader) return ConsumerHeader;
+    if (!header && !title) return null;
+    if (header && title) return console.warn(warning); // eslint-disable-line no-console
+    if (header) return createElement(header, { appearance, onClose });
 
     return (
       <StyledHeader>
         <Title>
-          <Icon appearance={appearance} />
+          <TitleIcon appearance={appearance} />
           {title}
         </Title>
       </StyledHeader>
     );
   }
   renderFooter = () => {
-    const { appearance, footer: ConsumerFooter, actions } = this.props;
+    const { actions, appearance, footer, onClose } = this.props;
     const warning = 'You can provide `footer` OR `actions`, not both.';
 
-    if (!ConsumerFooter && !actions) return null;
-    if (ConsumerFooter && actions) return console.warn(warning); // eslint-disable-line no-console
-    if (ConsumerFooter) return ConsumerFooter;
+    if (!footer && !actions) return null;
+    if (footer && actions) return console.warn(warning); // eslint-disable-line no-console
+    if (footer) return createElement(footer, { appearance, onClose });
 
     return (
       <StyledFooter>

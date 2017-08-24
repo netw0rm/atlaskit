@@ -1,12 +1,8 @@
-import { createElement, Children, Component } from 'react';
-import { render } from 'react-dom'; // eslint-disable-line
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { withTheme, ThemeProvider } from 'styled-components';
 
-function FirstChild({ children }) {
-  const childArr = Children.toArray(children);
-  return childArr[0] || null;
-}
-
-export default class Portal extends Component {
+class Portal extends Component {
   portalElement = null // eslint-disable-line react/sort-comp
   componentDidMount() {
     const node = document.createElement('span');
@@ -16,7 +12,7 @@ export default class Portal extends Component {
   }
   componentDidUpdate() {
     render(
-      createElement(FirstChild, this.props),
+      <ThemeProvider {...this.props} />,
       this.portalElement
     );
   }
@@ -27,3 +23,5 @@ export default class Portal extends Component {
     return null;
   }
 }
+
+export default withTheme(Portal);

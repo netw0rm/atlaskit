@@ -1,61 +1,57 @@
 import React, { PureComponent } from 'react';
-import ModalDialog from '@atlaskit/modal-dialog';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
+import Button, { ButtonGroup } from '@atlaskit/button';
+
+const VARIANTS = {
+  number: { value: 300, label: 'Number' },
+  pixels: { value: '400px', label: 'Pixels' },
+  percentage: { value: '50%', label: 'Percentage' },
+  size: { value: 'small', label: 'Size' },
+};
 
 export default class LozengeExamples extends PureComponent {
-  state = {
-    openNumModal: false,
-    openPxModal: false,
-    percentModal: false,
-    openSmallModal: false,
-  }
-
-  toggleNumModal = () => this.setState({ openNumModal: !this.state.openNumModal })
-  togglePxModal = () => this.setState({ openPxModal: !this.state.openPxModal })
-  togglePercentModal = () => this.setState({ percentModal: !this.state.percentModal })
-  toggleSmallModal = () => this.setState({ openSmallModal: !this.state.openSmallModal })
+  state = { active: null }
+  openModal = active => this.setState({ active })
+  closeModal = () => this.setState({ active: null })
 
   render() {
+    const { active } = this.state;
+    const variants = Object.keys(VARIANTS);
+    const Footer = () => <ModalFooter>
+      <Button onClick={this.closeModal}>Close Modal</Button>
+    </ModalFooter>;
+
     return (
-      <ButtonGroup>
-        <Button onClick={this.toggleNumModal}>Width as number</Button>
-        <ModalDialog
-          width={300}
-          header="300 as a number"
-          footer={<Button onClick={this.toggleNumModal}>Close Modal</Button>}
-          isOpen={this.state.openNumModal}
-        >
-          The modal dialog main content
-        </ModalDialog>
-        <Button onClick={this.togglePxModal}>Width of 300px</Button>
-        <ModalDialog
-          width="300px"
-          header="300px as a string"
-          footer={<Button onClick={this.togglePxModal}>Close Modal</Button>}
-          isOpen={this.state.openPxModal}
-        >
-          The modal dialog main content
-        </ModalDialog>
-        <Button onClick={this.togglePercentModal}>Width of 50%</Button>
-        <ModalDialog
-          width="50%"
-          header="50% as a string"
-          footer={<Button onClick={this.togglePercentModal}>Close Modal</Button>}
-          isOpen={this.state.percentModal}
-        >
-          The modal dialog main content
-        </ModalDialog>
-        <Button onClick={this.toggleSmallModal}>Width small</Button>
-        <ModalDialog
-          width="small"
-          header="Pre-defined size option"
-          footer={<Button onClick={this.toggleSmallModal}>Close Modal</Button>}
-          isOpen={this.state.openSmallModal}
-        >
-          The modal dialog main content
-        </ModalDialog>
-      </ButtonGroup>
+      <div>
+        <ButtonGroup>
+          {variants.map((v) => {
+            const width = VARIANTS[v];
+            const onClick = () => this.openModal(v);
+
+            return (
+              <Button key={v} onClick={onClick} isSelected={active === v}>
+                {width.label} ({width.value})
+              </Button>
+            );
+          })}
+        </ButtonGroup>
+        {variants.map((v) => {
+          const width = VARIANTS[v];
+
+          return (
+            <Modal
+              footer={Footer}
+              isOpen={active === v}
+              key={v}
+              onDialogDismissed={this.closeModal}
+              title={`Width as ${width.label}`}
+              width={width.value}
+            >
+              Width as {width.label}
+            </Modal>
+          );
+        })}
+      </div>
     );
   }
 }

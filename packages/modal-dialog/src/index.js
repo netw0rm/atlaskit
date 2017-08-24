@@ -1,2 +1,6 @@
 export { default } from './components/Modal';
-export { Header, Footer } from './styled/Content';
+export {
+  Header as ModalHeader,
+  Footer as ModalFooter,
+  Title as ModalHeaderTitle,
+} from './styled/Content';

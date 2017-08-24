@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Modal Dialog"
+    "name": "Modal Dialog",
+    "dark": true
   },
   "types": "src/index.d.ts",
   "scripts": {
@@ -39,7 +40,8 @@
     "tabbable": "^1.0.6"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -50,7 +52,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "^3.5.3",
-    "@atlaskit/button-group": "^1.5.2",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-text": "^3.4.2",
     "@atlaskit/inline-dialog": "^3.6.2",

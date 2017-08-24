@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
-import { colors, gridSize, math, themed } from '@atlaskit/theme';
+import { colors, gridSize, themed } from '@atlaskit/theme';
 import { modalShadowInnerSize } from '../shared-variables';
 import { dialogBgColor } from './Modal';
 
 // Constants
 // ==============================
-const gutterInterior = math.multiply(gridSize, 2);
-const gutterExterior = math.multiply(gridSize, 2.5);
+const innerGutter = 16;
+const outerGutter = 20;
 
 // Wrapper
 // ==============================
@@ -24,7 +24,7 @@ const HeaderOrFooter = styled.div`
   justify-content: space-between;
 `;
 export const Header = styled(HeaderOrFooter)`
-  padding: ${gutterExterior}px ${gutterExterior}px ${gutterInterior}px;
+  padding: ${outerGutter}px ${outerGutter}px ${innerGutter}px;
 `;
 
 // Title
@@ -59,7 +59,7 @@ const keylinePosition = (props) => {
       top: 0;
     `;
   } else if (position === 'footer') {
-    return `margin: 0 -${gutterInterior(props)}px;`;
+    return `margin: 0 -${outerGutter}px;`;
   }
 
   return null;
@@ -94,7 +94,7 @@ export const Body = styled.div`
   flex: 1 1 auto;
   flex-direction: column;
   overflow-y: auto;
-  padding: 0 ${gutterExterior}px;
+  padding: 0 ${outerGutter}px;
   position: relative;
 `;
 export const BodyInner = styled.div`
@@ -104,7 +104,7 @@ export const BodyInner = styled.div`
 // Footer
 // ==============================
 export const Footer = styled(HeaderOrFooter)`
-  padding: ${gutterInterior}px ${gutterExterior}px ${gutterExterior}px;
+  padding: ${innerGutter}px ${outerGutter}px ${outerGutter}px;
 `;
 
 const actionGutter = 8;

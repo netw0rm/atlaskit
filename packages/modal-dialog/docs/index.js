@@ -6,10 +6,10 @@ and are hidden behind the navigation panel.
 */
 
 /* eslint-disable import/no-duplicates, import/first */
-// import Examples from './Examples';
-// import examplesSrc from '!raw-loader!./Examples';
-// import WidthExamples from './WidthExamples';
-// import widthExamplesSrc from '!raw-loader!./WidthExamples';
+import Examples from './Examples';
+import examplesSrc from '!raw-loader!./Examples';
+import WidthExamples from './WidthExamples';
+import widthExamplesSrc from '!raw-loader!./WidthExamples';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -28,16 +28,15 @@ export const description = (
   </div>
 );
 
-export const examples = [];
-// export const examples = [
-//   {
-//     title: 'Basic Usage',
-//     Component: Examples,
-//     src: examplesSrc,
-//   },
-//   {
-//     title: 'Example Width Options',
-//     Component: WidthExamples,
-//     src: widthExamplesSrc,
-//   },
-// ];
+export const examples = [
+  {
+    title: 'Basic Usage',
+    Component: Examples,
+    src: examplesSrc,
+  },
+  {
+    title: 'Example Width Options',
+    Component: WidthExamples,
+    src: widthExamplesSrc,
+  },
+];

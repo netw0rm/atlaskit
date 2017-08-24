@@ -2,11 +2,14 @@ import styled, { css } from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import { WIDTH_ENUM } from '../shared-variables';
 
+// NOTE: `dialogBgColor` is consumed but `./Content` for the keyline mask
 export const dialogBgColor = themed({ light: colors.N0, dark: colors.DN50 });
-const gutter = math.multiply(gridSize, 7);
+const overlayBgColor = themed({ light: colors.N100A, dark: colors.DN90A });
+
+const gutter = 60;
 const viewportLessGutter = css`calc(100% - ${math.multiply(gridSize, 14)}px)`;
 const boxShadow = `0 0 0 1px ${colors.N30A}, 0 2px 1px ${colors.N30A}, 0 0 20px -6px ${colors.N60A}`;
-const fill = css`
+const fillViewportMixin = css`
   bottom: 0;
   left: 0;
   position: fixed;
@@ -14,19 +17,24 @@ const fill = css`
   top: 0;
 `;
 
-const dialogWidth = ({ width }) => `${WIDTH_ENUM.widths[width]}px`;
-export const dialogHeight = ({ height }) => {
-  if (typeof height === 'number') {
-    return `${height}px`;
-  } else if (typeof height === 'string') {
-    return height;
+const dialogWidth = ({ widthValue }) => (widthValue
+  ? `${WIDTH_ENUM.widths[widthValue]}px`
+  : 'initial'
+);
+export const dialogHeight = ({ heightValue }) => {
+  if (typeof heightValue === 'number') {
+    return `${heightValue}px`;
   }
 
-  return viewportLessGutter;
+  return heightValue;
 };
 
+// NOTE: z-index temporarily added to beat @atlaskit/navigation
 export const FillScreen = styled.div`
-  ${fill}
+  ${fillViewportMixin}
+  padding-bottom: ${gutter}px;
+  padding-top: ${gutter}px;
+  z-index: 300;
 `;
 
 export const DialogPositioner = styled.div`
@@ -34,8 +42,7 @@ export const DialogPositioner = styled.div`
   flex-direction: column;
   height: ${dialogHeight};
   margin: 0 auto;
-  margin-top: ${gutter}px;
-  max-height: calc(100% - 1px);
+  max-height: 100%;
   max-width: ${viewportLessGutter};
   position: relative;
   width: ${dialogWidth};
@@ -45,6 +52,7 @@ export const Dialog = styled.div`
   background-color: ${dialogBgColor};
   border-radius: ${borderRadius}px;
   box-shadow: ${boxShadow};
+  color: ${colors.text}
   display: flex;
   flex-direction: column;
   height: auto;
@@ -54,8 +62,8 @@ export const Dialog = styled.div`
 `;
 
 export const Overlay = styled.div`
-  ${fill}
-  background-color: ${colors.N100A};
+  ${fillViewportMixin}
+  background-color: ${overlayBgColor};
 `;
 FillScreen.displayName = 'FillScreen';
 DialogPositioner.displayName = 'DialogPositioner';

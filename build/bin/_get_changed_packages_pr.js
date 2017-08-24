@@ -21,22 +21,13 @@ function packageExists(packageName) {
   Where no package has been changed, a blank line is output.
 */
 function getChangedPackages() {
-  let changedPackages;
-
   exec('git fetch origin')
-    // we can fairly safely hard code the name here as we are never pushing back to origin
-    .then(() => exec('git checkout -b temp-branch-for-merging-master-and-doing-diff'))
-    .then(() => exec('git merge origin/master'))
-    .then(() => exec('git diff --name-only origin/master'))
-    .then((result) => {
+    .then(() => exec('git diff --name-only master...'))
+    .then(result => {
       const changedFiles = result.stdout.split('\n');
-      changedPackages = changedFilesToChangedPackages(changedFiles);
-
-      return exec('git checkout -');
-    })
-    .then(() => {
-      // need to filter out any packages that not longer exist (we've deleted a package)
-      changedPackages = changedPackages.filter(packageExists);
+      const changedPackages = changedFilesToChangedPackages(changedFiles)
+        // need to filter out any packages that not longer exist (we've deleted a package)
+        .filter(packageExists);
       const lernaGlob = changedPackagesToLernaGlob(changedPackages);
       if (lernaGlob.length !== 0) {
         console.log(lernaGlob);

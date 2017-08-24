@@ -1,0 +1,38 @@
+{
+  "name": "@atlaskit/privacy-safe",
+  "version": "0.0.1",
+  "description": "Utilities to help ensure privacy is respected with analytics",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/privacy-safe; } || ../../node_modules/.bin/not-in-publish",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Andrew Wakeling"
+    },
+    {
+      "name": "George Burrows"
+    }
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@atlaskit/privacy-safe": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "internal"
+  ]
+}

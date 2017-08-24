@@ -17,6 +17,7 @@ const focusedStyles = css`
   outline-offset: 0;
   position: relative; /* prevents bgcolor of a hovered element from obfuscating focus ring of a focused sibling element */
 `;
+
 const activeStyles = css`
   &, &:hover {
     background-color: ${selectedBackgroundColor};

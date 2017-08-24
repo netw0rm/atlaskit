@@ -1,22 +1,23 @@
 import styled, { css } from 'styled-components';
 
-import { akFontSizeDefault, akGridSizeUnitless, akColorN200 } from '@atlaskit/util-shared-styles';
+import { fontSize, gridSize, colors } from '@atlaskit/theme';
 
-const fontSizeDefault = parseInt(akFontSizeDefault, 10);
-const lineHeightDefault = (akGridSizeUnitless * 2) / fontSizeDefault;
+const gridSizeUnitless = gridSize();
+
+const lineHeightDefault = (gridSizeUnitless * 2) / fontSize();
 
 const Content = styled.div`
   flex: 1 1 auto;
-  margin: 3px ${akGridSizeUnitless}px; /* magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699 */
+  margin: 3px ${gridSizeUnitless}px; /* magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699 */
   white-space: nowrap;
 `;
 
 const Expand = styled.div`
   align-items: center;
   display: flex;
-  flex: 0 0 ${akGridSizeUnitless * 3}px;
+  flex: 0 0 ${gridSizeUnitless * 3}px;
   justify-content: center;
-  margin: 0px ${akGridSizeUnitless}px;
+  margin: 0px ${gridSizeUnitless}px;
 `;
 
 const Input = styled.input`
@@ -28,12 +29,12 @@ const Input = styled.input`
   border: 0;
   background: none;
   align-self: center;
-  font-size: ${akFontSizeDefault};
+  font-size: ${fontSize()}px;
   line-height: ${lineHeightDefault};
 
   &::placeholder {
     font-size: 14px;
-    color: ${akColorN200};
+    color: ${colors.N200};
   }
 `;
 

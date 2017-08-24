@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components';
-import { akFontSizeDefault, akGridSizeUnitless, akColorN200 } from '@atlaskit/util-shared-styles';
+import { colors, gridSize, fontSize } from '@atlaskit/theme';
 
-const fontSizeDefault = parseInt(akFontSizeDefault, 10);
-const lineHeightDefault = (akGridSizeUnitless * 2) / fontSizeDefault;
+const lineHeightDefault = (gridSize() * 2) / fontSize();
 
 const Input = styled.input`
   display: inline-block;
@@ -13,12 +12,12 @@ const Input = styled.input`
   border: 0;
   background: none;
   align-self: center;
-  font-size: ${akFontSizeDefault};
+  font-size: ${fontSize()}px;
   line-height: ${lineHeightDefault};
 
   &::placeholder {
     font-size: 14px;
-    color: ${akColorN200};
+    color: ${colors.N200};
   }
 `;
 

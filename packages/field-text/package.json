@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Text Field"
+    "name": "Text Field",
+    "dark": true
   },
   "types": "src/index.d.ts",
   "scripts": {

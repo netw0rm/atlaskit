@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const Content = styled.div`
   align-items: center;
   display: flex;
   flex: 1 1 auto;
-  margin: ${akGridSizeUnitless}px 6px;
+  margin: ${gridSize}px 6px;
   white-space: nowrap;
 `;
 

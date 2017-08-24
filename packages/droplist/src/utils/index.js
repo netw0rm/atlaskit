@@ -1,25 +1,17 @@
-import {
-akColorB400,
-akColorN0,
-akColorN20,
-akColorB200,
-akColorN40,
-akColorN50,
-akColorN600,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 export function getInputBackground({ isChecked, isDisabled, isHovered, isPressed }) {
-  let background = akColorN40;
+  let background = colors.R500;
 
-  if (isHovered) background = akColorN50;
-  if (isPressed) background = akColorB200;
-  if (isChecked) background = akColorB400;
-  if (isDisabled) background = akColorN20;
-  if (isChecked && isDisabled) background = akColorN600;
+  if (isHovered) background = colors.R500;
+  if (isPressed) background = colors.R500;
+  if (isChecked) background = colors.R500;
+  if (isDisabled) background = colors.R500;
+  if (isChecked && isDisabled) background = colors.R500;
 
   return background;
 }
 
 export function getInputFill({ isChecked }) {
-  return isChecked ? akColorN0 : 'transparent';
+  return isChecked ? colors.R500 : 'transparent';
 }

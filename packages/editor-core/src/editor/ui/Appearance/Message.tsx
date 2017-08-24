@@ -2,8 +2,12 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
-import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
+import {
+  EditorAppearanceComponentProps,
+  EditorAppearance
+} from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
@@ -74,6 +78,7 @@ const SecondaryToolbarContainer = styled.div`
 
 export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
   static displayName = 'MessageEditor';
+
   private flashToggle = false;
 
   private appearance: EditorAppearance = 'message';
@@ -85,13 +90,22 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
   }
 
   private renderChrome = ({ maxContentSize }) => {
-    const { editorView, contentComponents, secondaryToolbarComponents, providerFactory } = this.props;
+    const {
+      editorView,
+      contentComponents,
+      secondaryToolbarComponents,
+      providerFactory,
+      customContentComponents,
+      customSecondaryToolbarComponents,
+      addonToolbarComponents
+    } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
       <MessageEditor className={this.flashToggle ? '-flash' : ''} isMaxContentSizeReached={maxContentSizeReached}>
         <ContentArea innerRef={this.handleRef}>
+          {customContentComponents}
           <PluginSlot
             editorView={editorView}
             providerFactory={providerFactory}
@@ -106,6 +120,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             appearance={this.appearance}
             items={secondaryToolbarComponents}
           />
+          {customSecondaryToolbarComponents}
+          <AddonToolbar dropdownItems={addonToolbarComponents} />
         </SecondaryToolbarContainer>
       </MessageEditor>
     );

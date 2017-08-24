@@ -224,6 +224,52 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.context.text is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.context.icon.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+              icon: {
+                label: 'test-label'
+              }
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.context.icon.label is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+              icon: {
+                url: 'url'
+              }
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
       it('should return "text" if attrs.text is not a string', () => {
         const applicationCard = {
           type: 'applicationCard',

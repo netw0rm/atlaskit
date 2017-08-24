@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.4.3 (2017-08-24)
+
+* bug fix; fix creation of unwanted link cards when going in/out of edit link box (issues closed: ed-2404) ([eae0a3a](https://bitbucket.org/atlassian/atlaskit/commits/eae0a3a))
 ## 46.4.2 (2017-08-24)
 
 * bug fix; update the storybook for editor-core rnderer ([ce2ac94](https://bitbucket.org/atlassian/atlaskit/commits/ce2ac94))

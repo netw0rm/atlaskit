@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.4.0 (2017-08-24)
+
+* feature; application Card to support context (issues closed: ed-2532) ([eb57585](https://bitbucket.org/atlassian/atlaskit/commits/eb57585))
 ## 46.3.0 (2017-08-24)
 
 * bug fix; merged master ([4e39b8c](https://bitbucket.org/atlassian/atlaskit/commits/4e39b8c))

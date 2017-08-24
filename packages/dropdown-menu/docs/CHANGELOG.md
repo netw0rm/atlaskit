@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.7.3 (2017-08-24)
+
+* bug fix; dropdownItemRadio and DropdownItemCheckbox now work when custom onClick handler is s (issues closed: ak-3358) ([16bee1b](https://bitbucket.org/atlassian/atlaskit/commits/16bee1b))
 ## 3.7.2 (2017-08-22)
 
 * bug fix; dropdownItem and DropdownItemGroup now get correct a11y role (issues closed: ak-3325) ([2dbfe85](https://bitbucket.org/atlassian/atlaskit/commits/2dbfe85))

@@ -7,7 +7,7 @@ export type DrawerProps = {
   /** The icon to use as the back icon for this drawer */
   backIcon: ReactElement,
   /** The drawer contents */
-  children: ReactElement,
+  children?: ReactElement,
   /** The header for this Drawer – often the ContainerTitle for a given Container */
   header?: ReactElement,
   /** Set whether the drawer is visible. */

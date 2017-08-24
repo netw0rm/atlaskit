@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/privacy-safe",
-  "version": "4.0.0",
+  "version": "0.0.1",
+  "config": {
+    "access": "public"
+  },
   "description": "Utilities to help ensure privacy is respected with analytics",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

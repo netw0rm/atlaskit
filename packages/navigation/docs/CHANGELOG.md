@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 20.2.0 (2017-08-24)
+
+* bug fix; simplified siteSettings theme to inherit from settings theme (issues closed: ak-2429, confsim-1332) ([a1da88f](https://bitbucket.org/atlassian/atlaskit/commits/a1da88f))
+* bug fix; created siteSettings theme that has a matching dark blue for site settings to match (issues closed: ak-2429, confsim-1332) ([70df845](https://bitbucket.org/atlassian/atlaskit/commits/70df845))
+* feature; update settings sidebar theme preset to match the global navigation color to match (issues closed: ak-2429, confsim-1332) ([c9069b7](https://bitbucket.org/atlassian/atlaskit/commits/c9069b7))
 ## 20.1.3 (2017-08-24)
 
 * bug fix; fix alignment of navigation item group action (issues closed: ak-3279) ([4f98025](https://bitbucket.org/atlassian/atlaskit/commits/4f98025))

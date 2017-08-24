@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 46.3.0 (2017-08-24)
+
+* bug fix; merged master ([4e39b8c](https://bitbucket.org/atlassian/atlaskit/commits/4e39b8c))
+
+
+
+* feature; added editor actions to the dropdown ([8d86399](https://bitbucket.org/atlassian/atlaskit/commits/8d86399))
+* feature; added dot menu (issues closed: ed-2484) ([999e4f2](https://bitbucket.org/atlassian/atlaskit/commits/999e4f2))
+* feature; added secondaryToolbarComponents to the Message Editor (issues closed: ed-2484) ([7930907](https://bitbucket.org/atlassian/atlaskit/commits/7930907))
 ## 46.2.4 (2017-08-23)
 
 * bug fix; tolerate missing attributes for task/decision nodes. (issues closed: fs-1303) ([deab934](https://bitbucket.org/atlassian/atlaskit/commits/deab934))

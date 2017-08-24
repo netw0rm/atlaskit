@@ -1,7 +1,6 @@
 import { EmojiDescription } from '../../types';
 import { isEmojiVariationDescription } from '../../type-helpers';
-
-const MAX_NUMBER = 1000000;
+import { MAX_ORDINAL } from '../../constants';
 
 /**
  * Create the default sort comparator to be used for the user queries against emoji
@@ -19,7 +18,9 @@ export function createSearchEmojiComparator(query?: string, orderedIds?: Array<s
     comparators.push(new AsciiMatchComparator(query));
   }
 
-  // Build the comparators for the chain, in the correct order based on the parameters
+  // Add the comparators to the 'chain'. The order of adding each comparator is important to the sort that is applied by the
+  // ChainedEmojiComparator. (Which is why you may see the same 'if' a few times.)
+
   if (textQuery) {
     comparators.push(new ExactShortNameMatchComparator(textQuery));
   }
@@ -208,7 +209,7 @@ export class UsageFrequencyComparator implements EmojiComparator {
     if (position) {
       return position;
     } else {
-      return MAX_NUMBER;
+      return MAX_ORDINAL;
     }
   }
 }
@@ -232,11 +233,11 @@ export class QueryStringPositionMatchComparator implements EmojiComparator {
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
-    let i1 = e1[this.propertyName] ? e1[this.propertyName].indexOf(this.query) : MAX_NUMBER;
-    let i2 = e2[this.propertyName] ? e2[this.propertyName].indexOf(this.query) : MAX_NUMBER;
+    let i1 = e1[this.propertyName] ? e1[this.propertyName].indexOf(this.query) : MAX_ORDINAL;
+    let i2 = e2[this.propertyName] ? e2[this.propertyName].indexOf(this.query) : MAX_ORDINAL;
 
-    i1 = i1 === -1 ? MAX_NUMBER : i1;
-    i2 = i2 === -1 ? MAX_NUMBER : i2;
+    i1 = i1 === -1 ? MAX_ORDINAL : i1;
+    i2 = i2 === -1 ? MAX_ORDINAL : i2;
 
     return i1 - i2;
   }
@@ -252,8 +253,8 @@ export class OrderComparator implements EmojiComparator {
   }
 
   compare(e1: EmojiDescription, e2: EmojiDescription) {
-    let o1 = e1.order ? e1.order : MAX_NUMBER;
-    let o2 = e2.order ? e2.order : MAX_NUMBER;
+    let o1 = e1.order ? e1.order : MAX_ORDINAL;
+    let o2 = e2.order ? e2.order : MAX_ORDINAL;
 
     return o1 - o2;
   }

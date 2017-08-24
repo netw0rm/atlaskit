@@ -144,7 +144,7 @@ export default class EmojiRepository {
       sort: SearchSort.None
     };
 
-    return this.search(undefined, options);
+    return this.search('', options);
   }
 
   /**
@@ -226,15 +226,9 @@ export default class EmojiRepository {
   getFrequentlyUsed(): EmojiDescription[] {
     const emojiIds = this.usageTracker.getOrder();
 
-    const emoji: EmojiDescription[] = [];
-    emojiIds.forEach((id) => {
-      const e = this.findById(id);
-      if (e !== undefined) {
-        emoji.push(e);
-      }
-    });
-
-    return emoji;
+    return emojiIds
+      .map(id => this.findById(id))
+      .filter(e => e !== undefined) as EmojiDescription[];
   }
 
   getDynamicCategoryList(includeCustom?: boolean): string[] {
@@ -254,8 +248,10 @@ export default class EmojiRepository {
   used(emoji: EmojiDescription) {
     this.usageTracker.recordUsage(emoji);
 
-    // if this is the first usage ensure that we update the dynamic categories (on the next tick to give the
-    // tracker time to record the usage)
+    // If this is the first usage ensure that we update the dynamic categories.
+    // This is done in a 'timeout' since the usageTracker call previously also happens in a timeout. This ensures that
+    // the frequent category will not appear until the usage has been tracked (avoiding the possibility of an empty
+    // frequent category being shown in the picker).
     if (this.dynamicCategoryList.indexOf(frequentCategory) === -1) {
       setTimeout(() => {
         this.dynamicCategoryList.push(frequentCategory);

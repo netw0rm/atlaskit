@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import * as uid from 'uid';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import { atlassianCategory, customCategory, defaultCategories, frequentCategory } from '../../constants';
+import { atlassianCategory, customCategory, defaultCategories, frequentCategory, MAX_ORDINAL } from '../../constants';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent, ToneSelection } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -108,8 +108,8 @@ const categoryComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
   let cat1 = categoryOrder.indexOf(eg1.category);
   let cat2 = categoryOrder.indexOf(eg2.category);
 
-  cat1 = cat1 === -1 ? 100000 : cat1;
-  cat2 = cat2 === -1 ? 100000 : cat2;
+  cat1 = cat1 === -1 ? MAX_ORDINAL : cat1;
+  cat2 = cat2 === -1 ? MAX_ORDINAL : cat2;
 
   return cat1 - cat2;
 };

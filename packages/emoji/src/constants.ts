@@ -3,6 +3,12 @@ export const atlassianCategory = 'ATLASSIAN';
 export const frequentCategory = 'FREQUENT';
 export const customType = 'SITE';
 
+/**
+ * A constant used in sorting/ordering to represent a number 'obviously much bigger than any item in the set being handled'.
+ * This is used instead of Number.MAX_VALUE since subtraction of MAX_VALUE from itself occassionaly doesn't equal zero exactly :-(
+ */
+export const MAX_ORDINAL = 100000;
+
 export const defaultEmojiHeight = 20;
 
 export const emojiPickerWidth = 350;

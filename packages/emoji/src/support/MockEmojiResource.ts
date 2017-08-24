@@ -219,6 +219,9 @@ const isUsageClearEmojiRepository = (object: any): object is UsageClearEmojiRepo
   return 'clear' in object;
 };
 
+/**
+ * An EmojiResource used in storybooks to allow a user a mechanism for clearing their frequently used emoji.
+ */
 export class UsageClearEmojiResource extends MockNonUploadingEmojiResource {
   constructor(emojis: EmojiDescription[]) {
     super(new UsageClearEmojiRepository(emojis));

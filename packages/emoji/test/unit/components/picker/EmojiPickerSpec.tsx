@@ -425,7 +425,7 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('search', () => {
-    it('searching for all should match emoji via description', () =>
+    it('searching for "al" should match emoji via description', () =>
       setupPicker().then(component =>
         waitUntil(() => searchInputVisible(component))
         .then(() => {

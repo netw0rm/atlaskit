@@ -210,10 +210,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       return searchEmoji;
     }
 
-    const emoji = searchEmoji.slice();  // clone
-
-    emoji.push(...frequentEmoji);
-    return emoji;
+    return [
+      ...searchEmoji,
+      ...frequentEmoji
+    ];
   }
 
 

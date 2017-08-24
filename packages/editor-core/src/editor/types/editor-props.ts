@@ -6,13 +6,16 @@ import { AnalyticsHandler } from '../../analytics';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
+export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
+
 export interface EditorProps {
   appearance?: EditorAppearance;
   analyticsHandler?: AnalyticsHandler;
 
-  primaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-  secondaryToolbarComponents?: React.ReactElement<any> | React.ReactElement<any>[];
-  contentComponents?: React.ReactElement<any> | React.ReactElement<any>[];
+  contentComponents?: ReactElement;
+  primaryToolbarComponents?: ReactElement;
+  secondaryToolbarComponents?: ReactElement;
+  addonToolbarComponents?: ReactElement;
 
   allowTextFormatting?: boolean;
   allowMentions?: boolean;

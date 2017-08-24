@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 20.1.3 (2017-08-24)
+
+* bug fix; fix alignment of navigation item group action (issues closed: ak-3279) ([4f98025](https://bitbucket.org/atlassian/atlaskit/commits/4f98025))
 ## 20.1.2 (2017-08-23)
 
 * bug fix; random badge in stories is no longer passed if it is empty (issues closed: ak-3353) ([6da4718](https://bitbucket.org/atlassian/atlaskit/commits/6da4718))

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.4.1 (2017-08-24)
+
+* bug fix; group mentions and "self" mentions are not rendered in blue anymore (issues closed: ed-2553) ([b8aab4d](https://bitbucket.org/atlassian/atlaskit/commits/b8aab4d))
 ## 46.4.0 (2017-08-24)
 
 * feature; application Card to support context (issues closed: ed-2532) ([eb57585](https://bitbucket.org/atlassian/atlaskit/commits/eb57585))

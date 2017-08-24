@@ -8,6 +8,7 @@ import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
+import DropdownItemClickManager from './context/DropdownItemClickManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
 import WidthConstrainer from '../styled/WidthConstrainer';
 import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
@@ -129,7 +130,11 @@ export default class DropdownMenuStateless extends Component {
     return isDroplistItem && thisDom ? thisDom.contains(target) : false;
   }
 
-  handleKeyboardInteractionForOpen = (event: KeyboardEvent) => {
+  handleKeyboardInteractionForClosed = (event: KeyboardEvent) => {
+    if (this.props.isOpen) {
+      return;
+    }
+
     switch (event.key) {
       case KEY_DOWN:
       case KEY_SPACE:
@@ -140,10 +145,6 @@ export default class DropdownMenuStateless extends Component {
       default:
         break;
     }
-  }
-
-  handleKeyboardInteractions = (event: KeyboardEvent) => {
-    this.handleKeyboardInteractionForOpen(event);
   }
 
   handleKeyboardInteractionsDeprecated = (event: KeyboardEvent) => {
@@ -261,6 +262,10 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
+  handleItemClicked = (event: MouseEvent | KeyboardEvent) => {
+    this.props.onOpenChange({ isOpen: false, event });
+  }
+
   renderTrigger = () => {
     const triggerContent = this.triggerContent();
     return this.isUsingDeprecatedAPI() ? triggerContent : (
@@ -324,7 +329,7 @@ export default class DropdownMenuStateless extends Component {
       onKeyDown: this.handleKeyboardInteractionsDeprecated,
       shouldAllowMultilineItems,
     } : {
-      onKeyDown: this.handleKeyboardInteractions,
+      onKeyDown: this.handleKeyboardInteractionForClosed,
     };
 
     return (
@@ -348,9 +353,11 @@ export default class DropdownMenuStateless extends Component {
                 role="menu"
                 shouldFitContainer={shouldFitContainer}
               >
-                <DropdownItemFocusManager autoFocus={this.sourceOfIsOpen === 'keydown'}>
-                  {children}
-                </DropdownItemFocusManager>
+                <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
+                  <DropdownItemFocusManager autoFocus={this.sourceOfIsOpen === 'keydown'}>
+                    {children}
+                  </DropdownItemFocusManager>
+                </DropdownItemClickManager>
               </WidthConstrainer>
             )
           }

@@ -523,7 +523,7 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
 
         // Ignore creating link cards during link editing
         const { link } = oldState.schema.marks as { link: Mark };
-        const { nodeAfter, nodeBefore } = oldState.selection.$from;
+        const { nodeAfter, nodeBefore } = newState.selection.$from;
 
         if ((nodeAfter && link.isInSet(nodeAfter.marks)) ||
           (nodeBefore && link.isInSet(nodeBefore.marks))

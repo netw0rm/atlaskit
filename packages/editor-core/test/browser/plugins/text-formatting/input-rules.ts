@@ -72,6 +72,22 @@ describe('text-formatting input rules', () => {
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'), 'text')));
     });
+
+    it('should not convert "`**text**" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`**text**')));
+    });
+
+    it('should not convert "`__text__" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`__text__', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`__text__')));
+    });
   });
 
   describe('em rule', () => {
@@ -89,7 +105,7 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '* text*', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p('* text*')));
     });
-    
+
     it('should convert "_text_" to em', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
@@ -118,6 +134,22 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '*text*', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('*text*')));
+    });
+
+    it('should not convert "`*text*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`*text*', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`*text*')));
+    });
+
+    it('should not convert "`_text_" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`_text_', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`_text_')));
     });
   });
 
@@ -150,6 +182,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '~~text~~', sel);
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
       expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'), 'text')));
+    });
+
+    it('should not convert "`~~text~~" to strike', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`~~text~~', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`~~text~~')));
     });
   });
 

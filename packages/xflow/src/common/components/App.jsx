@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { privacySafeString } from '@atlaskit/privacy-safe';
 import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
 export default class App extends Component {
@@ -16,8 +15,8 @@ export default class App extends Component {
     if (onAnalyticsEvent) {
       onAnalyticsEvent(name, {
         ...data,
-        sourceComponent: privacySafeString(sourceComponent),
-        sourceContext: privacySafeString(sourceContext),
+        sourceComponent,
+        sourceContext,
       });
     }
   };

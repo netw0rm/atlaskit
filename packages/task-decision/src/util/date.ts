@@ -1,26 +1,32 @@
-import * as moment from 'moment';
+// Only bring in the subset of date-fns that we use
+import * as format from 'date-fns/format';
+import * as isSameDay from 'date-fns/is_same_day';
+import * as isToday from 'date-fns/is_today';
+import * as isYesterday from 'date-fns/is_yesterday';
+import * as isThisYear from 'date-fns/is_this_year';
+import * as startOfDay from 'date-fns/start_of_day';
 
-// FIXME i18n messages
-const DATE_FORMAT = {
-  sameDay: '[Today]',
-  lastDay: '[Yesterday]',
-  lastWeek: 'MMMM D',
-  sameElse: 'MMMM D'
-};
+const DATE_FORMAT_SAME_YEAR = 'MMMM D';
+const DATE_FORMAT_PAST_YEAR = 'MMMM D, YYYY';
 
 export const getFormattedDate = (ts: Date): string => {
-  const stamp = moment(ts);
-  if (stamp.isSame(new Date(), 'year')) {
-    return stamp.calendar(undefined, DATE_FORMAT);
+  // FIXME i18n messages
+  if (isToday(ts)) {
+    return 'Today';
   }
-  return stamp.format('MMMM D, YYYY');
+  if (isYesterday(ts)) {
+    return 'Yesterday';
+  }
+  if (isThisYear(ts)) {
+    return format(ts, DATE_FORMAT_SAME_YEAR);
+  }
+  return format(ts, DATE_FORMAT_PAST_YEAR);
 };
 
 export const getStartOfDate = (ts: Date): Date => {
-  const stamp = moment(ts);
-  return stamp.startOf('date').toDate();
+  return startOfDay(ts);
 };
 
 export const isSameDate = (d1: Date, d2: Date): boolean => {
-  return d1 && d2 && moment(d1).isSame(d2, 'date');
+  return d1 && d2 && isSameDay(d1, d2);
 };

@@ -434,10 +434,19 @@ export default class Editor extends PureComponent<Props, State> {
     const { onSubmit } = this.props;
     const { editorView } = this.state;
     if (onSubmit && editorView) {
-      onSubmit(this.value);
+      const { $cursor } = editorView.state.selection as TextSelection;
+      const { paragraph } = editorView.state.schema.nodes;
+      const canSubmit = (!$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1))
+        ? true
+        : false;
+
+      if (canSubmit) {
+        onSubmit(this.value);
+        return true;
+      }
     }
 
-    return true;
+    return false;
   }
 
   private handleChange = () => {

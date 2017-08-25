@@ -86,6 +86,8 @@ pipelines:
           script:
             - export FORCE_BS_TESTS="Yes"
             - ./build/bin/setup.sh
+            # required so that we can fetch origin
+            - ./build/bin/prep_for_release.sh
             - yarn
             - yarn run browserstack/tunnel/start
             - yarn run test:browserstack

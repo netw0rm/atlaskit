@@ -12,6 +12,28 @@ const usernamesEndpoint = (groupName, startIndex) =>
 const CACHE_TIMEOUT = 100000; // 100 seconds
 const cache = new Map();
 
+const resolveGroupnameErrors = async (response) => {
+  let resolvedErrorResponse = null;
+  if (response.status === 404) {
+    const result = await response.json();
+    // if this request returns with 404 error "Group does not exist", return an empty array
+    if (result.errors) {
+      result.errors.forEach(error => {
+        if (error.message && error.message.indexOf('does not exist') !== -1) {
+          resolvedErrorResponse = [];
+        }
+      });
+    }
+  }
+
+  if (resolvedErrorResponse === null) {
+    // if unhandled error, throw
+    throw new Error(`Unable to retrieve active jira users. Status: ${response.status}`);
+  } else {
+    return resolvedErrorResponse;
+  }
+};
+
 /**
  * Recursively compile usernames for adding to group
  *
@@ -41,28 +63,6 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
           : []),
     ]
     : [];
-};
-
-const resolveGroupnameErrors = async (response) => {
-  let resolvedErrorResponse = null;
-  if (response.status === 404) {
-    const result = await response.json();
-    // if this request returns with 404 error "Group does not exist", return an empty array
-    if (result.errors) {
-      result.errors.forEach(error => {
-        if (error.message && error.message.indexOf("does not exist") !== -1) {
-          resolvedErrorResponse = [];
-        }
-      });
-    }
-  }
-
-  if (resolvedErrorResponse === null) {
-    // if unhandled error, throw
-    throw new Error(`Unable to retrieve active jira users. Status: ${response.status}`);
-  } else {
-    return resolvedErrorResponse;
-  }
 };
 
 const getUsersInGroup = async (group) => {

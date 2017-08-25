@@ -154,10 +154,8 @@ describe('retrieveJiraUsers', () => {
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), { status: 404, body: missingJiraCoreGroupResponse }, { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
-    console.log("resolving");
 
     const response = await retrieveJiraUsers('everyone', false);
-    console.log("resolving");
     expect(response).toEqual(jiraSoftwareUsersResponse);
   });
 });

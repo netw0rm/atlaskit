@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 20.3.0 (2017-08-25)
+
+* feature; added Navigation.isElectronMac prop to make UI fit better with Mac window buttons (issues closed: ak-2613) ([2c65ec7](https://bitbucket.org/atlassian/atlaskit/commits/2c65ec7))
 ## 20.2.0 (2017-08-24)
 
 * bug fix; simplified siteSettings theme to inherit from settings theme (issues closed: ak-2429, confsim-1332) ([a1da88f](https://bitbucket.org/atlassian/atlaskit/commits/a1da88f))

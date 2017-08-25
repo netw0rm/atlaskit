@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.8.0 (2017-08-25)
+
+* feature; added defaultSelected and isSelected props for DropdownItemRadio and DropdownItemCh (issues closed: ak-3357) ([00080f1](https://bitbucket.org/atlassian/atlaskit/commits/00080f1))
 ## 3.7.3 (2017-08-24)
 
 * bug fix; dropdownItemRadio and DropdownItemCheckbox now work when custom onClick handler is s (issues closed: ak-3358) ([16bee1b](https://bitbucket.org/atlassian/atlaskit/commits/16bee1b))

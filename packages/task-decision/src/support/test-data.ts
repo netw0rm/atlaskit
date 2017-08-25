@@ -26,7 +26,7 @@ import {
   getServiceTasksResponse,
 } from './story-data';
 
-import * as moment from 'moment';
+import { addMinutes, subDays, subMonths } from 'date-fns';
 
 // Just a re-export, but we may change datasets between stories and test at some point.
 export {
@@ -72,11 +72,11 @@ export const getItemsResponse = (options?: GetItemsResponseOptions): ItemRespons
 
   const getDate = (index: number): Date => {
     const dayOffset = groupByDateSize ? Math.floor(index / groupByDateSize) : 0;
-    const m = moment().subtract(dayOffset, 'day');
+    let date = subDays(new Date(), dayOffset);
     if (idOffset) {
-      m.subtract('month', idOffset);
+      date = subMonths(date, idOffset);
     }
-    return m.toDate();
+    return date;
   };
 
   if (hasMore) {
@@ -164,4 +164,4 @@ export const content = (text: string): any => [
   }
 ];
 
-export const datePlus = (minutes: number): Date => moment().add(minutes, 'minute').toDate();
+export const datePlus = (minutes: number): Date => addMinutes(new Date(), minutes);

@@ -29,7 +29,7 @@ export const RowStyle = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
-  padding: 8px 16px;
+  padding: 6px 14px;
   text-overflow: ellipsis;
   vertical-align: middle;
 `;
@@ -38,7 +38,6 @@ export const RowStyle = styled.div`
 export const AvatarStyle = styled.span`
   position: relative;
   flex: initial;
-  margin-top: -2px;
   opacity: ${(props: AvatarSectionStyleProps) => props.restricted ? '0.5' : 'inherit'};
 `;
 
@@ -46,7 +45,7 @@ export const AvatarStyle = styled.span`
 export const NameSectionStyle = styled.div`
   flex: 1;
   min-width: 0;
-  margin-left: 16px;
+  margin-left: 14px;
   opacity: ${(props: NameSectionStyleProps) => props.restricted ? '0.5' : 'inherit'};
 `;
 

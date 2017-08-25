@@ -1,12 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
-import audio from '@atlaskit/icon/glyph/audio';
-import doc from '@atlaskit/icon/glyph/document';
-import image from '@atlaskit/icon/glyph/image';
-import video from '@atlaskit/icon/glyph/media-services/video';
-import unknown from '@atlaskit/icon/glyph/page';
-
+import {MediaTypeIcon} from '../mediaTypeIcon';
 import {FileTypeIcon} from './styled';
 
 export interface FileIconProps {
@@ -15,24 +10,18 @@ export interface FileIconProps {
   iconUrl?: string;
 }
 
-const icons = {
-  audio,
-  doc,
-  image,
-  video,
-  unknown
-};
+const fileTypeIconClass = 'file-type-icon';
 
 export class FileIcon extends Component<FileIconProps, {}> {
   render() {
-    const type = this.props.mediaType || 'unknown';
-    const fileTypeIconClass = `file-type-icon ${type}`;
-    const IconType = icons[type] || icons['unknown'];
-    const defaultIcon = <IconType className={fileTypeIconClass} size="small" label="fileIcon"/>;
-    const icon = this.props.iconUrl ? <img src={this.props.iconUrl} className="custom-icon" alt={type} /> : defaultIcon;
-
-    return <FileTypeIcon style={this.props.style} className={fileTypeIconClass}>
-            {icon}
-           </FileTypeIcon>;
+    const {mediaType, iconUrl, style} = this.props;
+    const type = mediaType || 'unknown';
+    const defaultIcon = <MediaTypeIcon type={mediaType} size="small" className={fileTypeIconClass}/>;
+    const icon = iconUrl ? <img src={iconUrl} className="custom-icon" alt={type} /> : defaultIcon;
+    return (
+      <FileTypeIcon style={style} className={fileTypeIconClass}>
+        {icon}
+      </FileTypeIcon>
+    );
   }
 }

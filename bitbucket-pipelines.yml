@@ -72,7 +72,7 @@ pipelines:
           # - node
 
   custom: # Pipelines that can be scheduled or triggered manually
-    build-website: # The name that is displayed in the list in the Bitbucket Cloud GUI
+    build-website:
       - step:
           script:
             - ./build/bin/setup.sh
@@ -80,3 +80,15 @@ pipelines:
             - cd packages/website
             - npm run deploy-staging
             - npm run deploy
+
+    run-browserstack: # this is to allow users to manually run BS for a commit
+      - step:
+          script:
+            - export FORCE_BS_TESTS="Yes"
+            - ./build/bin/setup.sh
+            # required so that we can fetch origin
+            - ./build/bin/prep_for_release.sh
+            - yarn
+            - yarn run browserstack/tunnel/start
+            - yarn run test:browserstack
+            - yarn run browserstack/tunnel/stop

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import DecisionItem from '../../../src/components/DecisionItem';
-import { ContentWrapper, Placeholder } from '../../../src/styled/DecisionItem';
+import { ContentWrapper } from '../../../src/styled/DecisionItem';
+import { Placeholder } from '../../../src/styled/Placeholder';
 
 describe('<DecisionItem/>', () => {
   it('should render children', () => {

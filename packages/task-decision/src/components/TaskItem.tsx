@@ -4,8 +4,9 @@ import {
   Wrapper,
   CheckBoxWrapper,
   ContentWrapper,
-  Placeholder,
 } from '../styled/TaskItem';
+
+import { Placeholder } from '../styled/Placeholder';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;

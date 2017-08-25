@@ -45,7 +45,8 @@ const emojiPlugin: EditorPlugin = {
 
   secondaryToolbarComponent(editorView, eventDispatcher, providerFactory) {
     const renderNode = (providers) => {
-      return <ToolbarEmojiPicker editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
+      // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
+      return <ToolbarEmojiPicker editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} numFollowingButtons={2}/>;
     };
 
     return (

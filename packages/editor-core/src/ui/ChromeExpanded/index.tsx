@@ -221,6 +221,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       ? 'default'
       : 'primary';
 
+    // NOTE (to be refactored in ED-2565): ToolbarEmojiPicker.numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker in the SecondaryToolbar
     return (
       <Container
         data-editor-chrome={true}
@@ -383,7 +384,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           </FooterActions>
           <SecondaryToolbar>
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} /> : null}
+            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} numFollowingButtons={2}/> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>

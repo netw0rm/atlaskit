@@ -9,12 +9,16 @@ import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@
 import Layer from '@atlaskit/layer';
 import ToolbarButton from '../ToolbarButton';
 
-const numButtons = 2; // Number of toolbar buttons between right edge of the emoji picker and the editor
-
 export interface Props {
   editorView: EditorView;
   pluginKey: PluginKey;
   emojiProvider: Promise<EmojiProvider>;
+  /**
+   * The number of secondary toolbar buttons between and including ToolbarEmojiPicker and the right edge of the editor
+   * This must be passed in by the integrator (e.g. SecondaryToolbar) that contains the buttons
+   * TODO: Implement a better solution as part of ED-2565
+   */
+  numFollowingButtons: number;
 }
 
 export interface State {
@@ -159,7 +163,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private renderTrigger(content, trigger) {
     const { button } = this.state;
 
-    // Check already occurs in render() by needed for typescript
+    // Check already occurs in render() but needed for typescript
     if (!button) {
       return null;
     }
@@ -177,7 +181,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   private getOffsetX = (buttonRect: ClientRect): number => {
-    return -(emojiPickerWidth - numButtons * buttonRect.width);
+    return -(emojiPickerWidth - this.props.numFollowingButtons * buttonRect.width);
   }
 
   @analytics('atlassian.editor.emoji.button')

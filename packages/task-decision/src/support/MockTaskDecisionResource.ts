@@ -24,8 +24,9 @@ import {
   TaskResponse,
   TaskState,
 } from '../types';
+
 import { objectKeyToString, toggleTaskState } from '../type-helpers';
-import { subMinutes } from 'date-fns';
+import * as subMinutes from 'date-fns/sub_minutes';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;

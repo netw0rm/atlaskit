@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.5.0 (2017-08-25)
+
+* bug fix; upgrade mediapicker to 7.0.3 (issues closed: ed-2556) ([2c36a86](https://bitbucket.org/atlassian/atlaskit/commits/2c36a86))
+* feature; adding support for lists in editor-hipchat schema ([c695497](https://bitbucket.org/atlassian/atlaskit/commits/c695497))
 ## 46.4.3 (2017-08-24)
 
 * bug fix; fix creation of unwanted link cards when going in/out of edit link box (issues closed: ed-2404) ([eae0a3a](https://bitbucket.org/atlassian/atlaskit/commits/eae0a3a))

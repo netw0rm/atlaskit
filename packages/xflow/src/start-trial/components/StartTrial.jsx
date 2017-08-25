@@ -47,7 +47,7 @@ class StartTrial extends Component {
             />}
         />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />
-        <Step render={nextStep => <LoadingTime onComplete={() => nextStep} />} />
+        <Step render={nextStep => <LoadingTime onComplete={nextStep} />} />
       </MultiStep>
     );
   }

@@ -39,7 +39,6 @@ storiesOf('ConfirmTrial')
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}
-        analyticsId="growth.happy"
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
       />
@@ -49,7 +48,6 @@ storiesOf('ConfirmTrial')
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}
-        analyticsId="growth.happy"
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
         spinnerActive
@@ -61,7 +59,6 @@ storiesOf('ConfirmTrial')
     setupStorybookAnalytics(
       <ConfirmTrialBase
         {...defaultProps}
-        analyticsId="growth.happy"
         startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
         onComplete={() => Promise.resolve()}
         onCancel={() => Promise.resolve()}
@@ -73,7 +70,6 @@ storiesOf('ConfirmTrial')
       <ConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        analyticsId="growth.happy"
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
       />
@@ -84,7 +80,6 @@ storiesOf('ConfirmTrial')
       <ConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        analyticsId="growth.happy"
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
         spinnerActive
@@ -97,7 +92,6 @@ storiesOf('ConfirmTrial')
       <ConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        analyticsId="growth.happy"
         startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
         onComplete={() => Promise.resolve()}
         onCancel={() => Promise.resolve()}

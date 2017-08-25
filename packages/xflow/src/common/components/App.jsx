@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { privacySafeString } from '@atlaskit/privacy-safe';
 import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
-
-const noop = () => {};
 
 export default class App extends Component {
   static propTypes = {
     children: PropTypes.node,
     onAnalyticsEvent: PropTypes.func,
+    sourceComponent: PropTypes.string,
+    sourceContext: PropTypes.string,
+  };
+
+  handleAnalyticsEvent = (name, data) => {
+    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    if (onAnalyticsEvent) {
+      onAnalyticsEvent(name, {
+        ...data,
+        sourceComponent: privacySafeString(sourceComponent),
+        sourceContext: privacySafeString(sourceContext),
+      });
+    }
   };
 
   render() {
-    const { onAnalyticsEvent } = this.props;
     return (
-      <XFlowAnalyticsListener onEvent={onAnalyticsEvent || noop}>
+      <XFlowAnalyticsListener onEvent={this.handleAnalyticsEvent}>
         {this.props.children}
       </XFlowAnalyticsListener>
     );

@@ -115,7 +115,7 @@ class LoadingTime extends Component {
   handleCloseClick = async () => {
     const { firePrivateAnalyticsEvent, status, closeLoadingDialog, onComplete } = this.props;
     const convertStatusFromSymbolToString = String(status).slice(7, -1);
-    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { convertStatusFromSymbolToString });
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { status: convertStatusFromSymbolToString });
     this.setState({
       showErrorFlag: false,
     });

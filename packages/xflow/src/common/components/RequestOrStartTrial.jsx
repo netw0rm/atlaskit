@@ -21,6 +21,8 @@ const Screens = {
 
 class RequestOrStartTrial extends Component {
   static propTypes = {
+    sourceComponent: PropTypes.string.isRequired,
+    sourceContext: PropTypes.string.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
@@ -94,7 +96,10 @@ class RequestOrStartTrial extends Component {
       });
     } else {
       firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
-      this.setState({ initializingCheckFailed: true });
+      this.setState({
+        initializingCheckFailed: true,
+        showInitializationError: true,
+      });
     }
   };
 
@@ -102,32 +107,51 @@ class RequestOrStartTrial extends Component {
     {
       content: 'Retry',
       onClick: () => {
-        this.setState({ initializingCheckFailed: false });
+        this.setState({
+          initializingCheckFailed: false,
+          showInitializationError: false,
+        });
         return this.resetRequestOrStartTrial();
       },
     },
   ];
 
   render() {
-    const { onAnalyticsEvent, onComplete, onTrialRequested, onTrialActivating } = this.props;
-    const { activationState } = this.state;
+    const {
+      onAnalyticsEvent,
+      onComplete,
+      onTrialRequested,
+      onTrialActivating,
+      sourceComponent,
+      sourceContext,
+    } = this.props;
+    const { activationState, initializingCheckFailed, showInitializationError } = this.state;
 
     return (
-      <App onAnalyticsEvent={onAnalyticsEvent}>
+      <App
+        onAnalyticsEvent={onAnalyticsEvent}
+        sourceComponent={sourceComponent}
+        sourceContext={sourceContext}
+      >
         <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
           {(() => {
             switch (this.state.screen) {
               case Screens.INITIALIZING: {
                 return (
                   <div>
-                    <InitializingScreen isOpen={!this.state.initializingCheckFailed} />
+                    <InitializingScreen isOpen={!initializingCheckFailed} />
                     <ErrorFlag
                       flagRetry
                       flagActions={this.flagActions}
                       title="Oops... Something went wrong"
                       description="Let's try again."
-                      showFlag={this.state.initializingCheckFailed}
-                      onDismissed={() => this.setState({ initializingCheckFailed: false })}
+                      showFlag={showInitializationError}
+                      onDismissed={() => {
+                        this.setState({
+                          showInitializationError: false,
+                        });
+                        return onComplete();
+                      }}
                     />
                   </div>
                 );

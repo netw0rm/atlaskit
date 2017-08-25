@@ -30,14 +30,14 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(true);
   });
 
   it('should render the picker if the button has been clicked once', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
 
     expect(toolbarEmojiPicker.find(AkEmojiPicker)).to.have.length(1);
@@ -45,14 +45,14 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should not render the picker if the button has not been clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
 
     expect(toolbarEmojiPicker.find(AkEmojiPicker)).to.have.length(0);
   });
 
   it('should have an onSelection handler in the rendered picker', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const picker = toolbarEmojiPicker.find(AkEmojiPicker);
     expect(picker.prop('onSelection')).to.not.equal(undefined);
@@ -60,7 +60,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should insert an emoji into editor if the picker registers a selection', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const onSelection = toolbarEmojiPicker.find(AkEmojiPicker).prop('onSelection');
     onSelection!(grinEmojiId, grinEmoji);
@@ -77,7 +77,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should close the picker if an external node is clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     toolbarEmojiPicker.find(EmojiIcon).parent().simulate('click');
 
@@ -94,6 +94,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
           pluginKey={pluginKey}
           emojiProvider={emojiProvider}
           editorView={editorView}
+          numFollowingButtons={0}
         />
       );
       toolbarOption.find(EmojiIcon).simulate('click');
@@ -103,7 +104,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should disable the ToolbarEmojiPicker when there in an active mention query mark', () => {
     const { editorView } = editor(doc(p('@')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} />);
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
 
     expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
   });

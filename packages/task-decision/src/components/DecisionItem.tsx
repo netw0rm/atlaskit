@@ -5,8 +5,9 @@ import {
   Wrapper,
   IconWrapper,
   ContentWrapper,
-  Placeholder
 } from '../styled/DecisionItem';
+
+import { Placeholder } from '../styled/Placeholder';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;

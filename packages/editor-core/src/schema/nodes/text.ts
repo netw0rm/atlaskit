@@ -2,7 +2,6 @@ import { NodeSpec, nodes } from '../../prosemirror';
 
 /**
  * @name text_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'text';

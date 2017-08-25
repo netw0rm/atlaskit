@@ -93,7 +93,9 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
       return new AnyOfSchemaNode(type.types.map(t => getSchemaNodeFromType(t)));
     }
   } else if (isIntersectionType(type)) {
-    return new AllOfSchemaNode(type.types.map(t => getSchemaNodeFromType(t)));
+    return new AllOfSchemaNode(type.types.map(
+      t => getSchemaNodeFromType(t, getTags(t.getSymbol().getJsDocTags()))
+    ));
   } else if (isArrayType(type)) {
     const types = type.typeArguments.length === 1 // Array< X | Y >
       ? [type.typeArguments[0]]
@@ -105,7 +107,7 @@ function getSchemaNodeFromType(type: ts.Type, validators = {}): SchemaNode {
       validators
     );
   } else if (isObjectType(type)) {
-    const obj = new ObjectSchemaNode({}, validators);
+    const obj = new ObjectSchemaNode({}, { additionalProperties: false, ...validators });
     // Use node's queue to prevent circular dependency
     process.nextTick(() => {
       ticks++;

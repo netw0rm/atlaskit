@@ -88,6 +88,22 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p('`__text__')));
     });
+
+    it('should not convert "`some**variables**" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`some**variables**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`some**variables**')));
+    });
+
+    it('should not convert "`some__variables__" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`some__variables__', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`some__variables__')));
+    });
   });
 
   describe('em rule', () => {
@@ -144,12 +160,28 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('`*text*')));
     });
 
+    it('should not convert "`some*variables*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`some*variables*', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`some*variables*')));
+    });
+
     it('should not convert "`_text_" to em', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '`_text_', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p('`_text_')));
+    });
+
+    it('should not convert "`some_variables_" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`some_variables_', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`some_variables_')));
     });
   });
 
@@ -190,6 +222,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`~~text~~', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p('`~~text~~')));
+    });
+
+    it('should not convert "`some~~texts~~" to strike', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`some~~texts~~', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('`some~~texts~~')));
     });
   });
 

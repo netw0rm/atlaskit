@@ -37,7 +37,7 @@ describe('media-links', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
   const testLinkId = `mock-link-id${randomId()}`;
   const testUuid = '1234';
-  const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
+  const linkCreateContextMock = getLinkCreateContextMock({ id: testLinkId });
   const createTempId = url => `temporary:${testUuid}:${url}`;
   const readyState = (id, publicId = testLinkId) => ({id, publicId, status: 'ready'});
 
@@ -535,11 +535,11 @@ describe('media-links', () => {
         p(a({ href: 'https://www.google.com' })('www.google.com'))
       ));
 
-      const newDoc = await appendLinkCards(editorView, linkCreateContextMock, testCollectionName);
+      const newDoc = await appendLinkCards(editorView, mediaStateManager, linkCreateContextMock, testCollectionName);
 
       expect(newDoc).to.deep.equal(doc(
         p(a({href: 'https://www.google.com'})('www.google.com')),
-        mediaGroup(media({ id: testLinkId, type: 'link', collection: testCollectionName })),
+        mediaGroup(media({ id: `temporary:${testUuid}:https://www.google.com`, type: 'link', collection: testCollectionName })),
       ));
     });
 
@@ -553,8 +553,7 @@ describe('media-links', () => {
         p('World!'),
       ));
 
-      const tempLinkContext = getLinkCreateContextMock(url => Promise.resolve(url));
-      const newDoc = await appendLinkCards(editorView, tempLinkContext, testCollectionName);
+      const newDoc = await appendLinkCards(editorView, mediaStateManager, linkCreateContextMock, testCollectionName);
 
       expect(newDoc).to.deep.equal(doc(
         p(strong(a({ href: href1 })(href1))),
@@ -562,8 +561,8 @@ describe('media-links', () => {
         p(strong(a({ href: href2 })(href2))),
         p('World!'),
         mediaGroup(
-          media({ id: href1, type: 'link', collection: testCollectionName }),
-          media({ id: href2, type: 'link', collection: testCollectionName }),
+          media({ id: `temporary:${testUuid}:https://www.atlassian.com`, type: 'link', collection: testCollectionName }),
+          media({ id: `temporary:${testUuid}:https://www.google.com`, type: 'link', collection: testCollectionName }),
         ),
       ));
     });
@@ -573,9 +572,12 @@ describe('media-links', () => {
         p(a({ href: 'https://localhost'})('www.google.com'))
       ));
 
-      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'addLinkItem')
+      const tempLinkContext = getLinkCreateContextMock({
+        error: new Error('preview not found')
+      });
+      const addLinkItemStub = sinon.stub(linkCreateContextMock, 'getUrlPreviewProvider')
         .returns(Promise.reject('error message'));
-      const newDoc = await appendLinkCards(editorView, linkCreateContextMock, testCollectionName);
+      const newDoc = await appendLinkCards(editorView, mediaStateManager, tempLinkContext, testCollectionName);
       addLinkItemStub.restore();
 
       expect(newDoc).to.deep.equal(doc(
@@ -593,10 +595,10 @@ describe('media-links', () => {
         p('World!'),
       ));
 
-      const tempLinkContext = getLinkCreateContextMock(url =>
-        url === href1 ? Promise.resolve(url) : Promise.reject(href2)
-      );
-      const newDoc = await appendLinkCards(editorView, tempLinkContext, testCollectionName);
+      const tempLinkContext = getLinkCreateContextMock({
+        subscribe: (href) => href === href1 ? cb => cb({}) : cb => cb(null, new Error('preview not found'))
+      });
+      const newDoc = await appendLinkCards(editorView, mediaStateManager, tempLinkContext, testCollectionName);
 
       expect(newDoc).to.deep.equal(doc(
         p(strong(a({ href: href1 })(href1))),
@@ -604,7 +606,7 @@ describe('media-links', () => {
         p(strong(a({ href: href2 })(href2))),
         p('World!'),
         mediaGroup(
-          media({ id: href1, type: 'link', collection: testCollectionName }),
+          media({ id: `temporary:${testUuid}:https://www.atlassian.com`, type: 'link', collection: testCollectionName }),
         ),
       ));
     });

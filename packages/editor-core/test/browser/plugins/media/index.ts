@@ -38,7 +38,7 @@ chai.use(chaiPlugin);
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 const testLinkId = `mock-link-id${randomId()}`;
-const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
+const linkCreateContextMock = getLinkCreateContextMock({ id: testLinkId });
 
 
 const getFreshMediaProvider = () => {

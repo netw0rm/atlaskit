@@ -1,13 +1,22 @@
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
-
-import { chaiPlugin, sendKeyToPm, insertText, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { mount, ReactWrapper } from 'enzyme';
+
+import { MediaProvider } from '@atlaskit/editor-core';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
+import {
+  chaiPlugin,
+  sendKeyToPm,
+  insertText,
+  storyMediaProviderFactory,
+  randomId,
+} from '@atlaskit/editor-core/dist/es5/test-helper';
+import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import * as utils from '@atlaskit/editor-core/src/plugins/utils';
+
 import Editor from '../../src';
 import * as api from '../../src';
-import { MediaProvider } from '@atlaskit/editor-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 
 chai.use(chaiPlugin);
 
@@ -80,62 +89,12 @@ describe('@atlaskit/editor-hipchat', () => {
       expect(spy.calledWith(editor.value)).to.equal(true);
     });
 
-    it('should trigger onSubmit when user presses Enter in decisionItem', () => {
-      const spy = sinon.spy();
-      editorWrapper = mount(<Editor onSubmit={spy} />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      insertText(editorView, '<> ', 1);
-      const selParentType = editorView.state.selection.$from.parent.type;
-      expect(selParentType.name).to.equal('decisionItem');
-      insertText(editorView, '1', editorView.state.selection.$from.pos);
-      sendKeyToPm(editorView!, 'Enter');
-      expect(spy.calledWith(editor.value)).to.equal(true);
-    });
-
-    it('should trigger onSubmit when user presses Enter inside taskItem', () => {
-      const spy = sinon.spy();
-      editorWrapper = mount(<Editor onSubmit={spy} />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      insertText(editorView, '[] ', 1);
-      const selParentType = editorView.state.selection.$from.parent.type;
-      expect(selParentType.name).to.equal('taskItem');
-      insertText(editorView, '1', editorView.state.selection.$from.pos);
-      sendKeyToPm(editorView!, 'Enter');
-      expect(spy.calledWith(editor.value)).to.equal(true);
-    });
-
-    it('should not trigger onSubmit when user presses Enter in empty decisionItem', () => {
-      const spy = sinon.spy();
-      editorWrapper = mount(<Editor onSubmit={spy} />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      insertText(editorView, '<> ', 1);
-      const selParentType = editorView.state.selection.$from.parent.type;
-      expect(selParentType.name).to.equal('decisionItem');
-      sendKeyToPm(editorView!, 'Enter');
-      expect(spy.calledWith(editor.value)).to.equal(false);
-    });
-
-    it('should not trigger onSubmit when user presses Enter inside empty taskItem', () => {
-      const spy = sinon.spy();
-      editorWrapper = mount(<Editor onSubmit={spy} />);
-      const editor = editorWrapper.get(0) as any;
-      const { editorView } = editor.state;
-      insertText(editorView, '[] ', 1);
-      const selParentType = editorView.state.selection.$from.parent.type;
-      expect(selParentType.name).to.equal('taskItem');
-      sendKeyToPm(editorView!, 'Enter');
-      expect(spy.calledWith(editor.value)).to.equal(false);
-    });
-
-    it('should insert a new line when user presses Shift-Enter', () => {
+    it('should insert a new line when user presses Shift-Enter', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
       sendKeyToPm(editorView!, 'Shift-Enter');
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         type: 'doc',
         version: 1,
         content: [
@@ -153,14 +112,14 @@ describe('@atlaskit/editor-hipchat', () => {
 
   describe('Autoformatting', () => {
 
-    it('should convert "**text**" to strong', () => {
+    it('should convert "**text**" to strong', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
 
       insertText(editorView, '**text**', 1);
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         type: 'doc',
         version: 1,
         content: [
@@ -178,14 +137,14 @@ describe('@atlaskit/editor-hipchat', () => {
       });
     });
 
-    it('should convert "*text*" to em', () => {
+    it('should convert "*text*" to em', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
 
       insertText(editorView, '*text*', 1);
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         type: 'doc',
         version: 1,
         content: [
@@ -207,7 +166,7 @@ describe('@atlaskit/editor-hipchat', () => {
 
   describe('MaxContentSize', () => {
 
-    it('should prevent the user from entering more text if it node size is > maxContentSize', () => {
+    it('should prevent the user from entering more text if it node size is > maxContentSize', async () => {
       editorWrapper = mount(<Editor maxContentSize={9} />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
@@ -215,7 +174,7 @@ describe('@atlaskit/editor-hipchat', () => {
       editorView.dispatch(editorView.state.tr.insertText('Hello'));
       editorView.dispatch(editorView.state.tr.insertText('!'));
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         type: 'doc',
         version: 1,
         content: [
@@ -289,8 +248,34 @@ describe('@atlaskit/editor-hipchat', () => {
     });
 
     describe('.value', () => {
-      it('returns a Promise which resolves with fabric document', () => {
-        expect(editor.value).to.deep.equal({
+      let editor;
+      let uuidStub;
+      let mediaStateManager;
+      let mediaProvider: Promise<MediaProvider>;
+      const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
+      const testUuid = '1234';
+
+      beforeEach(async () => {
+        mediaStateManager = new DefaultMediaStateManager();
+        uuidStub = sinon.stub(utils, 'uuid').returns(testUuid);
+        mediaProvider = storyMediaProviderFactory(mediaTestHelpers, testCollectionName, mediaStateManager);
+        editorWrapper = mount(<Editor mediaProvider={mediaProvider} />);
+        // Wait until mediaProvider has been set
+        const provider = await mediaProvider;
+        // Wait until mediaProvider's linkCreateContext has been set
+        await provider.linkCreateContext;
+
+        editor = editorWrapper.get(0) as any;
+        editor.setFromJson(defaultValue);
+      });
+
+      afterEach(() => {
+        uuidStub.restore();
+        mediaStateManager.destroy();
+      });
+
+      it('returns a Promise which resolves with fabric document', async () => {
+        expect(await editor.value).to.deep.equal({
           type: 'doc',
           version: 1,
           content: [
@@ -314,10 +299,78 @@ describe('@atlaskit/editor-hipchat', () => {
           ]
         });
       });
+
+      it('should append linksCards to the returned document', async () => {
+        const documentWithLink = {
+          type: 'doc',
+          version: 1,
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Hello'
+                },
+                {
+                  type: 'text',
+                  text: 'Atlassian',
+                  marks: [{
+                    type: 'link',
+                    attrs: {
+                      href: 'https://atlassian.com'
+                    }
+                  }]
+                }
+              ]
+            }
+          ]
+        };
+
+        editor.setFromJson(documentWithLink);
+        expect(await editor.value).to.deep.equal({
+          type: 'doc',
+          version: 1,
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Hello'
+                },
+                {
+                  type: 'text',
+                  text: 'Atlassian',
+                  marks: [{
+                    type: 'link',
+                    attrs: {
+                      href: 'https://atlassian.com'
+                    }
+                  }]
+                }
+              ]
+            },
+            {
+              type: 'mediaGroup',
+              content: [
+                {
+                  attrs: {
+                    collection: testCollectionName,
+                    id: `temporary:${testUuid}:https://atlassian.com`,
+                    type: 'link',
+                  },
+                  type: 'media',
+                }
+              ]
+            }
+          ]
+        });
+      });
     });
 
     describe('.setFromJson()', () => {
-      it('creates a new document based on json-object', () => {
+      it('creates a new document based on json-object', async () => {
         const value = {
           type: 'doc',
           version: 1,
@@ -335,7 +388,7 @@ describe('@atlaskit/editor-hipchat', () => {
         };
 
         editor.setFromJson(value);
-        expect(editor.value).to.deep.equal(value);
+        expect(await editor.value).to.deep.equal(value);
       });
     });
 
@@ -361,13 +414,13 @@ describe('@atlaskit/editor-hipchat', () => {
 
   describe('List support', () => {
 
-    it('should support list autoformatting', () => {
+    it('should support list autoformatting', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
       insertText(editorView, '* test', 1);
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         version: 1,
         type: 'doc',
         content: [{
@@ -386,14 +439,14 @@ describe('@atlaskit/editor-hipchat', () => {
       });
     });
 
-    it('should not submit when enter is pressed in non-empty list item', () => {
+    it('should not submit when enter is pressed in non-empty list item', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
       insertText(editorView, '* l1', 1);
       sendKeyToPm(editorView!, 'Enter');
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         version: 1,
         type: 'doc',
         content: [{
@@ -418,7 +471,7 @@ describe('@atlaskit/editor-hipchat', () => {
       });
     });
 
-    it('should create paragraph when enter is pressed in empty list item', () => {
+    it('should create paragraph when enter is pressed in empty list item', async () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;
       const { editorView } = editor.state;
@@ -426,7 +479,7 @@ describe('@atlaskit/editor-hipchat', () => {
       sendKeyToPm(editorView!, 'Enter');
       sendKeyToPm(editorView!, 'Enter');
 
-      expect(editor.value).to.deep.equal({
+      expect(await editor.value).to.deep.equal({
         version: 1,
         type: 'doc',
         content: [{
@@ -453,7 +506,7 @@ describe('@atlaskit/editor-hipchat', () => {
 
     describe('MaxContentSize', () => {
 
-      it('should prevent the user from entering more text if it node size is > maxContentSize', () => {
+      it('should prevent the user from entering more text if it node size is > maxContentSize', async () => {
         editorWrapper = mount(<Editor maxContentSize={9} useLegacyFormat={true} />);
         const editor = editorWrapper.get(0) as any;
         const { editorView } = editor.state;
@@ -461,7 +514,7 @@ describe('@atlaskit/editor-hipchat', () => {
         editorView.dispatch(editorView.state.tr.insertText('Hello'));
         editorView.dispatch(editorView.state.tr.insertText('!'));
 
-        expect(editor.value).to.deep.equal([{
+        expect(await editor.value).to.deep.equal([{
           type: 'text',
           text: 'Hello',
           marks: []
@@ -483,8 +536,8 @@ describe('@atlaskit/editor-hipchat', () => {
       });
 
       describe('.value', () => {
-        it('returns hipchat-friendly json-object', () => {
-          expect(editor.value).to.deep.equal([
+        it('returns hipchat-friendly json-object', async () => {
+          expect(await editor.value).to.deep.equal([
             {
               type: 'text',
               text: 'Hello',
@@ -504,7 +557,7 @@ describe('@atlaskit/editor-hipchat', () => {
       });
 
       describe('.setFromJson()', () => {
-        it('creates a new document based on json-object', () => {
+        it('creates a new document based on json-object', async () => {
           const value = [
             {
               type: 'text',
@@ -514,7 +567,7 @@ describe('@atlaskit/editor-hipchat', () => {
           ];
 
           editor.setFromJson(value);
-          expect(editor.value).to.deep.equal(value);
+          expect(await editor.value).to.deep.equal(value);
         });
       });
     });

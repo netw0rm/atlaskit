@@ -1,4 +1,4 @@
-import { Context, MediaStateManager, MediaState } from '@atlaskit/media-core';
+import { Context, MediaStateManager, MediaState, UrlPreview } from '@atlaskit/media-core';
 import {
   EditorView,
   AddMarkStep,
@@ -20,6 +20,7 @@ export interface URLInfo {
 
 export async function appendLinkCards(
   view: EditorView,
+  stateManager: MediaStateManager,
   linkCreateContext: Context,
   collection: string
 ): Promise<PMNode> {
@@ -34,15 +35,42 @@ export async function appendLinkCards(
   });
 
   const linkNodes = (await Promise.all(hrefs.map(href => new Promise<PMNode | undefined>(resolve => {
-    linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(async (metadata) => {
-      try {
-        const publicId = await linkCreateContext.addLinkItem(href, collection, metadata);
-        const linkNode = schema.nodes.media.createChecked({ id: publicId, type: 'link', collection });
+    const id = `temporary:${uuid()}:${href}`;
+
+    stateManager.updateState(id, {
+      id,
+      status: 'processing',
+    });
+
+    const isAppWithoutURL = metadata => metadata.resources && metadata.resources.app && !metadata.resources.app.url;
+
+    const updateStatus = (metadata?: UrlPreview) => {
+      stateManager.updateState(id, {
+        id,
+        status: 'unfinalized',
+        finalizeCb: async () => {
+          // Workaround for problem with missing fields preventing Twitter links from working
+          if(metadata && isAppWithoutURL(metadata))  {
+            (metadata as any).resources.app.url = metadata.url;
+          }
+          const publicId = await linkCreateContext.addLinkItem(href, collection, metadata);
+          stateManager.updateState(id, {
+            id,
+            publicId,
+            status: 'ready'
+          });
+        }
+      });
+
+      if (metadata) {
+        const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
         resolve(linkNode);
-      } catch (error) {
+      } else {
         resolve(undefined);
       }
-    }, () => resolve(undefined));
+    };
+
+    linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(updateStatus, (_) => updateStatus());
   })))).filter(node => !!node);
 
   if (linkNodes.length) {
@@ -60,8 +88,8 @@ export const insertLinks = async (
   linkRanges: Array<URLInfo>,
   linkCreateContext: Context,
   collection?: string
-) : Promise<Array<string | undefined> | undefined> => {
-  if (!linkRanges || linkRanges.length <= 0 || !collection) {
+): Promise<Array<string | undefined> | undefined> => {
+  if (linkRanges.length <= 0 || !collection) {
     return;
   }
 
@@ -122,7 +150,7 @@ export const insertLinks = async (
               stateManager.updateState(id, {
                 id,
                 publicId,
-                status: 'unfinalized'
+                status: 'ready',
               }) || resolve(publicId)
             )
             .catch(updateStateWithError);

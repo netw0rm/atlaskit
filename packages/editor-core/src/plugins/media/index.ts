@@ -32,13 +32,14 @@ import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../nodeviews';
 import keymapPlugin from './keymap';
-import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
+import { URLInfo, detectLinkRangesInSteps, appendLinkCards } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 
-const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
+export { appendLinkCards };
 
+const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
 export interface MediaNodeWithPosHandler {
@@ -202,13 +203,46 @@ export class MediaPluginState {
       linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
     }
 
-    return insertLinks(
+    // return insertLinks(
+    //   this.view,
+    //   this.stateManager,
+    //   this.handleMediaState,
+    //   this.linkRanges,
+    //   linkCreateContextInstance as Context,
+    //   this.collectionFromProvider()
+    // );
+  }
+
+  appendLinkCards = async () => {
+    const { mediaProvider } = this;
+    if (!mediaProvider) {
+      return;
+    }
+
+    const { linkCreateContext } = mediaProvider;
+    if (!linkCreateContext) {
+      return;
+    }
+
+    let linkCreateContextInstance = await linkCreateContext;
+    if (!linkCreateContextInstance) {
+      return;
+    }
+
+    if (!(linkCreateContextInstance as Context).addLinkItem) {
+      linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
+    }
+
+    const collection = this.collectionFromProvider();
+    if (!collection) {
+      return;
+    }
+
+    return await appendLinkCards(
       this.view,
       this.stateManager,
-      this.handleMediaState,
-      this.linkRanges,
       linkCreateContextInstance as Context,
-      this.collectionFromProvider()
+      collection
     );
   }
 

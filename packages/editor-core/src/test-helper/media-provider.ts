@@ -87,15 +87,26 @@ export function isImage(type: string) {
   return ['image/jpeg', 'image/png'].indexOf(type) > -1;
 }
 
-export function getLinkCreateContextMock(testLinkId: string | Function) {
+export function getLinkCreateContextMock(options: {
+  id?: string | Function,
+  metadata?: object,
+  error?: Error,
+  subscribe?: Function,
+}) {
   return {
     getUrlPreviewProvider: (url) => ({
       observable: () => ({
-        subscribe: (cb) => cb({})
+        subscribe: options.subscribe ?
+          options.subscribe(url) :
+            (cb => options.error ?
+              cb(null, options.error) :
+                cb(options.metadata || {})
+            )
       })
     }),
     addLinkItem: (url, collection, metadata) =>
-      testLinkId instanceof Function ?
-        testLinkId(url, collection, metadata) : Promise.resolve(testLinkId)
+      options.id instanceof Function ?
+        options.id(url, collection, metadata) :
+          Promise.resolve(options.id)
   } as any;
 }

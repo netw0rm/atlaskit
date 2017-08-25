@@ -163,15 +163,19 @@ export default class Editor extends PureComponent<Props, State> {
   /**
    * The current value of the editor
    */
-  get value(): Doc {
+  get value(): Promise<Doc> {
     const { editorView } = this.state;
-    const doc = editorView && toJSON(editorView.state.doc);
+    const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
+    return mediaPluginState.appendLinkCards().then(docWithLinkCards => {
+      const doc = docWithLinkCards ?
+        toJSON(docWithLinkCards) : editorView && toJSON(editorView.state.doc);
 
-    if (!doc) {
-      return { type: 'doc', version: 1, content: [] };
-    }
+      if (!doc) {
+        return { type: 'doc', version: 1, content: [] };
+      }
 
-    return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
+      return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
+    });
   }
 
   /**

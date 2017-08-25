@@ -64,26 +64,26 @@ export const simpleDropdownItemsWithCheckboxes = (
 
 export const simpleDropdownItemsWithRadio = [
   <DropdownItemGroupRadio id="example-radio-group" title="Languages">
-    <DropdownItemRadio onClick={clickAction} id="js">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="js">JavaScript</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="java">Java</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="ruby">Ruby</DropdownItemRadio>
   </DropdownItemGroupRadio>,
   <DropdownItemGroupRadio behavior="radio" title="Platforms">
-    <DropdownItemRadio onClick={clickAction} id="mac">MacOS</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="mac">MacOS</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="win">Windows</DropdownItemRadio>
   </DropdownItemGroupRadio>,
 ];
 
 export const simpleDropdownItemsWithRadioAndCheckbox = [
   <DropdownItemGroupRadio id="languages" title="Languages">
-    <DropdownItemRadio onClick={clickAction} id="js">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="js-radio">JavaScript</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="java">Java</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="ruby">Ruby</DropdownItemRadio>
   </DropdownItemGroupRadio>,
   <DropdownItemGroupCheckbox id="languages2" title="Languages">
-    <DropdownItemCheckbox onClick={clickAction} id="js">JavaScript</DropdownItemCheckbox>
+    <DropdownItemCheckbox defaultSelected onClick={clickAction} id="js-check">JavaScript</DropdownItemCheckbox>
     <DropdownItemCheckbox onClick={clickAction} id="java">Java</DropdownItemCheckbox>
-    <DropdownItemCheckbox onClick={clickAction} id="ruby">Ruby</DropdownItemCheckbox>
+    <DropdownItemCheckbox defaultSelected onClick={clickAction} id="ruby">Ruby</DropdownItemCheckbox>
   </DropdownItemGroupCheckbox>,
 ];
 

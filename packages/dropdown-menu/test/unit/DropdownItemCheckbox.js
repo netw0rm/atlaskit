@@ -1,18 +1,24 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import PropTypes from 'prop-types';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
 import Item from '@atlaskit/item';
 import { KEY_ENTER, KEY_SPACE } from '../../src/util/keys';
 
 import { name } from '../../package.json';
-import {
+import DropdownMenu, {
   DropdownMenuStateless,
   DropdownItemCheckbox,
   DropdownItemGroupCheckbox,
 } from '../../src';
 
 describe(`${name} - DropdownItemCheckbox`, () => {
+  const isIconSelected = (icon) => (
+    icon.prop('primaryColor') === akColorB400 &&
+    icon.prop('secondaryColor') === akColorN40
+  );
+
   describe('common use cases', () => {
     let wrapper;
 
@@ -35,18 +41,15 @@ describe(`${name} - DropdownItemCheckbox`, () => {
     });
 
     test('should default the checkbox icon to unchecked', () => {
-      expect(wrapper.find(CheckboxIcon).prop('primaryColor')).toBe(akColorN40);
-      expect(wrapper.find(CheckboxIcon).prop('secondaryColor')).toBe(akColorN40);
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(false);
     });
 
     test('should appear as checked when clicked, and unchecked when clicked again', () => {
       clickItem();
-      expect(wrapper.find(CheckboxIcon).prop('primaryColor')).toBe(akColorB400);
-      expect(wrapper.find(CheckboxIcon).prop('secondaryColor')).toBe(akColorN40);
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(true);
 
       clickItem();
-      expect(wrapper.find(CheckboxIcon).prop('primaryColor')).toBe(akColorN40);
-      expect(wrapper.find(CheckboxIcon).prop('secondaryColor')).toBe(akColorN40);
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(false);
     });
 
     // Cannot seem to mock window.navigator.userAgent in jest reliably. If/when possible, another
@@ -81,6 +84,129 @@ describe(`${name} - DropdownItemCheckbox`, () => {
       );
       wrapper.find(Item).first().simulate('keydown', { key: triggerKey });
       expect(clickSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('defaultSelected prop', () => {
+    test('causes item to be selected by default, but not if unselected and menu re-opened', () => {
+      const wrapper = mount(
+        <DropdownMenuStateless isOpen>
+          <DropdownItemGroupCheckbox id="check-items">
+            <DropdownItemCheckbox id="zero" defaultSelected>Item zero</DropdownItemCheckbox>
+          </DropdownItemGroupCheckbox>
+        </DropdownMenuStateless>
+      );
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(true);
+
+      // Clicks the DropdownItemCheckbox to unselect it
+      wrapper.find(Item).first().simulate('click');
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(false);
+
+      // Causes the DropdownItemCheckbox to be unmounted and remounted
+      wrapper.setProps({ isOpen: false });
+      wrapper.setProps({ isOpen: true });
+
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(false);
+    });
+  });
+
+  describe('isSelected prop', () => {
+    class IsSelectedController extends React.PureComponent {
+      static propTypes = {
+        itemZeroProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+        itemOneProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+      }
+
+      render() {
+        return (
+          <DropdownMenu defaultOpen trigger={<span className="test-trigger" />}>
+            <DropdownItemGroupCheckbox id="check-items">
+              <DropdownItemCheckbox id="zero" {...this.props.itemZeroProps} />
+              <DropdownItemCheckbox id="one" {...this.props.itemOneProps} />
+            </DropdownItemGroupCheckbox>
+          </DropdownMenu>
+        );
+      }
+    }
+
+    test('setting at mount should cause item to appear selected', () => {
+      const wrapper = mount(
+        <DropdownMenuStateless isOpen>
+          <DropdownItemGroupCheckbox id="check-items">
+            <DropdownItemCheckbox id="zero" isSelected>Item zero</DropdownItemCheckbox>
+          </DropdownItemGroupCheckbox>
+        </DropdownMenuStateless>
+      );
+      expect(isIconSelected(wrapper.find(CheckboxIcon))).toBe(true);
+    });
+
+    test('setting at mount on multiple items should cause them to appear selected', () => {
+      const wrapper = mount(
+        <DropdownMenuStateless isOpen>
+          <DropdownItemGroupCheckbox id="check-items">
+            <DropdownItemCheckbox id="zero" isSelected>Item zero</DropdownItemCheckbox>
+            <DropdownItemCheckbox id="one">Item one</DropdownItemCheckbox>
+            <DropdownItemCheckbox id="two" isSelected>Item two</DropdownItemCheckbox>
+          </DropdownItemGroupCheckbox>
+        </DropdownMenuStateless>
+      );
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(true);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(2))).toBe(true);
+    });
+
+    test('setting after mount should cause item to appear selected', () => {
+      const wrapper = mount(<IsSelectedController />);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(false);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+      wrapper.setProps({ itemZeroProps: { isSelected: true } });
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(true);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+    });
+
+    test('setting to false after mount should cause item to appear unselected', () => {
+      const wrapper = mount(<IsSelectedController itemZeroProps={{ isSelected: true }} />);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(true);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+      wrapper.setProps({ itemZeroProps: { isSelected: false } });
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(false);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+    });
+
+    test('setting after mount should not fire onClick', () => {
+      const clickSpy = jest.fn();
+      const wrapper = mount(<IsSelectedController itemZeroProps={{ onClick: clickSpy }} />);
+      wrapper.setProps({ isSelected: true });
+      expect(clickSpy).not.toHaveBeenCalled();
+    });
+
+    test('should still be applied when other items are clicked and the menu is reopened', () => {
+      const clickSpyZero = jest.fn();
+      const clickSpyOne = jest.fn();
+      const wrapper = mount(
+        <IsSelectedController
+          itemZeroProps={{ isSelected: true, onClick: clickSpyZero }}
+          itemOneProps={{ isSelected: false, onClick: clickSpyOne }}
+        />
+      );
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(true);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
+
+      // Item is now not selected, and onClick has been called so app can update it's state
+      wrapper.find(Item).at(0).simulate('click');
+      wrapper.find(Item).at(1).simulate('click');
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(false);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(true);
+      expect(clickSpyZero).toHaveBeenCalled();
+      expect(clickSpyOne).toHaveBeenCalled();
+
+      // Toggles the menu closed then open again
+      wrapper.find('.test-trigger').simulate('click');
+      wrapper.find('.test-trigger').simulate('click');
+
+      // Item should still be selected, because it still has isSelected applied.
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(0))).toBe(true);
+      expect(isIconSelected(wrapper.find(CheckboxIcon).at(1))).toBe(false);
     });
   });
 });

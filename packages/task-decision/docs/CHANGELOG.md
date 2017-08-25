@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.5.3 (2017-08-25)
+
+* bug fix; show placeholder with ellipsis it it will overflow (issues closed: fs-1286) ([d18ccba](https://bitbucket.org/atlassian/atlaskit/commits/d18ccba))
 ## 3.5.2 (2017-08-25)
 
 * bug fix; direct import date-fns for support classes too (issues closed: fs-1280) ([0dfa9e8](https://bitbucket.org/atlassian/atlaskit/commits/0dfa9e8))

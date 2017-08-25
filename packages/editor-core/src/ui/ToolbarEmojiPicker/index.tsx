@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as styles from './styles';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
@@ -9,6 +8,8 @@ import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@atlaskit/emoji';
 import Layer from '@atlaskit/layer';
 import ToolbarButton from '../ToolbarButton';
+
+const numButtons = 2; // Number of toolbar buttons between right edge of the emoji picker and the editor
 
 export interface Props {
   editorView: EditorView;
@@ -25,37 +26,50 @@ export interface State {
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
   private buttonRef: any;
-  private pluginState?: any;
+  private pluginState?: EmojiState;
 
   state: State = {
     isOpen: false,
   };
 
   componentWillMount() {
-    const { editorView, pluginKey } = this.props;
+    this.setPluginState(this.props);
+  }
+
+  componentDidMount() {
+    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+    if (this.pluginState) {
+      this.pluginState.subscribe(this.handlePluginStateChange);
+    }
+  }
+
+  componentDidUpdate() {
+    const { button } = this.state;
+    if (!button || !button.getBoundingClientRect().width) {
+      this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.pluginState) {
+      this.pluginState.unsubscribe(this.handlePluginStateChange);
+    }
+  }
+
+
+  private setPluginState(props: Props) {
+    const { editorView, pluginKey } = props;
 
     if (!editorView) {
       return;
     }
 
-    this.pluginState = pluginKey.getState(editorView.state);
-  }
+    const pluginState = pluginKey.getState(editorView.state);
 
-  componentDidMount() {
-    this.state.button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-    this.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUmount() {
-    this.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
-  render() {
-    return (
-      <div>
-        {this.renderTrigger(this.renderPopup())}
-      </div>
-    );
+    if (pluginState) {
+      this.pluginState = pluginState;
+      pluginState.subscribe(this.handlePluginStateChange);
+    }
   }
 
   private handlePluginStateChange = (pluginState: EmojiState) => {
@@ -118,41 +132,57 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     );
   }
 
-  private renderTrigger(content) {
-    const { isOpen, disabled, button } = this.state;
-    let offset = '0 0';
-    if (button) {
-      const buttonRect = button.getBoundingClientRect();
-      offset = `${this.getOffsetX(buttonRect)} 0`;
-   }
+  render() {
+    const { isOpen, disabled, button }  = this.state;
+    const toolbarButton = (
+      <ToolbarButton
+        selected={isOpen}
+        disabled={disabled}
+        onClick={this.toggleOpen}
+        iconBefore={<EmojiIcon label="Insert emoji (:)" />}
+        ref={this.handleButtonRef}
+        title="Insert emoji (:)"
+      />
+    );
 
+    if (!button) {
+      return toolbarButton;
+    }
+
+    return (
+      <div>
+        {this.renderTrigger(this.renderPopup(), toolbarButton)}
+      </div>
+    );
+  }
+
+  private renderTrigger(content, trigger) {
+    const { button } = this.state;
+
+    // Check already occurs in render() by needed for typescript
+    if (!button) {
+      return null;
+    }
+
+    const offset = `${this.getOffsetX(button.getBoundingClientRect())} 0`;
     return (
       <Layer
         content={content}
         position="top left"
         offset={offset}
-        autoPosition={true}
       >
-        <ToolbarButton
-          selected={isOpen}
-          disabled={disabled}
-          onClick={this.toggleOpen}
-          iconBefore={<EmojiIcon label="Insert emoji (:)" />}
-          ref={this.handleButtonRef}
-          title="Insert emoji (:)"
-        />
+        {trigger}
       </Layer>
     );
   }
 
   private getOffsetX = (buttonRect: ClientRect): number => {
-    const editorRect = this.props.editorView.dom.getBoundingClientRect();
-    return -(buttonRect.left + emojiPickerWidth - editorRect.right) - styles.marginRight;
+    return -(emojiPickerWidth - numButtons * buttonRect.width);
   }
 
   @analytics('atlassian.editor.emoji.button')
   private handleSelectedEmoji = (emojiId: any, emoji: any): boolean => {
-    if (this.state.isOpen) {
+    if (this.state.isOpen && this.pluginState) {
       this.pluginState.insertEmoji(emojiId);
       this.close();
       return true;

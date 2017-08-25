@@ -43,7 +43,7 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(editorView, providerFactory) {
+  secondaryToolbarComponent(editorView, eventDispatcher, providerFactory) {
     const renderNode = (providers) => {
       return <ToolbarEmojiPicker editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
     };

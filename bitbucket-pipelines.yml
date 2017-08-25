@@ -49,6 +49,8 @@ pipelines:
   default:
     - step:
         script:
+          - ./build/bin/setup.sh
+          - ./build/bin/prep_for_release.sh
           - git fetch origin
           - git diff --name-only origin/master...
           - git diff --name-only master...

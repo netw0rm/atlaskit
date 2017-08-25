@@ -84,6 +84,7 @@ pipelines:
     run-browserstack: # this is to allow users to manually run BS for a commit
       - step:
           script:
+            - export FORCE_BS_TESTS="Yes"
             - ./build/bin/setup.sh
             - yarn
             - yarn run browserstack/tunnel/start

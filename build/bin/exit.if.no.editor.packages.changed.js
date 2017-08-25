@@ -28,7 +28,7 @@ if (process.env.FORCE_BS_TESTS) {
 }
 
 exec('git fetch origin')
-.then(() => exec('git diff --name-only master...'))
+.then(() => exec('git diff --name-only origin/master...'))
 .then((result) => {
   const changedFiles = result.stdout.split('\n');
   const changedEditorPackages = changedFilesToChangedPackages(changedFiles)

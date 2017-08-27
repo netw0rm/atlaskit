@@ -114,6 +114,13 @@ export const settings: Provided = ((): Provided => {
   return theme;
 })();
 
+export const siteSettings: Provided = ((): Provided => {
+  // deep copy settings and only re-assign the secondary color
+  const theme: Provided = JSON.parse(JSON.stringify(settings));
+  theme.background.secondary = style.akColorN800;
+  return theme;
+})();
+
 export const global: Provided = ((): Provided => {
   const primaryBackground: Background = style.akColorB500;
   const activeBackground: Background = style.akColorB200;

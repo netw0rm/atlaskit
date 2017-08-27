@@ -56,6 +56,7 @@ export default class AppSwitcher extends Component {
     }
     if (typeof activated.item.onClick === 'function') {
       setTimeout(activated.item.onClick, 0);
+      this.setState({ isDropdownOpen: false });
     }
   };
 

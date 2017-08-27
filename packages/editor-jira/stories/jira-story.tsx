@@ -11,6 +11,7 @@ import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/to
 import { name, version } from '../package.json';
 import Editor from '../src';
 import MentionResource from './mentions/mention-resource';
+import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 
 const mediaTestHelpers = {
   defaultClientId,
@@ -103,6 +104,13 @@ storiesOf(name, module)
       onChange={handleChange}
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={mentionEncoder}
+    />
+  )
+  .add('Editor (Recently viewed in link dialog)', () =>
+    <Editor
+      onChange={handleChange}
+      allowLinks={true}
+      activityProvider={Promise.resolve(new MockActivityResource())}
     />
   )
   .add('Editor with InlineEdit', () => {

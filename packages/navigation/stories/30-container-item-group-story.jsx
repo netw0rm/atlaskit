@@ -6,6 +6,7 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import AkButton from '@atlaskit/button';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
@@ -27,7 +28,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon label="add" />}
+              iconBefore={<EmojiCustomIcon label="add" size="medium" />}
               spacing="none"
             />
           }
@@ -68,18 +69,15 @@ storiesOf(name, module)
     <BasicNavigation>
       <AkNavigationItem
         icon={<SearchIcon label="Search" />}
-        isCompact
         text="Search"
       />
       <AkNavigationItemGroup title="No action">
         <AkNavigationItem
           icon={<SettingsIcon label="Settings" />}
-          isCompact
           text="Settings"
         />
         <AkNavigationItem
           icon={<IssuesIcon label="Issues" />}
-          isCompact
           text="Issues"
         />
       </AkNavigationItemGroup>
@@ -87,7 +85,7 @@ storiesOf(name, module)
         action={
           <AkButton
             appearance="subtle"
-            iconBefore={<EmojiCustomIcon label="add" />}
+            iconBefore={<EmojiCustomIcon label="add" size="medium" />}
             spacing="none"
           />
         }
@@ -95,13 +93,13 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           icon={<SettingsIcon label="Settings" />}
-          isCompact
           text="Settings"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
         <AkNavigationItem
           icon={<IssuesIcon label="Issues" />}
-          isCompact
           text="Issues"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup
@@ -110,13 +108,13 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           icon={<SettingsIcon label="Settings" />}
-          isCompact
           text="Settings"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
         <AkNavigationItem
           icon={<IssuesIcon label="Issues" />}
-          isCompact
           text="Issues"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup
@@ -125,13 +123,13 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           icon={<SettingsIcon label="Settings" />}
-          isCompact
           text="Settings"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
         <AkNavigationItem
           icon={<IssuesIcon label="Issues" />}
-          isCompact
           text="Issues"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup
@@ -140,13 +138,37 @@ storiesOf(name, module)
       >
         <AkNavigationItem
           icon={<SettingsIcon label="Settings" />}
+          text="Settings"
+          action={<CancelIcon label="Cancel" size="small" />}
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Issues" />}
+          text="Issues"
+          action={<CancelIcon label="Cancel" size="small" />}
+        />
+      </AkNavigationItemGroup>
+      <AkNavigationItemGroup
+        action={
+          <AkButton
+            appearance="subtle"
+            iconBefore={<EmojiCustomIcon label="add" size="medium" />}
+            spacing="none"
+          />
+        }
+        isCompact
+        title="Compact group and items"
+      >
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" />}
           isCompact
           text="Settings"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
         <AkNavigationItem
           icon={<IssuesIcon label="Issues" />}
           isCompact
           text="Issues"
+          action={<CancelIcon label="Cancel" size="small" />}
         />
       </AkNavigationItemGroup>
     </BasicNavigation>

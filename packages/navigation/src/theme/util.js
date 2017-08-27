@@ -1,16 +1,17 @@
 // @flow
-import React, { PureComponent } from 'react';
-import { css, ThemeProvider } from 'styled-components';
-import { itemThemeNamespace } from '@atlaskit/item';
+import { css } from 'styled-components';
 import hasOwnProperty from '../utils/has-own-property';
-import type { Provided, RootTheme } from '../theme/types';
+import type { Provided } from '../theme/types';
 import { container } from './presets';
-import createItemTheme from './map-navigation-theme-to-item-theme';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
 export const rootKey = prefix('root');
 export const groupKey = prefix('group');
 export const isDropdownOverflowKey = prefix('isDropdownOverflow');
+export const isElectronMacKey = prefix('isElectronMac');
+
+export const isElectronMac = (map?: Object): boolean =>
+  map !== undefined && hasOwnProperty(map, isElectronMacKey) && map[isElectronMacKey];
 
 export const getProvided = (map?: Object): Provided => {
   if (map !== undefined && hasOwnProperty(map, rootKey)) {
@@ -43,37 +44,4 @@ export const whenCollapsedAndNotInOverflowDropdown = (...args: Array<any>) => cs
   ${({ theme }) => (isCollapsed(theme) && !isInOverflowDropdown(theme) ? css(...args) : '')}
 `;
 
-export class WithRootTheme extends PureComponent {
-  static defaultProps = {
-    isCollapsed: false,
-  }
-
-  props: {
-    provided: Provided,
-    isCollapsed?: boolean,
-    children?: any
-  }
-
-  withOuterTheme = (outerTheme: ?Object = {}): Object => {
-    const theme: RootTheme = {
-      provided: this.props.provided,
-      isCollapsed: (this.props.isCollapsed || false),
-    };
-
-    return {
-      ...outerTheme,
-      [rootKey]: theme,
-      [itemThemeNamespace]: createItemTheme(this.props.provided, this.props.isCollapsed),
-    };
-  }
-
-  render() {
-    return (
-      <ThemeProvider
-        theme={outerTheme => this.withOuterTheme(outerTheme)}
-      >
-        {this.props.children}
-      </ThemeProvider>
-    );
-  }
-}
+export { default as WithRootTheme } from './with-root-theme';

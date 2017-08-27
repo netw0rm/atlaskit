@@ -3,7 +3,6 @@ import {
   akBorderRadius,
   akGridSizeUnitless,
   akColorN20,
-  akColorN80,
 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
@@ -27,12 +26,4 @@ export const IconWrapper = styled.span`
   height: 24px;
   width: 24px;
   position: absolute;
-`;
-
-// tslint:disable-next-line:variable-name
-export const Placeholder = styled.span`
-  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
-  position: absolute;
-  color: ${akColorN80};
-  pointer-events: none;
 `;

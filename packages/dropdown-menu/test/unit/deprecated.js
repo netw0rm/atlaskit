@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Droplist, { Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import MoreIcon from '@atlaskit/icon/glyph/more';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
 
 import { name } from '../../package.json';
@@ -326,7 +326,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2 },
+            { content: '0' }, { content: '1' }, { content: '2' },
           ],
         }];
 
@@ -339,8 +339,8 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2, isHidden: true },
-            { content: 3, isHidden: true }, { content: 4 },
+            { content: '0' }, { content: '1' }, { content: '2', isHidden: true },
+            { content: '3', isHidden: true }, { content: '4' },
           ],
         }];
 
@@ -353,7 +353,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2 },
+            { content: '0' }, { content: '1' }, { content: '2' },
           ],
         }];
 
@@ -366,7 +366,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0, isHidden: true }, { content: 1, isHidden: true }, { content: 2 },
+            { content: '0', isHidden: true }, { content: '1', isHidden: true }, { content: '2' },
           ],
         }];
 
@@ -381,7 +381,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 },
+            { content: '0' }, { content: '1' },
           ],
         }];
 
@@ -394,7 +394,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0, isHidden: true }, { content: 1, isHidden: true }, { content: 2 },
+            { content: '0', isHidden: true }, { content: '1', isHidden: true }, { content: '2' },
           ],
         }];
 
@@ -407,7 +407,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2 },
+            { content: '0' }, { content: '1' }, { content: '2' },
           ],
         }];
 
@@ -420,8 +420,8 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1, isHidden: true }, { content: 2, isHidden: true },
-            { content: 3, isHidden: true }, { content: 4 },
+            { content: '0' }, { content: '1', isHidden: true }, { content: '2', isHidden: true },
+            { content: '3', isHidden: true }, { content: '4' },
           ],
         }];
 
@@ -434,7 +434,7 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2 },
+            { content: '0' }, { content: '1' }, { content: '2' },
           ],
         }];
 
@@ -447,8 +447,8 @@ describe(name, () => {
         const Items = [{
           heading: 'group',
           items: [
-            { content: 0 }, { content: 1 }, { content: 2 }, { content: 3, isHidden: true },
-            { content: 4, isHidden: true },
+            { content: '0' }, { content: '1' }, { content: '2' }, { content: '3', isHidden: true },
+            { content: '4', isHidden: true },
           ],
         }];
 

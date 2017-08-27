@@ -5,7 +5,7 @@ See the Installation and Usage guide in the [jscodeshift repo](https://github.co
 An example usage might look something like this:
 
 ```
-jscodeshift -t codemod/icon/6-to-7 packages/navigation/stories
+jscodeshift -t codemod/icon/6-to-7 packages/navigation/stories --extensions js,jsx --parser flow
 ```
 
 ### Useful tips
@@ -13,6 +13,7 @@ jscodeshift -t codemod/icon/6-to-7 packages/navigation/stories
 * Pass the `-d` flag to do a dry run.
 * Pass the `-p` flag to print the output of each transformation.
 * By default the jscodeshift will only transform `.js` files. You can specify other extensions with the `--extensions` flag. e.g. `--extensions js,jsx`.
+* If you are using Flow typing in your code, pass the `--parser flow` flag.
 
 # Existing codemods
 

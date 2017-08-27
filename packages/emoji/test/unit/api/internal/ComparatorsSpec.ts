@@ -1,15 +1,65 @@
 import { expect } from 'chai';
 
 import { EmojiDescription, EmojiVariationDescription } from '../../../../src/types';
-import { EmojiComparator } from '../../../../src/api//EmojiComparator';
 
 import {
   AlphabeticalShortnameComparator,
+  AsciiMatchComparator,
+  ChainedEmojiComparator,
+  EmojiComparator,
   ExactShortNameMatchComparator,
+  EmojiTypeComparator,
   OrderComparator,
   QueryStringPositionMatchComparator,
   UsageFrequencyComparator
 } from '../../../../src/api/internal/Comparators';
+
+class PresetResultComparator implements EmojiComparator {
+  private result: number;
+
+  constructor(result: number) {
+    this.result = result;
+  }
+
+  compare(e1, e2) {
+    return this.result;
+  }
+}
+
+describe('ChainedEmojiComparator', () => {
+
+  const emoji: EmojiDescription = {
+    shortName: 'abc',
+    type: 'standard',
+    category: 'monkey trousers',
+    representation: undefined,
+    searchable: false
+  };
+
+  it('should return first comparator result when not 0', () => {
+    const comparator = new ChainedEmojiComparator(new PresetResultComparator(100), new PresetResultComparator(200));
+
+    expect(comparator.compare(emoji,emoji)).to.equal(100);
+  });
+
+  it('should return second comparator result when first is 0', () => {
+    const comparator = new ChainedEmojiComparator(new PresetResultComparator(0), new PresetResultComparator(200));
+
+    expect(comparator.compare(emoji,emoji)).to.equal(200);
+  });
+
+  it('should return 0 when all comparators return 0', () => {
+    const comparator = new ChainedEmojiComparator(new PresetResultComparator(0), new PresetResultComparator(0));
+
+    expect(comparator.compare(emoji,emoji)).to.equal(0);
+  });
+
+  it('should return 0 when no comparators', () => {
+    const comparator = new ChainedEmojiComparator();
+
+    expect(comparator.compare(emoji,emoji)).to.equal(0);
+  });
+});
 
 describe('EmojiComparator implementations', () => {
   let comparator: EmojiComparator;
@@ -44,6 +94,44 @@ describe('EmojiComparator implementations', () => {
     });
 
     it('should return 0 when left and right are identical', () => {
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+  });
+
+  describe('AsciiMatchComparator', () => {
+    beforeEach(() => {
+      comparator = new AsciiMatchComparator(':->');
+    });
+
+    it('should be negative when left matches and emoji and right does not', () => {
+      left.ascii = [ ':>', ':->'];
+      right.ascii = [ 'x-)'];
+
+      expect(comparator.compare(left, right) < 0).to.equal(true);
+    });
+
+    it('should be positive when left does not matches and emoji and right does', () => {
+      left.ascii = [ 'x-)'];
+      right.ascii = [ ':>', ':->'];
+
+      expect(comparator.compare(left, right) > 0).to.equal(true);
+    });
+
+    it('should be zero when both match', () => {
+      left.ascii = [ ':>', ':->'];
+      right.ascii = [ ':->'];
+
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+
+    it('should be zero when neither match', () => {
+      left.ascii = [ ':>', ':-)'];
+      right.ascii = [ 'x-)'];
+
+      expect(comparator.compare(left, right)).to.equal(0);
+    });
+
+    it('should be zero when neither have an ascii representation', () => {
       expect(comparator.compare(left, right)).to.equal(0);
     });
   });
@@ -112,7 +200,115 @@ describe('EmojiComparator implementations', () => {
     });
   });
 
-  describe('ExactShortNameMatchComparator', () => {
+  describe('EmojiTypeComparator', () => {
+    describe('standard order', () => {
+      beforeEach(() => {
+        comparator = new EmojiTypeComparator(false);
+      });
+
+      it('should order STANDARD before ATLASSIAN', () => {
+        left.type = 'STANDARD';
+        right.type = 'ATLASSIAN';
+
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+      });
+
+      it('should order STANDARD before SITE', () => {
+        left.type = 'STANDARD';
+        right.type = 'SITE';
+
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+      });
+
+      it('should order ATLASSIAN before SITE', () => {
+        left.type = 'ATLASSIAN';
+        right.type = 'SITE';
+
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+
+      });
+
+      it('should order STANDARD, ATLASSIAN and SITE before an unknown type', () => {
+        left.type = 'STANDARD';
+        right.type = 'monkeytrousers';
+
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+
+        left.type = 'ATLASSIAN';
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+
+        left.type = 'SITE';
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+      });
+
+      it('should return 0 for emoji of the same types', () => {
+        left.type = 'STANDARD';
+        right.type = 'STANDARD';
+
+        expect(comparator.compare(left,right)).to.equal(0);
+
+        left.type = 'monkeytrousers';
+        right.type = 'simianwaistcoat';
+
+        expect(comparator.compare(left,right)).to.equal(0);
+      });
+    });
+
+    describe('reverse order', () => {
+      beforeEach(() => {
+        comparator = new EmojiTypeComparator(true);
+      });
+
+      it('should order STANDARD after ATLASSIAN', () => {
+        left.type = 'STANDARD';
+        right.type = 'ATLASSIAN';
+
+        expect(comparator.compare(left,right) > 0).to.equal(true);
+        expect(comparator.compare(right,left) < 0).to.equal(true);
+      });
+
+      it('should order STANDARD after SITE', () => {
+        left.type = 'STANDARD';
+        right.type = 'SITE';
+
+        expect(comparator.compare(left,right) > 0).to.equal(true);
+        expect(comparator.compare(right,left) < 0).to.equal(true);
+      });
+
+      it('should order ATLASSIAN after SITE', () => {
+        left.type = 'ATLASSIAN';
+        right.type = 'SITE';
+
+        expect(comparator.compare(left,right) > 0).to.equal(true);
+        expect(comparator.compare(right,left) < 0).to.equal(true);
+
+      });
+
+      it('should order STANDARD, ATLASSIAN and SITE before an unknown type', () => {
+        left.type = 'STANDARD';
+        right.type = 'monkeytrousers';
+
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+
+        left.type = 'ATLASSIAN';
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+
+        left.type = 'SITE';
+        expect(comparator.compare(left,right) < 0).to.equal(true);
+        expect(comparator.compare(right,left) > 0).to.equal(true);
+      });
+    });
+  });
+
+  describe('OrderComparator', () => {
 
     beforeEach(() => {
       comparator = OrderComparator.Instance;

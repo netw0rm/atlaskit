@@ -37,6 +37,9 @@ export class UsageFrequencyTracker {
   }
 
   /**
+   * Record the fact that the supplied emoji was used. You should note that usage is updated asynchronously so you can not
+   * count on getOrder() reflecting this usage immediately.
+   *
    * @param emoji the emoji who's usage is to be recorded. If the emoji has no id then no usage will be recorded
    */
   recordUsage(emoji: EmojiDescription): void {

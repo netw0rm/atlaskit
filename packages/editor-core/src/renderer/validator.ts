@@ -5,6 +5,8 @@ import {
   Schema
 } from '../prosemirror';
 
+import { uuid } from '../plugins/utils';
+
 export interface Doc {
   version: 1;
   type: 'doc';
@@ -227,7 +229,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
     switch (type) {
       case 'applicationCard': {
         if (!attrs) { break; }
-        const { text, link, background, preview, title, description, details } = attrs;
+        const { text, link, background, preview, title, description, details, context } = attrs;
         if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
 
         // title must contain only one key "text"
@@ -239,6 +241,15 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
           (background && !background.url) ||
           (preview && !preview.url) ||
           (description && !description.text)) { break; }
+
+        if (context && typeof context.text !== 'string') { break; }
+        if (context && context.icon) {
+          const { url, label } = context.icon;
+          if (typeof url !== 'string' || typeof label !== 'string') {
+            break;
+          }
+        }
+
         if (details && !Array.isArray(details)) { break; }
 
         if (details && details.some(meta => {
@@ -465,7 +476,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid(),
             },
           };
         }
@@ -477,8 +488,8 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'DECIDED'
             },
           };
         }
@@ -490,20 +501,20 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
             type,
             content,
             attrs: {
-              localId: attrs.localId,
+              localId: attrs && attrs.localId || uuid()
             },
           };
         }
         break;
       }
       case 'taskItem': {
-        if (content && attrs && attrs.localId) {
+        if (content) {
           return {
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'TODO'
             },
           };
         }

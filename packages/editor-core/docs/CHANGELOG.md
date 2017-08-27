@@ -1,5 +1,34 @@
 # @atlaskit/editor-core
 
+## 46.5.0 (2017-08-25)
+
+* bug fix; upgrade mediapicker to 7.0.3 (issues closed: ed-2556) ([2c36a86](https://bitbucket.org/atlassian/atlaskit/commits/2c36a86))
+* feature; adding support for lists in editor-hipchat schema ([c695497](https://bitbucket.org/atlassian/atlaskit/commits/c695497))
+## 46.4.3 (2017-08-24)
+
+* bug fix; fix creation of unwanted link cards when going in/out of edit link box (issues closed: ed-2404) ([eae0a3a](https://bitbucket.org/atlassian/atlaskit/commits/eae0a3a))
+## 46.4.2 (2017-08-24)
+
+* bug fix; update the storybook for editor-core rnderer ([ce2ac94](https://bitbucket.org/atlassian/atlaskit/commits/ce2ac94))
+* bug fix; handle onClick events for application cards - open the link ([a70b447](https://bitbucket.org/atlassian/atlaskit/commits/a70b447))
+## 46.4.1 (2017-08-24)
+
+* bug fix; group mentions and "self" mentions are not rendered in blue anymore (issues closed: ed-2553) ([b8aab4d](https://bitbucket.org/atlassian/atlaskit/commits/b8aab4d))
+## 46.4.0 (2017-08-24)
+
+* feature; application Card to support context (issues closed: ed-2532) ([eb57585](https://bitbucket.org/atlassian/atlaskit/commits/eb57585))
+## 46.3.0 (2017-08-24)
+
+* bug fix; merged master ([4e39b8c](https://bitbucket.org/atlassian/atlaskit/commits/4e39b8c))
+
+
+
+* feature; added editor actions to the dropdown ([8d86399](https://bitbucket.org/atlassian/atlaskit/commits/8d86399))
+* feature; added dot menu (issues closed: ed-2484) ([999e4f2](https://bitbucket.org/atlassian/atlaskit/commits/999e4f2))
+* feature; added secondaryToolbarComponents to the Message Editor (issues closed: ed-2484) ([7930907](https://bitbucket.org/atlassian/atlaskit/commits/7930907))
+## 46.2.4 (2017-08-23)
+
+* bug fix; tolerate missing attributes for task/decision nodes. (issues closed: fs-1303) ([deab934](https://bitbucket.org/atlassian/atlaskit/commits/deab934))
 ## 46.2.3 (2017-08-23)
 
 

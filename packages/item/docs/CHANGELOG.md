@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 3.1.1 (2017-08-24)
+
+* bug fix; fix alignment of navigation item group action (issues closed: ak-3279) ([4f98025](https://bitbucket.org/atlassian/atlaskit/commits/4f98025))
 ## 3.1.0 (2017-08-22)
 
 * feature; accept new ItemGroup.role prop (still defaults to "group") (issues closed: ak-3325) ([747d3da](https://bitbucket.org/atlassian/atlaskit/commits/747d3da))

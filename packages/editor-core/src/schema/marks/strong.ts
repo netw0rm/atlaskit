@@ -3,7 +3,6 @@ import { FONT_STYLE } from '../groups';
 
 /**
  * @name strong_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'strong';

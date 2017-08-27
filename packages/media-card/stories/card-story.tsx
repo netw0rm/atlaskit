@@ -31,7 +31,15 @@ import {
   errorFileId
 } from '@atlaskit/media-test-helpers';
 
-import { Card, UrlPreviewIdentifier, MediaIdentifier, Identifier, CardAppearance, CardEvent, OnSelectChangeFuncResult } from '../src';
+import {
+  Card,
+  UrlPreviewIdentifier,
+  FileIdentifier,
+  Identifier,
+  CardAppearance,
+  CardEvent,
+  OnSelectChangeFuncResult
+} from '../src';
 import { SelectableCard } from './utils/selectableCard';
 
 const context = createStorybookContext();
@@ -184,7 +192,7 @@ storiesOf('Card', {})
       url: 'https://atlassian.com'
     };
 
-    const fileIdentifier: MediaIdentifier = {
+    const fileIdentifier: FileIdentifier = {
       mediaItemType: 'file',
       id: 'fd4c4672-323a-4b6c-8326-223169e2a13e',
       collectionName
@@ -354,7 +362,7 @@ storiesOf('Card', {})
   })
   .add('Files', () => {
     // standard
-    const successIdentifier: MediaIdentifier = imageFileId;
+    const successIdentifier: FileIdentifier = imageFileId;
     const standardCards = [
       {
         title: 'Small',
@@ -411,6 +419,27 @@ storiesOf('Card', {})
       }
     ];
 
+    // collection and no collection configuration of files
+    const fileWithNoCollection: FileIdentifier = {
+      mediaItemType: 'file',
+      id: 'e84c54a4-38b2-463f-ae27-5ba043c3e4c2'
+    };
+
+    const collectionConfigCards = [
+      {
+        title: 'Standalone file (NO collection)',
+        content: (
+          <Card identifier={fileWithNoCollection} context={context} />
+        )
+      },
+      {
+        title: 'File within collection',
+        content: (
+          <Card identifier={successIdentifier} context={context} />
+        )
+      }
+    ];
+
     return (
       <div>
         <h1 style={{margin: '10px 20px'}}>File cards</h1>
@@ -432,6 +461,9 @@ storiesOf('Card', {})
 
           <h3>Lazy load</h3>
           <StoryList>{lazyLoadCards}</StoryList>
+
+          <h3>Collection configurations</h3>
+          <StoryList>{collectionConfigCards}</StoryList>
         </div>
       </div>
     );
@@ -539,7 +571,6 @@ storiesOf('Card', {})
 
           <h3>Embed cards</h3>
           <StoryList>{embedCards}</StoryList>
-
         </div>
       </div>
     );

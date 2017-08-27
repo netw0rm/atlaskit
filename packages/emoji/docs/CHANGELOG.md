@@ -1,5 +1,18 @@
 # @atlaskit/emoji
 
+## 27.0.0 (2017-08-24)
+
+
+
+* feature; add tests for the frequent emoji in the EmojiPicker. ([5b176d0](https://bitbucket.org/atlassian/atlaskit/commits/5b176d0))
+* bug fix; ensure only 16 frequent emoji are shown and they are at top of picker ([038b6eb](https://bitbucket.org/atlassian/atlaskit/commits/038b6eb))
+* breaking; EmojiProvider implementations need to implement a new method: getFrequentlyUsed. ([84b7c6c](https://bitbucket.org/atlassian/atlaskit/commits/84b7c6c))
+* breaking; show frequently used emoji in the EmojiPicker. (issues closed: fs-1095) ([84b7c6c](https://bitbucket.org/atlassian/atlaskit/commits/84b7c6c))
+
+* breaking; EmojiRepository search now applies a default sort unless you specifically set a parameter to prevent ([4f21e3c](https://bitbucket.org/atlassian/atlaskit/commits/4f21e3c))
+* breaking; sort the default emoji presented in the typeahead so that the most frequently used (issues closed: fs-1094) ([4f21e3c](https://bitbucket.org/atlassian/atlaskit/commits/4f21e3c))
+
+
 ## 26.0.2 (2017-08-21)
 
 * bug fix; no longer chain calls to mediapicker (no longer supported). ([14b4e6c](https://bitbucket.org/atlassian/atlaskit/commits/14b4e6c))

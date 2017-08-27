@@ -1,5 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
+import * as classNames from 'classnames';
 
 import { name } from '../package.json';
 import { getEmojis } from '../src/support/story-data';
@@ -10,6 +11,7 @@ import EmojiPickerList from '../src/components/picker/EmojiPickerList';
 import ToneSelector from '../src/components/common/ToneSelector';
 import EmojiUploadPicker from '../src/components/common/EmojiUploadPicker';
 
+import * as styles from '../src/components/picker/styles';
 import { emojiPickerWidth } from '../src/constants';
 import filters from '../src/util/filters';
 
@@ -25,7 +27,7 @@ const defaultStyles = {
 
 storiesOf(`${name}/Internal picker components`, module)
   .add('emoji picker list', () => (
-    <div style={defaultStyles}>
+    <div className={classNames([styles.emojiPicker])}>
       <EmojiPickerList
         emojis={emojis}
       />

@@ -223,13 +223,19 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
   private handleOnBlur = () => {
     const { editorView, pluginState } = this.props;
-    const { href = '' } = this.state;
+    const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
       pluginState.hideLinkPanel();
     } else if (!href || href.length === 0) {
       pluginState.removeLink(editorView);
     } else {
-      pluginState.updateLink({ href }, editorView);
+      if (text && pluginState.text !== text) {
+        pluginState.updateLinkText(text, editorView);
+        this.setState({ text: '' });
+      }
+      if (href && pluginState.href !== href) {
+        pluginState.updateLink({ href }, editorView);
+      }
     }
     this.resetInputActive();
   }

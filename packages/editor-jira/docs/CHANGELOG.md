@@ -1,5 +1,15 @@
 # @atlaskit/editor-jira
 
+## 20.6.0 (2017-08-24)
+
+* feature; add support for activity for the link dialog ([c5b34b5](https://bitbucket.org/atlassian/atlaskit/commits/c5b34b5))
+## 20.5.0 (2017-08-23)
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+## 20.4.0 (2017-08-23)
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
 ## 20.3.0 (2017-08-17)
 
 * feature; update minimum editor-core version ([f6a1e09](https://bitbucket.org/atlassian/atlaskit/commits/f6a1e09))

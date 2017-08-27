@@ -4,14 +4,10 @@ import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 /**
  * @name taskItem_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'taskItem';
   content: Array<Inline>;
-  /**
-   * @additionalProperties false
-   */
   attrs: {
     localId: string;
     state: 'TODO' | 'DONE';

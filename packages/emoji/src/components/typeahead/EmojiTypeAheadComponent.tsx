@@ -5,13 +5,12 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
-import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, SearchSort, SearchOptions, ToneSelection } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
 import { toEmojiId } from '../../type-helpers';
-
-export const defaultListLimit = 50;
+import { defaultListLimit } from './EmojiTypeAhead';
 
 export interface OnLifecycle {
   (): void;
@@ -141,10 +140,19 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
 
   private onSearch(query?: string) {
     const { emojiProvider, listLimit } = this.props;
-    emojiProvider.filter(query, {
+    const options: SearchOptions = {
       limit: listLimit || defaultListLimit,
       skinTone: this.state.selectedTone,
-    });
+    };
+
+    if (query && query.replace(':','').length > 0) {
+      options.sort = SearchSort.Default;
+    } else {
+      // if empty query (i.e. typeahead triggered only) then only sort by usage
+      options.sort = SearchSort.UsageFrequency;
+    }
+
+    emojiProvider.filter(query, options);
   }
 
   private onSearchResult = (result: EmojiSearchResult): void => {

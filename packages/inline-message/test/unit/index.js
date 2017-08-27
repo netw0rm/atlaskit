@@ -3,18 +3,12 @@ import { shallow, mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
-import {
-  akColorB400,
-  akColorG300,
-  akColorP300,
-  akColorR300,
-  akColorY300,
-} from '@atlaskit/util-shared-styles';
+
 import InlineDialog from '@atlaskit/inline-dialog';
 import InlineMessage from '../../src/';
 import IconForType from '../../src/components/IconForType';
 import IconWrapper from '../../src/styled/IconForType';
-import { Text } from '../../src/styled/InlineMessage';
+import { Text, Title } from '../../src/styled/InlineMessage';
 
 import { name } from '../../package.json';
 
@@ -37,7 +31,7 @@ describe(name, () => {
   describe('props', () => {
     describe('title', () => {
       it('supplied title should be rendered', () => {
-        expect(mount(<InlineMessage title="Title goes here" />).find(Text).text()).toBe('Title goes here');
+        expect(mount(<InlineMessage title="Title goes here" />).find(Title).text()).toBe('Title goes here');
       });
     });
     describe('secondaryText', () => {
@@ -71,27 +65,27 @@ describe(name, () => {
         it('connectivity type produces connectivity icon', () => {
           const wrapper = shallow(<IconForType type="connectivity" />);
           expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
-          expect(wrapper.find(IconWrapper).prop('iconColor')).toBe(akColorB400);
+          expect(wrapper.find(IconWrapper).prop('appearance')).toBe('connectivity');
         });
         it('confirmation type produces confirmation icon', () => {
           const wrapper = shallow(<IconForType type="confirmation" />);
           expect(wrapper.find(CheckCircleIcon).length).toBeGreaterThan(0);
-          expect(wrapper.find(IconWrapper).prop('iconColor')).toBe(akColorG300);
+          expect(wrapper.find(IconWrapper).prop('appearance')).toBe('confirmation');
         });
         it('info type produces info icon', () => {
           const wrapper = shallow(<IconForType type="info" />);
           expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
-          expect(wrapper.find(IconWrapper).prop('iconColor')).toBe(akColorP300);
+          expect(wrapper.find(IconWrapper).prop('appearance')).toBe('info');
         });
         it('warning type produces warning icon', () => {
           const wrapper = shallow(<IconForType type="warning" />);
           expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
-          expect(wrapper.find(IconWrapper).prop('iconColor')).toBe(akColorY300);
+          expect(wrapper.find(IconWrapper).prop('appearance')).toBe('warning');
         });
         it('error type produces error icon', () => {
           const wrapper = shallow(<IconForType type="error" />);
           expect(wrapper.find(WarningIcon).length).toBeGreaterThan(0);
-          expect(wrapper.find(IconWrapper).prop('iconColor')).toBe(akColorR300);
+          expect(wrapper.find(IconWrapper).prop('appearance')).toBe('error');
         });
       });
     });

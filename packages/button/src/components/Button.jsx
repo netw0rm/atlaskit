@@ -41,10 +41,12 @@ export default class Button extends Component {
     /** The base styling to apply to the button. */
     appearance: PropTypes.oneOf([
       'default',
+      'danger',
       'link',
       'primary',
       'subtle',
       'subtle-link',
+      'warning',
     ]),
     /** Pass aria-controls to underlying html button. */
     ariaControls: PropTypes.string,

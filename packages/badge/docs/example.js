@@ -24,6 +24,10 @@ const Badges = () => (
       <Badge appearance="primary" value={-5} />
     </Row>
     <Row>
+      <span>Primary Inverted</span>
+      <Badge appearance="primaryInverted" value={-5} />
+    </Row>
+    <Row>
       <span>Important</span>
       <Badge appearance="important" value={25} />
     </Row>

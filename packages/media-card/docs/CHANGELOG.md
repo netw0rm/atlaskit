@@ -1,5 +1,9 @@
 # @atlaskit/media-card
 
+## 21.0.0 (2017-08-23)
+
+* breaking; Removed the exported "MediaIdentifier" type and replaced it with "FileIdentifier" and ([56280b6](https://bitbucket.org/atlassian/atlaskit/commits/56280b6))
+* breaking; added support to <Card /> for files which don't exist within a collection (issues closed: msw-34) ([56280b6](https://bitbucket.org/atlassian/atlaskit/commits/56280b6))
 ## 19.0.3 (2017-08-18)
 
 * bug fix; use LinkCard for horizonal smart cards (issues closed: msw-155) ([1d5070e](https://bitbucket.org/atlassian/atlaskit/commits/1d5070e))

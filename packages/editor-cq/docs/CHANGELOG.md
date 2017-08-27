@@ -1,5 +1,12 @@
 # @atlaskit/editor-cq
 
+## 4.8.0 (2017-08-23)
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+## 4.7.0 (2017-08-23)
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
 ## 4.6.3 (2017-08-23)
 
 * bug fix; trigger a release for editor-cq (issues closed: ed-2359) ([9ac1dae](https://bitbucket.org/atlassian/atlaskit/commits/9ac1dae))

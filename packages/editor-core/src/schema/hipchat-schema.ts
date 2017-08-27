@@ -39,6 +39,11 @@ export const hipchatSchema: Schema<any, any> = createSchema({
 
     // blockquote
     'blockquote',
+
+    // list
+    'orderedList',
+    'bulletList',
+    'listItem',
   ],
   marks: [
     // Represents a hyperlink to a URL.

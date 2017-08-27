@@ -2,13 +2,9 @@ import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
 /**
  * @name applicationCard_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'applicationCard';
-  /**
-   * @additionalProperties false
-   */
   attrs: Attributes;
 }
 
@@ -34,38 +30,53 @@ export interface Attributes {
      */
     url: string;
   };
-  title: {
-    text: string;
-  };
-  description?: {
-    text: string;
-  };
-  details?: Array<Detail>;
+  title: AppCardTitle;
+  description?: AppCardDescription;
+  details?: AppCardDetails[];
+  context?: AppCardContext;
 }
 
-export interface Detail {
+export interface AppCardContext {
+  text: string;
+  icon?: AppCardIcon;
+}
+
+export interface AppCardTitle {
+  text: string;
+}
+
+export interface AppCardDescription {
+  text: string;
+}
+
+export interface AppCardDetails {
   title?: string;
   text?: string;
-  icon?: Icon;
-  badge?: {
-    value: number;
-    max?: number;
-    appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
-  };
-  lozenge?: {
-    text: string,
-    bold?: boolean;
-    appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
-  };
-  users?: Array<User>;
+  icon?: AppCardIcon;
+  badge?: AppCardBadge;
+  lozenge?: AppCardLozenge;
+  users?: AppCardUser[];
 }
 
-export interface User {
+export interface AppCardBadge {
+  value: number;
+  max?: number;
+  theme?: 'default' | 'dark';
+  appearance?: 'default' | 'primary' | 'important' | 'added' | 'removed';
+}
+
+export interface AppCardLozenge {
+  text: string;
+  bold?: boolean;
+  appearance?: 'default' | 'success' | 'removed' | 'inprogress' | 'new' | 'moved';
+}
+
+export interface AppCardUser {
   id?: string;
-  icon: Icon;
+  icon: AppCardIcon;
 }
 
-export interface Icon {
+export interface AppCardIcon {
   /**
    * @pattern "^https:\/\/|^data:image\/"
    */
@@ -83,6 +94,7 @@ const defaultAttrs = {
   title: { default: { text: '' } },
   description: { default: null },
   details: { default: null },
+  context: { default: null },
 };
 
 export const applicationCard: NodeSpec = {

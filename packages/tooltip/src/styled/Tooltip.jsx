@@ -74,7 +74,7 @@ const textColor = themed({
 });
 
 // apply all the things
-export default styled.div`
+export default styled.span`
   animation: ${getKeyframeName} ${animTime}s ${animDelay}s backwards;
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;

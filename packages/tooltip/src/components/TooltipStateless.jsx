@@ -37,7 +37,7 @@ export default class TooltipStateless extends PureComponent {
     ) : null;
 
     return (
-      <div onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+      <span onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
         <Layer
           autoPosition
           content={tooltip}
@@ -46,7 +46,7 @@ export default class TooltipStateless extends PureComponent {
         >
           {children}
         </Layer>
-      </div>
+      </span>
     );
   }
 }

@@ -154,17 +154,17 @@ export default class Layer extends PureComponent {
   render() {
     const { cssPosition, transform } = this.state;
     return (
-      <div>
-        <div ref={ref => (this.targetRef = ref)}>
+      <span>
+        <span ref={ref => (this.targetRef = ref)}>
           {this.props.children}
-        </div>
-        <div
+        </span>
+        <span
           ref={ref => (this.contentRef = ref)}
           style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
         >
           {this.props.content}
-        </div>
-      </div>
+        </span>
+      </span>
     );
   }
 }

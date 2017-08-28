@@ -1,4 +1,3 @@
-import * as rgba from 'polished/lib/color/rgba';
-import * as parseToRgb from 'polished/lib/color/parseToRgb';
+import {parseToRgb, rgba} from 'polished';
 
-export const colorWithAlpha = (color, alpha) => rgba({...parseToRgb(color), alpha});
+export const colorWithAlpha = (color: string, alpha: number) => rgba({...parseToRgb(color), alpha});

@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { colors } from '@atlaskit/theme';
 import Spinner from '@atlaskit/spinner';
 import Icon from '@atlaskit/icon/glyph/warning';
-import theme from '../styled/theme';
 
 // exported for testing
 export const WarningIcon = styled.div`
   align-items: center;
-  color: ${theme.icon.color};
+  color: ${colors.yellow};
   display: flex;
 `;
 

@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Inline Edit"
+    "name": "Inline Edit",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -28,10 +29,10 @@
     "react-dom": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^2.0.2",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/field-base": "^7.4.3",
     "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",

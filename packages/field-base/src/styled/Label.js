@@ -41,6 +41,6 @@ export const LabelInner = styled.div`
 `;
 
 export const RequiredIndicator = styled.span`
-  color: ${colors.R300};
+  color: ${colors.red};
   padding-left: 2px;
 `;

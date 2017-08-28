@@ -30,7 +30,7 @@ AutocompleteWrapper.displayName = 'SingleSelectAutocompleteWrapper';
 const AutocompleteInput = styled.input`
   background: none;
   border: 0;
-  color: ${colors.N800};
+  color: ${colors.heading};
   font-size: 14px;
   margin: 0;
   min-height: ${gridSize() * 4.5}px;

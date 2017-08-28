@@ -29,8 +29,9 @@ const Input = styled.input`
   border: 0;
   background: none;
   align-self: center;
-  font-size: ${fontSize()}px;
+  font-size: ${fontSize}px;
   line-height: ${lineHeightDefault};
+  color: ${colors.text};
 
   &::placeholder {
     font-size: 14px;

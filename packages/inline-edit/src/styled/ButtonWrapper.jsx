@@ -1,21 +1,19 @@
 import styled from 'styled-components';
-import {
-  akColorN0,
-  akColorN50A,
-  akColorN60A,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize, themed } from '@atlaskit/theme';
+
+const shadow1 = themed({ light: colors.N50A, dark: colors.DN50A });
+const shadow2 = themed({ light: colors.N60A, dark: colors.DN60A });
 
 const ButtonWrapper = styled.div`
-  background-color: ${akColorN0};
-  border-radius: ${(akGridSizeUnitless / 2) - 1}px;
-  box-shadow: 0 ${akGridSizeUnitless / 2}px ${akGridSizeUnitless}px -${akGridSizeUnitless / 4}px ${akColorN50A},
-              0 0 1px ${akColorN60A};
+  background-color: ${colors.background};
+  border-radius: ${(gridSize() / 2) - 1}px;
+  box-shadow: 0 ${gridSize() / 2}px ${gridSize}px -${gridSize() / 4}px ${shadow1},
+              0 0 1px ${shadow2};
   box-sizing: border-box;
   z-index: 200;
 
   &:last-child {
-    margin-left: ${akGridSizeUnitless / 2}px;
+    margin-left: ${gridSize() / 2}px;
   }
 `;
 

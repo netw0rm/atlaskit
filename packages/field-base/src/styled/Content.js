@@ -75,15 +75,16 @@ const getMargin = ({ appearance, isFocused, paddingDisabled, readOnly }) => {
 };
 
 const getColor = themed({ light: colors.N900, dark: colors.DN100 });
+const getBorderStyle = props => (props.appearance === 'none' ? 'none' : 'solid');
 
 export const Content = styled.div`
-  ${p => getBorderAndPadding(p)};
-  ${p => getMargin(p)};
+  ${getBorderAndPadding};
+  ${getMargin};
   color: ${getColor};
   background-color: ${p => (p.isFocused ? getBackgroundColorFocus(p) : getBackgroundColor(p))};
   border-color: ${p => (p.isFocused ? getBorderColorFocus(p) : getBorderColor(p))};
   border-radius: ${borderRadius};
-  border-style: ${p => (p.appearance === 'none' ? 'none' : 'solid')};
+  border-style: ${getBorderStyle};
   box-sizing: border-box;
   display: flex;
   flex: 0 1 auto;
@@ -98,8 +99,8 @@ export const Content = styled.div`
     border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
 
-  ${p => getHoverState(p)}
-  ${p => getDisabledState(p)}
+  ${getHoverState}
+  ${getDisabledState}
 `;
 
 export const ContentWrapper = styled.div`

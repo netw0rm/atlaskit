@@ -8,7 +8,7 @@ import Icon from '@atlaskit/icon/glyph/warning';
 // exported for testing
 export const WarningIcon = styled.div`
   align-items: center;
-  color: ${colors.Y300};
+  color: ${colors.yellow};
   display: flex;
 `;
 

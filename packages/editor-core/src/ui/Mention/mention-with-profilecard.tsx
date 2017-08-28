@@ -7,16 +7,10 @@ import {
 } from '@atlaskit/mention';
 
 import { ProfilecardProvider } from './types';
-import {
-  default as AkProfilecardResourced,
-  AkProfilecardTriggerActions,
-} from '@atlaskit/profilecard';
+import { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
 import { MentionEventHandler } from '../Renderer';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';
-
-// tslint:disable:next-line variable-name
-const ProfilecardResourcedWithListeners = withOuterListeners(AkProfilecardResourced);
 
 interface Coords {
   x: number;
@@ -43,6 +37,7 @@ export interface State {
   visible: boolean;
   popupAlignX: PopupAlignX;
   popupAlignY: PopupAlignY;
+  ProfilecardResourcedWithListeners?: React.ComponentClass<any>;
 }
 
 export default class MentionWithProfileCard extends PureComponent<Props, State> {
@@ -51,6 +46,15 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
 
   private handleRef = (target: HTMLElement | null) => {
     this.setState({ target });
+  }
+
+  componentDidMount () {
+    require.ensure([], () => {
+      const profilecard = require('@atlaskit/profilecard').default;
+      this.setState({
+        ProfilecardResourcedWithListeners: withOuterListeners(profilecard)
+      });
+    });
   }
 
   private calculateLayerPosition(): [PopupAlignX, PopupAlignY] {
@@ -138,6 +142,7 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
       popupAlignY,
       target,
       visible,
+      ProfilecardResourcedWithListeners
     } = this.state;
 
     const {
@@ -167,14 +172,16 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
           alignX={popupAlignX}
           alignY={popupAlignY}
         >
+        {ProfilecardResourcedWithListeners ?
           <ProfilecardResourcedWithListeners
-            handleClickOutside={this.hideProfilecard}
-            handleEscapeKeydown={this.hideProfilecard}
-            cloudId={cloudId}
-            userId={id}
-            resourceClient={resourceClient}
-            actions={this.getActions(id, text, accessLevel)}
-          />
+              handleClickOutside={this.hideProfilecard}
+              handleEscapeKeydown={this.hideProfilecard}
+              cloudId={cloudId}
+              userId={id}
+              resourceClient={resourceClient}
+              actions={this.getActions(id, text, accessLevel)}
+          /> : null
+        }
         </Popup>}
       </span>
     );

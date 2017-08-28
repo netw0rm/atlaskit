@@ -104,13 +104,13 @@ test('GrantAccess should fire an appropriate analytics event when granting acces
     expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.grant-access-successful',
         expect.objectContaining({
-          cloudIds: expect.arrayContaining([
+          atlassianAccountIds: [
             'https://id.atlassian.com/openid/v2/u/1',
             'https://id.atlassian.com/openid/v2/u/2',
             'https://id.atlassian.com/openid/v2/u/3',
             'https://id.atlassian.com/openid/v2/u/4',
             'https://id.atlassian.com/openid/v2/u/5',
-          ]),
+          ].join(','),
         })
       );
   });

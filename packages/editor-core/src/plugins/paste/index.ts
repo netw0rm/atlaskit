@@ -140,6 +140,13 @@ export const createPlugin = (schema: Schema<any, any>) => {
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
         const { schema } = view.state;
+        const { $from } = view.state.selection;
+        const selectedNode = $from.node($from.depth);
+
+        if (text && selectedNode.type === schema.nodes.codeBlock) {
+          view.dispatch(view.state.tr.insertText(text));
+          return true;
+        }
 
         if (
           (text && isCode(text)) ||

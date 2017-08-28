@@ -314,8 +314,14 @@ storiesOf(name, module)
       </CodeWrapper>
     </Spaced>
     ))
-  .add('Multi select - loading state (initial fetch)', () => (
+  .add('Multi select (stateless) - loading state (initial fetch)', () => (
     <Spaced>
+      <p>
+        <strong>Note:</strong> loading options are
+        <strong> only available on the stateless component </strong>
+        as the stateful counterpart currently is not capable
+        of handling back-end requests to fetch new options/items.
+      </p>
       {SmartSelectInitialLoading}
       <CodeWrapper>
         <Code language="js" showLineNumbers={false} text={SmartSelectInitialLoadingRaw} />

@@ -55,12 +55,6 @@ export default class MultiSelect extends PureComponent {
     /** Set whether there is an error with the selection. Sets an orange border
     and shows the warning icon. */
     isInvalid: PropTypes.bool,
-    /** Sets whether the field is loading data. The same property is used
-     * for either initial fetch (when no options are available) as well for
-     * subsequent loading of more options. The component reacts accordingly
-     * based on the `items` provided.
-     */
-    isLoading: PropTypes.bool,
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
     content being the displayed text. */
@@ -69,10 +63,6 @@ export default class MultiSelect extends PureComponent {
       PropTypes.arrayOf(PropTypes.shape(itemShape)),
     ]),    /** Label to be displayed above select. */
     label: PropTypes.string,
-    /** Message to be displayed when the component is set to its loading state.
-    The message might be displayed differently depending on whether or not
-    there are items already being rendered. */
-    loadingMessage: PropTypes.string,
     /** name property to be passed to the html select element. */
     name: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
@@ -112,11 +102,9 @@ export default class MultiSelect extends PureComponent {
     defaultSelected: [],
     shouldFocus: false,
     shouldFlip: true,
-    isLoading: false,
     isRequired: false,
     items: [],
     label: '',
-    loadingMessage: 'Receiving information',
     onFilterChange: () => {},
     onNewItemCreated: () => {},
     onOpenChange: () => {},
@@ -194,10 +182,8 @@ export default class MultiSelect extends PureComponent {
       isFirstChild,
       isInvalid,
       invalidMessage,
-      isLoading,
       isRequired,
       label,
-      loadingMessage,
       name,
       noMatchesFound,
       placeholder,
@@ -221,12 +207,10 @@ export default class MultiSelect extends PureComponent {
         isFirstChild={isFirstChild}
         isInvalid={isInvalid}
         invalidMessage={invalidMessage}
-        isLoading={isLoading}
         isOpen={isOpen}
         isRequired={isRequired}
         items={items}
         label={label}
-        loadingMessage={loadingMessage}
         name={name}
         noMatchesFound={noMatchesFound}
         onFilterChange={this.handleFilterChange}

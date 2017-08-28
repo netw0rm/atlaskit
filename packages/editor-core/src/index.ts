@@ -22,6 +22,9 @@ export {
   TaskDecisionResource
 } from '@atlaskit/task-decision';
 
+import * as testHelpers from './test-helper';
+export { testHelpers };
+
 import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
 export * from './config';

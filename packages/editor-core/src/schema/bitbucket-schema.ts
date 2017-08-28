@@ -16,7 +16,11 @@ export const bitbucketSchema: Schema<any, any> = createSchema({
     'rule',
     'image',
     'mention',
-    'emoji'
+    'emoji',
+    'table',
+    'tableCell',
+    'tableHeader',
+    'tableRow'
   ],
   marks: [
     'em',

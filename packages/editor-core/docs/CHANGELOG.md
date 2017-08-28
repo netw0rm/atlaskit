@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 46.6.0 (2017-08-28)
+
+* bug fix; fixed missing prop in tests ([0311be8](https://bitbucket.org/atlassian/atlaskit/commits/0311be8))
+
+* feature; aligned emoji picker to right of editor ([98206e8](https://bitbucket.org/atlassian/atlaskit/commits/98206e8))
+* feature; added ToolbarEmojiPicker to message editor (issues closed: fs-1092) ([ab2c080](https://bitbucket.org/atlassian/atlaskit/commits/ab2c080))
+* feature; adding support for tables in bitbucket markdown serializer. ([2e0353c](https://bitbucket.org/atlassian/atlaskit/commits/2e0353c))
+* feature; stricter JSON Schema (issues closed: ed-2555) ([39c99a2](https://bitbucket.org/atlassian/atlaskit/commits/39c99a2))
 ## 46.5.0 (2017-08-25)
 
 * bug fix; upgrade mediapicker to 7.0.3 (issues closed: ed-2556) ([2c36a86](https://bitbucket.org/atlassian/atlaskit/commits/2c36a86))

@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 5.2.2 (2017-08-28)
+
+* bug fix; move widths into state so they trigger a re-render inside a PureComponent ([95a7928](https://bitbucket.org/atlassian/atlaskit/commits/95a7928))
 ## 5.2.1 (2017-08-18)
 
 * bug fix; stop click events from propagating up (issues closed: msw-165) ([7ffc2b2](https://bitbucket.org/atlassian/atlaskit/commits/7ffc2b2))

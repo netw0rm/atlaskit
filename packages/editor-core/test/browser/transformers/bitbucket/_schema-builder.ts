@@ -21,6 +21,10 @@ export const mention = (attrs: { id: string, text?: string }) => schema.nodes.me
 export const ol = nodeFactory(schema.nodes.orderedList);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bulletList);
+export const table = nodeFactory(schema.nodes.table, {});
+export const tr = nodeFactory(schema.nodes.tableRow, {});
+export const td = (attrs: { colspan?: number, rowspan?: number, background?: string | null }) => nodeFactory(schema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number, background?: string | null }) => nodeFactory(schema.nodes.tableHeader, attrs);
 
 // Marks
 export const a = (attrs: { href: string, title?: string }) => markFactory(schema.marks.link, attrs);

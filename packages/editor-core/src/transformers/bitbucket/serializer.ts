@@ -9,6 +9,7 @@ import {
   stringRepeat,
 } from './util';
 import { bitbucketSchema as schema } from '../../schema';
+import tableNodes from './tableSerializer';
 
 /**
  * Look for series of backticks in a string, find length of the longest one, then
@@ -58,7 +59,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
     const active: Mark[] = [];
 
     const progress = (node: PMNode | null, _?: any, index?: number) => {
-      let marks = node ? node.marks : [];
+      let marks = node ? node.marks.filter(mark => this.marks[mark.type.name]) : [];
       const code = marks.length && marks[marks.length - 1].type === schema.marks.code && marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
 
@@ -144,7 +145,7 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
   }
 }
 
-export const nodes = {
+const editorNodes = {
   blockquote(state: MarkdownSerializerState, node: PMNode, parent: PMNode, index: number) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
@@ -254,6 +255,8 @@ export const nodes = {
     state.write(node.attrs.shortName);
   }
 };
+
+export const nodes = { ...editorNodes, ...tableNodes };
 
 export const marks = {
   em: { open: '*', close: '*', mixable: true },

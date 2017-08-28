@@ -1,5 +1,8 @@
 # @atlaskit/editor-hipchat
 
+## 5.1.0 (2017-08-28)
+
+* feature; adding list plugin to editor hipchat. ([4b7f461](https://bitbucket.org/atlassian/atlaskit/commits/4b7f461))
 ## 5.0.0 (2017-08-23)
 
 * breaking; Upgrade to next major editor-core and other deps ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))

@@ -2,6 +2,7 @@ import React from 'react';
 import { Item, Group } from '@atlaskit/droplist';
 
 import NoMatches from '../styled/NoMatch';
+import InitialLoading from '../styled/InitialLoading';
 import GroupsContainer from '../styled/GroupsContainer';
 import { filterItems } from '../internal/sharedFunctions';
 
@@ -26,6 +27,23 @@ const renderNoItemsMessage = noMatchesFound => (
     {noMatchesFound}
   </NoMatches>
 );
+
+const renderLoadingMessage = loadingMessage => (
+  <InitialLoading aria-live="polite" role="status">
+    {loadingMessage}
+  </InitialLoading>
+);
+
+const renderMessageForEmptyList = ({
+  noMatchesFound,
+  isLoading,
+  loadingMessage,
+}) => (
+  isLoading
+    ? renderLoadingMessage(loadingMessage)
+    : renderNoItemsMessage(noMatchesFound)
+);
+
 /* eslint-disable react/prop-types*/
 const renderGroups = ({
   filterValue,
@@ -36,6 +54,8 @@ const renderGroups = ({
   noMatchesFound,
   selectedItems,
   shouldAllowCreateItem,
+  isLoading,
+  loadingMessage,
 }) => {
   const renderedGroups = groups.map((group, groupIndex) => {
     const filteredItems = filterItems(group.items, filterValue, selectedItems);
@@ -56,7 +76,11 @@ const renderGroups = ({
   // don't show the 'noItems' message when the new item functinality is enabled
   return (renderedGroups.length > 0 || shouldAllowCreateItem)
     ? <GroupsContainer hasFooter={hasFooter}>{renderedGroups}</GroupsContainer>
-    : renderNoItemsMessage(noMatchesFound);
+    : renderMessageForEmptyList({
+      noMatchesFound,
+      isLoading,
+      loadingMessage,
+    });
 };
 /* eslint-enable prop-types */
 

@@ -45,6 +45,8 @@ import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
 import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
 import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
+import SmartSelectInitialLoading from './examples/SmartSelectInitialLoading';
+import SmartSelectInitialLoadingRaw from '!raw!./examples/SmartSelectInitialLoading';
 /* eslint-enable import/first, import/no-duplicates */
 
 const Spaced = styled.div`
@@ -309,6 +311,14 @@ storiesOf(name, module)
       {SmartSelectCustomIcon}
       <CodeWrapper>
         <Code language="js" showLineNumbers={false} text={SmartSelectCustomIconRaw} />
+      </CodeWrapper>
+    </Spaced>
+    ))
+  .add('Multi select - loading state (initial fetch)', () => (
+    <Spaced>
+      {SmartSelectInitialLoading}
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={SmartSelectInitialLoadingRaw} />
       </CodeWrapper>
     </Spaced>
     ))

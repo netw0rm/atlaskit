@@ -68,6 +68,12 @@ export default class StatelessMultiSelect extends PureComponent {
     /** Set whether there is an error with the selection. Sets an orange border
     and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** Sets whether the field is loading data. The same property is used
+     * for either initial fetch (when no options are available) as well for
+     * subsequent loading of more options. The component reacts accordingly
+     * based on the `items` provided.
+     */
+    isLoading: PropTypes.bool,
     /** Sets whether the Select dropdown is open. */
     isOpen: PropTypes.bool,
     /** Sets whether form including select can be submitted without an option
@@ -82,6 +88,10 @@ export default class StatelessMultiSelect extends PureComponent {
     ]),
     /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** Message to be displayed when the component is set to its loading state.
+    The message might be displayed differently depending on whether or not
+    there are items already being rendered. */
+    loadingMessage: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
     including if there is one item that has been selected. */
     noMatchesFound: PropTypes.string,
@@ -128,9 +138,11 @@ export default class StatelessMultiSelect extends PureComponent {
     footer: {},
     shouldFocus: false,
     shouldFlip: true,
+    isLoading: false,
     isOpen: false,
     items: [],
     label: '',
+    loadingMessage: 'Receiving information',
     noMatchesFound: 'No matches found',
     onFilterChange: () => {},
     onOpenChange: () => {},
@@ -418,9 +430,11 @@ export default class StatelessMultiSelect extends PureComponent {
       isFirstChild,
       isInvalid,
       invalidMessage,
+      isLoading,
       isOpen,
       isRequired,
       label,
+      loadingMessage,
       name,
       noMatchesFound,
       position,
@@ -479,6 +493,7 @@ export default class StatelessMultiSelect extends PureComponent {
               isFocused={isOpen || isFocused}
               isInvalid={isInvalid}
               invalidMessage={invalidMessage}
+              isLoading={isLoading}
               isRequired={isRequired}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
@@ -499,6 +514,8 @@ export default class StatelessMultiSelect extends PureComponent {
             focusedItemIndex,
             handleItemSelect: this.handleItemSelect,
             shouldAllowCreateItem,
+            isLoading,
+            loadingMessage,
           })}
           {this.renderFooter()}
         </Droplist>

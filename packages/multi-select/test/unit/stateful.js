@@ -45,9 +45,11 @@ describe(`${name} - smart`, () => {
         shouldFocus
         isInvalid
         invalidMessage="invalid message"
+        isLoading
         isRequired
         items={items}
         label="label"
+        loadingMessage="loading stuff"
         name="name"
         noMatchesFound="no matches"
         position="top left"
@@ -61,9 +63,11 @@ describe(`${name} - smart`, () => {
       expect(statelessProps.isInvalid).toBe(true);
       expect(statelessProps.invalidMessage).toBe('invalid message');
       expect(statelessProps.isOpen).toBe(true);
+      expect(statelessProps.isLoading).toBe(true);
       expect(statelessProps.isRequired).toBe(true);
       expect(statelessProps.items).toBe(items);
       expect(statelessProps.label).toBe('label');
+      expect(statelessProps.loadingMessage).toBe('loading stuff');
       expect(statelessProps.name).toBe('name');
       expect(statelessProps.noMatchesFound).toBe('no matches');
       expect(statelessProps.position).toBe('top left');

@@ -15,6 +15,10 @@ import {
   mention,
   code_block,
   randomId,
+  decisionItem,
+  decisionList,
+  taskItem,
+  taskList,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { insertFile } from '../../../../src/plugins/media/media-files';
@@ -562,6 +566,26 @@ describe('media-links', () => {
         ),
         p(),
       ));
+    });
+  });
+
+  context('when selection is in a task or decision block', () => {
+    it('media insertion ignored for task item', () => {
+      const itemDoc = doc(taskList(taskItem('{<>}')));
+      const { editorView } = editor(itemDoc);
+
+      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+
+      expect(editorView.state.doc).to.deep.equal(itemDoc);
+    });
+
+    it('media insertion ignored for decision item', () => {
+      const decisionDoc = doc(decisionList(decisionItem('{<>}')));
+      const { editorView } = editor(decisionDoc);
+
+      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+
+      expect(editorView.state.doc).to.deep.equal(decisionDoc);
     });
   });
 });

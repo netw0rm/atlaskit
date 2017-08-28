@@ -54,13 +54,17 @@ class ConfirmTrial extends Component {
   };
 
   componentDidMount() {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.confirm-trial.displayed');
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(status === INACTIVE ?
+      'xflow.confirm-trial.displayed' :
+      'xflow.reactivate-trial.displayed');
   }
 
   handleConfirmClick = () => {
-    const { startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.confirm-trial.confirm-button.clicked');
+    const { status, startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent(status === INACTIVE ?
+      'xflow.confirm-trial.confirm-button.clicked' :
+      'xflow.reactivate-trial.confirm-button.clicked');
     this.setState({
       spinnerActive: true,
       buttonsDisabled: true,
@@ -69,11 +73,15 @@ class ConfirmTrial extends Component {
 
     startProductTrial()
       .then(() => {
-        firePrivateAnalyticsEvent('xflow.confirm-trial.start-product.trial.successful');
+        firePrivateAnalyticsEvent(status === INACTIVE ?
+          'xflow.confirm-trial.start-product-trial.successful' :
+          'xflow.reactivate-trial.start-product-trial.successful');
         onComplete();
       })
       .catch(() => {
-        firePrivateAnalyticsEvent('xflow.confirm-trial.start-product-trial.failed');
+        firePrivateAnalyticsEvent(status === INACTIVE ?
+          'xflow.confirm-trial.start-product-trial.failed' :
+          'xflow.reactivate-trial.start-product-trial.failed');
         this.setState({
           confluenceFailedToStart: true,
           spinnerActive: false,
@@ -83,14 +91,18 @@ class ConfirmTrial extends Component {
   };
 
   handleCancelClick = () => {
-    const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.confirm-trial.cancel-button.clicked');
+    const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(status === INACTIVE ?
+      'xflow.confirm-trial.cancel-button.clicked' :
+      'xflow.reactivate-trial.cancel-button.clicked');
     cancelStartProductTrial().then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.confirm-trial.error-flag.dismissed');
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(status === INACTIVE ?
+      'xflow.confirm-trial.error-flag.dismissed' :
+      'xflow.reactivate-trial.error-flag.dismissed');
     this.setState({
       confluenceFailedToStart: false,
     });

@@ -319,6 +319,7 @@ describe(name, () => {
         'star-filled',
         'star',
         'subtask',
+        'switcher',
         'table',
         'task',
         'trash',

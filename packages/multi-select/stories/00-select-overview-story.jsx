@@ -45,8 +45,8 @@ import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
 import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
 import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
-import SmartSelectInitialLoading from './examples/SmartSelectInitialLoading';
-import SmartSelectInitialLoadingRaw from '!raw!./examples/SmartSelectInitialLoading';
+import MultiSelectStatelessInitialLoading from './examples/MultiSelectStatelessInitialLoading';
+import MultiSelectStatelessInitialLoadingRaw from '!raw!./examples/MultiSelectStatelessInitialLoading';
 /* eslint-enable import/first, import/no-duplicates */
 
 const Spaced = styled.div`
@@ -322,9 +322,9 @@ storiesOf(name, module)
         as the stateful counterpart currently is not capable
         of handling back-end requests to fetch new options/items.
       </p>
-      {SmartSelectInitialLoading}
+      {MultiSelectStatelessInitialLoading}
       <CodeWrapper>
-        <Code language="js" showLineNumbers={false} text={SmartSelectInitialLoadingRaw} />
+        <Code language="js" showLineNumbers={false} text={MultiSelectStatelessInitialLoadingRaw} />
       </CodeWrapper>
     </Spaced>
     ))

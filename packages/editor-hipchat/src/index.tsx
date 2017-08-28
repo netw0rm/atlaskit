@@ -445,9 +445,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (editorView) {
       const { $cursor } = editorView.state.selection as TextSelection;
       const { paragraph } = editorView.state.schema.nodes;
-      return (!$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1))
-        ? true
-        : false;
+      return !$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1);
     }
     return false;
   }

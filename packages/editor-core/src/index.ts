@@ -1,6 +1,6 @@
 export {
   EmojiProvider,
-  EmojiResource,
+  AtlassianEmojiMigrationResource as EmojiResource,
 } from '@atlaskit/emoji';
 
 export {

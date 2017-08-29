@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 27.0.2 (2017-08-29)
+
+* bug fix; prevent default on category buttons (issues closed: fs-1320) ([976e395](https://bitbucket.org/atlassian/atlaskit/commits/976e395))
 ## 27.0.1 (2017-08-29)
 
 * bug fix; added external story to test AtlassianEmojiMigrationResource behaviour ([ec6a355](https://bitbucket.org/atlassian/atlaskit/commits/ec6a355))

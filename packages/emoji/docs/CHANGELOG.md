@@ -1,5 +1,11 @@
 # @atlaskit/emoji
 
+## 27.0.1 (2017-08-29)
+
+* bug fix; added external story to test AtlassianEmojiMigrationResource behaviour ([ec6a355](https://bitbucket.org/atlassian/atlaskit/commits/ec6a355))
+
+
+
 ## 27.0.0 (2017-08-24)
 
 

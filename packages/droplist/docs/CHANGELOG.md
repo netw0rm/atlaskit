@@ -1,5 +1,9 @@
 # @atlaskit/droplist
 
+## 4.10.0 (2017-08-29)
+
+* bug fix; remove unused theme file ([5481b6b](https://bitbucket.org/atlassian/atlaskit/commits/5481b6b))
+* feature; droplist has darkmode style options (issues closed: ak-3399) ([f4e1c65](https://bitbucket.org/atlassian/atlaskit/commits/f4e1c65))
 ## 4.9.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

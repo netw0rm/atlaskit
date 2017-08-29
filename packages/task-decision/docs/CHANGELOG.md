@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.5.4 (2017-08-29)
+
+* bug fix; results clears if initialQuery prop changes. Consistent spinner. (issues closed: fs-1315) ([0933f72](https://bitbucket.org/atlassian/atlaskit/commits/0933f72))
 ## 3.5.3 (2017-08-25)
 
 * bug fix; show placeholder with ellipsis it it will overflow (issues closed: fs-1286) ([d18ccba](https://bitbucket.org/atlassian/atlaskit/commits/d18ccba))

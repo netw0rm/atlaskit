@@ -1,3 +1,3 @@
 export default () => {
-  location.href = '/wiki/';
+  window.top.location.href = '/wiki/';
 };

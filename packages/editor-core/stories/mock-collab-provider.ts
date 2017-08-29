@@ -1,10 +1,13 @@
-import { AbstractCollabEditProvider } from '../src/editor/plugins/collab-edit/provider';
+import { EventEmitter } from 'events';
+import { CollabEditProvider } from '../src/editor/plugins/collab-edit/provider';
 
-class MockCollabEditProvider extends AbstractCollabEditProvider {
+export class MockCollabEditProvider implements CollabEditProvider {
+  protected getState = () => {};
+  protected eventBus: EventEmitter = new EventEmitter();
+
   initialize(getState: () => any) {
     this.getState = getState;
-
-    this.eventBus.emit('init', {
+    const doc = {
       'type': 'doc',
       'content': [
         {
@@ -17,7 +20,9 @@ class MockCollabEditProvider extends AbstractCollabEditProvider {
           ]
         }
       ]
-    });
+    };
+
+    this.eventBus.emit('init', { doc });
 
     return this;
   }
@@ -27,6 +32,18 @@ class MockCollabEditProvider extends AbstractCollabEditProvider {
       const json = tr.steps.map(step => step.toJSON());
       this.eventBus.emit('data', { json });
     }
+  }
+
+  on(evt: 'init' | 'data' | 'error', handler: (...args) => void) {
+    this.eventBus.on(evt, handler);
+    return this;
+  }
+
+  /**
+   * Only used for testing.
+   */
+  emit(evt: 'init' | 'data' | 'error', ...args) {
+    this.eventBus.emit(evt, ...args);
   }
 }
 

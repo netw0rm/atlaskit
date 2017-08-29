@@ -4,14 +4,14 @@ import {
   Transaction,
   Step,
   EditorView,
+  EditorState,
 } from '../../../prosemirror';
 import ProviderFactory from '../../../providerFactory';
 import { EditorPlugin } from '../../types';
-import { CollabEditProvider, AbstractCollabEditProvider } from './provider';
+import { CollabEditProvider } from './provider';
 
 export {
   CollabEditProvider,
-  AbstractCollabEditProvider
 };
 
 export const pluginKey = new PluginKey('collabEditPlugin');
@@ -27,7 +27,36 @@ class PluginState {
   }
 }
 
-export const applyRemoteSteps = (json: any[], view: EditorView) => {
+const handleInit = (data: { doc?: any, json?: any }, view: EditorView) => {
+  const { doc, json } = data;
+  if (!!doc) {
+    const { state, state: { schema, tr } } = view;
+    const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
+
+    if (content.length) {
+      const newState = state.apply(
+        tr
+          .setMeta('addToHistory', false)
+          .replaceWith(0, state.doc.nodeSize - 2, content)
+          .scrollIntoView()
+      );
+      view.updateState(newState);
+    }
+  } else if (!!json) {
+    applyRemoteSteps(json, view);
+  }
+};
+
+ const applyRemoteData = (data: { json?: any, newState?: EditorState<any> }, view: EditorView) => {
+  const { json, newState } = data;
+  if (!!json) {
+    applyRemoteSteps(json, view);
+  } else if (!!newState) {
+    view.updateState(newState);
+  }
+};
+
+const applyRemoteSteps = (json: any[], view: EditorView) => {
   const { state, state: { schema } } = view;
   let { tr } = state;
 
@@ -70,48 +99,19 @@ export const createPlugin = (providerFactory: ProviderFactory) => {
       return true;
     },
     view(view) {
-      providerFactory.subscribe('collabEditProvider', (name: string, provider?: Promise<CollabEditProvider>) => {
-        if (provider) {
-          provider.then(p => {
-            collabEditProvider = p;
+      providerFactory.subscribe('collabEditProvider', async (name: string, providerPromise?: Promise<CollabEditProvider>) => {
+        if (providerPromise) {
+          collabEditProvider = await providerPromise;
 
-            // Initialize provider
-            collabEditProvider
-              .on('init', data => {
-                const { doc, json } = data;
-                if (!!doc) {
-                  isReady = true;
-                  const { state, state: { schema, tr } } = view;
-                  const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
-
-                  if (content.length) {
-                    const newState = state.apply(
-                      tr
-                        .setMeta('addToHistory', false)
-                        .replaceWith(0, state.doc.nodeSize - 2, content)
-                        .scrollIntoView()
-                    );
-                    view.updateState(newState);
-                  }
-                } else if (!!json) {
-                  isReady = true;
-                  applyRemoteSteps(json, view);
-                }
-              })
-              .on('data', data => {
-                const { json, newState } = data;
-                if (!!json) {
-                  applyRemoteSteps(json, view);
-                } else if (!!newState) {
-                  view.updateState(newState);
-                }
-              })
-              .on('error', err => {
-                // TODO: Handle errors propery (ED-2580)
-              })
-              .initialize(() => view.state)
-            ;
-          });
+          // Initialize provider
+          collabEditProvider
+            .on('init', data => { isReady = true; handleInit(data, view); })
+            .on('data', data => applyRemoteData(data, view))
+            .on('error', err => {
+              // TODO: Handle errors propery (ED-2580)
+            })
+            .initialize(() => view.state)
+          ;
         } else {
           collabEditProvider = null;
           isReady = false;

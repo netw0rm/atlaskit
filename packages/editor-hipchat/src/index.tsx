@@ -87,8 +87,8 @@ export { schema };
 export interface Props {
   id?: string;
   maxContentSize?: number;
-  onSubmit?: (value: Doc) => void;
-  onChange?: () => void;
+  onSubmit?: (value: Promise<Doc>) => void;
+  onChange?: (value: Doc) => void;
   emojiProvider?: Promise<EmojiProvider>;
   mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
@@ -165,17 +165,26 @@ export default class Editor extends PureComponent<Props, State> {
    */
   get value(): Promise<Doc> {
     const { editorView } = this.state;
+    const { onChange } = this.props;
     const mediaPluginState = mediaStateKey.getState(editorView!.state) as MediaPluginState;
     return mediaPluginState.appendLinkCards().then(docWithLinkCards => {
-      const doc = docWithLinkCards ?
-        toJSON(docWithLinkCards) : editorView && toJSON(editorView.state.doc);
-
-      if (!doc) {
-        return { type: 'doc', version: 1, content: [] };
+      const doc = this.getDoc(docWithLinkCards);
+      if (onChange) {
+        onChange(doc);
       }
-
-      return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
+      return doc;
     });
+  }
+
+  getDoc(defaultDoc?: Node): Doc {
+    const { editorView } = this.state;
+    const doc = defaultDoc ? toJSON(defaultDoc) : editorView && toJSON(editorView.state.doc);
+
+    if (!doc) {
+      return { type: 'doc', version: 1, content: [] };
+    }
+
+    return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
   }
 
   /**
@@ -550,7 +559,7 @@ export default class Editor extends PureComponent<Props, State> {
         clearTimeout(debounced);
       }
 
-      debounced = setTimeout(() => { onChange(); }, 200);
+      debounced = setTimeout(onChange, 200, this.getDoc());
     }
   }
 

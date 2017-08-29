@@ -18,6 +18,19 @@ export interface URLInfo {
   pos: number;
 }
 
+function wait(x: number = 1000) {
+  return new Promise<undefined>(resolve => setTimeout(resolve, x, undefined));
+}
+
+async function fetchMetadata(linkCreateContext: Context, href: string) {
+  return Promise.race([
+    wait(),
+    new Promise<UrlPreview | undefined>(resolve => {
+      linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(resolve, _ => resolve(undefined));
+    })
+  ]);
+}
+
 export async function appendLinkCards(
   view: EditorView,
   stateManager: MediaStateManager,
@@ -34,44 +47,32 @@ export async function appendLinkCards(
     }
   });
 
-  const linkNodes = (await Promise.all(hrefs.map(href => new Promise<PMNode | undefined>(resolve => {
+  const linkNodes = (await Promise.all(hrefs.map(async (href) => {
     const id = `temporary:${uuid()}:${href}`;
-
-    stateManager.updateState(id, {
-      id,
-      status: 'processing',
-    });
 
     const isAppWithoutURL = metadata => metadata.resources && metadata.resources.app && !metadata.resources.app.url;
 
-    const updateStatus = (metadata?: UrlPreview) => {
-      stateManager.updateState(id, {
-        id,
-        status: 'unfinalized',
-        finalizeCb: async () => {
-          // Workaround for problem with missing fields preventing Twitter links from working
-          if(metadata && isAppWithoutURL(metadata))  {
-            (metadata as any).resources.app.url = metadata.url;
-          }
-          const publicId = await linkCreateContext.addLinkItem(href, collection, metadata);
-          stateManager.updateState(id, {
-            id,
-            publicId,
-            status: 'ready'
-          });
-        }
-      });
+    const metadata = await fetchMetadata(linkCreateContext, href);
+    // Workaround for problem with missing fields preventing Twitter links from working
+    if(metadata && isAppWithoutURL(metadata))  {
+      (metadata as any).resources.app.url = (metadata as any).url;
+    }
 
-      if (metadata) {
-        const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
-        resolve(linkNode);
-      } else {
-        resolve(undefined);
-      }
-    };
-
-    linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(updateStatus, (_) => updateStatus());
-  })))).filter(node => !!node);
+    stateManager.updateState(id, {
+      id,
+      status: 'unfinalized',
+      finalizeCb: () => {
+        linkCreateContext.addLinkItem(href, collection, metadata).then(publicId => {
+          stateManager.updateState(id, {id, publicId, status: 'processing'});
+          stateManager.updateState(id, {id, publicId, status: 'ready'});
+        });
+      },
+    });
+    if (metadata) {
+      const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
+      return linkNode;
+    }
+  }))).filter(node => !!node);
 
   if (linkNodes.length) {
     const mediaGroup = schema.nodes.mediaGroup.createChecked({}, linkNodes);

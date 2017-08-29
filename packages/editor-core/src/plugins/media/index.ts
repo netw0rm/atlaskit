@@ -32,12 +32,11 @@ import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../nodeviews';
 import keymapPlugin from './keymap';
-import { URLInfo, detectLinkRangesInSteps, appendLinkCards } from './media-links';
+import { URLInfo, detectLinkRangesInSteps, appendLinkCards, insertLinks } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 
-export { appendLinkCards };
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
@@ -203,14 +202,14 @@ export class MediaPluginState {
       linkCreateContextInstance = ContextFactory.create(linkCreateContextInstance as ContextConfig);
     }
 
-    // return insertLinks(
-    //   this.view,
-    //   this.stateManager,
-    //   this.handleMediaState,
-    //   this.linkRanges,
-    //   linkCreateContextInstance as Context,
-    //   this.collectionFromProvider()
-    // );
+    return insertLinks(
+      this.view,
+      this.stateManager,
+      this.handleMediaState,
+      this.linkRanges,
+      linkCreateContextInstance as Context,
+      this.collectionFromProvider()
+    );
   }
 
   appendLinkCards = async () => {

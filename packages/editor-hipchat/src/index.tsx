@@ -61,8 +61,6 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { version } from './version';
-import { hipchatEncoder } from './encoders';
-import { hipchatDecoder } from './decoders';
 
 export {
   AbstractMentionResource,
@@ -78,7 +76,7 @@ let debounced: number | null = null;
 
 export type Doc = {
   type: 'doc',
-  version: 1,
+  version: number,
   content?: any[]
 };
 
@@ -95,7 +93,6 @@ export interface Props {
   presenceProvider?: any;
   reverseMentionPicker?: boolean;
   uploadErrorHandler?: (state: MediaState) => void;
-  useLegacyFormat?: boolean;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   showEmojiPicker?: boolean;
@@ -111,6 +108,12 @@ export interface State {
   maxLengthReached?: boolean;
   flashToggle?: boolean;
 }
+
+const isMediaGroup = node => node.type && node.type === 'mediaGroup';
+const hasContent = node => node.content && node.content.length;
+const firstChild = node => hasContent(node) ? node.content[0] : {};
+const isLinkMedia = node => node.type === 'media' && node.attrs && node.attrs.type === 'link';
+const isMediaGroupWithLink = node => isMediaGroup(node) && isLinkMedia(firstChild(node));
 
 export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
@@ -184,7 +187,7 @@ export default class Editor extends PureComponent<Props, State> {
       return { type: 'doc', version: 1, content: [] };
     }
 
-    return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
+    return doc;
   }
 
   /**
@@ -221,28 +224,21 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (editorView) {
       const { state } = editorView;
-      const { useLegacyFormat } = this.props;
 
       let content: Node[];
 
-      if (useLegacyFormat) {
-        content = [schema.nodeFromJSON(hipchatDecoder(value).content[0])];
-      } else {
-        content = [];
-        (value.content || []).forEach(child => {
+      content = [];
+      (value.content || []).forEach(child => {
+        if (!isMediaGroupWithLink(child)) {
           content.push(schema.nodeFromJSON(child));
-        });
-      }
+        }
+      });
 
       if (content && content.length > 0) {
         const tr = state.tr
           .replaceWith(0, state.doc.nodeSize - 2, content)
           .scrollIntoView();
         editorView.dispatch(tr);
-      }
-
-      if (useLegacyFormat && !value.length) {
-        this.clear();
       }
     }
   }

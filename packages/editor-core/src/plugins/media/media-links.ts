@@ -7,8 +7,8 @@ import {
   MarkType,
   Node as PMNode,
 } from '../../prosemirror';
-import { endPositionOfParent } from '../../utils';
-import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
+// import { endPositionOfParent } from '../../utils';
+// import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
 import { uuid } from '../utils';
 import { unsupportedNodeTypesForMediaCards } from '../../schema/unsupported';
 import analyticsService from '../../analytics/service';
@@ -18,16 +18,22 @@ export interface URLInfo {
   pos: number;
 }
 
+const linkMetadataCache = new Map<string, Promise<UrlPreview | undefined>>();
+
 function wait(x: number = 1000) {
   return new Promise<undefined>(resolve => setTimeout(resolve, x, undefined));
 }
 
 async function fetchMetadata(linkCreateContext: Context, href: string) {
+  return new Promise<UrlPreview | undefined>(resolve => {
+    linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(resolve, _ => resolve(undefined));
+  });
+}
+
+async function fetchMetadataRace(linkCreateContext: Context, href: string) {
   return Promise.race([
     wait(),
-    new Promise<UrlPreview | undefined>(resolve => {
-      linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(resolve, _ => resolve(undefined));
-    })
+    linkMetadataCache.has(href) ? linkMetadataCache.get(href) : fetchMetadata(linkCreateContext, href)
   ]);
 }
 
@@ -52,27 +58,33 @@ export async function appendLinkCards(
 
     const isAppWithoutURL = metadata => metadata.resources && metadata.resources.app && !metadata.resources.app.url;
 
-    const metadata = await fetchMetadata(linkCreateContext, href);
-    // Workaround for problem with missing fields preventing Twitter links from working
-    if(metadata && isAppWithoutURL(metadata))  {
-      (metadata as any).resources.app.url = (metadata as any).url;
-    }
-
-    stateManager.updateState(id, {
-      id,
-      status: 'unfinalized',
-      finalizeCb: () => {
-        linkCreateContext.addLinkItem(href, collection, metadata).then(publicId => {
-          stateManager.updateState(id, {id, publicId, status: 'processing'});
-          stateManager.updateState(id, {id, publicId, status: 'ready'});
-        });
-      },
-    });
+    const metadata = await fetchMetadataRace(linkCreateContext, href);
     if (metadata) {
+      // Workaround for problem with missing fields preventing Twitter links from working
+      if(isAppWithoutURL(metadata))  {
+        (metadata as any).resources.app.url = (metadata as any).url;
+      }
+
       const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
+      stateManager.updateState(id, {
+        id,
+        status: 'unfinalized',
+        finalizeCb: () => {
+          linkCreateContext.addLinkItem(href, collection, metadata).then(publicId => {
+            stateManager.updateState(id, {id, publicId, status: 'processing'});
+            stateManager.updateState(id, {id, publicId, status: 'ready'});
+          });
+        },
+      });
+
       return linkNode;
+    } else {
+      linkCreateContext.addLinkItem(href, collection);
     }
   }))).filter(node => !!node);
+
+  // Flush the link cache
+  linkMetadataCache.clear();
 
   if (linkNodes.length) {
     const mediaGroup = schema.nodes.mediaGroup.createChecked({}, linkNodes);
@@ -102,9 +114,15 @@ export const insertLinks = async (
     return;
   }
 
-  const trQueue = new Array<Transaction>();
+  // const trQueue = new Array<Transaction>();
   return Promise.all(
     linkRanges.map(({ href, pos }) => {
+      // TODO: decide about re unfurling of the same url
+      if (!linkMetadataCache.has(href)) {
+        linkMetadataCache.set(href, fetchMetadata(linkCreateContext, href));
+      }
+      return Promise.resolve(undefined);
+      /*
       return new Promise<string | undefined>(resolve => {
         const { state, dispatch } = view;
         const posAtTheEndOfDoc = state.doc.nodeSize - 4;
@@ -157,6 +175,7 @@ export const insertLinks = async (
             .catch(updateStateWithError);
         }, updateStateWithError);
       });
+      */
     })
   );
 };

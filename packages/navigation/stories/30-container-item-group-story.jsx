@@ -6,7 +6,7 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
-import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import CancelIcon from '@atlaskit/icon/glyph/cross';
 import AkButton from '@atlaskit/button';
 import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';

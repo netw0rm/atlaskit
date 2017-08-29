@@ -12,6 +12,7 @@ import ResourcedEmojiById from './demo-resourced-emoji-by-id';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
 import { getEmojiResource } from '../src/support/story-data';
+import AtlassianEmojiMigrationResource from '../src/api/AtlassianEmojiMigrationResource';
 
 declare var require: {
     <T>(path: string): T;
@@ -27,6 +28,7 @@ try {
 }
 
 const defaultEmojiProvider = Promise.resolve(getEmojiResource());
+const atlassianEmojiMigrationProvider = Promise.resolve(new AtlassianEmojiMigrationResource(emojiConfig));
 
 storiesOf(`${name}/external-emoji`, module)
   .add('resourced picker', () => {
@@ -39,6 +41,21 @@ storiesOf(`${name}/external-emoji`, module)
     return (
       <ResourcedEmojiControl
         emojiConfig={emojiConfig}
+        children={picker}
+      />
+    );
+  })
+  .add('atlassian emoji migration resourced picker', () => {
+    const picker = (
+      <EmojiPickerTextInput
+        onSelection={action('emoji selected')}
+        emojiProvider={atlassianEmojiMigrationProvider}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={emojiConfig}
+        customEmojiProvider={atlassianEmojiMigrationProvider}
         children={picker}
       />
     );

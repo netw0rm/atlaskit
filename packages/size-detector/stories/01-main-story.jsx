@@ -51,7 +51,7 @@ storiesOf(name, module)
       </p>
       <div style={{ display: 'flex' }}>
         <ResizingBox>I am resizing</ResizingBox>
-        <SizeDetector outerStyles={{ height: 'auto' }}>
+        <SizeDetector containerStyle={{ height: 'auto' }}>
           {displayResults}
         </SizeDetector>
       </div>

@@ -3,18 +3,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import rafSchedule from 'raf-schd';
-import { containerDivStyle, objectStyle } from './styles';
+
+// Need to make outer div full height in case consumer wants to align
+// child content vertically center. These styles can be overridden by the
+// product using the optional SizeDetector.containerStyle prop.
+const containerDivStyle = {
+  height: '100%',
+  flex: '1 0 auto',
+  position: 'relative',
+};
+
+// Not using styled-components here for performance
+// and framework-agnostic reasons.
+const objectStyle = {
+  display: 'block',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  height: '100%',
+  width: '100%',
+  overflow: 'hidden',
+  pointerEvents: 'none',
+  zIndex: -1,
+};
 
 export default class SizeDetector extends Component {
   static propTypes = {
     /** Function that accepts an object parameter containing 'height' and 'width' properties */
     children: PropTypes.func.isRequired,
     /** Optional styles object to be applied to the containing element */
-    outerStyles: {},
+    containerStyle: {},
   }
 
   static defaultProps = { // eslint-disable-line react/sort-comp
-    outerStyles: {},
+    containerStyle: {},
   };
 
   state = {}
@@ -91,7 +113,7 @@ export default class SizeDetector extends Component {
   render() {
     return (
       <div
-        style={{ ...containerDivStyle, ...this.props.outerStyles }}
+        style={{ ...containerDivStyle, ...this.props.containerStyle }}
         ref={this.handleContainerRef}
       >
         <object
@@ -107,4 +129,3 @@ export default class SizeDetector extends Component {
     );
   }
 }
-

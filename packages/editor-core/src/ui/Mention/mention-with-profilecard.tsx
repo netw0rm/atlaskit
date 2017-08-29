@@ -5,6 +5,7 @@ import {
   MentionProvider,
   ResourcedMention,
 } from '@atlaskit/mention';
+import Spinner from '@atlaskit/spinner';
 
 import { ProfilecardProvider } from './types';
 import { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
@@ -180,7 +181,7 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
               userId={id}
               resourceClient={resourceClient}
               actions={this.getActions(id, text, accessLevel)}
-          /> : null
+          /> : <Spinner />
         }
         </Popup>}
       </span>

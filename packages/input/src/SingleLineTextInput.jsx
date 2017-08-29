@@ -9,7 +9,7 @@ const common = `
   color: inherit;
   font-size: ${akFontSizeDefault};
   font-family: inherit;
-  letter-spacing: normal;
+  letter-spacing: inherit;
 `;
 
 const ReadView = styled.div`

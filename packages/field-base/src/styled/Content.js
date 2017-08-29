@@ -42,18 +42,18 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, sub
 
 const getDisabledColor = themed({ light: colors.N60, dark: colors.DN80 });
 
-const getDisabledState = (p) => p.disabled && css`
-  color: ${getDisabledColor(p)};
+const getDisabledState = (props) => props.disabled && css`
+  color: ${getDisabledColor(props)};
   pointer-events: none;
 `;
 
-const getHoverState = (p) => {
-  if (p.readOnly || p.isFocused || p.none) return null;
+const getHoverState = (props) => {
+  if (props.readOnly || props.isFocused || props.none) return null;
 
   return css`
     &:hover {
-      background-color: ${getBackgroundColorHover(p)};
-      border-color: ${getBorderColorHover(p)};
+      background-color: ${getBackgroundColorHover(props)};
+      border-color: ${getBorderColorHover(props)};
     }
   `;
 };
@@ -78,11 +78,9 @@ const getColor = themed({ light: colors.N900, dark: colors.DN100 });
 const getBorderStyle = props => (props.appearance === 'none' ? 'none' : 'solid');
 
 export const Content = styled.div`
-  ${getBorderAndPadding};
-  ${getMargin};
   color: ${getColor};
-  background-color: ${p => (p.isFocused ? getBackgroundColorFocus(p) : getBackgroundColor(p))};
-  border-color: ${p => (p.isFocused ? getBorderColorFocus(p) : getBorderColor(p))};
+  background-color: ${props => (props.isFocused ? getBackgroundColorFocus(props) : getBackgroundColor(props))};
+  border-color: ${props => (props.isFocused ? getBorderColorFocus(props) : getBorderColor(props))};
   border-radius: ${borderRadius};
   border-style: ${getBorderStyle};
   box-sizing: border-box;
@@ -99,13 +97,15 @@ export const Content = styled.div`
     border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
 
+  ${getBorderAndPadding}
+  ${getMargin}
   ${getHoverState}
   ${getDisabledState}
 `;
 
 export const ContentWrapper = styled.div`
-  ${p => (p.disabled && 'cursor: not-allowed;')}
-  ${p => (p.grow && 'flex: 1 1 auto;')};
+  ${props => (props.disabled && 'cursor: not-allowed;')}
+  ${props => (props.grow && 'flex: 1 1 auto;')};
   align-items: center;
   display: flex;
   max-width: 100%;

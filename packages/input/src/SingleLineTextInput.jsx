@@ -5,10 +5,11 @@ import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 const common = `
+  appearance: none;
   color: inherit;
   font-size: ${akFontSizeDefault};
+  font-family: inherit;
   letter-spacing: normal;
-  appearance: none;
 `;
 
 const ReadView = styled.div`
@@ -20,14 +21,15 @@ const ReadView = styled.div`
 
 const EditView = styled.input`
   ${common}
-  line-height: inherit;
   background: transparent;
   border: 0;
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   cursor: inherit;
+  height: ${20 / 14}em; /* for IE11 because it ignores the line-height */
+  line-height: inherit;
+  margin: 0;
   outline: none;
+  padding: 0;
   width: 100%;
   :invalid: {
     boxshadow: none;

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const Expand = styled.div`
   align-items: center;
   display: flex;
-  flex: 0 0 ${akGridSizeUnitless * 3}px;
+  flex: 0 0 ${gridSize() * 3}px;
   justify-content: center;
-  margin: 0px ${akGridSizeUnitless}px;
+  margin: 0px ${gridSize}px;
 `;
 
 Expand.displayName = 'SingleSelectExpand';

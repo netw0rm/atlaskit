@@ -36,6 +36,7 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
         {...attrs}
       />
     );
+    applicationCard.setState({ AppCardView });
   });
 
   it('should wrap content with <AppCardView>-tag', () => {

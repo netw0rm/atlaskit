@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeOutExpo } from '../../styles';
+import { Root, cardShadow, center, antialiased, ellipsis, borderRadius, easeOutExpo } from '../../styles';
 import {
   akColorN20,
   akColorN70
@@ -14,15 +14,11 @@ export const SmallCard = styled(Root)`
   box-sizing: border-box;
   padding: 5px;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   transition: .8s background-color ${easeOutExpo};
 
   &:hover {
     background-color: ${akColorN20};
-
-    .title {
-      color: #0065FF;
-    }
   }
 
   &.loading {
@@ -30,37 +26,19 @@ export const SmallCard = styled(Root)`
     box-shadow: none;
     cursor: default;
 
-    .title, .size {
+    .title, .subtitle {
       ${borderRadius}
       color: transparent;
       background-color: ${akColorN20};
       height: 10px;
     }
 
-    .size {
+    .subtitle {
       width: 50%;
     }
 
-    .info-wrapper {
-      height: 100%;
-    }
-
-    .img-wrapper {
-      box-shadow: none;
-    }
   }
 
-  .error-icon {
-    height: 20px;
-  }
-`;
-
-export const FileInfoWrapper = styled.div`
-  ${spaceAround}
-  ${size()}
-
-  height: 100%;
-  padding: 3px 0;
 `;
 
 export const Retry = styled.div`
@@ -73,6 +51,10 @@ export const Retry = styled.div`
   margin-top: 2px;
 `;
 
+export interface ImgWrapperProps {
+  shadow: boolean;
+}
+
 export const ImgWrapper = styled.div`
   ${center}
   ${borderRadius}
@@ -82,14 +64,20 @@ export const ImgWrapper = styled.div`
   position: relative;
   float: left;
 
-  &.shadow {
-    ${cardShadow}
+  .media-card.loading & {
+    box-shadow: none;
   }
+
+  ${({shadow}: ImgWrapperProps) => shadow && cardShadow || ''}
 
   img {
     max-width: 100%;
     max-height: 100%;
   }
+`;
+
+export const ErrorWrapper = styled.div`
+  ${center}
 `;
 
 export const Error = styled.div`
@@ -101,31 +89,6 @@ export const Error = styled.div`
   line-height: 15px;
 `;
 
-export const Title = styled.div`
-  ${antialiased}
-  ${ellipsis()}
-  font-weight: bold;
-  color: #091E42;
-  font-size: 12px;
-  line-height: 15px;
-`;
-
-export const Size = styled.div`
-  ${ellipsis()}
-  color: ${akColorN70};
-  font-size: 12px;
-  line-height: 15px;
-  margin-top: 2px;
-`;
-
-export const RoundedBackground = styled.div`
-  ${centerX}
-  ${borderRadius}
-  min-width: ${imgSize}px;
-  height: inherit;
-  overflow: hidden;
-`;
-
 export const InfoWrapper = styled.div`
   display: flex;
   padding-left: 8px;
@@ -133,23 +96,14 @@ export const InfoWrapper = styled.div`
   width: 0;
   flex: 1;
   overflow: hidden;
-`;
 
-export const LoadingWrapper = styled.div`
-  ${center}
-  ${size()}
-  color: #cfd4db;
-  background-color: ${akColorN20};
-`;
-
-export const PlaceholderSmallWrapper = styled.div`
-  ${size(imgSize)}
-  ${center}
-  position: relative;
-
-  .file-type-icon {
-    position: absolute;
-
-    span {${size(12)}}
+  .media-card.loading & {
+    height: 100%;
   }
+
+`;
+
+export const ActionsWrapper = styled.div`
+  display: flex;
+  ${center}
 `;

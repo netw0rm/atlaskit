@@ -5,7 +5,7 @@ import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 import { SharedCardProps, CardStatus } from '../..';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
-import { LinkCardViewSmall } from '../cardViewSmall';
+import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 import { EmbedCard } from '../embedCard';
 import { A } from './styled';
@@ -25,7 +25,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     switch (appearance) {
 
       case 'small':
-        return this.renderSmallLink();
+        return this.renderSmallCard();
 
       case 'image':
         return this.renderLinkCardImage();
@@ -122,22 +122,23 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     );
   }
 
-  private renderSmallLink(): JSX.Element {
+  private renderSmallCard(): JSX.Element {
     const { url, title, site } = this.urlPreview;
     const { dimensions, actions } = this.props;
-    const { errorMessage } = this;
-
+    const { iconUrl, thumbnailUrl, isLoading, errorMessage } = this;
     return this.renderInLink(
       url,
-      <LinkCardViewSmall
-        error={errorMessage}
-        linkUrl={url}
+      <CardGenericViewSmall
         title={title}
-        site={site}
-        thumbnailUrl={this.iconUrl || this.thumbnailUrl}
+        subtitle={site || url}
+        iconUrl={iconUrl}
+        thumbnailUrl={thumbnailUrl}
         dimensions={dimensions}
-        loading={this.isLoading}
+        loading={isLoading}
         actions={actions}
+        error={errorMessage}
+        type="link"
+        mediaType="image"
       />
     );
   }

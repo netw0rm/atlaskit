@@ -70,7 +70,7 @@ const generateStoriesForFilesWithAppearance = (appearance: CardAppearance) => {
       <h3>Sizes (Breakpoints check)</h3>
       <StoryList>{createCardsOfDifferentSize(appearance, genericFileDetails, gifDataUri)}</StoryList>
 
-      <h4>Media Types - no placeholders</h4>
+      <h4>Media Types - no thumbnails (placeholders)</h4>
       <StoryList>{fileMediaTypeCards}</StoryList>
 
       <h4>Loading and error states</h4>

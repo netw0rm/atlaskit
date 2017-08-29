@@ -1,5 +1,10 @@
 # @atlaskit/mention
 
+## 7.4.0 (2017-08-28)
+
+
+* feature; update util-* dependencies ([eba115f](https://bitbucket.org/atlassian/atlaskit/commits/eba115f))
+* feature; update mention dependencies: avatar, icon, lozenge, tooltip (issues closed: fs-1309) ([8686314](https://bitbucket.org/atlassian/atlaskit/commits/8686314))
 ## 7.3.5 (2017-08-21)
 
 * bug fix; based on PR comment, update the variable name ([4517be5](https://bitbucket.org/atlassian/atlaskit/commits/4517be5))

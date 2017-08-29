@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 21.0.1 (2017-08-28)
+
+* bug fix; pinned polished in media-card to avoid type issues ([d517df8](https://bitbucket.org/atlassian/atlaskit/commits/d517df8))
 ## 21.0.0 (2017-08-23)
 
 * breaking; Removed the exported "MediaIdentifier" type and replaced it with "FileIdentifier" and ([56280b6](https://bitbucket.org/atlassian/atlaskit/commits/56280b6))

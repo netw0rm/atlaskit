@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 6.1.0 (2017-08-28)
+
+* feature; added switcher icon back ([de848a6](https://bitbucket.org/atlassian/atlaskit/commits/de848a6))
 ## 6.0.0 (2017-08-17)
 
 * bug fix; fixing interactive coloured icon example ([8086a2c](https://bitbucket.org/atlassian/atlaskit/commits/8086a2c))

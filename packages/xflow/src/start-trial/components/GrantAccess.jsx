@@ -195,7 +195,7 @@ class GrantAccess extends Component {
       await grantAccessToUsers(users, notifyUsers);
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
-        cloudIds: grantedAccessTo,
+        atlassianAccountIds: grantedAccessTo.join(','),
       });
       onComplete();
     } catch (e) {

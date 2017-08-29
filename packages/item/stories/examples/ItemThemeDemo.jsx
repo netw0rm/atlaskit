@@ -25,8 +25,8 @@ const generateTheme = (
   secondaryTextColor: string,
   focusColor: string,
 ): ItemTheme => ({
-  afterSpacing: 0,
-  beforeSpacing: 0,
+  afterItemSpacing: 0,
+  beforeItemSpacing: 0,
   borderRadius: 0,
   focus: {
     outline: focusColor,

@@ -22,8 +22,8 @@ export const compactSmallFontSize = 10;
 export const gridSize: number = akGridSizeUnitless;
 
 export const defaultTheme: ItemTheme = {
-  afterSpacing: akGridSizeUnitless,
-  beforeSpacing: akGridSizeUnitless,
+  afterItemSpacing: akGridSizeUnitless,
+  beforeItemSpacing: akGridSizeUnitless,
   borderRadius: parseInt(akBorderRadius, 10),
   focus: {
     outline: akColorB100,

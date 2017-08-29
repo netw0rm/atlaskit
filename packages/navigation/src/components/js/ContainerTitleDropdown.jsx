@@ -21,7 +21,7 @@ type Props = {|
   subText?: string,
   /** Text to appear as the title. This is placed at the top and bolded. */
   text: string,
-  // TODO
+  /** Theme used */
   theme: Object,
 |}
 

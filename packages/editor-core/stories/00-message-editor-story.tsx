@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
+import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
@@ -21,15 +22,9 @@ storiesOf(name, module)
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
-          appearance="message"
+          {...getPropsPreset('message')}
+
           analyticsHandler={analyticsHandler}
-
-          allowTextFormatting={true}
-          allowTasksAndDecisions={true}
-          allowHyperlinks={true}
-          allowCodeBlocks={true}
-
-          saveOnEnter={true}
 
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}

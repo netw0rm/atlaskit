@@ -4,6 +4,7 @@ import { Component } from 'react';
 
 import { EditorAppearance, EditorProps } from '../src/editor/types';
 import Editor from './../src/editor';
+import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
@@ -71,15 +72,8 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
 
             return (
               <Editor
-                appearance={appearance}
+                {...getPropsPreset(appearance)}
                 analyticsHandler={analyticsHandler}
-
-                allowTextFormatting={true}
-                allowTasksAndDecisions={true}
-                allowHyperlinks={true}
-                allowCodeBlocks={true}
-
-                saveOnEnter={true}
 
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}

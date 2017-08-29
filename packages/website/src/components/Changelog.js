@@ -1,5 +1,6 @@
 // @flow
 import React, { Children, PureComponent } from 'react';
+
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
 import styled, { css } from 'styled-components';
@@ -16,7 +17,7 @@ const H3 = styled.h3`
 const Heading = (
   { children, level, packageName }:
   { children: Array<mixed>, level: number, packageName: string }
-) => {
+) :any => {
   if (level !== 2) return children;
   const childrenArray = Children.toArray(children);
   if (childrenArray.length !== 1) return children;
@@ -72,7 +73,7 @@ type Props = {
 
 export default class Changelog extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
-  render() {
+  render(): React.Element<any> {
     const { changelog, packageName, range } = this.props;
     const logs = range
       ? changelog.filter(e => semver.satisfies(e.version, range))

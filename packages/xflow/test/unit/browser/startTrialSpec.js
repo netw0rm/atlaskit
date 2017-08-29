@@ -123,7 +123,7 @@ const defaultRequestOrStartTrialProps = {
   sourceContext: 'storybook-example-context',
 };
 
-describe('@atlaskit/xflow', () => {
+describe.skip('@atlaskit/xflow', () => {
   describe('new to confluence', () => {
     let xflow;
 

@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import find from 'array-find';

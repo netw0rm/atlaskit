@@ -15,7 +15,7 @@ export default class TabsNav extends PureComponent {
   state = { wasKeyboardNav: false }
   tabs = []
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: TabsStatelessProps, nextState: any) {
     // Don't re-render when we are resetting the `wasKeyboardNav` state
     if (nextState.wasKeyboardNav !== this.state.wasKeyboardNav && !nextState.wasKeyboardNav) {
       return false;
@@ -43,10 +43,10 @@ export default class TabsNav extends PureComponent {
     this.props.onKeyboardNav(e.key);
   }
 
-  tabMouseDownHandler = e => e.preventDefault()
+  tabMouseDownHandler = (e:KeyboardEvent) => e.preventDefault()
 
   render() {
-    const { tabs } = this.props;
+    const { tabs } : any = this.props;
 
     return (
       <NavWrapper>

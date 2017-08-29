@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';

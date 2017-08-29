@@ -15,6 +15,13 @@ export default class FlagActions extends PureComponent {
     appearance: DEFAULT_APPEARANCE,
     actions: [],
   }
+  /* eslint-disable no-undef */
+
+  getButtonFocusRingColor = () => 'focusRingColor';
+
+  getButtonTheme = () => 'buttonTheme';
+  getButtonAppearance = (b: mixed) => (b ? 'default' : 'subtle-link');
+  getButtonSpacing = (b: mixed) => (b ? 'compact' : 'none');
 
   render() {
     const { actions, appearance } = this.props;

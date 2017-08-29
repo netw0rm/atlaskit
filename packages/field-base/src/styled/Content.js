@@ -40,7 +40,7 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, sub
   `;
 };
 
-const getDisabledColor = themed({ light: colors.N60, dark: colors.DN80 });
+const getDisabledColor = themed({ light: colors.N60, dark: colors.DN90 });
 
 const getDisabledState = (props) => props.disabled && css`
   color: ${getDisabledColor(props)};
@@ -74,7 +74,7 @@ const getMargin = ({ appearance, isFocused, paddingDisabled, readOnly }) => {
   return css`margin: -${margin}px`;
 };
 
-const getColor = themed({ light: colors.N900, dark: colors.DN100 });
+const getColor = themed({ light: colors.N900, dark: colors.DN600 });
 const getBorderStyle = props => (props.appearance === 'none' ? 'none' : 'solid');
 
 export const Content = styled.div`
@@ -96,7 +96,6 @@ export const Content = styled.div`
     background-color ${transitionDuration} ease-in-out,
     border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
-
   ${getBorderAndPadding}
   ${getMargin}
   ${getHoverState}

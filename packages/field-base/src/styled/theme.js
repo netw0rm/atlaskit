@@ -2,8 +2,9 @@ import { colors, themed } from '@atlaskit/theme';
 
 // The following are the name for color mappings in @atlaskit/themes
 // The exports are the functions, not the objects, so could not be used here
-const background = { light: colors.N0, dark: colors.DN30 };
-const codeBlock = { light: colors.N20, dark: colors.DN50 };
+const codeBlock = { light: colors.N20, dark: colors.DN80 };
+const hover = { light: colors.N20, dark: colors.DN30 };
+const disabled = { light: colors.N20, dark: colors.DN20 };
 const yellow = { light: colors.Y300, dark: colors.Y300 };
 // linkOutline has been altered based on the colors in the text-field spec
 const linkOutline = { light: colors.B100, dark: colors.B75 };
@@ -11,25 +12,25 @@ const linkOutline = { light: colors.B100, dark: colors.B75 };
 
 export const getBackgroundColor = themed('appearance', {
   standard: { light: colors.N10, dark: colors.DN10 },
-  disabled: codeBlock,
+  disabled,
   invalid: { light: colors.N10, dark: colors.DN10 },
   subtle: { light: 'transparent', dark: 'transparent' },
   none: { light: 'transparent', dark: 'transparent' },
 });
 
 export const getBackgroundColorFocus = themed('appearance', {
-  standard: background,
-  disabled: codeBlock,
-  invalid: background,
-  subtle: background,
+  standard: { light: colors.N20, dark: colors.DN10 },
+  disabled,
+  invalid: { light: colors.N20, dark: colors.DN10 },
+  subtle: { light: colors.N20, dark: colors.DN10 },
   none: { light: 'transparent', dark: 'transparent' },
 });
 
 export const getBackgroundColorHover = themed('appearance', {
-  standard: codeBlock,
-  disabled: codeBlock,
-  invalid: codeBlock,
-  subtle: codeBlock,
+  standard: hover,
+  disabled,
+  invalid: hover,
+  subtle: hover,
   none: { light: 'transparent', dark: 'transparent' },
 });
 

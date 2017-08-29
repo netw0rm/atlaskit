@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { AkNavigationItem } from '../../../src/index';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';

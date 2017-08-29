@@ -8,9 +8,20 @@ import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
 import SingleSelectInlineEdit from './SingleSelectInlineEdit';
+import MultiSelect from '@atlaskit/multi-select';
 import exampleMentions from './example-mentions';
 import InlineEdit, { InlineEditStateless } from '../src';
 import { name } from '../package.json';
+
+const MultiSelectItems = [
+  { content: 'Apple', value: 'Apple' },
+  { content: 'Banana', value: 'Banana' },
+  { content: 'Cherry', value: 'Cherry' },
+  { content: 'Mango', value: 'Mango' },
+  { content: 'Orange', value: 'Orange' },
+  { content: 'Strawberry', value: 'Strawberry' },
+  { content: 'Watermelon', value: 'Watermelon' },
+];
 
 const containerStyle = {
   padding: 20,
@@ -27,6 +38,11 @@ storiesOf(name, module)
   .add('with label hidden', () => (
     <div style={containerStyle}>
       <TextInlineEdit isLabelHidden />
+    </div>
+  ))
+  .add('in edit mode', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit isEditing />
     </div>
   ))
   .add('with invalid input', () => (
@@ -142,7 +158,17 @@ storiesOf(name, module)
   .add('with tag-group view', () => (
     <div style={containerStyle}>
       <InlineEdit
-        editView={<div>Edit view</div>}
+        label="Favourite fruit"
+        disableEditViewFieldBase
+        editView={(
+          <MultiSelect
+            defaultSelected={MultiSelectItems}
+            items={MultiSelectItems}
+            isDefaultOpen
+            shouldFitContainer
+            shouldFocus
+          />
+        )}
         readView={(
           <Group>
             <Tag text="Apple" />

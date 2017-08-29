@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 const ReadViewContentWrapper = styled.div`
-  display: inline-flex;
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 0;
   max-width: 100%;
 `;
 

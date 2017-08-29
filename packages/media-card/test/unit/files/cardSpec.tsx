@@ -2,7 +2,8 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { FileDetails } from '@atlaskit/media-core';
 
-import { FileCard, FileCardImageView, FileCardViewSmall } from '../../../src/files';
+import { FileCard, FileCardImageView } from '../../../src/files';
+import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
 
 describe('FileCard', () => {
   it('should render cardFileView with details passed through to props', function() {
@@ -33,7 +34,7 @@ describe('FileCard', () => {
     expect(fileCardView.props()).toMatchObject(expectedProps);
   });
 
-  it('should render cardFileViewSmall with details passed through to props', () => {
+  it('should render CardGenericViewSmall with file details passed through to props', () => {
     const details: FileDetails = {
       mediaType: 'image',
       mimeType: 'image/jpeg',
@@ -44,17 +45,17 @@ describe('FileCard', () => {
     };
 
     const expectedProps = {
-      mediaName: details.name,
+      title: details.name,
       mediaType: details.mediaType,
-      mediaSize: details.size,
+      subtitle: '121 KB',
     };
 
     const card = shallow(
       <FileCard appearance="small" status="complete" details={details}/>
     );
 
-    expect(card.find(FileCardViewSmall).length).toEqual(1);
-    expect(card.find(FileCardViewSmall).props()).toMatchObject(expectedProps);
+    expect(card.find(CardGenericViewSmall).length).toEqual(1);
+    expect(card.find(CardGenericViewSmall).props()).toMatchObject(expectedProps);
   });
 
   it('should render fileCardView with dataUri when passed', () => {
@@ -77,7 +78,7 @@ describe('FileCard', () => {
     expect(card.find(FileCardImageView).props().dataURI).toContain(fakeDataUri);
   });
 
-  it('should render fileCardViewSmall with dataUri when passed', () => {
+  it('should render CardGenericViewSmall with dataUri when passed', () => {
     const fakeDataUri: string = 'l33tdatauri';
 
     const details: FileDetails = {
@@ -93,7 +94,7 @@ describe('FileCard', () => {
       <FileCard appearance="small" status="complete" details={details} dataURI={fakeDataUri}/>
     );
 
-    expect(card.find(FileCardViewSmall).length).toEqual(1);
-    expect(card.find(FileCardViewSmall).props().dataURI).toContain(fakeDataUri);
+    expect(card.find(CardGenericViewSmall).length).toEqual(1);
+    expect(card.find(CardGenericViewSmall).props().thumbnailUrl).toEqual(fakeDataUri);
   });
 });

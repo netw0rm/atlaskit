@@ -3,7 +3,20 @@ import React from 'react';
 import Resizer from '../../src/components/js/Resizer';
 import ResizerInner from '../../src/components/styled/ResizerInner';
 import ResizerButton from '../../src/components/js/ResizerButton';
-import { standardOpenWidth, globalOpenWidth } from '../../src/shared-variables';
+import WithElectronTheme from '../../src/theme/with-electron-theme';
+import {
+  standardOpenWidth as standardOpenWidthGenerator,
+  globalOpenWidth as globalOpenWidthGenerator,
+} from '../../src/shared-variables';
+
+const standardOpenWidth = standardOpenWidthGenerator(false);
+const globalOpenWidth = globalOpenWidthGenerator(false);
+
+const mountWithElectronTheme = (children) => mount(
+  <WithElectronTheme>
+    {children}
+  </WithElectronTheme>
+);
 
 describe('<Resizer />', () => {
   describe('interacting', () => {
@@ -16,7 +29,7 @@ describe('<Resizer />', () => {
       resizeSpy = jest.fn();
       resizeEndSpy = jest.fn();
 
-      resizer = mount(<Resizer
+      resizer = mountWithElectronTheme(<Resizer
         onResizeStart={resizeStartSpy}
         onResize={resizeSpy}
         onResizeEnd={resizeEndSpy}
@@ -39,37 +52,42 @@ describe('<Resizer />', () => {
 
   describe('resizer button', () => {
     it('should not be visible if showResizeButton is false', () => {
-      expect(mount(<Resizer showResizeButton={false} />).find(ResizerButton).length).toBe(0);
+      expect(
+        mountWithElectronTheme(<Resizer showResizeButton={false} />).find(ResizerButton).length
+      ).toBe(0);
     });
 
     it('by default, <ResizerButton /> points left', () => {
-      expect(mount(<Resizer />).find(ResizerButton).props().isPointingRight).toEqual(false);
+      expect(
+        mountWithElectronTheme(<Resizer />).find(ResizerButton).props().isPointingRight
+      ).toEqual(false);
     });
     it('when navigationWidth=0, <ResizerButton /> points right', () => {
       expect(
-        mount(<Resizer navigationWidth={0} />).find(ResizerButton).props().isPointingRight
+        mountWithElectronTheme(<Resizer navigationWidth={0} />)
+        .find(ResizerButton).props().isPointingRight
       ).toEqual(true);
     });
     it(`when navigationWidth=${standardOpenWidth - 1}, <ResizerButton /> points right`, () => {
       expect(
-        mount(<Resizer navigationWidth={standardOpenWidth - 1} />)
+        mountWithElectronTheme(<Resizer navigationWidth={standardOpenWidth - 1} />)
         .find(ResizerButton).props().isPointingRight
       ).toEqual(true);
     });
     it(`when navigationWidth=${standardOpenWidth}, <ResizerButton /> points left`, () => {
       expect(
-        mount(<Resizer navigationWidth={standardOpenWidth} />)
+        mountWithElectronTheme(<Resizer navigationWidth={standardOpenWidth} />)
         .find(ResizerButton).props().isPointingRight
       ).toEqual(false);
     });
     it(`when navigationWidth=${standardOpenWidth + 100}, <ResizerButton /> points left`, () => {
       expect(
-        mount(<Resizer navigationWidth={standardOpenWidth + 100} />)
+        mountWithElectronTheme(<Resizer navigationWidth={standardOpenWidth + 100} />)
         .find(ResizerButton).props().isPointingRight
       ).toEqual(false);
     });
     it(`when navigationWidth=${standardOpenWidth - 1}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(
+      mountWithElectronTheme(
         <Resizer
           navigationWidth={standardOpenWidth - 1}
           onResizeButton={(resizeState) => {
@@ -83,7 +101,7 @@ describe('<Resizer />', () => {
       ).find(ResizerButton).simulate('click');
     });
     it(`when navigationWidth=${standardOpenWidth}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(
+      mountWithElectronTheme(
         <Resizer
           navigationWidth={standardOpenWidth}
           onResizeButton={(resizeState) => {
@@ -97,7 +115,7 @@ describe('<Resizer />', () => {
       ).find(ResizerButton).simulate('click');
     });
     it(`when navigationWidth=${standardOpenWidth + 100}, clicking <ResizerButton /> triggers an expand to the open width`, (done) => {
-      mount(
+      mountWithElectronTheme(
         <Resizer
           navigationWidth={standardOpenWidth + 100}
           onResizeButton={(resizeState) => {

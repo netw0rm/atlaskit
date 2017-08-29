@@ -157,16 +157,15 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent('xflow.grant-access.displayed');
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.retrieving.users.failed', {
-        ErrorMessage: e.message,
-        ErrorStack: e.stack,
+        errorMessage: e.message,
       });
     }
   };
 
-  handleSkipClick = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.grant-access.skip-button.clicked');
-    this.props.onComplete();
+  getAtlassianAccountId = ({ attributes: { attributes } }) => {
+    if (!attributes) return '';
+    const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
+    return openIdAttr ? openIdAttr.values[0] : '';
   };
 
   handleContinueClick = async () => {
@@ -194,7 +193,10 @@ class GrantAccess extends Component {
       const users =
         selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
-      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful');
+      const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
+        atlassianAccountIds: grantedAccessTo.join(','),
+      });
       onComplete();
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
@@ -207,15 +209,21 @@ class GrantAccess extends Component {
     }
   };
 
+  handleSkipClick = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.grant-access.skip-button.clicked');
+    this.props.onComplete();
+  };
+
   handleLearnMoreClick = () => {
     const { goToLearnMore, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.learn-more-button.clicked');
     goToLearnMore();
   };
 
-  handleChangeClick = () => {
+  handleManageClick = () => {
     const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.grant-access.change-button.clicked');
+    firePrivateAnalyticsEvent('xflow.grant-access.manage-button.clicked');
     this.setState({
       changeUsers: true,
     });
@@ -328,12 +336,12 @@ class GrantAccess extends Component {
                 />
               </Button>
               : !this.state.changeUsers && <Button
-                id="xflow-grant-access-change-button"
-                onClick={this.handleChangeClick}
+                id="xflow-grant-access-manage-button"
+                onClick={this.handleManageClick}
                 appearance="link"
               >
                 <FormattedMessage
-                  id="xflow.generic.grant-access.change"
+                  id="xflow.generic.grant-access.manage"
                   defaultMessage="Manage"
                 />
               </Button>}

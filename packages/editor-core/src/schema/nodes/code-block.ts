@@ -1,23 +1,14 @@
 import { NodeSpec, browser } from '../../prosemirror';
 import { Definition as Text } from './text';
+import { NoMark } from './doc';
 
-export type NoMark = {
-  /**
-   * @maxItems 0
-   */
-  marks?: Array<any>
-};
 
 /**
  * @name codeBlock_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'codeBlock';
   content?: Array<Text & NoMark>;
-  /**
-   * @additionalProperties false
-   */
   attrs?: {
     language?: 'abap' | 'actionscript' | 'ada' | 'arduino' | 'autoit' | 'c' | 'c++' | 'clojure'
     | 'coffeescript' | 'csharp' | 'css' | 'cuda' | 'd' | 'dart' | 'delphi' | 'elixir'

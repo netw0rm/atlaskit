@@ -4,7 +4,8 @@ import {CardAction, FileDetails, ImageResizeMode} from '@atlaskit/media-core';
 
 import {SharedCardProps, CardStatus} from '../..';
 import {FileCardImageView} from '../cardImageView';
-import {FileCardViewSmall} from '../cardViewSmall';
+import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
+import {toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -29,20 +30,23 @@ export class FileCard extends Component<FileCardProps, {}> {
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Error loading card' : undefined;
 
-    const card = (this._isSmall()) ?
-      (
-        <FileCardViewSmall
+    if (this._isSmall()) {
+      const subtitle = toHumanReadableMediaSize(size || 0);
+      return (
+        <CardGenericViewSmall
           error={errorMessage}
-          dimensions={dimensions}
-          dataURI={dataURI}
-          mediaName={name}
+          type="file"
           mediaType={mediaType}
-          mediaSize={size}
+          title={name}
+          subtitle={subtitle}
+          thumbnailUrl={dataURI}
+          dimensions={dimensions}
           loading={this.isLoading}
-
           actions={this._getActions()}
         />
-      ) : (
+      );
+    } else {
+      return (
         <FileCardImageView
           error={errorMessage}
           dimensions={dimensions}
@@ -55,12 +59,11 @@ export class FileCard extends Component<FileCardProps, {}> {
           status={status}
           progress={progress}
           resizeMode={resizeMode}
-
           actions={this._getActions()}
         />
       );
+    }
 
-    return card;
   }
 
   private _getActions(): Array <CardAction> {

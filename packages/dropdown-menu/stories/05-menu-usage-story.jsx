@@ -13,6 +13,7 @@ import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import StatusDropdown from './examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import WideDropdown from './examples/WideDropdown';
+import ControlledItemsExample from './examples/ControlledItemsExample';
 
 import {
   simpleDropdownItems,
@@ -206,5 +207,10 @@ storiesOf(name, module)
           </DropdownMenu>
         </p>
       </div>
+    </StoryContainer>
+  ))
+  .add('with controlled items', () => (
+    <StoryContainer>
+      <ControlledItemsExample />
     </StoryContainer>
   ));

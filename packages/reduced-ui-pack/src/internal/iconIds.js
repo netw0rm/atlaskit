@@ -274,6 +274,7 @@ const iconIds = [
   'star-filled',
   'star',
   'subtask',
+  'switcher',
   'table',
   'task',
   'trash',

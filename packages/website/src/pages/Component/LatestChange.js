@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
+
 import { Link } from 'react-router-dom';
 
 import Btn from '@atlaskit/button';
@@ -12,7 +13,7 @@ import Changelog from '../../components/Changelog';
 
 const LatestChange = (
   { changelog, componentKey }:
-  { changelog: Array<{ version: string }>, componentKey: string }
+  { changelog: Array<{ md: string, version: string }>, componentKey: string }
 ) => {
   if (!changelog || !changelog[0] || !changelog[0].version) return null;
 
@@ -61,7 +62,7 @@ const Button = styled(Btn)`
 `;
 const Latest = (
   { children, ...rest }:
-  { children: Element | Node | string }
+  { children?: Element | Node | string }
 ) => (
   <span style={{ position: 'relative', top: -3 }}>
     <Lozenge appearance="new" {...rest}>

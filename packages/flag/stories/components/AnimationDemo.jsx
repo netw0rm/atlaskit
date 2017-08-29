@@ -1,6 +1,7 @@
 // @flow
-import React, { PureComponent } from 'react';
+
 import { action } from '@kadira/storybook';
+import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
@@ -30,7 +31,7 @@ export default class AnimationDemo extends PureComponent {
 
   componentDidMount() { this.addFlag(); }
 
-  newFlag = (timeOffset = 0) => ({
+  newFlag = (timeOffset: number = 0) => ({
     appearance: this.state.chosenAppearance,
     created: Date.now() - (timeOffset * 1000),
     description: getRandomDescription(),
@@ -44,7 +45,7 @@ export default class AnimationDemo extends PureComponent {
     this.setState({ flags });
   }
 
-  flagDismissed = (flagId) => {
+  flagDismissed = (flagId: any) => {
     action('Flag.onDismissed fired for id')(flagId);
 
     this.setState(state => ({ flags: state.flags.slice(1) }));

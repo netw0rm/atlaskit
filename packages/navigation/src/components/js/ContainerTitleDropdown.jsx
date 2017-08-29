@@ -7,7 +7,7 @@ import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import { AkNavigationItem } from '../../../src/index';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
-import { ReactElement } from '../../types';
+import type { ReactElement } from '../../types';
 import { rootKey } from '../../theme/util';
 import overrideItemTheme from '../../theme/create-container-title-item-theme';
 
@@ -21,6 +21,8 @@ type Props = {|
   subText?: string,
   /** Text to appear as the title. This is placed at the top and bolded. */
   text: string,
+  /** Theme used */
+  theme: Object,
 |}
 
 const key = itemThemeNamespace;
@@ -55,7 +57,6 @@ class ContainerTitleDropdown extends PureComponent {
               dropIcon={isNavCollapsed ? null : <ExpandIcon />}
               isDropdownTrigger
               icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
-              spacing="title"
               subText={isNavCollapsed ? null : subText}
               text={isNavCollapsed ?
                 <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>

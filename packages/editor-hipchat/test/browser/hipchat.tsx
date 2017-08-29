@@ -309,6 +309,96 @@ describe('@atlaskit/editor-hipchat', () => {
     });
   });
 
+  describe('List support', () => {
+
+    it('should support list autoformatting', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '* test', 1);
+
+      expect(editor.value).to.deep.equal({
+        version: 1,
+        type: 'doc',
+        content: [{
+          type: 'bulletList',
+          content: [{
+            type: 'listItem',
+            content: [{
+              type: 'paragraph',
+              content: [{
+                type: 'text',
+                text: 'test'
+              }]
+            }]
+          }]
+        }]
+      });
+    });
+
+    it('should not submit when enter is pressed in non-empty list item', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '* l1', 1);
+      sendKeyToPm(editorView!, 'Enter');
+
+      expect(editor.value).to.deep.equal({
+        version: 1,
+        type: 'doc',
+        content: [{
+          type: 'bulletList',
+          content: [{
+            type: 'listItem',
+            content: [{
+              type: 'paragraph',
+              content: [{
+                type: 'text',
+                text: 'l1'
+              }]
+            }]
+          },{
+            type: 'listItem',
+            content: [{
+              type: 'paragraph',
+              content: []
+            }]
+          }]
+        }]
+      });
+    });
+
+    it('should create paragraph when enter is pressed in empty list item', () => {
+      editorWrapper = mount(<Editor />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '* l1', 1);
+      sendKeyToPm(editorView!, 'Enter');
+      sendKeyToPm(editorView!, 'Enter');
+
+      expect(editor.value).to.deep.equal({
+        version: 1,
+        type: 'doc',
+        content: [{
+          type: 'bulletList',
+          content: [{
+            type: 'listItem',
+            content: [{
+              type: 'paragraph',
+              content: [{
+                type: 'text',
+                text: 'l1'
+              }]
+            }]
+          }]
+        },{
+          type: 'paragraph',
+          content: []
+        }]
+      });
+    });
+  });
+
   describe('Legacy-format', () => {
 
     describe('MaxContentSize', () => {

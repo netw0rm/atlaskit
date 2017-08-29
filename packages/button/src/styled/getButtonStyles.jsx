@@ -1,3 +1,4 @@
+// @flow
 import { css } from 'styled-components';
 import { borderRadius, fontSize, gridSize, math } from '@atlaskit/theme';
 import themeDefinitions from './themeDefinitions';
@@ -17,7 +18,8 @@ const getState = ({
   return 'default';
 };
 
-export const getPropertyAppearance = (property, props = {}, definitions = themeDefinitions) => {
+export const getPropertyAppearance =
+(property: string, props : Object = {}, definitions: Object = themeDefinitions) => {
   const { appearance } = props;
   const { fallbacks, theme } = definitions;
 
@@ -33,7 +35,7 @@ export const getPropertyAppearance = (property, props = {}, definitions = themeD
   return propertyStyles[state] || propertyStyles.default || fallbacks[property];
 };
 
-export default function getButtonStyles(props) {
+export default function getButtonStyles(props: Object) {
   const baseSize = fontSize(props);
   const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(props)}em`;
   const compactButtonHeight = `${math.divide(math.multiply(gridSize, 3), baseSize)(props)}em`;
@@ -58,7 +60,7 @@ export default function getButtonStyles(props) {
   const background = getPropertyAppearance('background', props);
   const color = getPropertyAppearance('color', props);
   const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
-  const boxShadow = boxShadowColor ? `0 0 0 2px ${boxShadowColor(props)}` : null;
+  const boxShadow = boxShadowColor ? `0 0 0 2px ${boxShadowColor}` : null;
   const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact

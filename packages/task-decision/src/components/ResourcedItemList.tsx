@@ -74,11 +74,12 @@ interface ItemsByDate {
 
 // tslint:disable-next-line:variable-name
 const LoadingWrapper = styled.div`
-  width: 100%;
-  text-align: center;
-  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  height: ${props => props.height || 'auto'}
 `;
-
 
 export default class ResourcedItemList extends PureComponent<Props,State> {
   private mounted: boolean;
@@ -145,9 +146,11 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
 
   private performQuery(query: Query, replaceAll: boolean, recentUpdatesListener?: RecentUpdatesListener) {
     const { taskDecisionProvider } = this.props;
+    const items = replaceAll ? [] : this.state.items;
     this.setState({
       loading: true,
       error: false,
+      items,
     });
     taskDecisionProvider.then(provider => {
       provider.getItems(query, recentUpdatesListener).then(result => {
@@ -290,9 +293,13 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
     }
 
     if (loading) {
+      let height;
+      if (!items || items.length === 0) {
+        height = '100%';
+      }
       loadingSpinner = (
-        <LoadingWrapper>
-          <Spinner appearance=""/>
+        <LoadingWrapper height={height}>
+          <Spinner size="medium"/>
         </LoadingWrapper>
       );
     } else if (!items || !items.length) {

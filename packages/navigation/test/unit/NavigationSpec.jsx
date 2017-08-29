@@ -4,12 +4,17 @@ import Navigation from '../../src/components/js/Navigation';
 import Drawer from '../../src/components/js/Drawer';
 import * as presets from '../../src/theme/presets';
 import {
-  containerClosedWidth,
-  globalOpenWidth,
-  standardOpenWidth,
+  containerClosedWidth as containerClosedWidthFn,
+  globalOpenWidth as globalOpenWidthFn,
+  standardOpenWidth as standardOpenWidthFn,
   containerOpenWidth,
-  resizeClosedBreakpoint,
+  resizeClosedBreakpoint as resizeClosedBreakpointFn,
 } from '../../src/shared-variables';
+
+const containerClosedWidth = containerClosedWidthFn(false);
+const globalOpenWidth = globalOpenWidthFn(false);
+const standardOpenWidth = standardOpenWidthFn(false);
+const resizeClosedBreakpoint = resizeClosedBreakpointFn(false);
 
 const expect = window.expect;
 
@@ -85,17 +90,17 @@ describe('<Navigation />', () => {
 
     it('should call onResizeStart when the resizer starts resizing', () => {
       const stub = jest.fn();
-      const wrapper = shallow(<Navigation onResizeStart={stub} />);
+      const wrapper = mount(<Navigation onResizeStart={stub} />);
 
-      wrapper.find('Resizer').simulate('resizeStart');
+      wrapper.find('Resizer').simulate('mouseDown');
 
       expect(stub).toHaveBeenCalled();
     });
 
     it('should render a Spacer that has the width of the current container', () => {
-      const wrapper = shallow(<Navigation isOpen />);
+      const wrapper = mount(<Navigation isOpen />);
 
-      wrapper.find('Resizer').simulate('resize', 2000);
+      wrapper.find('Resizer').props().onResize(2000);
 
       expect(wrapper.find('Spacer').first().props().width)
         .toBe(2000 + (containerOpenWidth + globalOpenWidth));
@@ -103,48 +108,49 @@ describe('<Navigation />', () => {
 
     it('should call onResize when a resize finishes', () => {
       const stub = jest.fn();
-      const wrapper = shallow(<Navigation isOpen onResize={stub} />);
+      const wrapper = mount(<Navigation isOpen onResize={stub} />);
 
-      wrapper.find('Resizer').simulate('resizeEnd');
+      wrapper.find('Resizer').props().onResizeEnd();
 
       expect(stub).toHaveBeenCalled();
     });
 
     it('should never have a width less than the GlobalNavigation', () => {
-      const wrapper = shallow(<Navigation isOpen />);
+      const wrapper = mount(<Navigation isOpen />);
 
-      wrapper.find('Resizer').simulate('resize', -300);
+      wrapper.find('Resizer').props().onResize(-300);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth);
     });
 
     it('should allow the width to grow above the standard width if not collapsible', () => {
-      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
-      wrapper.find('Resizer').simulate('resize', 5);
+      wrapper.find('Resizer').props().onResize(5);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth + containerOpenWidth + 5);
     });
 
     it('should not allow the width to drop below the standard width if not collapsible', () => {
-      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
-      wrapper.find('Resizer').simulate('resize', -5);
+      wrapper.find('Resizer').props().onResize(-5);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth + containerOpenWidth);
     });
 
     describe('snapping', () => {
-      const resize = (wrapper, resizeTo) =>
-        wrapper.find('Resizer')
-            .simulate('resizeStart')
-            .simulate('resize', resizeTo)
-            .simulate('resizeEnd');
+      const resize = (wrapper, resizeTo) => {
+        const resizer = wrapper.find('Resizer');
+        resizer.props().onResizeStart();
+        resizer.props().onResize(resizeTo);
+        resizer.props().onResizeEnd();
+      };
 
       describe('starting open', () => {
         it('should snap closed if moving beyond the resize breakpoint', () => {
           const stub = jest.fn();
-          const wrapper = shallow(<Navigation isOpen onResize={stub} />);
+          const wrapper = mount(<Navigation isOpen onResize={stub} />);
           const diff = standardOpenWidth - resizeClosedBreakpoint;
           // moving to the left beyond the resize breakpoint
           const resizeTo = (-1 * diff) - 1;
@@ -159,7 +165,7 @@ describe('<Navigation />', () => {
 
         it('should snap open if closing but did not move past the resize breakpoint', () => {
           const stub = jest.fn();
-          const wrapper = shallow(<Navigation isOpen onResize={stub} />);
+          const wrapper = mount(<Navigation isOpen onResize={stub} />);
           const diff = standardOpenWidth - resizeClosedBreakpoint;
           // moving to the left but not enough
           const resizeTo = (-1 * diff) + 1;
@@ -176,7 +182,7 @@ describe('<Navigation />', () => {
       describe('starting closed', () => {
         it('should snap closed if opening but did not move beyond the resize breakpoint', () => {
           const stub = jest.fn();
-          const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
+          const wrapper = mount(<Navigation isOpen={false} onResize={stub} />);
           // moving to the right but not beyond the resize breakpoint
           const resizeTo = globalOpenWidth + 1;
 
@@ -190,7 +196,7 @@ describe('<Navigation />', () => {
 
         it('should snap open if expanding beyond the resize breakpoint', () => {
           const stub = jest.fn();
-          const wrapper = shallow(<Navigation isOpen={false} onResize={stub} />);
+          const wrapper = mount(<Navigation isOpen={false} onResize={stub} />);
           const diff = resizeClosedBreakpoint - globalOpenWidth;
           // moving to the right beyond the resize breakpoint
           const resizeTo = diff + 1;
@@ -252,16 +258,16 @@ describe('<Navigation />', () => {
     });
 
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
-      const navigation = shallow(<Navigation />);
+      const navigation = mount(<Navigation />);
       navigation.setProps({
         onResize: () => {
           expect(navigation.state().resizeDelta).toBe(0);
           done();
         },
       });
-      navigation.find('Resizer').simulate('resizeStart');
-      navigation.find('Resizer').simulate('resize', -300);
-      navigation.find('Resizer').simulate('resizeEnd');
+      navigation.find('Resizer').props().onResizeStart();
+      navigation.find('Resizer').props().onResize(-300);
+      navigation.find('Resizer').props().onResizeEnd();
     });
 
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
@@ -299,7 +305,7 @@ describe('<Navigation />', () => {
     });
 
     it('should override width when container is closed', () => {
-      expect(shallow(<Navigation isOpen={false} width={500} />)
+      expect(mount(<Navigation isOpen={false} width={500} />)
         .find('Spacer').first().props().width).toBe(containerClosedWidth);
     });
   });
@@ -357,17 +363,27 @@ describe('<Navigation />', () => {
 
   describe('collapsing', () => {
     it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
-      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
-      wrapper.find('Resizer')
-        .simulate('resize', 1);
+      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      wrapper.find('Resizer').props().onResize(1);
 
       expect(wrapper.find('Resizer').props().showResizeButton).toBe(true);
     });
 
     it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
-      const wrapper = shallow(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
       expect(wrapper.find('Resizer').props().showResizeButton).toBe(false);
+    });
+  });
+
+  describe('isElectronMac', () => {
+    it('should render WithElectronTheme with set to false by default', () => {
+      const wrapper = shallow(<Navigation />);
+      expect(wrapper.find('WithElectronTheme').props().isElectronMac).toBe(false);
+    });
+    it('should pass isElectronMac prop to WithElectronTheme', () => {
+      const wrapper = shallow(<Navigation isElectronMac />);
+      expect(wrapper.find('WithElectronTheme').props().isElectronMac).toBe(true);
     });
   });
 });

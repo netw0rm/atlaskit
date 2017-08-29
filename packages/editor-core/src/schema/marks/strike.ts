@@ -3,7 +3,6 @@ import { FONT_STYLE } from '../groups';
 
 /**
  * @name strike_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'strike';

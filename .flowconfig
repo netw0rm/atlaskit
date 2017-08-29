@@ -1,19 +1,20 @@
 [ignore]
-
 <PROJECT_ROOT>/node_modules/.*
 .*/node_modules/styled-components/.*
 .*/node_modules/polished/.*
 .*/node_modules/fbjs/.*
 .*/node_modules/memoize-one/test/.*
+.*/node_modules/react-beautiful-dnd/.*
 
 [include]
+src/
 
 [libs]
+flow-typed/
 
 [options]
-
 # Automatically map @atlaskit/* imports to local packages
-# module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
+module.name_mapper='^@atlaskit\/\([a-zA-Z0-9_\-]+\)$' -> '<PROJECT_ROOT>/packages/\1/src/index'
 
 # Provides a way to suppress flow errors in the following line.
 # Example: // $FlowFixMe: This following line is borked because of reasons.

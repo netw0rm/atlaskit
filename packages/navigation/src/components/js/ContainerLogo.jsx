@@ -9,6 +9,7 @@ class ContainerLogo extends PureComponent {
   props: {|
     /** Elements to be wrapped with the Logo styling. */
     children: ReactElement,
+    theme: Object
   |}
 
   render() {

@@ -5,14 +5,13 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { ThemeProvider } from 'styled-components';
-
+import { gridSize } from '@atlaskit/theme';
 import Wrapper, { Content, SpinnerContainer, Trigger } from '../styled/Droplist';
 import itemTheme from '../theme/item-theme';
 
 const halfFocusRing = 1;
-const dropOffset = `0 ${akGridSizeUnitless}px`;
+const dropOffset = `0 ${gridSize()}px`;
 
 export default class Droplist extends Component {
   static propTypes = {

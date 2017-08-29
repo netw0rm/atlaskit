@@ -1,10 +1,11 @@
+// @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from './IconForType';
 import { types, defaultType } from './types';
-import { Root, ButtonContents, Text } from '../styled/InlineMessage';
+import { Root, ButtonContents, Text, Title } from '../styled/InlineMessage';
 
 export default class InlineMessage extends PureComponent {
   static propTypes = {
@@ -46,15 +47,16 @@ export default class InlineMessage extends PureComponent {
 
   render() {
     const { children, position, secondaryText, title, type } = this.props;
-
+    const { isHovered, isOpen } = this.state;
     return (
       <Root
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
+        appearance={type}
       >
         <InlineDialog
           content={children}
-          isOpen={this.state.isOpen}
+          isOpen={isOpen}
           position={position}
           shouldFlip
         >
@@ -62,18 +64,22 @@ export default class InlineMessage extends PureComponent {
             appearance="subtle-link"
             onClick={this.toggleDialog}
           >
-            <ButtonContents isHovered={this.state.isHovered}>
-              <IconForType type={type} />
+            <ButtonContents isHovered={isHovered}>
+              <IconForType
+                type={type}
+                isHovered={isHovered}
+                isOpen={isOpen}
+              />
               {
                 title ? (
-                  <Text title isHovered={this.state.isHovered}>
+                  <Title isHovered={isHovered}>
                     {title}
-                  </Text>
+                  </Title>
                 ) : null
               }
               {
                 secondaryText ? (
-                  <Text isHovered={this.state.isHovered}>{secondaryText}</Text>
+                  <Text isHovered={isHovered}>{secondaryText}</Text>
                 ) : null
               }
             </ButtonContents>

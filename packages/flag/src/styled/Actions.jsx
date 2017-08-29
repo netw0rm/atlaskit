@@ -1,3 +1,4 @@
+// @flow
 /* eslint-disable no-confusing-arrow */
 
 import styled, { css } from 'styled-components';
@@ -19,7 +20,7 @@ import {
 const getDivider = ({ hasDivider, useMidDot }) => css`
   display: ${hasDivider ? 'inline-block' : 'none'};
   content: "${useMidDot ? '\u00B7' : ''}";
-  width: ${p => (useMidDot ? math.multiply(gridSize, 2) : gridSize)(p)}px;
+  width: ${useMidDot ? math.multiply(gridSize, 2) : gridSize}px;
 `;
 
 export default styled.div`

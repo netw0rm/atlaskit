@@ -89,7 +89,7 @@ export default class AvatarGroup extends Component {
   render() {
     const {
       avatar: Item, appearance, borderColor, data, maxCount, onAvatarClick, size,
-    } = this.props;
+    } : any = this.props;
 
     // NOTE: conditionally defaulting the `maxCount` prop based on `appearance`
     const max = (maxCount === 0) ? MAX_COUNT[appearance] : maxCount;
@@ -111,7 +111,7 @@ export default class AvatarGroup extends Component {
     return (
       <Group size={size}>
         {items}
-        {this.renderMoreDropdown(max, total)}
+        {this.renderMoreDropdown(+max, total)}
       </Group>
     );
   }

@@ -4,7 +4,6 @@ import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 /**
  * @name decisionList_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'decisionList';
@@ -12,9 +11,6 @@ export interface Definition {
    * @minItems 1
    */
   content: Array<DecisionItemNode>;
-  /**
-   * @additionalProperties false
-   */
   attrs: {
     localId: string;
   };

@@ -1,6 +1,17 @@
 # @atlaskit/inline-message
 
-## Unreleased
+## 3.0.0 (2017-08-24)
+
+
+* feature; remove util-shared-styles ([d0331cf](https://bitbucket.org/atlassian/atlaskit/commits/d0331cf))
+
+* breaking; Update inline message to include dark mode theming ([dfc37f8](https://bitbucket.org/atlassian/atlaskit/commits/dfc37f8))
+* breaking; update inline message to include dark mode theming (issues closed: #ak-3237) ([dfc37f8](https://bitbucket.org/atlassian/atlaskit/commits/dfc37f8))
+
+
+
+
+
 
 ## 2.5.2 (2017-07-27)
 

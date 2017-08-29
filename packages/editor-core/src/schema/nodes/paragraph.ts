@@ -3,7 +3,6 @@ import { Inline } from './doc';
 
 /**
  * @name paragraph_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'paragraph';

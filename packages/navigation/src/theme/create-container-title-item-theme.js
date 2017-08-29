@@ -1,9 +1,12 @@
 // @flow
-
 import type { ItemTheme } from './types';
 import { containerTitleHorizontalPadding, containerTitleIconSpacing } from '../shared-variables';
 
-const overrideItemTheme = (outerTheme, key): ItemTheme => {
+function clone<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   const original: ItemTheme = outerTheme[key];
 
   if (!original || !original.padding) {
@@ -13,7 +16,7 @@ const overrideItemTheme = (outerTheme, key): ItemTheme => {
   }
 
   // TODO: deep modification while respecting types
-  const newTheme: ItemTheme = (JSON.parse(JSON.stringify(original)) : any);
+  const newTheme = clone(original);
 
   newTheme.padding.default.x = containerTitleHorizontalPadding;
   newTheme.height.default = 0;

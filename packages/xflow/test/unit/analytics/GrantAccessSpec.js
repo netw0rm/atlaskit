@@ -74,6 +74,48 @@ test('GrantAccess should fire an appropriate analytics event when the continue b
   );
 });
 
+test('GrantAccess should fire an appropriate analytics event when granting access is successful', async () => {
+  const spy = jest.fn();
+  const mountWrapper = mount(
+    withAnalyticsSpy(
+      spy,
+      <GrantAccessBase
+        {...defaultProps}
+        retrieveUsers={() =>
+        Promise.resolve([
+          { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/1'] }] } },
+          { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/2'] }] } },
+          { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/3'] }] } },
+          { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/4'] }] } },
+          { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
+        ])}
+        grantAccessToUsers={() => new Promise((resolve) => setTimeout(resolve, 500))}
+      />
+    )
+  );
+  expect(spy).not.toHaveBeenCalledWith(
+    'xflow.grant-access.continue-button.grant-access-successful',
+    expect.any(Object)
+  );
+  await waitFor(() => {
+    mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
+  });
+  await waitFor(() => {
+    expect(spy).toHaveBeenCalledWith(
+        'xflow.grant-access.continue-button.grant-access-successful',
+        expect.objectContaining({
+          atlassianAccountIds: [
+            'https://id.atlassian.com/openid/v2/u/1',
+            'https://id.atlassian.com/openid/v2/u/2',
+            'https://id.atlassian.com/openid/v2/u/3',
+            'https://id.atlassian.com/openid/v2/u/4',
+            'https://id.atlassian.com/openid/v2/u/5',
+          ].join(','),
+        })
+      );
+  });
+});
+
 test('GrantAccess should fire an appropriate analytics event if granting access failed and using the skip button', () => {
   const spy = jest.fn();
   const mountWrapper = mount(
@@ -121,16 +163,16 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
   });
 });
 
-test('GrantAccess should fire an appropriate analytics event when the change button is clicked', () => {
+test('GrantAccess should fire an appropriate analytics event when the manage button is clicked', () => {
   const spy = jest.fn();
   const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
   expect(spy).not.toHaveBeenCalledWith(
-    'xflow.grant-access.change-button.clicked',
+    'xflow.grant-access.manage-button.clicked',
     expect.any(Object)
   );
-  mountWrapper.find('#xflow-grant-access-change-button').simulate('click');
+  mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
   return waitFor(() =>
-    expect(spy).toHaveBeenCalledWith('xflow.grant-access.change-button.clicked', expect.any(Object))
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.manage-button.clicked', expect.any(Object))
   );
 });
 

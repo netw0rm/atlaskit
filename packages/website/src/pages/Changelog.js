@@ -30,14 +30,14 @@ export default class ChangelogExplorer extends PureComponent {
 
   componentWillMount() {
     const { semver } = this.props.match.params;
-    if (semver) this.setState({ range: decodeURI(this.props.match.params.semver) });
+    if (semver) this.setState({ range: decodeURI(String(this.props.match.params.semver)) });
   }
 
-  handleChange = (e) => {
+  handleChange = (e: any) => {
     const { component } = this.props.match.params;
     const range = e.target.value;
     let isInvalid = false;
-    if (!isInvalid) this.props.history.replace(`/changelog/${component}/${encodeURI(range)}`);
+    if (!isInvalid) this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
 
     if (/[a-z]/gi.test(range)) isInvalid = true;
 
@@ -82,7 +82,7 @@ export default class ChangelogExplorer extends PureComponent {
 
 const Back = (
   { children, to }:
-  { children: Element | Node | string, to: string }
+  { children?: Element | Node | string, to: string }
 ) => (
   <Button
     appearance="link"

@@ -43,13 +43,13 @@ export class WithProviders extends PureComponent<Props, { providers: any }> {
   }
 
   handleProvider = (name: string, provider?: Promise<any>) => {
-    const { providers } = this.state;
-
-    this.setState({
-      providers: {
-        ...providers,
-        [name]: provider
-      }
+    this.setState(({ providers }) => {
+      return {
+        providers: {
+          ...providers,
+          [name]: provider,
+        },
+      };
     });
   }
 

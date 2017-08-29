@@ -2,13 +2,9 @@ import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
 /**
  * @name applicationCard_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'applicationCard';
-  /**
-   * @additionalProperties false
-   */
   attrs: Attributes;
 }
 

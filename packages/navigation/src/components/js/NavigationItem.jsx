@@ -54,7 +54,7 @@ type Props = {|
   /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
   /** Text to be shown alongside the main `text`. */
-  subText?: string,
+  subText?: ?string,
   /** Main text to be displayed as the item. Accepts a react component but in most
   cases this should just be a string. */
   text?: ReactElement,

@@ -1,14 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import InlineDialog from '@atlaskit/inline-dialog';
-import { Content, ContentWrapper } from '../styled/Content';
+import { Content, ContentWrapper, ChildWrapper } from '../styled/Content';
 import ValidationElement from './ValidationElement';
-
-const DialogWrapper = styled.div`
-  ${p => (p.grow ? 'flex: 1 1 auto;' : '')}
-  max-width: 100%;
-`;
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBaseStateless extends PureComponent {
@@ -55,6 +49,8 @@ export default class FieldBaseStateless extends PureComponent {
     onFocus: PropTypes.func.isRequired,
     /** whether to call the onBlur handler inside componentDidUpdate */
     shouldReset: PropTypes.bool,
+    /** the maximum width of the field-base in pixels. Don't include the "px". */
+    maxWidth: PropTypes.number,
   }
 
   static defaultProps = {
@@ -96,6 +92,7 @@ export default class FieldBaseStateless extends PureComponent {
       isLoading,
       isPaddingDisabled,
       isReadOnly,
+      maxWidth,
       onBlur,
       onDialogBlur,
       onDialogClick,
@@ -111,17 +108,17 @@ export default class FieldBaseStateless extends PureComponent {
     }
 
     return (
-      <ContentWrapper disabled={isDisabled} grow={isFitContainerWidthEnabled}>
-        <DialogWrapper grow={isFitContainerWidthEnabled}>
-          <InlineDialog
-            content={invalidMessage}
-            isOpen={isDialogOpen && !!invalidMessage}
-            onContentBlur={onDialogBlur}
-            onContentClick={onDialogClick}
-            onContentFocus={onDialogFocus}
-            position="right middle"
-            shouldFlip={['top']}
-          >
+      <ContentWrapper disabled={isDisabled} maxWidth={maxWidth} grow={isFitContainerWidthEnabled}>
+        <InlineDialog
+          content={invalidMessage}
+          isOpen={isDialogOpen && !!invalidMessage}
+          onContentBlur={onDialogBlur}
+          onContentClick={onDialogClick}
+          onContentFocus={onDialogFocus}
+          position="right middle"
+          shouldFlip={['top']}
+        >
+          <ChildWrapper>
             <Content
               appearance={getAppearance(appearance)}
               compact={isCompact}
@@ -143,8 +140,8 @@ export default class FieldBaseStateless extends PureComponent {
                 isLoading={isLoading}
               />
             </Content>
-          </InlineDialog>
-        </DialogWrapper>
+          </ChildWrapper>
+        </InlineDialog>
       </ContentWrapper>
     );
   }

@@ -9,10 +9,7 @@ export default class Gateway extends Component {
 
   static propTypes = {
     into: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.string,
-    ]),
+    children: PropTypes.element,
   };
 
   constructor(props, context) {

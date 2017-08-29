@@ -9,6 +9,15 @@ export default class GatewayRegistry {
     this._currentId = 0;
   }
 
+  /**
+  *   NOTE: this is where we deviate from cloudflare/react-gateway
+  *   https://github.com/cloudflare/react-gateway/blob/master/src/GatewayRegistry.js#L10
+  *
+  *   Rather than passing children through directly, they're cloned with:
+  *   - stackIndex
+  *   - stackTotal
+  */
+
   _renderContainer(name) {
     if (!this._containers[name] || !this._children[name]) {
       return;

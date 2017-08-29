@@ -28,8 +28,8 @@ export const LabelWrapper = styled.label`
   display: block;
 `;
 
-const getColor = themed({ light: colors.N60, dark: colors.DN90 });
-const getDisabledColor = themed({ light: colors.N200, dark: colors.DN300 });
+const getColor = themed({ light: colors.N200, dark: colors.DN90 });
+const getDisabledColor = themed({ light: colors.N60, dark: colors.DN300 });
 
 export const LabelInner = styled.div`
   color: ${props => (props.isDisabled ? getDisabledColor(props) : getColor(props))};

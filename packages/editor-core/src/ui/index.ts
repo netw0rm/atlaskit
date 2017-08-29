@@ -9,6 +9,7 @@ export { default as MentionPicker } from './MentionPicker';
 export { default as PanelTextInput } from './PanelTextInput';
 export { default as ToolbarBlockType } from './ToolbarBlockType';
 export { default as ToolbarButton } from './ToolbarButton';
+export { default as ToolbarEmojiPicker } from './ToolbarEmojiPicker';
 export { default as ToolbarFeedback } from './ToolbarFeedback';
 export { default as ToolbarHyperlink } from './ToolbarHyperlink';
 export { default as ToolbarLists } from './ToolbarLists';

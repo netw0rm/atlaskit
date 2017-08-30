@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 46.10.0 (2017-08-30)
+
+
+
+* bug fix; workaround double events for the attached and detached upload button. (issues closed: fs-1322) ([b3e19c3](https://bitbucket.org/atlassian/atlaskit/commits/b3e19c3))
+
+
+* feature; collab-plugin ([2c896c7](https://bitbucket.org/atlassian/atlaskit/commits/2c896c7))
 ## 46.9.0 (2017-08-30)
 
 * feature; adding configuration to not allow deletion of table header. ([c5e1cc7](https://bitbucket.org/atlassian/atlaskit/commits/c5e1cc7))

@@ -86,9 +86,10 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
       <SingleLinkWrapper>{
         React.cloneElement(child, {
           cardDimensions: {
-            width: 432,
-            height: SINGLE_LINK_HEIGHT,
+            width: 350,
+            height: 300,
           },
+          appearance: 'square'
         } as MediaProps)
       }</SingleLinkWrapper>
     );

@@ -97,6 +97,10 @@ type Props = {|
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
   width?: number,
+
+  /** todo */
+  // isCreateDrawerOpen: boolean,
+  // isSearchDrawerOpen: boolean,
 |}
 
 type State = {|
@@ -122,7 +126,8 @@ export default class Navigation extends PureComponent {
     isElectronMac: false,
     linkComponent: DefaultLinkComponent,
     onCreateDrawerOpen: () => { },
-    onResize: () => { },
+    /* eslint-disable no-unused-vars*/
+    onResize: (state) => { },
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
     width: defaultWidth,
@@ -229,8 +234,10 @@ export default class Navigation extends PureComponent {
 
   props: Props
 
-  triggerResizeButtonHandler = (resizeState) => {
-    this.props.onResize(resizeState);
+  triggerResizeButtonHandler = (resizeState: resizeObj) => {
+    if (resizeState && this.props.onResize) {
+      this.props.onResize(resizeState);
+    }
   }
 
   render() {

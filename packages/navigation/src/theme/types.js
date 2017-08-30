@@ -50,8 +50,8 @@ export type RootTheme = {|
 // once Flow is fully supported and documented in the repo.
 type GenericItemState = {|
   background: Color,
-  text: Color,
-  secondaryText: Color
+  text?: Color,
+  secondaryText?: Color
 |}
 
 type GenericItemPadding = {|
@@ -72,10 +72,14 @@ export type GenericItemTheme = {|
     compact: GenericItemPadding,
     default: GenericItemPadding,
   |},
+  beforeItemSpacing: {|
+    compact: number,
+    default: number,
+  |},
   default: GenericItemState,
   selected: GenericItemState,
   hover: GenericItemState,
   active: GenericItemState,
-  dragging: GenericItemState,
+  dragging?: GenericItemState,
   disabled?: GenericItemState,
 |};

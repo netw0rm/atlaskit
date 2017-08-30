@@ -36,11 +36,11 @@ export const whenCollapsed = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) ? css(...args) : '')}
 `;
 
-export const whenNotInOverflowDropdown = (...args: Array<mixed>) => css`
+export const whenNotInOverflowDropdown = (...args: Array<any>) => css`
 ${({ theme }) => (!isInOverflowDropdown(theme) ? css(...args) : '')}
 `;
 
-export const whenCollapsedAndNotInOverflowDropdown = (...args: Array<mixed>) => css`
+export const whenCollapsedAndNotInOverflowDropdown = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) && !isInOverflowDropdown(theme) ? css(...args) : '')}
 `;
 

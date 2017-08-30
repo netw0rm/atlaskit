@@ -83,8 +83,7 @@ export default class Item extends Component {
   // eslint-disable-next-line react/sort-comp
   ref: ?HTMLElement
 
-  // $FlowFixMe
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     // The type of element rendered at the root of render() can vary based on the `href`

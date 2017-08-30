@@ -50,7 +50,7 @@ const withToggleInteraction = (
       this.callContextFn('setItemSelected', id, isSelected, defaultSelected);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Object) {
       const { id, defaultSelected, isSelected } = nextProps;
       if (this.props.isSelected !== isSelected) {
         this.callContextFn('setItemSelected', id, isSelected, defaultSelected);

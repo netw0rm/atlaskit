@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import HeightDetector from './HeightDetector';
@@ -95,6 +94,7 @@ export default class NavigationOverflowHandler extends Component {
 
     const nonDropdownItems = React.Children.map(children, (child, childIndex) => (
       childIndex <= indexOfLastVisibleChild ? (
+
         <HeightDetector onHeightChange={this.handleChildHeight(childIndex)}>
           {child}
         </HeightDetector>
@@ -110,6 +110,7 @@ export default class NavigationOverflowHandler extends Component {
     ) : null;
 
     return (
+
       <HeightDetector
         onHeightChange={this.handleAvailableHeight}
         shouldDetectResize

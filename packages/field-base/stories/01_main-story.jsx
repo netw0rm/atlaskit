@@ -146,7 +146,7 @@ storiesOf(name, module)
     );
 
     return (
-      <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <BasicFieldBase
           label="Spinner example"
           id="fieldbase"
@@ -201,7 +201,7 @@ storiesOf(name, module)
     </form>
   )
   .add('with disabled prop', () =>
-    <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <BasicFieldBase
         label="Disabled example"
         id="fieldbase"
@@ -290,13 +290,14 @@ storiesOf(name, module)
         [
           'subtle',
           'none',
-        ].map((appearance) => {
+        ].map((appearance, i) => {
           const id = uid();
           return (
             <BasicFieldBase
               label={`${appearance} appearance example`}
               id={id}
               appearance={appearance}
+              key={i}
             >
               <Input
                 id={id}
@@ -317,7 +318,7 @@ storiesOf(name, module)
           isPaddingDisabled
         >
           <Button
-            iconAfter={<ExpandIcon />}
+            iconAfter={<ExpandIcon label="Expand" />}
           >
             Imagine a Dropdown
           </Button>
@@ -331,7 +332,7 @@ storiesOf(name, module)
           isInvalid
         >
           <Button
-            iconAfter={<ExpandIcon />}
+            iconAfter={<ExpandIcon label="Expand" />}
           >
             Imagine a Dropdown
           </Button>
@@ -375,7 +376,13 @@ storiesOf(name, module)
               src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
               size="small"
             />
-            <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
+            <span
+              style={{
+                marginLeft: 8,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >Jack Sparrow</span>
           </FieldBase>
         </div>
       </Label>
@@ -446,11 +453,11 @@ storiesOf(name, module)
       />
       <RightGutterFieldBase
         label="With button + icon"
-        rightGutter={<Button iconBefore={<HelpIcon />} />}
+        rightGutter={<Button iconBefore={<HelpIcon label="Help" />} />}
       />
       <RightGutterFieldBase
         label="With only icon"
-        rightGutter={<div style={{ color: '#bf2600' }}><ErrorIcon /></div>}
+        rightGutter={<div style={{ color: '#bf2600' }}><ErrorIcon label="Error" /></div>}
       />
       <RightGutterFieldBase
         label="With only icon"

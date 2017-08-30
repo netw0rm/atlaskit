@@ -1,5 +1,13 @@
 # @atlaskit/field-base
 
+## 8.0.0 (2017-08-29)
+
+* feature; adjust darkmode colors based on design feedback ([93a5eb9](https://bitbucket.org/atlassian/atlaskit/commits/93a5eb9))
+
+* breaking; Remove dependency on util-shared-styles and replace with theme ([960c062](https://bitbucket.org/atlassian/atlaskit/commits/960c062))
+* breaking; add darkmode to field-base (issues closed: #ak-3338) ([960c062](https://bitbucket.org/atlassian/atlaskit/commits/960c062))
+
+
 ## 7.4.4 (2017-08-22)
 
 * bug fix; after discussing the implementation ([27e1963](https://bitbucket.org/atlassian/atlaskit/commits/27e1963))

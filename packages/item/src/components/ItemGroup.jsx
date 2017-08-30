@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,6 +7,8 @@ import {
   GroupTitleText,
   GroupTitleAfter,
 } from '../styled/ItemGroup';
+
+type HTMLElement = any;
 
 export default class ItemGroup extends Component {
   static propTypes = {
@@ -28,6 +29,8 @@ export default class ItemGroup extends Component {
   static defaultProps = {
     role: 'group',
   }
+  // eslint-disable-next-line
+  headingAfterElement: ?HTMLElement;
 
   state = { ariaLabel: this.props.title }
 
@@ -54,7 +57,7 @@ export default class ItemGroup extends Component {
         ? elemAfter
         : this.headingAfterElement && this.headingAfterElement.textContent;
 
-    return `${title}${afterText ? ` ${afterText}` : ''}`;
+    return `${title}${afterText ? ` ${String(afterText)}` : ''}`;
   }
 
   render() {

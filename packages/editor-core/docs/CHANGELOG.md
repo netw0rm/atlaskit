@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 46.8.0 (2017-08-29)
+
+* feature; export ToolbarEmojiPicker for consumption by editor-hiphcat (issues closed: fs-1320) ([0226a5b](https://bitbucket.org/atlassian/atlaskit/commits/0226a5b))
+## 46.7.0 (2017-08-29)
+
+* feature; exported AtlassianEmojiMigrationResource from editor-core ([e7e0eab](https://bitbucket.org/atlassian/atlaskit/commits/e7e0eab))
+
+
+
+
+
+
 ## 46.6.0 (2017-08-28)
 
 * bug fix; fixed missing prop in tests ([0311be8](https://bitbucket.org/atlassian/atlaskit/commits/0311be8))

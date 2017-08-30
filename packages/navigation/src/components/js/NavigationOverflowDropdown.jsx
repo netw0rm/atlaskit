@@ -11,7 +11,7 @@ import { isDropdownOverflowKey } from '../../theme/util';
 import type { ReactElement } from '../../types';
 
 type State = {|
-  isOpen: bool,
+  isOpen: boolean,
 |}
 
 type Props = {|
@@ -27,7 +27,7 @@ export default class NavigationOverflowDropdown extends Component {
   state: State
   props: Props
 
-  handleDropdownToggle = ({ isOpen }) => {
+  handleDropdownToggle = ({ isOpen }: any) => {
     this.setState({ isOpen });
   }
 

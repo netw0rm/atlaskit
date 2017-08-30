@@ -1,5 +1,22 @@
 # @atlaskit/navigation
 
+## 20.3.1 (2017-08-29)
+
+
+* bug fix; add missing semicolon to the NavigationFixedContainer ([f2c89e8](https://bitbucket.org/atlassian/atlaskit/commits/f2c89e8))
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 20.3.0 (2017-08-25)
 
 * feature; added Navigation.isElectronMac prop to make UI fit better with Mac window buttons (issues closed: ak-2613) ([2c65ec7](https://bitbucket.org/atlassian/atlaskit/commits/2c65ec7))

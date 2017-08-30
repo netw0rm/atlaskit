@@ -11,8 +11,8 @@ import { focusManagerContext } from '../../util/contextNamespace';
 import type { ItemId } from '../../types';
 
 // HOC that typically wraps @atlaskit/item
-// $FlowFixMe
-const withItemFocus = WrappedComponent => (
+
+const withItemFocus = (WrappedComponent:any) => (
   class WithItemFocus extends Component {
     static displayName = `WithItemFocus(${getDisplayName(WrappedComponent)})`;
 

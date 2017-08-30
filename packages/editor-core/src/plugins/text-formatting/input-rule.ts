@@ -48,7 +48,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (schema.marks.strong) {
     // **string** or __strong__ should bold the text
     const markLength = 2;
-    rules.push(createInputRule(/^(?:[^`]+)(\_\_([^\s^\_][^\_]+)\_\_)|^(\_\_([^\s^\_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
+    rules.push(createInputRule(/^(?:[^`\w]+)(\_\_([^\s^\_][^\_]+)\_\_)|^(\_\_([^\s^\_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
     rules.push(createInputRule(/^(?:[^`]+)(\*\*([^\s^\*][^\*]+)\*\*)$|^(\*\*([^\s^\*][^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, markLength)));
   }
 
@@ -56,7 +56,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     // *string* or _string_ should italic the text
     const markLength = 1;
     rules.push(createInputRule(/^(?:[^\*`]+)(\*([^\s^\*][^\*]+?)\*)$|^(\*([^\s^\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, markLength)));
-    rules.push(createInputRule(/^(?:[^\_`]+)(\_([^\s^\_][^\_]+?)\_)$|^(\_([^\s^\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
+    rules.push(createInputRule(/^(?:[^\_\w`]+)(\_([^\s^\_][^\_]+?)\_)$|^(\_([^\s^\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
   }
 
   if (schema.marks.strike) {

@@ -12,17 +12,6 @@ export interface Match {
 }
 
 const linkify = LinkifyIt();
-const validateFileText = (text: string, pos: number) => {
-  const tail = text.slice(pos);
-  const match = /[a-zA-Z0-9\.\$\-_\+!\*',\/\?:@=&%#~;()]+\.[a-zA-Z0-9-]+/.exec(tail);
-  if (match) {
-    return match[0].length;
-  }
-  return 0;
-};
-linkify.add('/', { validate: validateFileText });
-linkify.add('./', { validate: validateFileText });
-linkify.add('../', { validate: validateFileText });
 linkify.add('sourcetree:', 'http:');
 
 export function getLinkMatch(str: string): Match | null {

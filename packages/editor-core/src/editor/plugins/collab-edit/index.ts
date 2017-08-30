@@ -29,7 +29,7 @@ class PluginState {
 
 const handleInit = (data: { doc?: any, json?: any }, view: EditorView) => {
   const { doc, json } = data;
-  if (!!doc) {
+  if (doc) {
     const { state, state: { schema, tr } } = view;
     const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
 
@@ -42,16 +42,16 @@ const handleInit = (data: { doc?: any, json?: any }, view: EditorView) => {
       );
       view.updateState(newState);
     }
-  } else if (!!json) {
+  } else if (json) {
     applyRemoteSteps(json, view);
   }
 };
 
  const applyRemoteData = (data: { json?: any, newState?: EditorState<any> }, view: EditorView) => {
   const { json, newState } = data;
-  if (!!json) {
+  if (json) {
     applyRemoteSteps(json, view);
-  } else if (!!newState) {
+  } else if (newState) {
     view.updateState(newState);
   }
 };

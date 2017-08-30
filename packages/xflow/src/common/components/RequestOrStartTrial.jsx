@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
+import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
-import App from './App';
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
 import { StartTrial, AlreadyStarted, ErrorFlag } from '../../start-trial/';
@@ -116,9 +116,19 @@ class RequestOrStartTrial extends Component {
     },
   ];
 
+  handleAnalyticsEvent = (name, data) => {
+    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    if (onAnalyticsEvent) {
+      onAnalyticsEvent(name, {
+        ...data,
+        sourceComponent,
+        sourceContext,
+      });
+    }
+  };
+
   render() {
     const {
-      onAnalyticsEvent,
       onComplete,
       onTrialRequested,
       onTrialActivating,
@@ -128,12 +138,14 @@ class RequestOrStartTrial extends Component {
     const { activationState, initializingCheckFailed, showInitializationError } = this.state;
 
     return (
-      <App
-        onAnalyticsEvent={onAnalyticsEvent}
-        sourceComponent={sourceComponent}
-        sourceContext={sourceContext}
+      <XFlowAnalyticsListener
+        onEvent={this.handleAnalyticsEvent}
       >
-        <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
+        <RequestOrStartTrialDialog
+          id="xflow-request-or-start-trial-dialog"
+          sourceComponent={sourceComponent}
+          sourceContext={sourceContext}
+        >
           {(() => {
             switch (this.state.screen) {
               case Screens.INITIALIZING: {
@@ -177,7 +189,7 @@ class RequestOrStartTrial extends Component {
             }
           })()}
         </RequestOrStartTrialDialog>
-      </App>
+      </XFlowAnalyticsListener>
     );
   }
 }

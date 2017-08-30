@@ -12,7 +12,7 @@ export default class AdminSettings extends Component {
   };
 
   static defaultProps = {
-    header: 'Request settings',
+    header: 'Confluence trial requests',
   };
 
   state = {

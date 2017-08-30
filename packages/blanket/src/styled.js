@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
-import { akZIndexBlanket } from '@atlaskit/util-shared-styles';
 
 const backgroundColor = themed({ light: colors.N100A, dark: colors.DN90A });
 export const opacity = p => (p.isTinted ? 1 : 0);
@@ -16,5 +15,4 @@ export default styled.div`
   right: 0;
   top: 0;
   transition: opacity 220ms;
-  z-index: ${akZIndexBlanket};
 `;

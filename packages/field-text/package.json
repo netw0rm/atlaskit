@@ -38,10 +38,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Ben W"
-    },
-    {
-      "name": "Matias C"
+      "name": "Jared Crowe"
     }
   ],
   "license": "Apache-2.0",

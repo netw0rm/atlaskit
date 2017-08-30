@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.11.0 (2017-08-30)
+
+
+* feature; make ASCII conversion of emoji count as usage for showing frequent used emoji (issues closed: fs-1094) ([86a0be1](https://bitbucket.org/atlassian/atlaskit/commits/86a0be1))
 ## 46.10.0 (2017-08-30)
 
 

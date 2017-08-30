@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.8.2 (2017-08-30)
+
+* bug fix; change blockQuote to blockquote in JSON Schema (issues closed: ed-2594) ([b32cfe2](https://bitbucket.org/atlassian/atlaskit/commits/b32cfe2))
 ## 46.8.1 (2017-08-30)
 
 * bug fix; prevent media insertion for task/decisions (issues closed: fs-1240) ([48dcf05](https://bitbucket.org/atlassian/atlaskit/commits/48dcf05))

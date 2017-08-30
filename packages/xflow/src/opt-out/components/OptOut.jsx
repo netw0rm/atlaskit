@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { xFlowShape } from '../../common/components/XFlowProvider';
-import App from '../../common/components/App';
+import XFlowAnalyticsListener from '../../common/components/XFlowAnalyticsListener';
 
 import AdminSettings from './AdminSettings';
 
@@ -12,14 +12,27 @@ export default class OptOut extends Component {
   };
 
   static propTypes = {
-    locale: PropTypes.string,
+    sourceComponent: PropTypes.string.isRequired,
+    sourceContext: PropTypes.string.isRequired,
+    onAnalyticsEvent: PropTypes.func.isRequired,
+  };
+
+  handleAnalyticsEvent = (name, data) => {
+    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    if (onAnalyticsEvent) {
+      onAnalyticsEvent(name, {
+        ...data,
+        sourceComponent,
+        sourceContext,
+      });
+    }
   };
 
   render() {
     return (
-      <App>
+      <XFlowAnalyticsListener onEvent={this.handleAnalyticsEvent}>
         <AdminSettings />
-      </App>
+      </XFlowAnalyticsListener>
     );
   }
 }

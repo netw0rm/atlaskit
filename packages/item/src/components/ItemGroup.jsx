@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,6 +7,8 @@ import {
   GroupTitleText,
   GroupTitleAfter,
 } from '../styled/ItemGroup';
+
+type HTMLElement = any;
 
 export default class ItemGroup extends Component {
   static propTypes = {
@@ -21,9 +22,19 @@ export default class ItemGroup extends Component {
     elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     /** A function that returns the DOM ref created by the group */
     innerRef: PropTypes.func,
+    /** Accessibility role to be applied to the root component */
+    role: PropTypes.string,
   }
 
+  static defaultProps = {
+    role: 'group',
+  }
+  // eslint-disable-next-line
+  headingAfterElement: ?HTMLElement;
+
   state = { ariaLabel: this.props.title }
+
+  headingAfterElement: Node // eslint-disable-line react/sort-comp
 
   componentDidMount = () => {
     if (this.props.title || this.props.elemAfter) {
@@ -46,15 +57,15 @@ export default class ItemGroup extends Component {
         ? elemAfter
         : this.headingAfterElement && this.headingAfterElement.textContent;
 
-    return `${title}${afterText ? ` ${afterText}` : ''}`;
+    return `${title}${afterText ? ` ${String(afterText)}` : ''}`;
   }
 
   render() {
-    const { children, elemAfter, isCompact, title, innerRef } = this.props;
+    const { children, elemAfter, isCompact, title, innerRef, role } = this.props;
     const { ariaLabel } = this.state;
 
     return (
-      <div aria-label={ariaLabel} role="group" ref={innerRef}>
+      <div aria-label={ariaLabel} role={role} ref={innerRef}>
         {
           title ? (
             <GroupTitle aria-hidden="true" isCompact={isCompact}>

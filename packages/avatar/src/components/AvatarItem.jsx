@@ -107,7 +107,7 @@ class AvatarItem extends Component {
     const props = getProps(this);
 
     // provide element type based on props
-    const Item = this.getStyledComponent();
+    const Item: any = this.getStyledComponent();
 
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;

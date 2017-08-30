@@ -97,6 +97,7 @@ storiesOf(name, module)
       onSave={SAVE_ACTION}
       onChange={handleChange}
       mentionProvider={mentionProvider}
+      analyticsHandler={action('Analytics event')}
     />
   )
   .add('With Media support', () =>
@@ -112,6 +113,7 @@ storiesOf(name, module)
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
         onChange={handleChange}
+        analyticsHandler={action('Analytics event')}
       />
     </div>
   )
@@ -132,6 +134,7 @@ storiesOf(name, module)
               onSave={SAVE_ACTION}
               onChange={handleChange}
               mentionProvider={mentionProvider}
+              analyticsHandler={action('Analytics event')}
             />
 
             <fieldset style={{ marginTop: 20 }}>
@@ -162,6 +165,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onSave={SAVE_ACTION}
               onChange={handleChange}
+              analyticsHandler={action('Analytics event')}
             />
 
             <fieldset style={{ marginTop: 20 }}>
@@ -215,6 +219,7 @@ storiesOf(name, module)
               defaultValue={this.state.input}
               key={this.state.input}
               mentionProvider={mentionProvider}
+              analyticsHandler={action('Analytics event')}
             />
           </div>
         );
@@ -237,6 +242,7 @@ storiesOf(name, module)
       onChange={handleChange}
       mentionProvider={mentionProvider}
       tablesEnabled={true}
+      analyticsHandler={action('Analytics event')}
     />
   )
 ;

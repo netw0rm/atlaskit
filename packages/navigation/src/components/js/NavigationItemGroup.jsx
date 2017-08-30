@@ -12,7 +12,7 @@ type Props = {|
   action?: ReactElement,
   /** React Elements to be displayed within the group. This should generally be
   a collection of NavigationItems. */
-  children: ReactElement,
+  children?: ReactElement,
   /** Set whether the text should be compacted. */
   isCompact?: boolean,
   /** Set whether a separator should appear above the group. */
@@ -58,7 +58,6 @@ export default class NavigationItemGroup extends PureComponent {
     const header = title || action ? (
       <NavigationItemGroupHeader>
         {wrappedTitle}
-        {wrappedAction}
       </NavigationItemGroupHeader>
     ) : null;
 

@@ -15,6 +15,10 @@ export const description = (
       animates in, as well as animating out when <code>isCompleting</code> is
       passed to it.
     </p>
+    <p>
+      The inverted spinner matches the dark spinner for display in non-dark
+      contexts. In a dark context, the inverted spinner remains the same color.
+    </p>
   </div>
 );
 

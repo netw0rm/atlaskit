@@ -10,7 +10,7 @@ import {
   flagFocusRingColor,
 } from '../theme';
 
-const getBoxShadow = props => {
+const getBoxShadow = (props) => {
   const borderColor = flagBorderColor(props);
   const shadowColor = flagShadowColor(props);
 
@@ -28,6 +28,7 @@ export default styled.div`
   color: ${flagTextColor};
   display: flex;
   padding: ${math.multiply(gridSize, 2)}px;
+  transition: background-color 200ms;
   width: 100%;
   z-index: 600;
 

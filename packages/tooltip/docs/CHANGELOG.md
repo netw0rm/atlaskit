@@ -1,5 +1,13 @@
 # @atlaskit/tooltip
 
+## 6.0.0 (2017-08-30)
+
+* breaking; The tooltip trigger is now wrapped in a div with 'display: inline-block' applied. Previously it was ([de263e5](https://bitbucket.org/atlassian/atlaskit/commits/de263e5))
+* breaking; tooltip now disappears as soon as the mouse leaves the trigger (issues closed: ak-1834) ([de263e5](https://bitbucket.org/atlassian/atlaskit/commits/de263e5))
+
+## 5.0.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
 ## 5.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

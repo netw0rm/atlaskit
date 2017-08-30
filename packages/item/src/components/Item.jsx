@@ -57,7 +57,7 @@ export default class Item extends Component {
     /** Standard onmouseleave event */
     onMouseLeave: PropTypes.func,
     /** Allows the role attribute of the item to be altered from it's default of
-     *  `role="presentation"` */
+     *  `role="button"` */
     role: PropTypes.string,
     /** Allows the `children` content to break onto a new line, rather than truncating the
      *  content. */
@@ -71,20 +71,19 @@ export default class Item extends Component {
   }
 
   static defaultProps = {
+    autoFocus: false,
     description: '',
     isCompact: false,
     isDisabled: false,
     isHidden: false,
-    role: 'presentation',
+    role: 'button',
     shouldAllowMultiline: false,
-    autoFocus: false,
   }
 
   // eslint-disable-next-line react/sort-comp
   ref: ?HTMLElement
 
-  // $FlowFixMe
-  constructor(props) {
+  constructor(props: Object) {
     super(props);
 
     // The type of element rendered at the root of render() can vary based on the `href`
@@ -210,7 +209,7 @@ export default class Item extends Component {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role={role}
-        tabIndex={isDisabled || isHidden ? null : 0}
+        tabIndex={isDisabled || isHidden || this.props.href ? null : 0}
         target={this.props.target}
         title={this.props.title}
         style={dnd ? dnd.draggableStyle : null}
@@ -219,7 +218,7 @@ export default class Item extends Component {
         {...patchedEventHandlers}
         {...otherProps}
       >
-        {!!this.props.elemBefore && <Before>{this.props.elemBefore}</Before>}
+        {!!this.props.elemBefore && <Before isCompact={isCompact}>{this.props.elemBefore}</Before>}
         <ContentWrapper>
           <Content allowMultiline={this.props.shouldAllowMultiline}>
             {this.props.children}
@@ -231,7 +230,7 @@ export default class Item extends Component {
             >{this.props.description}</Description>
           )}
         </ContentWrapper>
-        {!!this.props.elemAfter && <After>{this.props.elemAfter}</After>}
+        {!!this.props.elemAfter && <After isCompact={isCompact}>{this.props.elemAfter}</After>}
       </Root>
     );
   }

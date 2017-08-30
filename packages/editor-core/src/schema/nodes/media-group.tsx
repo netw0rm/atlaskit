@@ -3,7 +3,6 @@ import { Definition as Media } from './media';
 
 /**
  * @name mediaGroup_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'mediaGroup';
@@ -19,7 +18,7 @@ export const mediaGroup: NodeSpec = {
   content: 'media+',
   attrs: {},
   parseDOM: [{
-    tag: 'p[data-node-type="mediaGroup"]',
+    tag: 'div[data-node-type="mediaGroup"]',
     getAttrs: (dom: Element) => ({})
   }],
 
@@ -27,7 +26,7 @@ export const mediaGroup: NodeSpec = {
     return [
       'div',
       {
-        'data-node-type': 'media_group'
+        'data-node-type': 'mediaGroup'
       },
       0
     ];

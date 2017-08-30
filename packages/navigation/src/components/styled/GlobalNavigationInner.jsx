@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { globalOpenWidth, layout } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import { getProvided, isElectronMac } from '../../theme/util';
 
 const GlobalNavigationInner = styled.div`
   align-items: center;
@@ -11,7 +11,7 @@ const GlobalNavigationInner = styled.div`
   flex-direction: column;
   padding: ${layout.padding.top}px 0 ${layout.padding.bottom}px;
   /* always keeping a fixed width so that the ContainerNavigation bleeds over the top of this */
-  width: ${globalOpenWidth}px;
+  width: ${props => globalOpenWidth(isElectronMac(props.theme))}px;
 `;
 
 GlobalNavigationInner.displayName = 'GlobalNavigationInner';

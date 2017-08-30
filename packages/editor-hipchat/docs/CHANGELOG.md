@@ -1,5 +1,31 @@
 # @atlaskit/editor-hipchat
 
+## 5.2.0 (2017-08-29)
+
+* feature; upgrade editor-core to minimum required version for emoji toolbar (issues closed: fs-1320) ([14e9661](https://bitbucket.org/atlassian/atlaskit/commits/14e9661))
+* feature; add support for an inbuilt toolbar with Emoji picker button (issues closed: fs-1320) ([5c7209a](https://bitbucket.org/atlassian/atlaskit/commits/5c7209a))
+## 5.1.1 (2017-08-29)
+
+
+* bug fix; refactored canSubmit ([69e4ffc](https://bitbucket.org/atlassian/atlaskit/commits/69e4ffc))
+* bug fix; refactored handleSubmit ([113ea08](https://bitbucket.org/atlassian/atlaskit/commits/113ea08))
+
+* bug fix; fixed pressing Enter in hipchat (issues closed: ed-2447) ([c5d6775](https://bitbucket.org/atlassian/atlaskit/commits/c5d6775))
+
+
+## 5.1.0 (2017-08-28)
+
+* feature; adding list plugin to editor hipchat. ([4b7f461](https://bitbucket.org/atlassian/atlaskit/commits/4b7f461))
+## 5.0.0 (2017-08-23)
+
+* breaking; Upgrade to next major editor-core and other deps ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
+* breaking; upgrade editor-core and other dependencies. (issues closed: fs-1298) ([6fc0888](https://bitbucket.org/atlassian/atlaskit/commits/6fc0888))
+## 4.18.1 (2017-08-15)
+
+* bug fix; fix storybooks for editor-hipchat ([43c6200](https://bitbucket.org/atlassian/atlaskit/commits/43c6200))
+
+
+
 ## 4.18.0 (2017-08-10)
 
 * feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: ed-2446) ([8177e36](https://bitbucket.org/atlassian/atlaskit/commits/8177e36))

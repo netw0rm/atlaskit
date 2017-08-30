@@ -1,9 +1,10 @@
 import React from 'react';
 import Tag from '@atlaskit/tag';
+import TagGroup from '@atlaskit/tag-group';
 import Avatar from '@atlaskit/avatar';
 
 const TagsExample = () => (
-  <div>
+  <TagGroup>
     <Tag text="Base Tag" />
     <Tag text="Avatar Before" elemBefore={<Avatar size="xsmall" />} />
     <Tag text="Linked Tag" href="/components/tag" />
@@ -23,7 +24,7 @@ const TagsExample = () => (
       }}
       onAfterRemoveAction={e => console.log('After removal', e)}
     />
-  </div>
+  </TagGroup>
 );
 
 export default TagsExample;

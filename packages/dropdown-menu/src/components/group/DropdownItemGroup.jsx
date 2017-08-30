@@ -20,6 +20,7 @@ export default class DropdownItemGroup extends Component {
       <ItemGroup
         elemAfter={elemAfter}
         title={title}
+        role="menu"
       >{children}</ItemGroup>
     );
   }

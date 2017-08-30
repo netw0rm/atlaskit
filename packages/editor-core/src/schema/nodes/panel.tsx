@@ -15,13 +15,9 @@ export interface Attributes {
 
 /**
  * @name panel_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'panel';
-  /**
-   * @additionalProperties false
-   */
   attrs: Attributes;
   content: TopLevel;
 }
@@ -50,7 +46,7 @@ export interface DOMAttributes {
 
 export const panel: NodeSpec = {
   group: 'block',
-  content: '(paragraph | heading | bulletList | orderedList)*',
+  content: '(paragraph | heading | bulletList | orderedList)+',
   attrs: {
     panelType: { default: 'info' }
   },

@@ -11,6 +11,7 @@ import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/to
 import { name, version } from '../package.json';
 import Editor from '../src';
 import MentionResource from './mentions/mention-resource';
+import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 
 const mediaTestHelpers = {
   defaultClientId,
@@ -105,6 +106,13 @@ storiesOf(name, module)
       mentionEncoder={mentionEncoder}
     />
   )
+  .add('Editor (Recently viewed in link dialog)', () =>
+    <Editor
+      onChange={handleChange}
+      allowLinks={true}
+      activityProvider={Promise.resolve(new MockActivityResource())}
+    />
+  )
   .add('Editor with InlineEdit', () => {
     const fabricEditor = (
       <Editor
@@ -146,6 +154,36 @@ storiesOf(name, module)
       />
     </div>
   )
+  .add('Editor (isDisabled)', () => {
+    type Props = {};
+    type State = { isDisabled: boolean };
+
+    class Demo extends PureComponent<Props, State> {
+      state = { isDisabled: true };
+
+      render() {
+        return (
+          <div>
+            <Editor
+              isDisabled={this.state.isDisabled}
+              isExpandedByDefault={true}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              onChange={handleChange}
+            />
+
+            <fieldset style={{ marginTop: 20 }}>
+              <button onClick={this.toggleDisabled}>Toggle disabled state</button>
+            </fieldset>
+          </div>
+        );
+      }
+
+      private toggleDisabled = () => this.setState({ isDisabled: !this.state.isDisabled });
+    }
+
+    return <Demo />;
+  })
   .add('Editor (All flags)', () =>
     <Editor
       onChange={handleChange}

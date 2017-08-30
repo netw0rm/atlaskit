@@ -187,7 +187,7 @@ describe('emojis', () => {
         const spy = sinon.spy(pluginState, 'insertEmoji');
         (pluginState as any).emojiProvider = true;
         forceUpdate(editorView); // Force update to ensure active query.
-        pluginState.onSearchResult({categories: {}, emojis: [grinEmoji]});
+        pluginState.onSearchResult({emojis: [grinEmoji]});
 
         sendKeyToPm(editorView, 'Space');
         expect(spy.calledWith(grinEmoji), 'was called').to.equal(true);

@@ -71,8 +71,7 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
 // This is the main item style. It is defined as a basic style variable so it can
 // later be applied to different component types (span / a / custom link component)
 
-// $FlowFixMe
-export const ItemBase = ({ isSelected, theme }) => css`
+export const ItemBase = ({ isSelected, theme } : any) => css`
   align-items: center;
   border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
   box-sizing: border-box;
@@ -101,7 +100,7 @@ export const ItemBase = ({ isSelected, theme }) => css`
 // simplify this by taking advantage of the withComponent() functionality.
 const styledRootElement = (
   { href, linkComponent }:
-  { href?: string, linkComponent?: any }
+  { href?: ?string, linkComponent?: any }
 ) => {
   if (href) {
     return linkComponent

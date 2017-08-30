@@ -84,6 +84,10 @@ const eventHandlers = {
   media: {
     onClick: action('onClick'),
   },
+  applicationCard: {
+    onClick: action('onClick'),
+    onActionClick: action('onActionClick'),
+  },
 };
 
 interface DemoRendererProps {
@@ -126,13 +130,13 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
             value={this.state.input}
           />
         </fieldset>
-        {this.renderer}
-        {this.text}
+        {this.renderRenderer()}
+        {this.renderTextOutput()}
       </div>
     );
   }
 
-  get renderer() {
+  private renderRenderer() {
     if (this.props.serializer !== 'react') {
       return null;
     }
@@ -153,18 +157,20 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
 
       return (
         <div>
+          <div style={{color: '#ccc', marginBottom: '8px'}}>&lt;Renderer&gt;</div>
           <Renderer {...props}/>
+          <div style={{color: '#ccc', marginTop: '8px'}}>&lt;/Renderer&gt;</div>
           <div ref={this.handlePortalRef}/>
         </div>
       );
     } catch (ex) {
       return (
-        <div>Invalid document: {ex.message}</div>
+        <pre>Invalid document: {ex.stack}</pre>
       );
     }
   }
 
-  get text() {
+  private renderTextOutput() {
     if (this.props.serializer !== 'text') {
       return null;
     }

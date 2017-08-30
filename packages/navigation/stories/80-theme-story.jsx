@@ -7,7 +7,7 @@ import AkAvatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import ListIcon from '@atlaskit/icon/glyph/list';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import AkButton from '@atlaskit/button';

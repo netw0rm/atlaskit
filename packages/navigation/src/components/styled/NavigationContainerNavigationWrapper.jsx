@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { containerClosedWidth } from '../../shared-variables';
+import { isElectronMac } from '../../theme/util';
 
 const getTransform = ({ horizontalOffset }) => {
   if (!horizontalOffset || horizontalOffset === 0) {
@@ -8,14 +9,17 @@ const getTransform = ({ horizontalOffset }) => {
   return `transform: translateX(${horizontalOffset}px);`;
 };
 
-export default styled.div`
+const NavigationContainerNavigationWrapper = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   /* allowing the container to collapse down to its min width */
-  min-width: ${containerClosedWidth}px;
+  min-width: ${props => containerClosedWidth(isElectronMac(props.theme))}px;
   ${getTransform}
 
    /* make full height */
   display: flex;
 `;
 
+NavigationContainerNavigationWrapper.displayName = 'NavigationContainerNavigationWrapper';
+
+export default NavigationContainerNavigationWrapper;

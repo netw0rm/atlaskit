@@ -1,6 +1,7 @@
 // @flow
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import uid from 'uid';
 
@@ -10,8 +11,8 @@ import { focusManagerContext } from '../../util/contextNamespace';
 import type { ItemId } from '../../types';
 
 // HOC that typically wraps @atlaskit/item
-// $FlowFixMe
-const withItemFocus = WrappedComponent => (
+
+const withItemFocus = (WrappedComponent:any) => (
   class WithItemFocus extends Component {
     static displayName = `WithItemFocus(${getDisplayName(WrappedComponent)})`;
 
@@ -71,6 +72,7 @@ const withItemFocus = WrappedComponent => (
       return (
         <WrappedComponent
           onFocus={this.handleFocus}
+          role="menuitem"
           {...otherProps}
         >
           {children}

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
@@ -117,18 +118,44 @@ describe(name, () => {
           });
 
           it('should set isExpanded to true when icon clicked', () => {
+            flag.setProps({ description: 'Hello' });
             flag.find(DismissButton).simulate('click');
             expect(flag.state('isExpanded')).toBe(true);
           });
 
           it('should render a chevron-down icon if not expanded', () => {
+            flag.setProps({ description: 'Hello' });
             expect(flag.state('isExpanded')).toBe(false);
             expect(flag.find(ChevronDownIcon).exists()).toBe(true);
           });
 
           it('should render a chevron-up icon if expanded', () => {
+            flag.setProps({ description: 'Hello' });
             flag.setState({ isExpanded: true });
             expect(flag.find(ChevronUpIcon).exists()).toBe(true);
+          });
+
+          it('should only render an expand button if either description or actions props are set', () => {
+            expect(flag.find(DismissButton).exists()).toBe(false);
+
+            flag.setProps({ actions: [], description: 'Hello' });
+            expect(flag.find(DismissButton).exists()).toBe(true);
+
+            flag.setProps({ actions: [{ content: 'Hello', onClick: () => {} }], description: null });
+            expect(flag.find(DismissButton).exists()).toBe(true);
+          });
+
+          it('should un-expand an expanded bold flag when the description and actions props are removed', () => {
+            flag.setProps({ description: 'Hello', actions: [{ content: 'Hello', onClick: () => {} }] });
+            expect(flag.state('isExpanded')).toBe(false);
+            flag.find(DismissButton).simulate('click');
+            expect(flag.state('isExpanded')).toBe(true);
+
+            flag.setProps({ description: 'Hello', actions: [] });
+            expect(flag.state('isExpanded')).toBe(true);
+
+            flag.setProps({ description: null, actions: [] });
+            expect(flag.state('isExpanded')).toBe(false);
           });
 
           it('should set aria-hidden true on content when isExpanded is false', () => {

@@ -2,6 +2,7 @@ import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
@@ -78,10 +79,12 @@ export interface Props {
   saveDisabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  activityProvider?: Promise<ActivityProvider>;
   mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
+  height?: number;
   maxHeight?: number | undefined;
 }
 
@@ -92,7 +95,6 @@ export interface State {
 
 export default class ChromeExpanded extends PureComponent<Props, State> {
   private editorContainer: HTMLElement;
-  private editorContent: HTMLElement;
   private maxHeightContainer: HTMLElement;
   state: State = {
     showHelp: false
@@ -107,6 +109,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     if (maxHeight) {
       this.setState({
         maxHeightStyle: {
+          boxSizing: 'border-box',
           maxHeight: `${maxHeight}px`,
           overflow: 'auto',
           position: 'relative'
@@ -122,27 +125,36 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     }
   }
 
-  setEditorContent = (ref) => {
-    this.editorContent = ref;
-  }
-
   private handleSpinnerComplete() {}
+
+  private getEditorHeight() {
+    const { editorView } = this.props;
+
+    return editorView
+      ? editorView.dom.offsetHeight
+      : 0;
+  }
 
   private addBorders = () => {
     const { maxHeight } = this.props;
+
     if (maxHeight) {
+      const editorHeight = this.getEditorHeight();
       let { maxHeightStyle } = this.state;
-      if (this.editorContent.clientHeight >= maxHeight && !maxHeightStyle.borderBottom) {
+
+      if (editorHeight >= maxHeight && !maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: `1px solid ${akColorN40}`, borderTop: `1px solid ${akColorN40}` };
-      } else if (this.editorContent.clientHeight < maxHeight && maxHeightStyle.borderBottom) {
+      } else if (editorHeight < maxHeight && maxHeightStyle.borderBottom) {
         maxHeightStyle = { ...maxHeightStyle, borderBottom: null, borderTop: null };
       }
+
       this.setState({ maxHeightStyle });
     }
   }
 
   private toggleHelp = (): void => {
     const showHelp = !this.state.showHelp;
+
     this.setState({
       showHelp
     });
@@ -168,6 +180,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       editorView,
       emojiProvider,
       feedbackFormUrl,
+      height,
       helpDialogPresent,
       mentionProvider,
       onCancel,
@@ -190,8 +203,16 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       saveDisabled,
       popupsMountPoint,
       popupsBoundariesElement,
+      activityProvider,
     } = this.props;
+
     const { maxHeightStyle } = this.state;
+    const style = {...maxHeightStyle};
+
+    if (height) {
+      style.height = `${height}px`;
+    }
+
     const iconAfter = saveDisabled
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
@@ -280,11 +301,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           {helpDialogPresent && <ToolbarHelp showHelp={this.state.showHelp} toggleHelp={this.toggleHelp} />}
         </Toolbar>
         <Content
-          innerRef={this.setEditorContent}
           onPaste={this.addBorders}
           onKeyDown={this.addBorders}
         >
-          <div style={maxHeightStyle} ref={this.handleMaxHeightContainer}>
+          <div style={style} ref={this.handleMaxHeightContainer}>
             {this.props.children}
           </div>
           {pluginStateHyperlink && !disabled ?
@@ -293,6 +313,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              activityProvider={activityProvider}
             /> : null}
 
           {pluginStateCodeBlock && !disabled ?
@@ -360,9 +381,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               }
             </AkButtonGroup>
           </FooterActions>
+          {/* NOTE (to be refactored in ED-2565): ToolbarEmojiPicker.numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker in the SecondaryToolbar */}
           <SecondaryToolbar>
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginState={pluginStateEmojis} editorView={editorView} emojiProvider={emojiProvider} /> : null}
+            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} numFollowingButtons={2}/> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>

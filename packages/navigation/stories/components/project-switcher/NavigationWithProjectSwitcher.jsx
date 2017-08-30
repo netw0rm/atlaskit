@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import styled from 'styled-components';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import ListIcon from '@atlaskit/icon/glyph/list';
 import BasicNavigation from '../BasicNavigation';
@@ -34,25 +34,13 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
         containerTheme={this.props.containerTheme}
         onResizeCallback={this.onResize}
         containerHeaderComponent={() => (
-          this.state.isNavigationOpen ? (
-            <BasicProjectSwitcher
-              text="Project Switcher very long text"
-              icon={<NucleusIcon />}
-              subText="Software project"
-              shouldFitContainer={this.state.isNavigationOpen}
-              position="bottom left"
-            >
-              {this.props.dropdownItems}
-            </BasicProjectSwitcher>
-          ) : (
-            <BasicProjectSwitcher
-              shouldFitContainer={this.state.isNavigationOpen}
-              position="right top"
-              icon={<NucleusIcon />}
-            >
-              {this.props.dropdownItems}
-            </BasicProjectSwitcher>
-          )
+          <BasicProjectSwitcher
+            text="Project Switcher very long text"
+            icon={<NucleusIcon />}
+            subText="Software project"
+          >
+            {this.props.dropdownItems}
+          </BasicProjectSwitcher>
         )}
       >
         <NavigationItem

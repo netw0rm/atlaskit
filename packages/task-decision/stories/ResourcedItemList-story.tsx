@@ -1,19 +1,56 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { PureComponent } from 'react';
 
 import { Query } from '../src/types';
-import ResourcedItemList from '../src/components/ResourcedItemList';
+import ResourcedItemList, { Props } from '../src/components/ResourcedItemList';
 import { createProviders } from './story-utils';
 
 const initialQuery: Query = {
   containerAri: 'cheese',
-  limit: 10,
+  limit: 100,
 };
 
 const initialQueryByLastUpdateDate: Query = {
   ...initialQuery,
   sortCriteria: 'lastUpdateDate',
 };
+
+interface WithResetState {
+  query: Query;
+}
+
+class ResourcedItemListWithReset extends PureComponent<Props,WithResetState> {
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      query: props.initialQuery
+    };
+  }
+
+  onResetQuery = () => {
+    this.setState({
+      query: {
+        ...this.props.initialQuery
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <div>
+          <button onClick={this.onResetQuery}>Reset initial query</button>
+        </div>
+        <ResourcedItemList
+          {...this.props}
+          initialQuery={this.state.query}
+        />
+      </div>
+    );
+  }
+}
 
 storiesOf('<ResourcedItemList/>', module)
   .add('Simple', () => {
@@ -35,6 +72,8 @@ storiesOf('<ResourcedItemList/>', module)
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -46,6 +85,34 @@ storiesOf('<ResourcedItemList/>', module)
         renderDocument={renderDocument}
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
+      />
+    );
+  })
+  .add('Infinite loading slow 5000ms', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 5000 });
+
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
+      />
+    );
+  })
+  .add('Infinite loading slow 500ms with reset', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
+
+    return (
+      <ResourcedItemListWithReset
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -68,6 +135,8 @@ storiesOf('<ResourcedItemList/>', module)
         initialQuery={initialQueryByLastUpdateDate}
         taskDecisionProvider={taskDecisionProvider}
         groupItems={true}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -79,6 +148,8 @@ storiesOf('<ResourcedItemList/>', module)
         initialQuery={initialQueryByLastUpdateDate}
         taskDecisionProvider={taskDecisionProvider}
         groupItems={true}
+        useInfiniteScroll={true}
+        height="100%"
       />
     );
   })
@@ -90,6 +161,30 @@ storiesOf('<ResourcedItemList/>', module)
         initialQuery={initialQuery}
         taskDecisionProvider={taskDecisionProvider}
         groupItems={true}
+      />
+    );
+  })
+  .add('Empty stage', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ empty: true });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+        emptyComponent={<div>Empty result</div>}
+      />
+    );
+  })
+  .add('Error stage', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders({ error: true });
+    return (
+      <ResourcedItemList
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        groupItems={true}
+        errorComponent={<div>Error result</div>}
       />
     );
   });

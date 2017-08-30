@@ -18,6 +18,7 @@ import {
   standardOpenWidth,
 } from '../../shared-variables';
 import * as presets from '../../theme/presets';
+import WithElectronTheme from '../../theme/with-electron-theme';
 
 const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   if (!isCollapsible && !isOpen) {
@@ -30,28 +31,7 @@ const warnIfCollapsedPropsAreInvalid = ({ isCollapsible, isOpen }) => {
   }
 };
 
-const getSnappedWidth = (width) => {
-  // |------------------------------|
-  //      |           |             |
-  //    closed    breakpoint       open
-  //          * snap closed
-  //                       * snap open
-  //                                    * maintain expanded width
-
-  // Snap closed if width ever goes below the resizeClosedBreakpoint
-  if (width < resizeClosedBreakpoint) {
-    return globalOpenWidth;
-  }
-
-  // Snap open if in between the closed breakpoint and the standard width
-  if (width > resizeClosedBreakpoint && width < standardOpenWidth) {
-    return standardOpenWidth;
-  }
-
-  // At this point the width > standard width.
-  // We allow you to have your own wider width.
-  return width;
-};
+const defaultWidth = globalOpenWidth() + containerOpenWidth;
 
 type resizeObj = {|
   width: number,
@@ -65,8 +45,8 @@ type Props = {|
   containerTheme?: Provided,
   /** Component(s) to be rendered as the header of the container.  */
   containerHeaderComponent?: () => ReactElement[],
-  /** Location to pass in an array of AkSearchDrawers to be rendered. There is no
-  decoration done to the components passed in here. */
+  /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
+  to be rendered. There is no decoration done to the components passed in here. */
   drawers?: ReactElement[],
   /** Theme object to be used to color the global container. */
   globalTheme?: Provided,
@@ -95,6 +75,8 @@ type Props = {|
   isOpen?: boolean,
   /** Sets whether to disable all resize prompts. */
   isResizeable?: boolean,
+  /** Causes leftmost navigation section to be slightly wider to accommodate macOS buttons. */
+  isElectronMac: boolean,
   /** A component to be used as a link. By Default this is an anchor. when a href
   is passed to it, and otherwise is a button. */
   linkComponent?: ReactClass,
@@ -107,9 +89,18 @@ type Props = {|
   onCreateDrawerOpen?: () => void,
   /** Function called when the globalSearchIcon is clicked. */
   onSearchDrawerOpen?: () => void,
+  /** The offset at the top of the page before the navigation begins. This allows
+  absolute items such as a banner to be placed above nav, without lower nav items
+  being pushed off the screen. **DO NOT** use this outside of this use-case. Changes
+  are animated. The string is any valid css height value */
+  topOffset?: number,
   /** Width of the navigation. Width cannot be reduced below the minimum, and the
   collapsed with will be respected above the provided width. */
   width?: number,
+
+  /** todo */
+  // isCreateDrawerOpen: boolean,
+  // isSearchDrawerOpen: boolean,
 |}
 
 type State = {|
@@ -130,16 +121,17 @@ export default class Navigation extends PureComponent {
     globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
-    isCreateDrawerOpen: false,
     isOpen: true,
     isResizeable: true,
-    isSearchDrawerOpen: false,
+    isElectronMac: false,
     linkComponent: DefaultLinkComponent,
     onCreateDrawerOpen: () => { },
-    onResize: () => { },
+    /* eslint-disable no-unused-vars*/
+    onResize: (state) => { },
     onResizeStart: () => { },
     onSearchDrawerOpen: () => { },
-    width: globalOpenWidth + containerOpenWidth,
+    width: defaultWidth,
+    topOffset: 0,
   };
 
   constructor(props: Props, context: mixed) {
@@ -154,6 +146,22 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(props);
   }
 
+  // It is possible that Navigation.width will not be supplied by the product, which means the
+  // default width will be used, which assumes a non-Electron environment. We update the width
+  // for this specific case in componentDidMount.
+  componentDidMount() {
+    if (this.props.isElectronMac && this.props.isOpen && this.props.width === defaultWidth) {
+      /* $ExpectError - the onResizeProp is currently listed as optional and a defaultProp value is
+       * also set. Despite this, Flow complains that onResize may be undefined. The Flow docs say
+       * that we can make the prop required, however this marks the prop as required in the API
+       * docs. So using ExpectError here to avoid prop warnings. */
+      this.props.onResize({
+        isOpen: true,
+        width: globalOpenWidth(true) + containerOpenWidth,
+      });
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     this.setState({
       isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
@@ -162,7 +170,33 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(nextProps);
   }
 
-  onResize = (resizeDelta) => {
+  getSnappedWidth = (width: number) => {
+    // |------------------------------|
+    //      |           |             |
+    //    closed    breakpoint       open
+    //          * snap closed
+    //                       * snap open
+    //                                    * maintain expanded width
+
+    const { isElectronMac } = this.props;
+    const resizeClosedBreakpointResult = resizeClosedBreakpoint(isElectronMac);
+
+    // Snap closed if width ever goes below the resizeClosedBreakpoint
+    if (width < resizeClosedBreakpointResult) {
+      return globalOpenWidth(isElectronMac);
+    }
+
+    // Snap open if in between the closed breakpoint and the standard width
+    if (width > resizeClosedBreakpointResult && width < standardOpenWidth(isElectronMac)) {
+      return standardOpenWidth(isElectronMac);
+    }
+
+    // At this point the width > standard width.
+    // We allow you to have your own wider width.
+    return width;
+  };
+
+  onResize = (resizeDelta: number) => {
     this.setState({
       isResizing: true,
       resizeDelta,
@@ -171,10 +205,10 @@ export default class Navigation extends PureComponent {
 
   onResizeEnd = () => {
     const width = this.getRenderedWidth();
-    const snappedWidth = getSnappedWidth(width);
+    const snappedWidth = this.getSnappedWidth(width);
 
     const resizeState = {
-      isOpen: (snappedWidth >= standardOpenWidth),
+      isOpen: (snappedWidth >= standardOpenWidth(this.props.isElectronMac)),
       width: snappedWidth,
     };
 
@@ -187,9 +221,11 @@ export default class Navigation extends PureComponent {
   }
 
   getRenderedWidth = () => {
-    const { isOpen, width, isCollapsible } = this.props;
-    const baselineWidth = isOpen ? width : containerClosedWidth;
-    const minWidth = isCollapsible ? containerClosedWidth : standardOpenWidth;
+    const { isOpen, width, isCollapsible, isElectronMac } = this.props;
+    const baselineWidth = isOpen ? width : containerClosedWidth(isElectronMac);
+    const minWidth = isCollapsible
+      ? containerClosedWidth(isElectronMac)
+      : standardOpenWidth(isElectronMac);
     return Math.max(
       minWidth,
       baselineWidth + this.state.resizeDelta
@@ -198,29 +234,33 @@ export default class Navigation extends PureComponent {
 
   props: Props
 
-  triggerResizeButtonHandler = (resizeState) => {
-    this.props.onResize(resizeState);
+  triggerResizeButtonHandler = (resizeState: resizeObj) => {
+    if (resizeState && this.props.onResize) {
+      this.props.onResize(resizeState);
+    }
   }
 
   render() {
     const {
       children,
-      containerTheme,
       containerHeaderComponent,
+      containerTheme,
       drawers,
-      globalTheme,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
+      globalTheme,
       isCollapsible,
-      isResizeable,
+      isElectronMac,
       isOpen,
+      isResizeable,
       linkComponent,
       onCreateDrawerOpen,
       onResizeStart,
       onSearchDrawerOpen,
+      topOffset,
     } = this.props;
 
     const {
@@ -234,21 +274,25 @@ export default class Navigation extends PureComponent {
 
     const renderedWidth = this.getRenderedWidth();
 
+    const globalOpenWidthResult = globalOpenWidth(isElectronMac);
+    const containerClosedWidthResult = containerClosedWidth(isElectronMac);
+
     const isGlobalNavPartiallyCollapsed = isResizing &&
-      renderedWidth < (globalOpenWidth + containerClosedWidth);
+      renderedWidth < (globalOpenWidthResult + containerClosedWidthResult);
 
     // Cover over the global navigation when it is partially collapsed
     const containerOffsetX = isGlobalNavPartiallyCollapsed ?
-      renderedWidth - (globalOpenWidth + containerClosedWidth) : 0;
+      renderedWidth - (globalOpenWidthResult + containerClosedWidthResult) : 0;
 
     // always show global navigation if it is not collapsible
     const showGlobalNavigation = !isCollapsible || isOpen || isResizing;
 
     const containerWidth = showGlobalNavigation ?
-      Math.max(renderedWidth - globalOpenWidth, containerClosedWidth) :
-      containerClosedWidth;
+      Math.max(renderedWidth - globalOpenWidthResult, containerClosedWidthResult) :
+      containerClosedWidthResult;
 
-    const isContainerCollapsed = !showGlobalNavigation || containerWidth === containerClosedWidth;
+    const isContainerCollapsed = !showGlobalNavigation ||
+      containerWidth === containerClosedWidthResult;
     const shouldAnimateContainer = isTogglingIsOpen && !isResizing;
 
     // When the navigation is not collapsible, and the width is expanded.
@@ -283,39 +327,41 @@ export default class Navigation extends PureComponent {
     ) : null;
 
     return (
-      <div>
-        {/* Used to push the page to the right the width of the nav */}
-        <Spacer
-          shouldAnimate={shouldAnimateContainer}
-          width={renderedWidth}
-        >
-          <NavigationFixedContainer>
-            {globalNavigation}
-            <NavigationContainerNavigationWrapper
-              horizontalOffset={containerOffsetX}
-            >
-              <ContainerNavigation
-                theme={containerTheme}
-                showGlobalActions={!showGlobalNavigation}
-                globalCreateIcon={globalCreateIcon}
-                globalPrimaryIcon={globalPrimaryIcon}
-                globalPrimaryItemHref={globalPrimaryItemHref}
-                globalSearchIcon={globalSearchIcon}
-                globalSecondaryActions={globalSecondaryActions}
-                headerComponent={containerHeaderComponent}
-                linkComponent={linkComponent}
-                onGlobalCreateActivate={onCreateDrawerOpen}
-                onGlobalSearchActivate={onSearchDrawerOpen}
-                isCollapsed={isContainerCollapsed}
+      <WithElectronTheme isElectronMac={isElectronMac}>
+        <div>
+          {/* Used to push the page to the right the width of the nav */}
+          <Spacer
+            shouldAnimate={shouldAnimateContainer}
+            width={renderedWidth}
+          >
+            <NavigationFixedContainer topOffset={topOffset} >
+              {globalNavigation}
+              <NavigationContainerNavigationWrapper
+                horizontalOffset={containerOffsetX}
               >
-                {children}
-              </ContainerNavigation>
-            </NavigationContainerNavigationWrapper>
-            {resizer}
-          </NavigationFixedContainer>
-        </Spacer>
-        {drawers}
-      </div>
+                <ContainerNavigation
+                  theme={containerTheme}
+                  showGlobalActions={!showGlobalNavigation}
+                  globalCreateIcon={globalCreateIcon}
+                  globalPrimaryIcon={globalPrimaryIcon}
+                  globalPrimaryItemHref={globalPrimaryItemHref}
+                  globalSearchIcon={globalSearchIcon}
+                  globalSecondaryActions={globalSecondaryActions}
+                  headerComponent={containerHeaderComponent}
+                  linkComponent={linkComponent}
+                  onGlobalCreateActivate={onCreateDrawerOpen}
+                  onGlobalSearchActivate={onSearchDrawerOpen}
+                  isCollapsed={isContainerCollapsed}
+                >
+                  {children}
+                </ContainerNavigation>
+              </NavigationContainerNavigationWrapper>
+              {resizer}
+            </NavigationFixedContainer>
+          </Spacer>
+          {drawers}
+        </div>
+      </WithElectronTheme>
     );
   }
 }

@@ -1,6 +1,6 @@
 export {
   EmojiProvider,
-  EmojiResource,
+  AtlassianEmojiMigrationResource as EmojiResource,
 } from '@atlaskit/emoji';
 
 export {
@@ -76,3 +76,8 @@ export {
 export { colorPalette } from './schema/marks/text-color';
 
 export { default as Editor } from './editor';
+export { default as EditorContext } from './editor/ui/EditorContext';
+export { default as WithEditorActions } from './editor/ui/WithEditorActions';
+
+// asynchronously preloading of splitted code chunks
+require.ensure(['@atlaskit/media-card'], () => {});

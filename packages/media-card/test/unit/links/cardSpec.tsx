@@ -9,7 +9,7 @@ import {
 import { LinkCard, LinkCardGenericView } from '../../../src/links';
 import { A } from '../../../src/links/card/styled';
 import { LinkCardImageView } from '../../../src/links/cardImageView';
-import { LinkCardViewSmall } from '../../../src/links/cardViewSmall';
+import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
 import { EmbedCard } from '../../../src/links/embedCard';
 import { AppCardView } from '../../../src/app';
 
@@ -24,7 +24,7 @@ describe('LinkCard', () => {
 
     it('should render LinkCardViewSmall when appearance="small"', () => {
       const card = shallow(<LinkCard status="complete" appearance="small" details={genericLinkDetails}/>);
-      expect(card.find(LinkCardViewSmall).exists()).toBeTruthy();
+      expect(card.find(CardGenericViewSmall).exists()).toBeTruthy();
     });
 
     it('should render LinkCardImageView when appearance="image"', () => {
@@ -39,7 +39,9 @@ describe('LinkCard', () => {
 
     it('should render AppCardView when appearance="horizontal" and details contain a smartCard', () => {
       const element = shallow(<LinkCard status="complete" appearance="horizontal" details={minimalLinkDetailsContainingASmartCard}/>);
-      expect(element.find(AppCardView).exists()).toBeTruthy();
+      // temp fix: https://product-fabric.atlassian.net/browse/MSW-155
+      // expect(element.find(AppCardView).exists()).toBeTruthy();
+      expect(element.find(LinkCardGenericView).exists()).toBeTruthy();
     });
 
     it('should render LinkCardGenericView when appearance="square"', () => {

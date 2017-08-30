@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
-import { akColorN200 } from '@atlaskit/util-shared-styles';
+import { colors, gridSize, fontSize } from '@atlaskit/theme';
+
+const lineHeightDefault = (gridSize() * 2) / fontSize();
 
 const Input = styled.input`
   display: inline-block;
@@ -7,14 +9,15 @@ const Input = styled.input`
   margin: 0;
   padding: 0;
   outline: 0;
-  height: 17px; /* magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699 */
   border: 0;
   background: none;
   align-self: center;
+  font-size: ${fontSize}px;
+  line-height: ${lineHeightDefault};
 
   &::placeholder {
     font-size: 14px;
-    color: ${akColorN200};
+    color: ${colors.N200};
   }
 `;
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../../src/plugins/panel';
 import PanelEdit from '../../../src/ui/PanelEdit';
-import { ToolbarButton } from '../../../src/ui/PanelEdit/styles';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import { analyticsService } from '../../../src/analytics';
 
@@ -36,7 +36,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
     const panelEditOptions = shallow(<PanelEdit pluginState={pluginState} editorView={editorView} />);
     panelEditOptions.setState({ toolbarVisible: true });
-    expect(panelEditOptions.find(ToolbarButton).length).to.equal(5);
+    expect(panelEditOptions.find(ToolbarButton).length).to.equal(4);
   });
 
   it('should set toolbarVisible to true when panel is clicked', () => {

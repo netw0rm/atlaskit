@@ -14,6 +14,12 @@ import {
 
 export const gridSize: number = akGridSizeUnitless;
 
+const defaultClosedWidth = gridSize * 8;
+
+// Not using grid units here because this is a macOS-specific value and is not
+// related to the ADG 3 grid.
+const extraElectronGlobalNavWidth = 4;
+
 export const layout = {
   padding: {
     top: gridSize * 2,
@@ -21,7 +27,10 @@ export const layout = {
     side: gridSize,
   },
   width: {
-    closed: 64,
+    closed: {
+      default: defaultClosedWidth,
+      electron: defaultClosedWidth + extraElectronGlobalNavWidth,
+    },
   },
 };
 
@@ -31,15 +40,21 @@ export const globalItemSizes = {
   large: gridSize * 6,
 };
 
+export const containerTitleBottomMargin = gridSize;
+export const containerTitleHorizontalPadding = gridSize / 2;
+export const containerTitleIconSpacing = gridSize;
+
 export const drawerOffset = gridSize * 2;
 export const drawerContainerHeaderAnimationSpeed = '220ms';
-export const globalOpenWidth = layout.width.closed;
-export const containerClosedWidth = globalOpenWidth;
+export const globalOpenWidth = (isElectron: boolean = false): number =>
+  layout.width.closed[isElectron ? 'electron' : 'default'];
+export const containerClosedWidth = (isElectron: boolean = false): number =>
+  globalOpenWidth(isElectron);
 export const containerOpenWidth = 240;
-export const containerTitleBottomMargin = gridSize * 2.5;
-export const standardOpenWidth = globalOpenWidth + containerOpenWidth;
-export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
-export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
+export const standardOpenWidth = (isElectron: boolean = false): number =>
+  globalOpenWidth(isElectron) + containerOpenWidth;
+export const resizeClosedBreakpoint = (isElectron: boolean = false): number =>
+  globalOpenWidth(isElectron) + (containerOpenWidth / 2);
 export const searchIconOffset = 80;
 export const createIconOffset = 120;
 export const animationTimeUnitless = 200;
@@ -98,7 +113,7 @@ export const globalSecondaryActions = (() => {
     bottom: gridSize * 2,
   };
 
-  const height = (actionCount) => {
+  const height = (actionCount: number) => {
     const innerHeight = itemSizes.medium * actionCount;
     return {
       inner: innerHeight,

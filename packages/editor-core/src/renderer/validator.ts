@@ -5,6 +5,8 @@ import {
   Schema
 } from '../prosemirror';
 
+import { uuid } from '../plugins/utils';
+
 export interface Doc {
   version: 1;
   type: 'doc';
@@ -203,9 +205,16 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
-  const { attrs, text, type } = node;
-  let { content } = node;
+export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
+  const { attrs, marks, text, type } = originalNode;
+  let { content } = originalNode;
+
+  const node: Node = {
+    attrs,
+    marks,
+    text,
+    type
+  };
 
   if (content) {
     node.content = content = getValidContent(content, schema);
@@ -220,13 +229,27 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
     switch (type) {
       case 'applicationCard': {
         if (!attrs) { break; }
-        const { text, link, background, preview, title, description, details } = attrs;
-        if (typeof text !== 'string' || !title || !title.text) { break; }
+        const { text, link, background, preview, title, description, details, context } = attrs;
+        if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
+
+        // title must contain only one key "text"
+        const titleKeys = Object.keys(title);
+        if (titleKeys.length > 1) { break; }
+
         if (
           (link && !link.url) ||
           (background && !background.url) ||
           (preview && !preview.url) ||
           (description && !description.text)) { break; }
+
+        if (context && typeof context.text !== 'string') { break; }
+        if (context && context.icon) {
+          const { url, label } = context.icon;
+          if (typeof url !== 'string' || typeof label !== 'string') {
+            break;
+          }
+        }
+
         if (details && !Array.isArray(details)) { break; }
 
         if (details && details.some(meta => {
@@ -236,9 +259,12 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           if (users && !Array.isArray(users)) { return true; }
 
           if (users && users.some(user => {
-            if (!user.icon) {
+            if (typeof user.icon !== 'object') {
               return true;
             }
+
+            const { url, label } = user.icon;
+            return (typeof url !== 'string' || typeof label !== 'string');
           })) { return true; }
         })) { break; }
 
@@ -249,7 +275,7 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
         };
       }
       case 'doc': {
-        const { version } = node as Doc;
+        const { version } = originalNode as Doc;
         if (version && content && content.length) {
           return {
             type,
@@ -449,6 +475,9 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs && attrs.localId || uuid(),
+            },
           };
         }
         break;
@@ -458,6 +487,10 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'DECIDED'
+            },
           };
         }
         break;
@@ -467,18 +500,21 @@ export const getValidNode = (node: Node, schema: Schema<NodeSpec, MarkSpec> = de
           return {
             type,
             content,
+            attrs: {
+              localId: attrs && attrs.localId || uuid()
+            },
           };
         }
         break;
       }
       case 'taskItem': {
-        if (content && attrs && attrs.localId) {
+        if (content) {
           return {
             type,
             content,
             attrs: {
-              localId: attrs.localId,
-              state: attrs.state
+              localId: attrs && attrs.localId || uuid(),
+              state: attrs && attrs.state || 'TODO'
             },
           };
         }

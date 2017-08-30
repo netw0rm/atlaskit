@@ -4,9 +4,10 @@ import * as classNames from 'classnames';
 
 import * as styles from './styles';
 
-import { customCategory } from '../../constants';
+import { customCategory, frequentCategory } from '../../constants';
 import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
+import { SearchSort } from '../../types';
 import { getToneEmoji } from '../../util/filters';
 import { EmojiContext } from '../common/internal-types';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
@@ -14,6 +15,8 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
+
+const FREQUENTLY_USED_MAX = 16;
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -27,7 +30,12 @@ export interface Props {
 }
 
 export interface State {
+  // The emojis to be rendered in the picker - will include searchEmojis and frequentlyUsedEmojis
   filteredEmojis: EmojiDescription[];
+  // The emojis returned from a search against the EmojiProvider
+  searchEmojis: EmojiDescription[];
+  // The emojis that are frequently used.
+  frequentlyUsedEmojis?: EmojiDescription[];
   selectedEmoji?: EmojiDescription;
   activeCategory?: string;
   disableCategories?: boolean;
@@ -58,6 +66,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
     this.state = {
       filteredEmojis: [],
+      searchEmojis: [],
+      frequentlyUsedEmojis: [],
       query: '',
       dynamicCategories: [],
       selectedTone: !hideToneSelector ? emojiProvider.getSelectedTone() : undefined,
@@ -87,7 +97,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       if (isPromise(toneEmoji)) {
         toneEmoji.then(emoji => this.setState({ toneEmoji: emoji }));
       } else {
-        this.setState({ toneEmoji: toneEmoji });
+        this.setState({ toneEmoji });
       }
     }
   }
@@ -145,8 +155,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           selectedCategory: categoryId,
           selectedEmoji,
         } as State);
-
-        // this.loadEmoji(emojiProvider, selectedEmoji);
       }
     });
   }
@@ -165,19 +173,67 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   private onSearchResult = (searchResults: EmojiSearchResult): void => {
-    const filteredEmojis = searchResults.emojis;
+    const frequentlyUsedEmoji = this.state.frequentlyUsedEmojis || [];
+    const searchQuery = searchResults.query || '';
+
+    const emojiToRender = this.buildQuerySpecificEmojiList(searchQuery, searchResults.emojis, frequentlyUsedEmoji);
+    this.setStateAfterEmojiChange(searchQuery, emojiToRender, searchResults.emojis, frequentlyUsedEmoji);
+  }
+
+  private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
+    const { query, searchEmojis } = this.state;
+
+    frequentEmoji = frequentEmoji.slice(0, FREQUENTLY_USED_MAX);
+
+    // change the category of each of the featured emoji
+    const recategorised = frequentEmoji.map((emoji) => {
+      const clone = JSON.parse(JSON.stringify(emoji));
+      clone.category = frequentCategory;
+      return clone;
+    });
+
+    const emojiToRender = this.buildQuerySpecificEmojiList(query, searchEmojis, recategorised);
+    this.setStateAfterEmojiChange(query, emojiToRender, searchEmojis, recategorised);
+  }
+
+  /**
+   * If there is no user search in the EmojiPicker then it should display all emoji received from the EmojiRepository and should
+   * also include a special category of most frequently used emoji (if there are any). This method decides if we are in this 'no search'
+   * state and appends the frequent emoji if necessary.
+   *
+   * @param searchEmoji the emoji last received from the EmojiRepository after a search (may be empty)
+   * @param frequentEmoji the frequently used emoji last received from the EmojiRepository (may be empty)
+   */
+  private buildQuerySpecificEmojiList(query: string, searchEmoji: EmojiDescription[], frequentEmoji: EmojiDescription[]): EmojiDescription[] {
+    // If there are no frequent emoji, or if there was a search query then we want to take the search result exactly as is.
+    if (!frequentEmoji.length || query) {
+      return searchEmoji;
+    }
+
+    return [
+      ...searchEmoji,
+      ...frequentEmoji
+    ];
+  }
+
+
+  /**
+   * Calculate and set the new state of the component in response to the list of emoji changing for some reason (a search has returned
+   * or the frequently used emoji have updated.)
+   */
+  private setStateAfterEmojiChange(query: string, emojiToRender: EmojiDescription[], searchEmoji: EmojiDescription[], frequentEmoji: EmojiDescription[]) {
+    const { dynamicCategories, filteredEmojis } = this.state;
 
     // Only enable categories for full emoji list (non-search)
-    const query = searchResults.query;
     const disableCategories = !!query;
-    let dynamicCategories = this.state.dynamicCategories;
-    if (!disableCategories && filteredEmojis.length !== this.state.filteredEmojis.length) {
-      dynamicCategories = this.getDynamicCategories();
+    let newDynamicCategories = dynamicCategories;
+    if (!disableCategories && emojiToRender.length !== filteredEmojis.length) {
+      newDynamicCategories = this.getDynamicCategories();
     }
 
     let selectedEmoji;
     let activeCategory;
-    if (containsEmojiId(filteredEmojis, this.state.selectedEmoji)) {
+    if (containsEmojiId(emojiToRender, this.state.selectedEmoji)) {
       // Keep existing emoji selected if still in results
       selectedEmoji = this.state.selectedEmoji;
       activeCategory = this.state.activeCategory;
@@ -188,10 +244,12 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
 
     this.setState({
-      filteredEmojis,
+      filteredEmojis: emojiToRender,
+      searchEmojis: searchEmoji,
+      frequentlyUsedEmojis: frequentEmoji,
       selectedEmoji,
       activeCategory,
-      dynamicCategories,
+      dynamicCategories: newDynamicCategories,
       disableCategories,
       query,
       loading: false,
@@ -210,7 +268,26 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.updateEmojis('', { skinTone: toneValue });
   }
 
+  /**
+   * Updates the emoji displayed by the picker. If there is no query specified then we expect to retrieve all emoji for display,
+   * by category, in the picker. This differs from when there is a query in which case we expect to receive a sorted result matching
+   * the search.
+   */
   private updateEmojis = (query?: string, options?: SearchOptions) => {
+    // if the query is empty then we want the emoji to be in service defined order, unless specified otherwise
+    // and we want emoji for the 'frequently used' category to be refreshed as well.
+    if (!query) {
+      if (!options) {
+        options = {};
+      }
+
+      if (!options.sort) {
+        options.sort = SearchSort.None;
+      }
+
+      this.props.emojiProvider.getFrequentlyUsed().then(this.onFrequentEmojiResult);
+    }
+
     this.props.emojiProvider.filter(query, options);
   }
 
@@ -246,6 +323,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         this.setState({
           uploadErrorMessage: 'Upload failed.',
         });
+        console.error('Unable to upload emoji', err);
       });
     }
   }

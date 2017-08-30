@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import BadgeElement from '../styled/Badge';
 
 export const APPEARANCE_ENUM = {
-  values: ['default', 'primary', 'important', 'added', 'removed'],
+  values: ['default', 'primary', 'primaryInverted', 'important', 'added', 'removed'],
   defaultValue: 'default',
 };
 
@@ -28,7 +28,7 @@ function getValue(value, max) {
 
 type Props = {
   /** Affects the visual style of the badge */
-  appearance: 'default' | 'primary' | 'important' | 'added' | 'removed',
+  appearance: 'default' | 'primary' | 'primaryInverted' | 'important' | 'added' | 'removed',
   /** The maximum value to display. If value is 100, and max is 50,
       "50+" will be displayed */
   max: number,
@@ -47,7 +47,7 @@ export default class Badge extends PureComponent {
     value: 0,
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     const { onValueUpdated, value: oldValue } = this.props;
     const { value: newValue } = nextProps;
 

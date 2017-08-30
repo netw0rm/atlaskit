@@ -4,7 +4,7 @@ import { itemThemeNamespace } from '@atlaskit/item';
 import { prefix } from '../../src/theme/util';
 import * as presets from '../../src/theme/presets';
 import type { RootTheme, Provided } from '../../src/theme/types';
-import createItemTheme from '../../src/theme/create-item-theme';
+import createItemTheme from '../../src/theme/map-navigation-theme-to-item-theme';
 
 export const getRootTheme = (provided: Provided, isCollapsed?: boolean = false) => ({
   [prefix('root')]: {
@@ -64,4 +64,3 @@ export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) =
   }
   );
 };
-

@@ -1,6 +1,14 @@
 import { mount } from 'enzyme';
 import React from 'react';
+import Blanket from '@atlaskit/blanket';
 import Drawer from '../../src/components/js/Drawer';
+import ContainerHeader from '../../src/components/js/ContainerHeader';
+import DrawerBackIcon from '../../src/components/js/DrawerBackIcon';
+import DrawerSide from '../../src/components/styled/DrawerSide';
+import DrawerPrimaryIcon from '../../src/components/styled/DrawerPrimaryIcon';
+import GlobalItem from '../../src/components/js/GlobalItem';
+import DrawerTrigger from '../../src/components/js/DrawerTrigger';
+import DrawerBackIconWrapper from '../../src/components/styled/DrawerBackIconWrapper';
 
 describe('<Drawer />', () => {
   const escKeyCode = 27;
@@ -70,7 +78,7 @@ describe('<Drawer />', () => {
         const header = <div />;
         const wrapper = mount(<Drawer isOpen header={header} />);
 
-        expect(wrapper.find('ContainerHeader').contains(header)).toBe(true);
+        expect(wrapper.find(ContainerHeader).contains(header)).toBe(true);
       });
 
       it('should render its children', () => {
@@ -91,7 +99,7 @@ describe('<Drawer />', () => {
         const header = <div />;
         const wrapper = mount(<Drawer isOpen={false} header={header} />);
 
-        expect(wrapper.find('ContainerHeader').contains(header)).toBe(false);
+        expect(wrapper.find(ContainerHeader).contains(header)).toBe(false);
       });
     });
   });
@@ -103,8 +111,8 @@ describe('<Drawer />', () => {
         const wrapper = mount(<Drawer isOpen primaryIcon={icon} />);
 
         expect(wrapper
-          .find('DrawerSide')
-          .find('DrawerPrimaryIcon')
+          .find(DrawerSide)
+          .find(DrawerPrimaryIcon)
           .props().children).toBe(icon);
       });
 
@@ -113,32 +121,37 @@ describe('<Drawer />', () => {
         const wrapper = mount(<Drawer isOpen backIcon={icon} />);
 
         expect(wrapper
-          .find('DrawerSide')
-          .find('DrawerBackIcon')
+          .find(DrawerSide)
+          .find(DrawerBackIcon)
           .props().children).toBe(icon);
       });
 
       it('should trigger onBackButton when the DrawerTrigger is clicked', () => {
         const spy = jest.fn();
-        mount(<Drawer isOpen onBackButton={spy} />).find('DrawerTrigger').simulate('click');
+        mount(<Drawer isOpen onBackButton={spy} />)
+          .find(DrawerTrigger).find(GlobalItem).simulate('click');
         expect(spy).toHaveBeenCalled();
       });
 
       it('should default the back icon position at 0px', () => {
         expect(mount(
           <Drawer isOpen />
-        ).find('DrawerBackIconWrapper').props().style.top).toBe('0px');
+        ).find(DrawerBackIconWrapper).props().style.top).toBe('0px');
       });
 
       it('should updated the backIconOffset based on where the backIcon is rendered', () => {
         expect(mount(
           <Drawer isOpen iconOffset={123} />
-        ).find('DrawerBackIconWrapper').props().style.top).toBe('123px');
+        ).find(DrawerBackIconWrapper).props().style.top).toBe('123px');
       });
 
       it('should wrap a DrawerBackIcon in a DrawerTrigger', () => {
-        expect(mount(<Drawer isOpen />).find('DrawerTrigger')
-          .childAt(0).is('DrawerBackIcon')).toBe(true);
+        expect(
+          mount(<Drawer isOpen />)
+            .find(DrawerTrigger)
+            .find(DrawerBackIcon)
+            .exists()
+        ).toBe(true);
       });
     });
 
@@ -149,25 +162,25 @@ describe('<Drawer />', () => {
 
   describe('blanket', () => {
     it('should render a blanket when the drawer is open and closed', () => {
-      expect(mount(<Drawer isOpen />).find('Blanket').length).toBe(1);
-      expect(mount(<Drawer isOpen={false} />).find('Blanket').length).toBe(1);
+      expect(mount(<Drawer isOpen />).find(Blanket).length).toBe(1);
+      expect(mount(<Drawer isOpen={false} />).find(Blanket).length).toBe(1);
     });
 
     it('should render a blocking blanket when the drawer is open', () => {
-      const blanket = mount(<Drawer isOpen />).find('Blanket');
+      const blanket = mount(<Drawer isOpen />).find(Blanket);
       expect(blanket.props().isTinted).toBe(true);
       expect(blanket.props().canClickThrough).toBe(false);
     });
 
     it('should hide the blanket when the drawer is closed', () => {
-      const blanket = mount(<Drawer isOpen={false} />).find('Blanket');
+      const blanket = mount(<Drawer isOpen={false} />).find(Blanket);
       expect(blanket.props().isTinted).toBe(false);
       expect(blanket.props().canClickThrough).toBe(true);
     });
 
     it('should treat clicking an open blanket as if it where a back button', () => {
       const onBackButton = jest.fn();
-      const blanket = mount(<Drawer isOpen onBackButton={onBackButton} />).find('Blanket');
+      const blanket = mount(<Drawer isOpen onBackButton={onBackButton} />).find(Blanket);
 
       expect(blanket.props().onBlanketClicked).toBe(onBackButton);
 

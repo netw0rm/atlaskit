@@ -24,6 +24,36 @@ describe('table keymap', () => {
   });
 
   describe('Tab keypress', () => {
+    context('when the whole row is selected', () => {
+      it('it should select the first cell of the next row', () => {
+        const { editorView, plugin, pluginState, refs } = editor(
+          doc(table(tr(tdCursor, tdEmpty ), tr(td({})(p('{nextPos}')), tdEmpty)))
+        );
+        const { nextPos } = refs;
+        plugin.props.onFocus!(editorView, event);
+        pluginState.selectRow(0);
+        sendKeyToPm(editorView, 'Tab');
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+      });
+    });
+
+    context('when the whole column is selected', () => {
+      it('it should select the last cell of the next column', () => {
+        const { editorView, plugin, pluginState, refs } = editor(
+          doc(table(tr(tdCursor, tdEmpty ), tr(tdEmpty, td({})(p('{nextPos}')))))
+        );
+        const { nextPos } = refs;
+        plugin.props.onFocus!(editorView, event);
+        pluginState.selectColumn(0);
+        sendKeyToPm(editorView, 'Tab');
+        expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
+        expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+      });
+    });
+
     context('when the cursor is at the first cell of the first row', () => {
       it('it should select next cell of the current row', () => {
         const { editorView, refs } = editor(
@@ -32,6 +62,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -47,6 +78,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -63,6 +95,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(32);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
       });
     });
@@ -77,6 +110,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
@@ -92,6 +126,7 @@ describe('table keymap', () => {
         const { nextPos } = refs;
         sendKeyToPm(editorView, 'Shift-Tab');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });
@@ -108,6 +143,7 @@ describe('table keymap', () => {
         const map = TableMap.get(pluginState.tableNode!);
         expect(map.height).to.equal(3);
         expect(editorView.state.selection.$from.pos).to.equal(4);
+        expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
       });
     });

@@ -1,5 +1,34 @@
 # @atlaskit/media-card
 
+## 21.0.2 (2017-08-29)
+
+* bug fix; update the small appearance to adhere to the latest designs ([db2c7ab](https://bitbucket.org/atlassian/atlaskit/commits/db2c7ab))
+
+
+
+
+## 21.0.1 (2017-08-28)
+
+* bug fix; pinned polished in media-card to avoid type issues ([d517df8](https://bitbucket.org/atlassian/atlaskit/commits/d517df8))
+## 21.0.0 (2017-08-23)
+
+* breaking; Removed the exported "MediaIdentifier" type and replaced it with "FileIdentifier" and ([56280b6](https://bitbucket.org/atlassian/atlaskit/commits/56280b6))
+* breaking; added support to <Card /> for files which don't exist within a collection (issues closed: msw-34) ([56280b6](https://bitbucket.org/atlassian/atlaskit/commits/56280b6))
+## 19.0.3 (2017-08-18)
+
+* bug fix; use LinkCard for horizonal smart cards (issues closed: msw-155) ([1d5070e](https://bitbucket.org/atlassian/atlaskit/commits/1d5070e))
+## 19.0.2 (2017-08-17)
+
+* bug fix; address code review comments ([eda0d46](https://bitbucket.org/atlassian/atlaskit/commits/eda0d46))
+* bug fix; make sure link card expands to parent container ([926abe4](https://bitbucket.org/atlassian/atlaskit/commits/926abe4))
+* bug fix; make sure the strings and numbers can be passed as width ([e8bf028](https://bitbucket.org/atlassian/atlaskit/commits/e8bf028))
+* bug fix; pass dimensions property to the root wrapping component to small cards expand to fit (issues closed: msw-146) ([341e47d](https://bitbucket.org/atlassian/atlaskit/commits/341e47d))
+* bug fix; fix compiler errors ([cb2bf50](https://bitbucket.org/atlassian/atlaskit/commits/cb2bf50))
+## 19.0.1 (2017-08-15)
+
+* bug fix; fix sizing regression in small cards (issues closed: msw-146) ([d065ad8](https://bitbucket.org/atlassian/atlaskit/commits/d065ad8))
+
+
 ## 19.0.0 (2017-08-09)
 
 * breaking; bumped media-card to use latest media-core which no-longer supports "trello" cards introduced at a ([0912f65](https://bitbucket.org/atlassian/atlaskit/commits/0912f65))

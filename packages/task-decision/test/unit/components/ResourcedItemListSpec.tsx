@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 import Button from '@atlaskit/button';
 
@@ -10,7 +9,14 @@ import ResourcedItemList from '../../../src/components/ResourcedItemList';
 import DecisionItem from '../../../src/components/DecisionItem';
 import ResourcedTaskItem from '../../../src/components/ResourcedTaskItem';
 
-import { getItemsResponse } from '../../../src/support/test-data';
+import {
+  buildDecision,
+  buildItemResponse,
+  buildTask,
+  content,
+  datePlus,
+  getItemsResponse,
+} from '../../../src/support/test-data';
 
 const query: Query = {
   containerAri: 'cheese',
@@ -27,17 +33,19 @@ describe('<ResourcedItemList/>', () => {
 
   beforeEach(() => {
     provider = {
-      getItems: sinon.stub(),
+      getItems: jest.fn(),
+      subscribe: jest.fn(),
+      unsubscribe: jest.fn(),
     };
-    renderer = sinon.stub();
-    renderer.returns(<div/>);
+    renderer = jest.fn(),
+    renderer.mockImplementation(() => <div/>);
   });
 
   describe('ungrouped', () => {
     it('should render both types of items', () => {
-      provider.getItems.returns(Promise.resolve(defaultResponse));
+      provider.getItems.mockImplementation(() => Promise.resolve(defaultResponse));
       const component = mount(
-        <ResourcedItemList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
       const typeCount = countType(defaultResponse.items, 'TASK');
@@ -46,6 +54,13 @@ describe('<ResourcedItemList/>', () => {
         expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
         const moreButton = component.find(Button);
         expect(moreButton.length).toBe(0);
+        expect(renderer.mock.calls.length > 0).toBe(true);
+        const firstRenderCall = renderer.mock.calls[0];
+        const context = firstRenderCall[1];
+        expect(context).toEqual({
+          containerAri: defaultResponse.items[0].containerAri,
+          objectAri: defaultResponse.items[0].objectAri,
+        });
       });
     });
 
@@ -78,9 +93,9 @@ describe('<ResourcedItemList/>', () => {
   describe('group by', () => {
     const performDateTest = (testQuery: Query, dateField: string) => {
       const response = getItemsResponse({ groupByDateSize: 4, dateField });
-      provider.getItems.returns(Promise.resolve(response));
+      provider.getItems.mockImplementation(() => Promise.resolve(response));
       const component = mount(
-        <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={provider} renderDocument={renderer} groupItems={true} />
+        <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} groupItems={true} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
       const typeCount = countType(defaultResponse.items, 'TASK');
@@ -133,6 +148,177 @@ describe('<ResourcedItemList/>', () => {
         sortCriteria: 'lastUpdateDate',
       };
       performDateTest(groupByQuery, 'lastUpdateDate');
+    });
+  });
+
+  describe('recent updates', () => {
+    it('notifyRecentItems should refresh item list', () => {
+      // Initial render
+      const d1 = buildDecision({ localId: 'd1', lastUpdateDate: datePlus(2), content: content('d1') });
+      const t1 = buildTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(1), content: content('t1') });
+      const initialResponse = buildItemResponse([d1, t1]);
+
+      const d2 = buildDecision({ localId: 'd2', lastUpdateDate: datePlus(4), content: content('d2') });
+      const t1update = buildTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(3), content: content('t1update') });
+      const recentUpdatesResponse = buildItemResponse([ d2, t1update ]);
+
+      const renderer = (doc) => doc.content[0].content[0].text;
+
+      provider.getItems.mockReturnValueOnce(Promise.resolve(initialResponse));
+      provider.getItems.mockReturnValueOnce(Promise.resolve(recentUpdatesResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => decisionItemsRendered(component, 1)).then(() => {
+        expect(component.find(DecisionItem).length).toBe(1);
+        expect(component.find(ResourcedTaskItem).length).toBe(1);
+        const recentUpdatesListener = provider.getItems.mock.calls[0][1];
+        expect(recentUpdatesListener).toBeDefined();
+        const recentUpdatesCallback = recentUpdatesListener.recentUpdates;
+        expect(recentUpdatesCallback).toBeDefined();
+
+        // notifyRecent items on TaskDecisionResource
+        recentUpdatesCallback({
+          containerAri: d2.containerAri,
+          localId: d2.localId,
+        });
+        return waitUntil(() => decisionItemsRendered(component, 2));
+      }).then(() => {
+        // New render with new items + new task state
+        const items = component.findWhere(n => n.is(DecisionItem) || n.is(ResourcedTaskItem));
+        expect(items.length).toBe(3);
+        const item1 = items.at(0);
+        expect(item1.type()).toBe(DecisionItem);
+        expect(item1.prop('children')).toBe('d2');
+        const item2 = items.at(1);
+        expect(item2.type()).toBe(ResourcedTaskItem);
+        expect(item2.prop('children')).toBe('t1update');
+        const item3 = items.at(2);
+        expect(item3.type()).toBe(DecisionItem);
+        expect(item3.prop('children')).toBe('d1');
+      });
+    });
+
+    it('notifyRecentItems should refresh and wait for new item', () => {
+      // Initial render
+      const d1 = buildDecision({ localId: 'd1', lastUpdateDate: datePlus(2), content: content('d1') });
+      const t1 = buildTask({ localId: 't1', state: 'TODO', lastUpdateDate: datePlus(1), content: content('t1') });
+      const initialResponse = buildItemResponse([d1, t1]);
+
+      const d2 = buildDecision({ localId: 'd2', lastUpdateDate: datePlus(4), content: content('d2') });
+      const t1update = buildTask({ localId: 't1', state: 'DONE', lastUpdateDate: datePlus(3), content: content('t1update') });
+      const recentUpdatesResponse = buildItemResponse([ d2, t1update ]);
+
+      const renderer = (doc) => doc.content[0].content[0].text;
+
+      let currentResponse = initialResponse;
+      provider.getItems.mockImplementation(() => {
+        return Promise.resolve(currentResponse);
+      });
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => decisionItemsRendered(component, 1)).then(() => {
+        expect(component.find(DecisionItem).length).toBe(1);
+        expect(component.find(ResourcedTaskItem).length).toBe(1);
+
+        const recentUpdatesListener = provider.getItems.mock.calls[0][1];
+        expect(recentUpdatesListener).toBeDefined();
+        const recentUpdatesCallback = recentUpdatesListener.recentUpdates;
+        expect(recentUpdatesCallback).toBeDefined();
+
+        recentUpdatesCallback({
+          containerAri: d2.containerAri,
+          localId: d2.localId,
+        });
+
+        // Wait for second call to getItems due to recentUpdate
+        return waitUntil(() => provider.getItems.mock.calls.length > 1);
+      }).then(() => {
+        // notifyRecent items on TaskDecisionResource
+        const numGetItemsCalled = provider.getItems.mock.calls.length;
+        currentResponse = recentUpdatesResponse;
+
+        return waitUntil(() => provider.getItems.mock.calls.length === numGetItemsCalled + 1);
+      }).then(() => {
+        return waitUntil(() => decisionItemsRendered(component, 2));
+      }).then(() => {
+        // New render with new items + new task state
+        const items = component.findWhere(n => n.is(DecisionItem) || n.is(ResourcedTaskItem));
+        expect(items.length).toBe(3);
+      });
+    });
+  });
+
+  describe('empty state', () => {
+    it('should render empty state component if no results', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve({ items: [] }));
+      const emptyComponent = <div className="empty-component" />;
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} emptyComponent={emptyComponent} />
+      );
+      return waitUntil(() => component.find('.empty-component').length > 0).then(() => {
+        expect(component.find('.empty-component').length).toBe(1);
+      });
+    });
+
+    it('should render no content in component if no results and no emptyState', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve({ items: [] }));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => component.isEmptyRender()).then(() => {
+        expect(component.isEmptyRender()).toBe(true);
+      });
+    });
+  });
+
+  describe('error state', () => {
+    it('should render error state component on error', () => {
+      provider.getItems.mockImplementation(() => Promise.reject('bad times'));
+      const errorComponent = <div className="error-component" />;
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} errorComponent={errorComponent} />
+      );
+      return waitUntil(() => component.find('.error-component').length > 0).then(() => {
+        expect(component.find('.error-component').length).toBe(1);
+      });
+    });
+
+    it('should render no content in component if no results and error', () => {
+      provider.getItems.mockImplementation(() => Promise.reject('bad times'));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      return waitUntil(() => component.isEmptyRender()).then(() => {
+        expect(component.isEmptyRender()).toBe(true);
+      });
+    });
+  });
+
+  describe('prop changes', () => {
+    it('initialQuery should clear items immediately, while waiting for new results', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(defaultResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      let resolver;
+      return waitUntil(() => component.state('items').length > 0).then(() => {
+        const getItemsPromise = new Promise(resolve => {
+          resolver = resolve;
+        });
+        provider.getItems.mockImplementation(() => getItemsPromise);
+        component.setProps({
+          initialQuery: {...query}
+        });
+        return waitUntil(() => component.state('items').length === 0);
+      }).then(() => {
+        expect(component.state('items').length).toBe(0);
+        resolver(defaultResponse);
+        return waitUntil(() => component.state('items').length > 0);
+      }).then(() => {
+        expect(component.state('items').length).toBe(defaultResponse.items.length);
+      });
     });
   });
 });

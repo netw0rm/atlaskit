@@ -1,7 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { getThemeStyle, themeNamespace, smallFontSize } from '../util/theme';
+import { getThemeStyle, gridSize, smallFontSize, themeNamespace } from '../util/theme';
 
 const getPadding = ({ isCompact, theme }): Array<any> => {
   const paddingType = isCompact ? 'compact' : 'default';
@@ -12,21 +12,33 @@ const getPadding = ({ isCompact, theme }): Array<any> => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const GroupTitle = styled.div`
-  align-items: baseline;
+const GroupTitle = styled.div`
+  align-items: center;
   color: ${({ theme }) => getThemeStyle(theme[themeNamespace], 'secondaryText', 'default')};
   display: flex;
   flex: 1 1 auto;
   ${getPadding}
 `;
+GroupTitle.displayName = 'ItemGroupTitle';
 
-export const GroupTitleAfter = styled.div`
+const GroupTitleAfter = styled.div`
   flex: 0 0 auto;
+  margin-right: -${gridSize / 2}px;
 `;
+GroupTitleAfter.displayName = 'ItemGroupTitleAfter';
 
-export const GroupTitleText = styled.div`
+const GroupTitleText = styled.div`
   flex: 1 1 auto;
   font-size: ${smallFontSize}px;
   line-height: 1;
   text-transform: uppercase;
+  /* Required for children to truncate */
+  min-width: 0;
 `;
+GroupTitleText.displayName = 'ItemGroupTitleText';
+
+export {
+  GroupTitle,
+  GroupTitleAfter,
+  GroupTitleText,
+};

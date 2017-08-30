@@ -1,5 +1,10 @@
 # @atlaskit/badge
 
+## 6.1.0 (2017-08-24)
+
+* feature; remove util-shared-styles as a dependency ([52a0a63](https://bitbucket.org/atlassian/atlaskit/commits/52a0a63))
+
+* feature; adjust dark mode colors to spec 1.2, add primaryInveted appearance ([9c79e7b](https://bitbucket.org/atlassian/atlaskit/commits/9c79e7b))
 ## 6.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

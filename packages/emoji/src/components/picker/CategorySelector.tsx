@@ -160,12 +160,15 @@ export default class CategorySelector extends PureComponent<Props, State> {
               categoryClasses.push(styles.active);
             }
 
-            let onClick;
+            const onClick = (e) => {
+              e.preventDefault();
+              // ignore if disabled
+              if (!disableCategories) {
+                this.onClick(categoryId);
+              }
+            };
             if (disableCategories) {
               categoryClasses.push(styles.disable);
-            } else {
-              // disable click handling
-              onClick = () => this.onClick(categoryId);
             }
 
             // tslint:disable-next-line:variable-name

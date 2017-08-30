@@ -18,12 +18,15 @@ import {
   ItemResponse,
   ObjectKey,
   Query,
+  RecentUpdateContext,
+  RecentUpdatesId,
   TaskDecisionProvider,
   TaskResponse,
   TaskState,
 } from '../types';
-import { objectKeyToString } from '../type-helpers';
-import * as moment from 'moment';
+
+import { objectKeyToString, toggleTaskState } from '../type-helpers';
+import * as subMinutes from 'date-fns/sub_minutes';
 
 let debouncedTaskStateQuery: number | null = null;
 let debouncedTaskToggle: number | null = null;
@@ -35,7 +38,7 @@ interface BaseResult {
 export default class MockTaskDecisionResource implements TaskDecisionProvider {
   private config?: MockTaskDecisionResourceConfig;
   private fakeCursor = 0;
-  private lastNewItemTime = moment();
+  private lastNewItemTime = new Date();
   private subscribers: Map<string, Handler[]> = new Map();
   private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
@@ -48,27 +51,65 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
   }
 
   getDecisions(query: Query): Promise<DecisionResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          decisions: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceDecisionResponse = getServiceDecisionsResponse();
     const result = convertServiceDecisionResponseToDecisionResponse(serviceDecisionResponse);
     return this.applyConfig(query, result, 'decisions');
   }
 
   getTasks(query: Query): Promise<TaskResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          tasks: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceTasksResponse = getServiceTasksResponse();
     const result = convertServiceTaskResponseToTaskResponse(serviceTasksResponse);
     return this.applyConfig(query, result, 'tasks');
   }
 
   getItems(query: Query): Promise<ItemResponse> {
+    if (this.config) {
+      if (this.config.empty) {
+        return Promise.resolve({
+          items: []
+        });
+      }
+      if (this.config.error) {
+        return Promise.reject('error');
+      }
+    }
     const serviceItemResponse = getServiceItemsResponse();
     const result = convertServiceItemResponseToItemResponse(serviceItemResponse);
     return this.applyConfig(query, result, 'items');
   }
 
+  unsubscribeRecentUpdates(id: RecentUpdatesId) {
+
+  }
+
+  notifyRecentUpdates(updateContext?: RecentUpdateContext) {
+
+  }
+
   private getNextDate() {
     // Random 15 minute chunk earlier
-    this.lastNewItemTime = this.lastNewItemTime.subtract(Math.random() * 50 * 15, 'minutes');
-    return this.lastNewItemTime.toDate();
+    this.lastNewItemTime = subMinutes(this.lastNewItemTime, Math.random() * 50 * 15);
+    return this.lastNewItemTime;
   }
 
   private applyConfig<R extends BaseResult>(query: Query, result: R, itemKey: string): Promise<R> {
@@ -121,6 +162,9 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       clearTimeout(debouncedTaskToggle);
     }
 
+    // Optimistically notify subscribers that the task have been updated so that they can re-render accordingly
+    this.notifyUpdated(objectKey, state);
+
     return new Promise<TaskState>(resolve => {
       const key = objectKeyToString(objectKey);
       const cached = this.cachedItems.get(key);
@@ -135,9 +179,16 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
       }
 
       resolve(state);
+
+      const lag = this.config && this.config.lag || 0;
       setTimeout(() => {
-        this.notifyUpdated(objectKey, state);
-      }, 200);
+        if (this.config && this.config.error) {
+          // Undo optimistic change
+          this.notifyUpdated(objectKey, toggleTaskState(state));
+        } else {
+          this.notifyUpdated(objectKey, state);
+        }
+      }, 500 + lag);
     });
   }
 

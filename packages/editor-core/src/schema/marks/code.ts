@@ -3,7 +3,6 @@ import { COLOR, FONT_STYLE, LINK, SEARCH_QUERY } from '../groups';
 
 /**
  * @name code_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'code';

@@ -4,7 +4,8 @@ const glob = require('glob');
 const path = require('path');
 
 const config = require('./config');
-const optimiseSVG = require('./svgo')(config);
+const cleanSVG = require('./svgo/clean')(config);
+const customiseSVG = require('./svgo/customise')(config);
 const glyphTemplate = require('./glyph.template');
 const tsTemplate = require('./typescript.template');
 const createIconsDocs = require('./createIconsDocs');
@@ -12,7 +13,8 @@ const createIconsDocs = require('./createIconsDocs');
 console.log('Processing icon glyphs.');
 
 // Ensure the destination directory exists and empty it
-fs.emptyDir(path.join(__dirname, config.destDir))
+fs.emptyDir(path.join(__dirname, config.processedDir))
+  .then(() => fs.emptyDir(path.join(__dirname, config.destDir)))
   // Read the contents of the source directory
   .then(() => glob.sync('**/*.svg', { cwd: path.join(__dirname, config.srcDir, 'src') }))
   // Map over all the files
@@ -27,9 +29,15 @@ fs.emptyDir(path.join(__dirname, config.destDir))
     // Read the contents of the SVG file
     return fs.readFile(path.join(__dirname, config.srcDir, 'src', filepath))
       // Optimise the SVG
-      .then(rawSVG => optimiseSVG(filepath, rawSVG))
-      // Construct the component
-      .then(({ data: optimisedSVG }) => glyphTemplate(optimisedSVG, displayName))
+      .then(rawSVG => cleanSVG(filepath, rawSVG))
+      .then(({ data: optimisedSVG }) =>
+        // saved the optimised SVGs to disk for reduced-ui-pack
+        fs.outputFile(path.join(__dirname, config.processedDir, filepath), optimisedSVG)
+          // customise the SVG to make it JSX ready
+          .then(() => customiseSVG(filepath, optimisedSVG))
+          // wrap the optimised SVGs in the JS module
+          .then(({ data: customisedSVG }) => glyphTemplate(customisedSVG, displayName))
+      )
       // Transpile the component code
       .then(componentCode => babel.transform(componentCode, { presets: ['es2015', 'react', 'stage-0'] }))
       // Write the component file

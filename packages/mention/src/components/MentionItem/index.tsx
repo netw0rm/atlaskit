@@ -5,6 +5,7 @@ import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 import {
   AvatarStyle,
@@ -127,6 +128,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
 
     const nameHighlights = highlight && highlight.name;
     const nicknameHighlights = highlight && highlight.nickname;
+    const borderColor = selected ? akColorN30 : undefined;
 
     return (
       <MentionItemStyle
@@ -138,7 +140,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
       >
         <RowStyle>
           <AvatarStyle restricted={restricted}>
-            <Avatar src={avatarUrl} size="medium" presence={status} />
+            <Avatar src={avatarUrl} size="medium" presence={status} borderColor={borderColor} />
           </AvatarStyle>
           <NameSectionStyle restricted={restricted}>
             {renderHighlight(FullNameStyle, name, nameHighlights)}

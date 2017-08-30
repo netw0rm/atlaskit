@@ -90,7 +90,8 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || ''),
+      'process.env.ATLASKIT_SITE_ENV': JSON.stringify(process.env.ATLASKIT_SITE_ENV || ''),
     }),
     new HTMLWebpackPlugin({
       template: resolve(__dirname, 'src', 'index.html.ejs'),
@@ -99,5 +100,4 @@ module.exports = {
       { from: resolve(__dirname, 'public') },
     ]),
   ],
-
 };

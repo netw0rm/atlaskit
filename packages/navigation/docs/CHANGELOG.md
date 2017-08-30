@@ -1,5 +1,81 @@
 # @atlaskit/navigation
 
+## 20.3.2 (2017-08-30)
+
+* bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))
+* bug fix; fixes bug in modules export of nav ([5d07b8e](https://bitbucket.org/atlassian/atlaskit/commits/5d07b8e))
+## 20.3.1 (2017-08-29)
+
+
+* bug fix; add missing semicolon to the NavigationFixedContainer ([f2c89e8](https://bitbucket.org/atlassian/atlaskit/commits/f2c89e8))
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 20.3.0 (2017-08-25)
+
+* feature; added Navigation.isElectronMac prop to make UI fit better with Mac window buttons (issues closed: ak-2613) ([2c65ec7](https://bitbucket.org/atlassian/atlaskit/commits/2c65ec7))
+## 20.2.0 (2017-08-24)
+
+* bug fix; simplified siteSettings theme to inherit from settings theme (issues closed: ak-2429, confsim-1332) ([a1da88f](https://bitbucket.org/atlassian/atlaskit/commits/a1da88f))
+* bug fix; created siteSettings theme that has a matching dark blue for site settings to match (issues closed: ak-2429, confsim-1332) ([70df845](https://bitbucket.org/atlassian/atlaskit/commits/70df845))
+* feature; update settings sidebar theme preset to match the global navigation color to match (issues closed: ak-2429, confsim-1332) ([c9069b7](https://bitbucket.org/atlassian/atlaskit/commits/c9069b7))
+## 20.1.3 (2017-08-24)
+
+* bug fix; fix alignment of navigation item group action (issues closed: ak-3279) ([4f98025](https://bitbucket.org/atlassian/atlaskit/commits/4f98025))
+## 20.1.2 (2017-08-23)
+
+* bug fix; random badge in stories is no longer passed if it is empty (issues closed: ak-3353) ([6da4718](https://bitbucket.org/atlassian/atlaskit/commits/6da4718))
+## 20.1.1 (2017-08-23)
+
+* bug fix; navigation now uses a carat dep for react-beautiful-dnd ([20df7cb](https://bitbucket.org/atlassian/atlaskit/commits/20df7cb))
+
+
+## 20.1.0 (2017-08-22)
+
+
+* bug fix; add back in dropped button dependency ([add69b0](https://bitbucket.org/atlassian/atlaskit/commits/add69b0))
+* feature; add topOffset to navigation (issues closed: ak-1728) ([8e31acc](https://bitbucket.org/atlassian/atlaskit/commits/8e31acc))
+## 20.0.2 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+## 20.0.1 (2017-08-19)
+
+* bug fix; global navigation items without href are now tabbable again (issues closed: ak-3333) ([e2e2781](https://bitbucket.org/atlassian/atlaskit/commits/e2e2781))
+## 20.0.0 (2017-08-18)
+
+* bug fix; fixed lint errors ([628f453](https://bitbucket.org/atlassian/atlaskit/commits/628f453))
+* bug fix; removing log command and moved some things to variables. ([0ec36f2](https://bitbucket.org/atlassian/atlaskit/commits/0ec36f2))
+* bug fix; refactored ContainerTitle and ContainerLogo components ([92f2930](https://bitbucket.org/atlassian/atlaskit/commits/92f2930))
+* bug fix; exporting keys so ContainerTitleDropdown can respond to nav state ([73109e7](https://bitbucket.org/atlassian/atlaskit/commits/73109e7))
+* bug fix; fixing offset for drawers ([4bf6cdf](https://bitbucket.org/atlassian/atlaskit/commits/4bf6cdf))
+
+* breaking; ContainerTitleDropdown rebuilt to use Item and Dropdown under the hood. No longer accepts a ([026ea83](https://bitbucket.org/atlassian/atlaskit/commits/026ea83))
+* breaking; refactor of Item and Navigation to support Project Switcher dropdown menus ([026ea83](https://bitbucket.org/atlassian/atlaskit/commits/026ea83))
+## 19.0.5 (2017-08-18)
+
+* bug fix; fix navigation group title rendering action button twice (issues closed: ak-3219) ([b82bc4c](https://bitbucket.org/atlassian/atlaskit/commits/b82bc4c))
+## 19.0.4 (2017-08-16)
+
+* bug fix; removing deprecated @atlaskit/drag-and-drop. Project can now be found at react-beaut ([c323890](https://bitbucket.org/atlassian/atlaskit/commits/c323890))
+## 19.0.3 (2017-08-15)
+
+* bug fix; Add namespace to internal theming; clean up component internals (issues closed: ak-3255) ([a8cf551](https://bitbucket.org/atlassian/atlaskit/commits/a8cf551))
+## 19.0.2 (2017-08-15)
+
+* bug fix; nested nav pages have their own scroll containers (issues closed: ak-3222) ([865623d](https://bitbucket.org/atlassian/atlaskit/commits/865623d))
+
+
+
 ## 19.0.1 (2017-08-11)
 
 * bug fix; deprecating @atlaskit/drag-and-drop. It has been moved to react-natural-drag ([7183656](https://bitbucket.org/atlassian/atlaskit/commits/7183656))

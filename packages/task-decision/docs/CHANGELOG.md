@@ -1,5 +1,48 @@
 # @atlaskit/task-decision
 
+## 3.5.4 (2017-08-29)
+
+* bug fix; results clears if initialQuery prop changes. Consistent spinner. (issues closed: fs-1315) ([0933f72](https://bitbucket.org/atlassian/atlaskit/commits/0933f72))
+## 3.5.3 (2017-08-25)
+
+* bug fix; show placeholder with ellipsis it it will overflow (issues closed: fs-1286) ([d18ccba](https://bitbucket.org/atlassian/atlaskit/commits/d18ccba))
+## 3.5.2 (2017-08-25)
+
+* bug fix; direct import date-fns for support classes too (issues closed: fs-1280) ([0dfa9e8](https://bitbucket.org/atlassian/atlaskit/commits/0dfa9e8))
+* bug fix; switch to lighter weight date-fns (issues closed: fs-1281) ([dd21922](https://bitbucket.org/atlassian/atlaskit/commits/dd21922))
+## 3.5.1 (2017-08-23)
+
+* bug fix; optimistically notify when a task state changes. (issues closed: fs-1285) ([d9a4557](https://bitbucket.org/atlassian/atlaskit/commits/d9a4557))
+## 3.5.0 (2017-08-23)
+
+* feature; support emptyComponent and errorComponent for ResourceItemList (issues closed: fs-1292) ([4b012e2](https://bitbucket.org/atlassian/atlaskit/commits/4b012e2))
+## 3.4.1 (2017-08-18)
+
+* bug fix; add missing dependency from InfiniteScroll ([e43126c](https://bitbucket.org/atlassian/atlaskit/commits/e43126c))
+## 3.4.0 (2017-08-17)
+
+* feature; support retry for recentUpdates if expecting item is not found. (issues closed: fs-1284) ([ed9af1e](https://bitbucket.org/atlassian/atlaskit/commits/ed9af1e))
+## 3.3.1 (2017-08-17)
+
+* bug fix; ensure RendererContext is passed to renderDocument prop when rendering a ResourcedIt (issues closed: fs-1282) ([ec2a02a](https://bitbucket.org/atlassian/atlaskit/commits/ec2a02a))
+## 3.3.0 (2017-08-17)
+
+* feature; support infinite scroll for ResourcedItemList (issues closed: fs-1268) ([a7bbfe2](https://bitbucket.org/atlassian/atlaskit/commits/a7bbfe2))
+## 3.2.0 (2017-08-17)
+
+* feature; support refreshing of ResourcedItemList and task state updates from an external tri (issues closed: fs-1267) ([bc2d4f1](https://bitbucket.org/atlassian/atlaskit/commits/bc2d4f1))
+## 3.1.2 (2017-08-17)
+
+* bug fix; fix exporting of support json data (issues closed: fs-1274) ([b1ec12f](https://bitbucket.org/atlassian/atlaskit/commits/b1ec12f))
+## 3.1.1 (2017-08-16)
+
+* bug fix; fix incorrect prop type for taskDecisionProvider - it should be a Promise<TaskDecisi (issues closed: fs-1274) ([6a11027](https://bitbucket.org/atlassian/atlaskit/commits/6a11027))
+## 3.1.0 (2017-08-14)
+
+* feature; make default query ordering CREATION_DATE (issues closed: fs-1259) ([96e546d](https://bitbucket.org/atlassian/atlaskit/commits/96e546d))
+
+* bug fix; export ResourcedItemList ([4385f29](https://bitbucket.org/atlassian/atlaskit/commits/4385f29))
+* feature; add support for grouping items by sort date in ResourcedItemList. (issues closed: fs-1259) ([dbff6cf](https://bitbucket.org/atlassian/atlaskit/commits/dbff6cf))
 ## 3.0.0 (2017-08-14)
 
 * breaking; TaskDecisionProvider has new required methods. ([9e48cf4](https://bitbucket.org/atlassian/atlaskit/commits/9e48cf4))

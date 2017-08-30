@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import panelPlugins, { PanelState } from '../../../../src/plugins/panel';
-import { doc, panel, panelNote, p, makeEditor, createEvent, sendKeyToPm, blockquote } from '../../../../src/test-helper';
+import { doc, panel, panelNote, p, makeEditor, createEvent, sendKeyToPm, table, tr, td } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
@@ -97,7 +97,43 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'))));
       expect(pluginState.activePanelType).to.equal('info');
       pluginState.removePanel(editorView);
-      expect(pluginState.element).to.equal(undefined);
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+
+    it('should be able to remove panel having multiple paragraphs', () => {
+      const { pluginState, editorView } = editor(doc(panel(p('te{<>}xt'), p('te{<>}xt'), p('te{<>}xt'))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+
+    it('should be possible to remove panel inside table', () => {
+      const editorTable = (doc: any) => makeEditor<PanelState>({
+        doc,
+        plugins: panelPlugins(defaultSchema),
+      });
+      const { pluginState, editorView } = editorTable(doc(table(tr(td({})(panel(p('text{<>}')))))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(table(tr(td({})(p())))));
+    });
+
+    it('should be possible to remove panel with no text inside table', () => {
+      const editorTable = (doc: any) => makeEditor<PanelState>({
+        doc,
+        plugins: panelPlugins(defaultSchema),
+      });
+      const { pluginState, editorView } = editorTable(doc(table(tr(td({})(panel(p('{<>}')))))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(table(tr(td({})(p())))));
+    });
+
+    it('should be able to remove panel type using function removePanel even if panel has no text content', () => {
+      const { pluginState, editorView } = editor(doc(panel(p('{<>}'))));
+      expect(pluginState.activePanelType).to.equal('info');
+      pluginState.removePanel(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
     });
 
     it('should be able to remove panel for panel of multiple blocks using function removePanel', () => {
@@ -108,10 +144,10 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     });
 
     it('should not remove enclosing block while removing panel', () => {
-      const { pluginState, editorView } = editor(doc(blockquote(panel(p('te{<>}xt'), p('text')))));
+      const { pluginState, editorView } = editor(doc(p('testing'), panel(p('te{<>}xt'), p('text')), p('testing')));
       expect(pluginState.activePanelType).to.equal('info');
       pluginState.removePanel(editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
+      expect(editorView.state.doc).to.deep.equal(doc(p('testing'), p('testing')));
     });
 
     it('should call handlers for change in panel type', () => {

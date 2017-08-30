@@ -11,6 +11,7 @@ const NavigationItemAction = styled.div`
 
   ${whenCollapsed`
     flex-shrink: 1;
+    margin: 0;
     opacity: 0;
   `}
 `;

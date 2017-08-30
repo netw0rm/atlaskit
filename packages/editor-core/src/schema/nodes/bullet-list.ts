@@ -3,7 +3,6 @@ import { Definition as ListItemNode } from './list-item';
 
 /**
  * @name bulletList_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'bulletList';

@@ -1,71 +1,86 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import DefaultLinkComponent from './DefaultLinkComponent';
-import ContainerTitleWrapper from '../styled/ContainerTitleWrapper';
+import { ThemeProvider, withTheme } from 'styled-components';
+import { itemThemeNamespace } from '@atlaskit/item';
+import { AkNavigationItem } from '../../../src/index';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
-import ContainerTitleInner from '../styled/ContainerTitleInner';
-import ContainerTitleSubText from '../styled/ContainerTitleSubText';
 import ContainerTitleText from '../styled/ContainerTitleText';
-import ContainerTitleTextWrapper from '../styled/ContainerTitleTextWrapper';
 import type { ReactElement, ReactClass } from '../../types';
-
-// $ExpectError
-const getStyledLink = component => styled(component)`
-  display: block;
-  text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
-`;
+import { rootKey } from '../../theme/util';
+import overrideItemTheme from '../../theme/create-container-title-item-theme';
 
 type Props = {|
-  /** Content to use as a custom presence indicator. Accepts any React element.
-  For best results, it is recommended to use square content with height and
-  width of 100%. */
-  icon: ReactElement,
-  /** Text to appear as the title. This is placed at the top and bolded. */
-  text: string,
-  /** Text to appear below the title. */
-  subText?: string,
-  /** The destination of the title if clicked. If no href is provided, the
-  title will not be a link. */
+  /** Location to link out to on click. This is passed down to the custom link
+  component if one is provided. */
   href?: string,
-  /** A component to be used as a link. By Default this is an anchor. when a href
-  is passed to it, and otherwise is a button. */
+  /** React element to appear to the left of the text. This should be an
+  @atlaskit/icon component. */
+  icon?: ReactElement,
+  /** Component to be used as link, if default link component does not suit, such
+  as if you are using a different router. Component is passed a href prop, and the content
+  of the title as children. Any custom link component must accept a className prop so that
+  it can be styled. */
   linkComponent?: ReactClass,
+  /** Function to be called on click. This is passed down to a custom link component,
+  if one is provided.  */
+  onClick ?: (e: MouseEvent) => void,
+  /** Function to be called on click. This is passed down to a custom link component,
+  if one is provided.  */
+  onKeyDown?: (e: KeyboardEvent) => void,
+  /** Standard onmouseenter event */
+  onMouseEnter?: (e: MouseEvent) => void,
+  /** Standard onmouseleave event */
+  onMouseLeave?: (e: MouseEvent) => void,
+  /** Text to be shown alongside the main `text`. */
+  subText?: string,
+  /** Main text to be displayed as the item. Accepts a react component but in most
+  cases this should just be a string. */
+  text?: ReactElement,
+  // TODO
+  theme: Object,
 |}
 
-export default class ContainerTitle extends PureComponent {
-  static defaultProps = {
-    linkComponent: DefaultLinkComponent,
-  }
+const key = itemThemeNamespace;
 
+class ContainerTitle extends PureComponent {
   props: Props;
 
   render() {
     const {
-      href,
       text,
       subText,
       icon,
-      linkComponent: Link,
     } = this.props;
 
-    const StyledLink = getStyledLink(Link);
+    /* eslint-disable react/prop-types */
+    // theme is passed in via context and not part of the props API for this component
+    const isNavCollapsed = this.props.theme[rootKey] ?
+      this.props.theme[rootKey].isCollapsed
+      : false;
+    /* eslint-enable react/prop-types */
+
+    const interactiveWrapperProps = {
+      onClick: this.props.onClick,
+      onKeyDown: this.props.onKeyDown,
+      onMouseEnter: this.props.onMouseEnter,
+      onMouseLeave: this.props.onMouseLeave,
+      href: this.props.href,
+      linkComponent: this.props.linkComponent,
+    };
 
     return (
-      <ContainerTitleWrapper>
-        <StyledLink href={href}>
-          <ContainerTitleInner>
-            <ContainerTitleIcon>{icon}</ContainerTitleIcon>
-            <ContainerTitleTextWrapper>
-              <ContainerTitleText>{text}</ContainerTitleText>
-              {subText ? <ContainerTitleSubText>{subText}</ContainerTitleSubText> : null}
-            </ContainerTitleTextWrapper>
-          </ContainerTitleInner>
-        </StyledLink>
-      </ContainerTitleWrapper>
+      <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
+        <AkNavigationItem
+          icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
+          subText={isNavCollapsed ? null : subText}
+          text={isNavCollapsed ?
+            <ContainerTitleIcon aria-label={text}>{icon}</ContainerTitleIcon>
+            : <ContainerTitleText>{text}</ContainerTitleText>}
+          {...interactiveWrapperProps}
+        />
+      </ThemeProvider>
     );
   }
 }
+
+export default withTheme(ContainerTitle);

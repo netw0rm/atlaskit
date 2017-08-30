@@ -11,7 +11,11 @@ export default class EditorActions {
 
   // This method needs to be public for EditorContext component.
   _privateRegisterEditor(editorView: EditorView): void {
-    this.editorView = editorView;
+    if (!this.editorView && editorView) {
+      this.editorView = editorView;
+    } else if (this.editorView !== editorView) {
+      throw new Error('Editor has already been registered! It\'s not allowed to re-register editor with the new Editor instance.');
+    }
   }
 
   // This method needs to be public for EditorContext component.

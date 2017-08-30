@@ -1,5 +1,24 @@
 # @atlaskit/icon
 
+## 8.1.0 (2017-08-28)
+
+
+* feature; added switcher icon back ([de848a6](https://bitbucket.org/atlassian/atlaskit/commits/de848a6))
+## 8.0.1 (2017-08-21)
+
+* bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))
+## 8.0.0 (2017-08-17)
+
+
+
+* bug fix; fixing the devDep for icon on itself ([b3db177](https://bitbucket.org/atlassian/atlaskit/commits/b3db177))
+* bug fix; fixed icon build script ([10aea52](https://bitbucket.org/atlassian/atlaskit/commits/10aea52))
+
+
+* feature; updated stories for icons and updated the build step for reduced-ui-pack icons ([0ad9eea](https://bitbucket.org/atlassian/atlaskit/commits/0ad9eea))
+
+* breaking; Some icons have been deleted, and some are now 2-colours ([733dbd3](https://bitbucket.org/atlassian/atlaskit/commits/733dbd3))
+* breaking; icon audit and improvement ([733dbd3](https://bitbucket.org/atlassian/atlaskit/commits/733dbd3))
 ## 7.1.0 (2017-08-11)
 
 

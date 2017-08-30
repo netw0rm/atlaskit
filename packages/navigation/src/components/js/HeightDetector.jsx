@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import memoizeOne from 'memoize-one';
 import rafScheduler from 'raf-schd';
@@ -9,20 +8,21 @@ import type { ReactElement } from '../../types';
 type Props = {|
   children?: ReactElement,
   onHeightChange: (number) => void,
-  shouldMeasureImmediately?: bool,
   shouldDetectResize?: bool,
   shouldFillHeight?: bool,
 |}
 
 export default class HeightDetector extends Component {
   static defaultProps = {
-    onHeightChange: () => {},
+    onHeightChange: (num) => {}, // eslint-disable-line
   }
 
   constructor(props: Props, context: mixed) {
     super(props, context);
 
-    if (!props.shouldMeasureImmediately) {
+    // If we are detecting resize of the root component, we use requestAnimationFrame to
+    // debounce the events for improved performance.
+    if (props.shouldDetectResize) {
       this.measureHeight = rafScheduler(this.measureHeight);
     }
   }

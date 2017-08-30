@@ -13,21 +13,21 @@ const CHILD_WIDTH = 5;
  * @param element
  * @param children
  */
-function mockSizing(element) {
+function mockSizing(element, bufferWidth = BUFFER_WIDTH, windowWidth = WINDOW_WIDTH) {
   const instance = element.instance();
 
   instance.bufferElement = document.createElement('div');
   instance.bufferElement.getBoundingClientRect = () => ({
-    width: BUFFER_WIDTH
+    width: bufferWidth
   });
 
   instance.windowElement = document.createElement('div');
   instance.windowElement.getBoundingClientRect = () => ({
-    width: WINDOW_WIDTH
+    width: windowWidth
   });
 
   instance.childOffsets = [];
-  for (let i=0; i<BUFFER_WIDTH/CHILD_WIDTH; ++i) {
+  for (let i=0; i<bufferWidth/CHILD_WIDTH; ++i) {
     const child = document.createElement('div');
     instance.bufferElement.appendChild(child);
     child.getBoundingClientRect = () => ({
@@ -177,8 +177,7 @@ describe('FilmstripView', () => {
       const onScroll = jest.fn();
       const element = shallow(<FilmstripView offset={14} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
-      const instance = element.instance() as FilmstripView;
-      instance.handleLeftClick();
+      element.find(LeftArrow).simulate('click', {stopPropagation() {}});
       expect(onScroll).toBeCalledWith({
         direction: 'left',
         offset: 0,
@@ -194,8 +193,7 @@ describe('FilmstripView', () => {
       const onScroll = jest.fn();
       const element = shallow(<FilmstripView offset={4} onScroll={onScroll}>{['a', 'b', 'c']}</FilmstripView>);
       mockSizing(element);
-      const instance = element.instance() as FilmstripView;
-      instance.handleRightClick();
+      element.find(RightArrow).simulate('click', {stopPropagation() {}});
       expect(onScroll).toBeCalledWith({
         direction: 'right',
         offset: 18,
@@ -246,6 +244,17 @@ describe('FilmstripView', () => {
         offset: 14,
         animate: false
       });
+    });
+
+  });
+
+  describe('.handleSizeChange()', () => {
+
+    it('should call onSize() when the width has changed and after the state has been set', () => {
+      expect.assertions(1);
+      const onSize = jest.fn(({maxOffset}) => expect(maxOffset).toBeGreaterThan(0));
+      const element = shallow(<FilmstripView offset={4} onSize={onSize}>{['a', 'b', 'c']}</FilmstripView>);
+      mockSizing(element);
     });
 
   });

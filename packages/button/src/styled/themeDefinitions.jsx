@@ -80,6 +80,44 @@ export default {
       },
     },
 
+    // Warning appearance
+    warning: {
+      background: {
+        default: themed({ light: colors.Y300, dark: colors.Y300 }),
+        hover: themed({ light: colors.Y200, dark: colors.Y200 }),
+        active: themed({ light: colors.Y400, dark: colors.Y400 }),
+        disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
+        selected: themed({ light: colors.Y400, dark: colors.Y400 }),
+      },
+      boxShadowColor: {
+        focus: themed({ light: colors.Y500, dark: colors.Y500 }),
+      },
+      color: {
+        default: themed({ light: colors.N800, dark: colors.N800 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN30 }),
+        selected: themed({ light: colors.N800, dark: colors.N800 }),
+      },
+    },
+
+    // Danger appearance
+    danger: {
+      background: {
+        default: themed({ light: colors.R400, dark: colors.R400 }),
+        hover: themed({ light: colors.R300, dark: colors.R300 }),
+        active: themed({ light: colors.R500, dark: colors.R500 }),
+        disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
+        selected: themed({ light: colors.R600, dark: colors.R600 }),
+      },
+      boxShadowColor: {
+        focus: themed({ light: colors.R100, dark: colors.R100 }),
+      },
+      color: {
+        default: themed({ light: colors.N0, dark: colors.N0 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN30 }),
+        selected: themed({ light: colors.N0, dark: colors.N0 }),
+      },
+    },
+
     // Link appearance
     link: {
       background: {
@@ -131,9 +169,9 @@ export default {
         focus: themed({ light: hex2rgba(colors.B200, 0.6), dark: colors.B75 }),
       },
       color: {
-        default: themed({ light: colors.N100, dark: colors.DN400 }),
-        hover: themed({ light: colors.B300, dark: colors.B50 }),
-        active: themed({ light: colors.B500, dark: colors.DN300 }),
+        default: themed({ light: colors.N200, dark: colors.DN400 }),
+        hover: themed({ light: colors.N90, dark: colors.B50 }),
+        active: themed({ light: colors.N400, dark: colors.DN300 }),
         disabled: themed({ light: colors.N70, dark: colors.DN100 }),
         selected: themed({ light: colors.N20, dark: colors.DN400 }),
       },

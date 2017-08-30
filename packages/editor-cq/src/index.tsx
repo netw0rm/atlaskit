@@ -1,5 +1,6 @@
 import {
   AnalyticsHandler,
+  AnalyticsProperties,
   analyticsService,
   baseKeymap,
   Chrome,
@@ -17,6 +18,7 @@ import {
   mentionsPlugins,
   tablePlugins,
   tableStateKey,
+  pastePlugins,
   blockTypeStateKey,
   codeBlockStateKey,
   hyperlinkStateKey,
@@ -308,6 +310,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          ...pastePlugins(schema),
           ...mentionsPlugins(schema, this.providerFactory),
           ...clearFormattingPlugins(schema),
           ...hyperlinkPlugins(schema),
@@ -320,7 +323,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...blockTypePlugins(schema),
           // The following order of plugins blockTypePlugins -> listBlock -> codeBlockPlugins
           // this is needed to ensure that all block types are supported inside lists
-          // this is needed until we implement keymap proirity :(
+          // this is needed until we implement keymap priority :(
           ...listsPlugins(schema),
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
@@ -345,8 +348,8 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
-          unsupportedBlock: nodeViewFactory(this.providerFactory, { unsupportedBlock: ReactUnsupportedBlockNode }, true),
-          unsupportedInline: nodeViewFactory(this.providerFactory, { unsupportedInline: ReactUnsupportedInlineNode }),
+          confluenceUnsupportedBlock: nodeViewFactory(this.providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
+          confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode }),
           mediaGroup: nodeViewFactory(this.providerFactory, {
             mediaGroup: ReactMediaGroupNode,
             media: ReactMediaNode,
@@ -419,25 +422,26 @@ export default class Editor extends PureComponent<Props, State> {
    * Traverse document nodes to find the number of unsupported ones
    */
   private sendUnsupportedNodeUsage(doc: PMNode) {
-    const { unsupportedBlock, unsupportedInline } = schema.nodes;
-    let blockNodesOccurance = 0;
-    let inlineNodesOccurance = 0;
+    const { unsupportedInline, unsupportedBlock } = schema.nodes;
 
     traverseNode(doc);
 
-    for (let i = 0; i < blockNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.block');
-    }
-
-    for (let i = 0; i < inlineNodesOccurance; i++) {
-      analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.inline');
-    }
-
     function traverseNode(node: PMNode) {
-      if (node.type === unsupportedBlock) {
-        blockNodesOccurance += 1;
-      } else if (node.type === unsupportedInline) {
-        inlineNodesOccurance += 1;
+      let cxhtml = '';
+      if (node.attrs && node.attrs.cxhtml) {
+        cxhtml = node.attrs.cxhtml;
+      }
+
+      const data: AnalyticsProperties = {
+        type: node.type.name,
+        cxhtml: node.attrs.cxhtml as string,
+        text: node.text || ''
+      };
+
+      if (node.type === unsupportedInline) {
+        analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.inline', data);
+      } else if (node.type === unsupportedBlock) {
+        analyticsService.trackEvent('atlassian.editor.confluenceUnsupported.block', data);
       } else {
         node.content.forEach(traverseNode);
       }

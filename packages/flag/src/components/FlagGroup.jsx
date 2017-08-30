@@ -6,7 +6,7 @@ import type { ChildrenType, FunctionType } from '../types';
 
 type Props = {
   /** Flag elements to be displayed. */
-  children: ChildrenType,
+  children?: ChildrenType,
   /** Handler which will be called when a Flag's dismiss button is clicked.
     * Receives the id of the dismissed Flag as a parameter.
     */
@@ -21,10 +21,10 @@ export default class FlagGroup extends PureComponent {
 
     return Children.map(children, (flag, idx) => {
       const isDismissAllowed = idx === 0;
-      const { id, key } = flag.props;
+      const { id } = flag.props;
 
       return (
-        <FlagAnimationWrapper key={id || key}>
+        <FlagAnimationWrapper key={id}>
           {cloneElement(flag, { onDismissed, isDismissAllowed })}
         </FlagAnimationWrapper>
       );

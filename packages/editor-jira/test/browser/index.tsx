@@ -40,6 +40,18 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
+  it('should render disabled chrome if isDisabled=true', () => {
+    const chrome = mount(<Editor isExpandedByDefault={true} isDisabled={true} />);
+    expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
+  });
+
+  it('should disable chrome when isDisabled is changed', () => {
+    const chrome = mount(<Editor isExpandedByDefault={true} />);
+    expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(false);
+    chrome.setProps({ isDisabled: true });
+    expect(chrome.find('ChromeExpanded').prop('disabled')).to.equal(true);
+  });
+
   it('.expand() method should expand the editor chrome', () => {
     const editor: Editor = editorWrapper.get(0) as any;
 

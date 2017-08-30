@@ -1,7 +1,8 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Layer from '@atlaskit/layer';
 import { getLayerPosition } from '../utils';
-import Tip from '../styled/Tooltip';
+import Tip, { TooltipTrigger } from '../styled/Tooltip';
 
 export default class TooltipStateless extends PureComponent {
   static propTypes = {
@@ -36,16 +37,16 @@ export default class TooltipStateless extends PureComponent {
     ) : null;
 
     return (
-      <div onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-        <Layer
-          autoPosition
-          content={tooltip}
-          onFlippedChange={this.handleLayerFlipChange}
-          position={getLayerPosition(position)}
-        >
+      <Layer
+        autoPosition
+        content={tooltip}
+        onFlippedChange={this.handleLayerFlipChange}
+        position={getLayerPosition(position)}
+      >
+        <TooltipTrigger onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
           {children}
-        </Layer>
-      </div>
+        </TooltipTrigger>
+      </Layer>
     );
   }
 }

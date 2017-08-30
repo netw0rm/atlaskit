@@ -1,5 +1,16 @@
 # @atlaskit/tag
 
+## 3.0.0 (2017-08-23)
+
+
+
+
+* breaking; Tag has dark mode colors ([149b8df](https://bitbucket.org/atlassian/atlaskit/commits/149b8df))
+* breaking; tag has dark mode colors (issues closed: #ak-3239) ([149b8df](https://bitbucket.org/atlassian/atlaskit/commits/149b8df))
+
+
+* Adding Dark mode, so that when the atlaskit theme manager is used it can be turned on. This should not be a breaking any old functionality, but as it is a major rewrite, it is a major version bump.
+
 ## 2.6.0 (2017-08-03)
 
 * feature; add color options for tag (issues closed: #ak-2910) ([76831b4](https://bitbucket.org/atlassian/atlaskit/commits/76831b4))

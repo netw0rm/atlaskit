@@ -9,94 +9,110 @@ import {
   DropdownItemGroupRadio,
 } from '@atlaskit/dropdown-menu';
 import Tooltip from '@atlaskit/tooltip';
+import { action } from '@kadira/storybook';
+
+const clickAction = action('Item clicked');
 
 export const simpleDropdownItems = (
   <DropdownItemGroup title="Heading">
-    <DropdownItem>Hello it with some really quite long text here.</DropdownItem>
-    <DropdownItem>Some text 2</DropdownItem>
-    <DropdownItem isDisabled>Some disabled text</DropdownItem>
-    <DropdownItem>Some more text</DropdownItem>
+    <DropdownItem onClick={clickAction}>
+      Hello it with some really quite long text here.
+    </DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 2</DropdownItem>
+    <DropdownItem onClick={clickAction} isDisabled>Some disabled text</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some more text</DropdownItem>
   </DropdownItemGroup>
 );
 
 export const dropdownItemsWithGroups = (
   <div>
     <DropdownItemGroup title="The first group">
-      <DropdownItem>Some text 1</DropdownItem>
-      <DropdownItem isDisabled>Some text 2</DropdownItem>
+      <DropdownItem onClick={clickAction}>Some text 1</DropdownItem>
+      <DropdownItem onClick={clickAction} isDisabled>Some text 2</DropdownItem>
     </DropdownItemGroup>
     <DropdownItemGroup title="Second group">
-      <DropdownItem>Some text 3</DropdownItem>
-      <DropdownItem>Some text 4</DropdownItem>
+      <DropdownItem onClick={clickAction}>Some text 3</DropdownItem>
+      <DropdownItem onClick={clickAction}>Some text 4</DropdownItem>
     </DropdownItemGroup>
   </div>
 );
 
 export const simpleDropdownItemsWithAvatars = (
   <DropdownItemGroup title="Friends">
-    <DropdownItem elemBefore={<Avatar size="small" />}>Some text</DropdownItem>
-    <DropdownItem elemBefore={<Avatar size="small" />}>Some text also</DropdownItem>
+    <DropdownItem
+      onClick={clickAction}
+      elemBefore={<Avatar size="small" />}
+    >
+      Some text
+    </DropdownItem>
+    <DropdownItem
+      onClick={clickAction}
+      elemBefore={<Avatar size="small" />}
+    >
+      Some text also
+    </DropdownItem>
   </DropdownItemGroup>
 );
 
 export const simpleDropdownItemsWithCheckboxes = (
   <DropdownItemGroupCheckbox id="example-checkbox-group" title="Languages">
-    <DropdownItemCheckbox id="js">JavaScript</DropdownItemCheckbox>
-    <DropdownItemCheckbox id="java">Java</DropdownItemCheckbox>
-    <DropdownItemCheckbox id="ruby">Ruby</DropdownItemCheckbox>
+    <DropdownItemCheckbox onClick={clickAction} id="js">JavaScript</DropdownItemCheckbox>
+    <DropdownItemCheckbox onClick={clickAction} id="java">Java</DropdownItemCheckbox>
+    <DropdownItemCheckbox onClick={clickAction} id="ruby">Ruby</DropdownItemCheckbox>
   </DropdownItemGroupCheckbox>
 );
 
 export const simpleDropdownItemsWithRadio = [
   <DropdownItemGroupRadio id="example-radio-group" title="Languages">
-    <DropdownItemRadio id="js">JavaScript</DropdownItemRadio>
-    <DropdownItemRadio id="java">Java</DropdownItemRadio>
-    <DropdownItemRadio id="ruby">Ruby</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="js">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio onClick={clickAction} id="java">Java</DropdownItemRadio>
+    <DropdownItemRadio onClick={clickAction} id="ruby">Ruby</DropdownItemRadio>
   </DropdownItemGroupRadio>,
   <DropdownItemGroupRadio behavior="radio" title="Platforms">
-    <DropdownItemRadio id="mac">MacOS</DropdownItemRadio>
-    <DropdownItemRadio id="win">Windows</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="mac">MacOS</DropdownItemRadio>
+    <DropdownItemRadio onClick={clickAction} id="win">Windows</DropdownItemRadio>
   </DropdownItemGroupRadio>,
 ];
 
 export const simpleDropdownItemsWithRadioAndCheckbox = [
   <DropdownItemGroupRadio id="languages" title="Languages">
-    <DropdownItemRadio id="js">JavaScript</DropdownItemRadio>
-    <DropdownItemRadio id="java">Java</DropdownItemRadio>
-    <DropdownItemRadio id="ruby">Ruby</DropdownItemRadio>
+    <DropdownItemRadio defaultSelected onClick={clickAction} id="js-radio">JavaScript</DropdownItemRadio>
+    <DropdownItemRadio onClick={clickAction} id="java">Java</DropdownItemRadio>
+    <DropdownItemRadio onClick={clickAction} id="ruby">Ruby</DropdownItemRadio>
   </DropdownItemGroupRadio>,
   <DropdownItemGroupCheckbox id="languages2" title="Languages">
-    <DropdownItemCheckbox id="js">JavaScript</DropdownItemCheckbox>
-    <DropdownItemCheckbox id="java">Java</DropdownItemCheckbox>
-    <DropdownItemCheckbox id="ruby">Ruby</DropdownItemCheckbox>
+    <DropdownItemCheckbox defaultSelected onClick={clickAction} id="js-check">JavaScript</DropdownItemCheckbox>
+    <DropdownItemCheckbox onClick={clickAction} id="java">Java</DropdownItemCheckbox>
+    <DropdownItemCheckbox defaultSelected onClick={clickAction} id="ruby">Ruby</DropdownItemCheckbox>
   </DropdownItemGroupCheckbox>,
 ];
 
 export const lotsOfItems = (
   <DropdownItemGroup title="">
-    <DropdownItem>Some text</DropdownItem>
-    <DropdownItem>Some text 2</DropdownItem>
-    <DropdownItem>Some text 3</DropdownItem>
-    <DropdownItem>Some text 4</DropdownItem>
-    <DropdownItem>Some text 5</DropdownItem>
-    <DropdownItem>Some text 6</DropdownItem>
-    <DropdownItem>Some text 7</DropdownItem>
-    <DropdownItem>Some text 8</DropdownItem>
-    <DropdownItem>Some text 9</DropdownItem>
-    <DropdownItem>Some text 10</DropdownItem>
-    <DropdownItem>Some text 11</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 2</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 3</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 4</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 5</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 6</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 7</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 8</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 9</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 10</DropdownItem>
+    <DropdownItem onClick={clickAction}>Some text 11</DropdownItem>
   </DropdownItemGroup>
 );
 
 export const itemsWithTooltips = (
   <DropdownItemGroup title="Composed tooltips">
     {
-      ['right', 'left', 'top', 'bottom'].map(tooltipPos => (
+      ['right', 'left', 'top', 'bottom'].map((tooltipPos, i) => (
         <Tooltip
           description="Oh, hello there!"
           position={tooltipPos}
+          key={i}
         >
-          <DropdownItem>
+          <DropdownItem onClick={clickAction}>
             Tooltip on the {tooltipPos}
           </DropdownItem>
         </Tooltip>

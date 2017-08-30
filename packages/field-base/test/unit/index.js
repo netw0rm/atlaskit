@@ -41,9 +41,9 @@ describe('ak-field-base', () => {
     );
 
     describe('isFocused prop = true', () => {
-      it('should render the content with the focused prop', () =>
+      it('should render the content with the isFocused prop', () =>
         expect(shallow(<FieldBaseStateless {...defaultProps} isFocused />)
-          .find(Content).prop('focused')).toBe(true)
+          .find(Content).prop('isFocused')).toBe(true)
       );
     });
 
@@ -85,7 +85,7 @@ describe('ak-field-base', () => {
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBaseStateless {...defaultProps} isFocused isInvalid />);
-        expect(wrapper.find(Content).prop('focused')).toBe(true);
+        expect(wrapper.find(Content).prop('isFocused')).toBe(true);
         expect(wrapper.find(Content).prop('invalid')).toBe(false);
       })
     );

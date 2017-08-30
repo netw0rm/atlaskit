@@ -15,7 +15,6 @@ import ToolbarHelp from '../../../src/ui/ToolbarHelp';
 import HelpDialog from '../../../src/ui/HelpDialog';
 import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
-import { createNestedListStyles } from '../../../src/ui/ChromeExpanded/styles';
 import { Content } from '../../../src/ui/ChromeExpanded/styles';
 import { analyticsService } from '../../../src/analytics';
 import { browser } from '../../../src/prosemirror';
@@ -53,6 +52,24 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
       const props = wrapper.props();
       expect(!!props['style']).to.equal(true);
       expect(props['style']!.maxHeight).to.equal('75px');
+    });
+
+    it('should not set height if props.height is undefined', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} />);
+
+      const wrapper = chrome.find(Content).find('div').at(1);
+      const props = wrapper.props()!;
+      expect(props.style!.height).to.equal(undefined);
+    });
+
+    it('should not set borders if only props.height is set', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={false} height={75} />);
+
+      const wrapper = chrome.find(Content).find('div').at(1);
+      const props = wrapper.props()!;
+      expect(props.style!.borderBottom).to.equal(undefined);
     });
 
     it('should render disabled save button if saveDisabled=true', () => {
@@ -101,33 +118,6 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
         toolbarOption.find(AkButton).filterWhere(n => n.text() === 'Cancel').simulate('click');
         expect(trackEvent.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
       });
-    });
-  });
-
-  describe('styles/createNestedListStyles', () => {
-    it('should return not-null object for nested ordered list styles', () => {
-      const nestedOrderedListStyle = createNestedListStyles();
-      expect(nestedOrderedListStyle).to.not.equal(null);
-    });
-
-    it('should return not-null object for nested ordered list styles', () => {
-      const nestedOrderedListStyle = createNestedListStyles();
-      expect(Object.keys(nestedOrderedListStyle).length).to.eq(9);
-    });
-
-    it('should return correct values in the object', () => {
-      const nestedOrderedListStyle = createNestedListStyles();
-      expect(Object.keys(nestedOrderedListStyle[' > li'])).to.not.equal(undefined);
-      expect(Object.keys(nestedOrderedListStyle[' > li > ol > li'])).to.not.equal(undefined);
-      expect(Object.keys(nestedOrderedListStyle[' > li > ol > li > ol > li'])).to.not.equal(undefined);
-      expect(Object.keys(nestedOrderedListStyle[' > li > ol > li > ol > li > ol > li'])).to.not.equal(undefined);
-    });
-
-    it('should return correct styles for list items', () => {
-      const nestedOrderedListStyle = createNestedListStyles();
-      expect(Object.keys(nestedOrderedListStyle[' > li'].listStyleType)).not.equal('decimal');
-      expect(Object.keys(nestedOrderedListStyle[' > li > ol > li'].listStyleType)).not.equal('lower-alpha');
-      expect(Object.keys(nestedOrderedListStyle[' > li > ol > li > ol > li'].listStyleType)).not.equal('lower-roman');
     });
   });
 

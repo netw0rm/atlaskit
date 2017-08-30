@@ -98,15 +98,17 @@ export default function withPseudoState(WrappedComponent: ComponentType) {
       // if the element is interactive
       const props: {} = omit(this.props, ...INTERNAL_HANDLERS);
 
+      const self: Object = this;
+
       if (isInteractive) {
         INTERNAL_HANDLERS.forEach((handler: string) => {
           if (this.props[handler]) {
             props[handler] = (...args) => {
-              this[handler](...args);
+              self[handler](...args);
               this.props[handler](...args);
             };
           } else {
-            props[handler] = this[handler];
+            props[handler] = self[handler];
           }
         });
       }

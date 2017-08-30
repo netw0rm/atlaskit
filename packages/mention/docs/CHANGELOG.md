@@ -1,5 +1,14 @@
 # @atlaskit/mention
 
+## 7.4.0 (2017-08-28)
+
+
+* feature; update util-* dependencies ([eba115f](https://bitbucket.org/atlassian/atlaskit/commits/eba115f))
+* feature; update mention dependencies: avatar, icon, lozenge, tooltip (issues closed: fs-1309) ([8686314](https://bitbucket.org/atlassian/atlaskit/commits/8686314))
+## 7.3.5 (2017-08-21)
+
+* bug fix; based on PR comment, update the variable name ([4517be5](https://bitbucket.org/atlassian/atlaskit/commits/4517be5))
+* bug fix; the name of the variable was not correct - cf AK-1433 (issues closed: ak-1433) ([85fe651](https://bitbucket.org/atlassian/atlaskit/commits/85fe651))
 ## 7.3.4 (2017-08-14)
 
 * bug fix; publish only javascript files in dist/ ([367736a](https://bitbucket.org/atlassian/atlaskit/commits/367736a))

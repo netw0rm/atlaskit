@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "5.5.1",
+  "version": "6.1.0",
   "config": {
     "access": "public"
   },
@@ -32,7 +32,6 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/field-text": "^2.0.5",
     "@atlaskit/util-readme": "^1.0.0",
     "cheerio": "^0.22.0",
     "glob": "^7.1.1",

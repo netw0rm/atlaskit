@@ -12,7 +12,7 @@ export interface ContentRef {
 }
 
 export interface Props {
-  taskDecisionProvider: TaskDecisionProvider;
+  taskDecisionProvider: Promise<TaskDecisionProvider>;
   initialQuery: Query;
   renderDocument: RenderDocument;
   onUpdate?: OnUpdate<Task>;
@@ -57,24 +57,26 @@ export default class ResourcedTaskList extends PureComponent<Props,State> {
     this.setState({
       loading: true,
     });
-    taskDecisionProvider.getTasks(query).then(result => {
-      if (!this.mounted) {
-        return;
-      }
-      const { tasks, nextQuery } = result;
-      const combinedTasks: Task[] = [
-        ...this.state.tasks || [],
-        ...tasks,
-      ];
-      this.setState({
-        tasks: combinedTasks,
-        nextQuery,
-        loading: false,
+    taskDecisionProvider.then(provider => {
+      provider.getTasks(query).then(result => {
+        if (!this.mounted) {
+          return;
+        }
+        const { tasks, nextQuery } = result;
+        const combinedTasks: Task[] = [
+          ...this.state.tasks || [],
+          ...tasks,
+        ];
+        this.setState({
+          tasks: combinedTasks,
+          nextQuery,
+          loading: false,
+        });
+        const { onUpdate } = this.props;
+        if (onUpdate) {
+          onUpdate(combinedTasks, tasks);
+        }
       });
-      const { onUpdate } = this.props;
-      if (onUpdate) {
-        onUpdate(combinedTasks, tasks);
-      }
     });
   }
 
@@ -109,6 +111,11 @@ export default class ResourcedTaskList extends PureComponent<Props,State> {
       );
     }
 
+    // FIXME FS-1283
+    // Either:
+    //  - render per task, and pass rendererContext
+    //  - delegate to ResourcedItemList (or extract common renderering)
+    //  - remove this class if not used.
     return (
       <div>
         {renderDocument(document)}

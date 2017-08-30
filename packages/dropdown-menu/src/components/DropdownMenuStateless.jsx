@@ -2,77 +2,26 @@
 
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
 import uid from 'uid';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
 import WidthConstrainer from '../styled/WidthConstrainer';
 import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
+import type { DropdownMenuStatelessProps } from '../types';
 
 export default class DropdownMenuStateless extends Component {
-  static propTypes = {
-    /**
-      * Controls the appearance of the menu.
-      * Default menu has scroll after its height exceeds the pre-defined amount.
-      * Tall menu has no restrictions.
-      */
-    appearance: PropTypes.oneOf(['default', 'tall']),
-    /** Content that will be rendered inside the layer element. Should typically be
-      * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
-    children: PropTypes.node,
-    /** If true, a Spinner is rendered instead of the items */
-    isLoading: PropTypes.bool,
-    /** Controls the open state of the dropdown. */
-    isOpen: PropTypes.bool,
-    /** Deprecated. An array of groups. Every group must contain an array of items */
-    items: PropTypes.arrayOf(PropTypes.shape({
-      elemAfter: PropTypes.node,
-      heading: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.shape({
-        content: PropTypes.string,
-        elemBefore: PropTypes.node,
-        href: PropTypes.string,
-        isDisabled: PropTypes.bool,
-        target: PropTypes.oneOf(['_blank', '_self']),
-      })).isRequired,
-    })).isRequired,
-    /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
-    onItemActivated: PropTypes.func,
-    /** Called when the menu should be open/closed. Received an object with isOpen state. */
-    onOpenChange: PropTypes.func,
-    /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
-    position: PropTypes.string,
-    /** Deprecated. Option to display multiline items when content is too long.
-      * Instead of ellipsing the overflown text it causes item to flow over multiple lines.
-      */
-    shouldAllowMultilineItems: PropTypes.bool,
-    /** Option to fit dropdown menu width to its parent width */
-    shouldFitContainer: PropTypes.bool,
-    /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
-      * fit in the viewport. */
-    shouldFlip: PropTypes.bool,
-    /** Content which will trigger the dropdown menu to open and close. Use with `triggerType`
-      * to easily get a button trigger. */
-    trigger: PropTypes.node,
-    /** Props to pass through to the trigger button. See @atlaskit/button for allowed props. */
-    triggerButtonProps: PropTypes.shape(Button.propTypes),
-    /** Controls the type of trigger to be used for the dropdown menu. The default trigger allows
-      * you to supply your own trigger component. Setting this prop to `button` will render a
-      * Button component with an 'expand' icon, and the `trigger` prop contents inside the
-      * button. */
-    triggerType: PropTypes.oneOf(['default', 'button']),
-  }
+  props: DropdownMenuStatelessProps // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     appearance: 'default',
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: () => {},
+    onItemActivated: (a) => {}, // eslint-disable-line
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,
@@ -88,8 +37,10 @@ export default class DropdownMenuStateless extends Component {
 
   componentDidMount = () => {
     if (this.isUsingDeprecatedAPI()) {
-      // eslint-disable-next-line no-console
-      console.warn('DropdownMenu.items is deprecated. Please switch to the declarative API.');
+      if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line no-console
+        console.log('DropdownMenu.items is deprecated. Please switch to the declarative API.');
+      }
 
       if (this.domItemsList) {
         this.focusFirstItem();
@@ -97,15 +48,13 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  // $FlowFixMe
-  componentDidUpdate = (prevProp) => {
+  componentDidUpdate = (prevProp: Object) => {
     if (this.isUsingDeprecatedAPI() && this.props.isOpen && !prevProp.isOpen) {
       this.focusFirstItem();
     }
   }
 
-  // $FlowFixMe
-  getNextFocusable = (indexItem, available) => {
+  getNextFocusable = (indexItem: number | void, available: number | void) => {
     let currentItem = indexItem === undefined ? -1 : indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
 
@@ -122,12 +71,10 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable;
   }
 
-  // $FlowFixMe
-  getPrevFocusable = (indexItem, available) => {
-    let currentItem = indexItem;
+  getPrevFocusable = (indexItem: number | void, available: number| void) => {
+    let currentItem = indexItem === undefined ? -1 : indexItem;
     const latestAvailable = available === undefined ? currentItem : available;
-
-    if (currentItem > 0) {
+    if (currentItem && currentItem > 0) {
       currentItem--;
 
       if (this.domItemsList[currentItem].getAttribute('aria-hidden') !== 'true') {
@@ -152,7 +99,7 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  focusedItem: number
+  focusedItem: number | void
 
   focusNextItem = () => {
     this.focusItem(this.getNextFocusable(this.focusedItem));
@@ -167,8 +114,7 @@ export default class DropdownMenuStateless extends Component {
     this.domItemsList[this.focusedItem].focus();
   }
 
-  // $FlowFixMe
-  isTargetChildItem = (target) => {
+  isTargetChildItem = (target: any) => {
     if (!target) return false;
 
     const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
@@ -239,7 +185,7 @@ export default class DropdownMenuStateless extends Component {
   handleClickDeprecated = (event: MouseEvent) => {
     const menuContainer = this.domMenuContainer;
     // checking whether click was outside of the menu container.
-    // $FlowFixMe - not flow typing existing code
+    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
     if (!menuContainer || (menuContainer && !menuContainer.contains(event.target))) {
       this.toggle({ source: 'click', event });
     }
@@ -254,9 +200,10 @@ export default class DropdownMenuStateless extends Component {
     }
 
     const { triggerContainer } = this;
-    // $FlowFixMe - existing code that works fine but flow doesn't like for some reason
+    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
     if (triggerContainer && triggerContainer.contains(event.target)) {
       const { isOpen } = this.props;
+      this.sourceOfIsOpen = 'mouse';
       this.props.onOpenChange({ isOpen: !isOpen, event });
     }
   }
@@ -286,20 +233,17 @@ export default class DropdownMenuStateless extends Component {
     );
   }
 
-  // $FlowFixMe
-  open = (attrs) => {
+  open = (attrs: any) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  // $FlowFixMe
-  close = (attrs) => {
+  close = (attrs: any) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
-  // $FlowFixMe
-  toggle = (attrs) => {
+  toggle = (attrs: any) => {
     if (attrs.source === 'keydown') return;
 
     if (this.props.isOpen) {
@@ -318,8 +262,7 @@ export default class DropdownMenuStateless extends Component {
     );
   };
 
-  // $FlowFixMe
-  renderItems = items => items.map((item, itemIndex) =>
+  renderItems = (items: any) => items.map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}
@@ -331,8 +274,7 @@ export default class DropdownMenuStateless extends Component {
     </Item>
   )
 
-  // $FlowFixMe
-  renderGroups = groups => groups.map((group, groupIndex) =>
+  renderGroups = (groups: any) => groups.map((group, groupIndex) =>
     <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
       {this.renderItems(group.items)}
     </Group>
@@ -396,7 +338,7 @@ export default class DropdownMenuStateless extends Component {
                 role="menu"
                 shouldFitContainer={shouldFitContainer}
               >
-                <DropdownItemFocusManager>
+                <DropdownItemFocusManager autoFocus={this.sourceOfIsOpen === 'keydown'}>
                   {children}
                 </DropdownItemFocusManager>
               </WidthConstrainer>

@@ -44,7 +44,7 @@
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
-    "@atlaskit/multi-select": "^6.9.2",
+    "@atlaskit/multi-select": "^7.0.0",
     "@atlaskit/single-select": "^1.4.0",
     "@atlaskit/tag": "^2.6.0",
     "@atlaskit/tag-group": "^3.4.2",

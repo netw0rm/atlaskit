@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
-import { EditorView } from '../../prosemirror';
+import { EditorView, Node } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
@@ -45,6 +45,7 @@ export interface EditorProps {
   maxHeight?: number;
   maxContentSize?: number;
   placeholder?: string;
+  defaultValue?: Node | string | Object;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

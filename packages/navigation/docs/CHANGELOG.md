@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 20.3.2 (2017-08-30)
+
+* bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))
+* bug fix; fixes bug in modules export of nav ([5d07b8e](https://bitbucket.org/atlassian/atlaskit/commits/5d07b8e))
 ## 20.3.1 (2017-08-29)
 
 

@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 46.8.1 (2017-08-30)
+
+* bug fix; prevent media insertion for task/decisions (issues closed: fs-1240) ([48dcf05](https://bitbucket.org/atlassian/atlaskit/commits/48dcf05))
+
+* bug fix; added async preloading of media-card chunk ([7a19c6d](https://bitbucket.org/atlassian/atlaskit/commits/7a19c6d))
+* bug fix; split media-card with require.ensure ([1159f23](https://bitbucket.org/atlassian/atlaskit/commits/1159f23))
+* bug fix; split profile card with require.ensure (issues closed: ed-2581) ([6901949](https://bitbucket.org/atlassian/atlaskit/commits/6901949))
 ## 46.8.0 (2017-08-29)
 
 * feature; export ToolbarEmojiPicker for consumption by editor-hiphcat (issues closed: fs-1320) ([0226a5b](https://bitbucket.org/atlassian/atlaskit/commits/0226a5b))

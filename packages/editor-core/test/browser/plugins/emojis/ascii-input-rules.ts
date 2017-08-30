@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { EmojiDescription } from '@atlaskit/emoji';
 import asciiEmojiPlugins from '../../../../src/plugins/emojis/ascii-input-rules';
 import ProviderFactory from '../../../../src/providerFactory';
 import {
@@ -198,6 +199,31 @@ describe('ascii emojis - input rules', () => {
     it('it should replace a matching emoticon starting with a colon', () => {
       return assert(' ', p(emojiQuery(':D{<>}')), (state) => {
         expect(state.doc.content.child(0)).to.deep.equal(p(smileyEmoji, textNode(' ')));
+      });
+    });
+  });
+
+  context('recording emoji usage', () => {
+    beforeEach(() => {
+      return emojiProvider.then((provider) => {
+        provider.recordedSelections = [];
+      });
+    });
+
+    afterEach(() => {
+      return emojiProvider.then((provider) => {
+        provider.recordedSelections = [];
+      });
+    });
+
+    it('it should record usage when an emoticon is matched', () => {
+      return emojiProvider.then((resource) => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, ':D ', sel);
+
+        const selections: EmojiDescription[] = resource.recordedSelections;
+        expect(selections).to.have.lengthOf(1);
+        expect(selections[0].shortName).to.equal(smileyEmoji.attrs..shortName);
       });
     });
   });

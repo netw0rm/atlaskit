@@ -5,6 +5,7 @@ import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
 import ProviderFactory from '../providerFactory';
 import { EditorProps, EditorInstance, EditorAppearanceComponentProps } from './types';
+import { moveCursorToTheEnd } from '../utils';
 export * from './types';
 
 export interface State {
@@ -82,8 +83,12 @@ export default class Editor extends React.Component<EditorProps, State> {
     this.setState({ editor });
 
     // Focus editor first time we create it if shouldFocus prop is set to true.
-    if (this.props.shouldFocus && !editor.editorView.hasFocus()) {
-      editor.editorView.focus();
+    if (this.props.shouldFocus) {
+      if (!editor.editorView.hasFocus()) {
+        editor.editorView.focus();
+      }
+
+      moveCursorToTheEnd(editor.editorView);
     }
   }
 

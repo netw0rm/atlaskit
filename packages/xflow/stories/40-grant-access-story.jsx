@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { GrantAccessBase } from '../src/start-trial/components/GrantAccess';
+import { GrantAccessBase } from '../src/request-or-start-trial/components/GrantAccess';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
 import { ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';

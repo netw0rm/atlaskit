@@ -1,5 +1,12 @@
 # @atlaskit/tag
 
+## 3.0.1 (2017-08-30)
+
+
+* bug fix; change darkmode colors after spec update to 1.3 ([5d78178](https://bitbucket.org/atlassian/atlaskit/commits/5d78178))
+
+
+
 ## 3.0.0 (2017-08-23)
 
 

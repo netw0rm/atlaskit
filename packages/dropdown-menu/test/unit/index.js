@@ -50,6 +50,7 @@ describe(name, () => {
       const droplist = wrapper.find(Droplist);
       expect(droplist.prop('position')).toBe(wrapper.props().position);
       expect(droplist.prop('appearance')).toBe(wrapper.props().appearance);
+      expect(droplist.prop('boundariesElement')).toBe(wrapper.props().boundariesElement);
       expect(droplist.prop('shouldFlip')).toBe(wrapper.props().shouldFlip);
       expect(droplist.prop('isOpen')).toBe(wrapper.state().isOpen);
       // expect(droplist.prop('trigger')).toEqual(<div>text</div>);

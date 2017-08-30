@@ -37,7 +37,7 @@ const providers = {
     'undefined' : undefined,
   },
   emojiProvider: {
-    resolved: emojiStoryData.getEmojiResource(),
+    resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined' : undefined,

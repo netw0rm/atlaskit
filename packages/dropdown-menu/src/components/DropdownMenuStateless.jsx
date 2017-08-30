@@ -18,6 +18,7 @@ export default class DropdownMenuStateless extends Component {
 
   static defaultProps = {
     appearance: 'default',
+    boundariesElement: 'viewport',
     isLoading: false,
     isOpen: false,
     items: [],
@@ -304,7 +305,7 @@ export default class DropdownMenuStateless extends Component {
 
   render() {
     const {
-      appearance, children, isLoading, isOpen, onOpenChange, position,
+      appearance, boundariesElement, children, isLoading, isOpen, onOpenChange, position,
       shouldAllowMultilineItems, shouldFitContainer, shouldFlip,
     } = this.props;
     const { id } = this.state;
@@ -321,6 +322,7 @@ export default class DropdownMenuStateless extends Component {
       <DropdownItemSelectionCache>
         <Droplist
           appearance={appearance}
+          boundariesElement={boundariesElement}
           isLoading={isLoading}
           isOpen={isOpen}
           onClick={this.handleClick}

@@ -102,7 +102,7 @@ storiesOf(name, module)
           allowTables={true}
 
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
-          emojiProvider={emojiStoryData.getEmojiResource()}
+          emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
 
           placeholder="Write something..."

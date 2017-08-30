@@ -223,7 +223,7 @@ describe('ascii emojis - input rules', () => {
 
         const selections: EmojiDescription[] = resource.recordedSelections;
         expect(selections).to.have.lengthOf(1);
-        expect(selections[0].shortName).to.equal(smileyEmoji.attrs..shortName);
+        expect(selections[0].shortName).to.equal(smileyEmoji.attrs.shortName);
       });
     });
   });

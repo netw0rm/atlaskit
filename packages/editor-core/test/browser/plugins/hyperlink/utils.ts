@@ -8,9 +8,6 @@ describe('hyperlink', () => {
       ['mailto:prettyandsimple@example.com', 'mailto:prettyandsimple@example.com'],
       ['example.com', 'http://example.com'],
       ['http://example.com', 'http://example.com'],
-      ['/index.php', '/index.php'],
-      ['./index.php', './index.php'],
-      ['#hash', '#hash'],
       ['', '']
     ];
 

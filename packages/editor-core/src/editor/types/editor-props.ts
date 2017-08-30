@@ -34,12 +34,13 @@ export interface EditorProps {
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
 
+  activityProvider?: Promise<ActivityProvider>;
+  collabEditProvider?: Promise<CollabEditProvider>;
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
-  collabEditProvider?: Promise<CollabEditProvider>;
-  activityProvider?: Promise<ActivityProvider>;
+  waitForMediaUpload?: boolean;
 
   maxHeight?: number;
   maxContentSize?: number;

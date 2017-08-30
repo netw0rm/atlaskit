@@ -151,10 +151,6 @@ export default class Navigation extends PureComponent {
   // for this specific case in componentDidMount.
   componentDidMount() {
     if (this.props.isElectronMac && this.props.isOpen && this.props.width === defaultWidth) {
-      /* $ExpectError - the onResizeProp is currently listed as optional and a defaultProp value is
-       * also set. Despite this, Flow complains that onResize may be undefined. The Flow docs say
-       * that we can make the prop required, however this marks the prop as required in the API
-       * docs. So using ExpectError here to avoid prop warnings. */
       this.props.onResize({
         isOpen: true,
         width: globalOpenWidth(true) + containerOpenWidth,
@@ -232,7 +228,7 @@ export default class Navigation extends PureComponent {
     );
   }
 
-  props: Props
+  props: ReactElement
 
   triggerResizeButtonHandler = (resizeState: resizeObj) => {
     if (resizeState && this.props.onResize) {

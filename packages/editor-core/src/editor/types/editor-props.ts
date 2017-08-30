@@ -34,6 +34,7 @@ export interface EditorProps {
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
 
+  presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;

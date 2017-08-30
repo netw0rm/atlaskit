@@ -93,12 +93,20 @@ export default class Editor extends React.Component<EditorProps, State> {
   }
 
   private handleProviders(props: EditorProps) {
-    const { emojiProvider, mentionProvider, mediaProvider, collabEditProvider, activityProvider } = props;
+    const {
+      emojiProvider,
+      mentionProvider,
+      mediaProvider,
+      collabEditProvider,
+      activityProvider,
+      presenceProvider
+    } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
+    this.providerFactory.setProvider('presenceProvider', presenceProvider);
   }
 
   render() {
@@ -135,6 +143,7 @@ export default class Editor extends React.Component<EditorProps, State> {
         customContentComponents={this.props.contentComponents}
         customPrimaryToolbarComponents={this.props.primaryToolbarComponents}
         customSecondaryToolbarComponents={this.props.secondaryToolbarComponents}
+
         addonToolbarComponents={this.props.addonToolbarComponents}
       />
     );

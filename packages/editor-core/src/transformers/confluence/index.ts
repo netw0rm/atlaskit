@@ -5,6 +5,7 @@ import {
 import { Transformer } from '../transformer';
 import parse from './parse';
 import encode from './encode';
+export { LANGUAGE_MAP } from './languageMap';
 
 export default class ConfluenceTransformer implements Transformer<string> {
   private schema: Schema<any, any>;

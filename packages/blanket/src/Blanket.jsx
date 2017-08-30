@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
-import Container from './styled/Container';
+import Div from './styled';
+
+type Props = {
+  /** Whether mouse events can pierce the blanket. If true, onBlanketClicked will not be fired */
+  canClickThrough: boolean,
+  /** Whether the blanket has a tinted background color. */
+  isTinted: boolean,
+  /** Handler function to be called when the blanket is clicked */
+  onBlanketClicked: () => void,
+}
 
 export default class Blanket extends PureComponent {
-  static propTypes = {
-    /** Whether mouse events can pierce the blanket. If true, onBlanketClicked will not be fired */
-    canClickThrough: PropTypes.bool,
-    /** Whether the blanket has a tinted background color. */
-    isTinted: PropTypes.bool,
-    /** Handler function to be called when the blanket is clicked */
-    onBlanketClicked: PropTypes.func,
-  };
-
+  props: Props // eslint-disable-line react/sort-comp
   static defaultProps = {
     canClickThrough: false,
     isTinted: false,
@@ -23,7 +24,6 @@ export default class Blanket extends PureComponent {
     const onClick = canClickThrough ? null : onBlanketClicked;
     const containerProps = { canClickThrough, isTinted, onClick };
 
-    // TODO make sure that the div onClick is accessible
-    return <Container {...containerProps} />;
+    return <Div {...containerProps} />;
   }
 }

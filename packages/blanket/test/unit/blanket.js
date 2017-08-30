@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Blanket from '../../src';
-import { getOpacity } from '../../src/styled/Container';
+import { opacity } from '../../src/styled';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -23,12 +23,12 @@ describe('ak-blanket', () => {
 
       it('should get tint styling when prop set', () => {
         const props = { isTinted: true };
-        expect(getOpacity(props)).toBe(0.5);
+        expect(opacity(props)).toBe(1);
       });
 
       it('should not get tint styling when prop set to false', () => {
         const props = { isTinted: false };
-        expect(getOpacity(props)).toBe(0);
+        expect(opacity(props)).toBe(0);
       });
     });
 

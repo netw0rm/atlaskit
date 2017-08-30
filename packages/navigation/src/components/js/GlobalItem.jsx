@@ -13,13 +13,13 @@ type Props = {|
   size?: 'small' | 'medium' | 'large',
   /** Component to be used to create the link in the global item. A default
   component is used if none is provided. */
-  linkComponent?: ReactClass,
+  linkComponent: ReactClass,
   /** ARIA role to apply to the global item. */
   role?: string,
   /** Standard aria-haspopup prop */
   'aria-haspopup'?: string, // eslint-disable-line react/no-unused-prop-types
   /** Standard onClick event */
-  onClick?: (event: MouseEvent) => {},
+  onClick?: (event: Event) => {},
   onMouseDown?: (event: MouseEvent) => {},
 |}
 

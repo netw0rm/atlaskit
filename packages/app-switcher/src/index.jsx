@@ -40,6 +40,7 @@ export default class AppSwitcher extends Component {
     isSiteAdminLinkEnabled: false,
     isLoading: false,
     onAppSwitcherOpen: () => {},
+    suggestedApplication: { onDontShowAgainClick: () => {} },
   };
 
   state = {

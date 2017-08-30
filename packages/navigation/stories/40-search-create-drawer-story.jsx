@@ -7,7 +7,7 @@ import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
 import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';

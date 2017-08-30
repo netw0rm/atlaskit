@@ -11,7 +11,7 @@ const items = Array(12).fill(true).map((item, index) => (
 
 export default class ManyItemsExample extends Component {
   static propTypes = {
-    appearance: PropTypes.oneOf('normal', 'tall'),
+    appearance: PropTypes.oneOf(['normal', 'tall']),
     withGroup: PropTypes.bool,
   }
 

@@ -7,8 +7,8 @@ import DropdownItemSelectionManager from '../context/DropdownItemSelectionManage
 import type { Behaviors } from '../../types';
 
 // HOC that typically wraps @atlaskit/item/ItemGroup
-// $FlowFixMe
-const withDropdownItemSelectionManager = (WrappedComponent, selectionBehavior: Behaviors) => (
+
+const withDropdownItemSelectionManager = (WrappedComponent: any, selectionBehavior: Behaviors) => (
   class WithDropdownItemSelectionManager extends Component {
     static displayName = `WithDropdownItemSelectionManager(${getDisplayName(WrappedComponent)})`;
 

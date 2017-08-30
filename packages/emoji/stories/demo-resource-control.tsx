@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 
-import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
+import EmojiResource, { EmojiResourceConfig, EmojiProvider } from '../src/api/EmojiResource';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj: any): string => {
@@ -29,17 +29,18 @@ const toJavascriptString = (obj: any): string => {
 export interface Props {
   children: ReactElement<any>;
   emojiConfig: EmojiResourceConfig;
+  customEmojiProvider?: Promise<EmojiProvider>;
 }
 
 export interface State {
-  emojiProvider: Promise<EmojiResource>;
+  emojiProvider: Promise<EmojiProvider>;
 }
 
 export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      emojiProvider: Promise.resolve(new EmojiResource(this.props.emojiConfig)),
+      emojiProvider: this.props.customEmojiProvider || Promise.resolve(new EmojiResource(this.props.emojiConfig)),
     };
   }
 

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless as spacing, akColorR300 } from '@atlaskit/util-shared-styles';
-import theme from './theme';
+import { colors, themed, gridSize } from '@atlaskit/theme';
 
+const spacing = gridSize();
 const fontSize = 12;
 const innerHeight = spacing * 2; // 16px
 const lineHeight = innerHeight / fontSize;
@@ -28,8 +28,11 @@ export const LabelWrapper = styled.label`
   display: block;
 `;
 
+const getColor = themed({ light: colors.N200, dark: colors.DN90 });
+const getDisabledColor = themed({ light: colors.N60, dark: colors.DN300 });
+
 export const LabelInner = styled.div`
-  color: ${theme.label.color};
+  color: ${props => (props.isDisabled ? getDisabledColor(props) : getColor(props))};
   font-size: ${fontSize}px;
   font-weight: 600;
   line-height: ${lineHeight}
@@ -39,6 +42,6 @@ export const LabelInner = styled.div`
 `;
 
 export const RequiredIndicator = styled.span`
-  color: ${akColorR300};
+  color: ${colors.red};
   padding-left: 2px;
 `;

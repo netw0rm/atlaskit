@@ -47,6 +47,8 @@ export interface FilmstripViewProps {
 }
 
 export interface FilmstripViewState {
+  bufferWidth: number;
+  windowWidth: number;
 }
 
 export interface ArrowProps {
@@ -77,15 +79,15 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   };
 
   bufferElement: HTMLElement;
-  bufferWidth: number = 0;
-
   windowElement: HTMLElement;
-  windowWidth: number = 0;
 
   childOffsets: ChildOffset[];
   previousOffset: number = 0;
 
-  state = {};
+  state = {
+    bufferWidth: 0,
+    windowWidth: 0
+  };
 
   get offset() {
     const {offset} = this.props;
@@ -103,7 +105,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
    * The furthest we can scroll, where the end of the buffer is just in view
    */
   get maxOffset() {
-    return Math.max(this.minOffset, this.bufferWidth - this.windowWidth - 1);
+    const {bufferWidth, windowWidth} = this.state;
+    return Math.max(this.minOffset, bufferWidth - windowWidth - 1);
   }
 
   get canGoLeft() {
@@ -116,6 +119,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   get transitionDuration() {
     const {animate} = this.props;
+    const {windowWidth} = this.state;
     if (!animate) {
       return 0;
     }
@@ -123,7 +127,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       return DURATION_MIN;
     } else {
       const diff = Math.abs(this.offset - this.previousOffset);
-      const relativeOffset = diff / this.windowWidth;
+      const relativeOffset = diff / windowWidth;
       const duration = DURATION_MAX - DURATION_MIN * relativeOffset;
       return Math.max(Math.min(duration, DURATION_MAX), DURATION_MIN);
     }
@@ -159,11 +163,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   // find the child that is cut off on the right edge of the window and change the window offset
   // to finish at start of the next child
   getClosestForRight(offset: number): number {
-    const rightWindowEdge = Math.min(this.maxOffset, Math.max(this.minOffset, offset)) + this.windowWidth;
+    const {windowWidth} = this.state;
+    const rightWindowEdge = Math.min(this.maxOffset, Math.max(this.minOffset, offset)) + windowWidth;
     for (let i = 0; i < this.childOffsets.length; ++i) {
       const childBounds = this.childOffsets[i];
       if (rightWindowEdge >= childBounds.left && rightWindowEdge <= childBounds.right) {
-        const newOffset = childBounds.right - this.windowWidth;
+        const newOffset = childBounds.right - windowWidth;
         if (newOffset + EXTRA_PADDING <= this.maxOffset) {
           return newOffset + EXTRA_PADDING; // show extra padding from the next sibling for aesthetic reasons
         } else {
@@ -176,7 +181,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   handleSizeChange = () => {
 
-    // get the widths
+    // get the new widths
     const {windowElement, bufferElement} = this;
     let bufferWidth = 0;
     let windowWidth = 0;
@@ -199,27 +204,42 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       });
     }
 
-    // make sure the widths have changed before we notify the integrator
-    if (bufferWidth === this.bufferWidth && windowWidth === this.windowWidth) {
+    // make sure the state has changed before we update state and notify the integrator
+    // (otherwise, since this method() is called in componentDidUpdate() we'll recurse until the stack size is exceeded)
+    const {
+      bufferWidth: prevBufferWidth,
+      windowWidth: prevWindowWidth
+    } = this.state;
+    if (bufferWidth === prevBufferWidth && windowWidth === prevWindowWidth) {
+      // NOTE: we're not checking here if childOffsets has changed... if the children change size but
+      // result in the exact same size buffer, we're not going to update, resulting in incorrect navigations
       return;
     }
 
     // store the widths
-    this.bufferWidth = bufferWidth;
-    this.windowWidth = windowWidth;
-    this.childOffsets = childOffsets;
+    this.setState(
+      {
+        bufferWidth,
+        windowWidth
+      },
+      () => {
 
-    // notify the integrator
-    const {onSize} = this.props;
-    if (onSize) {
-      onSize({
-        offset: Math.min(this.maxOffset, this.offset),
-        offsets: childOffsets,
-        width: this.windowWidth,
-        minOffset: this.minOffset,
-        maxOffset: this.maxOffset
-      });
-    }
+        this.childOffsets = childOffsets;
+
+        // notify the integrator
+        const {onSize} = this.props;
+        if (onSize) {
+          onSize({
+            offset: Math.min(this.maxOffset, this.offset),
+            offsets: childOffsets,
+            width: windowWidth,
+            minOffset: this.minOffset,
+            maxOffset: this.maxOffset
+          });
+        }
+
+      }
+    );
 
   }
 
@@ -241,7 +261,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
     const {onScroll} = this.props;
     if (onScroll) {
-      const newOffset = this.getClosestForLeft(this.offset - this.windowWidth);
+      const {windowWidth} = this.state;
+      const newOffset = this.getClosestForLeft(this.offset - windowWidth);
       onScroll({
         direction: 'left',
         offset: newOffset,
@@ -258,7 +279,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
     const {onScroll} = this.props;
     if (onScroll) {
-      const newOffset = this.getClosestForRight(this.offset + this.windowWidth);
+      const {windowWidth} = this.state;
+      const newOffset = this.getClosestForRight(this.offset + windowWidth);
       onScroll({
         direction: 'right',
         offset: newOffset,

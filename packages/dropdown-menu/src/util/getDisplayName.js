@@ -1,8 +1,7 @@
 // @flow
 // from https://facebook.github.io/react/docs/higher-order-components.html
 
-// $FlowFixMe
-const getDisplayName = WrappedComponent => (
+const getDisplayName = (WrappedComponent:any) => (
   WrappedComponent.displayName || WrappedComponent.name || 'Component'
 );
 

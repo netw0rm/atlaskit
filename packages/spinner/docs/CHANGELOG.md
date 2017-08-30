@@ -1,6 +1,16 @@
 # @atlaskit/spinner
 
-## Unreleased
+## 4.0.0 (2017-08-29)
+
+
+
+* breaking; convert spinner to have a dark mode implementation ([b1c2a53](https://bitbucket.org/atlassian/atlaskit/commits/b1c2a53))
+* breaking; convert spinner to have a dark mode implementation (issues closed: #ak-3371) ([b1c2a53](https://bitbucket.org/atlassian/atlaskit/commits/b1c2a53))
+
+
+
+
+
 
 ## 3.4.2 (2017-07-27)
 

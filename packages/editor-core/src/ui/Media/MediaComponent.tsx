@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {
-  Card,
   CardStatus,
-  CardView,
   CardDimensions,
   MediaIdentifier,
 } from '@atlaskit/media-card';
+import Spinner from '@atlaskit/spinner';
 
 import {
   ContextConfig,
@@ -38,6 +37,8 @@ export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
   linkCreateContext?: Context;
+  Card?: React.ComponentClass<any>;
+  CardView?: React.ComponentClass<any>;
 }
 
 /**
@@ -83,6 +84,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (mediaProvider) {
       mediaProvider.then(this.handleMediaProvider);
     }
+
+    require.ensure([], () => {
+      const { Card, CardView } = require('@atlaskit/media-card');
+      this.setState({ Card, CardView });
+    });
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -130,11 +136,15 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderLink() {
-    const { mediaProvider, linkCreateContext } = this.state;
+    const { mediaProvider, linkCreateContext, Card, CardView } = this.state;
     const { id, collection, cardDimensions, onDelete, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
+    }
+
+    if (!Card || !CardView) {
+      return <Spinner />;
     }
 
     const identifier: MediaIdentifier = {
@@ -172,10 +182,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderFile() {
-    const { mediaProvider, viewContext } = this.state;
+    const { mediaProvider, viewContext, CardView } = this.state;
     const { id, cardDimensions } = this.props;
 
     if (!mediaProvider || !viewContext) {
+      if (!CardView) {
+        return <Spinner />;
+      }
+
       return (
         <CardView
           status="loading"
@@ -193,7 +207,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderPublicFile() {
-    const { viewContext } = this.state;
+    const { viewContext, Card } = this.state;
     const { cardDimensions, collection, id, onDelete, onClick } = this.props;
     const otherProps: any = {};
 
@@ -203,6 +217,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     if (onClick) {
       otherProps.onClick = onClick;
+    }
+
+    if (!Card) {
+      return <Spinner />;
     }
 
     return (
@@ -223,7 +241,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType } = state;
+    const { thumbnail, fileName, fileSize, fileType, CardView } = state;
     const { onDelete } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
@@ -254,6 +272,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const otherProps: any = {};
     if (onDelete) {
       otherProps.actions = [ CardDelete(onDelete) ];
+    }
+
+    if (!CardView) {
+      return <Spinner />;
     }
 
     return <CardView

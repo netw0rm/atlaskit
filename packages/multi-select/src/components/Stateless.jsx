@@ -466,6 +466,7 @@ export default class StatelessMultiSelect extends PureComponent {
         </select>
         {label ? <Label
           htmlFor={id}
+          isDisabled={isDisabled}
           isFirstChild={isFirstChild}
           isRequired={isRequired}
           label={label}

@@ -1,90 +1,59 @@
-import {
-  akColorB100,
-  akColorN0,
-  akColorN10,
-  akColorN20,
-  akColorN200,
-  akColorN20A,
-  akColorN60,
-  akColorY300,
-} from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 
-const invalidColor = akColorY300;
+// The following are the name for color mappings in @atlaskit/themes
+// The exports are the functions, not the objects, so could not be used here
+const codeBlock = { light: colors.N20, dark: colors.DN80 };
+const hover = { light: colors.N20, dark: colors.DN30 };
+const disabled = { light: colors.N20, dark: colors.DN20 };
+const yellow = { light: colors.Y300, dark: colors.Y300 };
+// linkOutline has been altered based on the colors in the text-field spec
+const linkOutline = { light: colors.B100, dark: colors.B75 };
+// The following do not yet have a darkmode 'map': N20A, N10
 
-export default {
-  field: {
-    standard: {
-      background: {
-        default: akColorN10,
-        focus: akColorN0,
-        hover: akColorN20,
-      },
-      border: {
-        default: akColorN20,
-        focus: akColorB100,
-        hover: akColorN20,
-      },
-    },
-    disabled: {
-      background: {
-        default: akColorN20,
-        focus: akColorN20,
-        hover: akColorN20,
-      },
-      border: {
-        default: akColorN20A,
-        focus: akColorN20A,
-        hover: akColorN20A,
-      },
-      text: {
-        default: akColorN60,
-        focus: akColorN60,
-        hover: akColorN60,
-      },
-    },
-    invalid: {
-      background: {
-        default: akColorN10,
-        focus: akColorN0,
-        hover: akColorN20,
-      },
-      border: {
-        default: invalidColor,
-        hover: invalidColor,
-        focus: invalidColor,
-      },
-    },
-    subtle: {
-      background: {
-        default: 'transparent',
-        focus: akColorN0,
-        hover: akColorN20,
-      },
-      border: {
-        default: 'transparent',
-        focus: akColorB100,
-        hover: akColorN20,
-      },
-    },
-    none: {
-      background: {
-        default: 'transparent',
-        focus: 'transparent',
-        hover: 'transparent',
-      },
-      border: {
-        default: 'transparent',
-        focus: 'transparent',
-        hover: 'transparent',
-      },
-    },
-  },
+export const getBackgroundColor = themed('appearance', {
+  standard: { light: colors.N10, dark: colors.DN10 },
+  disabled,
+  invalid: { light: colors.N10, dark: colors.DN10 },
+  subtle: { light: 'transparent', dark: 'transparent' },
+  none: { light: 'transparent', dark: 'transparent' },
+});
 
-  icon: {
-    color: invalidColor,
-  },
+export const getBackgroundColorFocus = themed('appearance', {
+  standard: { light: colors.N20, dark: colors.DN10 },
+  disabled,
+  invalid: { light: colors.N20, dark: colors.DN10 },
+  subtle: { light: colors.N20, dark: colors.DN10 },
+  none: { light: 'transparent', dark: 'transparent' },
+});
 
-  label: {
-    color: akColorN200,
-  },
-};
+export const getBackgroundColorHover = themed('appearance', {
+  standard: hover,
+  disabled,
+  invalid: hover,
+  subtle: hover,
+  none: { light: 'transparent', dark: 'transparent' },
+});
+
+export const getBorderColor = themed('appearance', {
+  standard: codeBlock,
+  disabled: { light: colors.N20A, dark: colors.DN20A },
+  invalid: yellow,
+  subtle: { light: 'transparent', dark: 'transparent' },
+  none: { light: 'transparent', dark: 'transparent' },
+});
+
+export const getBorderColorFocus = themed('appearance', {
+  standard: linkOutline,
+  disabled: { light: colors.N20A, dark: colors.DN20A },
+  invalid: linkOutline,
+  subtle: linkOutline,
+  none: { light: 'transparent', dark: 'transparent' },
+});
+
+export const getBorderColorHover = themed('appearance', {
+  standard: codeBlock,
+  disabled: { light: colors.N20A, dark: colors.DN20A },
+  invalid: yellow,
+  subtle: codeBlock,
+  none: { light: 'transparent', dark: 'transparent' },
+});

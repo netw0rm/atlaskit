@@ -16,6 +16,7 @@ export default props => (
       isRequired={props.isRequired}
       appearance={props.labelAppearance}
       isFirstChild={props.isFirstChild}
+      isDisabled={props.isDisabled}
     />
     <FieldBase
       invalidMessage={props.invalidMessage}

@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 46.8.1 (2017-08-30)
+
+* bug fix; prevent media insertion for task/decisions (issues closed: fs-1240) ([48dcf05](https://bitbucket.org/atlassian/atlaskit/commits/48dcf05))
+
+* bug fix; added async preloading of media-card chunk ([7a19c6d](https://bitbucket.org/atlassian/atlaskit/commits/7a19c6d))
+* bug fix; split media-card with require.ensure ([1159f23](https://bitbucket.org/atlassian/atlaskit/commits/1159f23))
+* bug fix; split profile card with require.ensure (issues closed: ed-2581) ([6901949](https://bitbucket.org/atlassian/atlaskit/commits/6901949))
+## 46.8.0 (2017-08-29)
+
+* feature; export ToolbarEmojiPicker for consumption by editor-hiphcat (issues closed: fs-1320) ([0226a5b](https://bitbucket.org/atlassian/atlaskit/commits/0226a5b))
+## 46.7.0 (2017-08-29)
+
+* feature; exported AtlassianEmojiMigrationResource from editor-core ([e7e0eab](https://bitbucket.org/atlassian/atlaskit/commits/e7e0eab))
+
+
+
+
+
+
+## 46.6.0 (2017-08-28)
+
+* bug fix; fixed missing prop in tests ([0311be8](https://bitbucket.org/atlassian/atlaskit/commits/0311be8))
+
+* feature; aligned emoji picker to right of editor ([98206e8](https://bitbucket.org/atlassian/atlaskit/commits/98206e8))
+* feature; added ToolbarEmojiPicker to message editor (issues closed: fs-1092) ([ab2c080](https://bitbucket.org/atlassian/atlaskit/commits/ab2c080))
+* feature; adding support for tables in bitbucket markdown serializer. ([2e0353c](https://bitbucket.org/atlassian/atlaskit/commits/2e0353c))
+* feature; stricter JSON Schema (issues closed: ed-2555) ([39c99a2](https://bitbucket.org/atlassian/atlaskit/commits/39c99a2))
 ## 46.5.0 (2017-08-25)
 
 * bug fix; upgrade mediapicker to 7.0.3 (issues closed: ed-2556) ([2c36a86](https://bitbucket.org/atlassian/atlaskit/commits/2c36a86))

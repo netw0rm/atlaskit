@@ -1,12 +1,11 @@
 // @flow
-
-import type { NavigationTheme, GenericItemTheme } from './types';
+import type { Provided, GenericItemTheme } from './types';
 import { gridSize } from '../shared-variables';
 
 // Converts the top-level 'Provided' container navigation theme into the
 // format the @atlaskit/item expects.
 const itemThemeFromNavTheme = (
-  navigationTheme: NavigationTheme
+  navigationTheme: Provided
 ): GenericItemTheme => ({
   padding: {
     compact: {

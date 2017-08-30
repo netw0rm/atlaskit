@@ -23,6 +23,10 @@ type Props = {|
   text: string,
   /** Theme used */
   theme: Object,
+  /** If true, a Spinner is rendered instead of the items */
+  isDropdownLoading?: boolean,
+  /** Called when the menu is open or closed. Received an object with isOpen state. */
+  onDropdownOpenChange?: Function,
 |}
 
 const key = itemThemeNamespace;
@@ -36,6 +40,8 @@ class ContainerTitleDropdown extends PureComponent {
       icon,
       subText,
       text,
+      isDropdownLoading,
+      onDropdownOpenChange,
     } = this.props;
 
     /* eslint-disable react/prop-types */
@@ -51,6 +57,8 @@ class ContainerTitleDropdown extends PureComponent {
         shouldFitContainer={!isNavCollapsed}
         position={isNavCollapsed ? 'right top' : 'bottom left'}
         shouldFlip={false}
+        isLoading={isDropdownLoading}
+        onOpenChange={onDropdownOpenChange}
         trigger={(
           <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
             <AkNavigationItem

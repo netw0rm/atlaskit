@@ -91,4 +91,29 @@ storiesOf(`${name}/ProjectSwitcher`, module)
       </Grid>
     </HtmlPage>
   ))
+  .add('with loading state', () => {
+    const dropdownProps = {
+      isDropdownLoading: true,
+      onDropdownOpenChange: ({ isOpen }) => console.log(`dropdown open change: ${isOpen}`),
+    };
+
+    return withRootTheme(
+      <NavigationWithProjectSwitcher
+        dropdownItems={dropdownItems}
+        projectSwictherProps={dropdownProps}
+      />
+    );
+  })
+  .add('with callback called on open change', () => {
+    const dropdownProps = {
+      onDropdownOpenChange: ({ isOpen }) => console.log(`dropdown open change: ${isOpen}`),
+    };
+
+    return withRootTheme(
+      <NavigationWithProjectSwitcher
+        dropdownItems={dropdownItems}
+        projectSwictherProps={dropdownProps}
+      />
+    );
+  })
 ;

@@ -21,6 +21,8 @@ const validateFileText = (text: string, pos: number) => {
   return 0;
 };
 linkify.add('/', { validate: validateFileText });
+linkify.add('./', { validate: validateFileText });
+linkify.add('../', { validate: validateFileText });
 linkify.add('sourcetree:', 'http:');
 
 export function getLinkMatch(str: string): Match | null {

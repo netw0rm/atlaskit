@@ -18,9 +18,9 @@ export const Container = styled.div`
   justify-content: center;
 `;
 export const Relative = styled.div`
-  height: 100px;
+  height: 140px;
   margin-left: 50vw;
   margin-top: 50vh;
   position: relative;
-  width: 100px;
+  width: 140px;
 `;

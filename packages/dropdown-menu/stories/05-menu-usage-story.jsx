@@ -9,6 +9,7 @@ import DropdownMenu from '../src';
 import { name } from '../package.json';
 
 import DropdownLoadItemsExample from './DropdownLoadItemsExample';
+import BoundariesElementExample from './examples/BoundariesElementDopdown';
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import StatusDropdown from './examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
@@ -164,6 +165,14 @@ storiesOf(name, module)
           {lotsOfItems}
         </DropdownMenu>
       </DropdownWrapper>
+    </StoryContainer>
+  ))
+  .add('constrained by the scrollParent', () => (
+    <StoryContainer>
+      <p>
+        This default dropdown is constrained by the scrollParent.
+      </p>
+      { BoundariesElementExample }
     </StoryContainer>
   ))
   .add('with items in groups', () => (

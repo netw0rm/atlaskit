@@ -1,5 +1,5 @@
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import { EditorState, EditorView, Schema, MarkSpec, Plugin } from '../../prosemirror';
+import { EditorState, EditorView, Schema, MarkSpec, Plugin, Transaction } from '../../prosemirror';
 import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
@@ -126,7 +126,14 @@ export default function createEditor(
   const schema = createSchema(editorConfig);
   const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
   const state = EditorState.create({ schema, plugins });
-  const editorView = new EditorView(place, { state });
+  const editorView = new EditorView(place, {
+    state,
+    dispatchTransaction(tr: Transaction) {
+      tr.setMeta('isLocal', true);
+      const newState = editorView.state.apply(tr);
+      editorView.updateState(newState);
+    }
+  });
 
   return {
     editorView,

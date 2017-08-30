@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
-import { MultiStep, Step } from '../../multi-step';
+import { MultiStep, Step } from '../../common/components/multi-step';
 
 import RequestTrialAccess from './RequestTrialAccess';
 import RequestTrialNote from './RequestTrialNote';

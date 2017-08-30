@@ -6,7 +6,7 @@ import { colors } from '@atlaskit/theme';
 
 import ProgressBarContainer from '../styled/ProgressBarContainer';
 import ProgressBarIconDiv from '../styled/ProgressBarIconDiv';
-import ProgressBar from '../../progress-bar/components/ProgressBar';
+import ProgressBar from '../../common/components/ProgressBar';
 
 import {
   ACTIVE,

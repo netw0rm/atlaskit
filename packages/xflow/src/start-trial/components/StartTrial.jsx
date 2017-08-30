@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import { MultiStep, Step } from '../../multi-step';
+import { MultiStep, Step } from '../../common/components/multi-step';
 import ConfirmTrial from './ConfirmTrial';
 import GrantAccess from './GrantAccess';
 import LoadingTime from './LoadingTime';

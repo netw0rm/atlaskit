@@ -6,6 +6,7 @@ import UpIcon from '@atlaskit/icon/glyph/arrow-up';
 import Spinner from '@atlaskit/spinner';
 
 import { StatelessSelect } from '../../src';
+import InitialLoadingElement from '../../src/styled/InitialLoading';
 
 import { name } from '../../package.json';
 
@@ -702,7 +703,9 @@ describe(name, () => {
       />);
 
       expect(wrapper.find(Spinner).length).toBe(1);
-      expect(wrapper.find('InitialLoading').length).toBe(1);
+      expect(wrapper.find(InitialLoadingElement).length).toBe(1);
+      expect(wrapper.find(InitialLoadingElement).props()['aria-live']).toBe('polite');
+      expect(wrapper.find(InitialLoadingElement).props().role).toBe('status');
     });
 
     it('should accept a custom loading message', () => {
@@ -712,7 +715,7 @@ describe(name, () => {
         isOpen
       />);
 
-      expect(wrapper.find('InitialLoading').text()).toBe('Custom loading message here');
+      expect(wrapper.find(InitialLoadingElement).text()).toBe('Custom loading message here');
     });
 
     it('should not display loading icon and message when select is not open', () => {
@@ -722,7 +725,7 @@ describe(name, () => {
       />);
 
       expect(wrapper.find(Spinner).length).toBe(0);
-      expect(wrapper.find('InitialLoading').length).toBe(0);
+      expect(wrapper.find(InitialLoadingElement).length).toBe(0);
     });
   });
 });

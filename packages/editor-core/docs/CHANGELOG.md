@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.9.0 (2017-08-30)
+
+* feature; adding configuration to not allow deletion of table header. ([c5e1cc7](https://bitbucket.org/atlassian/atlaskit/commits/c5e1cc7))
 ## 46.8.2 (2017-08-30)
 
 * bug fix; change blockQuote to blockquote in JSON Schema (issues closed: ed-2594) ([b32cfe2](https://bitbucket.org/atlassian/atlaskit/commits/b32cfe2))

@@ -74,6 +74,7 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
               <Editor
                 {...getPropsPreset(appearance)}
                 analyticsHandler={analyticsHandler}
+                maxHeight={305}
 
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}

@@ -40,6 +40,7 @@ export interface EditorProps {
   collabEditProvider?: Promise<CollabEditProvider>;
   activityProvider?: Promise<ActivityProvider>;
 
+  maxHeight?: number;
   maxContentSize?: number;
   placeholder?: string;
 

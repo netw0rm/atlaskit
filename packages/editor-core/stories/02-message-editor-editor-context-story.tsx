@@ -57,6 +57,7 @@ storiesOf(name, module)
               {...getPropsPreset('message')}
 
               analyticsHandler={analyticsHandler}
+              maxHeight={305}
 
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}

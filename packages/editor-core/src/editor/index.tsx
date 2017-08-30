@@ -121,6 +121,8 @@ export default class Editor extends React.Component<EditorProps, State> {
 
         eventDispatcher={eventDispatcher}
 
+        maxHeight={this.props.maxHeight}
+
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}
         secondaryToolbarComponents={secondaryToolbarComponents}

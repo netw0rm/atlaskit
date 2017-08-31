@@ -7,7 +7,7 @@ import Spinner from '@atlaskit/spinner';
 import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import SpinnerDiv from '../styled/SpinnerDiv';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';

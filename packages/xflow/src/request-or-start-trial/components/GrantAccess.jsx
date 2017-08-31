@@ -21,7 +21,7 @@ import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
-import SpinnerDiv from '../styled/SpinnerDiv';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 

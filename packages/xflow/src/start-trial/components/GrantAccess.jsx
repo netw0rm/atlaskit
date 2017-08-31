@@ -145,6 +145,7 @@ class GrantAccess extends Component {
             value: user.name,
             content: user['display-name'],
             description: user.email,
+            filterValues: [user.email, user.name, user['display-name']],
           })),
         },
       ];

@@ -392,18 +392,22 @@ class GrantAccess extends Component {
                   defaultMessage="How will this affect my bill?"
                 />
                 <GrantAccessLearnMoreSpan>
-                  <Button
-                    id="xflow-grant-access-learn-more-button"
-                    onClick={this.handleLearnMoreClick}
-                    appearance="link"
-                    href={learnMoreLink}
-                    target="_blank"
+                  <span
+                    onMouseDown={this.handleLearnMoreClick}
+                    id="xflow-grant-access-learn-more-span"
                   >
-                    <FormattedMessage
-                      id="xflow.generic.grant-access.learn-more"
-                      defaultMessage="Learn more"
-                    />
-                  </Button>
+                    <Button
+                      id="xflow-grant-access-learn-more-button"
+                      appearance="link"
+                      href={learnMoreLink}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        id="xflow.generic.grant-access.learn-more"
+                        defaultMessage="Learn more"
+                      />
+                    </Button>
+                  </span>
                 </GrantAccessLearnMoreSpan>
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>

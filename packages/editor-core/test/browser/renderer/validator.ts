@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import {
   Doc,
-  isSafeUrl,
   isSubSupType,
   getValidDocument,
   getValidNode,
@@ -12,6 +11,7 @@ import {
   markOrder,
   Node,
 } from '../../../src/renderer/validator';
+import { isSafeUrl } from '../../../src/renderer/utils';
 
 import schema from '../../../stories/schema';
 import { createSchema } from '../../../src/schema';

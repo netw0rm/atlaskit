@@ -30,7 +30,7 @@ import { ErrorReporter } from '../../utils';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
-import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../';
+import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';

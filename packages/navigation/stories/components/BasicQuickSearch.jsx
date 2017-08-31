@@ -210,7 +210,7 @@ const mapResultsDataToComponents = (resultData =>
       {group.items.map((props) => {
         const Result = availableResultTypes[props.type];
         return Result ? (
-          <Result key={props.resultId} {...props} />
+          <Result key={props.resultId} {...props} isSelected={false} />
           ) : null;
       })}
     </AkNavigationItemGroup>

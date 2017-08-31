@@ -27,7 +27,7 @@ class CustomResultFromBase extends PureComponent {
         {...props}
         isCompact
         icon={avatar}
-        text={<h3>{messages[index]}</h3>}
+        text={messages[index]}
         textAfter={avatar}
       />
     );
@@ -37,10 +37,10 @@ class CustomResultFromBase extends PureComponent {
 // eslint-disable-next-line react/no-multi-comp
 class CustomResultFromInterface extends PureComponent {
   static mainStyles = {
-    'align-items': 'center',
-    'border-radius': '800px',
+    alignItems: 'center',
+    borderRadius: '800px',
     display: 'flex',
-    'font-size': '16px',
+    fontSize: '16px',
     margin: '8px',
   }
   handleMouseEnter = () => this.props.onMouseEnter({
@@ -50,7 +50,7 @@ class CustomResultFromInterface extends PureComponent {
     const { index, isSelected } = this.props;
     return (
       <button onMouseEnter={this.handleMouseEnter} style={CustomResultFromInterface.mainStyles}>
-        <div style={{ 'margin-right': '8px' }}>
+        <div style={{ marginRight: '8px' }}>
           <AkAvatar
             src={getPersonAvatarUrl(index)}
             size={isSelected ? 'xlarge' : 'large'}

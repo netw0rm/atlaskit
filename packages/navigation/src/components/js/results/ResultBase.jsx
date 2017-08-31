@@ -30,9 +30,9 @@ export default class ResultBase extends PureComponent {
     /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
     /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-    onMouseEnter: PropTypes.func.isRequired,
+    onMouseEnter: PropTypes.func,
     /** Standard onMouseLeave event. */
-    onMouseLeave: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func,
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Text to be shown alongside the main `text`. */
@@ -48,6 +48,8 @@ export default class ResultBase extends PureComponent {
     isSelected: false,
     isTabbingDisabled: false,
     onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
     type: BASE_RESULT_TYPE,
   }
 

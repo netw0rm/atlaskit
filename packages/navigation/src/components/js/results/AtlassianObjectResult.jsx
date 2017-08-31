@@ -42,9 +42,9 @@ export default class AtlassianObjectResult extends PureComponent {
     /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
     /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-    onMouseEnter: PropTypes.func.isRequired,
+    onMouseEnter: PropTypes.func,
     /** Standard onMouseLeave event. */
-    onMouseLeave: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func,
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
@@ -53,6 +53,8 @@ export default class AtlassianObjectResult extends PureComponent {
 
   static defaultProps = {
     onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
     type: OBJECT_RESULT_TYPE,
   }
 

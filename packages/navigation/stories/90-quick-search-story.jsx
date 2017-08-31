@@ -171,7 +171,7 @@ storiesOf(`${name}/QuickSearch`, module)
         <ResultBase
           {...noOpInteractionProps}
           caption="#ReSuLtsUNl3a$h3d!"
-          icon={<AudioCircleIcon size="large" primaryColor="#FFEBE5" secondaryColor="RebeccaPurple" />}
+          icon={<AudioCircleIcon label="a" size="large" primaryColor="#FFEBE5" secondaryColor="RebeccaPurple" />}
           text="Cronenberg result"
           subText="Anything goes!"
         />

@@ -38,9 +38,9 @@ export default class PersonResult extends PureComponent {
     /** Triggered by mouseClick event. Called with { `resultId`, `type` }. */
     onClick: PropTypes.func,
     /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-    onMouseEnter: PropTypes.func.isRequired,
+    onMouseEnter: PropTypes.func,
     /** Standard onMouseLeave event. */
-    onMouseLeave: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func,
     /** Text to be shown alongside the main `text`. */
     presenceMessage: PropTypes.string,
     /** Sets the appearance of the presence indicator */
@@ -54,6 +54,8 @@ export default class PersonResult extends PureComponent {
   static defaultProps = {
     mentionPrefix: '@',
     onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
     type: PERSON_RESULT_TYPE,
     presenceState: null, // No presence indicator by default
   };

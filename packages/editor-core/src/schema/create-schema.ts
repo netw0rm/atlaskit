@@ -1,7 +1,20 @@
 import { NodeSpec, MarkSpec, Schema } from '../prosemirror';
 import { COLOR, FONT_STYLE, SEARCH_QUERY, LINK } from './groups';
+
 import {
-  // Nodes
+  link,
+  em,
+  strong,
+  strike,
+  subsup,
+  underline,
+  code,
+  mentionQuery,
+  emojiQuery,
+  textColor,
+} from './marks';
+
+import {
   confluenceJiraIssue,
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline,
@@ -33,19 +46,7 @@ import {
   taskList,
   taskItem,
   unknownBlock,
-
-  // Marks
-  link,
-  em,
-  strong,
-  strike,
-  subsup,
-  underline,
-  code,
-  mentionQuery,
-  emojiQuery,
-  textColor,
-} from '../schema';
+} from './nodes';
 
 function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
   if (!config) {

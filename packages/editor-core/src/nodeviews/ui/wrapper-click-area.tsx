@@ -5,7 +5,7 @@ import {
   ReactComponentConstructor,
 } from './';
 import { ReactNodeViewComponents } from '../factory';
-import { ReactNodeViewState } from '../../plugins';
+import { ReactNodeViewState } from '../../plugins/react-nodeview';
 import ProviderFactory from '../../providerFactory';
 import {
   EditorView,

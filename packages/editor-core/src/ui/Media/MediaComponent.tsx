@@ -20,8 +20,8 @@ import {
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '../../schema';
-import { EditorView, mediaStateKey } from '../../index';
-import { MediaPluginState } from '../../plugins/media';
+import { EditorView } from '../../prosemirror';
+import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 
 export interface Props extends MediaAttributes {

@@ -1,5 +1,5 @@
-import { createSchema } from './create-schema';
 import { Schema } from '../prosemirror';
+import { createSchema } from './create-schema';
 
 export const bitbucketSchema: Schema<any, any> = createSchema({
   nodes: [

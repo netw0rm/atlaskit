@@ -25,7 +25,7 @@ const defaultProps = {
   ],
   userSelectPlaceholder: 'Start typing a username',
   usersOption: 'specific-users',
-  learnMoreLink: 'https://atlassian.com',
+  learnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
   // selectLabel: 'Select users',
   defaultSelectedRadio: 'everyone',
   progress: 0,

@@ -219,6 +219,15 @@ class GrantAccess extends Component {
     firePrivateAnalyticsEvent('xflow.grant-access.learn-more-button.clicked');
   };
 
+  // This is necessary to capture middle and right mouse clicks
+  // while not breaking keyboard functionality
+  handleLearnMoreAlternateClick = evt => {
+    if (evt.button > 0) {
+      const { firePrivateAnalyticsEvent } = this.props;
+      firePrivateAnalyticsEvent('xflow.grant-access.learn-more-button.clicked');
+    }
+  };
+
   handleManageClick = () => {
     const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.manage-button.clicked');
@@ -393,11 +402,12 @@ class GrantAccess extends Component {
                 />
                 <GrantAccessLearnMoreSpan>
                   <span
-                    onMouseDown={this.handleLearnMoreClick}
+                    onMouseDown={this.handleLearnMoreAlternateClick}
                     id="xflow-grant-access-learn-more-span"
                   >
                     <Button
                       id="xflow-grant-access-learn-more-button"
+                      onClick={this.handleLearnMoreClick}
                       appearance="link"
                       href={learnMoreLink}
                       target="_blank"

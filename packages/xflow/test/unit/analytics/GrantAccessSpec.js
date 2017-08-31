@@ -155,7 +155,7 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
     'xflow.grant-access.learn-more-button.clicked',
     expect.any(Object)
   );
-  mountWrapper.find('#xflow-grant-access-learn-more-span').prop('onMouseDown')();
+  mountWrapper.find('#xflow-grant-access-learn-more-span').prop('onMouseDown')({ button: 1 });
   return waitFor(() => {
     expect(spy).toHaveBeenCalledWith(
       'xflow.grant-access.learn-more-button.clicked',

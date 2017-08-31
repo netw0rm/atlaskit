@@ -12,6 +12,11 @@ export const WarningIcon = styled.div`
   display: flex;
 `;
 
+// Spinner needs set height to avoid height jumping
+const SpinnerParent = styled.div`
+  height: 20px;
+`;
+
 const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
   if (!isDisabled && isInvalid) {
     return (
@@ -21,7 +26,11 @@ const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
     );
   }
 
-  return isLoading ? <Spinner /> : null;
+  return isLoading ? (
+    <SpinnerParent>
+      <Spinner size="small" />
+    </SpinnerParent>
+  ) : null;
 };
 
 ValidationElement.propTypes = {

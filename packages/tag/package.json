@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "config": {
     "access": "public"
   },
@@ -45,9 +45,6 @@
   "maintainers": [
     {
       "name": "Luke B"
-    },
-    {
-      "name": "Nadia M"
     }
   ],
   "license": "Apache-2.0",

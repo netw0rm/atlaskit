@@ -269,6 +269,7 @@ export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory
 export const tdEmpty = td({})(p(''));
 export const thEmpty = th({})(p(''));
 export const tdCursor = td({})(p('{<>}'));
+export const thCursor = th({})(p('{<>}'));
 export const td11 = createCell(1, 1);
 export const th11 = createHeaderCell(1, 1);
 export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});

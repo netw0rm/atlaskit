@@ -1,5 +1,38 @@
 # @atlaskit/navigation
 
+## 21.0.0 (2017-08-31)
+
+* breaking; AkSearchResults and AkQuickSearchWithKeyboardControls have been removed. ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* breaking; New quickSearchResultTypes export has been added ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* bug fix; bumping navigation dependencies (issues closed: ak-3392) ([de8e271](https://bitbucket.org/atlassian/atlaskit/commits/de8e271))
+
+
+
+
+* breaking; QuickSearch \`results\` prop (plain js object) removed in favour of \`children\` prop (array of React ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+* breaking; refactor QuickSearch API to expect results as component children instead of js ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+
+## 20.3.2 (2017-08-30)
+
+* bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))
+* bug fix; fixes bug in modules export of nav ([5d07b8e](https://bitbucket.org/atlassian/atlaskit/commits/5d07b8e))
+## 20.3.1 (2017-08-29)
+
+
+* bug fix; add missing semicolon to the NavigationFixedContainer ([f2c89e8](https://bitbucket.org/atlassian/atlaskit/commits/f2c89e8))
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 20.3.0 (2017-08-25)
 
 * feature; added Navigation.isElectronMac prop to make UI fit better with Mac window buttons (issues closed: ak-2613) ([2c65ec7](https://bitbucket.org/atlassian/atlaskit/commits/2c65ec7))

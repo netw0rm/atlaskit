@@ -104,6 +104,12 @@ storiesOf(name, module)
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
         reverseMentionPicker={false}
+        showEmojiPicker={true}
+        numFollowingToolbarButtons={1}
+        toolbarStyles={{
+          height: '20px',
+          marginTop: '-2px',
+        }}
       />
     )
   )

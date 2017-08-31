@@ -43,6 +43,7 @@ export interface AppCardContext {
 
 export interface AppCardTitle {
   text: string;
+  user?: AppCardUser;
 }
 
 export interface AppCardDescription {

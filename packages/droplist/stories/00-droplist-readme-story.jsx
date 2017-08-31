@@ -13,6 +13,7 @@ import DroplistOverviewExampleRaw from '!raw!./examples/DroplistOverview';
 import DroplistFitExample from './examples/DroplistFit';
 import DroplistOverflowItemsExample from './examples/DroplistOverflowItems';
 import DroplistMultilineItemsExample from './examples/DroplistMultilineItems';
+import BoundariesElementExample from './examples/DroplistBoundariesElement';
 
 import ManyItemsExample from './examples/ManyItemsExample';
 
@@ -51,6 +52,9 @@ open/close functionality</p>
   ))
   .add('with lots of items and tall appearance', () => (
     <ManyItemsExample appearance="tall" />
+  ))
+  .add('constrained to the scrollParent', () => (
+    BoundariesElementExample
   ))
   .add('Droplist that is loading', () => (
     <DropList isLoading isOpen />

@@ -3,6 +3,7 @@ import { MediaState } from '@atlaskit/media-core';
 import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
+import { CollabEditProvider } from '../plugins/collab-edit';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
@@ -35,6 +36,7 @@ export interface EditorProps {
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+  collabEditProvider?: Promise<CollabEditProvider>;
 
   maxContentSize?: number;
   placeholder?: string;

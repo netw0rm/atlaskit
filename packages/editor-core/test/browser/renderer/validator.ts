@@ -100,6 +100,56 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.title.user.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {}
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.user.icon.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {
+                icon: {
+                  label: 'icon'
+                }
+              }
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.user.icon.label is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {
+                icon: {
+                  url: 'https://lol.icon'
+                }
+              }
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
       it('should return "text" if attrs.link.url is missing', () => {
         const applicationCard = {
           type: 'applicationCard',

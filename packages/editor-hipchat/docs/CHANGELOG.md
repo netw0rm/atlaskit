@@ -1,5 +1,9 @@
 # @atlaskit/editor-hipchat
 
+## 5.2.0 (2017-08-29)
+
+* feature; upgrade editor-core to minimum required version for emoji toolbar (issues closed: fs-1320) ([14e9661](https://bitbucket.org/atlassian/atlaskit/commits/14e9661))
+* feature; add support for an inbuilt toolbar with Emoji picker button (issues closed: fs-1320) ([5c7209a](https://bitbucket.org/atlassian/atlaskit/commits/5c7209a))
 ## 5.1.1 (2017-08-29)
 
 

@@ -5,8 +5,8 @@ import tableCommands from '../../../../src/plugins/table/commands';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
 import { CellSelection, TableMap } from '../../../../src/prosemirror';
 import {
-  createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td,
-  tdEmpty, tdCursor, code_block, code
+  createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td, th,
+  tdEmpty, tdCursor, code_block, code, thCursor
 } from '../../../../src/test-helper';
 import { setTextSelection } from '../../../../src/utils';
 import { analyticsService } from '../../../../src/analytics';
@@ -343,6 +343,30 @@ describe('table plugin', () => {
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_column.button')).to.equal(true);
           expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        });
+      });
+
+      context('when the header row is selected', () => {
+        const editorTableHeader = (doc: any) => makeEditor<TableState>({
+          doc,
+          plugins: tablePlugins({ isHeaderRowRequired: true }),
+        });
+        it('it should convert first following row to header if pluginState.isHeaderRowRequired is true', () => {
+          const { plugin, pluginState, editorView } = editorTableHeader(doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))));
+          plugin.props.onFocus!(editorView, event);
+          pluginState.selectRow(0);
+          pluginState.remove();
+          expect(editorView.state.doc).to.deep.equal(doc(table(tr(th({})(p())), tr(tdEmpty))));
+        });
+
+        it('it should move cursor to the first cell of the new header row', () => {
+          const { plugin, pluginState, editorView, refs } = editorTableHeader(doc(table(tr(th({})(p('{nextPos}testing{<>}'))), tr(tdEmpty), tr(tdEmpty))));
+          const { nextPos } = refs;
+          plugin.props.onFocus!(editorView, event);
+          pluginState.selectRow(0);
+          pluginState.remove();
+          expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+          expect(editorView.state.selection.$to.pos).to.equal(nextPos);
         });
       });
 

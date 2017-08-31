@@ -458,31 +458,6 @@ describe('BitbucketTransformer: parser', () => {
       ));
     });
 
-    it('created automatically for paths should be preserved', () => {
-      const link = a({
-        href: '/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/' +
-              'packages/@atlaskit/editor-bitbucket/package.json'
-      });
-
-      // The following HTML is rendered in a PR comment from relative markdown link:
-      //   [bar](packages/@atlaskit/editor-bitbucket/package.json)
-      expect(parse(
-        '<p>' +
-          'foo ' +
-          '<a href="/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/packages/@atlaskit/editor-bitbucket/package.json">' +
-            'bar' +
-          '</a>' +
-          ' baz' +
-        '</p>'
-      )).to.deep.equal(doc(
-        p(
-          'foo ',
-          link('bar'),
-          ' baz'
-        )
-      ));
-    });
-
     it('with title, created manually, should be preserved', () => {
       const link = a({
         href: 'http://www.atlassian.com',

@@ -1,22 +1,18 @@
 {
-  "name": "@atlaskit/blanket",
-  "version": "2.4.3",
+  "name": "@atlaskit/size-detector",
+  "version": "1.0.0",
   "config": {
     "access": "public"
   },
-  "description": "A React component that covers the underlying UI for a layered component.",
+  "description": "Wrapper for components that need to respond to size changes",
   "main": "dist/bundle.js",
+  "jsnext:experimental:main": "dist/es/index.jsx",
   "webpack": "dist/bundle-cjs.js",
-  "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
-  "ak:component": {
-    "name": "Blanket",
-    "dark": true
-  },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
     "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/blanket; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/size-detector; } || ../../node_modules/.bin/not-in-publish",
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
@@ -25,31 +21,32 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",
-    "styled-components": "^1.3.0"
+    "prop-types": "^15.5.10",
+    "raf-schd": "^2.0.1"
   },
   "devDependencies": {
-    "@atlaskit/blanket": "*",
-    "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/button": "^1.0.0"
+    "@atlaskit/size-detector": "*",
+    "@atlaskit/util-readme": "^3.6.2",
+    "styled-components": "^1.3.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Luke B"
+      "name": "Ben G"
     }
   ],
   "license": "Apache-2.0",
-  "peerDependencies": {
-    "react": "^15.3.2"
-  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

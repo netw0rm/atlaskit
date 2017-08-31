@@ -226,6 +226,7 @@ export const emojiCategoryTitle = style({
 export const emojiItem = style({
   display: 'inline-block',
   textAlign: 'center',
+  width: '40px',
 
   $nest: {
     '&>span': {

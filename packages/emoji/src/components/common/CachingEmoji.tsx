@@ -13,23 +13,28 @@ export interface State {
   invalidImage?: boolean;
 }
 
+export interface CachingEmojiProps extends EmojiProps {
+  placeholderSize?: number;
+}
+
 /**
  * Renders an emoji from a cached image, if required.
  */
-export const CachingEmoji = (props: EmojiProps) => { // tslint:disable-line:variable-name
+export const CachingEmoji = (props: CachingEmojiProps) => { // tslint:disable-line:variable-name
   // Optimisation to only render the class based CachingMediaEmoji if necessary
   // slight performance hit, which accumulates for a large number of emoji.
+  const { placeholderSize, ...emojiProps } = props;
   if (isMediaEmoji(props.emoji)) {
     return (<CachingMediaEmoji {...props} />);
   }
-  return (<Emoji {...props} />);
+  return (<Emoji {...emojiProps} />);
 };
 
 /**
  * Rendering a media emoji image from a cache for media emoji, with different
  * rendering paths depending on caching strategy.
  */
-export class CachingMediaEmoji extends PureComponent<EmojiProps,State> {
+export class CachingMediaEmoji extends PureComponent<CachingEmojiProps,State> {
   static contextTypes = {
     emoji: React.PropTypes.object
   };
@@ -120,7 +125,7 @@ export class CachingMediaEmoji extends PureComponent<EmojiProps,State> {
 
   render() {
     const { cachedEmoji } = this.state;
-    const { children, ...otherProps } = this.props;
+    const { children, placeholderSize, ...otherProps } = this.props;
 
     let emojiComponent;
     if (cachedEmoji) {
@@ -138,6 +143,7 @@ export class CachingMediaEmoji extends PureComponent<EmojiProps,State> {
         <EmojiPlaceholder
           shortName={shortName}
           showTooltip={showTooltip}
+          size={placeholderSize}
         />
       );
     }

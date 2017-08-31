@@ -48,25 +48,26 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (schema.marks.strong) {
     // **string** or __strong__ should bold the text
     const markLength = 2;
-    rules.push(createInputRule(/(\*\*([^\s^\*][^\*]+)\*\*)$|(\_\_([^\s^\_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
+    rules.push(createInputRule(/(?:[^`0-9A-Za-z]+)(\_\_([^\s\_][^\_]+)\_\_)$|^(\_\_([^\s \_][^\_]+)\_\_)$/, addMark(schema.marks.strong, schema, markLength)));
+    rules.push(createInputRule(/^(?:[^`]+)(\*\*([^\s\*][^\*]+)\*\*)$|^(\*\*([^\s\*][^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, markLength)));
   }
 
   if (schema.marks.em) {
     // *string* or _string_ should italic the text
     const markLength = 1;
-    rules.push(createInputRule(/(?:[^\*]+)(\*([^\s^\*][^\*]+?)\*)$|^(\*([^\s^\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, markLength)));
-    rules.push(createInputRule(/(?:[^\_]+)(\_([^\s^\_][^\_]+?)\_)$|^(\_([^\s^\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
+    rules.push(createInputRule(/(?:[^\_`0-9A-Za-z]+)(\_([^\s\_][^\_]+?)\_)$|^(\_([^\s\_][^\_]+)\_)$/, addMark(schema.marks.em, schema, markLength)));
+    rules.push(createInputRule(/^(?:[^\*`]+)(\*([^\s\*][^\*]+?)\*)$|^(\*([^\s\*][^\*]+)\*)$/, addMark(schema.marks.em, schema, markLength)));
   }
 
   if (schema.marks.strike) {
     // ~~string~~ should strikethrough the text
     const markLength = 2;
-    rules.push(createInputRule(/(\~\~([^\s^\~][^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, markLength)));
+    rules.push(createInputRule(/^(?:[^`]+)(\~\~([^\s\~][^\~]+)\~\~)$|^(\~\~([^\s\~][^\~]+)\~\~)$/, addMark(schema.marks.strike, schema, markLength)));
   }
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(createInputRule(/(`([^\s^`][^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
+    rules.push(createInputRule(/(`([^\s`][^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
   if (rules.length !== 0) {

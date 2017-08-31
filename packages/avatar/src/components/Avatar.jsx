@@ -30,7 +30,7 @@ export const AvatarDefaultProps = {
 
 class Avatar extends Component {
   // Removed as a part of AK-3423
-  // props: AvatarPropTypes; // eslint-disable-line react/sort-comp
+  props: AvatarPropTypes; // eslint-disable-line react/sort-comp
   node: { blur?: FunctionType, focus?: FunctionType };
   cache: {
     button?: ElementType,

@@ -32,7 +32,7 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/button": "^5.0.0",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/icon": "^7.1.0",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -45,9 +45,9 @@
     "@atlaskit/field-radio-group": "^1.6.3",
     "@atlaskit/flag": "*",
     "@atlaskit/modal-dialog": "^2.6.0",
-    "@atlaskit/navigation": "^19.0.2",
+    "@atlaskit/navigation": "^21.0.0",
     "@atlaskit/page": "^4.4.2",
-    "@atlaskit/spinner": "^3.4.2",
+    "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/util-readme": "^3.6.2",
     "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
   },

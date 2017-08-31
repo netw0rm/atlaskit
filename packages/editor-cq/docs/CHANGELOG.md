@@ -1,5 +1,13 @@
 # @atlaskit/editor-cq
 
+## 4.8.1 (2017-08-31)
+
+* bug fix; remove encoder/parser from editor-cq (issues closed: ed-2615) ([42bb27c](https://bitbucket.org/atlassian/atlaskit/commits/42bb27c))
+
+
+
+
+
 ## 4.8.0 (2017-08-23)
 
 

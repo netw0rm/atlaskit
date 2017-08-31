@@ -1,5 +1,11 @@
 # @atlaskit/multi-select
 
+## 7.1.0 (2017-08-31)
+
+
+
+* bug fix; loading options should not be exposed on the stateful component (issues closed: ak-3181) ([5eb9413](https://bitbucket.org/atlassian/atlaskit/commits/5eb9413))
+* feature; added loading state for the initial fetching of data on the multi-select component (issues closed: ak-3181) ([638afd5](https://bitbucket.org/atlassian/atlaskit/commits/638afd5))
 ## 7.0.0 (2017-08-30)
 
 * feature; update field base dependency for darkmode ([baeb283](https://bitbucket.org/atlassian/atlaskit/commits/baeb283))

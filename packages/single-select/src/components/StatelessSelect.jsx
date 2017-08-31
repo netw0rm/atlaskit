@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import Spinner from '@atlaskit/spinner';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
 import Content from '../styled/Content';
@@ -10,6 +11,7 @@ import DummyItem from './DummyItem';
 import DummyGroup from './DummyGroup';
 import ElemBefore from '../styled/ElemBefore';
 import Expand from '../styled/Expand';
+import InitialLoading from './InitialLoading';
 import NothingWasFound from './NothingWasFound';
 import Placeholder from '../styled/Placeholder';
 import StatelessSelectWrapper from '../styled/StatelessSelectWrapper';
@@ -68,12 +70,22 @@ export default class StatelessSelect extends PureComponent {
     /** Set whether there is an error with the selection. Sets an orange border
     and shows the warning icon. */
     isInvalid: PropTypes.bool,
+    /** Sets whether the field is loading data. The same property is used
+     * for either initial fetch (when no options are available) as well for
+     * subsequent loading of more options. The component reacts accordingly
+     * based on the `items` provided.
+     */
+    isLoading: PropTypes.bool,
     /** An array of objects, each one of which must have an array of items, and
     may have a heading. All items should have content and value properties, with
     content being the displayed text, and can optionally have a list of filterValues. */
     items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     /** Label to be displayed above select. */
     label: PropTypes.string,
+    /** Message to be displayed when the component is set to its loading state.
+    The message might be displayed differently depending on whether or not
+    there are items already being rendered. */
+    loadingMessage: PropTypes.string,
     /** name property to be passed to the html select element. */
     name: PropTypes.string,
     /** Message to display in any group in items if there are no items in it,
@@ -107,10 +119,12 @@ export default class StatelessSelect extends PureComponent {
     droplistShouldFitContainer: true,
     filterValue: '',
     hasAutocomplete: false,
+    isLoading: false,
     isOpen: false,
     isRequired: false,
     items: [],
     label: '',
+    loadingMessage: 'Receiving information',
     noMatchesFound: 'No matches found',
     onFilterChange: () => {},
     onSelected: () => {},
@@ -402,14 +416,24 @@ export default class StatelessSelect extends PureComponent {
     return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group
-      heading={group.heading}
-      key={groupIndex}
-    >
-      {this.renderItems(group.items, groupIndex)}
-    </Group>
-  )
+  renderGroups = groups => {
+    if (this.props.isLoading) {
+      return (
+        <InitialLoading>
+          {this.props.loadingMessage}
+        </InitialLoading>
+      );
+    }
+
+    return groups.map((group, groupIndex) =>
+      <Group
+        heading={group.heading}
+        key={groupIndex}
+      >
+        {this.renderItems(group.items, groupIndex)}
+      </Group>
+  );
+  }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}
@@ -450,6 +474,7 @@ export default class StatelessSelect extends PureComponent {
       isDisabled,
       isFirstChild,
       isInvalid,
+      isLoading,
       isOpen,
       isRequired,
       items,
@@ -530,7 +555,10 @@ export default class StatelessSelect extends PureComponent {
                     </AutocompleteWrapper>
                 }
                 <Expand>
-                  <ExpandIcon label="" />
+                  {isOpen && isLoading ?
+                    <Spinner /> :
+                    <ExpandIcon label="" />
+                  }
                 </Expand>
               </Trigger>
             </FieldBase>

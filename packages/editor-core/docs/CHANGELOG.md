@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 46.11.1 (2017-08-31)
+
+* bug fix; removed relative links and added tests ([9c07ea7](https://bitbucket.org/atlassian/atlaskit/commits/9c07ea7))
+
+* bug fix; remove auto formatting of relative links (issues closed: ed-2582) ([a36f9dc](https://bitbucket.org/atlassian/atlaskit/commits/a36f9dc))
 ## 46.11.0 (2017-08-30)
 
 

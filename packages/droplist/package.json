@@ -21,12 +21,12 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/icon": "^7.0.1",
-    "@atlaskit/item": "^2.0.0",
-    "@atlaskit/layer": "^2.5.1",
-    "@atlaskit/spinner": "^3.4.1",
+    "@atlaskit/icon": "^8.1.0",
+    "@atlaskit/item": "^3.1.1",
+    "@atlaskit/layer": "^2.5.3",
+    "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/theme": "^2.0.0",
-    "@atlaskit/tooltip": "^3.4.1",
+    "@atlaskit/tooltip": "^6.0.0",
     "babel-runtime": "^6.23.0",
     "classnames": "^2.2.5",
     "keycode": "^2.1.9",
@@ -34,11 +34,11 @@
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^6.4.1",
-    "@atlaskit/button": "^3.5.2",
+    "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/droplist": "*",
-    "@atlaskit/lozenge": "^3.4.1",
-    "@atlaskit/util-readme": "^3.6.1"
+    "@atlaskit/lozenge": "^3.4.2",
+    "@atlaskit/util-readme": "^3.6.2"
   },
   "peerDependencies": {
     "react": "^15.3.2",

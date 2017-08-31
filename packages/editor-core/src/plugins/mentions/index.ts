@@ -112,7 +112,6 @@ export class MentionsState {
       }
     } else if (this.queryActive) {
       this.dirty = true;
-      this.dismiss();
       return;
     }
   }
@@ -128,6 +127,14 @@ export class MentionsState {
     if (newAnchorElement !== this.anchorElement) {
       this.dirty = true;
       this.anchorElement = newAnchorElement;
+    }
+
+    const { mentionQuery } = state.schema.marks;
+    const { doc, selection } = state;
+    const { from, to } = selection;
+    if (!doc.rangeHasMark(from - 1, to, mentionQuery) && this.queryActive) {
+      this.dismiss();
+      return;
     }
 
     if (this.dirty) {

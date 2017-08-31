@@ -1,5 +1,5 @@
-import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import React, { Component } from 'react';
+import { storiesOf, action } from '@kadira/storybook';
 import styled from 'styled-components';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { name } from '../package.json';
@@ -49,13 +49,46 @@ const dropdownItems = (
     {
       items.map(item => <DropdownItem
         key={item}
-        description={'this is description'}
-        elemBefore={<NucleusIcon />}
+        description="this is description"
+        elemBefore={<div style={{ marginRight: gridSize }}><NucleusIcon /></div>}
       >{item}</DropdownItem>)
     }
     <ViewAllItem>View all projects</ViewAllItem>
   </DropdownItemGroup>
 );
+
+class ControlledProjectSwicther extends Component {
+  state = {
+    isOpen: true,
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(this.toggle, 200);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  toggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  render() {
+    const dropdownProps = {
+      isDropdownOpen: this.state.isOpen,
+    };
+
+    return (
+      <NavigationWithProjectSwitcher
+        dropdownItems={this.props.dropdownItems}
+        projectSwictherProps={dropdownProps}
+      />
+    );
+  }
+}
 
 storiesOf(`${name}/ProjectSwitcher`, module)
   .add('Simple ProjectSwitcher', () => withRootTheme(
@@ -91,10 +124,9 @@ storiesOf(`${name}/ProjectSwitcher`, module)
       </Grid>
     </HtmlPage>
   ))
-  .add('with loading state', () => {
+  .add('with default state = open', () => {
     const dropdownProps = {
-      isDropdownLoading: true,
-      onDropdownOpenChange: ({ isOpen }) => console.log(`dropdown open change: ${isOpen}`),
+      defaultDropdownOpen: true,
     };
 
     return withRootTheme(
@@ -104,9 +136,29 @@ storiesOf(`${name}/ProjectSwitcher`, module)
       />
     );
   })
-  .add('with callback called on open change', () => {
+  .add('changing isOpen programmaticaly', () => (
+    withRootTheme(
+      <ControlledProjectSwicther
+        items={dropdownItems}
+      />
+    )
+  ))
+  .add('with loading state', () => {
     const dropdownProps = {
-      onDropdownOpenChange: ({ isOpen }) => console.log(`dropdown open change: ${isOpen}`),
+      defaultDropdownOpen: true,
+      isDropdownLoading: true,
+    };
+
+    return withRootTheme(
+      <NavigationWithProjectSwitcher
+        dropdownItems={dropdownItems}
+        projectSwictherProps={dropdownProps}
+      />
+    );
+  })
+  .add('callback on open change', () => {
+    const dropdownProps = {
+      onDropdownOpenChange: ({ isOpen }) => action('dropdown open change')(isOpen),
     };
 
     return withRootTheme(

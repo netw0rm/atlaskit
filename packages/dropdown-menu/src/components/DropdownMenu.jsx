@@ -31,6 +31,9 @@ export default class DropdownMenu extends Component {
     if (nextProps.items !== this.state.items) {
       this.setState({ items: [...nextProps.items] });
     }
+    if (nextProps.isOpen !== this.props.isOpen) {
+      this.setState({ isOpen: nextProps.isOpen });
+    }
   }
 
   findActivatedGroup = (item: any) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line

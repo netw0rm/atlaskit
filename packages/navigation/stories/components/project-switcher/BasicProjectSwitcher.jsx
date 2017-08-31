@@ -7,6 +7,8 @@ type Props = {|
   text: string,
   subText?: string,
   children: ReactElement,
+  defaultDropdownOpen?: boolean,
+  isDropdownOpen?: boolean,
   isDropdownLoading?: boolean,
   onDropdownOpenChange?: Function,
 |}
@@ -15,16 +17,10 @@ export default class BasicProjectSwitcher extends PureComponent {
   props: Props
 
   render() {
-    const { children, text, icon, subText, isDropdownLoading, onDropdownOpenChange } = this.props;
+    const { children, ...otherProps } = this.props;
 
     return (
-      <AkContainerTitleDropdown
-        text={text}
-        icon={icon}
-        subText={subText}
-        isDropdownLoading={isDropdownLoading}
-        onDropdownOpenChange={onDropdownOpenChange}
-      >
+      <AkContainerTitleDropdown {...otherProps}>
         {children}
       </AkContainerTitleDropdown>
     );

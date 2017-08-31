@@ -2,11 +2,10 @@ import { NodeSpec } from '../../prosemirror';
 import { TopLevel } from './doc';
 
 /**
- * @name blockQuote_node
- * @additionalProperties false
+ * @name blockquote_node
  */
 export interface Definition {
-  type: 'blockQuote';
+  type: 'blockquote';
   content: TopLevel;
 }
 

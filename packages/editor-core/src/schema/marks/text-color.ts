@@ -14,13 +14,9 @@ export interface Attributes {
 
 /**
  * @name textColor_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'textColor';
-  /**
-   * @additionalProperties false
-   */
   attrs: Attributes;
 }
 

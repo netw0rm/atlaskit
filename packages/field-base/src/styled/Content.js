@@ -1,25 +1,32 @@
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless as spacing } from '@atlaskit/util-shared-styles';
-import theme from './theme';
+import { gridSize, fontSize, colors, themed } from '@atlaskit/theme';
+import {
+  getBackgroundColor,
+  getBackgroundColorFocus,
+  getBackgroundColorHover,
+  getBorderColor,
+  getBorderColorFocus,
+  getBorderColorHover,
+} from './theme';
 
 const borderRadius = '5px';
 const borderWidth = 1;
 const borderWidthFocused = 2;
 const borderWidthSubtle = 0;
 
-const fontSize = 14;
+const spacing = gridSize();
 const heightBase = spacing * 5;
 const heightCompact = spacing * 4;
 const horizontalPadding = spacing;
 const innerHeight = spacing * 2.5;
-const lineHeight = innerHeight / fontSize;
+const lineHeight = innerHeight / fontSize();
 const transitionDuration = '0.2s';
 
-const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtle, none }) => {
+const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, subtle, none }) => {
   let border;
   const height = compact ? heightCompact : heightBase;
 
-  if (invalid || focused || none) border = borderWidthFocused;
+  if (invalid || isFocused || none) border = borderWidthFocused;
   else if (subtle) border = borderWidthSubtle;
   else border = borderWidth;
 
@@ -33,25 +40,27 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, focused, compact, subtl
   `;
 };
 
-const getDisabledState = ({ disabled }) => disabled && css`
-  color: ${theme.field.disabled.text.default};
+const getDisabledColor = themed({ light: colors.N60, dark: colors.DN90 });
+
+const getDisabledState = (props) => props.disabled && css`
+  color: ${getDisabledColor(props)};
   pointer-events: none;
 `;
 
-const getHoverState = ({ appearance, readOnly, focused, none }) => {
-  if (readOnly || focused || none) return null;
+const getHoverState = (props) => {
+  if (props.readOnly || props.isFocused || props.none) return null;
 
   return css`
     &:hover {
-      background-color: ${theme.field[appearance].background.hover};
-      border-color: ${theme.field[appearance].border.hover};
+      background-color: ${getBackgroundColorHover(props)};
+      border-color: ${getBorderColorHover(props)};
     }
   `;
 };
 
-const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
+const getMargin = ({ appearance, isFocused, paddingDisabled, readOnly }) => {
   if (
-    !focused ||
+    !isFocused ||
     appearance !== 'invalid' ||
     appearance === 'none' ||
     !paddingDisabled ||
@@ -65,23 +74,15 @@ const getMargin = ({ appearance, focused, paddingDisabled, readOnly }) => {
   return css`margin: -${margin}px`;
 };
 
-const getBackgroundColor = ({ appearance, focused }) => {
-  const state = focused ? 'focus' : 'default';
-  return theme.field[appearance].background[state];
-};
-
-const getBorderColor = ({ appearance, focused }) => {
-  const state = focused ? 'focus' : 'default';
-  return theme.field[appearance].border[state];
-};
+const getColor = themed({ light: colors.N900, dark: colors.DN600 });
+const getBorderStyle = props => (props.appearance === 'none' ? 'none' : 'solid');
 
 export const Content = styled.div`
-  ${p => getBorderAndPadding(p)}
-  ${p => getMargin(p)}
-  background-color: ${p => getBackgroundColor(p)};
-  border-color: ${p => getBorderColor(p)};
+  color: ${getColor};
+  background-color: ${props => (props.isFocused ? getBackgroundColorFocus(props) : getBackgroundColor(props))};
+  border-color: ${props => (props.isFocused ? getBorderColorFocus(props) : getBorderColor(props))};
   border-radius: ${borderRadius};
-  border-style: ${p => (p.appearance === 'none' ? 'none' : 'solid')};
+  border-style: ${getBorderStyle};
   box-sizing: border-box;
   display: flex;
   flex: 0 1 auto;
@@ -95,14 +96,15 @@ export const Content = styled.div`
     background-color ${transitionDuration} ease-in-out,
     border-color ${transitionDuration} ease-in-out;
   word-wrap: break-word;
-
-  ${p => getHoverState(p)}
-  ${p => getDisabledState(p)}
+  ${getBorderAndPadding}
+  ${getMargin}
+  ${getHoverState}
+  ${getDisabledState}
 `;
 
 export const ContentWrapper = styled.div`
-  ${p => (p.disabled && 'cursor: not-allowed;')}
-  ${p => (p.grow && 'flex: 1 1 auto;')};
+  ${props => (props.disabled && 'cursor: not-allowed;')}
+  ${props => (props.grow && 'flex: 1 1 auto;')};
   align-items: center;
   display: flex;
   max-width: 100%;

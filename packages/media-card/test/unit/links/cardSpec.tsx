@@ -9,7 +9,7 @@ import {
 import { LinkCard, LinkCardGenericView } from '../../../src/links';
 import { A } from '../../../src/links/card/styled';
 import { LinkCardImageView } from '../../../src/links/cardImageView';
-import { LinkCardViewSmall } from '../../../src/links/cardViewSmall';
+import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
 import { EmbedCard } from '../../../src/links/embedCard';
 import { AppCardView } from '../../../src/app';
 
@@ -24,7 +24,7 @@ describe('LinkCard', () => {
 
     it('should render LinkCardViewSmall when appearance="small"', () => {
       const card = shallow(<LinkCard status="complete" appearance="small" details={genericLinkDetails}/>);
-      expect(card.find(LinkCardViewSmall).exists()).toBeTruthy();
+      expect(card.find(CardGenericViewSmall).exists()).toBeTruthy();
     });
 
     it('should render LinkCardImageView when appearance="image"', () => {

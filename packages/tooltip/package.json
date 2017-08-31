@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "config": {
     "access": "public"
   },
@@ -26,14 +26,14 @@
     "dist"
   ],
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/tooltip": "*"
   },
   "dependencies": {
-    "@atlaskit/layer": "^2.1.3",
+    "@atlaskit/layer": "^2.5.3",
     "@atlaskit/theme": "^2.0.0",
-    "@atlaskit/util-shared-styles": "^2.2.1",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
@@ -42,9 +42,6 @@
   "maintainers": [
     {
       "name": "Luke B"
-    },
-    {
-      "name": "Nadia M"
     }
   ],
   "license": "Apache-2.0",

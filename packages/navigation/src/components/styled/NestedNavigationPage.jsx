@@ -4,7 +4,7 @@ import { animationTimeUnitless } from '../../shared-variables';
 
 const animationTime = animationTimeUnitless / 1000;
 
-export const getAnimation = ({ isEntering, isLeaving, traversalDirection }) => (
+export const getAnimation = ({ isEntering, isLeaving, traversalDirection }: Object) => (
   (isEntering || isLeaving) ? (
     `animation: ${animationTime}s ${keyframes`
       from { transform: translateX(${traversalDirection === 'down' ? 100 : -100}%); }

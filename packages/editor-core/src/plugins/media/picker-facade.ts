@@ -117,7 +117,11 @@ export default class PickerFacade {
 
   show(): void {
     if (this.picker.show) {
-      this.picker.show();
+      try {
+        this.picker.show();
+      } catch (ex) {
+        this.errorReporter.captureException(ex);
+      }
     }
   }
 

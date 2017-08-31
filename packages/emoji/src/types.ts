@@ -163,9 +163,19 @@ export interface OnCategory {
   (categoryId: string | null): void;
 }
 
+export const enum SearchSort {
+  // no sort - just the default ordering of emoji
+  None,
+  // a sort taking into account a number of factors including, usage, closeness of match to the query, etc
+  Default,
+  // sort such that the most frequently used emoji come first, and then standard, service defined ordering is preserved.
+  UsageFrequency,
+}
+
 export interface SearchOptions {
   skinTone?: number; // skin tone offset starting at 1
   limit?: number;
+  sort?: SearchSort;
 }
 
 export interface EmojiSearchResult {

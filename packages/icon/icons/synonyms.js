@@ -270,6 +270,7 @@ module.exports = {
   'star-filled': [],
   star: [],
   subtask: ['issue', 'task'],
+  switcher: [],
   table: ['grid'],
   task: ['check', 'tick'],
   trash: ['bin', 'remove', 'delete', 'recycle'],

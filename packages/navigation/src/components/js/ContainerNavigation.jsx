@@ -18,7 +18,7 @@ import type { ReactClass, ReactElement } from '../../types';
 import type { Provided } from '../../theme/types';
 
 type Props = {|
-  children: ReactElement,
+  children?: ReactElement,
   /** Icon to be rendered in the globalPrimaryActions internal component when
   isCollapsed is true. When clicked, onGlobalCreateActivate is called. It is
   recommended that you use an atlaskit icon. */

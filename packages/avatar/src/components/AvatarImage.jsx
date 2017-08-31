@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 import { HiddenImage, Span, Svg } from '../styled/AvatarImage';
-import { AppearanceType, SizeType } from '../types';
+import type { AppearanceType, SizeType } from '../types';
 
 const ShapeGroup = styled.g`
   & circle,

@@ -13,6 +13,8 @@ export default class Label extends PureComponent {
     onClick: PropTypes.func,
     /** show a style indicating that the label is for a required field */
     isRequired: PropTypes.bool,
+    /** Sets whether the disabled style is applied to the label */
+    isDisabled: PropTypes.bool,
     /** the labels control element */
     htmlFor: PropTypes.string,
     /** any children to render, displayed underneath the label */
@@ -35,6 +37,7 @@ export default class Label extends PureComponent {
       htmlFor,
       isFirstChild,
       isLabelHidden,
+      isDisabled,
       isRequired,
       label,
       onClick,
@@ -46,6 +49,7 @@ export default class Label extends PureComponent {
           isHidden={isLabelHidden}
           inlineEdit={appearance === 'inline-edit'}
           firstChild={isFirstChild}
+          isDisabled={isDisabled}
         >
           <span onClick={onClick}>{label}</span>
           {isRequired ?

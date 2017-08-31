@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
@@ -99,5 +100,44 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     hyperlinkEdit.setState({ editorFocused: true });
     expect(hyperlinkEdit.find(PanelTextInput).prop('placeholder')).to.equal('Text to display');
     expect(hyperlinkEdit.find(PanelTextInput).prop('defaultValue')).to.equal('');
+  });
+
+  it('should update href on blur', () => {
+    const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: '' })('te{<>}xt'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    const href = 'http://www.atlassian.com';
+    input.prop('onChange')!(href);
+    input.prop('onBlur')!();
+    expect(pluginState.href).to.equal(href);
+  });
+
+  it('should update title on blur', () => {
+    const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    const title = 'Atlassian';
+    const updateLinkTextStub = sinon.stub(pluginState, 'updateLinkText');
+    input.prop('onChange')!(title);
+    input.prop('onBlur')!();
+    // pluginState.text doesn't work because link is not inclusive. After replace the selection gets outside of the link
+    sinon.assert.alwaysCalledWithMatch(updateLinkTextStub, title);
+    updateLinkTextStub.restore();
+  });
+
+  it('should not update title or href on blur if there is no change', () => {
+    const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    const updateLinkStub = sinon.stub(pluginState, 'updateLink');
+    const updateLinkTextStub = sinon.stub(pluginState, 'updateLinkText');
+    input.prop('onBlur')!();
+    sinon.assert.notCalled(updateLinkStub);
+    sinon.assert.notCalled(updateLinkTextStub);
+    updateLinkTextStub.restore();
+    updateLinkStub.restore();
   });
 });

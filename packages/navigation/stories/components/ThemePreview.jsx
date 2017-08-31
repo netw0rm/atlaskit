@@ -8,7 +8,7 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import ListIcon from '@atlaskit/icon/glyph/list';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import AkDropdownMenu, {
   AkDropdownItemRadio,
   AkDropdownItemGroupRadio,

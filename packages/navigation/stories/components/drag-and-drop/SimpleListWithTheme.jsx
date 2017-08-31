@@ -12,7 +12,7 @@ import reorder from './reorder';
 import reorderingUsageNote from './UsageNote';
 import Container from './Container';
 
-const isDraggingClassName = 'is-dragging';
+const isDraggingClassName = 'isdragging';
 
 type Item = {|
   id: string,
@@ -64,7 +64,7 @@ export default class SimpleListWithTheme extends Component {
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result) => {
+  onDragEnd = (result: Object) => {
     // $ExpectError
     document.body.classList.remove(isDraggingClassName);
 

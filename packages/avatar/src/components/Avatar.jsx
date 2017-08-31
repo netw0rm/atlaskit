@@ -29,6 +29,7 @@ export const AvatarDefaultProps = {
 };
 
 class Avatar extends Component {
+  // Removed as a part of AK-3423
   props: AvatarPropTypes; // eslint-disable-line react/sort-comp
   node: { blur?: FunctionType, focus?: FunctionType };
   cache: {
@@ -67,7 +68,7 @@ class Avatar extends Component {
 
   // disallow click on disabled avatars
   // only return avatar data properties
-  guardedClick = (event: {}) => {
+  guardedClick = (event: Object) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled || (typeof onClick !== 'function')) return;
@@ -86,7 +87,7 @@ class Avatar extends Component {
 
     // add warnings for various invalid states
     if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
-      console.warn(`Avatar size "${size}" does NOT support ${showPresence ? 'presence' : 'status'}`);
+      console.warn(`Avatar size "${String(size)}" does NOT support ${showPresence ? 'presence' : 'status'}`);
       return null;
     }
     if (showPresence && showStatus) {
@@ -135,7 +136,7 @@ class Avatar extends Component {
     const props: AvatarPropTypes = getProps(this);
 
     // provide element type based on props
-    const Inner = this.getStyledComponent();
+    const Inner: any = this.getStyledComponent();
 
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;

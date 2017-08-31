@@ -63,10 +63,11 @@ export default class FieldText extends PureComponent {
     return (
       <div>
         <Label
-          label={this.props.label}
           htmlFor={this.props.id}
+          isDisabled={this.props.disabled}
           isLabelHidden={this.props.isLabelHidden}
           isRequired={this.props.required}
+          label={this.props.label}
         />
         <Base
           isCompact={this.props.compact}

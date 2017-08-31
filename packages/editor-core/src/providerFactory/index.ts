@@ -80,6 +80,15 @@ export default class ProviderFactory {
     }
   }
 
+  unsubscribeAll(name: string) {
+    const handlers = this.subscribers.get(name);
+    if (!handlers) {
+      return;
+    }
+
+    this.subscribers.delete(name);
+  }
+
   private notifyUpdated(name: string, provider?: Promise<any>) {
     const handlers = this.subscribers.get(name);
     if (!handlers) {

@@ -1,15 +1,16 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies */
 // @flow
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import FieldRange from '../..';
 
 // We need to simulate a real event on the DOM element due IE compatibility
 const simulateValueChange = (input, value) => {
-  const inputElement = input.find('input').node;
-
-  inputElement.value = value;
-  inputElement.dispatchEvent(new Event('input', { detail: { value } }));
+  const inputElement: ?HTMLInputElement = (input.find('input').getDOMNode(): any);
+  if (inputElement) {
+    inputElement.value = `${value}`;
+    inputElement.dispatchEvent(new Event('input', { detail: { value } }));
+  }
 };
 
 describe('FieldRange', () => {

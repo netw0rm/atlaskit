@@ -18,7 +18,7 @@ export default class DrawerTrigger extends PureComponent {
       <DrawerTriggerInner>
         <GlobalItem
           role="button"
-          aria-haspopup
+          aria-haspopup="true"
           onClick={this.props.onActivate}
           onMouseDown={e => e.preventDefault()}
           size="medium"

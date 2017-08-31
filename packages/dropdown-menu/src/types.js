@@ -21,8 +21,6 @@ export type OpenChangeObj = {|
 
 export type ReactElement = any;
 
-type FunctionType = () => {}
-
 type DeprecatedItem = {
   content?: string,
   elemBefore?: ReactElement,
@@ -44,6 +42,8 @@ type DropdownMenuBaseProps = {
     * Tall menu has no restrictions.
     */
   appearance: 'default' | 'tall',
+  /** Value passed to the Layer component to determine when to reposition the droplist */
+  boundariesElement: 'viewport' | 'window' | 'scrollParent',
   /** Content that will be rendered inside the layer element. Should typically be
     * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
   children?: ReactElement,
@@ -54,7 +54,7 @@ type DropdownMenuBaseProps = {
   /** Deprecated. An array of groups. Every group must contain an array of items */
   items: Array<DeprecatedItemGroup>,
   /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
-  onItemActivated: FunctionType,
+  onItemActivated: Function,
   /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
   position: string,
   /** Deprecated. Option to display multiline items when content is too long.
@@ -80,12 +80,12 @@ type DropdownMenuBaseProps = {
 
 export type DropdownMenuStatelessProps = DropdownMenuBaseProps & {
   /** Called when the menu should be open/closed. Received an object with isOpen state. */
-  onOpenChange: FunctionType,
+  onOpenChange: Function,
 }
 
 export type DropdownMenuStatefulProps = DropdownMenuBaseProps & {
   /** Controls the initial open state of the dropdown. */
   defaultOpen: boolean,
   /** Called when the menu is open or closed. Received an object with isOpen state. */
-  onOpenChange: FunctionType,
+  onOpenChange: Function,
 }

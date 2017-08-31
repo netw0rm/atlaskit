@@ -79,6 +79,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   getAsciiMap(): Promise<Map<string, EmojiDescription>>;
 
   /**
+   * Returns, in a Promise, an array of the most frequently used emoji, ordered from most frequent to least frequent.
+   * If there is no frequently used data then an empty array should be returned.
+   */
+  getFrequentlyUsed(): Promise<EmojiDescription[]>;
+
+  /**
    * Records an emoji selection, for example for using in tracking recent emoji.
    * If no recordConfig is configured then a resolved promise should be returned
    *
@@ -401,6 +407,14 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return Promise.resolve(this.emojiRepository.getAsciiMap());
     }
     return this.retryIfLoading(() => this.getAsciiMap(), new Map());
+  }
+
+  getFrequentlyUsed(): Promise<EmojiDescription[]> {
+    if (this.emojiRepository) {
+      return Promise.resolve(this.emojiRepository.getFrequentlyUsed());
+    }
+
+    return this.retryIfLoading(() => this.getFrequentlyUsed(), []);
   }
 
   /**

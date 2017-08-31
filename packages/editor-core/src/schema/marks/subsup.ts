@@ -7,13 +7,9 @@ export interface Attributes {
 
 /**
  * @name subsup_mark
- * @additionalProperties false
  */
 export interface Definition {
   type: 'subsup';
-  /**
-   * @additionalProperties false
-   */
   attrs: Attributes;
 }
 

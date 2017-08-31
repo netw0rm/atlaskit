@@ -9,10 +9,12 @@ import DropdownMenu from '../src';
 import { name } from '../package.json';
 
 import DropdownLoadItemsExample from './DropdownLoadItemsExample';
+import BoundariesElementExample from './examples/BoundariesElementDopdown';
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import StatusDropdown from './examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import WideDropdown from './examples/WideDropdown';
+import ControlledItemsExample from './examples/ControlledItemsExample';
 
 import {
   simpleDropdownItems,
@@ -165,6 +167,14 @@ storiesOf(name, module)
       </DropdownWrapper>
     </StoryContainer>
   ))
+  .add('constrained by the scrollParent', () => (
+    <StoryContainer>
+      <p>
+        This default dropdown is constrained by the scrollParent.
+      </p>
+      { BoundariesElementExample }
+    </StoryContainer>
+  ))
   .add('with items in groups', () => (
     <StoryContainer>
       <p>If the dropdown menu has more than one group, then all the groups should have headings.</p>
@@ -206,5 +216,10 @@ storiesOf(name, module)
           </DropdownMenu>
         </p>
       </div>
+    </StoryContainer>
+  ))
+  .add('with controlled items', () => (
+    <StoryContainer>
+      <ControlledItemsExample />
     </StoryContainer>
   ));

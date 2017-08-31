@@ -22,7 +22,7 @@ export function stringRepeat(text: string, length: number): string {
  * @see MarkdownSerializerState.esc()
  */
 export function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\+_]/g, '\\$&');
+  str = str.replace(/[`*\\+_|]/g, '\\$&');
   if (startOfLine) {
     str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
@@ -70,41 +70,6 @@ export function transformHtml(html: string): HTMLElement {
 
     a.parentNode!.insertBefore(span, a);
     a.parentNode!.removeChild(a);
-  });
-
-  // Simplify <table>s into paragraphs
-  arrayFrom(el.querySelectorAll('table')).forEach((table: HTMLTableElement) => {
-    const thead = table.querySelector('thead');
-    const tbody = table.querySelector('tbody');
-
-    // Convert <thead> into a paragraph of bold, comma-separated phrases.
-    if (thead) {
-      const p = document.createElement('p');
-      const strong = document.createElement('strong');
-
-      strong.innerText = arrayFrom(thead.querySelectorAll('th'))
-        .map((th) => th.innerText)
-        .filter((v) => (!!v))   // skip zombie cells
-        .join(', ')
-      ;
-      p.appendChild(strong);
-      table.parentNode!.insertBefore(p, table);
-    }
-
-    // Convert <tr> into a paragraphs of comma-separated phrases.
-    if (tbody) {
-      arrayFrom(tbody.querySelectorAll('tr')).forEach((tr: HTMLTableRowElement) => {
-        const p = document.createElement('p');
-        p.innerText = arrayFrom(tr.querySelectorAll('td'))
-          .map((td) => td.innerText)
-          .filter((v) => (!!v))   // skip zombie cells
-          .join(', ')
-        ;
-        table.parentNode!.insertBefore(p, table);
-      });
-    }
-
-    table.parentNode!.removeChild(table);
   });
 
   // Parse emojis i.e.

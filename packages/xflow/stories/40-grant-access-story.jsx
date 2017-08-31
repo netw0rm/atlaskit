@@ -44,11 +44,11 @@ const defaultProps = {
 
   retrieveUsers: () =>
     Promise.resolve([
-      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com' },
-      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com' },
-      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com' },
-      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com' },
-      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com' },
+      { name: 'lhunt', 'display-name': 'Lachlan Hunt', email: 'lhunt@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/1'] }] } },
+      { name: 'awakeling', 'display-name': 'Andrew Wakeling', email: 'awakeling@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/2'] }] } },
+      { name: 'ahammond', 'display-name': 'Andrew Hammond', email: 'ahammond@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/3'] }] } },
+      { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/4'] }] } },
+      { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
     ]),
 
   goToLearnMore: () => {
@@ -61,25 +61,18 @@ const defaultProps = {
 };
 
 storiesOf('GrantAccess')
-  .add('Grant Access dialog', () =>
-    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} analyticsId="growth.happy" />)
-  )
-  .add('Grant Access dialog, Change... ("everyone" selected)', () =>
+  .add('Grant Access dialog', () => setupStorybookAnalytics(<GrantAccessBase {...defaultProps} />))
+  .add('Grant Access dialog, Manage ("everyone" selected)', () =>
     setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        analyticsId="growth.happy"
-        changeUsers
-        defaultSelectedRadio="everyone"
-      />
+      <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="everyone" />
     )
   )
-  .add('Grant Access dialog, Change... ("site-admins" selected)', () =>
+  .add('Grant Access dialog, Manage ("site-admins" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
     )
   )
-  .add('Grant Access dialog, Change... ("specific-users" selected)', () =>
+  .add('Grant Access dialog, Manage ("specific-users" selected)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -89,7 +82,7 @@ storiesOf('GrantAccess')
       />
     )
   )
-  .add('Grant Access dialog, Change... ("specific-users" selected, error)', () =>
+  .add('Grant Access dialog, Manage ("specific-users" selected, error)', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}
@@ -118,21 +111,15 @@ storiesOf('GrantAccess')
     )
   )
   .add('Grant Access dialog (ACTIVATING) progress bar (25%)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={0.25} />
-    )
+    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={0.25} />)
   )
   .add('Grant Access dialog (ACTIVATING Error) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={1} />
-    )
+    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={1} />)
   )
   .add('Grant Access dialog (ACTIVE) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} analyticsId="growth.happy" progress={1} status={ACTIVE} />
-    )
+    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={1} status={ACTIVE} />)
   )
-  .add('Grant Access dialog, Change... Error flag after Continue', () =>
+  .add('Grant Access dialog, Manage Error flag after Continue', () =>
     setupStorybookAnalytics(
       <GrantAccessBase
         {...defaultProps}

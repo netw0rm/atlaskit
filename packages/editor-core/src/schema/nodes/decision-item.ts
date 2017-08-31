@@ -4,14 +4,10 @@ import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 /**
  * @name decisionItem_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'decisionItem';
   content: Array<Inline>;
-  /**
-   * @additionalProperties false
-   */
   attrs: {
     localId: string;
     state: string;

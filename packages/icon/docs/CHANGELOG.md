@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 8.1.0 (2017-08-28)
+
+
+* feature; added switcher icon back ([de848a6](https://bitbucket.org/atlassian/atlaskit/commits/de848a6))
 ## 8.0.1 (2017-08-21)
 
 * bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))

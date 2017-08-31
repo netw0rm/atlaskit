@@ -15,7 +15,7 @@ export {
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   panel, panelNote, mentionQuery, hardBreak, emojiQuery,
   media, mediaGroup, singleImage, textColor, table, tr, td,
-  th, tdEmpty, td11, th11, tdCursor, thEmpty,
+  th, tdEmpty, td11, th11, tdCursor, thEmpty, thCursor,
   decisionItem, decisionList, taskItem, taskList,
 } from './schema-builder';
 export * from './html-helpers';

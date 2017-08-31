@@ -1,9 +1,10 @@
 // @flow
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
+
 import { darken, mix } from 'polished';
+
 import Avatar from '@atlaskit/avatar';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import {
@@ -24,6 +25,8 @@ const generateTheme = (
   secondaryTextColor: string,
   focusColor: string,
 ): ItemTheme => ({
+  afterItemSpacing: 0,
+  beforeItemSpacing: 0,
   borderRadius: 0,
   focus: {
     outline: focusColor,

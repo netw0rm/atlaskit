@@ -5,14 +5,13 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { ThemeProvider } from 'styled-components';
-
+import { gridSize } from '@atlaskit/theme';
 import Wrapper, { Content, SpinnerContainer, Trigger } from '../styled/Droplist';
 import itemTheme from '../theme/item-theme';
 
 const halfFocusRing = 1;
-const dropOffset = `0 ${akGridSizeUnitless}px`;
+const dropOffset = `0 ${gridSize()}px`;
 
 export default class Droplist extends Component {
   static propTypes = {
@@ -22,6 +21,8 @@ export default class Droplist extends Component {
       * Tall menu has no restrictions.
       */
     appearance: PropTypes.oneOf(['default', 'tall']),
+    /** Value passed to the Layer component to determine when to reposition the droplist */
+    boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
     /** Content that will be rendered inside the layer element. Should typically be
       * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
     children: PropTypes.node,
@@ -50,6 +51,7 @@ export default class Droplist extends Component {
   }
   static defaultProps = {
     appearance: 'default',
+    boundariesElement: 'viewport',
     children: null,
     isLoading: false,
     isOpen: false,
@@ -140,6 +142,7 @@ export default class Droplist extends Component {
   render() {
     const {
       appearance,
+      boundariesElement,
       children,
       isLoading,
       isOpen,
@@ -181,6 +184,7 @@ export default class Droplist extends Component {
       >
         <Layer
           autoFlip={shouldFlip}
+          boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
           position={position}

@@ -3,7 +3,6 @@ import { Definition as ListItemNode } from './list-item';
 
 /**
  * @name orderedList_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'orderedList';
@@ -11,9 +10,6 @@ export interface Definition {
    * @minItems 1
    */
   content: Array<ListItemNode>;
-  /**
-   * @additionalProperties false
-   */
   attrs?: {
     /**
      * @minimum 1

@@ -3,7 +3,6 @@ import { TopLevel } from './doc';
 
 /**
  * @name listItem_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'listItem';

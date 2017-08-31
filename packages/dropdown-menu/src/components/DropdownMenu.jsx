@@ -8,11 +8,12 @@ export default class DropdownMenu extends Component {
 
   static defaultProps = {
     appearance: 'default',
+    boundariesElement: 'viewport',
     defaultOpen: false,
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: () => {},
+    onItemActivated: (a) => {}, // eslint-disable-line
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,
@@ -33,9 +34,9 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  findActivatedGroup = item => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]
+  findActivatedGroup = (item: any) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line
 
-  handleItemActivation = (attrs) => {
+  handleItemActivation = (attrs: any) => {
     const activatedItem = attrs.item;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];
@@ -47,7 +48,7 @@ export default class DropdownMenu extends Component {
         this.setState({ items });
         break;
       case 'radio':
-        activatedGroup.items.forEach((i) => {
+        activatedGroup.items.forEach((i: Object) => {
           if (i === activatedItem) {
             i.isChecked = true;
           } else {
@@ -78,13 +79,15 @@ export default class DropdownMenu extends Component {
   render() {
     const { isOpen } = this.state;
     const {
-      appearance, children, isLoading, items, position, shouldAllowMultilineItems,
-      shouldFitContainer, shouldFlip, trigger, triggerButtonProps, triggerType,
+      appearance, boundariesElement, children, isLoading, items, position,
+      shouldAllowMultilineItems, shouldFitContainer, shouldFlip, trigger,
+      triggerButtonProps, triggerType,
     } = this.props;
 
     return (
       <StatelessMenu
         appearance={appearance}
+        boundariesElement={boundariesElement}
         isOpen={isOpen}
         isLoading={isLoading}
         items={items}

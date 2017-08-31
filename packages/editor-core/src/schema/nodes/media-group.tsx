@@ -3,7 +3,6 @@ import { Definition as Media } from './media';
 
 /**
  * @name mediaGroup_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'mediaGroup';

@@ -12,6 +12,7 @@ import {
   history,
   hyperlinkPlugins,
   codeBlockPlugins,
+  listsPlugins,
   keymap,
   mediaPluginFactory,
   mediaStateKey,
@@ -30,6 +31,7 @@ import {
   TextSelection,
   toJSON,
   version as coreVersion,
+  ToolbarEmojiPicker,
 
   // Components
   WithProviders,
@@ -45,6 +47,7 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
+
 } from '@atlaskit/editor-core';
 import {
   EmojiProvider,
@@ -92,6 +95,9 @@ export interface Props {
   useLegacyFormat?: boolean;
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
+  showEmojiPicker?: boolean;
+  numFollowingToolbarButtons?: number;
+  toolbarStyles?: any;
 }
 
 export interface State {
@@ -286,6 +292,29 @@ export default class Editor extends PureComponent<Props, State> {
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
   }
 
+  renderExtraToolbar() {
+
+    const { emojiProvider, numFollowingToolbarButtons = 0, showEmojiPicker, toolbarStyles = {} } = this.props;
+    const { editorView } = this.state;
+
+    if (!editorView || !emojiProvider || !showEmojiPicker) {
+      return null;
+    }
+
+    return (
+      <div
+        style={toolbarStyles}
+      >
+        <ToolbarEmojiPicker
+          editorView={editorView}
+          pluginKey={emojisStateKey}
+          emojiProvider={emojiProvider}
+          numFollowingButtons={numFollowingToolbarButtons}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { props } = this;
     const { editorView } = this.state;
@@ -300,8 +329,20 @@ export default class Editor extends PureComponent<Props, State> {
     });
 
     return (
-      <div className={classNames} id={this.props.id}>
-        <div ref={this.handleRef}>
+      <div
+        className={classNames}
+        id={this.props.id}
+        style={{
+          display: 'flex',
+          flexDirection: 'row'
+        }}
+      >
+        <div
+          ref={this.handleRef}
+          style={{
+            flexGrow: 1
+          }}
+        >
           {!emojisState ? null :
             <WithProviders
               providerFactory={this.providerFactory}
@@ -334,6 +375,7 @@ export default class Editor extends PureComponent<Props, State> {
             />
           }
         </div>
+        {this.renderExtraToolbar()}
       </div>
     );
   }
@@ -365,6 +407,7 @@ export default class Editor extends PureComponent<Props, State> {
         // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
         // if converting is possible
         ...blockTypePlugins(schema),
+        ...listsPlugins(schema),
         history(),
         keymap(hcKeymap),
         // After hcKeyMap to ensure 'ENTER' is not taken by task/decision (which will create a new task/decision)
@@ -432,12 +475,22 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleSubmit = () => {
     const { onSubmit } = this.props;
-    const { editorView } = this.state;
-    if (onSubmit && editorView) {
+    if (onSubmit && this.canSubmit()) {
       onSubmit(this.value);
+      return true;
     }
 
-    return true;
+    return false;
+  }
+
+  private canSubmit = () => {
+    const { editorView } = this.state;
+    if (editorView) {
+      const { $cursor } = editorView.state.selection as TextSelection;
+      const { paragraph } = editorView.state.schema.nodes;
+      return !$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1);
+    }
+    return false;
   }
 
   private handleChange = () => {

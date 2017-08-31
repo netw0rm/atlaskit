@@ -3,14 +3,10 @@ import { InlineLinkText } from './doc';
 
 /**
  * @name heading_node
- * @additionalProperties false
  */
 export interface Definition {
   type: 'heading';
   content: Array<InlineLinkText>;
-  /**
-   * @additionalProperties false
-   */
   attrs: {
     /**
      * @minimum 1

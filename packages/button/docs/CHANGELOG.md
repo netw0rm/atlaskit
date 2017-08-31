@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 5.1.1 (2017-08-24)
+
+
+* bug fix; improved focus ring contrast for warning and danger buttons ([39ddda7](https://bitbucket.org/atlassian/atlaskit/commits/39ddda7))
 ## 5.1.0 (2017-08-23)
 
 * bug fix; subtle-link button font colour is slightly updated (issues closed: ak-2480) ([510393a](https://bitbucket.org/atlassian/atlaskit/commits/510393a))

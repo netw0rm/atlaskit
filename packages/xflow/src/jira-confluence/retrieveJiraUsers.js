@@ -4,6 +4,14 @@ const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 const JIRA_CORE_GROUP = 'jira-core-users';
 const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
 const SITE_ADMINS_GROUP = 'site-admins';
+const VALID_GROUPS = [
+  JIRA_SOFTWARE_GROUP,
+  JIRA_CORE_GROUP,
+  JIRA_SERVICE_DESK_GROUP,
+  SITE_ADMINS_GROUP,
+];
+
+const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
 
 const usernamesEndpoint = (groupName, startIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
@@ -11,6 +19,28 @@ const usernamesEndpoint = (groupName, startIndex) =>
 
 const CACHE_TIMEOUT = 100000; // 100 seconds
 const cache = new Map();
+
+const resolveGroupnameErrors = async (response) => {
+  let resolvedErrorResponse = null;
+  if (response.status === 404) {
+    const result = await response.json();
+    // if this request returns with 404 error "Group does not exist", return an empty array
+    if (result.errors) {
+      result.errors.forEach(error => {
+        if (error.message && error.message.indexOf('does not exist') !== -1) {
+          resolvedErrorResponse = [];
+        }
+      });
+    }
+  }
+
+  if (resolvedErrorResponse === null) {
+    // if unhandled error, throw
+    throw new Error(`Unable to retrieve active jira users. Status: ${response.status}`);
+  } else {
+    return resolvedErrorResponse;
+  }
+};
 
 /**
  * Recursively compile usernames for adding to group
@@ -25,9 +55,9 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
     dataType: 'json',
   });
 
-  // if this request fails, return an empty array
+  // if this request fails, resolve errors
   if (!(response.status >= 200 && response.status < 300)) {
-    throw new Error(`Unable to retrieve active jira users. Status: ${response.status}`);
+    return resolveGroupnameErrors(response);
   }
 
   const result = await response.json();
@@ -43,17 +73,35 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
     : [];
 };
 
+/**
+ * Retrieve the active groups on the instance that are valid for retrieval
+ * @returns Array of active group names in valid groups array
+ */
+const getActiveGroups = async () => {
+  const response = await fetch(GROUPS_ENDPOINT, {
+    credentials: 'same-origin',
+    dataType: 'json',
+  });
+
+  if (!(response.status >= 200 && response.status < 300)) {
+    throw new Error(`Unable to retrieve groups. Status: ${response.status}`);
+  }
+
+  const groups = await response.json();
+  return groups
+    .filter(group => group.active && VALID_GROUPS.includes(group.name))
+    .map(group => group.name);
+};
+
 const getUsersInGroup = async (group) => {
   let users;
   if (group === 'site-admins') {
     users = getJiraActiveUsernamesList(SITE_ADMINS_GROUP);
   } else {
-    const userLists = await Promise.all([
-      getJiraActiveUsernamesList(SITE_ADMINS_GROUP),
-      getJiraActiveUsernamesList(JIRA_SOFTWARE_GROUP),
-      getJiraActiveUsernamesList(JIRA_CORE_GROUP),
-      getJiraActiveUsernamesList(JIRA_SERVICE_DESK_GROUP),
-    ]);
+    const groups = await getActiveGroups();
+    const userLists = await Promise.all(
+      groups.map(groupName => getJiraActiveUsernamesList(groupName))
+    );
 
     const usernames = new Set();
 

@@ -1,24 +1,33 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
-import typesMapping, { types } from './types';
+import typesMapping from './types';
+import type { allTypes } from '../types';
 import IconWrapper from '../styled/IconForType';
 
+type Props = {
+  isHovered: boolean,
+  isOpen: boolean,
+  type: allTypes;
+}
+
 export default class SelectedIconForType extends PureComponent {
-  static propTypes = {
-    type: PropTypes.oneOf(types).isRequired,
-  }
+  props: Props
 
   render() {
+    const { type, isHovered, isOpen } = this.props;
     const {
-      [this.props.type]: {
+      [type]: {
         icon: SelectedIcon,
-        iconColor,
         iconSize,
       },
     } = typesMapping;
 
     return (
-      <IconWrapper iconColor={iconColor}>
+      <IconWrapper
+        appearance={type}
+        isHovered={isHovered}
+        isOpen={isOpen}
+      >
         <SelectedIcon
           label="Inline message icon"
           size={iconSize}

@@ -5,10 +5,10 @@ import * as XRegExpUnicodeBase from 'xregexp/src/addons/unicode-base';
 import * as XRegExpUnicodeScripts from 'xregexp/src/addons/unicode-scripts';
 import * as XRegExpUnicodeCategories from 'xregexp/src/addons/unicode-categories';
 
-import { customCategory, defaultCategories } from '../constants';
-import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchOptions } from '../types';
+import { customCategory, defaultCategories, frequentCategory } from '../constants';
+import { EmojiDescription, EmojiSearchResult, OptionalEmojiDescription, SearchSort, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
-import { createFrequencyEmojiComparator } from './internal/Comparators';
+import { createSearchEmojiComparator, createUsageOnlyEmojiComparator } from './internal/Comparators';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
 
 XRegExpUnicodeBase(XRegExp);
@@ -102,18 +102,6 @@ const splitQuery = (query = ''): SplitQuery => {
   };
 };
 
-const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
-  if (options) {
-    if (options.limit && options.limit > 0) {
-      emojis = emojis.slice(0, options.limit);
-    }
-    return emojis.map(emoji => {
-      return getEmojiVariation(emoji, options);
-    });
-  }
-  return emojis;
-};
-
 export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptions): EmojiDescription => {
   if (isEmojiDescriptionWithVariations(emoji) && options) {
     const skinTone = options.skinTone;
@@ -141,24 +129,32 @@ export default class EmojiRepository {
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
+    this.usageTracker = new UsageFrequencyTracker();
 
     this.initRepositoryMetadata();
     this.initSearchIndex();
 
-    this.usageTracker = new UsageFrequencyTracker();
   }
 
   /**
    * Returns all available (and searchable) emoji in some default order.
    */
   all(): EmojiSearchResult {
-    return this.search();
+    const options: SearchOptions = {
+      sort: SearchSort.None
+    };
+
+    return this.search('', options);
   }
 
   /**
    * Text search of emoji shortName and name field for suitable matches.
    *
-   * Returns an array of all (searchable) emoji if query is empty or null, otherwise an matching emoji.
+   * Returns an array of all (searchable) emoji if query is empty or null, otherwise returns matching emoji.
+   *
+   * You can change how the results are sorted by specifying a custom EmojiComparator in the SearchOptions. If
+   * you don't want any sorting you can also disable via the SearchOptions (this might be a useful optimisation).
+   * If no sort is specified in SearchOptions then a default sorting it applied based on the query.
    */
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[] = [];
@@ -167,9 +163,6 @@ export default class EmojiRepository {
     if (nameQuery) {
       filteredEmoji = this.fullSearch.search(nameQuery);
 
-      const comparator = createFrequencyEmojiComparator(nameQuery, this.usageTracker.getOrder());
-      filteredEmoji.sort(comparator.compare);
-
       if (asciiQuery) {
         filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
       }
@@ -177,11 +170,8 @@ export default class EmojiRepository {
       filteredEmoji = this.getAllSearchableEmojis();
     }
 
-    if (asciiQuery) {
-      filteredEmoji = this.withAsciiMatch(asciiQuery, filteredEmoji);
-    }
+    filteredEmoji = this.applySearchOptions(filteredEmoji, query, options);
 
-    filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
       query,
@@ -229,11 +219,24 @@ export default class EmojiRepository {
     return this.asciiMap;
   }
 
+  /**
+   * Return the most frequently used emoji, ordered from most frequent to least frequent. Return an empty array if
+   * there are none.
+   */
+  getFrequentlyUsed(): EmojiDescription[] {
+    const emojiIds = this.usageTracker.getOrder();
+
+    return emojiIds
+      .map(id => this.findById(id))
+      .filter(e => e !== undefined) as EmojiDescription[];
+  }
+
   getDynamicCategoryList(includeCustom?: boolean): string[] {
+    const categories = this.dynamicCategoryList.slice();
     if (this.dynamicCategoryList.indexOf(customCategory) === -1 && includeCustom) {
-      this.dynamicCategoryList.push(customCategory);
+      categories.push(customCategory);
     }
-    return this.dynamicCategoryList;
+    return categories;
   }
 
   /**
@@ -244,6 +247,16 @@ export default class EmojiRepository {
    */
   used(emoji: EmojiDescription) {
     this.usageTracker.recordUsage(emoji);
+
+    // If this is the first usage ensure that we update the dynamic categories.
+    // This is done in a 'timeout' since the usageTracker call previously also happens in a timeout. This ensures that
+    // the frequent category will not appear until the usage has been tracked (avoiding the possibility of an empty
+    // frequent category being shown in the picker).
+    if (this.dynamicCategoryList.indexOf(frequentCategory) === -1) {
+      setTimeout(() => {
+        this.dynamicCategoryList.push(frequentCategory);
+      });
+    }
   }
 
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
@@ -256,6 +269,40 @@ export default class EmojiRepository {
       result = [asciiEmoji, ...result];
     }
     return result;
+  }
+
+  private applySearchOptions(emojis: EmojiDescription[], query?: string, options?: SearchOptions): EmojiDescription[] {
+    if (!options) {
+      options = <SearchOptions>{};
+    }
+
+    if (options.sort === undefined) {
+      options.sort = SearchSort.Default;
+    }
+
+    let comparator;
+    if (options.sort === SearchSort.Default) {
+      comparator = createSearchEmojiComparator(query, this.usageTracker.getOrder());
+    } else if (options.sort === SearchSort.UsageFrequency) {
+      comparator = createUsageOnlyEmojiComparator(this.usageTracker.getOrder());
+    }
+
+    if (comparator) {
+      comparator.compare = comparator.compare.bind(comparator); // TODO bind at a better place
+      emojis = emojis.sort(comparator.compare);
+    }
+
+    if (options.limit && options.limit > 0) {
+      emojis = emojis.slice(0, options.limit);
+    }
+
+    if (options.skinTone) {
+      return emojis.map(emoji => {
+        return getEmojiVariation(emoji, options);
+      });
+    }
+
+    return emojis;
   }
 
   /**
@@ -271,6 +318,11 @@ export default class EmojiRepository {
       categorySet.add(emoji.category);
       this.addToMaps(emoji);
     });
+
+    if (this.usageTracker.getOrder().length) {
+      categorySet.add(frequentCategory);
+    }
+
     this.dynamicCategoryList = Array.from(categorySet).filter(category => defaultCategories.indexOf(category) === -1);
   }
 

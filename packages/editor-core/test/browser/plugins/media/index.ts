@@ -643,6 +643,25 @@ describe('Media plugin', () => {
     });
   });
 
+  describe('ignoreLinks', () => {
+    it('should set to true when at the beginning of a link', () => {
+      const { pluginState } = editor(doc(p(a({ href: 'www.google.com' })('{<>}www.google.com'))));
+      expect(pluginState.ignoreLinks).to.equal(true);
+    });
+
+    it('should set to true when at the end of a link', () => {
+      const { pluginState } = editor(doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))));
+      expect(pluginState.ignoreLinks).to.equal(true);
+    });
+
+    it('should switch from true to false when insert space after a link', () => {
+      const { editorView, pluginState, sel } = editor(doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))));
+      expect(pluginState.ignoreLinks).to.equal(true);
+      insertText(editorView, ' ', sel);
+      expect(pluginState.ignoreLinks).to.equal(false);
+    });
+  });
+
   describe('align', () => {
     context('when there is only one image in the media group', () => {
       context('when selection is a media node', () => {

@@ -1,5 +1,29 @@
 # @atlaskit/navigation
 
+## 20.3.2 (2017-08-30)
+
+* bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))
+* bug fix; fixes bug in modules export of nav ([5d07b8e](https://bitbucket.org/atlassian/atlaskit/commits/5d07b8e))
+## 20.3.1 (2017-08-29)
+
+
+* bug fix; add missing semicolon to the NavigationFixedContainer ([f2c89e8](https://bitbucket.org/atlassian/atlaskit/commits/f2c89e8))
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 20.3.0 (2017-08-25)
+
+* feature; added Navigation.isElectronMac prop to make UI fit better with Mac window buttons (issues closed: ak-2613) ([2c65ec7](https://bitbucket.org/atlassian/atlaskit/commits/2c65ec7))
 ## 20.2.0 (2017-08-24)
 
 * bug fix; simplified siteSettings theme to inherit from settings theme (issues closed: ak-2429, confsim-1332) ([a1da88f](https://bitbucket.org/atlassian/atlaskit/commits/a1da88f))

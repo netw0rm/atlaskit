@@ -89,7 +89,7 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '* text*', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p('* text*')));
     });
-    
+
     it('should convert "_text_" to em', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 

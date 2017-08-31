@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { akColorN0, akColorN500 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 import Spinner from '../../src';
 import SpinnerGlyph from '../../src/SpinnerGlyph';
@@ -115,13 +115,13 @@ describe('Spinner', () => {
       expect(wrapper.find(Svg).prop('invertColor')).toBe(true);
     });
 
-    it('should be akColorN500 by default', () => {
-      expect(getStrokeColor()).toBe(akColorN500);
-      expect(getStrokeColor(false)).toBe(akColorN500);
+    it('should be colors.N500 by default', () => {
+      expect(getStrokeColor({})).toBe(colors.N500);
+      expect(getStrokeColor({ invertColor: false })).toBe(colors.N500);
     });
 
-    it('should be akColorN0 when set to true', () => {
-      expect(getStrokeColor(true)).toBe(akColorN0);
+    it('should be colors.N0 when set to true', () => {
+      expect(getStrokeColor({ invertColor: true })).toBe(colors.N0);
     });
   });
 
@@ -130,7 +130,7 @@ describe('Spinner', () => {
 
     beforeEach(() => {
       const svg = mount(<Spinner />).find(Svg);
-      styles = svgStyles[1](svg.props());
+      styles = svgStyles[1](svg.props()).join('');
     });
 
     it('should have expected svg stroke keys', () => {

@@ -6,9 +6,10 @@ import {ErrorIconWrapper} from './styled';
 
 export class ErrorIcon extends Component<{}, {}> {
   render() {
-    return <ErrorIconWrapper className={'error-icon'}>
-             <WarningIcon label="Error" size="small"/>
-           </ErrorIconWrapper>
-    ;
+    return (
+      <ErrorIconWrapper>
+        <WarningIcon label="Error" size="small"/>
+      </ErrorIconWrapper>
+    );
   }
 }

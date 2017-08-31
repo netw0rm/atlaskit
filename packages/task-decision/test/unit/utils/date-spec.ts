@@ -1,7 +1,20 @@
 import { getFormattedDate, getStartOfDate, isSameDate } from '../../../src/util/date';
-import * as moment from 'moment';
+import { setHours, subDays, subWeeks, subYears } from 'date-fns';
 
-const months = moment.months();
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 
 describe('util/date', () => {
   describe('getFormattedDate', () => {
@@ -10,17 +23,17 @@ describe('util/date', () => {
     });
 
     it('Yesterday', () => {
-      const yesterday = moment().subtract(1, 'day').toDate();
+      const yesterday = subDays(new Date(), 1);
       expect(getFormattedDate(yesterday)).toBe('Yesterday');
     });
 
     it('Last week', () => {
-      const lastWeek = moment().subtract(1, 'week').toDate();
+      const lastWeek =  subWeeks(new Date(), 1);
       expect(getFormattedDate(lastWeek)).toBe(`${months[lastWeek.getMonth()]} ${lastWeek.getDate()}`);
     });
 
     it('Last year', () => {
-      const lastYear = moment().subtract(1, 'year').toDate();
+      const lastYear = subYears(new Date(), 1);
       expect(getFormattedDate(lastYear)).toBe(`${months[lastYear.getMonth()]} ${lastYear.getDate()}, ${lastYear.getFullYear()}`);
     });
   });
@@ -41,14 +54,14 @@ describe('util/date', () => {
 
   describe('isSameDate', () => {
     it('Same date with two different times are same', () => {
-      const d1 = moment(new Date()).set('hour', 12).toDate();
-      const d2 = moment(d1).set('hour', 13).toDate();
+      const d1 = setHours(new Date(), 12);
+      const d2 = setHours(new Date(), 13);
       expect(isSameDate(d1, d2)).toBe(true);
     });
 
     it('Different date with two sames times are not same', () => {
       const d1 = new Date();
-      const d2 = moment(d1).subtract(1, 'day').toDate();
+      const d2 = subDays(d1, 1);
       expect(isSameDate(d1, d2)).toBe(false);
     });
   });

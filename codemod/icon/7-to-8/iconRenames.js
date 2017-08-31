@@ -11,6 +11,5 @@ module.exports = {
   'media-services/square': 'media-services/rectangle',
   remove: 'trash',
   'schedule-add': 'schedule',
-  switcher: 'menu',
   time: 'recent',
 };

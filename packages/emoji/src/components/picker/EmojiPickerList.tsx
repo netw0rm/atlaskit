@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import * as uid from 'uid';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import { customCategory } from '../../constants';
+import { atlassianCategory, customCategory, defaultCategories, frequentCategory, MAX_ORDINAL } from '../../constants';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent, ToneSelection } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -101,6 +101,18 @@ class CategoryTracker {
   }
 
 }
+
+const categoryOrder = [frequentCategory, ...defaultCategories, atlassianCategory, customCategory];
+
+const categoryComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
+  let cat1 = categoryOrder.indexOf(eg1.category);
+  let cat2 = categoryOrder.indexOf(eg2.category);
+
+  cat1 = cat1 === -1 ? MAX_ORDINAL : cat1;
+  cat2 = cat2 === -1 ? MAX_ORDINAL : cat2;
+
+  return cat1 - cat2;
+};
 
 export default class EmojiPickerVirtualList extends PureComponent<Props, State> {
   static contextTypes = {
@@ -352,7 +364,7 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
       currentGroup.emojis.push(emoji);
     }
 
-    this.allEmojiGroups = list;
+    this.allEmojiGroups = list.sort(categoryComparator);
   }
 
   private checkCategoryChange = ({ scrollTop }) => {

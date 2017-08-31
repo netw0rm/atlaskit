@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DropdownList from '@atlaskit/droplist';
 import Item, { ItemGroup } from '@atlaskit/item';
-import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
+import Arrow from '@atlaskit/icon/glyph/arrow-right';
 import Lozenge from '@atlaskit/lozenge';
 import { BlockTrigger } from '../styled/StoryHelpers';
 

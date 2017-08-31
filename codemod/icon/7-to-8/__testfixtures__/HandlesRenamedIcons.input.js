@@ -12,7 +12,6 @@ import OldLogInIcon from '@atlaskit/icon/glyph/log-in';
 import OldSquareIcon from '@atlaskit/icon/glyph/media-services/square';
 import OldRemoveIcon from '@atlaskit/icon/glyph/remove';
 import OldScheduleAddIcon from '@atlaskit/icon/glyph/schedule-add';
-import OldSwitcherIcon from '@atlaskit/icon/glyph/switcher';
 import OldTimeIcon from '@atlaskit/icon/glyph/time';
 
 const myOtherVar = true;

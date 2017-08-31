@@ -80,7 +80,7 @@ const initialGroup: Group = (() => {
       {
         id: 'space-princess',
         content: 'Lumpy Space Princess',
-        image: 'https://i.pinimg.com/236x/cc/83/81/cc8381bea3783c86df7268d7b8cb2e96--lumpy-space-princess-adventure-time.jpg',
+        image: 'https://i.pinimg.com/236x/cc/83/81/cc8381bea3783c86df7268d7b8cb2e96lumpy-space-princess-adventure-time.jpg',
         href: 'http://adventuretime.wikia.com/wiki/Lumpy_Space_Princess',
       },
     ],
@@ -149,7 +149,7 @@ export default class WithNestedNavigation extends Component {
   // eslint-disable-next-line react/sort-comp
   state: State
 
-  constructor(props, context) {
+  constructor(props: Object, context: ReactElement) {
     super(props, context);
 
     const state: State = {
@@ -167,7 +167,7 @@ export default class WithNestedNavigation extends Component {
     injectGlobal`
       body.${isDraggingClassName} {
         cursor: grabbing;
-        user-select: none;
+        userselect: none;
       }
     `;
   }
@@ -178,7 +178,7 @@ export default class WithNestedNavigation extends Component {
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result) => {
+  onDragEnd = (result: Object) => {
     console.log('result', result);
     // $ExpectError - body might be null
     document.body.classList.remove(isDraggingClassName);
@@ -186,7 +186,7 @@ export default class WithNestedNavigation extends Component {
     const source = result.source;
     const destination = result.destination;
 
-    // nothing to do here!
+   // nothing to do here!
     if (destination == null) {
       return;
     }
@@ -202,7 +202,7 @@ export default class WithNestedNavigation extends Component {
       lists: [...previous.lists],
     };
 
-    // dragging the group lists
+   // dragging the group lists
     if (source.droppableId === initialGroup.id) {
       group.lists = reorder(group.lists, source.index, destination.index);
 
@@ -213,10 +213,10 @@ export default class WithNestedNavigation extends Component {
       return;
     }
 
-    // dragging a leaf in a list
+   // dragging a leaf in a list
     const list: ?List = group.lists.find(
-      (item: List): boolean => item.id === source.droppableId
-    );
+     (item: List): boolean => item.id === source.droppableId
+   );
 
     if (!list) {
       console.error('cannot find source list');
@@ -225,7 +225,7 @@ export default class WithNestedNavigation extends Component {
 
     list.leafs = reorder(list.leafs, source.index, destination.index);
 
-    // shallow clone with last page removed
+   // shallow clone with last page removed
     const stack = this.state.stack.slice(0, this.state.stack.length - 1);
     stack.push(this.getList(list));
 

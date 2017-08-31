@@ -1,5 +1,67 @@
 # @atlaskit/editor-core
 
+## 46.11.0 (2017-08-30)
+
+
+* feature; make ASCII conversion of emoji count as usage for showing frequent used emoji (issues closed: fs-1094) ([86a0be1](https://bitbucket.org/atlassian/atlaskit/commits/86a0be1))
+## 46.10.0 (2017-08-30)
+
+
+
+* bug fix; workaround double events for the attached and detached upload button. (issues closed: fs-1322) ([b3e19c3](https://bitbucket.org/atlassian/atlaskit/commits/b3e19c3))
+
+
+* feature; collab-plugin ([2c896c7](https://bitbucket.org/atlassian/atlaskit/commits/2c896c7))
+## 46.9.0 (2017-08-30)
+
+* feature; adding configuration to not allow deletion of table header. ([c5e1cc7](https://bitbucket.org/atlassian/atlaskit/commits/c5e1cc7))
+## 46.8.2 (2017-08-30)
+
+* bug fix; change blockQuote to blockquote in JSON Schema (issues closed: ed-2594) ([b32cfe2](https://bitbucket.org/atlassian/atlaskit/commits/b32cfe2))
+## 46.8.1 (2017-08-30)
+
+* bug fix; prevent media insertion for task/decisions (issues closed: fs-1240) ([48dcf05](https://bitbucket.org/atlassian/atlaskit/commits/48dcf05))
+
+* bug fix; added async preloading of media-card chunk ([7a19c6d](https://bitbucket.org/atlassian/atlaskit/commits/7a19c6d))
+* bug fix; split media-card with require.ensure ([1159f23](https://bitbucket.org/atlassian/atlaskit/commits/1159f23))
+* bug fix; split profile card with require.ensure (issues closed: ed-2581) ([6901949](https://bitbucket.org/atlassian/atlaskit/commits/6901949))
+## 46.8.0 (2017-08-29)
+
+* feature; export ToolbarEmojiPicker for consumption by editor-hiphcat (issues closed: fs-1320) ([0226a5b](https://bitbucket.org/atlassian/atlaskit/commits/0226a5b))
+## 46.7.0 (2017-08-29)
+
+* feature; exported AtlassianEmojiMigrationResource from editor-core ([e7e0eab](https://bitbucket.org/atlassian/atlaskit/commits/e7e0eab))
+
+
+
+
+
+
+## 46.6.0 (2017-08-28)
+
+* bug fix; fixed missing prop in tests ([0311be8](https://bitbucket.org/atlassian/atlaskit/commits/0311be8))
+
+* feature; aligned emoji picker to right of editor ([98206e8](https://bitbucket.org/atlassian/atlaskit/commits/98206e8))
+* feature; added ToolbarEmojiPicker to message editor (issues closed: fs-1092) ([ab2c080](https://bitbucket.org/atlassian/atlaskit/commits/ab2c080))
+* feature; adding support for tables in bitbucket markdown serializer. ([2e0353c](https://bitbucket.org/atlassian/atlaskit/commits/2e0353c))
+* feature; stricter JSON Schema (issues closed: ed-2555) ([39c99a2](https://bitbucket.org/atlassian/atlaskit/commits/39c99a2))
+## 46.5.0 (2017-08-25)
+
+* bug fix; upgrade mediapicker to 7.0.3 (issues closed: ed-2556) ([2c36a86](https://bitbucket.org/atlassian/atlaskit/commits/2c36a86))
+* feature; adding support for lists in editor-hipchat schema ([c695497](https://bitbucket.org/atlassian/atlaskit/commits/c695497))
+## 46.4.3 (2017-08-24)
+
+* bug fix; fix creation of unwanted link cards when going in/out of edit link box (issues closed: ed-2404) ([eae0a3a](https://bitbucket.org/atlassian/atlaskit/commits/eae0a3a))
+## 46.4.2 (2017-08-24)
+
+* bug fix; update the storybook for editor-core rnderer ([ce2ac94](https://bitbucket.org/atlassian/atlaskit/commits/ce2ac94))
+* bug fix; handle onClick events for application cards - open the link ([a70b447](https://bitbucket.org/atlassian/atlaskit/commits/a70b447))
+## 46.4.1 (2017-08-24)
+
+* bug fix; group mentions and "self" mentions are not rendered in blue anymore (issues closed: ed-2553) ([b8aab4d](https://bitbucket.org/atlassian/atlaskit/commits/b8aab4d))
+## 46.4.0 (2017-08-24)
+
+* feature; application Card to support context (issues closed: ed-2532) ([eb57585](https://bitbucket.org/atlassian/atlaskit/commits/eb57585))
 ## 46.3.0 (2017-08-24)
 
 * bug fix; merged master ([4e39b8c](https://bitbucket.org/atlassian/atlaskit/commits/4e39b8c))

@@ -14,7 +14,6 @@ import reorderingUsageNote from './UsageNote';
 import Container from './Container';
 
 const isDraggingClassName = 'is-dragging';
-
 type Person = {|
   id: string,
   name: string,
@@ -26,6 +25,7 @@ type Room = {|
   id: string,
   name: string,
   avatarUrl: string,
+  // presence: 'online' | 'offline' | 'busy',
 |}
 
 type State = {|
@@ -45,21 +45,21 @@ const getPeople = (count: number): Person[] =>
     avatarUrl: `${faker.image.avatar()}`,
     presence: faker.random.arrayElement(['online', 'offline', 'busy']),
   }))
-  // sort alphabetically
-  .sort((a: Person, b: Person): number =>
-    (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
-  );
+ // sort alphabetically
+ .sort((a: Person, b: Person): number =>
+   (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+ );
 
 const getRooms = (count: number): Room[] =>
-  Array.from({ length: count }, (v, k) => k).map((val: number): Room => ({
-    id: `room-${val}`,
-    name: `${faker.company.bsAdjective()} ${faker.company.catchPhraseNoun()}`,
-    avatarUrl: faker.random.boolean() ? roomPublicUrl : roomPrivateUrl,
-  }))
-  // sort alphabetically
-  .sort((a: Room, b: Room): number =>
-    (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
-  );
+ Array.from({ length: count }, (v, k) => k).map((val: number): Room => ({
+   id: `room-${val}`,
+   name: `${faker.company.bsAdjective()} ${faker.company.catchPhraseNoun()}`,
+   avatarUrl: faker.random.boolean() ? roomPublicUrl : roomPrivateUrl,
+ }))
+ // sort alphabetically
+ .sort((a: Room, b: Room): number =>
+   (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+ );
 
 export default class ListWithGroups extends Component {
   state: State
@@ -72,13 +72,13 @@ export default class ListWithGroups extends Component {
   };
 
   componentDidMount() {
-    // eslint-disable-next-line no-unused-expressions
+   // eslint-disable-next-line no-unused-expressions
     injectGlobal`
-      body.${isDraggingClassName} {
-        cursor: grabbing;
-        user-select: none;
-      }
-    `;
+     body.${isDraggingClassName} {
+       cursor: grabbing;
+       user-select: none;
+     }
+   `;
   }
 
   onNavResize = (state: Object) => {
@@ -89,18 +89,18 @@ export default class ListWithGroups extends Component {
   }
 
   onDragStart = () => {
-    // $ExpectError
+   // $ExpectError
     document.body.classList.add(isDraggingClassName);
   }
 
-  onDragEnd = (result) => {
-    // $ExpectError
+  onDragEnd = (result: Object) => {
+   // $ExpectError
     document.body.classList.remove(isDraggingClassName);
 
     const source = result.source;
     const destination = result.destination;
 
-    // nothing to do here!
+   // nothing to do here!
     if (destination == null) {
       return;
     }
@@ -122,9 +122,9 @@ export default class ListWithGroups extends Component {
   }
 
   renderGroupItem = (
-    { item, isOpen, extraAvatarProps, type } :
-    { item: any, isOpen: boolean, extraAvatarProps?: Function, type: string }
-  ) => {
+   { item, isOpen, extraAvatarProps, type } :
+   { item: any, isOpen: boolean, extraAvatarProps?: Function, type: string }
+ ) => {
     const baseNavItemProps = {
       text: item.name,
       isCompact: true,
@@ -136,7 +136,7 @@ export default class ListWithGroups extends Component {
           name={item.name}
           {...extraAvatarProps && extraAvatarProps(item)}
         />
-      ),
+     ),
     };
     return isOpen ? (
       <Draggable
@@ -153,32 +153,32 @@ export default class ListWithGroups extends Component {
             />
             {provided.placeholder}
           </div>
-      )}
+     )}
       </Draggable>
-    ) : (
-      <AkNavigationItem {...baseNavItemProps} />
-    );
+   ) : (
+     <AkNavigationItem {...baseNavItemProps} />
+   );
   }
 
   renderGroup = (
-    { dropProvided, items, groupTitle, type, isOpen, extraAvatarProps } :
-    { dropProvided?: any, items: Person[]|Room[], groupTitle: string, type: string,
-      isOpen: boolean, extraAvatarProps?: Function }
-  ) => (
-    <AkNavigationItemGroup
-      title={groupTitle}
-      innerRef={dropProvided && dropProvided.innerRef}
-    >
-      {items.map(item => (
-        this.renderGroupItem({
-          item,
-          isOpen,
-          extraAvatarProps,
-          type,
-        })
-      ))}
-    </AkNavigationItemGroup>
-  )
+   { dropProvided, items, groupTitle, type, isOpen, extraAvatarProps } :
+   { dropProvided?: any, items: any[], groupTitle: string, type: string,
+     isOpen: boolean, extraAvatarProps?: Function }
+ ) => (
+   <AkNavigationItemGroup
+     title={groupTitle}
+     innerRef={dropProvided && dropProvided.innerRef}
+   >
+     {items.map(item => (
+       this.renderGroupItem({
+         item,
+         isOpen,
+         extraAvatarProps,
+         type,
+       })
+     ))}
+   </AkNavigationItemGroup>
+ )
 
   renderContainerContent = () => {
     const isOpen: boolean = this.state.isNavOpen;
@@ -193,7 +193,7 @@ export default class ListWithGroups extends Component {
       groupTitle: 'People',
       type: 'people',
       isOpen,
-      extraAvatarProps: person => ({ presence: person.presence }),
+      extraAvatarProps: (person: Person) => ({ presence: person.presence }),
     };
 
     return isOpen ? (
@@ -210,12 +210,12 @@ export default class ListWithGroups extends Component {
           </Droppable>
         </div>
       </DragDropContext>
-    ) : (
-      <AkCollapseOverflow>
-        {this.renderGroup(roomOptions)}
-        {this.renderGroup(peopleOptions)}
-      </AkCollapseOverflow>
-    );
+   ) : (
+     <AkCollapseOverflow>
+       {this.renderGroup(roomOptions)}
+       {this.renderGroup(peopleOptions)}
+     </AkCollapseOverflow>
+   );
   }
 
   render() {

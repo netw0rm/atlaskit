@@ -6,7 +6,7 @@ import { bitbucketSchema as schema } from '../../../../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
   h3, h4, h5, h6, hr, img, li, emoji, mention,
-  code, ol, p, strong, ul
+  code, ol, p, ul, table, tr, th, td, strong, em, strike
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -219,7 +219,7 @@ describe('BitbucketTransformer: parser', () => {
   });
 
   describe('tables', () => {
-    it('with header, multiple rows and columns should be converted into paragraphs', () => {
+    it('with header, multiple rows and columns should be converted into table', () => {
       expect(parse(
         '<table>' +
           '<thead>' +
@@ -243,28 +243,67 @@ describe('BitbucketTransformer: parser', () => {
           '</tbody>' +
         '</table>'
       )).to.deep.equal(doc(
-        p(strong('First Header, Second Header, Third Header')),
-        p('Content Cell, Content Cell, Content Cell'),
-        p('Content Cell, Content Cell, Content Cell'),
+        table(
+          tr(
+            th({})(p('First Header')),
+            th({})(p('Second Header')),
+            th({})(p('Third Header'))
+          ),
+          tr(
+            td({})(p('Content Cell')),
+            td({})(p('Content Cell')),
+            td({})(p('Content Cell'))
+          ),
+          tr(
+            td({})(p('Content Cell')),
+            td({})(p('Content Cell')),
+            td({})(p('Content Cell'))
+          )
+        )
       ));
     });
 
-    it('with a single column should be converted into paragraphs', () => {
+    it('with a single column should be converted into table', () => {
       const result = parse(
         '<table>' +
           '<thead>' +
             '<tr>' +
               '<th>First Header</th>' +
-              '<th></th>' +           // a single column table produces empty zombie cells
             '</tr>' +
           '</thead>' +
           '<tbody>' +
             '<tr>' +
               '<td>Content Cell</td>' +
-              '<td></td>' +
             '</tr>' +
             '<tr>' +
               '<td>Content Cell</td>' +
+            '</tr>' +
+          '</tbody>' +
+        '</table>'
+      );
+
+      expect(result).to.deep.equal(doc(
+        table(
+          tr(th({})(p('First Header'))),
+          tr(td({})(p('Content Cell'))),
+          tr(td({})(p('Content Cell')))
+        )
+      ));
+    });
+
+    it('with a empty cells', () => {
+      const result = parse(
+        '<table>' +
+          '<thead>' +
+            '<tr>' +
+              '<th></th>' +
+            '</tr>' +
+          '</thead>' +
+          '<tbody>' +
+            '<tr>' +
+              '<td></td>' +
+            '</tr>' +
+            '<tr>' +
               '<td></td>' +
             '</tr>' +
           '</tbody>' +
@@ -272,9 +311,39 @@ describe('BitbucketTransformer: parser', () => {
       );
 
       expect(result).to.deep.equal(doc(
-        p(strong('First Header')),
-        p('Content Cell'),
-        p('Content Cell'),
+        table(
+          tr(th({})(p())),
+          tr(td({})(p())),
+          tr(td({})(p()))
+        )
+      ));
+    });
+
+    it('with inline styling', () => {
+      const result = parse(
+        '<table>' +
+          '<thead>' +
+            '<tr>' +
+              '<th><strong>testing</strong></th>' +
+            '</tr>' +
+          '</thead>' +
+          '<tbody>' +
+            '<tr>' +
+              '<td><em>testing</em></td>' +
+            '</tr>' +
+            '<tr>' +
+              '<td><strike>testing</strike></td>' +
+            '</tr>' +
+          '</tbody>' +
+        '</table>'
+      );
+
+      expect(result).to.deep.equal(doc(
+        table(
+          tr(th({})(p(strong('testing')))),
+          tr(td({})(p(em('testing')))),
+          tr(td({})(p(strike('testing'))))
+        )
       ));
     });
   });
@@ -384,31 +453,6 @@ describe('BitbucketTransformer: parser', () => {
         p(
           'foo ',
           link('Atlassian'),
-          ' baz'
-        )
-      ));
-    });
-
-    it('created automatically for paths should be preserved', () => {
-      const link = a({
-        href: '/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/' +
-              'packages/@atlaskit/editor-bitbucket/package.json'
-      });
-
-      // The following HTML is rendered in a PR comment from relative markdown link:
-      //   [bar](packages/@atlaskit/editor-bitbucket/package.json)
-      expect(parse(
-        '<p>' +
-          'foo ' +
-          '<a href="/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/packages/@atlaskit/editor-bitbucket/package.json">' +
-            'bar' +
-          '</a>' +
-          ' baz' +
-        '</p>'
-      )).to.deep.equal(doc(
-        p(
-          'foo ',
-          link('bar'),
           ' baz'
         )
       ));

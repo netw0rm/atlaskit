@@ -295,4 +295,30 @@ describe('<ResourcedItemList/>', () => {
       });
     });
   });
+
+  describe('prop changes', () => {
+    it('initialQuery should clear items immediately, while waiting for new results', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(defaultResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      let resolver;
+      return waitUntil(() => component.state('items').length > 0).then(() => {
+        const getItemsPromise = new Promise(resolve => {
+          resolver = resolve;
+        });
+        provider.getItems.mockImplementation(() => getItemsPromise);
+        component.setProps({
+          initialQuery: {...query}
+        });
+        return waitUntil(() => component.state('items').length === 0);
+      }).then(() => {
+        expect(component.state('items').length).toBe(0);
+        resolver(defaultResponse);
+        return waitUntil(() => component.state('items').length > 0);
+      }).then(() => {
+        expect(component.state('items').length).toBe(defaultResponse.items.length);
+      });
+    });
+  });
 });

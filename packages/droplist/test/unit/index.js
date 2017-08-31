@@ -41,6 +41,7 @@ describe(`${name} - core`, () => {
       expect(layer.prop('offset')).toBe('0 8px');
       expect(layer.prop('position')).toBe('bottom left');
       expect(layer.prop('autoFlip')).toBe(wrapper.props().shouldFlip);
+      expect(layer.prop('boundariesElement')).toBe('viewport');
       expect(layer.prop('content')).not.toBe(undefined);
     });
 

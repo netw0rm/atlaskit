@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
-import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
+import Arrow from '@atlaskit/icon/glyph/arrow-right';
 
 import DropList, {
   Item as DeprecatedItem,

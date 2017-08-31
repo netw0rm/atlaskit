@@ -1,1 +1,1 @@
-export default from './Blanket';
+export { default } from './Blanket';

@@ -4,6 +4,14 @@ const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 const JIRA_CORE_GROUP = 'jira-core-users';
 const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
 const SITE_ADMINS_GROUP = 'site-admins';
+const VALID_GROUPS = [
+  JIRA_SOFTWARE_GROUP,
+  JIRA_CORE_GROUP,
+  JIRA_SERVICE_DESK_GROUP,
+  SITE_ADMINS_GROUP,
+];
+
+const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
 
 const usernamesEndpoint = (groupName, startIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
@@ -65,17 +73,35 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
     : [];
 };
 
+/**
+ * Retrieve the active groups on the instance that are valid for retrieval
+ * @returns Array of active group names in valid groups array
+ */
+const getActiveGroups = async () => {
+  const response = await fetch(GROUPS_ENDPOINT, {
+    credentials: 'same-origin',
+    dataType: 'json',
+  });
+
+  if (!(response.status >= 200 && response.status < 300)) {
+    throw new Error(`Unable to retrieve groups. Status: ${response.status}`);
+  }
+
+  const groups = await response.json();
+  return groups
+    .filter(group => group.active && VALID_GROUPS.includes(group.name))
+    .map(group => group.name);
+};
+
 const getUsersInGroup = async (group) => {
   let users;
   if (group === 'site-admins') {
     users = getJiraActiveUsernamesList(SITE_ADMINS_GROUP);
   } else {
-    const userLists = await Promise.all([
-      getJiraActiveUsernamesList(SITE_ADMINS_GROUP),
-      getJiraActiveUsernamesList(JIRA_SOFTWARE_GROUP),
-      getJiraActiveUsernamesList(JIRA_CORE_GROUP),
-      getJiraActiveUsernamesList(JIRA_SERVICE_DESK_GROUP),
-    ]);
+    const groups = await getActiveGroups();
+    const userLists = await Promise.all(
+      groups.map(groupName => getJiraActiveUsernamesList(groupName))
+    );
 
     const usernames = new Set();
 

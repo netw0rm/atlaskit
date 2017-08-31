@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 46.11.1 (2017-08-31)
+
+* bug fix; removed relative links and added tests ([9c07ea7](https://bitbucket.org/atlassian/atlaskit/commits/9c07ea7))
+
+* bug fix; remove auto formatting of relative links (issues closed: ed-2582) ([a36f9dc](https://bitbucket.org/atlassian/atlaskit/commits/a36f9dc))
+## 46.11.0 (2017-08-30)
+
+
+* feature; make ASCII conversion of emoji count as usage for showing frequent used emoji (issues closed: fs-1094) ([86a0be1](https://bitbucket.org/atlassian/atlaskit/commits/86a0be1))
+## 46.10.0 (2017-08-30)
+
+
+
+* bug fix; workaround double events for the attached and detached upload button. (issues closed: fs-1322) ([b3e19c3](https://bitbucket.org/atlassian/atlaskit/commits/b3e19c3))
+
+
+* feature; collab-plugin ([2c896c7](https://bitbucket.org/atlassian/atlaskit/commits/2c896c7))
+## 46.9.0 (2017-08-30)
+
+* feature; adding configuration to not allow deletion of table header. ([c5e1cc7](https://bitbucket.org/atlassian/atlaskit/commits/c5e1cc7))
+## 46.8.2 (2017-08-30)
+
+* bug fix; change blockQuote to blockquote in JSON Schema (issues closed: ed-2594) ([b32cfe2](https://bitbucket.org/atlassian/atlaskit/commits/b32cfe2))
 ## 46.8.1 (2017-08-30)
 
 * bug fix; prevent media insertion for task/decisions (issues closed: fs-1240) ([48dcf05](https://bitbucket.org/atlassian/atlaskit/commits/48dcf05))

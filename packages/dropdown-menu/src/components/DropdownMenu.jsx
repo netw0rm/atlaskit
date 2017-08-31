@@ -8,6 +8,7 @@ export default class DropdownMenu extends Component {
 
   static defaultProps = {
     appearance: 'default',
+    boundariesElement: 'viewport',
     defaultOpen: false,
     isLoading: false,
     isOpen: false,
@@ -81,13 +82,15 @@ export default class DropdownMenu extends Component {
   render() {
     const { isOpen } = this.state;
     const {
-      appearance, children, isLoading, items, position, shouldAllowMultilineItems,
-      shouldFitContainer, shouldFlip, trigger, triggerButtonProps, triggerType,
+      appearance, boundariesElement, children, isLoading, items, position,
+      shouldAllowMultilineItems, shouldFitContainer, shouldFlip, trigger,
+      triggerButtonProps, triggerType,
     } = this.props;
 
     return (
       <StatelessMenu
         appearance={appearance}
+        boundariesElement={boundariesElement}
         isOpen={isOpen}
         isLoading={isLoading}
         items={items}

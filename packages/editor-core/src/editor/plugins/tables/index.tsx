@@ -18,7 +18,7 @@ const tablesPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 900, plugin: () => plugin },
+      { rank: 900, plugin: () => plugin() },
       { rank: 910, plugin: () => tableEditing() },
     ];
   },

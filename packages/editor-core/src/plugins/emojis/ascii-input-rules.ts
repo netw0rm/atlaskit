@@ -24,7 +24,7 @@ function initMatcher(providerFactory: ProviderFactory) {
 
     provider.then(emojiProvider => {
       emojiProvider.getAsciiMap().then(map => {
-        matcher = new AsciiEmojiMatcher(map);
+        matcher = new RecordingAsciiEmojiMatcher(emojiProvider, map);
       });
     });
   };
@@ -123,6 +123,27 @@ class AsciiEmojiMatcher {
 
   private static getTrailingString(match: string[]): string {
     return match[AsciiEmojiMatcher.REGEX_TRAILING_CAPTURE_INDEX] || '';
+  }
+}
+
+/**
+ * A matcher that will record ascii matches as usages of the matched emoji.
+ */
+class RecordingAsciiEmojiMatcher extends AsciiEmojiMatcher {
+  private emojiProvider: EmojiProvider;
+
+  constructor(emojiProvider: EmojiProvider, asciiToEmojiMap: Map<string, EmojiDescription>) {
+    super(asciiToEmojiMap);
+    this.emojiProvider = emojiProvider;
+  }
+
+  match(matchParts: string[]): AsciiEmojiMatch | undefined {
+    const match = super.match(matchParts);
+    if (match && this.emojiProvider.recordSelection) {
+      this.emojiProvider.recordSelection(match.emoji);
+    }
+
+    return match;
   }
 }
 

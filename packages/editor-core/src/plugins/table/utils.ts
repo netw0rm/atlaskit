@@ -1,9 +1,11 @@
 import {
   TableMap,
   Node,
+  Slice,
   Fragment,
   Schema,
   EditorState,
+  EditorView,
   CellSelection
 } from '../../prosemirror';
 
@@ -71,4 +73,26 @@ export const getSelectedRow = (state: EditorState<any>): SelectedCells => {
   const head = $headCell.index(-1);
 
   return { anchor, head };
+};
+
+export const containsTable = (view: EditorView, slice: Slice): boolean => {
+  const { table } = view.state.schema.nodes;
+  let tablePresent = false;
+  slice.content.forEach(node => {
+    if (node.type === table) {
+      tablePresent = true;
+    }
+  });
+  return tablePresent;
+};
+
+export const containsTableHeader = (view: EditorView, table: Node): boolean => {
+  const { tableHeader } = view.state.schema.nodes;
+  let headerPresent = false;
+  table.content.forEach(row => {
+    if (row.firstChild!.type === tableHeader) {
+      headerPresent = true;
+    }
+  });
+  return headerPresent;
 };

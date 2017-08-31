@@ -8,6 +8,8 @@ import {
 } from '../../prosemirror';
 import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
+import { stateKey as tableStateKey } from '../table';
+import { containsTable } from '../table/utils';
 
 function isCode(str) {
   const lines = str.split(/\r?\n|\r/);
@@ -138,6 +140,13 @@ export const createPlugin = (schema: Schema<any, any>) => {
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
         const { schema } = view.state;
+        const { $from } = view.state.selection;
+        const selectedNode = $from.node($from.depth);
+
+        if (text && selectedNode.type === schema.nodes.codeBlock) {
+          view.dispatch(view.state.tr.insertText(text));
+          return true;
+        }
 
         if (
           (text && isCode(text)) ||
@@ -156,6 +165,17 @@ export const createPlugin = (schema: Schema<any, any>) => {
               new Slice(doc.content, slice.openStart, slice.openEnd)
             );
             view.dispatch(tr.scrollIntoView());
+            return true;
+          }
+        }
+
+        if (html) {
+          const tableState = tableStateKey.getState(view.state);
+          if (tableState && tableState.isRequiredToAddHeader() && containsTable(view, slice)) {
+            const { state, dispatch } = view;
+            const selectionStart = state.selection.$from.pos;
+            dispatch(state.tr.replaceSelection(slice));
+            tableState.addHeaderToTableNodes(slice, selectionStart);
             return true;
           }
         }

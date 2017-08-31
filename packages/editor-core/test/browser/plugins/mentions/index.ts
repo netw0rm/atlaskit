@@ -472,6 +472,14 @@ describe('mentions', () => {
     });
   });
 
+  describe('remove', () => {
+    it('should remove active mark when all text of mark is removed', () => {
+      const { editorView } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
+      sendKeyToPm(editorView, 'Delete');
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+    });
+  });
+
   describe('onMentionResult', () => {
 
 

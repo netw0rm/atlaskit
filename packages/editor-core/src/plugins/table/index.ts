@@ -12,6 +12,7 @@ import {
   Slice,
   Decoration,
   DecorationSet,
+  TextSelection,
 } from '../../prosemirror';
 import keymapHandler from './keymap';
 import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
@@ -20,7 +21,8 @@ import {
   getRowPos,
   getTablePos,
   getSelectedColumn,
-  getSelectedRow
+  getSelectedRow,
+  containsTableHeader,
 } from './utils';
 import { analyticsService } from '../../analytics';
 
@@ -29,6 +31,10 @@ export type TableStateSubscriber = (state: TableState) => any;
 export interface SelectedCell {
   pos: number;
   node: Node;
+}
+
+export interface PluginConfig {
+  isHeaderRowRequired?: boolean;
 }
 
 export class TableState {
@@ -45,14 +51,16 @@ export class TableState {
   domEvent: boolean = false;
   hoveredCells: SelectedCell[] = [];
 
+  private isHeaderRowRequired: boolean = false;
   private view: EditorView;
   private changeHandlers: TableStateSubscriber[] = [];
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState<any>, pluginConfig: PluginConfig = {}) {
     this.changeHandlers = [];
 
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
+    this.isHeaderRowRequired = pluginConfig.isHeaderRowRequired || false;
   }
 
   insertColumn = (column: number): void => {
@@ -131,7 +139,7 @@ export class TableState {
       const cell = this.getCurrentCell();
       const event = cell && cell.type === tableHeader ? 'delete_header_row' : 'delete_row';
       analyticsService.trackEvent(`atlassian.editor.format.table.${event}.button`);
-
+      const headerRowSelected = this.isHeaderRowSelected();
       // move the cursor to the beginning of the next row, or prev row if deleted row was the last row
       const { anchor, head } = getSelectedRow(this.view.state);
       const map = TableMap.get(this.tableNode!);
@@ -139,6 +147,9 @@ export class TableState {
       const maxRow = Math.max(anchor, head);
       const isRemovingLastRow = maxRow === (map.height - 1);
       tableBaseCommands.deleteRow(state, dispatch);
+      if (headerRowSelected && this.isHeaderRowRequired) {
+        this.convertFirstRowToHeader();
+      }
       const nextPos =  map.positionAt(isRemovingLastRow ? minRow - 1 : minRow, 0, this.tableNode!);
       this.moveCursorTo(nextPos);
     } else {
@@ -147,6 +158,12 @@ export class TableState {
       this.moveCursorInsideTableTo(state.selection.from);
       analyticsService.trackEvent('atlassian.editor.format.table.delete_content.button');
     }
+  }
+
+  convertFirstRowToHeader = () => {
+    this.selectRow(0);
+    const { state, dispatch } = this.view;
+    tableBaseCommands.toggleHeaderRow(state, dispatch);
   }
 
   subscribe(cb: TableStateSubscriber): void {
@@ -239,6 +256,20 @@ export class TableState {
     return false;
   }
 
+  isHeaderRowSelected = (): boolean => {
+    if (this.cellSelection && this.cellSelection.isRowSelection()) {
+      const { $from } = this.view.state.selection;
+      const { tableHeader } = this.view.state.schema.nodes;
+      for (let i = $from.depth; i > 0; i--) {
+        const node = $from.node(i);
+        if(node.type === tableHeader) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   isTableSelected = (): boolean => {
     if (this.cellSelection) {
       return this.cellSelection.isColSelection() && this.cellSelection.isRowSelection();
@@ -321,6 +352,21 @@ export class TableState {
         return $from.start(i);
       }
     }
+  }
+
+  isRequiredToAddHeader = (): boolean => this.isHeaderRowRequired;
+
+  addHeaderToTableNodes = (slice: Node, selectionStart: number): void => {
+    const { table } = this.view.state.schema.nodes;
+    slice.content.forEach((node: Node, offset: number) => {
+      if (node.type === table && !containsTableHeader(this.view, node)) {
+        const { state, dispatch } = this.view;
+        const { tr, doc } = state;
+        const $anchor = doc.resolve(selectionStart + offset);
+        dispatch(tr.setSelection(new TextSelection($anchor)));
+        this.convertFirstRowToHeader();
+      }
+    });
   }
 
   private getCurrentCell(): Node | undefined {
@@ -512,10 +558,10 @@ export class TableState {
 
 export const stateKey = new PluginKey('tablePlugin');
 
-export const plugin = new Plugin({
+export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
   state: {
     init(config, state: EditorState<any>) {
-      return new TableState(state);
+      return new TableState(state, pluginConfig);
     },
     apply(tr, pluginState: TableState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
@@ -574,8 +620,8 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = () => {
-  return [plugin, tableEditing()].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (pluginConfig?: PluginConfig) => {
+  return [plugin(pluginConfig), tableEditing()].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

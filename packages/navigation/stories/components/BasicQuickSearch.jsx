@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { action } from '@kadira/storybook';
-import { AkQuickSearch, AkQuickSearchWithKeyboardControls } from '../../src/index';
+import { AkQuickSearch, AkNavigationItemGroup, quickSearchResultTypes } from '../../src';
+
+const { PersonResult, RoomResult } = quickSearchResultTypes;
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
@@ -197,17 +199,38 @@ const data = [
   },
 ];
 
+const availableResultTypes = {
+  person: PersonResult,
+  room: RoomResult,
+};
+
+const mapResultsDataToComponents = (resultData =>
+  resultData.map(group => (
+    <AkNavigationItemGroup title={group.title} key={group.title}>
+      {group.items.map((props) => {
+        const Result = availableResultTypes[props.type];
+        return Result ? (
+          <Result key={props.resultId} {...props} />
+          ) : null;
+      })}
+    </AkNavigationItemGroup>
+  ))
+);
+
 function contains(string, query) {
   return string.toLowerCase().indexOf(query.toLowerCase()) > -1;
 }
 
 function searchData(query) {
-  const results = data.map(({ title, items }) => {
-    const filteredItems = items.filter(
-      item => contains(item.name, query)
-    );
-    return { title, items: filteredItems };
-  });
+  const results =
+    data
+      .map(({ title, items }) => {
+        const filteredItems = items.filter(
+          item => contains(item.name, query)
+        );
+        return { title, items: filteredItems };
+      })
+      .filter(group => group.items.length);
   return results;
 }
 
@@ -251,19 +274,15 @@ export default class BasicQuickSearch extends PureComponent {
   }
 
   render() {
-    const QuickSearchComp = this.props.withKeyboardControls
-      ? AkQuickSearchWithKeyboardControls
-      : AkQuickSearch;
     return (
-      <QuickSearchComp
+      <AkQuickSearch
         /* Search props */
         isLoading={this.state.isLoading}
         onSearchInput={({ target }) => { this.search(target.value); }}
         value={this.state.query}
-
-        /* SearchResults props */
-        results={this.state.results}
-      />
+      >
+        {mapResultsDataToComponents(this.state.results)}
+      </AkQuickSearch>
     );
   }
 }

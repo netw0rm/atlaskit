@@ -42,6 +42,8 @@ type DropdownMenuBaseProps = {
     * Tall menu has no restrictions.
     */
   appearance: 'default' | 'tall',
+  /** Value passed to the Layer component to determine when to reposition the droplist */
+  boundariesElement: 'viewport' | 'window' | 'scrollParent',
   /** Content that will be rendered inside the layer element. Should typically be
     * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
   children?: ReactElement,

@@ -120,6 +120,30 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p('some__variables__')));
     });
+
+    it('should convert "hello __text__" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, 'hello __text__', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('hello ', strong('text'))));
+    });
+
+    it('should convert "**^hello**" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '**^hello**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('^hello'))));
+    });
+
+    it('should convert "__^hello__" to strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '__^hello__', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('^hello'))));
+    });
   });
 
   describe('em rule', () => {
@@ -215,6 +239,30 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p('some_variables_')));
     });
+
+    it('should convert "hello _text_" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, 'hello _text_', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('hello ', em('text'))));
+    });
+
+    it('should convert "_^hello_" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '_^hello_', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('^hello'))));
+    });
+
+    it('should convert "*^hello*" to em', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '*^hello*', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('^hello'))));
+    });
   });
 
   describe('stike rule', () => {
@@ -270,6 +318,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, 'some~~texts~~', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p('some', strike('texts'))));
+    });
+
+    it('should convert "~~^hello~~" to strike', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '~~^hello~~', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('^hello'))));
     });
   });
 
@@ -339,6 +395,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
       expect(editorView.state.doc).to.deep.equal(doc(p(code('text'), 'text')));
     });
+
+    it('should convert "`^hello`" to code', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`^hello`', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('^hello'))));
+    });
   });
 
   describe('nested rules', () => {
@@ -366,6 +430,23 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '*', editorView.state.selection.from);
       expect(editorView.state.doc).to.deep.equal(doc(p(em(code('text')))));
+    });
+
+    it('should convert "___text___" to italic strong', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '___text__', sel);
+      insertText(editorView, '_', editorView.state.selection.from);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(em(strong(('text'))))));
+    });
+
+    it('should not convert " __world__" to strong if I insert a space afterwards', () => {
+      const { editorView, sel } = editor(doc(p(' __world__{<>}')));
+
+      insertText(editorView, ' ', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(' __world__ ')));
     });
 
     it('should convert "~~**text**~~" to strike strong', () => {

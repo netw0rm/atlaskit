@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import AkAvatar from '@atlaskit/avatar';
 import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../src';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 
 const { ResultBase } = quickSearchResultTypes;
 
@@ -61,14 +62,21 @@ class CustomResultFromInterface extends PureComponent {
   }
 }
 
+const searchIcon = <SearchIcon label="search" />;
+
 export default (
-  <AkSearchDrawer isOpen>
-    <AkQuickSearch placeholder="Sorry, no search callback in this story">
+  <AkSearchDrawer
+    backIcon={searchIcon}
+    isOpen
+    onBackButton={() => {}}
+    primaryIcon={searchIcon}
+  >
+    <AkQuickSearch onSearchInput={() => {}} placeholder="Sorry, no search callback in this story">
       <AkNavigationItemGroup title="Custom result type built on top of existing result type">
-        {[0, 1, 2, 3].map(n => <CustomResultFromBase resultId={n} index={n} />)}
+        {[0, 1, 2, 3].map(n => <CustomResultFromBase resultId={n} index={n} key={n} />)}
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="Custom result type built from scratch">
-        {[4, 5, 6, 7].map(n => <CustomResultFromInterface resultId={n} index={n} />)}
+        {[4, 5, 6, 7].map(n => <CustomResultFromInterface resultId={n} index={n} key={n} />)}
       </AkNavigationItemGroup>
     </AkQuickSearch>
   </AkSearchDrawer>

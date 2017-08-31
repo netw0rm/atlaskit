@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import AtlassianContainerResult from './AtlassianContainerResult';
 
+const JIRA_PROJECT_RESULT_TYPE = 'jira-project';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -41,11 +43,12 @@ export default class JiraProjectResult extends PureComponent {
     /** Type of Jira project. Shown alongside the main `name` text. */
     projectType: PropTypes.oneOf(['Business project', 'Software project', 'Service desk']),
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
     onClick: () => {},
+    type: JIRA_PROJECT_RESULT_TYPE,
   }
 
   render() {

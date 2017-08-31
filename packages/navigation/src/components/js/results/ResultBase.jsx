@@ -40,7 +40,7 @@ export default class ResultBase extends PureComponent {
     /** Main text to be displayed as the item. */
     text: PropTypes.string.isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {

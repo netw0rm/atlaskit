@@ -10,6 +10,14 @@ import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
 import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
 
+const noOpInteractionProps = {
+  isSelected: false,
+  onClick: () => {},
+  onMouseEnter: () => {},
+  onMouseLeave: () => {},
+  resultId: 'default_result_id',
+};
+
 const {
   AtlassianContainerResult,
   AtlassianObjectResult,
@@ -48,18 +56,20 @@ storiesOf(`${name}/QuickSearch`, module)
     CustomQuickSearchResults
   ))
   .add('Example results', () => withRootTheme(
-    <div style={{ padding: '2em' }}>
+    <div style={{ padding: '32px', maxWidth: '640px', textAlign: 'justify' }}>
       <h3>People</h3>
       People results have circular avatar and a name.
       They can optionally display a mention handle and presence.
       <AkNavigationItemGroup title="People examples" key="People examples">
         <PersonResult
+          {...noOpInteractionProps}
           avatarUrl={getPersonAvatarUrl('owkenobi')}
           mentionName="BenKen"
           name="Obi Wan Kenobi"
           presenceState="online"
         />
         <PersonResult
+          {...noOpInteractionProps}
           avatarUrl={getPersonAvatarUrl('qgjinn')}
           mentionName="MasterQ"
           name="Qui-Gon Jinn"
@@ -67,6 +77,7 @@ storiesOf(`${name}/QuickSearch`, module)
           presenceState="offline"
         />
         <PersonResult
+          {...noOpInteractionProps}
           avatarUrl={getPersonAvatarUrl('sidious')}
           mentionName="TheEmperor"
           mentionPrefix="#"
@@ -74,24 +85,28 @@ storiesOf(`${name}/QuickSearch`, module)
           presenceMessage="Custom mention prefix"
           presenceState="busy"
         />
-        <PersonResult key="4" name="Minimum detail person" />
+        <PersonResult {...noOpInteractionProps} key="4" name="Minimum detail person" />
       </AkNavigationItemGroup>
       <h3>Containers</h3>
       Containers have square avatars, can be marked as private and have a name and subText fields.
       <AkNavigationItemGroup title="Container examples" key="Container examples">
         <AtlassianContainerResult
+          {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(3)}
           name="Cargo boxes"
           subText="They're big!"
+          type="container"
         />
         <AtlassianContainerResult
+          {...noOpInteractionProps}
           isPrivate
           name="Private container"
         />
-        <AtlassianContainerResult key="3" name="Minimum detail container" />
+        <AtlassianContainerResult {...noOpInteractionProps} key="3" name="Minimum detail container" />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="Confluence space example" key="Confluence space example">
         <ConfluenceSpaceResult
+          {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(4)}
           isPrivate
           name="Phillip Jacobs' personal space"
@@ -100,13 +115,15 @@ storiesOf(`${name}/QuickSearch`, module)
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="Jira project example" key="Jira project example">
         <JiraProjectResult
+          {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(5)}
           name="AtlasKit"
-          projectType="Software Project"
+          projectType="Software project"
         />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="HipChat room example" key="HipChat room example">
         <RoomResult
+          {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(1)}
           isPrivate
           name="No Homers"
@@ -120,17 +137,20 @@ storiesOf(`${name}/QuickSearch`, module)
       entity.  They can optionally display an object key.
       <AkNavigationItemGroup title="Object examples" key="Object examples">
         <AtlassianObjectResult
+          {...noOpInteractionProps}
           avatarUrl={sampleAvatars.jiraIssueBug}
           name="Too much awesomeness in one repo"
           objectKey="AK-9001"
           containerName="AtlasKit"
         />
         <AtlassianObjectResult
+          {...noOpInteractionProps}
           avatarUrl={sampleAvatars.confluenceBlog}
           name="Yeah, I cut my dev loop in half, but you'll never guess what happened next!"
           containerName="Buzzfluence"
         />
         <AtlassianObjectResult
+          {...noOpInteractionProps}
           avatarUrl={sampleAvatars.confluencePage}
           name="Prank schedule: April 2017"
           containerName="The Scream Team"
@@ -140,12 +160,16 @@ storiesOf(`${name}/QuickSearch`, module)
 
       <h3>Miscellaneous</h3>
       If the preset result types do not support the shape required, ResultBase can be used
-      directly for maximum flexibility whilst maintaining QuickSearch compatibility.
+      directly or composed to help create QuickSearch compatible results. Fully custom result
+      types can be created from scratch and still be QuickSearch compatible as long as they
+      implement the required props
       <AkNavigationItemGroup title="Miscellaneous examples" key="Miscellaneous examples">
         <ResultBase
+          {...noOpInteractionProps}
           text="I don't even have an icon or subText"
         />
         <ResultBase
+          {...noOpInteractionProps}
           caption="#ReSuLtsUNl3a$h3d!"
           icon={<AudioCircleIcon size="large" primaryColor="#FFEBE5" secondaryColor="RebeccaPurple" />}
           text="Cronenberg result"

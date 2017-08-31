@@ -5,6 +5,8 @@ import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
 
+const CONTAINER_RESULT_TYPE = 'container';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -44,11 +46,12 @@ export default class AtlassianContainerResult extends PureComponent {
     /** Text to be shown alongside the main `name` text. */
     subText: PropTypes.string,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
     onClick: () => {},
+    type: CONTAINER_RESULT_TYPE,
   }
 
   getAvatar = () => (

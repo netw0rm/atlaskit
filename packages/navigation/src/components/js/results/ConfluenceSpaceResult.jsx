@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import AtlassianContainerResult from './AtlassianContainerResult';
 
+const CONFLUENCE_SPACE_RESULT_TYPE = 'confluence-space';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -46,6 +48,7 @@ export default class ConfluenceSpaceResult extends PureComponent {
 
   static defaultProps = {
     onClick: () => {},
+    type: CONFLUENCE_SPACE_RESULT_TYPE,
   }
 
   render() {

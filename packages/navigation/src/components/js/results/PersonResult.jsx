@@ -48,7 +48,7 @@ export default class PersonResult extends PureComponent {
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {

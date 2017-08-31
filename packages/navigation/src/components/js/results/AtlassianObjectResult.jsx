@@ -5,6 +5,8 @@ import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
 
+const OBJECT_RESULT_TYPE = 'object';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -46,11 +48,12 @@ export default class AtlassianObjectResult extends PureComponent {
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
     onClick: () => {},
+    type: OBJECT_RESULT_TYPE,
   }
 
   getAvatar = () => (

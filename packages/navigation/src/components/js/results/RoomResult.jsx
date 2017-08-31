@@ -43,7 +43,7 @@ export default class RoomResult extends PureComponent {
     /** Topic line of the room. Shown alongside the main `name` text. */
     topic: PropTypes.string,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {

@@ -50,11 +50,12 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
+  ConfluenceTransformer,
+  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
-import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
@@ -95,6 +96,7 @@ export default class Editor extends PureComponent<Props, State> {
   mentionProvider: Promise<MentionProvider>;
   editorView?: EditorView;
 
+  private transformer = new ConfluenceTransformer(schema);
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
 
@@ -185,7 +187,7 @@ export default class Editor extends PureComponent<Props, State> {
       await mediaPluginState.waitForPendingTasks();
 
       return editorView && editorView.state.doc
-          ? encode(editorView.state.doc)
+          ? this.transformer.encode(editorView.state.doc)
           : this.props.defaultValue;
     })();
   }
@@ -301,7 +303,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { tablesEnabled, defaultValue } = this.props;
 
     if (place) {
-      const doc = parse(defaultValue || '');
+      const doc = this.transformer.parse(defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -336,6 +338,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
+      const supportedLanguages = Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name]);
       codeBlockState.setLanguages(supportedLanguages);
 
       const editorView = new EditorView(place, {
@@ -367,7 +370,7 @@ export default class Editor extends PureComponent<Props, State> {
           const html = clipboardData && clipboardData.getData('text/html');
           // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
           if (html && !html.match(/<table[^>]+>/g)) {
-            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+            const doc = this.transformer.parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
               view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
             );

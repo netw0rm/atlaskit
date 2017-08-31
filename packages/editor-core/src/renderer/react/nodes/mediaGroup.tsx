@@ -15,7 +15,7 @@ export interface MediaGroupState {
 }
 
 export const SINGLE_FILE_HEIGHT = 180;
-export const SINGLE_LINK_HEIGHT = 116;
+export const SINGLE_LINK_HEIGHT = 300;
 
 const padding = css`
   padding: ${akGridSize} 0;
@@ -86,9 +86,10 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
       <SingleLinkWrapper>{
         React.cloneElement(child, {
           cardDimensions: {
-            width: 432,
+            width: 350,
             height: SINGLE_LINK_HEIGHT,
           },
+          appearance: 'square'
         } as MediaProps)
       }</SingleLinkWrapper>
     );

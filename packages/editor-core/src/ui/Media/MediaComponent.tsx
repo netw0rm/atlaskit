@@ -24,6 +24,8 @@ import { EditorView } from '../../prosemirror';
 import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 
+export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
+
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
@@ -31,6 +33,7 @@ export interface Props extends MediaAttributes {
   onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
   resizeMode?: ImageResizeMode;
+  appearance?: Appearance;
 }
 
 export interface State extends MediaState {
@@ -137,7 +140,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderLink() {
     const { mediaProvider, linkCreateContext, Card, CardView } = this.state;
-    const { id, collection, cardDimensions, onDelete, ...otherProps } = this.props;
+    const { id, collection, cardDimensions, onDelete, appearance, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
       return null;
@@ -157,7 +160,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       const url = id.substr(id.indexOf(':', 11) + 1);
       return (
         <CardView
-          metadata={{type: 'link', url, title: ''}}
+          metadata={{ type: 'link', url, title: '' }}
           status="loading"
           mediaItemType="link"
           dimensions={cardDimensions}
@@ -166,7 +169,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (onDelete) {
-      (otherProps as any).actions = [ CardDelete(onDelete) ];
+      (otherProps as any).actions = [CardDelete(onDelete)];
     }
 
     return (
@@ -174,7 +177,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         context={linkCreateContext}
         dimensions={cardDimensions}
         identifier={identifier}
-        appearance="horizontal"
+        appearance={appearance || 'horizontal'}
         resizeMode={this.resizeMode}
         {...otherProps as any}
       />
@@ -212,7 +215,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const otherProps: any = {};
 
     if (onDelete) {
-      otherProps.actions = [ CardDelete(onDelete) ];
+      otherProps.actions = [CardDelete(onDelete)];
     }
 
     if (onClick) {
@@ -271,7 +274,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     const otherProps: any = {};
     if (onDelete) {
-      otherProps.actions = [ CardDelete(onDelete) ];
+      otherProps.actions = [CardDelete(onDelete)];
     }
 
     if (!CardView) {
@@ -323,14 +326,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       const mediaState = stateManager.getState(id);
 
       stateManager.subscribe(id, this.handleMediaStateChange);
-      this.setState({id,  ...mediaState });
+      this.setState({ id, ...mediaState });
     }
 
     await this.setContext('viewContext', mediaProvider);
     await this.setContext('linkCreateContext', mediaProvider);
   }
 
-  private setContext = async (contextName: string, mediaProvider: MediaProvider) =>  {
+  private setContext = async (contextName: string, mediaProvider: MediaProvider) => {
     let context = await mediaProvider[contextName];
 
     if (this.destroyed || !context) {
@@ -360,7 +363,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private get resizeMode(): ImageResizeMode {
-    const {resizeMode} = this.props;
+    const { resizeMode } = this.props;
 
     return resizeMode || 'full-fit';
   }

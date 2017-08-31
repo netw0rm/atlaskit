@@ -5,8 +5,8 @@ import inputRulePlugin from '../../../plugins/hyperlink/input-rule';
 import keymap from '../../../plugins/hyperlink/keymap';
 import { link } from '../../../schema/marks/link';
 import pluginKey from '../../../plugins/hyperlink/plugin-key';
-import HyperlinkEdit from '../../../ui/HyperlinkEdit';
-import ToolbarHyperlink from '../../../ui/ToolbarHyperlink';
+import HyperlinkEdit from './ui/HyperlinkEdit';
+import ToolbarHyperlink from './ui/ToolbarHyperlink';
 
 const hyperlinkPlugin: EditorPlugin = {
   marks() {

@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
-import HyperlinkEdit from '../../../../src/ui/HyperlinkEdit';
+import HyperlinkEdit from '../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import RecentSearch from '../../../../src/ui/RecentSearch';
 import RecentItem from '../../../../src/ui/RecentSearch/RecentItem';

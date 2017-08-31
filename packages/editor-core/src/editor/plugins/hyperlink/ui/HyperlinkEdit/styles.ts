@@ -1,6 +1,6 @@
 import { akColorN10, akColorN30 } from '@atlaskit/util-shared-styles';
-import FloatingToolbarDefault from '../FloatingToolbar';
-import ToolbarButtonDefault from '../ToolbarButton';
+import FloatingToolbarDefault from '../../../../../ui/FloatingToolbar';
+import ToolbarButtonDefault from '../../../../../ui/ToolbarButton';
 import styled from 'styled-components';
 import { ComponentClass } from 'react';
 

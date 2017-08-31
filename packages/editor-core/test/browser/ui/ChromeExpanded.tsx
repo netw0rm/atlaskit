@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
-import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
+import HyperlinkEdit from '../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
 import LanguagePicker from '../../../src/ui/LanguagePicker';
 import MentionPicker from '../../../src/ui/MentionPicker';
 import EmojiTypeAhead from '../../../src/ui/EmojiTypeAhead';

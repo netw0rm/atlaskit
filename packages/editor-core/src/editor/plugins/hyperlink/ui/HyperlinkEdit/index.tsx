@@ -3,12 +3,12 @@ import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
 import { ActivityProvider } from '@atlaskit/activity';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HyperlinkState } from '../../plugins/hyperlink';
-import PanelTextInput from '../PanelTextInput';
+import { HyperlinkState } from '../../../../../plugins/hyperlink';
 import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
-import { EditorView } from '../../prosemirror';
-import { normalizeUrl } from '../../plugins/hyperlink/utils';
-import RecentSearch from '../RecentSearch';
+import { EditorView } from '../../../../../prosemirror';
+import { normalizeUrl } from '../../../../../plugins/hyperlink/utils';
+import PanelTextInput from '../../../../../ui/PanelTextInput';
+import RecentSearch from '../../../../../ui/RecentSearch';
 
 const TEXT_NODE = 3;
 

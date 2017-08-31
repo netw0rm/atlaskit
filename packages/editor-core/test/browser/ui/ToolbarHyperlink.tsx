@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
 import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink';
-import ToolbarHyperlink from '../../../src/ui/ToolbarHyperlink';
+import ToolbarHyperlink from '../../../src/editor/plugins/hyperlink/ui/ToolbarHyperlink';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';

@@ -23,7 +23,7 @@ import { MediaPluginState, stateKey as mediaPluginKey } from '../../plugins/medi
 import { TextColorState } from '../../plugins/text-color';
 import { TableState } from '../../plugins/table';
 import EmojiTypeAhead from '../EmojiTypeAhead';
-import HyperlinkEdit from '../HyperlinkEdit';
+import HyperlinkEdit from '../../editor/plugins/hyperlink/ui/HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
 import PanelEdit from '../PanelEdit';
@@ -32,7 +32,7 @@ import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import ToolbarMention from '../ToolbarMention';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHelp from '../ToolbarHelp';
-import ToolbarHyperlink from '../ToolbarHyperlink';
+import ToolbarHyperlink from '../../editor/plugins/hyperlink/ui/ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';

@@ -8,9 +8,6 @@ describe('hyperlink', () => {
       ['mailto:prettyandsimple@example.com', 'mailto:prettyandsimple@example.com'],
       ['example.com', 'http://example.com'],
       ['http://example.com', 'http://example.com'],
-      ['/index.php', '/index.php'],
-      ['./index.php', './index.php'],
-      ['#hash', '#hash'],
       ['', '']
     ];
 
@@ -53,6 +50,9 @@ describe('hyperlink', () => {
     });
 
     it('should not match non-web schemes', () => {
+      expect(getLinkMatch('#hello')).to.equal(null);
+      expect(getLinkMatch('./index.php')).to.equal(null);
+      expect(getLinkMatch('/index.php')).to.equal(null);
       expect(getLinkMatch('app://atlassian.com')).to.equal(null);
       expect(getLinkMatch('tcp://173.123.21.12')).to.equal(null);
       expect(getLinkMatch('javascript:alert(1);')).to.equal(null);

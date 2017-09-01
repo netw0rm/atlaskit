@@ -63,11 +63,10 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
 
       if (previousNodeIsList && !parentNodeIsList) {
         const content = $from.node($from.depth).content;
-        const itemType = previousNodeType === decisionList ? decisionItem : taskItem;
 
         deleteCurrentItem($from, tr)
-          .insert(previousPos.pos, itemType.create({}, content))
-          .setSelection(new TextSelection(tr.doc.resolve(previousPos.pos + 1)))
+          .insert(previousPos.pos - 1, content)
+          .setSelection(new TextSelection(tr.doc.resolve(previousPos.pos - 1)))
           .scrollIntoView()
         ;
 

@@ -10,6 +10,7 @@ import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
+import { isSingleLine } from './util';
 
 function isCode(str) {
   const lines = str.split(/\r?\n|\r/);
@@ -152,8 +153,14 @@ export const createPlugin = (schema: Schema<any, any>) => {
           (text && isCode(text)) ||
           (text && html && node && node.type === schema.nodes.codeBlock)
         ) {
-          const codeBlockNode = schema.nodes.codeBlock.create(node ? node.attrs : {}, schema.text(text));
-          const tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+          let tr;
+          if (isSingleLine(text)) {
+            tr = view.state.tr.insertText(text);
+            tr = tr.addMark($from.pos, $from.pos + text.length, schema.marks.code.create());
+          } else {
+            const codeBlockNode = schema.nodes.codeBlock.create(node ? node.attrs : {}, schema.text(text));
+            tr = view.state.tr.replaceSelectionWith(codeBlockNode);
+          }
           view.dispatch(tr.scrollIntoView());
           return true;
         }

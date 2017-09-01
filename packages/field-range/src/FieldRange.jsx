@@ -55,7 +55,7 @@ export default class Slider extends PureComponent {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  onInputChange = (e: any) => {
+  onInputChange = (e: Object) => {
     const value = parseFloat(e.target.value);
     const { onChange } = this.props;
 

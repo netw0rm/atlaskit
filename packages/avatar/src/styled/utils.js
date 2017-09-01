@@ -36,7 +36,7 @@ export function getAvatarDimensions(
 }
 
 // expose here for use with multiple element types
-export function getInnerStyles(props: any) {
+export function getInnerStyles(props: Object) {
   const boxSizing: string = 'content-box';
   const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
   const isInteractive: boolean = props.isInteractive || props.href || props.onClick;

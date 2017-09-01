@@ -10,7 +10,7 @@ const items = Array(4).fill(true).map((item, index) => (
 ));
 
 class BoundariesElementExample extends Component {
-  static propTypes = {
+  static propTypes : Object = {
     appearance: PropTypes.oneOf(['normal', 'tall']),
     withGroup: PropTypes.bool,
   }

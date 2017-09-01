@@ -33,7 +33,7 @@ export default class ChangelogExplorer extends PureComponent {
     if (semver) this.setState({ range: decodeURI(String(this.props.match.params.semver)) });
   }
 
-  handleChange = (e: any) => {
+  handleChange = (e: Object) => {
     const { component } = this.props.match.params;
     const range = e.target.value;
     let isInvalid = false;

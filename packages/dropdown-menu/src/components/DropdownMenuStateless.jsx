@@ -115,7 +115,7 @@ export default class DropdownMenuStateless extends Component {
     this.domItemsList[this.focusedItem].focus();
   }
 
-  isTargetChildItem = (target: any) => {
+  isTargetChildItem = (target: Object) => {
     if (!target) return false;
 
     const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
@@ -234,17 +234,17 @@ export default class DropdownMenuStateless extends Component {
     );
   }
 
-  open = (attrs: any) => {
+  open = (attrs: Object) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  close = (attrs: any) => {
+  close = (attrs: Object) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
-  toggle = (attrs: any) => {
+  toggle = (attrs: Object) => {
     if (attrs.source === 'keydown') return;
 
     if (this.props.isOpen) {

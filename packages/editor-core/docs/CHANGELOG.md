@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.13.1 (2017-09-01)
+
+* bug fix; support activity provider in hyperlinkedit in new editor architecture ([d45ee4e](https://bitbucket.org/atlassian/atlaskit/commits/d45ee4e))
 ## 46.13.0 (2017-09-01)
 
 * feature; pasting a single word or single line of code should create an inline code block. ([e64a721](https://bitbucket.org/atlassian/atlaskit/commits/e64a721))

@@ -9,6 +9,8 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
+import RadioGroupSpacing from '../styled/RadioGroupSpacing';
+import CustomLabel from '../styled/CustomLabel';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -67,18 +69,14 @@ class AdminSettings extends Component {
     this.setState({
       selectedRadio: evt.target.value,
     });
-  }
+  };
 
   render() {
     return (
       <ModalDialog
         isOpen={this.state.isOpen}
         width="small"
-        header={
-          <OptOutHeader>
-            {this.props.header}
-          </OptOutHeader>
-        }
+        header={<OptOutHeader>{this.props.header}</OptOutHeader>}
         footer={
           <OptOutFooter>
             <SpinnerDiv>
@@ -96,26 +94,34 @@ class AdminSettings extends Component {
               />
             </Button>
             <Button onClick={this.handleCancelClick} appearance="subtle-link">
-              <FormattedMessage
-                id="xflow-generic.opt-out.cancel-button"
-                defaultMessage="Cancel"
-              />
+              <FormattedMessage id="xflow-generic.opt-out.cancel-button" defaultMessage="Cancel" />
             </Button>
           </OptOutFooter>
         }
       >
-        <AkFieldRadioGroup
-          label="Change your notifications, or stop requests completely."
-          onRadioChange={this.handleRadioChange}
-          items={[
-            { value: 'personal-opt-out',
-              label: 'I don\'t want to get trial requests from users',
-              isSelected: this.state.selectedRadio === 'personal-opt-out' },
-            { value: 'blanket-opt-out',
-              label: 'Turn off trial requesting for all users',
-              isSelected: this.state.selectedRadio === 'blanket-opt-out' },
-          ]}
-        />
+        <RadioGroupSpacing>
+          <AkFieldRadioGroup
+            label="Change your notifications, or stop requests completely."
+            onRadioChange={this.handleRadioChange}
+            items={[
+              {
+                value: 'personal-opt-out',
+                label: (
+                  <CustomLabel>
+                    I don&apos;t want to get trial requests from users<br />
+                    <small>I Any other site admins will still receive trial requests</small>
+                  </CustomLabel>
+                ),
+                isSelected: this.state.selectedRadio === 'personal-opt-out',
+              },
+              {
+                value: 'blanket-opt-out',
+                label: 'Turn off trial requesting for all users',
+                isSelected: this.state.selectedRadio === 'blanket-opt-out',
+              },
+            ]}
+          />
+        </RadioGroupSpacing>
         {this.props.children}
       </ModalDialog>
     );
@@ -124,6 +130,4 @@ class AdminSettings extends Component {
 
 export const AdminSettingsBase = withAnalytics(AdminSettings);
 
-export default withXFlowProvider(
-  AdminSettingsBase
-);
+export default withXFlowProvider(AdminSettingsBase);

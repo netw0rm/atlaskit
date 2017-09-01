@@ -29,7 +29,7 @@ import {
   ErrorReportingHandler,
 } from '../../src';
 
-import { Chrome } from '../../';
+import { Chrome } from '../../src';
 import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
 import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../../src/plugins/clear-formatting';
 import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugins/code-block';

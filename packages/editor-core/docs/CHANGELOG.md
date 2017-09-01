@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 46.13.2 (2017-09-01)
+
+* bug fix; pass eventDispatcher to PluginSlot (issues closed: ed-2634) ([ee59df4](https://bitbucket.org/atlassian/atlaskit/commits/ee59df4))
+* bug fix; fix editor-core storybook for real (issues closed: ed-2614) ([704a76e](https://bitbucket.org/atlassian/atlaskit/commits/704a76e))
+* bug fix; do not show frequent links in the recently viewed link dialog ([5a175e9](https://bitbucket.org/atlassian/atlaskit/commits/5a175e9))
+* bug fix; fire onChange only when docChanged = true (issues closed: ed-2421) ([5605a74](https://bitbucket.org/atlassian/atlaskit/commits/5605a74))
 ## 46.13.1 (2017-09-01)
 
 * bug fix; support activity provider in hyperlinkedit in new editor architecture ([d45ee4e](https://bitbucket.org/atlassian/atlaskit/commits/d45ee4e))

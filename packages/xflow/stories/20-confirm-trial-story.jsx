@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { ConfirmTrialBase } from '../src/start-trial/components/ConfirmTrial';
+import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ConfirmTrial';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';

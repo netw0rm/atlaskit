@@ -12,13 +12,13 @@ import {
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import mockConfluenceStatusChecker from '../../../stories/providers/mockConfluenceStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
-import StartTrial from '../../../src/start-trial/components/StartTrial';
-import ConfirmTrial from '../../../src/start-trial/components/ConfirmTrial';
-import GrantAccess from '../../../src/start-trial/components/GrantAccess';
-import LoadingTime from '../../../src/start-trial/components/LoadingTime';
-import AlreadyStarted from '../../../src/start-trial/components/AlreadyStarted';
-import ProgressIndicator from '../../../src/start-trial/components/ProgressIndicator';
-import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
+import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
+import ConfirmTrial from '../../../src/request-or-start-trial/components/ConfirmTrial';
+import GrantAccess from '../../../src/request-or-start-trial/components/GrantAccess';
+import LoadingTime from '../../../src/request-or-start-trial/components/LoadingTime';
+import AlreadyStarted from '../../../src/request-or-start-trial/components/AlreadyStarted';
+import ProgressIndicator from '../../../src/request-or-start-trial/components/ProgressIndicator';
+import ErrorFlag from '../../../src/request-or-start-trial/components/ErrorFlag';
 import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 
 const noop = () => {};

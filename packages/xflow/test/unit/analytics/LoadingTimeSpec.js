@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { LoadingTimeBase } from '../../../src/start-trial/components/LoadingTime';
+import { LoadingTimeBase } from '../../../src/request-or-start-trial/components/LoadingTime';
 import { withAnalyticsSpy, waitFor } from '../../util';
 import { ACTIVATING, ACTIVE } from '../../../src/common/productProvisioningStates';
 

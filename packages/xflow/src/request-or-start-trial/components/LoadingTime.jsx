@@ -16,7 +16,7 @@ import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
 import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
 import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
 import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
-import SpinnerDiv from '../styled/SpinnerDiv';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 

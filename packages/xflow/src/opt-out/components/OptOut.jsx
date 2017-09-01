@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
-export default class App extends Component {
+import { xFlowShape } from '../../common/components/XFlowProvider';
+import XFlowAnalyticsListener from '../../common/components/XFlowAnalyticsListener';
+
+import AdminSettings from './AdminSettings';
+
+export default class OptOut extends Component {
+  static contextTypes = {
+    xFlow: xFlowShape,
+  };
+
   static propTypes = {
-    children: PropTypes.node,
-    onAnalyticsEvent: PropTypes.func,
-    sourceComponent: PropTypes.string,
-    sourceContext: PropTypes.string,
+    sourceComponent: PropTypes.string.isRequired,
+    sourceContext: PropTypes.string.isRequired,
+    onAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   handleAnalyticsEvent = (name, data) => {
@@ -24,7 +31,7 @@ export default class App extends Component {
   render() {
     return (
       <XFlowAnalyticsListener onEvent={this.handleAnalyticsEvent}>
-        {this.props.children}
+        <AdminSettings />
       </XFlowAnalyticsListener>
     );
   }

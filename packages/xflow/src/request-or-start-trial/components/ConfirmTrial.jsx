@@ -7,7 +7,7 @@ import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-i
 import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from './ErrorFlag';
 
-import SpinnerDiv from '../styled/SpinnerDiv';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { ProviderFactory } from '@atlaskit/editor-core';
 import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
@@ -28,3 +29,15 @@ export const createRenderer = (provider: TaskDecisionProvider) => {
   );
   return renderDocument;
 };
+
+// tslint:disable-next-line:variable-name
+export const MessageContainer = styled.div`
+  border: 10px solid #ccc;
+  width: 585px
+`;
+
+// tslint:disable-next-line:variable-name
+export const SidebarContainer = styled.div`
+  border: 10px solid #ccc;
+  width: 240px
+`;

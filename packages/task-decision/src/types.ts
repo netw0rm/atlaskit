@@ -91,6 +91,13 @@ export interface Query {
   sortCriteria?: SortCriteria;
 }
 
+export interface Participant {
+  id: string;
+  displayName: string;
+  nickname: string;
+  avatarUrl: string;
+}
+
 export interface ServiceTask {
   containerAri: string;
   creationDate: string;
@@ -99,7 +106,7 @@ export interface ServiceTask {
   localId: string;
   objectAri: string;
   parentLocalId: string;
-  participants: any[];
+  participants: Participant[];
   position: number;
   // Atlassian Document fragment (json string)
   rawContent: string;
@@ -112,7 +119,7 @@ export interface Task extends BaseItem<TaskState> {
   creatorId: string;
   lastUpdateDate: Date;
   parentLocalId: string;
-  participants: any[];
+  participants: Participant[];
   position: number;
   // Atlassian Document fragment
   content: any;
@@ -179,4 +186,4 @@ export interface OnUpdate<T> {
   (allDecisions: T[], newDecisions: T[]): void;
 }
 
-export type Appearance = 'elevated' | 'flat';
+export type Appearance = 'inline' | 'card';

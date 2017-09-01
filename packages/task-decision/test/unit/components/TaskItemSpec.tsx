@@ -2,8 +2,10 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import TaskItem from '../../../src/components/TaskItem';
+import Participants from '../../../src/components/Participants';
 import { ContentWrapper } from '../../../src/styled/Item';
 import { Placeholder } from '../../../src/styled/Placeholder';
+import { getParticipants } from '../../../src/support/test-data';
 
 describe('<TaskItem/>', () => {
   it('should render children', () => {
@@ -36,7 +38,7 @@ describe('<TaskItem/>', () => {
 
 
   describe('showPlaceholder', () => {
-    it('shoud render placeholder if task is empty', () => {
+    it('should render placeholder if task is empty', () => {
       const component = mount(<TaskItem taskId="task-1" showPlaceholder={true} />);
       expect(component.find(Placeholder).length).toEqual(1);
     });
@@ -46,6 +48,22 @@ describe('<TaskItem/>', () => {
         <TaskItem taskId="task-1" showPlaceholder={true}>Hello <b>world</b></TaskItem>
       );
       expect(component.find(Placeholder).length).toEqual(0);
+    });
+  });
+
+  describe('participants', () => {
+    const participants = getParticipants(2);
+
+    it('participants not used for message style item', () => {
+      const component = mount(<TaskItem taskId="task-1" appearance="inline" participants={participants} />);
+      expect(component.find(Participants).length).toEqual(0);
+    });
+
+    it('participants used for card style item', () => {
+      const component = mount(<TaskItem taskId="task-1" appearance="card" participants={participants} />);
+      const participantsComponents = component.find(Participants);
+      expect(participantsComponents.length).toEqual(1);
+      expect(participantsComponents.at(0).prop('participants')).toEqual(participants);
     });
   });
 });

@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 
 import { Query } from '../src/types';
 import ResourcedItemList, { Props } from '../src/components/ResourcedItemList';
-import { createProviders } from './story-utils';
+import { createProviders, SidebarContainer } from './story-utils';
 
 const initialQuery: Query = {
   containerAri: 'cheese',
@@ -43,10 +43,12 @@ class ResourcedItemListWithReset extends PureComponent<Props,WithResetState> {
         <div>
           <button onClick={this.onResetQuery}>Reset initial query</button>
         </div>
-        <ResourcedItemList
-          {...this.props}
-          initialQuery={this.state.query}
-        />
+        <SidebarContainer>
+          <ResourcedItemList
+            {...this.props}
+            initialQuery={this.state.query}
+          />
+        </SidebarContainer>
       </div>
     );
   }
@@ -57,134 +59,156 @@ storiesOf('<ResourcedItemList/>', module)
     const { renderDocument, taskDecisionProvider } = createProviders();
 
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+        />
+      </SidebarContainer>
     );
   })
   .add('Infinite loading', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true });
 
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Infinite loading slow 500ms', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
 
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Infinite loading slow 5000ms', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 5000 });
 
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Infinite loading slow 500ms with reset', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
 
     return (
-      <ResourcedItemListWithReset
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemListWithReset
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Group by last update date', () => {
     const { renderDocument, taskDecisionProvider } = createProviders();
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQueryByLastUpdateDate}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQueryByLastUpdateDate}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+        />
+      </SidebarContainer>
     );
   })
   .add('Group by last update date - Infinite loading', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true });
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQueryByLastUpdateDate}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQueryByLastUpdateDate}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Group by last update date - Infinite loading slow 500ms', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQueryByLastUpdateDate}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-        useInfiniteScroll={true}
-        height="100%"
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQueryByLastUpdateDate}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+          useInfiniteScroll={true}
+          height="100%"
+        />
+      </SidebarContainer>
     );
   })
   .add('Group by (default) creation date', () => {
     const { renderDocument, taskDecisionProvider } = createProviders();
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+        />
+      </SidebarContainer>
     );
   })
   .add('Empty stage', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ empty: true });
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-        emptyComponent={<div>Empty result</div>}
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+          emptyComponent={<div>Empty result</div>}
+        />
+      </SidebarContainer>
     );
   })
   .add('Error stage', () => {
     const { renderDocument, taskDecisionProvider } = createProviders({ error: true });
     return (
-      <ResourcedItemList
-        renderDocument={renderDocument}
-        initialQuery={initialQuery}
-        taskDecisionProvider={taskDecisionProvider}
-        groupItems={true}
-        errorComponent={<div>Error result</div>}
-      />
+      <SidebarContainer>
+        <ResourcedItemList
+          renderDocument={renderDocument}
+          initialQuery={initialQuery}
+          taskDecisionProvider={taskDecisionProvider}
+          groupItems={true}
+          errorComponent={<div>Error result</div>}
+        />
+      </SidebarContainer>
     );
   });

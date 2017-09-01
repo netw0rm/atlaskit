@@ -95,6 +95,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
   render() {
     const {
       editorView,
+      eventDispatcher,
       providerFactory,
       contentComponents, primaryToolbarComponents, secondaryToolbarComponents,
       customPrimaryToolbarComponents, customContentComponents, customSecondaryToolbarComponents
@@ -105,6 +106,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         <MainToolbar>
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={primaryToolbarComponents}
@@ -118,6 +120,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             {customContentComponents}
             <PluginSlot
               editorView={editorView}
+              eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
               items={contentComponents}
@@ -127,6 +130,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         <SecondaryToolbar>
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={secondaryToolbarComponents}

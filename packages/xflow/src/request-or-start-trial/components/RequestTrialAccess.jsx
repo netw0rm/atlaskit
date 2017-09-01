@@ -7,6 +7,8 @@ import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
+import RequestAccessFooter from '../styled/RequestAccessFooter';
+import RequestAccessDiv from '../styled/RequestAccessDiv';
 
 export class RequestTrialAccessBase extends Component {
   static propTypes = {
@@ -41,6 +43,7 @@ export class RequestTrialAccessBase extends Component {
     return (
       <ModalDialog
         isOpen
+        width={'400px'}
         header={
           <div>
             <img src={banner} alt="" />
@@ -48,19 +51,19 @@ export class RequestTrialAccessBase extends Component {
           </div>
         }
         footer={
-          <p>
+          <RequestAccessFooter>
             <Button appearance="primary" onClick={this.handleRequestAccessClick}>
               Request access
             </Button>
             <Button appearance="subtle-link" onClick={this.handleCancelClick}>Cancel</Button>
-          </p>
+          </RequestAccessFooter>
         }
       >
-        <div>
+        <RequestAccessDiv>
           {productLogo}
           <RequestTrialHeader>{heading}</RequestTrialHeader>
           {React.isValidElement(message) ? message : <p>{message}</p>}
-        </div>
+        </RequestAccessDiv>
       </ModalDialog>
     );
   }

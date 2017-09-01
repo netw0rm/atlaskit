@@ -9,6 +9,7 @@ import { EditorView } from '../../../../../prosemirror';
 import { normalizeUrl } from '../../../../../editor/plugins/hyperlink/pm-plugins/utils';
 import PanelTextInput from '../../../../../ui/PanelTextInput';
 import RecentSearch from '../RecentSearch';
+import * as hyperlinkCommands from '../../pm-plugins/commands';
 
 const TEXT_NODE = 3;
 
@@ -181,7 +182,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { editorView, pluginState, activityProvider } = this.props;
     const normalizedOldText = oldText && normalizeUrl(oldText);
 
-     // insert new link with recently viewed dropdown
+    // insert new link with recently viewed dropdown
     if (activityProvider && !oldHref) {
       return (
         <RecentSearch
@@ -223,25 +224,42 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
   private handleOnBlur = () => {
     const { editorView, pluginState } = this.props;
+    const { state, dispatch } = editorView;
     const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
       pluginState.hideLinkPanel();
     } else if (!href || href.length === 0) {
-      pluginState.removeLink(editorView);
+      this.handleUnlink();
     } else {
       if (text && pluginState.text !== text) {
-        pluginState.updateLinkText(text, editorView);
+        hyperlinkCommands.updateLinkText(
+          text,
+          editorView,
+          pluginState.activeLinkStartPos,
+          pluginState.text,
+          pluginState.activeLinkMark)(state, dispatch);
         this.setState({ text: '' });
       }
       if (href && pluginState.href !== href) {
-        pluginState.updateLink({ href }, editorView);
+        hyperlinkCommands.updateLink(
+          { href },
+          pluginState.activeLinkStartPos,
+          pluginState.text,
+          pluginState.activeLinkMark)(state, dispatch);
       }
     }
     this.resetInputActive();
   }
 
   private handleUnlink = () => {
-    this.props.pluginState.removeLink(this.props.editorView);
+    const { editorView, pluginState } = this.props;
+    const { state, dispatch } = editorView;
+
+    hyperlinkCommands.removeLink(
+      editorView,
+      pluginState.activeLinkStartPos,
+      pluginState.text,
+      pluginState.activeLinkMark)(state, dispatch);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
@@ -273,17 +291,28 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   private updateLinkText = (text: string) => {
     if (text && text.length > 0 && text !== this.state.oldText) {
       const { editorView, pluginState } = this.props;
-      pluginState.updateLinkText(text, editorView);
+      const { state, dispatch } = editorView;
+      hyperlinkCommands.updateLinkText(
+        text,
+        editorView,
+        pluginState.activeLinkStartPos,
+        pluginState.text,
+        pluginState.activeLinkMark)(state, dispatch);
       this.setState({ text: '' });
     }
   }
 
   private updateLinkHref = (href: string) => {
     const { editorView, pluginState } = this.props;
+    const { state, dispatch } = editorView;
     if (this.state.oldHref) {
-      pluginState.updateLink({ href }, editorView);
+      hyperlinkCommands.updateLink(
+        { href },
+        pluginState.activeLinkStartPos,
+        pluginState.text,
+        pluginState.activeLinkMark)(state, dispatch);
     } else {
-      pluginState.addLink({ href }, editorView);
+      hyperlinkCommands.addLink({ href }, pluginState.linkable, pluginState.active)(state, dispatch);
     }
     editorView.focus();
   }

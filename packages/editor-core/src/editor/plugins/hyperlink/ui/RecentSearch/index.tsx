@@ -7,6 +7,7 @@ import { HyperlinkState } from '../../pm-plugins';
 import { EditorView } from '../../../../../prosemirror';
 import PanelTextInput from '../../../../../ui/PanelTextInput';
 import RecentList from './RecentList';
+import * as hyperlinkCommands from '../../pm-plugins/commands';
 
 // tslint:disable-next-line:variable-name
 const Container = styled.span`
@@ -158,17 +159,22 @@ export default class RecentSearch extends PureComponent<Props, State> {
       pluginState.hideLinkPanel();
       editorView.focus();
     } else {
-      pluginState.removeLink(editorView);
+      hyperlinkCommands.removeLink(editorView, pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(editorView.state, editorView.dispatch);
     }
   }
 
   private addLink = (href: string, text?: string) => {
     const { editorView, pluginState } = this.props;
+    const { state, dispatch } = editorView;
 
     if (editorView.state.selection.empty) {
-      pluginState.addLink({ href, text }, editorView);
+      hyperlinkCommands.addLink({ href, text }, pluginState.linkable, pluginState.active)(state, dispatch);
     } else {
-      pluginState.updateLink({ href }, editorView);
+      hyperlinkCommands.updateLink(
+        { href },
+        pluginState.activeLinkStartPos,
+        pluginState.text,
+        pluginState.activeLinkMark)(state, dispatch);
     }
 
     this.setState({

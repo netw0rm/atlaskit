@@ -17,6 +17,7 @@ import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
 
+import { addLink } from './commands';
 import stateKey from './plugin-key';
 export { stateKey };
 
@@ -43,11 +44,11 @@ export class HyperlinkState {
   activeElement?: HTMLElement;
   showToolbarPanel = false;
   activeLinkNode?: Node;
+  activeLinkMark?: Mark;
+  activeLinkStartPos?: number;
 
   private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
-  private activeLinkMark?: Mark;
-  private activeLinkStartPos?: number;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -60,54 +61,6 @@ export class HyperlinkState {
 
   unsubscribe(cb: HyperlinkStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  addLink(options: HyperlinkOptions, view: EditorView) {
-    if (this.linkable && !this.active) {
-      const { state } = this;
-      const { href, text } = options;
-      const { empty, $from, $to } = state.selection;
-      const mark = state.schema.mark('link', { href: normalizeUrl(href) });
-      const tr = empty
-        ? state.tr.insert($from.pos, state.schema.text(text || href, [mark]))
-        : state.tr.addMark($from.pos, $to.pos, mark);
-
-      view.dispatch(tr);
-    }
-  }
-
-  removeLink(view: EditorView) {
-    if (this.activeLinkStartPos) {
-      const { state } = this;
-      const from = this.activeLinkStartPos;
-      const to = from + this.text!.length;
-
-      view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
-      view.focus();
-    }
-  }
-
-  updateLink(options: HyperlinkOptions, view: EditorView) {
-    if (this.activeLinkStartPos) {
-      const { state } = this;
-      const from = this.activeLinkStartPos;
-      const to = this.activeLinkStartPos + this.text!.length;
-      view.dispatch(state.tr
-        .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
-    }
-  }
-
-  updateLinkText(text: string, view: EditorView) {
-    if (this.activeLinkStartPos) {
-      const { state } = this;
-      const from = this.activeLinkStartPos;
-      const to = from + (this.text ? this.text.length : 0);
-      const newTo = from + (text ? text.length : 0);
-      view.dispatch(state.tr.insertText(text, from, to)
-        .addMark(from, newTo, this.activeLinkMark!));
-      view.focus();
-    }
   }
 
   update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
@@ -160,7 +113,7 @@ export class HyperlinkState {
       this.showToolbarPanel = !this.showToolbarPanel;
       this.changeHandlers.forEach(cb => cb(this));
     } else {
-      this.addLink({ href: '' }, editorView);
+      addLink({ href: '' }, this.linkable, this.active)(editorView.state, editorView.dispatch);
       this.update(editorView.state, editorView.docView);
     }
   }

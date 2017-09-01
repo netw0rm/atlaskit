@@ -92,6 +92,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
   private renderChrome = ({ maxContentSize }) => {
     const {
       editorView,
+      eventDispatcher,
       contentComponents,
       secondaryToolbarComponents,
       providerFactory,
@@ -108,6 +109,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
@@ -116,6 +118,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         <SecondaryToolbarContainer>
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={secondaryToolbarComponents}

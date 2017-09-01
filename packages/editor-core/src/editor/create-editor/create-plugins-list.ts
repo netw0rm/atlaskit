@@ -18,6 +18,7 @@ import {
   listsPlugin,
   textColorPlugin,
   insertBlockPlugin,
+  helpDialogPlugin,
   tablesPlugin,
   collabEditPlugin,
 } from '../plugins';
@@ -87,12 +88,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(collabEditPlugin);
   }
 
-  if(props.maxContentSize) {
+  if (props.maxContentSize) {
     plugins.push(maxContentSizePlugin);
   }
 
   // UI only plugins
-  plugins.push(insertBlockPlugin);
+  plugins.push(insertBlockPlugin, helpDialogPlugin);
 
   return plugins;
 }

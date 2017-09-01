@@ -45,6 +45,7 @@ export default class EmojiPickerEmojiRow extends PureComponent<Props, {}> {
                 selectOnHover={true}
                 onSelected={onSelected}
                 onMouseMove={onMouseMove}
+                placeholderSize={24}
               />
             </span>
           );

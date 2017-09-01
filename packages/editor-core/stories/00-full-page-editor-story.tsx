@@ -15,6 +15,7 @@ import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/col
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 
 import {
   akEditorCodeBackground,
@@ -104,6 +105,7 @@ storiesOf(name, module)
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
+          activityProvider={Promise.resolve(new MockActivityResource())}
 
           placeholder="Write something..."
           shouldFocus={false}

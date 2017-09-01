@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const RequestAccessFooter = styled.div`
-  text-align: center;
+  text-align: right;
 `;
 
 RequestAccessFooter.displayName = 'RequestAccessFooter';

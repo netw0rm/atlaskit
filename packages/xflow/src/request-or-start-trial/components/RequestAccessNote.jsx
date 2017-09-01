@@ -7,7 +7,7 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import NoteText from '../styled/NoteText';
 
-export class RequestTrialNoteBase extends Component {
+export class RequestAccessNoteBase extends Component {
   static propTypes = {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
@@ -62,7 +62,7 @@ export class RequestTrialNoteBase extends Component {
 }
 
 export default withXFlowProvider(
-  RequestTrialNoteBase,
+  RequestAccessNoteBase,
   ({
     xFlow: {
       config: { productLogo, requestTrial },

@@ -111,11 +111,11 @@ const messages = defineMessages({
   // Request Trial
   accessHeading: {
     id: 'xflow.j2c.request-trial.access.heading',
-    defaultMessage: 'Ask your admin for access',
+    defaultMessage: 'JIRA\'s perfect partner',
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Send a request for your admin to activate confluence',
+    defaultMessage: 'Create requirements and stay in sync with your entire team.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
@@ -131,7 +131,7 @@ export const defaultProps = intl => ({
   config: {
     productLogo: <ConfluenceLogo />,
     requestTrial: {
-      accessBanner: 'https://placehold.it/352x214',
+      accessBanner: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/thLml1VMBT-bGkv2iO-2h5g2ZQLA0ivTS_mSX2zaHJc/ConfluenceRequestAccess.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
       notePrompt: intl.formatMessage(messages.notePrompt),

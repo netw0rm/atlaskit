@@ -3,18 +3,18 @@ import React from 'react';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { RequestTrialAccessBase } from '../src/request-or-start-trial/components/RequestTrialAccess';
-import { RequestTrialNoteBase } from '../src/request-or-start-trial/components/RequestTrialNote';
+import { RequestAccessBase } from '../src/request-or-start-trial/components/RequestAccess';
+import { RequestAccessNoteBase } from '../src/request-or-start-trial/components/RequestAccessNote';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import { INACTIVE } from '../src/common/productProvisioningStates';
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,
-  heading: 'JIRA Software\'s perfect partner',
-  message: 'Create requirements and stay in sync with your team.',
-  banner: 'https://placehold.it/352x214',
+  heading: 'JIRA\'s perfect partner',
+  message: 'Create requirements and stay in sync with your entire team.',
+  banner: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/thLml1VMBT-bGkv2iO-2h5g2ZQLA0ivTS_mSX2zaHJc/ConfluenceRequestAccess.svg',
   prompt: 'Help your site administrator understand why you would like to use Confluence:',
-  placeholder: 'I would like to try Confleunce because...',
+  placeholder: 'I would like to try Confluence because...',
   spinnerActive: false,
   status: INACTIVE,
   onComplete: () => {},
@@ -23,11 +23,11 @@ const defaultProps = {
 storiesOf('RequestTrial')
   .add('Request Trial (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <RequestTrialAccessBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+      <RequestAccessBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
     )
   )
   .add('RequestTrialWithNote (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <RequestTrialNoteBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+      <RequestAccessNoteBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
     )
 );

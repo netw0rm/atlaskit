@@ -5,8 +5,8 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import { MultiStep, Step } from '../../common/components/multi-step';
 
-import RequestTrialAccess from './RequestTrialAccess';
-import RequestTrialNote from './RequestTrialNote';
+import RequestAccess from './RequestAccess';
+import RequestAccessNote from './RequestAccessNote';
 
 export class RequestTrialBase extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ export class RequestTrialBase extends Component {
       <MultiStep start={0} onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
-            <RequestTrialAccess
+            <RequestAccess
               onComplete={async () => {
                 await onTrialRequested();
                 nextStep();
@@ -33,7 +33,7 @@ export class RequestTrialBase extends Component {
               onCancel={cancel}
             />}
         />
-        <Step render={nextStep => <RequestTrialNote onComplete={nextStep} />} />
+        <Step render={nextStep => <RequestAccessNote onComplete={nextStep} />} />
       </MultiStep>
     );
   }

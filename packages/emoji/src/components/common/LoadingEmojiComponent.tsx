@@ -22,7 +22,7 @@ export default abstract class LoadingEmojiComponent<P extends Props,S extends St
     this.loadEmojiProvider(this.props.emojiProvider);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: Readonly<P>) {
     this.loadEmojiProvider(nextProps.emojiProvider);
   }
 

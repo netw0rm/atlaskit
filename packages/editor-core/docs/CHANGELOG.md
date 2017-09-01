@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.13.0 (2017-09-01)
+
+* feature; pasting a single word or single line of code should create an inline code block. ([e64a721](https://bitbucket.org/atlassian/atlaskit/commits/e64a721))
+* bug fix; adjust behaviour of backspace into a decision/item list (issues closed: fs-1264) ([5db2517](https://bitbucket.org/atlassian/atlaskit/commits/5db2517))
 ## 46.12.0 (2017-08-31)
 
 * bug fix; update min-height of single link card. ([bb7e71a](https://bitbucket.org/atlassian/atlaskit/commits/bb7e71a))

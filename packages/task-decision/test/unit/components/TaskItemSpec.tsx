@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import TaskItem from '../../../src/components/TaskItem';
-import { ContentWrapper } from '../../../src/styled/TaskItem';
+import { ContentWrapper } from '../../../src/styled/Item';
 import { Placeholder } from '../../../src/styled/Placeholder';
 
 describe('<TaskItem/>', () => {

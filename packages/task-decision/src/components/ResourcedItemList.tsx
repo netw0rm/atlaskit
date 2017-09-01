@@ -11,6 +11,7 @@ import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
 
+import { Appearance } from '../types';
 import { isDateSortCriteria, toRendererContext } from '../type-helpers';
 import { getFormattedDate, getStartOfDate, isSameDate } from '../util/date';
 
@@ -58,6 +59,8 @@ export interface Props {
 
   emptyComponent?: JSX.Element;
   errorComponent?: JSX.Element;
+
+  appearance?: Appearance;
 }
 
 export interface State {
@@ -82,6 +85,10 @@ const LoadingWrapper = styled.div`
 `;
 
 export default class ResourcedItemList extends PureComponent<Props,State> {
+  public static defaultProps: Partial<Props> = {
+    appearance: 'elevated'
+  };
+
   private mounted: boolean;
   private recentUpdatesId: string | undefined;
 
@@ -215,31 +222,36 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
   }
 
   private renderItemsUngrouped(items: Item[]) {
-    const { renderDocument, taskDecisionProvider } = this.props;
+    const { appearance, renderDocument, taskDecisionProvider } = this.props;
     return (
-      <ListWrapper>
+      <ListWrapper theme={{ appearance }}>
         {items.map(item => {
           const objectKey = toObjectKey(item);
 
           if (isDecision(item)) {
             return (
-              <DecisionItem key={objectKeyToString(objectKey)}>
-                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
-              </DecisionItem>
+              <li key={objectKeyToString(objectKey)}>
+                <DecisionItem appearance={appearance} >
+                  {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
+                </DecisionItem>
+              </li>
             );
           }
 
           if (isTask(item)) {
             return (
-              <ResourcedTaskItem
-                key={objectKeyToString(objectKey)}
-                taskDecisionProvider={taskDecisionProvider}
-                taskId={objectKey.localId}
-                objectAri={objectKey.objectAri}
-                containerAri={objectKey.containerAri}
-              >
-                {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
-              </ResourcedTaskItem>
+              <li key={objectKeyToString(objectKey)}>
+                <ResourcedTaskItem
+                  key={objectKeyToString(objectKey)}
+                  taskDecisionProvider={taskDecisionProvider}
+                  taskId={objectKey.localId}
+                  objectAri={objectKey.objectAri}
+                  containerAri={objectKey.containerAri}
+                  appearance={appearance}
+                >
+                  {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
+                </ResourcedTaskItem>
+              </li>
             );
           }
 

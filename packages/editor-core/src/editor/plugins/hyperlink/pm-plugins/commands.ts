@@ -1,7 +1,7 @@
 import { EditorView, Mark } from '../../../../prosemirror';
 import { Command } from '../../../../commands';
 import stateKey from './plugin-key';
-import { normalizeUrl } from './utils';
+import { normalizeUrl, getActiveLinkNodeInfo, isShouldEscapeFromMark } from './utils';
 
 export interface HyperlinkOptions {
   href: string;
@@ -81,6 +81,25 @@ export function updateLinkText(newLinkedText: string, view: EditorView, activeLi
     view.dispatch(state.tr.insertText(newLinkedText, from, to)
       .addMark(from, newTo, activeLinkMark!));
     view.focus();
+    return true;
+  };
+}
+
+export function escapeFromMark(): Command {
+  return function (state, dispatch) {
+    const { selection, schema, tr } = state;
+    const activeNodeInfo = getActiveLinkNodeInfo(state);
+    if (!activeNodeInfo || !isShouldEscapeFromMark(state, activeNodeInfo)) {
+      return false;
+    }
+
+    tr.removeMark(
+      activeNodeInfo.startPos,
+      selection.$from.pos,
+      schema.marks.link
+    );
+
+    dispatch(tr);
     return true;
   };
 }

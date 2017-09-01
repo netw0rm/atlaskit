@@ -6,7 +6,6 @@ import {
   Node,
   Plugin,
   NodeViewDesc,
-  TextSelection,
   Slice,
   Step,
   ReplaceStep,
@@ -15,9 +14,13 @@ import {
 import * as commands from '../../../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
+import {
+  Match, getLinkMatch,
+  normalizeUrl, linkifyContent,
+  getActiveLinkNodeInfo,
+} from './utils';
 
-import { addLink } from './commands';
+import { addLink, escapeFromMark } from './commands';
 import stateKey from './plugin-key';
 export { stateKey };
 
@@ -28,10 +31,6 @@ export interface HyperlinkOptions {
   text?: string;
 }
 export type Coordinates = { left: number; right: number; top: number; bottom: number };
-interface NodeInfo {
-  node: Node;
-  startPos: number;
-}
 
 export class HyperlinkState {
   // public state
@@ -66,7 +65,7 @@ export class HyperlinkState {
   update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
     this.state = state;
 
-    const nodeInfo = this.getActiveLinkNodeInfo();
+    const nodeInfo = getActiveLinkNodeInfo(state);
     const canAddLink = this.isActiveNodeLinkable();
 
     if (canAddLink !== this.linkable) {
@@ -90,20 +89,6 @@ export class HyperlinkState {
       this.triggerOnChange();
     }
   }
-
-  escapeFromMark(editorView: EditorView) {
-    const nodeInfo = this.getActiveLinkNodeInfo();
-    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
-      const transaction = this.state.tr.removeMark(
-        nodeInfo.startPos,
-        this.state.selection.$from.pos,
-        this.state.schema.marks.link
-      );
-
-      editorView.dispatch(transaction);
-    }
-  }
-
   showLinkPanel(editorView: EditorView) {
     if (!(this.showToolbarPanel || editorView.hasFocus())) {
       editorView.focus();
@@ -156,35 +141,6 @@ export class HyperlinkState {
 
   private triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
-    const parentOffset = this.state.selection.$from.parentOffset;
-    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
-  }
-
-  private getActiveLinkNodeInfo(): NodeInfo | undefined {
-    const { state } = this;
-    const { link } = state.schema.marks;
-    const { $from, empty } = state.selection as TextSelection;
-
-    if (link && $from) {
-      const { node, offset } = $from.parent.childAfter($from.parentOffset);
-      const parentNodeStartPos = $from.start($from.depth);
-
-      // offset is the end position of previous node
-      // This is to check whether the cursor is at the beginning of current node
-      if (empty && offset + 1 === $from.pos) {
-        return;
-      }
-
-      if (node && node.isText && link.isInSet(node.marks)) {
-        return {
-          node,
-          startPos: parentNodeStartPos + offset
-        };
-      }
-    }
   }
 
   private getActiveLinkMark(activeLinkNode: Node): Mark | undefined {
@@ -294,9 +250,7 @@ function updateLinkOnChange(
 export const plugin = new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.escapeFromMark(view);
-
+      escapeFromMark()(view.state, view.dispatch);
       return false;
     },
     handleClick(view: EditorView) {

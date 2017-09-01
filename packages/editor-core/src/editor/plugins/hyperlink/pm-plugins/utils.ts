@@ -1,4 +1,7 @@
-import { Slice, Fragment, Node, Schema } from '../../../../prosemirror';
+import {
+  Slice, Fragment, Node, Schema,
+  TextSelection, EditorState
+} from '../../../../prosemirror';
 import * as LinkifyIt from 'linkify-it';
 
 export interface Match {
@@ -9,6 +12,10 @@ export interface Match {
   text: string;
   url: string;
   length?: number;
+}
+interface NodeInfo {
+  node: Node;
+  startPos: number;
 }
 
 const linkify = LinkifyIt();
@@ -71,7 +78,7 @@ function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragmen
           linkified.push(child.cut(pos, match.start));
         }
         linkified.push(
-          child.cut(match.start, match.end).mark(link.create({href: normalizeUrl(match.href)}).addToSet(child.marks))
+          child.cut(match.start, match.end).mark(link.create({ href: normalizeUrl(match.href) }).addToSet(child.marks))
         );
         pos = match.end;
       });
@@ -107,3 +114,32 @@ function findLinkMatches(text: string): LinkMatch[] {
   }
   return matches;
 }
+
+export function getActiveLinkNodeInfo(state: EditorState<any>): NodeInfo | undefined {
+  const { link } = state.schema.marks;
+  const { $from, empty } = state.selection as TextSelection;
+
+  if (link && $from) {
+    const { node, offset } = $from.parent.childAfter($from.parentOffset);
+    const parentNodeStartPos = $from.start($from.depth);
+
+    // offset is the end position of previous node
+    // This is to check whether the cursor is at the beginning of current node
+    if (empty && offset + 1 === $from.pos) {
+      return;
+    }
+
+    if (node && node.isText && link.isInSet(node.marks)) {
+      return {
+        node,
+        startPos: parentNodeStartPos + offset
+      };
+    }
+  }
+}
+
+export function isShouldEscapeFromMark(state: EditorState<any>, nodeInfo: NodeInfo): boolean {
+  const parentOffset = state.selection.$from.parentOffset;
+  return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
+}
+

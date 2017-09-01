@@ -119,12 +119,9 @@ describe('@atlaskit/editor-core/editor/plugins/hyperlink/ui/HyperlinkEdit', () =
     hyperlinkEdit.setState({ editorFocused: true });
     const input = hyperlinkEdit.find(PanelTextInput);
     const title = 'Atlassian';
-    const updateLinkTextStub = sinon.stub(pluginState, 'updateLinkText');
     input.prop('onChange')!(title);
     input.prop('onBlur')!();
-    // pluginState.text doesn't work because link is not inclusive. After replace the selection gets outside of the link
-    sinon.assert.alwaysCalledWithMatch(updateLinkTextStub, title);
-    updateLinkTextStub.restore();
+    expect(editorView.state.doc).to.deep.equal(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('Atlassian'), 'after')));
   });
 
   it('should not update title or href on blur if there is no change', () => {

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../src/editor/plugins/hyperlink/pm-plugins';
 import ToolbarHyperlink from '../../../src/editor/plugins/hyperlink/ui/ToolbarHyperlink';
 import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
@@ -11,7 +11,7 @@ import { doc, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { analyticsService } from '../../../src/analytics';
 
-describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
+describe('@atlaskit/editor-core/editor/plugins/hyperlink/ui/ToolbarHyperlink', () => {
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),

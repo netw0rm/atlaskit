@@ -3,9 +3,9 @@ import { KeyboardEvent, PureComponent } from 'react';
 import styled from 'styled-components';
 import { ActivityProvider, ActivityItem } from '@atlaskit/activity';
 
-import { HyperlinkState } from '../../plugins/hyperlink';
-import PanelTextInput from '../PanelTextInput';
-import { EditorView } from '../../prosemirror';
+import { HyperlinkState } from '../../pm-plugins';
+import { EditorView } from '../../../../../prosemirror';
+import PanelTextInput from '../../../../../ui/PanelTextInput';
 import RecentList from './RecentList';
 
 // tslint:disable-next-line:variable-name

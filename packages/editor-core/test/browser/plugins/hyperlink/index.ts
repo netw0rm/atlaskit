@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../../src/editor/plugins/hyperlink/pm-plugins';
 import {
   chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
   makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent

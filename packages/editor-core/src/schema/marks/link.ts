@@ -1,7 +1,7 @@
 import { MarkSpec } from '../../prosemirror';
 import { LINK, COLOR } from '../groups';
 import { isSafeUrl } from '../../renderer/validator';
-import { normalizeUrl } from '../../plugins/hyperlink/utils';
+import { normalizeUrl } from '../../editor/plugins/hyperlink/pm-plugins/utils';
 
 /**
  * @name link_mark

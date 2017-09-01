@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../../../../analytics';
 import { addLink, tooltip } from '../../../../../keymaps';
 import { EditorView, PluginKey } from '../../../../../prosemirror';
-import { HyperlinkState } from '../../../../../plugins/hyperlink';
+import { HyperlinkState } from '../../../../../editor/plugins/hyperlink/pm-plugins';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import { OuterContainer } from './styles';
 

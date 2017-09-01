@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { getLinkMatch, normalizeUrl } from '../../../../src/plugins/hyperlink/utils';
+import { getLinkMatch, normalizeUrl } from '../../../../src/editor/plugins/hyperlink/pm-plugins/utils';
 
-describe('hyperlink', () => {
+describe('hyperlink - utils', () => {
   describe('#normalizeUrl', () => {
     const examples = [
       ['prettyandsimple@example.com', 'mailto:prettyandsimple@example.com'],

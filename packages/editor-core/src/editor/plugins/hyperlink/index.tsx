@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-import { plugin } from '../../../plugins/hyperlink';
-import inputRulePlugin from '../../../plugins/hyperlink/input-rule';
-import keymap from '../../../plugins/hyperlink/keymap';
 import { link } from '../../../schema/marks/link';
-import pluginKey from '../../../plugins/hyperlink/plugin-key';
+import { plugin } from './pm-plugins';
+import inputRulePlugin from './pm-plugins/input-rule';
+import keymap from './pm-plugins/keymap';
+import pluginKey from './pm-plugins/plugin-key';
 import HyperlinkEdit from './ui/HyperlinkEdit';
 import ToolbarHyperlink from './ui/ToolbarHyperlink';
 

@@ -1,4 +1,4 @@
-import { Slice, Fragment, Node, Schema } from '../../prosemirror';
+import { Slice, Fragment, Node, Schema } from '../../../../prosemirror';
 import * as LinkifyIt from 'linkify-it';
 
 export interface Match {

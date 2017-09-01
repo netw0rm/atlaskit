@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import RecentItem, { Name, ContainerName } from '../../../../src/ui/RecentSearch/RecentItem';
+import RecentItem, { Name, ContainerName } from '../../../../src/editor/plugins/hyperlink/ui/RecentSearch/RecentItem';
 
 const noop = () => {};
-describe('@atlaskit/editor-core/ui/RecentSearch/RecentItem', () => {
+describe('@atlaskit/editor-core/editor/plugins/hyperlink/ui/RecentSearch/RecentItem', () => {
   it('should render the item', () => {
     const item = {
       objectId: '1',

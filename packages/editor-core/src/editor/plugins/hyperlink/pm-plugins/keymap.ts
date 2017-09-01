@@ -1,7 +1,7 @@
-import { Schema, keymap, Plugin, EditorState, Transaction } from '../../prosemirror';
-import * as keymaps from '../../keymaps';
-import * as commands from '../../commands';
-import { analyticsService, trackAndInvoke } from '../../analytics';
+import { Schema, keymap, Plugin, EditorState, Transaction } from '../../../../prosemirror';
+import * as keymaps from '../../../../keymaps';
+import * as commands from '../../../../commands';
+import { analyticsService, trackAndInvoke } from '../../../../analytics';
 import { Match, getLinkMatch } from './utils';
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {

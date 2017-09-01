@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../../src/editor/plugins/hyperlink/pm-plugins';
 import {
   chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
 } from '../../../../src/test-helper';

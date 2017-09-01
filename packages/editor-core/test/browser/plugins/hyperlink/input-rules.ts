@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import hyperlinkPlugins from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../../src/editor/plugins/hyperlink/pm-plugins';
 import {
   insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
   strong, code_block, sendKeyToPm
@@ -11,7 +11,7 @@ import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
-describe('hyperlink', () => {
+describe('hyperlink - input rules', () => {
   const editor = (doc: any) => makeEditor({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),

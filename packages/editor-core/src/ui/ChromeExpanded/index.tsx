@@ -12,9 +12,9 @@ import { analyticsDecorator as analytics, analyticsService } from '../../analyti
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { EmojiState, stateKey as emojiPluginKey } from '../../plugins/emojis';
-import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
+import { HyperlinkState } from '../../editor/plugins/hyperlink/pm-plugins';
 import { MentionsState, stateKey as mentionPluginKey } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';

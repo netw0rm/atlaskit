@@ -1,6 +1,6 @@
-import { Schema, inputRules, Plugin, InputRule, EditorState } from '../../prosemirror';
-import { analyticsService } from '../../analytics';
-import { createInputRule } from '../utils';
+import { Schema, inputRules, Plugin, InputRule, EditorState } from '../../../../prosemirror';
+import { analyticsService } from '../../../../analytics';
+import { createInputRule } from '../../../../plugins/utils';
 import { Match, LinkMatcher, normalizeUrl } from './utils';
 
 export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) => string): InputRule {

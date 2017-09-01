@@ -3,8 +3,8 @@ import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, { HyperlinkState } from '../../../src/plugins/hyperlink';
-import HyperlinkEdit from '../../../src/ui/HyperlinkEdit';
+import hyperlinkPlugins, { HyperlinkState } from '../../../src/editor/plugins/hyperlink/pm-plugins';
+import HyperlinkEdit from '../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../src/ui/PanelTextInput';
 import {
   createEvent, doc, p as paragraph, a as link, makeEditor
@@ -12,7 +12,7 @@ import {
 import defaultSchema from '../../../src/test-helper/schema';
 import { setTextSelection } from '../../../src/utils';
 
-describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
+describe('@atlaskit/editor-core/editor/plugins/hyperlink/ui/HyperlinkEdit', () => {
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),

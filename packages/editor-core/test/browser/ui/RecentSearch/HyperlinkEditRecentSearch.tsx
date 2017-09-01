@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
+import hyperlinkPlugins, { HyperlinkState } from '../../../../src/editor/plugins/hyperlink/pm-plugins';
 import HyperlinkEdit from '../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
-import RecentSearch from '../../../../src/ui/RecentSearch';
-import RecentItem from '../../../../src/ui/RecentSearch/RecentItem';
+import RecentSearch from '../../../../src/editor/plugins/hyperlink/ui/RecentSearch';
+import RecentItem from '../../../../src/editor/plugins/hyperlink/ui/RecentSearch/RecentItem';
 import {
   doc, p as paragraph, a as link, makeEditor
 } from '../../../../src/test-helper';

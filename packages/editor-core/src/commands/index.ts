@@ -9,7 +9,7 @@ import {
   canMoveDown, canMoveUp,
   setTextSelection,
 } from '../utils';
-import hyperlinkPluginStateKey from '../plugins/hyperlink/plugin-key';
+import hyperlinkPluginStateKey from '../editor/plugins/hyperlink/pm-plugins/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;

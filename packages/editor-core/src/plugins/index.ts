@@ -3,7 +3,6 @@ export { default as clearFormattingPlugins, stateKey as clearFormattingStateKey 
 export { default as codeBlockPlugins, stateKey as codeBlockStateKey, CodeBlockState } from './code-block';
 export { default as emojisPlugins, stateKey as emojisStateKey } from './emojis';
 export { default as asciiEmojiPlugins, stateKey as asciiEmojiStateKey } from './emojis/ascii-input-rules';
-export { default as hyperlinkPlugins, stateKey as hyperlinkStateKey } from './hyperlink';
 export { default as imageUploadPlugins, stateKey as imageUploadStateKey } from './image-upload';
 export { default as listsPlugins, stateKey as listsStateKey } from './lists';
 export { default as mediaPluginFactory, MediaPluginState, stateKey as mediaStateKey } from './media';

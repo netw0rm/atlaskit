@@ -11,8 +11,8 @@ import {
   Step,
   ReplaceStep,
   Transaction,
-} from '../../prosemirror';
-import * as commands from '../../commands';
+} from '../../../../prosemirror';
+import * as commands from '../../../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
@@ -277,6 +277,7 @@ export class HyperlinkState {
 function isReplaceStep(step?: Step): step is ReplaceStep {
   return !!step && step instanceof ReplaceStep;
 }
+
 const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
 
 function updateLinkOnChange(

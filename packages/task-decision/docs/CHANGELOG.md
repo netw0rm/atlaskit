@@ -1,5 +1,13 @@
 # @atlaskit/task-decision
 
+## 3.5.5 (2017-09-01)
+
+* bug fix; break and wrap text that doesn't fit on a full line (e.g. link) (issues closed: fs-1300) ([2f8d413](https://bitbucket.org/atlassian/atlaskit/commits/2f8d413))
+
+
+
+
+
 ## 3.5.4 (2017-08-29)
 
 * bug fix; results clears if initialQuery prop changes. Consistent spinner. (issues closed: fs-1315) ([0933f72](https://bitbucket.org/atlassian/atlaskit/commits/0933f72))

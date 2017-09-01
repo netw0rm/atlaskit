@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.10.0 (2017-09-01)
+
+* feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))
 ## 3.9.0 (2017-08-31)
 
 * bug fix; dropdown-menu depenencies bumped to latest (issues closed: ak-3392) ([faea6d3](https://bitbucket.org/atlassian/atlaskit/commits/faea6d3))

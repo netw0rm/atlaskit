@@ -339,6 +339,15 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })('tebarxt'))));
     });
 
+    it('should create a link if href is invalid', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      const href = 'pig';
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
+    });
+
     it('should not be a part of the link when typing after it', () => {
       const { refs, editorView, pluginState } = editor(doc(paragraph('{<}text{>}{end}')));
       const { end } = refs;

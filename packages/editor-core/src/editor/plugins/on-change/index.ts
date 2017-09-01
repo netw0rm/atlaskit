@@ -13,7 +13,9 @@ export function createPlugin(onChange?: (editorView: EditorView) => void): Plugi
     view() {
       return {
         update(editorView) {
-          onChange(editorView);
+          if (editorView.state.tr.docChanged) {
+            onChange(editorView);
+          }
         }
       };
     }

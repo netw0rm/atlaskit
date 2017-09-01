@@ -44,7 +44,7 @@ export class LinkMatcher {
  */
 export function normalizeUrl(url: string) {
   const match = getLinkMatch(url);
-  return match && match.url;
+  return (match && match.url) || url;
 }
 
 export function linkifyContent(schema: Schema<any, any>, slice: Slice): Slice | undefined {

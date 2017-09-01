@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
@@ -37,6 +38,7 @@ export interface EditorProps {
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   collabEditProvider?: Promise<CollabEditProvider>;
+  activityProvider?: Promise<ActivityProvider>;
 
   maxContentSize?: number;
   placeholder?: string;

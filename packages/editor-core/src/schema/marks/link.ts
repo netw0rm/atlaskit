@@ -1,6 +1,6 @@
 import { MarkSpec } from '../../prosemirror';
 import { LINK, COLOR } from '../groups';
-import { isSafeUrl } from '../../renderer/validator';
+import { isSafeUrl } from '../../renderer/utils';
 import { normalizeUrl } from '../../editor/plugins/hyperlink/pm-plugins/utils';
 
 /**

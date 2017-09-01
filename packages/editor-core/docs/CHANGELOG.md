@@ -1,5 +1,30 @@
 # @atlaskit/editor-core
 
+## 46.13.1 (2017-09-01)
+
+* bug fix; support activity provider in hyperlinkedit in new editor architecture ([d45ee4e](https://bitbucket.org/atlassian/atlaskit/commits/d45ee4e))
+## 46.13.0 (2017-09-01)
+
+* feature; pasting a single word or single line of code should create an inline code block. ([e64a721](https://bitbucket.org/atlassian/atlaskit/commits/e64a721))
+* bug fix; adjust behaviour of backspace into a decision/item list (issues closed: fs-1264) ([5db2517](https://bitbucket.org/atlassian/atlaskit/commits/5db2517))
+## 46.12.0 (2017-08-31)
+
+* bug fix; update min-height of single link card. ([bb7e71a](https://bitbucket.org/atlassian/atlaskit/commits/bb7e71a))
+* bug fix; fix storybook for editor-core (issues closed: ed-2614) ([4bae650](https://bitbucket.org/atlassian/atlaskit/commits/4bae650))
+
+* bug fix; making sure adding links with invalid href doesn't throw an error (issues closed: ed-2568) ([d44226f](https://bitbucket.org/atlassian/atlaskit/commits/d44226f))
+* bug fix; fixed the bug that no text format after space. ([8aa1bfe](https://bitbucket.org/atlassian/atlaskit/commits/8aa1bfe))
+* feature; dAC story with renderer (issues closed: ed-2530) ([005bdba](https://bitbucket.org/atlassian/atlaskit/commits/005bdba))
+* feature; render single link card with square appearance ([8197e31](https://bitbucket.org/atlassian/atlaskit/commits/8197e31))
+* feature; add title/user in applicationCard (issues closed: ed-2532) ([a1c5790](https://bitbucket.org/atlassian/atlaskit/commits/a1c5790))
+
+
+* feature; added Confluence transformer (issues closed: ed-1679) ([b9d48b3](https://bitbucket.org/atlassian/atlaskit/commits/b9d48b3))
+* bug fix; pasting plain text in code block should not create a paragraph ([e7b133e](https://bitbucket.org/atlassian/atlaskit/commits/e7b133e))
+* bug fix; should not autoformat __ or _ in mid words. ([49a4df4](https://bitbucket.org/atlassian/atlaskit/commits/49a4df4))
+* bug fix; fix for issue mention mark not removed even after whole text of mention is removed. ([ed7b58d](https://bitbucket.org/atlassian/atlaskit/commits/ed7b58d))
+* bug fix; should not convert "\`some_variables_" to em ([2eaf1f6](https://bitbucket.org/atlassian/atlaskit/commits/2eaf1f6))
+* bug fix; ignore markdown if have a backtick in the front. ([0f921b1](https://bitbucket.org/atlassian/atlaskit/commits/0f921b1))
 ## 46.11.1 (2017-08-31)
 
 * bug fix; removed relative links and added tests ([9c07ea7](https://bitbucket.org/atlassian/atlaskit/commits/9c07ea7))

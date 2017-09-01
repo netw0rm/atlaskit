@@ -25,6 +25,7 @@ const defaultProps = {
   ],
   userSelectPlaceholder: 'Start typing a username',
   usersOption: 'specific-users',
+  learnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
   // selectLabel: 'Select users',
   defaultSelectedRadio: 'everyone',
   progress: 0,
@@ -50,10 +51,6 @@ const defaultProps = {
       { name: 'mtruong', 'display-name': 'Michael Truong', email: 'mtruong@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/4'] }] } },
       { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
     ]),
-
-  goToLearnMore: () => {
-    console.log('Go to Learn More!');
-  },
 
   onComplete: () => {
     console.log('GrantAccessToUsers onComplete called');

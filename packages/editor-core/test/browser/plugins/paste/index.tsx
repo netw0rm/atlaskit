@@ -1,15 +1,15 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-import pastePlugins from '../../../../src/plugins/code-block';
+import pastePlugins from '../../../../src/plugins/paste';
 import { browser } from '../../../../src/prosemirror';
-import { chaiPlugin, code_block, doc, p, makeEditor, dispatchPasteEvent, isMobileBrowser } from '../../../../src/test-helper';
+import { chaiPlugin, code_block, doc, p, code, makeEditor, dispatchPasteEvent, isMobileBrowser } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 if(!browser.ie && !isMobileBrowser()) {
-  describe('code-block', () => {
+  describe('paste plugins', () => {
     const editor = (doc: any) => makeEditor<any>({
       doc,
       plugins: pastePlugins(defaultSchema),
@@ -26,6 +26,18 @@ if(!browser.ie && !isMobileBrowser()) {
         const { editorView } = editor(doc(p('{<>}')));
         dispatchPasteEvent(editorView, { plain: 'plain text' });
         expect(editorView.state.doc).to.deep.equal(doc(p('plain text')));
+      });
+
+      it('should create code-block for multiple lines of code copied', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { plain: 'code line 1\ncode line 2', html: '<pre>code line 1\ncode line 2</pre>' });
+        expect(editorView.state.doc).to.deep.equal(doc(code_block()('code line 1\ncode line 2')));
+      });
+
+      it('should create code mark for single lines of code copied', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { plain: 'code single line', html: '<pre>code single line</pre>' });
+        expect(editorView.state.doc).to.deep.equal(doc(p(code('code single line'))));
       });
     });
   });

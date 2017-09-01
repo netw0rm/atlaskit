@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
+import { WithProviders } from '../../../providerFactory/withProviders';
 import { link } from '../../../schema/marks/link';
 import { plugin } from './pm-plugins';
 import inputRulePlugin from './pm-plugins/input-rule';
@@ -31,8 +32,18 @@ const hyperlinkPlugin: EditorPlugin = {
       return null;
     }
 
-    const pluginState = pluginKey.getState(editorView.state);
-    return <HyperlinkEdit editorView={editorView} pluginState={pluginState} />;
+    const renderNode = (providers) => {
+      const pluginState = pluginKey.getState(editorView.state);
+      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} />;
+    };
+
+    return (
+      <WithProviders
+        providerFactory={providerFactory}
+        providers={['activityProvider']}
+        renderNode={renderNode}
+      />
+    );
   }
 };
 

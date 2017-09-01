@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 21.1.0 (2017-09-01)
+
+* feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))
+* feature; exposing dropdown props in ContainerTitleDropdown (issues closed: ak-3404) ([2fd0515](https://bitbucket.org/atlassian/atlaskit/commits/2fd0515))
 ## 21.0.0 (2017-08-31)
 
 * breaking; AkSearchResults and AkQuickSearchWithKeyboardControls have been removed. ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))

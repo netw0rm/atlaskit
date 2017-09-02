@@ -5,7 +5,6 @@ import {
   Mark,
   Node,
   Plugin,
-  NodeViewDesc,
   Slice,
   Step,
   ReplaceStep,
@@ -38,8 +37,6 @@ export class HyperlinkState {
   active = false;
   linkable = false;
   editorFocused = false;
-  element?: HTMLElement;
-  activeElement?: HTMLElement;
   showToolbarPanel = false;
   activeLinkNode?: Node;
   activeLinkMark?: Mark;
@@ -61,7 +58,7 @@ export class HyperlinkState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
+  update(state: EditorState<any>, dirty: boolean = false) {
     this.state = state;
 
     const nodeInfo = getActiveLinkNodeInfo(state);
@@ -81,8 +78,6 @@ export class HyperlinkState {
       this.active = !!nodeInfo;
       dirty = true;
     }
-    this.element = this.getDomElement(docView);
-    this.activeElement = this.getActiveDomElement(state.selection, docView);
 
     if (dirty) {
       this.triggerOnChange();
@@ -98,7 +93,7 @@ export class HyperlinkState {
       this.changeHandlers.forEach(cb => cb(this));
     } else {
       addLink({ href: '' }, this.linkable, this.active)(editorView.state, editorView.dispatch);
-      this.update(editorView.state, editorView.docView);
+      this.update(editorView.state);
     }
   }
 
@@ -117,32 +112,6 @@ export class HyperlinkState {
     });
 
     return (linkMarks as Mark[])[0];
-  }
-
-  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
-    if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
-
-      if (node.childNodes.length === 0) {
-        return node.parentNode as HTMLElement;
-      }
-
-      return node.childNodes[offset] as HTMLElement;
-    }
-  }
-
-  /**
-   * Returns active dom element for current selection.
-   * Used by Hyperlink edit popup to position relative to cursor.
-   */
-  private getActiveDomElement(selection, docView: NodeViewDesc): HTMLElement | undefined {
-    if (selection.$from.pos !== selection.$to.pos) {
-      return;
-    }
-
-    const { node } = docView.domFromPos(selection.$from.pos);
-
-    return node as HTMLElement;
   }
 
   private isActiveNodeLinkable(): boolean {
@@ -272,12 +241,12 @@ export const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    const pluginState = stateKey.getState(view.state);
-    pluginState.update(view.state, view.docView, true);
+    const pluginState = stateKey.getState(view.state) as HyperlinkState;
+    pluginState.update(view.state, true);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        pluginState.update(view.state, view.docView);
+        pluginState.update(view.state);
       }
     };
   },

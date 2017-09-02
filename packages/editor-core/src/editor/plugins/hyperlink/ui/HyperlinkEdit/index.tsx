@@ -6,7 +6,10 @@ import { PureComponent } from 'react';
 import { HyperlinkState } from '../../../../../editor/plugins/hyperlink/pm-plugins';
 import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
 import { EditorView } from '../../../../../prosemirror';
-import { normalizeUrl, getCoordinates } from '../../../../../editor/plugins/hyperlink/pm-plugins/utils';
+import {
+  normalizeUrl, getCoordinates,
+  getDomElement, getActiveDomElement,
+} from '../../../../../editor/plugins/hyperlink/pm-plugins/utils';
 import PanelTextInput from '../../../../../ui/PanelTextInput';
 import RecentSearch from '../RecentSearch';
 import * as hyperlinkCommands from '../../pm-plugins/commands';
@@ -264,12 +267,13 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
     const { inputActive } = this.state;
+    const { editorView } = this.props;
     const hrefNotPreset = pluginState.active && (!pluginState.href || pluginState.href.length === 0);
 
     this.setState({
       active: pluginState.active,
-      target: pluginState.element,
-      activeElement: pluginState.activeElement,
+      target: getDomElement(editorView.docView, pluginState.activeLinkStartPos),
+      activeElement: getActiveDomElement(editorView.docView, editorView.state.selection),
       href: pluginState.href,
       oldText: pluginState.text,
       oldHref: pluginState.href,

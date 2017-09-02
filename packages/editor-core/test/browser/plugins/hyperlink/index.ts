@@ -101,97 +101,6 @@ describe('hyperlink', () => {
     });
   });
 
-  describe('element', () => {
-    context('when select the whole hyperlink text from start to end', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when hitting backspace in a link', () => {
-      it('removes link mark when its not more valid link', () => {
-        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
-      });
-    });
-
-    context('when select the whole hyperlink text from end to start', () => {
-      it('returns link element', () => {
-        const { editorView, pluginState, refs } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text from the end', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text from the start', () => {
-      it('returns link element', () => {
-        const { editorView, pluginState, refs } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text in the middle', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when cursor is winthin hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
-
-        expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when cursor at the beginning of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
-
-        expect(pluginState.element).to.equal(undefined);
-      });
-    });
-
-    context('when cursor at the end of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
-
-        expect(pluginState.element).to.equal(undefined);
-      });
-    });
-  });
-
   describe('API', () => {
     it('should allow a change handler to be registered', () => {
       const { pluginState } = editor(doc(paragraph('')));
@@ -310,15 +219,6 @@ describe('hyperlink', () => {
       plugin.props.onFocus!(editorView, event);
 
       expect(spy.callCount).to.equal(1);
-    });
-
-    it('should return referring DOM element', () => {
-      const { pluginState } = editor(doc(
-        paragraph(link({ href: 'http://www.atlassian.com' })('atlassian')),
-        paragraph(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin')))
-      );
-
-      expect(pluginState.element!.textContent).to.eq('dsorin');
     });
 
     context('should update both href and text on edit if they were same before edit', () => {
@@ -616,6 +516,16 @@ describe('hyperlink', () => {
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test')));
       });
+    });
+  });
+
+  context('when hitting backspace in a link', () => {
+    it('removes link mark when its not more valid link', () => {
+      const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
+      sendKeyToPm(editorView, 'Backspace');
+      sendKeyToPm(editorView, 'Backspace');
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
     });
   });
 });

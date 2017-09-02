@@ -1,7 +1,7 @@
 import {
   Slice, Fragment, Node, Schema,
-  TextSelection, EditorState,
-  EditorView,
+  TextSelection, Selection, EditorState,
+  EditorView, NodeViewDesc
 } from '../../../../prosemirror';
 import * as LinkifyIt from 'linkify-it';
 
@@ -147,33 +147,59 @@ export function isShouldEscapeFromMark(state: EditorState<any>, nodeInfo: NodeIn
 }
 
 export function getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
-    if (editorView.hasFocus()) {
-      editorView.focus();
-    }
-    const { pos } = editorView.state.selection.$from;
-    const { left, top, height } = offsetParent.getBoundingClientRect();
-    const { node } = editorView.docView.domFromPos(pos);
-
-    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
-      (node.parentNode as HTMLElement) : (node as HTMLElement);
-    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
-    /**
-     * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
-     * relative to `window`. And, also need to adjust the cursor container height.
-     * (0, 0)
-     * +--------------------- [window] ---------------------+
-     * |   (left, top) +-------- [Offset Parent] --------+  |
-     * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
-     * |               | [FloatingToolbar]               |  |
-     */
-    const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
-      return {
-        left: coords.left - dx,
-        right: coords.right - dx,
-        top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
-        bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
-      };
-    };
-    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
+  if (editorView.hasFocus()) {
+    editorView.focus();
   }
+  const { pos } = editorView.state.selection.$from;
+  const { left, top, height } = offsetParent.getBoundingClientRect();
+  const { node } = editorView.docView.domFromPos(pos);
+
+  const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
+    (node.parentNode as HTMLElement) : (node as HTMLElement);
+  const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
+  /**
+   * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
+   * relative to `window`. And, also need to adjust the cursor container height.
+   * (0, 0)
+   * +--------------------- [window] ---------------------+
+   * |   (left, top) +-------- [Offset Parent] --------+  |
+   * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
+   * |               | [FloatingToolbar]               |  |
+   */
+  const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
+    return {
+      left: coords.left - dx,
+      right: coords.right - dx,
+      top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+      bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+    };
+  };
+  return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
+}
+
+export function getDomElement(docView: NodeViewDesc, activeLinkStartPos?: number): HTMLElement | undefined {
+  if (activeLinkStartPos) {
+    const { node, offset } = docView.domFromPos(activeLinkStartPos);
+
+    if (node.childNodes.length === 0) {
+      return node.parentNode as HTMLElement;
+    }
+
+    return node.childNodes[offset] as HTMLElement;
+  }
+}
+
+/**
+ * Returns active dom element for current selection.
+ * Used by Hyperlink edit popup to position relative to cursor.
+ */
+export function getActiveDomElement(docView: NodeViewDesc, selection: Selection): HTMLElement | undefined {
+  if (selection.$from.pos !== selection.$to.pos) {
+    return;
+  }
+
+  const { node } = docView.domFromPos(selection.$from.pos);
+
+  return node as HTMLElement;
+}
 

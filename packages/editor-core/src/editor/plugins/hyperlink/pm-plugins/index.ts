@@ -30,7 +30,6 @@ export interface HyperlinkOptions {
   href: string;
   text?: string;
 }
-export type Coordinates = { left: number; right: number; top: number; bottom: number };
 
 export class HyperlinkState {
   // public state
@@ -106,37 +105,6 @@ export class HyperlinkState {
   hideLinkPanel() {
     this.showToolbarPanel = false;
     this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
-    if (editorView.hasFocus()) {
-      editorView.focus();
-    }
-    const { pos } = this.state.selection.$from;
-    const { left, top, height } = offsetParent.getBoundingClientRect();
-    const { node } = editorView.docView.domFromPos(pos);
-
-    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
-      (node.parentNode as HTMLElement) : (node as HTMLElement);
-    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
-    /**
-     * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
-     * relative to `window`. And, also need to adjust the cursor container height.
-     * (0, 0)
-     * +--------------------- [window] ---------------------+
-     * |   (left, top) +-------- [Offset Parent] --------+  |
-     * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
-     * |               | [FloatingToolbar]               |  |
-     */
-    const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
-      return {
-        left: coords.left - dx,
-        right: coords.right - dx,
-        top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
-        bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
-      };
-    };
-    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
   }
 
   private triggerOnChange() {

@@ -1,6 +1,7 @@
 import {
   Slice, Fragment, Node, Schema,
-  TextSelection, EditorState
+  TextSelection, EditorState,
+  EditorView,
 } from '../../../../prosemirror';
 import * as LinkifyIt from 'linkify-it';
 
@@ -25,6 +26,8 @@ export function getLinkMatch(str: string): Match | null {
   const match = str && linkify.match(str);
   return match && match[0];
 }
+
+export type Coordinates = { left: number; right: number; top: number; bottom: number };
 
 /**
  * Instance of class LinkMatcher are used in autoformatting in place of Regex.
@@ -142,4 +145,35 @@ export function isShouldEscapeFromMark(state: EditorState<any>, nodeInfo: NodeIn
   const parentOffset = state.selection.$from.parentOffset;
   return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
 }
+
+export function getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
+    if (editorView.hasFocus()) {
+      editorView.focus();
+    }
+    const { pos } = editorView.state.selection.$from;
+    const { left, top, height } = offsetParent.getBoundingClientRect();
+    const { node } = editorView.docView.domFromPos(pos);
+
+    const cursorNode = (node.nodeType === 3) ? // Node.TEXT_NODE = 3
+      (node.parentNode as HTMLElement) : (node as HTMLElement);
+    const cursorHeight = parseFloat(window.getComputedStyle(cursorNode, undefined).lineHeight || '');
+    /**
+     * We need to translate the co-ordinates because `coordsAtPos` returns co-ordinates
+     * relative to `window`. And, also need to adjust the cursor container height.
+     * (0, 0)
+     * +--------------------- [window] ---------------------+
+     * |   (left, top) +-------- [Offset Parent] --------+  |
+     * | {coordsAtPos} | [Cursor]   <- cursorHeight      |  |
+     * |               | [FloatingToolbar]               |  |
+     */
+    const translateCoordinates = (coords: Coordinates, dx: number, dy: number) => {
+      return {
+        left: coords.left - dx,
+        right: coords.right - dx,
+        top: (coords.top - dy) + (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+        bottom: height - (coords.top - dy) - (offsetParent === document.body ? 0 : offsetParent.scrollTop),
+      };
+    };
+    return translateCoordinates(editorView.coordsAtPos(pos), left, top - cursorHeight);
+  }
 

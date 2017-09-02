@@ -6,7 +6,7 @@ import { PureComponent } from 'react';
 import { HyperlinkState } from '../../../../../editor/plugins/hyperlink/pm-plugins';
 import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
 import { EditorView } from '../../../../../prosemirror';
-import { normalizeUrl } from '../../../../../editor/plugins/hyperlink/pm-plugins/utils';
+import { normalizeUrl, getCoordinates } from '../../../../../editor/plugins/hyperlink/pm-plugins/utils';
 import PanelTextInput from '../../../../../ui/PanelTextInput';
 import RecentSearch from '../RecentSearch';
 import * as hyperlinkCommands from '../../pm-plugins/commands';
@@ -107,7 +107,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         return position;
       }
 
-      const coordinates = pluginState.getCoordinates(this.props.editorView, offsetParent);
+      const coordinates = getCoordinates(this.props.editorView, offsetParent);
 
       if (position.left) {
         position.left = coordinates.left;

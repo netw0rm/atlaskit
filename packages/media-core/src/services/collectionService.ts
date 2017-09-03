@@ -1,4 +1,4 @@
-import { MediaApiConfig } from '../config';
+import {MediaApiConfig} from '../auth';
 import {MediaCollectionItem} from '../collection';
 import {Resources} from '../item';
 import createRequest from './util/createRequest';
@@ -53,7 +53,7 @@ export type DetailsType = 'minimal' | 'full';
 
 export class MediaCollectionService implements CollectionService {
 
-  constructor(private config: MediaApiConfig, private clientId: string) {
+  constructor(private config: MediaApiConfig) {
   }
 
   private mapToMediaCollectionItem(item: RemoteCollectionItem): MediaCollectionItem {
@@ -92,7 +92,6 @@ export class MediaCollectionService implements CollectionService {
 
     const request = createRequest({
       config: this.config,
-      clientId: this.clientId,
       preventPreflight: true,
       collectionName
     });

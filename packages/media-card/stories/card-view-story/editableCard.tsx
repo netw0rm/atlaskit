@@ -87,13 +87,12 @@ export const generateStoriesForEditableCards = () => {
   };
 
   const getOptionsWithDefaultValue = (options: Array<{value?: string}>, value: string) => {
-    const selectedOption = (options as any).find(option => option.value === value);
+    const optionsWithDefault = options.map(option => ({
+      ...option,
+      defaultSelected: option.value === value
+    }));
 
-    if (selectedOption) {
-      selectedOption.defaultSelected = true;
-    }
-
-    return options;
+    return optionsWithDefault;
   };
 
   interface EditableCardProps {

@@ -14,6 +14,7 @@ type EventMapOrFunction =
 type AnalyticsProps = {
   analyticsId?: string,
   analyticsData?: Object,
+  innerRef?: Function,
 };
 
 /*
@@ -83,6 +84,7 @@ const withAnalytics = (
           fireAnalyticsEvent={this.fireAnalyticsEvent}
           firePrivateAnalyticsEvent={this.privateAnalyticsEvent}
           analyticsId={analyticsId}
+          ref={input => this.props.innerRef && this.props.innerRef(input)}
           {...componentProps}
         />
       );

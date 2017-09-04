@@ -68,6 +68,14 @@ const resizeModeOptions = [
 
 export const generateStoriesForEditableCards = () => {
   const localStorageKeyName = 'editableCardState';
+  const metadataOptionsMap = {
+    fileImage: imageFileDetails,
+    fileVideo: videoFileDetails,
+    fileAudio: audioFileDetails,
+    fileDoc: docFileDetails,
+    fileUnknown: unknownFileDetails,
+    genericLink: genericLinkDetails
+  };
   const getStateFromLocalStorage = () :EditableCardState | null => {
     const previousState = localStorage.getItem(localStorageKeyName);
 
@@ -144,7 +152,7 @@ export const generateStoriesForEditableCards = () => {
       const {appearance, status, dataURI, dimensions, metadata: metadataKey, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
-      const metadata = this.getMetadaFromKey(metadataKey);
+      const metadata = metadataOptionsMap[metadataKey];
 
       return (
         <div>
@@ -316,17 +324,6 @@ export const generateStoriesForEditableCards = () => {
       const metadata = e.target.value;
 
       this.setState({metadata});
-    }
-
-    getMetadaFromKey(key) {
-      return {
-        fileImage: imageFileDetails,
-        fileVideo: videoFileDetails,
-        fileAudio: audioFileDetails,
-        fileDoc: docFileDetails,
-        fileUnknown: unknownFileDetails,
-        genericLink: genericLinkDetails
-      }[key];
     }
 
     onDataURIChange = (e) => {

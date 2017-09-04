@@ -19,10 +19,10 @@ export const getBackgroundColor = themed('appearance', {
 });
 
 export const getBackgroundColorFocus = themed('appearance', {
-  standard: { light: colors.N20, dark: colors.DN10 },
+  standard: { light: colors.N0, dark: colors.DN10 },
   disabled,
-  invalid: { light: colors.N20, dark: colors.DN10 },
-  subtle: { light: colors.N20, dark: colors.DN10 },
+  invalid: { light: colors.N0, dark: colors.DN10 },
+  subtle: { light: colors.N0, dark: colors.DN10 },
   none: { light: 'transparent', dark: 'transparent' },
 });
 

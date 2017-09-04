@@ -1,4 +1,24 @@
-import { MediaPicker } from 'mediapicker';
+import {
+  MediaPicker,
+  ModuleConfig,
+  MediaPickerComponent,
+  MediaPickerComponents,
+  ComponentConfigs,
+
+  Popup,
+  Browser,
+  Dropzone,
+  Clipboard,
+  BinaryUploader,
+
+  UploadStartPayload,
+  UploadPreviewUpdatePayload,
+  UploadStatusUpdatePayload,
+  UploadProcessingPayload,
+  UploadFinalizeReadyPayload,
+  UploadErrorPayload,
+  UploadEndPayload,
+} from 'mediapicker';
 import {
   ContextConfig,
   MediaStateManager,
@@ -8,51 +28,21 @@ import {
 
 import { ErrorReportingHandler } from '../../utils';
 
-export type PickerEvent = {
-  file: PickerEventFile,
-  preview?: Blob
-  progress?: PickerEventProgress,
-  error?: PickerEventError,
-  finalize?: () => void,
-};
-
-export type PickerEventFile = {
-  id: string,           // unique id, which is generated when user picked the file
-  name: string,         // file name
-  size: number,         // size in bytes
-  publicId?: string     // public id of the file, if it was uploaded
-  creationDate: number, // timestamp of file creation date
-  type: string          // mimetype
-};
-
-export type PickerEventProgress = {
-  absolute?: number,           // amount of bytes uploaded
-  portion?: number,            // percentage of file uploaded (0.55 = 55%)
-  max?: number,                // size of the file
-  overallTime?: number,        // the total amount of time needed to upload this file (in ms)
-  expectedFinishTime?: number, // timestamp of approximate finish time
-  timeLeft?: number            // time before finish (in ms)
-};
-
-export type PickerEventError = {
-  description: string, // description for an error. example: "Token verification failed: invalid token". Can be empty.
-  name: string,        // type of error. Available types: 'object_create_fail' (failed to create file object), 'metadata_fetch_fail', 'token_fetch_fail', 'token_source_empty', 'upload_fail'
-  fileId?: string      // if available, the id of the file that failed to upload
-};
+export type PickerType = keyof MediaPickerComponents;
 
 export default class PickerFacade {
-  private picker: any;
+  private picker: MediaPickerComponent;
   private onStartListeners: Array<(state: MediaState) => void> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
 
   constructor(
-    pickerType: string,
+    pickerType: PickerType,
     uploadParams: UploadParams,
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: string, pickerConfig: any, extraConfig?: any) => any
+    mediaPickerFactory?: (pickerType: PickerType, pickerConfig: ModuleConfig, extraConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
@@ -75,7 +65,7 @@ export default class PickerFacade {
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
-    if (picker.activate) {
+    if (picker instanceof Dropzone || picker instanceof Clipboard) {
       picker.activate();
     }
   }
@@ -96,18 +86,16 @@ export default class PickerFacade {
     picker.removeAllListeners('upload-end');
 
     try {
-      if (picker.deactivate) {
+      if (picker instanceof Dropzone || picker instanceof Clipboard) {
         picker.deactivate();
       }
 
-      if (picker.teardown) {
+      if (picker instanceof Popup || picker instanceof Browser) {
         picker.teardown();
       }
     } catch (ex) {
       this.errorReporter.captureException(ex);
     }
-
-    this.picker = null;
   }
 
   setUploadParams(params: UploadParams): void {
@@ -116,7 +104,7 @@ export default class PickerFacade {
   }
 
   show(): void {
-    if (this.picker.show) {
+    if (this.picker instanceof Popup) {
       try {
         this.picker.show();
       } catch (ex) {
@@ -126,31 +114,33 @@ export default class PickerFacade {
   }
 
   cancel(tempId: string): void {
-    const state = this.stateManager.getState(tempId);
+    if (this.picker instanceof Popup) {
+      const state = this.stateManager.getState(tempId);
 
-    if (!state || (state.status === 'cancelled')) {
-      return;
-    }
-
-    try {
-      this.picker.cancel(tempId);
-    } catch (e) {
-      // We're deliberately consuming a known Media Picker exception, as it seems that
-      // the picker has problems cancelling uploads before the popup picker has been shown
-      // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
-      if (!/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(`${e}`)) {
-        throw e;
+      if (!state || (state.status === 'cancelled')) {
+        return;
       }
-    }
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      status: 'cancelled',
-    });
+      try {
+        this.picker.cancel(tempId);
+      } catch (e) {
+        // We're deliberately consuming a known Media Picker exception, as it seems that
+        // the picker has problems cancelling uploads before the popup picker has been shown
+        // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4161
+        if (!/((popupIframe|cancelUpload).*?undefined)|(undefined.*?(popupIframe|cancelUpload))/.test(`${e}`)) {
+          throw e;
+        }
+      }
+
+      this.stateManager.updateState(tempId, {
+        id: tempId,
+        status: 'cancelled',
+      });
+    }
   }
 
   upload(url: string, fileName: string): void {
-    if (this.picker.upload) {
+    if (this.picker instanceof BinaryUploader) {
       this.picker.upload(url, fileName);
     }
   }
@@ -159,7 +149,7 @@ export default class PickerFacade {
     this.onStartListeners.push(cb);
   }
 
-  private buildPickerConfigFromContext(context: ContextConfig) {
+  private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
     return {
       uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
@@ -176,7 +166,7 @@ export default class PickerFacade {
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
 
-  private handleUploadStart = (event: PickerEvent) => {
+  private handleUploadStart = (event: UploadStartPayload) => {
     const { file } = event;
     const tempId = `temporary:${file.id}`;
     const state = {
@@ -191,7 +181,7 @@ export default class PickerFacade {
     this.onStartListeners.forEach(cb => cb.call(cb, state));
   }
 
-  private handleUploadStatusUpdate = (event: PickerEvent) => {
+  private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {
     const { file, progress } = event;
     const tempId = `temporary:${file.id}`;
     const currentState = this.stateManager.getState(tempId);
@@ -207,7 +197,7 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadProcessing = (event: PickerEvent) => {
+  private handleUploadProcessing = (event: UploadProcessingPayload) => {
     const { file } = event;
     const tempId = `temporary:${file.id}`;
 
@@ -221,7 +211,7 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadFinalizeReady = (event: PickerEvent) => {
+  private handleUploadFinalizeReady = (event: UploadFinalizeReadyPayload) => {
     const { file } = event;
     const { finalize } = event;
     const tempId = `temporary:${file.id}`;
@@ -241,7 +231,7 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadError = ({ error }: { error: PickerEventError }) => {
+  private handleUploadError = ({ error }: UploadErrorPayload) => {
     if (!error || !error.fileId) {
       const err = new Error(`Media: unknown upload-error received from Media Picker: ${error && error.name}`);
       this.errorReporter.captureException(err);
@@ -257,7 +247,7 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadEnd = (event: PickerEvent) => {
+  private handleUploadEnd = (event: UploadEndPayload) => {
     const { file } = event;
     const tempId = `temporary:${file.id}`;
 
@@ -271,7 +261,7 @@ export default class PickerFacade {
     });
   }
 
-  private handleUploadPreviewUpdate = (event: PickerEvent) => {
+  private handleUploadPreviewUpdate = (event: UploadPreviewUpdatePayload) => {
     const tempId = `temporary:${event.file.id}`;
 
     if (event.preview !== undefined) {

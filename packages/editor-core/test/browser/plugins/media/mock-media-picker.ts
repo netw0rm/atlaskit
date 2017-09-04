@@ -1,4 +1,4 @@
-import { PickerEvent } from '../../../../src/plugins/media/picker-facade';
+import { GenericUploadEvents } from 'mediapicker';
 
 export default class MockMediaPicker {
   public pickerType: string;
@@ -50,7 +50,7 @@ export default class MockMediaPicker {
     this.listeners = {};
   }
 
-  __triggerEvent(eventName, event: PickerEvent) {
+  __triggerEvent<K extends keyof GenericUploadEvents>(eventName: K, event: GenericUploadEvents[K]) {
     const { listeners } = this;
 
     if (!listeners[eventName]) {

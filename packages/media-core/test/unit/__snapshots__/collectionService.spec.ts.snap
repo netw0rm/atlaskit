@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaCollectionService should have correct query parameters 1`] = `"some-service-host/collection/some-collection-name/items?collection=some-collection-name&limit=36&inclusiveStartKey=128&sortDirection=desc&details=full&token=some-token&client=some-client-id"`;
+
+exports[`MediaCollectionService should have correct response 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "details": Object {
+        "id": "0a6f64e4-7330-4dcf-ac65-58ab10677282",
+        "mimeType": "application/video",
+        "name": "some_video.mp4",
+        "occurrenceKey": "urn:hipchat:message:12413532",
+        "size": 34315,
+      },
+      "type": "file",
+    },
+  ],
+  "nextInclusiveStartKey": "121",
+}
+`;
+
+exports[`MediaCollectionService should have correct url 1`] = `"some-service-host/collection/some-collection-name/items?collection=some-collection-name&limit=10&token=some-token&client=some-client-id"`;

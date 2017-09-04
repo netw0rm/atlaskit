@@ -56,7 +56,7 @@ describe('createRequest()', () => {
 
     return request({url: '/some-api/links'}).then(json => {
       expect(tokenProvider.calledOnce).toBe(true);
-      expect(myFakeResponses[0].url).toBe(`http://example.com/some-api/links?token=${token}&client=${clientId}`);
+      expect(myFakeResponses[0].url).toMatchSnapshot();
       expect(myFakeResponses[0].requestHeaders['X-Client-Id']).toBeUndefined();
       expect(myFakeResponses[0].requestHeaders['Authorization']).toBeUndefined();
     });

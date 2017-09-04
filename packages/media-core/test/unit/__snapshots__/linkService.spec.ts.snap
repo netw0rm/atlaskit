@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaLinkService should add link 1`] = `"some-host/link?collection=some-collection"`;
+
+exports[`MediaLinkService should resolve link item 1`] = `"some-host/link/some-link-id?collection=some-collection&token=some-token&client=some-client-id"`;

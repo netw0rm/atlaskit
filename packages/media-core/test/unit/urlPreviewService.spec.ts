@@ -61,7 +61,7 @@ describe('UrlPreviewService', () => {
         const headers = requests[0].requestHeaders;
         expect(headers['X-Client-Id']).toBe(clientId);
         expect(headers['Authorization']).toBe(`Bearer ${token}`);
-        expect(requests[0].url).toBe('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(requests[0].url).toMatchSnapshot();
       });
 
     setTimeout(() => {
@@ -92,7 +92,7 @@ describe('UrlPreviewService', () => {
         const headers = requests[0].requestHeaders;
         expect(headers['X-Client-Id']).toBe(clientId);
         expect(headers['Authorization']).toBe(`Bearer ${token}`);
-        expect(requests[0].url).toBe('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+        expect(requests[0].url).toMatchSnapshot();
       });
 
     setTimeout(() => {

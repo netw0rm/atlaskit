@@ -12,7 +12,6 @@ const fileId = 'some-file-id';
 const unprocessedFileId = 'some-unprocessed-file-id';
 const clientId = 'some-client-id';
 const collection = 'some-collection';
-const authParams = `token=${token}&client=${clientId}`;
 const defaultFileDetails = {
   id: 'some-file-id',
   mediaType: 'image',
@@ -75,7 +74,7 @@ describe('MediaFileService', () => {
         expect(tokenProvider).toHaveBeenCalledWith(collection);
       })
       .then(() => {
-        expect(requests[0].url).toBe(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
+        expect(requests[0].url).toMatchSnapshot();
       });
 
     respondFakeXhr();
@@ -94,7 +93,7 @@ describe('MediaFileService', () => {
         expect(tokenProvider).toHaveBeenCalledWith(undefined);
       })
       .then(() => {
-        expect(requests[0].url).toBe(`some-host/file/some-file-id?${authParams}`);
+        expect(requests[0].url).toMatchSnapshot();
       });
 
     respondFakeXhr();

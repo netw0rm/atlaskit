@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaFileService should resolve file item from collection given 1`] = `"some-host/file/some-file-id?token=some-token&client=some-client-id"`;
+
+exports[`MediaFileService should resolve file item from collection given or not 1`] = `"some-host/file/some-file-id?collection=some-collection&token=some-token&client=some-client-id"`;

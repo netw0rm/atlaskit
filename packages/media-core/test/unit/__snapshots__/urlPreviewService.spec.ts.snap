@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UrlPreviewService should resolve a preview 1`] = `"some-host/link/preview?url=http:%2F%2Fatlassian.com"`;
+
+exports[`UrlPreviewService should resolve an error when iFramely fails to process provided link 1`] = `"some-host/link/preview?url=http:%2F%2Fatlassian.com"`;

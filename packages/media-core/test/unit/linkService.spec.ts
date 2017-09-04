@@ -24,7 +24,6 @@ const linkMetadata = <UrlPreview> {
     thumbnail: {url: 'some-thumbnail-url'}
   }
 };
-const authParams = `token=${token}&client=${clientId}`;
 
 describe('MediaLinkService', () => {
   let tokenProvider: JwtTokenProvider;
@@ -87,7 +86,7 @@ describe('MediaLinkService', () => {
         expect(tokenProvider).toHaveBeenCalledWith(collection);
       })
       .then(() => {
-        expect(requests[0].url).toBe(`some-host/link/some-link-id?collection=some-collection&${authParams}`);
+        expect(requests[0].url).toMatchSnapshot();
       });
     setTimeout(() => {
       const mockedResponse = {
@@ -123,7 +122,7 @@ describe('MediaLinkService', () => {
         const headers = requests[0].requestHeaders;
         expect(headers['X-Client-Id']).toBe(clientId);
         expect(headers['Authorization']).toBe(`Bearer ${token}`);
-        expect(requests[0].url).toBe('some-host/link?collection=some-collection');
+        expect(requests[0].url).toMatchSnapshot();
       });
 
     setTimeout(() => {

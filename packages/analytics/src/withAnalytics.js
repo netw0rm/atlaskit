@@ -84,7 +84,7 @@ const withAnalytics = (
           fireAnalyticsEvent={this.fireAnalyticsEvent}
           firePrivateAnalyticsEvent={this.privateAnalyticsEvent}
           analyticsId={analyticsId}
-          ref={input => this.props.innerRef && this.props.innerRef(input)}
+          ref={this.props.innerRef}
           {...componentProps}
         />
       );

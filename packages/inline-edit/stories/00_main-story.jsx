@@ -25,7 +25,7 @@ const MultiSelectItems = [
 
 const containerStyle = {
   padding: 20,
-  backgroundColor: 'papayawhip',
+  backgroundColor: 'white',
   width: 400,
 };
 

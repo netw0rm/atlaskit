@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.13.3 (2017-09-04)
+
+* bug fix; fix filmstrip arrows don't show up in editor or renderer (issues closed: ed-2577) ([43291f6](https://bitbucket.org/atlassian/atlaskit/commits/43291f6))
 ## 46.13.2 (2017-09-01)
 
 * bug fix; pass eventDispatcher to PluginSlot (issues closed: ed-2634) ([ee59df4](https://bitbucket.org/atlassian/atlaskit/commits/ee59df4))

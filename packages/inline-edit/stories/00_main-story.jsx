@@ -161,6 +161,20 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('with custom internal component', () => (
+    <div style={containerStyle}>
+      <InlineEdit
+        label="With many much long text"
+        readView={(
+          <div>
+            <p>{'It\'s been, one week since you looked at me'}</p>
+            <p>{'cocked your head to the side and said \'I\'m angry\''}</p>
+          </div>
+        )}
+        editView="This is a terrible edit view"
+      />
+    </div>
+  ))
   .add('inside modal dialog', () => (
     <div style={containerStyle}>
       <ModalDialog

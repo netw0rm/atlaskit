@@ -81,10 +81,16 @@ export default class InlineEdit extends PureComponent {
     });
   }
 
-  onWrapperClick = () => {
-    if (!this.isReadOnly() && !this.props.isEditing) {
+  onMouseDown = ({ clientX, clientY }) => this.setState({ startX: clientX, startY: clientY });
+
+  onWrapperClick = (e) => {
+    if (!this.isReadOnly() && !this.props.isEditing && !this.mouseHasMoved(e)) {
       this.props.onEditRequested();
+    } else {
+      e.preventDefault();
+      e.stopPropagation();
     }
+    this.setState({ startX: 0, startY: 0 });
   }
 
   onWrapperBlur = () => {
@@ -123,6 +129,11 @@ export default class InlineEdit extends PureComponent {
   onFieldBaseWrapperMouseEnter = () => this.setState({ fieldBaseWrapperIsHover: true })
 
   onFieldBaseWrapperMouseLeave = () => this.setState({ fieldBaseWrapperIsHover: false })
+
+  mouseHasMoved = ({ clientX, clientY }) => {
+    const { startX, startY } = this.state;
+    return Math.abs(startX - clientX) > 5 || Math.abs(startY - clientY) > 5;
+  }
 
   confirmIfUnfocused = () => {
     if (!this.state.wasFocusReceivedSinceLastBlur) {
@@ -205,6 +216,7 @@ export default class InlineEdit extends PureComponent {
             isLabelHidden={this.props.isLabelHidden}
             htmlFor={this.isReadOnly() ? undefined : this.props.labelHtmlFor}
             onClick={this.onWrapperClick}
+            onMouseDown={this.onMouseDown}
           />
         </div>
         <ContentWrapper
@@ -215,6 +227,7 @@ export default class InlineEdit extends PureComponent {
             onClick={this.onWrapperClick}
             onMouseEnter={this.onFieldBaseWrapperMouseEnter}
             onMouseLeave={this.onFieldBaseWrapperMouseLeave}
+            onMouseDown={this.onMouseDown}
           >
             {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
           </FieldBaseWrapper>

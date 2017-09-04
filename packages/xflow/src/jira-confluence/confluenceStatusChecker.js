@@ -122,7 +122,7 @@ export default {
           status === ACTIVE ? 1 : easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
 
         if (progress === 1) {
-          setTimeout(this.stop(), PROGRESS_COMPLETE_DELAY);
+          setTimeout(() => this.stop(), PROGRESS_COMPLETE_DELAY);
         } else {
           interval = setTimeout(poll, pollingInterval);
         }

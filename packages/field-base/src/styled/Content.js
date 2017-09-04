@@ -103,8 +103,8 @@ export const Content = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  ${props => (props.disabled && 'cursor: not-allowed;')}
-  ${props => (props.grow ? 'flex: 1 1 auto;' : 'flex: 0 0 auto;')}
-  ${props => (props.grow ? 'display: block' : 'display: inline-block; vertical-align: top;')}
-  ${props => (props.maxWidth ? `max-width: ${props.maxWidth}px;` : 'max-width: 100%;')}
+  ${props => (props.disabled && css`cursor: not-allowed;`)}
+  ${props => (props.grow ? css`flex: 1 0 auto;` : css`flex: 0 0 auto;`)}
+  ${props => (props.grow ? css`display: block` : css`display: inline-block; vertical-align: top;`)}
+  ${props => (props.maxWidth ? css`max-width: ${props.maxWidth}px;` : css`max-width: 100%;`)}
 `;

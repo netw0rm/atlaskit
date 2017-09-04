@@ -123,7 +123,6 @@ export default class FieldBaseStateless extends PureComponent {
               appearance={getAppearance(appearance)}
               compact={isCompact}
               disabled={isDisabled}
-              fitContainerWidth={isFitContainerWidthEnabled}
               isFocused={isFocused}
               invalid={isInvalid && !isFocused}
               none={appearance === 'none'}

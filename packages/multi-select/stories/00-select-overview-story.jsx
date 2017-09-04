@@ -49,6 +49,16 @@ import MultiSelectStatelessInitialLoading from './examples/MultiSelectStatelessI
 import MultiSelectStatelessInitialLoadingRaw from '!raw!./examples/MultiSelectStatelessInitialLoading';
 /* eslint-enable import/first, import/no-duplicates */
 
+const MultiSelectItems = [
+  { content: 'Apple', value: 'Apple' },
+  { content: 'Banana', value: 'Banana' },
+  { content: 'Cherry', value: 'Cherry' },
+  { content: 'Mango', value: 'Mango' },
+  { content: 'Orange', value: 'Orange' },
+  { content: 'Strawberry', value: 'Strawberry' },
+  { content: 'Watermelon', value: 'Watermelon' },
+];
+
 const Spaced = styled.div`
   padding: 20px;
 `;
@@ -283,6 +293,19 @@ storiesOf(name, module)
       <CodeWrapper>
         <Code language="js" showLineNumbers={false} text={SmartSelectWithCreateNewItemRaw} />
       </CodeWrapper>
+    </Spaced>
+  ))
+  .add('Multi select that should fit container', () => (
+    <Spaced>
+      <div style={{ width: '400px' }}>
+        <MultiSelect
+          defaultSelected={MultiSelectItems}
+          items={MultiSelectItems}
+          isDefaultOpen
+          shouldFitContainer
+          shouldFocus
+        />
+      </div>
     </Spaced>
   ))
   .add('Multi select with footer', () => (

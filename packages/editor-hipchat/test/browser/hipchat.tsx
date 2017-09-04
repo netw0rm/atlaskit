@@ -80,6 +80,56 @@ describe('@atlaskit/editor-hipchat', () => {
       expect(spy.calledWith(editor.value)).to.equal(true);
     });
 
+    it('should trigger onSubmit when user presses Enter in decisionItem', () => {
+      const spy = sinon.spy();
+      editorWrapper = mount(<Editor onSubmit={spy} />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '<> ', 1);
+      const selParentType = editorView.state.selection.$from.parent.type;
+      expect(selParentType.name).to.equal('decisionItem');
+      insertText(editorView, '1', editorView.state.selection.$from.pos);
+      sendKeyToPm(editorView!, 'Enter');
+      expect(spy.calledWith(editor.value)).to.equal(true);
+    });
+
+    it('should trigger onSubmit when user presses Enter inside taskItem', () => {
+      const spy = sinon.spy();
+      editorWrapper = mount(<Editor onSubmit={spy} />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '[] ', 1);
+      const selParentType = editorView.state.selection.$from.parent.type;
+      expect(selParentType.name).to.equal('taskItem');
+      insertText(editorView, '1', editorView.state.selection.$from.pos);
+      sendKeyToPm(editorView!, 'Enter');
+      expect(spy.calledWith(editor.value)).to.equal(true);
+    });
+
+    it('should not trigger onSubmit when user presses Enter in empty decisionItem', () => {
+      const spy = sinon.spy();
+      editorWrapper = mount(<Editor onSubmit={spy} />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '<> ', 1);
+      const selParentType = editorView.state.selection.$from.parent.type;
+      expect(selParentType.name).to.equal('decisionItem');
+      sendKeyToPm(editorView!, 'Enter');
+      expect(spy.calledWith(editor.value)).to.equal(false);
+    });
+
+    it('should not trigger onSubmit when user presses Enter inside empty taskItem', () => {
+      const spy = sinon.spy();
+      editorWrapper = mount(<Editor onSubmit={spy} />);
+      const editor = editorWrapper.get(0) as any;
+      const { editorView } = editor.state;
+      insertText(editorView, '[] ', 1);
+      const selParentType = editorView.state.selection.$from.parent.type;
+      expect(selParentType.name).to.equal('taskItem');
+      sendKeyToPm(editorView!, 'Enter');
+      expect(spy.calledWith(editor.value)).to.equal(false);
+    });
+
     it('should insert a new line when user presses Shift-Enter', () => {
       editorWrapper = mount(<Editor />);
       const editor = editorWrapper.get(0) as any;

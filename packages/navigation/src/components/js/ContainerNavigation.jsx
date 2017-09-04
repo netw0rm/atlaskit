@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import { WithRootTheme } from '../../theme/util';
 import ContainerHeader from './ContainerHeader';
+import ContainerNavigationChildren from './ContainerNavigationChildren';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
-import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 import {
   globalPrimaryActions,
@@ -33,6 +33,12 @@ type Props = {|
   component. On click, onGlobalSearchActivate is called. It is recommended
   that you use an atlaskit icon. */
   globalSearchIcon?: ReactElement,
+  /** Whether to display a scroll hint shadow at the bottom of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintBottom?: boolean,
+  /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintTop?: boolean,
   /** Functional react component that is passed the prop isCollapsed. The AkContainerTitle
   component is designed to be used as the headerComponent. */
   headerComponent?: () => mixed,
@@ -101,6 +107,8 @@ export default class ContainerNavigation extends Component {
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
+      hasScrollHintBottom,
+      hasScrollHintTop,
       headerComponent,
       linkComponent,
       onGlobalCreateActivate,
@@ -139,7 +147,10 @@ export default class ContainerNavigation extends Component {
           <ContainerHeader>
             {headerComponent ? headerComponent({ isCollapsed }) : null}
           </ContainerHeader>
-          <ContainerNavigationChildren>
+          <ContainerNavigationChildren
+            hasScrollHintBottom={hasScrollHintBottom}
+            hasScrollHintTop={hasScrollHintTop}
+          >
             {children}
           </ContainerNavigationChildren>
           <GlobalNavigationSecondaryContainer>

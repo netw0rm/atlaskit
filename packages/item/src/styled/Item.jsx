@@ -10,6 +10,10 @@ const getItemState = stateName => ({ theme }) => {
     background-color: ${stateStyles.background};
     color: ${stateStyles.text};
     text-decoration: none;
+
+    &:focus {
+      color: ${stateStyles.text};
+    }
   `;
 };
 
@@ -44,6 +48,7 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
   const standardFocus = css`
     &:focus {
       box-shadow: 0 0 0 2px ${getThemeStyle(theme[themeNamespace], 'outline', 'focus')} inset;
+      text-decoration: none;
     }
   `;
 
@@ -72,24 +77,26 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
 // later be applied to different component types (span / a / custom link component)
 
 export const ItemBase = ({ isSelected, theme } : any) => css`
-  align-items: center;
-  border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
-  box-sizing: border-box;
-  cursor: pointer;
-  display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
-  flex: none;
-  ${getItemState(isSelected ? 'selected' : 'default')}
-  ${getPadding}
-  ${getInteractiveStyles}
-  ${getHeightStyles}
+  && {
+    align-items: center;
+    border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
+    flex: none;
+    ${getItemState(isSelected ? 'selected' : 'default')}
+    ${getPadding}
+    ${getInteractiveStyles}
+    ${getHeightStyles}
 
-  &:focus {
-    /* focus shadow drawn by getInteractiveStyles */
+    &:focus {
+      /* focus shadow drawn by getInteractiveStyles */
 
-    outline: none;
-    /* relative position prevents bgcolor of a hovered element from
-    obfuscating focus ring of a focused sibling element */
-    position: relative;
+      outline: none;
+      /* relative position prevents bgcolor of a hovered element from
+      obfuscating focus ring of a focused sibling element */
+      position: relative;
+    }
   }
 `;
 

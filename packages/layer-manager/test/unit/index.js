@@ -11,6 +11,10 @@ function assertEqual(actual, expected) {
   expect(render(actual)).toBe(render(expected));
 }
 
+// NOTE: shim avoids noise in test logs
+// eslint-disable-next-line react/prop-types, no-unused-vars
+const Shim = ({ stackIndex, stackTotal, ...props }) => <span {...props} />;
+
 describe(name, () => {
   it('should render Gateway in GatewayDest', () => {
     assertEqual(
@@ -18,7 +22,7 @@ describe(name, () => {
         <div>
           <section>
             <Gateway into="foo">
-              <span>Hello World</span>
+              <Shim>Hello World</Shim>
             </Gateway>
           </section>
           <GatewayDest name="foo" />
@@ -58,8 +62,8 @@ describe(name, () => {
     assertEqual(
       <GatewayProvider>
         <div>
-          <Gateway into="foo"><span>One</span></Gateway>
-          <Gateway into="bar"><span>Two</span></Gateway>
+          <Gateway into="foo"><Shim>One</Shim></Gateway>
+          <Gateway into="bar"><Shim>Two</Shim></Gateway>
           <GatewayDest name="bar" />
           <GatewayDest name="foo" />
         </div>
@@ -77,15 +81,15 @@ describe(name, () => {
         <div>
           <section>
             <Gateway into="foo">
-              <div>One</div>
+              <Shim>One</Shim>
             </Gateway>
             <div>
               <Gateway into="foo">
-                <div>Two</div>
+                <Shim>Two</Shim>
               </Gateway>
             </div>
             <Gateway into="foo">
-              <div>Three</div>
+              <Shim>Three</Shim>
             </Gateway>
           </section>
           <GatewayDest name="foo" />
@@ -97,9 +101,9 @@ describe(name, () => {
           <div />
         </section>
         <div>
-          <div>One</div>
-          <div>Two</div>
-          <div>Three</div>
+          <span>One</span>
+          <span>Two</span>
+          <span>Three</span>
         </div>
       </div>
     );

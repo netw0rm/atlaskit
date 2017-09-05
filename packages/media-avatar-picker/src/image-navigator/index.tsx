@@ -12,9 +12,18 @@ import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
+export interface Crop {
+  x: number;
+  y: number;
+  size: number;
+}
+
 export interface Props {
   imageSource?: string;
+  onImageChanged: (file: File, crop: Crop) => void;
   onLoad?: OnLoadHandler;
+  onPositionChanged: (x: number, y: number) => void;
+  onSizeChanged: (size: number) => void;
 }
 
 export interface Position {
@@ -32,6 +41,7 @@ export interface State {
   isDragging: boolean;
   minScale?: number;
   fileImageSource?: string;
+  imageFile?: File;
   isDroppingFile: boolean;
 }
 
@@ -76,10 +86,14 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   onMouseUp = () => {
+    const { imagePos, scale } = this.state;
+    this.props.onPositionChanged(
+      Math.abs(imagePos.x) / scale,
+      Math.abs(imagePos.y) / scale);
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
-      imageInitPos: this.state.imagePos
+      imageInitPos: imagePos
     });
   }
 
@@ -105,22 +119,44 @@ export class ImageNavigator extends Component<Props, State> {
       x: scaleRelation * oldCenterPixel.x,
       y: scaleRelation * oldCenterPixel.y,
     };
-
+    const imagePos = {
+      x: CONTAINER_SIZE / 2 - newCenterPixel.x,
+      y: CONTAINER_SIZE / 2 - newCenterPixel.y,
+    };
+    if (this.state.imageWidth) {
+      const x = Math.abs(imagePos.x) / newScale;
+      const y = Math.abs(imagePos.y) / newScale;
+      this.props.onPositionChanged(x, y);
+      this.props.onSizeChanged(CONTAINER_SIZE / newScale);
+    }
     this.setState({
       scale: newScale,
-      imagePos: {
-        x: CONTAINER_SIZE / 2 - newCenterPixel.x,
-        y: CONTAINER_SIZE / 2 - newCenterPixel.y,
-      }
+      imagePos,
     });
   }
 
+  /**
+   * This gets called when the cropper loads an image
+   * at this point we will be able to get the height/width
+   * @param width the width of the image
+   * @param height the height of the image
+   */
   onImageSize = (width, height) => {
+    const { imageFile, imagePos } = this.state;
+    const scale = this.calculateInitialScale(width, height);
+    if (imageFile) {
+      this.props.onImageChanged(
+        imageFile,
+        {
+          ...imagePos,
+          size: CONTAINER_SIZE / scale,
+        });
+    }
     this.setState({
       imageWidth: width,
       imageHeight: height,
-      scale: this.calculateInitialScale(width, height),
       minScale: (CONTAINER_SIZE / 2) / Math.max(width, height) * 100,
+      scale,
     });
   }
 
@@ -144,7 +180,7 @@ export class ImageNavigator extends Component<Props, State> {
     reader.onload = (e: ProgressEvent) => {
       const fileImageSource = (e.target as FileReader).result;
 
-      this.setState({fileImageSource});
+      this.setState({ fileImageSource, imageFile: file });
     };
     reader.readAsDataURL(file);
   }
@@ -196,7 +232,13 @@ export class ImageNavigator extends Component<Props, State> {
 
     return (
       <ImageUploader>
-        <DragZone isDroppingFile={isDroppingFile} onDragLeave={this.onDragLeave} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
+        <DragZone
+          isDroppingFile={isDroppingFile}
+          onDragLeave={this.onDragLeave}
+          onDragEnter={this.onDragEnter}
+          onDragOver={this.onDragOver}
+          onDrop={this.onDrop}
+        >
           <DragZoneImage src={uploadPlaceholder} alt="upload image" />
           <DragZoneText>Drag and drop your photos here</DragZoneText>
         </DragZone>

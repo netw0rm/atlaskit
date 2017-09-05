@@ -13,12 +13,18 @@ export interface State {
 /**
  * A base class for components that don't want to start rendering
  * until the EmojiProvider is resolved.
+ * Notes: super.componentDidMount and super.componentWillUnmount will need to be
+ * called explicitly if they are overridden on the child class.
  */
 export default abstract class LoadingEmojiComponent<P extends Props,S extends State> extends PureComponent<P,S> {
+  private isUnmounted: boolean;
 
   constructor(props: P, state: S) {
     super(props);
     this.state = state;
+  }
+
+  componentDidMount() {
     this.loadEmojiProvider(this.props.emojiProvider);
   }
 
@@ -28,14 +34,22 @@ export default abstract class LoadingEmojiComponent<P extends Props,S extends St
 
   private loadEmojiProvider(futureEmojiProvider: Promise<EmojiProvider>) {
     futureEmojiProvider.then(loadedEmojiProvider => {
-      this.setState({
-        loadedEmojiProvider
-      });
+      if (!this.isUnmounted) {
+        this.setState({
+          loadedEmojiProvider
+        });
+      }
     }).catch(err => {
-      this.setState({
-        loadedEmojiProvider: undefined
-      });
+      if (!this.isUnmounted) {
+        this.setState({
+          loadedEmojiProvider: undefined
+        });
+      }
     });
+  }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
   }
 
   renderLoading(): JSX.Element | null {

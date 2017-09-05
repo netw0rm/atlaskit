@@ -410,8 +410,8 @@ export const plugin = new Plugin({
   },
 });
 
-const plugins = (schema: Schema<any, any>) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, props = {}) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema, props)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

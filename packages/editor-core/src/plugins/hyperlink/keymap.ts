@@ -4,17 +4,19 @@ import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { Match, getLinkMatch } from './utils';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema<any, any>, props: any): Plugin | undefined {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(
-    keymaps.addLink.common!,
-    trackAndInvoke(
-      'atlassian.editor.format.hyperlink.keyboard',
-      commands.showLinkPanel()
-    ),
-    list
-  );
+  if (props.appearance !== 'message') {
+    keymaps.bindKeymapWithCommand(
+      keymaps.addLink.common!,
+      trackAndInvoke(
+        'atlassian.editor.format.hyperlink.keyboard',
+        commands.showLinkPanel()
+      ),
+      list
+    );
+  }
 
   keymaps.bindKeymapWithCommand(
     keymaps.enter.common!, mayConvertLastWordToHyperlink,

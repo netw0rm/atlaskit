@@ -1,5 +1,4 @@
-import AkButton from '@atlaskit/button';
-import AkButtonGroup from '@atlaskit/button-group';
+import AkButton, { ButtonGroup as AkButtonGroup } from '@atlaskit/button';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { ActivityProvider } from '@atlaskit/activity';

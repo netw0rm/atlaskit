@@ -21,6 +21,7 @@ export const Wrapper = styled.div`
 // tslint:disable-next-line:variable-name
 export const ContentWrapper = styled.div`
   margin: 1px 0 1px 32px;
+  word-wrap: break-word;
 `;
 
 // tslint:disable-next-line:variable-name

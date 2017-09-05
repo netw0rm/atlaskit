@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 1.19.1 (2017-09-05)
+
+* bug fix; removing unused focus outline from single-select triggers. Fieldbase handles the glo ([7792b87](https://bitbucket.org/atlassian/atlaskit/commits/7792b87))
 ## 1.19.0 (2017-08-31)
 
 

@@ -180,7 +180,7 @@ export default class InlineEdit extends PureComponent {
     this.wrapWithFieldBase(
       <ReadViewContentWrapper>
         {this.props.readView}
-        <EditButton fieldBaseWrapperIsHover={this.state.fieldBaseWrapperIsHover} />
+        <EditButton type="button" fieldBaseWrapperIsHover={this.state.fieldBaseWrapperIsHover} />
       </ReadViewContentWrapper>
     )
   )

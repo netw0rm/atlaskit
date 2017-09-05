@@ -1,14 +1,27 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
+import Tag from '@atlaskit/tag';
+import Group from '@atlaskit/tag-group';
 import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
 import SingleSelectInlineEdit from './SingleSelectInlineEdit';
+import MultiSelect from '@atlaskit/multi-select';
 import exampleMentions from './example-mentions';
 import InlineEdit, { InlineEditStateless } from '../src';
 import { name } from '../package.json';
+
+const MultiSelectItems = [
+  { content: 'Apple', value: 'Apple' },
+  { content: 'Banana', value: 'Banana' },
+  { content: 'Cherry', value: 'Cherry' },
+  { content: 'Mango', value: 'Mango' },
+  { content: 'Orange', value: 'Orange' },
+  { content: 'Strawberry', value: 'Strawberry' },
+  { content: 'Watermelon', value: 'Watermelon' },
+];
 
 const containerStyle = {
   padding: 20,
@@ -25,6 +38,11 @@ storiesOf(name, module)
   .add('with label hidden', () => (
     <div style={containerStyle}>
       <TextInlineEdit isLabelHidden />
+    </div>
+  ))
+  .add('in edit mode', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit isEditing />
     </div>
   ))
   .add('with invalid input', () => (
@@ -135,6 +153,34 @@ storiesOf(name, module)
   .add('with slow confirmation', () => (
     <div style={containerStyle}>
       <SlowInlineEdit />
+    </div>
+  ))
+  .add('with tag-group view', () => (
+    <div style={containerStyle}>
+      <InlineEdit
+        label="Favourite fruit"
+        disableEditViewFieldBase
+        editView={(
+          <MultiSelect
+            defaultSelected={MultiSelectItems}
+            items={MultiSelectItems}
+            isDefaultOpen
+            shouldFitContainer
+            shouldFocus
+          />
+        )}
+        readView={(
+          <Group>
+            <Tag text="Apple" />
+            <Tag text="Banana" />
+            <Tag text="Cherry" />
+            <Tag text="Mango" />
+            <Tag text="Orange" />
+            <Tag text="Strawberry" />
+            <Tag text="Watermelon" />
+          </Group>
+        )}
+      />
     </div>
   ))
   .add('with mention list', () => (

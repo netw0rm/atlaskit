@@ -1,5 +1,12 @@
 # @atlaskit/field-base
 
+## 8.1.0 (2017-09-05)
+
+* bug fix; update styles for ie11 to respect flex-wrap ([7cec339](https://bitbucket.org/atlassian/atlaskit/commits/7cec339))
+* feature; fixes lots of spacing and alignment issues. Needed to add a maxWidth prop as part o ([188ee4b](https://bitbucket.org/atlassian/atlaskit/commits/188ee4b))
+## 8.0.2 (2017-09-04)
+
+* bug fix; fix color of focused field ([8f6f4c2](https://bitbucket.org/atlassian/atlaskit/commits/8f6f4c2))
 ## 8.0.1 (2017-08-30)
 
 * bug fix; field-base label color fixed, dependencies updated (issues closed: ak-3363) ([7b77635](https://bitbucket.org/atlassian/atlaskit/commits/7b77635))

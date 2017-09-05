@@ -199,7 +199,9 @@ class GrantAccess extends Component {
       });
       onComplete();
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access', {
+        errorMessage: e.message,
+      });
       this.setState({
         continueButtonDisabled: false,
         spinnerActive: false,

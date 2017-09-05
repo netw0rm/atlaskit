@@ -1,6 +1,13 @@
 # @atlaskit/input
 
-## Unreleased
+## 1.5.3 (2017-09-05)
+
+* bug fix; input component now also inherits the letter-spacing from the CSS reset. ([cf96c4c](https://bitbucket.org/atlassian/atlaskit/commits/cf96c4c))
+* bug fix; inputs in IE11 no longer change size when used with inline-edit ([029cca6](https://bitbucket.org/atlassian/atlaskit/commits/029cca6))
+
+
+
+
 
 ## 1.5.2 (2017-07-27)
 

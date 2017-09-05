@@ -124,7 +124,7 @@ storiesOf('GrantAccess')
         defaultSelectedRadio="everyone"
         grantAccessToUsers={() => {
           console.log('grantAccessToUsers', ...arguments);
-          return new Promise((_, reject) => setTimeout(reject, 1500));
+          return new Promise((_, reject) => setTimeout(reject(new Error('Error granting access.')), 1500));
         }}
       />
     )

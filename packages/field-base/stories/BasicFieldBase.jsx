@@ -1,14 +1,9 @@
 import React from 'react';
 import FieldBase, { Label } from '../src';
 
-const containerStyles = {
-  display: 'inline-flex',
-  flexDirection: 'column',
-};
-
 /* eslint-disable react/prop-types */
 export default props => (
-  <div style={{ ...containerStyles, ...{ padding: props.disablePadding ? '0' : '20px' } }}>
+  <div style={{ padding: props.disablePadding ? '0' : '20px' }}>
     <Label
       label={props.label}
       htmlFor={props.id}
@@ -30,6 +25,7 @@ export default props => (
       isPaddingDisabled={props.isPaddingDisabled}
       isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
       isLoading={props.isLoading}
+      maxWidth={props.maxWidth}
     >
       {props.children}
     </FieldBase>

@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import Navigation from '../../src/components/js/Navigation';
+import ContainerNavigationChildren from '../../src/components/js/ContainerNavigationChildren';
 import Drawer from '../../src/components/js/Drawer';
 import * as presets from '../../src/theme/presets';
 import {
@@ -255,6 +256,24 @@ describe('<Navigation />', () => {
     it('should pass globalCreateIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="create" />;
       expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).toBe(icon);
+    });
+
+    it('should pass hasScrollHintBottom onto <ContainerNavigationChildren />', () => {
+      expect(
+        mount(<Navigation hasScrollHintBottom />)
+          .find(ContainerNavigationChildren)
+          .props()
+          .hasScrollHintBottom
+      ).toBe(true);
+    });
+
+    it('should pass hasScrollHintTop onto <ContainerNavigationChildren />', () => {
+      expect(
+        mount(<Navigation hasScrollHintTop />)
+          .find(ContainerNavigationChildren)
+          .props()
+          .hasScrollHintTop
+      ).toBe(true);
     });
 
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {

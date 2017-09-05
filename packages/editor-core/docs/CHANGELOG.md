@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 46.14.0 (2017-09-05)
+
+* feature; add showSpinner prop to Editor ([ac14e79](https://bitbucket.org/atlassian/atlaskit/commits/ac14e79))
+* feature; add defaultValue property for the "new arch" editor (issues closed: ed-2579) ([dc537cc](https://bitbucket.org/atlassian/atlaskit/commits/dc537cc))
+* feature; add appendText command to EditorActions (issues closed: ed-2579) ([417f348](https://bitbucket.org/atlassian/atlaskit/commits/417f348))
+* feature; add waitForMediaUpload flag for products that want to finalize media on their own (issues closed: ed-2579) ([7ee8106](https://bitbucket.org/atlassian/atlaskit/commits/7ee8106))
+* feature; support presence provider ([4926ae0](https://bitbucket.org/atlassian/atlaskit/commits/4926ae0))
+* bug fix; shouldFocus must place cursor to the end of the document (issues closed: ed-2579) ([e3f7187](https://bitbucket.org/atlassian/atlaskit/commits/e3f7187))
+* feature; add maxHeight property to the 'new architecture' editor (issues closed: ed-2579) ([0cad06d](https://bitbucket.org/atlassian/atlaskit/commits/0cad06d))
+* feature; add feature preset for Message editor (issues closed: ed-2579) ([69c5ee1](https://bitbucket.org/atlassian/atlaskit/commits/69c5ee1))
 ## 46.13.3 (2017-09-04)
 
 * bug fix; fix filmstrip arrows don't show up in editor or renderer (issues closed: ed-2577) ([43291f6](https://bitbucket.org/atlassian/atlaskit/commits/43291f6))

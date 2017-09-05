@@ -6,6 +6,7 @@ import {
 } from '../prosemirror';
 
 import { uuid } from '../plugins/utils';
+import { isSafeUrl } from './utils';
 
 export interface Doc {
   version: 1;
@@ -49,52 +50,12 @@ export const markOrder = [
   'code',
 ];
 
-const whitelistedURLPatterns = [
-  /^https?:\/\//im,
-  /^ftps?:\/\//im,
-  /^\//im,
-  /^mailto:/im,
-  /^skype:/im,
-  /^callto:/im,
-  /^facetime:/im,
-  /^git:/im,
-  /^irc6?:/im,
-  /^news:/im,
-  /^nntp:/im,
-  /^feed:/im,
-  /^cvs:/im,
-  /^svn:/im,
-  /^mvn:/im,
-  /^ssh:/im,
-  /^scp:\/\//im,
-  /^sftp:\/\//im,
-  /^itms:/im,
-  /^notes:/im,
-  /^smb:/im,
-  /^hipchat:\/\//im,
-  /^sourcetree:/im,
-  /^urn:/im,
-  /^tel:/im,
-  /^xmpp:/im,
-  /^telnet:/im,
-  /^vnc:/im,
-  /^rdp:/im,
-  /^whatsapp:/im,
-  /^slack:/im,
-  /^sips?:/im,
-  /^magnet:/im,
-];
-
-export const isSafeUrl = (url: string): boolean => {
-  return whitelistedURLPatterns.some(p => p.test(url.trim()) === true);
-};
-
 export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
   return type === 'sub' || type === 'sup';
 };
 
 /*
- * Sorts mark by the predfined order above
+ * Sorts mark by the predefined order above
  */
 export const getMarksByOrder = (marks: PMMark[] ) => {
   return [...marks].sort((a, b) => markOrder.indexOf(a.type.name) - markOrder.indexOf(b.type.name));
@@ -152,6 +113,21 @@ const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> 
   }
 
   return output;
+};
+
+// null is Object, also maybe check obj.constructor == Object if we want to skip Class
+const isValidObject = obj => obj !== null && typeof obj === 'object';
+const isValidString = str => typeof str === 'string';
+const keysLen = obj => Object.keys(obj).length;
+
+const isValidIcon = icon => isValidObject(icon) && keysLen(icon) === 2 &&
+  isValidString(icon.url) && isValidString(icon.label);
+
+const isValidUser = user => {
+  const len = keysLen(user);
+  return isValidObject(user) && len <= 2 && isValidIcon(user.icon) && (
+    len === 1 || isValidString(user.id)
+  );
 };
 
 /**
@@ -220,7 +196,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
     node.content = content = getValidContent(content, schema);
   }
 
-  // If node type doesn't exist in schema, make it an unknow node
+  // If node type doesn't exist in schema, make it an unknown node
   if (!schema.nodes[type]) {
     return getValidUnknownNode(node);
   }
@@ -230,11 +206,13 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details, context } = attrs;
-        if (typeof text !== 'string' || typeof title !== 'object' || !title.text) { break; }
+        if (!isValidString(text) || !isValidObject(title) || !title.text) { break; }
 
-        // title must contain only one key "text"
+        // title can contain at most two keys (text, user)
         const titleKeys = Object.keys(title);
-        if (titleKeys.length > 1) { break; }
+        if (titleKeys.length > 2) { break; }
+        if (titleKeys.length === 2 && !title.user) { break; }
+        if (title.user && !isValidUser(title.user)) { break; }
 
         if (
           (link && !link.url) ||
@@ -242,30 +220,19 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
           (preview && !preview.url) ||
           (description && !description.text)) { break; }
 
-        if (context && typeof context.text !== 'string') { break; }
-        if (context && context.icon) {
-          const { url, label } = context.icon;
-          if (typeof url !== 'string' || typeof label !== 'string') {
-            break;
-          }
+        if (context && !isValidString(context.text)) { break; }
+        if (context && !isValidIcon(context.icon)) {
+          break;
         }
 
         if (details && !Array.isArray(details)) { break; }
-
         if (details && details.some(meta => {
           const { badge, lozenge, users } = meta;
           if (badge && !badge.value) { return true; }
           if (lozenge && !lozenge.text) { return true; }
           if (users && !Array.isArray(users)) { return true; }
 
-          if (users && users.some(user => {
-            if (typeof user.icon !== 'object') {
-              return true;
-            }
-
-            const { url, label } = user.icon;
-            return (typeof url !== 'string' || typeof label !== 'string');
-          })) { return true; }
+          if (users && !users.every(isValidUser)) { return true; }
         })) { break; }
 
         return {

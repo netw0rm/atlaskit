@@ -1,5 +1,11 @@
 # @atlaskit/emoji
 
+## 27.0.4 (2017-09-01)
+
+* bug fix; changed prop type passed into LoadingEmojiComponent ([93cf9e3](https://bitbucket.org/atlassian/atlaskit/commits/93cf9e3))
+## 27.0.3 (2017-09-01)
+
+* bug fix; fix size of placeholders in emoji picker. ([b5c5a02](https://bitbucket.org/atlassian/atlaskit/commits/b5c5a02))
 ## 27.0.2 (2017-08-29)
 
 * bug fix; prevent default on category buttons (issues closed: fs-1320) ([976e395](https://bitbucket.org/atlassian/atlaskit/commits/976e395))

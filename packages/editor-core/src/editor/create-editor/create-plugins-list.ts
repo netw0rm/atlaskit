@@ -18,7 +18,8 @@ import {
   listsPlugin,
   textColorPlugin,
   insertBlockPlugin,
-  tablesPlugin
+  tablesPlugin,
+  collabEditPlugin,
 } from '../plugins';
 
 /**
@@ -80,6 +81,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.mediaProvider) {
     plugins.push(mediaPlugin);
+  }
+
+  if (props.collabEditProvider) {
+    plugins.push(collabEditPlugin);
   }
 
   if(props.maxContentSize) {

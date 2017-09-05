@@ -1,13 +1,14 @@
 import styled, { css } from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const RootWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: -${akGridSizeUnitless}px;
+  margin-left: -${gridSize}px;
+  width: 100%;
 
   ${props => (!props.isEditing ? css`
-    display: inline-flex;
+    display: flex;
     flex: 0 1 auto;
     max-width: 100%;
   ` : null)}

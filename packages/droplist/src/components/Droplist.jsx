@@ -21,6 +21,8 @@ export default class Droplist extends Component {
       * Tall menu has no restrictions.
       */
     appearance: PropTypes.oneOf(['default', 'tall']),
+    /** Value passed to the Layer component to determine when to reposition the droplist */
+    boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
     /** Content that will be rendered inside the layer element. Should typically be
       * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
     children: PropTypes.node,
@@ -49,6 +51,7 @@ export default class Droplist extends Component {
   }
   static defaultProps = {
     appearance: 'default',
+    boundariesElement: 'viewport',
     children: null,
     isLoading: false,
     isOpen: false,
@@ -139,6 +142,7 @@ export default class Droplist extends Component {
   render() {
     const {
       appearance,
+      boundariesElement,
       children,
       isLoading,
       isOpen,
@@ -180,6 +184,7 @@ export default class Droplist extends Component {
       >
         <Layer
           autoFlip={shouldFlip}
+          boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
           position={position}

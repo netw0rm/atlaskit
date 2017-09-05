@@ -16,7 +16,7 @@ import {
   wideImage,
   wideTransparentImage
 } from '@atlaskit/media-test-helpers';
-import {MediaItemDetails, ImageResizeMode, MediaItemType} from '@atlaskit/media-core';
+import {ImageResizeMode, MediaItemType} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
 import {CardView} from '../../src/root/cardView';
@@ -26,14 +26,14 @@ import {EditableCardOptions, EditableCardContent, SliderWrapper, OptionsWrapper,
 import {defaultImageCardDimensions} from '../../src/utils/cardDimensions';
 
 const appearanceOptions = [
-  { value: 'auto', label: 'Auto', defaultSelected: true },
+  { value: 'auto', label: 'Auto' },
   { value: 'small', label: 'Small', },
   { value: 'image', label: 'Image' },
   { value: 'square', label: 'Square' },
   { value: 'horizontal', label: 'Horizontal' }
 ];
 const metadataOptions = [
-  { value: 'fileImage', label: 'File image', defaultSelected: true },
+  { value: 'fileImage', label: 'File image' },
   { value: 'fileVideo', label: 'File video' },
   { value: 'fileAudio', label: 'File audio' },
   { value: 'fileDoc', label: 'File doc' },
@@ -41,11 +41,11 @@ const metadataOptions = [
   { value: 'genericLink', label: 'Link generic' }
 ];
 const mediaItemTypeOptions = [
-  { value: 'file', label: 'File', defaultSelected: true },
+  { value: 'file', label: 'File' },
   { value: 'link', label: 'Link' },
 ];
 const dataURIOptions = [
-  { value: gifDataUri, label: 'Gif', defaultSelected: true },
+  { value: gifDataUri, label: 'Gif' },
   { value: smallImage, label: 'Small', },
   { value: smallTransparentImage, label: 'Small transparent', },
   { value: tallImage, label: 'Tall', },
@@ -54,19 +54,47 @@ const dataURIOptions = [
   { value: undefined, label: 'No Image', }
 ];
 const statusOptions = [
-  {value: 'complete', label: 'complete', defaultSelected: true},
+  {value: 'complete', label: 'complete'},
   {value: 'uploading', label: 'uploading'},
   {value: 'loading', label: 'loading'},
   {value: 'processing', label: 'processing'},
   {value: 'error', label: 'error'}
 ];
 const resizeModeOptions = [
-  {value: 'crop', label: 'crop', defaultSelected: true},
+  {value: 'crop', label: 'crop'},
   {value: 'fit', label: 'fit'},
   {value: 'full-fit', label: 'full-fit'}
 ];
 
 export const generateStoriesForEditableCards = () => {
+  const localStorageKeyName = 'editableCardState';
+  const metadataOptionsMap = {
+    fileImage: imageFileDetails,
+    fileVideo: videoFileDetails,
+    fileAudio: audioFileDetails,
+    fileDoc: docFileDetails,
+    fileUnknown: unknownFileDetails,
+    genericLink: genericLinkDetails
+  };
+  const getStateFromLocalStorage = () :EditableCardState | null => {
+    const previousState = localStorage.getItem(localStorageKeyName);
+
+    try {
+      return JSON.parse(previousState || '');
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const getOptionsWithDefaultValue = (options: Array<{value?: string}>, value: string) => {
+    const optionsWithDefault = options.map(option => ({
+      ...option,
+      defaultSelected: option.value === value
+    }));
+
+    return optionsWithDefault;
+  };
+
   interface EditableCardProps {
 
   }
@@ -75,7 +103,7 @@ export const generateStoriesForEditableCards = () => {
     appearance: CardAppearance;
     status: CardStatus;
     dimensions: CardDimensions;
-    metadata: MediaItemDetails;
+    metadata: string;
     dataURI: string;
     progress: number;
     menuActions: any;
@@ -92,11 +120,10 @@ export const generateStoriesForEditableCards = () => {
 
     constructor(props) {
       super(props);
-
-      this.state = {
+      const defaultState: EditableCardState = {
         appearance: 'auto',
         status: 'complete',
-        metadata: imageFileDetails,
+        metadata: 'fileImage',
         dataURI: gifDataUri,
         dimensions: {
           width: defaultImageCardDimensions.width,
@@ -111,12 +138,20 @@ export const generateStoriesForEditableCards = () => {
         isMouseEnterHandlerActive: true,
         isClickHandlerActive: true
       };
+      const previousState = getStateFromLocalStorage();
+
+      this.state = previousState || defaultState;
+    }
+
+    componentDidUpdate() {
+      localStorage.setItem(localStorageKeyName, JSON.stringify(this.state));
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
+      const {appearance, status, dataURI, dimensions, metadata: metadataKey, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
+      const metadata = metadataOptionsMap[metadataKey];
 
       return (
         <div>
@@ -177,32 +212,32 @@ export const generateStoriesForEditableCards = () => {
             <OptionsWrapper>
               <FieldRadioGroup
                 label="Appearance"
-                items={appearanceOptions}
+                items={getOptionsWithDefaultValue(appearanceOptions, appearance)}
                 onRadioChange={this.onAppearanceChange}
               />
               <FieldRadioGroup
                 label="Metadata"
-                items={metadataOptions}
+                items={getOptionsWithDefaultValue(metadataOptions, metadataKey)}
                 onRadioChange={this.onMetadataChange}
               />
               <FieldRadioGroup
                 label="MediaItemType"
-                items={mediaItemTypeOptions}
+                items={getOptionsWithDefaultValue(mediaItemTypeOptions, mediaItemType)}
                 onRadioChange={this.onMediaItemTypeChange}
               />
               <FieldRadioGroup
                 label="URI"
-                items={dataURIOptions}
+                items={getOptionsWithDefaultValue(dataURIOptions, dataURI)}
                 onRadioChange={this.onDataURIChange}
               />
               <FieldRadioGroup
                 label="Status"
-                items={statusOptions}
+                items={getOptionsWithDefaultValue(statusOptions, status)}
                 onRadioChange={this.onStatusChange}
               />
               <FieldRadioGroup
                 label="Resize mode"
-                items={resizeModeOptions}
+                items={getOptionsWithDefaultValue(resizeModeOptions, resizeMode)}
                 onRadioChange={this.onResizeModeChange}
               />
             </OptionsWrapper>
@@ -285,18 +320,9 @@ export const generateStoriesForEditableCards = () => {
     }
 
     onMetadataChange = (e) => {
-      const label = e.target.value;
+      const metadata = e.target.value;
 
-      this.setState({
-        metadata: {
-          fileImage: imageFileDetails,
-          fileVideo: videoFileDetails,
-          fileAudio: audioFileDetails,
-          fileDoc: docFileDetails,
-          fileUnknown: unknownFileDetails,
-          genericLink: genericLinkDetails,
-        }[label]
-      });
+      this.setState({metadata});
     }
 
     onDataURIChange = (e) => {

@@ -37,15 +37,26 @@ describe('tasks and decisions - keymaps', () => {
     describe('Backspace', () => {
 
       context('when decisionList exists before paragraph', () => {
-        it('should replace paragraph with decisionItem and preserves content', () => {
+        it('should merge paragraph with decisionItem and preserve content', () => {
           const { editorView } = editor(doc(decisionList(decisionItem('Hello')), p('{<>}World')));
 
           sendKeyToPm(editorView, 'Backspace');
           expect(editorView.state.doc).to.deep.equal(
             doc(
               decisionList(
-                decisionItem('Hello'),
-                decisionItem('World')
+                decisionItem('HelloWorld')
+              ),
+            )
+          );
+        });
+        it('should remove paragraph with decisionItem and preserve content', () => {
+          const { editorView } = editor(doc(decisionList(decisionItem('Hello')), p('{<>}')));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              decisionList(
+                decisionItem('Hello')
               ),
             )
           );
@@ -163,15 +174,27 @@ describe('tasks and decisions - keymaps', () => {
     describe('Backspace', () => {
 
       context('when taskList exists before paragraph', () => {
-        it('should replace paragraph with taskItem and preserves content', () => {
+        it('should merge paragraph with taskItem and preserve content', () => {
           const { editorView } = editor(doc(taskList(taskItem('Hello')), p('{<>}World')));
 
           sendKeyToPm(editorView, 'Backspace');
           expect(editorView.state.doc).to.deep.equal(
             doc(
               taskList(
-                taskItem('Hello'),
-                taskItem('World')
+                taskItem('HelloWorld')
+              ),
+            )
+          );
+        });
+
+        it('should remove paragraph with taskItem and preserve content', () => {
+          const { editorView } = editor(doc(taskList(taskItem('Hello')), p('{<>}')));
+
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).to.deep.equal(
+            doc(
+              taskList(
+                taskItem('Hello')
               ),
             )
           );

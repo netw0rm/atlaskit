@@ -7,7 +7,7 @@ import {
 } from './';
 import UIMedia from '../../ui/Media';
 import ProviderFactory from '../../providerFactory';
-import { mediaStateKey, MediaPluginState } from '../../plugins';
+import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import {
   EditorView,
   Node as PMNode,

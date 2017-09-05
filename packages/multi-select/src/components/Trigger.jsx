@@ -3,8 +3,9 @@ import React, { PureComponent } from 'react';
 import { FieldBaseStateless } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
-
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import Spinner from '@atlaskit/spinner';
+
 import { Content, Expand, Input, TriggerDiv } from '../styled/Trigger';
 import { mapAppearanceToFieldBase } from '../internal/appearances';
 import ItemShape from '../internal/ItemShape';
@@ -37,6 +38,7 @@ export default class Trigger extends PureComponent {
     isFocused: PropTypes.bool,
     isInvalid: PropTypes.bool,
     invalidMessage: PropTypes.node,
+    isLoading: PropTypes.bool,
     isRequired: PropTypes.bool,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
@@ -48,6 +50,7 @@ export default class Trigger extends PureComponent {
 
   static defaultProps = {
     isDisabled: false,
+    isLoading: false,
     onClick: () => {},
     icon: <ExpandIcon label="" />,
   }
@@ -62,10 +65,12 @@ export default class Trigger extends PureComponent {
       handleOnChange,
       handleTriggerClick,
       inputRefFunction,
+      icon,
       isDisabled,
       isFocused,
       isInvalid,
       invalidMessage,
+      isLoading,
       isRequired,
       onBlur,
       onFocus,
@@ -116,7 +121,10 @@ export default class Trigger extends PureComponent {
             </TagGroup>
           </Content>
           <Expand>
-            {this.props.icon}
+            {isFocused && isLoading ?
+              <Spinner /> :
+              icon
+            }
           </Expand>
         </TriggerDiv>
       </FieldBaseStateless>

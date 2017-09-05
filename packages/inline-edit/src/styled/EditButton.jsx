@@ -6,7 +6,7 @@ const EditButton = styled.button`
   appearance: none;
   background: transparent;
   border: 0;
-  display: inline-flex;
+  display: inline-block;
   line-height: 1;
   margin: 0;
   padding: 0;

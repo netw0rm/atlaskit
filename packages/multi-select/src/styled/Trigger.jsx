@@ -10,6 +10,7 @@ const Content = styled.div`
   flex: 1 1 auto;
   margin: 3px ${gridSizeUnitless}px; /* magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699 */
   white-space: nowrap;
+  width: 100%
 `;
 
 const Expand = styled.div`

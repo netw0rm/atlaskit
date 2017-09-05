@@ -24,7 +24,7 @@ export const insertLinks = async (
   linkCreateContext: Context,
   collection?: string
 ) : Promise<Array<string | undefined> | undefined> => {
-  if (linkRanges.length <= 0 || !collection) {
+  if (!linkRanges || linkRanges.length <= 0 || !collection) {
     return;
   }
 

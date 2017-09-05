@@ -32,6 +32,7 @@ export const xFlowShape = PropTypes.shape({
           label: PropTypes.string,
         })
       ),
+      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
 
       loadingProductHeading: PropTypes.string,
       loadingProductMessage: PropTypes.string,
@@ -62,7 +63,6 @@ export const xFlowShape = PropTypes.shape({
   grantAccessToUsers: PropTypes.func,
   retrieveUsers: PropTypes.func,
   goToProduct: PropTypes.func,
-  goToLearnMore: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
 
   closeAlreadyStartedDialog: PropTypes.func,

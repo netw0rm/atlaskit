@@ -1,5 +1,20 @@
 # @atlaskit/multi-select
 
+## 7.1.1 (2017-09-05)
+
+* bug fix; update styles for ie11 to respect flex-wrap ([7cec339](https://bitbucket.org/atlassian/atlaskit/commits/7cec339))
+## 7.1.0 (2017-08-31)
+
+
+
+* bug fix; loading options should not be exposed on the stateful component (issues closed: ak-3181) ([5eb9413](https://bitbucket.org/atlassian/atlaskit/commits/5eb9413))
+* feature; added loading state for the initial fetching of data on the multi-select component (issues closed: ak-3181) ([638afd5](https://bitbucket.org/atlassian/atlaskit/commits/638afd5))
+## 7.0.0 (2017-08-30)
+
+* feature; update field base dependency for darkmode ([baeb283](https://bitbucket.org/atlassian/atlaskit/commits/baeb283))
+* breaking; multi select has dark mode, util-shared-styles removed ([26ffe5c](https://bitbucket.org/atlassian/atlaskit/commits/26ffe5c))
+* breaking; add dark mode to multi-select (issues closed: #ak-3400) ([26ffe5c](https://bitbucket.org/atlassian/atlaskit/commits/26ffe5c))
+
 ## 6.9.3 (2017-08-19)
 
 * bug fix; aK-2249 use variables from utils-shared-styles instead of hard-coding font-size and (issues closed: ak-2249) ([77e32f8](https://bitbucket.org/atlassian/atlaskit/commits/77e32f8))

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import MediaComponent from './MediaComponent';
+import MediaComponent, { Appearance } from './MediaComponent';
 import { CardEventClickHandler } from '../Renderer';
 import { MediaType } from '../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
@@ -24,6 +24,7 @@ export interface MediaProps {
   resizeMode?: ImageResizeMode;
   onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
+  appearance?: Appearance;
 }
 
 export default class Media extends PureComponent<MediaProps, {}> {
@@ -52,6 +53,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       onDelete,
       resizeMode,
       editorView,
+      appearance,
     } = this.props;
 
     return (
@@ -65,6 +67,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
         onDelete={onDelete}
         onClick={onClick}
         editorView={editorView}
+        appearance={appearance}
       />
     );
   }

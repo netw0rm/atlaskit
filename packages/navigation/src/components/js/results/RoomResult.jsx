@@ -7,6 +7,8 @@ import ResultBase from './ResultBase';
 
 const noOp = () => {};
 
+const ROOM_RESULT_TYPE = 'room';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -25,7 +27,7 @@ export default class RoomResult extends PureComponent {
     privacy: PropTypes.oneOf(['none', 'private', 'public']),
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     topic: PropTypes.string,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
@@ -35,6 +37,7 @@ export default class RoomResult extends PureComponent {
     onMouseEnter: noOp,
     onMouseLeave: noOp,
     privacy: 'none',
+    type: ROOM_RESULT_TYPE,
   }
 
   getAvatar = () => (

@@ -1,5 +1,17 @@
 # @atlaskit/dropdown-menu
 
+## 3.10.0 (2017-09-01)
+
+* feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))
+## 3.9.0 (2017-08-31)
+
+* bug fix; dropdown-menu depenencies bumped to latest (issues closed: ak-3392) ([faea6d3](https://bitbucket.org/atlassian/atlaskit/commits/faea6d3))
+* feature; adding the ability to pass a boundariesElement to the Layer component (issues closed: ak-3416) ([f6a215e](https://bitbucket.org/atlassian/atlaskit/commits/f6a215e))
+
+
+
+
+
 ## 3.8.0 (2017-08-25)
 
 * feature; added defaultSelected and isSelected props for DropdownItemRadio and DropdownItemCheckbox (issues closed: ak-3357) ([00080f1](https://bitbucket.org/atlassian/atlaskit/commits/00080f1))

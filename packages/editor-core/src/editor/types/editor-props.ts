@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
+import { ActivityProvider } from '@atlaskit/activity';
 import { EditorView } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
+import { CollabEditProvider } from '../plugins/collab-edit';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
@@ -35,6 +37,8 @@ export interface EditorProps {
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+  collabEditProvider?: Promise<CollabEditProvider>;
+  activityProvider?: Promise<ActivityProvider>;
 
   maxContentSize?: number;
   placeholder?: string;

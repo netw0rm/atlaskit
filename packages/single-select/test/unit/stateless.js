@@ -3,8 +3,10 @@ import { shallow, mount } from 'enzyme';
 import FieldBase, { Label } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/arrow-up';
+import Spinner from '@atlaskit/spinner';
 
 import { StatelessSelect } from '../../src';
+import InitialLoadingElement from '../../src/styled/InitialLoading';
 
 import { name } from '../../package.json';
 
@@ -690,6 +692,40 @@ describe(name, () => {
       const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).toBe('standard');
       expect(subtleFieldBase.prop('appearance')).toBe('subtle');
+    });
+  });
+
+  describe('initial loading state', () => {
+    it('should display loading icon and message when conditions are met', () => {
+      const wrapper = mount(<StatelessSelect
+        isLoading
+        isOpen
+      />);
+
+      expect(wrapper.find(Spinner).length).toBe(1);
+      expect(wrapper.find(InitialLoadingElement).length).toBe(1);
+      expect(wrapper.find(InitialLoadingElement).props()['aria-live']).toBe('polite');
+      expect(wrapper.find(InitialLoadingElement).props().role).toBe('status');
+    });
+
+    it('should accept a custom loading message', () => {
+      const wrapper = mount(<StatelessSelect
+        isLoading
+        loadingMessage="Custom loading message here"
+        isOpen
+      />);
+
+      expect(wrapper.find(InitialLoadingElement).text()).toBe('Custom loading message here');
+    });
+
+    it('should not display loading icon and message when select is not open', () => {
+      const wrapper = mount(<StatelessSelect
+        isLoading
+        isOpen={false}
+      />);
+
+      expect(wrapper.find(Spinner).length).toBe(0);
+      expect(wrapper.find(InitialLoadingElement).length).toBe(0);
     });
   });
 });

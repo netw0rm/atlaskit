@@ -15,7 +15,6 @@ module.exports = [
   { name: 'AkGlobalNavigation', src: path.join(__dirname, '../src/components/js/GlobalNavigation.jsx') },
   { name: 'AkGlobalItem', src: path.join(__dirname, '../src/components/js/GlobalItem.jsx') },
   { name: 'AkSearch', src: path.join(__dirname, '../src/components/js/Search.jsx') },
-  { name: 'AkSearchResults', src: path.join(__dirname, '../src/components/js/SearchResults.jsx') },
   // { name: 'createGlobalTheme', src: path.join(__dirname, '../theme/create-provided-theme') },
   //
   // { name: 'presetThemes', src: path.join(__dirname, '../theme/presets') },

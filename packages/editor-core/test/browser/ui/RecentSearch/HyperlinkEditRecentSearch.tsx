@@ -21,22 +21,6 @@ class MockActivityResource extends ActivityResource {
     super('', '');
   }
 
-  getFrequentItems(): Promise<ActivityItem[]> {
-    return Promise.resolve([{
-      objectId: 'frequent1',
-      name: 'frequent item 1',
-      container: 'container 1',
-      iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-      url: 'frequent1-url.com'
-    }, {
-      objectId: 'frequent2',
-      name: 'frequent item 2',
-      container: 'container 2',
-      iconUrl: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-      url: 'frequent2-url.com'
-    }]);
-  }
-
   getRecentItems(): Promise<ActivityItem[]> {
     return Promise.resolve([{
       objectId: 'recent1',
@@ -109,13 +93,13 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     expect(hyperlinkEdit.find(RecentSearch)).to.have.lengthOf(0);
   });
 
-  it('should show frequent items by default', async () => {
+  it('should show recent items by default', async () => {
     const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
     const recentSearch = hyperlinkEdit.find(RecentSearch);
 
-    expect(recentSearch.find(RecentItem)).to.have.lengthOf(2);
-    expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'frequent item 1');
+    expect(recentSearch.find(RecentItem)).to.have.lengthOf(3);
+    expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'recent item 1');
   });
 
   it('should search recent items when typing into the input field', async () => {
@@ -134,10 +118,10 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
     const recentSearch = hyperlinkEdit.find(RecentSearch);
 
-    expect(recentSearch.find(RecentItem)).to.have.lengthOf(2);
+    expect(recentSearch.find(RecentItem)).to.have.lengthOf(3);
     recentSearch.find(RecentItem).at(0).simulate('mousedown');
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://frequent1-url.com' })('frequent item 1'))));
+    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1'))));
   });
 
   it('should allow inserting an arbitrary link', async () => {
@@ -172,7 +156,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressDownArrowInputField(recentSearch);
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://frequent2-url.com' })('frequent item 2'))));
+    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent2-url.com' })('recent item 2'))));
   });
 
   it('should allow inserting a link from a text selection', async () => {
@@ -183,7 +167,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressDownArrowInputField(recentSearch);
     pressReturnInputField(recentSearch);
 
-    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://frequent1-url.com' })('Page'))));
+    expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('Page'))));
   });
 });
 

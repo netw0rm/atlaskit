@@ -41,6 +41,8 @@ import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
 import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
 import SelectNoPositionFlip from './examples/SelectNoPositionFlip';
 import SelectNoPositionFlipRaw from '!raw!./examples/SelectNoPositionFlip';
+import InitialLoading from './examples/InitialLoading';
+import InitialLoadingRaw from '!raw!./examples/InitialLoading';
 
 import ShouldFocus from './examples/ShouldFocus';
 import ShouldFocusRaw from '!raw!./examples/ShouldFocus';
@@ -64,10 +66,12 @@ const propDescriptions = {
   isDisabled: 'Specifies that a select should be disabled',
   isDefaultOpen: 'Controls the open state of the select',
   isInvalid: 'Specifies that selected value is not correct',
+  isLoading: 'Whether or not the select is loading data to display options',
   isRequired: 'Specifies that the user is required to select a value before submitting the form',
   isOpen: 'Controls the open state of the select',
   items: 'List of items',
   label: 'Text that you will see above the element',
+  loadingMessage: 'Message to be displayed (or a11y read) when data is being fetched',
   onSelected: 'This is a handler function which is called when an item is selected',
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
   Received an object with isOpen state`,
@@ -340,6 +344,23 @@ storiesOf(name, module)
       {SelectNoPositionFlip}
       <Code>
         {SelectNoPositionFlipRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select (stateless) - loading state (initial fetch)', () => (
+    <Chrome title="Select (stateless) - loading state (initial fetch)">
+      <Description>
+        <p style={{ marginBottom: '12px' }}>
+          <strong>Note:</strong> loading options are
+          <strong> only available on the stateless component </strong>
+          as the stateful counterpart currently is not capable
+          of handling back-end requests to fetch new options/items.
+        </p>
+      </Description>
+      {InitialLoading}
+      <Code>
+        {InitialLoadingRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

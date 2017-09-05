@@ -93,6 +93,13 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   recordSelection?(emoji: EmojiDescription): Promise<any>;
 
   /**
+   * Deletes the custom emoji with given ID for a particular site
+   * No changes are made if the user is not authorized, the emoji does not exist
+   * or no mediaEmojiResource has been initialised
+   */
+  deleteSiteEmoji(emoji: EmojiDescription): Promise<any>;
+
+  /**
    * Load media emoji that may require authentication to download, producing
    * a new EmojiDescription to be used for rendering, if necessary.
    *
@@ -442,6 +449,13 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
 
     return Promise.resolve();
+  }
+
+  deleteSiteEmoji(emoji: EmojiDescription): Promise<any> {
+    if (this.mediaEmojiResource && emoji.id) {
+      return this.mediaEmojiResource.deleteSiteEmoji(emoji.id);
+    }
+    return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), 'Could not load media emoji resource');
   }
 
   getSelectedTone(): ToneSelection {

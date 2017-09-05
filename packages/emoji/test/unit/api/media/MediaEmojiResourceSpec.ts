@@ -313,6 +313,24 @@ describe('MediaEmojiResource', () => {
     });
   });
 
+  describe('#deleteSiteEmoji', () => {
+    it('Deleting an emoji calls the site emoji service', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub);
+
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${missingMediaEmoji.id}`,
+        response: '200',
+        name: 'delete-site-emoji',
+      });
+
+      return mediaEmojiResource.deleteSiteEmoji(missingMediaEmoji.id!).then(response => {
+        expect(response, 'Response OK').to.equal(200);
+        const deleteSiteEmojiCalls = fetchMock.calls('delete-site-emoji');
+        expect(deleteSiteEmojiCalls.length, 'Delete site emoji from emoji service called').to.equal(1);
+      });
+    });
+  });
 
   describe('#findSiteEmoji', () => {
     it('Emoji found', () => {

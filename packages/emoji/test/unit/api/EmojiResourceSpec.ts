@@ -398,7 +398,7 @@ describe('EmojiResource', () => {
     });
   });
 
-  describe('#recordMentionSelection', () => {
+  describe('#recordSelection', () => {
     let mockEmojiRepository: EmojiRepository;
     let mockRecordUsage: sinon.SinonStub;
 
@@ -431,9 +431,35 @@ describe('EmojiResource', () => {
 
     it('should record usage on emoji repository even when no recordConfig configured', () => {
       const resource = new EmojiResourceWithEmojiRepositoryOverride({ providers: [provider1] }, mockEmojiRepository);
-      resource.recordSelection(grinEmoji).then(() => {
+      return resource.recordSelection(grinEmoji).then(() => {
         expect(mockRecordUsage.calledWith(grinEmoji)).to.equal(true);
       });
+    });
+  });
+
+  describe('#deleteSiteEmoji', () => {
+    it('Should not attempt to delete if there is no media emoji resource', () => {
+      fetchMock.mock({
+        matcher: `begin:${siteUrl}`,
+        response: {
+          emojis: siteServiceEmojis().emojis,
+          // no meta.mediaApiToken means no media resource created
+        },
+        times: 1,
+      }).mock({
+        matcher: `${siteUrl}/${mediaEmoji.id}`,
+        response: 200,
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+
+      const resource = new EmojiResource(config);
+      return resource.deleteSiteEmoji(mediaEmoji).then(reason => expect(reason).to.equal('Could not load media emoji resource'));
     });
   });
 
@@ -1057,7 +1083,7 @@ describe('EmojiResource', () => {
       return done;
     });
 
-    it('Two providers, ingore in failing provider', () => {
+    it('Two providers, ignore in failing provider', () => {
       let resolveProvider2;
 
       fetchMock.mock({
@@ -1199,6 +1225,18 @@ describe('UploadingEmojiResource', () => {
       });
     });
   });
+
+  describe('#deleteSiteEmoji', () => {
+    it('calls delete in MediaEmojiResource', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+      const deleteStub = mediaEmojiResource.deleteSiteEmoji;
+      emojiResource.deleteSiteEmoji(mediaEmoji);
+      return waitUntil(() => deleteStub.called).then(() => {
+        expect(deleteStub.called, 'delete called on mediaEmojiResource').to.equal(true);
+      });
+    });
+  });
 });
 
 describe('#toneSelectionStorage', () => {
@@ -1249,6 +1287,7 @@ describe('helpers', () => {
     findInCategory = categoryId => Promise.resolve([]);
     getSelectedTone = () => -1;
     setSelectedTone = tone => {};
+    deleteSiteEmoji = emoji => Promise.resolve();
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};

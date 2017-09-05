@@ -131,6 +131,14 @@ export default class MediaEmojiResource {
     });
   }
 
+  deleteSiteEmoji(id: string): Promise<any> {
+    const path = `${id}`;
+    const requestInit = {
+      method: 'DELETE',
+    };
+    return serviceUtils.requestService(this.siteServiceConfig, { path, requestInit });
+  }
+
   /**
    * Intended to be overridden for unit testing.
    */

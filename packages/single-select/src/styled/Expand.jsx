@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 const Expand = styled.div`
   align-items: center;
   display: flex;
-  flex: 0 0 ${gridSize() * 3}px;
+  flex: 0 0 ${math.multiply(gridSize, 3)}px;
   justify-content: center;
   margin: 0px ${gridSize}px;
 `;

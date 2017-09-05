@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 const Trigger = styled.div`
   align-items: center;
   display: flex;
-  min-height: ${gridSize() * 4.5}px;
+  min-height: ${math.multiply(gridSize, 4.5)}px;
   outline: none;
   width: 100%;
 `;

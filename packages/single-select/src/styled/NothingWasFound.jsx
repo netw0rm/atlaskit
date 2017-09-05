@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 const NothingWasFoundElement = styled.div`
-  padding: 6px ${gridSize() * 3}px;
+  padding: 6px ${math.multiply(gridSize, 3)}px;
 `;
 
 NothingWasFoundElement.displayName = 'NothingWasFoundElement';

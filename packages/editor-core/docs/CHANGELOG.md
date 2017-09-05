@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 46.14.1 (2017-09-05)
+
+* bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))
+
+* bug fix; tolerate empty actions/decisions, just don't render them. (issues closed: fs-1266) ([29a82db](https://bitbucket.org/atlassian/atlaskit/commits/29a82db))
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: ed-2447 / fs-1265 / fs-1329) ([9f77faa](https://bitbucket.org/atlassian/atlaskit/commits/9f77faa))
+* bug fix; disabling hyperlink keymap Cmd-K for message editor. (issues closed: #ed-2567) ([ddf7769](https://bitbucket.org/atlassian/atlaskit/commits/ddf7769))
 ## 46.14.0 (2017-09-05)
 
 * feature; add showSpinner prop to Editor ([ac14e79](https://bitbucket.org/atlassian/atlaskit/commits/ac14e79))

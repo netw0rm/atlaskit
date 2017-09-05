@@ -11,11 +11,11 @@ export const Outer = styled.button`
 `;
 
 export const Inner = styled.span`
-  background-color: ${themed({ light: colors.N40, dark: colors.DN50 })};
+  background-color: ${themed({ light: colors.N40, dark: colors.DN70 })};
   border-radius: ${getBorderRadius}
   align-items: center;
   box-shadow: 0 0 0 ${getBorderWidth} ${colors.B200};
-  color: ${themed({ light: colors.N500, dark: colors.DN300 })};
+  color: ${themed({ light: colors.N500, dark: colors.DN400 })};
   cursor: pointer;
   display: flex;
   flex: 1;

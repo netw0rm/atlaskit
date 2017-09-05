@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 /* eslint no-confusing-arrow: 0 */
 
 import React, { PureComponent } from 'react';
-import { DateDiv, DateTd } from './styled';
+import { DateDiv, DateTd } from '../styled/Date';
 
 export default class extends PureComponent {
   static propTypes = {
@@ -35,13 +35,26 @@ export default class extends PureComponent {
     sibling: false,
     today: '',
   }
-  handleClick = () => {
+  state = {
+    isActive: false,
+  }
+  onMouseDown = () => this.setState({ isActive: true });
+
+  onMouseUp = () => {
+    this.setState({ isActive: false });
     const { children: day, month, onClick, year } = this.props;
     onClick({ year, month, day });
   }
   render() {
-    const { children, focused, selected } = this.props;
-
+    const {
+      children,
+      disabled,
+      focused,
+      isToday,
+      previouslySelected,
+      selected,
+      sibling,
+    } = this.props;
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <DateTd
@@ -49,8 +62,18 @@ export default class extends PureComponent {
         aria-selected={selected ? 'true' : 'false'}
         onClick={this.handleClick}
         role="gridcell"
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
       >
-        <DateDiv {...this.props}>
+        <DateDiv
+          disabled={disabled}
+          focused={focused}
+          isToday={isToday}
+          previouslySelected={previouslySelected}
+          selected={selected}
+          sibling={sibling}
+          isActive={this.state.isActive}
+        >
           {children}
         </DateDiv>
       </DateTd>

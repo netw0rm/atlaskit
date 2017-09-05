@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import { akColorN0 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { transition } from './constants';
 
-const colors = {
-  default: akColorN0,
+const colorOptions = {
+  default: colors.N0,
   checkedDisabled: '#A1DCC4',
   uncheckedDisabled: '#AFB6C2',
 };
 
 const getColor = ({ isChecked, isDisabled }) => {
-  let color = colors.default;
+  let color = colorOptions.default;
 
-  if (isDisabled) color = colors.uncheckedDisabled;
-  if (isDisabled && isChecked) color = colors.checkedDisabled;
+  if (isDisabled) color = colorOptions.uncheckedDisabled;
+  if (isDisabled && isChecked) color = colorOptions.checkedDisabled;
 
   return color;
 };

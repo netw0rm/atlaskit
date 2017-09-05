@@ -45,7 +45,10 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.refreshEmoji(nextProps.emojiConfig);
+    // Make a weak attempt to reduce the duplication in EmojiResource creation when a storybook is mounted
+    if (JSON.stringify(nextProps.emojiConfig) !== JSON.stringify(this.props.emojiConfig)) {
+      this.refreshEmoji(nextProps.emojiConfig);
+    }
   }
 
   refreshEmoji(emojiConfig: EmojiResourceConfig) {

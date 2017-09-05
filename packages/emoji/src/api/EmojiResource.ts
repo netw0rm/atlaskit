@@ -318,7 +318,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return true;
     }
     if (!this.mediaEmojiResource) {
-      // Shouldn't have a media emoji without a mediaEmojiResouce, but anyway ;)
+      // Shouldn't have a media emoji without a mediaEmojiResource, but anyway ;)
       return false;
     }
     const optimistic = this.mediaEmojiResource.optimisticRendering(emoji);

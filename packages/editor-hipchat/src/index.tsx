@@ -199,6 +199,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   setFromJson(value: any): void {
     const { editorView } = this.state;
+
     if (editorView) {
       const { state } = editorView;
       const { useLegacyFormat } = this.props;
@@ -487,10 +488,19 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       const { $cursor } = editorView.state.selection as TextSelection;
-      const { paragraph } = editorView.state.schema.nodes;
-      return !$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1);
+      const { decisionItem, paragraph, taskItem } = editorView.state.schema.nodes;
+      return !$cursor
+        || ($cursor.parent.type === paragraph && $cursor.depth === 1)
+        || ($cursor.parent.type === decisionItem && !this.isEmptyAtCursor($cursor))
+        || ($cursor.parent.type === taskItem && !this.isEmptyAtCursor($cursor))
+      ;
     }
     return false;
+  }
+
+  private isEmptyAtCursor($cursor) {
+    const { content } = $cursor.parent;
+    return !(content && content.size);
   }
 
   private handleChange = () => {

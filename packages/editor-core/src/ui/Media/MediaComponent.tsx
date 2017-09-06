@@ -176,6 +176,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         />
       );
     }
+
+    return null;
   }
 
   private renderLink() {

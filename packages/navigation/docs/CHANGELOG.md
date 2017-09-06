@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 21.2.2 (2017-09-06)
+
+* bug fix; navigation scrollbar is now hidden until hovered in supported environments (issues closed: ak-3366 ak-3454) ([7c2b236](https://bitbucket.org/atlassian/atlaskit/commits/7c2b236))
 ## 21.2.1 (2017-09-06)
 
 * bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))

@@ -6,6 +6,7 @@ import {
   ToolbarButton,
   ToolbarMedia,
 } from '@atlaskit/editor-core';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
 import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   chaiPlugin,
@@ -105,4 +106,41 @@ describe('media', () => {
 
     expect(editor.find(ToolbarMedia).find(ToolbarButton)).to.have.length(1);
   });
+
+  it('should show spinner only when the save button was clicked', async () => {
+    const stateManager = new DefaultMediaStateManager();
+    const resolvedProvider = storyMediaProviderFactory(
+      mediaTestHelpers,
+      mediaTestHelpers.defaultCollectionName,
+      stateManager
+    );
+
+    const editor = mount(<Editor
+      isExpandedByDefault={true}
+      mediaProvider={resolvedProvider}
+      onCancel={noop}
+      onSave={noop}
+      onChange={noop}
+    />);
+
+    const resolvedMediaProvider = await resolvedProvider;
+    await resolvedMediaProvider.uploadContext;
+
+    expect(editor.state('showSpinner')).to.equal(false);
+
+    stateManager.updateState('tmp:123', {
+      id: 'tmp:123',
+      status: 'unknown'
+    });
+    expect(editor.state('showSpinner')).to.equal(false);
+
+    editor.find('button').findWhere(node => node.text() === 'Save').first().simulate('click');
+    expect(editor.state('showSpinner')).to.equal(true);
+
+    stateManager.updateState('tmp:123', {
+      id: 'tmp:123',
+      status: 'cancelled'
+    });
+  });
+
 });

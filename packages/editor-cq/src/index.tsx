@@ -88,6 +88,7 @@ export interface State {
   isExpanded?: boolean;
   isMediaReady: boolean;
   schema: typeof schema;
+  showSpinner: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -107,6 +108,7 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
       isMediaReady: true,
+      showSpinner: false,
     };
 
     this.providerFactory = new ProviderFactory();
@@ -185,6 +187,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     return (async () => {
       await mediaPluginState.waitForPendingTasks();
+      this.setState({ showSpinner: false });
 
       return editorView && editorView.state.doc
           ? this.transformer.encode(editorView.state.doc)
@@ -242,7 +245,7 @@ export default class Editor extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsMountPoint
     } = this.props;
-    const { editorView, isExpanded, isMediaReady } = this.state;
+    const { editorView, isExpanded, isMediaReady, showSpinner } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -282,6 +285,7 @@ export default class Editor extends PureComponent<Props, State> {
         mentionProvider={this.mentionProvider}
         pluginStateMentions={mentionsState}
         saveDisabled={!isMediaReady}
+        showSpinner={showSpinner}
         popupsBoundariesElement={popupsBoundariesElement}
         popupsMountPoint={popupsMountPoint}
       />
@@ -415,6 +419,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleSave = () => {
+    this.setState({ showSpinner: true });
     const { onSave } = this.props;
     if (onSave) {
       onSave(this);

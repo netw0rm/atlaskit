@@ -1,13 +1,13 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import hyperlinkPlugins from '../../../../src/editor/plugins/hyperlink/pm-plugins';
+import hyperlinkPlugins from '../../../../../../src/editor/plugins/hyperlink/pm-plugins';
 import {
   insertText, chaiPlugin, makeEditor, doc, br, p, a as link,
   strong, code_block, sendKeyToPm
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
-import { analyticsService } from '../../../../src/analytics';
+} from '../../../../../../src/test-helper';
+import defaultSchema from '../../../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../../../src/analytics';
 
 chai.use(chaiPlugin);
 

@@ -4,14 +4,14 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 
-import hyperlinkPlugins, { HyperlinkState } from '../../../../src/editor/plugins/hyperlink/pm-plugins';
-import HyperlinkEdit from '../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
-import PanelTextInput from '../../../../src/ui/PanelTextInput';
+import hyperlinkPlugins, { HyperlinkState } from '../../../../../../src/editor/plugins/hyperlink/pm-plugins';
+import HyperlinkEdit from '../../../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
+import PanelTextInput from '../../../../../../src/ui/PanelTextInput';
 import {
   chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
-} from '../../../../src/test-helper';
-import defaultSchema from '../../../../src/test-helper/schema';
-import { analyticsService } from '../../../../src/analytics';
+} from '../../../../../../src/test-helper';
+import defaultSchema from '../../../../../../src/test-helper/schema';
+import { analyticsService } from '../../../../../../src/analytics';
 
 chai.use(chaiPlugin);
 

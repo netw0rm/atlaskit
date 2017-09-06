@@ -1,13 +1,13 @@
 import { expect } from 'chai'; import {
   chaiPlugin, doc, insertText, a as link, code_block,
   makeEditor, p as paragraph
-} from '../../../../../src/test-helper';
-import { setTextSelection } from '../../../../../src/utils';
-import hyperlinkPlugins, { HyperlinkState } from '../../../../../src/editor/plugins/hyperlink/pm-plugins';
+} from '../../../../../../src/test-helper';
+import { setTextSelection } from '../../../../../../src/utils';
+import hyperlinkPlugins, { HyperlinkState } from '../../../../../../src/editor/plugins/hyperlink/pm-plugins';
 import {
   addLink, removeLink, updateLink, updateLinkText, showLinkPanel
-} from '../../../../../src/editor/plugins/hyperlink/pm-plugins/commands';
-import defaultSchema from '../../../../../src/test-helper/schema';
+} from '../../../../../../src/editor/plugins/hyperlink/pm-plugins/commands';
+import defaultSchema from '../../../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 

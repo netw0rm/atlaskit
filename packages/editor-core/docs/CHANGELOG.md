@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.15.0 (2017-09-06)
+
+* bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))
+* feature; colour text support in renderer (issues closed: ed-2657) ([d1608c9](https://bitbucket.org/atlassian/atlaskit/commits/d1608c9))
 ## 46.14.1 (2017-09-05)
 
 * bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))

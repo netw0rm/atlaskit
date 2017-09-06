@@ -12,7 +12,7 @@ import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
-export interface Crop {
+export interface CropProperties {
   x: number;
   y: number;
   size: number;
@@ -20,7 +20,7 @@ export interface Crop {
 
 export interface Props {
   imageSource?: string;
-  onImageChanged: (file: File, crop: Crop) => void;
+  onImageChanged: (file: File, crop: CropProperties) => void;
   onLoad?: OnLoadHandler;
   onPositionChanged: (x: number, y: number) => void;
   onSizeChanged: (size: number) => void;
@@ -35,7 +35,7 @@ export interface State {
   imageWidth?: number;
   imageHeight?: number;
   imagePos: Position;
-  imageInitPos: Position;
+  imageDragStartPos: Position;
   cursorInitPos?: Position;
   scale: number;
   isDragging: boolean;
@@ -54,7 +54,7 @@ export class ImageNavigator extends Component<Props, State> {
       imagePos: {x: 0, y: 0},
       scale: 1,
       isDragging: false,
-      imageInitPos: {x: 0, y: 0},
+      imageDragStartPos: {x: 0, y: 0},
       fileImageSource: '',
       isDroppingFile: false
     };
@@ -78,8 +78,8 @@ export class ImageNavigator extends Component<Props, State> {
       this.setState({
         cursorInitPos,
         imagePos: {
-          x: this.state.imageInitPos.x + (x - cursorInitPos.x),
-          y: this.state.imageInitPos.y + (y - cursorInitPos.y),
+          x: this.state.imageDragStartPos.x + (x - cursorInitPos.x),
+          y: this.state.imageDragStartPos.y + (y - cursorInitPos.y),
         }
       });
     }
@@ -93,7 +93,7 @@ export class ImageNavigator extends Component<Props, State> {
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
-      imageInitPos: imagePos
+      imageDragStartPos: imagePos
     });
   }
 
@@ -123,11 +123,14 @@ export class ImageNavigator extends Component<Props, State> {
       x: CONTAINER_SIZE / 2 - newCenterPixel.x,
       y: CONTAINER_SIZE / 2 - newCenterPixel.y,
     };
-    if (this.state.imageWidth) {
+    const haveRenderedImage = this.state.imageWidth;
+    if (haveRenderedImage) {
+      // adjust cropping properties by scale value
       const x = Math.abs(imagePos.x) / newScale;
       const y = Math.abs(imagePos.y) / newScale;
+      const size = CONTAINER_SIZE / newScale;
       this.props.onPositionChanged(x, y);
-      this.props.onSizeChanged(CONTAINER_SIZE / newScale);
+      this.props.onSizeChanged(size);
     }
     this.setState({
       scale: newScale,
@@ -144,6 +147,9 @@ export class ImageNavigator extends Component<Props, State> {
   onImageSize = (width, height) => {
     const { imageFile, imagePos } = this.state;
     const scale = this.calculateInitialScale(width, height);
+    // imageFile will be undefined when this component is rendered with
+    // an imageSource value rather than a new image being uploaded or dropped.
+    // This means that cropping does not work when imageSource is provided
     if (imageFile) {
       this.props.onImageChanged(
         imageFile,
@@ -170,8 +176,8 @@ export class ImageNavigator extends Component<Props, State> {
     }
   }
 
-  readFile(file: File) {
-    const {type} = file;
+  readFile(imageFile: File) {
+    const {type} = imageFile;
 
     // TODO FIL-4342: Show feedback about invalid file type
     if (type.indexOf('image/') !== 0) { return; }
@@ -180,9 +186,9 @@ export class ImageNavigator extends Component<Props, State> {
     reader.onload = (e: ProgressEvent) => {
       const fileImageSource = (e.target as FileReader).result;
 
-      this.setState({ fileImageSource, imageFile: file });
+      this.setState({ fileImageSource, imageFile });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(imageFile);
   }
 
   // Trick to have a nice <input /> appearance

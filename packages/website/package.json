@@ -24,7 +24,7 @@
     "@atlaskit/icon": "^6.0.0",
     "@atlaskit/inline-message": "^2.0.0",
     "@atlaskit/lozenge": "^3.0.0",
-    "@atlaskit/navigation": "^18.1.2",
+    "@atlaskit/navigation": "^21.2.1",
     "@atlaskit/page": "^3.0.4",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^1.6.1",

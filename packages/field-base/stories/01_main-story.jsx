@@ -76,6 +76,22 @@ storiesOf(name, module)
       />
     </BasicFieldBase>
   ))
+  .add('with custom maxWidth', () => (
+    <div>
+      <BasicFieldBase label="No maxWidth set" isFitContainerWidthEnabled>
+        <Input isEditing />
+      </BasicFieldBase>
+      <BasicFieldBase label="maxWidth=100" maxWidth="100" isFitContainerWidthEnabled>
+        <Input isEditing />
+      </BasicFieldBase>
+      <BasicFieldBase label="maxWidth=200" maxWidth="200" isFitContainerWidthEnabled>
+        <Input isEditing />
+      </BasicFieldBase>
+      <BasicFieldBase label="maxWidth=300" maxWidth="300" isFitContainerWidthEnabled>
+        <Input isEditing />
+      </BasicFieldBase>
+    </div>
+  ))
   .add('with invalid prop', () =>
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       <BasicFieldBase

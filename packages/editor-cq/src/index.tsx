@@ -347,7 +347,7 @@ export default class Editor extends PureComponent<Props, State> {
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
-          this.handleChange();
+          this.handleChange(tr.docChanged);
         },
         nodeViews: {
           jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
@@ -400,9 +400,9 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleChange = async () => {
+  private handleChange = async (docChanged: boolean) => {
     const { onChange } = this.props;
-    if (onChange) {
+    if (onChange && docChanged) {
       onChange(this);
     }
 

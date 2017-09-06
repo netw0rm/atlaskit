@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { AkCalendar } from '@atlaskit/calendar';
+import { CalendarStateless } from '@atlaskit/calendar';
 
-export default class AkCAlendarExample extends PureComponent {
+export default class CalendarStatelessExample extends PureComponent {
   state = {
     selected: [],
     day: new Date().getDate(),
@@ -19,7 +19,7 @@ export default class AkCAlendarExample extends PureComponent {
 
   render() {
     return (
-      <AkCalendar
+      <CalendarStateless
         selected={this.state.selected}
         day={this.state.day}
         month={this.state.month}

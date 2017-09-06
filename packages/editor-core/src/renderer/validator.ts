@@ -87,6 +87,8 @@ export const getValidContent = (content: Node[], schema: Schema<NodeSpec, MarkSp
   return content.map(node => getValidNode(node, schema));
 };
 
+const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+
 const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
   const output: Node[] = [];
   let isPrevLeafNode = false;
@@ -438,54 +440,42 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
         break;
       }
       case 'decisionList': {
-        if (content) {
-          return {
-            type,
-            content,
-            attrs: {
-              localId: attrs && attrs.localId || uuid(),
-            },
-          };
-        }
-        break;
+        return {
+          type,
+          content,
+          attrs: {
+            localId: attrs && attrs.localId || uuid(),
+          },
+        };
       }
       case 'decisionItem': {
-        if (content) {
-          return {
-            type,
-            content,
-            attrs: {
-              localId: attrs && attrs.localId || uuid(),
-              state: attrs && attrs.state || 'DECIDED'
-            },
-          };
-        }
-        break;
+        return {
+          type,
+          content,
+          attrs: {
+            localId: attrs && attrs.localId || uuid(),
+            state: attrs && attrs.state || 'DECIDED'
+          },
+        };
       }
       case 'taskList': {
-        if (content) {
-          return {
-            type,
-            content,
-            attrs: {
-              localId: attrs && attrs.localId || uuid()
-            },
-          };
-        }
-        break;
+        return {
+          type,
+          content,
+          attrs: {
+            localId: attrs && attrs.localId || uuid()
+          },
+        };
       }
       case 'taskItem': {
-        if (content) {
-          return {
-            type,
-            content,
-            attrs: {
-              localId: attrs && attrs.localId || uuid(),
-              state: attrs && attrs.state || 'TODO'
-            },
-          };
-        }
-        break;
+        return {
+          type,
+          content,
+          attrs: {
+            localId: attrs && attrs.localId || uuid(),
+            state: attrs && attrs.state || 'TODO'
+          },
+        };
       }
       case 'table': {
         if (Array.isArray(content)
@@ -599,6 +589,16 @@ export const getValidMark = (mark: Mark): Mark | null => {
             };
           }
         }
+        break;
+      }
+      case 'textColor': {
+        if (attrs && TEXT_COLOR_PATTERN.test(attrs.color)) {
+          return {
+            type,
+            attrs,
+          };
+        }
+
         break;
       }
       case 'underline': {

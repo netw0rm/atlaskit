@@ -1,5 +1,8 @@
 # @atlaskit/multi-select
 
+## 7.1.1 (2017-09-05)
+
+* bug fix; update styles for ie11 to respect flex-wrap ([7cec339](https://bitbucket.org/atlassian/atlaskit/commits/7cec339))
 ## 7.1.0 (2017-08-31)
 
 

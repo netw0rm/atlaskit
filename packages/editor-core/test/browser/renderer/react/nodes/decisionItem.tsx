@@ -10,4 +10,9 @@ describe('Renderer - React/Nodes/DecisionItem', () => {
   it('should wrap content with <AkDecisionItem>-tag', () => {
     expect(listItem.is(AkDecisionItem)).to.equal(true);
   });
+
+  it('should not render if no children', () => {
+    const decisionItem = shallow(<DecisionItem/>);
+    expect(decisionItem.isEmptyRender()).to.equal(true);
+  });
 });

@@ -1,19 +1,30 @@
+// @flow
 import styled from 'styled-components';
-import { drawerContainerHeaderAnimationSpeed, gridSize, scrollbar } from '../../shared-variables';
-import { whenCollapsed } from '../../theme/util';
+import { drawerContainerHeaderAnimationSpeed, scrollbar } from '../../shared-variables';
+import { getProvided } from '../../theme/util';
 
-const ContainerNavigationChildren = styled.div`
+const keylineHeight = '2px';
+
+const ScrollHintScrollContainer = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex: 1 1 100%;
+  height: 100%;
   justify-content: flex-start;
   overflow-y: ${props => (props.isCollapsed ? 'hidden' : 'auto')};
-  padding: 0 ${gridSize * 2}px ${gridSize}px ${gridSize * 2}px;
   transition: padding ${drawerContainerHeaderAnimationSpeed};
 
-  ${whenCollapsed`
-    padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;
-  `}
+  &:before,
+  &:after {
+    background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};
+    content: '';
+    display: block;
+    min-height: ${keylineHeight};
+    width: 100%;
+    z-index: 5;
+    position: relative;
+  }
 
   /* The following styles are to style scrollbars when there is long/wide content*/
   -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -32,7 +43,5 @@ const ContainerNavigationChildren = styled.div`
     background-color: ${scrollbar.hoverBackground};
   }
 `;
-
-ContainerNavigationChildren.displayName = 'ContainerNavigationChildren';
-
-export default ContainerNavigationChildren;
+ScrollHintScrollContainer.displayName = 'ScrollHintScrollContainer';
+export default ScrollHintScrollContainer;

@@ -152,6 +152,13 @@ export function setTextSelection(view: EditorView, anchor: number, head?: number
   view.dispatch(tr);
 }
 
+export function moveCursorToTheEnd(view: EditorView) {
+  const { state } = view;
+  const anchor = Math.max(state.doc.nodeSize - 2, 0);
+  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor)).scrollIntoView();
+  view.dispatch(tr);
+}
+
 
 /**
  * Determines if content inside a selection can be joined with the previous block.

@@ -2,14 +2,7 @@ import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import SingleLineTextInput from '@atlaskit/input';
 import Select from '@atlaskit/single-select';
-import styled from 'styled-components';
 import { InlineEditStateless } from '../src';
-
-// Prevent edit views that use their own field-base from shifting due to negative margin
-// set in 'no-padding' mode. Fixes shifting content for single-select
-const NoFieldBaseEditWrapper = styled.div`
-  margin: 1px -1px 1px 1px;
-`;
 
 /* eslint-disable react/prop-types */
 export default class extends PureComponent {
@@ -51,16 +44,14 @@ export default class extends PureComponent {
   )
 
   renderEditView = () => (
-    <NoFieldBaseEditWrapper>
-      <Select
-        defaultSelected={this.state.editValue}
-        items={this.props.selectItems}
-        onSelected={this.onSelect}
-        isDefaultOpen
-        shouldFitContainer
-        shouldFocus
-      />
-    </NoFieldBaseEditWrapper>
+    <Select
+      defaultSelected={this.state.editValue}
+      items={this.props.selectItems}
+      onSelected={this.onSelect}
+      isDefaultOpen
+      shouldFitContainer
+      shouldFocus
+    />
   );
 
   render() {

@@ -1,5 +1,35 @@
 # @atlaskit/editor-core
 
+## 46.15.0 (2017-09-06)
+
+* bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))
+* feature; colour text support in renderer (issues closed: ed-2657) ([d1608c9](https://bitbucket.org/atlassian/atlaskit/commits/d1608c9))
+## 46.14.1 (2017-09-05)
+
+* bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))
+
+* bug fix; tolerate empty actions/decisions, just don't render them. (issues closed: fs-1266) ([29a82db](https://bitbucket.org/atlassian/atlaskit/commits/29a82db))
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: ed-2447 / fs-1265 / fs-1329) ([9f77faa](https://bitbucket.org/atlassian/atlaskit/commits/9f77faa))
+* bug fix; disabling hyperlink keymap Cmd-K for message editor. (issues closed: #ed-2567) ([ddf7769](https://bitbucket.org/atlassian/atlaskit/commits/ddf7769))
+## 46.14.0 (2017-09-05)
+
+* feature; add showSpinner prop to Editor ([ac14e79](https://bitbucket.org/atlassian/atlaskit/commits/ac14e79))
+* feature; add defaultValue property for the "new arch" editor (issues closed: ed-2579) ([dc537cc](https://bitbucket.org/atlassian/atlaskit/commits/dc537cc))
+* feature; add appendText command to EditorActions (issues closed: ed-2579) ([417f348](https://bitbucket.org/atlassian/atlaskit/commits/417f348))
+* feature; add waitForMediaUpload flag for products that want to finalize media on their own (issues closed: ed-2579) ([7ee8106](https://bitbucket.org/atlassian/atlaskit/commits/7ee8106))
+* feature; support presence provider ([4926ae0](https://bitbucket.org/atlassian/atlaskit/commits/4926ae0))
+* bug fix; shouldFocus must place cursor to the end of the document (issues closed: ed-2579) ([e3f7187](https://bitbucket.org/atlassian/atlaskit/commits/e3f7187))
+* feature; add maxHeight property to the 'new architecture' editor (issues closed: ed-2579) ([0cad06d](https://bitbucket.org/atlassian/atlaskit/commits/0cad06d))
+* feature; add feature preset for Message editor (issues closed: ed-2579) ([69c5ee1](https://bitbucket.org/atlassian/atlaskit/commits/69c5ee1))
+## 46.13.3 (2017-09-04)
+
+* bug fix; fix filmstrip arrows don't show up in editor or renderer (issues closed: ed-2577) ([43291f6](https://bitbucket.org/atlassian/atlaskit/commits/43291f6))
+## 46.13.2 (2017-09-01)
+
+* bug fix; pass eventDispatcher to PluginSlot (issues closed: ed-2634) ([ee59df4](https://bitbucket.org/atlassian/atlaskit/commits/ee59df4))
+* bug fix; fix editor-core storybook for real (issues closed: ed-2614) ([704a76e](https://bitbucket.org/atlassian/atlaskit/commits/704a76e))
+* bug fix; do not show frequent links in the recently viewed link dialog ([5a175e9](https://bitbucket.org/atlassian/atlaskit/commits/5a175e9))
+* bug fix; fire onChange only when docChanged = true (issues closed: ed-2421) ([5605a74](https://bitbucket.org/atlassian/atlaskit/commits/5605a74))
 ## 46.13.1 (2017-09-01)
 
 * bug fix; support activity provider in hyperlinkedit in new editor architecture ([d45ee4e](https://bitbucket.org/atlassian/atlaskit/commits/d45ee4e))

@@ -1,5 +1,14 @@
 # @atlaskit/avatar
 
+## 8.0.1 (2017-09-05)
+
+
+
+
+
+
+* bug fix; update dark theme color palette (issues closed: ak-3172) ([d23e55f](https://bitbucket.org/atlassian/atlaskit/commits/d23e55f))
+
 ## 8.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

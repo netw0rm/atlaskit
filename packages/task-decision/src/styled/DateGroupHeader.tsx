@@ -8,7 +8,7 @@ const DateGroupHeader = styled.div`
   color: ${akColorN200};
   font-size: 12px;
   font-weight: 500;
-  margin: 8px;
+  margin: 12px 0 4px 0;
 `;
 
 export default DateGroupHeader;

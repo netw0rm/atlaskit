@@ -20,7 +20,7 @@ export const HeaderButtonDefault = styled.button`
   display: block;
   padding: 0;
   cursor: pointer;
-  &:hover, .active > &, .tableSelected & {
+  &:hover, .active > &, .tableHovered & {
     background-color: ${akEditorTableToolbarSelected};
     border-color: ${akEditorTableBorderSelected};
   }

@@ -1,52 +1,28 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { TableState } from '../../plugins/table';
-import Popup from '../Popup';
-import { CellSelection, Node, EditorView } from '../../prosemirror';
+import { EditorView } from '../../prosemirror';
 import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
+import { Container } from './styles';
 
 export interface Props {
   pluginState: TableState;
   editorView: EditorView;
-  popupsBoundariesElement?: HTMLElement;
-  popupsMountPoint?: HTMLElement;
 }
 
 export interface State {
-  tableElement?: HTMLElement;
-  tableActive?: boolean;
-  tableNode?: Node;
-  cellSelection?: CellSelection;
-  tableSelected: boolean;
+  tableHovered: boolean;
 }
 
-export default class TableFloatingControls extends PureComponent<Props, State> {
+export default class TableFloatingControls extends PureComponent<Props, any> {
   state: State = {
-    tableSelected: false
+    tableHovered: false
   };
-  content?: HTMLElement;
 
-  componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-  }
-
-  componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-  }
-
-  handleMouseDown = () => {
-    this.props.pluginState.updateToolbarFocused(true);
-  }
-
-  handleBlur = () => {
-    // hide toolbar if it's currently in focus and editor looses focus
-    if (!this.props.pluginState.toolbarFocused) {
-      this.props.pluginState.updateEditorFocused(false);
-      this.props.pluginState.update(this.props.editorView.docView, true);
-    }
-    this.props.pluginState.updateToolbarFocused(false);
+  handleMouseDown = (event) => {
+    event.nativeEvent.preventDefault();
   }
 
   handleKeyDown = (event) => {
@@ -56,73 +32,59 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
       event.nativeEvent.preventDefault();
     }
     if (!pluginState.cellSelection) {
-      this.setState({ tableSelected: false });
+      this.setState({ tableHovered: false });
     }
   }
 
   handleCornerMouseOver = () => {
-    this.setState({ tableSelected: true });
+    this.setState({ tableHovered: true });
     this.props.pluginState.hoverTable();
   }
 
   handleCornerMouseOut = () => {
-    this.setState({ tableSelected: false });
+    this.setState({ tableHovered: false });
     this.props.pluginState.resetHoverSelection();
   }
 
   render() {
-    const { tableActive, tableElement, tableSelected } = this.state;
-    const { pluginState, popupsBoundariesElement, popupsMountPoint } = this.props;
-
-    if (!tableElement || !tableActive) {
+    const { pluginState } = this.props;
+    const { tableElement } = pluginState;
+    if (!tableElement) {
       return null;
     }
 
     return (
-      <Popup
-        target={tableElement}
-        boundariesElement={popupsBoundariesElement}
-        mountTo={popupsMountPoint}
-        alignY="top"
+      <Container
+        onMouseDown={this.handleMouseDown}
+        className={this.state.tableHovered ? 'tableHovered' : ''}
+        onKeyDown={this.handleKeyDown}
       >
-        <div
-          onMouseDown={this.handleMouseDown}
-          onBlur={this.handleBlur}
-          className={tableSelected ? 'tableSelected' : ''}
-          onKeyDown={this.handleKeyDown}
-        >
-          <CornerControls
-            tableElement={tableElement}
-            isSelected={pluginState.isTableSelected}
-            selectTable={pluginState.selectTable}
-            insertColumn={pluginState.insertColumn}
-            insertRow={pluginState.insertRow}
-            onMouseOver={this.handleCornerMouseOver}
-            onMouseOut={this.handleCornerMouseOut}
-          />
-          <ColumnControls
-            tableElement={tableElement}
-            isSelected={pluginState.isColumnSelected}
-            selectColumn={pluginState.selectColumn}
-            insertColumn={pluginState.insertColumn}
-            hoverColumn={pluginState.hoverColumn}
-            resetHoverSelection={pluginState.resetHoverSelection}
-          />
-          <RowControls
-            tableElement={tableElement}
-            isSelected={pluginState.isRowSelected}
-            selectRow={pluginState.selectRow}
-            insertRow={pluginState.insertRow}
-            hoverRow={pluginState.hoverRow}
-            resetHoverSelection={pluginState.resetHoverSelection}
-          />
-        </div>
-      </Popup>
+        <CornerControls
+          tableElement={tableElement}
+          isSelected={pluginState.isTableSelected}
+          selectTable={pluginState.selectTable}
+          insertColumn={pluginState.insertColumn}
+          insertRow={pluginState.insertRow}
+          onMouseOver={this.handleCornerMouseOver}
+          onMouseOut={this.handleCornerMouseOut}
+        />
+        <ColumnControls
+          tableElement={tableElement}
+          isSelected={pluginState.isColumnSelected}
+          selectColumn={pluginState.selectColumn}
+          insertColumn={pluginState.insertColumn}
+          hoverColumn={pluginState.hoverColumn}
+          resetHoverSelection={pluginState.resetHoverSelection}
+        />
+        <RowControls
+          tableElement={tableElement}
+          isSelected={pluginState.isRowSelected}
+          selectRow={pluginState.selectRow}
+          insertRow={pluginState.insertRow}
+          hoverRow={pluginState.hoverRow}
+          resetHoverSelection={pluginState.resetHoverSelection}
+        />
+      </Container>
     );
-  }
-
-  private handlePluginStateChange = (pluginState: TableState) => {
-    const { tableElement, tableActive, tableNode, cellSelection } = pluginState;
-    this.setState({ tableElement, tableActive, tableNode, cellSelection });
   }
 }

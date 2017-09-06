@@ -20,7 +20,8 @@ export interface Props {
 
 export default class RowControls extends Component<Props, any> {
   render () {
-    const rows = this.props.tableElement.querySelector('tbody')!.children;
+    const tbody = this.props.tableElement.querySelector('tbody')!;
+    const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
     const tableWidth = this.props.tableElement.offsetWidth;
 

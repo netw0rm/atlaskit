@@ -2,7 +2,12 @@ import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { akGridSize, akColorN30 } from '@atlaskit/util-shared-styles';
-import { Props as MediaProps } from '../../../ui/Media/MediaComponent';
+import {
+  Props as MediaProps,
+  MEDIA_HEIGHT,
+  FILE_WIDTH,
+  LINK_WIDTH,
+} from '../../../ui/Media/MediaComponent';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;
@@ -17,14 +22,8 @@ export interface MediaGroupState {
 export const SINGLE_FILE_WIDTH = 275;
 export const SINGLE_FILE_HEIGHT = 180;
 
-export const SINGLE_LINK_HEIGHT = 300;
 export const SINGLE_LINK_WIDTH = 350;
-
-// Maybe it's better to ask media to export these as constant because
-// we do something similar in src/schema/nodes/media.tsx:82
-export const FILMSTRIP_HEIGHT = 125;
-export const FILMSTRIP_FILE_WIDTH = 156;
-export const FILMSTRIP_LINK_WIDTH = 343;
+export const SINGLE_LINK_HEIGHT = 300;
 
 const margin = css`
   margin: ${akGridSize} 0;
@@ -40,14 +39,14 @@ const center = css`
 const filmStripItem = css`
   background: ${akColorN30};
   margin-right: ${akGridSize};
-  min-height: ${FILMSTRIP_HEIGHT}px;
+  min-height: ${MEDIA_HEIGHT}px;
   flex-shrink: 0;
 `;
 
 // tslint:disable-next-line
 const FilmStripWrapper = styled.div`
   ${margin}
-  min-height: ${FILMSTRIP_HEIGHT}px;
+  min-height: ${MEDIA_HEIGHT}px;
 `;
 
 // tslint:disable-next-line
@@ -56,19 +55,19 @@ const FilmStripLoaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  min-height: ${FILMSTRIP_HEIGHT}px;
+  min-height: ${MEDIA_HEIGHT}px;
 `;
 
 // tslint:disable-next-line
-const FilmStripFileLoaderWrapper = styled.div`
+const FilmStripFilePlaceholder = styled.div`
   ${filmStripItem}
-  width: ${FILMSTRIP_FILE_WIDTH}px;
+  width: ${FILE_WIDTH}px;
 `;
 
 // tslint:disable-next-line
-const FilmStripLinkLoaderWrapper = styled.div`
+const FilmStripLinkPlaceholder = styled.div`
   ${filmStripItem}
-  width: ${FILMSTRIP_LINK_WIDTH}px;
+  width: ${LINK_WIDTH}px;
 `;
 
 // tslint:disable-next-line
@@ -102,7 +101,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   private handleScroll = ({animate, offset}) => this.setState({animate, offset});
 
   componentWillMount() {
-    require.ensure(['@atlaskit/media-card'], () => {
+    require.ensure(['@atlaskit/media-card'], (require) => {
       const { FilmstripView } = require('@atlaskit/media-filmstrip');
       this.setState({ FilmstripView });
     });
@@ -162,9 +161,9 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
         <FilmStripLoaderWrapper>{
           React.Children.map(children, (media: ReactElement<MediaProps>) =>
             media.props.type === 'file' ? (
-              <FilmStripFileLoaderWrapper />
+              <FilmStripFilePlaceholder />
             ) : (
-              <FilmStripLinkLoaderWrapper />
+              <FilmStripLinkPlaceholder />
             )
           )
         }</FilmStripLoaderWrapper>
@@ -190,7 +189,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
               case 'link':
                 return React.cloneElement(child, {
                   cardDimensions: {
-                    width: FILMSTRIP_LINK_WIDTH,
+                    width: LINK_WIDTH,
                   },
                 } as MediaProps);
             }

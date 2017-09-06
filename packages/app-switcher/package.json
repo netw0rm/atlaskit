@@ -20,6 +20,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/avatar": "^6.4.5",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/dropdown-menu": "^3.0.0",
     "@atlaskit/droplist": "^3.3.2",

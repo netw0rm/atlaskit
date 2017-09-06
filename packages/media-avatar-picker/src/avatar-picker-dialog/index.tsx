@@ -58,6 +58,12 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
     this.setState({ selectedAvatar: avatar });
   }
 
+  /**
+   * Updates the image position state. These numbers are always positive.
+   *
+   * @param x the number of pixels from the left edge of the image
+   * @param y the number of pixels from the top edge of the image
+   */
   setPositionState = (x: number, y: number) => {
     const { size } = this.state.crop;
     this.setState({ crop: { x, y, size }});

@@ -281,6 +281,7 @@ export default class Editor extends PureComponent<Props, State> {
         popupsBoundariesElement={this.props.popupsBoundariesElement}
         popupsMountPoint={this.props.popupsMountPoint}
         maxHeight={480}
+        helpDialogPresent={true}
       />
     );
   }

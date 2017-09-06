@@ -1,3 +1,9 @@
+// The @atlassian/mediaviewer type definitions
+// These types are required by TS consumers to consume @atlaskit/media-viewer
+
+// This file is intentionally NOT a TS declaration file (mediaviewer.d.ts) because the Atlaskit build process does NOT publish declaration files to the /dist directory
+// TODO MSW-216 move type definitions into the @atlassian/mediaviewer package and remove this file
+
 import 'jquery';
 
 export interface MediaFileAttributes {

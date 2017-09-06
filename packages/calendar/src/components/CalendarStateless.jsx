@@ -1,35 +1,28 @@
 import { Calendar } from 'calendar-base';
-import ArrowleftIcon from '@atlaskit/icon/glyph/arrowleft';
-import ArrowrightIcon from '@atlaskit/icon/glyph/arrowright';
 import keycode from 'keycode';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
 import {
   dateToString,
   getDayName,
-  getMonthName,
   makeArrayFromNumber,
-} from './util';
-import Btn from './Btn';
+} from '../util';
 import DateComponent from './Date';
-
+import Heading from './Heading';
 import {
   Announcer,
   CalendarTable,
   CalendarTbody,
   CalendarTh,
   CalendarThead,
-  Heading,
-  MonthAndYear,
   Wrapper,
-} from './styled';
+} from '../styled/Calendar';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-export default class StatelessCalendar extends PureComponent {
+export default class CalendarStateless extends PureComponent {
   static propTypes = {
     /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
     provided are greyed out. This does not prevent these dates being selected. */
@@ -97,6 +90,7 @@ export default class StatelessCalendar extends PureComponent {
     const isArrowKey = arrowKeys.indexOf(key) > -1;
     const isInitialArrowKeyPress = !focused && isArrowKey;
 
+    e.preventDefault();
     if (isInitialArrowKeyPress) {
       this.triggerOnChange(year, month, 1);
       return;
@@ -264,21 +258,12 @@ export default class StatelessCalendar extends PureComponent {
           role="grid"
           tabIndex={0}
         >
-          <Heading>
-            <div aria-hidden="true" onClick={this.handleClickPrev}>
-              <Btn>
-                <ArrowleftIcon label="Last month" />
-              </Btn>
-            </div>
-            <MonthAndYear>
-              {`${getMonthName(month)} ${year}`}
-            </MonthAndYear>
-            <div aria-hidden="true" onClick={this.handleClickNext}>
-              <Btn>
-                <ArrowrightIcon label="Next month" />
-              </Btn>
-            </div>
-          </Heading>
+          <Heading
+            month={month}
+            year={year}
+            handleClickNext={this.handleClickNext}
+            handleClickPrev={this.handleClickPrev}
+          />
           <CalendarTable role="presentation">
             <CalendarThead>
               <tr>

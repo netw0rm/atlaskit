@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 21.2.1 (2017-09-06)
+
+* bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))
+
 ## 21.2.0 (2017-09-04)
 
 * feature; add optional top and bottom visual scroll hints for ContainerNavigation (issues closed: ak-3278) ([9333bbb](https://bitbucket.org/atlassian/atlaskit/commits/9333bbb))

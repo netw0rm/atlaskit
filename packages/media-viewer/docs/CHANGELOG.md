@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 6.1.1 (2017-09-05)
+
+* bug fix; correctly publish type declaration files ([85a5ad2](https://bitbucket.org/atlassian/atlaskit/commits/85a5ad2))
+
+
 ## 6.1.0 (2017-08-11)
 
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))

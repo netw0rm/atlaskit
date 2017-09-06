@@ -320,6 +320,16 @@ export const document = {
             }
           ]
         },
+        {
+          type: 'text',
+          text: ' red text',
+          marks: [
+            {
+              type: 'textColor',
+              attrs: { color: '#ff0000' }
+            },
+          ],
+        },
       ]
     },
     {
@@ -1053,6 +1063,48 @@ System.out.println("There are " + count + " values >= 5");`
     {
       type: 'decisionList',
       attrs: {
+        localId: 'empty-list-should-not-render'
+      },
+    },
+    {
+      type: 'taskList',
+      attrs: {
+        localId: 'empty-list-should-not-render'
+      },
+    },
+    {
+      type: 'decisionList',
+      attrs: {
+        localId: 'empty-list-should-not-render'
+      },
+      content: [
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: 'to-be-ignored-as-no-content',
+            state: 'DECIDED'
+          }
+        }
+      ]
+    },
+    {
+      type: 'taskList',
+      attrs: {
+        localId: 'empty-list-should-not-render'
+      },
+      content: [
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'to-be-ignored-as-no-content',
+            state: 'TODO'
+          }
+        }
+      ]
+    },
+    {
+      type: 'decisionList',
+      attrs: {
         localId: ''
       },
       content: [
@@ -1141,6 +1193,13 @@ System.out.println("There are " + count + " values >= 5");`
               text: 'decision 2'
             }
           ]
+        },
+        {
+          type: 'decisionItem',
+          attrs: {
+            localId: 'to-be-ignored-as-no-content',
+            state: 'DECIDED'
+          }
         }
       ]
     },
@@ -1202,6 +1261,13 @@ System.out.println("There are " + count + " values >= 5");`
               text: 'This is completed'
             }
           ]
+        },
+        {
+          type: 'taskItem',
+          attrs: {
+            localId: 'to-be-ignored-as-no-content',
+            state: 'TODO'
+          }
         }
       ]
     },

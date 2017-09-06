@@ -9,7 +9,7 @@ export async function getEditorValueWithMedia(editorState?: EditorState<any>): P
   const mediaPluginState = editorState &&
      mediaStateKey.getState(editorState) as MediaPluginState;
 
-  if (mediaPluginState) {
+  if (mediaPluginState && mediaPluginState.waitForMediaUpload) {
     await mediaPluginState.waitForPendingTasks();
   }
 

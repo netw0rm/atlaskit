@@ -1,8 +1,8 @@
 import React from 'react';
-import { AkCalendar } from '@atlaskit/calendar';
+import { CalendarStateless } from '@atlaskit/calendar';
 
-const AkCalendarOptions = () => (
-  <AkCalendar
+const CalendarStatelessOptions = () => (
+  <CalendarStateless
     month={5}
     year={2017}
     disabled={['2017-05-01', '2017-05-02']}
@@ -13,4 +13,4 @@ const AkCalendarOptions = () => (
   />
 );
 
-export default AkCalendarOptions;
+export default CalendarStatelessOptions;

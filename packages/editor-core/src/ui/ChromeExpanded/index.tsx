@@ -77,6 +77,7 @@ export interface Props {
   pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
+  showSpinner?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   activityProvider?: Promise<ActivityProvider>;
@@ -201,6 +202,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       pluginStateTextFormatting,
       pluginStateTable,
       saveDisabled,
+      showSpinner,
       popupsMountPoint,
       popupsBoundariesElement,
       activityProvider,
@@ -213,7 +215,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       style.height = `${height}px`;
     }
 
-    const iconAfter = saveDisabled
+    const iconAfter = saveDisabled && showSpinner
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 

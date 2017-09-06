@@ -54,6 +54,7 @@ export class MediaPluginState {
   public pickers: PickerFacade[] = [];
   public binaryPicker?: PickerFacade;
   public ignoreLinks: boolean = false;
+  public waitForMediaUpload: boolean = true;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -69,6 +70,7 @@ export class MediaPluginState {
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.options = options;
+    this.waitForMediaUpload = options.waitForMediaUpload === undefined ? true : options.waitForMediaUpload;
 
     const { nodes } = state.schema;
     assert(nodes.media && nodes.mediaGroup, 'Editor: unable to init media plugin - media or mediaGroup node absent in schema');

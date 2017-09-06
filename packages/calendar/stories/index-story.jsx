@@ -3,7 +3,7 @@ import React from 'react';
 
 import { name } from '../package.json';
 import { dateToString } from '../src/util';
-import AkCalendarSmart, { AkCalendar } from '../src';
+import Calendar, { CalendarStateless } from '../src';
 
 const now = new Date();
 const today = now.getDate();
@@ -26,35 +26,35 @@ const imports = [['React', 'react'], ['Calendar, { StatelessCalendar }', '@atlas
 
 storiesOf(name, module)
   .addCodeExampleStory('smart', () => (
-    <AkCalendarSmart />
+    <Calendar />
   ), { imports })
   .addCodeExampleStory('onBlur', () => (
-    <AkCalendar onBlur={action('blur')} />
+    <CalendarStateless onBlur={action('blur')} />
   ), { imports, overrides: { onBlur: "action('blur')" } })
   .addCodeExampleStory('onChange', () => (
-    <AkCalendar onChange={action('change')} />
+    <CalendarStateless onChange={action('change')} />
   ), { imports, overrides: { onChange: "action('change')" } })
   .addCodeExampleStory('onSelect', () => (
-    <AkCalendar onSelect={action('select')} />
+    <CalendarStateless onSelect={action('select')} />
   ), { imports, overrides: { onSelect: "action('select')" } })
   .addCodeExampleStory('disabled', () => (
-    <AkCalendar disabled={getDates()} />
+    <CalendarStateless disabled={getDates()} />
   ), { imports })
   .addCodeExampleStory('focused (today)', () => (
-    <AkCalendar focused={today} />
+    <CalendarStateless focused={today} />
   ), { imports })
   .addCodeExampleStory('focused (not today)', () => (
-    <AkCalendar focused={notToday} />
+    <CalendarStateless focused={notToday} />
   ), { imports })
   .addCodeExampleStory('month', () => (
-    <AkCalendar month={notThisMonth} />
+    <CalendarStateless month={notThisMonth} />
   ), { imports })
   .addCodeExampleStory('previouslySelected', () => (
-    <AkCalendar previouslySelected={getDates()} />
+    <CalendarStateless previouslySelected={getDates()} />
   ), { imports })
   .addCodeExampleStory('selected', () => (
-    <AkCalendar selected={getDates()} />
+    <CalendarStateless selected={getDates()} />
   ), { imports })
   .addCodeExampleStory('year', () => (
-    <AkCalendar year={notThisYear} />
+    <CalendarStateless year={notThisYear} />
   ), { imports });

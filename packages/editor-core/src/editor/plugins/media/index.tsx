@@ -19,7 +19,15 @@ const mediaPlugin: EditorPlugin = {
       {
         rank: 1200,
         plugin: (schema, props, dispatch, providerFactory, errorReporter) =>
-          createPlugin(schema, { providerFactory, errorReporter, uploadErrorHandler: props.uploadErrorHandler })
+          createPlugin(
+            schema,
+            {
+              providerFactory,
+              errorReporter,
+              uploadErrorHandler: props.uploadErrorHandler,
+              waitForMediaUpload: props.waitForMediaUpload
+            }
+          )
       },
       { rank: 1220, plugin: schema => keymapPlugin(schema) }
     ];

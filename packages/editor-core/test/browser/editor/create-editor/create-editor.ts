@@ -1,6 +1,8 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
-import { sortByRank, fixExcludes, createPMPlugins } from '../../../../src/editor/create-editor/create-editor';
+import { Schema, Node } from '../../../../src/prosemirror';
+import createEditor from '../../../helpers/create-editor';
+import { sortByRank, fixExcludes, createPMPlugins, processDefaultDocument } from '../../../../src/editor/create-editor/create-editor';
 
 describe(name, () => {
   describe('create-editor', () => {
@@ -63,6 +65,69 @@ describe(name, () => {
         };
         expect(createPMPlugins(editorConfig as any, {} as any, {} as any, () => {}, {} as any, {} as any).length).to.eq(1);
       });
+    });
+  });
+
+  describe('#processDefaultDocument', () => {
+    let schema: Schema<any, any>;
+    beforeEach(() => {
+      const editor = createEditor();
+      schema = editor.editorView.state.schema;
+    });
+
+    it('should return undefined if no default document provided', () => {
+      expect(processDefaultDocument(schema, undefined)).to.equal(undefined);
+    });
+
+    it(`should return undefined if provided document isn't a vaild JSON`, () => {
+      expect(processDefaultDocument(schema, '{1:2}')).to.equal(undefined);
+    });
+
+    it(`should return undefined if provided document is an array`, () => {
+      expect(processDefaultDocument(schema, [{ type: 'paragraph' }])).to.equal(undefined);
+    });
+
+    it(`should return undefined if Node.fomJSON wasn't able to create a Node`, () => {
+      expect(processDefaultDocument(schema, {
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'taskList',
+            content: [
+              {
+                type: 'taskItem',
+                content: [{ type: 'text', text: '213123' }]
+              }
+            ]
+          }
+        ]
+      })).to.equal(undefined);
+    });
+
+    it('should return PM Node if a default document is an instance of Node', () => {
+      const node = Node.fromJSON(schema, {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [{ type: 'text', text: 'text' }]
+          }
+        ]
+      });
+      expect(processDefaultDocument(schema, node)).to.equal(node);
+    });
+
+    it('should return PM Node', () => {
+      expect(processDefaultDocument(schema, {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [{ type: 'text', text: 'text' }]
+          }
+        ]
+      })).to.be.an.instanceOf(Node);
     });
   });
 });

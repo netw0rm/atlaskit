@@ -1,7 +1,10 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { getThemeStyle, themeNamespace, smallFontSize, compactSmallFontSize } from '../util/theme';
+import { akFontSizeDefault as akFontSizeDefaultPx } from '@atlaskit/util-shared-styles';
+import { getThemeStyle, themeNamespace, smallFontSize, compactSmallFontSize, compactLineHeight } from '../util/theme';
+
+const akFontSizeDefault = parseInt(akFontSizeDefaultPx, 10);
 
 // Checkbox/Radio wrapper -- sits left of the children
 export const InputWrapper = styled.span`
@@ -55,6 +58,7 @@ export const Content = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: ${({ allowMultiline }) => (allowMultiline ? 'normal' : 'nowrap')};
+  line-height: ${16 / akFontSizeDefault};
 `;
 
 const getColorStyle = ({ isDisabled, theme }) => {
@@ -81,9 +85,10 @@ const getColorStyle = ({ isDisabled, theme }) => {
 
 const getDescriptionFontStyles = ({ isCompact }) => {
   const fontSize = isCompact ? compactSmallFontSize : smallFontSize;
+  const lineHeight = isCompact ? compactLineHeight : (14 / fontSize);
   return css`
     font-size: ${fontSize}px;
-    line-height: ${16 / fontSize};
+    line-height: ${lineHeight};
   `;
 };
 

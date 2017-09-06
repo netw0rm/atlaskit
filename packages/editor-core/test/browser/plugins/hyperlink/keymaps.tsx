@@ -1,7 +1,12 @@
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import hyperlinkPlugins from '../../../../src/editor/plugins/hyperlink/pm-plugins';
+import { mount } from 'enzyme';
+import * as React from 'react';
+
+import hyperlinkPlugins, { HyperlinkState } from '../../../../src/editor/plugins/hyperlink/pm-plugins';
+import HyperlinkEdit from '../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
+import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import {
   chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
 } from '../../../../src/test-helper';
@@ -11,7 +16,7 @@ import { analyticsService } from '../../../../src/analytics';
 chai.use(chaiPlugin);
 
 describe('hyperink - keymaps', () => {
-  const editor = (doc: any) => makeEditor({
+  const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),
   });
@@ -89,4 +94,27 @@ describe('hyperink - keymaps', () => {
       expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.autoformatting')).to.equal(true);
     });
   });
+
+  describe('Cmd-k keypress', () => {
+    it('should open floating toolbar for non-message editor', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}text{>}')));
+      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      sendKeyToPm(editorView, 'Mod-k');
+      let input = hyperlinkEdit.find(PanelTextInput);
+      expect(input.length).to.equal(1);
+    });
+
+    it('should not work for message editor', () => {
+      const messageEditor = (doc: any) => makeEditor<HyperlinkState>({
+        doc,
+        plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
+      });
+      const { editorView, pluginState } = messageEditor(doc(p('{<}text{>}')));
+      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      sendKeyToPm(editorView, 'Mod-k');
+      let input = hyperlinkEdit.find(PanelTextInput);
+      expect(input.length).to.equal(0);
+    });
+  });
+
 });

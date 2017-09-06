@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, Children } from 'react';
 import { ResourcedTaskItem as AkTaskItem } from '@atlaskit/task-decision';
 import { RendererContext } from '../';
 import {
@@ -42,6 +42,12 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   render() {
+    const { children } = this.props;
+
+    if (Children.count(children) === 0) {
+      return null;
+    }
+
     return (
       <WithProviders
         providers={['taskDecisionProvider']}

@@ -31,7 +31,10 @@ import {
   TextSelection,
   toJSON,
   version as coreVersion,
+  ToolbarDecision,
   ToolbarEmojiPicker,
+  ToolbarMedia,
+  ToolbarTask,
 
   // Components
   WithProviders,
@@ -96,6 +99,9 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   showEmojiPicker?: boolean;
+  showMediaPicker?: boolean;
+  showTasks?: boolean;
+  showDecisions?: boolean;
   numFollowingToolbarButtons?: number;
   toolbarStyles?: any;
 }
@@ -199,6 +205,7 @@ export default class Editor extends PureComponent<Props, State> {
    */
   setFromJson(value: any): void {
     const { editorView } = this.state;
+
     if (editorView) {
       const { state } = editorView;
       const { useLegacyFormat } = this.props;
@@ -294,10 +301,18 @@ export default class Editor extends PureComponent<Props, State> {
 
   renderExtraToolbar() {
 
-    const { emojiProvider, numFollowingToolbarButtons = 0, showEmojiPicker, toolbarStyles = {} } = this.props;
+    const {
+      emojiProvider,
+      numFollowingToolbarButtons = 0,
+      showEmojiPicker,
+      showDecisions,
+      showTasks,
+      showMediaPicker,
+      toolbarStyles = {}
+    } = this.props;
     const { editorView } = this.state;
 
-    if (!editorView || !emojiProvider || !showEmojiPicker) {
+    if (!editorView) {
       return null;
     }
 
@@ -305,12 +320,34 @@ export default class Editor extends PureComponent<Props, State> {
       <div
         style={toolbarStyles}
       >
-        <ToolbarEmojiPicker
-          editorView={editorView}
-          pluginKey={emojisStateKey}
-          emojiProvider={emojiProvider}
-          numFollowingButtons={numFollowingToolbarButtons}
-        />
+        { emojiProvider && showEmojiPicker ?
+          <ToolbarEmojiPicker
+            editorView={editorView}
+            pluginKey={emojisStateKey}
+            emojiProvider={emojiProvider}
+            numFollowingButtons={numFollowingToolbarButtons}
+          />
+          : null
+        }
+        { showMediaPicker ?
+          <ToolbarMedia
+            editorView={editorView}
+            pluginKey={mediaStateKey}
+          />
+          : null
+        }
+        { showTasks ?
+          <ToolbarTask
+            editorView={editorView}
+          />
+          : null
+        }
+        { showDecisions ?
+          <ToolbarDecision
+            editorView={editorView}
+          />
+          : null
+        }
       </div>
     );
   }
@@ -487,10 +524,19 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       const { $cursor } = editorView.state.selection as TextSelection;
-      const { paragraph } = editorView.state.schema.nodes;
-      return !$cursor || ($cursor.parent.type === paragraph && $cursor.depth === 1);
+      const { decisionItem, paragraph, taskItem } = editorView.state.schema.nodes;
+      return !$cursor
+        || ($cursor.parent.type === paragraph && $cursor.depth === 1)
+        || ($cursor.parent.type === decisionItem && !this.isEmptyAtCursor($cursor))
+        || ($cursor.parent.type === taskItem && !this.isEmptyAtCursor($cursor))
+      ;
     }
     return false;
+  }
+
+  private isEmptyAtCursor($cursor) {
+    const { content } = $cursor.parent;
+    return !(content && content.size);
   }
 
   private handleChange = () => {

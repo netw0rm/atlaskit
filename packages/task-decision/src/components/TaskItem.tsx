@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import {
-  Wrapper,
   CheckBoxWrapper,
-  ContentWrapper,
 } from '../styled/TaskItem';
+import {
+  Wrapper,
+  ContentWrapper,
+} from '../styled/Item';
 
+import { Appearance } from '../types';
 import { Placeholder } from '../styled/Placeholder';
 
 export interface ContentRef {
@@ -19,12 +22,16 @@ export interface Props {
   contentRef?: ContentRef;
   children?: ReactElement<any>;
   showPlaceholder?: boolean;
+  appearance?: Appearance;
 }
 
 let taskCount = 0;
 const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
 export default class TaskItem extends PureComponent<Props, {}> {
+  public static defaultProps: Partial<Props> = {
+    appearance: 'flat'
+  };
 
   private checkBoxId: string;
 
@@ -34,7 +41,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   private renderPlaceholder() {
-    return <Placeholder contentEditable={false}>Create a task. @ mention your teammates to assign tasks.</Placeholder>;
+    return <Placeholder contentEditable={false}>Add an action…</Placeholder>;
   }
 
 
@@ -52,10 +59,10 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { isDone, contentRef, children, showPlaceholder } = this.props;
+    const { appearance, isDone, contentRef, children, showPlaceholder } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper theme={{ appearance }}>
         <CheckBoxWrapper contentEditable={false}>
           <input
             id={this.checkBoxId}

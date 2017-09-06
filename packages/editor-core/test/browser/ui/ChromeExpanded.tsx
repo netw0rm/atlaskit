@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import AkButton from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 import { doc, p, makeEditor } from '../../../src/test-helper';
 import ChromeExpanded from '../../../src/ui/ChromeExpanded';
 import HyperlinkEdit from '../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
@@ -41,6 +42,14 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded', () => {
 
       const button = chrome.find(AkButton).filterWhere(node => node.text() === 'Save');
       expect(button.prop('isDisabled')).to.equal(false);
+    });
+
+    it('should render Spinner if showSpinner=true and saveDisabled=true', () => {
+      const { editorView } = editor(doc(p()));
+      const chrome = mount(<ChromeExpanded editorView={editorView} onSave={noop} saveDisabled={true} showSpinner={true}/>);
+
+      const spinnerInsideSave = chrome.find(Spinner).filterWhere(node => node.parent().parent().text() === 'Save');
+      expect(spinnerInsideSave).not.to.equal(undefined);
     });
 
     it('should add maxHeight to content section if it\'s passed', () => {

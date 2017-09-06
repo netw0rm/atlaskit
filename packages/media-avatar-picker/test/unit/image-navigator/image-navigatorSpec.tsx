@@ -106,23 +106,23 @@ describe('Image navigator', () => {
 
     describe('when image is dragged', () => {
       it('should change state during drag', () => {
-        const imageInitPos = component.state().imageInitPos;
+        const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
         document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
         expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
-        expect(component.state().imagePos).toEqual({x: imageInitPos.x, y: imageInitPos.y});
+        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x, y: imageDragStartPos.y});
 
         document.dispatchEvent(createMouseEvent('mousemove', {screenX: 50, screenY: 70}));
         expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
-        expect(component.state().imagePos).toEqual({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
+        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x + 30, y: imageDragStartPos.y + 40});
 
         document.dispatchEvent(createMouseEvent('mouseup'));
         expect(component.state().cursorInitPos).toBe(undefined);
-        expect(component.state().imageInitPos).toEqual({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
+        expect(component.state().imageDragStartPos).toEqual({x: imageDragStartPos.x + 30, y: imageDragStartPos.y + 40});
       });
       it('should call onPositionChanged on drop', () => {
-        const imageInitPos = component.state().imageInitPos;
+        const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
         document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
@@ -132,7 +132,7 @@ describe('Image navigator', () => {
         expect(onPositionChanged).not.toHaveBeenCalled();
 
         document.dispatchEvent(createMouseEvent('mouseup'));
-        expect(onPositionChanged).toHaveBeenCalledWith(imageInitPos.x + 30, imageInitPos.y + 40);
+        expect(onPositionChanged).toHaveBeenCalledWith(imageDragStartPos.x + 30, imageDragStartPos.y + 40);
       });
     });
     describe('when image is scaled', () => {

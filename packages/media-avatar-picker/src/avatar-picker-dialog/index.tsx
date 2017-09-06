@@ -5,7 +5,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
 import {Avatar} from '../avatar-list';
-import {ImageNavigator, Crop} from '../image-navigator';
+import {ImageNavigator, CropProperties} from '../image-navigator';
 import {PredefinedAvatarList} from '../predefined-avatar-list';
 
 import {AvatarPickerViewWrapper} from './styled';
@@ -13,11 +13,11 @@ import {PredefinedAvatarView} from '../predefined-avatar-view';
 
 export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
-  defaultSelected?: Avatar;
-  onSaveAvatar: (avatar: Avatar) => void;
+  defaultSelectedAvatar?: Avatar;
+  onAvatarPicked: (avatar: Avatar) => void;
   imageSource?: string;
-  onSaveImage: (file: File, crop: Crop) => void;
-  onCancel?: () => void;
+  onImagePicked: (file: File, crop: CropProperties) => void;
+  onCancel: () => void;
 }
 
 export enum Mode {
@@ -29,7 +29,7 @@ export interface AvatarPickerDialogState {
   mode: Mode;
   selectedAvatar?: Avatar;
   selectedImage?: File;
-  crop: Crop;
+  crop: CropProperties;
 }
 
 export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, AvatarPickerDialogState> {
@@ -50,7 +50,7 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
     };
   }
 
-  setSelectedImageState = (selectedImage: File, crop: Crop) => {
+  setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
     this.setState({ selectedImage, crop });
   }
 
@@ -70,22 +70,18 @@ export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, A
 
   onSaveClick = () => {
     if (this.state.selectedImage) {
-      this.props.onSaveImage(this.state.selectedImage, this.state.crop);
+      this.props.onImagePicked(this.state.selectedImage, this.state.crop);
     } else if (this.state.selectedAvatar) {
-      this.props.onSaveAvatar(this.state.selectedAvatar);
+      this.props.onAvatarPicked(this.state.selectedAvatar);
     }
   }
 
   onShowMore = () => {
-    this.setState(state => {
-      return {...state, mode: Mode.PredefinedAvatars};
-    });
+    this.setState({ mode: Mode.PredefinedAvatars});
   }
 
   onGoBack = () => {
-    this.setState(state => {
-      return {...state, mode: Mode.Cropping};
-    });
+    this.setState({ mode: Mode.Cropping });
   }
 
   render() {

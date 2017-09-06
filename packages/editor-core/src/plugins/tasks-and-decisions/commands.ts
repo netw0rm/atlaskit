@@ -1,5 +1,4 @@
-import { EditorState, NodeSelection, TextSelection, Transaction, EditorView, ResolvedPos, Schema } from '../../prosemirror';
-import { liftFollowingList } from '../../commands/lists';
+import { EditorState, TextSelection, Transaction, EditorView, Schema } from '../../prosemirror';
 import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 const getListTypes = (listType: TaskDecisionListType, schema: Schema<any,any>): { list, item } => {

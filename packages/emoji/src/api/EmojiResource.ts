@@ -22,7 +22,7 @@ export interface EmojiResourceConfig {
   providers: ServiceConfig[];
 
   /**
-   * Must be set to true to enable upload support in the mention components.
+   * Must be set to true to enable upload support in the emoji components.
    *
    * Can be used for the restriction of the upload UI based on permissions, or feature flags.
    *
@@ -484,7 +484,7 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
       return Promise.resolve(false);
     }
     if (this.mediaEmojiResource) {
-      return Promise.resolve(true);
+      return this.mediaEmojiResource.hasUploadToken();
     }
     return this.retryIfLoading(() => this.isUploadSupported(), false);
   }

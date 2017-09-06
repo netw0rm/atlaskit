@@ -81,6 +81,9 @@ export const scrollbar = {
   hoverBackground: unthemedColors.scrollbarHoverBackground,
 };
 
+export const scrollHintHeight = 2;
+export const scrollHintSpacing = gridSize * 2;
+
 export const globalPrimaryActions = (() => {
   const itemSizes = {
     medium: gridSize * 5,

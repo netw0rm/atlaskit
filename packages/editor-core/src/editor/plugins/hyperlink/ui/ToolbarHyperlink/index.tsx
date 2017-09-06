@@ -5,6 +5,7 @@ import { analyticsDecorator as analytics } from '../../../../../analytics';
 import { addLink, tooltip } from '../../../../../keymaps';
 import { EditorView, PluginKey } from '../../../../../prosemirror';
 import { HyperlinkState } from '../../../../../editor/plugins/hyperlink/pm-plugins';
+import { showLinkPanel } from '../../../../../editor/plugins/hyperlink/pm-plugins/commands';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import { OuterContainer } from './styles';
 
@@ -51,8 +52,9 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   @analytics('atlassian.editor.format.hyperlink.button')
   private toggleLinkPanel = () => {
     const { pluginState, editorView } = this.props;
-    pluginState.showLinkPanel(editorView);
-    return true;
+    const { state, dispatch } = editorView;
+    const { showToolbarPanel, linkable, active } = pluginState;
+    return showLinkPanel(showToolbarPanel, linkable, active)(state, dispatch);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {

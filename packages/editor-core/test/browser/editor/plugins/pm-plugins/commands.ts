@@ -2,8 +2,11 @@ import { expect } from 'chai'; import {
   chaiPlugin, doc, insertText, a as link, code_block,
   makeEditor, p as paragraph
 } from '../../../../../src/test-helper';
+import { setTextSelection } from '../../../../../src/utils';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../../src/editor/plugins/hyperlink/pm-plugins';
-import { addLink, removeLink, updateLink, updateLinkText } from '../../../../../src/editor/plugins/hyperlink/pm-plugins/commands';
+import {
+  addLink, removeLink, updateLink, updateLinkText, showLinkPanel
+} from '../../../../../src/editor/plugins/hyperlink/pm-plugins/commands';
 import defaultSchema from '../../../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -205,6 +208,27 @@ describe('hyperlink/pm-plugins/commands', () => {
       updateLinkText('Atlassian', editorView, pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(editorView.state, editorView.dispatch);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+    });
+  });
+
+  describe('showLinkPanel', () => {
+    context('when called without any selection in the editor', () => {
+      it('should set state value showToolbarPanel to true', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('testing')));
+        showLinkPanel(pluginState.showToolbarPanel, pluginState.linkable, pluginState.active)(editorView.state, editorView.dispatch);
+        expect(pluginState.showToolbarPanel).to.equal(true);
+      });
+    });
+
+    context('when called with a selection in the editor', () => {
+      it('should create a link node', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('testing')));
+
+        setTextSelection(editorView, 4, 7);
+        showLinkPanel(pluginState.showToolbarPanel, pluginState.linkable, pluginState.active)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).to.deep.equal(doc(paragraph('tes', link({ href: '' })('tin'), 'g')));
+      });
     });
   });
 });

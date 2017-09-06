@@ -17,15 +17,6 @@ describe('@atlaskit/editor-core/editor/plugins/hyperlink/ui/ToolbarHyperlink', (
     plugins: hyperlinkPlugins(defaultSchema),
   });
 
-  it('should trigger showLinkPanel of plugin when toolbar hyperlink button is clicked', () => {
-    const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
-    const spyFunc = sinon.spy();
-    pluginState.showLinkPanel = spyFunc;
-    toolbarHyperlink.find(LinkIcon).simulate('click');
-    expect(spyFunc.callCount).to.equal(1);
-  });
-
   it('should state variable showToolbarPanel should be true when toolbar hyperlink button is clicked without a selection', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);

@@ -14,7 +14,7 @@ export interface Match {
   url: string;
   length?: number;
 }
-interface NodeInfo {
+export interface NodeInfo {
   node: Node;
   startPos: number;
 }

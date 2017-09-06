@@ -296,49 +296,6 @@ describe('hyperlink', () => {
     });
   });
 
-  describe('showLinkPanel', () => {
-    context('when called without any selection in the editor', () => {
-      it('should set state value showToolbarPanel to true', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-        pluginState.showLinkPanel(editorView, );
-        expect(pluginState.showToolbarPanel).to.equal(true);
-      });
-    });
-
-    context('when called without any selection in the editor', () => {
-      it('should call subscribers', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-        const spy = sinon.spy();
-        pluginState.subscribe(spy);
-        pluginState.showLinkPanel(editorView);
-        expect(spy.callCount).to.equal(2);
-      });
-    });
-
-    context('when called with cursor in a link', () => {
-      it('should not call subscribers', () => {
-        const { editorView, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
-        const spy = sinon.spy();
-        pluginState.subscribe(spy);
-
-        pluginState.showLinkPanel(editorView);
-        expect(spy.callCount).to.equal(1);
-      });
-    });
-
-    context('when called with a selection in the editor', () => {
-      it('should create a link node', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-
-        setTextSelection(editorView, 4, 7);
-        pluginState.showLinkPanel(editorView);
-
-        expect(pluginState.activeLinkNode).not.to.equal(undefined);
-        expect(pluginState.text).not.to.equal(undefined);
-      });
-    });
-  });
-
   describe('Key Press Cmd-K', () => {
     context('when called without any selection in the editor', () => {
       it('should call subscribers', () => {

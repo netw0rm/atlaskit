@@ -34,7 +34,7 @@ import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../
 import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugins/code-block';
 import panelPlugins, { stateKey as panelStateKey } from '../../src/plugins/panel';
 import textFormattingPlugins, { stateKey as textFormattingStateKey } from '../../src/plugins/text-formatting';
-import hyperlinkPlugins, { stateKey as hyperlinkStateKey } from '../../src/editor/plugins/hyperlink/pm-plugins';
+import hyperlinkPlugins, { pluginKey as hyperlinkStateKey } from '../../src/editor/plugins/hyperlink/pm-plugins';
 import rulePlugins from '../../src/plugins/rule';
 import listsPlugins, { stateKey as listsStateKey } from '../../src/plugins/lists';
 import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins/mentions';

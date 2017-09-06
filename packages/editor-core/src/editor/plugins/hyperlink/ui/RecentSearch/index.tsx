@@ -154,12 +154,13 @@ export default class RecentSearch extends PureComponent<Props, State> {
   private handleBlur = () => {
     const { editorView, pluginState } = this.props;
     const { linkAdded } = this.state;
+    const { state, dispatch } = editorView;
 
     if (linkAdded || editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+      hyperlinkCommands.hideLinkPanel()(state, dispatch);
       editorView.focus();
     } else {
-      hyperlinkCommands.removeLink(editorView, pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(editorView.state, editorView.dispatch);
+      hyperlinkCommands.removeLink(editorView, pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(state, dispatch);
     }
   }
 

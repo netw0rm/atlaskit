@@ -1,6 +1,8 @@
 import { Schema, keymap, Plugin, EditorState, Transaction } from '../../../../prosemirror';
 import * as keymaps from '../../../../keymaps';
-import * as commands from '../../../../commands';
+import * as commands from './commands';
+import pluginKey from './plugin-key';
+import { HyperlinkState } from './';
 import { analyticsService, trackAndInvoke } from '../../../../analytics';
 import { Match, getLinkMatch } from './utils';
 
@@ -11,7 +13,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     keymaps.addLink.common!,
     trackAndInvoke(
       'atlassian.editor.format.hyperlink.keyboard',
-      commands.showLinkPanel()
+      showLinkPanel
     ),
     list
   );
@@ -29,6 +31,10 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   return keymap(list);
 }
 
+function showLinkPanel(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+  const pluginState: HyperlinkState = pluginKey.getState(state);
+  return commands.showLinkPanel(pluginState.showToolbarPanel, pluginState.linkable, pluginState.active)(state, dispatch);
+}
 
 function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
   const nodeBefore = state.selection.$from.nodeBefore;

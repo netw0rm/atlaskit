@@ -17,6 +17,20 @@ export function hideLinkPanel(): Command {
   };
 }
 
+export function showLinkPanel(showToolbarPanel: boolean, linkable: boolean, active: boolean): Command {
+  return function (state, dispatch) {
+    const { tr } = state;
+    const { selection } = state;
+    if (selection.empty && !active) {
+      tr.setMeta(stateKey, { showToolbarPanel: !showToolbarPanel });
+      dispatch(tr);
+      return true;
+    }
+
+    return addLink({ href: '' }, linkable, active)(state, dispatch);
+  };
+}
+
 export function addLink(options: HyperlinkOptions, linkable: boolean, active: boolean): Command {
   return function (state, dispatch) {
     if (!linkable || active) {

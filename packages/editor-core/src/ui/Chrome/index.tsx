@@ -6,7 +6,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { EmojiState } from '../../plugins/emojis';
-import { HyperlinkState } from '../../plugins/hyperlink';
+import { HyperlinkState } from '../../editor/plugins/hyperlink/pm-plugins';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsState } from '../../plugins/mentions';

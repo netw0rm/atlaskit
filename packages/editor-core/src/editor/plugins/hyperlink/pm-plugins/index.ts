@@ -19,9 +19,9 @@ import {
   getActiveLinkNodeInfo,
 } from './utils';
 
-import { addLink, escapeFromMark } from './commands';
-import stateKey from './plugin-key';
-export { stateKey };
+import { escapeFromMark } from './commands';
+import pluginKey from './plugin-key';
+export { pluginKey };
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -35,7 +35,7 @@ export class HyperlinkState {
   href?: string;
   text?: string;
   active = false;
-  linkable = false;
+  linkable = true;
   editorFocused = false;
   showToolbarPanel = false;
   activeLinkNode?: Node;
@@ -83,26 +83,8 @@ export class HyperlinkState {
       this.triggerOnChange();
     }
   }
-  showLinkPanel(editorView: EditorView) {
-    if (!(this.showToolbarPanel || editorView.hasFocus())) {
-      editorView.focus();
-    }
-    const { selection } = editorView.state;
-    if (selection.empty && !this.active) {
-      this.showToolbarPanel = !this.showToolbarPanel;
-      this.changeHandlers.forEach(cb => cb(this));
-    } else {
-      addLink({ href: '' }, this.linkable, this.active)(editorView.state, editorView.dispatch);
-      this.update(editorView.state);
-    }
-  }
 
-  hideLinkPanel() {
-    this.showToolbarPanel = false;
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private triggerOnChange() {
+  triggerOnChange() {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
@@ -191,14 +173,14 @@ export const plugin = new Plugin({
       return false;
     },
     handleClick(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState = pluginKey.getState(view.state);
       if (pluginState.active) {
         pluginState.changeHandlers.forEach(cb => cb(pluginState));
       }
       return false;
     },
     onBlur(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState = pluginKey.getState(view.state);
 
       pluginState.editorFocused = false;
       if (pluginState.active) {
@@ -208,7 +190,7 @@ export const plugin = new Plugin({
       return true;
     },
     onFocus(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState = pluginKey.getState(view.state);
       pluginState.editorFocused = true;
 
       return true;
@@ -236,20 +218,17 @@ export const plugin = new Plugin({
       return new HyperlinkState(state);
     },
     apply(tr, pluginState: HyperlinkState, oldState, newState) {
+      const pluginMeta = tr.getMeta(pluginKey);
+      if (pluginMeta && pluginMeta.showToolbarPanel !== null && pluginMeta.showToolbarPanel !== pluginState.showToolbarPanel) {
+        pluginState.showToolbarPanel = pluginMeta.showToolbarPanel;
+        pluginState.triggerOnChange();
+      } else {
+        pluginState.update(newState);
+      }
       return pluginState;
     }
   },
-  key: stateKey,
-  view: (view: EditorView) => {
-    const pluginState = stateKey.getState(view.state) as HyperlinkState;
-    pluginState.update(view.state, true);
-
-    return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
-        pluginState.update(view.state);
-      }
-    };
-  },
+  key: pluginKey,
   appendTransaction: (transactions, oldState, newState) => {
     return updateLinkOnChange(transactions, oldState, newState);
   },

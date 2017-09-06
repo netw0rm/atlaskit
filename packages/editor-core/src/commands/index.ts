@@ -9,7 +9,6 @@ import {
   canMoveDown, canMoveUp,
   setTextSelection,
 } from '../utils';
-import hyperlinkPluginStateKey from '../editor/plugins/hyperlink/pm-plugins/plugin-key';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -288,14 +287,6 @@ export function createCodeBlockFromFenceFormat(): Command {
     }
 
     return false;
-  };
-}
-
-export function showLinkPanel(): Command {
-  return function (state, dispatch, view) {
-    const pluginState = hyperlinkPluginStateKey.getState(state);
-    pluginState.showLinkPanel(view);
-    return true;
   };
 }
 

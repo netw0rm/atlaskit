@@ -230,7 +230,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { state, dispatch } = editorView;
     const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+      hyperlinkCommands.hideLinkPanel();
     } else if (!href || href.length === 0) {
       this.handleUnlink();
     } else {

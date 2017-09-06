@@ -4,6 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/editor/plugins/hyperlink/pm-plugins';
+import { showLinkPanel } from '../../../../src/editor/plugins/hyperlink/pm-plugins/commands';
 import HyperlinkEdit from '../../../../src/editor/plugins/hyperlink/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import RecentSearch from '../../../../src/editor/plugins/hyperlink/ui/RecentSearch';
@@ -44,11 +45,11 @@ class MockActivityResource extends ActivityResource {
   }
 }
 
-async function openLinkPanel(editorView, pluginState) {
+async function openLinkPanel(editorView, pluginState: HyperlinkState) {
   const activityProviderPromise = Promise.resolve(new MockActivityResource());
   const hyperlinkEdit = mount(<HyperlinkEdit activityProvider={activityProviderPromise} pluginState={pluginState} editorView={editorView} />);
   hyperlinkEdit.setState({ inputActive: true });
-  pluginState.showLinkPanel(editorView);
+  showLinkPanel(pluginState.showToolbarPanel, pluginState.linkable, pluginState.active)(editorView.state, editorView.dispatch);
   await timeout();
 
   return hyperlinkEdit;

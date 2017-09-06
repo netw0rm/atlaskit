@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 46.17.0 (2017-09-06)
+
+
+* bug fix; fix typescript errors ([b5c597a](https://bitbucket.org/atlassian/atlaskit/commits/b5c597a))
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
 ## 46.16.0 (2017-09-06)
 
 * feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))

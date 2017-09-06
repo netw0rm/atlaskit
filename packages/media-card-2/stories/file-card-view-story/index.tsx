@@ -1,9 +1,17 @@
 import * as React from 'react';
-import {FileCardView} from '../../src/FileCardView';
+import {action} from '@kadira/storybook';
+import {FileCardView, Action} from '../../src/FileCardView';
 
 export function uploading() {
+  const actions: Action[] = [
+    {
+      type: 'delete',
+      label: 'Delete',
+      handler: action('Delete')
+    }
+  ];
   return (
-    <FileCardView status="uploading"/>
+    <FileCardView status="uploading" actions={actions}/>
   );
 }
 

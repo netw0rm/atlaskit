@@ -1,18 +1,23 @@
 import * as React from 'react';
 import {Status} from '../utils/types';
 import {Card} from '../utils/Card';
+import {CardActions, CardAction} from '../utils/CardActions';
 import {ErroredView} from '../utils/ErroredView';
 import {LoadingView} from '../utils/LoadingView';
+import {ProgressBar} from '../utils/ProgressBar';
 import {DetailLayout} from '../utils/DetailLayout';
 import {TypeIcon} from './TypeIcon';
 import {toHumanReadableSize} from './toHumanReadableSize';
+
+export {CardAction as Action};
 
 export interface FileCardViewProps {
   status: Status;
   type?: 'image' | 'doc' | 'unknwon'; // TODO: support all
   name?: string;
   size?: number;
-  // TODO: actions
+  progress?: number;
+  actions?: CardAction[];
 }
 
 export interface FileCardViewState {
@@ -20,9 +25,14 @@ export interface FileCardViewState {
 
 export class FileCardView extends React.Component<FileCardViewProps, FileCardViewState> {
 
-  renderErrored() {
+  renderUploading() { // TODO: overlay for images
+    const {name, actions} = this.props;
     return (
-      <ErroredView/>
+      <DetailLayout
+        title={name}
+        subtitle={<ProgressBar progress={33}/>}
+        actions={<CardActions actions={actions}/>}
+      />
     );
   }
 
@@ -33,14 +43,20 @@ export class FileCardView extends React.Component<FileCardViewProps, FileCardVie
   }
 
   renderLoaded() { // TODO: overlay for images
-    const {type, name, size} = this.props;
+    const {type, name, size, actions} = this.props;
     return (
       <DetailLayout
         icon={<TypeIcon type={type}/>}
         title={name}
         subtitle={toHumanReadableSize(size || 0)}
-        actions="..."
+        actions={<CardActions actions={actions}/>}
       />
+    );
+  }
+
+  renderErrored() {
+    return (
+      <ErroredView/>
     );
   }
 
@@ -50,7 +66,7 @@ export class FileCardView extends React.Component<FileCardViewProps, FileCardVie
     switch (status) {
 
       case 'uploading':
-        break;
+        return this.renderUploading();
 
       case 'loading':
         return this.renderLoading();

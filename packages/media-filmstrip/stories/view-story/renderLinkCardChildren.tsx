@@ -39,25 +39,19 @@ export class Story extends Component<{}, StoryState> {
 
   render() {
     const {animate, offset} = this.state;
-
-    const cards: Array<JSX.Element> = [];
-    for (let i = 0; i < 5; i++) {
-      const card = (
-        <Card
-          key={i}
-          appearance="horizontal"
-          identifier={youtubeLinkId}
-          context={this.mediaContext}
-          dimensions={this.cardDimensions}
-        />
-      );
-
-      cards.push(card);
-    }
+    const cards: Array<JSX.Element> = Array.apply(null, {length: 5}).map((e, k) => (
+      <Card
+        key={k}
+        appearance="horizontal"
+        identifier={youtubeLinkId}
+        context={this.mediaContext}
+        dimensions={this.cardDimensions}
+      />
+    ));
 
     return (
-      <div style={{padding: '40px'}}>
-        <h1 style={{marginBottom: '20px'}}>Filmstrip with just link cards</h1>
+      <div style={{padding: 40}}>
+        <h1 style={{marginBottom: 20}}>Filmstrip with just link cards</h1>
         <p>
           As a filmstrip user, I want to be able to navigate between link cards in the filmstrip.
           Previously, a bug was reported in filmstrip which prevented navigation within a filmstrip when it contained exclusively link items

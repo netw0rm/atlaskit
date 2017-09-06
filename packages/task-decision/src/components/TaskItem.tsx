@@ -41,7 +41,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   private renderPlaceholder() {
-    return <Placeholder contentEditable={false}>Add a task…</Placeholder>;
+    return <Placeholder contentEditable={false}>Add an action…</Placeholder>;
   }
 
 

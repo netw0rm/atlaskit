@@ -1,3 +1,5 @@
+import * as React from 'react';
+import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
 import { decisionList } from '../../../schema/nodes/decision-list';
 import { decisionItem } from '../../../schema/nodes/decision-item';
@@ -6,6 +8,13 @@ import { taskItem } from '../../../schema/nodes/task-item';
 import { createPlugin } from '../../../plugins/tasks-and-decisions';
 import inputRulePlugin from '../../../plugins/tasks-and-decisions/input-rules';
 import keymap from '../../../plugins/tasks-and-decisions/keymaps';
+import ToolbarDecision from '../../../ui/ToolbarDecision';
+import ToolbarTask from '../../../ui/ToolbarTask';
+
+// tslint:disable-next-line:variable-name
+const TaskDecisionToolbarGroup = styled.div`
+  display: flex;
+`;
 
 const tasksAndDecisionsPlugin: EditorPlugin = {
   nodes() {
@@ -23,6 +32,15 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       { rank: 510, plugin: schema => inputRulePlugin(schema) },
       { rank: 9800, plugin: schema => keymap(schema) } // Needs to be after "save-on-enter"
     ];
+  },
+
+  secondaryToolbarComponent(editorView) {
+    return (
+      <TaskDecisionToolbarGroup>
+        <ToolbarDecision editorView={editorView} />
+        <ToolbarTask editorView={editorView} />
+      </TaskDecisionToolbarGroup>
+    );
   }
 };
 

@@ -10,6 +10,7 @@ export const WarningIcon = styled.div`
   align-items: center;
   color: ${colors.yellow};
   display: flex;
+  flex-shrink: 0;
 `;
 
 // Spinner needs set height to avoid height jumping
@@ -21,7 +22,7 @@ const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {
   if (!isDisabled && isInvalid) {
     return (
       <WarningIcon>
-        <Icon label="warning" size="medium" />
+        <Icon label="warning" />
       </WarningIcon>
     );
   }

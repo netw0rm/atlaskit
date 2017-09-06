@@ -10,7 +10,7 @@ import RecentList from './RecentList';
 
 // tslint:disable-next-line:variable-name
 const Container = styled.span`
-  width: 500px;
+  width: 420px;
   padding-left: 4px;
   display: flex;
   flex-direction: column;
@@ -51,16 +51,13 @@ export default class RecentSearch extends PureComponent<Props, State> {
   async componentDidMount() {
     const activityProvider = await this.resolveProvider();
 
-    this.loadFrequentItems(activityProvider);
-
-    // fetch recent items eagerly to have them in the cache
-    activityProvider.getRecentItems();
+    this.loadRecentItems(activityProvider);
   }
 
-  private async loadFrequentItems(activityProvider: ActivityProvider) {
+  private async loadRecentItems(activityProvider: ActivityProvider) {
     try {
       this.setState({ isLoading: true });
-      this.setState({ items: limit(await activityProvider.getFrequentItems()) });
+      this.setState({ items: limit(await activityProvider.getRecentItems()) });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -71,11 +68,10 @@ export default class RecentSearch extends PureComponent<Props, State> {
       input: input
     });
 
-    // show frequent items when there is no input, otherwise search through recent
     if (this.state.activityProvider) {
       if (input.length === 0) {
         this.setState({
-          items: limit(await this.state.activityProvider.getFrequentItems()),
+          items: limit(await this.state.activityProvider.getRecentItems()),
           selectedIndex: -1
         });
       } else {

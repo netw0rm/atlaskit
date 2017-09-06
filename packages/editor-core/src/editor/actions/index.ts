@@ -99,6 +99,26 @@ export default class EditorActions {
     return true;
   }
 
+  appendText(text: string): boolean {
+    if (!this.editorView || !text) {
+      return false;
+    }
+
+    const { state } = this.editorView;
+    const lastChild = state.doc.lastChild;
+
+    if (lastChild && lastChild.type !== state.schema.nodes.paragraph) {
+      return false;
+    }
+
+    const tr = state.tr
+      .insertText(text)
+      .scrollIntoView();
+    this.editorView.dispatch(tr);
+
+    return true;
+  }
+
   insertFileFromDataUrl(url: string, filename: string): boolean {
     if (!this.editorView) {
       return false;

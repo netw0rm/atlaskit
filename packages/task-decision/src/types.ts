@@ -178,3 +178,5 @@ export interface RenderDocument {
 export interface OnUpdate<T> {
   (allDecisions: T[], newDecisions: T[]): void;
 }
+
+export type Appearance = 'elevated' | 'flat';

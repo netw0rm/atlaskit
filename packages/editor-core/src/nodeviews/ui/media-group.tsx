@@ -4,7 +4,7 @@ import { PureComponent, ReactElement } from 'react';
 import styled from 'styled-components';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
-import { MediaPluginState, mediaStateKey } from '../../plugins';
+import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { EditorView } from '../../prosemirror';
 import { Props as MediaProps } from '../../ui/Media/MediaComponent';
 

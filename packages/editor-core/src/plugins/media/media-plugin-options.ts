@@ -6,4 +6,5 @@ export type MediaPluginOptions = {
   providerFactory: ProviderFactory;
   errorReporter?: ErrorReporter;
   uploadErrorHandler?: (state: MediaState) => void;
+  waitForMediaUpload?: boolean;
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
-import { EditorView } from '../../prosemirror';
+import { ActivityProvider } from '@atlaskit/activity';
+import { EditorView, Node } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
@@ -33,13 +34,18 @@ export interface EditorProps {
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
 
+  activityProvider?: Promise<ActivityProvider>;
+  collabEditProvider?: Promise<CollabEditProvider>;
+  presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
-  collabEditProvider?: Promise<CollabEditProvider>;
+  waitForMediaUpload?: boolean;
 
+  maxHeight?: number;
   maxContentSize?: number;
   placeholder?: string;
+  defaultValue?: Node | string | Object;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

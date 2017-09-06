@@ -17,7 +17,8 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     dropdownItems: PropTypes.node,
-    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types,
+    projectSwictherProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types,
   }
 
   state = {
@@ -35,6 +36,7 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
         onResizeCallback={this.onResize}
         containerHeaderComponent={() => (
           <BasicProjectSwitcher
+            {...this.props.projectSwictherProps}
             text="Project Switcher very long text"
             icon={<NucleusIcon />}
             subText="Software project"

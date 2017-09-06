@@ -1,5 +1,24 @@
 # @atlaskit/navigation
 
+## 21.2.0 (2017-09-04)
+
+* feature; add optional top and bottom visual scroll hints for ContainerNavigation (issues closed: ak-3278) ([9333bbb](https://bitbucket.org/atlassian/atlaskit/commits/9333bbb))
+## 21.1.0 (2017-09-01)
+
+* feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))
+* feature; exposing dropdown props in ContainerTitleDropdown (issues closed: ak-3404) ([2fd0515](https://bitbucket.org/atlassian/atlaskit/commits/2fd0515))
+## 21.0.0 (2017-08-31)
+
+* breaking; AkSearchResults and AkQuickSearchWithKeyboardControls have been removed. ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* breaking; New quickSearchResultTypes export has been added ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* bug fix; bumping navigation dependencies (issues closed: ak-3392) ([de8e271](https://bitbucket.org/atlassian/atlaskit/commits/de8e271))
+
+
+
+
+* breaking; QuickSearch \`results\` prop (plain js object) removed in favour of \`children\` prop (array of React ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+* breaking; refactor QuickSearch API to expect results as component children instead of js ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+
 ## 20.3.2 (2017-08-30)
 
 * bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))

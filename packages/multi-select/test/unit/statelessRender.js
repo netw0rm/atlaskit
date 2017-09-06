@@ -7,9 +7,11 @@ import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import Spinner from '@atlaskit/spinner';
 
 import { MultiSelectStateless } from '../../src';
 import { SelectWrapper } from '../../src/styled/Stateless';
+import InitialLoading from '../../src/styled/InitialLoading';
 import NoMatches from '../../src/styled/NoMatch';
 import { TriggerDiv } from '../../src/styled/Trigger';
 import Footer from '../../src/components/Footer';
@@ -180,6 +182,32 @@ describe(`${name} - stateless`, () => {
         expect(select.find(Group).at(0).props().heading).toBe('group 1');
         expect(select.find(Group).at(1).find(Item).length).toBe(2);
         expect(select.find(Group).at(1).props().heading).toBe('group 3');
+      });
+
+      it('should render loading state for initial fetching when properties are set and no items', () => {
+        const select = mount(<MultiSelectStateless
+          items={[]}
+          isOpen
+          isLoading
+        />);
+
+        expect(select.find(Spinner).length).toBe(1);
+        const loadingElement = select.find(InitialLoading);
+        expect(loadingElement.length).toBe(1);
+        // a11y props
+        expect(loadingElement.props()['aria-live']).toBe('polite');
+        expect(loadingElement.props().role).toBe('status');
+      });
+
+      it('should not render loading state when field is not open', () => {
+        const select = mount(<MultiSelectStateless
+          items={[]}
+          isOpen={false}
+          isLoading
+        />);
+
+        expect(select.find(Spinner).length).toBe(0);
+        expect(select.find(InitialLoading).length).toBe(0);
       });
 
       it('should render a no matches found if there is no item at all', () => {

@@ -22,7 +22,6 @@ const overrideImplementations = {
   grantAccessToUsers: notImplemented,
   retrieveUsers: notImplemented,
   goToProduct: notImplemented,
-  goToLearnMore: notImplemented,
   closeLoadingDialog: notImplemented,
 };
 

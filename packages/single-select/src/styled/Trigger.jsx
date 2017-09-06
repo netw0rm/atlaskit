@@ -5,6 +5,7 @@ const Trigger = styled.div`
   align-items: center;
   display: flex;
   min-height: ${akGridSizeUnitless * 4.5}px;
+  outline: none;
   width: 100%;
 `;
 

@@ -8,7 +8,7 @@ import { rootKey } from './util';
 type Props = {
   provided: Provided,
   isCollapsed?: boolean,
-  children?: any
+  children?: HTMLElement
 };
 
 export default class WithRootTheme extends PureComponent {

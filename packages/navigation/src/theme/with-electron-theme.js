@@ -4,7 +4,7 @@ import { isElectronMacKey } from './util';
 
 type Props = {
   isElectronMac?: boolean,
-  children?: any
+  children?: HTMLElement
 };
 
 export default class WithElectronTheme extends PureComponent {

@@ -20,6 +20,8 @@ import {
   insertBlockPlugin,
   tablesPlugin,
   collabEditPlugin,
+  jiraIssuePlugin,
+  unsupportedContentPlugin
 } from '../plugins';
 
 /**

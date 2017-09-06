@@ -151,6 +151,9 @@ export default function createEditor(
 ): EditorInstance {
   const editorConfig = processPluginsList(editorPlugins);
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
+  const { transformerProvider, defaultValue } = props;
+  let doc;
+  let transformer;
 
   initAnalytics(props.analyticsHandler);
 
@@ -159,7 +162,14 @@ export default function createEditor(
   const dispatch = createDispatch(eventDispatcher);
   const schema = createSchema(editorConfig);
   const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
-  const doc = processDefaultDocument(schema, props.defaultValue);
+
+  if (transformerProvider && typeof defaultValue === 'string') {
+    transformer = transformerProvider(schema);
+    doc = transformer.parse(defaultValue);
+  } else {
+    doc = processDefaultDocument(schema, defaultValue);
+  }
+
   const state = EditorState.create({ doc, schema, plugins });
   const editorView = new EditorView(place, {
     state,
@@ -175,6 +185,7 @@ export default function createEditor(
     eventDispatcher,
     contentComponents,
     primaryToolbarComponents,
-    secondaryToolbarComponents
+    secondaryToolbarComponents,
+    transformer
   };
 }

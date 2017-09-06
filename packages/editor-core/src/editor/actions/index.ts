@@ -1,8 +1,9 @@
 import { EditorView, TextSelection, Node } from '../../prosemirror';
 import { getEditorValueWithMedia, insertFileFromDataUrl } from '../utils';
-
+import { Transformer } from '../../transformers';
 export default class EditorActions {
   private editorView?: EditorView;
+  private transformer?: Transformer<string>;
 
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
@@ -10,11 +11,14 @@ export default class EditorActions {
   }
 
   // This method needs to be public for EditorContext component.
-  _privateRegisterEditor(editorView: EditorView): void {
+  _privateRegisterEditor(editorView: EditorView, transformer?: Transformer<string>): void {
     if (!this.editorView && editorView) {
       this.editorView = editorView;
     } else if (this.editorView !== editorView) {
       throw new Error('Editor has already been registered! It\'s not allowed to re-register editor with the new Editor instance.');
+    }
+    if (transformer) {
+      this.transformer = transformer;
     }
   }
 
@@ -57,8 +61,13 @@ export default class EditorActions {
     return true;
   }
 
-  getValue(): Promise<Node | undefined> {
-    return getEditorValueWithMedia(this.editorView && this.editorView.state);
+  getValue(): Promise<string | Node | undefined> {
+    return getEditorValueWithMedia(this.editorView && this.editorView.state).then(doc => {
+      if (this.transformer && doc) {
+        return this.transformer.encode(doc);
+      }
+      return doc;
+    });
   }
 
   replaceDocument(rawValue: Node | string | Object): boolean {

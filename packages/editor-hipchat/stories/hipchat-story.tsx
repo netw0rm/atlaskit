@@ -109,7 +109,7 @@ storiesOf(name, module)
         showTasks={true}
         showMediaPicker={true}
         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
-        numFollowingToolbarButtons={1}
+        numFollowingToolbarButtons={4.1}
         toolbarStyles={{
           display: 'flex',
           height: '20px',

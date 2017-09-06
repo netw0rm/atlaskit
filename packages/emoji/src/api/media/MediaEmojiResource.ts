@@ -113,6 +113,20 @@ export default class MediaEmojiResource {
     });
   }
 
+  /**
+   * Check if the MediaEmojiResource has been able to initialise an uploadToken. Retrieving an upload token
+   * is asynchronous so the Promise will need to resolve before the state is known. If the token retrieval
+   * completes with failure then the Promise will resolve to false.
+   */
+  hasUploadToken(): Promise<boolean> {
+    const tokenPromise: Promise<MediaApiToken>  = this.tokenManager.getToken('upload');
+    return tokenPromise.then((token) => {
+      return token !== undefined;
+    }, () => {
+      return false;
+    });
+  }
+
   prepareForUpload() {
     // make sure a token is loaded from the emoji service if we don't have one
     // as future request to uploadEmoji will use this, this to preload it, as it

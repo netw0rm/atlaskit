@@ -22,11 +22,12 @@ export function stringRepeat(text: string, length: number): string {
  * @see MarkdownSerializerState.esc()
  */
 export function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\+_|]/g, '\\$&');
+  let strToEscape = str || '';
+  strToEscape = strToEscape.replace(/[`*\\+_|()\[\]{}]/g, '\\$&');
   if (startOfLine) {
-    str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
+    strToEscape = strToEscape.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
-  return str;
+  return strToEscape;
 }
 
 /**

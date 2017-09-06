@@ -138,12 +138,28 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
+  private renderLoadingCard(url?: string, mediaItemType: string = 'link') {
+    const { CardView } = this.state;
+    const { cardDimensions } = this.props;
+
+    if (CardView) {
+      return (
+        <CardView
+          metadata={{ type: mediaItemType, url, title: '' }}
+          status="loading"
+          mediaItemType={mediaItemType}
+          dimensions={cardDimensions}
+        />
+      );
+    }
+  }
+
   private renderLink() {
     const { mediaProvider, linkCreateContext, Card, CardView } = this.state;
     const { id, collection, cardDimensions, onDelete, appearance, ...otherProps } = this.props;
 
     if (!mediaProvider || !linkCreateContext) {
-      return null;
+      return this.renderLoadingCard();
     }
 
     if (!Card || !CardView) {
@@ -158,14 +174,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     if (id.substr(0, 10) === 'temporary:') {
       const url = id.substr(id.indexOf(':', 11) + 1);
-      return (
-        <CardView
-          metadata={{ type: 'link', url, title: '' }}
-          status="loading"
-          mediaItemType="link"
-          dimensions={cardDimensions}
-        />
-      );
+      return this.renderLoadingCard(url);
     }
 
     if (onDelete) {

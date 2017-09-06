@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.16.0 (2017-09-06)
+
+* feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))
+* bug fix; fix filmstrip arrow problem in renderer when not using code splitting (issues closed: ed-2667) ([c9cb09d](https://bitbucket.org/atlassian/atlaskit/commits/c9cb09d))
 ## 46.15.0 (2017-09-06)
 
 * bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))

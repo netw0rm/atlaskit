@@ -1,5 +1,12 @@
 # @atlaskit/app-switcher
 
+## 3.1.1 (2017-09-06)
+
+
+
+
+
+* bug fix; use @atlaskit/avatar for recent container icons (issues closed: home-884) ([482af6d](https://bitbucket.org/atlassian/atlaskit/commits/482af6d))
 ## 3.1.0 (2017-08-23)
 
 * feature; aK-3356 Allow the AppSwitcher to close on click (issues closed: ak-3356) ([2710d52](https://bitbucket.org/atlassian/atlaskit/commits/2710d52))

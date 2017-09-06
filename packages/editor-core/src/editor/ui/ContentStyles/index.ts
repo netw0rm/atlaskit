@@ -63,6 +63,10 @@ const tableStyle = `
         opacity: 0.3;
         pointer-events: none;
       }
+      .table-decoration {
+        position: relative;
+        left: -1px;
+      }
     }
   }
 `;

@@ -31,7 +31,7 @@ export const CornerButton = styled.button`
   cursor: pointer;
   padding: 0;
 
-  &:hover, .active > &, .tableSelected & {
+  &:hover, .active > &, .tableHovered & {
     background-image: linear-gradient(to bottom right, #fff 0, #fff 49%, ${akEditorTableToolbarSelected} 50%, ${akEditorTableToolbarSelected} 100%);
     border-color: ${akEditorTableBorderSelected};
     z-index: 1;

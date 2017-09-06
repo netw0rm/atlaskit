@@ -4,7 +4,8 @@ import {
   CardDimensions,
   MediaIdentifier,
 } from '@atlaskit/media-card';
-import Spinner from '@atlaskit/spinner';
+import styled from 'styled-components';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 import {
   ContextConfig,
@@ -25,6 +26,29 @@ import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media
 import { CardEventClickHandler } from '../Renderer';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
+
+// Maybe it's better to ask media to export these as constant because
+// we do something similar in src/schema/nodes/media.tsx:82
+export const MEDIA_HEIGHT = 125;
+export const FILE_WIDTH = 156;
+export const LINK_WIDTH = 343;
+
+type PlaceholderProps = { dimensions?: CardDimensions };
+
+// tslint:disable-next-line
+const FilePlaceholder = styled.div`
+  background: ${akColorN30};
+  width: ${ ({ dimensions: { width = FILE_WIDTH} = {} }: PlaceholderProps) => width }px;
+  min-height: ${ ({ dimensions: { height = MEDIA_HEIGHT} = {} }: PlaceholderProps) => height }px;
+`;
+
+// tslint:disable-next-line
+const LinkPlaceholder = styled.div`
+  background: ${akColorN30};
+  width: ${ ({ dimensions: { width = LINK_WIDTH} = {} }: PlaceholderProps) => width }px;
+  min-height: ${ ({ dimensions: { height = MEDIA_HEIGHT} = {} }: PlaceholderProps) => height }px;
+`;
+
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
@@ -88,7 +112,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       mediaProvider.then(this.handleMediaProvider);
     }
 
-    require.ensure([], () => {
+    require.ensure([], (require) => {
       const { Card, CardView } = require('@atlaskit/media-card');
       this.setState({ Card, CardView });
     });
@@ -147,7 +171,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (!Card || !CardView) {
-      return <Spinner />;
+      return <LinkPlaceholder dimensions={cardDimensions} />;
     }
 
     const identifier: MediaIdentifier = {
@@ -190,7 +214,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     if (!mediaProvider || !viewContext) {
       if (!CardView) {
-        return <Spinner />;
+        return <FilePlaceholder dimensions={cardDimensions} />;
       }
 
       return (
@@ -223,7 +247,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (!Card) {
-      return <Spinner />;
+      return <FilePlaceholder dimensions={cardDimensions} />;
     }
 
     return (
@@ -245,7 +269,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   private renderTemporaryFile() {
     const { state } = this;
     const { thumbnail, fileName, fileSize, fileType, CardView } = state;
-    const { onDelete } = this.props;
+    const { onDelete, cardDimensions } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -278,7 +302,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     if (!CardView) {
-      return <Spinner />;
+      return <FilePlaceholder dimensions={cardDimensions} />;
     }
 
     return <CardView

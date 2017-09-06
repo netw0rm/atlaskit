@@ -31,7 +31,10 @@ import {
   TextSelection,
   toJSON,
   version as coreVersion,
+  ToolbarDecision,
   ToolbarEmojiPicker,
+  ToolbarMedia,
+  ToolbarTask,
 
   // Components
   WithProviders,
@@ -96,6 +99,9 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   errorReporter?: ErrorReportingHandler;
   showEmojiPicker?: boolean;
+  showMediaPicker?: boolean;
+  showTasks?: boolean;
+  showDecisions?: boolean;
   numFollowingToolbarButtons?: number;
   toolbarStyles?: any;
 }
@@ -295,10 +301,18 @@ export default class Editor extends PureComponent<Props, State> {
 
   renderExtraToolbar() {
 
-    const { emojiProvider, numFollowingToolbarButtons = 0, showEmojiPicker, toolbarStyles = {} } = this.props;
+    const {
+      emojiProvider,
+      numFollowingToolbarButtons = 0,
+      showEmojiPicker,
+      showDecisions,
+      showTasks,
+      showMediaPicker,
+      toolbarStyles = {}
+    } = this.props;
     const { editorView } = this.state;
 
-    if (!editorView || !emojiProvider || !showEmojiPicker) {
+    if (!editorView) {
       return null;
     }
 
@@ -306,12 +320,34 @@ export default class Editor extends PureComponent<Props, State> {
       <div
         style={toolbarStyles}
       >
-        <ToolbarEmojiPicker
-          editorView={editorView}
-          pluginKey={emojisStateKey}
-          emojiProvider={emojiProvider}
-          numFollowingButtons={numFollowingToolbarButtons}
-        />
+        { emojiProvider && showEmojiPicker ?
+          <ToolbarEmojiPicker
+            editorView={editorView}
+            pluginKey={emojisStateKey}
+            emojiProvider={emojiProvider}
+            numFollowingButtons={numFollowingToolbarButtons}
+          />
+          : null
+        }
+        { showMediaPicker ?
+          <ToolbarMedia
+            editorView={editorView}
+            pluginKey={mediaStateKey}
+          />
+          : null
+        }
+        { showTasks ?
+          <ToolbarTask
+            editorView={editorView}
+          />
+          : null
+        }
+        { showDecisions ?
+          <ToolbarDecision
+            editorView={editorView}
+          />
+          : null
+        }
       </div>
     );
   }

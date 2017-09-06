@@ -7,6 +7,7 @@ import Link from './link';
 import Strike from './strike';
 import Strong from './strong';
 import Subsup from './subsup';
+import TextColor from './textColor';
 import Underline from './underline';
 
 export const markToReact = {
@@ -16,6 +17,7 @@ export const markToReact = {
   'strike': Strike,
   'strong': Strong,
   'subsup': Subsup,
+  'textColor': TextColor,
   'underline': Underline,
 };
 
@@ -30,5 +32,6 @@ export {
   Strike,
   Strong,
   Subsup,
+  TextColor,
   Underline,
 };

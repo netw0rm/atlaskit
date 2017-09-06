@@ -9,6 +9,7 @@ import {
 import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
 import { uuid } from '../utils';
+import { unsupportedNodeTypesForMediaCards } from '../../schema/unsupported';
 import analyticsService from '../../analytics/service';
 
 export interface URLInfo {
@@ -25,6 +26,14 @@ export const insertLinks = async (
   collection?: string
 ) : Promise<Array<string | undefined> | undefined> => {
   if (!linkRanges || linkRanges.length <= 0 || !collection) {
+    return;
+  }
+
+  // Don't support media in unsupported node types (this can be removed when ED-2478 is done)
+  const { state } = view;
+  const { $to } = state.selection;
+  if (unsupportedNodeTypesForMediaCards.has($to.parent.type.name)) {
+    analyticsService.trackEvent('atlassian.editor.media.file.unsupported.node');
     return;
   }
 

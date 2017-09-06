@@ -1,5 +1,9 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.0 (2017-09-06)
+
+
+* feature; support inbuild media/action/decision toolbar buttons (issues closed: fs-1342) ([14d35ed](https://bitbucket.org/atlassian/atlaskit/commits/14d35ed))
 ## 5.3.1 (2017-09-05)
 
 * bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: fs-1329 / fs-1265) ([1ec4bf4](https://bitbucket.org/atlassian/atlaskit/commits/1ec4bf4))

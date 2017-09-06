@@ -1,5 +1,18 @@
 # @atlaskit/item
 
+## 3.1.3 (2017-09-06)
+
+* bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))
+## 3.1.2 (2017-09-05)
+
+* bug fix; add defensive styles to link items to prevent CSS resets overwriting colour etc. (issues closed: ak-3391) ([4fa64a6](https://bitbucket.org/atlassian/atlaskit/commits/4fa64a6))
+
+
+
+
+
+
+
 ## 3.1.1 (2017-08-24)
 
 * bug fix; fix alignment of navigation item group action (issues closed: ak-3279) ([4f98025](https://bitbucket.org/atlassian/atlaskit/commits/4f98025))

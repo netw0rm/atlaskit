@@ -1,30 +1,44 @@
-import styled from 'styled-components';
-import {
-  akGridSizeUnitless,
-  akColorN800,
-  akHelperMixins,
-} from '@atlaskit/util-shared-styles';
+import styled, { css } from 'styled-components';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import placeholderStyles from './placeholderStyles';
+
+/* Placeholder has been temporarily inlined until we have a helper library for such things */
+const placeholderTemp = styles => (
+  css`
+    &::-webkit-input-placeholder {
+      ${styles}
+    }
+    &:-moz-placeholder {
+      ${styles}
+    }
+    &::-moz-placeholder {
+      ${styles}
+    }
+    &:-ms-input-placeholder {
+      ${styles}
+    }
+  `
+);
 
 const AutocompleteWrapper = styled.div`
   flex: 1 1 auto;
   white-space: nowrap;
-  padding: 0 ${akGridSizeUnitless}px;
+  padding: 0 ${gridSize}px;
 `;
 AutocompleteWrapper.displayName = 'SingleSelectAutocompleteWrapper';
 
 const AutocompleteInput = styled.input`
   background: none;
   border: 0;
-  color: ${akColorN800};
+  color: ${colors.heading};
   font-size: 14px;
   margin: 0;
-  min-height: ${akGridSizeUnitless * 4.5}px;
+  min-height: ${math.multiply(gridSize, 4.5)}px;
   outline: 0;
   padding: 0;
   width: 100%;
 
-  ${akHelperMixins.placeholder(placeholderStyles)}
+  ${placeholderTemp(placeholderStyles)}
 `;
 AutocompleteInput.displayName = 'SingleSelectAutocompleteInput';
 

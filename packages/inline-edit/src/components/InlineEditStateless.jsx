@@ -14,6 +14,8 @@ import ButtonsWrapper from '../styled/ButtonsWrapper';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import EditButton from '../styled/EditButton';
 
+const DRAG_THRESHOLD = 5;
+
 export default class InlineEdit extends PureComponent {
   static propTypes = {
     /** Label above the input. */
@@ -132,7 +134,8 @@ export default class InlineEdit extends PureComponent {
 
   mouseHasMoved = ({ clientX, clientY }) => {
     const { startX, startY } = this.state;
-    return Math.abs(startX - clientX) > 5 || Math.abs(startY - clientY) > 5;
+    return Math.abs(startX - clientX) >= DRAG_THRESHOLD
+      || Math.abs(startY - clientY) >= DRAG_THRESHOLD;
   }
 
   confirmIfUnfocused = () => {

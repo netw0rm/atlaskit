@@ -18,7 +18,7 @@ const hyperlinkPlugin: EditorPlugin = {
     return [
       { rank: 900, plugin: () => plugin },
       { rank: 910, plugin: (schema) => inputRulePlugin(schema) },
-      { rank: 920, plugin: (schema) => keymap(schema) },
+      { rank: 920, plugin: (schema, props) => keymap(schema, props) },
     ];
   },
 

@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.6.0 (2017-09-05)
+
+* feature; visual updates based on action and decision designs. (issues closed: fs-1232) ([8b2126f](https://bitbucket.org/atlassian/atlaskit/commits/8b2126f))
 ## 3.5.5 (2017-09-01)
 
 * bug fix; break and wrap text that doesn't fit on a full line (e.g. link) (issues closed: fs-1300) ([2f8d413](https://bitbucket.org/atlassian/atlaskit/commits/2f8d413))

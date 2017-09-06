@@ -1059,6 +1059,34 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('textColor', () => {
+      it('should return "textColor"', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: '#ff0000' } })).to.deep.equal({
+          type: 'textColor',
+          attrs: {
+            color: '#ff0000',
+          },
+        });
+      });
+
+      it('should return "textColor" for uppercase color', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: '#FF0000' } })).to.deep.equal({
+          type: 'textColor',
+          attrs: {
+            color: '#FF0000',
+          },
+        });
+      });
+
+      it('should skip nodes if color attribute is missing', () => {
+        expect(getValidMark({ type: 'textColor' })).to.equal(null);
+      });
+
+      it('should skip nodes if color attribute doesn\'t match RGB pattern', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: 'red' } })).to.equal(null);
+      });
+    });
+
     describe('underline', () => {
       it('should return "underline"', () => {
         expect(getValidMark({ type: 'underline' })).to.deep.equal({

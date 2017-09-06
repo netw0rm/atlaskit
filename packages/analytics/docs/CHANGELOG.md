@@ -1,5 +1,9 @@
 # @atlaskit/analytics
 
+## 1.1.2 (2017-09-05)
+
+
+* bug fix; expose innerRef on WithAnalytics ([3f8a210](https://bitbucket.org/atlassian/atlaskit/commits/3f8a210))
 ## 1.1.1 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -1,5 +1,9 @@
 # @atlaskit/calendar
 
+## 3.0.0 (2017-09-05)
+
+* breaking; update calendar to 1.3 spec ([4cde720](https://bitbucket.org/atlassian/atlaskit/commits/4cde720))
+* breaking; update calendar to 1.3 spec (issues closed: #ak-2824) ([4cde720](https://bitbucket.org/atlassian/atlaskit/commits/4cde720))
 ## 2.4.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -8,18 +8,24 @@ import {
   AnalyticsHandler,
   analyticsService
 } from '../../../../src';
+
 import {
-  chaiPlugin,
-  doc,
-  makeEditor,
-  mediaGroup,
-  media,
-  p,
   a,
   blockquote,
-  randomId,
+  chaiPlugin,
+  decisionItem,
+  decisionList,
+  doc,
   getLinkCreateContextMock,
+  makeEditor,
+  media,
+  mediaGroup,
+  p,
+  randomId,
+  taskItem,
+  taskList,
 } from '../../../../src/test-helper';
+
 import defaultSchema from '../../../../src/test-helper/schema';
 import { insertLinks, detectLinkRangesInSteps } from '../../../../src/plugins/media/media-links';
 import * as utils from '../../../../src/plugins/utils';
@@ -479,6 +485,44 @@ describe('media-links', () => {
         mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
         p(),
       ));
+    });
+  });
+
+  context('when selection is in a task or decision block', () => {
+    it('link insertion ignored for task item', async () => {
+      const itemDoc = doc(taskList(taskItem('{<>}')));
+      const { editorView } = editor(itemDoc);
+      const handle = sinon.spy();
+
+      await insertLinks(
+        editorView,
+        mediaStateManager,
+        handle,
+        [],
+        linkCreateContextMock,
+        testCollectionName,
+      );
+
+      sinon.assert.notCalled(handle);
+      expect(editorView.state.doc).to.deep.equal(itemDoc);
+    });
+
+    it('link insertion ignored for decision item', async () => {
+      const decisionDoc = doc(decisionList(decisionItem('{<>}')));
+      const { editorView } = editor(decisionDoc);
+      const handle = sinon.spy();
+
+      await insertLinks(
+        editorView,
+        mediaStateManager,
+        handle,
+        [],
+        linkCreateContextMock,
+        testCollectionName,
+      );
+
+      sinon.assert.notCalled(handle);
+      expect(editorView.state.doc).to.deep.equal(decisionDoc);
     });
   });
 });

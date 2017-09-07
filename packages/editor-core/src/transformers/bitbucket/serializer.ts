@@ -209,8 +209,8 @@ const editorNodes = {
   },
   image(state: MarkdownSerializerState, node: PMNode) {
     // Note: the 'title' is not escaped in this flavor of markdown.
-    state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
-      (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
+    state.write('![' + escapeMarkdown(node.attrs.alt) + '](' + escapeMarkdown(node.attrs.src) +
+      (node.attrs.title ? ` '${escapeMarkdown(node.attrs.title)}'` : '') + ')');
   },
   hardBreak(state: MarkdownSerializerState) {
     state.write('  \n');

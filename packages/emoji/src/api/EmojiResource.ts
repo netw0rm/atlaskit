@@ -6,7 +6,7 @@ import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
-import MediaEmojiResource from './media/MediaEmojiResource';
+import SiteEmojiResource from './media/SiteEmojiResource';
 
 export interface EmojiResourceConfig {
   /**
@@ -93,11 +93,16 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   recordSelection?(emoji: EmojiDescription): Promise<any>;
 
   /**
-   * Deletes the custom emoji with given ID for a particular site
-   * No changes are made if the user is not authorized, the emoji does not exist
-   * or no mediaEmojiResource has been initialised
+   * Deletes the given emoji from the site emoji service
+   * No changes are made if it is not a media emoji, no siteEmojiResource has been initialised
+   * or the user is not authorised.
+   * It should also be removed from the EmojiResource so it cannot be returned via search
+   *
+   * Optional.
+   *
+   * @return a boolean indicating whether the delete was successful
    */
-  deleteSiteEmoji(emoji: EmojiDescription): Promise<any>;
+  deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean>;
 
   /**
    * Load media emoji that may require authentication to download, producing
@@ -184,7 +189,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected lastQuery: LastQuery;
   protected activeLoaders: number = 0;
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
-  protected mediaEmojiResource?: MediaEmojiResource;
+  protected siteEmojiResource?: SiteEmojiResource;
   protected selectedTone: ToneSelection;
 
   constructor(config: EmojiResourceConfig) {
@@ -203,7 +208,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         this.activeLoaders--;
         emojiResponses[index] = emojiResponse;
         this.initEmojiRepository(emojiResponses);
-        this.initMediaEmojiResource(emojiResponse, provider).then(() => {
+        this.initSiteEmojiResource(emojiResponse, provider).then(() => {
           this.performRetries();
           this.refreshLastFilter();
         });
@@ -230,30 +235,30 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     this.emojiRepository = new EmojiRepository(emojis);
   }
 
-  protected initMediaEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): Promise<void>  {
-    if (!this.mediaEmojiResource && emojiResponse.mediaApiToken) {
-      const mediaEmojiResource = new MediaEmojiResource(provider, emojiResponse.mediaApiToken);
+  protected initSiteEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): Promise<void>  {
+    if (!this.siteEmojiResource && emojiResponse.mediaApiToken) {
+      const siteEmojiResource = new SiteEmojiResource(provider, emojiResponse.mediaApiToken);
 
       // Prime cache type + optimistic rendering by checking first Emoji.
       // If this is fails, it won't be primed until a good emoji is loaded later.
       const { emojis } = emojiResponse;
       if (emojis.length) {
-        const done = mediaEmojiResource.optimisticRendering(emojis[0]);
+        const done = siteEmojiResource.optimisticRendering(emojis[0]);
         if (isPromise(done)) {
           return done.then(() => {
-            debug('Primed mediaEmojiResource');
-            this.mediaEmojiResource = mediaEmojiResource;
+            debug('Primed siteEmojiResource');
+            this.siteEmojiResource = siteEmojiResource;
           }).catch(err => {
-            debug('Failed to prime mediaEmojiResource');
-            this.mediaEmojiResource = mediaEmojiResource;
+            debug('Failed to prime siteEmojiResource');
+            this.siteEmojiResource = siteEmojiResource;
           });
         } else {
-          debug('Already primed mediaEmojiResource');
-          this.mediaEmojiResource = mediaEmojiResource;
+          debug('Already primed siteEmojiResource');
+          this.siteEmojiResource = siteEmojiResource;
         }
       } else {
-        debug('No emoji to prime mediaEmojiResource with');
-        this.mediaEmojiResource = mediaEmojiResource;
+        debug('No emoji to prime siteEmojiResource with');
+        this.siteEmojiResource = siteEmojiResource;
       }
     }
     return Promise.resolve();
@@ -314,21 +319,21 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   }
 
   loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    if (!this.mediaEmojiResource || !isMediaEmoji(emoji)) {
+    if (!this.siteEmojiResource || !isMediaEmoji(emoji)) {
       return emoji;
     }
-    return this.mediaEmojiResource.loadMediaEmoji(emoji);
+    return this.siteEmojiResource.loadMediaEmoji(emoji);
   }
 
   optimisticMediaRendering(emoji: EmojiDescription): boolean {
     if (!isMediaEmoji(emoji)) {
       return true;
     }
-    if (!this.mediaEmojiResource) {
+    if (!this.siteEmojiResource) {
       // Shouldn't have a media emoji without a mediaEmojiResouce, but anyway ;)
       return false;
     }
-    const optimistic = this.mediaEmojiResource.optimisticRendering(emoji);
+    const optimistic = this.siteEmojiResource.optimisticRendering(emoji);
 
     if (isPromise(optimistic)) {
       // Not sure yet, so lets say no for now (this should normally be primed in most/all cases)
@@ -370,8 +375,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         if (this.isLoaded()) {
           // all loaded but not found by id, try server to see if
           // this is a newly uploaded emoji
-          if (this.mediaEmojiResource) {
-            return this.mediaEmojiResource.findSiteEmoji(emojiId).then(emoji => {
+          if (this.siteEmojiResource) {
+            return this.siteEmojiResource.findEmoji(emojiId).then(emoji => {
               if (!emoji) {
                 // if not, fallback to searching by shortName to
                 // at least render an alternative
@@ -451,11 +456,16 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return Promise.resolve();
   }
 
-  deleteSiteEmoji(emoji: EmojiDescription): Promise<any> {
-    if (this.mediaEmojiResource && emoji.id) {
-      return this.mediaEmojiResource.deleteSiteEmoji(emoji.id);
+  deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean> {
+    if (this.siteEmojiResource && emoji.id) {
+      return this.siteEmojiResource.deleteEmoji(emoji).then((success) => {
+        if (success) {
+          this.emojiRepository.delete(emoji);
+        }
+        return success;
+      });
     }
-    return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), 'Could not load media emoji resource');
+    return this.retryIfLoading(() => this.deleteSiteEmoji(emoji), false);
   }
 
   getSelectedTone(): ToneSelection {
@@ -477,7 +487,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     if (!this.emojiRepository) {
       return [];
     }
-    return this.emojiRepository.getDynamicCategoryList(!!this.mediaEmojiResource);
+    return this.emojiRepository.getDynamicCategoryList(!!this.siteEmojiResource);
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {
@@ -497,7 +507,7 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
     if (!this.allowUpload) {
       return Promise.resolve(false);
     }
-    if (this.mediaEmojiResource) {
+    if (this.siteEmojiResource) {
       return Promise.resolve(true);
     }
     return this.retryIfLoading(() => this.isUploadSupported(), false);
@@ -505,11 +515,11 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
 
   uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription> {
     return this.isUploadSupported().then(supported => {
-      if (!supported || !this.mediaEmojiResource) {
+      if (!supported || !this.siteEmojiResource) {
         return Promise.reject('No media api support is configured');
       }
 
-      return this.mediaEmojiResource.uploadEmoji(upload).then(emoji => {
+      return this.siteEmojiResource.uploadEmoji(upload).then(emoji => {
         this.addCustomEmoji(emoji);
         this.refreshLastFilter();
         return emoji;
@@ -518,8 +528,8 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
   }
 
   prepareForUpload() {
-    if (this.mediaEmojiResource) {
-      this.mediaEmojiResource.prepareForUpload();
+    if (this.siteEmojiResource) {
+      this.siteEmojiResource.prepareForUpload();
     }
     return this.retryIfLoading(() => this.prepareForUpload(), undefined);
   }

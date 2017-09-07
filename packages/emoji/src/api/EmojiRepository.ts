@@ -115,6 +115,20 @@ export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptio
   return emoji;
 };
 
+const findEmojiIndex = (emojis: EmojiDescription[], toFind: EmojiDescription): number => {
+  const findId = toFind.id;
+  let match = -1;
+  emojis.forEach((emoji, index) => {
+    // Match if ID is defined and are equal
+    // Or both have no id and shortnames match
+    if (emoji.id && (emoji.id === findId) || !emoji.id && !findId && (emoji.shortName === toFind.shortName)) {
+      match = index;
+      return;
+    }
+  });
+  return match;
+};
+
 export default class EmojiRepository {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
@@ -133,7 +147,6 @@ export default class EmojiRepository {
 
     this.initRepositoryMetadata();
     this.initSearchIndex();
-
   }
 
   /**
@@ -256,6 +269,20 @@ export default class EmojiRepository {
       setTimeout(() => {
         this.dynamicCategoryList.push(frequentCategory);
       });
+    }
+  }
+
+  delete(emoji: EmojiDescription) {
+    const deletedIndex = findEmojiIndex(this.emojis, emoji);
+    if (deletedIndex !== -1) {
+      this.emojis.splice(deletedIndex, 1);
+      this.shortNameMap.delete(emoji.shortName);
+      this.idMap.delete(emoji.id);
+      if (emoji.ascii) {
+        emoji.ascii.forEach(a => this.asciiMap.delete(a));
+      }
+      // Search index must be reinitialised since there is no deleteDocuments
+      this.initSearchIndex();
     }
   }
 

@@ -105,8 +105,8 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(undefined, 'recordSelection');
   }
 
-  deleteSiteEmoji(emoji: EmojiDescription): Promise<any> {
-    return this.promiseBuilder(undefined, 'deleteSiteEmoji');
+  deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean> {
+    return this.promiseBuilder(false, 'deleteSiteEmoji');
   }
 
   loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {

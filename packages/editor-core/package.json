@@ -55,6 +55,7 @@
     "@atlaskit/emoji": "^27.0.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.3",
+    "@atlaskit/logo": "^3.5.3",
     "@atlaskit/media-card": "^19.0.3",
     "@atlaskit/media-core": "^9.0.0",
     "@atlaskit/media-filmstrip": "^5.2.2",

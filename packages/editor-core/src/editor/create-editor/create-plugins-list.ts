@@ -93,6 +93,14 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(maxContentSizePlugin);
   }
 
+  if(props.allowJiraIssue) {
+    plugins.push(jiraIssuePlugin);
+  }
+
+  if(props.allowUnsupportedContent) {
+    plugins.push(unsupportedContentPlugin);
+  }
+
   // UI only plugins
   plugins.push(insertBlockPlugin);
 

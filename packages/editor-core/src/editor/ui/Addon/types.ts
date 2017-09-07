@@ -2,14 +2,17 @@ import EditorActions from '../../actions';
 
 export type RenderOnClickHandler = (editorActions: EditorActions, closePopup: () => void) => React.ReactElement<any>;
 
-export interface AddonCommonProps {
-  icon: React.ReactElement<any>;
+export interface AddonActions {
   actionOnClick?: (editorActions: EditorActions) => void;
   renderOnClick?: RenderOnClickHandler;
 }
 
+export interface AddonCommonProps extends AddonActions {
+  icon: React.ReactElement<any>;
+}
+
 export interface AddonProps extends AddonCommonProps {
-  onClick?: () => void;
+  onClick?: (actions: AddonActions) => void;
   children?: React.ReactElement<any>[];
 }
 

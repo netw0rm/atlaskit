@@ -24,7 +24,7 @@ export default class ResultBase extends PureComponent {
     onMouseLeave: PropTypes.func.isRequired,
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     subText: PropTypes.string,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
     textAfter: PropTypes.node,
     type: PropTypes.string.isRequired,
   }

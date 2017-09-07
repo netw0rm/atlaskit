@@ -7,8 +7,8 @@ const BASE_RESULT_TYPE = 'base';
 
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
-// All "-Result" components (PersonResult, RoomResult, etc.) should extend this class to-
-// ensure consideration of these props.
+// All "-Result" components (PersonResult, ContainerResult, ObjectResult, etc.) should extend
+// this class to ensure consideration of these props.
 // ==========================================================================================
 
 export default class ResultBase extends PureComponent {

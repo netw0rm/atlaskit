@@ -1,13 +1,13 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import { AtlassianObjectResult } from '../../../src/components/js/results';
+import { ObjectResult } from '../../../src/components/js/results';
 import { mountWithRootTheme } from '../_theme-util';
 
 describe('Atlassian Object Result', () => {
   let resultWrapper;
   beforeEach(() => {
     resultWrapper = mountWithRootTheme(
-      <AtlassianObjectResult resultId="testId" type="object" name="test" />
+      <ObjectResult resultId="testId" type="object" name="test" />
     );
   });
 

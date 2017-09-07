@@ -5,7 +5,7 @@ import Avatar from '@atlaskit/avatar';
 
 import ResultBase from './ResultBase';
 
-const CONTAINER_RESULT_TYPE = 'container';
+const OBJECT_RESULT_TYPE = 'object';
 
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
@@ -13,12 +13,14 @@ const CONTAINER_RESULT_TYPE = 'container';
 // ===================================================================
 
 /**
- * Generic result type for Atlassian containers.
+ * Generic result type for Atlassian objects.
  */
-export default class AtlassianContainerResult extends PureComponent {
+export default class ObjectResult extends PureComponent {
   static propTypes = {
     /** Src URL of the image to be used as the result's icon */
     avatarUrl: PropTypes.string,
+    /** Name of the container to which the object belongs. Displayed alongside the name */
+    containerName: PropTypes.string.isRequired,
     /** Text to appear to the right of the `name`. It has a lower font-weight. */
     caption: PropTypes.string,
     /** Content to be shown after the main content. Shown to the right of content
@@ -33,8 +35,10 @@ export default class AtlassianContainerResult extends PureComponent {
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
     isSelected: PropTypes.bool.isRequired,
-    /** Name of the container. Provides the main text to be displayed as the item. */
+    /** Name of the object. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
+    /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
+    objectKey: PropTypes.string,
     /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
     onClick: PropTypes.func,
     /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
@@ -43,8 +47,6 @@ export default class AtlassianContainerResult extends PureComponent {
     onMouseLeave: PropTypes.func,
     /** Unique ID of the result. This is passed as a parameter to certain callbacks */
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    /** Text to be shown alongside the main `name` text. */
-    subText: PropTypes.string,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string,
   }
@@ -53,7 +55,7 @@ export default class AtlassianContainerResult extends PureComponent {
     onClick: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
-    type: CONTAINER_RESULT_TYPE,
+    type: OBJECT_RESULT_TYPE,
   }
 
   getAvatar = () => (
@@ -66,6 +68,8 @@ export default class AtlassianContainerResult extends PureComponent {
 
   render() {
     const {
+      containerName,
+      objectKey,
       name,
       ...resultBaseProps
     } = this.props;
@@ -73,6 +77,7 @@ export default class AtlassianContainerResult extends PureComponent {
       <ResultBase
         {...resultBaseProps}
         icon={this.getAvatar()}
+        subText={`${objectKey ? `${objectKey} ` : ''}in ${containerName}`}
         text={name}
       />
     );

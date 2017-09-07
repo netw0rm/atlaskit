@@ -19,10 +19,10 @@ const noOpInteractionProps = {
 };
 
 const {
-  AtlassianContainerResult,
-  AtlassianObjectResult,
   ConfluenceSpaceResult,
   JiraProjectResult,
+  ContainerResult,
+  ObjectResult,
   PersonResult,
   ResultBase,
   RoomResult,
@@ -90,19 +90,19 @@ storiesOf(`${name}/QuickSearch`, module)
       <h3>Containers</h3>
       Containers have square avatars, can be marked as private and have a name and subText fields.
       <AkNavigationItemGroup title="Container examples" key="Container examples">
-        <AtlassianContainerResult
+        <ContainerResult
           {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(3)}
           name="Cargo boxes"
           subText="They're big!"
           type="container"
         />
-        <AtlassianContainerResult
+        <ContainerResult
           {...noOpInteractionProps}
           isPrivate
           name="Private container"
         />
-        <AtlassianContainerResult {...noOpInteractionProps} key="3" name="Minimum detail container" />
+        <ContainerResult {...noOpInteractionProps} key="3" name="Minimum detail container" />
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="Confluence space example" key="Confluence space example">
         <ConfluenceSpaceResult
@@ -136,20 +136,20 @@ storiesOf(`${name}/QuickSearch`, module)
       however, instead of a free subText field, they display the name of their containing
       entity.  They can optionally display an object key.
       <AkNavigationItemGroup title="Object examples" key="Object examples">
-        <AtlassianObjectResult
+        <ObjectResult
           {...noOpInteractionProps}
           avatarUrl={sampleAvatars.jiraIssueBug}
           name="Too much awesomeness in one repo"
           objectKey="AK-9001"
           containerName="AtlasKit"
         />
-        <AtlassianObjectResult
+        <ObjectResult
           {...noOpInteractionProps}
           avatarUrl={sampleAvatars.confluenceBlog}
           name="Yeah, I cut my dev loop in half, but you'll never guess what happened next!"
           containerName="Buzzfluence"
         />
-        <AtlassianObjectResult
+        <ObjectResult
           {...noOpInteractionProps}
           avatarUrl={sampleAvatars.confluencePage}
           name="Prank schedule: April 2017"

@@ -5,8 +5,7 @@ const DrawerMain = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: ${layout.padding.top}px 0;
+  padding: ${layout.padding.top}px 0 0;
   overflow-y: auto;
   width: 100%;
 `;

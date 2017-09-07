@@ -79,7 +79,7 @@ storiesOf(`${name}`, module)
       <AkProfilecard isLoading />
     </div>
   ))
-  .add('error state', () => (
+  .add('error state default', () => (
     <div style={canvasStyle}>
       <AkProfilecard
         hasError
@@ -90,6 +90,16 @@ storiesOf(`${name}`, module)
   .add('error state without reload option', () => (
     <div style={canvasStyle}>
       <AkProfilecard hasError />
+    </div>
+  ))
+  .add('error state "NotFound"', () => (
+    <div style={canvasStyle}>
+      <AkProfilecard
+        hasError
+        errorType={{
+          reason: 'NotFound',
+        }}
+      />
     </div>
   ))
   .add('worst case card', () => {

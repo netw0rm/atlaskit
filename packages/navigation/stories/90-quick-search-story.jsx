@@ -8,7 +8,8 @@ import BasicQuickSearch from './components/BasicQuickSearch';
 import { AkNavigationItemGroup, quickSearchResultTypes } from '../src';
 import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
-import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
+import QuickSearchWithCustomResults from './examples/quicksearch/SupplyingCustomResultsToApi';
+import { ConfluenceSpaceResult, JiraProjectResult, RoomResult } from './examples/quicksearch/ExtendingResultTypes';
 
 const noOpInteractionProps = {
   isSelected: false,
@@ -19,13 +20,10 @@ const noOpInteractionProps = {
 };
 
 const {
-  ConfluenceSpaceResult,
-  JiraProjectResult,
   ContainerResult,
   ObjectResult,
   PersonResult,
   ResultBase,
-  RoomResult,
 } = quickSearchResultTypes;
 
 import sampleAvatars from './examples/90-sample-avatars';
@@ -53,7 +51,7 @@ storiesOf(`${name}/QuickSearch`, module)
     />
   ))
   .add('Example with custom result types', () => withRootTheme(
-    CustomQuickSearchResults
+    QuickSearchWithCustomResults
   ))
   .add('Example results', () => withRootTheme(
     <div style={{ padding: '32px', maxWidth: '640px', textAlign: 'justify' }}>

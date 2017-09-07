@@ -72,10 +72,8 @@ export default class ResultBase extends PureComponent {
       isCompact,
       isSelected,
       onMouseLeave,
-      resultId,
       subText,
       text,
-      type,
     } = this.props;
     return (
       <AkNavigationItem
@@ -87,11 +85,9 @@ export default class ResultBase extends PureComponent {
         onClick={this.handleClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={onMouseLeave}
-        resultId={resultId}
         subText={subText}
         text={text}
         textAfter={elemAfter}
-        type={type}
       />
     );
   }

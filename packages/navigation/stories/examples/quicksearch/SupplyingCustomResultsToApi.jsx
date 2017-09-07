@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import AkAvatar from '@atlaskit/avatar';
-import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../src';
+import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../../src';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
 const { ResultBase } = quickSearchResultTypes;

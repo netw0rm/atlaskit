@@ -123,7 +123,7 @@ export class ImageNavigator extends Component<Props, State> {
       x: CONTAINER_SIZE / 2 - newCenterPixel.x,
       y: CONTAINER_SIZE / 2 - newCenterPixel.y,
     };
-    const haveRenderedImage = this.state.imageWidth;
+    const haveRenderedImage = !!this.state.imageWidth;
     if (haveRenderedImage) {
       // adjust cropping properties by scale value
       const x = Math.abs(imagePos.x) / newScale;

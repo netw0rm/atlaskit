@@ -143,10 +143,7 @@ export default class EmojiRepository {
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
-    this.usageTracker = new UsageFrequencyTracker();
-
-    this.initRepositoryMetadata();
-    this.initSearchIndex();
+    this.initMembers();
   }
 
   /**
@@ -275,14 +272,10 @@ export default class EmojiRepository {
   delete(emoji: EmojiDescription) {
     const deletedIndex = findEmojiIndex(this.emojis, emoji);
     if (deletedIndex !== -1) {
+      // Remove the deleted emojis from the internal list
       this.emojis.splice(deletedIndex, 1);
-      this.shortNameMap.delete(emoji.shortName);
-      this.idMap.delete(emoji.id);
-      if (emoji.ascii) {
-        emoji.ascii.forEach(a => this.asciiMap.delete(a));
-      }
-      // Search index must be reinitialised since there is no deleteDocuments
-      this.initSearchIndex();
+      // Reconstruct repository member variables
+      this.initMembers();
     }
   }
 
@@ -330,6 +323,12 @@ export default class EmojiRepository {
     }
 
     return emojis;
+  }
+
+  private initMembers(): void {
+    this.usageTracker = new UsageFrequencyTracker();
+    this.initRepositoryMetadata();
+    this.initSearchIndex();
   }
 
   /**

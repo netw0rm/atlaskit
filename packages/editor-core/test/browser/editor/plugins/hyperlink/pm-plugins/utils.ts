@@ -5,7 +5,7 @@ import { expect } from 'chai'; import {
 import defaultSchema from '../../../../../../src/test-helper/schema';
 import { setTextSelection } from '../../../../../../src/utils';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../../../src/editor/plugins/hyperlink/pm-plugins';
-import { getDomElement } from '../../../../../../src/editor/plugins/hyperlink/pm-plugins/utils';
+import { getDomElement, normalizeUrl, getLinkMatch } from '../../../../../../src/editor/plugins/hyperlink/pm-plugins/utils';
 
 chai.use(chaiPlugin);
 

@@ -64,7 +64,7 @@ export function getHorizontalPlacement(target: HTMLElement, boundariesElement: H
   }
 
   if (isTextNode(target)) {
-    target = target.parentElement!;
+    target = target.parentElement! || target.parentNode;
   }
 
   const { left: targetLeft, width: targetWidth } = target.getBoundingClientRect();

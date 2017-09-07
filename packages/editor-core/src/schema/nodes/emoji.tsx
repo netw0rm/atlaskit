@@ -5,11 +5,13 @@ import { Node, NodeSpec } from '../../prosemirror';
  */
 export interface Definition {
   type: 'emoji';
-  attrs: {
-    id?: string; // Optional to support legacy formats
-    shortName: string;
-    fallback?: string;
-  };
+  attrs: Attributes;
+}
+
+export interface Attributes {
+  id?: string; // Optional to support legacy formats
+  shortName: string;
+  text?: string;
 }
 
 export const emoji: NodeSpec = {

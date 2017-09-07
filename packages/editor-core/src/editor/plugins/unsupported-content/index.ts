@@ -1,4 +1,4 @@
-import { Plugin, PluginKey } from '../../../prosemirror';
+import { EditorState, Plugin, PluginKey } from '../../../prosemirror';
 import { EditorPlugin } from '../../types';
 import { confluenceUnsupportedInline } from '../../../schema/nodes/confluence-unsupported-inline';
 import { confluenceUnsupportedBlock } from '../../../schema/nodes/confluence-unsupported-block';
@@ -7,18 +7,29 @@ import {
   ReactUnsupportedBlockNode,
   ReactUnsupportedInlineNode
 } from '../../../nodeviews';
+import { traverseNode } from './utils';
 
 export const pluginKey = new PluginKey('unsupportedContentPlugin');
 
-export const unsupportedContent = new Plugin({
-  key: pluginKey,
-  props: {
-    nodeViews: {
-      confluenceUnsupportedBlock: nodeViewFactory(this.providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
-      confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode })
+const createPlugin = (schema) => {
+  return new Plugin({
+    state: {
+      init(config, state: EditorState<any>) {
+        traverseNode(state.doc, schema);
+      },
+      apply(tr, pluginState, oldState, newState) {
+        return pluginState;
+      }
+    },
+    key: pluginKey,
+    props: {
+      nodeViews: {
+        confluenceUnsupportedBlock: nodeViewFactory(this.providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
+        confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode })
+      }
     }
-  }
-});
+  });
+};
 
 const unsupportedContentPlugin: EditorPlugin = {
   nodes() {
@@ -30,7 +41,7 @@ const unsupportedContentPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 1320, plugin: () => unsupportedContent }
+      { rank: 1320, plugin: (schema) => createPlugin(schema) }
     ];
   }
 };

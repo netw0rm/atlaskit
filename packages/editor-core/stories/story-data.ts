@@ -320,6 +320,16 @@ export const document = {
             }
           ]
         },
+        {
+          type: 'text',
+          text: ' red text',
+          marks: [
+            {
+              type: 'textColor',
+              attrs: { color: '#ff0000' }
+            },
+          ],
+        },
       ]
     },
     {

@@ -87,6 +87,8 @@ export const getValidContent = (content: Node[], schema: Schema<NodeSpec, MarkSp
   return content.map(node => getValidNode(node, schema));
 };
 
+const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+
 const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
   const output: Node[] = [];
   let isPrevLeafNode = false;
@@ -587,6 +589,16 @@ export const getValidMark = (mark: Mark): Mark | null => {
             };
           }
         }
+        break;
+      }
+      case 'textColor': {
+        if (attrs && TEXT_COLOR_PATTERN.test(attrs.color)) {
+          return {
+            type,
+            attrs,
+          };
+        }
+
         break;
       }
       case 'underline': {

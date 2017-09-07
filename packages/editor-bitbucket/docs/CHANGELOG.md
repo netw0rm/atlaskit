@@ -1,5 +1,8 @@
 # @atlaskit/editor-bitbucket
 
+## 3.4.1 (2017-09-05)
+
+* bug fix; added missing help dialog (issues closed: ed-2656) ([5de1771](https://bitbucket.org/atlassian/atlaskit/commits/5de1771))
 ## 3.4.0 (2017-08-31)
 
 * feature; enabling table plugin in editor bitbucket ([fe59624](https://bitbucket.org/atlassian/atlaskit/commits/fe59624))

@@ -44,7 +44,7 @@
   "devDependencies": {
     "@atlaskit/profilecard": "*",
     "@atlaskit/util-common-test": "*",
-    "@atlaskit/util-data-test": "^7.1.0",
+    "@atlaskit/util-data-test": "*",
     "@atlaskit/util-readme": "^1.0.3",
     "fetch-mock": "^5.9.4",
     "loader-utils": "^0.2.16",

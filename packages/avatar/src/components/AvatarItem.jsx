@@ -4,8 +4,7 @@ import React, { cloneElement, Component } from 'react';
 import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
 import {
-  activeBackgroundColor,
-  hoverBackgroundColor,
+  getBackgroundColor,
   getStyles,
   Content,
   PrimaryText,
@@ -20,17 +19,6 @@ import type {
   FunctionType,
   StyledComponentType,
 } from '../types';
-
-function getBorderColor(props) {
-  const { href, isActive, isHover, isSelected, onClick } = props;
-  const isInteractive = href || onClick;
-  let borderColor: string;
-
-  if (isInteractive && (isHover || isSelected)) borderColor = hoverBackgroundColor(props);
-  if (isInteractive && isActive) borderColor = activeBackgroundColor(props);
-
-  return borderColor;
-}
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -113,7 +101,7 @@ class AvatarItem extends Component {
     const { avatar, enableTextTruncate, onClick, primaryText, secondaryText } = this.props;
 
     // maintain the illusion of a mask around presence/status
-    const borderColor = getBorderColor(this.props);
+    const borderColor = getBackgroundColor(this.props);
 
     // distill props from context, props, and state
     const props = getProps(this);

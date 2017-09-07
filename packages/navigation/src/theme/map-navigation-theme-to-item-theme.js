@@ -23,7 +23,7 @@ const itemThemeFromNavTheme = (
     default: gridSize * 5,
   },
   beforeItemSpacing: {
-    compact: gridSize * 2,
+    compact: gridSize,
     default: gridSize * 2,
   },
   default: {

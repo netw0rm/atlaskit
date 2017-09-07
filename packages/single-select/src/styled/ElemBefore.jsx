@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 const ElemBefore = styled.div`
   display: flex;
-  padding-right: ${akGridSizeUnitless}px;
+  padding-right: ${gridSize}px;
 `;
 
 ElemBefore.displayName = 'TriggerElemBefore';

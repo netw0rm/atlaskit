@@ -195,6 +195,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       let left = 0;
       childOffsets = children.map((child, index) => {
         const width = child.getBoundingClientRect().width;
+
         const offset = {
           left,
           right: left + width - 1

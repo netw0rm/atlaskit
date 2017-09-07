@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BORDER_WIDTH, ICON_OFFSET, ICON_SIZES } from './constants';
+import { BORDER_WIDTH, ICON_OFFSET, SQUARE_ICON_OFFSET, ICON_SIZES } from './constants';
 import { getAvatarDimensions, getInnerStyles } from './utils';
 
 // =================================
@@ -41,7 +41,7 @@ export const PresenceWrapper = styled.span`
 // STATUS WRAPPER
 const getStatusLayout = ({ appearance, size }) => {
   const statusPosition = appearance === 'square'
-    ? -(BORDER_WIDTH[size] * 2)
+    ? SQUARE_ICON_OFFSET[size]
     : ICON_OFFSET[size];
   const statusSize = ICON_SIZES[size];
 

@@ -1,5 +1,30 @@
 # @atlaskit/editor-core
 
+## 46.17.1 (2017-09-07)
+
+* bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))
+* bug fix; make TS happy ([e8b27c3](https://bitbucket.org/atlassian/atlaskit/commits/e8b27c3))
+* bug fix; render placeholder Card instead of null in MediaComponent ([1b73785](https://bitbucket.org/atlassian/atlaskit/commits/1b73785))
+## 46.17.0 (2017-09-06)
+
+
+* bug fix; fix typescript errors ([b5c597a](https://bitbucket.org/atlassian/atlaskit/commits/b5c597a))
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
+## 46.16.0 (2017-09-06)
+
+* feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))
+* bug fix; fix filmstrip arrow problem in renderer when not using code splitting (issues closed: ed-2667) ([c9cb09d](https://bitbucket.org/atlassian/atlaskit/commits/c9cb09d))
+## 46.15.0 (2017-09-06)
+
+* bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))
+* feature; colour text support in renderer (issues closed: ed-2657) ([d1608c9](https://bitbucket.org/atlassian/atlaskit/commits/d1608c9))
+## 46.14.1 (2017-09-05)
+
+* bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))
+
+* bug fix; tolerate empty actions/decisions, just don't render them. (issues closed: fs-1266) ([29a82db](https://bitbucket.org/atlassian/atlaskit/commits/29a82db))
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: ed-2447 / fs-1265 / fs-1329) ([9f77faa](https://bitbucket.org/atlassian/atlaskit/commits/9f77faa))
+* bug fix; disabling hyperlink keymap Cmd-K for message editor. (issues closed: #ed-2567) ([ddf7769](https://bitbucket.org/atlassian/atlaskit/commits/ddf7769))
 ## 46.14.0 (2017-09-05)
 
 * feature; add showSpinner prop to Editor ([ac14e79](https://bitbucket.org/atlassian/atlaskit/commits/ac14e79))

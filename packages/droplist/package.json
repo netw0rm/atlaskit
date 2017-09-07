@@ -34,7 +34,7 @@
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/avatar": "^8.0.1",
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/droplist": "*",
     "@atlaskit/lozenge": "^3.4.2",

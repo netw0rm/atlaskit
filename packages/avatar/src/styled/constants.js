@@ -47,9 +47,9 @@ export const BORDER_WIDTH: {
   xsmall: 2,
   small: 2,
   medium: 2,
-  large: 3,
-  xlarge: 3,
-  xxlarge: 3,
+  large: 2,
+  xlarge: 2,
+  xxlarge: 2,
 };
 
 // NOTE: sizes xsmall & xxlarge DO NOT support
@@ -75,8 +75,8 @@ export const ICON_SIZES: {
   large: number,
   xlarge: number,
 } = {
-  small: 10,
-  medium: 12,
+  small: 12,
+  medium: 14,
   large: 15,
   xlarge: 18,
 };
@@ -91,4 +91,16 @@ export const ICON_OFFSET: {
   medium: 0,
   large: 1,
   xlarge: 7,
+};
+
+export const SQUARE_ICON_OFFSET: {
+  small: number,
+  medium: number,
+  large: number,
+  xlarge: number,
+} = {
+  small: 0,
+  medium: 0,
+  large: 0,
+  xlarge: 1,
 };

@@ -22,7 +22,7 @@ export interface EmojiResourceConfig {
   providers: ServiceConfig[];
 
   /**
-   * Must be set to true to enable upload support in the mention components.
+   * Must be set to true to enable upload support in the emoji components.
    *
    * Can be used for the restriction of the upload UI based on permissions, or feature flags.
    *
@@ -330,7 +330,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       return true;
     }
     if (!this.siteEmojiResource) {
-      // Shouldn't have a media emoji without a mediaEmojiResouce, but anyway ;)
+      // Shouldn't have a media emoji without a siteEmojiResouce, but anyway ;)
       return false;
     }
     const optimistic = this.siteEmojiResource.optimisticRendering(emoji);
@@ -508,7 +508,7 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
       return Promise.resolve(false);
     }
     if (this.siteEmojiResource) {
-      return Promise.resolve(true);
+      return this.siteEmojiResource.hasUploadToken();
     }
     return this.retryIfLoading(() => this.isUploadSupported(), false);
   }

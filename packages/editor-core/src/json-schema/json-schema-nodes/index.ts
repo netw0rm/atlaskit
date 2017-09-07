@@ -10,15 +10,15 @@ export { default as EmptySchemaNode } from './empty-schema-node';
 export { default as AnyOfSchemaNode } from './any-of-schema-node';
 export { default as AllOfSchemaNode } from './all-of-schema-node';
 
-type JSONSchemVersion = 'draft-04';
+type JSONSchemaVersion = 'draft-04';
 
 export default class JSONSchemaNode {
-  version: JSONSchemVersion;
+  version: JSONSchemaVersion;
   description: string;
   root: string;
   definitions: Map<string, SchemaNode> = new Map();
 
-  constructor(version: JSONSchemVersion, description: string, root: string) {
+  constructor(version: JSONSchemaVersion, description: string, root: string) {
     this.version = version;
     this.description = description;
     this.root = root;

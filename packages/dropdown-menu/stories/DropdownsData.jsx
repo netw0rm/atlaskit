@@ -21,6 +21,7 @@ export const simpleDropdownItems = (
     <DropdownItem onClick={clickAction}>Some text 2</DropdownItem>
     <DropdownItem onClick={clickAction} isDisabled>Some disabled text</DropdownItem>
     <DropdownItem onClick={clickAction}>Some more text</DropdownItem>
+    <DropdownItem href="//atlassian.com" target="_new">A link item</DropdownItem>
   </DropdownItemGroup>
 );
 

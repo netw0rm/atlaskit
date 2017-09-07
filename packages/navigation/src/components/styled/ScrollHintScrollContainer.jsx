@@ -1,9 +1,15 @@
 // @flow
 import styled from 'styled-components';
-import { drawerContainerHeaderAnimationSpeed, scrollbar } from '../../shared-variables';
-import { getProvided } from '../../theme/util';
+import {
+  gridSize,
+  drawerContainerHeaderAnimationSpeed,
+  scrollbar,
+  scrollHintSpacing,
+  scrollHintHeight,
+} from '../../shared-variables';
+import { whenCollapsed, whenNotCollapsed, getProvided } from '../../theme/util';
 
-const keylineHeight = '2px';
+const bottomPadding = gridSize;
 
 const ScrollHintScrollContainer = styled.div`
   box-sizing: border-box;
@@ -14,34 +20,48 @@ const ScrollHintScrollContainer = styled.div`
   justify-content: flex-start;
   overflow-y: ${props => (props.isCollapsed ? 'hidden' : 'auto')};
   transition: padding ${drawerContainerHeaderAnimationSpeed};
+  padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
 
-  &:before,
-  &:after {
-    background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};
-    content: '';
-    display: block;
-    min-height: ${keylineHeight};
-    width: 100%;
-    z-index: 5;
-    position: relative;
-  }
+  ${whenCollapsed`
+    padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;
+  `}
 
-  /* The following styles are to style scrollbars when there is long/wide content*/
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-  &::-webkit-scrollbar {
-    height: ${scrollbar.size}px;
-    width: ${scrollbar.size}px;
-  }
-  &::-webkit-scrollbar-corner {
-    display: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${scrollbar.background};
-    border-radius: ${scrollbar.size}px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: ${scrollbar.hoverBackground};
-  }
+  ${whenNotCollapsed`
+    &:before,
+    &:after {
+      background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};
+      content: '';
+      display: block;
+      flex: 0;
+      min-height: ${scrollHintHeight}px;
+      position: relative;
+      z-index: 5;
+    }
+
+    &:after {
+      top: ${bottomPadding}px;
+    }
+
+    /* The following styles are to style scrollbars when there is long/wide content */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    &::-webkit-scrollbar {
+      height: ${scrollbar.size}px;
+      width: ${scrollbar.size}px;
+    }
+    &::-webkit-scrollbar-corner {
+      display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: ${scrollbar.background};
+      border-radius: ${scrollbar.size}px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: ${scrollbar.hoverBackground};
+    }
+  `}
 `;
 ScrollHintScrollContainer.displayName = 'ScrollHintScrollContainer';
 export default ScrollHintScrollContainer;

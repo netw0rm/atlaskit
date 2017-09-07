@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 import {
+  MediaItemType,
   ContextConfig,
   ContextFactory,
   Context,
@@ -162,7 +163,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private renderLoadingCard(url?: string, mediaItemType: string = 'link') {
+  private renderLoadingCard(url?: string, mediaItemType: MediaItemType = 'link') {
     const { CardView } = this.state;
     const { cardDimensions } = this.props;
 
@@ -177,19 +178,22 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       );
     }
 
+    if (mediaItemType === 'link') {
+      return <LinkPlaceholder dimensions={cardDimensions} />;
+    } else if (mediaItemType === 'file') {
+      return <FilePlaceholder dimensions={cardDimensions} />;
+    }
+
     return null;
   }
 
   private renderLink() {
-    const { mediaProvider, linkCreateContext, Card, CardView } = this.state;
+    const { mediaProvider, linkCreateContext, Card } = this.state;
     const { id, collection, cardDimensions, onDelete, appearance, ...otherProps } = this.props;
+    const hasProviders = mediaProvider && linkCreateContext;
 
-    if (!mediaProvider || !linkCreateContext) {
+    if (!hasProviders || !Card) {
       return this.renderLoadingCard();
-    }
-
-    if (!Card || !CardView) {
-      return <LinkPlaceholder dimensions={cardDimensions} />;
     }
 
     const identifier: MediaIdentifier = {

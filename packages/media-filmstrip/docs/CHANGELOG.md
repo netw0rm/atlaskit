@@ -1,5 +1,10 @@
 # @atlaskit/media-filmstrip
 
+## 5.2.3 (2017-09-07)
+
+* bug fix; renderLinkCardChildren.tsx hipster mode on ([6852141](https://bitbucket.org/atlassian/atlaskit/commits/6852141))
+* bug fix; added story which shows filmstrip with only link cards ([27f24e6](https://bitbucket.org/atlassian/atlaskit/commits/27f24e6))
+
 ## 5.2.2 (2017-08-28)
 
 * bug fix; move widths into state so they trigger a re-render inside a PureComponent ([95a7928](https://bitbucket.org/atlassian/atlaskit/commits/95a7928))

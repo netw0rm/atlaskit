@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 46.17.1 (2017-09-07)
+
+* bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))
+* bug fix; make TS happy ([e8b27c3](https://bitbucket.org/atlassian/atlaskit/commits/e8b27c3))
+* bug fix; render placeholder Card instead of null in MediaComponent ([1b73785](https://bitbucket.org/atlassian/atlaskit/commits/1b73785))
 ## 46.17.0 (2017-09-06)
 
 

@@ -285,7 +285,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         options.sort = SearchSort.None;
       }
 
-      this.props.emojiProvider.getFrequentlyUsed().then(this.onFrequentEmojiResult);
+      this.props.emojiProvider.getFrequentlyUsed(options).then(this.onFrequentEmojiResult);
     }
 
     this.props.emojiProvider.filter(query, options);

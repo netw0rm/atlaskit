@@ -222,13 +222,21 @@ export default class EmojiRepository {
   /**
    * Return the most frequently used emoji, ordered from most frequent to least frequent. Return an empty array if
    * there are none.
+   *
+   * @param options optional settings to be applied to the set of frequently used emoji
    */
-  getFrequentlyUsed(): EmojiDescription[] {
+  getFrequentlyUsed(options?: SearchOptions): EmojiDescription[] {
     const emojiIds = this.usageTracker.getOrder();
 
-    return emojiIds
+    let emojiResult = emojiIds
       .map(id => this.findById(id))
       .filter(e => e !== undefined) as EmojiDescription[];
+
+    if (options) {
+      emojiResult = this.applySearchOptions(emojiResult, '', options);
+    }
+
+    return emojiResult;
   }
 
   getDynamicCategoryList(includeCustom?: boolean): string[] {

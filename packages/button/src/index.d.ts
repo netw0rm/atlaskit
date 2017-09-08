@@ -22,4 +22,10 @@ interface Props {
   id?: string;
 }
 
+interface ButtonGroupProps {
+  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger';
+  children?: ReactElement<any>;
+}
+
+export class ButtonGroup extends Component<ButtonGroupProps, {}> { }
 export default class extends Component<Props, {}> {}

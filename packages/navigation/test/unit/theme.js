@@ -127,6 +127,10 @@ describe('theme', () => {
         expect(generatedTheme.text).toBe(textColor);
       });
 
+      it('text color for selected items', () => {
+        expect(generatedTheme.item.selected.text).toBe(textColor);
+      });
+
       it('subText color', () => {
         expect(generatedTheme.subText).toBe(chromatism.brightness(20, textColor).hex);
       });

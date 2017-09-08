@@ -4,12 +4,14 @@ import * as sinon from 'sinon';
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import MediaEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress } from '../../../../src/api/media/MediaEmojiResource';
+import SiteEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress } from '../../../../src/api/media/SiteEmojiResource';
 import TokenManager from '../../../../src/api/media/TokenManager';
-import { EmojiServiceResponse, EmojiUpload } from '../../../../src/types';
+import { EmojiDescription, EmojiServiceResponse, EmojiUpload } from '../../../../src/types';
+import { toEmojiId } from '../../../../src/type-helpers';
 import { MediaUploadStatusUpdate, MediaUploadEnd, MediaUploadError } from '../../../../src/api/media/media-types';
 
 import {
+    atlassianServiceEmojis,
     defaultMediaApiToken,
     fetchSiteEmojiUrl,
     missingMediaEmoji,
@@ -55,7 +57,7 @@ class MockMediaPicker {
   }
 }
 
-class TestMediaEmojiResource extends MediaEmojiResource {
+class TestSiteEmojiResource extends SiteEmojiResource {
   private mockMediaPicker?: MockMediaPicker;
 
   constructor(tokenManager: TokenManager, mockMediaPicker?: MockMediaPicker) {
@@ -69,7 +71,7 @@ class TestMediaEmojiResource extends MediaEmojiResource {
   }
 }
 
-describe('MediaEmojiResource', () => {
+describe('SiteEmojiResource', () => {
 
   afterEach(() => {
     fetchMock.restore();
@@ -123,7 +125,7 @@ describe('MediaEmojiResource', () => {
     it('successful upload', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       fetchMock.post({
         matcher: siteServiceConfig.url,
@@ -135,7 +137,7 @@ describe('MediaEmojiResource', () => {
 
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
-      const uploadPromise = mediaEmojiResource.uploadEmoji(upload).then(emoji => {
+      const uploadPromise = siteEmojiResource.uploadEmoji(upload).then(emoji => {
         expect(emoji).to.deep.equal({
           ...serviceResponse.emojis[0],
           representation: {
@@ -178,7 +180,7 @@ describe('MediaEmojiResource', () => {
     it('upload error to media', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       fetchMock.post({
         matcher: siteServiceConfig.url,
@@ -190,7 +192,7 @@ describe('MediaEmojiResource', () => {
 
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
-      const uploadPromise = mediaEmojiResource.uploadEmoji(upload).catch(error => {
+      const uploadPromise = siteEmojiResource.uploadEmoji(upload).catch(error => {
         const mediaUploads = mockMediaPicker.getUploads();
         expect(mediaUploads.length, '1 media upload').to.equal(1);
         expect(mediaUploads[0], 'upload params').to.deep.equal({
@@ -218,7 +220,7 @@ describe('MediaEmojiResource', () => {
     it('upload error to emoji service', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       fetchMock.post({
         matcher: siteServiceConfig.url,
@@ -228,7 +230,7 @@ describe('MediaEmojiResource', () => {
 
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
-      const uploadPromise = mediaEmojiResource.uploadEmoji(upload).catch(error => {
+      const uploadPromise = siteEmojiResource.uploadEmoji(upload).catch(error => {
         const mediaUploads = mockMediaPicker.getUploads();
         expect(mediaUploads.length, '1 media upload').to.equal(1);
         expect(mediaUploads[0], 'upload params').to.deep.equal({
@@ -265,7 +267,7 @@ describe('MediaEmojiResource', () => {
     it('media progress events', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
@@ -274,7 +276,7 @@ describe('MediaEmojiResource', () => {
         progress = progressUpdate;
       };
 
-      mediaEmojiResource.uploadEmoji(upload, progressCallback);
+      siteEmojiResource.uploadEmoji(upload, progressCallback);
 
       const portion = 0.5;
 
@@ -307,18 +309,36 @@ describe('MediaEmojiResource', () => {
     it('prepareForUpload initiates request for new token from server', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const getTokenStub = tokenManagerStub.getToken;
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub);
-      mediaEmojiResource.prepareForUpload();
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
+      siteEmojiResource.prepareForUpload();
       expect(getTokenStub.called, 'getToken called').to.equal(true);
     });
   });
 
+  describe('#deleteEmoji', () => {
+    it('Deleting an emoji calls the site emoji service', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub);
 
-  describe('#findSiteEmoji', () => {
+      fetchMock.delete({
+        matcher: `${siteServiceConfig.url}/${missingMediaEmoji.id}`,
+        response: '200',
+        name: 'delete-site-emoji',
+      });
+
+      return siteEmojiResource.deleteEmoji(missingMediaEmoji).then(response => {
+        expect(response, 'Response OK').to.equal(true);
+        const deleteEmojiCalls = fetchMock.calls('delete-site-emoji');
+        expect(deleteEmojiCalls.length, 'Delete site emoji from emoji service called').to.equal(1);
+      });
+    });
+  });
+
+  describe('#findEmoji', () => {
     it('Emoji found', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       const serviceResponse: EmojiServiceResponse = {
         emojis: [ missingMediaServiceEmoji ],
@@ -335,7 +355,7 @@ describe('MediaEmojiResource', () => {
         name: 'fetch-site-emoji'
       });
 
-      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+      return siteEmojiResource.findEmoji(missingMediaEmojiId).then(emoji => {
         expect(emoji, 'Emoji defined').to.not.equal(undefined);
         expect(emoji).to.deep.equal(missingMediaEmoji);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
@@ -346,7 +366,7 @@ describe('MediaEmojiResource', () => {
     it('Emoji not found', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       const serviceResponse: EmojiServiceResponse = {
         emojis: [],
@@ -363,7 +383,36 @@ describe('MediaEmojiResource', () => {
         name: 'fetch-site-emoji'
       });
 
-      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+      return siteEmojiResource.findEmoji(missingMediaEmojiId).then(emoji => {
+        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+      });
+    });
+
+    it('Only returns emojis of type site', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mockMediaPicker = new MockMediaPicker();
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
+      const atlassianEmoji = atlassianServiceEmojis.emojis[0];
+      const atlassianId = toEmojiId(atlassianEmoji as EmojiDescription);
+
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [ atlassianEmoji ],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.post({
+        matcher: fetchSiteEmojiUrl(atlassianId),
+        response: {
+          body: serviceResponse,
+        },
+        name: 'fetch-site-emoji'
+      });
+
+      return siteEmojiResource.findEmoji(atlassianId).then(emoji => {
         expect(emoji, 'Emoji undefined').to.equal(undefined);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
         expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
@@ -373,7 +422,7 @@ describe('MediaEmojiResource', () => {
     it('Request error', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
-      const mediaEmojiResource = new TestMediaEmojiResource(tokenManagerStub, mockMediaPicker);
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       fetchMock.post({
         matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
@@ -381,7 +430,7 @@ describe('MediaEmojiResource', () => {
         name: 'fetch-site-emoji'
       });
 
-      return mediaEmojiResource.findSiteEmoji(missingMediaEmojiId).then(emoji => {
+      return siteEmojiResource.findEmoji(missingMediaEmojiId).then(emoji => {
         expect(emoji, 'Emoji undefined').to.equal(undefined);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
         expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);

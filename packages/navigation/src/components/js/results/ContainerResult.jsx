@@ -32,7 +32,7 @@ export default class ContainerResult extends PureComponent {
     isPrivate: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
-    isSelected: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool,
     /** Name of the container. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
     /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
@@ -50,6 +50,7 @@ export default class ContainerResult extends PureComponent {
   }
 
   static defaultProps = {
+    isSelected: false,
     onClick: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},

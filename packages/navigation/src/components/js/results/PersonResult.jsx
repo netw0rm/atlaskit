@@ -27,7 +27,7 @@ export default class PersonResult extends PureComponent {
     isCompact: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
-    isSelected: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool,
     /** A user's custom handle. Appears to the right of their `name`. It has a lower
     font-weight. */
     mentionName: PropTypes.string,
@@ -52,6 +52,7 @@ export default class PersonResult extends PureComponent {
   }
 
   static defaultProps = {
+    isSelected: false,
     mentionPrefix: '@',
     onClick: () => {},
     onMouseEnter: () => {},

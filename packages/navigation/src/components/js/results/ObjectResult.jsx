@@ -34,7 +34,7 @@ export default class ObjectResult extends PureComponent {
     isPrivate: PropTypes.bool,
     /** Set whether the item should be highlighted as selected. Selected items have
     a different background color. */
-    isSelected: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool,
     /** Name of the object. Provides the main text to be displayed as the item. */
     name: PropTypes.string.isRequired,
     /** A key or identifier of the object. Ajoined to the `containerName` when provided. */
@@ -52,6 +52,7 @@ export default class ObjectResult extends PureComponent {
   }
 
   static defaultProps = {
+    isSelected: false,
     onClick: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},

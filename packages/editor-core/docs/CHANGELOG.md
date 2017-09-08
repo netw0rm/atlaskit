@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 46.17.2 (2017-09-08)
+
+* bug fix; remove ourdated fallback attr, use text instead ([bffe13b](https://bitbucket.org/atlassian/atlaskit/commits/bffe13b))
+* bug fix; special characters like brackets should be escaped in image attributes. (issues closed: #ed-1643) ([30d9d38](https://bitbucket.org/atlassian/atlaskit/commits/30d9d38))
+* bug fix; set DAC renderer maxHeight, which prevents double scroll (issues closed: ed-2530) ([721d231](https://bitbucket.org/atlassian/atlaskit/commits/721d231))
 ## 46.17.1 (2017-09-07)
 
 * bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))

@@ -2,7 +2,7 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote } from '../../../../src/test-helper';
-import { EditorView } from '../../../../src/prosemirror';
+import { EditorView, Node } from '../../../../src/prosemirror';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
 
@@ -65,7 +65,9 @@ describe(name, () => {
 
         const val = await editorActions.getValue();
         expect(val).to.not.equal(undefined);
-        expect(val!.toJSON()).to.deep.equal(result.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(result.toJSON());
+        }
       });
     });
 
@@ -80,33 +82,43 @@ describe(name, () => {
       it('should accept a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc);
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        }
       });
 
       it('should accept JSON version of a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc.toJSON());
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        }
       });
 
       it('should accept stringified JSON version of a prosemirror node', async () => {
         editorActions.replaceDocument(JSON.stringify(newDoc.toJSON()));
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        }
       });
 
       it('should accept atlassian document format', async () => {
         const atlassianDoc = serializer.serializeFragment(newDoc.content);
         editorActions.replaceDocument(atlassianDoc);
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        }
       });
 
       it('should accept atlassian document format from a string', async () => {
         const atlassianDoc = serializer.serializeFragment(newDoc.content);
         editorActions.replaceDocument(JSON.stringify(atlassianDoc));
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+        }
       });
     });
 
@@ -117,7 +129,9 @@ describe(name, () => {
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+        }
       });
 
       it('should append text to a complex document', async () => {
@@ -126,7 +140,9 @@ describe(name, () => {
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
-        expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+        if (val instanceof Node) {
+          expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+        }
       });
 
       it(`should return false if the last node of a document isn't a paragraph`, async () => {

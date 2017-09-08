@@ -12,7 +12,6 @@ export default class extends PureComponent {
         appearance="subtle"
         spacing="none"
         tabIndex={-1}
-        theme="dark"
       >
         {this.props.children}
       </Button>

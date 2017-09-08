@@ -13,6 +13,7 @@ import {
  */
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
+const PROGRESS_COMPLETE_DELAY = 20000;
 
 // Used to caculate progress from time non-linearly
 const easeOutFn = bezier(0.075, 0.82, 0.165, 1.0, 1000);
@@ -121,7 +122,7 @@ export default {
           status === ACTIVE ? 1 : easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
 
         if (progress === 1) {
-          this.stop();
+          setTimeout(() => this.stop(), PROGRESS_COMPLETE_DELAY);
         } else {
           interval = setTimeout(poll, pollingInterval);
         }

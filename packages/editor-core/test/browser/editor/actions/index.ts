@@ -1,7 +1,7 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
-import { doc, p } from '../../../../src/test-helper';
+import { doc, p, blockquote } from '../../../../src/test-helper';
 import { EditorView } from '../../../../src/prosemirror';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
@@ -107,6 +107,32 @@ describe(name, () => {
         editorActions.replaceDocument(JSON.stringify(atlassianDoc));
         const val = await editorActions.getValue();
         expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
+      });
+    });
+
+    describe('#appendText', () => {
+      it('should append text to a document', async () => {
+        const newDoc = doc(p('some text'));
+        const expected = doc(p('some text appended'));
+        editorActions.replaceDocument(newDoc);
+        editorActions.appendText(' appended');
+        const val = await editorActions.getValue();
+        expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+      });
+
+      it('should append text to a complex document', async () => {
+        const newDoc = doc(p('some text'), blockquote('some quote'), p(''));
+        const expected = doc(p('some text'), blockquote('some quote'), p(' appended'));
+        editorActions.replaceDocument(newDoc);
+        editorActions.appendText(' appended');
+        const val = await editorActions.getValue();
+        expect(val!.toJSON()).to.deep.equal(expected.toJSON());
+      });
+
+      it(`should return false if the last node of a document isn't a paragraph`, async () => {
+        const newDoc = doc(p('some text'), blockquote('some quote'));
+        editorActions.replaceDocument(newDoc);
+        expect(editorActions.appendText(' appended')).to.equal(false);
       });
     });
   });

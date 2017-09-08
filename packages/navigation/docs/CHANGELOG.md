@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 21.2.0 (2017-09-04)
+
+* feature; add optional top and bottom visual scroll hints for ContainerNavigation (issues closed: ak-3278) ([9333bbb](https://bitbucket.org/atlassian/atlaskit/commits/9333bbb))
 ## 21.1.0 (2017-09-01)
 
 * feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))

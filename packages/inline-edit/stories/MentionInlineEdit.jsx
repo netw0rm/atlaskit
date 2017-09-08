@@ -14,11 +14,14 @@ const keyCodes = {
 const avatarStyle = {
   paddingRight: 8,
   display: 'flex',
+  maxWidth: '100%',
 };
 
 const mentionWrapperStyle = {
   display: 'flex',
   alignItems: 'center',
+  flex: '1 0 auto',
+  maxWidth: '100%',
 };
 
 const mentionListWrapperStyle = {

@@ -1,28 +1,23 @@
 import styled, { css } from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
-export const activeBackgroundColor = themed({
+const activeBackgroundColor = themed({
   light: colors.B50,
   dark: colors.DN40,
 });
-export const hoverBackgroundColor = themed({
+const hoverBackgroundColor = themed({
   light: colors.N30,
   dark: colors.DN50,
 });
 const focusBorderColor = themed({
   light: colors.B200,
-  dark: colors.B100,
+  dark: colors.B75,
 });
 
-export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSelected, onClick }) {
+export function getBackgroundColor({ href, isActive, isHover, isSelected, onClick }) {
   const isInteractive = href || onClick;
 
-  let backgroundColor = 'transparent';
-  let borderColor = 'transparent';
-  let cursor = 'auto';
-  let opacity = 1;
-  let outline = 'none';
-  let pointerEvents = 'auto';
+  let backgroundColor = colors.background;
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
@@ -33,6 +28,18 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
   if (isInteractive && isActive) {
     backgroundColor = activeBackgroundColor;
   }
+
+  return backgroundColor;
+}
+
+export function getStyles({ href, isActive, isDisabled, isFocus, onClick }) {
+  const isInteractive = href || onClick;
+
+  let borderColor = 'transparent';
+  let cursor = 'auto';
+  let opacity = 1;
+  let outline = 'none';
+  let pointerEvents = 'auto';
 
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
@@ -53,7 +60,7 @@ export function getStyles({ href, isActive, isDisabled, isFocus, isHover, isSele
   }
   return css`
     align-items: center;
-    background-color: ${backgroundColor};
+    background-color: ${getBackgroundColor};
     border-radius: ${borderRadius}px;
     border: 2px solid ${borderColor};
     box-sizing: content-box;

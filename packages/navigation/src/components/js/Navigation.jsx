@@ -65,6 +65,12 @@ type Props = {|
   These should be icons or other small elements. There should be no more than four.
   Secondary Actions will not be visible when nav is collapsed. */
   globalSecondaryActions?: ReactElement[],
+  /** Whether to display a scroll hint shadow at the bottom of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintBottom?: boolean,
+  /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintTop?: boolean,
   /** Set whether collapse should be allowed. If false, the nav cannot be dragged
   to be smaller. */
   isCollapsible?: boolean,
@@ -248,6 +254,8 @@ export default class Navigation extends PureComponent {
       globalSearchIcon,
       globalSecondaryActions,
       globalTheme,
+      hasScrollHintBottom,
+      hasScrollHintTop,
       isCollapsible,
       isElectronMac,
       isOpen,
@@ -343,6 +351,8 @@ export default class Navigation extends PureComponent {
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}
                   globalSecondaryActions={globalSecondaryActions}
+                  hasScrollHintBottom={hasScrollHintBottom}
+                  hasScrollHintTop={hasScrollHintTop}
                   headerComponent={containerHeaderComponent}
                   linkComponent={linkComponent}
                   onGlobalCreateActivate={onCreateDrawerOpen}

@@ -28,14 +28,19 @@ const mentionsPlugin: EditorPlugin = {
   },
 
   contentComponent(editorView, eventDispatcher, providerFactory) {
-    const renderNode = (providers) =>{
-      return <MentionPicker editorView={editorView} pluginKey={pluginKey} mentionProvider={providers.mentionProvider} />;
+    const renderNode = (providers) => {
+      return <MentionPicker
+        editorView={editorView}
+        pluginKey={pluginKey}
+        mentionProvider={providers.mentionProvider}
+        presenceProvider={providers.presenceProvider}
+      />;
     };
 
     return (
       <WithProviders
         providerFactory={providerFactory}
-        providers={['mentionProvider']}
+        providers={['mentionProvider', 'presenceProvider']}
         renderNode={renderNode}
       />
     );

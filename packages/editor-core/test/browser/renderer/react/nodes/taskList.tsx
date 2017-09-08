@@ -9,4 +9,9 @@ describe('Renderer - React/Nodes/TaskList', () => {
     const taskList = shallow(<TaskList>This is a task list</TaskList>);
     expect(taskList.is(AkTaskList)).to.equal(true);
   });
+
+  it('should not render if no children', () => {
+    const taskList = shallow(<TaskList/>);
+    expect(taskList.isEmptyRender()).to.equal(true);
+  });
 });

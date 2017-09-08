@@ -1,5 +1,11 @@
 # @atlaskit/emoji
 
+## 27.0.5 (2017-09-05)
+
+* bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))
+## 27.0.4 (2017-09-01)
+
+* bug fix; changed prop type passed into LoadingEmojiComponent ([93cf9e3](https://bitbucket.org/atlassian/atlaskit/commits/93cf9e3))
 ## 27.0.3 (2017-09-01)
 
 * bug fix; fix size of placeholders in emoji picker. ([b5c5a02](https://bitbucket.org/atlassian/atlaskit/commits/b5c5a02))

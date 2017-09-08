@@ -1,5 +1,12 @@
 # @atlaskit/editor-hipchat
 
+## 5.3.1 (2017-09-05)
+
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: fs-1329 / fs-1265) ([1ec4bf4](https://bitbucket.org/atlassian/atlaskit/commits/1ec4bf4))
+## 5.3.0 (2017-09-01)
+
+* feature; updated core version to 46.12.0 ([c097ac7](https://bitbucket.org/atlassian/atlaskit/commits/c097ac7))
+
 ## 5.2.0 (2017-08-29)
 
 * feature; upgrade editor-core to minimum required version for emoji toolbar (issues closed: fs-1320) ([14e9661](https://bitbucket.org/atlassian/atlaskit/commits/14e9661))

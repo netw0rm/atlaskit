@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import TaskItem from './TaskItem';
-import { TaskDecisionProvider, TaskState } from '../types';
+import { Appearance, TaskDecisionProvider, TaskState } from '../types';
 
 export interface Props {
   taskId: string;
@@ -11,6 +11,7 @@ export interface Props {
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   objectAri: string;
   containerAri: string;
+  appearance?: Appearance;
 }
 
 export interface State {
@@ -18,6 +19,10 @@ export interface State {
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
+  public static defaultProps: Partial<Props> = {
+    appearance: 'flat'
+  };
+
   private mounted: boolean;
 
   constructor(props: Props) {
@@ -88,10 +93,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   render() {
     const { isDone } = this.state;
-    const { children, taskId } = this.props;
+    const { appearance, children, taskId } = this.props;
 
     return (
-      <TaskItem isDone={isDone} taskId={taskId} onChange={this.handleOnChange}>
+      <TaskItem isDone={isDone} taskId={taskId} onChange={this.handleOnChange} appearance={appearance} >
         {children}
       </TaskItem>
     );

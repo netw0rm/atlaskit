@@ -27,7 +27,7 @@ export const description = (
       set through props.
     </p>
     <Usage>
-      {"import Calendar, { AkCalendar } from '@atlaskit/calendar';"}
+      {"import Calendar, { CalendarStateless } from '@atlaskit/calendar';"}
     </Usage>
     <p>
       For the stateful version, be cautious that some functions such as

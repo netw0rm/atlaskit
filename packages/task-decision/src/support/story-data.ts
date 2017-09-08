@@ -27,10 +27,8 @@ export const document = {
   version: 1,
   type: 'doc',
   content:
-  [{
-    type: 'paragraph',
-    content:
-    [{
+  [
+    {
       type: 'text',
       text: 'Hello world'
     },
@@ -84,6 +82,6 @@ export const document = {
     {
       type: 'text',
       text: '. '
-    }]
-  }]
+    }
+  ]
 };

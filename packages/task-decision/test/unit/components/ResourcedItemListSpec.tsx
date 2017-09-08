@@ -107,7 +107,7 @@ describe('<ResourcedItemList/>', () => {
         const moreButton = component.find(Button);
         expect(moreButton.length).toBe(0);
 
-        const dateGroups = component.find('ol').find('li');
+        const dateGroups = component.find('ol').first().children('li');
         expect(dateGroups.length).toBe(3);
         // Group 1 - Today
         const dateGroup1 = dateGroups.at(0);

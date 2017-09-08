@@ -216,7 +216,7 @@ storiesOf(name, module)
                         mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
                         activityProvider={Promise.resolve(new MockActivityResource())}
                         // tslint:disable-next-line:jsx-no-lambda
-                        transformerProvider={(schema) => new ConfluenceTransformer(schema)}
+                        contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 
                         placeholder="Write something..."
                         shouldFocus={false}

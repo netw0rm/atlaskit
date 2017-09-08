@@ -44,7 +44,7 @@ export interface EditorProps {
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   waitForMediaUpload?: boolean;
-  transformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
+  contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 
   maxHeight?: number;
   maxContentSize?: number;

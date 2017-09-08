@@ -102,6 +102,8 @@ storiesOf(name, module)
           allowLists={true}
           allowTextColor={true}
           allowTables={true}
+          allowJiraIssue={true}
+          allowUnsupportedContent={true}
 
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}

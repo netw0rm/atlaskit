@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
 import {
   akBorderRadius,
@@ -31,7 +31,7 @@ const BlockNode = styled.div`
   }
 `;
 
-export default class UnsupportedBlockNode extends PureComponent<{}, {}> {
+export default class UnsupportedBlockNode extends Component<{}, {}> {
   render() {
     return (
       <BlockNode>Unsupported content</BlockNode>

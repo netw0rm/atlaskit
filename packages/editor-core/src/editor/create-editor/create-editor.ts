@@ -160,9 +160,9 @@ export default function createEditor(
   const dispatch = createDispatch(eventDispatcher);
   const schema = createSchema(editorConfig);
   const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
-  const transformer = transformerProvider ? transformerProvider(schema) : undefined;
-  const doc = (transformer && typeof defaultValue === 'string')
-    ? transformer.parse(defaultValue)
+  const contentTransformer = transformerProvider ? transformerProvider(schema) : undefined;
+  const doc = (contentTransformer && typeof defaultValue === 'string')
+    ? contentTransformer.parse(defaultValue)
     : processDefaultDocument(schema, defaultValue);
 
   const state = EditorState.create({ doc, schema, plugins });
@@ -181,6 +181,6 @@ export default function createEditor(
     contentComponents,
     primaryToolbarComponents,
     secondaryToolbarComponents,
-    transformer
+    contentTransformer
   };
 }

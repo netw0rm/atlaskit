@@ -5,7 +5,7 @@ import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
-import { ConfluenceTransformer } from '../../';
+import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
@@ -44,7 +44,7 @@ export interface EditorProps {
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   waitForMediaUpload?: boolean;
-  transformerProvider?: (schema: Schema<any, any>) => ConfluenceTransformer;
+  transformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 
   maxHeight?: number;
   maxContentSize?: number;

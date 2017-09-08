@@ -9,5 +9,5 @@ export interface EditorInstance {
   contentComponents: UIComponentFactory[];
   primaryToolbarComponents: UIComponentFactory[];
   secondaryToolbarComponents: UIComponentFactory[];
-  transformer?: Transformer<string>;
+  contentTransformer?: Transformer<string>;
 }

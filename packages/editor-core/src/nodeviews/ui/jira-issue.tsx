@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Node as PMNode } from '../../prosemirror';
 import { JiraLogo } from '@atlaskit/logo';
@@ -62,18 +61,16 @@ export interface Props {
   node: PMNode;
 }
 
-export default class JIRAIssueNode extends PureComponent<Props, {}> {
-  render() {
-    const { node } = this.props;
-    const { issueKey } = node.attrs;
+export default function JIRAIssueNode(props: Props) {
+  const { node } = this.props;
+  const { issueKey } = node.attrs;
 
-    return (
-      <WrapperNode>
-        <SvgChildNode>
-          <JiraLogo size="small" collapseTo="icon"/>
-        </SvgChildNode>
-        <JiraChildNode>{issueKey}</JiraChildNode>
-      </WrapperNode>
-    );
-  }
+  return (
+    <WrapperNode>
+      <SvgChildNode>
+        <JiraLogo size="small" collapseTo="icon"/>
+      </SvgChildNode>
+      <JiraChildNode>{issueKey}</JiraChildNode>
+    </WrapperNode>
+  );
 }

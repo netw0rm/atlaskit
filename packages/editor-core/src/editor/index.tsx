@@ -58,7 +58,7 @@ export default class Editor extends React.Component<EditorProps, State> {
 
   private registerEditorForActions(editor: EditorInstance) {
     if (this.context && this.context.editorActions) {
-      this.context.editorActions._privateRegisterEditor(editor.editorView, editor.transformer);
+      this.context.editorActions._privateRegisterEditor(editor.editorView, editor.contentTransformer);
     }
   }
 

@@ -3,7 +3,7 @@ import { getEditorValueWithMedia, insertFileFromDataUrl } from '../utils';
 import { Transformer } from '../../transformers';
 export default class EditorActions {
   private editorView?: EditorView;
-  private transformer?: Transformer<string>;
+  private contentTransformer?: Transformer<string>;
 
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
@@ -11,15 +11,13 @@ export default class EditorActions {
   }
 
   // This method needs to be public for EditorContext component.
-  _privateRegisterEditor(editorView: EditorView, transformer?: Transformer<string>): void {
+  _privateRegisterEditor(editorView: EditorView, contentTransformer?: Transformer<string>): void {
     if (!this.editorView && editorView) {
       this.editorView = editorView;
     } else if (this.editorView !== editorView) {
       throw new Error('Editor has already been registered! It\'s not allowed to re-register editor with the new Editor instance.');
     }
-    if (transformer) {
-      this.transformer = transformer;
-    }
+    this.contentTransformer = contentTransformer;
   }
 
   // This method needs to be public for EditorContext component.
@@ -63,8 +61,8 @@ export default class EditorActions {
 
   getValue(): Promise<string | Node | undefined> {
     return getEditorValueWithMedia(this.editorView && this.editorView.state).then(doc => {
-      if (this.transformer && doc) {
-        return this.transformer.encode(doc);
+      if (this.contentTransformer && doc) {
+        return this.contentTransformer.encode(doc);
       }
       return doc;
     });

@@ -51,6 +51,7 @@ import {
   ErrorReporter,
   ErrorReportingHandler,
 
+  browser,
 } from '@atlaskit/editor-core';
 import {
   EmojiProvider,
@@ -111,6 +112,8 @@ export interface State {
   maxLengthReached?: boolean;
   flashToggle?: boolean;
 }
+
+const isIEEdgeOrEarlier = browser.ie && browser.ie_version <= 15;
 
 export default class Editor extends PureComponent<Props, State> {
   version = `${version} (editor-core ${coreVersion})`;
@@ -371,7 +374,8 @@ export default class Editor extends PureComponent<Props, State> {
         id={this.props.id}
         style={{
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          wordBreak: isIEEdgeOrEarlier ? 'break-all' : 'break-word',
         }}
       >
         <div

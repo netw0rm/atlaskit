@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Modal Dialog"
+    "name": "Modal Dialog",
+    "dark": true
   },
   "types": "src/index.d.ts",
   "scripts": {
@@ -25,14 +26,22 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^2.4.2",
-    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/blanket": "^3.0.0",
+    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/icon": "^8.1.0",
+    "@atlaskit/layer-manager": "^2.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.25.0",
+    "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.3.0"
+    "raf-schd": "^2.0.1",
+    "react-transition-group": "^2.2.0",
+    "styled-components": "^1.3.0",
+    "tabbable": "^1.0.6"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -42,8 +51,6 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/button-group": "^1.5.2",
-    "@atlaskit/button": "^3.5.3",
     "@atlaskit/dropdown-menu": "^3.5.0",
     "@atlaskit/field-text": "^3.4.2",
     "@atlaskit/inline-dialog": "^3.6.2",

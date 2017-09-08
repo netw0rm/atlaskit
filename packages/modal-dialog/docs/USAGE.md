@@ -24,7 +24,6 @@ Import the component in your React app as follows:
 import ModalDialog from '@NAME@';
 ReactDOM.render(
   <ModalDialog
-    isOpen
     header={
       <h2>Modal header</h2>
     }
@@ -41,9 +40,8 @@ ReactDOM.render(
 **Kind**: global class
 * Properties
 
-    *  [modalDialog.isOpen](#ModalDialog+isOpen) : <code>Boolean</code>
     *  [modalDialog.width](#ModalDialog+width) : <code>string</code>
-    *  [modalDialog.onDialogDismissed](#ModalDialog+onDialogDismissed) : <code>function</code>
+    *  [modalDialog.onClose](#ModalDialog+onClose) : <code>function</code>
     *  [ModalDialog.header](#ModalDialog.header) : <code>element</code>
     *  [ModalDialog.children](#ModalDialog.children) : <code>element</code>
     *  [ModalDialog.footer](#ModalDialog.footer) : <code>element</code>
@@ -58,13 +56,7 @@ A modal dialog which blankets the page
 import ModalDialog from 'ak-modal-dialog';
 ReactDOM.render(<ModalDialog />, container);
 ```
-<a name="ModalDialog+isOpen"></a>
 
-### modalDialog.isOpen : <code>Boolean</code>
-Whether the modal dialog is open/visible
-
-**Kind**: instance property of <code>[ModalDialog](#ModalDialog)</code>
-**Default**: <code>false</code>
 <a name="ModalDialog+width"></a>
 
 ### modalDialog.width : <code>string</code>
@@ -75,9 +67,9 @@ pixel or percentage width including unit (e.g. 300px, 75%).
 
 **Kind**: instance property of <code>[ModalDialog](#ModalDialog)</code>
 **Default**: <code>&quot;default&quot;</code>
-<a name="ModalDialog+onDialogDismissed"></a>
+<a name="ModalDialog+onClose"></a>
 
-### modalDialog.onDialogDismissed : <code>function</code>
+### modalDialog.onClose : <code>function</code>
 Handler function to be called when the blanket is clicked
 
 **Kind**: instance property of <code>[ModalDialog](#ModalDialog)</code>

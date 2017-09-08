@@ -1,3 +1,5 @@
+import React from 'react';
+import Lorem from 'react-lorem-component';
 import { storiesOf } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import Layer from '@atlaskit/layer';
@@ -5,185 +7,66 @@ import Navigation from '@atlaskit/navigation';
 import DropdownMenu, { DropdownItemGroupRadio, DropdownItemRadio } from '@atlaskit/dropdown-menu';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Page from '@atlaskit/page';
-import React from 'react';
-import Lorem from 'react-lorem-component';
+
 import { name } from '../package.json';
-import ModalDialog from '../src';
+import { ModalFooter } from '../src';
+
+import HeadFootDemo from './HeadFootDemo';
+import HeightDemo from './HeightDemo';
 import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
 import ShowHideDemo from './ShowHideDemo';
+import WidthDemo from './WidthDemo';
+
+const onClick = ({ target }) => console.log(target.innerText);
+const actions = [
+  { text: 'Primary', onClick },
+  { text: 'Secondary', onClick },
+  { text: 'Tertiary', onClick },
+];
 
 storiesOf(name, module)
-  .add('simple modal', () => <ModalDemo />)
-  .add('demo with form submission', () => <SubmitDemo />)
-  .add('with content overflow', () => (
-    <ModalDemo>
-      <Lorem count="15" />
-    </ModalDemo>
-  ))
-  .add('with footer that is taller than usual', () => (
-    <ModalDemo
-      footer={
-        <div>
-          <Button appearance="primary">Create issue</Button>
-          <br />
-          <Button>Why am i down here</Button>
-          <br />
-          <Button>I really should be on one line</Button>
-        </div>
-      }
-    />
-  ))
-  .add('with animated content', () => (
-    <ModalDemo>
-      <style>{`
-        @keyframes example {
-          0%   { height: 200px; }
-          50%  { height: 1300px; }
-          100% { height: 200px; }
-        }
-
-        .animate-height {
-          height: 200px;
-          overflow: hidden;
-          animation-name: example;
-          animation-duration: 2s;
-          animation-iteration-count: infinite;
-        }
-      `}</style>
-      <div className="animate-height">
-        <Lorem count="15" />
-      </div>
-    </ModalDemo>
-  ))
-  .add('width={300}', () => (
-    <div>
-      <p>Width should be 100 px smaller than width=small</p>
-      <ModalDemo width={300} />
-    </div>
-  ))
-  .add('width="300px"', () => (
-    <div>
-      <p>Width should be 100 px smaller than width=small</p>
-      <ModalDemo width="300px" />
-    </div>
-  ))
-  .add('width="75%"', () => (
-    <div>
-      <p>Width should be 75% of the viewport width</p>
-      <ModalDemo width="75%" />
-    </div>
-  ))
-  .add('width="small"', () => (
-    <ModalDemo width="small" />
-  ))
-  .add('width="medium"', () => (
-    <ModalDemo width="medium" />
-  ))
-  .add('width="large"', () => (
-    <ModalDemo width="large" />
-  ))
-  .add('width="x-large"', () => (
-    <ModalDemo width="x-large" />
-  ))
-  .add('height={300}', () => (
-    <ModalDemo height={300} />
-  ))
-  .add('height="400px"', () => (
-    <ModalDemo height="400px" />
-  ))
-  .add('height="100%"', () => (
-    <ModalDemo height="100%" />
-  ))
-  .add('without header or footer', () => (
-    <ModalDemo
-      header={null}
-      footer={null}
-    >
-      <Lorem count="10" />
-    </ModalDemo>
-  ))
-  .add('with header only', () => (
-    <ModalDemo
-      header="Header"
-      footer={null}
-    >
-      <Lorem count="10" />
-    </ModalDemo>
-  ))
-  .add('with footer only', () => (
-    <ModalDemo
-      header={null}
-      footer="Footer"
-    >
-      <Lorem count="10" />
-    </ModalDemo>
-  ))
+  .add('animated entry/exit', () => <ShowHideDemo />)
+  .add('form submission', () => <SubmitDemo />)
+  .add('actions', () => <ModalDemo heading="Multiple Actions" actions={actions} />)
+  .add('height', () => <HeightDemo />)
+  .add('width', () => <WidthDemo />)
+  .add('header and footer', () => <HeadFootDemo />)
   .add('z-index test', () => (
     <div>
       <Page navigation={<Navigation />}>
-        <Layer
-          content={
-            <span>I am the popup content</span>
-          }
-          position="right middle"
-        >
+        <Layer content={<span>I am the popup content</span>} position="right middle">
           <span style={{ border: '1px solid yellow' }}>
             There should be a layer of text to the right of this:
           </span>
         </Layer>
       </Page>
-      <ModalDialog
-        footer={
-          <Button appearance="primary">Create issue</Button>
-        }
-        header={<span>New issue</span>}
-        isOpen
-        width="medium"
+      <ModalDemo
+        heading="Z-Index Text"
+        footer={() => (
+          <ModalFooter>
+            <span />
+            <InlineDialog
+              content="Some content to indicate layout behaviour."
+              isOpen
+              position="top right"
+            >
+              <Button>Dialog Anchor (top right)</Button>
+            </InlineDialog>
+          </ModalFooter>
+        )}
       >
-        <p>
-          <DropdownMenu
-            trigger="Choose city"
-            triggerType="button"
-            position="right middle"
-          >
-            <DropdownItemGroupRadio id="cities" title="Cities">
+        <div>
+          <Lorem count="2" style={{ marginBottom: 16 }} />
+          <DropdownMenu trigger="Choose city" triggerType="button">
+            <DropdownItemGroupRadio id="cities" heading="Cities">
               <DropdownItemRadio id="sydney">Sydney</DropdownItemRadio>
               <DropdownItemRadio id="canberra">Canberra</DropdownItemRadio>
               <DropdownItemRadio id="melbourne">Melbourne</DropdownItemRadio>
               <DropdownItemRadio id="perth">Perth</DropdownItemRadio>
             </DropdownItemGroupRadio>
           </DropdownMenu>
-        </p>
-      </ModalDialog>
-    </div>
-  ))
-  .add('with inline-dialog child', () => (
-    <ModalDialog
-      isOpen
-      width="medium"
-    >
-      <div style={{ minHeight: '240px' }}>
-        <p>This story is to ensure that an inline dialog inside a modal displays correctly.</p>
-        <p>Ensure that the inline dialog is visible above the trigger in IE browsers.</p>
-      </div>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <div style={{ backgroundColor: 'grey' }}>
-            <InlineDialog
-              content="Long inline dialog content that should be fully visible above the trigger"
-              isOpen
-              position="top right"
-            >
-              <span style={{}}>
-                  Inline dialog trigger
-                </span>
-            </InlineDialog>
-          </div>
         </div>
-      </div>
-    </ModalDialog>
-  ))
-  .add('width animated entry/exit', () => (
-    <ShowHideDemo />
+      </ModalDemo>
+    </div>
   ));

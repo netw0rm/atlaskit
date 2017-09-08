@@ -1,104 +1,88 @@
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
 import { shallow, mount } from 'enzyme';
+import Blanket from '@atlaskit/blanket';
 
 import ModalDialog from '../../src';
+import Content from '../../src/components/Content';
+import { Body } from '../../src/styled/Content';
+import { dialogHeight, dialogWidth, Dialog, Positioner } from '../../src/styled/Modal';
 
-import ModalWrapper from '../../src/styled/ModalWrapper';
-import ModalPositioner from '../../src/styled/ModalPositioner';
-import HeaderFooterWrapper from '../../src/styled/HeaderFooterWrapper';
-import KeylineMask from '../../src/styled/KeylineMask';
-import ModalContainer, { getHeight } from '../../src/styled/ModalContainer';
+// dialogs require onClose and to be wrapped in a ThemeProvider
+const StubDialog = props => (
+  <ThemeProvider theme={{}}>
+    <ModalDialog onClose={() => {}} {...props} />
+  </ThemeProvider>
+);
 
-describe('ak-modal-dialog', () => {
-  describe('exports', () => {
-    it('should export a base component', () => {
-      expect(shallow(<ModalDialog />)).toBeInstanceOf(Object);
-    });
+// wait for react-transition-group to mount the modal
+const wait = (fn) => setTimeout(fn, 1);
+
+describe('modal-dialog', () => {
+  it('should be possible to create a component', () => {
+    const wrapper = shallow(<ModalDialog />);
+    expect(wrapper).not.toBe(undefined);
   });
 
   describe('props', () => {
-    describe('isOpen', () => {
-      it('should be hidden by default', () => {
-        expect(shallow(<ModalDialog />).find(ModalPositioner).length).toBe(0);
-      });
-      it('should be visible when open = true', () => {
-        expect(shallow(<ModalDialog isOpen />).find(ModalPositioner).length).toBe(1);
-      });
-      it('should become hidden when open changed from true -> false', () => {
-        const wrapper = mount(<ModalDialog isOpen />);
-        expect(wrapper.find(ModalPositioner).length).toBe(1);
-        wrapper.setProps({ isOpen: false });
-        // need to simulate onAnimationEnd it doesn't seem to fire after setProps
-        wrapper.find(ModalPositioner).simulate('animationEnd');
-        expect(wrapper.find(ModalPositioner).length).toBe(0);
-      });
-    });
-
     describe('height', () => {
-      it('should be passed to ModalContainer', () => {
-        expect(
-          shallow(<ModalDialog height="42%" isOpen />).find(ModalContainer).prop('height')
-        ).toBe('42%');
+      it('should be passed to Dialog', () => {
+        const wrapper = mount(<StubDialog height="42%" />);
+
+        wait(() => {
+          const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
+          expect(dialogHeightProp).toBe('42%');
+        });
       });
 
       it('should return px if number', () => {
-        expect(getHeight({ height: 42 })).toBe('42px');
+        expect(dialogHeight({ heightValue: 42 })).toBe('42px');
       });
 
       it('should return raw value if string', () => {
-        expect(getHeight({ height: '42%' })).toBe('42%');
-        expect(getHeight({ height: '42em' })).toBe('42em');
-        expect(getHeight({ height: 'initial' })).toBe('initial');
+        expect(dialogHeight({ heightValue: '42%' })).toBe('42%');
+        expect(dialogHeight({ heightValue: '42em' })).toBe('42em');
+        expect(dialogHeight({ heightValue: 'initial' })).toBe('initial');
       });
 
       it('should return "auto" if not supplied', () => {
-        expect(getHeight({})).toBe('auto');
+        expect(dialogHeight({})).toBe('auto');
       });
     });
-
     describe('width', () => {
-      const allowedWidths = ['small', 'medium', 'large', 'x-large'];
-      const hasWidth = (wrapper, expectedWidth) => wrapper.find(ModalPositioner).prop('width') === expectedWidth;
+      const TSHIRT_SIZES = ['small', 'medium', 'large', 'x-large'];
+      const assertEqual = (wrapper, expected) => wrapper
+        .find(Positioner)
+        .prop('dialogWidth') === expected;
 
-      it('should be "medium" by default', () => {
-        expect(hasWidth(shallow(<ModalDialog isOpen />), 'medium')).toBe(true);
+      it('should be passed to Dialog', () => {
+        const wrapper = mount(<StubDialog width="42%" />);
+
+        wait(() => {
+          const dialogWidthProp = wrapper.find(Dialog).prop('widthValue');
+          expect(dialogWidthProp).toBe('42%');
+        });
       });
 
-      it('should support a custom pixel width as string (pixels)', () => {
-        expect(shallow(
-          <ModalDialog
-            isOpen
-            width="300px"
-          />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: '300px' });
+      it('should return px if number', () => {
+        expect(dialogWidth({ widthValue: 42 })).toBe('42px');
       });
 
-      it('should support a custom pixel width as string (percent)', () => {
-        expect(shallow(
-          <ModalDialog
-            isOpen
-            width="75%"
-          />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: '75%' });
+      it('should return raw value if string', () => {
+        expect(dialogWidth({ widthValue: '42%' })).toBe('42%');
+        expect(dialogWidth({ widthValue: '42em' })).toBe('42em');
+        expect(dialogWidth({ widthValue: 'auto' })).toBe('auto');
       });
 
-      it('should support a custom integer width', () => {
-        expect(shallow(
-          <ModalDialog
-            isOpen
-            width={300}
-          />
-        ).find(ModalPositioner).prop('style')).toEqual({ width: 300 });
+      it('should return "auto" if not supplied', () => {
+        expect(dialogWidth({})).toBe('auto');
       });
 
-      allowedWidths.forEach((width) => {
+      TSHIRT_SIZES.forEach((width) => {
         it(`width = "${width}" is applied uniquely`, () => {
-          const wrapper = shallow(<ModalDialog isOpen width={width} />);
-          expect(hasWidth(wrapper, width)).toBe(true);
-
-          // Check that other widths aren't applied
-          allowedWidths.filter(w => w !== width).forEach((otherWidth) => {
-            expect(hasWidth(wrapper, otherWidth)).toBe(false);
+          const wrapper = shallow(<StubDialog width={width} />);
+          wait(() => {
+            expect(assertEqual(wrapper, width)).toBe(true);
           });
         });
       });
@@ -106,72 +90,106 @@ describe('ak-modal-dialog', () => {
 
     describe('header', () => {
       it('should render when set', () => {
-        const wrapper = mount(<ModalDialog header={<span>My header</span>} isOpen />);
-        expect(wrapper.find(HeaderFooterWrapper).contains(<span>My header</span>)).toBe(true);
+        const node = <span>My header</span>;
+        const wrapper = mount(<StubDialog header={() => node} />);
+
+        wait(() => {
+          expect(wrapper.contains(node)).toBe(true);
+        });
       });
     });
 
     describe('footer', () => {
       it('should render when set', () => {
-        const wrapper = mount(<ModalDialog footer={<span>My footer</span>} isOpen />);
-        expect(wrapper.contains(<span>My footer</span>)).toBe(true);
+        const node = <span>My footer</span>;
+        const wrapper = mount(<StubDialog footer={() => node} />);
+
+        wait(() => {
+          expect(wrapper.contains(node)).toBe(true);
+        });
       });
     });
 
     describe('children', () => {
       it('should render when set', () => {
-        const wrapper = shallow(<ModalDialog isOpen>
-          <form>This is <strong>my</strong> form</form>
-        </ModalDialog>);
-        expect(wrapper.contains(<form>This is <strong>my</strong> form</form>)).toBe(true);
+        const node = <form>This is <strong>my</strong> form</form>;
+        const wrapper = shallow(<StubDialog>{node}</StubDialog>);
+
+        wait(() => {
+          expect(wrapper.contains(node)).toBe(true);
+        });
       });
     });
 
-    describe('onDialogDismissed', () => {
+    describe('onClose', () => {
       it('should trigger when blanket clicked', () => {
         const spy = jest.fn();
-        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(ModalWrapper).children().first().simulate('click');
-        expect(spy).toHaveBeenCalledTimes(1);
+        const wrapper = mount(<StubDialog onClose={spy} />);
+
+        wait(() => {
+          const blanket = wrapper.find(Blanket);
+
+          blanket.simulate('click');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = jest.fn();
-        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(ModalPositioner).simulate('click');
-        expect(spy).toHaveBeenCalledTimes(1);
+        const wrapper = mount(<StubDialog onClose={spy} />);
+
+        wait(() => {
+          wrapper.find(Positioner).simulate('click');
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
       });
 
       it('should not trigger when blanket content clicked', () => {
         const spy = jest.fn();
-        const wrapper = mount(
-          <ModalDialog isOpen onDialogDismissed={spy}>
-            <span className="my-content" />
-          </ModalDialog>
-        );
-        wrapper.find('.my-content').simulate('click');
-        expect(spy).not.toHaveBeenCalled();
+        const node = <span>my content</span>;
+        const wrapper = mount(<StubDialog onClose={spy}>{node}</StubDialog>);
+
+        wait(() => {
+          wrapper.find(node).simulate('click');
+          expect(spy).not.toHaveBeenCalled();
+        });
       });
     });
   });
 
+  /*
+    <Content /> won't render until it has a `dialogNode` reference;
+    the timeout gives it time to propagate.
+  */
   describe('scrolling header/footer keylines', () => {
     it('should enable header keyline only when header provided', () => {
-      const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(KeylineMask).length).toBe(0);
-      wrapper.setProps({ header: 'Header' });
-      const keyline = wrapper.find(KeylineMask);
-      expect(keyline.length).toBe(1);
-      expect(keyline.prop('headerOrFooter')).toBe('header');
+      const wrapper = mount(<StubDialog />);
+
+      wait(() => {
+        const content = wrapper.find(Content);
+        const body = content.find(Body);
+
+        expect(content.state('showHeaderKeyline')).toBe(false);
+
+        wrapper.setProps({ header: () => 'Header' });
+        body.simulate('scroll');
+        expect(content.state('showHeaderKeyline')).toBe(true);
+      });
     });
 
     it('should enable footer keyline only when footer provided', () => {
-      const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(KeylineMask).length).toBe(0);
-      wrapper.setProps({ footer: 'Header' });
-      const keyline = wrapper.find(KeylineMask);
-      expect(keyline.length).toBe(1);
-      expect(keyline.prop('headerOrFooter')).toBe('footer');
+      const wrapper = mount(<StubDialog />);
+
+      wait(() => {
+        const content = wrapper.find(Content);
+        const body = content.find(Body);
+
+        expect(content.state('showFooterKeyline')).toBe(false);
+
+        wrapper.setProps({ footer: () => 'Footer' });
+        body.simulate('scroll');
+        expect(content.state('showFooterKeyline')).toBe(true);
+      });
     });
   });
 });

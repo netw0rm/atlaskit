@@ -6,10 +6,12 @@ import { waitUntil } from '@atlaskit/util-common-test';
 
 import SiteEmojiResource, { EmojiProgress, EmojiProgessCallback, EmojiUploadResponse, mediaProportionOfProgress } from '../../../../src/api/media/SiteEmojiResource';
 import TokenManager from '../../../../src/api/media/TokenManager';
-import { EmojiServiceResponse, EmojiUpload } from '../../../../src/types';
+import { EmojiDescription, EmojiServiceResponse, EmojiUpload } from '../../../../src/types';
+import { toEmojiId } from '../../../../src/type-helpers';
 import { MediaUploadStatusUpdate, MediaUploadEnd, MediaUploadError } from '../../../../src/api/media/media-types';
 
 import {
+    atlassianServiceEmojis,
     defaultMediaApiToken,
     fetchSiteEmojiUrl,
     missingMediaEmoji,
@@ -382,6 +384,35 @@ describe('SiteEmojiResource', () => {
       });
 
       return siteEmojiResource.findEmoji(missingMediaEmojiId).then(emoji => {
+        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
+        expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
+      });
+    });
+
+    it('Only returns emojis of type site', () => {
+      const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
+      const mockMediaPicker = new MockMediaPicker();
+      const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
+      const atlassianEmoji = atlassianServiceEmojis.emojis[0];
+      const atlassianId = toEmojiId(atlassianEmoji as EmojiDescription);
+
+      const serviceResponse: EmojiServiceResponse = {
+        emojis: [ atlassianEmoji ],
+        meta: {
+          mediaApiToken: defaultMediaApiToken(),
+        }
+      };
+
+      fetchMock.post({
+        matcher: fetchSiteEmojiUrl(atlassianId),
+        response: {
+          body: serviceResponse,
+        },
+        name: 'fetch-site-emoji'
+      });
+
+      return siteEmojiResource.findEmoji(atlassianId).then(emoji => {
         expect(emoji, 'Emoji undefined').to.equal(undefined);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
         expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);

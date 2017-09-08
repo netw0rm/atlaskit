@@ -10,7 +10,7 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+    "prepublishOnly": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
     "storybook": "../../build/bin/storybook/run.local.js",
     "eslint": "../../build/bin/lint.eslint.sh",
     "storybook:static": "../../build/bin/storybook/build.static.js"

@@ -146,8 +146,8 @@
     "whatwg-fetch": "^2.0.3"
   },
   "engines": {
-    "npm": ">=3.8",
-    "node": ">=6.1"
+    "npm": ">=4",
+    "node": ">=7"
   },
   "homepage": "https://aui-cdn.atlassian.com/atlaskit/registry/",
   "keywords": [

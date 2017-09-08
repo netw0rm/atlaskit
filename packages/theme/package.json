@@ -12,7 +12,7 @@
     "name": "Theme"
   },
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/theme; } || ../../node_modules/.bin/not-in-publish",
+    "prepublishOnly": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/theme; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

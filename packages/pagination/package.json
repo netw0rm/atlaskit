@@ -15,7 +15,7 @@
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
     "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/pagination; } || ../../node_modules/.bin/not-in-publish",
+    "prepublishOnly": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/pagination; } || ../../node_modules/.bin/not-in-publish",
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"

@@ -9,7 +9,7 @@
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "prepublishOnly": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "build": "npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5 && rm -rf dist/es5/engine/core/binaries && cp -r src/engine/core/binaries dist/es5/engine/core",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015 && rm -rf dist/es2015/engine/core/binaries && cp -r src/engine/core/binaries dist/es2015/engine/core",

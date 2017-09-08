@@ -9,7 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/xflow; } || ../../node_modules/.bin/not-in-publish",
+    "prepublishOnly": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/xflow; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [

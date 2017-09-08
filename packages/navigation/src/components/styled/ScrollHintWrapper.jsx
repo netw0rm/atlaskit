@@ -1,30 +1,45 @@
 // @flow
 import styled from 'styled-components';
-import { getProvided } from '../../theme/util';
+import { getProvided, whenNotCollapsed } from '../../theme/util';
+import { scrollbar, scrollHintSpacing, scrollHintHeight } from '../../shared-variables';
+
+const doubleIfNotWebkit = (width) => (
+  width * (window.navigator.userAgent.indexOf('AppleWebKit') >= 0 ? 1 : 2)
+);
 
 const ContainerNavigationChildrenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1 1 100%;
   overflow: hidden;
   position: relative;
 
-  &:before,
-  &:after {
-    background: ${({ theme }) => getProvided(theme).keyline};
-    position: absolute;
-    height: 2px;
-    width: 100%;
-    z-index: 1;
-  }
+  ${whenNotCollapsed`
+    &:before,
+    &:after {
+      background: ${({ theme }) => getProvided(theme).keyline};
+      display: block;
+      flex: 0;
+      height: ${scrollHintHeight}px;
+      left: ${scrollHintSpacing}px;
+      position: absolute;
+      z-index: 1;
 
-  &:before {
-    top: 0;
-    content: ${({ hasScrollHintTop }) => (hasScrollHintTop ? '\'\'' : 'none')};
-  }
+      // Because we are using a custom scrollbar for WebKit in ScrollHintScrollContainer, the
+      // right margin needs to be calculated based on whether that feature is in use.
+      right: ${scrollHintSpacing + doubleIfNotWebkit(scrollbar.size)}px;
+    }
 
-  &:after {
-    bottom: 0;
-    content: ${({ hasScrollHintBottom }) => (hasScrollHintBottom ? '\'\'' : 'none')};
-  }
+    &:before {
+      top: 0;
+      content: ${({ hasScrollHintTop }) => (hasScrollHintTop ? '\'\'' : 'none')};
+    }
+
+    &:after {
+      bottom: 0;
+      content: ${({ hasScrollHintBottom }) => (hasScrollHintBottom ? '\'\'' : 'none')};
+    }
+  `}
 `;
 ContainerNavigationChildrenWrapper.displayName = 'ContainerNavigationChildrenWrapper';
 export default ContainerNavigationChildrenWrapper;

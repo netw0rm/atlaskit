@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 46.17.1 (2017-09-07)
+
+* bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))
+* bug fix; make TS happy ([e8b27c3](https://bitbucket.org/atlassian/atlaskit/commits/e8b27c3))
+* bug fix; render placeholder Card instead of null in MediaComponent ([1b73785](https://bitbucket.org/atlassian/atlaskit/commits/1b73785))
+## 46.17.0 (2017-09-06)
+
+
+* bug fix; fix typescript errors ([b5c597a](https://bitbucket.org/atlassian/atlaskit/commits/b5c597a))
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
 ## 46.16.0 (2017-09-06)
 
 * feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))

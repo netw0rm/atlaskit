@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 22.0.0 (2017-09-07)
+
+* breaking; DrawerContent is now a flex column, so anything you put inside a drawer will behave like a flex ([fc075c7](https://bitbucket.org/atlassian/atlaskit/commits/fc075c7))
+* breaking; nav drawer content fills drawer height, to allow for vertically-centered layouts (issues closed: ak-3443, donut-789) ([fc075c7](https://bitbucket.org/atlassian/atlaskit/commits/fc075c7))
+## 21.2.2 (2017-09-06)
+
+* bug fix; navigation scrollbar is now hidden until hovered in supported environments (issues closed: ak-3366 ak-3454) ([7c2b236](https://bitbucket.org/atlassian/atlaskit/commits/7c2b236))
 ## 21.2.1 (2017-09-06)
 
 * bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))

@@ -1,5 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import styled from 'styled-components';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import BitbucketBranchesIcon from '@atlaskit/icon/glyph/bitbucket/branches';
 import PageIcon from '@atlaskit/icon/glyph/page';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
@@ -8,7 +11,7 @@ import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
 import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
+import { AkCreateDrawer, AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import BasicSearch from './components/BasicSearch';
@@ -24,6 +27,14 @@ const manyNavigationItems = () => {
   }
   return items;
 };
+
+const VerticallyCenteredDrawerContent = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+`;
 
 storiesOf(name, module)
   .add('with create drawer open', () => (
@@ -150,6 +161,25 @@ storiesOf(name, module)
           <BasicSearch fakeNetworkLatency={800} />
         )}
         openDrawer="search"
+      />
+    </HtmlPage>
+  ))
+  .add('with vertically-centered drawer content', () => (
+    <HtmlPage>
+      <BasicNavigation
+        drawers={[
+          <AkCreateDrawer
+            backIcon={<ArrowLeftIcon label="Back icon" size="medium" />}
+            isFullWidth
+            isOpen
+            key="create"
+            primaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+          >
+            <VerticallyCenteredDrawerContent>
+              <p>This content should be vertically centered.</p>
+            </VerticallyCenteredDrawerContent>
+          </AkCreateDrawer>,
+        ]}
       />
     </HtmlPage>
   ));

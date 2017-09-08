@@ -2,7 +2,7 @@
 set -e
 
 BASEDIR=$(dirname $0)
-BIN_PATH=$(yarn bin)
+BIN_PATH=$(npm bin) # Using the npm bin here as in  yarn 1.x, `yarn bin` returns the root bin
 LERNA_LOC="$BIN_PATH/lerna"
 PSA="$BIN_PATH/psa"
 CHALK="$BIN_PATH/chalk"

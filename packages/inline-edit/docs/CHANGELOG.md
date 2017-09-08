@@ -1,5 +1,9 @@
 # @atlaskit/inline-edit
 
+## 4.4.6 (2017-09-06)
+
+
+* bug fix; text in inline edit readview can be highlighted (issues closed: #ak-2685) ([3b99f10](https://bitbucket.org/atlassian/atlaskit/commits/3b99f10))
 ## 4.4.5 (2017-09-05)
 
 * bug fix; inline edit wraps correctly using tags in ie11 (issues closed: #ak-3261) ([b894b85](https://bitbucket.org/atlassian/atlaskit/commits/b894b85))

@@ -1,12 +1,12 @@
 import SchemaNode from './schema-node';
-import SchemaNodeWithVadators, { Indexed } from './schema-node-with-validators';
+import SchemaNodeWithValidators, { Indexed } from './schema-node-with-validators';
 
 export interface ArrayValidators extends Indexed {
   minItems?: number; // 6.12
   maxItems?: number; // 6.11
 }
 
-export default class ArraySchemaNode extends SchemaNodeWithVadators<ArrayValidators> {
+export default class ArraySchemaNode extends SchemaNodeWithValidators<ArrayValidators> {
   items: Array<SchemaNode>; // 6.9 -> SchemaNode | Array<SchemaNode>;
 
   constructor(

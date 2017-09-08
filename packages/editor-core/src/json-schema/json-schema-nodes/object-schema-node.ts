@@ -1,5 +1,5 @@
 import SchemaNode from './schema-node';
-import SchemaNodeWithVadators, { Indexed } from './schema-node-with-validators';
+import SchemaNodeWithValidators, { Indexed } from './schema-node-with-validators';
 
 type Properties = {
   [key: string]: {
@@ -12,7 +12,7 @@ export interface ObjectValidators extends Indexed {
   additionalProperties?: boolean; // 6.20
 }
 
-export default class ObjectSchemaNode extends SchemaNodeWithVadators<ObjectValidators> {
+export default class ObjectSchemaNode extends SchemaNodeWithValidators<ObjectValidators> {
   properties: Properties;
 
   constructor(properties: Properties = {}, validators: ObjectValidators) {

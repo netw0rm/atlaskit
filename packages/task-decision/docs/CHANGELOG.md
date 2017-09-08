@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 3.7.0 (2017-09-06)
+
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
 ## 3.6.0 (2017-09-05)
 
 * feature; visual updates based on action and decision designs. (issues closed: fs-1232) ([8b2126f](https://bitbucket.org/atlassian/atlaskit/commits/8b2126f))

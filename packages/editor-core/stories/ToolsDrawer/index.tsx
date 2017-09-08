@@ -47,6 +47,7 @@ const providers = {
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
+    'w/o link cards': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, true, undefined, false),
     'undefined' : undefined,
   },
   activityProvider: {

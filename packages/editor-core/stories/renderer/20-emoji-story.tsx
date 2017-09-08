@@ -1,5 +1,4 @@
 import { storiesOf } from '@kadira/storybook';
-import { toEmojiId } from '@atlaskit/emoji';
 import { storyData as  emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 import * as React from 'react';
@@ -14,6 +13,8 @@ import {
 import { EmojiProps } from '../../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../../src/providerFactory';
 
+const { evilburnsEmoji, grinEmoji } = emojiTestData;
+
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('nodes/emoji', () => {
@@ -27,15 +28,24 @@ storiesOf(name, module)
       providerFactory.setProvider('emojiProvider', props.emojiProvider);
 
       const evilBurnsEmojiProps: EmojiProps = {
-        ...toEmojiId(emojiTestData.evilburnsEmoji),
-        providers: providerFactory
-      };
-      const grinEmojiProps: EmojiProps = {
-        ...toEmojiId(emojiTestData.grinEmoji),
-        providers: providerFactory
+        providers: providerFactory,
+        shortName: evilburnsEmoji.shortName,
+        id: evilburnsEmoji.id,
+        text: evilburnsEmoji.fallback,
       };
 
-      const nopeEmojiProps: EmojiProps = { shortName: ':nope:' };
+      const grinEmojiProps: EmojiProps = {
+        providers: providerFactory,
+        shortName: grinEmoji.shortName,
+        id: grinEmoji.id,
+        text: grinEmoji.fallback,
+      };
+
+      const nopeEmojiProps: EmojiProps = {
+        shortName: ':nope:',
+        text: '',
+      };
+
       if (props.emojiProvider) {
         const providerFactory = new ProviderFactory();
         providerFactory.setProvider('emojiProvider', loadingEmojiProvider);

@@ -32,10 +32,12 @@ export default class DrawerWidthNavigation extends PureComponent {
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
     >
-      <p>Search drawer</p>
-      <AkButton onClick={this.toggleSearchDrawerWidth}>
-        Change drawer width
-      </AkButton>
+      <div>
+        <p>Search drawer</p>
+        <AkButton onClick={this.toggleSearchDrawerWidth}>
+          Change drawer width
+        </AkButton>
+      </div>
     </AkSearchDrawer>
   );
 
@@ -48,10 +50,12 @@ export default class DrawerWidthNavigation extends PureComponent {
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
     >
-      <p>Create drawer</p>
-      <AkButton onClick={this.toggleCreateDrawerWidth}>
-        Change drawer width
-      </AkButton>
+      <div>
+        <p>Create drawer</p>
+        <AkButton onClick={this.toggleCreateDrawerWidth}>
+          Change drawer width
+        </AkButton>
+      </div>
     </AkCreateDrawer>
   );
 
@@ -64,10 +68,12 @@ export default class DrawerWidthNavigation extends PureComponent {
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
     >
-      <p>Create drawer</p>
-      <AkButton onClick={this.changeCustomDrawerWidth}>
-        Change drawer width
-      </AkButton>
+      <div>
+        <p>Create drawer</p>
+        <AkButton onClick={this.changeCustomDrawerWidth}>
+          Change drawer width
+        </AkButton>
+      </div>
     </AkCustomDrawer>
   );
 

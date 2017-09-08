@@ -105,10 +105,16 @@ storiesOf(name, module)
         emojiProvider={emojiProvider}
         reverseMentionPicker={false}
         showEmojiPicker={true}
-        numFollowingToolbarButtons={1}
+        showDecisions={true}
+        showTasks={true}
+        showMediaPicker={true}
+        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+        numFollowingToolbarButtons={4.1}
         toolbarStyles={{
+          display: 'flex',
           height: '20px',
           marginTop: '-2px',
+          flexShrink: 0,
         }}
       />
     )

@@ -10,7 +10,7 @@ import DrawerSide from '../styled/DrawerSide';
 import DrawerInner from '../styled/DrawerInner';
 import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
-import DrawerContent, { ContentArea } from '../styled/DrawerContent';
+import DrawerContent from '../styled/DrawerContent';
 import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 import { WithRootTheme } from '../../theme/util';
 import { container } from '../../theme/presets';
@@ -98,9 +98,7 @@ export default class Drawer extends PureComponent {
           {(width !== 'full') ? header : null}
         </ContainerHeader>
         <DrawerContent>
-          <ContentArea>
-            {this.props.children}
-          </ContentArea>
+          {this.props.children}
         </DrawerContent>
       </DrawerMain>
     ) : null;

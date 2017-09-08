@@ -1,5 +1,9 @@
 # @atlaskit/profilecard
 
+## 3.7.1 (2017-09-08)
+
+* bug fix; limit profilecards error types to the two available from the api (issues closed: dir-376) ([b9b8532](https://bitbucket.org/atlassian/atlaskit/commits/b9b8532))
+
 ## 3.7.0 (2017-08-14)
 
 

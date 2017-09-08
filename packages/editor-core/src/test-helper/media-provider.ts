@@ -13,7 +13,8 @@ export function storyMediaProviderFactory (
   collection?: string,
   stateManager?: MediaStateManager,
   includeUploadContext = true,
-  dropzoneContainer?: HTMLElement
+  dropzoneContainer?: HTMLElement,
+  includeLinkCreateContext = true,
 ) {
   const {
     defaultClientId,
@@ -47,7 +48,7 @@ export function storyMediaProviderFactory (
         'urn:filestore:upload:*': ['read', 'update']
       })
     }),
-    linkCreateContext: Promise.resolve<MediaContextConfig>({
+    linkCreateContext: !includeLinkCreateContext ? undefined : Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,
       serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
       tokenProvider: StoryBookTokenProvider.withAccess({

@@ -130,7 +130,7 @@ describe('BitbucketTransformer: serializer', () => {
   it('should not skip [ & ]', () => {
     expect(markdownSerializer.serialize(doc(
       p('[hello]')
-    ))).to.eq('[hello]');
+    ))).to.eq('\\[hello\\]');
   });
 
   describe('code block', () => {
@@ -524,6 +524,14 @@ describe('BitbucketTransformer: serializer', () => {
           ' bar',
         )
       ))).to.eq('foo ![an image](http://example.com \'a title\') bar');
+    });
+
+    it('should escape the characters in image attributes', () => {
+      expect(markdownSerializer.serialize(doc(img({
+        src: 'http://exa()mple.com',
+        alt: 'an ()example',
+        title: 'An image ()example'
+      })))).to.eq('![an \\(\\)example](http://exa\\(\\)mple.com \'An image \\(\\)example\')');
     });
   });
 

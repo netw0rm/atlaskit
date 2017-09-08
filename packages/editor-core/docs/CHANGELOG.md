@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 46.17.2 (2017-09-08)
+
+* bug fix; remove ourdated fallback attr, use text instead ([bffe13b](https://bitbucket.org/atlassian/atlaskit/commits/bffe13b))
+* bug fix; special characters like brackets should be escaped in image attributes. (issues closed: #ed-1643) ([30d9d38](https://bitbucket.org/atlassian/atlaskit/commits/30d9d38))
+* bug fix; set DAC renderer maxHeight, which prevents double scroll (issues closed: ed-2530) ([721d231](https://bitbucket.org/atlassian/atlaskit/commits/721d231))
+## 46.17.1 (2017-09-07)
+
+* bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))
+* bug fix; make TS happy ([e8b27c3](https://bitbucket.org/atlassian/atlaskit/commits/e8b27c3))
+* bug fix; render placeholder Card instead of null in MediaComponent ([1b73785](https://bitbucket.org/atlassian/atlaskit/commits/1b73785))
+## 46.17.0 (2017-09-06)
+
+
+* bug fix; fix typescript errors ([b5c597a](https://bitbucket.org/atlassian/atlaskit/commits/b5c597a))
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
+## 46.16.0 (2017-09-06)
+
+* feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))
+* bug fix; fix filmstrip arrow problem in renderer when not using code splitting (issues closed: ed-2667) ([c9cb09d](https://bitbucket.org/atlassian/atlaskit/commits/c9cb09d))
 ## 46.15.0 (2017-09-06)
 
 * bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))

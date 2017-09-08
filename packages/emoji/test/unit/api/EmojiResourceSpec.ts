@@ -1116,10 +1116,28 @@ describe('UploadingEmojiResource', () => {
   }
 
   describe('#isUploadSupported', () => {
-    it('resource has custom emoji with media support', () => {
-      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any);
+    it('resource has custom emoji with media support and upload token', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const hasUploadTokenStub = mediaEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
+      const config: EmojiResourceConfig = { allowUpload: true } as EmojiResourceConfig;
+
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource, config);
+
       return emojiResource.isUploadSupported().then(supported => {
         expect(supported, 'Upload is supported').to.equal(true);
+      });
+    });
+
+    it('should not allow upload if no upload token', () => {
+      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const hasUploadTokenStub = mediaEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(false));
+      const config: EmojiResourceConfig = { allowUpload: true } as EmojiResourceConfig;
+
+      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource, config);
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is not supported').to.equal(false);
       });
     });
 
@@ -1159,9 +1177,13 @@ describe('UploadingEmojiResource', () => {
 
     it('media support - upload successful', () => {
       const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const hasUploadTokenStub = mediaEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
       const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
       uploadEmojiStub.returns(Promise.resolve(mediaEmoji));
+
       const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+
       return emojiResource.uploadCustomEmoji(upload).then(emoji => {
         expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
         expect(emoji, 'Emoji uploaded').to.equal(mediaEmoji);
@@ -1170,9 +1192,13 @@ describe('UploadingEmojiResource', () => {
 
     it('media support - upload error', () => {
       const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
+      const hasUploadTokenStub = mediaEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
       const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
       uploadEmojiStub.returns(Promise.reject('bad things'));
+
       const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+
       return emojiResource.uploadCustomEmoji(upload).then(emoji => {
         expect(true, 'Promise should have been rejected').to.equal(false);
       }).catch(error => {

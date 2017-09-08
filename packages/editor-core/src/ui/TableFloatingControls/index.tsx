@@ -16,20 +16,20 @@ export interface State {
   tableHovered: boolean;
 }
 
-export default class TableFloatingControls extends PureComponent<Props, any> {
+export default class TableFloatingControls extends PureComponent<Props, State> {
   state: State = {
     tableHovered: false
   };
 
   handleMouseDown = (event) => {
-    event.nativeEvent.preventDefault();
+    event.preventDefault();
   }
 
   handleKeyDown = (event) => {
     const { editorView, pluginState } = this.props;
     const result = pluginState.keymapHandler(editorView, event.nativeEvent);
     if (result) {
-      event.nativeEvent.preventDefault();
+      event.preventDefault();
     }
     if (!pluginState.cellSelection) {
       this.setState({ tableHovered: false });

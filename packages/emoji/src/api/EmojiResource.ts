@@ -81,6 +81,8 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
   /**
    * Returns, in a Promise, an array of the most frequently used emoji, ordered from most frequent to least frequent.
    * If there is no frequently used data then an empty array should be returned.
+   *
+   * @param options supply options to be applied to the request.
    */
   getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]>;
 

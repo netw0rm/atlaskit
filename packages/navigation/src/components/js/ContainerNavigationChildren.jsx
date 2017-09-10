@@ -7,7 +7,7 @@ import ContainerNavigationChildrenInner from '../styled/ContainerNavigationChild
 import type { ReactElement } from '../../types';
 
 type Props = {
-  children: ReactElement,
+  children?: ReactElement,
   hasScrollHintBottom?: boolean,
   hasScrollHintTop?: boolean,
 };

@@ -268,7 +268,7 @@ export default class DropdownMenuStateless extends Component {
     );
   };
 
-  renderItems = (items: any) => items.map((item, itemIndex) =>
+  renderItems = (items: Object) => items.map((item, itemIndex) =>
     <Item
       {...item}
       key={itemIndex}

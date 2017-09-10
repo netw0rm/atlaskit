@@ -3,12 +3,13 @@ import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import createItemTheme from './map-navigation-theme-to-item-theme';
 import type { Provided, RootTheme } from '../theme/types';
+import type { ReactElement } from '../../src/types';
 import { rootKey } from './util';
 
 type Props = {
   provided: Provided,
   isCollapsed?: boolean,
-  children?: HTMLElement
+  children?: ReactElement
 };
 
 export default class WithRootTheme extends PureComponent {

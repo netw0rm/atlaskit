@@ -22,7 +22,7 @@ export type AvatarPropTypes = {
   appearance?: AppearanceType,
   /** Used to override the default border color of the presence indicator.
   Accepts any color argument that the border-color CSS property accepts. */
-  borderColor?: string | FunctionType,
+  borderColor?: string,
   /** A custom component to use instead of the default span. */
   component?: ComponentType,
   /** Display a tooltip on hover */

@@ -10,6 +10,7 @@ const items = Array(4).fill(true).map((item, index) => (
 ));
 
 class BoundariesElementExample extends Component {
+
   static propTypes : Object = {
     appearance: PropTypes.oneOf(['normal', 'tall']),
     withGroup: PropTypes.bool,
@@ -18,6 +19,7 @@ class BoundariesElementExample extends Component {
   componentDidMount() {
     this.scroll.scrollTop = 200;
   }
+  scroll: HTMLDivElement;
 
   render() {
     const content = this.props.withGroup ? (

@@ -6,7 +6,7 @@ import { clickManagerContext } from '../../util/contextNamespace';
 import type { ReactElement } from '../../../src/types';
 
 type Props = {
-  children: ReactElement,
+  children?: ReactElement,
   onItemClicked: (event: MouseEvent | KeyboardEvent) => {}
 }
 

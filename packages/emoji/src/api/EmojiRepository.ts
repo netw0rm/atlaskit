@@ -115,6 +115,20 @@ export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptio
   return emoji;
 };
 
+const findEmojiIndex = (emojis: EmojiDescription[], toFind: EmojiDescription): number => {
+  const findId = toFind.id;
+  let match = -1;
+  emojis.forEach((emoji, index) => {
+    // Match if ID is defined and are equal
+    // Or both have no id and shortnames match
+    if (emoji.id && (emoji.id === findId) || !emoji.id && !findId && (emoji.shortName === toFind.shortName)) {
+      match = index;
+      return;
+    }
+  });
+  return match;
+};
+
 export default class EmojiRepository {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
@@ -129,11 +143,7 @@ export default class EmojiRepository {
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
-    this.usageTracker = new UsageFrequencyTracker();
-
-    this.initRepositoryMetadata();
-    this.initSearchIndex();
-
+    this.initMembers();
   }
 
   /**
@@ -259,6 +269,16 @@ export default class EmojiRepository {
     }
   }
 
+  delete(emoji: EmojiDescription) {
+    const deletedIndex = findEmojiIndex(this.emojis, emoji);
+    if (deletedIndex !== -1) {
+      // Remove the deleted emojis from the internal list
+      this.emojis.splice(deletedIndex, 1);
+      // Reconstruct repository member variables
+      this.initMembers();
+    }
+  }
+
   private withAsciiMatch(ascii: string, emojis: EmojiDescription[]): EmojiDescription[] {
     let result = emojis;
     const asciiEmoji = this.findByAsciiRepresentation(ascii);
@@ -303,6 +323,12 @@ export default class EmojiRepository {
     }
 
     return emojis;
+  }
+
+  private initMembers(): void {
+    this.usageTracker = new UsageFrequencyTracker();
+    this.initRepositoryMetadata();
+    this.initSearchIndex();
   }
 
   /**

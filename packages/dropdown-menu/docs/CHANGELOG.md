@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.10.1 (2017-09-06)
+
+* bug fix; Dropdown menu now closes when a non-link item is clicked (issues closed: ak-3288) ([3bdf62d](https://bitbucket.org/atlassian/atlaskit/commits/3bdf62d))
 ## 3.10.0 (2017-09-01)
 
 * feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))

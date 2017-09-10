@@ -7,7 +7,7 @@ import {
   MediaGroup,
   Media,
 } from '../../src/renderer/react/nodes';
-import { EventHandlers } from '../../src/ui/Renderer';
+import { EventHandlers, CardSurroundings } from '../../src/ui/Renderer';
 
 import { CardEvent } from '@atlaskit/media-card';
 
@@ -44,9 +44,9 @@ storiesOf(name, module)
     providerFactory.setProvider('mediaProvider', mediaProvider);
     const eventHandlers: EventHandlers = {
       media: {
-        onClick: (result: CardEvent) => {
+        onClick: (result: CardEvent, surroundings?: CardSurroundings) => {
           // json-safe-stringify does not handle cyclic references in the react mouse click event
-          return action('Media click')('[react.MouseEvent]', result.mediaItemDetails);
+          return action('Media click')('[react.MouseEvent]', result.mediaItemDetails, surroundings);
         }
       }
     };

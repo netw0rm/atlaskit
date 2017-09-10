@@ -16,6 +16,7 @@ import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/to
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { ConfluenceTransformer } from '../';
 
 import {
   akEditorCodeBackground,
@@ -101,11 +102,15 @@ storiesOf(name, module)
           allowLists={true}
           allowTextColor={true}
           allowTables={true}
+          allowJiraIssue={true}
+          allowUnsupportedContent={true}
 
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
           activityProvider={Promise.resolve(new MockActivityResource())}
+          // tslint:disable-next-line:jsx-no-lambda
+          contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 
           placeholder="Write something..."
           shouldFocus={false}

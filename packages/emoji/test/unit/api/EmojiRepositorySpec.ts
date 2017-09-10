@@ -502,4 +502,40 @@ describe('EmojiRepository', () => {
       expect(variation.shortName).to.equal(':thumbsup:');
     });
   });
+
+  describe('getFrequentlyUsed', () => {
+    it('should return frequently used with the correct skin tone', (done) => {
+        const emojiRepository = newEmojiRepository();
+        emojiRepository.used(thumbsupEmoji);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          let emoji = emojiRepository.getFrequentlyUsed( { skinTone: 4 });
+          expect(emoji).to.have.lengthOf(1);
+          expect(emoji[0].shortName).to.equal(`${thumbsupEmoji.shortName}:skin-tone-5:`);
+          done();
+        });
+      }
+    );
+
+    it('should return a limited number of frequently used', (done) => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+      emojiRepository.used(thumbsdownEmoji);
+      emojiRepository.used(smileyEmoji);
+      emojiRepository.used(openMouthEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        let emoji = emojiRepository.getFrequentlyUsed();
+        expect(emoji).to.have.lengthOf(4);
+
+        emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
+        expect(emoji).to.have.lengthOf(2);
+
+        done();
+      });
+
+    });
+  });
 });

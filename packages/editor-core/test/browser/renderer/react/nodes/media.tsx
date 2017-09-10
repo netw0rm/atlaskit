@@ -1,18 +1,9 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import { MediaProvider } from '@atlaskit/media-core';
 import Media from '../../../../../src/renderer/react/nodes/media';
 import { MediaType } from '../../../../../src/schema';
-import ProviderFactory from '../../../../../src/providerFactory';
 import MediaComponent from '../../../../../src/ui/Media/MediaComponent';
-
-const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({})
-});
-
-const providerFactory = new ProviderFactory();
-providerFactory.setProvider('mediaProvider', mediaProvider);
 
 describe('Media', () => {
 

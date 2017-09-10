@@ -4,7 +4,7 @@ import { Node } from '../../prosemirror';
  * Checks if node is an empty paragraph.
  */
 export function isEmptyParagraph(node?: Node): boolean {
-  return !node || (node.type.name === 'paragraph' && !node.textContent);
+  return !node || (node.type.name === 'paragraph' && !node.textContent && !node.childCount);
 }
 
 /**

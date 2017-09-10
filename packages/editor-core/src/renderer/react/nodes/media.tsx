@@ -6,6 +6,7 @@ import UIMedia from '../../../ui/Media';
 import { Appearance } from '../../../ui/Media/MediaComponent';
 import { MediaType } from '../../../schema';
 import { CardDimensions } from '@atlaskit/media-card';
+import { ImageResizeMode } from '@atlaskit/media-core';
 
 export interface MediaProps {
   id: string;
@@ -15,6 +16,7 @@ export interface MediaProps {
   collection: string;
   cardDimensions?: CardDimensions;
   appearance?: Appearance;
+  resizeMode?: ImageResizeMode;
 }
 
 export default class Media extends PureComponent<MediaProps, {}> {
@@ -27,6 +29,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
       collection,
       cardDimensions,
       appearance,
+      resizeMode,
     } = this.props;
 
     return (
@@ -38,6 +41,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
         onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
         cardDimensions={cardDimensions}
         appearance={appearance}
+        resizeMode={resizeMode}
       />
     );
   }

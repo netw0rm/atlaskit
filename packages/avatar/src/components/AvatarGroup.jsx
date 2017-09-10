@@ -90,8 +90,6 @@ export default class AvatarGroup extends Component {
     const {
       avatar: Item, appearance, borderColor, data, maxCount, onAvatarClick, size,
     } : any = this.props;
-    // const { avatar: Item, appearance, data, borderColor, maxCount, onAvatarClick, size,
-    //  }: Props = this.props;
     // NOTE: conditionally defaulting the `maxCount` prop based on `appearance`
     const max = (maxCount === 0) ? MAX_COUNT[appearance] : maxCount;
     const total = data.length;

@@ -205,7 +205,7 @@ describe('hyperlink/pm-plugins/commands', () => {
     it('should be able to update existing links text', () => {
       const { editorView, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'))));
 
-      updateLinkText('Atlassian', editorView, pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(editorView.state, editorView.dispatch);
+      updateLinkText(editorView, 'Atlassian', pluginState.activeLinkStartPos, pluginState.text, pluginState.activeLinkMark)(editorView.state, editorView.dispatch);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
     });

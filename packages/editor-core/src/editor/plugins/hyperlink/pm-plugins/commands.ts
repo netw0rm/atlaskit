@@ -83,7 +83,7 @@ export function updateLink(options: HyperlinkOptions, activeLinkStartPos?: numbe
   };
 }
 
-export function updateLinkText(newLinkedText: string, view: EditorView, activeLinkStartPos?: number, currentLinkedText?: string, activeLinkMark?: Mark): Command {
+export function updateLinkText(view: EditorView, newLinkedText: string, activeLinkStartPos?: number, currentLinkedText?: string, activeLinkMark?: Mark): Command {
   return function (state, dispatch) {
     if (!activeLinkStartPos || !currentLinkedText) {
       return false;
@@ -92,7 +92,7 @@ export function updateLinkText(newLinkedText: string, view: EditorView, activeLi
     const to = from + currentLinkedText.length;
     const newTo = from + newLinkedText.length;
 
-    view.dispatch(state.tr.insertText(newLinkedText, from, to)
+    dispatch(state.tr.insertText(newLinkedText, from, to)
       .addMark(from, newTo, activeLinkMark!));
     view.focus();
     return true;

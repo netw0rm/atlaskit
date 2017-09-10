@@ -236,8 +236,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     } else {
       if (text && pluginState.text !== text) {
         hyperlinkCommands.updateLinkText(
-          text,
           editorView,
+          text,
           pluginState.activeLinkStartPos,
           pluginState.text,
           pluginState.activeLinkMark)(state, dispatch);
@@ -297,8 +297,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       const { editorView, pluginState } = this.props;
       const { state, dispatch } = editorView;
       hyperlinkCommands.updateLinkText(
-        text,
         editorView,
+        text,
         pluginState.activeLinkStartPos,
         pluginState.text,
         pluginState.activeLinkMark)(state, dispatch);

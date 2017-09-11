@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 
 const getPlaceholderStyle = style => css`
 &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -20,8 +20,7 @@ const getPlaceholderStyle = style => css`
    ${style}
 }
 `;
-const subtleText = themed({ light: colors.N70, dark: colors.DN90 });
-const getPlaceholderColor = css`color: ${subtleText};`;
+const getPlaceholderColor = css`color: ${colors.placeholderText};`;
 
 const InputElement = styled.input`
   background: transparent;

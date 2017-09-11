@@ -27,7 +27,12 @@ export const description = (
   BitbucketLogo,
   ConfluenceLogo,
   HipchatLogo,
-  JiraLogo
+  JiraLogo,
+  JiraCoreLogo,
+  JiraServiceDeskLogo,
+  JiraSoftwareLogo,
+  StatuspageLogo,
+  StrideLogo,
 } from '@atlaskit/logo'`}</Usage>
     <p>All exported logos share a base, with the same props. Props passed to each logo
     are passed down to the base.</p>

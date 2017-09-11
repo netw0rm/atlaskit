@@ -1,5 +1,16 @@
 import React from 'react';
-import { AtlassianLogo, BitbucketLogo, ConfluenceLogo, HipchatLogo, JiraLogo } from '@atlaskit/logo';
+import {
+  AtlassianLogo,
+  BitbucketLogo,
+  ConfluenceLogo,
+  HipchatLogo,
+  JiraLogo,
+  JiraCoreLogo,
+  JiraServiceDeskLogo,
+  JiraSoftwareLogo,
+  StatuspageLogo,
+  StrideLogo,
+} from '@atlaskit/logo';
 
 const Examples = () => (
   <div>
@@ -8,6 +19,11 @@ const Examples = () => (
     <ConfluenceLogo />
     <HipchatLogo />
     <JiraLogo />
+    <JiraCoreLogo />
+    <JiraServiceDeskLogo />
+    <JiraSoftwareLogo />
+    <StatuspageLogo />
+    <StrideLogo />
   </div>
 );
 

@@ -19,12 +19,14 @@ export const Image = styled.img`
   user-select: none;          /* Likely future */
 `;
 
+export const containerPadding = 20;
+
 const Mask = styled.div`
   position: absolute;
-  top: 20px;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  top: ${containerPadding}px;
+  bottom: ${containerPadding}px;
+  left: ${containerPadding}px;
+  right: ${containerPadding}px;
   box-shadow: 0 0 0 100px rgba(255,255,255,.5);
 `;
 

@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import {storiesOf} from '@kadira/storybook';
+import {storiesOf, action} from '@kadira/storybook';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ storiesOf('Predefined Avatars', {})
   ))
   .add('Predefined Avatars (none preselected)', () => (
     <Wrapper>
-      <PredefinedAvatarList avatars={avatars} />
+      <PredefinedAvatarList avatars={avatars} onAvatarSelected={action('onAvatarSelected')} />
     </Wrapper>
   ))
   .add('Predefined Avatars (preselected)', () => (
@@ -25,6 +25,7 @@ storiesOf('Predefined Avatars', {})
       <PredefinedAvatarList
         avatars={avatars}
         selectedAvatar={avatars[2]}
+        onAvatarSelected={action('onAvatarSelected')}
       />
     </Wrapper>
   ))
@@ -32,6 +33,7 @@ storiesOf('Predefined Avatars', {})
     <Wrapper>
       <PredefinedAvatarView
         avatars={generateAvatars(25)}
+        onAvatarSelected={action('onAvatarSelected')}
       />
     </Wrapper>
   ));

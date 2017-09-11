@@ -1,4 +1,4 @@
-import { EditorState, TextSelection, Transaction, EditorView, Schema } from '../../prosemirror';
+import { EditorState, Selection, TextSelection, Transaction, EditorView, Schema } from '../../prosemirror';
 import uuid from '../../plugins/tasks-and-decisions/uuid';
 
 const getListTypes = (listType: TaskDecisionListType, schema: Schema<any,any>): { list, item } => {
@@ -18,22 +18,24 @@ const getListTypes = (listType: TaskDecisionListType, schema: Schema<any,any>): 
 
 export type TaskDecisionListType = 'taskList' | 'decisionList';
 
+const isSelectionInAList = (listType: TaskDecisionListType, selection: Selection) => {
+  const fromNode = selection.$from.node(selection.$from.depth - 2);
+  const endNode = selection.$to.node(selection.$to.depth - 2);
+
+  return fromNode && fromNode.type.name === listType
+      && endNode  && endNode.type.name !== listType;
+};
+
 export const changeToTaskDecision = (
-  // dispatch: (tr: Transaction) => void,
   view: EditorView,
   listType: TaskDecisionListType
 ): boolean => {
   const { state } = view;
   const { selection, schema } = state;
-  const fromNode = selection.$from.node(selection.$from.depth - 2);
-  const endNode = selection.$to.node(selection.$to.depth - 2);
-
   const { list, item } = getListTypes(listType, schema);
-
   const { tr } = state;
 
-  if ((!fromNode || fromNode.type.name !== listType) ||
-    (!endNode || endNode.type.name !== listType)) {
+  if (!isSelectionInAList(listType, selection)) {
     // Not a list - convert to one.
     const created = createListAtSelection(tr, list, item, schema, state);
     view.dispatch(tr);

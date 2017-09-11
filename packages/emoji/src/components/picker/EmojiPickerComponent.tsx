@@ -183,8 +183,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   private onFrequentEmojiResult = (frequentEmoji: EmojiDescription[]): void => {
     const { query, searchEmojis } = this.state;
 
-    frequentEmoji = frequentEmoji.slice(0, FREQUENTLY_USED_MAX);
-
     // change the category of each of the featured emoji
     const recategorised = frequentEmoji.map((emoji) => {
       const clone = JSON.parse(JSON.stringify(emoji));
@@ -285,7 +283,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         options.sort = SearchSort.None;
       }
 
-      this.props.emojiProvider.getFrequentlyUsed().then(this.onFrequentEmojiResult);
+      // take a copy of search options so that the frequently used can be limited to 16 without affecting the full emoji query
+      const frequentOptions: SearchOptions = {
+        ...options,
+        sort: SearchSort.None,
+        limit: FREQUENTLY_USED_MAX
+      };
+
+      this.props.emojiProvider.getFrequentlyUsed(frequentOptions).then(this.onFrequentEmojiResult);
     }
 
     this.props.emojiProvider.filter(query, options);

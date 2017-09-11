@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/multi-select",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "config": {
     "access": "public"
   },

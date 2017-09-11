@@ -14,6 +14,12 @@ type State = {
   value: number;
 };
 
+type InputChangeEvent = Event & {
+  target: EventTarget & {
+    value: mixed,
+  },
+};
+
 const isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0;
 const eventName = isIE ? 'change' : 'input';
 const defaultStep = 0.1;
@@ -55,7 +61,7 @@ export default class Slider extends PureComponent {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  onInputChange = (e: Object) => {
+  onInputChange = (e: InputChangeEvent) => {
     const value = parseFloat(e.target.value);
     const { onChange } = this.props;
 

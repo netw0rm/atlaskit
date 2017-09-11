@@ -50,7 +50,7 @@ export type AvatarPropTypes = {
   use square content with height and width of 100%. */
   presence?: PresenceType,
   /** Defines the size of the avatar */
-  size?: SizeType,
+  size: SizeType,
   /** A url to load an image from (this can also be a base64 encoded image). */
   src?: string,
   /** Indicates contextual information by showing a small icon on the avatar.

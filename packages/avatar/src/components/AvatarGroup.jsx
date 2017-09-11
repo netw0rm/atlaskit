@@ -20,14 +20,14 @@ type Props = {
   can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar?: ComponentType,
+  avatar: ComponentType,
   /** Typically the background color that the avatar is presented on.
   Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
   /** Array of avatar data passed to each `avatar` component */
   data: Array<AvatarPropTypes>,
   /** The maximum number of avatars allowed in the grid */
-  maxCount?: number,
+  maxCount: number,
   /** Handle the click event on the avatar item */
   onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
@@ -89,7 +89,7 @@ export default class AvatarGroup extends Component {
   render() {
     const {
       avatar: Item, appearance, borderColor, data, maxCount, onAvatarClick, size,
-    } : any = this.props;
+    }: Props = this.props;
     // NOTE: conditionally defaulting the `maxCount` prop based on `appearance`
     const max = (maxCount === 0) ? MAX_COUNT[appearance] : maxCount;
     const total = data.length;

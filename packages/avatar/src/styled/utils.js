@@ -2,7 +2,7 @@
 import { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 import { AVATAR_RADIUS, AVATAR_SIZES, BORDER_WIDTH, TRANSITION_DURATION } from './constants';
-import type { AppearanceType, SizeType } from '../types';
+import type { AvatarPropTypes, SizeType } from '../types';
 
 const backgroundColorFocus = colors.B200;
 const overlayColorDefault = 'transparent';
@@ -12,7 +12,7 @@ const overlayColorDisabled = themed({ light: 'rgba(255, 255, 255, 0.7)', dark: c
 
 // "square" avatars are explicit
 export function getBorderRadius(
-  props: { appearance: AppearanceType, size: SizeType },
+  props: AvatarPropTypes,
   config: { includeBorderWidth: boolean } = { includeBorderWidth: false }
 ) {
   const borderWidth: number = config.includeBorderWidth ? BORDER_WIDTH[props.size] : 0;
@@ -36,10 +36,10 @@ export function getAvatarDimensions(
 }
 
 // expose here for use with multiple element types
-export function getInnerStyles(props: Object) {
+export function getInnerStyles(props: AvatarPropTypes) {
   const boxSizing: string = 'content-box';
   const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
-  const isInteractive: boolean = props.isInteractive || props.href || props.onClick;
+  const isInteractive: boolean = Boolean(props.isInteractive || props.href || props.onClick);
 
   let backgroundColor = props.borderColor || colors.background;
   let cursor = 'default';

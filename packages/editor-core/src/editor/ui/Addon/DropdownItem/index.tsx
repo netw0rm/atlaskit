@@ -4,7 +4,13 @@ import { AddonProps } from '../types';
 
 // tslint:disable-next-line:variable-name
 const DropdownItemWrapper = (props: AddonProps) => (
-  <DropdownItem onClick={props.onClick}>
+  <DropdownItem
+    // tslint:disable-next-line:jsx-no-lambda
+    onClick={() => props.onClick && props.onClick({
+      actionOnClick: props.actionOnClick,
+      renderOnClick: props.renderOnClick
+    })}
+  >
     <span>{props.icon}</span>
     {props.children}
   </DropdownItem>

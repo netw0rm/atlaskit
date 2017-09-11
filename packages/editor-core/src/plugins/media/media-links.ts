@@ -41,7 +41,8 @@ export async function appendLinkCards(
   view: EditorView,
   stateManager: MediaStateManager,
   linkCreateContext: Context,
-  collection: string
+  collection: string,
+  autoFinalize: boolean,
 ): Promise<PMNode> {
   const { schema, doc, tr } = view.state;
   const { marks: { link }  } = schema;
@@ -54,30 +55,34 @@ export async function appendLinkCards(
   });
 
   const linkNodes = (await Promise.all(hrefs.map(async (href) => {
-    const id = `temporary:${uuid()}:${href}`;
 
     const isAppWithoutURL = metadata => metadata.resources && metadata.resources.app && !metadata.resources.app.url;
 
     const metadata = await fetchMetadataRace(linkCreateContext, href);
     if (metadata) {
       // Workaround for problem with missing fields preventing Twitter links from working
-      if(isAppWithoutURL(metadata))  {
+      if (isAppWithoutURL(metadata))  {
         (metadata as any).resources.app.url = (metadata as any).url;
       }
 
-      const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
-      stateManager.updateState(id, {
-        id,
-        status: 'unfinalized',
-        finalizeCb: () => {
-          linkCreateContext.addLinkItem(href, collection, metadata).then(publicId => {
-            stateManager.updateState(id, {id, publicId, status: 'processing'});
-            stateManager.updateState(id, {id, publicId, status: 'ready'});
-          });
-        },
-      });
-
-      return linkNode;
+      if (autoFinalize) {
+        const id = await linkCreateContext.addLinkItem(href, collection, metadata);
+        return schema.nodes.media.createChecked({ id, type: 'link', collection });
+      } else {
+        const id = `temporary:${uuid()}:${href}`;
+        const linkNode = schema.nodes.media.createChecked({ id, type: 'link', collection });
+        stateManager.updateState(id, {
+          id,
+          status: 'unfinalized',
+          finalizeCb: () => {
+            linkCreateContext.addLinkItem(href, collection, metadata).then(publicId => {
+              stateManager.updateState(id, {id, publicId, status: 'processing'});
+              stateManager.updateState(id, {id, publicId, status: 'ready'});
+            });
+          },
+        });
+        return linkNode;
+      }
     } else {
       linkCreateContext.addLinkItem(href, collection);
     }
@@ -161,7 +166,7 @@ export const insertLinks = async (
         // Unfurl URL using media API
         linkCreateContext.getUrlPreviewProvider(href).observable().subscribe(metadata => {
           // Workaround for problem with missing fields preventing Twitter links from working
-          if(isAppWithoutURL(metadata))  {
+          if (isAppWithoutURL(metadata))  {
             (metadata as any).resources.app.url = metadata.url;
           }
           linkCreateContext.addLinkItem(href, collection, metadata)

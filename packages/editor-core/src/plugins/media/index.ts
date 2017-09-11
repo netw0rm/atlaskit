@@ -218,10 +218,12 @@ export class MediaPluginState {
       return;
     }
 
-    const { linkCreateContext } = mediaProvider;
+    const { linkCreateContext, uploadParams } = mediaProvider;
     if (!linkCreateContext) {
       return;
     }
+
+    const { autoFinalize = true } = uploadParams || {};
 
     let linkCreateContextInstance = await linkCreateContext;
     if (!linkCreateContextInstance) {
@@ -241,7 +243,8 @@ export class MediaPluginState {
       this.view,
       this.stateManager,
       linkCreateContextInstance as Context,
-      collection
+      collection,
+      autoFinalize,
     );
   }
 

@@ -62,12 +62,7 @@ class AnalyticsDecorator extends Component {
   };
   render() {
     const { children } = this.props; // eslint-disable-line react/prop-types
-    // TODO: Remove wrapping <div> when we upgrade to React@16
-    return (
-      <div>
-        {children}
-      </div>
-    );
+    return React.Children.only(children);
   }
 }
 

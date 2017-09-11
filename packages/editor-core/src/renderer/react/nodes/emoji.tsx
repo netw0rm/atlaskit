@@ -1,19 +1,23 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EmojiId } from '@atlaskit/emoji';
-import Emoji from '../../../ui/Emoji';
 import ProviderFactory from '../../../providerFactory';
+import { Attributes as EmojiAttributes } from '../../../schema/nodes/emoji';
+import Emoji from '../../../ui/Emoji';
 
-export interface EmojiProps extends EmojiId {
+export interface EmojiProps extends EmojiAttributes {
   providers?: ProviderFactory;
 }
 
 export default class EmojiItem extends PureComponent<EmojiProps, {}> {
   render() {
+    const { id, shortName, text } = this.props;
+
     return (
       <Emoji
         allowTextFallback={true}
-        {...this.props}
+        id={id}
+        shortName={shortName}
+        fallback={text}
       />
     );
   }

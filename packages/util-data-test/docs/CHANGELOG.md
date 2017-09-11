@@ -1,5 +1,10 @@
 # @atlaskit/util-data-test
 
+## 7.1.1 (2017-09-08)
+
+* bug fix; fix regex in mock-profile-client to match lower and uppercase error strings (issues closed: dir-376) ([e52930f](https://bitbucket.org/atlassian/atlaskit/commits/e52930f))
+
+
 ## 7.1.0 (2017-08-04)
 
 * feature; update mock-profile-client to be able to return custom error responses ([1a99156](https://bitbucket.org/atlassian/atlaskit/commits/1a99156))

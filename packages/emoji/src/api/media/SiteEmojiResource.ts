@@ -1,6 +1,8 @@
 import { MediaPicker } from 'mediapicker';
 import { ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
+import { customType } from '../../constants';
+
 import {
   EmojiDescription,
   EmojiId,
@@ -34,7 +36,9 @@ export interface EmojiProgessCallback {
 // Assume media is 95% of total upload time.
 export const mediaProportionOfProgress = 95/100;
 
-export default class MediaEmojiResource {
+const isSiteEmoji = (emoji: EmojiDescription): boolean => emoji.type === customType;
+
+export default class SiteEmojiResource {
   private siteServiceConfig: ServiceConfig;
   private mediaApiToken: MediaApiToken;
   private mediaEmojiCache: MediaEmojiCache;
@@ -134,15 +138,32 @@ export default class MediaEmojiResource {
     this.tokenManager.getToken('upload');
   }
 
-  findSiteEmoji(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+  findEmoji(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
     const path = `../${emojiId.id}`;
     return emojiRequest(this.siteServiceConfig, { path }).then(serviceResponse => {
       const response = denormaliseEmojiServiceResponse(serviceResponse);
-      return response.emojis[0];
+      const emoji = response.emojis[0];
+      return isSiteEmoji(emoji) ? emoji : undefined;
     }).catch(error => {
       debug('failed to load emoji', emojiId, error);
       return undefined;
     });
+  }
+
+  deleteEmoji(emoji: EmojiDescription): Promise<boolean> {
+    if (!isMediaEmoji(emoji)) {
+      return Promise.reject(false);
+    }
+    const path = `${emoji.id}`;
+    const requestInit = {
+      method: 'DELETE',
+    };
+    return serviceUtils.requestService(this.siteServiceConfig, { path, requestInit }).then(
+      // Successful delete on Promise.resolve
+      () => true,
+      // Unsuccessful delete on Promise.reject
+      () => false
+    );
   }
 
   /**

@@ -11,7 +11,7 @@ import ReactPMNode from './ui/prosemirror-node';
 type getPosHandler = () => number;
 
 export interface ReactNodeViewComponents {
-  [key: string]: React.ComponentClass<any>;
+  [key: string]: React.ComponentClass<any> | React.StatelessComponent<any>;
 }
 
 class NodeViewElem implements NodeView {

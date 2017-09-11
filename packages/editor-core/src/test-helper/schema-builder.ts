@@ -276,3 +276,12 @@ export const decisionList = nodeFactory(sampleSchema.nodes.decisionList, {});
 export const decisionItem = nodeFactory(sampleSchema.nodes.decisionItem, {});
 export const taskList = nodeFactory(sampleSchema.nodes.taskList, {});
 export const taskItem = nodeFactory(sampleSchema.nodes.taskItem, {});
+export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
+export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const confluenceJiraIssue = (attrs: {
+  issueKey?: string;
+  macroId?: string;
+  schemaVersion?: string;
+  server?: string;
+  serverId?: string;
+}) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);

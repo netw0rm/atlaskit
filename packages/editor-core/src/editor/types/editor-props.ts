@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
-import { EditorView, Node } from '../../prosemirror';
+import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
+import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
 
@@ -27,6 +28,8 @@ export interface EditorProps {
   allowLists?: boolean;
   allowTextColor?: boolean;
   allowTables?: boolean;
+  allowJiraIssue?: boolean;
+  allowUnsupportedContent?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
@@ -41,6 +44,7 @@ export interface EditorProps {
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   waitForMediaUpload?: boolean;
+  contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 
   maxHeight?: number;
   maxContentSize?: number;

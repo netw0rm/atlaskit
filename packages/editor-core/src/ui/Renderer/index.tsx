@@ -9,8 +9,12 @@ import {
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
 
+export interface CardSurroundings {
+  collectionName: string;
+  list: string[];
+}
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
-export type CardEventClickHandler = (result: CardEvent) => void;
+export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
 export interface AppCardAction {

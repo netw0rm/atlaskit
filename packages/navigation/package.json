@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "21.2.2",
+  "version": "22.0.0",
   "config": {
     "access": "public"
   },

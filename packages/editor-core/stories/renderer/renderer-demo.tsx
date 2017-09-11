@@ -3,6 +3,8 @@ import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { CardEvent } from '@atlaskit/media-card';
+import { CardSurroundings } from '../../src/ui/Renderer';
 
 import {
   StoryBookTokenProvider,
@@ -77,12 +79,15 @@ providerFactory.setProvider('profilecardProvider', profilecardProvider);
 
 const eventHandlers = {
   mention: {
-    onClick: action('onClick'),
-    onMouseEnter: action('onMouseEnter'),
-    onMouseLeave: action('onMouseLeave'),
+    onClick: action('onMentionClick'),
+    onMouseEnter: action('onMentionMouseEnter'),
+    onMouseLeave: action('onMentionMouseLeave'),
   },
   media: {
-    onClick: action('onClick'),
+    onClick: (result: CardEvent, surroundings?: CardSurroundings) => {
+      // json-safe-stringify does not handle cyclic references in the react mouse click event
+      return action('onMediaClick')('[react.MouseEvent]', result.mediaItemDetails, surroundings);
+    }
   },
   applicationCard: {
     onClick: action('onClick'),

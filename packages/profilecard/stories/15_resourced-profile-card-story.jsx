@@ -68,7 +68,7 @@ class AkProfilecardMultiProfiles extends PureComponent {
         &nbsp;
         <button onClick={() => this.reloadCardData('1')}>Set card data to profile</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData('error:NotFound')}>Set card data to error</button>
+        <button onClick={() => this.reloadCardData('error:default')}>Set card data to error</button>
         &nbsp;
         <button onClick={this.flushStoryCache}>Delete cache</button>
       </div>
@@ -80,6 +80,24 @@ storiesOf(`${name}-resourced`, module)
   .add('mock data', () => (
     <div style={canvasStyle}>
       <AkProfilecardMultiProfiles />
+    </div>
+  ))
+  .add('mock api /w user not found', () => (
+    <div style={canvasStyle}>
+      <AkProfilecardResourced
+        cloudId="bogus-cloud-id"
+        userId="error:NotFound"
+        resourceClient={mockClient}
+      />
+    </div>
+  ))
+  .add('mock api /w generic error', () => (
+    <div style={canvasStyle}>
+      <AkProfilecardResourced
+        cloudId="bogus-cloud-id"
+        userId="error:default"
+        resourceClient={mockClient}
+      />
     </div>
   ))
   .add('mock api w/o user-id', () => (
@@ -94,15 +112,6 @@ storiesOf(`${name}-resourced`, module)
       <AkProfilecardResourced
         userId={3}
         resourceClient={mockClient}
-      />
-    </div>
-  ))
-  .add('mock api w/ error response', () => (
-    <div style={canvasStyle}>
-      <AkProfilecardResourced
-        cloudId="bogus-cloud-id"
-        resourceClient={mockClient}
-        userId="error:NotFound"
       />
     </div>
   ));

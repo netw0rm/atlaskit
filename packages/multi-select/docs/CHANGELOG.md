@@ -1,5 +1,8 @@
 # @atlaskit/multi-select
 
+## 7.1.2 (2017-09-11)
+
+* bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))
 ## 7.1.1 (2017-09-05)
 
 * bug fix; update styles for ie11 to respect flex-wrap ([7cec339](https://bitbucket.org/atlassian/atlaskit/commits/7cec339))

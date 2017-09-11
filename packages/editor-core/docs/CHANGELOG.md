@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 46.19.2 (2017-09-11)
+
+* bug fix; updated table floating controls ([b653ab2](https://bitbucket.org/atlassian/atlaskit/commits/b653ab2))
+* bug fix; removed popup from tables (issues closed: ed-2486) ([65e34c6](https://bitbucket.org/atlassian/atlaskit/commits/65e34c6))
 ## 46.19.1 (2017-09-11)
 
 * bug fix; upgrade @atlaskit/button and @atlaskit/button-group dependencies (issues closed: #ed-2658) ([36c2820](https://bitbucket.org/atlassian/atlaskit/commits/36c2820))

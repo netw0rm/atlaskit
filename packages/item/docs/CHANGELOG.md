@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 3.1.4 (2017-09-11)
+
+* bug fix; selected item text colour is now unchanged when hovered (issues closed: ak-3308) ([e8be246](https://bitbucket.org/atlassian/atlaskit/commits/e8be246))
 ## 3.1.3 (2017-09-06)
 
 * bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))

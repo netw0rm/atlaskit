@@ -3,16 +3,19 @@ import PropTypes from 'prop-types';
 import { AtlassianLogo } from '@atlaskit/logo';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-import LockFilledIcon from '@atlaskit/icon/glyph/lock-filled';
+import Lozenge from '@atlaskit/lozenge';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestAccessFooter from '../styled/RequestAccessFooter';
+import RequestAccessHeader from '../styled/RequestAccessHeader';
+import RequestAccessLozengeDiv from '../styled/RequestAccessLozengeDiv';
+import RequestAccessImage from '../styled/RequestAccessImage';
 import RequestAccessDiv from '../styled/RequestAccessDiv';
 
 export class RequestTrialAccessBase extends Component {
   static propTypes = {
-    banner: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
     productLogo: PropTypes.element,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
@@ -39,28 +42,32 @@ export class RequestTrialAccessBase extends Component {
   };
 
   render() {
-    const { productLogo, banner, heading, message } = this.props;
+    const { productLogo, image, heading, message } = this.props;
     return (
       <ModalDialog
         isOpen
         width={'400px'}
         header={
           <div>
-            <img src={banner} alt="" />
-            <span><LockFilledIcon label="" size="small" /> Inactive on your site</span>
+            <RequestAccessHeader>
+              {productLogo}
+              <RequestAccessLozengeDiv>
+                <Lozenge isBold>Inactive on your site</Lozenge>
+              </RequestAccessLozengeDiv>
+            </RequestAccessHeader>
+            <RequestAccessImage src={image} alt="" />
           </div>
         }
         footer={
           <RequestAccessFooter>
             <Button appearance="primary" onClick={this.handleRequestAccessClick}>
-              Request access
+              Request a trial
             </Button>
-            <Button appearance="subtle-link" onClick={this.handleCancelClick}>Cancel</Button>
+            <Button appearance="subtle-link" onClick={this.handleCancelClick}>Close</Button>
           </RequestAccessFooter>
         }
       >
         <RequestAccessDiv>
-          {productLogo}
           <RequestTrialHeader>{heading}</RequestTrialHeader>
           {React.isValidElement(message) ? message : <p>{message}</p>}
         </RequestAccessDiv>
@@ -75,7 +82,7 @@ export default withXFlowProvider(
     xFlow: { config: { productLogo, requestTrial }, requestTrialAccess, cancelRequestTrialAccess },
   }) => ({
     productLogo,
-    banner: requestTrial.accessBanner,
+    image: requestTrial.accessImage,
     heading: requestTrial.accessHeading,
     message: requestTrial.accessMessage,
     prompt: requestTrial.notePrompt,

@@ -100,8 +100,8 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(this.emojiRepository.getAsciiMap(), 'getAsciiMap');
   }
 
-  getFrequentlyUsed(): Promise<EmojiDescription[]> {
-    return this.promiseBuilder(this.emojiRepository.getFrequentlyUsed(), 'getFrequentlyUsed');
+  getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
+    return this.promiseBuilder(this.emojiRepository.getFrequentlyUsed(options), 'getFrequentlyUsed');
   }
 
   recordSelection?(emoji: EmojiDescription): Promise<any> {

@@ -7,7 +7,7 @@ const WIDTH_OF_368_PX_WITH_PADDING = 328;
 
 const NoteText = styled.textarea`
   background-color: ${colors.N10};
-  border: solid 1px #ebedf0;
+  border: solid 1px ${colors.N30};
   border-radius: ${borderRadius}px;
   font-size: ${fontSize}px;
   height: 100px;

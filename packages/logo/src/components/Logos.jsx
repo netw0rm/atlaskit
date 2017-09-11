@@ -1,9 +1,14 @@
 import React from 'react';
-import AtlassianLogoText from '../logos/atlassian.svg';
-import BitbucketLogoText from '../logos/bitbucket.svg';
-import ConfluenceLogoText from '../logos/confluence.svg';
-import HipchatLogoText from '../logos/hipchat.svg';
-import JiraLogoText from '../logos/jira.svg';
+import AtlassianLogoText from '../logos/atlassian';
+import BitbucketLogoText from '../logos/bitbucket';
+import ConfluenceLogoText from '../logos/confluence';
+import HipchatLogoText from '../logos/hipchat';
+import JiraLogoText from '../logos/jira';
+import JiraCoreLogoText from '../logos/jira-core';
+import JiraServiceDeskLogoText from '../logos/jira-service-desk';
+import JiraSoftwareLogoText from '../logos/jira-software';
+import StatuspageLogoText from '../logos/statuspage';
+import StrideLogoText from '../logos/stride';
 import Logo from './LogoBase';
 import {
   atlassianTypeOffset,
@@ -11,37 +16,71 @@ import {
   confluenceTypeOffset,
   hipchatTypeOffset,
   jiraTypeOffset,
+  jiraCoreTypeOffset,
+  jiraServiceDeskTypeOffset,
+  jiraSoftwareTypeOffset,
+  statuspageTypeOffset,
+  strideTypeOffset,
 } from '../styled/typeOffsetRatios';
 
-const AtlassianLogo = props => (
+export const AtlassianLogo = props => (
   <Logo {...props} typeOffsetRatio={atlassianTypeOffset} >
     <AtlassianLogoText />
   </Logo>
 );
 
-const BitbucketLogo = props => (
+export const BitbucketLogo = props => (
   <Logo {...props} typeOffsetRatio={bitbucketTypeOffset} >
     <BitbucketLogoText />
   </Logo>
 );
 
-const ConfluenceLogo = props => (
+export const ConfluenceLogo = props => (
   <Logo {...props} typeOffsetRatio={confluenceTypeOffset} >
     <ConfluenceLogoText />
   </Logo>
 );
 
-const HipchatLogo = props => (
+export const HipchatLogo = props => (
   <Logo {...props} typeOffsetRatio={hipchatTypeOffset} >
     <HipchatLogoText />
   </Logo>
 );
 
-const JiraLogo = props => (
+export const JiraLogo = props => (
   <Logo {...props} typeOffsetRatio={jiraTypeOffset} >
     <JiraLogoText />
   </Logo>
 );
 
+export const JiraCoreLogo = props => (
+  <Logo {...props} typeOffsetRatio={jiraCoreTypeOffset} >
+    <JiraCoreLogoText />
+  </Logo>
+);
+
+export const JiraServiceDeskLogo = props => (
+  <Logo {...props} typeOffsetRatio={jiraServiceDeskTypeOffset} >
+    <JiraServiceDeskLogoText />
+  </Logo>
+);
+
+export const JiraSoftwareLogo = props => (
+  <Logo {...props} typeOffsetRatio={jiraSoftwareTypeOffset} >
+    <JiraSoftwareLogoText />
+  </Logo>
+);
+
+export const StatuspageLogo = props => (
+  <Logo {...props} typeOffsetRatio={statuspageTypeOffset} >
+    <StatuspageLogoText />
+  </Logo>
+);
+
+export const StrideLogo = props => (
+  <Logo {...props} typeOffsetRatio={strideTypeOffset} >
+    <StrideLogoText />
+  </Logo>
+);
+
 export default AtlassianLogo;
-export { AtlassianLogo, BitbucketLogo, ConfluenceLogo, HipchatLogo, JiraLogo };

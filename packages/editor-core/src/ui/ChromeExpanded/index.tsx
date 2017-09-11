@@ -1,5 +1,4 @@
-import AkButton from '@atlaskit/button';
-import AkButtonGroup from '@atlaskit/button-group';
+import AkButton, { ButtonGroup as AkButtonGroup } from '@atlaskit/button';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { ActivityProvider } from '@atlaskit/activity';
@@ -41,7 +40,6 @@ import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
-import TableFloatingControls from '../TableFloatingControls';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
@@ -325,14 +323,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null}
-
-          {pluginStateTable && !disabled &&
-            <TableFloatingControls
-              pluginState={pluginStateTable}
-              editorView={editorView}
-              popupsMountPoint={this.maxHeightContainer}
-              popupsBoundariesElement={this.maxHeightContainer}
-            /> }
 
           {pluginStateTable && !disabled &&
             <TableFloatingToolbar

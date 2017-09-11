@@ -268,7 +268,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.stop.save', () => {
     editor
-      .find('AkButton')
+      .find('Button')
       .filterWhere(n => n.text() === 'Save')
       .simulate('click');
 
@@ -277,7 +277,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.stop.cancel', () => {
     editor
-      .find('AkButton')
+      .find('Button')
       .filterWhere(n => n.text() === 'Cancel')
       .simulate('click');
 
@@ -360,7 +360,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     { value: 'heading5', name: 'Heading 5' },
   ].forEach(blockType => {
     it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarBlockType').find('AkButton').simulate('click');
+      editor.find('ToolbarBlockType').find('ToolbarButton').simulate('click');
       editor
         .find('ToolbarBlockType')
         .find('Item')
@@ -377,7 +377,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     { value: 'blockquote', name: 'Block quote' },
   ].forEach(blockType => {
     it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarInsertBlock').find('AkButton').simulate('click');
+      editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
       editor
         .find('Item')
         .filterWhere(n => n.text().indexOf(blockType.name) > 0)

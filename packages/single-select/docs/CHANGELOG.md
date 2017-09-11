@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 2.0.1 (2017-09-11)
+
+* bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))
 ## 2.0.0 (2017-09-06)
 
 * bug fix; fix how gridsize is implemented in styles ([586d583](https://bitbucket.org/atlassian/atlaskit/commits/586d583))

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "config": {
     "access": "public"
   },
@@ -42,7 +42,6 @@
   "devDependencies": {
     "@atlaskit/button": "^1.1.2",
     "@atlaskit/editor-hipchat": "*",
-    "@atlaskit/emoji": "^27.0.0",
     "@atlaskit/media-core": "^9.0.0",
     "@atlaskit/media-test-helpers": "^7.0.0",
     "@atlaskit/mention": "^7.3.4",

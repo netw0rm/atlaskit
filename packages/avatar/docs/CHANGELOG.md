@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.0.3 (2017-09-11)
+
+* bug fix; limit avatar + more count to maxCount size (issues closed: ak-3472) ([3516192](https://bitbucket.org/atlassian/atlaskit/commits/3516192))
 ## 8.0.2 (2017-09-06)
 
 

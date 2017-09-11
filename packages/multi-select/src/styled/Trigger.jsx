@@ -6,6 +6,27 @@ const gridSizeUnitless = gridSize();
 
 const lineHeightDefault = (gridSizeUnitless * 2) / fontSize();
 
+const getPlaceholderStyle = style => css`
+&::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  ${style}
+}
+&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   ${style}
+   opacity:  1;
+}
+&::-moz-placeholder { /* Mozilla Firefox 19+ */
+   ${style}
+   opacity:  1;
+}
+&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   ${style}
+}
+&::-ms-input-placeholder { /* Microsoft Edge */
+   ${style}
+}
+`;
+const getPlaceholderColor = css`color: ${colors.placeholderText};`;
+
 const Content = styled.div`
   flex: 1 1 auto;
   margin: 3px ${gridSizeUnitless}px; /* magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699 */
@@ -34,10 +55,7 @@ const Input = styled.input`
   line-height: ${lineHeightDefault};
   color: ${colors.text};
 
-  &::placeholder {
-    font-size: 14px;
-    color: ${colors.N200};
-  }
+  ${getPlaceholderStyle(getPlaceholderColor)}
 `;
 
 const TriggerDiv = styled.div`

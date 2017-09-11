@@ -1,4 +1,4 @@
-import {storiesOf} from '@kadira/storybook';
+import {storiesOf, action} from '@kadira/storybook';
 import * as React from 'react';
 
 import {Avatar, AvatarPickerDialog} from '../../src';
@@ -9,8 +9,19 @@ const avatars: Array<Avatar> = generateAvatars(30);
 
 storiesOf('Avatar Picker', {})
   .add('With imageSource', () => (
-    <AvatarPickerDialog avatars={avatars} imageSource={tallImage}/>
+    <AvatarPickerDialog
+      avatars={avatars}
+      imageSource={tallImage}
+      onImagePicked={action('onSaveImage')}
+      onAvatarPicked={action('onSaveAvatar')}
+      onCancel={action('onCancel')}
+    />
   ))
   .add('Without imageSource', () => (
-    <AvatarPickerDialog avatars={avatars} />
+    <AvatarPickerDialog
+      avatars={avatars}
+      onImagePicked={action('onSaveImage')}
+      onAvatarPicked={action('onSaveAvatar')}
+      onCancel={action('onCancel')}
+    />
   ));

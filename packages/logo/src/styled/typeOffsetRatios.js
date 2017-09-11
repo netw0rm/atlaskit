@@ -5,8 +5,13 @@ at an unpredictable distance, we need to define the distance here.
 
 // 1st value is horizontal type offset
 // 2nd value is raw SVG height
-export const atlassianTypeOffset = 28 / 29;
-export const bitbucketTypeOffset = 34 / 29;
-export const confluenceTypeOffset = 34 / 28;
-export const hipchatTypeOffset = 38 / 31;
-export const jiraTypeOffset = 33 / 32;
+export const atlassianTypeOffset = 43 / 32;
+export const bitbucketTypeOffset = 42 / 32;
+export const confluenceTypeOffset = 42 / 32;
+export const hipchatTypeOffset = 42 / 32;
+export const jiraTypeOffset = 42 / 32;
+export const jiraCoreTypeOffset = 37 / 32;
+export const jiraServiceDeskTypeOffset = 36 / 32;
+export const jiraSoftwareTypeOffset = 41 / 32;
+export const statuspageTypeOffset = 42 / 32;
+export const strideTypeOffset = 42 / 32;

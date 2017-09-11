@@ -1,5 +1,9 @@
 # @atlaskit/field-text
 
+## 4.0.1 (2017-09-11)
+
+* bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))
+* bug fix; add placeholder color for light and dark mode ([0632c02](https://bitbucket.org/atlassian/atlaskit/commits/0632c02))
 ## 4.0.0 (2017-08-30)
 
 

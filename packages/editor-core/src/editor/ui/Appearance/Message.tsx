@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { akColorR100 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
@@ -12,19 +13,19 @@ import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
 `;
 
 const pulseBackgroundReverse = keyframes`
   0% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
   50% {
     background-color: auto;
   }
   100% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
 `;
 

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "501.0.0",
+  "version": "512.0.0",
   "description": "The AtlasKit Website",
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production ATLASKIT_SITE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
@@ -15,19 +15,19 @@
     "start": "yarn build-data && yarn serve"
   },
   "dependencies": {
-    "@atlaskit/button": "^3.5.0",
+    "@atlaskit/button": "^5.1.2",
     "@atlaskit/button-group": "^1.0.11",
     "@atlaskit/css-reset": "^1.0.5",
     "@atlaskit/dropdown-menu": "^1.1.13",
     "@atlaskit/dynamic-table": "^4.5.1",
     "@atlaskit/field-text": "^3.0.0",
-    "@atlaskit/icon": "^6.0.0",
+    "@atlaskit/icon": "^9.0.0",
     "@atlaskit/inline-message": "^2.0.0",
     "@atlaskit/lozenge": "^3.0.0",
-    "@atlaskit/navigation": "^21.2.1",
-    "@atlaskit/page": "^3.0.4",
+    "@atlaskit/navigation": "^22.0.0",
+    "@atlaskit/page": "^4.4.2",
     "@atlaskit/theme": "^2.0.0",
-    "@atlaskit/util-shared-styles": "^1.6.1",
+    "@atlaskit/util-shared-styles": "^2.10.3",
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",

@@ -27,7 +27,7 @@ export interface PredefinedAvatarListProps {
   avatars: Array<Avatar>;
   selectedAvatar?: Avatar;
   onShowMore?: () => void;
-  onAvatarSelected?: (avatar: Avatar) => void;
+  onAvatarSelected: (avatar: Avatar) => void;
 }
 
 export interface PredefinedAvatarListState {

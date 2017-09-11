@@ -24,8 +24,8 @@
     "dist"
   ],
   "dependencies": {
-    "ak-field-base": "^6.4.2",
-    "@atlaskit/util-shared-styles": "^2.0.1",
+    "@atlaskit/field-base": "8.0.2",
+    "@atlaskit/theme": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
@@ -39,9 +39,8 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/field-radio-group": "*",
-    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {

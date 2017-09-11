@@ -17,7 +17,8 @@
     "prepublish": "CLI=1 npm run build && cd ../.. && npm run prepublish/single @atlaskit/icon",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
-    "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+    "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
     "storybook": "../../build/bin/storybook.single.sh"
   },
   "files": [
@@ -44,13 +45,12 @@
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/button": "^5.1.2",
     "@atlaskit/dynamic-table": "^3.0.0",
     "@atlaskit/field-text": "^2.7.0",
     "@atlaskit/icon": "* || > 8.0.0-beta",
     "@atlaskit/modal-dialog": "^2.1.1",
-    "@atlaskit/tooltip": "^1.2.0",
+    "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/util-readme": "^3.1.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-core": "^6.24.1",

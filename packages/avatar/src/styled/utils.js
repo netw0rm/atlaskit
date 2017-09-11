@@ -39,7 +39,7 @@ export function getAvatarDimensions(
 export function getInnerStyles(props: AvatarPropTypes) {
   const boxSizing: string = 'content-box';
   const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
-  const isInteractive: boolean = Boolean(props.isInteractive || props.href || props.onClick);
+  const isInteractive: boolean = Boolean(props.href || props.onClick);
 
   let backgroundColor = props.borderColor || colors.background;
   let cursor = 'default';

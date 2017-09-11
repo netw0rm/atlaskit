@@ -177,6 +177,10 @@ const iconIds = [
   'issues',
 
   'jira',
+  'jira-core',
+  'jira-service-desk',
+  'jira-software',
+
   'jira/blocker',
   'jira/capture',
   'jira/critical',
@@ -273,6 +277,8 @@ const iconIds = [
   'sign-out',
   'star-filled',
   'star',
+  'statuspage',
+  'stride',
   'subtask',
   'switcher',
   'table',

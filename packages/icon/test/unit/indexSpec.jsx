@@ -10,30 +10,6 @@ import components from '../../docs/icons';
 describe(name, () => {
   describe('exports', () => {
     it('are properly defined for atomic ones', () => {
-      const arrayCompare = (actual, expected) => {
-        expect(actual.length).toBe(expected.length);
-
-        for (let i = 0; i < actual.length; i++) {
-          if (actual[i] !== expected[i]) {
-            let actualContext = '... ';
-            let expectedContext = '... ';
-
-            for (let j = -2; j <= 2; j++) {
-              if (i + j >= 0 && i + j < actual.length) {
-                actualContext = `${actualContext} ${actual[i + j]}, `;
-                expectedContext = `${expectedContext} ${expected[i + j]}, `;
-              }
-            }
-
-            if (i + 1 < expected.length && actual[i] === expected[i + 1]) {
-              return `Missing value ${expected[i]}: ${actualContext} !== ${expectedContext}`;
-            }
-            return `Found unexpected value ${actual[i]}: ${actualContext} !== ${expectedContext}`;
-          }
-        }
-        return '';
-      };
-
       // NOTE Please remember:
       // An addition is a feature
       // a removal or rename is a BREAKING CHANGE
@@ -221,7 +197,11 @@ describe(name, () => {
         'issue',
         'issues',
 
+        'jira-core',
+        'jira-service-desk',
+        'jira-software',
         'jira',
+
         'jira/blocker',
         'jira/capture',
         'jira/critical',
@@ -318,6 +298,8 @@ describe(name, () => {
         'sign-out',
         'star-filled',
         'star',
+        'statuspage',
+        'stride',
         'subtask',
         'switcher',
         'table',
@@ -359,8 +341,7 @@ describe(name, () => {
 
       const actual = Object.keys(components);
 
-      const errorMsg = arrayCompare(actual, expected);
-      expect(errorMsg).toBe('');
+      expect(actual).toEqual(expected);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.
         // As the sole purpose of this component is providing icons:

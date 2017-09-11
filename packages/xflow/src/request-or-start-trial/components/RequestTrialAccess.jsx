@@ -4,6 +4,8 @@ import { AtlassianLogo } from '@atlaskit/logo';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
+import { FormattedMessage } from 'react-intl';
+import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
@@ -13,7 +15,7 @@ import RequestAccessLozengeDiv from '../styled/RequestAccessLozengeDiv';
 import RequestAccessImage from '../styled/RequestAccessImage';
 import RequestAccessDiv from '../styled/RequestAccessDiv';
 
-export class RequestTrialAccessBase extends Component {
+export class RequestTrialAccess extends Component {
   static propTypes = {
     image: PropTypes.string.isRequired,
     productLogo: PropTypes.element,
@@ -52,18 +54,31 @@ export class RequestTrialAccessBase extends Component {
             <RequestAccessHeader>
               {productLogo}
               <RequestAccessLozengeDiv>
-                <Lozenge isBold>Inactive on your site</Lozenge>
+                <Lozenge isBold>
+                  <FormattedMessage
+                    id="xflow.generic.request-trial.inactive-lozenge"
+                    defaultMessage="Inactive on your site"
+                  />
+                </Lozenge>
               </RequestAccessLozengeDiv>
             </RequestAccessHeader>
-            <RequestAccessImage src={image} alt="" />
+            <RequestAccessImage src={image} alt="files" />
           </div>
         }
         footer={
           <RequestAccessFooter>
             <Button appearance="primary" onClick={this.handleRequestAccessClick}>
-              Request a trial
+              <FormattedMessage
+                id="xflow.generic.request-trial.request-button"
+                defaultMessage="Request a trial"
+              />
             </Button>
-            <Button appearance="subtle-link" onClick={this.handleCancelClick}>Close</Button>
+            <Button appearance="subtle-link" onClick={this.handleCancelClick}>
+              <FormattedMessage
+                id="xflow.generic.request-trial.close-button"
+                defaultMessage="Close"
+              />
+            </Button>
           </RequestAccessFooter>
         }
       >
@@ -75,6 +90,8 @@ export class RequestTrialAccessBase extends Component {
     );
   }
 }
+
+export const RequestTrialAccessBase = withAnalytics(RequestTrialAccess);
 
 export default withXFlowProvider(
   RequestTrialAccessBase,

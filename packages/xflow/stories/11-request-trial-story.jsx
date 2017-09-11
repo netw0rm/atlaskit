@@ -23,11 +23,18 @@ const defaultProps = {
 storiesOf('RequestTrial')
   .add('Request Trial (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <RequestTrialAccessBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+      <RequestTrialAccessBase
+        {...defaultProps}
+        onComplete={() => Promise.resolve(true)}
+        onCancel={() => Promise.resolve(true)}
+      />
     )
   )
   .add('RequestTrialWithNote (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <RequestTrialNoteBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+      <RequestTrialNoteBase
+        {...defaultProps}
+        onComplete={() => Promise.resolve(true)}
+      />
     )
 );

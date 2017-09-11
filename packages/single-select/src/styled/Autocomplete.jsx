@@ -3,22 +3,25 @@ import { colors, gridSize, math } from '@atlaskit/theme';
 import placeholderStyles from './placeholderStyles';
 
 /* Placeholder has been temporarily inlined until we have a helper library for such things */
-const placeholderTemp = styles => (
-  css`
-    &::-webkit-input-placeholder {
-      ${styles}
-    }
-    &:-moz-placeholder {
-      ${styles}
-    }
-    &::-moz-placeholder {
-      ${styles}
-    }
-    &:-ms-input-placeholder {
-      ${styles}
-    }
-  `
-);
+const getPlaceholderStyle = style => css`
+&::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  ${style}
+}
+&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   ${style}
+   opacity:  1;
+}
+&::-moz-placeholder { /* Mozilla Firefox 19+ */
+   ${style}
+   opacity:  1;
+}
+&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   ${style}
+}
+&::-ms-input-placeholder { /* Microsoft Edge */
+   ${style}
+}
+`;
 
 const AutocompleteWrapper = styled.div`
   flex: 1 1 auto;
@@ -38,7 +41,7 @@ const AutocompleteInput = styled.input`
   padding: 0;
   width: 100%;
 
-  ${placeholderTemp(placeholderStyles)}
+  ${getPlaceholderStyle(placeholderStyles)}
 `;
 AutocompleteInput.displayName = 'SingleSelectAutocompleteInput';
 

@@ -128,4 +128,17 @@ describe('requestService', () => {
       expect(url.indexOf('bacon=crispy') >= 0, 'sauce query param').to.equal(true);
     });
   });
+
+  it('handles 204 responses', () => {
+    fetchMock.mock({
+      matcher: `begin:${url}`,
+      response: 204,
+      name: 'request',
+    });
+    const serviceConfig: ServiceConfig = {
+      url
+    };
+    return requestService(serviceConfig).then(() => expect(true).to.equal(true))
+                                        .catch(() => expect(false).to.equal(true)); // should not error
+  });
 });

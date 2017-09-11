@@ -7,7 +7,7 @@ import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { Transformer } from '../../';
 
-export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
+export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 

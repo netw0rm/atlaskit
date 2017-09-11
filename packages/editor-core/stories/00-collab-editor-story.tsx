@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';

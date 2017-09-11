@@ -1,5 +1,14 @@
 # @atlaskit/media-avatar-picker
 
+## 3.0.0 (2017-09-11)
+
+* bug fix; ensures boolean value for hasRenderedImage variable ([a9d53e2](https://bitbucket.org/atlassian/atlaskit/commits/a9d53e2))
+
+* bug fix; renames AvatarPickerDialog props and adds more descriptive variable names and comment ([f323500](https://bitbucket.org/atlassian/atlaskit/commits/f323500))
+* breaking; new required props for AvatarPickerDialog and ImageNavigator ([f119bfe](https://bitbucket.org/atlassian/atlaskit/commits/f119bfe))
+* breaking; adds onSaveAvatar, onSaveImage and onCancel props to AvatarPickerDialog ([f119bfe](https://bitbucket.org/atlassian/atlaskit/commits/f119bfe))
+
+
 ## 2.3.0 (2017-08-11)
 
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))

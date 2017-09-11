@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "46.17.2",
+  "version": "46.19.0",
   "config": {
     "access": "public"
   },
@@ -47,8 +47,7 @@
   ],
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/button": "^1.0.10",
-    "@atlaskit/button-group": "^1.0.7",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
@@ -96,8 +95,7 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/button": "^3.0.0",
-    "@atlaskit/button-group": "^1.1.0",
+    "@atlaskit/button": "^5.1.1",
     "@atlaskit/media-test-helpers": "^7.0.0",
     "@atlaskit/util-data-test": "^7.0.0",
     "chai-as-promised": "^6.0.0",

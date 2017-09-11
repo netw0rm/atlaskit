@@ -3,7 +3,7 @@ import {
   EditorState,
 } from '../../../prosemirror';
 
-export type CollabEvent = 'init' | 'data' | 'error';
+export type CollabEvent = 'init' | 'connected' | 'data' | 'telepointer' | 'presence' | 'error';
 
 export interface CollabEditProvider {
   initialize(getState: () => any): this;

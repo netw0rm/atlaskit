@@ -7,7 +7,11 @@ import {
   akEditorTableBorderSelected,
   akEditorTableFloatingControls,
 } from '../../../styles';
-import { akGridSizeUnitless, akColorN80 } from '@atlaskit/util-shared-styles';
+import {
+  akGridSizeUnitless,
+  akColorN80,
+} from '@atlaskit/util-shared-styles';
+import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
 const tableStyle = `
   {
@@ -203,6 +207,8 @@ const ContentStyles = styled.div`
     display: inline-table;
   }
   .ProseMirror table ${tableStyle}
+
+  .ProseMirror .telepointer ${telepointerStyle}
 `;
 
 export default ContentStyles;

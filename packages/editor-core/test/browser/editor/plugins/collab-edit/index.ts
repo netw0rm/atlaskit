@@ -1,9 +1,10 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import createEditor from '../../../../helpers/create-editor';
-import collabEdit from '../../../../../src/editor/plugins/collab-edit';
+import collabEdit, { pluginKey as collabEditPluginKey } from '../../../../../src/editor/plugins/collab-edit';
 import ProviderFactory from '../../../../../src/providerFactory';
 import { MockCollabEditProvider } from '../../../../../stories/mock-collab-provider';
+import { findPointer } from '../../../../../src/editor/plugins/collab-edit/utils';
 
 const setupEditor = (setProvider: boolean = true) => {
   const providerFactory = new ProviderFactory();
@@ -133,5 +134,114 @@ describe('editor/plugins/collab-edit', () => {
     });
 
   });
+
+  describe('telepointers', () => {
+
+    it('should emit telepointer-data for local changes', async () => {
+      const { editorView, providerPromise } = setupEditor();
+      const provider = await providerPromise;
+      const spy = sandbox.spy(provider, 'sendMessage');
+
+      const { tr } = editorView.state;
+      tr.setMeta('sessionId', { sid: 'test' });
+      tr.insertText('!');
+      editorView.dispatch(tr);
+
+      expect(spy.called).to.equal(true);
+      expect(spy.calledWith({
+        'type': 'telepointer',
+        'selection': {
+          'type': 'textSelection',
+          'anchor': 13,
+          'head': 13
+        },
+        'sessionId': 'test'
+      })).to.equal(true);
+    });
+
+    it('should keep track of remote telepointers in plugin state', async () => {
+      const { editorView, providerPromise } = setupEditor();
+      const provider = await providerPromise;
+
+      provider.emit('telepointer', {
+        'type': 'telepointer',
+        'selection': {
+          'type': 'textSelection',
+          'anchor': 5,
+          'head': 5
+        },
+        'sessionId': 'test'
+      });
+
+      const { decorations } = collabEditPluginKey.getState(editorView.state);
+
+      expect(findPointer('test', decorations)!.spec).to.deep.equal({
+        'pointer': {
+          'sessionId': 'test'
+        }
+      });
+    });
+
+  });
+
+  // tslint:disable-next-line:no-only-tests
+  describe('presence', () => {
+    it('should add new participants', async () => {
+      const { editorView, providerPromise } = setupEditor();
+      const provider = await providerPromise;
+
+      provider.emit('presence', {
+        'left': [],
+        'joined': [{
+          'sessionId': 'test',
+          'lastActive': 1,
+          'avatar': 'avatar.png'
+        }]
+      });
+
+      const { participants } = collabEditPluginKey.getState(editorView.state);
+      expect(participants).to.deep.equal([{
+        'avatar': 'avatar.png',
+        'lastActive': 1,
+        'sessionId': 'test'
+      }]);
+
+    });
+
+    it('should remove participants who left', async () => {
+      const { editorView, providerPromise } = setupEditor();
+      const provider = await providerPromise;
+
+      provider.emit('presence', {
+        'joined': [
+          {
+            'sessionId': 'test',
+            'lastActive': 1,
+            'avatar': 'avatar.png'
+          },
+          {
+            'sessionId': 'test-2',
+            'lastActive': 1,
+            'avatar': 'avatar-2.png'
+          },
+        ]
+      });
+
+      provider.emit('presence', {
+        'left': [{
+          'sessionId': 'test',
+        }],
+      });
+
+      const { participants } = collabEditPluginKey.getState(editorView.state);
+      expect(participants).to.deep.equal([{
+        'sessionId': 'test-2',
+        'lastActive': 1,
+        'avatar': 'avatar-2.png'
+      }]);
+
+    });
+  });
+
 
 });

@@ -61,7 +61,7 @@ export default class Slider extends PureComponent {
     // EventTarget can have these properties, so we cast it to Element through Object. This is
     // the safest thing we can do in this situation.
     // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
-    const target: HTMLInputElement = (e: Object);
+    const target: HTMLInputElement = (e.target: Object);
     const value = parseFloat(target.value);
     const { onChange } = this.props;
 

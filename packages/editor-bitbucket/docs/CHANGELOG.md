@@ -1,5 +1,8 @@
 # @atlaskit/editor-bitbucket
 
+## 3.4.2 (2017-09-11)
+
+* bug fix; fire onChange only when doc content is changed (issues closed: ed-2681) ([75dc43b](https://bitbucket.org/atlassian/atlaskit/commits/75dc43b))
 ## 3.4.1 (2017-09-05)
 
 * bug fix; added missing help dialog (issues closed: ed-2656) ([5de1771](https://bitbucket.org/atlassian/atlaskit/commits/5de1771))

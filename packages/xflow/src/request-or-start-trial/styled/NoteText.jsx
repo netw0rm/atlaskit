@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import { gridSize, math } from '@atlaskit/theme';
+import { borderRadius, colors, fontSize, gridSize, math } from '@atlaskit/theme';
 
 const NoteText = styled.textarea`
-  background-color: rgba(9, 30, 66, 0.02);
+  background-color: ${colors.N10};
   border: solid 1px #ebedf0;
-  border-radius: 3px;
-  font-size: 14px;
+  border-radius: ${borderRadius}px;
+  font-size: ${fontSize}px;
   height: 100px;
   line-height: 1.43;
   margin-top: ${math.multiply(gridSize, 1.5)}px;

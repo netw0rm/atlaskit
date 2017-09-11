@@ -22,20 +22,12 @@ export const PROSPECTIVE_PRICES_URL = '/admin/rest/billing/api/instance/prospect
  * This class will poll a specified site for a set period to check if it
  * has come up.
  * @param productKey product key being activated
- * @param redirectUri redirect location once activation has completed
  * @returns {*} Product checker object
  */
-export default (productKey, redirectUri) => {
+export default (productKey) => {
   let interval = null;
   let startTime = 0;
   let currentStatus = UNKNOWN;
-
-  async function isRedirectPageReady() {
-    const response = await fetch(redirectUri, {
-      cache: 'no-store',
-    });
-    return response.ok ? ACTIVE : UNKNOWN;
-  }
 
   async function hasProductBeenEvaluated() {
     const response = await fetch(PROSPECTIVE_PRICES_URL, {
@@ -129,7 +121,7 @@ export default (productKey, redirectUri) => {
         const poll = async () => {
           const status = await updateStatus();
           const timeElapsed = Date.now() - startTime;
-          const progress = (status === ACTIVE && await isRedirectPageReady() === ACTIVE)
+          const progress = (status === ACTIVE)
             ? 1 :
             easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
 

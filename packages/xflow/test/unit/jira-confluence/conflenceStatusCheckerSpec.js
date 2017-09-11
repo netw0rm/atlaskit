@@ -14,8 +14,6 @@ import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivat
 
 import confluenceStatusChecker from '../../../src/jira-confluence/confluenceStatusChecker';
 
-import { CONFLUENCE_REDIRECT } from '../../../src/jira-confluence/goToProduct';
-
 import {
   PRODUCT_USAGE_URL,
   PRICING_URL,
@@ -64,10 +62,6 @@ const mockProspectivePricesEndpointWithFailureStatus = (status) => {
   fetchMock.mock(PROSPECTIVE_PRICES_URL, status);
 };
 
-const mockConfluenceRedirectWithStatus = (status) => {
-  fetchMock.mock(CONFLUENCE_REDIRECT, status);
-};
-
 const toBeNumberInRange = (min, max) => ({
   asymmetricMatch: actual => typeof actual === 'number' && actual >= min && actual <= max,
 });
@@ -90,7 +84,6 @@ describe('confluenceStatusChecker', () => {
     it('will poll the product usage endpoint until confluence is active', async () => {
       mockPricingEndpointWithResponse(pricingActivating);
       mockProductUsageEndpointWithSuccess(5);
-      mockConfluenceRedirectWithStatus(200);
 
       const progressHandler = jest.fn();
       const result = await new Promise(async (resolve) => {

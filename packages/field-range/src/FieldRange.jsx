@@ -14,12 +14,6 @@ type State = {
   value: number;
 };
 
-type InputChangeEvent = Event & {
-  target: EventTarget & {
-    value: mixed,
-  },
-};
-
 const isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0;
 const eventName = isIE ? 'change' : 'input';
 const defaultStep = 0.1;
@@ -61,8 +55,14 @@ export default class Slider extends PureComponent {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  onInputChange = (e: InputChangeEvent) => {
-    const value = parseFloat(e.target.value);
+  onInputChange = (e: Event) => {
+    // Event.target is typed as an EventTarget but we need to access properties on it which are
+    // specific to HTMLInputElement. Due limitations of the HTML spec flow doesn't know that an
+    // EventTarget can have these properties, so we cast it to Element through Object. This is
+    // the safest thing we can do in this situation.
+    // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    const target: HTMLInputElement = (e: Object);
+    const value = parseFloat(target.value);
     const { onChange } = this.props;
 
     this.setState({ value });

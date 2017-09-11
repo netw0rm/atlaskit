@@ -61,13 +61,13 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  getNextFocusable = (indexItem: number | void, available: number | void) => {
+  getNextFocusable = (indexItem?: ?number, available?: number) => {
     if (!this.domItemsList) {
       return null;
     }
 
-    let currentItem = indexItem === undefined ? -1 : indexItem;
-    const latestAvailable = available === undefined ? currentItem : available;
+    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
+    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
 
     if (currentItem < this.domItemsList.length - 1) {
       currentItem++;
@@ -82,13 +82,14 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable;
   }
 
-  getPrevFocusable = (indexItem: number | void, available: number| void) => {
+  getPrevFocusable = (indexItem?: ?number, available?: number) => {
     if (!this.domItemsList) {
       return null;
     }
 
-    let currentItem = indexItem === undefined ? -1 : indexItem;
-    const latestAvailable = available === undefined ? currentItem : available;
+    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
+    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
+
     if (currentItem && currentItem > 0) {
       currentItem--;
 
@@ -104,7 +105,7 @@ export default class DropdownMenuStateless extends Component {
 
   domItemsList: ?NodeList<HTMLElement>
 
-  focusedItem: number | void
+  focusedItem: ?number
 
   triggerContainer: HTMLElement
 

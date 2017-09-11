@@ -39,7 +39,7 @@ export default class DropdownMenu extends Component {
 
   findActivatedGroup = (item: Object) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line
 
-  handleItemActivation = (attrs: Object) => {
+  handleItemActivation = (attrs: { event?: Event, item: Object }) => {
     const activatedItem = attrs.item;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];

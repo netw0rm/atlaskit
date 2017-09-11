@@ -9,6 +9,7 @@ import {
 } from 'akutil-shared-styles';
 
 import {
+  Decoration,
   DecorationSet,
 } from '../../../prosemirror';
 
@@ -63,7 +64,7 @@ export const getAvatarColor = (str: string) => {
 };
 // tslint:enable:no-bitwise
 
-export const findPointer = (id: string, decorations: DecorationSet) => {
+export const findPointer = (id: string, decorations: DecorationSet): Decoration | undefined => {
   let current = decorations.find();
   for (let i = 0; i < current.length; i++) {
     if (current[i].spec.pointer.sessionId === id) {

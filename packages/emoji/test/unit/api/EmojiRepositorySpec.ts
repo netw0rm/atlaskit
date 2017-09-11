@@ -431,13 +431,7 @@ describe('EmojiRepository', () => {
     it('should not be able to find by id for an emoji that has been deleted', () => {
       const repository = new EmojiRepository(copyEmojis);
       repository.delete(smileyEmoji);
-      expect(repository.findByShortName(smileyEmoji.id!), 'No smileys').to.equal(undefined);
-    });
-
-    it('should not be able to find by id for an emoji that has been deleted', () => {
-      const repository = new EmojiRepository(copyEmojis);
-      repository.delete(smileyEmoji);
-      expect(repository.findByShortName(smileyEmoji.id!), 'No smileys').to.equal(undefined);
+      expect(repository.findById(smileyEmoji.id!), 'No smileys').to.equal(undefined);
     });
 
     it('should not be able to find by ascii for an emoji that has been deleted', () => {

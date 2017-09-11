@@ -24,6 +24,7 @@ export const createGlobalTheme = (text: Text, background: Background): Provided 
     },
     selected: {
       background: chromatism.brightness(-20, background).hex,
+      text,
     },
     focus: {
       outline: text,

@@ -25,6 +25,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/app-switcher": "^3.1.1",
     "@atlaskit/avatar": "^4.0.6",
     "@atlaskit/blanket": "^2.4.3",
     "@atlaskit/dropdown-menu": "^3.8.0",

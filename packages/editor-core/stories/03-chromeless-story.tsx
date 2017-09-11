@@ -1,11 +1,11 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
-import Button, { ButtonGroup } from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
+import Button from '@atlaskit/button';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
-import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
@@ -37,7 +37,7 @@ const exampleDocument = {
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
-  .add('Message Editor with EditorContext', () =>
+  .add('Chromeless Editor', () =>
     <EditorContext>
       <div>
         <WithEditorActions
@@ -53,10 +53,16 @@ storiesOf(name, module)
           // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
             <Editor
-              {...getPropsPreset('message')}
-
+              appearance="chromeless"
               analyticsHandler={analyticsHandler}
-              maxHeight={305}
+              shouldFocus={true}
+
+              allowTextFormatting={true}
+              allowTasksAndDecisions={true}
+              allowHyperlinks={true}
+              allowCodeBlocks={true}
+
+              saveOnEnter={true}
 
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}

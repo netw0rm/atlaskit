@@ -1,5 +1,10 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.1 (2017-09-11)
+
+* bug fix; fix dependency in story to get emoji support files via the Editor. ([6b20943](https://bitbucket.org/atlassian/atlaskit/commits/6b20943))
+* bug fix; reset version.ts ([e3eccf1](https://bitbucket.org/atlassian/atlaskit/commits/e3eccf1))
+* bug fix; remove explicit dependency on emoji and get it via editor-core ([7d83371](https://bitbucket.org/atlassian/atlaskit/commits/7d83371))
 ## 5.4.0 (2017-09-06)
 
 

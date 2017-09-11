@@ -59,7 +59,7 @@ storiesOf(name, module)
      */
     const addonConfigs: AddonConfiguration[] = [
       {
-        text: 'Item one',
+        text: 'Render on click',
         icon: <DocumentIcon label="Item 1" />,
         renderOnClick: (editorActions, closePopup) => (
           <AddonComponentExample>
@@ -69,7 +69,7 @@ storiesOf(name, module)
         )
       },
       {
-        text: 'Item two',
+        text: 'Clear editor',
         icon: <AtlassianIcon label="Item 2" />,
         actionOnClick: editorActions => editorActions.clear()
       }

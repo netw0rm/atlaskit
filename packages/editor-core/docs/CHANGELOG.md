@@ -1,5 +1,26 @@
 # @atlaskit/editor-core
 
+## 46.19.0 (2017-09-11)
+
+* feature; add Chromeless appearance (issues closed: ed-2629) ([0466c4d](https://bitbucket.org/atlassian/atlaskit/commits/0466c4d))
+## 46.18.0 (2017-09-11)
+
+* bug fix; tslint fix ([39b2639](https://bitbucket.org/atlassian/atlaskit/commits/39b2639))
+* feature; cardEventHanlder now support an optional second argument to accept list of IDs if t (issues closed: ed-1774) ([6ed2276](https://bitbucket.org/atlassian/atlaskit/commits/6ed2276))
+
+
+
+* bug fix; fixed placeholder, transformer and Editor confluence storybook ([de73aef](https://bitbucket.org/atlassian/atlaskit/commits/de73aef))
+* bug fix; fix tslint ([ef20c32](https://bitbucket.org/atlassian/atlaskit/commits/ef20c32))
+* bug fix; fixed jiraissue nodeview ([ab9e750](https://bitbucket.org/atlassian/atlaskit/commits/ab9e750))
+* bug fix; pasting list converts first list item to paragraph. (issues closed: #ed-2647) ([15bbaf7](https://bitbucket.org/atlassian/atlaskit/commits/15bbaf7))
+
+* feature; added cxhtml transformer story ([2f18b50](https://bitbucket.org/atlassian/atlaskit/commits/2f18b50))
+* feature; change Addons api a little bit to allow composition (issues closed: ed-2680) ([6aee0b1](https://bitbucket.org/atlassian/atlaskit/commits/6aee0b1))
+* feature; added analytics tracking for unsupported content ([edef276](https://bitbucket.org/atlassian/atlaskit/commits/edef276))
+
+
+* feature; added missing cq features to editor-core (issues closed: ed-2635) ([600b257](https://bitbucket.org/atlassian/atlaskit/commits/600b257))
 ## 46.17.2 (2017-09-08)
 
 * bug fix; remove ourdated fallback attr, use text instead ([bffe13b](https://bitbucket.org/atlassian/atlaskit/commits/bffe13b))

@@ -238,7 +238,7 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
   });
 
   it('should close blocktype dropdown after second click', () => {
-    const trigger = editorWrapper.find('ToolbarBlockType AkButton');
+    const trigger = editorWrapper.find('ToolbarBlockType ToolbarButton');
 
     expect(trigger).to.have.length.above(0);
     expect(editorWrapper.find('ToolbarBlockType Group').length).to.equal(0);
@@ -252,7 +252,7 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
 
   it('should have option of tables in advance menu', () => {
     const toolbarInsertBlock = editorWrapper.find('ToolbarInsertBlock');
-    const trigger = toolbarInsertBlock.find('AkButton');
+    const trigger = toolbarInsertBlock.find('ToolbarButton');
 
     trigger.simulate('click');
 

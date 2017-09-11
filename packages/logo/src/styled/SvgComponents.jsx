@@ -12,9 +12,9 @@ export const TextPolygon = styled.polygon`${textFillStyle}`;
 export const TextRect = styled.rect`${textFillStyle}`;
 
 // elements for flat-color icon portion of logos
-export const IconPath = styled.path`
-  fill: ${getColor('iconColor')};
-`;
+const iconFillStyle = css`fill: ${getColor('iconColor')};`;
+export const IconPath = styled.path`${iconFillStyle}`;
+export const IconEllipse = styled.ellipse`${iconFillStyle}`;
 
 // elements for gradient portion of icons in logos
 export const IconGradientStart = styled.stop`

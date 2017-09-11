@@ -358,7 +358,9 @@ export default class Editor extends PureComponent<Props, State> {
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
-          this.handleChange();
+          if (tr.docChanged) {
+            this.handleChange();
+          }
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

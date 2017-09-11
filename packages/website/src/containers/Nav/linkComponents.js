@@ -1,22 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AkNavigationItem as NavigationItem } from '@atlaskit/navigation';
+import { AkNavigationItem } from '@atlaskit/navigation';
 
-/* eslint-disable react/prop-types */
-export const RouterNavigationItem = (props) => {
-  const { href, ...navItemProps } = props;
-  return (
-    <Link to={href} style={{ textDecoration: 'none' }}>
-      <NavigationItem {...navItemProps} />
-    </Link>
-  );
-};
+// eslint-disable-next-line react/prop-types
+const RouterLink = ({ children, href, ...otherProps }) => (
+  <Link to={href} {...otherProps} style={{ color: 'inherit' }}>
+    {children}
+  </Link>
+);
 
-export const ExternalNavigationItem = (props) => {
-  const { href, ...navItemProps } = props;
-  return (
-    <a href={href} style={{ textDecoration: 'none' }} target="_new">
-      <NavigationItem {...navItemProps} />
-    </a>
-  );
-};
+export const RouterNavigationItem = props => (
+  <AkNavigationItem linkComponent={RouterLink} {...props} />
+);
+
+export const ExternalNavigationItem = props => (
+  <AkNavigationItem {...props} target="_new" />
+);

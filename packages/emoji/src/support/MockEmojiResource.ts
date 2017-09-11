@@ -55,9 +55,14 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
   }
 
-  filter(query: string, options?: SearchOptions) {
+  filter(query?: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
-    this.lastQuery = query;
+    if (query) {
+      this.lastQuery = query;
+    } else {
+      this.lastQuery = '';
+    }
+
     this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
       this.notifyResult(result);
     });
@@ -95,14 +100,18 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     return this.promiseBuilder(this.emojiRepository.getAsciiMap(), 'getAsciiMap');
   }
 
-  getFrequentlyUsed(): Promise<EmojiDescription[]> {
-    return this.promiseBuilder(this.emojiRepository.getFrequentlyUsed(), 'getFrequentlyUsed');
+  getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
+    return this.promiseBuilder(this.emojiRepository.getFrequentlyUsed(options), 'getFrequentlyUsed');
   }
 
   recordSelection?(emoji: EmojiDescription): Promise<any> {
     this.recordedSelections.push(emoji);
     this.emojiRepository.used(emoji);
     return this.promiseBuilder(undefined, 'recordSelection');
+  }
+
+  deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean> {
+    return this.promiseBuilder(false, 'deleteSiteEmoji');
   }
 
   loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
@@ -155,9 +164,13 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
     }
   }
 
-  filter(query: string, options?: SearchOptions) {
+  filter(query?: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
-    this.lastQuery = query;
+    if (query) {
+      this.lastQuery = query;
+    } else {
+      this.lastQuery = '';
+    }
     this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => this.notifyResult(result));
   }
 

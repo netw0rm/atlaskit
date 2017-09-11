@@ -26,7 +26,7 @@ class BackBtn extends PureComponent<BackBtnProps, {}> {
 export interface PredefinedAvatarViewProps {
   avatars: Array<Avatar>;
   onGoBack?: () => void;
-  onAvatarSelected?: (avatar: Avatar) => void;
+  onAvatarSelected: (avatar: Avatar) => void;
 }
 
 export interface PredefinedAvatarViewState {

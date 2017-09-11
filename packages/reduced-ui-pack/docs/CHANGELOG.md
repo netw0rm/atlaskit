@@ -1,5 +1,9 @@
 # @atlaskit/reduced-ui-pack
 
+## 6.1.1 (2017-09-06)
+
+* bug fix; reduced-ui buttons now have correct horizontal padding (issues closed: ak-3457) ([31b66b7](https://bitbucket.org/atlassian/atlaskit/commits/31b66b7))
+
 ## 6.1.0 (2017-08-28)
 
 * feature; added switcher icon back ([de848a6](https://bitbucket.org/atlassian/atlaskit/commits/de848a6))

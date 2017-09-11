@@ -3,11 +3,13 @@ import { ReactElement, PureComponent } from 'react';
 import styled, { css } from 'styled-components';
 import { akGridSize, akColorN30 } from '@atlaskit/util-shared-styles';
 import {
-  Props as MediaProps,
   MEDIA_HEIGHT,
   FILE_WIDTH,
   LINK_WIDTH,
 } from '../../../ui/Media/MediaComponent';
+import { MediaProps } from './media';
+import { CardEvent } from '@atlaskit/media-card';
+import { CardSurroundings } from '../../../ui/Renderer';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;
@@ -156,6 +158,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   renderStrip() {
     const { children } = this.props;
     const { animate, offset, FilmstripView } = this.state;
+    const listIds = React.Children.map(children, (child: ReactElement<MediaProps>) => child.props.id);
     if (!FilmstripView) {
       return (
         <FilmStripLoaderWrapper>{
@@ -182,7 +185,25 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
             switch(child.props.type) {
               case 'file':
                 return React.cloneElement(child, {
-                  resizeMode: 'crop'
+                  resizeMode: 'crop',
+                  eventHandlers: {
+                    ...child.props.eventHandlers,
+                    media: {
+                      onClick: (event: CardEvent) => {
+                        if(!child.props
+                          || !child.props.eventHandlers
+                          || !child.props.eventHandlers.media
+                          || !child.props.eventHandlers.media.onClick) {
+                            return;
+                          }
+                        const surroundings: CardSurroundings = {
+                          collectionName: child.props.collection,
+                          list: listIds,
+                        };
+                        child.props.eventHandlers.media.onClick(event, surroundings);
+                      }
+                    }
+                  }
                 } as MediaProps);
 
               default:

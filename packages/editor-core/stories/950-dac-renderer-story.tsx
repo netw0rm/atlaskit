@@ -94,7 +94,7 @@ class DACRenderer extends PureComponent<{}, State> {
           onChange={this.onChange}
           value={this.state.value}
         />
-        <div style={{margin: '12px 0'}}>
+        <div style={{margin: '6px 0', maxHeight: '300px', overflow: 'auto'}}>
           {renderedContent}
         </div>
       </div>

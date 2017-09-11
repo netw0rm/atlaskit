@@ -12,9 +12,18 @@ import {uploadPlaceholder} from './images';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
+export interface CropProperties {
+  x: number;
+  y: number;
+  size: number;
+}
+
 export interface Props {
   imageSource?: string;
+  onImageChanged: (file: File, crop: CropProperties) => void;
   onLoad?: OnLoadHandler;
+  onPositionChanged: (x: number, y: number) => void;
+  onSizeChanged: (size: number) => void;
 }
 
 export interface Position {
@@ -26,12 +35,13 @@ export interface State {
   imageWidth?: number;
   imageHeight?: number;
   imagePos: Position;
-  imageInitPos: Position;
+  imageDragStartPos: Position;
   cursorInitPos?: Position;
   scale: number;
   isDragging: boolean;
   minScale?: number;
   fileImageSource?: string;
+  imageFile?: File;
   isDroppingFile: boolean;
 }
 
@@ -44,7 +54,7 @@ export class ImageNavigator extends Component<Props, State> {
       imagePos: {x: 0, y: 0},
       scale: 1,
       isDragging: false,
-      imageInitPos: {x: 0, y: 0},
+      imageDragStartPos: {x: 0, y: 0},
       fileImageSource: '',
       isDroppingFile: false
     };
@@ -68,18 +78,22 @@ export class ImageNavigator extends Component<Props, State> {
       this.setState({
         cursorInitPos,
         imagePos: {
-          x: this.state.imageInitPos.x + (x - cursorInitPos.x),
-          y: this.state.imageInitPos.y + (y - cursorInitPos.y),
+          x: this.state.imageDragStartPos.x + (x - cursorInitPos.x),
+          y: this.state.imageDragStartPos.y + (y - cursorInitPos.y),
         }
       });
     }
   }
 
   onMouseUp = () => {
+    const { imagePos, scale } = this.state;
+    this.props.onPositionChanged(
+      Math.abs(imagePos.x) / scale,
+      Math.abs(imagePos.y) / scale);
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
-      imageInitPos: this.state.imagePos
+      imageDragStartPos: imagePos
     });
   }
 
@@ -105,22 +119,50 @@ export class ImageNavigator extends Component<Props, State> {
       x: scaleRelation * oldCenterPixel.x,
       y: scaleRelation * oldCenterPixel.y,
     };
-
+    const imagePos = {
+      x: CONTAINER_SIZE / 2 - newCenterPixel.x,
+      y: CONTAINER_SIZE / 2 - newCenterPixel.y,
+    };
+    const haveRenderedImage = !!this.state.imageWidth;
+    if (haveRenderedImage) {
+      // adjust cropping properties by scale value
+      const x = Math.abs(imagePos.x) / newScale;
+      const y = Math.abs(imagePos.y) / newScale;
+      const size = CONTAINER_SIZE / newScale;
+      this.props.onPositionChanged(x, y);
+      this.props.onSizeChanged(size);
+    }
     this.setState({
       scale: newScale,
-      imagePos: {
-        x: CONTAINER_SIZE / 2 - newCenterPixel.x,
-        y: CONTAINER_SIZE / 2 - newCenterPixel.y,
-      }
+      imagePos,
     });
   }
 
+  /**
+   * This gets called when the cropper loads an image
+   * at this point we will be able to get the height/width
+   * @param width the width of the image
+   * @param height the height of the image
+   */
   onImageSize = (width, height) => {
+    const { imageFile, imagePos } = this.state;
+    const scale = this.calculateInitialScale(width, height);
+    // imageFile will be undefined when this component is rendered with
+    // an imageSource value rather than a new image being uploaded or dropped.
+    // This means that cropping does not work when imageSource is provided
+    if (imageFile) {
+      this.props.onImageChanged(
+        imageFile,
+        {
+          ...imagePos,
+          size: CONTAINER_SIZE / scale,
+        });
+    }
     this.setState({
       imageWidth: width,
       imageHeight: height,
-      scale: this.calculateInitialScale(width, height),
       minScale: (CONTAINER_SIZE / 2) / Math.max(width, height) * 100,
+      scale,
     });
   }
 
@@ -134,8 +176,8 @@ export class ImageNavigator extends Component<Props, State> {
     }
   }
 
-  readFile(file: File) {
-    const {type} = file;
+  readFile(imageFile: File) {
+    const {type} = imageFile;
 
     // TODO FIL-4342: Show feedback about invalid file type
     if (type.indexOf('image/') !== 0) { return; }
@@ -144,9 +186,9 @@ export class ImageNavigator extends Component<Props, State> {
     reader.onload = (e: ProgressEvent) => {
       const fileImageSource = (e.target as FileReader).result;
 
-      this.setState({fileImageSource});
+      this.setState({ fileImageSource, imageFile });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(imageFile);
   }
 
   // Trick to have a nice <input /> appearance
@@ -196,7 +238,13 @@ export class ImageNavigator extends Component<Props, State> {
 
     return (
       <ImageUploader>
-        <DragZone isDroppingFile={isDroppingFile} onDragLeave={this.onDragLeave} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
+        <DragZone
+          isDroppingFile={isDroppingFile}
+          onDragLeave={this.onDragLeave}
+          onDragEnter={this.onDragEnter}
+          onDragOver={this.onDragOver}
+          onDrop={this.onDrop}
+        >
           <DragZoneImage src={uploadPlaceholder} alt="upload image" />
           <DragZoneText>Drag and drop your photos here</DragZoneText>
         </DragZone>

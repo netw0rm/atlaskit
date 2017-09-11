@@ -1,5 +1,17 @@
 # @atlaskit/emoji
 
+## 28.0.1 (2017-09-11)
+
+* bug fix; some of the support classes did not implement EmojiProvider interface properly. ([ab68a91](https://bitbucket.org/atlassian/atlaskit/commits/ab68a91))
+
+* bug fix; frequently used emoji should include skin-tone modifier (issues closed: fs-1331) ([1b48b4a](https://bitbucket.org/atlassian/atlaskit/commits/1b48b4a))
+## 28.0.0 (2017-09-08)
+
+* bug fix; fS-1359 siteEmojiResource.findEmoji only returns emojis of type CUSTOM (issues closed: fs-1359) ([cf222de](https://bitbucket.org/atlassian/atlaskit/commits/cf222de))
+
+* feature; deleting an emoji removes all references to it from the EmojiRepository ([70f105b](https://bitbucket.org/atlassian/atlaskit/commits/70f105b))
+* breaking; EmojiResource must implement deleteSiteEmoji functioon ([cf45944](https://bitbucket.org/atlassian/atlaskit/commits/cf45944))
+* breaking; fS-1194 add deleteSiteEmoji to EmojiResource ([cf45944](https://bitbucket.org/atlassian/atlaskit/commits/cf45944))
 ## 27.1.0 (2017-09-06)
 
 * feature; only allow upload if the MediaEmojiResource was able to retrieve an upload token (issues closed: fs-1338) ([b7c085a](https://bitbucket.org/atlassian/atlaskit/commits/b7c085a))

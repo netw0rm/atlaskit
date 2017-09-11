@@ -401,6 +401,59 @@ describe('EmojiRepository', () => {
     });
   });
 
+  describe('#delete', () => {
+    let copyEmojis;
+    beforeEach(() => {
+      // Deep copy emoji list
+      copyEmojis = JSON.parse(JSON.stringify(allEmojis));
+    });
+
+    it('should not be able to search by shortname for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      const numSmileys = repository.search(':smiley').emojis.length;
+      repository.delete(smileyEmoji);
+      expect(repository.search(':smiley').emojis.length, 'One less smiley').to.equal(numSmileys - 1);
+    });
+
+    it('should not be able to search by ascii for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      const numSmileys = repository.search(':D').emojis.length;
+      repository.delete(smileyEmoji);
+      expect(repository.search(':D').emojis.length, 'One less smiley').to.equal(numSmileys - 1);
+    });
+
+    it('should not be able to find by shortname for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      repository.delete(smileyEmoji);
+      expect(repository.findByShortName(smileyEmoji.shortName), 'No smileys').to.equal(undefined);
+    });
+
+    it('should not be able to find by id for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      repository.delete(smileyEmoji);
+      expect(repository.findByShortName(smileyEmoji.id!), 'No smileys').to.equal(undefined);
+    });
+
+    it('should not be able to find by id for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      repository.delete(smileyEmoji);
+      expect(repository.findByShortName(smileyEmoji.id!), 'No smileys').to.equal(undefined);
+    });
+
+    it('should not be able to find by ascii for an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      repository.delete(smileyEmoji);
+      smileyEmoji.ascii!.forEach(a => expect(repository.findByAsciiRepresentation(a), 'No smileys').to.equal(undefined));
+    });
+
+    it('should not be able to find by category an emoji that has been deleted', () => {
+      const repository = new EmojiRepository(copyEmojis);
+      repository.delete(smileyEmoji);
+      const peopleEmojis = repository.findInCategory('PEOPLE');
+      peopleEmojis.forEach(emoji => expect(emoji.shortName).to.not.equal(smileyEmoji.shortName));
+    });
+  });
+
   describe('#getDynamicCategories', () => {
     it('returns an empty list if only standard emojis', () => {
       const repository = new EmojiRepository(standardEmojis);
@@ -447,6 +500,42 @@ describe('EmojiRepository', () => {
 
       variation = getEmojiVariation(thumbsupEmoji, { skinTone: 0 });
       expect(variation.shortName).to.equal(':thumbsup:');
+    });
+  });
+
+  describe('getFrequentlyUsed', () => {
+    it('should return frequently used with the correct skin tone', (done) => {
+        const emojiRepository = newEmojiRepository();
+        emojiRepository.used(thumbsupEmoji);
+
+        // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+        setTimeout(() => {
+          let emoji = emojiRepository.getFrequentlyUsed( { skinTone: 4 });
+          expect(emoji).to.have.lengthOf(1);
+          expect(emoji[0].shortName).to.equal(`${thumbsupEmoji.shortName}:skin-tone-5:`);
+          done();
+        });
+      }
+    );
+
+    it('should return a limited number of frequently used', (done) => {
+      const emojiRepository = newEmojiRepository();
+      emojiRepository.used(thumbsupEmoji);
+      emojiRepository.used(thumbsdownEmoji);
+      emojiRepository.used(smileyEmoji);
+      emojiRepository.used(openMouthEmoji);
+
+      // usage is recorded asynchronously so give it a chance to happen by running the asserts with setTimeout
+      setTimeout(() => {
+        let emoji = emojiRepository.getFrequentlyUsed();
+        expect(emoji).to.have.lengthOf(4);
+
+        emoji = emojiRepository.getFrequentlyUsed({ limit: 2 });
+        expect(emoji).to.have.lengthOf(2);
+
+        done();
+      });
+
     });
   });
 });

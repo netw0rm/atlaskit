@@ -20,6 +20,8 @@ import {
   insertBlockPlugin,
   tablesPlugin,
   collabEditPlugin,
+  jiraIssuePlugin,
+  unsupportedContentPlugin
 } from '../plugins';
 
 /**
@@ -89,6 +91,14 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.maxContentSize) {
     plugins.push(maxContentSizePlugin);
+  }
+
+  if(props.allowJiraIssue) {
+    plugins.push(jiraIssuePlugin);
+  }
+
+  if(props.allowUnsupportedContent) {
+    plugins.push(unsupportedContentPlugin);
   }
 
   // UI only plugins

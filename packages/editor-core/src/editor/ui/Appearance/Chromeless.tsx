@@ -9,7 +9,6 @@ import {
   EditorAppearance
 } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
-import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
@@ -29,23 +28,23 @@ const pulseBackgroundReverse = keyframes`
   }
 `;
 
-export interface MessageEditorProps {
+export interface ChromelessEditorProps {
   isMaxContentSizeReached?: boolean;
   maxHeight?: number;
 }
 
 // tslint:disable-next-line:variable-name
-const MessageEditor: any = styled.div`
-  display: flex;
-  border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0' };
-  border-radius: 3px;
+const ChromelessEditor: any = styled.div`
   height: auto;
   min-height: 30px;
-  ${(props: MessageEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
+  ${(props: ChromelessEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
+  overflow-x: hidden;
+  overflow-y: auto;
+
   max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
-  animation: ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
 
   &.-flash {
     animation: .25s ease-in-out ${pulseBackgroundReverse};
@@ -58,32 +57,18 @@ const MessageEditor: any = styled.div`
     margin: 0;
   }
 `;
+ChromelessEditor.displayName = 'ChromelessEditor';
 
 // tslint:disable-next-line:variable-name
-const ContentArea = styled(ContentStyles)`
-  padding: 4px 16px 4px 8px;
-  flex-grow: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
-
-// tslint:disable-next-line:variable-name
-const SecondaryToolbarContainer = styled.div`
-  padding: 2px 4px 0 0;
-  margin-bottom: -2px;
-  box-sizing: border-box;
-  justify-content: flex-end;
-  align-items: flex-end;
-  flex-shrink: 0;
-  display: flex;
-`;
+const ContentArea = styled(ContentStyles)``;
+ContentArea.displayName = 'ContentArea';
 
 export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
-  static displayName = 'MessageEditor';
+  static displayName = 'ChromelessEditorAppearance';
 
   private flashToggle = false;
 
-  private appearance: EditorAppearance = 'message';
+  private appearance: EditorAppearance = 'chromeless';
 
   private handleRef = ref => {
     if (this.props.onUiReady) {
@@ -97,17 +82,14 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       eventDispatcher,
       providerFactory,
       contentComponents,
-      secondaryToolbarComponents,
       customContentComponents,
-      customSecondaryToolbarComponents,
-      addonToolbarComponents,
       maxHeight
     } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <MessageEditor
+      <ChromelessEditor
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
@@ -122,18 +104,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             items={contentComponents}
           />
         </ContentArea>
-        <SecondaryToolbarContainer>
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={secondaryToolbarComponents}
-          />
-          {customSecondaryToolbarComponents}
-          <AddonToolbar dropdownItems={addonToolbarComponents} />
-        </SecondaryToolbarContainer>
-      </MessageEditor>
+      </ChromelessEditor>
     );
   }
 

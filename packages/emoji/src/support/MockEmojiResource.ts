@@ -55,9 +55,14 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
   }
 
-  filter(query: string, options?: SearchOptions) {
+  filter(query?: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
-    this.lastQuery = query;
+    if (query) {
+      this.lastQuery = query;
+    } else {
+      this.lastQuery = '';
+    }
+
     this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => {
       this.notifyResult(result);
     });
@@ -159,9 +164,13 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
     }
   }
 
-  filter(query: string, options?: SearchOptions) {
+  filter(query?: string, options?: SearchOptions) {
     debug('MockEmojiResource.filter', query);
-    this.lastQuery = query;
+    if (query) {
+      this.lastQuery = query;
+    } else {
+      this.lastQuery = '';
+    }
     this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => this.notifyResult(result));
   }
 

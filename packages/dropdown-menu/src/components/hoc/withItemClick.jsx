@@ -19,7 +19,7 @@ type Props = {
   /** If true, the item appears greyed out and does not fire click events. */
   href?: string,
   /** Standard onClick handler */
-  onClick: (event: MouseEvent | KeyboardEvent) => {},
+  onClick: (event?: Event) => void,
 }
 
 // HOC that typically wraps @atlaskit/item

@@ -13,7 +13,7 @@ export default class DropdownMenu extends Component {
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: (a) => {}, // eslint-disable-line
+    onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,

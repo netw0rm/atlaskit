@@ -21,7 +21,7 @@ export type OpenChangeObj = {|
 
 export type ReactElement = any;
 
-type DeprecatedItem = {
+export type DeprecatedItem = {
   content?: string,
   elemBefore?: ReactElement,
   href?: string,
@@ -29,11 +29,16 @@ type DeprecatedItem = {
   target?: '_blank' | '_self',
 }
 
-type DeprecatedItemGroup = {
+export type DeprecatedItemGroup = {
   elemAfter?: ReactElement,
   heading?: string,
   items: Array<DeprecatedItem>,
 }
+
+type OnItemActivatedArgs = {
+  event?: Event,
+  item: DeprecatedItem,
+};
 
 type DropdownMenuBaseProps = {
   /**
@@ -54,7 +59,7 @@ type DropdownMenuBaseProps = {
   /** Deprecated. An array of groups. Every group must contain an array of items */
   items: Array<DeprecatedItemGroup>,
   /** Deprecated. Called when an item is activated. Receives an object with the activated item. */
-  onItemActivated: Function,
+  onItemActivated: (?OnItemActivatedArgs) => void,
   /** Position of the menu. See the documentation of @atlastkit/layer for more details. */
   position: string,
   /** Deprecated. Option to display multiline items when content is too long.
@@ -78,9 +83,14 @@ type DropdownMenuBaseProps = {
   triggerType: 'default' | 'button',
 }
 
+type OnOpenChangeArgs = {
+  isOpen: boolean,
+  event: MouseEvent | KeyboardEvent,
+};
+
 export type DropdownMenuStatelessProps = DropdownMenuBaseProps & {
   /** Called when the menu should be open/closed. Received an object with isOpen state. */
-  onOpenChange: Function,
+  onOpenChange: (OnOpenChangeArgs) => void,
 }
 
 export type DropdownMenuStatefulProps = DropdownMenuBaseProps & {

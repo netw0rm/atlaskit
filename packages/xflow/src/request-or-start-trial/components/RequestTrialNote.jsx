@@ -5,6 +5,7 @@ import Button from '@atlaskit/button';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
+import RequestAccessFooter from '../styled/RequestAccessFooter';
 import NoteText from '../styled/NoteText';
 
 export class RequestTrialNoteBase extends Component {
@@ -36,16 +37,17 @@ export class RequestTrialNoteBase extends Component {
     return (
       <ModalDialog
         isOpen
-        header={<RequestTrialHeader>Add a note</RequestTrialHeader>}
+        width="small"
+        header={<RequestTrialHeader>Ping your site admin</RequestTrialHeader>}
         footer={
-          <p>
+          <RequestAccessFooter>
             <Button appearance="primary" onClick={this.handleSendRequest}>
               Send request
             </Button>
             <Button appearance="subtle-link" onClick={this.handleSendRequestWithoutNote}>
               Send without note
             </Button>
-          </p>
+          </RequestAccessFooter>
         }
       >
         <div>

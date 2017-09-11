@@ -119,11 +119,11 @@ const messages = defineMessages({
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
-    defaultMessage: 'Help your site administrator understand why you would like to use Confluence:',
+    defaultMessage: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
   },
   notePlaceholder: {
     id: 'xflow.j2c.request-trial.note.placeholder',
-    defaultMessage: 'I would like to try Confluence because…',
+    defaultMessage: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in JIRA Software - and it\'s free for 30 days.',
   },
 });
 

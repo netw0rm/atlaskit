@@ -9,8 +9,8 @@ export default (
       accessImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: 'JIRA Software\'s perfect partner',
       accessMessage: 'Create requirements and stay in sync with your entire team.',
-      notePrompt: 'Help your site administrator understand why you would like to use this product:',
-      notePlaceholder: 'I would like to try this product because…',
+      notePrompt: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
+      notePlaceholder: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in JIRA Software - and it\'s free for 30 days.',
     }}
   >
     <RequestTrial />

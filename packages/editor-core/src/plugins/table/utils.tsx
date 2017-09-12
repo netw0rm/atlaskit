@@ -6,8 +6,13 @@ import {
   Schema,
   EditorState,
   EditorView,
-  CellSelection
+  CellSelection,
+  Decoration
 } from '../../prosemirror';
+import { TableState } from './';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import TableFloatingControls from '../../ui/TableFloatingControls';
 
 export interface TableRelativePosition {
   from: number;
@@ -95,4 +100,26 @@ export const containsTableHeader = (view: EditorView, table: Node): boolean => {
     }
   });
   return headerPresent;
+};
+
+export const createControlsDecoration = (pluginState: TableState, editorView: EditorView): Decoration[] => {
+  const node = document.createElement('div');
+  node.className = 'table-decoration';
+
+  ReactDOM.render(
+    <TableFloatingControls pluginState={pluginState} editorView={editorView} />,
+    node
+  );
+
+  const pos = pluginState.tableStartPos() || 1;
+
+  return [
+    Decoration.widget(pos, node)
+  ];
+};
+
+export const createHoverDecoration = (hoveredCells: {pos: number; node: Node}[]): Decoration[] => {
+  return hoveredCells.map(cell => {
+    return Decoration.node(cell.pos, cell.pos + cell.node!.nodeSize, {class: 'hoveredCell'});
+  });
 };

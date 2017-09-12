@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import Button from '@atlaskit/button';
-import { akColorB400, akColorN800, akColorR500 } from '@atlaskit/util-shared-styles';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import * as logos from '../../src';
 
@@ -11,32 +11,50 @@ const Centered = styled.div`
 
 const sizes = ['small', 'medium', 'large', 'xlarge'];
 
-const sizeRange = (Logo, collapseTo) => (
+const sizeRange = (Logo, collapseTo, colorPresetProps) => (
   <Centered>
     {
-      sizes.map(size => (
-        <LogoParent>
-          <Logo collapseTo={collapseTo} size={size} />
+      sizes.map((size, i) => (
+        <LogoParent key={i}>
+          <Logo
+            collapseTo={collapseTo}
+            size={size}
+            {...colorPresetProps}
+          />
         </LogoParent>
       ))
     }
   </Centered>
 );
 
-const Coloured = styled.div`
-  color: ${props => props.color};
-`;
-
 const LogoParent = styled.div`
-  border-left: 1px dotted ${akColorN800};
-  border-right: 1px dotted ${akColorN800};
+  border-left: 1px dotted ${akColorN300};
+  border-right: 1px dotted ${akColorN300};
 `;
 
-const colors = [akColorN800, akColorB400, akColorR500];
+const colorPresets = [
+  {
+    textColor: akColorN700,
+    iconColor: akColorB200,
+    iconGradientStart: akColorB400,
+    iconGradientStop: akColorB200,
+  },
+  {
+    textColor: 'currentColor',
+    iconColor: 'currentColor',
+    iconGradientStart: 'rgba(0, 0, 0, 0.4)',
+    iconGradientStop: 'currentColor',
+  },
+  {
+    textColor: akColorB400,
+    iconColor: akColorB200,
+    iconGradientStart: akColorB400,
+    iconGradientStop: akColorB200,
+  },
+];
 const collapseToValues = [null, 'icon', 'type'];
 
 export default class InteractiveLogo extends PureComponent {
-
   state = {
     collapseToIndex: 0,
     colorIndex: 0,
@@ -47,23 +65,29 @@ export default class InteractiveLogo extends PureComponent {
   }
 
   toggleColor = () => {
-    this.setState({ colorIndex: (this.state.colorIndex + 1) % colors.length });
+    this.setState({ colorIndex: (this.state.colorIndex + 1) % colorPresets.length });
   }
 
   render() {
     const collapseTo = collapseToValues[this.state.collapseToIndex];
-    console.log(collapseTo);
+    const colorPreset = colorPresets[this.state.colorIndex];
     return (
-      <Coloured color={colors[this.state.colorIndex]}>
-        <div>
+      <div style={{ color: akColorN300 }}>
+        <ButtonGroup>
           <Button onClick={this.toggleColor}>Change colour</Button>
           <Button onClick={this.toggleCollapsed}>Change collapseTo</Button>
-        </div>
-        {sizeRange(logos.AtlassianLogo, collapseTo)}
-        {sizeRange(logos.BitbucketLogo, collapseTo)}
-        {sizeRange(logos.ConfluenceLogo, collapseTo)}
-        {sizeRange(logos.HipchatLogo, collapseTo)}
-        {sizeRange(logos.JiraLogo, collapseTo)}
-      </Coloured>);
+        </ButtonGroup>
+        {sizeRange(logos.AtlassianLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.BitbucketLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.ConfluenceLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.HipchatLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.JiraLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.JiraCoreLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.JiraServiceDeskLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.JiraSoftwareLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.StatuspageLogo, collapseTo, colorPreset)}
+        {sizeRange(logos.StrideLogo, collapseTo, colorPreset)}
+      </div>
+    );
   }
 }

@@ -47,7 +47,9 @@ describe('TableFloatingControls', () => {
       const floatingControls = shallow(
         <TableFloatingControls pluginState={pluginState} editorView={editorView} />
       );
-      floatingControls.setState({ tableElement: document.createElement('table'), tableActive: true });
+      floatingControls.setProps({ pluginState: {
+        tableElement: document.createElement('table')
+      }});
       expect(floatingControls.find(CornerControls)).to.have.length(1);
       expect(floatingControls.find(ColumnControls)).to.have.length(1);
       expect(floatingControls.find(RowControls)).to.have.length(1);
@@ -55,44 +57,13 @@ describe('TableFloatingControls', () => {
   });
 
   context('when editor is not focused', () => {
-    it('should not render table header', () => {
+    it('should not render table controls', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const floatingControls = mount(
-        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
-      );
       plugin.props.onFocus!(editorView, event);
-      expect(floatingControls.html()).to.not.equal(null);
+      const decoration = pluginState.decorations.find()[0] as any;
+      expect(decoration.type.widget.className.indexOf('table-decoration') > -1).to.equal(true);
       plugin.props.onBlur!(editorView, event);
-      expect(floatingControls.html()).to.equal(null);
-      floatingControls.unmount();
-    });
-  });
-
-  context('when toolbar is clicked', () => {
-    it('should call pluginState.updateToolbarFocused', () => {
-      const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const floatingControls = mount(
-        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
-      );
-      plugin.props.onFocus!(editorView, event);
-      pluginState.updateToolbarFocused = sinon.spy();
-      floatingControls.find(CornerControls).parent().simulate('mousedown');
-      expect((pluginState.updateToolbarFocused as any).calledOnce).to.equal(true);
-      floatingControls.unmount();
-    });
-  });
-
-  context('when toolbar is not focused', () => {
-    it('should call pluginState.updateToolbarFocused', () => {
-      const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-      const floatingControls = mount(
-        <TableFloatingControls pluginState={pluginState} editorView={editorView} />
-      );
-      plugin.props.onFocus!(editorView, event);
-      pluginState.updateToolbarFocused = sinon.spy();
-      floatingControls.find(CornerControls).parent().simulate('blur');
-      expect((pluginState.updateToolbarFocused as any).calledOnce).to.equal(true);
-      floatingControls.unmount();
+      expect(pluginState.decorations.find()).to.have.length(0);
     });
   });
 

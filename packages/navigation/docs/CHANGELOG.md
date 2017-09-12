@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 22.0.1 (2017-09-11)
+
+
+* bug fix; selected nav items with a custom theme now have correct hover/focus style (issues closed: ak-3449) ([53d54c2](https://bitbucket.org/atlassian/atlaskit/commits/53d54c2))
 ## 22.0.0 (2017-09-07)
 
 * breaking; DrawerContent is now a flex column, so anything you put inside a drawer will behave like a flex ([fc075c7](https://bitbucket.org/atlassian/atlaskit/commits/fc075c7))

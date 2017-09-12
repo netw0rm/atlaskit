@@ -2,7 +2,7 @@ import { css } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 
 const placeholderStyles = css`
-  color: ${colors.N200};
+  color: ${colors.placeholderText};
   font-size: 14px;
 `;
 

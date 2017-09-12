@@ -1,5 +1,11 @@
 # @atlaskit/icon
 
+## 9.0.0 (2017-09-11)
+
+* breaking; The company/product icons (AtlassianIcon, BitbucketIcon, ConfluenceIcon, HipchatIcon, JiraIcon) have ([8a502b1](https://bitbucket.org/atlassian/atlaskit/commits/8a502b1))
+* breaking; new company and product icons added ([8a502b1](https://bitbucket.org/atlassian/atlaskit/commits/8a502b1))
+
+
 ## 8.1.0 (2017-08-28)
 
 

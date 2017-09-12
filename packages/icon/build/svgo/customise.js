@@ -26,6 +26,13 @@ module.exports = () => {
         { convertAttributesToCamelcase },
         { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
         { addPresentationAttribute },
+        { cleanupIDs: {
+          // This is used to prefix IDs of LinearGradient fills with a unique ID in case multiple
+          // icons with gradients (company/product icons) are shown on the same page.
+          prefix: filename.replace('.svg', '').replace(/[^a-z]+/, '') + '-', // eslint-disable-line
+          minify: true,
+          remove: true,
+        } },
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },

@@ -42,7 +42,7 @@ export const HeaderButton = styled(HeaderButtonDefault)`
   height: ${akEditorTableToolbarSize - 1}px;
   width: 100%;
 
-  &:hover, .active > &, .tableSelected & {
+  &:hover, .active > &, .tableHovered & {
     border-bottom: 1px solid ${akEditorTableBorderSelected};
     height: ${akEditorTableToolbarSize}px;
   }

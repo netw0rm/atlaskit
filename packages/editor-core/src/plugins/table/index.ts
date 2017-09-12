@@ -23,12 +23,14 @@ import {
   getSelectedColumn,
   getSelectedRow,
   containsTableHeader,
+  createControlsDecoration,
+  createHoverDecoration
 } from './utils';
 import { analyticsService } from '../../analytics';
 
 export type TableStateSubscriber = (state: TableState) => any;
 
-export interface SelectedCell {
+export interface HoveredCell {
   pos: number;
   node: Node;
 }
@@ -44,15 +46,17 @@ export class TableState {
   editorFocused: boolean = false;
   tableNode?: Node;
   cellSelection?: CellSelection;
-  toolbarFocused: boolean = false;
   tableHidden: boolean = false;
   tableDisabled: boolean = false;
   tableActive: boolean = false;
   domEvent: boolean = false;
-  hoveredCells: SelectedCell[] = [];
+  decorations: DecorationSet;
+  hoveredCells: HoveredCell[];
 
-  private isHeaderRowRequired: boolean = false;
   private view: EditorView;
+  private hoverDecoration?: Decoration[];
+  private controlsDecoration?: Decoration[];
+  private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
 
   constructor(state: EditorState<any>, pluginConfig: PluginConfig = {}) {
@@ -61,6 +65,7 @@ export class TableState {
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
     this.tableHidden = !table || !tableCell || !tableRow || !tableHeader;
     this.isHeaderRowRequired = pluginConfig.isHeaderRowRequired || false;
+    this.decorations = DecorationSet.create(state.doc, []);
   }
 
   insertColumn = (column: number): void => {
@@ -179,10 +184,6 @@ export class TableState {
     this.editorFocused = editorFocused;
   }
 
-  updateToolbarFocused(toolbarFocused: boolean): void {
-    this.toolbarFocused = toolbarFocused;
-  }
-
   selectColumn = (column: number): void => {
     if (this.tableNode) {
       const {from, to} = getColumnPos(column, this.tableNode);
@@ -226,8 +227,12 @@ export class TableState {
   }
 
   resetHoverSelection = () => {
-    this.hoveredCells = [];
-    this.view.dispatch(this.view.state.tr);
+    if (this.hoverDecoration) {
+      this.decorations = this.decorations.remove(this.hoverDecoration);
+      this.hoverDecoration = undefined;
+      this.hoveredCells = [];
+      this.view.dispatch(this.view.state.tr);
+    }
   }
 
   isColumnSelected = (column: number): boolean => {
@@ -279,6 +284,7 @@ export class TableState {
 
   update(docView: NodeViewDesc, domEvent: boolean = false) {
     let dirty = this.updateSelection();
+    let controlsDirty = dirty;
     const { cellSelection } = this;
 
     const tableElement = this.getTableElement(docView);
@@ -292,6 +298,7 @@ export class TableState {
     if (tableNode !== this.tableNode) {
       this.tableNode = tableNode;
       dirty = true;
+      controlsDirty = true;
     }
 
     // show floating toolbar only when the whole row, column or table is selected
@@ -311,6 +318,7 @@ export class TableState {
     if (tableActive !== this.tableActive) {
       this.tableActive = tableActive;
       dirty = true;
+      controlsDirty = true;
     }
 
     const tableDisabled = !this.canInsertTable();
@@ -321,6 +329,20 @@ export class TableState {
 
     if (dirty) {
       this.triggerOnChange();
+    }
+
+    if (controlsDirty) {
+      if (this.controlsDecoration) {
+        this.decorations = this.decorations.remove(this.controlsDecoration);
+        this.controlsDecoration = undefined;
+      }
+
+      if (tableActive) {
+        const decoration = createControlsDecoration(this, this.view);
+        this.controlsDecoration = [...decoration];
+        this.decorations = this.decorations.add(this.view.state.doc, decoration);
+      }
+      this.view.dispatch(this.view.state.tr);
     }
   }
 
@@ -381,7 +403,7 @@ export class TableState {
   }
 
   private createHoverSelection (from: number, to: number): void {
-    if (!this.tableNode) {
+    if (!this.tableNode || this.hoverDecoration) {
       return;
     }
     const offset = this.tableStartPos();
@@ -390,13 +412,17 @@ export class TableState {
       const map = TableMap.get(this.tableNode);
       const cells = map.cellsInRect(map.rectBetween(from, to));
 
-      cells.forEach(cellPos => {
+      this.hoveredCells = cells.map(cellPos => {
         const pos = cellPos + offset;
-        const node = state.doc.nodeAt(pos);
-        if (node) {
-          this.hoveredCells.push({node, pos});
-        }
+        const node = state.doc.nodeAt(pos)!;
+        return {pos, node};
       });
+      const decoration: Decoration[] = createHoverDecoration(this.hoveredCells);
+
+      // keeping track of decorations in order to remove them later
+      // cloning, because ProseMirror mutates decorations after the transaction is dispathed (Waat?)
+      this.hoverDecoration = [...decoration];
+      this.decorations = this.decorations.add(state.doc, decoration);
       // trigger state change to be able to pick it up in the decorations handler
       this.view.dispatch(state.tr);
     }
@@ -564,16 +590,12 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
       return new TableState(state, pluginConfig);
     },
     apply(tr, pluginState: TableState, oldState, newState) {
-      const stored = tr.getMeta(stateKey);
-      if (stored) {
-        pluginState.update(stored.docView, stored.domEvent);
-      }
       return pluginState;
     }
   },
   key: stateKey,
   view: (editorView: EditorView) => {
-    const pluginState = stateKey.getState(editorView.state);
+    const pluginState: TableState = stateKey.getState(editorView.state);
     pluginState.setView(editorView);
     pluginState.update(editorView.docView);
     pluginState.keymapHandler = keymapHandler(pluginState);
@@ -585,36 +607,24 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
     };
   },
   props: {
-    decorations: (state: EditorState<any>) => {
-      const pluginState = stateKey.getState(state);
-      if (!pluginState.hoveredCells.length) {
-        return;
-      }
-      const cells: Decoration[] = pluginState.hoveredCells.map(cell => {
-        return Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {class: 'hoveredCell'});
-      });
-      return DecorationSet.create(state.doc, cells);
-    },
+    decorations: (state: EditorState<any>) => stateKey.getState(state).decorations,
+
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
     },
     handleClick(view: EditorView, pos: number, event) {
-      stateKey.getState(view.state).update(view.docView, true);
+      stateKey.getState(view.state).resetHoverSelection();
       return false;
     },
     onFocus(view: EditorView, event) {
-      const pluginState = stateKey.getState(view.state);
+      const pluginState: TableState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(true);
       pluginState.update(view.docView, true);
     },
     onBlur(view: EditorView, event) {
-      const pluginState = stateKey.getState(view.state);
-      if (pluginState.toolbarFocused) {
-        pluginState.updateToolbarFocused(false);
-      } else {
-        pluginState.updateEditorFocused(false);
-        pluginState.update(view.docView, true);
-      }
+      const pluginState: TableState = stateKey.getState(view.state);
+      pluginState.updateEditorFocused(false);
+      pluginState.update(view.docView, true);
       pluginState.resetHoverSelection();
     },
   }
@@ -632,3 +642,4 @@ setTimeout(() => {
   document.execCommand('enableObjectResizing', false, 'false');
   document.execCommand('enableInlineTableEditing', false, 'false');
 });
+

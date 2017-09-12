@@ -10,11 +10,12 @@ import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestAccessFooter from '../styled/RequestAccessFooter';
 import NoteText from '../styled/NoteText';
 
-export class RequestTrialNote extends Component {
+class RequestTrialNote extends Component {
   static propTypes = {
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    onComplete: PropTypes.func.isRequired,
     requestTrialAccessWithNote: PropTypes.func,
     requestTrialAccessWithoutNote: PropTypes.func,
   };
@@ -25,13 +26,31 @@ export class RequestTrialNote extends Component {
     requestTrialAccessWithoutNote: () => Promise.resolve(),
   };
 
+  componentDidMount() {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.request-trial-note.displayed');
+  }
+
   handleSendRequest = () => {
-    const { requestTrialAccessWithNote, onComplete } = this.props;
+    const {
+      firePrivateAnalyticsEvent,
+      requestTrialAccessWithNote,
+      requestTrialAccessWithoutNote,
+      onComplete,
+    } = this.props;
+    const noteText = document.getElementById('request-trial-note').value;
+    if (noteText === '') {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked.with.no.text');
+      return Promise.resolve(requestTrialAccessWithoutNote()).then(() => onComplete());
+    }
+    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
     return Promise.resolve(requestTrialAccessWithNote()).then(() => onComplete());
+    // TODO: add analytics events for success or failure of sending note
   };
 
   handleSendRequestWithoutNote = () => {
-    const { requestTrialAccessWithoutNote, onComplete } = this.props;
+    const { firePrivateAnalyticsEvent, requestTrialAccessWithoutNote, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note-button.clicked');
     return Promise.resolve(requestTrialAccessWithoutNote()).then(() => onComplete());
   };
 
@@ -70,7 +89,7 @@ export class RequestTrialNote extends Component {
             : <p>
               {this.props.prompt}
             </p>}
-          <NoteText placeholder={this.props.placeholder} />
+          <NoteText id="request-trial-note" placeholder={this.props.placeholder} />
         </div>
       </ModalDialog>
     );

@@ -15,16 +15,18 @@ import RequestAccessLozengeDiv from '../styled/RequestAccessLozengeDiv';
 import RequestAccessImage from '../styled/RequestAccessImage';
 import RequestAccessDiv from '../styled/RequestAccessDiv';
 
-export class RequestTrialAccess extends Component {
+class RequestTrialAccess extends Component {
   static propTypes = {
-    image: PropTypes.string.isRequired,
-    productLogo: PropTypes.element,
+    alreadyRequested: PropTypes.bool.isRequired,
+    cancelRequestTrialAccess: PropTypes.func,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     heading: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    productLogo: PropTypes.element,
     requestTrialAccess: PropTypes.func,
-    cancelRequestTrialAccess: PropTypes.func,
   };
 
   static defaultProps = {
@@ -33,18 +35,35 @@ export class RequestTrialAccess extends Component {
     cancelRequestTrialAccess: () => Promise.resolve(),
   };
 
-  handleCancelClick = () => {
-    const { cancelRequestTrialAccess, onCancel } = this.props;
+  componentDidMount() {
+    const { firePrivateAnalyticsEvent, alreadyRequested } = this.props;
+    firePrivateAnalyticsEvent(alreadyRequested ?
+      'xflow.already-requested-trial.displayed' :
+      'xflow.request-trial.displayed');
+  }
+
+  handleRequestAccessClick = () => {
+    const { firePrivateAnalyticsEvent, requestTrialAccess, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.request-trial.request-button.clicked');
+    Promise.resolve(requestTrialAccess()).then(() => onComplete());
+    // TODO: add analytics events for success or failure of requestTrialAccess
+  };
+
+  handleCloseClick = () => {
+    const {
+      alreadyRequested,
+      firePrivateAnalyticsEvent,
+      cancelRequestTrialAccess,
+      onCancel,
+    } = this.props;
+    firePrivateAnalyticsEvent(alreadyRequested ?
+      'xflow.already-requested-trial.close-button.clicked' :
+      'xflow.request-trial.close-button.clicked');
     Promise.resolve(cancelRequestTrialAccess()).then(onCancel);
   };
 
-  handleRequestAccessClick = () => {
-    const { requestTrialAccess, onComplete } = this.props;
-    Promise.resolve(requestTrialAccess()).then(() => onComplete());
-  };
-
   render() {
-    const { productLogo, image, heading, message } = this.props;
+    const { alreadyRequested, productLogo, image, heading, message } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -55,10 +74,14 @@ export class RequestTrialAccess extends Component {
               {productLogo}
               <RequestAccessLozengeDiv>
                 <Lozenge isBold>
+                  {alreadyRequested ? <FormattedMessage
+                    id="xflow.generic.request-trial.requested-lozenge"
+                    defaultMessage="Requested"
+                  /> :
                   <FormattedMessage
                     id="xflow.generic.request-trial.inactive-lozenge"
                     defaultMessage="Inactive on your site"
-                  />
+                  />}
                 </Lozenge>
               </RequestAccessLozengeDiv>
             </RequestAccessHeader>
@@ -73,7 +96,7 @@ export class RequestTrialAccess extends Component {
                 defaultMessage="Request a trial"
               />
             </Button>
-            <Button appearance="subtle-link" onClick={this.handleCancelClick}>
+            <Button appearance="subtle-link" onClick={this.handleCloseClick}>
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
                 defaultMessage="Close"

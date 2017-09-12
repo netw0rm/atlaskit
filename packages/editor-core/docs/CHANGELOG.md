@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.20.2 (2017-09-12)
+
+* bug fix; upgrade task-decision. Breaking changes not relevant to editor. (issues closed: fs-1371) ([652a38e](https://bitbucket.org/atlassian/atlaskit/commits/652a38e))
 ## 46.20.1 (2017-09-12)
 
 * bug fix; fixed jiraissue and unsupportedcontent nodes ([731120e](https://bitbucket.org/atlassian/atlaskit/commits/731120e))

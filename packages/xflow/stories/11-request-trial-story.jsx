@@ -59,4 +59,13 @@ storiesOf('RequestTrial')
         onComplete={() => Promise.resolve(true)}
       />
     )
+  )
+  .add('RequestTrialWithNote (INACTIVE), error flag after Send Note', () =>
+  setupStorybookAnalytics(
+    <RequestTrialNoteBase
+      {...defaultProps}
+      requestTrialAccessWithNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+      onComplete={() => Promise.resolve(true)}
+    />
+  )
 );

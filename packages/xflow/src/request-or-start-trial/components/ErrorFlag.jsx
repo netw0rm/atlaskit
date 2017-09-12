@@ -17,16 +17,24 @@ export default class ErrorFlag extends Component {
   };
 
   render() {
+    const {
+      description,
+      flagRetry,
+      flagActions,
+      onDismissed,
+      showFlag,
+      title,
+    } = this.props;
     return (
-      <FlagGroup onDismissed={this.props.onDismissed}>
-        {this.props.showFlag
+      <FlagGroup onDismissed={onDismissed}>
+        {showFlag
           ? <Flag
             icon={Icon}
-            actions={this.props.flagRetry && this.props.flagActions}
+            actions={flagRetry ? flagRetry && flagActions : flagActions}
             id="ErrorFlag"
             key="ErrorFlag"
-            title={this.props.title}
-            description={this.props.description}
+            title={title}
+            description={description}
           />
           : []}
       </FlagGroup>

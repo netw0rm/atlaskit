@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 46.20.0 (2017-09-12)
+
+
+
+
+* feature; adding telepointers and avatars (issues closed: ed-2574, ed-2575) ([e8311c1](https://bitbucket.org/atlassian/atlaskit/commits/e8311c1))
+
 ## 46.19.2 (2017-09-11)
 
 * bug fix; updated table floating controls ([b653ab2](https://bitbucket.org/atlassian/atlaskit/commits/b653ab2))

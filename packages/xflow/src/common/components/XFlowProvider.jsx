@@ -8,7 +8,7 @@ export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
     productLogo: PropTypes.element,
     requestTrial: PropTypes.shape({
-      accessBanner: PropTypes.string,
+      accessImage: PropTypes.string,
       accessHeading: PropTypes.string,
       accessMessage: PropTypes.node,
       notePrompt: PropTypes.node,

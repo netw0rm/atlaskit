@@ -111,19 +111,19 @@ const messages = defineMessages({
   // Request Trial
   accessHeading: {
     id: 'xflow.j2c.request-trial.access.heading',
-    defaultMessage: 'Ask your admin for access',
+    defaultMessage: 'JIRA Software\'s perfect partner',
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Send a request for your admin to activate confluence',
+    defaultMessage: 'Create requirements and stay in sync with your entire team.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
-    defaultMessage: 'Help your site administrator understand why you would like to use Confluence:',
+    defaultMessage: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
   },
   notePlaceholder: {
     id: 'xflow.j2c.request-trial.note.placeholder',
-    defaultMessage: 'I would like to try Confluence because…',
+    defaultMessage: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in JIRA Software - and it\'s free for 30 days.',
   },
 });
 
@@ -131,7 +131,7 @@ export const defaultProps = intl => ({
   config: {
     productLogo: <ConfluenceLogo />,
     requestTrial: {
-      accessBanner: 'https://placehold.it/352x214',
+      accessImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
       notePrompt: intl.formatMessage(messages.notePrompt),

@@ -8,15 +8,15 @@ type Store = {
 };
 
 export default class SpotlightRegistry {
-  store: Store = {}
+  _store: Store = {}
 
   add(name, data) {
-    this.store[name] = data;
+    this._store[name] = data;
   }
   get(name) {
-    return this.store[name];
+    return this._store[name];
   }
   remove(name) {
-    delete this.store[name];
+    delete this._store[name];
   }
 }

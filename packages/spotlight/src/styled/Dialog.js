@@ -1,7 +1,5 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
-
-// Dialog
 
 export const DIALOG_WIDTH = {
   small: 400,
@@ -21,10 +19,17 @@ const dialogWidth = ({ widthName, widthValue }) => {
     : widthValue || 'auto';
 };
 
-const backgroundColor = themed({
-  light: colors.N0,
-  dark: colors.DN50,
-});
+const backgroundColor = props => (props.appearance === 'purple'
+  ? colors.P300
+  : themed({
+    light: colors.N0,
+    dark: colors.DN50,
+  })
+);
+const textColor = props => (props.appearance === 'purple'
+  ? colors.N0
+  : colors.text
+);
 const borderColor = themed({
   light: colors.N60A,
   dark: colors.DN60A,
@@ -70,28 +75,9 @@ export const Dialog = styled.div`
   border-radius: ${borderRadius}px;
   box-shadow: ${getBoxShadow};
   box-sizing: border-box;
-  color: ${colors.text};
+  color: ${textColor};
   max-height: ${math.multiply(gridSize, 60)}px;
   max-width: ${math.multiply(gridSize, 62)}px;
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 3)}px;
   z-index: 501;
-`;
-
-// Pulse
-// rgba from colors.P400
-
-const pulse = keyframes`
-  0%, 10% { box-shadow: 0 0 0 rgba(82, 67, 170, 0.9) }
-  90%, 100% { box-shadow: 0 0 1px 6px rgba(82, 67, 170, 0.1) }
-`;
-
-export const Div = styled.div`
-  line-height: 1;
-  position: absolute;
-  z-index: 501;
-`;
-
-export const Pulse = styled(Div)`
-  animation: ${pulse} 1600ms linear infinite;
-  border-radius: 4px;
 `;

@@ -12,20 +12,22 @@ import { ClickTarget, Target } from '../styled/Target';
 type Props = {|
   /** The elements rendered in the modal */
   children: ElementType,
-  /** The elements rendered in the modal */
-  onClick?: FunctionType,
+  /** The appearance of the dialog */
+  dialogAppearance?: 'purple' | 'default',
   /** Where the dialog should appear, relative to the contents of the children. */
-  position?: 'top left' | 'top center' | 'top right' | 'right top' | 'right middle' | 'right bottom' | 'bottom left' | 'bottom center' | 'bottom right' | 'left top' | 'left middle' | 'left bottom',
+  dialogPlacement?: 'top left' | 'top center' | 'top right' | 'right top' | 'right middle' | 'right bottom' | 'bottom left' | 'bottom center' | 'bottom right' | 'left top' | 'left middle' | 'left bottom',
+  /** width of the dialog */
+  dialogWidth?: 'small' | 'medium' | 'large' | 'x-large',
   /** whether or not to display a pulse animation around the spotlighted element */
   pulse?: bool,
-  /** the border-radius of the element being highlighted */
-  radius?: number,
   /** alternative element to render than the wrapped target */
   renderElement?: ComponentType,
-  /** the name to reference later */
+  /** the name of the spotlight target */
   target?: string,
-  /** width of the dialog */
-  width?: 'small' | 'medium' | 'large' | 'x-large',
+  /** The elements rendered in the modal */
+  targetOnClick?: FunctionType,
+  /** the border-radius of the element being highlighted */
+  targetRadius?: number,
 |};
 type State = {
   scrollDistance: number,
@@ -53,20 +55,24 @@ export default class Spotlight extends Component {
   };
   static defaultProps = {
     pulse: true,
-    width: 'medium',
+    dialogWidth: 'medium',
   };
 
-  handleChildClick = (event) => {
-    const { onClick, target } = this.props;
+  handleTargetClick = (event) => {
+    const { targetOnClick, target } = this.props;
 
-    if (onClick) onClick({ event, target });
+    if (targetOnClick) targetOnClick({ event, target });
   }
 
   renderChild() {
     const { spotlightRegistry } = this.context;
-    const { onClick, pulse, radius, renderElement: AltElement, target } = this.props;
+    const { targetOnClick, pulse, targetRadius, renderElement: AltElement, target } = this.props;
 
-    if (!target) return null;
+    if (!target) {
+      // eslint-disable-next-line no-console
+      console.warn(`No target found for "${target}".`);
+      return null;
+    }
 
     const { element, ref } = spotlightRegistry.get(target);
     const { height, left, top, width } = ref.getBoundingClientRect();
@@ -75,29 +81,34 @@ export default class Spotlight extends Component {
     return AltElement ? (
       <AltElement {...dimensions} />
     ) : (
-      <Target pulse={pulse} radius={radius} style={dimensions}>
+      <Target pulse={pulse} radius={targetRadius} style={dimensions}>
         {element}
-        <ClickTarget onClick={onClick && this.handleChildClick} />
+        <ClickTarget onClick={targetOnClick && this.handleTargetClick} />
       </Target>
     );
   }
 
   render() {
-    const { children, position, target, width } = this.props;
+    const { dialogAppearance, children, dialogPlacement, target, dialogWidth } = this.props;
     const { scrollDistance } = this.state;
-    const dialog = <Dialog tabIndex="-1">{children}</Dialog>;
+
+    const dialog = (
+      <Dialog appearance={dialogAppearance} tabIndex="-1">
+        {children}
+      </Dialog>
+    );
 
     // If a custom width (number or percentage) is supplied, set inline style
     // otherwise allow styled component to consume as named prop
     const acceptedWidths = Object.keys(DIALOG_WIDTH);
-    const widthName = acceptedWidths.includes(width) ? width : null;
-    const widthValue = widthName ? null : width;
+    const widthName = acceptedWidths.includes(dialogWidth) ? dialogWidth : null;
+    const widthValue = widthName ? null : dialogWidth;
 
     const element = target ? (
       <Layer
         content={dialog}
         offset="0 8"
-        position={position}
+        position={dialogPlacement}
       >
         {this.renderChild()}
       </Layer>
@@ -114,7 +125,7 @@ export default class Spotlight extends Component {
 
     return (
       <div>
-        <Blanket isTinted />
+        <Blanket />
         {element}
       </div>
     );

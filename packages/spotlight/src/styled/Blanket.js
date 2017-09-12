@@ -5,15 +5,11 @@ import { colors, themed } from '@atlaskit/theme';
 // we can't use @atlaskit/blanket because the z-index is insufficient
 
 const backgroundColor = themed({ light: colors.N100A, dark: colors.DN90A });
-export const opacity = p => (p.isTinted ? 1 : 0);
-export const pointerEvents = p => (p.canClickThrough ? 'none' : 'initial');
 
 export default styled.div`
   background: ${backgroundColor};
   bottom: 0;
   left: 0;
-  opacity: ${opacity};
-  pointer-events: ${pointerEvents};
   position: fixed;
   right: 0;
   top: 0;

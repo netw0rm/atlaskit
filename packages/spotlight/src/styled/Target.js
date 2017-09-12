@@ -27,6 +27,11 @@ export const ClickTarget = styled.div`
   width: 100%;
 `;
 
+export const TargetWrapper = styled.div`
+  display: inline-block;
+  line-height: 0;
+`;
+
 // exported for consumer
 export const Pulse = styled.div`
   ${animation}

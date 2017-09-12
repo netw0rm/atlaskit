@@ -1,6 +1,6 @@
 export {
   Spotlight,
-  SpotlightManager,
+  SpotlightJourney,
   SpotlightTarget,
 } from './components';
 

@@ -1,8 +1,9 @@
 // @flow
 import PropTypes from 'prop-types';
-import { Children, cloneElement, Component } from 'react';
+import React, { Children, Component } from 'react';
 
 import type { ElementType } from '../types';
+import { TargetWrapper } from '../styled/Target';
 import SpotlightRegistry from './SpotlightRegistry';
 
 type Props = {
@@ -25,25 +26,25 @@ export default class SpotlightTarget extends Component {
     const { children, name } = this.props;
     const { spotlightRegistry } = this.context;
 
-    spotlightRegistry.add(name, {
-      element: Children.only(children),
-      ref: this._innerRef || this._ref,
-    });
+    // FIXME: write a better warning.
+    if (!spotlightRegistry) {
+      // eslint-disable-next-line no-console
+      throw Error('`SpotlightTarget` requires `SpotlightJourney` as an ancestor.');
+    } else {
+      spotlightRegistry.add(name, {
+        element: Children.only(children),
+        ref: this.node,
+      });
+    }
   }
-
-  handleInnerRef = (node) => {
-    this._innerRef = node;
-  }
-  handleRef = (node) => {
-    this._ref = node;
-  }
+  getRef = r => (this.node = r);
 
   render() {
-    const { children } = this.props;
-
-    return cloneElement(children, {
-      innerRef: this.handleInnerRef,
-      ref: this.handleRef,
-    });
+    return (
+      <TargetWrapper
+        innerRef={this.getRef}
+        {...this.props}
+      />
+    );
   }
 }

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 46.20.1 (2017-09-12)
+
+* bug fix; fixed jiraissue and unsupportedcontent nodes ([731120e](https://bitbucket.org/atlassian/atlaskit/commits/731120e))
 ## 46.20.0 (2017-09-12)
 
 

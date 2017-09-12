@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.0.4 (2017-09-12)
+
+* bug fix; avatars now display in Firefox when used in an Avatar Group ([1db854f](https://bitbucket.org/atlassian/atlaskit/commits/1db854f))
 ## 8.0.3 (2017-09-11)
 
 * bug fix; limit avatar + more count to maxCount size (issues closed: ak-3472) ([3516192](https://bitbucket.org/atlassian/atlaskit/commits/3516192))

@@ -13,7 +13,7 @@ export const ContentWrapper = styled.div`
   margin: 0;
   word-wrap: break-word;
   min-width: 0;
-  flex: 1 1 100%;
+  flex: 1 1 auto;
 `;
 
 // tslint:disable-next-line:variable-name

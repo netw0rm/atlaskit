@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Item, { ItemGroup } from '@atlaskit/item';
 import DropList from '../../src';
 
@@ -9,15 +8,19 @@ const items = Array(4).fill(true).map((item, index) => (
   <Item key={index}>Item {index + 1}</Item>
 ));
 
+type Props = {
+  /** TODO */
+  appearance?: 'normal' | 'tall',
+  /** TODO */
+  withGroup?: boolean,
+};
 class BoundariesElementExample extends Component {
-  static propTypes = {
-    appearance: PropTypes.oneOf(['normal', 'tall']),
-    withGroup: PropTypes.bool,
-  }
 
   componentDidMount() {
     this.scroll.scrollTop = 200;
   }
+  props: Props;
+  scroll: HTMLDivElement;
 
   render() {
     const content = this.props.withGroup ? (

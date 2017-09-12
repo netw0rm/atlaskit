@@ -23,7 +23,7 @@ type Props = {|
   linkComponent?: ReactClass,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
-  onClick ?: (e: MouseEvent) => void,
+  onClick ?: (?MouseEvent) => void,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
   onKeyDown?: (e: KeyboardEvent) => void,

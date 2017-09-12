@@ -6,9 +6,9 @@ import { clickManagerContext } from '../../util/contextNamespace';
 import type { ReactElement } from '../../../src/types';
 
 type Props = {
-  children: ReactElement,
-  onItemClicked: (event: MouseEvent | KeyboardEvent) => {}
-}
+  children?: ReactElement,
+  onItemClicked: (event: MouseEvent | KeyboardEvent) => void,
+};
 
 export default class DropdownItemClickManager extends Component {
   props: Props // eslint-disable-line react/sort-comp

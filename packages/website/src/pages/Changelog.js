@@ -33,9 +33,15 @@ export default class ChangelogExplorer extends PureComponent {
     if (semver) this.setState({ range: decodeURI(String(this.props.match.params.semver)) });
   }
 
-  handleChange = (e: any) => {
+  handleChange = (e: Event) => {
+    // Event.target is typed as an EventTarget but we need to access properties on it which are
+    // specific to HTMLInputElement. Due limitations of the HTML spec flow doesn't know that an
+    // EventTarget can have these properties, so we cast it to Element through Object. This is
+    // the safest thing we can do in this situation.
+    // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    const target: HTMLInputElement = (e.target: Object);
     const { component } = this.props.match.params;
-    const range = e.target.value;
+    const range = target.value;
     let isInvalid = false;
     if (!isInvalid) this.props.history.replace(`/changelog/${String(component)}/${encodeURI(range)}`);
 

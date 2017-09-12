@@ -5,12 +5,13 @@ import { TransitionGroup } from 'react-transition-group';
 import { GatewayDest, GatewayProvider } from './gateway';
 import type { ChildrenType } from '../types';
 
-type Props = { children: ChildrenType };
+type Props = { children: ChildrenType};
 
 export default class LayerManager extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
-  static childContextTypes = { appId: PropTypes.string }
-  constructor(props, context) {
+  props: Props; // eslint-disable-line react/sort-comp
+  appId: string;
+  static childContextTypes : Object= { appId: PropTypes.string }
+  constructor(props: Props, context: mixed) {
     super(props, context);
     this.appId = 'app-wrapper';
   }

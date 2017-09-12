@@ -29,7 +29,7 @@
     "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/icon": "^8.1.0",
-    "@atlaskit/layer-manager": "^2.0.0",
+    "@atlaskit/layer-manager": "^2.0.1",
     "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.25.0",
     "focusin": "^2.0.0",

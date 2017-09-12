@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import { shallow, mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
@@ -8,19 +7,16 @@ import Content from '../../src/components/Content';
 import { Body } from '../../src/styled/Content';
 import { dialogHeight, dialogWidth, Dialog, Positioner } from '../../src/styled/Modal';
 
-// dialogs require onClose and to be wrapped in a ThemeProvider
-const StubDialog = props => (
-  <ThemeProvider theme={{}}>
-    <ModalDialog onClose={() => {}} {...props} />
-  </ThemeProvider>
-);
+// dialogs require an onClose function
+const noop = () => {};
+const StubDialog = props => <ModalDialog onClose={noop} {...props} />;
 
 // wait for react-transition-group to mount the modal
 const wait = (fn) => setTimeout(fn, 1);
 
 describe('modal-dialog', () => {
   it('should be possible to create a component', () => {
-    const wrapper = shallow(<ModalDialog />);
+    const wrapper = shallow(<ModalDialog onClose={noop} />);
     expect(wrapper).not.toBe(undefined);
   });
 

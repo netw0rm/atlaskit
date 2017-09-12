@@ -9,9 +9,9 @@ const items = Array(4).fill(true).map((item, index) => (
   <Item key={index}>Item {index + 1}</Item>
 ));
 
-class BoundariesElementExample extends Component {
+export default class BoundariesElementExample extends Component {
 
-  static propTypes : Object = {
+  static propTypes = {
     appearance: PropTypes.oneOf(['normal', 'tall']),
     withGroup: PropTypes.bool,
   }

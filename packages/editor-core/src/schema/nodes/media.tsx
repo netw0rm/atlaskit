@@ -1,6 +1,5 @@
 import { NodeSpec, Node as PMNode } from '../../prosemirror';
 
-export type MediaType = 'file' | 'link';
 export type DisplayType = 'file' | 'thumbnail';
 
 /**
@@ -8,19 +7,12 @@ export type DisplayType = 'file' | 'thumbnail';
  */
 export interface Definition {
   type: 'media';
-  /**
-   * @minItems 1
-   */
   attrs: Attributes;
 }
 
-export interface Attributes {
-  /**
-   * @minLength 1
-   */
-  id: string;
-  type: MediaType;
-  collection: string;
+export type Attributes = LinkType | LinkURLType | FileType;
+
+interface Others {
   /**
    * @minLength 1
    */
@@ -32,6 +24,23 @@ export interface Attributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
+}
+
+interface LinkType extends Others {
+  type: 'link';
+  id: string;
+  collection: string;
+}
+
+interface LinkURLType extends Others {
+  type: 'link';
+  url: string;
+}
+
+interface FileType extends Others {
+  type: 'file';
+  id: string;
+  collection: string;
 }
 
 const defaultAttrs = {

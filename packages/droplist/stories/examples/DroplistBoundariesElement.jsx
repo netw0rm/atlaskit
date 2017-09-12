@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import Item, { ItemGroup } from '@atlaskit/item';
 import DropList from '../../src';
 

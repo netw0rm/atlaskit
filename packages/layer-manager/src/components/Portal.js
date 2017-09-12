@@ -17,9 +17,11 @@ class Portal extends Component {
   portalElement = null
   componentDidMount() {
     const node = document.createElement('span');
-    document.body.appendChild(node);
-    this.portalElement = node;
-    this.componentDidUpdate();
+    if (document.body) {
+      document.body.appendChild(node);
+      this.portalElement = node;
+      this.componentDidUpdate();
+    }
   }
   componentDidUpdate() {
     const { children } = this.props;
@@ -40,7 +42,9 @@ class Portal extends Component {
         // five seconds is an arbitary number, but is more than any of our
         // animations need to complete
         setTimeout(() => {
-          document.body.removeChild(this.portalElement);
+          if (document.body) {
+            document.body.removeChild(this.portalElement);
+          }
         }, 5000);
       }
     );

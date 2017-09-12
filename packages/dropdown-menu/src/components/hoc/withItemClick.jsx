@@ -13,13 +13,13 @@ import type { ReactElement } from '../../types';
 
 type Props = {
   /** Content to be displayed inside the item. Same as @atlaskit/item `children` prop. */
-  children: ReactElement,
+  children?: ReactElement,
   /** If true, the item appears greyed out and does not fire click events. */
   isDisabled?: bool,
   /** If true, the item appears greyed out and does not fire click events. */
   href?: string,
   /** Standard onClick handler */
-  onClick: (event: MouseEvent | KeyboardEvent) => {},
+  onClick: (event?: Event) => void,
 }
 
 // HOC that typically wraps @atlaskit/item

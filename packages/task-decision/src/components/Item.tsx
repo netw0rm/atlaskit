@@ -3,6 +3,7 @@ import { PureComponent, ReactElement } from 'react';
 import Participants from './Participants';
 
 import {
+  AttributionWrapper,
   CardHeadingWrapper,
   ContentWrapper,
   ParticipantWrapper,
@@ -24,6 +25,7 @@ export interface Props {
   contentRef?: ContentRef;
   placeholder: string;
   showPlaceholder?: boolean;
+  attribution?: string;
 }
 
 export default class Item extends PureComponent<Props, {}> {
@@ -51,6 +53,20 @@ export default class Item extends PureComponent<Props, {}> {
     );
   }
 
+  renderAttribution() {
+    const { attribution } = this.props;
+
+    if (!attribution) {
+      return null;
+    }
+
+    return (
+      <AttributionWrapper>
+        {attribution}
+      </AttributionWrapper>
+    );
+  }
+
   renderCardAppearance() {
     const { appearance, contentRef, children, icon } = this.props;
     return (
@@ -63,6 +79,7 @@ export default class Item extends PureComponent<Props, {}> {
         <ContentWrapper innerRef={contentRef}>
           {children}
         </ContentWrapper>
+        {this.renderAttribution()}
       </Wrapper>
     );
   }

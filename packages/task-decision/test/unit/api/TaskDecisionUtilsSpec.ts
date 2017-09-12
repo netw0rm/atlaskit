@@ -9,11 +9,12 @@ import {
 describe('TaskDecisionUtils', () => {
   it('convertServiceDecisionToDecision', () => {
     const decision = convertServiceDecisionToDecision(serviceDecision);
-    const { containerAri, creationDate, creatorId, lastUpdateDate, localId, objectAri,
+    const { containerAri, creationDate, creator, lastUpdater, lastUpdateDate, localId, objectAri,
       participants, content, state, status } = decision;
 
     expect(containerAri).toEqual(serviceDecision.containerAri);
-    expect(creatorId).toEqual(serviceDecision.creatorId);
+    expect(creator).toEqual(serviceDecision.creator);
+    expect(lastUpdater).toEqual(serviceDecision.lastUpdater);
     expect(localId).toEqual(serviceDecision.localId);
     expect(objectAri).toEqual(serviceDecision.objectAri);
     expect(participants).toEqual(serviceDecision.participants);
@@ -27,11 +28,12 @@ describe('TaskDecisionUtils', () => {
 
   it('convertServiceTaskToTask', () => {
     const task = convertServiceTaskToTask(serviceTask);
-    const { containerAri, creationDate, creatorId, lastUpdateDate, localId, objectAri,
+    const { containerAri, creationDate, creator, lastUpdater, lastUpdateDate, localId, objectAri,
       participants, content, state } = task;
 
     expect(containerAri).toEqual(serviceTask.containerAri);
-    expect(creatorId).toEqual(serviceTask.creatorId);
+    expect(creator).toEqual(serviceTask.creator);
+    expect(lastUpdater).toEqual(serviceTask.lastUpdater);
     expect(localId).toEqual(serviceTask.localId);
     expect(objectAri).toEqual(serviceTask.objectAri);
     expect(participants).toEqual(serviceTask.participants);

@@ -350,4 +350,52 @@ describe('<ResourcedItemList/>', () => {
     });
   });
 
+  describe('attribution', () => {
+    const attributionResponse = getItemsResponseWithParticipants();
+    it('creator propogate to items', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(attributionResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      const decisionCount = countType(attributionResponse.items, 'DECISION');
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        // First item (a task) will have 2 participant
+        const t1 = attributionResponse.items[0];
+        expect(t1.type).toBe('TASK');
+        expect(t1.creator).toBeDefined();
+        const taskComponent = component.find(TaskItem).at(0);
+        expect(taskComponent.prop('creator')).toEqual(t1.creator);
+
+        // Second item (a decision) will have 1 participant
+        const d1 = attributionResponse.items[1];
+        expect(d1.type).toBe('DECISION');
+        expect(d1.creator).toBeDefined();
+        const decisionComponent = component.find(DecisionItem).at(0);
+        expect(decisionComponent.prop('creator')).toEqual(d1.creator);
+      });
+    });
+
+    it('lastUpdater propogate to items', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(attributionResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      const decisionCount = countType(attributionResponse.items, 'DECISION');
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        // First item (a task) will have 2 participant
+        const t1 = attributionResponse.items[3];
+        expect(t1.type).toBe('TASK');
+        expect(t1.lastUpdater).toBeDefined();
+        const taskComponent = component.find(TaskItem).at(1);
+        expect(taskComponent.prop('lastUpdater')).toEqual(t1.lastUpdater);
+
+        // Second item (a decision) will have 1 participant
+        const d1 = attributionResponse.items[2];
+        expect(d1.type).toBe('DECISION');
+        expect(d1.lastUpdater).toBeDefined();
+        const decisionComponent = component.find(DecisionItem).at(1);
+        expect(decisionComponent.prop('lastUpdater')).toEqual(d1.lastUpdater);
+      });
+    });
+  });
 });

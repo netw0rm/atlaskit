@@ -3,6 +3,7 @@ import {
   akBorderRadius,
   akGridSizeUnitless,
   akColorN20,
+  akColorN200,
   akColorN50A,
   akColorN60A,
 } from '@atlaskit/util-shared-styles';
@@ -55,4 +56,12 @@ export const CardHeadingWrapper = styled.div`
   justify-content: space-between;
   margin-bottom: 4px;
   min-height: 24px;
+`;
+
+// tslint:disable-next-line:variable-name
+export const AttributionWrapper = styled.div`
+  color: ${akColorN200};
+  margin-top: ${akGridSizeUnitless}px;
+  font-size: 12px;
+  font-weight: 500;
 `;

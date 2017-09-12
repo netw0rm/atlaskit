@@ -12,7 +12,7 @@ import {
 } from '../styled/DecisionItem';
 
 import Item from './Item';
-import { Appearance, Participant } from '../types';
+import { Appearance, User } from '../types';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
@@ -23,14 +23,27 @@ export interface Props {
   contentRef?: ContentRef;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  participants?: Participant[];
+  participants?: User[];
   showParticipants?: boolean;
+  creator?: User;
+  lastUpdater?: User;
 }
 
 export default class DecisionItem extends PureComponent<Props,{}> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
+
+  getAttributionText() {
+    const { creator, lastUpdater } = this.props;
+    const user = lastUpdater || creator;
+
+    if (!user || !user.displayName) {
+      return undefined;
+    }
+
+    return `Captured by ${user.displayName}`;
+  }
 
   render() {
     const { appearance, children, contentRef, participants, showPlaceholder } = this.props;
@@ -50,6 +63,7 @@ export default class DecisionItem extends PureComponent<Props,{}> {
         participants={participants}
         placeholder="Add a decision…"
         showPlaceholder={showPlaceholder}
+        attribution={this.getAttributionText()}
       >
         {children}
       </Item>

@@ -21,11 +21,12 @@ export interface BaseItem<S> extends ObjectKey {
 export interface ServiceDecision {
   containerAri: string;
   creationDate: string;
-  creatorId: string;
+  creator?: User;
+  lastUpdater?: User;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
-  participants: any[];
+  participants: User[];
   // Atlassian Document fragment (json string)
   rawContent: string;
   state: DecisionState;
@@ -56,9 +57,10 @@ export interface ServiceTaskResponse {
 
 export interface Decision extends BaseItem<DecisionState> {
   creationDate: Date;
-  creatorId: string;
+  creator?: User;
+  lastUpdater?: User;
   lastUpdateDate: Date;
-  participants: any[];
+  participants: User[];
   // Atlassian Document fragment
   content: any;
   status: DecisionStatus;
@@ -91,7 +93,10 @@ export interface Query {
   sortCriteria?: SortCriteria;
 }
 
-export interface Participant {
+// Kept for compatibility
+export type Participant = User;
+
+export interface User {
   id: string;
   displayName: string;
   nickname: string;
@@ -101,12 +106,13 @@ export interface Participant {
 export interface ServiceTask {
   containerAri: string;
   creationDate: string;
-  creatorId: string;
+  creator?: User;
+  lastUpdater?: User;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
   parentLocalId: string;
-  participants: Participant[];
+  participants: User[];
   position: number;
   // Atlassian Document fragment (json string)
   rawContent: string;
@@ -116,10 +122,11 @@ export interface ServiceTask {
 
 export interface Task extends BaseItem<TaskState> {
   creationDate: Date;
-  creatorId: string;
+  creator?: User;
+  lastUpdater?: User;
   lastUpdateDate: Date;
   parentLocalId: string;
-  participants: Participant[];
+  participants: User[];
   position: number;
   // Atlassian Document fragment
   content: any;

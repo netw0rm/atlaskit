@@ -79,6 +79,12 @@
         "nickname": "Petch 🎃 🦂 🌯 ",
         "avatarUrl": "https://avatar-cdn.atlassian.com/2dcf022e62a332e23e06642bd0d59d29"
       },
+      "lastUpdater": {
+        "id": "id:tara",
+        "displayName": "Tara Tjandra",
+        "nickname": "Tara 🕳",
+        "avatarUrl": "https://avatar-cdn.atlassian.com/ed5c802ddd0ef7ec9da68da9fa51c186"
+      },
       "rawContent": "[{\"type\":\"text\",\"text\":\"123\",\"marks\":[]}]",
       "contentAsFabricDocument": "{\"version\":1,\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"123\",\"marks\":[]}]}]}",
       "participants": []
@@ -87,7 +93,7 @@
       "type": "TASK",
       "creationDate": "2017-09-01T05:34:31.186Z",
       "lastUpdateDate": "2017-09-01T05:34:31.186Z",
-      "state": "TODO",
+      "state": "DONE",
       "status": "CREATED",
       "localId": "696ad39c-06ed-4b82-9d87-25db1c9f05de",
       "parentLocalId": "e4610f3a-4ac3-445a-86d9-60006f737432",
@@ -96,9 +102,15 @@
       "containerAri": "ari:cloud:chat:a436116f-02ce-4520-8fbb-7301462a1674:conversation/8e1a1476-5dc2-4363-8d42-f62e8467835d",
       "creator": {
         "id": "id:craig",
-        "displayName": "Craig Petchell",
+        "displayName": "Craig Petchell with a really long name",
         "nickname": "Petch 🎃 🦂 🌯 ",
         "avatarUrl": "https://avatar-cdn.atlassian.com/2dcf022e62a332e23e06642bd0d59d29"
+      },
+      "lastUpdater": {
+        "id": "id:tara",
+        "displayName": "Tara Tjandra",
+        "nickname": "Tara 🕳",
+        "avatarUrl": "https://avatar-cdn.atlassian.com/ed5c802ddd0ef7ec9da68da9fa51c186"
       },
       "rawContent": "[{\"type\":\"text\",\"text\":\"234\",\"marks\":[]}]",
       "contentAsFabricDocument": "{\"version\":1,\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"234\",\"marks\":[]}]}]}",

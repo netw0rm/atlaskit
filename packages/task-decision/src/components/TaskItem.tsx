@@ -6,7 +6,7 @@ import {
 } from '../styled/TaskItem';
 
 import Item from './Item';
-import { Appearance, Participant } from '../types';
+import { Appearance, User } from '../types';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
@@ -20,8 +20,10 @@ export interface Props {
   children?: ReactElement<any>;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  participants?: Participant[];
+  participants?: User[];
   showParticipants?: boolean;
+  creator?: User;
+  lastUpdater?: User;
 }
 
 let taskCount = 0;
@@ -52,6 +54,20 @@ export default class TaskItem extends PureComponent<Props, {}> {
     }
   }
 
+  getAttributionText() {
+    const { creator, lastUpdater, isDone } = this.props;
+
+    if (isDone && lastUpdater) {
+      return `Completed by ${lastUpdater.displayName}`;
+    }
+
+    if (!creator || !creator.displayName) {
+      return undefined;
+    }
+
+    return `Added by ${creator.displayName}`;
+  }
+
   render() {
     const { appearance, isDone, contentRef, children, participants, showPlaceholder } = this.props;
 
@@ -76,6 +92,7 @@ export default class TaskItem extends PureComponent<Props, {}> {
         participants={participants}
         placeholder="Add an action…"
         showPlaceholder={showPlaceholder}
+        attribution={this.getAttributionText()}
       >
         {children}
       </Item>

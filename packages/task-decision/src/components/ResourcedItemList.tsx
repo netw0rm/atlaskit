@@ -231,7 +231,12 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
           if (isDecision(item)) {
             return (
               <li key={objectKeyToString(objectKey)}>
-                <DecisionItem appearance={appearance} participants={item.participants} >
+                <DecisionItem
+                  appearance={appearance}
+                  participants={item.participants}
+                  creator={item.creator}
+                  lastUpdater={item.lastUpdater}
+                >
                   {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
                 </DecisionItem>
               </li>
@@ -249,6 +254,8 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
                   containerAri={objectKey.containerAri}
                   appearance={appearance}
                   participants={item.participants}
+                  creator={item.creator}
+                  lastUpdater={item.lastUpdater}
                 >
                   {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
                 </ResourcedTaskItem>

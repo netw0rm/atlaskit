@@ -47,6 +47,7 @@ ContentArea.displayName = 'ContentArea';
 
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
+  position: relative;
   align-items: center;
   border-bottom: 1px solid ${akColorN30};
   display: flex;

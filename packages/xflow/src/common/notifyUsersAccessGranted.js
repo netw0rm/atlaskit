@@ -12,14 +12,14 @@ function getAtlassianAccountId({ attributes: { attributes } }) {
   return openIdAttr ? openIdAttr.values[0] : '';
 }
 
-async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo) {
+async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo, productKey) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      product: 'confluence',
+      product: productKey,
       instance,
       grantedAccessBy,
       grantedAccessTo,
@@ -35,7 +35,7 @@ async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo)
   return await response.json();
 }
 
-export default async (users) => {
+export default async (users, productKey) => {
   if (users.length === 0) {
     return {
       status: 'SENT',
@@ -58,5 +58,5 @@ export default async (users) => {
     atlassianAccountId: getAtlassianAccountId(user),
   }));
 
-  return await notifyUsers(NOTIFY_ENDPOINT_EAST, instance, grantedAccessBy, grantedAccessTo);
+  return await notifyUsers(NOTIFY_ENDPOINT_EAST, instance, grantedAccessBy, grantedAccessTo, productKey);
 };

@@ -4,14 +4,16 @@ import fetchMock from 'fetch-mock';
 
 import * as tenantContext from '../../../src/common/tenantContext';
 
-import notifyUsersAccessGranted, {
+import {
   NOTIFY_ENDPOINT_EAST,
-} from '../../../src/jira-confluence/notifyUsersAccessGranted';
+} from '../../../src/common/notifyUsersAccessGranted';
 
-import userAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
-import accessgrantedJiraUsersResponse from './mock-data/accessgrantedJiraUsers.json';
-import accessgrantedNoUsersResponse from './mock-data/accessgrantedNoUsers.json';
-import jiraUsersResponse from './mock-data/jiraUsers.json';
+import notifyUsersAccessGranted from '../../../src/common/notifyUsersAccessGranted';
+
+import userAdminResponse from './../jira-confluence/mock-data/isUserTrustedSiteAdmin.json';
+import accessgrantedJiraUsersResponse from './../jira-confluence/mock-data/accessgrantedJiraUsers.json';
+import accessgrantedNoUsersResponse from './../jira-confluence/mock-data/accessgrantedNoUsers.json';
+import jiraUsersResponse from './../jira-confluence/mock-data/jiraUsers.json';
 // import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
 // import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
 // import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
@@ -39,7 +41,7 @@ describe('notifyUsersAccessGranted', () => {
 
   it('should return a resolved promise with no value and it should never contact the endpoint', async () => {
     shouldNeverContactEndpoint();
-    const result = await notifyUsersAccessGranted([]);
+    const result = await notifyUsersAccessGranted([], 'confluence');
     expect(result).toEqual(accessgrantedNoUsersResponse);
     expect(fetchMock.done(NEVER_CALL)).toBe(false);
   });
@@ -51,7 +53,7 @@ describe('notifyUsersAccessGranted', () => {
 
     mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);
 
-    const result = await notifyUsersAccessGranted(jiraUsersResponse);
+    const result = await notifyUsersAccessGranted(jiraUsersResponse, 'confluence');
     expect(result).toEqual(accessgrantedJiraUsersResponse);
     expect(fetchMock.done('NOTIFY')).toBe(true);
 
@@ -79,7 +81,7 @@ describe('notifyUsersAccessGranted', () => {
     expect.assertions(1);
 
     try {
-      await notifyUsersAccessGranted(jiraUsersResponse);
+      await notifyUsersAccessGranted(jiraUsersResponse, 'confluence');
     } catch (e) {
       expect(e).toEqual(
         new Error('Unable to notify users that they were granted access. Status: 500')

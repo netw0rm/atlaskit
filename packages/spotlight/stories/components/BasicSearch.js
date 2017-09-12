@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
-import { AkSearch, AkNavigationItem } from '../../src/index';
+import { AkSearch, AkNavigationItem } from '@atlaskit/navigation';
 
 const data = [
   {

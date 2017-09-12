@@ -28,6 +28,7 @@ export default class BasicNavigation extends PureComponent {
     drawers: PropTypes.arrayOf(PropTypes.node),
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    globalSearchIcon: PropTypes.node,
     onResizeCallback: PropTypes.func,
     openDrawer: PropTypes.string,
     searchDrawerContent: PropTypes.node,
@@ -133,6 +134,7 @@ export default class BasicNavigation extends PureComponent {
         </DropdownItemGroup>
       </AkDropdownMenu>,
     ],
+    globalSearchIcon: <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />,
   }
 
   constructor(...args) {
@@ -189,10 +191,7 @@ export default class BasicNavigation extends PureComponent {
         }
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={
-          <Tooltip position="right" description="Search">
-            <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>}
+        globalSearchIcon={this.props.globalSearchIcon}
         globalSecondaryActions={this.props.globalSecondaryActions}
         isOpen={this.state.isOpen}
         onCreateDrawerOpen={() => { this.openDrawer('create'); }}

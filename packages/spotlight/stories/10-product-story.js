@@ -1,8 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-
 import { name } from '../package.json';
-import JiraExample from './examples/jira';
+import JiraNavigation from './examples/JiraNavigation';
 
 storiesOf(name, module)
-  .add('Jira', () => <JiraExample />);
+  .add('Jira Navigation', () => <JiraNavigation />);

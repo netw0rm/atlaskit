@@ -22,8 +22,6 @@ export const telepointerStyle = `
       }
     }
 
-    &.telepointer-selection {}
-
     ${colors.map((color, index) => telepointerColorStyle(color, index))}
   }
 `;

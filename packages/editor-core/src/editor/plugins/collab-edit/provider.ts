@@ -9,4 +9,5 @@ export interface CollabEditProvider {
   initialize(getState: () => any): this;
   send(tr: Transaction, oldState: EditorState<any>, newState: EditorState<any>): void;
   on(evt: CollabEvent, handler: (...args) => void): this;
+  sendMessage(data: { type: 'telepointer', [key: string]: any });
 }

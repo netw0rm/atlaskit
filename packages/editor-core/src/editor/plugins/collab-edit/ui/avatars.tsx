@@ -87,9 +87,9 @@ export default class Avatars extends React.Component<Props, {}> {
   }
 
   private renderAvatars = ({ data }) => {
-    const { sessionId, participants } = data;
+    const { sessionId, activeParticipants } = data;
 
-    const avatars = participants.map(p => ({
+    const avatars = activeParticipants.map(p => ({
       email: p.email,
       key: p.sessionId,
       name: p.name,

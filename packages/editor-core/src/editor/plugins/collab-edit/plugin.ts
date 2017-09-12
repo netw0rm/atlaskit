@@ -16,6 +16,12 @@ import {
   handleTelePointer,
   applyRemoteData,
 } from './actions';
+import {
+  Participant,
+  ConnectionData,
+  PresenceData,
+  TelepointerData
+} from './types';
 import { getAvatarColor, findPointer } from './utils';
 import { CollabEditProvider } from './provider';
 export {
@@ -42,12 +48,12 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
           }
         }
 
-        const { participants, sessionId } = pluginState;
+        const { activeParticipants, sessionId } = pluginState;
 
         if (collabEditProvider) {
           const selection = getSendableSelection(oldState, newState);
           if (selection && sessionId) {
-            (collabEditProvider as any).sendMessage({
+            collabEditProvider.sendMessage({
               type: 'telepointer',
               selection,
               sessionId,
@@ -55,7 +61,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
           }
         }
 
-        dispatch(pluginKey, { participants, sessionId });
+        dispatch(pluginKey, { activeParticipants, sessionId });
 
         return pluginState;
       },
@@ -108,15 +114,12 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
   });
 };
 
-interface Participant {
-  lastActive: number;
-  sessionId: string;
-  avatar: string;
-}
-
 class Participants {
 
-  constructor(private participants: Map<string, Participant> = new Map<string, Participant>()) {
+  private participants: Map<string, Participant>;
+
+  constructor(participants: Map<string, Participant> = new Map<string, Participant>()) {
+    this.participants = participants;
   }
 
   add(data: Participant[]) {
@@ -159,23 +162,22 @@ class Participants {
 
 const createTelepointer = (from: number, to: number, sessionId: string, isSelection: boolean) => {
   // TODO: Use Decoration.widget when there's no selection. (ED-2728)
-
   const color = getAvatarColor(sessionId).index.toString();
   return Decoration.inline(from, to, { class: `telepointer color-${color} ${isSelection ? 'telepointer-selection' : 'telepointer-pointer'}` }, { pointer: { sessionId } });
 };
 
 class PluginState {
 
-  private d: DecorationSet;
-  private p: Participants;
+  private decorationSet: DecorationSet;
+  private participants: Participants;
   private sid?: string;
 
   get decorations() {
-    return this.d;
+    return this.decorationSet;
   }
 
-  get participants() {
-    return this.p.toArray();
+  get activeParticipants() {
+    return this.participants.toArray();
   }
 
   get sessionId() {
@@ -183,34 +185,34 @@ class PluginState {
   }
 
   constructor(decorations: DecorationSet, participants: Participants, sessionId?: string) {
-    this.d = decorations;
-    this.p = participants;
+    this.decorationSet = decorations;
+    this.participants = participants;
     this.sid = sessionId;
   }
 
   apply(tr: Transaction) {
-    let { d, p, sid } = this;
+    let { decorationSet, participants, sid } = this;
 
-    const presenceData = tr.getMeta('presence');
-    const telepointerData = tr.getMeta('telepointer');
-    const sessionIdData = tr.getMeta('sessionId');
+    const presenceData = tr.getMeta('presence') as PresenceData;
+    const telepointerData = tr.getMeta('telepointer') as TelepointerData;
+    const sessionIdData = tr.getMeta('sessionId') as ConnectionData;
 
     if (sessionIdData) {
       sid = sessionIdData.sid;
     }
 
-    let add: any[] = [];
-    let remove: any[] = [];
+    const add: Decoration[] = [];
+    const remove: Decoration[] = [];
 
     if (presenceData) {
-      const { joined = [], left = [] as { sessionId: string }[] } = presenceData;
+      const { joined = [] as Participant[], left = [] as { sessionId: string }[] } = presenceData;
 
-      p = p.remove(left.map(i => i.sessionId));
-      p = p.add(joined);
+      participants = participants.remove(left.map(i => i.sessionId));
+      participants = participants.add(joined);
 
       // Remove telepointers for users that left
       left.forEach(i => {
-        const pointer = findPointer(i.sessionId, d);
+        const pointer = findPointer(i.sessionId, decorationSet);
         if (pointer) {
           remove.push(pointer);
         }
@@ -220,7 +222,7 @@ class PluginState {
     if (telepointerData) {
       const { sessionId } = telepointerData;
       if (sessionId && sessionId !== sid) {
-        const oldPointer = findPointer(telepointerData.sessionId, d);
+        const oldPointer = findPointer(telepointerData.sessionId, decorationSet);
         if (oldPointer) {
           remove.push(oldPointer);
         }
@@ -235,14 +237,14 @@ class PluginState {
     }
 
     if (remove.length) {
-      d = d.remove(remove);
+      decorationSet = decorationSet.remove(remove);
     }
 
     if (add.length) {
-      d = d.add(tr.doc, add);
+      decorationSet = decorationSet.add(tr.doc, add);
     }
 
-    return new PluginState(d, p, sid);
+    return new PluginState(decorationSet, participants, sid);
   }
 
   static init(config: any) {

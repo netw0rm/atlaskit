@@ -4,8 +4,17 @@ import {
   EditorState,
 } from '../../../prosemirror';
 
-export const handleInit = (data: { doc?: any, json?: any }, view: EditorView) => {
-  const { doc, json } = data;
+import {
+  InitData,
+  RemoteData,
+  ConnectionData,
+  PresenceData,
+  TelepointerData,
+  SendableSelection,
+} from './types';
+
+export const handleInit = (initData: InitData, view: EditorView) => {
+  const { doc, json } = initData;
   if (doc) {
     const { state, state: { schema, tr } } = view;
     const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
@@ -24,18 +33,18 @@ export const handleInit = (data: { doc?: any, json?: any }, view: EditorView) =>
   }
 };
 
-export const handleConnection = (data: { sid: string }, view: EditorView) => {
+export const handleConnection = (connectionData: ConnectionData, view: EditorView) => {
   const { state: { tr } } = view;
-  view.dispatch(tr.setMeta('sessionId', data));
+  view.dispatch(tr.setMeta('sessionId', connectionData));
 };
 
-export const handlePresence = (data: any, view: EditorView) => {
+export const handlePresence = (presenceData: PresenceData, view: EditorView) => {
   const { state: { tr } } = view;
-  view.dispatch(tr.setMeta('presence', data));
+  view.dispatch(tr.setMeta('presence', presenceData));
 };
 
-export const applyRemoteData = (data: { json?: any, newState?: EditorState<any> }, view: EditorView) => {
-  const { json, newState } = data;
+export const applyRemoteData = (remoteData: RemoteData, view: EditorView) => {
+  const { json, newState } = remoteData;
   if (json) {
     applyRemoteSteps(json, view);
   } else if (newState) {
@@ -58,16 +67,16 @@ export const applyRemoteSteps = (json: any[], view: EditorView) => {
   view.updateState(newState);
 };
 
-export const handleTelePointer = (data: any, view: EditorView) => {
+export const handleTelePointer = (telepointerData: TelepointerData, view: EditorView) => {
   const { state: { tr } } = view;
   view.dispatch(
     tr
-      .setMeta('telepointer', data)
+      .setMeta('telepointer', telepointerData)
       .scrollIntoView()
   );
 };
 
-export const getSendableSelection = (oldState: EditorState<any>, newState: EditorState<any>) => {
+export const getSendableSelection = (oldState: EditorState<any>, newState: EditorState<any>): SendableSelection | undefined => {
   const oldSelection = oldState.selection;
   const newSelection = newState.selection;
 

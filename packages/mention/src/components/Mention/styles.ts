@@ -14,7 +14,7 @@ export interface MentionStyleProps {
 const mentionStyle = {};
 mentionStyle[MentionType.SELF] = {
   background: akColorB400,
-  border: akColorB400,
+  border: 'transparent',
   text: akColorN20,
 };
 mentionStyle[MentionType.RESTRICTED] = {

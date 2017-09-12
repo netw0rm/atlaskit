@@ -9,6 +9,7 @@ import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import { INACTIVE } from '../src/common/productProvisioningStates';
 
 const defaultProps = {
+  alreadyRequested: false,
   productLogo: <ConfluenceLogo />,
   heading: 'JIRA Software\'s perfect partner',
   message: 'Create requirements and stay in sync with your entire team.',
@@ -27,6 +28,27 @@ storiesOf('RequestTrial')
         {...defaultProps}
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
+      />
+    )
+  )
+  .add('Request Trial (INACTIVE) with spinner', () =>
+    setupStorybookAnalytics(
+      <RequestTrialAccessBase
+        {...defaultProps}
+        onComplete={() => Promise.resolve(true)}
+        onCancel={() => Promise.resolve(true)}
+        spinnerActive
+        buttonsDisabled
+      />
+    )
+  )
+  .add('Already Requested Trial (INACTIVE)', () =>
+    setupStorybookAnalytics(
+      <RequestTrialAccessBase
+        {...defaultProps}
+        onComplete={() => Promise.resolve(true)}
+        onCancel={() => Promise.resolve(true)}
+        alreadyRequested
       />
     )
   )

@@ -4,10 +4,12 @@ import { AtlassianLogo } from '@atlaskit/logo';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
+import Spinner from '@atlaskit/spinner';
 import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestAccessFooter from '../styled/RequestAccessFooter';
 import RequestAccessHeader from '../styled/RequestAccessHeader';
@@ -18,6 +20,7 @@ import RequestAccessDiv from '../styled/RequestAccessDiv';
 class RequestTrialAccess extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
+    buttonsDisabled: PropTypes.bool,
     cancelRequestTrialAccess: PropTypes.func,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     heading: PropTypes.string.isRequired,
@@ -28,6 +31,7 @@ class RequestTrialAccess extends Component {
     onCancel: PropTypes.func.isRequired,
     productLogo: PropTypes.element,
     requestTrialAccess: PropTypes.func,
+    spinnerActive: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -35,6 +39,12 @@ class RequestTrialAccess extends Component {
     requestTrialAccess: () => Promise.resolve(),
     cancelRequestTrialAccess: () => Promise.resolve(),
   };
+
+  state = {
+    spinnerActive: this.props.spinnerActive,
+    buttonsDisabled: this.props.buttonsDisabled,
+    requestTrialFailed: false,
+  }
 
   componentDidMount() {
     const { firePrivateAnalyticsEvent, alreadyRequested } = this.props;
@@ -46,7 +56,21 @@ class RequestTrialAccess extends Component {
   handleRequestAccessClick = () => {
     const { firePrivateAnalyticsEvent, requestTrialAccess, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial.request-button.clicked');
-    Promise.resolve(requestTrialAccess()).then(() => onComplete());
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+      confluenceFailedToStart: false,
+    });
+    requestTrialAccess()
+      .then(() => onComplete())
+      .catch(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial.failed');
+        this.setState({
+          buttonsDisabled: false,
+          requestTrialFailed: true,
+          spinnerActive: false,
+        });
+      });
     // TODO: add analytics events for success or failure of requestTrialAccess
   };
 
@@ -106,6 +130,9 @@ class RequestTrialAccess extends Component {
         }
         footer={
           <RequestAccessFooter>
+            <SpinnerDiv>
+              <Spinner isCompleting={!this.state.spinnerActive} />
+            </SpinnerDiv>
             {alreadyRequested ?
               <span
                 onMouseDown={this.handleLearnMoreAlternateClick}
@@ -124,13 +151,21 @@ class RequestTrialAccess extends Component {
                   />
                 </Button>
               </span> :
-              <Button appearance="primary" onClick={this.handleRequestAccessClick}>
+              <Button
+                appearance="primary"
+                onClick={this.handleRequestAccessClick}
+                isDisabled={this.state.buttonsDisabled}
+              >
                 <FormattedMessage
                   id="xflow.generic.request-trial.request-button"
                   defaultMessage="Request a trial"
                 />
               </Button>}
-            <Button appearance="subtle-link" onClick={this.handleCloseClick}>
+            <Button
+              appearance="subtle-link"
+              onClick={this.handleCloseClick}
+              isDisabled={this.state.buttonsDisabled}
+            >
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
                 defaultMessage="Close"

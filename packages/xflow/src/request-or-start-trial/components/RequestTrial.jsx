@@ -38,9 +38,9 @@ class RequestTrial extends Component {
               onComplete={async () => {
                 await onTrialRequested();
                 if (alreadyRequested) {
-                  firePrivateAnalyticsEvent('xflow.request-trial.previously-requested.true');
+                  firePrivateAnalyticsEvent('xflow.request-trial.already-requested.true');
                 } else {
-                  firePrivateAnalyticsEvent('xflow.request-trial.previously-requested.false');
+                  firePrivateAnalyticsEvent('xflow.request-trial.already-requested.false');
                 }
                 nextStep();
               }}

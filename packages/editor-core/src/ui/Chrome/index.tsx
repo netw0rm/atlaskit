@@ -50,6 +50,7 @@ export interface Props {
   activityProvider?: Promise<ActivityProvider>;
   onCollapsedChromeFocus: () => void;
   saveDisabled?: boolean;
+  showSpinner?: boolean;
   popupsBoundariesElement?: HTMLElement;
   popupsMountPoint?: HTMLElement;
   height?: number;
@@ -65,6 +66,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         onCancel={props.onCancel}
         onSave={props.onSave}
         saveDisabled={props.saveDisabled}
+        showSpinner={props.showSpinner}
         disabled={props.disabled}
         feedbackFormUrl={props.feedbackFormUrl}
         helpDialogPresent={props.helpDialogPresent}

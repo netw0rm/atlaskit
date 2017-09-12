@@ -1,5 +1,39 @@
 # @atlaskit/navigation
 
+## 22.0.1 (2017-09-11)
+
+
+* bug fix; selected nav items with a custom theme now have correct hover/focus style (issues closed: ak-3449) ([53d54c2](https://bitbucket.org/atlassian/atlaskit/commits/53d54c2))
+## 22.0.0 (2017-09-07)
+
+* breaking; DrawerContent is now a flex column, so anything you put inside a drawer will behave like a flex ([fc075c7](https://bitbucket.org/atlassian/atlaskit/commits/fc075c7))
+* breaking; nav drawer content fills drawer height, to allow for vertically-centered layouts (issues closed: ak-3443, donut-789) ([fc075c7](https://bitbucket.org/atlassian/atlaskit/commits/fc075c7))
+## 21.2.2 (2017-09-06)
+
+* bug fix; navigation scrollbar is now hidden until hovered in supported environments (issues closed: ak-3366 ak-3454) ([7c2b236](https://bitbucket.org/atlassian/atlaskit/commits/7c2b236))
+## 21.2.1 (2017-09-06)
+
+* bug fix; compact items now have tighter spacing (issues closed: ak-3441) ([c378809](https://bitbucket.org/atlassian/atlaskit/commits/c378809))
+
+## 21.2.0 (2017-09-04)
+
+* feature; add optional top and bottom visual scroll hints for ContainerNavigation (issues closed: ak-3278) ([9333bbb](https://bitbucket.org/atlassian/atlaskit/commits/9333bbb))
+## 21.1.0 (2017-09-01)
+
+* feature; exposing isOpen and defaultOpen from dropdown ([f89ac1c](https://bitbucket.org/atlassian/atlaskit/commits/f89ac1c))
+* feature; exposing dropdown props in ContainerTitleDropdown (issues closed: ak-3404) ([2fd0515](https://bitbucket.org/atlassian/atlaskit/commits/2fd0515))
+## 21.0.0 (2017-08-31)
+
+* breaking; AkSearchResults and AkQuickSearchWithKeyboardControls have been removed. ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* breaking; New quickSearchResultTypes export has been added ([25c2baf](https://bitbucket.org/atlassian/atlaskit/commits/25c2baf))
+* bug fix; bumping navigation dependencies (issues closed: ak-3392) ([de8e271](https://bitbucket.org/atlassian/atlaskit/commits/de8e271))
+
+
+
+
+* breaking; QuickSearch \`results\` prop (plain js object) removed in favour of \`children\` prop (array of React ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+* breaking; refactor QuickSearch API to expect results as component children instead of js ([1678752](https://bitbucket.org/atlassian/atlaskit/commits/1678752))
+
 ## 20.3.2 (2017-08-30)
 
 * bug fix; Updated Navigation dependencies (issues closed: ak-3392) ([cd361f0](https://bitbucket.org/atlassian/atlaskit/commits/cd361f0))

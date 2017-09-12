@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.18.0",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Select (Single)"
+    "name": "Select (Single)",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -25,10 +26,11 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/droplist": "^4.1.0",
-    "@atlaskit/field-base": "^7.0.1",
+    "@atlaskit/droplist": "^4.9.0",
+    "@atlaskit/field-base": "^8.0.0",
     "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/util-shared-styles": "^2.1.0",
+    "@atlaskit/spinner": "^4.0.0",
+    "@atlaskit/theme": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
@@ -41,7 +43,6 @@
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/single-select": "*",
     "@atlaskit/tooltip": "^1.2.0",
-    "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

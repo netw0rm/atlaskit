@@ -96,12 +96,16 @@ export default class AvatarGroup extends Component {
     const total = data.length;
     const Group = GROUP_COMPONENT[appearance];
 
-    const items = data.slice(0, max).map((avatar, idx) => (
+    // Render (max - 1) avatars to leave space for moreIndicator
+    const maxAvatar = total > max ? max - 1 : max;
+
+    const items = data.slice(0, maxAvatar).map((avatar, idx) => (
       <Item
         {...avatar}
         borderColor={borderColor}
         groupAppearance={appearance}
         index={idx}
+        key={idx}
         onClick={avatar.onClick || onAvatarClick}
         size={size}
         stackIndex={max - idx}
@@ -111,7 +115,7 @@ export default class AvatarGroup extends Component {
     return (
       <Group size={size}>
         {items}
-        {this.renderMoreDropdown(+max, total)}
+        {this.renderMoreDropdown(+maxAvatar, total)}
       </Group>
     );
   }

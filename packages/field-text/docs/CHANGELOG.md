@@ -1,5 +1,15 @@
 # @atlaskit/field-text
 
+## 4.0.1 (2017-09-11)
+
+* bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))
+* bug fix; add placeholder color for light and dark mode ([0632c02](https://bitbucket.org/atlassian/atlaskit/commits/0632c02))
+## 4.0.0 (2017-08-30)
+
+
+* feature; bump field-base to add dark mode ([0d6bbc4](https://bitbucket.org/atlassian/atlaskit/commits/0d6bbc4))
+* breaking; Add dark mode, remove util-shared-styles ([b6ae894](https://bitbucket.org/atlassian/atlaskit/commits/b6ae894))
+* breaking; add dark mode to field text (issues closed: #ak-3339) ([b6ae894](https://bitbucket.org/atlassian/atlaskit/commits/b6ae894))
 ## 3.4.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

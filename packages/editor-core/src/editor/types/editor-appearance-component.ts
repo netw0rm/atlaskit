@@ -5,14 +5,21 @@ import { UIComponentFactory, ReactElement } from '../types';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
+
   providerFactory: ProviderFactory;
   editorView?: EditorView;
+
   eventDispatcher?: EventDispatcher;
+
+  maxHeight?: number;
+
   contentComponents?: UIComponentFactory[];
   primaryToolbarComponents?: UIComponentFactory[];
   secondaryToolbarComponents?: UIComponentFactory[];
+
   customContentComponents?: ReactElement;
   customPrimaryToolbarComponents?: ReactElement;
   customSecondaryToolbarComponents?: ReactElement;
+
   addonToolbarComponents?: ReactElement;
 }

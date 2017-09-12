@@ -19,7 +19,6 @@ import {
 import { EmojiProps } from '../../src/renderer/react/nodes/emoji';
 import ProviderFactory from '../../src/providerFactory';
 import { storyData as  emojiStoryData, testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { toEmojiId } from '@atlaskit/emoji';
 
 import {
   imageFileId
@@ -45,9 +44,12 @@ storiesOf(name, module)
     providerFactory.setProvider('emojiProvider', emojiProvider);
     providerFactory.setProvider('mediaProvider', mediaProvider);
 
+    const { id, fallback, shortName } = emojiTestData.evilburnsEmoji;
     const evilBurnsEmojiProps: EmojiProps = {
-      ...toEmojiId(emojiTestData.evilburnsEmoji),
-      providers: providerFactory
+      id,
+      shortName,
+      providers: providerFactory,
+      text: fallback,
     };
 
     const eventHandlers: EventHandlers = {

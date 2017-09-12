@@ -27,6 +27,11 @@ export interface State {
   isOpen: boolean;
 }
 
+/**
+ * Checks if an element is detached (i.e. not in the current document)
+ */
+const isDetachedElement = (el) => !document.contains(el);
+
 export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   private pickerRef: any;
   private buttonRef: any;
@@ -114,7 +119,11 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   private handleClickOutside = (e) => {
     const picker = ReactDOM.findDOMNode(this.pickerRef);
-    if (!picker || !picker.contains(e.target)) {
+    // Ignore click events for detached elements.
+    // Workaround for FS-1322 - where two onClicks fire - one when the upload button is
+    // still in the document, and one once it's detached. Does not always occur, and
+    // may be a side effect of a react render optimisation
+    if (!picker || (!isDetachedElement(e.target) && !picker.contains(e.target))) {
       this.close();
     }
   }

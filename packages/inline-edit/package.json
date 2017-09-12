@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "4.4.4",
+  "version": "4.4.6",
   "config": {
     "access": "public"
   },
@@ -28,10 +28,10 @@
     "react-dom": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^2.0.2",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/field-base": "^5.0.0",
+    "@atlaskit/field-base": "^8.0.1",
     "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
@@ -44,8 +44,10 @@
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
+    "@atlaskit/multi-select": "^7.1.0",
     "@atlaskit/single-select": "^1.4.0",
-    "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/tag": "^2.6.0",
+    "@atlaskit/tag-group": "^3.4.2",
     "react-router-dom": "^4.0.0",
     "uid": "0.0.2"
   },

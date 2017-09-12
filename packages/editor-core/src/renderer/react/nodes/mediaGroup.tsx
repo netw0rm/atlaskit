@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { ReactElement, PureComponent } from 'react';
-import { FilmstripView } from '@atlaskit/media-filmstrip';
 import styled, { css } from 'styled-components';
-import { akGridSize } from '@atlaskit/util-shared-styles';
-import { Props as MediaProps } from '../../../ui/Media/MediaComponent';
+import { akGridSize, akColorN30 } from '@atlaskit/util-shared-styles';
+import {
+  MEDIA_HEIGHT,
+  FILE_WIDTH,
+  LINK_WIDTH,
+} from '../../../ui/Media/MediaComponent';
+import { MediaProps } from './media';
+import { CardEvent } from '@atlaskit/media-card';
+import { CardSurroundings } from '../../../ui/Renderer';
 
 export interface MediaGroupProps {
   children?: React.ReactNode;
@@ -12,30 +18,78 @@ export interface MediaGroupProps {
 export interface MediaGroupState {
   animate: boolean;
   offset: number;
+  FilmstripView?: React.ComponentClass<any>;
 }
 
+export const SINGLE_FILE_WIDTH = 275;
 export const SINGLE_FILE_HEIGHT = 180;
-export const SINGLE_LINK_HEIGHT = 116;
 
-const padding = css`
-  padding: ${akGridSize} 0;
+export const SINGLE_LINK_WIDTH = 350;
+export const SINGLE_LINK_HEIGHT = 300;
+
+const margin = css`
+  margin: ${akGridSize} 0;
+`;
+
+const center = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${akColorN30};
+`;
+
+const filmStripItem = css`
+  background: ${akColorN30};
+  margin-right: ${akGridSize};
+  min-height: ${MEDIA_HEIGHT}px;
+  flex-shrink: 0;
 `;
 
 // tslint:disable-next-line
 const FilmStripWrapper = styled.div`
-  ${padding}
+  ${margin}
+  min-height: ${MEDIA_HEIGHT}px;
+`;
+
+// tslint:disable-next-line
+const FilmStripLoaderWrapper = styled.div`
+  ${margin}
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  min-height: ${MEDIA_HEIGHT}px;
+`;
+
+// tslint:disable-next-line
+const FilmStripFilePlaceholder = styled.div`
+  ${filmStripItem}
+  width: ${FILE_WIDTH}px;
+`;
+
+// tslint:disable-next-line
+const FilmStripLinkPlaceholder = styled.div`
+  ${filmStripItem}
+  width: ${LINK_WIDTH}px;
 `;
 
 // tslint:disable-next-line
 const SingleFileWrapper = styled.div`
-  ${padding}
+  ${margin}
   min-height: ${SINGLE_FILE_HEIGHT}px;
+  width: ${SINGLE_FILE_WIDTH}px;
+  ${center}
+  // This is a fix for media component css problem
+  .hVlmUn {
+    line-height: 0;
+  }
 `;
 
 // tslint:disable-next-line
 const SingleLinkWrapper = styled.div`
-  ${padding}
+  ${margin}
   min-height: ${SINGLE_LINK_HEIGHT}px;
+  width: ${SINGLE_LINK_WIDTH}px;
+  ${center}
 `;
 
 export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGroupState> {
@@ -48,6 +102,12 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   private handleSize = ({offset}) => this.setState({offset});
   private handleScroll = ({animate, offset}) => this.setState({animate, offset});
 
+  componentWillMount() {
+    require.ensure(['@atlaskit/media-card'], (require) => {
+      const { FilmstripView } = require('@atlaskit/media-filmstrip');
+      this.setState({ FilmstripView });
+    });
+  }
 
   render() {
     const numChildren = React.Children.count(this.props.children);
@@ -72,7 +132,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
       <SingleFileWrapper>{
         React.cloneElement(child, {
           cardDimensions: {
-            width: 275,
+            width: SINGLE_FILE_WIDTH,
             height: SINGLE_FILE_HEIGHT,
           },
           resizeMode: 'full-fit'
@@ -86,16 +146,32 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
       <SingleLinkWrapper>{
         React.cloneElement(child, {
           cardDimensions: {
-            width: 432,
+            width: SINGLE_LINK_WIDTH,
             height: SINGLE_LINK_HEIGHT,
           },
+          appearance: 'square'
         } as MediaProps)
       }</SingleLinkWrapper>
     );
   }
 
   renderStrip() {
-    const {animate, offset} = this.state;
+    const { children } = this.props;
+    const { animate, offset, FilmstripView } = this.state;
+    const listIds = React.Children.map(children, (child: ReactElement<MediaProps>) => child.props.id);
+    if (!FilmstripView) {
+      return (
+        <FilmStripLoaderWrapper>{
+          React.Children.map(children, (media: ReactElement<MediaProps>) =>
+            media.props.type === 'file' ? (
+              <FilmStripFilePlaceholder />
+            ) : (
+              <FilmStripLinkPlaceholder />
+            )
+          )
+        }</FilmStripLoaderWrapper>
+      );
+    }
     return (
       <FilmStripWrapper>
         <FilmstripView
@@ -105,18 +181,36 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
           onScroll={this.handleScroll}
         >
         {
-          React.Children.map(this.props.children, (child: ReactElement<MediaProps>) => {
+          React.Children.map(children, (child: ReactElement<MediaProps>) => {
             switch(child.props.type) {
               case 'file':
                 return React.cloneElement(child, {
-                  resizeMode: 'crop'
+                  resizeMode: 'crop',
+                  eventHandlers: {
+                    ...child.props.eventHandlers,
+                    media: {
+                      onClick: (event: CardEvent) => {
+                        if(!child.props
+                          || !child.props.eventHandlers
+                          || !child.props.eventHandlers.media
+                          || !child.props.eventHandlers.media.onClick) {
+                            return;
+                          }
+                        const surroundings: CardSurroundings = {
+                          collectionName: child.props.collection,
+                          list: listIds,
+                        };
+                        child.props.eventHandlers.media.onClick(event, surroundings);
+                      }
+                    }
+                  }
                 } as MediaProps);
 
               default:
               case 'link':
                 return React.cloneElement(child, {
                   cardDimensions: {
-                    width: 343,
+                    width: LINK_WIDTH,
                   },
                 } as MediaProps);
             }

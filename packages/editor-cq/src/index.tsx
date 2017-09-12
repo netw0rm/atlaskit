@@ -50,11 +50,12 @@ import {
   // error-reporting
   ErrorReporter,
   ErrorReportingHandler,
+  ConfluenceTransformer,
+  CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
-import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
@@ -87,6 +88,7 @@ export interface State {
   isExpanded?: boolean;
   isMediaReady: boolean;
   schema: typeof schema;
+  showSpinner: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -95,6 +97,7 @@ export default class Editor extends PureComponent<Props, State> {
   mentionProvider: Promise<MentionProvider>;
   editorView?: EditorView;
 
+  private transformer = new ConfluenceTransformer(schema);
   private providerFactory: ProviderFactory;
   private mediaPlugins: Plugin[];
 
@@ -105,6 +108,7 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
       isMediaReady: true,
+      showSpinner: false,
     };
 
     this.providerFactory = new ProviderFactory();
@@ -183,9 +187,10 @@ export default class Editor extends PureComponent<Props, State> {
 
     return (async () => {
       await mediaPluginState.waitForPendingTasks();
+      this.setState({ showSpinner: false });
 
       return editorView && editorView.state.doc
-          ? encode(editorView.state.doc)
+          ? this.transformer.encode(editorView.state.doc)
           : this.props.defaultValue;
     })();
   }
@@ -240,7 +245,7 @@ export default class Editor extends PureComponent<Props, State> {
       popupsBoundariesElement,
       popupsMountPoint
     } = this.props;
-    const { editorView, isExpanded, isMediaReady } = this.state;
+    const { editorView, isExpanded, isMediaReady, showSpinner } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
@@ -280,6 +285,7 @@ export default class Editor extends PureComponent<Props, State> {
         mentionProvider={this.mentionProvider}
         pluginStateMentions={mentionsState}
         saveDisabled={!isMediaReady}
+        showSpinner={showSpinner}
         popupsBoundariesElement={popupsBoundariesElement}
         popupsMountPoint={popupsMountPoint}
       />
@@ -301,7 +307,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { tablesEnabled, defaultValue } = this.props;
 
     if (place) {
-      const doc = parse(defaultValue || '');
+      const doc = this.transformer.parse(defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
@@ -336,6 +342,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       const codeBlockState = codeBlockStateKey.getState(editorState);
+      const supportedLanguages = Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name]);
       codeBlockState.setLanguages(supportedLanguages);
 
       const editorView = new EditorView(place, {
@@ -344,7 +351,7 @@ export default class Editor extends PureComponent<Props, State> {
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
-          this.handleChange();
+          this.handleChange(tr.docChanged);
         },
         nodeViews: {
           jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode }),
@@ -367,7 +374,7 @@ export default class Editor extends PureComponent<Props, State> {
           const html = clipboardData && clipboardData.getData('text/html');
           // we let table plugin to handle pasting of html that contain tables, because the logic is pretty complex
           if (html && !html.match(/<table[^>]+>/g)) {
-            const doc = parse(html.replace(/^<meta[^>]+>/, ''));
+            const doc = this.transformer.parse(html.replace(/^<meta[^>]+>/, ''));
             view.dispatch(
               view.state.tr.replaceSelection(new Slice(doc.content, slice.openStart, slice.openEnd))
             );
@@ -397,9 +404,9 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  private handleChange = async () => {
+  private handleChange = async (docChanged: boolean) => {
     const { onChange } = this.props;
-    if (onChange) {
+    if (onChange && docChanged) {
       onChange(this);
     }
 
@@ -412,6 +419,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleSave = () => {
+    this.setState({ showSpinner: true });
     const { onSave } = this.props;
     if (onSave) {
       onSave(this);

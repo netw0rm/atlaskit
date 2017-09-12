@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
@@ -15,6 +14,8 @@ import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/col
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
+import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { ConfluenceTransformer } from '../';
 
 import {
   akEditorCodeBackground,
@@ -100,10 +101,15 @@ storiesOf(name, module)
           allowLists={true}
           allowTextColor={true}
           allowTables={true}
+          allowJiraIssue={true}
+          allowUnsupportedContent={true}
 
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
-          emojiProvider={emojiStoryData.getEmojiResource()}
+          emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
+          activityProvider={Promise.resolve(new MockActivityResource())}
+          // tslint:disable-next-line:jsx-no-lambda
+          contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 
           placeholder="Write something..."
           shouldFocus={false}

@@ -8,7 +8,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 
 import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation, SearchSort } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
-import MediaEmojiResource from '../../../src/api/media/MediaEmojiResource';
+import SiteEmojiResource from '../../../src/api/media/SiteEmojiResource';
 import EmojiResource, {
     EmojiProvider,
     EmojiResourceConfig,
@@ -398,7 +398,7 @@ describe('EmojiResource', () => {
     });
   });
 
-  describe('#recordMentionSelection', () => {
+  describe('#recordSelection', () => {
     let mockEmojiRepository: EmojiRepository;
     let mockRecordUsage: sinon.SinonStub;
 
@@ -431,9 +431,35 @@ describe('EmojiResource', () => {
 
     it('should record usage on emoji repository even when no recordConfig configured', () => {
       const resource = new EmojiResourceWithEmojiRepositoryOverride({ providers: [provider1] }, mockEmojiRepository);
-      resource.recordSelection(grinEmoji).then(() => {
+      return resource.recordSelection(grinEmoji).then(() => {
         expect(mockRecordUsage.calledWith(grinEmoji)).to.equal(true);
       });
+    });
+  });
+
+  describe('#deleteSiteEmoji', () => {
+    it('Should not attempt to delete if there is no media emoji resource', () => {
+      fetchMock.mock({
+        matcher: `begin:${siteUrl}`,
+        response: {
+          emojis: siteServiceEmojis().emojis,
+          // no meta.mediaApiToken means no media resource created
+        },
+        times: 1,
+      }).mock({
+        matcher: `${siteUrl}/${mediaEmoji.id}`,
+        response: 200,
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+
+      const resource = new EmojiResource(config);
+      return resource.deleteSiteEmoji(mediaEmoji).then(success => expect(success).to.equal(false));
     });
   });
 
@@ -1057,7 +1083,7 @@ describe('EmojiResource', () => {
       return done;
     });
 
-    it('Two providers, ingore in failing provider', () => {
+    it('Two providers, ignore in failing provider', () => {
       let resolveProvider2;
 
       fetchMock.mock({
@@ -1098,28 +1124,46 @@ describe('UploadingEmojiResource', () => {
   });
 
   class TestUploadingEmojiResource extends EmojiResource {
-    private mockMediaEmojiResource?: MediaEmojiResource;
+    private mockSiteEmojiResource?: SiteEmojiResource;
 
-    constructor(mockMediaEmojiResource?: MediaEmojiResource, config?: EmojiResourceConfig) {
+    constructor(mockSiteEmojiResource?: SiteEmojiResource, config?: EmojiResourceConfig) {
       super({
         providers: [provider1],
         allowUpload: true,
         ...config,
       });
-      this.mockMediaEmojiResource = mockMediaEmojiResource;
+      this.mockSiteEmojiResource = mockSiteEmojiResource;
     }
 
-    protected initMediaEmojiResource(emojiResponse, provider) {
-      this.mediaEmojiResource = this.mockMediaEmojiResource;
+    protected initSiteEmojiResource(emojiResponse, provider) {
+      this.siteEmojiResource = this.mockSiteEmojiResource;
       return Promise.resolve();
     }
   }
 
   describe('#isUploadSupported', () => {
-    it('resource has custom emoji with media support', () => {
-      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any);
+    it('resource has custom emoji with media support and upload token', () => {
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const hasUploadTokenStub = siteEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
+      const config: EmojiResourceConfig = { allowUpload: true } as EmojiResourceConfig;
+
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource, config);
+
       return emojiResource.isUploadSupported().then(supported => {
         expect(supported, 'Upload is supported').to.equal(true);
+      });
+    });
+
+    it('should not allow upload if no upload token', () => {
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const hasUploadTokenStub = siteEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(false));
+      const config: EmojiResourceConfig = { allowUpload: true } as EmojiResourceConfig;
+
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource, config);
+      return emojiResource.isUploadSupported().then(supported => {
+        expect(supported, 'Upload is not supported').to.equal(false);
       });
     });
 
@@ -1131,7 +1175,7 @@ describe('UploadingEmojiResource', () => {
     });
 
     it('allowUpload is false', () => {
-      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(MediaEmojiResource) as any, { allowUpload: false } as EmojiResourceConfig);
+      const emojiResource = new TestUploadingEmojiResource(sinon.createStubInstance(SiteEmojiResource) as any, { allowUpload: false } as EmojiResourceConfig);
       return emojiResource.isUploadSupported().then(supported => {
         expect(supported, 'Upload is not supported').to.equal(false);
       });
@@ -1158,25 +1202,32 @@ describe('UploadingEmojiResource', () => {
     });
 
     it('media support - upload successful', () => {
-      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
-      const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const hasUploadTokenStub = siteEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
+      const uploadEmojiStub = siteEmojiResource.uploadEmoji;
       uploadEmojiStub.returns(Promise.resolve(mediaEmoji));
-      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource);
+
       return emojiResource.uploadCustomEmoji(upload).then(emoji => {
-        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
+        expect(uploadEmojiStub.calledWith(upload), 'upload called on siteEmojiResource').to.equal(true);
         expect(emoji, 'Emoji uploaded').to.equal(mediaEmoji);
       });
     });
 
     it('media support - upload error', () => {
-      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
-      const uploadEmojiStub = mediaEmojiResource.uploadEmoji;
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const hasUploadTokenStub = siteEmojiResource.hasUploadToken;
+      hasUploadTokenStub.returns(Promise.resolve(true));
+      const uploadEmojiStub = siteEmojiResource.uploadEmoji;
       uploadEmojiStub.returns(Promise.reject('bad things'));
-      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource);
       return emojiResource.uploadCustomEmoji(upload).then(emoji => {
         expect(true, 'Promise should have been rejected').to.equal(false);
       }).catch(error => {
-        expect(uploadEmojiStub.calledWith(upload), 'upload called on mediaEmojiResource').to.equal(true);
+        expect(uploadEmojiStub.calledWith(upload), 'upload called on siteEmojiResource').to.equal(true);
         expect(true, 'Promise should be rejected').to.equal(true);
       });
     });
@@ -1190,13 +1241,67 @@ describe('UploadingEmojiResource', () => {
     });
 
     it('media support - token primed', () => {
-      const mediaEmojiResource = sinon.createStubInstance(MediaEmojiResource) as any;
-      const prepareForUploadStub = mediaEmojiResource.prepareForUpload;
-      const emojiResource = new TestUploadingEmojiResource(mediaEmojiResource);
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const prepareForUploadStub = siteEmojiResource.prepareForUpload;
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource);
       emojiResource.prepareForUpload();
       return waitUntil(() => prepareForUploadStub.called).then(() => {
-        expect(prepareForUploadStub.called, 'upload called on mediaEmojiResource').to.equal(true);
+        expect(prepareForUploadStub.called, 'upload called on siteEmojiResource').to.equal(true);
       });
+    });
+  });
+
+  describe('#deleteSiteEmoji', () => {
+    it('calls delete in SiteEmojiResource', () => {
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource);
+      const deleteStub = siteEmojiResource.deleteEmoji;
+      emojiResource.deleteSiteEmoji(mediaEmoji);
+      return waitUntil(() => deleteStub.called).then(() => {
+        expect(deleteStub.called, 'delete called on siteEmojiResource').to.equal(true);
+      });
+    });
+
+    it('can find mediaEmoji by id if not yet deleted', () => {
+      fetchMock.mock({
+        matcher: `begin:${siteUrl}`,
+        response: siteServiceEmojis(),
+        times: 1,
+      });
+
+      const config = {
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      siteEmojiResource.deleteEmoji = () => Promise.resolve(true);
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource, config);
+      return alwaysPromise(emojiResource.findById(mediaEmoji.id!)).then(emoji =>
+        expect(emoji).to.deep.equal(mediaEmoji)
+      ).catch(() => expect(true).to.equal(false));
+    });
+
+    it('removes the deleted emoji from the emoji repository', () => {
+      fetchMock.mock({
+        matcher: `begin:${siteUrl}`,
+        response: siteServiceEmojis(),
+        times: 1,
+      });
+
+      const config = {
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+      const siteEmojiResource = sinon.createStubInstance(SiteEmojiResource) as any;
+      siteEmojiResource.deleteEmoji = () => Promise.resolve(true);
+      const emojiResource = new TestUploadingEmojiResource(siteEmojiResource, config);
+      return emojiResource.deleteSiteEmoji(mediaEmoji).then(result => {
+        expect(result).to.equal(true);
+        const emojiPromise = alwaysPromise(emojiResource.findById(mediaEmoji.id!));
+        return emojiPromise.then(emoji => expect(emoji).to.equal(undefined));
+      }).catch(() => expect(true).to.equal(false));
     });
   });
 });
@@ -1249,12 +1354,13 @@ describe('helpers', () => {
     findInCategory = categoryId => Promise.resolve([]);
     getSelectedTone = () => -1;
     setSelectedTone = tone => {};
+    deleteSiteEmoji = emoji => Promise.resolve(false);
     filter = (query, options) => {};
     subscribe = onChange => {};
     unsubscribe = onChange => {};
     loadMediaEmoji = () => undefined;
     optimisticMediaRendering = () => false;
-    getFrequentlyUsed = () => Promise.resolve([]);
+    getFrequentlyUsed = (options?) => Promise.resolve([]);
   }
 
   class TestUploadingEmojiProvider extends TestEmojiProvider implements UploadingEmojiProvider {

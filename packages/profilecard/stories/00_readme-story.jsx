@@ -22,6 +22,7 @@ const profilecardPropDescriptions = {
   actions: 'Action buttons',
   isLoading: 'Shows loading state if true',
   hasError: 'Shows error state if true',
+  errorType: 'Determines which error message is shown',
   clientFetchProfile: 'Used in error state to retry loading profile data. Usually passed from AkProfilecardResourced',
 };
 
@@ -40,6 +41,9 @@ const profilecardPropTypes = {
   }))`,
   isLoading: 'bool',
   hasError: 'bool',
+  errorType: `PropTypes.shape({
+    reason: PropTypes.oneOf('default', 'NotFound')
+  })`,
   clientFetchProfile: 'func',
 };
 

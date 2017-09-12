@@ -1,5 +1,14 @@
 # @atlaskit/droplist
 
+## 4.11.0 (2017-08-31)
+
+* bug fix; droplist dependencies bumped to latest (issues closed: ak-3392) ([f24b3ba](https://bitbucket.org/atlassian/atlaskit/commits/f24b3ba))
+* feature; adding the ability to pass a boundariesElement to the Layer component (issues closed: ak-3416) ([f6a215e](https://bitbucket.org/atlassian/atlaskit/commits/f6a215e))
+
+
+
+
+
 ## 4.10.0 (2017-08-29)
 
 * bug fix; remove unused theme file ([5481b6b](https://bitbucket.org/atlassian/atlaskit/commits/5481b6b))

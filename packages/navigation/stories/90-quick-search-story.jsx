@@ -2,13 +2,14 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 
-import PersonResult from '../src/components/js/results/PersonResult';
-import RoomResult from '../src/components/js/results/RoomResult';
 import BasicNavigation from './components/BasicNavigation';
 import BasicQuickSearch from './components/BasicQuickSearch';
-import { AkNavigationItemGroup, AkSearchResults } from '../src';
+import { AkNavigationItemGroup, quickSearchResultTypes } from '../src';
 import { WithRootTheme } from '../src/theme/util';
 import * as presets from '../src/theme/presets';
+import CustomQuickSearchResults from './examples/CustomQuickSearchResults';
+
+const { PersonResult, RoomResult } = quickSearchResultTypes;
 
 const withRootTheme = children => (
   <WithRootTheme provided={presets.container}>
@@ -20,23 +21,20 @@ const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${ident
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
 
 storiesOf(`${name}/QuickSearch`, module)
-  .add('Quick search', () => withRootTheme(
+  .add('Example implementation', () => withRootTheme(
     <BasicNavigation
       openDrawer="search"
       searchDrawerContent={<BasicQuickSearch />}
     />
   ))
-  .add('Quick search w/ keyboard controls', () => withRootTheme(
-    <BasicNavigation
-      openDrawer="search"
-      searchDrawerContent={<BasicQuickSearch withKeyboardControls />}
-    />
-  ))
-  .add('Quick search w/ 500ms latency', () => withRootTheme(
+  .add('Example with search latency', () => withRootTheme(
     <BasicNavigation
       openDrawer="search"
       searchDrawerContent={<BasicQuickSearch fakeNetworkLatency={500} />}
     />
+  ))
+  .add('Example with custom result types', () => withRootTheme(
+    CustomQuickSearchResults
   ))
   .add('Person Result', () => withRootTheme(
     <div>
@@ -103,63 +101,4 @@ storiesOf(`${name}/QuickSearch`, module)
       </AkNavigationItemGroup>
     </div>
   ))
-  .add('Search Results', () => {
-    const items = [
-      {
-        resultId: '1',
-        type: 'person',
-        avatarUrl: getPersonAvatarUrl('qgjinn'),
-        mentionName: 'MasterQ',
-        name: 'Qui-Gon Jinn',
-        presenceMessage: 'On-call',
-        presenceState: 'offline',
-      },
-      {
-        resultId: '2',
-        type: 'person',
-        avatarUrl: getPersonAvatarUrl('lskywalker'),
-        mentionName: 'lskywalker',
-        name: 'Luke Skywalker',
-        presenceState: 'online',
-      },
-      {
-        resultId: '3',
-        type: 'room',
-        avatarUrl: getRoomAvatarUrl(5),
-        name: 'Jedi Council [archived]',
-        privacy: 'private',
-      },
-      {
-        resultId: '4',
-        type: 'room',
-        avatarUrl: getRoomAvatarUrl(6),
-        name: 'Jawa Movie Night',
-        privacy: 'public',
-        topic: 'Centaxdays at 8pm',
-      },
-    ];
-    const results = [
-      {
-        title: 'Obi Wan\'s Rooms',
-        items: [items[2], items[3]],
-      },
-      {
-        title: '1 on Wan chats',
-        items: [items[0], items[1]],
-      },
-    ];
-    const resultsNoTitle = [{
-      title: '',
-      items,
-    }];
-    return withRootTheme(
-      <div>
-        <h3>Results with two groups with titles</h3>
-        <AkSearchResults results={results} />
-
-        <h3>Results with one group and no title</h3>
-        <AkSearchResults results={resultsNoTitle} />
-      </div>
-    );
-  })
 ;

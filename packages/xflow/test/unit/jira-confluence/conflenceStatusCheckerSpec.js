@@ -12,11 +12,13 @@ import pricingActive from './mock-data/pricingActiveConfluence.json';
 import prospectivePricesInactive from './mock-data/prospectivePricesInactiveConfluence.json';
 import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivatedConfluence.json';
 
-import confluenceStatusChecker, {
+import confluenceStatusChecker from '../../../src/jira-confluence/confluenceStatusChecker';
+
+import {
   PRODUCT_USAGE_URL,
   PRICING_URL,
   PROSPECTIVE_PRICES_URL,
-} from '../../../src/jira-confluence/confluenceStatusChecker';
+} from '../../../src/common/productStatusChecker';
 
 import {
   ACTIVE,
@@ -203,7 +205,7 @@ describe('confluenceStatusChecker', () => {
       expect(result).toBe(ACTIVATING);
     });
 
-    it('will return ÅCTIVE if Confluence is active', async () => {
+    it('will return ACTIVE if Confluence is active', async () => {
       mockPricingEndpointWithResponse(pricingActive);
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(ACTIVE);

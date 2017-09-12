@@ -11,6 +11,7 @@ export interface Definition {
 
 export const listItem: NodeSpec = {
   content: 'paragraph (paragraph | bulletList | orderedList)*',
+  defining: true,
   parseDOM: [{ tag: 'li' }],
   toDOM() {
     return ['li', 0];

@@ -1,5 +1,12 @@
 # @atlaskit/blanket
 
+## 3.0.0 (2017-08-31)
+
+* breaking; removed z-index ([b344810](https://bitbucket.org/atlassian/atlaskit/commits/b344810))
+* breaking; removed z-index for integration with @atlaskit/layer-manager ([b344810](https://bitbucket.org/atlassian/atlaskit/commits/b344810))
+* feature; update to use @atlaskit/theme - now supports dark mode ([422c74e](https://bitbucket.org/atlassian/atlaskit/commits/422c74e))
+
+
 ## 2.4.3 (2017-08-09)
 
 * bug fix; bump util-shared-styles dependency to latest to reduce app bundle sizes (issues closed: ak-3252) ([dbc406c](https://bitbucket.org/atlassian/atlaskit/commits/dbc406c))

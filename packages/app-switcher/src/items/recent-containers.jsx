@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import { ItemWithIcon, RecentContainerType, RecentContainerImage, RecentContainerName } from '../styled';
+import Avatar from '@atlaskit/avatar';
+import { ItemWithIcon, RecentContainerType, RecentContainerName } from '../styled';
 import type { Translations, RecentContainers, DropdownConfig } from '../internal/types';
 
 export default function (
@@ -23,7 +24,7 @@ export default function (
           <RecentContainerType>{i18n[`container.${container.type}`]}</RecentContainerType>
         </ItemWithIcon>
       ),
-      elemBefore: (<RecentContainerImage src={container.iconUrl} alt={container.name} />),
+      elemBefore: (<Avatar src={container.iconUrl} appearance="square" />),
       href: container.url,
       analyticEvent: { key: 'appswitcher.recent.container.click' },
     })),

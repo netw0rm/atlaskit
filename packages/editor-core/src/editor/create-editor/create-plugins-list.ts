@@ -18,7 +18,10 @@ import {
   listsPlugin,
   textColorPlugin,
   insertBlockPlugin,
-  tablesPlugin
+  tablesPlugin,
+  collabEditPlugin,
+  jiraIssuePlugin,
+  unsupportedContentPlugin
 } from '../plugins';
 
 /**
@@ -82,8 +85,20 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(mediaPlugin);
   }
 
+  if (props.collabEditProvider) {
+    plugins.push(collabEditPlugin);
+  }
+
   if(props.maxContentSize) {
     plugins.push(maxContentSizePlugin);
+  }
+
+  if(props.allowJiraIssue) {
+    plugins.push(jiraIssuePlugin);
+  }
+
+  if(props.allowUnsupportedContent) {
+    plugins.push(unsupportedContentPlugin);
   }
 
   // UI only plugins

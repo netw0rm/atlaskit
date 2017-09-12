@@ -1,7 +1,9 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { akColorR100 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
+import ContentStyles from '../ContentStyles';
 import {
   EditorAppearanceComponentProps,
   EditorAppearance
@@ -11,24 +13,25 @@ import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
   50% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
 `;
 
 const pulseBackgroundReverse = keyframes`
   0% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
   50% {
     background-color: auto;
   }
   100% {
-    background-color: #FF8F73;
+    background-color: ${akColorR100};
   }
 `;
 
 export interface MessageEditorProps {
   isMaxContentSizeReached?: boolean;
+  maxHeight?: number;
 }
 
 // tslint:disable-next-line:variable-name
@@ -38,11 +41,11 @@ const MessageEditor: any = styled.div`
   border-radius: 3px;
   height: auto;
   min-height: 30px;
-  max-height: 305px;
+  ${(props: MessageEditorProps) => props.maxHeight ? 'max-height: ' + props.maxHeight + 'px;' : ''}
   max-width: inherit;
   box-sizing: border-box;
   word-wrap: break-word;
-  animation: ${(props: any) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  animation: ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
 
   &.-flash {
     animation: .25s ease-in-out ${pulseBackgroundReverse};
@@ -57,11 +60,10 @@ const MessageEditor: any = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-const ContentArea = styled.div`
-  height: 100%;
+const ContentArea = styled(ContentStyles)`
   padding: 4px 16px 4px 8px;
   flex-grow: 1;
-  overflow: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
 `;
 
@@ -92,22 +94,29 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
   private renderChrome = ({ maxContentSize }) => {
     const {
       editorView,
+      eventDispatcher,
+      providerFactory,
       contentComponents,
       secondaryToolbarComponents,
-      providerFactory,
       customContentComponents,
       customSecondaryToolbarComponents,
-      addonToolbarComponents
+      addonToolbarComponents,
+      maxHeight
     } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <MessageEditor className={this.flashToggle ? '-flash' : ''} isMaxContentSizeReached={maxContentSizeReached}>
+      <MessageEditor
+        className={this.flashToggle ? '-flash' : ''}
+        isMaxContentSizeReached={maxContentSizeReached}
+        maxHeight={maxHeight}
+      >
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
@@ -116,6 +125,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         <SecondaryToolbarContainer>
           <PluginSlot
             editorView={editorView}
+            eventDispatcher={eventDispatcher}
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={secondaryToolbarComponents}

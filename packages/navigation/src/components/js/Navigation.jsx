@@ -65,6 +65,12 @@ type Props = {|
   These should be icons or other small elements. There should be no more than four.
   Secondary Actions will not be visible when nav is collapsed. */
   globalSecondaryActions?: ReactElement[],
+  /** Whether to display a scroll hint shadow at the bottom of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintBottom?: boolean,
+  /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
+   * wrapper. */
+  hasScrollHintTop?: boolean,
   /** Set whether collapse should be allowed. If false, the nav cannot be dragged
   to be smaller. */
   isCollapsible?: boolean,
@@ -151,10 +157,6 @@ export default class Navigation extends PureComponent {
   // for this specific case in componentDidMount.
   componentDidMount() {
     if (this.props.isElectronMac && this.props.isOpen && this.props.width === defaultWidth) {
-      /* $ExpectError - the onResizeProp is currently listed as optional and a defaultProp value is
-       * also set. Despite this, Flow complains that onResize may be undefined. The Flow docs say
-       * that we can make the prop required, however this marks the prop as required in the API
-       * docs. So using ExpectError here to avoid prop warnings. */
       this.props.onResize({
         isOpen: true,
         width: globalOpenWidth(true) + containerOpenWidth,
@@ -232,7 +234,7 @@ export default class Navigation extends PureComponent {
     );
   }
 
-  props: Props
+  props: ReactElement
 
   triggerResizeButtonHandler = (resizeState: resizeObj) => {
     if (resizeState && this.props.onResize) {
@@ -252,6 +254,8 @@ export default class Navigation extends PureComponent {
       globalSearchIcon,
       globalSecondaryActions,
       globalTheme,
+      hasScrollHintBottom,
+      hasScrollHintTop,
       isCollapsible,
       isElectronMac,
       isOpen,
@@ -347,6 +351,8 @@ export default class Navigation extends PureComponent {
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}
                   globalSecondaryActions={globalSecondaryActions}
+                  hasScrollHintBottom={hasScrollHintBottom}
+                  hasScrollHintTop={hasScrollHintTop}
                   headerComponent={containerHeaderComponent}
                   linkComponent={linkComponent}
                   onGlobalCreateActivate={onCreateDrawerOpen}

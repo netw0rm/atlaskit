@@ -1,8 +1,8 @@
 import { css } from 'styled-components';
-import { akColorN200 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 const placeholderStyles = css`
-  color: ${akColorN200};
+  color: ${colors.placeholderText};
   font-size: 14px;
 `;
 

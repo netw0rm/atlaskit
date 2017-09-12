@@ -1,5 +1,11 @@
 # @atlaskit/button
 
+## 5.1.2 (2017-09-08)
+
+* bug fix; adding ButtonGroup to type declarations of button pckage. ([bb373c1](https://bitbucket.org/atlassian/atlaskit/commits/bb373c1))
+
+
+
 ## 5.1.1 (2017-08-24)
 
 

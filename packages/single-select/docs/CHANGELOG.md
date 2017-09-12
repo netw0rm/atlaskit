@@ -1,5 +1,25 @@
 # @atlaskit/single-select
 
+## 2.0.1 (2017-09-11)
+
+* bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))
+## 2.0.0 (2017-09-06)
+
+* bug fix; fix how gridsize is implemented in styles ([586d583](https://bitbucket.org/atlassian/atlaskit/commits/586d583))
+* feature; bump field base component for dark mode ([df986db](https://bitbucket.org/atlassian/atlaskit/commits/df986db))
+* breaking; Dark mode added for single-select, util-shared-styles removed ([df016de](https://bitbucket.org/atlassian/atlaskit/commits/df016de))
+* breaking; darkmode added for single-select ([df016de](https://bitbucket.org/atlassian/atlaskit/commits/df016de))
+## 1.19.1 (2017-09-05)
+
+* bug fix; removing unused focus outline from single-select triggers. Fieldbase handles the glo ([7792b87](https://bitbucket.org/atlassian/atlaskit/commits/7792b87))
+## 1.19.0 (2017-08-31)
+
+
+
+
+* feature; added loading state for the initial fetching of data on the single-select component (issues closed: ak-3181) ([473effe](https://bitbucket.org/atlassian/atlaskit/commits/473effe))
+
+
 ## 1.18.0 (2017-08-22)
 
 * feature; single select items now support filterValues which, when present, are used instead (issues closed: ak-3348) ([523f485](https://bitbucket.org/atlassian/atlaskit/commits/523f485))

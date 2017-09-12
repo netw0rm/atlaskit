@@ -1,5 +1,5 @@
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import { EditorState, EditorView, Schema, MarkSpec, Plugin } from '../../prosemirror';
+import { EditorState, EditorView, Node, Schema, MarkSpec, Plugin, Transaction } from '../../prosemirror';
 import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
@@ -106,6 +106,40 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   analyticsService.trackEvent('atlassian.editor.start');
 }
 
+export function processDefaultDocument(schema: Schema<any, any>, rawDoc?: Node | string | Object): Node | undefined {
+  if (!rawDoc) {
+    return;
+  }
+
+  if (rawDoc instanceof Node) {
+    return rawDoc;
+  }
+
+  let doc: Object;
+  if (typeof rawDoc === 'string') {
+    try {
+      doc = JSON.parse(rawDoc);
+    } catch (e) {
+      console.error(`Error processing default value: ${rawDoc} isn't valid JSON document`);
+      return;
+    }
+  } else {
+    doc = rawDoc;
+  }
+
+  if (Array.isArray(doc)) {
+    console.error(`Error processing default value: ${doc} is an array, but it must be an object with the following shape { type: 'doc', content: [...] }`);
+    return;
+  }
+
+  try {
+    return Node.fromJSON(schema, doc);
+  } catch (e) {
+    console.error(`Error processing default value: ${doc} – ${e.message}`);
+    return;
+  }
+}
+
 /**
  * Creates and mounts EditorView to the provided place.
  */
@@ -117,6 +151,7 @@ export default function createEditor(
 ): EditorInstance {
   const editorConfig = processPluginsList(editorPlugins);
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
+  const { contentTransformerProvider, defaultValue } = props;
 
   initAnalytics(props.analyticsHandler);
 
@@ -125,14 +160,27 @@ export default function createEditor(
   const dispatch = createDispatch(eventDispatcher);
   const schema = createSchema(editorConfig);
   const plugins = createPMPlugins(editorConfig, schema, props, dispatch, providerFactory, errorReporter);
-  const state = EditorState.create({ schema, plugins });
-  const editorView = new EditorView(place, { state });
+  const contentTransformer = contentTransformerProvider ? contentTransformerProvider(schema) : undefined;
+  const doc = (contentTransformer && typeof defaultValue === 'string')
+    ? contentTransformer.parse(defaultValue)
+    : processDefaultDocument(schema, defaultValue);
+
+  const state = EditorState.create({ doc, schema, plugins });
+  const editorView = new EditorView(place, {
+    state,
+    dispatchTransaction(tr: Transaction) {
+      tr.setMeta('isLocal', true);
+      const newState = editorView.state.apply(tr);
+      editorView.updateState(newState);
+    }
+  });
 
   return {
     editorView,
     eventDispatcher,
     contentComponents,
     primaryToolbarComponents,
-    secondaryToolbarComponents
+    secondaryToolbarComponents,
+    contentTransformer
   };
 }

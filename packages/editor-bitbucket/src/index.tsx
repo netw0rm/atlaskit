@@ -18,6 +18,8 @@ import {
   blockTypeStateKey,
   emojisStateKey,
   hyperlinkStateKey,
+  tablePlugins,
+  tableStateKey,
   imageUploadStateKey,
   mentionsStateKey,
   listsStateKey,
@@ -250,6 +252,7 @@ export default class Editor extends PureComponent<Props, State> {
     const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const emojiState = editorState && emojisStateKey.getState(editorState);
+    const tableState = editorState && tableStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -270,6 +273,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateImageUpload={imageUploadState}
+        pluginStateTable={tableState}
         mentionProvider={mentionProvider}
         emojiProvider={emojiProvider}
         packageVersion={version}
@@ -277,6 +281,7 @@ export default class Editor extends PureComponent<Props, State> {
         popupsBoundariesElement={this.props.popupsBoundariesElement}
         popupsMountPoint={this.props.popupsMountPoint}
         maxHeight={480}
+        helpDialogPresent={true}
       />
     );
   }
@@ -334,6 +339,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...listsPlugins(schema),
             ...textFormattingPlugins(schema),
             ...codeBlockPlugins(schema),
+            ...(schema.nodes.table ? tablePlugins({ isHeaderRowRequired: true }) : []),
             ...reactNodeViewPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
@@ -352,7 +358,9 @@ export default class Editor extends PureComponent<Props, State> {
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
-          this.handleChange();
+          if (tr.docChanged) {
+            this.handleChange();
+          }
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

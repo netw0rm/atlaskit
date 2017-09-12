@@ -5,7 +5,7 @@ import {
 import defaultSchema from '../../../src/test-helper/schema';
 import * as commands from '../../../src/commands';
 
-import { isMarkTypeAllowedAtCurrentPosition, areBlockTypesDisabled } from '../../../src/utils';
+import { isMarkTypeAllowedAtCurrentPosition, areBlockTypesDisabled, moveCursorToTheEnd } from '../../../src/utils';
 
 describe('@atlaskit/editore-core/utils', () => {
   const editor = (doc: any) => makeEditor({
@@ -13,7 +13,7 @@ describe('@atlaskit/editore-core/utils', () => {
     schema: defaultSchema
   });
 
-  describe('isMarkTypeAllowedAtCurrentPosition', () => {
+  describe('#isMarkTypeAllowedAtCurrentPosition', () => {
     context('when the current node supports the given mark type', () => {
       context('and a stored mark is present', () => {
         it('returns true if given mark type is not excluded', () => {
@@ -85,7 +85,7 @@ describe('@atlaskit/editore-core/utils', () => {
     });
   });
 
-  describe('areBlockTypesDisabled', () => {
+  describe('#areBlockTypesDisabled', () => {
     it('should return true is selection has a blockquote', () => {
       const { editorView } = editor(doc(blockquote('te{<}xt'), panel(p('te{>}xt'))));
       const result = areBlockTypesDisabled(editorView.state);
@@ -96,6 +96,19 @@ describe('@atlaskit/editore-core/utils', () => {
       const { editorView } = editor(doc(p('te{<}xt'), panel(p('te{>}xt'))));
       const result = areBlockTypesDisabled(editorView.state);
       expect(result).to.equal(false);
+    });
+  });
+
+  describe('#moveCursorToTheEnd', () => {
+    it('should move cursor to the end of a document', () => {
+      const { editorView } = editor(doc(p('Som{<>}e text after the cursor')));
+      moveCursorToTheEnd(editorView);
+      expect(editorView.state.selection.anchor).to.equal(28);
+    });
+    it('should not blow up on empty document', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      moveCursorToTheEnd(editorView);
+      expect(editorView.state.selection.anchor).to.equal(2);
     });
   });
 });

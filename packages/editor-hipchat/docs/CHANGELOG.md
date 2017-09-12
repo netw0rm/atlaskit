@@ -1,5 +1,21 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.1 (2017-09-11)
+
+* bug fix; fix dependency in story to get emoji support files via the Editor. ([6b20943](https://bitbucket.org/atlassian/atlaskit/commits/6b20943))
+* bug fix; reset version.ts ([e3eccf1](https://bitbucket.org/atlassian/atlaskit/commits/e3eccf1))
+* bug fix; remove explicit dependency on emoji and get it via editor-core ([7d83371](https://bitbucket.org/atlassian/atlaskit/commits/7d83371))
+## 5.4.0 (2017-09-06)
+
+
+* feature; support inbuild media/action/decision toolbar buttons (issues closed: fs-1342) ([14d35ed](https://bitbucket.org/atlassian/atlaskit/commits/14d35ed))
+## 5.3.1 (2017-09-05)
+
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: fs-1329 / fs-1265) ([1ec4bf4](https://bitbucket.org/atlassian/atlaskit/commits/1ec4bf4))
+## 5.3.0 (2017-09-01)
+
+* feature; updated core version to 46.12.0 ([c097ac7](https://bitbucket.org/atlassian/atlaskit/commits/c097ac7))
+
 ## 5.2.0 (2017-08-29)
 
 * feature; upgrade editor-core to minimum required version for emoji toolbar (issues closed: fs-1320) ([14e9661](https://bitbucket.org/atlassian/atlaskit/commits/14e9661))

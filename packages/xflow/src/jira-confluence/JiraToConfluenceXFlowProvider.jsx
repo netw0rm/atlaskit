@@ -15,7 +15,6 @@ import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
 import retrieveJiraUsers from './retrieveJiraUsers';
 import goToProduct from './goToProduct';
-import goToLearnMore from './goToLearnMore';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import confluenceStatusChecker from './confluenceStatusChecker';
@@ -185,6 +184,7 @@ export const defaultProps = intl => ({
           label: intl.formatMessage(messages.grantAccessOptionItemsLabelSpecificUsers),
         },
       ],
+      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
 
       loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
       loadingProductMessage: intl.formatMessage(messages.loadingProductMessage),
@@ -224,7 +224,6 @@ export const defaultProps = intl => ({
   grantAccessToUsers,
   retrieveUsers: retrieveJiraUsers,
   goToProduct,
-  goToLearnMore,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
 });

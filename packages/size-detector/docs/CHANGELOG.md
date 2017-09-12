@@ -1,0 +1,2 @@
+# @atlaskit/size-detector
+

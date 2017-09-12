@@ -81,6 +81,9 @@ export const scrollbar = {
   hoverBackground: unthemedColors.scrollbarHoverBackground,
 };
 
+export const scrollHintHeight = 2;
+export const scrollHintSpacing = gridSize * 2;
+
 export const globalPrimaryActions = (() => {
   const itemSizes = {
     medium: gridSize * 5,
@@ -132,7 +135,7 @@ export const search = {
   layout: {
     padding: {
       top: gridSize * 0.5,
-      bottom: 0,
+      bottom: gridSize * 2,
       side: gridSize * 3,
     },
     margin: {

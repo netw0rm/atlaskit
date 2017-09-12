@@ -45,7 +45,19 @@ import SmartSelectWithFooter from './examples/SmartSelectWithFooter';
 import SmartSelectWithFooterRaw from '!raw!./examples/SmartSelectWithFooter';
 import SmartSelectCustomIcon from './examples/SmartSelectCustomIcon';
 import SmartSelectCustomIconRaw from '!raw!./examples/SmartSelectCustomIcon';
+import MultiSelectStatelessInitialLoading from './examples/MultiSelectStatelessInitialLoading';
+import MultiSelectStatelessInitialLoadingRaw from '!raw!./examples/MultiSelectStatelessInitialLoading';
 /* eslint-enable import/first, import/no-duplicates */
+
+const MultiSelectItems = [
+  { content: 'Apple', value: 'Apple' },
+  { content: 'Banana', value: 'Banana' },
+  { content: 'Cherry', value: 'Cherry' },
+  { content: 'Mango', value: 'Mango' },
+  { content: 'Orange', value: 'Orange' },
+  { content: 'Strawberry', value: 'Strawberry' },
+  { content: 'Watermelon', value: 'Watermelon' },
+];
 
 const Spaced = styled.div`
   padding: 20px;
@@ -283,6 +295,19 @@ storiesOf(name, module)
       </CodeWrapper>
     </Spaced>
   ))
+  .add('Multi select that should fit container', () => (
+    <Spaced>
+      <div style={{ width: '400px' }}>
+        <MultiSelect
+          defaultSelected={MultiSelectItems}
+          items={MultiSelectItems}
+          isDefaultOpen
+          shouldFitContainer
+          shouldFocus
+        />
+      </div>
+    </Spaced>
+  ))
   .add('Multi select with footer', () => (
     <Spaced title="Multi select with footer">
       <div style={{ width: '300px' }}>
@@ -309,6 +334,20 @@ storiesOf(name, module)
       {SmartSelectCustomIcon}
       <CodeWrapper>
         <Code language="js" showLineNumbers={false} text={SmartSelectCustomIconRaw} />
+      </CodeWrapper>
+    </Spaced>
+    ))
+  .add('Multi select (stateless) - loading state (initial fetch)', () => (
+    <Spaced>
+      <p>
+        <strong>Note:</strong> loading options are
+        <strong> only available on the stateless component </strong>
+        as the stateful counterpart currently is not capable
+        of handling back-end requests to fetch new options/items.
+      </p>
+      {MultiSelectStatelessInitialLoading}
+      <CodeWrapper>
+        <Code language="js" showLineNumbers={false} text={MultiSelectStatelessInitialLoadingRaw} />
       </CodeWrapper>
     </Spaced>
     ))

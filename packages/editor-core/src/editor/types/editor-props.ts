@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
-import { EditorView } from '../../prosemirror';
+import { ActivityProvider } from '@atlaskit/activity';
+import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
+import { CollabEditProvider } from '../plugins/collab-edit';
+import { Transformer } from '../../';
 
-export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | undefined;
+export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
@@ -25,6 +28,8 @@ export interface EditorProps {
   allowLists?: boolean;
   allowTextColor?: boolean;
   allowTables?: boolean;
+  allowJiraIssue?: boolean;
+  allowUnsupportedContent?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
@@ -32,12 +37,19 @@ export interface EditorProps {
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;
 
+  activityProvider?: Promise<ActivityProvider>;
+  collabEditProvider?: Promise<CollabEditProvider>;
+  presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+  waitForMediaUpload?: boolean;
+  contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 
+  maxHeight?: number;
   maxContentSize?: number;
   placeholder?: string;
+  defaultValue?: Node | string | Object;
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;

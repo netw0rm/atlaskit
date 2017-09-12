@@ -1,5 +1,12 @@
 # @atlaskit/editor-jira
 
+## 20.6.1 (2017-09-04)
+
+* bug fix; fix arrows on the filmstrip don't show up ([e6042a6](https://bitbucket.org/atlassian/atlaskit/commits/e6042a6))
+
+
+
+
 ## 20.6.0 (2017-08-24)
 
 * feature; add support for activity for the link dialog ([c5b34b5](https://bitbucket.org/atlassian/atlaskit/commits/c5b34b5))

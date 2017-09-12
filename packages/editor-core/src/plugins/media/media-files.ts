@@ -17,7 +17,7 @@ import {
   isSelectionNonMediaBlockNode,
   isInsidePotentialEmptyParagraph,
 } from './utils';
-import { unsupportedMediaCardNodeTypes } from '../../schema/unsupported';
+import { unsupportedNodeTypesForMediaCards } from '../../schema/unsupported';
 import analyticsService from '../../analytics/service';
 
 export interface Range {
@@ -36,7 +36,7 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
   }
 
   // Don't support media in unsupported node types
-  if (unsupportedMediaCardNodeTypes.has($to.parent.type.name)) {
+  if (unsupportedNodeTypesForMediaCards.has($to.parent.type.name)) {
     analyticsService.trackEvent('atlassian.editor.media.file.unsupported.node');
     return;
   }

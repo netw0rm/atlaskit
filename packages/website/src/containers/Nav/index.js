@@ -54,7 +54,7 @@ class StandardNav extends Component {
             />
           </AkSearchDrawer>
         )]}
-        globalPrimaryIcon={<AtlassianIcon size="xlarge" label="Atlassian" />}
+        globalPrimaryIcon={<AtlassianIcon size="large" label="Atlassian" />}
         globalPrimaryItemHref="https://atlassian.design"
         globalSearchIcon={<SearchIcon label="Search icon" />}
         isResizeable={false}

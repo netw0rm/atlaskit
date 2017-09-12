@@ -1,5 +1,20 @@
 # @atlaskit/avatar
 
+## 8.0.3 (2017-09-11)
+
+* bug fix; limit avatar + more count to maxCount size (issues closed: ak-3472) ([3516192](https://bitbucket.org/atlassian/atlaskit/commits/3516192))
+## 8.0.2 (2017-09-06)
+
+
+## 8.0.1 (2017-09-05)
+
+
+
+
+
+
+* bug fix; update dark theme color palette (issues closed: ak-3172) ([d23e55f](https://bitbucket.org/atlassian/atlaskit/commits/d23e55f))
+
 ## 8.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

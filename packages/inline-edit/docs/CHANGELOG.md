@@ -1,5 +1,18 @@
 # @atlaskit/inline-edit
 
+## 4.4.6 (2017-09-06)
+
+
+* bug fix; text in inline edit readview can be highlighted (issues closed: #ak-2685) ([3b99f10](https://bitbucket.org/atlassian/atlaskit/commits/3b99f10))
+## 4.4.5 (2017-09-05)
+
+* bug fix; inline edit wraps correctly using tags in ie11 (issues closed: #ak-3261) ([b894b85](https://bitbucket.org/atlassian/atlaskit/commits/b894b85))
+* bug fix; cause wrap of multi-select to be respected ([751ba47](https://bitbucket.org/atlassian/atlaskit/commits/751ba47))
+
+* bug fix; fixes lots of alignment issues with field-base, including using tag-groups in the vi ([db40514](https://bitbucket.org/atlassian/atlaskit/commits/db40514))
+* bug fix; changing the Edit button for inline-edit to not submit forms ([5b4d16c](https://bitbucket.org/atlassian/atlaskit/commits/5b4d16c))
+
+
 ## 4.4.4 (2017-08-21)
 
 * bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))

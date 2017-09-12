@@ -29,6 +29,7 @@ const defaultProps = {
       label: 'Specific users',
     },
   ],
+  learnMoreLink: 'https://atlassian.com',
 };
 
 test('GrantAccess should fire an appropriate analytics event when it is mounted', () => {
@@ -147,14 +148,14 @@ test('GrantAccess should fire an appropriate analytics event when the learn more
   const mountWrapper = mount(
     withAnalyticsSpy(
       spy,
-      <GrantAccessBase {...defaultProps} changeUsers goToLearnMore={() => {}} />
+      <GrantAccessBase {...defaultProps} changeUsers learnMoreLink="//atlassian.com" />
     )
   );
   expect(spy).not.toHaveBeenCalledWith(
     'xflow.grant-access.learn-more-button.clicked',
     expect.any(Object)
   );
-  mountWrapper.find('#xflow-grant-access-learn-more-button').simulate('click');
+  mountWrapper.find('#xflow-grant-access-learn-more-span').prop('onMouseDown')({ button: 1 });
   return waitFor(() => {
     expect(spy).toHaveBeenCalledWith(
       'xflow.grant-access.learn-more-button.clicked',

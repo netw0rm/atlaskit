@@ -1,5 +1,127 @@
 # @atlaskit/editor-core
 
+## 46.19.2 (2017-09-11)
+
+* bug fix; updated table floating controls ([b653ab2](https://bitbucket.org/atlassian/atlaskit/commits/b653ab2))
+* bug fix; removed popup from tables (issues closed: ed-2486) ([65e34c6](https://bitbucket.org/atlassian/atlaskit/commits/65e34c6))
+## 46.19.1 (2017-09-11)
+
+* bug fix; upgrade @atlaskit/button and @atlaskit/button-group dependencies (issues closed: #ed-2658) ([36c2820](https://bitbucket.org/atlassian/atlaskit/commits/36c2820))
+## 46.19.0 (2017-09-11)
+
+* feature; add Chromeless appearance (issues closed: ed-2629) ([0466c4d](https://bitbucket.org/atlassian/atlaskit/commits/0466c4d))
+## 46.18.0 (2017-09-11)
+
+* bug fix; tslint fix ([39b2639](https://bitbucket.org/atlassian/atlaskit/commits/39b2639))
+* feature; cardEventHanlder now support an optional second argument to accept list of IDs if t (issues closed: ed-1774) ([6ed2276](https://bitbucket.org/atlassian/atlaskit/commits/6ed2276))
+
+
+
+* bug fix; fixed placeholder, transformer and Editor confluence storybook ([de73aef](https://bitbucket.org/atlassian/atlaskit/commits/de73aef))
+* bug fix; fix tslint ([ef20c32](https://bitbucket.org/atlassian/atlaskit/commits/ef20c32))
+* bug fix; fixed jiraissue nodeview ([ab9e750](https://bitbucket.org/atlassian/atlaskit/commits/ab9e750))
+* bug fix; pasting list converts first list item to paragraph. (issues closed: #ed-2647) ([15bbaf7](https://bitbucket.org/atlassian/atlaskit/commits/15bbaf7))
+
+* feature; added cxhtml transformer story ([2f18b50](https://bitbucket.org/atlassian/atlaskit/commits/2f18b50))
+* feature; change Addons api a little bit to allow composition (issues closed: ed-2680) ([6aee0b1](https://bitbucket.org/atlassian/atlaskit/commits/6aee0b1))
+* feature; added analytics tracking for unsupported content ([edef276](https://bitbucket.org/atlassian/atlaskit/commits/edef276))
+
+
+* feature; added missing cq features to editor-core (issues closed: ed-2635) ([600b257](https://bitbucket.org/atlassian/atlaskit/commits/600b257))
+## 46.17.2 (2017-09-08)
+
+* bug fix; remove ourdated fallback attr, use text instead ([bffe13b](https://bitbucket.org/atlassian/atlaskit/commits/bffe13b))
+* bug fix; special characters like brackets should be escaped in image attributes. (issues closed: #ed-1643) ([30d9d38](https://bitbucket.org/atlassian/atlaskit/commits/30d9d38))
+* bug fix; set DAC renderer maxHeight, which prevents double scroll (issues closed: ed-2530) ([721d231](https://bitbucket.org/atlassian/atlaskit/commits/721d231))
+## 46.17.1 (2017-09-07)
+
+* bug fix; return Card placeholders from "renderLoadingCard" if CardView is not loaded yet ([813b527](https://bitbucket.org/atlassian/atlaskit/commits/813b527))
+* bug fix; make TS happy ([e8b27c3](https://bitbucket.org/atlassian/atlaskit/commits/e8b27c3))
+* bug fix; render placeholder Card instead of null in MediaComponent ([1b73785](https://bitbucket.org/atlassian/atlaskit/commits/1b73785))
+## 46.17.0 (2017-09-06)
+
+
+* bug fix; fix typescript errors ([b5c597a](https://bitbucket.org/atlassian/atlaskit/commits/b5c597a))
+* feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))
+## 46.16.0 (2017-09-06)
+
+* feature; add disable linkCreateContext in example editor (issues closed: ed-2670) ([033e67d](https://bitbucket.org/atlassian/atlaskit/commits/033e67d))
+* bug fix; fix filmstrip arrow problem in renderer when not using code splitting (issues closed: ed-2667) ([c9cb09d](https://bitbucket.org/atlassian/atlaskit/commits/c9cb09d))
+## 46.15.0 (2017-09-06)
+
+* bug fix; disable media link cards in actions/decisions nodes (issues closed: fs-1344) ([873e476](https://bitbucket.org/atlassian/atlaskit/commits/873e476))
+* feature; colour text support in renderer (issues closed: ed-2657) ([d1608c9](https://bitbucket.org/atlassian/atlaskit/commits/d1608c9))
+## 46.14.1 (2017-09-05)
+
+* bug fix; we need to make sure the component is not unmounted before we use this.setState in p (issues closed: ed-2448) ([b3301ea](https://bitbucket.org/atlassian/atlaskit/commits/b3301ea))
+
+* bug fix; tolerate empty actions/decisions, just don't render them. (issues closed: fs-1266) ([29a82db](https://bitbucket.org/atlassian/atlaskit/commits/29a82db))
+* bug fix; eNTER on empty action/decision will not submit message, but remove action/decision (issues closed: ed-2447 / fs-1265 / fs-1329) ([9f77faa](https://bitbucket.org/atlassian/atlaskit/commits/9f77faa))
+* bug fix; disabling hyperlink keymap Cmd-K for message editor. (issues closed: #ed-2567) ([ddf7769](https://bitbucket.org/atlassian/atlaskit/commits/ddf7769))
+## 46.14.0 (2017-09-05)
+
+* feature; add showSpinner prop to Editor ([ac14e79](https://bitbucket.org/atlassian/atlaskit/commits/ac14e79))
+* feature; add defaultValue property for the "new arch" editor (issues closed: ed-2579) ([dc537cc](https://bitbucket.org/atlassian/atlaskit/commits/dc537cc))
+* feature; add appendText command to EditorActions (issues closed: ed-2579) ([417f348](https://bitbucket.org/atlassian/atlaskit/commits/417f348))
+* feature; add waitForMediaUpload flag for products that want to finalize media on their own (issues closed: ed-2579) ([7ee8106](https://bitbucket.org/atlassian/atlaskit/commits/7ee8106))
+* feature; support presence provider ([4926ae0](https://bitbucket.org/atlassian/atlaskit/commits/4926ae0))
+* bug fix; shouldFocus must place cursor to the end of the document (issues closed: ed-2579) ([e3f7187](https://bitbucket.org/atlassian/atlaskit/commits/e3f7187))
+* feature; add maxHeight property to the 'new architecture' editor (issues closed: ed-2579) ([0cad06d](https://bitbucket.org/atlassian/atlaskit/commits/0cad06d))
+* feature; add feature preset for Message editor (issues closed: ed-2579) ([69c5ee1](https://bitbucket.org/atlassian/atlaskit/commits/69c5ee1))
+## 46.13.3 (2017-09-04)
+
+* bug fix; fix filmstrip arrows don't show up in editor or renderer (issues closed: ed-2577) ([43291f6](https://bitbucket.org/atlassian/atlaskit/commits/43291f6))
+## 46.13.2 (2017-09-01)
+
+* bug fix; pass eventDispatcher to PluginSlot (issues closed: ed-2634) ([ee59df4](https://bitbucket.org/atlassian/atlaskit/commits/ee59df4))
+* bug fix; fix editor-core storybook for real (issues closed: ed-2614) ([704a76e](https://bitbucket.org/atlassian/atlaskit/commits/704a76e))
+* bug fix; do not show frequent links in the recently viewed link dialog ([5a175e9](https://bitbucket.org/atlassian/atlaskit/commits/5a175e9))
+* bug fix; fire onChange only when docChanged = true (issues closed: ed-2421) ([5605a74](https://bitbucket.org/atlassian/atlaskit/commits/5605a74))
+## 46.13.1 (2017-09-01)
+
+* bug fix; support activity provider in hyperlinkedit in new editor architecture ([d45ee4e](https://bitbucket.org/atlassian/atlaskit/commits/d45ee4e))
+## 46.13.0 (2017-09-01)
+
+* feature; pasting a single word or single line of code should create an inline code block. ([e64a721](https://bitbucket.org/atlassian/atlaskit/commits/e64a721))
+* bug fix; adjust behaviour of backspace into a decision/item list (issues closed: fs-1264) ([5db2517](https://bitbucket.org/atlassian/atlaskit/commits/5db2517))
+## 46.12.0 (2017-08-31)
+
+* bug fix; update min-height of single link card. ([bb7e71a](https://bitbucket.org/atlassian/atlaskit/commits/bb7e71a))
+* bug fix; fix storybook for editor-core (issues closed: ed-2614) ([4bae650](https://bitbucket.org/atlassian/atlaskit/commits/4bae650))
+
+* bug fix; making sure adding links with invalid href doesn't throw an error (issues closed: ed-2568) ([d44226f](https://bitbucket.org/atlassian/atlaskit/commits/d44226f))
+* bug fix; fixed the bug that no text format after space. ([8aa1bfe](https://bitbucket.org/atlassian/atlaskit/commits/8aa1bfe))
+* feature; dAC story with renderer (issues closed: ed-2530) ([005bdba](https://bitbucket.org/atlassian/atlaskit/commits/005bdba))
+* feature; render single link card with square appearance ([8197e31](https://bitbucket.org/atlassian/atlaskit/commits/8197e31))
+* feature; add title/user in applicationCard (issues closed: ed-2532) ([a1c5790](https://bitbucket.org/atlassian/atlaskit/commits/a1c5790))
+
+
+* feature; added Confluence transformer (issues closed: ed-1679) ([b9d48b3](https://bitbucket.org/atlassian/atlaskit/commits/b9d48b3))
+* bug fix; pasting plain text in code block should not create a paragraph ([e7b133e](https://bitbucket.org/atlassian/atlaskit/commits/e7b133e))
+* bug fix; should not autoformat __ or _ in mid words. ([49a4df4](https://bitbucket.org/atlassian/atlaskit/commits/49a4df4))
+* bug fix; fix for issue mention mark not removed even after whole text of mention is removed. ([ed7b58d](https://bitbucket.org/atlassian/atlaskit/commits/ed7b58d))
+* bug fix; should not convert "\`some_variables_" to em ([2eaf1f6](https://bitbucket.org/atlassian/atlaskit/commits/2eaf1f6))
+* bug fix; ignore markdown if have a backtick in the front. ([0f921b1](https://bitbucket.org/atlassian/atlaskit/commits/0f921b1))
+## 46.11.1 (2017-08-31)
+
+* bug fix; removed relative links and added tests ([9c07ea7](https://bitbucket.org/atlassian/atlaskit/commits/9c07ea7))
+
+* bug fix; remove auto formatting of relative links (issues closed: ed-2582) ([a36f9dc](https://bitbucket.org/atlassian/atlaskit/commits/a36f9dc))
+## 46.11.0 (2017-08-30)
+
+
+* feature; make ASCII conversion of emoji count as usage for showing frequent used emoji (issues closed: fs-1094) ([86a0be1](https://bitbucket.org/atlassian/atlaskit/commits/86a0be1))
+## 46.10.0 (2017-08-30)
+
+
+
+* bug fix; workaround double events for the attached and detached upload button. (issues closed: fs-1322) ([b3e19c3](https://bitbucket.org/atlassian/atlaskit/commits/b3e19c3))
+
+
+* feature; collab-plugin ([2c896c7](https://bitbucket.org/atlassian/atlaskit/commits/2c896c7))
+## 46.9.0 (2017-08-30)
+
+* feature; adding configuration to not allow deletion of table header. ([c5e1cc7](https://bitbucket.org/atlassian/atlaskit/commits/c5e1cc7))
 ## 46.8.2 (2017-08-30)
 
 * bug fix; change blockQuote to blockquote in JSON Schema (issues closed: ed-2594) ([b32cfe2](https://bitbucket.org/atlassian/atlaskit/commits/b32cfe2))

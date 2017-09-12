@@ -5,7 +5,31 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import applyDevTools from 'prosemirror-dev-tools';
 
-import { Chrome } from '../../';
+import {
+  baseKeymap,
+  EditorState,
+  EditorView,
+  history,
+  keymap,
+  Node,
+  TextSelection,
+  PluginKey,
+  Schema,
+} from '../../src/prosemirror';
+
+import { default as schemaFull } from '../schema';
+import ProviderFactory from '../../src/providerFactory';
+import { AnalyticsHandler, analyticsService } from '../../src/analytics';
+
+import {
+  MediaProvider,
+  MediaState,
+  Plugin,
+  ErrorReporter,
+  ErrorReportingHandler,
+} from '../../src';
+
+import { Chrome } from '../../src';
 import blockTypePlugins, { stateKey as blockTypeStateKey } from '../../src/plugins/block-type';
 import clearFormattingPlugins, { stateKey as clearFormattingStateKey } from '../../src/plugins/clear-formatting';
 import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugins/code-block';
@@ -19,36 +43,10 @@ import emojiPlugins, { stateKey as emojiStateKey } from '../../src/plugins/emoji
 import asciiEmojiPlugins from '../../src/plugins/emojis/ascii-input-rules';
 import tablePlugins, { stateKey as tableStateKey } from '../../src/plugins/table';
 import pastePlugins from '../../src/plugins/paste';
-import { reactNodeViewPlugins, tasksAndDecisionsPlugin } from '../../src/plugins';
-import { Schema } from '../../src/prosemirror';
-
+import tasksAndDecisionsPlugin from '../../src/plugins/tasks-and-decisions';
+import reactNodeViewPlugins from '../../src/plugins/react-nodeview';
+import mediaPluginFactory, { stateKey as mediaStateKey } from '../../src/plugins/media';
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
-import {
-  baseKeymap,
-  EditorState,
-  EditorView,
-  history,
-  keymap,
-  Node,
-  TextSelection,
-  PluginKey,
-} from '../../src/prosemirror';
-import { default as schemaFull } from '../schema';
-import ProviderFactory from '../../src/providerFactory';
-import { AnalyticsHandler, analyticsService } from '../../src/analytics';
-
-import {
-  MediaProvider,
-  MediaState,
-  Plugin,
-  ErrorReporter,
-  ErrorReportingHandler,
-} from '../../src';
-
-import {
-  mediaPluginFactory,
-  mediaStateKey,
-} from '../../src/plugins';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {

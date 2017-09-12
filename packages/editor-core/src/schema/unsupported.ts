@@ -1,6 +1,6 @@
 
 
-export const unsupportedMediaCardNodeTypes = new Set<string>([
+export const unsupportedNodeTypesForMediaCards = new Set<string>([
   'decisionItem',
   'taskItem',
 ]);

@@ -1,5 +1,19 @@
 # @atlaskit/editor-cq
 
+## 4.8.3 (2017-09-06)
+
+* bug fix; fix save button has spinner during media upload (issues closed: ed-2273) ([67a5997](https://bitbucket.org/atlassian/atlaskit/commits/67a5997))
+## 4.8.2 (2017-09-01)
+
+* bug fix; fire onChange only when docChanged = true (issues closed: ed-2421) ([5605a74](https://bitbucket.org/atlassian/atlaskit/commits/5605a74))
+## 4.8.1 (2017-08-31)
+
+* bug fix; remove encoder/parser from editor-cq (issues closed: ed-2615) ([42bb27c](https://bitbucket.org/atlassian/atlaskit/commits/42bb27c))
+
+
+
+
+
 ## 4.8.0 (2017-08-23)
 
 

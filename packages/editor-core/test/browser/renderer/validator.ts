@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import {
   Doc,
-  isSafeUrl,
   isSubSupType,
   getValidDocument,
   getValidNode,
@@ -12,6 +11,7 @@ import {
   markOrder,
   Node,
 } from '../../../src/renderer/validator';
+import { isSafeUrl } from '../../../src/renderer/utils';
 
 import schema from '../../../stories/schema';
 import { createSchema } from '../../../src/schema';
@@ -95,6 +95,56 @@ describe('Renderer - Validator', () => {
           attrs: {
             text: 'applicationCard',
             title: {}
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.user.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {}
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.user.icon.url is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {
+                icon: {
+                  label: 'icon'
+                }
+              }
+            }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.title.user.icon.label is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: {
+              text: 'title',
+              user: {
+                icon: {
+                  url: 'https://lol.icon'
+                }
+              }
+            }
           }
         };
         expect(getValidNode(applicationCard).type).to.equal('text');
@@ -1006,6 +1056,34 @@ describe('Renderer - Validator', () => {
             type: 'sup'
           },
         });
+      });
+    });
+
+    describe('textColor', () => {
+      it('should return "textColor"', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: '#ff0000' } })).to.deep.equal({
+          type: 'textColor',
+          attrs: {
+            color: '#ff0000',
+          },
+        });
+      });
+
+      it('should return "textColor" for uppercase color', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: '#FF0000' } })).to.deep.equal({
+          type: 'textColor',
+          attrs: {
+            color: '#FF0000',
+          },
+        });
+      });
+
+      it('should skip nodes if color attribute is missing', () => {
+        expect(getValidMark({ type: 'textColor' })).to.equal(null);
+      });
+
+      it('should skip nodes if color attribute doesn\'t match RGB pattern', () => {
+        expect(getValidMark({ type: 'textColor', attrs: { color: 'red' } })).to.equal(null);
       });
     });
 

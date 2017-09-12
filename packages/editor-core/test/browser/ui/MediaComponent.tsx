@@ -16,6 +16,7 @@ import {
   Card,
   CardView,
   CardViewProps,
+  CardProps,
 } from '@atlaskit/media-card';
 import {
   storyMediaProviderFactory,
@@ -155,6 +156,49 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
 
     expect(mediaComponent.find(Card).length).to.equal(1);
+  });
+
+  context('when appearence is set', () => {
+    it('renders a Card component with the customized appearence', async () => {
+      const mediaProvider = getFreshResolvedProvider();
+      const mediaComponent = shallow(
+        <MediaComponent
+          id={link.attrs.id}
+          type={link.attrs.type as MediaType}
+          collection={link.attrs.collection}
+          mediaProvider={mediaProvider}
+          appearance="square"
+        />);
+
+      const resolvedMediaProvider = await mediaProvider;
+      const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+      const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+      mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+
+      const props: CardProps = mediaComponent.find(Card).props();
+      expect(props.appearance).to.equal('square');
+    });
+  });
+
+  context('when appearence is not set', () => {
+    it('renders a link Card component with the default appearence', async () => {
+      const mediaProvider = getFreshResolvedProvider();
+      const mediaComponent = shallow(
+        <MediaComponent
+          id={link.attrs.id}
+          type={link.attrs.type as MediaType}
+          collection={link.attrs.collection}
+          mediaProvider={mediaProvider}
+        />);
+
+      const resolvedMediaProvider = await mediaProvider;
+      const resolvedLinkCreateContextConfig = await resolvedMediaProvider.linkCreateContext as ContextConfig;
+      const linkCreateContext = ContextFactory.create(resolvedLinkCreateContextConfig) as Context;
+      mediaComponent.setState({ 'linkCreateContext': linkCreateContext });
+
+      const props: CardProps = mediaComponent.find(Card).props();
+      expect(props.appearance).to.equal('horizontal');
+    });
   });
 
   it('should use stateManager from Plugin state in Editor mode', async () => {

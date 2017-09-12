@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
+import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
@@ -21,15 +22,10 @@ storiesOf(name, module)
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
         <Editor
-          appearance="message"
+          {...getPropsPreset('message')}
+
           analyticsHandler={analyticsHandler}
-
-          allowTextFormatting={true}
-          allowTasksAndDecisions={true}
-          allowHyperlinks={true}
-          allowCodeBlocks={true}
-
-          saveOnEnter={true}
+          maxHeight={305}
 
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
@@ -63,7 +59,7 @@ storiesOf(name, module)
      */
     const addonConfigs: AddonConfiguration[] = [
       {
-        text: 'Item one',
+        text: 'Render on click',
         icon: <DocumentIcon label="Item 1" />,
         renderOnClick: (editorActions, closePopup) => (
           <AddonComponentExample>
@@ -73,7 +69,7 @@ storiesOf(name, module)
         )
       },
       {
-        text: 'Item two',
+        text: 'Clear editor',
         icon: <AtlassianIcon label="Item 2" />,
         actionOnClick: editorActions => editorActions.clear()
       }

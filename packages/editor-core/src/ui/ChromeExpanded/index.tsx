@@ -1,5 +1,4 @@
-import AkButton from '@atlaskit/button';
-import AkButtonGroup from '@atlaskit/button-group';
+import AkButton, { ButtonGroup as AkButtonGroup } from '@atlaskit/button';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { ActivityProvider } from '@atlaskit/activity';
@@ -41,7 +40,6 @@ import ToolbarInlineCode from '../ToolbarInlineCode';
 import ToolbarImage from '../ToolbarImage';
 import ToolbarMedia from '../ToolbarMedia';
 import ToolbarTextColor from '../ToolbarTextColor';
-import TableFloatingControls from '../TableFloatingControls';
 import TableFloatingToolbar from '../TableFloatingToolbar';
 import {
   Container,
@@ -77,6 +75,7 @@ export interface Props {
   pluginStateTable?: TableState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   saveDisabled?: boolean;
+  showSpinner?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   activityProvider?: Promise<ActivityProvider>;
@@ -201,6 +200,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       pluginStateTextFormatting,
       pluginStateTable,
       saveDisabled,
+      showSpinner,
       popupsMountPoint,
       popupsBoundariesElement,
       activityProvider,
@@ -213,7 +213,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
       style.height = `${height}px`;
     }
 
-    const iconAfter = saveDisabled
+    const iconAfter = saveDisabled && showSpinner
       ? <Spinner isCompleting={false} onComplete={this.handleSpinnerComplete} />
       : undefined;
 
@@ -323,14 +323,6 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
             /> : null}
-
-          {pluginStateTable && !disabled &&
-            <TableFloatingControls
-              pluginState={pluginStateTable}
-              editorView={editorView}
-              popupsMountPoint={this.maxHeightContainer}
-              popupsBoundariesElement={this.maxHeightContainer}
-            /> }
 
           {pluginStateTable && !disabled &&
             <TableFloatingToolbar

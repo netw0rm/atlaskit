@@ -7,6 +7,8 @@ import ResultBase from './ResultBase';
 
 const noOp = () => {};
 
+const PERSON_RESULT_TYPE = 'person';
+
 // ===================================================================
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
@@ -27,7 +29,7 @@ export default class PersonResult extends PureComponent {
     presenceMessage: PropTypes.string,
     presenceState: PropTypes.oneOf(['online', 'busy', 'offline']),
     resultId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
   }
 
   static defaultProps = {
@@ -37,6 +39,7 @@ export default class PersonResult extends PureComponent {
     onClick: noOp,
     onMouseEnter: noOp,
     onMouseLeave: noOp,
+    type: PERSON_RESULT_TYPE,
   }
 
   getMention = () => (

@@ -82,6 +82,7 @@ class GrantAccess extends Component {
     ).isRequired,
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
+    learnMoreLink: PropTypes.string,
     // selectLabel: PropTypes.string,
     defaultSelectedRadio: PropTypes.string,
     progress: PropTypes.number.isRequired,
@@ -100,14 +101,12 @@ class GrantAccess extends Component {
 
     grantAccessToUsers: PropTypes.func,
     retrieveUsers: PropTypes.func,
-    goToLearnMore: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     grantAccessToUsers: async () => {},
     retrieveUsers: async () => [],
-    goToLearnMore: async () => {},
   };
 
   state = {
@@ -145,6 +144,7 @@ class GrantAccess extends Component {
             value: user.name,
             content: user['display-name'],
             description: user.email,
+            filterValues: [user.email, user.name, user['display-name']],
           })),
         },
       ];
@@ -199,7 +199,9 @@ class GrantAccess extends Component {
       });
       onComplete();
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access');
+      firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access', {
+        errorMessage: e.message,
+      });
       this.setState({
         continueButtonDisabled: false,
         spinnerActive: false,
@@ -216,9 +218,17 @@ class GrantAccess extends Component {
   };
 
   handleLearnMoreClick = () => {
-    const { goToLearnMore, firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.learn-more-button.clicked');
-    goToLearnMore();
+  };
+
+  // This is necessary to capture middle and right mouse clicks
+  // while not breaking keyboard functionality
+  handleLearnMoreAlternateClick = evt => {
+    if (evt.button > 0) {
+      const { firePrivateAnalyticsEvent } = this.props;
+      firePrivateAnalyticsEvent('xflow.grant-access.learn-more-button.clicked');
+    }
   };
 
   handleManageClick = () => {
@@ -290,6 +300,7 @@ class GrantAccess extends Component {
       productLogo,
       optionItems,
       userSelectPlaceholder,
+      learnMoreLink,
       // selectLabel,
       progress,
       status,
@@ -393,16 +404,23 @@ class GrantAccess extends Component {
                   defaultMessage="How will this affect my bill?"
                 />
                 <GrantAccessLearnMoreSpan>
-                  <Button
-                    id="xflow-grant-access-learn-more-button"
-                    onClick={this.handleLearnMoreClick}
-                    appearance="link"
+                  <span
+                    onMouseDown={this.handleLearnMoreAlternateClick}
+                    id="xflow-grant-access-learn-more-span"
                   >
-                    <FormattedMessage
-                      id="xflow.generic.grant-access.learn-more"
-                      defaultMessage="Learn more"
-                    />
-                  </Button>
+                    <Button
+                      id="xflow-grant-access-learn-more-button"
+                      onClick={this.handleLearnMoreClick}
+                      appearance="link"
+                      href={learnMoreLink}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        id="xflow.generic.grant-access.learn-more"
+                        defaultMessage="Learn more"
+                      />
+                    </Button>
+                  </span>
                 </GrantAccessLearnMoreSpan>
               </AffectMyBillText>
             </GrantAccessChangeUsersDiv>
@@ -451,6 +469,7 @@ export default withXFlowProvider(
           grantAccessOptionItems,
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
+          grantAccessLearnMoreLink,
           // grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
           grantAccessHeading,
@@ -461,20 +480,19 @@ export default withXFlowProvider(
       retrieveUsers,
       progress,
       status,
-      goToLearnMore,
     },
   }) => ({
     productLogo,
     optionItems: grantAccessOptionItems,
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
+    learnMoreLink: grantAccessLearnMoreLink,
     // selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,
     grantAccessToUsers,
     retrieveUsers,
     progress,
     status,
-    goToLearnMore,
     heading: grantAccessHeading,
     defaultAccess: grantAccessDefaultAccess,
   })

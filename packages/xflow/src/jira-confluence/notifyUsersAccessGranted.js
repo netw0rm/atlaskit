@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 import { getCurrentUsername, queryUsername, getInstanceName } from './tenantContext';
 
-export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.atl-paas.net/accessgranted';
+export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/accessgranted';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 

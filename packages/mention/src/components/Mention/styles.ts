@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import {
   akColorB400,
-  akColorN0,
   akColorN20,
   akColorN30A,
   akColorN500,
@@ -19,7 +18,7 @@ mentionStyle[MentionType.SELF] = {
   text: akColorN20,
 };
 mentionStyle[MentionType.RESTRICTED] = {
-  background: akColorN0,
+  background: 'transparent',
   border: akColorN500,
   text: akColorN500,
 };

@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 4.0.0 (2017-09-12)
+
+* feature; support attribution label depending on state/creator/updaters. (issues closed: fs-1368) ([8955414](https://bitbucket.org/atlassian/atlaskit/commits/8955414))
+* bug fix; fix content height in card appearance in IE11. ([e51886b](https://bitbucket.org/atlassian/atlaskit/commits/e51886b))
+* breaking; Removed incomplete/unused ResourcedDecisionList and ResourcedTaskList. Changed values of appearance ([5aeb4f9](https://bitbucket.org/atlassian/atlaskit/commits/5aeb4f9))
+* breaking; support participant rendering in action/decision cards (issues closed: fs-1307) ([5aeb4f9](https://bitbucket.org/atlassian/atlaskit/commits/5aeb4f9))
 ## 3.7.0 (2017-09-06)
 
 * feature; add toolbar button support for actions/decisions (issues closed: fs-1342) ([faddb0b](https://bitbucket.org/atlassian/atlaskit/commits/faddb0b))

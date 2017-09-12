@@ -3,7 +3,7 @@ import {
   akColorB400,
   akColorN0,
   akColorN20,
-  akColorN30,
+  akColorN30A,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 import { MentionType } from '../../types';
@@ -24,8 +24,8 @@ mentionStyle[MentionType.RESTRICTED] = {
   text: akColorN500,
 };
 mentionStyle[MentionType.DEFAULT] = {
-  background: akColorN30,
-  border: akColorN30,
+  background: akColorN30A,
+  border: 'transparent',
   text: akColorN500,
 };
 

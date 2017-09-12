@@ -11,7 +11,7 @@ import { traverseNode } from './utils';
 
 export const pluginKey = new PluginKey('unsupportedContentPlugin');
 
-const createPlugin = (schema) => {
+const createPlugin = (schema, providerFactory) => {
   return new Plugin({
     state: {
       init(config, state: EditorState<any>) {
@@ -24,8 +24,8 @@ const createPlugin = (schema) => {
     key: pluginKey,
     props: {
       nodeViews: {
-        confluenceUnsupportedBlock: nodeViewFactory(this.providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
-        confluenceUnsupportedInline: nodeViewFactory(this.providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode })
+        confluenceUnsupportedBlock: nodeViewFactory(providerFactory, { confluenceUnsupportedBlock: ReactUnsupportedBlockNode }, true),
+        confluenceUnsupportedInline: nodeViewFactory(providerFactory, { confluenceUnsupportedInline: ReactUnsupportedInlineNode })
       }
     }
   });
@@ -41,7 +41,7 @@ const unsupportedContentPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 1320, plugin: (schema) => createPlugin(schema) }
+      { rank: 1320, plugin: (schema, props, dispatch, providerFactory) => createPlugin(schema, providerFactory) }
     ];
   }
 };

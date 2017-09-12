@@ -11,6 +11,9 @@ export const checkWebpSupport = () : Promise<boolean> => {
   return new Promise((resolve) => {
     const img = new Image();
 
+    // Following base64 encoded binary content is in webp format. If browser supports this standard,
+    // 2px height image will be displayed. If not, standard "not found" image placeholder will be
+    // displayed and it will be not 2px height.
     img.src = 'data:image/webp;base64,UklGRi4AAABXRUJQVlA4TCEAAAAvAUAAEB8wAiMwAgSSNtse/cXjxyCCmrYNWPwmHRH9jwMA';
     img.onload = img.onerror = () => {
       isSupported = img.height === 2;

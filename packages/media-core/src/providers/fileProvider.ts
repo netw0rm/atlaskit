@@ -1,4 +1,4 @@
-import {FileItem, MediaApiConfig, MediaItem} from '../';
+import {FileItem, MediaApiConfig} from '../';
 import {FileService, MediaFileService} from '../services/fileService';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/publishReplay';
@@ -12,22 +12,19 @@ export interface FileProvider {
 
 export class FileProvider {
   public static fromMediaApi(config: MediaApiConfig,
-                             cache: LRUCache<string, MediaItem>,
+                             fileItemCache: LRUCache<string, FileItem>,
                              fileId: string,
-                             clientId: string,
                              collection?: string,
                              pollInterval?: number): FileProvider {
     return FileProvider.fromFileService(
-      new MediaFileService(config, cache),
+      new MediaFileService(config, fileItemCache),
       fileId,
-      clientId,
       collection,
       pollInterval);
   }
 
   public static fromFileService(fileService: FileService,
                                 fileId: string,
-                                clientId: string,
                                 collectionName?: string,
                                 pollInterval?: number): FileProvider {
     return {
@@ -37,7 +34,7 @@ export class FileProvider {
           const timeout = pollInterval || 1000;
 
           const fetch = () => {
-            fileService.getFileItem(fileId, clientId, collectionName)
+            fileService.getFileItem(fileId, collectionName)
               .then(fileItem => {
                   if (fileItem.details.processingStatus !== 'pending') {
                     subscriber.next(fileItem);

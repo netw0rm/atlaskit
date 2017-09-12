@@ -5,6 +5,7 @@ import { LinkProvider } from './linkProvider';
 import { Pool } from './util/pool';
 import { observableFromObservablePool } from './util/observableFromObservablePool';
 import { LRUCache } from 'lru-fast';
+import { FileItem } from '../item';
 
 export type MediaItemObservablePool = Pool<Observable<MediaItem>>;
 
@@ -15,16 +16,15 @@ export interface MediaItemProvider {
 export class MediaItemProvider {
   public static fromMediaApi(
     config: MediaApiConfig,
-    cache: LRUCache<string, MediaItem>,
+    fileItemCache: LRUCache<string, FileItem>,
     mediaItemType: MediaItemType,
     id: string,
-    clientId: string,
     collection?: string): MediaItemProvider {
     switch (mediaItemType) {
       case 'file':
-        return FileProvider.fromMediaApi(config, cache, id, clientId, collection, FILE_PROVIDER_RETRY_INTERVAL);
+        return FileProvider.fromMediaApi(config, fileItemCache, id, collection, FILE_PROVIDER_RETRY_INTERVAL);
       case 'link':
-        return LinkProvider.fromMediaApi(config, id, clientId, collection);
+        return LinkProvider.fromMediaApi(config, id, collection);
       default:
         throw new Error('invalid media type ' + mediaItemType);
     }
@@ -33,16 +33,15 @@ export class MediaItemProvider {
   public static fromPool(
     pool: MediaItemObservablePool,
     config: MediaApiConfig,
-    cache: LRUCache<string, MediaItem>,
+    fileItemCache: LRUCache<string, FileItem>,
     mediaItemType: MediaItemType,
     id: string,
-    clientId: string,
     collection?: string): MediaItemProvider {
     return {
       observable() {
         const poolId = [mediaItemType, id, collection].join('-');
         return observableFromObservablePool(pool, poolId, () => {
-          return MediaItemProvider.fromMediaApi(config, cache, mediaItemType, id, clientId, collection).observable();
+          return MediaItemProvider.fromMediaApi(config, fileItemCache, mediaItemType, id, collection).observable();
         });
       }
     };

@@ -1,6 +1,6 @@
 export * from './item';
 export * from './actions';
-export * from './config';
+export * from './auth';
 export * from './editor';
 export * from './mediaTypes';
 export * from './context/context';

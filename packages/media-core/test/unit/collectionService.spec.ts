@@ -1,6 +1,6 @@
 import { useFakeXMLHttpRequest, SinonFakeXMLHttpRequest } from 'sinon';
 import { MediaCollectionService, DEFAULT_COLLECTION_PAGE_SIZE } from '../../src/services/collectionService';
-import { MediaApiConfig } from '../../src/config';
+import { MediaApiConfig } from '../../src/auth';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
@@ -9,7 +9,10 @@ const serviceHost = 'some-service-host';
 const authParams = `token=${token}&client=${clientId}`;
 const config = {
     serviceHost,
-    tokenProvider: () => Promise.resolve(token)
+    authProvider: (collection) => Promise.resolve({
+      token,
+      clientId
+    })
 } as MediaApiConfig;
 
 describe('MediaCollectionService', () => {
@@ -38,7 +41,7 @@ describe('MediaCollectionService', () => {
     };
 
     it('should have correct url', () => {
-        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
+        const collectionService: MediaCollectionService = new MediaCollectionService(config);
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 const request = requests[0];
@@ -55,7 +58,7 @@ describe('MediaCollectionService', () => {
         const inclusiveStartKey = '128';
         const sortDirection = 'desc';
         const details = 'full';
-        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
+        const collectionService: MediaCollectionService = new MediaCollectionService(config);
         const response = collectionService.getCollectionItems(
             collectionName, limit, inclusiveStartKey, sortDirection, details)
             .then(response => {
@@ -72,7 +75,7 @@ describe('MediaCollectionService', () => {
     });
 
     it('should have correct response', () => {
-        const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
+        const collectionService: MediaCollectionService = new MediaCollectionService(config);
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 expect(response).toEqual({

@@ -32,6 +32,7 @@ mentionStyle[MentionType.DEFAULT] = {
 
 // tslint:disable-next-line:variable-name
 export const MentionStyle = styled.span`${(props: MentionStyleProps) => `
+  display: table-cell;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;
@@ -39,10 +40,11 @@ export const MentionStyle = styled.span`${(props: MentionStyleProps) => `
   cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;
+  line-height: 16px;
 `}`;
 
 // tslint:disable-next-line:variable-name
 export const MentionContainer = styled.span`
-  display: inline-block;
+  display: inline-table;
   white-space: nowrap;
 `;

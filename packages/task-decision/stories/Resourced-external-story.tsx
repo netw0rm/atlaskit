@@ -6,7 +6,7 @@ import { TaskDecisionProvider } from '../src/types';
 import ResourcedItemList from '../src/components/ResourcedItemList';
 import TaskDecisionResource from '../src/api/TaskDecisionResource';
 
-import { createRenderer } from './story-utils';
+import { createRenderer, SidebarContainer } from './story-utils';
 
 let tdConfig;
 try {
@@ -60,12 +60,7 @@ class NotifyChanges extends PureComponent<NotifyChangesProps,{}> {
         <div>
           Select <button onClick={this.handleNotify}>notify</button> to look for newest items from service.
         </div>
-        <div
-          style={{
-            border: '1px solid #ccc',
-            margin: '8px'
-          }}
-        >
+        <SidebarContainer>
           <ResourcedItemList
             renderDocument={this.renderDocument}
             initialQuery={tdConfig.initialQuery}
@@ -73,7 +68,7 @@ class NotifyChanges extends PureComponent<NotifyChangesProps,{}> {
             useInfiniteScroll={useInfiniteScroll}
             height={height}
           />
-        </div>
+        </SidebarContainer>
       </div>
     );
   }

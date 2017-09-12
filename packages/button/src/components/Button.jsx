@@ -68,6 +68,8 @@ export default class Button extends Component {
     iconAfter: PropTypes.element,
     /** Places an icon within the button, before the button's text. */
     iconBefore: PropTypes.element,
+    /** Pass a reference on to the styled component */
+    innerRef: PropTypes.func,
     /** Provide a unique id to the button. */
     id: PropTypes.string,
     /** Set if the button is disabled. */
@@ -155,6 +157,7 @@ export default class Button extends Component {
       children,
       iconBefore,
       iconAfter,
+      innerRef,
       shouldFitContainer,
     } = this.props;
 
@@ -165,7 +168,7 @@ export default class Button extends Component {
       || (iconAfter && !iconBefore && !children);
 
     return (
-      <StyledComponent {...buttonProps}>
+      <StyledComponent innerRef={innerRef} {...buttonProps}>
         <ButtonWrapper fit={shouldFitContainer}>
           {iconBefore ? (
             <IconWrapper spacing={buttonProps.spacing} isOnlyChild={iconIsOnlyChild}>

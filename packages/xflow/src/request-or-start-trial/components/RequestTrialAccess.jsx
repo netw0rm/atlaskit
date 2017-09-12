@@ -22,6 +22,7 @@ class RequestTrialAccess extends Component {
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     heading: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
+    learnMoreLink: PropTypes.string,
     message: PropTypes.node.isRequired,
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -49,6 +50,21 @@ class RequestTrialAccess extends Component {
     // TODO: add analytics events for success or failure of requestTrialAccess
   };
 
+  handleLearnMoreClick = () => {
+    const { firePrivateAnalyticsEvent, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-requested-trial.learn-more-button.clicked');
+    Promise.resolve(() => onComplete());
+  };
+
+  // This is necessary to capture middle and right mouse clicks
+  // while not breaking keyboard functionality
+  handleLearnMoreAlternateClick = evt => {
+    if (evt.button > 0) {
+      const { firePrivateAnalyticsEvent } = this.props;
+      firePrivateAnalyticsEvent('xflow.already-requested-trial.learn-more-button.clicked');
+    }
+  };
+
   handleCloseClick = () => {
     const {
       alreadyRequested,
@@ -63,7 +79,7 @@ class RequestTrialAccess extends Component {
   };
 
   render() {
-    const { alreadyRequested, productLogo, image, heading, message } = this.props;
+    const { alreadyRequested, productLogo, image, learnMoreLink, heading, message } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -90,12 +106,30 @@ class RequestTrialAccess extends Component {
         }
         footer={
           <RequestAccessFooter>
-            <Button appearance="primary" onClick={this.handleRequestAccessClick}>
-              <FormattedMessage
-                id="xflow.generic.request-trial.request-button"
-                defaultMessage="Request a trial"
-              />
-            </Button>
+            {alreadyRequested ?
+              <span
+                onMouseDown={this.handleLearnMoreAlternateClick}
+                id="xflow-already-requested-trial-learn-more-span"
+              >
+                <Button
+                  id="xflow-already-requested-trial-learn-more-button"
+                  appearance="link"
+                  onClick={this.handleLearnMoreClick}
+                  href={learnMoreLink}
+                  target="_blank"
+                >
+                  <FormattedMessage
+                    id="xflow.generic.already-requested-trial.learn-more-button"
+                    defaultMessage="Learn more"
+                  />
+                </Button>
+              </span> :
+              <Button appearance="primary" onClick={this.handleRequestAccessClick}>
+                <FormattedMessage
+                  id="xflow.generic.request-trial.request-button"
+                  defaultMessage="Request a trial"
+                />
+              </Button>}
             <Button appearance="subtle-link" onClick={this.handleCloseClick}>
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
@@ -125,6 +159,7 @@ export default withXFlowProvider(
     image: requestTrial.accessImage,
     heading: requestTrial.accessHeading,
     message: requestTrial.accessMessage,
+    learnMoreLink: requestTrial.accessLearnMoreLink,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
     requestTrialAccess,

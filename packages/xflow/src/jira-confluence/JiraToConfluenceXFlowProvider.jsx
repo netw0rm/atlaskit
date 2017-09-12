@@ -133,6 +133,7 @@ export const defaultProps = intl => ({
       accessImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
+      accessLearnMoreLink: 'https://www.atlassian.com/software/confluence',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
     },

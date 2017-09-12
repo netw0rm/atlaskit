@@ -62,7 +62,10 @@ class RequestTrialAccess extends Component {
       confluenceFailedToStart: false,
     });
     requestTrialAccess()
-      .then(() => onComplete())
+      .then(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial.successful');
+        onComplete();
+      })
       .catch(() => {
         firePrivateAnalyticsEvent('xflow.request-trial.failed');
         this.setState({
@@ -71,7 +74,6 @@ class RequestTrialAccess extends Component {
           spinnerActive: false,
         });
       });
-    // TODO: add analytics events for success or failure of requestTrialAccess
   };
 
   handleLearnMoreClick = () => {

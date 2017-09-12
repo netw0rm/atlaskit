@@ -2,7 +2,7 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import * as tenantContext from '../../../src/jira-confluence/tenantContext';
+import * as tenantContext from '../../../src/common/tenantContext';
 
 import notifyUsersAccessGranted, {
   NOTIFY_ENDPOINT_EAST,

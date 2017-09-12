@@ -2,11 +2,11 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import { isUserTrusted, getUserDisplayName } from '../../../src/jira-confluence/tenantContext';
-import jiraAdminResponse from './mock-data/isUserTrustedJiraAdmin.json';
-import nonAdminResponse from './mock-data/isUserTrustedNonAdmin.json';
-import siteAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
-import queryUsernameResponse from './mock-data/queryUsername.json';
+import { isUserTrusted, getUserDisplayName } from '../../../src/common/tenantContext';
+import jiraAdminResponse from './../jira-confluence/mock-data/isUserTrustedJiraAdmin.json';
+import nonAdminResponse from './../jira-confluence/mock-data/isUserTrustedNonAdmin.json';
+import siteAdminResponse from './../jira-confluence/mock-data/isUserTrustedSiteAdmin.json';
+import queryUsernameResponse from './../jira-confluence/mock-data/queryUsername.json';
 
 const TEST_USERNAME = 'admin%40acme.org';
 

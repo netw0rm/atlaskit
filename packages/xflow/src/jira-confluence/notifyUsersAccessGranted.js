@@ -1,24 +1,9 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-import { getCurrentUsername, queryUsername, getInstanceName } from './tenantContext';
+import { getCurrentUsername, queryUsername, getInstanceName, getAvatarUrl } from './../common/tenantContext';
 
 export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/accessgranted';
-const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
-const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
-
-function getAvatarUrl({ avatarUrls }) {
-  // Find the largest size key
-  const key = Object.keys(avatarUrls || {}).pop();
-
-  if (!key) {
-    return DEFAULT_AVATAR_URL;
-  }
-
-  const baseUrl = (avatarUrls[key].match(AVATAR_REGEXP) || [])[0];
-  const url = baseUrl ? `${baseUrl}?s=128` : avatarUrls[key];
-  return url;
-}
 
 function getAtlassianAccountId({ attributes: { attributes } }) {
   if (!attributes) return '';

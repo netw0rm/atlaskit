@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "3.0.0-beta",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },

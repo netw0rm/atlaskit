@@ -52,7 +52,7 @@ storiesOf('RequestTrial')
       />
     )
   )
-  .add('RequestTrialWithNote (INACTIVE)', () =>
+  .add('RequestTrialWithNote (INACTIVE), success flag after Send Note', () =>
     setupStorybookAnalytics(
       <RequestTrialNoteBase
         {...defaultProps}

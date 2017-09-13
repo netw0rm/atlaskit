@@ -6,6 +6,7 @@ import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-i
 import { withAnalytics } from '@atlaskit/analytics';
 
 import ErrorFlag from './ErrorFlag';
+import SuccessFlag from './SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestAccessFooter from '../styled/RequestAccessFooter';
@@ -19,6 +20,14 @@ const messages = defineMessages({
   errorFlagDescription: {
     id: 'xflow.generic.request-tral-note.error-flag.description',
     defaultMessage: "That request didn't make it through. Shall we try again?",
+  },
+  successFlagTitle: {
+    id: 'xflow.generic.request-trial-note.success-flag.title',
+    defaultMessage: 'Your request is sent',
+  },
+  successFlagDescription: {
+    id: 'xflow.generic.request-tral-note.success-flag.description',
+    defaultMessage: 'Props for helping your admin out!',
   },
 });
 
@@ -40,7 +49,8 @@ class RequestTrialNote extends Component {
   };
 
   state = {
-    requestTrialSendNoteFailed: false,
+    requestTrialSendNoteStatus: null,
+    awaitingRequest: false,
   }
 
   componentDidMount() {
@@ -56,24 +66,33 @@ class RequestTrialNote extends Component {
       onComplete,
     } = this.props;
     this.setState({
-      requestTrialSendNoteFailed: false,
+      requestTrialSendNoteStatus: null,
+      awaitingRequest: true,
     });
     const noteText = document.getElementById('request-trial-note').value;
     if (noteText === '') {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked.with.no.text');
       requestTrialAccessWithoutNote()
-        .then(() => onComplete());
+        .then(() => {
+          this.setState({
+            requestTrialSendNoteStatus: 'successful',
+          });
+          onComplete();
+        });
     } else {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
       requestTrialAccessWithNote()
         .then(() => {
           firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
+          this.setState({
+            requestTrialSendNoteStatus: 'successful',
+          });
           onComplete();
         })
         .catch(() => {
           firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
           this.setState({
-            requestTrialSendNoteFailed: true,
+            requestTrialSendNoteStatus: 'failed',
           });
         });
     }
@@ -81,8 +100,18 @@ class RequestTrialNote extends Component {
 
   handleSendRequestWithoutNote = () => {
     const { firePrivateAnalyticsEvent, requestTrialAccessWithoutNote, onComplete } = this.props;
+    this.setState({
+      requestTrialSendNoteStatus: null,
+      awaitingRequest: true,
+    });
     firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note-button.clicked');
-    return Promise.resolve(requestTrialAccessWithoutNote()).then(() => onComplete());
+    requestTrialAccessWithoutNote()
+      .then(() => {
+        this.setState({
+          requestTrialSendNoteStatus: 'successful',
+        });
+        onComplete();
+      });
   };
 
   handleErrorFlagDismiss = () => {
@@ -90,7 +119,16 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.error-flag.dismissed');
     this.setState({
-      requestTrialSendNoteFailed: false,
+      requestTrialSendNoteStatus: null,
+    });
+  };
+
+  handleSuccessFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent(
+      'xflow.request-trial-note.success-flag.dismissed');
+    this.setState({
+      requestTrialSendNoteStatus: null,
     });
   };
 
@@ -101,54 +139,62 @@ class RequestTrialNote extends Component {
       prompt,
     } = this.props;
     return (
-      <ModalDialog
-        isOpen
-        width="small"
-        header={
-          <RequestTrialHeader>
-            <FormattedMessage
-              id="xflow.generic.request-trial-note.heading"
-              defaultMessage="Ping your site admin"
-            />
-          </RequestTrialHeader>}
-        footer={
-          <RequestAccessFooter>
-            <Button appearance="primary" onClick={this.handleSendRequest}>
+      <div>
+        <ModalDialog
+          isOpen={!this.state.awaitingRequest}
+          width="small"
+          header={
+            <RequestTrialHeader>
               <FormattedMessage
-                id="xflow.generic.request-trial-note.request-button"
-                defaultMessage="Send request"
+                id="xflow.generic.request-trial-note.heading"
+                defaultMessage="Ping your site admin"
               />
-            </Button>
-            <Button appearance="subtle-link" onClick={this.handleSendRequestWithoutNote}>
-              <FormattedMessage
-                id="xflow.generic.request-trial-note.request-without-note-button"
-                defaultMessage="Send without note"
-              />
-            </Button>
-          </RequestAccessFooter>
+            </RequestTrialHeader>}
+          footer={
+            <RequestAccessFooter>
+              <Button appearance="primary" onClick={this.handleSendRequest}>
+                <FormattedMessage
+                  id="xflow.generic.request-trial-note.request-button"
+                  defaultMessage="Send request"
+                />
+              </Button>
+              <Button appearance="subtle-link" onClick={this.handleSendRequestWithoutNote}>
+                <FormattedMessage
+                  id="xflow.generic.request-trial-note.request-without-note-button"
+                  defaultMessage="Send without note"
+                />
+              </Button>
+            </RequestAccessFooter>
         }
-      >
-        <div>
-          {React.isValidElement(prompt)
+        >
+          <div>
+            {React.isValidElement(prompt)
             ? prompt
             : <p>
               {prompt}
             </p>}
-          <NoteText id="request-trial-note" placeholder={placeholder} />
-        </div>
+            <NoteText id="request-trial-note" placeholder={placeholder} />
+          </div>
+        </ModalDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
-          showFlag={this.state.requestTrialSendNoteFailed}
+          showFlag={this.state.requestTrialSendNoteStatus === 'failed'}
           flagActions={[
             { content: 'Resend request',
-              // TODO: Work out how to resend the request and dismiss the flag
+          // TODO: Work out how to resend the request and dismiss the flag
               onClick: this.handleErrorFlagDismiss,
             },
-            { content: 'Not now', onClick: this.handleErrorFlagDismiss },
+        { content: 'Not now', onClick: this.handleErrorFlagDismiss },
           ]}
         />
-      </ModalDialog>
+        <SuccessFlag
+          title={intl.formatMessage(messages.successFlagTitle)}
+          description={intl.formatMessage(messages.successFlagDescription)}
+          showFlag={this.state.requestTrialSendNoteStatus === 'successful'}
+          onDismissed={this.handleSuccessFlagDismiss}
+        />
+      </div>
     );
   }
 }

@@ -1,5 +1,9 @@
 # @atlaskit/analytics
 
+## 2.0.0 (2017-09-13)
+
+* breaking; AnalyticsListener and AnalyticsDecorator now only accepts one child and will throw an error if ([92f1b3f](https://bitbucket.org/atlassian/atlaskit/commits/92f1b3f))
+* breaking; analyticsListener and AnalyticsDecorator now only accepts one child (issues closed: ak-2048) ([92f1b3f](https://bitbucket.org/atlassian/atlaskit/commits/92f1b3f))
 ## 1.1.2 (2017-09-05)
 
 

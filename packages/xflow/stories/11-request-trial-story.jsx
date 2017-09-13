@@ -42,16 +42,6 @@ storiesOf('RequestTrial')
       />
     )
   )
-  .add('Already Requested Trial (INACTIVE)', () =>
-    setupStorybookAnalytics(
-      <RequestTrialAccessBase
-        {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-        alreadyRequested
-      />
-    )
-  )
   .add('RequestTrialWithNote (INACTIVE), success flag after Send Note', () =>
     setupStorybookAnalytics(
       <RequestTrialNoteBase
@@ -61,11 +51,21 @@ storiesOf('RequestTrial')
     )
   )
   .add('RequestTrialWithNote (INACTIVE), error flag after Send Note', () =>
+    setupStorybookAnalytics(
+      <RequestTrialNoteBase
+        {...defaultProps}
+        requestTrialAccessWithNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+        onComplete={() => Promise.resolve(true)}
+      />
+    )
+  )
+  .add('Already Requested Trial (INACTIVE)', () =>
   setupStorybookAnalytics(
-    <RequestTrialNoteBase
+    <RequestTrialAccessBase
       {...defaultProps}
-      requestTrialAccessWithNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
       onComplete={() => Promise.resolve(true)}
+      onCancel={() => Promise.resolve(true)}
+      alreadyRequested
     />
   )
 );

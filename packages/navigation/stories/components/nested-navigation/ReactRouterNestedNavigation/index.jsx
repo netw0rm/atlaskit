@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch, Link } from 'react-router-dom';
+import { HashRouter, Link, Route, Switch, withRouter } from 'react-router-dom';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
@@ -19,14 +19,31 @@ import BasicNavigation from '../../BasicNavigation';
 import HtmlPage from '../../HtmlPage';
 import ReactRouterNestedNavigation from './ReactRouterNestedNavigation';
 
+const makePage = title => () => (
+  <div>
+    <h1>{title}</h1>
+    <p>Lorem ipsum</p>
+  </div>
+);
+
 const RouterLinkComponent = (props) => {
   const { children, href, ...linkProps } = props;
   return <Link to={href} {...linkProps}>{children}</Link>;
 };
 
-const makePage = title => () => (
-  <h1>{title}</h1>
-);
+class NavItemLink extends Component {
+  render() {
+    const { location, ...props } = this.props;
+    return (
+      <AkNavigationItem
+        linkComponent={RouterLinkComponent}
+        isSelected={location.pathname === props.href}
+        {...props}
+      />
+    );
+  }
+}
+const RouterNavItemLink = withRouter(NavItemLink);
 
 const backButton = path => () => (
   <AkNavigationItem
@@ -37,6 +54,7 @@ const backButton = path => () => (
   />
 );
 
+// eslint-disable-next-line react/no-multi-comp
 export default class App extends Component {
   render() {
     return (
@@ -78,28 +96,28 @@ export default class App extends Component {
             <ReactRouterNestedNavigation>
               <Route path="/">
                 <div>
-                  <AkNavigationItem href="/movies" linkComponent={RouterLinkComponent} icon={<DashboardIcon label="Dashboard" />} text="Movies" />
-                  <AkNavigationItem href="/albums" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="Albums" />
-                  <AkNavigationItem href="/about" linkComponent={RouterLinkComponent} icon={<TrayIcon label="Projects" />} text="About" />
+                  <RouterNavItemLink href="/movies" icon={<DashboardIcon label="Dashboard" />} text="Movies" />
+                  <RouterNavItemLink href="/albums" icon={<SettingsIcon label="Settings" />} text="Albums" />
+                  <RouterNavItemLink href="/about" icon={<TrayIcon label="Projects" />} text="About" />
                 </div>
               </Route>
               <Route path="/movies">
                 <div>
-                  <AkNavigationItem href="/movies/matrix" linkComponent={RouterLinkComponent} icon={<DashboardIcon label="Dashboard" />} text="The Matrix" />
-                  <AkNavigationItem href="/movies/lotr" linkComponent={RouterLinkComponent} icon={<DashboardIcon label="Dashboard" />} text="Lord of the Rings" />
+                  <RouterNavItemLink href="/movies/matrix" icon={<DashboardIcon label="Dashboard" />} text="The Matrix" />
+                  <RouterNavItemLink href="/movies/lotr" icon={<DashboardIcon label="Dashboard" />} text="Lord of the Rings" />
                 </div>
               </Route>
               <Route path="/albums">
                 <div>
-                  <AkNavigationItem href="/albums/coexist" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="The xx – coexist" />
-                  <AkNavigationItem href="/albums/anawesomewave" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="Alt J – an awesome wave" />
-                  <AkNavigationItem href="/albums/more" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="More Albums" />
+                  <RouterNavItemLink href="/albums/coexist" icon={<SettingsIcon label="Settings" />} text="The xx – coexist" />
+                  <RouterNavItemLink href="/albums/anawesomewave" icon={<SettingsIcon label="Settings" />} text="Alt J – an awesome wave" />
+                  <RouterNavItemLink href="/albums/more" icon={<SettingsIcon label="Settings" />} text="More Albums" />
                 </div>
               </Route>
               <Route path="/albums/more">
                 <div>
-                  <AkNavigationItem href="/albums/more/lonelyheartsclub" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="The Beatles – Sgt. Peppers Lonely Hearts Club Band" />
-                  <AkNavigationItem href="/albums/more/lonerism" linkComponent={RouterLinkComponent} icon={<SettingsIcon label="Settings" />} text="Tame Impala – Lonerism" />
+                  <RouterNavItemLink href="/albums/more/lonelyheartsclub" icon={<SettingsIcon label="Settings" />} text="The Beatles – Sgt. Peppers Lonely Hearts Club Band" />
+                  <RouterNavItemLink href="/albums/more/lonerism" icon={<SettingsIcon label="Settings" />} text="Tame Impala – Lonerism" />
                 </div>
               </Route>
             </ReactRouterNestedNavigation>

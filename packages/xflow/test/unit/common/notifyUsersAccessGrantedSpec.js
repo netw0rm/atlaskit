@@ -4,11 +4,9 @@ import fetchMock from 'fetch-mock';
 
 import * as tenantContext from '../../../src/common/tenantContext';
 
-import {
+import notifyUsersAccessGranted, {
   NOTIFY_ENDPOINT_EAST,
 } from '../../../src/common/notifyUsersAccessGranted';
-
-import notifyUsersAccessGranted from '../../../src/common/notifyUsersAccessGranted';
 
 import userAdminResponse from './../jira-confluence/mock-data/isUserTrustedSiteAdmin.json';
 import accessgrantedJiraUsersResponse from './../jira-confluence/mock-data/accessgrantedJiraUsers.json';

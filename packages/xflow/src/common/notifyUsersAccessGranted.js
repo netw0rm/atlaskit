@@ -58,5 +58,11 @@ export default async (users, productKey) => {
     atlassianAccountId: getAtlassianAccountId(user),
   }));
 
-  return await notifyUsers(NOTIFY_ENDPOINT_EAST, instance, grantedAccessBy, grantedAccessTo, productKey);
+  return await notifyUsers(
+    NOTIFY_ENDPOINT_EAST,
+    instance,
+    grantedAccessBy,
+    grantedAccessTo,
+    productKey
+  );
 };

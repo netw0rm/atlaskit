@@ -1,5 +1,5 @@
-import { MediaType } from './mediaTypes';
-import { SmartCardResponse } from './smartCardResponse';
+import {MediaType} from './mediaTypes';
+import {SmartCardResponse} from './smartCardResponse';
 
 export type MediaItemType = 'file' | 'link';
 
@@ -14,6 +14,15 @@ export interface FileItem {
 
 export type FileProcessingStatus = 'pending' | 'running' | 'succeeded' | 'failed';
 
+export type FileArtifact = {
+  readonly href: string;
+  readonly processingStatus: FileProcessingStatus;
+};
+
+export type ArtifactName = 'thumb.jpg' | 'thumb_120.jpg' | 'thumb_large.jpg' | 'thumb_320.jpg' | 'document.pdf' | 'document.txt' |
+  'image.jpg' | 'audio.mp3' | 'video_640.mp4' | 'video_1280.mp4' | 'poster_640.jpg' | 'poster_1280.jpg' | 'meta.json';
+export type FileArtifacts = {[artifactName: string]: FileArtifact};
+
 export interface FileDetails {
   id?: string;
   name?: string;
@@ -22,7 +31,7 @@ export interface FileDetails {
   mediaType?: MediaType;
   creationDate?: number; // timestamp in milliseconds from EPOCH
   processingStatus?: FileProcessingStatus;
-  artifacts?: Object;
+  artifacts?: FileArtifacts;
 }
 
 export interface LinkItem {
@@ -70,3 +79,10 @@ export interface Resource {
   html?: string;
 }
 
+export function isFileItem(mediaItem: MediaItem): mediaItem is FileItem {
+  return mediaItem.type === 'file';
+}
+
+export function isLinkItem(mediaItem: MediaItem): mediaItem is LinkItem {
+  return mediaItem.type === 'link';
+}

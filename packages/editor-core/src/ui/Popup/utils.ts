@@ -33,7 +33,7 @@ export function getVerticalPlacement(target: HTMLElement, boundariesElement: HTM
   }
 
   if (isTextNode(target)) {
-    target = target.parentElement!;
+    target = target.parentElement! || target.parentNode;
   }
 
   const boundariesClientRect = boundariesElement.getBoundingClientRect();
@@ -98,7 +98,7 @@ export function calculatePosition({ placement, target, popup, offset }: Calculat
   }
 
   if (isTextNode(target)) {
-    target = target.parentElement!;
+    target = target.parentElement! || target.parentNode;
   }
 
   const popupOffsetParent = popup.offsetParent as HTMLElement;

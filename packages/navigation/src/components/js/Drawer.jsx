@@ -73,16 +73,12 @@ export default class Drawer extends PureComponent {
 
     const actualFullWidth = width === 'full';
 
-    const backIconWrapperStyle = {
-      top: `${iconOffset}px`,
-    };
-
     const sidebar = isOpen ? (
       <DrawerSide>
         <DrawerPrimaryIcon>
           {primaryIcon}
         </DrawerPrimaryIcon>
-        <DrawerBackIconWrapper style={backIconWrapperStyle}>
+        <DrawerBackIconWrapper iconOffset={iconOffset}>
           <DrawerTrigger onActivate={onBackButton}>
             <DrawerBackIcon isVisible={isOpen}>
               {backIcon}

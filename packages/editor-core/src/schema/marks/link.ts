@@ -11,6 +11,8 @@ export interface Definition {
   attrs: {
     href: string;
     title?: string;
+    id?: string;
+    collection?: string;
   };
 }
 

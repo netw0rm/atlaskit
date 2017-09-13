@@ -55,6 +55,7 @@ storiesOf('RequestTrial')
       <RequestTrialNoteBase
         {...defaultProps}
         requestTrialAccessWithNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+        requestTrialAccessWithoutNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
         onComplete={() => Promise.resolve(true)}
       />
     )

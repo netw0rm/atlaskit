@@ -74,10 +74,17 @@ class RequestTrialNote extends Component {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked.with.no.text');
       requestTrialAccessWithoutNote()
         .then(() => {
+          firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.successful');
           this.setState({
             requestTrialSendNoteStatus: 'successful',
           });
           onComplete();
+        })
+        .catch(() => {
+          firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.failed');
+          this.setState({
+            requestTrialSendNoteStatus: 'failed',
+          });
         });
     } else {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
@@ -107,10 +114,17 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note-button.clicked');
     requestTrialAccessWithoutNote()
       .then(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.successful');
         this.setState({
           requestTrialSendNoteStatus: 'successful',
         });
         onComplete();
+      })
+      .catch(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.failed');
+        this.setState({
+          requestTrialSendNoteStatus: 'failed',
+        });
       });
   };
 

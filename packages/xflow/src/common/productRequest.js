@@ -7,7 +7,7 @@ import {
   queryUsername,
 } from './tenantContext';
 
-export const REQUEST_TRIAL_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/requesttrial';
+export const PRODUCT_REQUEST_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/productrequest';
 
 async function getCurrentUserAvatarUrl() {
   const currentUser = getCurrentUsername();
@@ -27,7 +27,7 @@ export default (productKey) => async (comment) => {
     const displayName = getUserDisplayName();
     const instanceName = getInstanceName();
 
-    const response = await fetch(REQUEST_TRIAL_ENDPOINT_EAST, {
+    const response = await fetch(PRODUCT_REQUEST_ENDPOINT_EAST, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,12 +44,12 @@ export default (productKey) => async (comment) => {
 
     if (!response.ok) {
       throw new Error(
-          `Unable to request trial from end user. Status: ${response.status}`
+          `Unable to request product from end user. Status: ${response.status}`
         );
     }
 
     return await response.json();
   } catch (e) {
-    throw new Error(`Unable to request trial: ${e.message}`);
+    throw new Error(`Unable to request product: ${e.message}`);
   }
 };

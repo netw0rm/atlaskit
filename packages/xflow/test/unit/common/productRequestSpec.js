@@ -4,13 +4,13 @@ import fetchMock from 'fetch-mock';
 
 import * as tenantContext from '../../../src/common/tenantContext';
 
-import requestTrialAccess, {
-  REQUEST_TRIAL_ENDPOINT_EAST,
-} from '../../../src/common/requestTrialAccess';
+import productRequest, {
+  PRODUCT_REQUEST_ENDPOINT_EAST,
+} from '../../../src/common/productRequest';
 
 const mockRequestTrialEastEndpointWithResponse = (response) => {
   fetchMock.mock(
-    REQUEST_TRIAL_ENDPOINT_EAST,
+    PRODUCT_REQUEST_ENDPOINT_EAST,
     { body: response },
     {
       method: 'POST',
@@ -19,7 +19,7 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
   );
 };
 
-describe('requestTrialAccess', () => {
+describe('productRequest', () => {
   beforeEach(() => {
     fetchMock.restore();
     tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
@@ -33,7 +33,7 @@ describe('requestTrialAccess', () => {
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };
     mockRequestTrialEastEndpointWithResponse(xflowResponse);
-    const requestConfluenceTrialAccess = requestTrialAccess('confluence.ondemand');
+    const requestConfluenceTrialAccess = productRequest('confluence.ondemand');
     const result = await requestConfluenceTrialAccess('Please let me innovate');
     expect(result).toEqual(xflowResponse);
     expect(fetchMock.done('REQUEST_TRIAL')).toBe(true);
@@ -51,16 +51,16 @@ describe('requestTrialAccess', () => {
     );
   });
 
-  it('should return a rejected promise if REQUEST_TRIAL_ENDPOINT_EAST returns a 500 response', async () => {
-    fetchMock.mock(REQUEST_TRIAL_ENDPOINT_EAST, 500);
+  it('should return a rejected promise if PRODUCT_REQUEST_ENDPOINT_EAST returns a 500 response', async () => {
+    fetchMock.mock(PRODUCT_REQUEST_ENDPOINT_EAST, 500);
     expect.assertions(1);
-    const requestConfluenceTrialAccess = requestTrialAccess('confluence.ondemand');
+    const requestConfluenceTrialAccess = productRequest('confluence.ondemand');
 
     try {
       await requestConfluenceTrialAccess('never to be seen comment');
     } catch (e) {
       expect(e).toEqual(
-        new Error('Unable to request trial: Unable to request trial from end user. Status: 500')
+        new Error('Unable to request product: Unable to request product from end user. Status: 500')
       );
     }
   });

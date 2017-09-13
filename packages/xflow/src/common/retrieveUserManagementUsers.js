@@ -31,7 +31,7 @@ const resolveGroupnameErrors = async (response) => {
 
   if (resolvedErrorResponse === null) {
     // if unhandled error, throw
-    throw new Error(`Unable to retrieve active jira users. Status: ${response.status}`);
+    throw new Error(`Unable to retrieve active users. Status: ${response.status}`);
   } else {
     return resolvedErrorResponse;
   }
@@ -43,7 +43,7 @@ const resolveGroupnameErrors = async (response) => {
  * @param groupName UM group that grants access to products (e.g. jira-software-users)
  * @param startIndex counter for current loop of user group
  */
-const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
+const getActiveUsernamesList = async (groupName, startIndex = 0) => {
   const response = await fetch(usernamesEndpoint(groupName, startIndex), {
     credentials: 'same-origin',
     dataType: 'json',
@@ -61,7 +61,7 @@ const getJiraActiveUsernamesList = async (groupName, startIndex = 0) => {
       ...result,
     // Only fetch more if there are likely to be more to fetch
       ...(result.length >= PAGINATION
-      ? await getJiraActiveUsernamesList(groupName, startIndex + PAGINATION)
+      ? await getActiveUsernamesList(groupName, startIndex + PAGINATION)
       : []),
     ]
     : [];
@@ -97,11 +97,11 @@ export default (validGroups) => {
   const getUsersInGroup = async (group) => {
     let users;
     if (group === 'site-admins') {
-      users = getJiraActiveUsernamesList(SITE_ADMINS_GROUP);
+      users = getActiveUsernamesList(SITE_ADMINS_GROUP);
     } else {
       const groups = await getActiveGroups();
       const userLists = await Promise.all(
-        groups.map(groupName => getJiraActiveUsernamesList(groupName))
+        groups.map(groupName => getActiveUsernamesList(groupName))
       );
 
       const usernames = new Set();
@@ -118,7 +118,7 @@ export default (validGroups) => {
   };
 
   /**
-   * Loop over all jira groups, compile user list, and return a sorted list of user items
+   * Loop over all product groups, compile user list, and return a sorted list of user items
    */
   return async (group = 'everyone', useCache = true) => {
     // Fetching the set of users for the specific users list is the same set as 'everyone'

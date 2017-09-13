@@ -20,8 +20,8 @@ export interface TypeIconProps {
   size?: string;
 }
 
-export function TypeIcon({type, size = 'small'}: TypeIconProps) {
-  const Icon = type ? icons[type] : icons['unknown'];
+export function TypeIcon({type = 'unknown', size = 'small'}: TypeIconProps) {
+  const Icon = icons[type] || icons['unknown'];
   return (
     <IconWrapper type={type || 'unknown'}>
       <Icon label="media-type" size={size}/>

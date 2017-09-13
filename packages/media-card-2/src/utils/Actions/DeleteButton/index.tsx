@@ -2,7 +2,7 @@ import * as React from 'react';
 /* tslint:disable: variable-name */
 import {Component, MouseEvent} from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import {StyledButton} from '../styled/DeleteButton';
+import {StyledButton} from './styled';
 
 // hack to get around lack of event in typings for @atlaskit/button
 const UntypedButton = StyledButton as any;

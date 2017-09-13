@@ -1,6 +1,6 @@
-import * as React from 'react';
 /* tslint:disable: variable-name */
-import {Component, MouseEvent} from 'react';
+import * as React from 'react';
+import {Component, MouseEvent, ReactNode} from 'react';
 import AkButton from '@atlaskit/button';
 
 // hack to get around lack of event in typings for @atlaskit/button
@@ -9,7 +9,7 @@ const UntypedButton = AkButton as any;
 export interface ActionButtonProps {
   theme?: 'dark' | 'default';
   compact?: boolean;
-  children?: JSX.Element;
+  children?: ReactNode;
   onClick?: () => void;
 }
 

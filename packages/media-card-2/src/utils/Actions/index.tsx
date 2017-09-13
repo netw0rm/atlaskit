@@ -7,7 +7,7 @@ import {ReactNode} from 'react';
 import {PrimaryButton} from './PrimaryButton';
 import {DeleteButton} from './DeleteButton';
 import {Menu} from './Menu';
-import {Wrapper} from '../styled/index';
+import {Wrapper} from './styled';
 
 function findFirstInArray<T>(array: T[], match: (t: T) => boolean) {
   for (let i=0; i<array.length; ++i) {
@@ -18,13 +18,13 @@ function findFirstInArray<T>(array: T[], match: (t: T) => boolean) {
   return null;
 }
 
-export interface CardAction {
+export interface Action {
   type?: 'delete' | 'primary';
   label: ReactNode;
   handler: () => void;
 }
 
-export interface CardActionsProps {
+export interface ActionsProps {
 
   /**
    * The theme
@@ -61,7 +61,7 @@ export interface CardActionsProps {
   /**
    * The actions to display in a button and/or in a menu
    */
-  actions?: CardAction[];
+  actions?: Action[];
 
   /**
    * A callback called when the user causes the menu visibility to change
@@ -70,12 +70,12 @@ export interface CardActionsProps {
 
 }
 
-export interface CardActionsState {
+export interface ActionsState {
 }
 
-export class CardActions extends React.Component<CardActionsProps, CardActionsState> {
+export class Actions extends React.Component<ActionsProps, ActionsState> {
 
-   static defaultProps: Partial<CardActionsProps> = {
+   static defaultProps: Partial<ActionsProps> = {
     theme: 'dark',
     compact: false,
     canShowDeleteButton: true,
@@ -88,7 +88,7 @@ export class CardActions extends React.Component<CardActionsProps, CardActionsSt
     return theme === 'dark' ? 'default' : 'dark'; // our theme is the reverse of @atlaskit/Button's
   }
 
-  get primaryAction(): CardAction | null {
+  get primaryAction(): Action | null {
     const {canShowPrimaryButton, actions = []} = this.props;
 
     // check we're allowed to display the primary button
@@ -96,10 +96,10 @@ export class CardActions extends React.Component<CardActionsProps, CardActionsSt
       return null;
     }
 
-    return findFirstInArray<CardAction>(actions, action => action.type === 'primary');
+    return findFirstInArray<Action>(actions, action => action.type === 'primary');
   }
 
-  get deleteAction(): CardAction | null {
+  get deleteAction(): Action | null {
     const {canShowDeleteButton, actions = []} = this.props;
     const {primaryAction} = this;
 
@@ -113,10 +113,10 @@ export class CardActions extends React.Component<CardActionsProps, CardActionsSt
       return null;
     }
 
-    return findFirstInArray<CardAction>(actions, action => action.type === 'delete');
+    return findFirstInArray<Action>(actions, action => action.type === 'delete');
   }
 
-  get menuActions(): CardAction[] {
+  get menuActions(): Action[] {
     const {actions = []} = this.props;
     const {deleteAction, primaryAction} = this;
 

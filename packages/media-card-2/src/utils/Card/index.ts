@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 import {akFontFamily, akColorN20} from '@atlaskit/util-shared-styles';
 
+// TODO: come up with a better name for this component!!!
+
 export interface CardProps {
   width?: number | string;
   height?: number | string;

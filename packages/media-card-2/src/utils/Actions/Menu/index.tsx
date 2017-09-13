@@ -5,7 +5,7 @@ import MoreIcon from '@atlaskit/icon/glyph/more';
 import Button from '@atlaskit/button';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 
-import {Wrapper} from '../styled/Menu';
+import {Wrapper} from '../styled';
 
 export interface MenuItem {
   content: ReactNode;

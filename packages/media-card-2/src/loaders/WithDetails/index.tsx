@@ -1,0 +1,147 @@
+/* tslint:disable: variable-name */
+import * as React from 'react';
+import {Observable, Subscription} from 'rxjs';
+import 'rxjs/add/operator/map';
+import {
+  Context,
+  MediaItemProvider,
+  UrlPreviewProvider,
+  MediaItem,
+  UrlPreview
+} from '@atlaskit/media-core';
+import {
+  Identifier,
+  LinkPreviewIdentifier,
+  Status,
+  Details
+} from '../../types';
+
+// TODO: add logic to lazy load in here
+
+/*
+  I ended up using a normal component here instead of a HoC because typing them is waaaay easier since you don't
+  need to care about pass-thru props... also its probably easier to use
+ */
+
+export interface WithDetailsProps {
+  context: Context;
+  identifier: Identifier;
+  onChange?: (status: Status, details?: Details) => void;
+
+  // I would prefer to name the prop "children", but Typescript doesn't let me type "children"
+  render: (status: Status, details?: Details) => JSX.Element;
+}
+
+export interface WithDetailsState {
+  status: Status;
+  error?: any;
+  details?: Details;
+}
+
+export class WithDetails extends React.Component<WithDetailsProps, WithDetailsState> {
+
+  subscription: Subscription;
+
+  state: WithDetailsState = {
+    status: 'loading'
+  };
+
+  isLinkPreviewIdentifier(identifier: Identifier): identifier is LinkPreviewIdentifier {
+    const preview = identifier as LinkPreviewIdentifier;
+    return preview && preview.url !== undefined;
+  }
+
+  isMediaItem(item: MediaItem | UrlPreview): item is MediaItem {
+    return item && (item as MediaItem).details !== undefined;
+  }
+
+  provider(): UrlPreviewProvider | MediaItemProvider {
+    const {context, identifier} = this.props;
+    if (this.isLinkPreviewIdentifier(identifier)) {
+      const {url} = identifier;
+      return context.getUrlPreviewProvider(url);
+    } else {
+      const {id, type, collection} = identifier;
+      return context.getMediaItemProvider(id, type, collection);
+    }
+  }
+
+  observable(): Observable<Details> {
+    return this.provider().observable()
+      .map((result: MediaItem | UrlPreview) => {
+        if (this.isMediaItem(result)) {
+          return result.details;
+        } else {
+          return result;
+        }
+      })
+    ;
+  }
+
+  unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  subscribe() {
+    this.unsubscribe();
+    this.setState(
+      {status: 'loading', details: undefined, error: undefined},
+      () => {
+        this.subscription = this.observable().subscribe({
+          next: details => {
+            this.setState({status: 'waiting', details, error: undefined});
+          },
+          complete: () => {
+            this.setState({status: 'loaded', error: undefined});
+          },
+          error: (error) => {
+            this.setState({status: 'errored', details: undefined, error});
+          }
+        });
+      }
+    );
+  }
+
+  handleChange() {
+    const {onChange} = this.props;
+    const {status, details} = this.state;
+    if (onChange) {
+      onChange(status, details);
+    }
+  }
+
+  componentDidMount() {
+    this.subscribe();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    // re-subscribe when the context or identifier changes
+    const {context: prevContext, identifier: prevIdentifier} = prevProps;
+    const {context: currContext, identifier: currIdentifier} = prevProps;
+    if (currContext !== prevContext || currIdentifier !== prevIdentifier) {
+      this.subscribe();
+    }
+
+    // call the onChange callback when the data has changed
+    const {status: prevStatus, details: prevDetails} = prevState;
+    const {status: currStatus, details: currDetails} = this.state;
+    if (currStatus !== prevStatus || currDetails !== prevDetails) {
+      this.handleChange();
+    }
+
+  }
+
+  render() {
+    const {render} = this.props;
+    const {status, details} = this.state;
+    return render(status, details);
+  }
+
+}

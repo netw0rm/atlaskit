@@ -2,9 +2,9 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import startProductTrial, {
-  START_TRIAL_ENDPOINT,
-} from '../../../src/jira-confluence/startConfluenceTrial';
+import startProductTrial from '../../../src/jira-confluence/startConfluenceTrial';
+
+import { startTrialEndpoint } from '../../../src/common/startProductTrial';
 
 describe('startConfluenceTrial', () => {
   beforeEach(() => {
@@ -12,17 +12,17 @@ describe('startConfluenceTrial', () => {
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 202 response', async () => {
-    fetchMock.mock(START_TRIAL_ENDPOINT, 202);
+    fetchMock.mock(startTrialEndpoint('confluence.ondemand'), 202);
     const result = await startProductTrial();
     expect(result).toBe(undefined);
   });
 
   it('should return a rejected promise if the endpoint returns a 400 response', async () => {
-    fetchMock.mock(START_TRIAL_ENDPOINT, 400);
+    fetchMock.mock(startTrialEndpoint('confluence.ondemand'), 400);
     try {
       await startProductTrial();
     } catch (e) {
-      expect(e).toEqual(new Error('Unable to start confluence trial. Status: 400'));
+      expect(e).toEqual(new Error('Unable to start confluence.ondemand trial. Status: 400'));
     }
   });
 });

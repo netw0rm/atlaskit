@@ -1,37 +1,42 @@
-import React, { PropTypes } from 'react';
-import Button from '@atlaskit/button';
+import React, { PropTypes, PureComponent } from 'react';
+import { ThemeProvider } from 'styled-components';
 import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';
+
 import ModalDialog from '../src';
 
-function doSomethingOnDismiss() {
-  action('the "onDialogDismissed" handler is fired')();
+function onClose() {
+  action('the "onClose" handler is fired')();
 }
+const onClick = () => {};
 
-export default class ModalDemo extends React.PureComponent {
+export default class ModalDemo extends PureComponent {
   static propTypes = {
-    header: PropTypes.element,
-    children: PropTypes.element,
-    footer: PropTypes.element,
+    children: PropTypes.node,
+    footer: PropTypes.func,
+    header: PropTypes.func,
+    heading: PropTypes.string,
+  }
+  static defaultProps = {
+    heading: 'New issue',
   }
 
   render() {
-    const { header, children, footer } = this.props;
+    const { children, footer, header, heading } = this.props;
 
     return (
-      <ModalDialog
-        footer={
-          footer || <Button appearance="primary">Create issue</Button>
-        }
-        header={
-          header || <span>New issue</span>
-        }
-        isOpen
-        onDialogDismissed={doSomethingOnDismiss}
-        {...this.props}
-      >
-        {children || <Lorem count="1" />}
-      </ModalDialog>
+      <ThemeProvider theme={{}}>
+        <ModalDialog
+          actions={!footer ? [{ text: 'Create issue', onClick }] : null}
+          footer={footer}
+          header={header}
+          onClose={onClose}
+          heading={heading}
+          {...this.props}
+        >
+          {children || <Lorem count="1" />}
+        </ModalDialog>
+      </ThemeProvider>
     );
   }
 }

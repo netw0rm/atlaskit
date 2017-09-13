@@ -1,13 +1,17 @@
 import { MediaDataUriService } from '../../../src/services/dataUriService';
+import {AuthProvider} from '../../../src/auth';
 
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
 const token = 'some-token';
 const serviceHost = 'some-service-host';
-const tokenProvider = () => Promise.resolve(token);
 
 describe('MediaDataUriService', () => {
-  const service = new MediaDataUriService(clientId, serviceHost, tokenProvider, collectionName);
+  const authProvider: AuthProvider = () => Promise.resolve({
+    token: token,
+    clientId: clientId
+  });
+  const service = new MediaDataUriService(authProvider, serviceHost, collectionName);
 
   describe('fetchImageDataUri()', () => {
     it('should use "crop" resize mode as default', () => {

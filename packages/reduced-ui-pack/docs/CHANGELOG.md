@@ -1,5 +1,9 @@
 # @atlaskit/reduced-ui-pack
 
+## 7.0.0 (2017-09-11)
+
+* breaking; The company/product icons (AtlassianIcon, BitbucketIcon, ConfluenceIcon, HipchatIcon, JiraIcon) have ([8a502b1](https://bitbucket.org/atlassian/atlaskit/commits/8a502b1))
+* breaking; new company and product icons added ([8a502b1](https://bitbucket.org/atlassian/atlaskit/commits/8a502b1))
 ## 6.1.1 (2017-09-06)
 
 * bug fix; reduced-ui buttons now have correct horizontal padding (issues closed: ak-3457) ([31b66b7](https://bitbucket.org/atlassian/atlaskit/commits/31b66b7))

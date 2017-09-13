@@ -35,7 +35,7 @@ const getHeightStyles = ({ isCompact, theme }) => {
 };
 
 // This function is responsible for drawing any focus styles for the element
-const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
+const getInteractiveStyles = ({ theme, isDisabled, isDragging, isSelected }) => {
   if (isDragging) {
     return css`
       ${getItemState('dragging')}
@@ -60,6 +60,18 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
     `;
   }
 
+  if (isSelected) {
+    return css`
+      ${getItemState('selected')}
+
+      &:active {
+        ${getItemState('active')}
+      }
+
+      ${standardFocus}
+    `;
+  }
+
   return css`
     &:hover {
       ${getItemState('hover')}
@@ -76,7 +88,7 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging }) => {
 // This is the main item style. It is defined as a basic style variable so it can
 // later be applied to different component types (span / a / custom link component)
 
-export const ItemBase = ({ isSelected, theme } : any) => css`
+export const ItemBase = ({ theme } : any) => css`
   && {
     align-items: center;
     border-radius: ${getThemeStyle(theme[themeNamespace], 'borderRadius')}px;
@@ -84,7 +96,7 @@ export const ItemBase = ({ isSelected, theme } : any) => css`
     cursor: pointer;
     display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
     flex: none;
-    ${getItemState(isSelected ? 'selected' : 'default')}
+    ${getItemState('default')}
     ${getPadding}
     ${getInteractiveStyles}
     ${getHeightStyles}

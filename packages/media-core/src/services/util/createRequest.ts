@@ -1,14 +1,15 @@
 import axios from 'axios';
-import {MediaApiConfig} from '../../config';
+import {MediaApiConfig} from '../../auth';
 import {checkWebpSupport} from '../../utils';
+import {Auth, isAsapBasedAuth, isClientBasedAuth} from '../../auth';
 
 export type ResponseType = 'json' | 'image';
+
 export interface CreateRequestFunc {
   (requestOptions: RequestOptions): Promise<any>;
 }
 
 export interface RequesterOptions {
-  clientId: string;
   collectionName?: string;
   preventPreflight?: boolean;
   config: MediaApiConfig;
@@ -22,48 +23,64 @@ export interface RequestOptions {
   data?: Object;
   responseType?: ResponseType;
 }
+const addAcceptHeader = (headers: any, responseType?: ResponseType) =>
+  checkWebpSupport().then(isWebpSupported => {
+    // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
+    if (isWebpSupported) {
+      headers.accept = 'image/webp,image/*,*/*;q=0.8';
+    } else {
+      headers.accept = 'image/*,*/*;q=0.8';
+    }
 
-const buildHeaders = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
+    return headers;
+  });
+
+const buildHeaders = (auth: Auth,
+                      baseHeaders?: Object,
+                      preventPreflight?: boolean,
+                      responseType?: ResponseType): Promise<object> => {
   const headers = {
-    ...requestOptions.headers,
+    ...baseHeaders,
     'Content-Type': 'application/json'
   } as any;
+
   // We can add custom headers if we don't want to avoid preflight - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method
-  if (!requesterOptions.preventPreflight) {
-    headers['X-Client-Id'] = requesterOptions.clientId;
-    headers['Authorization'] = `Bearer ${token}`;
+  if (!preventPreflight) {
+    if (isAsapBasedAuth(auth)) {
+      headers['X-Issuer'] = auth.asapIssuer;
+    } else if (isClientBasedAuth(auth)) {
+      headers['X-Client-Id'] = auth.clientId;
+    }
+    headers['Authorization'] = `Bearer ${auth.token}`;
   }
 
-  if (requestOptions.responseType === 'image') {
-    return checkWebpSupport().then(isWebpSupported => {
-      // q=0.8 stands for 'quality factor' => http://stackoverflow.com/a/10496722
-      const noWebpAcceptHeader = 'image/*,*/*;q=0.8';
-      const webpAcceptHeader = 'image/webp,image/*,*/*;q=0.8';
-
-      headers.accept = isWebpSupported ? webpAcceptHeader : noWebpAcceptHeader;
-      return headers;
-    });
+  if (responseType === 'image') {
+    return addAcceptHeader(headers, responseType);
   }
 
   return Promise.resolve(headers);
 };
 
-const buildParams = (requesterOptions: RequesterOptions, requestOptions: RequestOptions, token: string) => {
-  const {params} = requestOptions;
-  const {collectionName: collection, preventPreflight, clientId} = requesterOptions;
-  const defaultParams = {
-    collection,
-    ...params
-  };
-  const authParams = preventPreflight ? {
-    token,
-    client: clientId
-  } : {};
+const buildParams = (auth: Auth,
+                     baseParams?: Object,
+                     preventPreflight?: boolean,
+                     collection?: string): Promise<object> => {
+  const authParams = {} as any;
 
-  return {
-    ...defaultParams,
+  if(preventPreflight){
+    authParams.token = auth.token;
+    if (isClientBasedAuth(auth)) {
+      authParams.client = auth.clientId;
+    } else if (isAsapBasedAuth(auth)) {
+      authParams.issuer = auth.asapIssuer;
+    }
+  }
+
+  return Promise.resolve({
+    collection,
+    ...baseParams,
     ...authParams
-  };
+  });
 };
 
 const responseTypeToAxios = (responseType?: ResponseType): string => {
@@ -77,23 +94,41 @@ const responseTypeToAxios = (responseType?: ResponseType): string => {
   return responseTypeMap[responseType];
 };
 
-export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions) : any => {
-  return requesterOptions.config.tokenProvider(requesterOptions.collectionName).then(token => {
-    return buildHeaders(requesterOptions, requestOptions, token).then(headers => {
-      const responseType = responseTypeToAxios(requestOptions.responseType);
-      const params = buildParams(requesterOptions, requestOptions, token);
-      const {method, url, data} = requestOptions;
-      const {config} = requesterOptions;
+export default (requesterOptions: RequesterOptions) => {
+  const {
+    preventPreflight,
+    collectionName,
+    config: {
+      authProvider,
+      serviceHost
+    },
+  } = requesterOptions;
 
-      return axios({
+  return (requestOptions: RequestOptions) => {
+    const {url, headers, params, responseType, method, data} = requestOptions;
+    const acquireAuth: Promise<Auth> = authProvider({collectionName});
+
+    const createHeadersAndParams = (auth: Auth) => Promise.all(
+      [
+        buildHeaders(auth, headers, preventPreflight, responseType),
+        buildParams(auth, params, preventPreflight, collectionName)
+      ]
+    );
+
+    const sendAxiosRequest = ([headers, params]) =>
+      axios({
         method: method || 'get',
-        url: url,
-        baseURL: config.serviceHost,
+        url,
+        baseURL: serviceHost,
         headers,
         params,
-        data: data,
-        responseType
-      }).then(response => response.data);
-    });
-  });
+        data,
+        responseType: responseTypeToAxios(responseType)
+      });
+
+    return acquireAuth
+      .then(createHeadersAndParams)
+      .then(sendAxiosRequest)
+      .then(response => response.data);
+  };
 };

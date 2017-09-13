@@ -30,6 +30,7 @@ export const indentList = makeKeyMapWithCommon('Indent List', 'Tab');
 export const outdentList = makeKeyMapWithCommon('Outdent List', 'Shift-Tab');
 export const redo = makeKeymap('Redo', 'Ctrl-y', 'Cmd-Shift-z');
 export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
+export const openHelp = makeKeyMapWithCommon('Open Help', 'Mod-/');
 export const addLink = makeKeyMapWithCommon('Insert link', 'Mod-k');
 export const enter = makeKeyMapWithCommon('Enter', 'Enter');
 export const tab = makeKeyMapWithCommon('Tab', 'Tab');

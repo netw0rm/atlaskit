@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 28.0.2 (2017-09-13)
+
+* bug fix; fixed typescript errors ([db466da](https://bitbucket.org/atlassian/atlaskit/commits/db466da))
+
 ## 28.0.1 (2017-09-11)
 
 * bug fix; some of the support classes did not implement EmojiProvider interface properly. ([ab68a91](https://bitbucket.org/atlassian/atlaskit/commits/ab68a91))

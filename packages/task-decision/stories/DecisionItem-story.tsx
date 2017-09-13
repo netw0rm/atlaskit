@@ -3,7 +3,8 @@ import * as React from 'react';
 import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
 
 import DecisionItem from '../src/components/DecisionItem';
-import { document } from '../src/support/story-data';
+import { document, getParticipants } from '../src/support/story-data';
+import { MessageContainer, SidebarContainer } from './story-utils';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console
@@ -33,4 +34,79 @@ storiesOf('<DecisionItem/>', module)
   .add('Simple DecisionItem with placeholder', () => (
     <DecisionItem contentRef={dumpRef} showPlaceholder={true} />
   ))
-;
+  .add('Simple DecisionItem with 1 participant, inline (shouldn\'t render participants)', () => (
+    <MessageContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(1)}
+        appearance="inline"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </MessageContainer>
+  ))
+  .add('Simple DecisionItem with no participants', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ))
+  .add('Simple DecisionItem with 1 participant', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(1)}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ))
+  .add('Simple DecisionItem with 2 participant', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(2)}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ))
+  .add('Simple DecisionItem with 3 participants', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(3)}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ))
+  .add('Simple DecisionItem with 4 participants', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(4)}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ))
+  .add('Simple DecisionItem with 5 participants', () => (
+    <SidebarContainer>
+      <DecisionItem
+        contentRef={dumpRef}
+        participants={getParticipants(5)}
+        appearance="card"
+      >
+        <Renderer document={document} />
+      </DecisionItem>
+    </SidebarContainer>
+  ));

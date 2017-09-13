@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 46.21.0 (2017-09-13)
+
+* feature; return Atlassian Document from EditorActions.getValue (issues closed: ed-2755) ([711cd34](https://bitbucket.org/atlassian/atlaskit/commits/711cd34))
+## 46.20.2 (2017-09-12)
+
+* bug fix; upgrade task-decision. Breaking changes not relevant to editor. (issues closed: fs-1371) ([652a38e](https://bitbucket.org/atlassian/atlaskit/commits/652a38e))
+## 46.20.1 (2017-09-12)
+
+* bug fix; fixed jiraissue and unsupportedcontent nodes ([731120e](https://bitbucket.org/atlassian/atlaskit/commits/731120e))
+## 46.20.0 (2017-09-12)
+
+
+
+
+* feature; adding telepointers and avatars (issues closed: ed-2574, ed-2575) ([e8311c1](https://bitbucket.org/atlassian/atlaskit/commits/e8311c1))
+
+## 46.19.2 (2017-09-11)
+
+* bug fix; updated table floating controls ([b653ab2](https://bitbucket.org/atlassian/atlaskit/commits/b653ab2))
+* bug fix; removed popup from tables (issues closed: ed-2486) ([65e34c6](https://bitbucket.org/atlassian/atlaskit/commits/65e34c6))
+## 46.19.1 (2017-09-11)
+
+* bug fix; upgrade @atlaskit/button and @atlaskit/button-group dependencies (issues closed: #ed-2658) ([36c2820](https://bitbucket.org/atlassian/atlaskit/commits/36c2820))
 ## 46.19.0 (2017-09-11)
 
 * feature; add Chromeless appearance (issues closed: ed-2629) ([0466c4d](https://bitbucket.org/atlassian/atlaskit/commits/0466c4d))

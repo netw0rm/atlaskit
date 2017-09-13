@@ -1,11 +1,12 @@
 import * as sinon from 'sinon';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/take';
 
 import { CollectionServiceStub } from '../_stubs/collection-service-stub';
 import { RemoteMediaCollectionProviderFactory } from '../../../src/providers/remoteMediaCollectionProviderFactory';
+
+const defaultCollectionName = 'MediaServicesSample';
 
 describe('RemoteMediaCollectionProvider', () => {
   const pageCount = 10;

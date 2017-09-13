@@ -9,17 +9,16 @@ export interface UrlPreviewProvider {
 export class UrlPreviewProvider {
 
   public static fromMediaApi(config: MediaApiConfig,
-                             url: string,
-                             clientId: string): UrlPreviewProvider {
+                             url: string): UrlPreviewProvider {
 
-    return UrlPreviewProvider.fromUrlPreviewService(new MediaUrlPreviewService(config), url, clientId);
+    return UrlPreviewProvider.fromUrlPreviewService(new MediaUrlPreviewService(config), url);
   }
 
-  public static fromUrlPreviewService(urlPreviewService: UrlPreviewService, url: string, clientId: string): UrlPreviewProvider {
+  public static fromUrlPreviewService(urlPreviewService: UrlPreviewService, url: string): UrlPreviewProvider {
     return {
       observable() {
         return new Observable<UrlPreview>((observer) => {
-          urlPreviewService.getUrlPreview(url, clientId)
+          urlPreviewService.getUrlPreview(url)
             .then(linkPreview => {
               observer.next(linkPreview);
               observer.complete();

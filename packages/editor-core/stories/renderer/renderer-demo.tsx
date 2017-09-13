@@ -186,7 +186,7 @@ export default class RendererDemo extends PureComponent<DemoRendererProps, DemoR
       return (
         <div>
           <h1>Text output</h1>
-          <pre>{renderDocument(doc, this.textSerializer)}</pre>
+          <pre>{renderDocument(doc, this.textSerializer).result}</pre>
         </div>
       );
     } catch (ex) {

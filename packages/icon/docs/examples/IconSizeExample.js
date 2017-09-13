@@ -15,8 +15,7 @@ import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 
 import { size } from '@atlaskit/icon';
-import Btn from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Btn, { ButtonGroup } from '@atlaskit/button';
 
 const IconRow = styled.div`
   display: flex;

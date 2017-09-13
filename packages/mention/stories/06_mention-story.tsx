@@ -5,9 +5,18 @@ import { name } from '../package.json';
 import Mention from '../src/components/Mention';
 import ResourcedMention from '../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../test/unit/_mock-mention-provider';
+import { akColorN20 } from '../../util-shared-styles/index';
+
+function withN20Container(mention) {
+  return (
+    <div style={{ backgroundColor: akColorN20, width: '100%', height: '100%' }}>
+      {mention}
+    </div>
+  );
+}
 
 storiesOf(`${name}/Mention`, module)
-  .add('Mention', () => (
+  .add('Default', () => (
     <Mention
       {...mentionData}
       accessLevel={'CONTAINER'}
@@ -16,7 +25,18 @@ storiesOf(`${name}/Mention`, module)
       onMouseLeave={action('onMouseLeave')}
     />
   ))
-  .add('Highlighted mention', () => (
+  .add('Default on N20 background', () => {
+    return withN20Container(
+      <Mention
+        {...mentionData}
+        accessLevel={'CONTAINER'}
+        onClick={action('onClick')}
+        onMouseEnter={action('onMouseEnter')}
+        onMouseLeave={action('onMouseLeave')}
+      />
+    );
+  })
+  .add('Highlighted', () => (
     <Mention
       {...mentionData}
       isHighlighted={true}
@@ -25,7 +45,18 @@ storiesOf(`${name}/Mention`, module)
       onMouseLeave={action('onMouseLeave')}
     />
   ))
-  .add('Resourced mention', () => (
+  .add('Highlighted on N20 background', () => {
+    return withN20Container(
+      <Mention
+        {...mentionData}
+        isHighlighted={true}
+        onClick={action('onClick')}
+        onMouseEnter={action('onMouseEnter')}
+        onMouseLeave={action('onMouseLeave')}
+      />
+    );
+  })
+  .add('Default resourced', () => (
     <ResourcedMention
       {...mentionData}
       accessLevel={'CONTAINER'}
@@ -35,7 +66,7 @@ storiesOf(`${name}/Mention`, module)
       onMouseLeave={action('onMouseLeave')}
     />
   ))
-  .add('Highlighted resourced mention', () => (
+  .add('Highlighted resourced', () => (
     <ResourcedMention
       id="oscar"
       text="@Oscar Wallhult"
@@ -45,7 +76,7 @@ storiesOf(`${name}/Mention`, module)
       onMouseLeave={action('onMouseLeave')}
     />
   ))
-  .add('Mention with no container permission', () => (
+  .add('No access', () => (
     <Mention
       {...mentionData}
       accessLevel={'NONE'}
@@ -53,4 +84,15 @@ storiesOf(`${name}/Mention`, module)
       onMouseEnter={action('onMouseEnter')}
       onMouseLeave={action('onMouseLeave')}
     />
-  ));
+  ))
+  .add('No access on N20 background', () => {
+    return withN20Container(
+      <Mention
+        {...mentionData}
+        accessLevel={'NONE'}
+        onClick={action('onClick')}
+        onMouseEnter={action('onMouseEnter')}
+        onMouseLeave={action('onMouseLeave')}
+      />
+    );
+  });

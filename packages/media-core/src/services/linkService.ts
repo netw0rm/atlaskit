@@ -2,19 +2,18 @@ import createRequest from './util/createRequest';
 import {LinkItem, MediaApiConfig, UrlPreview} from '../';
 
 export interface LinkService {
-  getLinkItem(linkId: string, clientId: string, collection?: string): Promise<LinkItem>;
-  addLinkItem(url: string, clientId: string, collection: string, metadata?: UrlPreview): Promise<string>;
+  getLinkItem(linkId: string, collection?: string): Promise<LinkItem>;
+  addLinkItem(url: string, collection: string, metadata?: UrlPreview): Promise<string>;
 }
 
 export class MediaLinkService implements LinkService {
   constructor(private readonly config: MediaApiConfig) {
   }
 
-  getLinkItem(linkId: string, clientId: string, collectionName: string): Promise<LinkItem> {
+  getLinkItem(linkId: string, collectionName: string): Promise<LinkItem> {
 
     const request = createRequest({
       config: this.config,
-      clientId: clientId,
       collectionName: collectionName,
       preventPreflight: true
     });
@@ -39,16 +38,16 @@ export class MediaLinkService implements LinkService {
       });
   }
 
-  addLinkItem(url: string, clientId: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
+  addLinkItem(url: string,
+              collectionName: string,
+              metadata?: UrlPreview): Promise<string> {
 
     const request = createRequest({
       config: this.config,
-      clientId: clientId,
       collectionName: collectionName
     });
 
     return request({method: 'post', url: '/link', data: {url, metadata}})
-      .then(json => json.data.id)
-    ;
+      .then(json => json.data.id);
   }
 }

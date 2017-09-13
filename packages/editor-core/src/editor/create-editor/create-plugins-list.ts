@@ -20,6 +20,7 @@ import {
   insertBlockPlugin,
   tablesPlugin,
   collabEditPlugin,
+  helpDialogPlugin,
   jiraIssuePlugin,
   unsupportedContentPlugin
 } from '../plugins';
@@ -71,6 +72,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowTasksAndDecisions) {
     plugins.push(tasksAndDecisionsPlugin);
+  }
+
+  if (props.allowHelpDialog) {
+    plugins.push(helpDialogPlugin);
   }
 
   if (props.saveOnEnter) {

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "9.0.0",
+  "version": "10.1.0",
   "config": {
     "access": "public"
   },
@@ -53,10 +53,11 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
-    "tslib": "^1.2.0",
-    "lru-fast": "^0.2.2"
+    "lru-fast": "^0.2.2",
+    "tslib": "^1.2.0"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^1.0.0"
+    "@atlaskit/button": "^5.1.2",
+    "styled-components": "^2.1.2"
   }
 }

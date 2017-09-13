@@ -1,5 +1,6 @@
 import createRequest, {CreateRequestFunc} from './util/createRequest';
-import { MediaItem, JwtTokenProvider } from '../';
+import { MediaItem } from '../';
+import {AuthProvider} from '../auth';
 
 export type DataUri = string;
 export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
@@ -14,16 +15,14 @@ export class MediaDataUriService implements DataUriService {
   private request: CreateRequestFunc;
 
   constructor(
-    private readonly clientId: string,
+    private readonly authProvider: AuthProvider,
     private readonly serviceHost: string,
-    private readonly tokenProvider: JwtTokenProvider,
     private readonly collectionName?: string) {
       this.request = createRequest({
         config: {
           serviceHost: this.serviceHost,
-          tokenProvider: this.tokenProvider
+          authProvider: this.authProvider
         },
-        clientId: this.clientId,
         collectionName: this.collectionName
       });
   }

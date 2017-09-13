@@ -20,14 +20,14 @@ type Props = {
   can be used for 'container' objects. */
   appearance: 'grid' | 'stack',
   /** Component used to render each avatar */
-  avatar?: ComponentType,
+  avatar: ComponentType,
   /** Typically the background color that the avatar is presented on.
   Accepts any color argument that the CSS border-color property accepts. */
   borderColor?: string,
   /** Array of avatar data passed to each `avatar` component */
   data: Array<AvatarPropTypes>,
   /** The maximum number of avatars allowed in the grid */
-  maxCount?: number,
+  maxCount: number,
   /** Handle the click event on the avatar item */
   onAvatarClick?: AvatarClickType,
   /** Take control of the click event on the more indicator. This will cancel
@@ -89,19 +89,22 @@ export default class AvatarGroup extends Component {
   render() {
     const {
       avatar: Item, appearance, borderColor, data, maxCount, onAvatarClick, size,
-    } : any = this.props;
-
+    }: Props = this.props;
     // NOTE: conditionally defaulting the `maxCount` prop based on `appearance`
     const max = (maxCount === 0) ? MAX_COUNT[appearance] : maxCount;
     const total = data.length;
     const Group = GROUP_COMPONENT[appearance];
 
-    const items = data.slice(0, max).map((avatar, idx) => (
+    // Render (max - 1) avatars to leave space for moreIndicator
+    const maxAvatar = total > max ? max - 1 : max;
+
+    const items = data.slice(0, maxAvatar).map((avatar, idx) => (
       <Item
         {...avatar}
         borderColor={borderColor}
         groupAppearance={appearance}
         index={idx}
+        key={idx}
         onClick={avatar.onClick || onAvatarClick}
         size={size}
         stackIndex={max - idx}
@@ -111,7 +114,7 @@ export default class AvatarGroup extends Component {
     return (
       <Group size={size}>
         {items}
-        {this.renderMoreDropdown(+max, total)}
+        {this.renderMoreDropdown(+maxAvatar, total)}
       </Group>
     );
   }

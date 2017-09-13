@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -30,7 +30,7 @@
     "@atlaskit/field-base": "^8.0.0",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/spinner": "^4.0.0",
-    "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/theme": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",

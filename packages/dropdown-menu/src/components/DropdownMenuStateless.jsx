@@ -12,7 +12,12 @@ import DropdownItemClickManager from './context/DropdownItemClickManager';
 import DropdownItemSelectionCache from './context/DropdownItemSelectionCache';
 import WidthConstrainer from '../styled/WidthConstrainer';
 import { KEY_DOWN, KEY_SPACE, KEY_ENTER } from '../util/keys';
-import type { DropdownMenuStatelessProps } from '../types';
+import type { DeprecatedItem, DeprecatedItemGroup, DropdownMenuStatelessProps } from '../types';
+
+type OpenCloseArgs = {
+  event: MouseEvent | KeyboardEvent,
+  source?: 'click' | 'keydown',
+};
 
 export default class DropdownMenuStateless extends Component {
   props: DropdownMenuStatelessProps // eslint-disable-line react/sort-comp
@@ -23,7 +28,7 @@ export default class DropdownMenuStateless extends Component {
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: (a) => {}, // eslint-disable-line
+    onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,
@@ -50,15 +55,19 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  componentDidUpdate = (prevProp: Object) => {
+  componentDidUpdate = (prevProp: DropdownMenuStatelessProps) => {
     if (this.isUsingDeprecatedAPI() && this.props.isOpen && !prevProp.isOpen) {
       this.focusFirstItem();
     }
   }
 
-  getNextFocusable = (indexItem: number | void, available: number | void) => {
-    let currentItem = indexItem === undefined ? -1 : indexItem;
-    const latestAvailable = available === undefined ? currentItem : available;
+  getNextFocusable = (indexItem?: ?number, available?: number) => {
+    if (!this.domItemsList) {
+      return null;
+    }
+
+    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
+    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
 
     if (currentItem < this.domItemsList.length - 1) {
       currentItem++;
@@ -73,9 +82,14 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable;
   }
 
-  getPrevFocusable = (indexItem: number | void, available: number| void) => {
-    let currentItem = indexItem === undefined ? -1 : indexItem;
-    const latestAvailable = available === undefined ? currentItem : available;
+  getPrevFocusable = (indexItem?: ?number, available?: number) => {
+    if (!this.domItemsList) {
+      return null;
+    }
+
+    let currentItem = (typeof indexItem !== 'number') ? -1 : indexItem;
+    const latestAvailable = (typeof available !== 'number') ? currentItem : available;
+
     if (currentItem && currentItem > 0) {
       currentItem--;
 
@@ -89,7 +103,9 @@ export default class DropdownMenuStateless extends Component {
     return latestAvailable || currentItem;
   }
 
-  domItemsList: NodeList<HTMLElement>
+  domItemsList: ?NodeList<HTMLElement>
+
+  focusedItem: ?number
 
   triggerContainer: HTMLElement
 
@@ -101,8 +117,6 @@ export default class DropdownMenuStateless extends Component {
     }
   }
 
-  focusedItem: number | void
-
   focusNextItem = () => {
     this.focusItem(this.getNextFocusable(this.focusedItem));
   }
@@ -111,12 +125,16 @@ export default class DropdownMenuStateless extends Component {
     this.focusItem(this.getPrevFocusable(this.focusedItem));
   }
 
-  focusItem = (index: number) => {
+  focusItem = (index: ?number) => {
+    if (!this.domItemsList || !index) {
+      return;
+    }
+
     this.focusedItem = index;
     this.domItemsList[this.focusedItem].focus();
   }
 
-  isTargetChildItem = (target: any) => {
+  isTargetChildItem = (target: Element) => {
     if (!target) return false;
 
     const isDroplistItem = target.getAttribute('data-role') === 'droplistItem';
@@ -144,8 +162,14 @@ export default class DropdownMenuStateless extends Component {
   }
 
   handleKeyboardInteractionsDeprecated = (event: KeyboardEvent) => {
+    // KeyboardEvent.target is typed as an EventTarget but we need to access methods on it which
+    // are specific to Element. Due limitations of the HTML spec flow doesn't know that an
+    // EventTarget can have these methods, so we cast it to Element through Object. This is the
+    // safest thing we can do in this situation.
+    // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    const target: Element = (event.target: Object);
     if (this.props.isOpen) {
-      if (this.isTargetChildItem(event.target)) {
+      if (this.isTargetChildItem(target)) {
         switch (event.key) {
           case 'ArrowUp':
             event.preventDefault();
@@ -186,9 +210,9 @@ export default class DropdownMenuStateless extends Component {
 
   handleClickDeprecated = (event: MouseEvent) => {
     const menuContainer = this.domMenuContainer;
-    // checking whether click was outside of the menu container.
-    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
-    if (!menuContainer || (menuContainer && !menuContainer.contains(event.target))) {
+    // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
+    const target: Element = (event.target: Object);
+    if (!menuContainer || (menuContainer && !menuContainer.contains(target))) {
       this.toggle({ source: 'click', event });
     }
   }
@@ -202,8 +226,9 @@ export default class DropdownMenuStateless extends Component {
     }
 
     const { triggerContainer } = this;
-    // $FlowFixMe - https://github.com/facebook/flow/pull/4687
-    if (triggerContainer && triggerContainer.contains(event.target)) {
+    // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
+    const target: Element = (event.target: Object);
+    if (triggerContainer && triggerContainer.contains(target)) {
       const { isOpen } = this.props;
       this.sourceOfIsOpen = 'mouse';
       this.props.onOpenChange({ isOpen: !isOpen, event });
@@ -235,17 +260,17 @@ export default class DropdownMenuStateless extends Component {
     );
   }
 
-  open = (attrs: any) => {
+  open = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  close = (attrs: any) => {
+  close = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = null;
     this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
-  toggle = (attrs: any) => {
+  toggle = (attrs: OpenCloseArgs) => {
     if (attrs.source === 'keydown') return;
 
     if (this.props.isOpen) {
@@ -268,7 +293,7 @@ export default class DropdownMenuStateless extends Component {
     );
   };
 
-  renderItems = (items: any) => items.map((item, itemIndex) =>
+  renderItems = (items: DeprecatedItem[]) => items.map((item: DeprecatedItem, itemIndex: number) =>
     <Item
       {...item}
       key={itemIndex}
@@ -280,7 +305,7 @@ export default class DropdownMenuStateless extends Component {
     </Item>
   )
 
-  renderGroups = (groups: any) => groups.map((group, groupIndex) =>
+  renderGroups = (groups: DeprecatedItemGroup[]) => groups.map((group, groupIndex) =>
     <Group heading={group.heading} elemAfter={group.elemAfter} key={groupIndex}>
       {this.renderItems(group.items)}
     </Group>
@@ -297,8 +322,7 @@ export default class DropdownMenuStateless extends Component {
           this.domMenuContainer = ref;
           this.domItemsList = ref
             ? ref.querySelectorAll('[data-role="droplistItem"]')
-            // $FlowFixMe
-            : undefined;
+            : null;
         }}
         role="menu"
         style={shouldFitContainer ? null : { maxWidth: 300 }}

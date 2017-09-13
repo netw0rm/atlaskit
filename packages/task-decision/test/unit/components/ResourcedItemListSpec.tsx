@@ -8,6 +8,7 @@ import { getFormattedDate } from '../../../src/util/date';
 import ResourcedItemList from '../../../src/components/ResourcedItemList';
 import DecisionItem from '../../../src/components/DecisionItem';
 import ResourcedTaskItem from '../../../src/components/ResourcedTaskItem';
+import TaskItem from '../../../src/components/TaskItem';
 
 import {
   buildDecision,
@@ -16,6 +17,7 @@ import {
   content,
   datePlus,
   getItemsResponse,
+  getItemsResponseWithParticipants,
 } from '../../../src/support/test-data';
 
 const query: Query = {
@@ -48,10 +50,10 @@ describe('<ResourcedItemList/>', () => {
         <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
-      const typeCount = countType(defaultResponse.items, 'TASK');
+      const taskCount = countType(defaultResponse.items, 'TASK');
       return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
         expect(component.find(DecisionItem).length).toBe(decisionCount);
-        expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
+        expect(component.find(ResourcedTaskItem).length).toBe(taskCount);
         const moreButton = component.find(Button);
         expect(moreButton.length).toBe(0);
         expect(renderer.mock.calls.length > 0).toBe(true);
@@ -73,10 +75,10 @@ describe('<ResourcedItemList/>', () => {
     //     <ResourcedItemList initialQuery={query} taskDecisionProvider={provider} renderDocument={renderer} />
     //   );
     //   const decisionCount = countType(defaultResponse.items, 'DECISION');
-    //   const typeCount = countType(defaultResponse.items, 'TASK');
+    //   const taskCount = countType(defaultResponse.items, 'TASK');
     //   return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
     //     expect(component.find(DecisionItem).length).toBe(decisionCount);
-    //     expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
+    //     expect(component.find(ResourcedTaskItem).length).toBe(taskCount);
     //     const moreButton = component.find(Button);
     //     expect(moreButton.length).toBe(1);
     //     moreButton.simulate('click');
@@ -98,12 +100,12 @@ describe('<ResourcedItemList/>', () => {
         <ResourcedItemList initialQuery={testQuery} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} groupItems={true} />
       );
       const decisionCount = countType(defaultResponse.items, 'DECISION');
-      const typeCount = countType(defaultResponse.items, 'TASK');
+      const taskCount = countType(defaultResponse.items, 'TASK');
       expect(decisionCount).toBe(5);
-      expect(typeCount).toBe(5);
+      expect(taskCount).toBe(5);
       return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
         expect(component.find(DecisionItem).length).toBe(decisionCount);
-        expect(component.find(ResourcedTaskItem).length).toBe(typeCount);
+        expect(component.find(ResourcedTaskItem).length).toBe(taskCount);
         const moreButton = component.find(Button);
         expect(moreButton.length).toBe(0);
 
@@ -131,7 +133,7 @@ describe('<ResourcedItemList/>', () => {
       const groupByQuery: Query = {
         ...query,
       };
-      performDateTest(groupByQuery, 'creationDate');
+      return performDateTest(groupByQuery, 'creationDate');
     });
 
     it('should group by creationDate, when specified', () => {
@@ -139,7 +141,7 @@ describe('<ResourcedItemList/>', () => {
         ...query,
         sortCriteria: 'creationDate',
       };
-      performDateTest(groupByQuery, 'creationDate');
+      return performDateTest(groupByQuery, 'creationDate');
     });
 
     it('should group by lastUpdateDate, when specified', () => {
@@ -147,7 +149,7 @@ describe('<ResourcedItemList/>', () => {
         ...query,
         sortCriteria: 'lastUpdateDate',
       };
-      performDateTest(groupByQuery, 'lastUpdateDate');
+      return performDateTest(groupByQuery, 'lastUpdateDate');
     });
   });
 
@@ -318,6 +320,81 @@ describe('<ResourcedItemList/>', () => {
         return waitUntil(() => component.state('items').length > 0);
       }).then(() => {
         expect(component.state('items').length).toBe(defaultResponse.items.length);
+      });
+    });
+  });
+
+  describe('participants', () => {
+    const participantResponse = getItemsResponseWithParticipants();
+    it('participants propogate to items', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(participantResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      const decisionCount = countType(participantResponse.items, 'DECISION');
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        // First item (a task) will have 2 participant
+        const t1 = participantResponse.items[0];
+        expect(t1.type).toBe('TASK');
+        expect(t1.participants.length).toBe(2);
+        const taskComponent = component.find(TaskItem).at(0);
+        expect(taskComponent.prop('participants')).toEqual(t1.participants);
+
+        // Second item (a decision) will have 1 participant
+        const d1 = participantResponse.items[1];
+        expect(d1.type).toBe('DECISION');
+        expect(d1.participants.length).toBe(1);
+        const decisionComponent = component.find(DecisionItem).at(0);
+        expect(decisionComponent.prop('participants')).toEqual(d1.participants);
+      });
+    });
+  });
+
+  describe('attribution', () => {
+    const attributionResponse = getItemsResponseWithParticipants();
+    it('creator propogate to items', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(attributionResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      const decisionCount = countType(attributionResponse.items, 'DECISION');
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        // First item (a task) will have 2 participant
+        const t1 = attributionResponse.items[0];
+        expect(t1.type).toBe('TASK');
+        expect(t1.creator).toBeDefined();
+        const taskComponent = component.find(TaskItem).at(0);
+        expect(taskComponent.prop('creator')).toEqual(t1.creator);
+
+        // Second item (a decision) will have 1 participant
+        const d1 = attributionResponse.items[1];
+        expect(d1.type).toBe('DECISION');
+        expect(d1.creator).toBeDefined();
+        const decisionComponent = component.find(DecisionItem).at(0);
+        expect(decisionComponent.prop('creator')).toEqual(d1.creator);
+      });
+    });
+
+    it('lastUpdater propogate to items', () => {
+      provider.getItems.mockImplementation(() => Promise.resolve(attributionResponse));
+      const component = mount(
+        <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
+      );
+      const decisionCount = countType(attributionResponse.items, 'DECISION');
+      return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
+        // First item (a task) will have 2 participant
+        const t1 = attributionResponse.items[3];
+        expect(t1.type).toBe('TASK');
+        expect(t1.lastUpdater).toBeDefined();
+        const taskComponent = component.find(TaskItem).at(1);
+        expect(taskComponent.prop('lastUpdater')).toEqual(t1.lastUpdater);
+
+        // Second item (a decision) will have 1 participant
+        const d1 = attributionResponse.items[2];
+        expect(d1.type).toBe('DECISION');
+        expect(d1.lastUpdater).toBeDefined();
+        const decisionComponent = component.find(DecisionItem).at(1);
+        expect(decisionComponent.prop('lastUpdater')).toEqual(d1.lastUpdater);
       });
     });
   });

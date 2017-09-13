@@ -6,6 +6,7 @@ import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/render
 import TaskList from '../src/components/TaskList';
 import TaskItem from '../src/components/TaskItem';
 import { document } from '../src/support/story-data';
+import { MessageContainer } from './story-utils';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console
@@ -37,7 +38,11 @@ class TaskStateManager extends PureComponent<Props,State> {
   }
 
   render() {
-    return this.props.render(this.taskStates, this.onChangeListener);
+    return (
+      <MessageContainer>
+        {this.props.render(this.taskStates, this.onChangeListener)}
+      </MessageContainer>
+    );
   }
 }
 
@@ -63,13 +68,19 @@ storiesOf('<TaskList/>', module)
     />
   ))
   .add('Single item TaskList', () => (
-    <TaskList>
-      <TaskItem contentRef={dumpRef} taskId="task-5" onChange={action('onChange')}>
-        Hello <b>world</b>.
-      </TaskItem>
-    </TaskList>
+    <TaskStateManager
+      render={(taskStates, onChangeListener) => // tslint:disable-line:jsx-no-lambda
+      <TaskList>
+        <TaskItem contentRef={dumpRef} taskId="task-5" onChange={action('onChange')}>
+          Hello <b>world</b>.
+        </TaskItem>
+      </TaskList>
+      }
+    />
   ))
   .add('Empty TaskList', () => (
-    <TaskList/>
+    <MessageContainer>
+      <TaskList/>
+    </MessageContainer>
   ))
 ;

@@ -1,4 +1,4 @@
-import {MediaApiConfig} from '../config';
+import {MediaApiConfig} from '../auth';
 import {RemoteMediaCollectionProvider} from './remoteMediaCollectionProvider';
 import {CollectionService, MediaCollectionService, SortDirection} from '../services/collectionService';
 import {mediaCollectionProviderFromPool} from './util/mediaCollectionProviderFromPool';
@@ -22,11 +22,10 @@ export class RemoteMediaCollectionProviderFactory {
   public static fromMediaAPI(
     config: MediaApiConfig,
     collectionName: string,
-    clientId: string,
     pageSize: number,
     sortDirection: SortDirection = 'desc'): RemoteMediaCollectionProvider {
     return RemoteMediaCollectionProviderFactory.fromCollectionService(
-      new MediaCollectionService(config, clientId),
+      new MediaCollectionService(config),
       collectionName,
       pageSize,
       sortDirection
@@ -37,13 +36,12 @@ export class RemoteMediaCollectionProviderFactory {
     pool: Pool<RemoteMediaCollectionProvider>,
     config: MediaApiConfig,
     collectionName: string,
-    clientId: string,
     pageSize: number,
     sortDirection: SortDirection = 'desc'): RemoteMediaCollectionProvider {
 
     const poolId = [collectionName, pageSize, sortDirection].join('-');
     const createFn = () => {
-      const collectionService = new MediaCollectionService(config, clientId);
+      const collectionService = new MediaCollectionService(config);
       return new RemoteMediaCollectionProvider(
         collectionService,
         collectionName,

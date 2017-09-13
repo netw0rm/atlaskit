@@ -5,14 +5,16 @@ import { nodeViewFactory, ReactJIRAIssueNode } from '../../../nodeviews';
 
 export const pluginKey = new PluginKey('jiraIssuePlugin');
 
-export const jiraIssue = new Plugin({
-  key: pluginKey,
-  props: {
-    nodeViews: {
-      jiraIssue: nodeViewFactory(this.providerFactory, { jiraIssue: ReactJIRAIssueNode })
+const createPlugin = (schema, providerFactory) => {
+  return new Plugin({
+    key: pluginKey,
+    props: {
+      nodeViews: {
+        jiraIssue: nodeViewFactory(providerFactory, { jiraIssue: ReactJIRAIssueNode })
+      }
     }
-  }
-});
+  });
+};
 
 const jiraIssuePlugin: EditorPlugin = {
   nodes() {
@@ -23,7 +25,7 @@ const jiraIssuePlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 1410, plugin: () => jiraIssue }
+      { rank: 1410, plugin: (schema, props, dispatch, providerFactory) => createPlugin(schema, providerFactory) }
     ];
   }
 };

@@ -322,7 +322,7 @@ describe('SiteEmojiResource', () => {
 
       fetchMock.delete({
         matcher: `${siteServiceConfig.url}/${missingMediaEmoji.id}`,
-        response: '200',
+        response: '204',
         name: 'delete-site-emoji',
       });
 

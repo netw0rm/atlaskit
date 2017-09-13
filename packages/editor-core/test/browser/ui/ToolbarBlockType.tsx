@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import blockTypePlugins from '../../../src/plugins/block-type';
 import ToolbarBlockType from '../../../src/ui/ToolbarBlockType';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
 import AkButton from '@atlaskit/button';
 import { doc, p, makeEditor, code_block, blockquote, panel } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
@@ -74,7 +75,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
           editorView={editorView}
         />
       );
-      toolbarOption.find('AkButton').simulate('click');
+      toolbarOption.find(ToolbarButton).simulate('click');
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
     });

@@ -1,8 +1,8 @@
-import * as sinon from 'sinon';
+import {useFakeXMLHttpRequest} from 'sinon';
 
 import {MediaLinkService} from '../../src/services/linkService';
-import {JwtTokenProvider} from '../../src';
 import {UrlPreview} from '../../src/item';
+import {AuthProvider} from '../../src/auth';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -27,14 +27,14 @@ const linkMetadata = <UrlPreview> {
 const authParams = `token=${token}&client=${clientId}`;
 
 describe('MediaLinkService', () => {
-  let tokenProvider: JwtTokenProvider;
+  let authProvider: AuthProvider;
   let linkService: MediaLinkService;
 
   let xhr: any;
   let requests: Array<any>;
 
   const setupFakeXhr = () => {
-    xhr = sinon.useFakeXMLHttpRequest();
+    xhr = useFakeXMLHttpRequest();
     requests = [];
 
     xhr.onCreate = function (xhr: any) {
@@ -44,8 +44,11 @@ describe('MediaLinkService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = jest.fn(() => Promise.resolve(token));
-    linkService = new MediaLinkService({serviceHost, tokenProvider});
+    authProvider = jest.fn(({collectionName}) => Promise.resolve({
+      token,
+      clientId
+    }));
+    linkService = new MediaLinkService({serviceHost, authProvider});
   });
 
   afterEach(function () {
@@ -71,7 +74,7 @@ describe('MediaLinkService', () => {
       }
     };
 
-    const response = linkService.getLinkItem(linkId, clientId, collection)
+    const response = linkService.getLinkItem(linkId, collection)
       .then(linkItem => {
         expect(linkItem.type).toBe('link');
         expect(linkItem.details.id).toBe('some-id');
@@ -84,7 +87,7 @@ describe('MediaLinkService', () => {
       })
       .then(() => {
         // Validate call to token provider
-        expect(tokenProvider).toHaveBeenCalledWith(collection);
+        expect(authProvider).toHaveBeenCalledWith({collectionName: collection});
       })
       .then(() => {
         expect(requests[0].url).toBe(`some-host/link/some-link-id?collection=some-collection&${authParams}`);
@@ -100,7 +103,7 @@ describe('MediaLinkService', () => {
   });
 
   it('should reject get link when server responded with 500', () => {
-    const response = linkService.getLinkItem('some-dodgy-link-id', clientId, collection)
+    const response = linkService.getLinkItem('some-dodgy-link-id', collection)
       .then(
         () => { throw new Error('The function getLinkItem should fail'); },
         error => expect(error).toBeDefined()
@@ -111,13 +114,13 @@ describe('MediaLinkService', () => {
   });
 
   it('should add link', () => {
-    const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
+    const response = linkService.addLinkItem(linkUrl, collection, linkMetadata)
       .then(id => {
         expect(id).toBe(linkId);
       })
       .then(() => {
         // Validate call to token provider
-        expect(tokenProvider).toHaveBeenCalledWith(collection);
+        expect(authProvider).toHaveBeenCalledWith({collectionName: collection});
       })
       .then(() => {
         const headers = requests[0].requestHeaders;
@@ -138,7 +141,7 @@ describe('MediaLinkService', () => {
   });
 
   it('should reject add link when server responded with 500', () => {
-    const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
+    const response = linkService.addLinkItem(linkUrl, collection, linkMetadata)
       .then(
         () => { throw new Error('The function addLinkItem should fail'); },
         error => expect(error).toBeDefined

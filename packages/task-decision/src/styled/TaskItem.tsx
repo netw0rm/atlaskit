@@ -8,17 +8,16 @@ import {
 
 // tslint:disable-next-line:variable-name
 export const CheckBoxWrapper = styled.span`
-  position: absolute;
-  top: 0;
-  left: ${akGridSize};
-  bottom: 0;
+  flex: 0 0 16px;
   width: 16px;
+  height: 16px;
+  position: relative;
+  align-self: start;
+  margin: 2px ${akGridSize} 0 0;
 
   & > input[type="checkbox"] {
     position: absolute;
     outline: none;
-    width: 100%;
-    height: 100%;
     margin: 0;
     opacity: 0;
     left: 0;
@@ -28,7 +27,6 @@ export const CheckBoxWrapper = styled.span`
     + label {
       box-sizing: border-box;
       display: block;
-      padding: 4px;
       position: relative;
       width: 100%;
       cursor: pointer;
@@ -47,7 +45,7 @@ export const CheckBoxWrapper = styled.span`
         left: 50%;
         position: absolute;
         transition: border-color 0.2s ease-in-out;
-        top: 18px;
+        top: 8px;
         width: 16px;
         transform: translate(-50%, -50%);
       }

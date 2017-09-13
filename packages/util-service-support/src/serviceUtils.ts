@@ -83,7 +83,9 @@ export const requestService = <T>(serviceConfig: ServiceConfig, options?: Reques
 
   return fetch(new Request(requestUrl, requestOptions))
     .then((response: Response) => {
-      if (response.ok) {
+      if (response.status === 204) {
+        return Promise.resolve();
+      } else if (response.ok) {
         return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once

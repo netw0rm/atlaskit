@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
+
 import {
   CheckBoxWrapper,
 } from '../styled/TaskItem';
-import {
-  Wrapper,
-  ContentWrapper,
-} from '../styled/Item';
 
-import { Appearance } from '../types';
-import { Placeholder } from '../styled/Placeholder';
+import Item from './Item';
+import { Appearance, User } from '../types';
 
 export interface ContentRef {
   (ref: HTMLElement | undefined): void;
@@ -23,6 +20,10 @@ export interface Props {
   children?: ReactElement<any>;
   showPlaceholder?: boolean;
   appearance?: Appearance;
+  participants?: User[];
+  showParticipants?: boolean;
+  creator?: User;
+  lastUpdater?: User;
 }
 
 let taskCount = 0;
@@ -30,7 +31,7 @@ const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
 export default class TaskItem extends PureComponent<Props, {}> {
   public static defaultProps: Partial<Props> = {
-    appearance: 'flat'
+    appearance: 'inline',
   };
 
   private checkBoxId: string;
@@ -39,11 +40,6 @@ export default class TaskItem extends PureComponent<Props, {}> {
     super(props);
     this.checkBoxId = getCheckBoxId(props.taskId);
   }
-
-  private renderPlaceholder() {
-    return <Placeholder contentEditable={false}>Add an action…</Placeholder>;
-  }
-
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.taskId !== this.props.taskId) {
@@ -58,26 +54,48 @@ export default class TaskItem extends PureComponent<Props, {}> {
     }
   }
 
+  getAttributionText() {
+    const { creator, lastUpdater, isDone } = this.props;
+
+    if (isDone && lastUpdater) {
+      return `Completed by ${lastUpdater.displayName}`;
+    }
+
+    if (!creator || !creator.displayName) {
+      return undefined;
+    }
+
+    return `Added by ${creator.displayName}`;
+  }
+
   render() {
-    const { appearance, isDone, contentRef, children, showPlaceholder } = this.props;
+    const { appearance, isDone, contentRef, children, participants, showPlaceholder } = this.props;
+
+    const icon = (
+      <CheckBoxWrapper contentEditable={false}>
+        <input
+          id={this.checkBoxId}
+          name={this.checkBoxId}
+          type="checkbox"
+          onChange={this.handleOnChange}
+          checked={!!isDone}
+        />
+        <label htmlFor={this.checkBoxId} />
+      </CheckBoxWrapper>
+    );
 
     return (
-      <Wrapper theme={{ appearance }}>
-        <CheckBoxWrapper contentEditable={false}>
-          <input
-            id={this.checkBoxId}
-            name={this.checkBoxId}
-            type="checkbox"
-            onChange={this.handleOnChange}
-            checked={!!isDone}
-          />
-          <label htmlFor={this.checkBoxId} />
-        </CheckBoxWrapper>
-        {showPlaceholder && !children && this.renderPlaceholder()}
-        <ContentWrapper innerRef={contentRef}>
-          {children}
-        </ContentWrapper>
-      </Wrapper>
+      <Item
+        appearance={appearance}
+        contentRef={contentRef}
+        icon={icon}
+        participants={participants}
+        placeholder="Add an action…"
+        showPlaceholder={showPlaceholder}
+        attribution={this.getAttributionText()}
+      >
+        {children}
+      </Item>
     );
   }
 }

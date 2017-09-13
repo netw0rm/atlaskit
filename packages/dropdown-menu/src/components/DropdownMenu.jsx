@@ -13,7 +13,7 @@ export default class DropdownMenu extends Component {
     isLoading: false,
     isOpen: false,
     items: [],
-    onItemActivated: (a) => {}, // eslint-disable-line
+    onItemActivated: () => {},
     onOpenChange: () => {},
     position: 'bottom left',
     shouldAllowMultilineItems: false,
@@ -37,9 +37,9 @@ export default class DropdownMenu extends Component {
     }
   }
 
-  findActivatedGroup = (item: any) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line
+  findActivatedGroup = (item: Object) => this.state.items.filter(group => group.items.indexOf(item) > -1)[0]// eslint-disable-line
 
-  handleItemActivation = (attrs: any) => {
+  handleItemActivation = (attrs: { event?: Event, item: Object }) => {
     const activatedItem = attrs.item;
     const activatedGroup = this.findActivatedGroup(activatedItem);
     const items = [...this.state.items];

@@ -3,15 +3,15 @@ import 'rxjs/add/observable/of';
 import {MediaItem, MediaItemProvider} from '../../src';
 import {ContextFactory} from '../../src/context/context';
 
-const tokenProvider = function () {
-  return Promise.resolve('some-token-that-does-not-really-matter-in-this-tests');
-};
+const authProvider = (collection) => Promise.resolve({
+  token: 'some-token-that-does-not-really-matter-in-this-tests',
+  clientId: 'some-clientId'
+});
 
 const createFakeContext = () => {
   return ContextFactory.create({
-    clientId: 'some-clientId',
     serviceHost: 'service-host',
-    tokenProvider
+    authProvider
   });
 };
 

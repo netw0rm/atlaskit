@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { isElectronMacKey } from './util';
+import type { ReactElement } from '../../src/types';
 
 type Props = {
   isElectronMac?: boolean,
-  children?: any
+  children?: ReactElement
 };
 
 export default class WithElectronTheme extends PureComponent {

@@ -1,14 +1,14 @@
 import * as sinon from 'sinon';
 
 import {MediaUrlPreviewService} from '../../src/services/urlPreviewService';
-import {JwtTokenProvider} from '../../src';
+import {AuthProvider} from '../../src/auth';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
 const clientId = 'some-client-id';
 
 describe('UrlPreviewService', () => {
-  let tokenProvider: JwtTokenProvider;
+  let authProvider: AuthProvider;
   let urlPreviewService: MediaUrlPreviewService;
 
   let xhr: any;
@@ -25,8 +25,11 @@ describe('UrlPreviewService', () => {
 
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = jest.fn(() => Promise.resolve(token));
-    urlPreviewService = new MediaUrlPreviewService({serviceHost, tokenProvider});
+    authProvider = jest.fn(() => Promise.resolve({
+      token: token,
+      clientId: clientId
+    }));
+    urlPreviewService = new MediaUrlPreviewService({serviceHost, authProvider});
   });
 
   afterEach(function () {
@@ -49,13 +52,13 @@ describe('UrlPreviewService', () => {
       }
     };
 
-    const response = urlPreviewService.getUrlPreview('http://atlassian.com', clientId)
+    const response = urlPreviewService.getUrlPreview('http://atlassian.com')
       .then(preview => {
         expect(preview).toEqual(linkPreviewResponse);
       })
       .then(() => {
         // Validate call to token provider with no parameters
-        expect(tokenProvider).toHaveBeenCalledTimes(1);
+        expect(authProvider).toHaveBeenCalledTimes(1);
       })
       .then(() => {
         const headers = requests[0].requestHeaders;
@@ -80,13 +83,13 @@ describe('UrlPreviewService', () => {
   it('should resolve an error when iFramely fails to process provided link', () => {
     const expectedError = '417: Some cray cray error occured';
 
-    const response = urlPreviewService.getUrlPreview('http://atlassian.com', clientId)
+    const response = urlPreviewService.getUrlPreview('http://atlassian.com')
       .catch((actualError) => {
         expect(actualError.message).toEqual(expectedError);
       })
       .then(() => {
         // Validate call to token provider with no parameters
-        expect(tokenProvider).toHaveBeenCalledTimes(1);
+        expect(authProvider).toHaveBeenCalledTimes(1);
       })
       .then(() => {
         const headers = requests[0].requestHeaders;

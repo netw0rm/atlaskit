@@ -158,12 +158,11 @@ export default class SiteEmojiResource {
     const requestInit = {
       method: 'DELETE',
     };
-    return serviceUtils.requestService(this.siteServiceConfig, { path, requestInit }).then(
-      // Successful delete on Promise.resolve
-      () => true,
-      // Unsuccessful delete on Promise.reject
-      () => false
-    );
+    return serviceUtils.requestService(this.siteServiceConfig, { path, requestInit })
+                      // Successful delete on Promise.resolve
+                      .then(() => true)
+                      // Unsuccessful delete on Promise.reject
+                      .catch(() => false);
   }
 
   /**

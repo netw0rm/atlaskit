@@ -5,8 +5,8 @@ import Input from '@atlaskit/input';
 import Button from '@atlaskit/button';
 import Avatar from '@atlaskit/avatar';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
-import HelpIcon from '@atlaskit/icon/glyph/help';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import HelpIcon from '@atlaskit/icon/glyph/question-circle';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import Calendar from '@atlaskit/calendar';
@@ -26,25 +26,13 @@ storiesOf(name, module)
     <div>
       <div>
         <BasicFieldBase
-          label="basic example for form"
+          label="basic example of fieldbase"
           id="fieldbase"
         >
           <Input
             value="input children"
             isEditing
             id="fieldbase"
-          />
-        </BasicFieldBase>
-      </div>
-      <div>
-        <BasicFieldBase
-          label="basic example for form"
-          id="fieldbase2"
-        >
-          <Input
-            value="input children"
-            isEditing
-            id="fieldbase2"
           />
         </BasicFieldBase>
       </div>

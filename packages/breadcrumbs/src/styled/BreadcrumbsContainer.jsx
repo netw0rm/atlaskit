@@ -1,12 +1,10 @@
 import styled from 'styled-components';
-import { akColorN300 } from '@atlaskit/util-shared-styles';
+import { colors, themed } from '@atlaskit/theme';
 
-const ThemeColor = {
-  text: akColorN300,
-};
+const ThemeColor = themed({ light: colors.N300, dark: colors.N300 });
 
 const BreadcrumbsContainer = styled.div`
-  color: ${ThemeColor.text};
+  color: ${ThemeColor};
   display: flex;
   flex-wrap: wrap;
 `;

@@ -6,11 +6,10 @@ import AddCircleIcon from '@atlaskit/icon/glyph/add-circle';
 import AddItemIcon from '@atlaskit/icon/glyph/add-item';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import AddonIcon from '@atlaskit/icon/glyph/addon';
-import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
+import AppSwitcherIcon from '@atlaskit/icon/glyph/menu';
 import ArrowDownIcon from '@atlaskit/icon/glyph/arrow-down';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import ArrowRightLongIcon from '@atlaskit/icon/glyph/arrow-right-long';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 
@@ -39,7 +38,6 @@ const demoIcons = [
   ArrowDownIcon,
   ArrowLeftCircleIcon,
   ArrowLeftIcon,
-  ArrowRightLongIcon,
   ArrowRightIcon,
   ArrowUpIcon,
 ];

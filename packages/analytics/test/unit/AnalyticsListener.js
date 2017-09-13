@@ -27,8 +27,19 @@ const Button = withAnalytics(
 
 describe('AnalyticsListener', () => {
   it('should create a listener component', () => {
-    const component = shallow(<AnalyticsListener onEvent={() => {}} />);
+    const component = shallow(<AnalyticsListener onEvent={() => {}}><div /></AnalyticsListener>);
     expect(component).not.toBe(undefined);
+  });
+
+  it('should not create a component with multiple children', () => {
+    expect(() => {
+      shallow((
+        <AnalyticsListener onEvent={() => {}}>
+          <div />
+          <div />
+        </AnalyticsListener>
+      ));
+    }).toThrow();
   });
 
   it('should send public event', () => {

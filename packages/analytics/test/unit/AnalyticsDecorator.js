@@ -28,8 +28,19 @@ const Button = withAnalytics(
 
 describe('AnalyticsDecorator', () => {
   it('should create a decorator component', () => {
-    const component = shallow(<AnalyticsDecorator onEvent={() => {}} />);
+    const component = shallow(<AnalyticsDecorator onEvent={() => {}}><div /></AnalyticsDecorator>);
     expect(component).not.toBe(undefined);
+  });
+
+  it('should not create a component with multiple children', () => {
+    expect(() => {
+      shallow((
+        <AnalyticsDecorator onEvent={() => {}}>
+          <div />
+          <div />
+        </AnalyticsDecorator>
+      ));
+    }).toThrow();
   });
 
   it('should extend eventData for analytics events', () => {

@@ -10,7 +10,8 @@ const messageEditorPropsPreset: EditorProps = {
   allowTextColor: true,
   allowHyperlinks: true,
   allowCodeBlocks: true,
-  allowTasksAndDecisions: true
+  allowTasksAndDecisions: true,
+  allowHelpDialog: true
 };
 
 export default function getPropsPreset(appearance: EditorAppearance): EditorProps {

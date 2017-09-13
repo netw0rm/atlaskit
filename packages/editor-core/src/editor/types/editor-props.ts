@@ -28,6 +28,7 @@ export interface EditorProps {
   allowLists?: boolean;
   allowTextColor?: boolean;
   allowTables?: boolean;
+  allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
 

@@ -71,14 +71,14 @@ export const codeBlock: NodeSpec = {
       return { language };
     }
   },
-  // Handle VSCode paste, it wraps copied content with
-  // <div style="...white-space: pre;...">
+  // Handle VSCode paste
+  // Checking `white-space: pre-wrap` is too aggressive @see ED-2627
   {
     tag: 'div[style]',
     preserveWhitespace: 'full',
     getAttrs: (dom: HTMLElement) => {
       if (
-        dom.style.whiteSpace === 'pre' || dom.style.whiteSpace === 'pre-wrap' ||
+        dom.style.whiteSpace === 'pre' ||
         (dom.style.fontFamily && dom.style.fontFamily.toLowerCase().indexOf('monospace') > -1)
       ) {
         return {};

@@ -3,6 +3,12 @@ import React, { PureComponent } from 'react';
 import Navigation from '../../src/components/js/Navigation';
 import ContainerNavigationChildren from '../../src/components/js/ContainerNavigationChildren';
 import Drawer from '../../src/components/js/Drawer';
+import GlobalNavigation from '../../src/components/js/GlobalNavigation';
+import ContainerNavigation from '../../src/components/js/ContainerNavigation';
+import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
+import Resizer from '../../src/components/js/Resizer';
+import Spacer from '../../src/components/js/Spacer';
+import WithElectronTheme from '../../src/theme/with-electron-theme';
 import * as presets from '../../src/theme/presets';
 import {
   containerClosedWidth as containerClosedWidthFn,
@@ -28,50 +34,54 @@ class Child extends PureComponent {
 describe('<Navigation />', () => {
   describe('is open', () => {
     it('should render a <ContainerNavigation />', () => {
-      expect(shallow(<Navigation isOpen />).find('ContainerNavigation').length).toBe(1);
+      expect(shallow(<Navigation isOpen />).find(ContainerNavigation).length).toBe(1);
     });
 
     it('should render a <GlobalNavigation />', () => {
-      expect(shallow(<Navigation isOpen />).find('GlobalNavigation').length).toBe(1);
+      expect(shallow(<Navigation isOpen />).find(GlobalNavigation).length).toBe(1);
     });
 
     it('should render the provided Drawers', () => {
       const drawer1 = (<Drawer key="d1" />);
       const drawer2 = (<Drawer key="d2" />);
-      expect(shallow(<Navigation isOpen drawers={[drawer1, drawer2]} />).find('Drawer').length).toBe(2);
+      expect(shallow(
+        <Navigation isOpen drawers={[drawer1, drawer2]} />
+      ).find(Drawer).length).toBe(2);
     });
 
     it('should render a Spacer that has the width of the GlobalNavigation and ContainerNavigation', () => {
       const wrapper = shallow(<Navigation isOpen />);
 
-      expect(wrapper.find('Spacer').first().props().width).toBe(globalOpenWidth + containerOpenWidth);
+      expect(wrapper.find(Spacer).first().props().width).toBe(globalOpenWidth + containerOpenWidth);
     });
   });
 
   describe('is closed', () => {
     it('should render a <ContainerNavigation />', () => {
-      expect(shallow(<Navigation isOpen={false} />).find('ContainerNavigation').length).toBe(1);
+      expect(shallow(<Navigation isOpen={false} />).find(ContainerNavigation).length).toBe(1);
     });
 
     it('should not render a <GlobalNavigation />', () => {
-      expect(shallow(<Navigation isOpen={false} />).find('GlobalNavigation').length).toBe(0);
+      expect(shallow(<Navigation isOpen={false} />).find(GlobalNavigation).length).toBe(0);
     });
 
     it('should render the provided Drawers', () => {
       const drawer1 = (<Drawer key="d1" />);
       const drawer2 = (<Drawer key="d2" />);
-      expect(shallow(<Navigation isOpen={false} drawers={[drawer1, drawer2]} />).find('Drawer').length).toBe(2);
+      expect(shallow(
+        <Navigation isOpen={false} drawers={[drawer1, drawer2]} />
+      ).find(Drawer).length).toBe(2);
     });
 
     it('should render a Spacer that has the width of the GlobalNavigation', () => {
       const wrapper = shallow(<Navigation isOpen={false} />);
 
-      expect(wrapper.find('Spacer').first().props().width).toBe(globalOpenWidth);
+      expect(wrapper.find(Spacer).first().props().width).toBe(globalOpenWidth);
     });
   });
 
   describe('resizing', () => {
-    const getSpacerWidth = wrapper => wrapper.find('Spacer').first().props().width;
+    const getSpacerWidth = wrapper => wrapper.find(Spacer).first().props().width;
 
     it('should not allow resizing if not resizable', () => {
       const onResizeStart = jest.fn();
@@ -103,7 +113,7 @@ describe('<Navigation />', () => {
 
       wrapper.find('Resizer').props().onResize(2000);
 
-      expect(wrapper.find('Spacer').first().props().width)
+      expect(wrapper.find(Spacer).first().props().width)
         .toBe(2000 + (containerOpenWidth + globalOpenWidth));
     });
 
@@ -111,7 +121,7 @@ describe('<Navigation />', () => {
       const stub = jest.fn();
       const wrapper = mount(<Navigation isOpen onResize={stub} />);
 
-      wrapper.find('Resizer').props().onResizeEnd();
+      wrapper.find(Resizer).props().onResizeEnd();
 
       expect(stub).toHaveBeenCalled();
     });
@@ -119,7 +129,7 @@ describe('<Navigation />', () => {
     it('should never have a width less than the GlobalNavigation', () => {
       const wrapper = mount(<Navigation isOpen />);
 
-      wrapper.find('Resizer').props().onResize(-300);
+      wrapper.find(Resizer).props().onResize(-300);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth);
     });
@@ -127,7 +137,7 @@ describe('<Navigation />', () => {
     it('should allow the width to grow above the standard width if not collapsible', () => {
       const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
-      wrapper.find('Resizer').props().onResize(5);
+      wrapper.find(Resizer).props().onResize(5);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth + containerOpenWidth + 5);
     });
@@ -135,14 +145,14 @@ describe('<Navigation />', () => {
     it('should not allow the width to drop below the standard width if not collapsible', () => {
       const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
-      wrapper.find('Resizer').props().onResize(-5);
+      wrapper.find(Resizer).props().onResize(-5);
 
       expect(getSpacerWidth(wrapper)).toBe(globalOpenWidth + containerOpenWidth);
     });
 
     describe('snapping', () => {
       const resize = (wrapper, resizeTo) => {
-        const resizer = wrapper.find('Resizer');
+        const resizer = wrapper.find(Resizer);
         resizer.props().onResizeStart();
         resizer.props().onResize(resizeTo);
         resizer.props().onResizeEnd();
@@ -225,37 +235,49 @@ describe('<Navigation />', () => {
     it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
       const header = () => (<div>foo</div>);
       expect(shallow(<Navigation containerHeaderComponent={header} />)
-        .find('ContainerNavigation').props().headerComponent).toBe(header);
+        .find(ContainerNavigation).props().headerComponent).toBe(header);
     });
 
     it('should pass globalSearchIcon onto <GlobalNavigation />', () => {
       const icon = <img alt="search" />;
-      expect(mount(<Navigation globalSearchIcon={icon} />).find('GlobalNavigation').props().searchIcon).toBe(icon);
+      expect(mount(
+        <Navigation globalSearchIcon={icon} />
+      ).find(GlobalNavigation).props().searchIcon).toBe(icon);
     });
 
     it('should pass globalCreateIcon onto <GlobalNavigation />', () => {
       const icon = <img alt="create" />;
-      expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).toBe(icon);
+      expect(mount(
+        <Navigation globalCreateIcon={icon} />
+      ).find(GlobalNavigation).props().createIcon).toBe(icon);
     });
 
     it('should pass globalTheme onto <GlobalNavigation />', () => {
       const theme = presets.settings;
-      expect(mount(<Navigation globalTheme={theme} />).find('GlobalNavigation').props().theme).toBe(theme);
+      expect(mount(
+        <Navigation globalTheme={theme} />
+      ).find(GlobalNavigation).props().theme).toBe(theme);
     });
 
     it('should pass containerTheme onto <ContainerNavigation />', () => {
       const theme = presets.settings;
-      expect(mount(<Navigation containerTheme={theme} />).find('ContainerNavigation').props().theme).toBe(theme);
+      expect(mount(
+        <Navigation containerTheme={theme} />
+      ).find(ContainerNavigation).props().theme).toBe(theme);
     });
 
     it('should pass globalSearchIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="search" />;
-      expect(mount(<Navigation globalSearchIcon={icon} />).find('ContainerNavigation').props().globalSearchIcon).toBe(icon);
+      expect(mount(
+        <Navigation globalSearchIcon={icon} />
+      ).find(ContainerNavigation).props().globalSearchIcon).toBe(icon);
     });
 
     it('should pass globalCreateIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="create" />;
-      expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).toBe(icon);
+      expect(mount(
+        <Navigation globalCreateIcon={icon} />
+      ).find(ContainerNavigation).props().globalCreateIcon).toBe(icon);
     });
 
     it('should pass hasScrollHintBottom onto <ContainerNavigationChildren />', () => {
@@ -284,9 +306,9 @@ describe('<Navigation />', () => {
           done();
         },
       });
-      navigation.find('Resizer').props().onResizeStart();
-      navigation.find('Resizer').props().onResize(-300);
-      navigation.find('Resizer').props().onResizeEnd();
+      navigation.find(Resizer).props().onResizeStart();
+      navigation.find(Resizer).props().onResize(-300);
+      navigation.find(Resizer).props().onResizeEnd();
     });
 
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
@@ -294,7 +316,7 @@ describe('<Navigation />', () => {
       expect(mount(
         <Navigation
           globalPrimaryIcon={primaryIcon}
-        />).find('GlobalNavigation').props().primaryIcon).toBe(primaryIcon);
+        />).find(GlobalNavigation).props().primaryIcon).toBe(primaryIcon);
     });
     it('should allow you to pass in global secondard actions', () => {
       const wrapper = mount(
@@ -304,8 +326,8 @@ describe('<Navigation />', () => {
       );
 
       expect(wrapper
-        .find('GlobalNavigation')
-        .find('GlobalSecondaryActions')
+        .find(GlobalNavigation)
+        .find(GlobalSecondaryActions)
         .find(Child)
         .length
       ).toBe(2);
@@ -315,17 +337,17 @@ describe('<Navigation />', () => {
       expect(mount(
         <Navigation
           linkComponent={linkComponent}
-        />).find('GlobalNavigation').props().linkComponent).toBe(linkComponent);
+        />).find(GlobalNavigation).props().linkComponent).toBe(linkComponent);
     });
 
     it('initial width prop is reflected on <Spacer />', () => {
-      expect(shallow(<Navigation width={500} />).find('Spacer').first().props().width).toBe(500);
-      expect(shallow(<Navigation width={200} />).find('Spacer').first().props().width).toBe(200);
+      expect(shallow(<Navigation width={500} />).find(Spacer).first().props().width).toBe(500);
+      expect(shallow(<Navigation width={200} />).find(Spacer).first().props().width).toBe(200);
     });
 
     it('should override width when container is closed', () => {
       expect(mount(<Navigation isOpen={false} width={500} />)
-        .find('Spacer').first().props().width).toBe(containerClosedWidth);
+        .find(Spacer).first().props().width).toBe(containerClosedWidth);
     });
   });
 
@@ -344,20 +366,20 @@ describe('<Navigation />', () => {
     });
 
     it('should keep the container navigation open', () => {
-      expect(wrapper.find('ContainerNavigation').length).toBe(1);
+      expect(wrapper.find(ContainerNavigation).length).toBe(1);
     });
 
     it('should tell the container not to render the global primary items', () => {
-      expect(wrapper.find('ContainerNavigation').props().showGlobalActions)
+      expect(wrapper.find(ContainerNavigation).props().showGlobalActions)
         .toBe(false);
     });
 
     it('should render the global navigation', () => {
-      expect(wrapper.find('GlobalNavigation').length).toBe(1);
+      expect(wrapper.find(GlobalNavigation).length).toBe(1);
     });
 
     it('should render the correct width', () => {
-      expect(wrapper.find('Spacer').first().props().width)
+      expect(wrapper.find(Spacer).first().props().width)
         .toBe(globalOpenWidth + containerOpenWidth);
     });
 
@@ -383,26 +405,26 @@ describe('<Navigation />', () => {
   describe('collapsing', () => {
     it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
       const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
-      wrapper.find('Resizer').props().onResize(1);
+      wrapper.find(Resizer).props().onResize(1);
 
-      expect(wrapper.find('Resizer').props().showResizeButton).toBe(true);
+      expect(wrapper.find(Resizer).props().showResizeButton).toBe(true);
     });
 
     it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
       const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
-      expect(wrapper.find('Resizer').props().showResizeButton).toBe(false);
+      expect(wrapper.find(Resizer).props().showResizeButton).toBe(false);
     });
   });
 
   describe('isElectronMac', () => {
     it('should render WithElectronTheme with set to false by default', () => {
       const wrapper = shallow(<Navigation />);
-      expect(wrapper.find('WithElectronTheme').props().isElectronMac).toBe(false);
+      expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(false);
     });
     it('should pass isElectronMac prop to WithElectronTheme', () => {
       const wrapper = shallow(<Navigation isElectronMac />);
-      expect(wrapper.find('WithElectronTheme').props().isElectronMac).toBe(true);
+      expect(wrapper.find(WithElectronTheme).props().isElectronMac).toBe(true);
     });
   });
 });

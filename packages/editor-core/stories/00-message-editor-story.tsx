@@ -3,12 +3,14 @@ import * as React from 'react';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
+import WithHelpTrigger from './../src/editor/ui/WithHelpTrigger';
 import getPropsPreset from './../src/editor/create-editor/get-props-preset';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
 import { Addon, AddonConfiguration } from '../src/editor/ui/Addon';
 import DocumentIcon from '@atlaskit/icon/glyph/document';
+import QuestionIcon from '@atlaskit/icon/glyph/editor/help';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import styled from 'styled-components';
 
@@ -54,6 +56,15 @@ storiesOf(name, module)
       }
     `;
 
+    class OpenHelp extends React.Component<any, any> {
+      render() {
+        this.props.openHelp();
+        return null;
+      }
+    }
+
+    const openHelp = (openHelp) => <OpenHelp openHelp={openHelp} />;
+
     /**
      * List of addon configuration objects
      */
@@ -67,11 +78,15 @@ storiesOf(name, module)
             <button onClick={closePopup}>close</button>
           </AddonComponentExample>
         )
-      },
-      {
+      }, {
         text: 'Clear editor',
         icon: <AtlassianIcon label="Item 2" />,
         actionOnClick: editorActions => editorActions.clear()
+      }, {
+        text: 'Formatting Tips',
+        icon: <QuestionIcon label="Formatting tips" />,
+        renderOnClick: () =>
+          <WithHelpTrigger render={openHelp} />
       }
     ];
 
@@ -94,6 +109,7 @@ storiesOf(name, module)
               allowTasksAndDecisions={true}
               allowHyperlinks={true}
               allowCodeBlocks={true}
+              allowHelpDialog={true}
 
               saveOnEnter={true}
 

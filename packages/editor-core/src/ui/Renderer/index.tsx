@@ -6,6 +6,7 @@ import {
   ReactSerializer,
   renderDocument,
   RendererContext,
+  RenderOutputStat,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
 
@@ -42,6 +43,7 @@ export interface Props {
   document: any;
   dataProviders?: ProviderFactory;
   eventHandlers?: EventHandlers;
+  onComplete?: (stat: RenderOutputStat) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema<any, any>;
@@ -75,8 +77,14 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, schema } = this.props;
-    return renderDocument(document, this.serializer, schema || defaultSchema);
+    const { document, onComplete, schema } = this.props;
+    const { result, stat } = renderDocument(document, this.serializer, schema || defaultSchema);
+
+    if (onComplete) {
+      onComplete(stat);
+    }
+
+    return result;
   }
 
   componentWillUnmount() {

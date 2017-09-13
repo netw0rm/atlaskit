@@ -1,3 +1,4 @@
+import * as assert from 'assert';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -75,6 +76,13 @@ describe('Renderer', () => {
       expect(spy.called).to.equal(true);
     });
 
+    it('should return result and stat fields', () => {
+      const res = renderDocument(doc, serializer, schema);
+
+      assert(res.result, 'Output is missing');
+      assert(res.stat, 'Stat is missing');
+    });
+
     it('should return null if document is invalid', () => {
       const unexpectedContent = [
         true,
@@ -92,7 +100,7 @@ describe('Renderer', () => {
       ];
 
       unexpectedContent.forEach(content => {
-        expect(renderDocument(content, serializer)).to.equal(null);
+        expect(renderDocument(content, serializer).result).to.equal(null);
       });
     });
 

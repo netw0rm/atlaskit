@@ -102,7 +102,6 @@
     "minilog": "^3.0.1",
     "mocha": "^3.2.0",
     "modify-babel-preset": "^3.2.1",
-    "node-cmd": "^3.0.0",
     "npm-run": "^4.1.2",
     "npm-run-all": "^4.0.1",
     "npmconf": "^2.1.2",

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { action } from '@kadira/storybook';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import SearchIcon from '@atlaskit/icon/glyph/search';
@@ -17,7 +17,7 @@ import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, 
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
-export default class BasicNavigation extends PureComponent {
+export default class BasicNavigation extends Component {
   static propTypes = {
     children: PropTypes.node,
     width: PropTypes.number,

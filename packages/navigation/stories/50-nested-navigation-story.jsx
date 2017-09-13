@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import BasicNestedNavigation from './components/nested-navigation/BasicNestedNavigation';
 import LazyLoadNestedNavigation from './components/nested-navigation/LazyLoadNestedNavigation';
@@ -17,7 +17,7 @@ storiesOf(`${name}/NestedNavigation`, module)
     <LazyLoadNestedNavigation />
   ))
   .add('nested navigation with react-router', () => (
-    <BrowserRouter><ReactRouterNestedNavigation /></BrowserRouter>
+    <ReactRouterNestedNavigation />
   ))
   .add('tooltip in nested navigation', () => (
     <BasicNestedNavigation withtootips />

@@ -1,5 +1,8 @@
 # @atlaskit/toggle
 
+## 2.5.0 (2017-09-13)
+
+* feature; update dependencies for toggle ([ae1a0ca](https://bitbucket.org/atlassian/atlaskit/commits/ae1a0ca))
 ## 2.4.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

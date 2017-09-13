@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 23.1.0 (2017-09-13)
+
+* feature; isElectronMac prop now pushes the navigation content down to avoid overlap with mac (issues closed: ak-3460) ([4e33100](https://bitbucket.org/atlassian/atlaskit/commits/4e33100))
 ## 23.0.0 (2017-09-13)
 
 * breaking; Navigation theming has been updated to take styles from @atlaskit/theme to support dark mode. Please ([4ee3080](https://bitbucket.org/atlassian/atlaskit/commits/4ee3080))

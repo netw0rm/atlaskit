@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import AkAvatar from '@atlaskit/avatar';
-import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../src';
+import { AkQuickSearch, AkNavigationItemGroup, AkSearchDrawer, quickSearchResultTypes } from '../../../src';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 
 const { ResultBase } = quickSearchResultTypes;
 
@@ -26,7 +27,7 @@ class CustomResultFromBase extends PureComponent {
         {...props}
         isCompact
         icon={avatar}
-        text={<h3>{messages[index]}</h3>}
+        text={messages[index]}
         textAfter={avatar}
       />
     );
@@ -36,10 +37,10 @@ class CustomResultFromBase extends PureComponent {
 // eslint-disable-next-line react/no-multi-comp
 class CustomResultFromInterface extends PureComponent {
   static mainStyles = {
-    'align-items': 'center',
-    'border-radius': '800px',
+    alignItems: 'center',
+    borderRadius: '800px',
     display: 'flex',
-    'font-size': '16px',
+    fontSize: '16px',
     margin: '8px',
   }
   handleMouseEnter = () => this.props.onMouseEnter({
@@ -49,7 +50,7 @@ class CustomResultFromInterface extends PureComponent {
     const { index, isSelected } = this.props;
     return (
       <button onMouseEnter={this.handleMouseEnter} style={CustomResultFromInterface.mainStyles}>
-        <div style={{ 'margin-right': '8px' }}>
+        <div style={{ marginRight: '8px' }}>
           <AkAvatar
             src={getPersonAvatarUrl(index)}
             size={isSelected ? 'xlarge' : 'large'}
@@ -61,14 +62,21 @@ class CustomResultFromInterface extends PureComponent {
   }
 }
 
+const searchIcon = <SearchIcon label="search" />;
+
 export default (
-  <AkSearchDrawer isOpen>
-    <AkQuickSearch placeholder="Sorry, no search callback in this story">
+  <AkSearchDrawer
+    backIcon={searchIcon}
+    isOpen
+    onBackButton={() => {}}
+    primaryIcon={searchIcon}
+  >
+    <AkQuickSearch onSearchInput={() => {}} placeholder="Sorry, no search callback in this story">
       <AkNavigationItemGroup title="Custom result type built on top of existing result type">
-        {[0, 1, 2, 3].map(n => <CustomResultFromBase resultId={n} index={n} />)}
+        {[0, 1, 2, 3].map(n => <CustomResultFromBase resultId={n} index={n} key={n} />)}
       </AkNavigationItemGroup>
       <AkNavigationItemGroup title="Custom result type built from scratch">
-        {[4, 5, 6, 7].map(n => <CustomResultFromInterface resultId={n} index={n} />)}
+        {[4, 5, 6, 7].map(n => <CustomResultFromInterface resultId={n} index={n} key={n} />)}
       </AkNavigationItemGroup>
     </AkQuickSearch>
   </AkSearchDrawer>

@@ -127,6 +127,7 @@
     "semver": "^5.3.0",
     "shelljs": "^0.7.5",
     "sinon": "^2.2.0",
+    "source-trace": "^2.0.0",
     "stats.js": "^0.17.0",
     "storybook-addon-i18n-tools": "^1.0.0",
     "style-loader": "^0.13.1",

@@ -1,3 +1,6 @@
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
 const xflowEnabledProperty = 'xflow.non.admin.request.enabled.jira.confluence';
 
 export default async () => {

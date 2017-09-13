@@ -1,5 +1,10 @@
 # @atlaskit/media-core
 
+## 10.1.0 (2017-09-12)
+
+* feature; support asap issuer in media-core context ([eff2b56](https://bitbucket.org/atlassian/atlaskit/commits/eff2b56))
+
+
 ## 9.0.0 (2017-08-07)
 
 * breaking; removed trello types ([ce181b4](https://bitbucket.org/atlassian/atlaskit/commits/ce181b4))

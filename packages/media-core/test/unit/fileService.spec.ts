@@ -1,9 +1,9 @@
-import * as sinon from 'sinon';
+import {useFakeXMLHttpRequest} from 'sinon';
+import {LRUCache} from 'lru-fast';
 
 import {MediaFileService} from '../../src/services/fileService';
-import {JwtTokenProvider, MediaItem} from '../../src';
-import {LRUCache} from 'lru-fast';
-import {FileDetails} from '../../src/item';
+import {FileDetails, FileItem} from '../../src/item';
+import {AuthProvider} from '../../src/auth';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -27,14 +27,14 @@ const defaultFileDetails = {
 };
 
 describe('MediaFileService', () => {
-  let tokenProvider: JwtTokenProvider;
   let fileService: MediaFileService;
 
   let xhr: any;
   let requests: Array<any>;
+  let authProvider: AuthProvider;
 
   const setupFakeXhr = () => {
-    xhr = sinon.useFakeXMLHttpRequest();
+    xhr = useFakeXMLHttpRequest();
     requests = [];
 
     xhr.onCreate = function (xhr: any) {
@@ -53,11 +53,18 @@ describe('MediaFileService', () => {
     });
   };
 
+  const resetAuthProvider = () => {
+    authProvider = jest.fn(() => Promise.resolve({
+      token: token,
+      clientId: clientId
+    }));
+  };
+
   beforeEach(() => {
     setupFakeXhr();
-    tokenProvider = jest.fn(() => Promise.resolve(token));
-    const cache = new LRUCache<string, MediaItem>(0);
-    fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
+    const cache = new LRUCache<string, FileItem>(0);
+    resetAuthProvider();
+    fileService = new MediaFileService({ serviceHost, authProvider }, cache);
   });
 
   afterEach(function () {
@@ -65,33 +72,30 @@ describe('MediaFileService', () => {
   });
 
   it('should resolve file item from collection given or not', () => {
-    const response = fileService.getFileItem(fileId, clientId, collection)
+    respondFakeXhr();
+    return fileService.getFileItem(fileId, collection)
       .then(fileItem => {
         expect(fileItem.type).toBe('file');
         expect(fileItem.details).toEqual(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
-        expect(tokenProvider).toHaveBeenCalledWith(collection);
+        expect(authProvider).toHaveBeenCalledWith({collectionName: collection});
       })
       .then(() => {
         expect(requests[0].url).toBe(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
       });
-
-    respondFakeXhr();
-
-    return response;
   });
 
   it('should resolve file item from collection given', () => {
-    const response = fileService.getFileItem(fileId, clientId)
+    const response = fileService.getFileItem(fileId)
       .then(fileItem => {
         expect(fileItem.type).toBe('file');
         expect(fileItem.details).toEqual(defaultFileDetails);
       })
       .then(() => {
         // Validate call to token provider
-        expect(tokenProvider).toHaveBeenCalledWith(undefined);
+        expect(authProvider).toHaveBeenCalledWith({collectionName: undefined});
       })
       .then(() => {
         expect(requests[0].url).toBe(`some-host/file/some-file-id?${authParams}`);
@@ -103,7 +107,7 @@ describe('MediaFileService', () => {
   });
 
   it('should reject server responded with 500', () => {
-    const response = fileService.getFileItem('some-dodgy-file-id', clientId, collection)
+    const response = fileService.getFileItem('some-dodgy-file-id', collection)
       .then(
         () => { throw new Error('The function getFileItem should fail'); },
         (error) => expect(error).toBeDefined()
@@ -114,37 +118,35 @@ describe('MediaFileService', () => {
   });
 
   describe('cache', () => {
-    const shouldReturnFileFromService = (id: string, cache: LRUCache<string, MediaItem>, fileDetails?: FileDetails) => {
-      tokenProvider = jest.fn(() => Promise.resolve(token));
-      fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
-      const response = fileService.getFileItem(id, clientId, collection).then(() => {
-        expect(tokenProvider).toHaveBeenCalledTimes(1);
-      });
-
+    const shouldReturnFileFromService = (id: string, cache: LRUCache<string, FileItem>, fileDetails?: FileDetails) => {
+      resetAuthProvider();
+      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
       respondFakeXhr(fileDetails);
-
-      return response;
+      return fileService.getFileItem(id, collection).then(() => {
+        expect(authProvider).toHaveBeenCalledTimes(1);
+      });
     };
 
-    const shouldReturnFileFromCache = (id: string, cache: LRUCache<string, MediaItem>) => {
-      tokenProvider = jest.fn(() => Promise.resolve(token));
-      fileService = new MediaFileService({ serviceHost, tokenProvider }, cache);
-      return fileService.getFileItem(id, clientId, collection).then(() => {
-        expect(tokenProvider).not.toHaveBeenCalled();
+    const shouldReturnFileFromCache = (id: string, cache: LRUCache<string, FileItem>) => {
+      resetAuthProvider();
+      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
+      return fileService.getFileItem(id, collection).then(() => {
+        expect(authProvider).not.toHaveBeenCalled();
       });
     };
 
     it('should cache processed files', () => {
-      const cache = new LRUCache<string, MediaItem>(1);
-      return shouldReturnFileFromService(fileId, cache).then(() => shouldReturnFileFromCache(fileId, cache));
+      const cache = new LRUCache<string, FileItem>(1);
+      return shouldReturnFileFromService(fileId, cache)
+        .then(() => shouldReturnFileFromCache(fileId, cache));
     });
 
     it('should not cache processed files if caching is disabled', () => {
-      const cache = new LRUCache<string, MediaItem>(0);
+      const cache = new LRUCache<string, FileItem>(0);
       return shouldReturnFileFromService(fileId, cache).then(() => {
         xhr.restore();
         setupFakeXhr();
-        shouldReturnFileFromService(fileId, cache);
+        return shouldReturnFileFromService(fileId, cache);
       });
     });
 
@@ -161,11 +163,11 @@ describe('MediaFileService', () => {
           'presentation.ppt': { href: `/file/${fileId}/artifact/presentation.ppt` }
         }
       };
-      const cache = new LRUCache<string, MediaItem>(1);
+      const cache = new LRUCache<string, FileItem>(1);
       return shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails).then(() => {
         xhr.restore();
         setupFakeXhr();
-        shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails);
+        return shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails);
       });
     });
   });

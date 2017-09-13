@@ -520,4 +520,54 @@ describe('@atlaskit/editor-hipchat', () => {
     });
   });
 
+  describe('Content Overflow', () => {
+    let editor;
+    let container: HTMLDivElement;
+
+    beforeEach(() => {
+      container = document.createElement('div');
+      container.style.width = '450px';
+      document.body.appendChild(container);
+      editorWrapper = mount(<Editor />, { attachTo: container });
+      editor = editorWrapper.get(0) as any;
+      editor.setFromJson(defaultValueLegacy);
+    });
+
+    afterEach(() => {
+      if (container) {
+        document.body.removeChild(container);
+      }
+    });
+
+    it('should prevent content from going outside of the container', () => {
+      const value = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'https://product-fabric.atlassian.net/wiki/spaces/D/pages/40304667/Media+cards+design+v2.0#Mediacardsdesignv2.0-Dragcards',
+                marks: [
+                  {
+                    type: 'link',
+                    attrs: {
+                      href: 'https://product-fabric.atlassian.net/wiki/spaces/D/pages/40304667/Media+cards+design+v2.0#Mediacardsdesignv2.0-Dragcards'
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+
+      editor.setFromJson(value);
+      const wrapperDiv = editorWrapper.find('.ak-editor-hipchat').children().first().getDOMNode() as HTMLDivElement;
+      expect(wrapperDiv.offsetWidth).to.equal(450);
+    });
+  });
+
 });

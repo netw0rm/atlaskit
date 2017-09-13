@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.2.0 (2017-09-12)
+
+* feature; we need the ability to reference elements ([cbf5c12](https://bitbucket.org/atlassian/atlaskit/commits/cbf5c12))
 ## 5.1.2 (2017-09-08)
 
 * bug fix; adding ButtonGroup to type declarations of button pckage. ([bb373c1](https://bitbucket.org/atlassian/atlaskit/commits/bb373c1))

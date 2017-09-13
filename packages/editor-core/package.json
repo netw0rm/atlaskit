@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "46.19.2",
+  "version": "46.21.0",
   "config": {
     "access": "public"
   },
@@ -46,6 +46,7 @@
     }
   ],
   "dependencies": {
+    "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/code": "^2.1.2",
@@ -62,7 +63,7 @@
     "@atlaskit/profilecard": "^3.6.4",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
-    "@atlaskit/task-decision": "^3.4.0",
+    "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-shared-styles": "^2.1.0",
     "@types/codemirror": "^0.0.40",

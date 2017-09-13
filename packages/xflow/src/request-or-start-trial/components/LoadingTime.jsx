@@ -12,10 +12,10 @@ import ProgressIndicator from './ProgressIndicator';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
-import WhereToFindConfluenceDiv from '../styled/WhereToFindConfluenceDiv';
-import WhereToFindConfluenceImg from '../styled/WhereToFindConfluenceImg';
-import WhereToFindConfluenceSVGDiv from '../styled/WhereToFindConfluenceSVGDiv';
-import WhereToFindConfluenceText from '../styled/WhereToFindConfluenceText';
+import WhereToFindNewProductDiv from '../styled/WhereToFindNewProductDiv';
+import WhereToFindNewProductImg from '../styled/WhereToFindNewProductImg';
+import WhereToFindNewProductSVGDiv from '../styled/WhereToFindNewProductSVGDiv';
+import WhereToFindNewProductText from '../styled/WhereToFindNewProductText';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -200,17 +200,17 @@ class LoadingTime extends Component {
             {this.showHeading()}
           </StartTrialHeader>
           <LoadingTimeTextDiv>
-            <WhereToFindConfluenceSVGDiv>
-              <WhereToFindConfluenceImg src={headerImage} alt="app-switcher" />
-            </WhereToFindConfluenceSVGDiv>
-            <WhereToFindConfluenceDiv>
+            <WhereToFindNewProductSVGDiv>
+              <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
+            </WhereToFindNewProductSVGDiv>
+            <WhereToFindNewProductDiv>
               <h5>
                 {heading}
               </h5>
-              <WhereToFindConfluenceText>
+              <WhereToFindNewProductText>
                 {message}
-              </WhereToFindConfluenceText>
-            </WhereToFindConfluenceDiv>
+              </WhereToFindNewProductText>
+            </WhereToFindNewProductDiv>
           </LoadingTimeTextDiv>
         </div>
         <ErrorFlag

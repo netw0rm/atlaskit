@@ -16,6 +16,7 @@ import { mapProps, withPseudoState } from '../hoc';
 
 import type {
   AvatarPropTypes,
+  AvatarPropTypesBase,
   ComponentType,
   ElementType,
   FunctionType,
@@ -67,12 +68,12 @@ class Avatar extends Component {
 
   // disallow click on disabled avatars
   // only return avatar data properties
-  guardedClick = (event: Object) => {
+  guardedClick = (event: KeyboardEvent | MouseEvent) => {
     const { isDisabled, onClick } = this.props;
 
     if (isDisabled || (typeof onClick !== 'function')) return;
 
-    const item: {} = omit(this.props, ...propsOmittedFromClickData);
+    const item: Object = omit(this.props, ...propsOmittedFromClickData);
 
     onClick({ item, event });
   }
@@ -131,8 +132,13 @@ class Avatar extends Component {
   render() {
     const { appearance, enableTooltip, isHover, onClick, name, size, src, stackIndex } = this.props;
 
+    // Since we augment the onClick handler below we can't use the
+    // same type definition that we do for the Avatar's onClick prop
+    type AvatarInnerProps = AvatarPropTypesBase & {
+      onClick?: Function,
+    };
     // distill props from context, props, and state
-    const props: AvatarPropTypes = getProps(this);
+    const props: AvatarInnerProps = getProps(this);
 
     // provide element type based on props
     const Inner: any = this.getStyledComponent();

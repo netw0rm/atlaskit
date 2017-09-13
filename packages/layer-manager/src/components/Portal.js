@@ -17,32 +17,39 @@ class Portal extends Component {
   portalElement = null
   componentDidMount() {
     const node = document.createElement('span');
-    document.body.appendChild(node);
-    this.portalElement = node;
-    this.componentDidUpdate();
+    if (document.body) {
+      document.body.appendChild(node);
+      this.portalElement = node;
+      this.componentDidUpdate();
+    }
   }
   componentDidUpdate() {
     const { children } = this.props;
     render(
-      this.getLayout(children),
+      this.renderChildren(children),
       this.portalElement
     );
   }
   componentWillUnmount() {
+    // re-render an empty react tree into the portal element so that any
+    // mounted components get cleaned up and have a chance to complete their
+    // lifecycle before the portal is removed from the dom entirely
     render(
-      this.getLayout(),
+      this.renderChildren(),
       this.portalElement,
       () => {
         // allow time for transitions to complete before the dom is cleaned up
         // five seconds is an arbitary number, but is more than any of our
         // animations need to complete
         setTimeout(() => {
-          document.body.removeChild(this.portalElement);
+          if (document.body) {
+            document.body.removeChild(this.portalElement);
+          }
         }, 5000);
       }
     );
   }
-  getLayout = (children) => {
+  renderChildren = (children) => {
     const { theme } = this.props;
 
     return (
@@ -58,4 +65,15 @@ class Portal extends Component {
   }
 }
 
-export default withTheme(Portal);
+// Pass theme through to be consumed
+const PortalWithTheme = withTheme(Portal);
+
+// Wrap the default export in a ThemeProvider component so that withTheme
+// doesn't freak out if the app doesn't have one already
+export default function PortalWithThemeProvider(props) {
+  return (
+    <ThemeProvider theme={{}}>
+      <PortalWithTheme {...props} />
+    </ThemeProvider>
+  );
+}

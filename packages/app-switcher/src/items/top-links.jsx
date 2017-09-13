@@ -1,6 +1,6 @@
 // @flow
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import React from 'react';
-import HomeIcon from '../components/HomeIcon';
 import SiteAdminIcon from '../components/SiteAdminIcon';
 import { HomeIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
 import type { Translations, DropdownConfig } from '../internal/types';
@@ -19,7 +19,7 @@ export default function (
   if (isHomeLinkEnabled) {
     items.push({
       content: (<TopLinkContainer>{i18n.home}</TopLinkContainer>),
-      elemBefore: (<HomeIconContainer><HomeIcon /></HomeIconContainer>),
+      elemBefore: (<HomeIconContainer><AtlassianIcon size="large" label="" /></HomeIconContainer>),
       href: '/home',
       analyticEvent: { key: 'appswitcher.home.link.click' },
     });

@@ -5,7 +5,7 @@ import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-i
 import { XFlowProvider } from '../common/components/XFlowProvider';
 import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 
-import { isUserTrusted } from './tenantContext';
+import { isUserTrusted } from './../common/tenantContext';
 import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
 import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';

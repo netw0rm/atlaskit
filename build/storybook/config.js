@@ -1,7 +1,9 @@
+// Put first for Symbol to be polyfilled for the latest react (see https://github.com/facebook/react/issues/8379)
+import 'babel-polyfill';
+
 import { configure, setAddon } from '@kadira/storybook';
 
 // add polyfills
-import 'babel-polyfill';
 import 'element-closest';
 import URLSearchParamsPolyfill from 'url-search-params';
 import 'es6-promise/auto';

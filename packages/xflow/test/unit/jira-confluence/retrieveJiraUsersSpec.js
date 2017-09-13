@@ -145,7 +145,7 @@ describe('retrieveJiraUsers', () => {
     try {
       await retrieveJiraUsers('everyone', false);
     } catch (e) {
-      expect(e).toEqual(new Error('Unable to retrieve active jira users. Status: 500'));
+      expect(e).toEqual(new Error('Unable to retrieve active users. Status: 500'));
     }
   });
 

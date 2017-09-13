@@ -32,5 +32,5 @@ export const Svg = styled.svg`
 `;
 
 export const HiddenImage = styled.img`
-  display: none;
+  visibility: hidden;
 `;

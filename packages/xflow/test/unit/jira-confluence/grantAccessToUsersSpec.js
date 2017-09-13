@@ -1,14 +1,16 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
-import * as notifyUsersAccessGranted from '../../../src/jira-confluence/notifyUsersAccessGranted';
+import * as notifyUsersAccessGranted from '../../../src/common/notifyUsersAccessGranted';
 
 import jiraUsers from './mock-data/jiraUsers.json';
 
-import grantAccessToUsers, {
+import {
   CREATE_GROUP_URL,
-  ADD_USERS_URL,
-} from '../../../src/jira-confluence/grantAccessToUsers';
+  addUsersUrl,
+} from '../../../src/common/grantAccessToUsers';
+
+import grantAccessToUsers from '../../../src/jira-confluence/grantAccessToUsers';
 
 import createConfluenceUsersGroupResponse from './mock-data/createConfluenceUsersGroup.json';
 
@@ -30,7 +32,7 @@ const mockCreateGroupEndpointWithSuccessStatus = () => {
 };
 
 const mockAddUsersEndpointWithSuccessStatus = () => {
-  fetchMock.mock(ADD_USERS_URL, addUsersToGroupResponse, {
+  fetchMock.mock(addUsersUrl('confluence-users'), addUsersToGroupResponse, {
     method: 'POST',
     name: 'AddUsers',
   });
@@ -41,7 +43,7 @@ const mockCreateGroupEndpointWithFailureStatus = (status) => {
 };
 
 const mockAddUsersEndpointWithFailureStatus = (status) => {
-  fetchMock.mock(ADD_USERS_URL, status);
+  fetchMock.mock(addUsersUrl('confluence-users'), status);
 };
 
 describe('grantAccessToUsers', () => {
@@ -82,7 +84,7 @@ describe('grantAccessToUsers', () => {
 
     await grantAccessToUsers(jiraUsers);
 
-    expect(notifyUsersAccessGranted.default).toHaveBeenCalledWith(jiraUsers);
+    expect(notifyUsersAccessGranted.default).toHaveBeenCalledWith(jiraUsers, 'confluence');
   });
 
   it('will reject with an error if the notifying users fails', async () => {

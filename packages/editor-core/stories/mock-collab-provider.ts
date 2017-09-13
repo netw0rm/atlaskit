@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { CollabEditProvider } from '../src/editor/plugins/collab-edit/provider';
+import { CollabEditProvider, CollabEvent } from '../src/editor/plugins/collab-edit/provider';
 
 export class MockCollabEditProvider implements CollabEditProvider {
   protected getState = () => {};
@@ -34,7 +34,7 @@ export class MockCollabEditProvider implements CollabEditProvider {
     }
   }
 
-  on(evt: 'init' | 'data' | 'error', handler: (...args) => void) {
+  on(evt: CollabEvent, handler: (...args) => void) {
     this.eventBus.on(evt, handler);
     return this;
   }
@@ -42,8 +42,11 @@ export class MockCollabEditProvider implements CollabEditProvider {
   /**
    * Only used for testing.
    */
-  emit(evt: 'init' | 'data' | 'error', ...args) {
+  emit(evt: CollabEvent, ...args) {
     this.eventBus.emit(evt, ...args);
+  }
+
+  sendMessage(data: any) {
   }
 }
 

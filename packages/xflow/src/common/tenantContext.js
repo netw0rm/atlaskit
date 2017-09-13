@@ -70,7 +70,7 @@ export const getInstanceName = () => window.location.hostname;
 /**
  * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
  */
-export const retrieveCloudId = async function() {
+export const retrieveCloudId = async () => {
   let response = await fetch(JIRA_CLOUD_ID_URL, {
     credentials: 'same-origin',
   });
@@ -83,6 +83,6 @@ export const retrieveCloudId = async function() {
     throw new Error('Unable to retrieve cloud id');
   }
 
-  const cloudId = await response.json();
-  return cloudId['cloudId'];
-}
+  const { cloudId } = await response.json();
+  return cloudId;
+};

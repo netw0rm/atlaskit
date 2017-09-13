@@ -2,7 +2,13 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import { isUserTrusted, getUserDisplayName } from '../../../src/common/tenantContext';
+import {
+  isUserTrusted,
+  getUserDisplayName,
+  getCloudId,
+  JIRA_CLOUD_ID_URL,
+  CONFLUENCE_CLOUD_ID_URL,
+} from '../../../src/common/tenantContext';
 import jiraAdminResponse from './../jira-confluence/mock-data/isUserTrustedJiraAdmin.json';
 import nonAdminResponse from './../jira-confluence/mock-data/isUserTrustedNonAdmin.json';
 import siteAdminResponse from './../jira-confluence/mock-data/isUserTrustedSiteAdmin.json';
@@ -21,6 +27,40 @@ const mockEndpointWithFailureStatus = (status) => {
 };
 
 describe('tenantContext', () => {
+  describe('getCloudId', () => {
+    beforeEach(() => {
+      fetchMock.restore();
+    });
+
+    it('should return the expected cloud id from Jira', async () => {
+      const EXPECTED_CLOUD_ID = 'not-an-instance-name';
+      fetchMock.mock(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
+      const result = await getCloudId();
+      return expect(result).toBe(EXPECTED_CLOUD_ID);
+    });
+
+    it('should return the expected cloud id from Confluence if Jira fails', async () => {
+      const EXPECTED_CLOUD_ID = 'instance-without-jira';
+      fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
+      fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
+      const result = await getCloudId();
+      return expect(result).toBe(EXPECTED_CLOUD_ID);
+    });
+
+    it('will reject with an error if both endpoints return a 500', async () => {
+      expect.assertions(1);
+      fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
+      fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, 500);
+      try {
+        await getCloudId();
+      } catch (e) {
+        expect(e).toEqual(
+          new Error('Unable to retrieve cloud id. Status: 500')
+        );
+      }
+    });
+  });
+
   describe('getUserDisplayName', () => {
     beforeEach(() => {
       fetchMock.restore();

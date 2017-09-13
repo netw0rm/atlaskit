@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import {
   akColorB400,
-  akColorN0,
   akColorN20,
-  akColorN30,
+  akColorN30A,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 import { MentionType } from '../../types';
@@ -15,23 +14,24 @@ export interface MentionStyleProps {
 const mentionStyle = {};
 mentionStyle[MentionType.SELF] = {
   background: akColorB400,
-  border: akColorB400,
+  border: 'transparent',
   text: akColorN20,
 };
 mentionStyle[MentionType.RESTRICTED] = {
-  background: akColorN0,
+  background: 'transparent',
   border: akColorN500,
   text: akColorN500,
 };
 mentionStyle[MentionType.DEFAULT] = {
-  background: akColorN30,
-  border: akColorN30,
+  background: akColorN30A,
+  border: 'transparent',
   text: akColorN500,
 };
 
 
 // tslint:disable-next-line:variable-name
 export const MentionStyle = styled.span`${(props: MentionStyleProps) => `
+  display: table-cell;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;
@@ -39,10 +39,11 @@ export const MentionStyle = styled.span`${(props: MentionStyleProps) => `
   cursor: pointer;
   padding: 0 4px 2px 3px;
   white-space: nowrap;
+  line-height: 16px;
 `}`;
 
 // tslint:disable-next-line:variable-name
 export const MentionContainer = styled.span`
-  display: inline-block;
+  display: inline-table;
   white-space: nowrap;
 `;

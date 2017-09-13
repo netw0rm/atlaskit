@@ -1,15 +1,15 @@
 // @flow
 import PropTypes from 'prop-types';
-import React, { Children, Component } from 'react';
+import { Children, Component } from 'react';
+import { findDOMNode } from 'react-dom';
 
 import type { ElementType } from '../types';
-import { TargetWrapper } from '../styled/Target';
 import SpotlightRegistry from './SpotlightRegistry';
 
 type Props = {
   /** a single child */
   children: ElementType,
-  /** the name to reference later */
+  /** the name to reference from Spotlight */
   name: string,
 };
 
@@ -18,33 +18,30 @@ export default class SpotlightTarget extends Component {
   static contextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };
-  static defaultProps = {
-    pulse: true,
-  };
 
   componentDidMount() {
-    const { children, name } = this.props;
+    const { name } = this.props;
     const { spotlightRegistry } = this.context;
 
-    // FIXME: write a better warning.
     if (!spotlightRegistry) {
-      // eslint-disable-next-line no-console
-      throw Error('`SpotlightTarget` requires `SpotlightJourney` as an ancestor.');
+      throw Error('`SpotlightTarget` requires `SpotlightManager` as an ancestor.');
     } else {
-      spotlightRegistry.add(name, {
-        element: Children.only(children),
-        ref: this.node,
-      });
+      spotlightRegistry.add(name, findDOMNode(this));
+    }
+  }
+  componentWillUnmount() {
+    const { name } = this.props;
+    const { spotlightRegistry } = this.context;
+
+    if (!spotlightRegistry) {
+      throw Error('`SpotlightTarget` requires `SpotlightManager` as an ancestor.');
+    } else {
+      spotlightRegistry.remove(name);
     }
   }
   getRef = r => (this.node = r);
 
   render() {
-    return (
-      <TargetWrapper
-        innerRef={this.getRef}
-        {...this.props}
-      />
-    );
+    return Children.only(this.props.children);
   }
 }

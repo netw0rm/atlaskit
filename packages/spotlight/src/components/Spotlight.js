@@ -1,13 +1,20 @@
 // @flow
+/* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
-
 import type { ComponentType, ElementType, FunctionType } from '../types';
-import SpotlightRegistry from './SpotlightRegistry';
 import { DIALOG_WIDTH, Dialog, DialogPositioner, FillScreen } from '../styled/Dialog';
 import Blanket from '../styled/Blanket';
 import { ClickTarget, Target } from '../styled/Target';
+
+import SpotlightRegistry from './SpotlightRegistry';
+import { Fade, SlideUp } from './Animation';
+
+// Rename transition components for easier parsing of the render method
+const Fill = props => <Fade component={FillScreen} {...props} />;
+const Positioner = props => <SlideUp component={DialogPositioner} {...props} />;
 
 type Props = {|
   /** The elements rendered in the modal */
@@ -20,14 +27,16 @@ type Props = {|
   dialogWidth?: 'small' | 'medium' | 'large' | 'x-large',
   /** whether or not to display a pulse animation around the spotlighted element */
   pulse?: bool,
-  /** alternative element to render than the wrapped target */
-  renderElement?: ComponentType,
-  /** the name of the spotlight target */
+  /** the name of the SpotlightTarget */
   target?: string,
+  /** the background color of the element being highlighted */
+  targetBgColor?: string,
   /** The elements rendered in the modal */
   targetOnClick?: FunctionType,
   /** the border-radius of the element being highlighted */
   targetRadius?: number,
+  /** alternative element to render than the wrapped target */
+  targetReplacementComponent?: ComponentType,
 |};
 type State = {
   scrollDistance: number,
@@ -45,14 +54,19 @@ function getInitialState() {
   };
 }
 
-/* eslint-disable react/sort-comp */
-export default class Spotlight extends Component {
+/* eslint-disable react/prop-types, react/no-danger */
+const Clone = ({ html }) => (
+  <div
+    dangerouslySetInnerHTML={{ __html: html }}
+    style={{ pointerEvents: 'none' }}
+  />
+);
+/* eslint-enable react/prop-types, react/no-danger */
+
+class Spotlight extends Component {
   props: Props;
   state: State = getInitialState();
 
-  static contextTypes = {
-    spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
-  };
   static defaultProps = {
     pulse: true,
     dialogWidth: 'medium',
@@ -64,26 +78,39 @@ export default class Spotlight extends Component {
     if (targetOnClick) targetOnClick({ event, target });
   }
 
-  renderChild() {
-    const { spotlightRegistry } = this.context;
-    const { targetOnClick, pulse, targetRadius, renderElement: AltElement, target } = this.props;
+  renderTargetClone() {
+    const {
+      // NOTE: we don't document the spotlightRegistry prop type because it
+      // is provided by the HOC and not part of the public API.
+      // eslint-disable-next-line react/prop-types
+      spotlightRegistry,
+      pulse,
+      target,
+      targetBgColor,
+      targetOnClick,
+      targetRadius,
+      targetReplacementComponent: Replacement,
+    } = this.props;
 
     if (!target) {
-      // eslint-disable-next-line no-console
-      console.warn(`No target found for "${target}".`);
-      return null;
+      throw Error(`Spotlight couldn't find a target matching "${target}".`);
+    }
+    if (!spotlightRegistry) {
+      throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
     }
 
-    const { element, ref } = spotlightRegistry.get(target);
-    const { height, left, top, width } = ref.getBoundingClientRect();
-    const dimensions = { height, left, top, width };
+    const node = spotlightRegistry.get(target);
 
-    return AltElement ? (
-      <AltElement {...dimensions} />
+    const { height, left, top, width } = node.getBoundingClientRect();
+    const dimensions = { height, left, top, width };
+    const onClick = targetOnClick && this.handleTargetClick;
+
+    return Replacement ? (
+      <Replacement {...dimensions} />
     ) : (
-      <Target pulse={pulse} radius={targetRadius} style={dimensions}>
-        {element}
-        <ClickTarget onClick={targetOnClick && this.handleTargetClick} />
+      <Target pulse={pulse} bgColor={targetBgColor} radius={targetRadius} style={dimensions}>
+        <Clone html={node.outerHTML} />
+        <ClickTarget onClick={onClick} />
       </Target>
     );
   }
@@ -104,30 +131,42 @@ export default class Spotlight extends Component {
     const widthName = acceptedWidths.includes(dialogWidth) ? dialogWidth : null;
     const widthValue = widthName ? null : dialogWidth;
 
-    const element = target ? (
+    // NOTE: the `in` property is not part of the public API and should NOT be documented
+    // eslint-disable-next-line react/prop-types
+    return target ? this.props.in && (
       <Layer
         content={dialog}
         offset="0 8"
         position={dialogPlacement}
+        style={{ transition: 'all 240ms cubic-bezier(0.075, 0.82, 0.165, 1)' }}
       >
-        {this.renderChild()}
+        {this.renderTargetClone()}
+        <Blanket />
       </Layer>
     ) : (
-      <FillScreen scrollDistance={scrollDistance}>
-        <DialogPositioner
+      <Fill scrollDistance={scrollDistance} {...this.props}>
+        <Blanket />
+        <Positioner
+          {...this.props}
           widthName={widthName}
           widthValue={widthValue}
         >
           {dialog}
-        </DialogPositioner>
-      </FillScreen>
-    );
-
-    return (
-      <div>
-        <Blanket />
-        {element}
-      </div>
+        </Positioner>
+      </Fill>
     );
   }
 }
+
+const SpotlightWithRenderTarget = withRenderTarget({ target: 'spotlight' }, Spotlight);
+
+class SpotlightWrapper extends Component {
+  static contextTypes = {
+    spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
+  };
+  render() {
+    return <SpotlightWithRenderTarget {...this.props} {...this.context} />;
+  }
+}
+
+export default SpotlightWrapper;

@@ -1,17 +1,13 @@
 // @flow
-type Index = {|
-  element: Element,
-  ref: HTMLElement,
-|};
 type Store = {
-  [name: string]: Index,
+  [name: string]: HTMLElement,
 };
 
 export default class SpotlightRegistry {
   _store: Store = {}
 
-  add(name, data) {
-    this._store[name] = data;
+  add(name, node) {
+    this._store[name] = node;
   }
   get(name) {
     return this._store[name];

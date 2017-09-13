@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import SpotlightRegistry from './SpotlightRegistry';
 
-export default class SpotlightJourney extends Component {
+export default class SpotlightManager extends Component {
   static childContextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };

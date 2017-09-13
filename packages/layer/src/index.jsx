@@ -11,16 +11,17 @@ import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition 
 
 export default class Layer extends PureComponent {
   static propTypes = {
-    position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
     autoFlip: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.arrayOf(PropTypes.oneOf(['top', 'right', 'bottom', 'left'])),
     ]),
     boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
-    offset: PropTypes.string,
-    content: PropTypes.node,
-    onFlippedChange: PropTypes.func,
     children: PropTypes.node,
+    content: PropTypes.node,
+    offset: PropTypes.string,
+    onFlippedChange: PropTypes.func,
+    position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
+    style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = {
@@ -152,7 +153,18 @@ export default class Layer extends PureComponent {
   }
 
   render() {
+    const { style } = this.props;
     const { cssPosition, transform } = this.state;
+
+    const contentWrapperStyle = {
+      top: 0,
+      left: 0,
+      position: cssPosition,
+      transform,
+      zIndex: akZIndexLayer,
+      ...style,
+    };
+
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)}>
@@ -160,7 +172,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
+          style={contentWrapperStyle}
         >
           {this.props.content}
         </div>

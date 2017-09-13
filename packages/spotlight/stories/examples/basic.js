@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
+import LayerManager from '@atlaskit/layer-manager';
 
 import {
   Spotlight,
-  SpotlightJourney,
+  SpotlightManager,
   SpotlightTarget,
 } from '../../src';
 
@@ -98,7 +99,9 @@ class Example extends Component {
 }
 
 export default () => (
-  <SpotlightJourney>
-    <Example />
-  </SpotlightJourney>
+  <LayerManager>
+    <SpotlightManager>
+      <Example />
+    </SpotlightManager>
+  </LayerManager>
 );

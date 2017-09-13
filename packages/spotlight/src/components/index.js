@@ -1,4 +1,4 @@
 export Spotlight from './Spotlight';
-export SpotlightJourney from './SpotlightJourney';
+export SpotlightManager from './SpotlightManager';
 export SpotlightRegistry from './SpotlightRegistry';
 export SpotlightTarget from './SpotlightTarget';

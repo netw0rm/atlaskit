@@ -3,6 +3,8 @@ import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import { AkContainerTitleDropdown } from '@atlaskit/navigation';
 import NucleusIcon from '../components/NucleusIcon';
 
+import { SpotlightTarget } from '../../src';
+
 export default class JiraProjectSwitcher extends PureComponent {
   getContent = () => {
     const items = [
@@ -29,13 +31,15 @@ export default class JiraProjectSwitcher extends PureComponent {
 
   render() {
     return (
-      <AkContainerTitleDropdown
-        text="Project Switcher very long text"
-        icon={<NucleusIcon />}
-        subText="Software project"
-      >
-        {this.getContent()}
-      </AkContainerTitleDropdown>
+      <SpotlightTarget name="jira-project-switcher">
+        <AkContainerTitleDropdown
+          text="Project Switcher very long text"
+          icon={<NucleusIcon />}
+          subText="Software project"
+        >
+          {this.getContent()}
+        </AkContainerTitleDropdown>
+      </SpotlightTarget>
     );
   }
 }

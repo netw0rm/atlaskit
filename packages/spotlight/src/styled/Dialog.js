@@ -63,11 +63,11 @@ export const DialogPositioner = styled.div`
   margin-left: auto;
   margin-right: auto;
   max-height: calc(100% - 1px);
-  max-width: ${maxDimensions};
   position: absolute;
   right: 0;
   top: ${gutter}px;
   width: ${dialogWidth};
+  z-index: 501;
 `;
 
 export const Dialog = styled.div`
@@ -78,6 +78,7 @@ export const Dialog = styled.div`
   color: ${textColor};
   max-height: ${math.multiply(gridSize, 60)}px;
   max-width: ${math.multiply(gridSize, 62)}px;
+  overflow-y: auto;
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 3)}px;
   z-index: 501;
 `;

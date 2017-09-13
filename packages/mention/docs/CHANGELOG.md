@@ -1,5 +1,13 @@
 # @atlaskit/mention
 
+## 7.4.1 (2017-09-13)
+
+
+* bug fix; update background of "no access" mention lozenge to be transparent (issues closed: fs-1160) ([abd124d](https://bitbucket.org/atlassian/atlaskit/commits/abd124d))
+* bug fix; update background colour of default mention lozenge (issues closed: fs-1319) ([391d263](https://bitbucket.org/atlassian/atlaskit/commits/391d263))
+* bug fix; make mention lozenge 20px high to match rendering line height (issues closed: fs-1160) ([9d02973](https://bitbucket.org/atlassian/atlaskit/commits/9d02973))
+
+
 ## 7.4.0 (2017-08-28)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "46.21.0",
+  "version": "47.0.0",
   "config": {
     "access": "public"
   },
@@ -19,7 +19,9 @@
     "validate/typescript": "../../build/bin/validate.typescript.sh",
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
-    "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
+    "test:browser": "npm run test:json-schema-compat && npm run test:karma",
+    "test:json-schema-compat": "tempdir=$(mktemp -d) && wget --no-check-certificate --tries 3 --quiet --directory-prefix $tempdir https://unpkg.com/@atlaskit/editor-core@latest/dist/json-schema/v1/full.json && json-schema-diff-validator $tempdir/full.json dist/json-schema/v1/full.json",
+    "test:karma": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
   },
   "files": [
     "dist/es5/**/*.js",
@@ -46,8 +48,8 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/activity": "^1.0.1",
+    "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
@@ -104,11 +106,12 @@
     "highlight.js": "^9.6.0",
     "jquery": "^2.2.4",
     "js-search": "^1.3.3",
+    "json-schema-diff-validator": "^0.0.1",
+    "pretty-data": "^0.40.0",
     "prosemirror-dev-tools": "^1.3.3",
     "sinon": "^2.2.0",
     "string.prototype.repeat": "^0.2.0",
-    "thenable": "^1.0.0",
-    "pretty-data": "^0.40.0"
+    "thenable": "^1.0.0"
   },
   "repository": {
     "type": "git",

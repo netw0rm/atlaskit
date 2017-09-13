@@ -3,7 +3,7 @@
 import * as presets from './theme/presets';
 import * as resultTypes from './components/js/results';
 
-export { default } from './components/js/Navigation';
+export { default } from './components/js/NavigationWithTheme';
 export { default as AkNavigationItemGroup } from './components/js/NavigationItemGroup';
 export { default as AkContainerLogo } from './components/js/ContainerLogo';
 export { default as AkContainerTitle } from './components/js/ContainerTitle';

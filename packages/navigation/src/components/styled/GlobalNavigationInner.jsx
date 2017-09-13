@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { globalOpenWidth, layout } from '../../shared-variables';
-import { getProvided, isElectronMac } from '../../theme/util';
+import { getProvided, isElectronMac, electronMacTopPadding } from '../../theme/util';
+
+const getTopPadding = (props) => (
+  layout.padding.top + (isElectronMac(props.theme) ? electronMacTopPadding : 0)
+);
 
 const GlobalNavigationInner = styled.div`
   align-items: center;
@@ -9,7 +13,7 @@ const GlobalNavigationInner = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: ${layout.padding.top}px 0 ${layout.padding.bottom}px;
+  padding: ${getTopPadding}px 0 ${layout.padding.bottom}px;
   /* always keeping a fixed width so that the ContainerNavigation bleeds over the top of this */
   width: ${props => globalOpenWidth(isElectronMac(props.theme))}px;
 `;

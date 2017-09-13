@@ -123,18 +123,17 @@ export class MentionsState {
       return;
     }
 
-    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
-    if (newAnchorElement !== this.anchorElement) {
-      this.dirty = true;
-      this.anchorElement = newAnchorElement;
-    }
-
     const { mentionQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
     if (!doc.rangeHasMark(from - 1, to, mentionQuery) && this.queryActive) {
       this.dismiss();
-      return;
+    }
+
+    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
+    if (newAnchorElement !== this.anchorElement) {
+      this.dirty = true;
+      this.anchorElement = newAnchorElement;
     }
 
     if (this.dirty) {

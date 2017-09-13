@@ -1,6 +1,7 @@
 export * as colors from './colors';
 export * as math from './math';
 
+export getTheme from './getTheme';
 export themed from './themed';
 export AtlasKitThemeProvider from './AtlasKitThemeProvider';
 

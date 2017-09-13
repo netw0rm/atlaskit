@@ -18,7 +18,7 @@ const defaultProps = {
   optionItems: [
     {
       value: 'everyone',
-      label: 'Everyone in JIRA Software',
+      label: 'Everyone in Jira Software',
     },
     {
       value: 'site-admins',

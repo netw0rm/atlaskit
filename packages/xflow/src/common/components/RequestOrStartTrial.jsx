@@ -152,7 +152,6 @@ class RequestOrStartTrial extends Component {
                   <div>
                     <InitializingScreen isOpen={!initializingCheckFailed} />
                     <ErrorFlag
-                      flagRetry
                       flagActions={this.flagActions}
                       title="Oops... Something went wrong"
                       description="Let's try again."

@@ -63,7 +63,7 @@ describe('tenantContext', () => {
       fetchMock.restore();
     });
 
-    it('will return false if they are only a JIRA administrator', async () => {
+    it('will return false if they are only a Jira administrator', async () => {
       mockEndpointWithResponse(jiraAdminResponse);
       const result = await isUserTrusted(TEST_USERNAME);
       return expect(result).toBe(false);

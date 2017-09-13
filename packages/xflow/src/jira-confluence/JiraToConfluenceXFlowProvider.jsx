@@ -8,7 +8,6 @@ import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 import { isUserTrusted } from './../common/tenantContext';
 import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
-import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
 import cancelRequestTrialAccess from './cancelRequestTrialAccess';
 import startConfluenceTrial from './startConfluenceTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
@@ -122,7 +121,7 @@ const messages = defineMessages({
   },
   notePlaceholder: {
     id: 'xflow.j2c.request-trial.note.placeholder',
-    defaultMessage: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in JIRA Software - and it\'s free for 30 days.',
+    defaultMessage: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and it\'s free for 30 days.',
   },
 });
 
@@ -133,6 +132,7 @@ export const defaultProps = intl => ({
       accessImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
+      accessLearnMoreLink: 'https://www.atlassian.com/software/confluence',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
     },
@@ -215,7 +215,6 @@ export const defaultProps = intl => ({
 
   requestTrialAccess,
   requestTrialAccessWithNote,
-  requestTrialAccessWithoutNote,
   cancelRequestTrialAccess,
 
   startProductTrial: startConfluenceTrial,

@@ -15,7 +15,6 @@ const overrideImplementations = {
 
   requestTrialAccess: notImplemented,
   requestTrialAccessWithNote: notImplemented,
-  requestTrialAccessWithoutNote: notImplemented,
   cancelRequestTrialAccess: notImplemented,
 
   cancelStartProductTrial: notImplemented,

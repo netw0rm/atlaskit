@@ -54,7 +54,6 @@ export const xFlowShape = PropTypes.shape({
 
   requestTrialAccess: PropTypes.func,
   requestTrialAccessWithNote: PropTypes.func,
-  requestTrialAccessWithoutNote: PropTypes.func,
   cancelRequestTrialAccess: PropTypes.func,
 
   startProductTrial: PropTypes.func,

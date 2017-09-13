@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Flag, { FlagGroup } from '@atlaskit/flag';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import { colors } from '@atlaskit/theme';
 
-const Icon = <ErrorIcon label="Error icon" primaryColor={colors.R200} />;
+const Icon = <CheckCircleIcon label="Success icon" primaryColor={colors.G300} />;
 
-export default class ErrorFlag extends Component {
+export default class SuccessFlag extends Component {
   static propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
@@ -29,8 +29,8 @@ export default class ErrorFlag extends Component {
           ? <Flag
             icon={Icon}
             actions={flagActions}
-            id="ErrorFlag"
-            key="ErrorFlag"
+            id="SuccessFlag"
+            key="SuccessFlag"
             title={title}
             description={description}
           />

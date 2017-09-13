@@ -26,25 +26,13 @@ storiesOf(name, module)
     <div>
       <div>
         <BasicFieldBase
-          label="basic example for form"
+          label="basic example of fieldbase"
           id="fieldbase"
         >
           <Input
             value="input children"
             isEditing
             id="fieldbase"
-          />
-        </BasicFieldBase>
-      </div>
-      <div>
-        <BasicFieldBase
-          label="basic example for form"
-          id="fieldbase2"
-        >
-          <Input
-            value="input children"
-            isEditing
-            id="fieldbase2"
           />
         </BasicFieldBase>
       </div>

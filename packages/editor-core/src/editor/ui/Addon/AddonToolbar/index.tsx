@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MoreIcon from '@atlaskit/icon/glyph/more';
+import MoreIcon from '@atlaskit/icon/glyph/editor/more';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { Dropdown, RenderOnClickHandler } from '../';
 import WithEditorActions from '../../WithEditorActions';
@@ -57,6 +57,7 @@ export default class AddonToolbar extends React.Component<Props, State> {
     return (
       <div ref={this.handleRef}>
         <ToolbarButton
+          selected={isOpen}
           onClick={this.togglePopup}
           title="Insert addon"
           iconBefore={<MoreIcon label="Insert addon" />}

@@ -5,6 +5,7 @@ import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/render
 import DecisionList from '../src/components/DecisionList';
 import DecisionItem from '../src/components/DecisionItem';
 import { document } from '../src/support/story-data';
+import { MessageContainer } from './story-utils';
 
 const dumpRef = (ref: HTMLElement) => {
   // tslint:disable-next-line:no-console
@@ -13,28 +14,34 @@ const dumpRef = (ref: HTMLElement) => {
 
 storiesOf('<DecisionList/>', module)
   .add('Simple DecisionList', () => (
-    <DecisionList>
-      <DecisionItem contentRef={dumpRef}>
-        Hello <b>world</b>.
-      </DecisionItem>
-      <DecisionItem contentRef={dumpRef}>
-        <Renderer document={document} />
-      </DecisionItem>
-      <DecisionItem contentRef={dumpRef}>
-        Hello <b>world</b>.
-      </DecisionItem>
-      <DecisionItem contentRef={dumpRef}>
-        <Renderer document={document} />
-      </DecisionItem>
-    </DecisionList>
+    <MessageContainer>
+      <DecisionList>
+        <DecisionItem contentRef={dumpRef}>
+          Hello <b>world</b>.
+        </DecisionItem>
+        <DecisionItem contentRef={dumpRef}>
+          <Renderer document={document} />
+        </DecisionItem>
+        <DecisionItem contentRef={dumpRef}>
+          Hello <b>world</b>.
+        </DecisionItem>
+        <DecisionItem contentRef={dumpRef}>
+          <Renderer document={document} />
+        </DecisionItem>
+      </DecisionList>
+    </MessageContainer>
   ))
   .add('Single item DecisionList', () => (
-    <DecisionList>
-      <DecisionItem contentRef={dumpRef}>
-        Hello <b>world</b>.
-      </DecisionItem>
-    </DecisionList>
+    <MessageContainer>
+      <DecisionList>
+        <DecisionItem contentRef={dumpRef}>
+          Hello <b>world</b>.
+        </DecisionItem>
+      </DecisionList>
+    </MessageContainer>
   ))
   .add('Empty DecisionList', () => (
-    <DecisionList/>
+    <MessageContainer>
+      <DecisionList/>
+    </MessageContainer>
   ));

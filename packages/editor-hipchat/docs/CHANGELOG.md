@@ -1,5 +1,9 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.3 (2017-09-12)
+
+
+* bug fix; long links pushes content and button outside of viewable area (issues closed: ed-2707) ([a830bf1](https://bitbucket.org/atlassian/atlaskit/commits/a830bf1))
 ## 5.4.2 (2017-09-12)
 
 * bug fix; long links pushes content and button outside of viewable area (issues closed: ed-2707) ([a830bf1](https://bitbucket.org/atlassian/atlaskit/commits/a830bf1))

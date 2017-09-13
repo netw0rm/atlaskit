@@ -111,6 +111,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   }
 
   deleteSiteEmoji?(emoji: EmojiDescription): Promise<boolean> {
+    this.emojiRepository.delete(emoji);
     return this.promiseBuilder(false, 'deleteSiteEmoji');
   }
 
@@ -119,7 +120,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   }
 
   optimisticMediaRendering(emoji: EmojiDescription) {
-    return !!this.optimisticRendering;
+    return emoji && !!this.optimisticRendering;
   }
 
   getSelectedTone(): ToneSelection {

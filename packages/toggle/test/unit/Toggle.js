@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import CloseIcon from 'ak-icon/glyph/cancel';
-import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CloseIcon from '@atlaskit/icon/glyph/cross';
+import ConfirmIcon from '@atlaskit/icon/glyph/check';
 
 import { ToggleStateless as Toggle } from '../../src';
 import { IconWrapper, Input, Label } from '../../src/styled';

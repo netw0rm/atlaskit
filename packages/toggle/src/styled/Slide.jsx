@@ -1,11 +1,5 @@
 import styled from 'styled-components';
-import {
-  akColorB100,
-  akColorG300,
-  akColorG500,
-  akColorN200,
-  akColorN80,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import {
   borderWidth,
   getHeight,
@@ -13,29 +7,29 @@ import {
   transition,
 } from './constants';
 
-const colors = {
-  bgChecked: akColorG300,
-  bgCheckedHover: akColorG500,
+const colorOptions = {
+  bgChecked: colors.G300,
+  bgCheckedHover: colors.G500,
   bgCheckedDisabled: '#35B885',
 
-  bgUnchecked: akColorN80,
-  bgUncheckedHover: akColorN200,
+  bgUnchecked: colors.N80,
+  bgUncheckedHover: colors.N200,
   bgUncheckedDisabled: '#f3f4f5',
 };
 
 const getBgColor = ({ isChecked, isDisabled }) => {
-  let color = colors.bgUnchecked;
+  let color = colorOptions.bgUnchecked;
 
-  if (isChecked) color = colors.bgChecked;
-  if (isDisabled && !isChecked) color = colors.bgUncheckedDisabled;
-  if (isDisabled && isChecked) color = colors.bgCheckedDisabled;
+  if (isChecked) color = colorOptions.bgChecked;
+  if (isDisabled && !isChecked) color = colorOptions.bgUncheckedDisabled;
+  if (isDisabled && isChecked) color = colorOptions.bgCheckedDisabled;
 
   return color;
 };
 const getHoverStyles = ({ isChecked, isDisabled }) => {
   let bgcolor;
   if (!isDisabled) {
-    bgcolor = isChecked ? colors.bgCheckedHover : colors.bgUncheckedHover;
+    bgcolor = isChecked ? colorOptions.bgCheckedHover : colorOptions.bgUncheckedHover;
   }
 
   return `
@@ -45,7 +39,7 @@ const getHoverStyles = ({ isChecked, isDisabled }) => {
     }
   `;
 };
-const getBorderColor = ({ isFocused }) => (isFocused ? akColorB100 : 'transparent');
+const getBorderColor = ({ isFocused }) => (isFocused ? colors.B100 : 'transparent');
 
 export default styled.div`
   background-clip: content-box;

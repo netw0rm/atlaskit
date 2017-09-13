@@ -11,11 +11,14 @@ import Page from '@atlaskit/page';
 import { name } from '../package.json';
 import { ModalFooter } from '../src';
 
+import AppearanceDemo from './AppearanceDemo';
+import AutofocusDemo from './AutofocusDemo';
 import HeadFootDemo from './HeadFootDemo';
 import HeightDemo from './HeightDemo';
 import ModalDemo from './ModalDemo';
-import SubmitDemo from './SubmitDemo';
+import MultipleDemo from './MultipleDemo';
 import ShowHideDemo from './ShowHideDemo';
+import SubmitDemo from './SubmitDemo';
 import WidthDemo from './WidthDemo';
 
 const onClick = ({ target }) => console.log(target.innerText);
@@ -27,6 +30,9 @@ const actions = [
 
 storiesOf(name, module)
   .add('animated entry/exit', () => <ShowHideDemo />)
+  .add('alternative appearances', () => <AppearanceDemo />)
+  .add('autofocus behaviour', () => <AutofocusDemo />)
+  .add('multiple modals', () => <MultipleDemo />)
   .add('form submission', () => <SubmitDemo />)
   .add('actions', () => <ModalDemo heading="Multiple Actions" actions={actions} />)
   .add('height', () => <HeightDemo />)

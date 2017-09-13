@@ -61,13 +61,17 @@ type Props = {
   */
   children?: ChildrenType,
   /**
-    Component to render the header of the modal.
+    Component to render the footer of the modal, replaces internal implementation.
+  */
+  footer?: ComponentType,
+  /**
+    Component to render the header of the modal, replaces internal implementation.
   */
   header?: ComponentType,
   /**
-    Component to render the footer of the modal.
+    The modal title; rendered in the header.
   */
-  footer?: ComponentType,
+  heading?: string,
   /**
     Height of the modal. If not set, the modal grows to fit the content until it
     runs out of vertical space, at which point scrollbars appear. If a number is
@@ -76,10 +80,6 @@ type Props = {
     also recognised.
   */
   height?: number | string,
-  /**
-    The modal title; rendered in the header.
-  */
-  heading?: string,
   /**
     Internal property for animation, provided by react-transition-group
   */

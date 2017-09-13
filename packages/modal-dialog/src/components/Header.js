@@ -13,8 +13,8 @@ const TitleIcon = ({ appearance }: { appearance: 'danger' | 'warning' }) => {
   const Icon = icon[appearance];
 
   return (
-    <IconWrapper appearance={appearance} label={`${appearance} icon`}>
-      <Icon />
+    <IconWrapper appearance={appearance}>
+      <Icon label={`${appearance} icon`} />
     </IconWrapper>
   );
 };

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { colors, gridSize, themed } from '@atlaskit/theme';
+import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 // Constants
 // ==============================
@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  max-height: 100%;
 `;
 
 // Header
@@ -62,9 +63,7 @@ export const TitleIconWrapper = styled.span`
   keyline height from header and footer.
 */
 export const Body = styled.div`
-  display: flex;
   flex: 1 1 auto;
-  flex-direction: column;
   overflow-y: auto;
   padding: ${keylineHeight}px ${outerGutter}px;
 `;
@@ -79,12 +78,11 @@ export const Footer = styled(HeaderOrFooter)`
   )};
 `;
 
-const actionGutter = 8;
 export const Actions = styled.div`
   display: inline-flex;
-  margin: 0 -${actionGutter / 2}px;
+  margin: 0 -${math.divide(gridSize, 2)}px;
 `;
 export const ActionItem = styled.div`
   flex: 1 0 auto;
-  margin: 0 ${actionGutter / 2}px;
+  margin: 0 ${math.divide(gridSize, 2)}px;
 `;

@@ -136,13 +136,13 @@ describe('<Drawer />', () => {
       it('should default the back icon position at 0px', () => {
         expect(mount(
           <Drawer isOpen />
-        ).find(DrawerBackIconWrapper).props().style.top).toBe('0px');
+        ).find(DrawerBackIconWrapper).props().iconOffset).toBe(0);
       });
 
-      it('should updated the backIconOffset based on where the backIcon is rendered', () => {
+      it('should update the backIconOffset based on where the backIcon is rendered', () => {
         expect(mount(
           <Drawer isOpen iconOffset={123} />
-        ).find(DrawerBackIconWrapper).props().style.top).toBe('123px');
+        ).find(DrawerBackIconWrapper).props().iconOffset).toBe(123);
       });
 
       it('should wrap a DrawerBackIcon in a DrawerTrigger', () => {

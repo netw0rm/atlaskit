@@ -4,6 +4,31 @@
 
 * feature; support asap issuer in media-core context ([eff2b56](https://bitbucket.org/atlassian/atlaskit/commits/eff2b56))
 
+* breaking; 
+ContextConfig type has changed. `clientId` and `tokenProvider` are replaced with
+single `authProvider`. It's a function that takes `AuthContext` (currently object with `collectionName` key),
+and returns a `Promise` that resolved with `Auth` object. `Auth` object can have either `clientId` + `token` 
+keys or `asapIssuer` + `token`. This also changed `MediaApiConfig` 
+(type of an object returned from `context.apiConfig()`) - `tokenProvider` was replaces with `authProvider`.
+See `USAGE.md` for more details.
+
+* breaking;
+Constructor arguments of `DataUriService` has changed. `clientId` and `tokenProvider` replaced with `authProvider`.
+
+* breaking;
+`FileProvider.fromMediaApi` doesnt take `clientId` as 4th argument.<br/>
+`FileProvider.fromFileService` doesnt take `clientId` as 3rd argument.<br/>
+`LinkProvider.fromMediaApi` doesnt take `clientId` as 3rd argument.<br/>
+`LinkProvider.fromLinkService` doesnt take `clientId` as 3rd argument.<br/>
+`MediaItemProvider.fromMediaApi` doesnt take `clientId` as 5th argument.<br/>
+`MediaItemProvider.fromPool` doesnt take `clientId` as 6th argument.<br/>
+`MediaUrlPreviewProvider.fromMediaApi` doesnt take `clientId` as 3rd argument.<br/>
+`MediaUrlPreviewProvider.fromPool` doesnt take `clientId` as 4th argument.<br/>
+`RemoteMediaCollectionProvider.fromMediaAPI` doesnt take `clientId` as 3rd argument.<br/>
+`RemoteMediaCollectionProvider.fromPool` doesnt take `clientId` as 4th argument.<br/>
+`UrlPreviewProvider.fromMediaAPI` doesnt take `clientId` as 3rd argument.<br/>
+`UrlPreviewProvider.fromUrlPreviewService` doesnt take `clientId` as 3rd argument.<br/> 
+
 
 ## 9.0.0 (2017-08-07)
 

@@ -1,15 +1,15 @@
 import styled from 'styled-components';
-import { akColorN100, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { colors, gridSize } from '@atlaskit/theme';
 
 const ThemeColor = {
-  text: akColorN100,
+  text: colors.N100,
 };
 
 const Separator = styled.div`
   color: ${ThemeColor.text};
-  padding-left: ${akGridSizeUnitless}px;
+  padding-left: ${gridSize}px;
   text-align: center;
-  width: ${akGridSizeUnitless}px;
+  width: ${gridSize}px;
 `;
 
 Separator.displayName = 'Separator';

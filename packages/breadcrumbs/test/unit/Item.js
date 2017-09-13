@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
-import AtlassianIcon from 'ak-icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import Item from '../../src/components/BreadcrumbsItem';
 import { itemTruncateWidth } from '../../src/constants';

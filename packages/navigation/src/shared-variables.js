@@ -134,7 +134,7 @@ export const globalSecondaryActions = (() => {
 export const search = {
   layout: {
     padding: {
-      top: gridSize * 0.5,
+      top: 0,
       bottom: gridSize * 2,
       side: gridSize * 3,
     },

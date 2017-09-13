@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 23.0.0 (2017-09-13)
+
+* breaking; Navigation theming has been updated to take styles from @atlaskit/theme to support dark mode. Please ([4ee3080](https://bitbucket.org/atlassian/atlaskit/commits/4ee3080))
+* breaking; navigation now supports dark mode via @atlaskit/theme (issues closed: ak-3235) ([4ee3080](https://bitbucket.org/atlassian/atlaskit/commits/4ee3080))
+
+
+
 ## 22.0.1 (2017-09-11)
 
 

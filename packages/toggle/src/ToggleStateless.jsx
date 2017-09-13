@@ -1,8 +1,8 @@
 import uid from 'uid';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import CloseIcon from 'ak-icon/glyph/cancel';
-import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CloseIcon from '@atlaskit/icon/glyph/cross';
+import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
 
 export default class ToggleStateless extends PureComponent {
@@ -92,7 +92,7 @@ export default class ToggleStateless extends PureComponent {
               size={size}
             />
             <IconWrapper isChecked={isChecked} size={size}>
-              <Icon label={label || (isChecked ? 'Uncheck' : 'Check')} />
+              <Icon label={label || (isChecked ? 'Uncheck' : 'Check')} size={size === 'large' ? 'medium' : 'small'} />
             </IconWrapper>
           </Inner>
         </Slide>

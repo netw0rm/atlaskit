@@ -112,7 +112,6 @@ const defaultProps = {
   closeLoadingDialog: async () => {},
   requestTrialAccess: async () => {},
   requestTrialAccessWithNote: async () => {},
-  requestTrialAccessWithoutNote: async () => {},
   cancelRequestTrialAccess: async () => {},
 };
 

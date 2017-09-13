@@ -39,18 +39,18 @@ class RequestTrialNote extends Component {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     requestTrialAccessWithNote: PropTypes.func,
-    requestTrialAccessWithoutNote: PropTypes.func,
   };
 
   static defaultProps = {
     onRequestAccessClick: () => {},
     requestTrialAccessWithNote: () => Promise.resolve(),
-    requestTrialAccessWithoutNote: () => Promise.resolve(),
   };
 
   state = {
     requestTrialSendNoteStatus: null,
     awaitingRequest: false,
+    noteText: `Hi! I'd like to try Confluence. It helps give the team more context on anything
+    happening in JIRA Software - and it's free for 30 days.`,
   }
 
   componentDidMount() {
@@ -62,71 +62,32 @@ class RequestTrialNote extends Component {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
-      requestTrialAccessWithoutNote,
       onComplete,
     } = this.props;
-    this.setState({
-      requestTrialSendNoteStatus: null,
-      awaitingRequest: true,
-    });
     const noteText = document.getElementById('request-trial-note').value;
-    if (noteText === '') {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked.with.no.text');
-      requestTrialAccessWithoutNote()
-        .then(() => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.successful');
-          this.setState({
-            requestTrialSendNoteStatus: 'successful',
-          });
-          onComplete();
-        })
-        .catch(() => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.failed');
-          this.setState({
-            requestTrialSendNoteStatus: 'failed',
-          });
-        });
-    } else {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
-      requestTrialAccessWithNote()
-        .then(() => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
-          this.setState({
-            requestTrialSendNoteStatus: 'successful',
-          });
-          onComplete();
-        })
-        .catch(() => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
-          this.setState({
-            requestTrialSendNoteStatus: 'failed',
-          });
-        });
-    }
-  };
-
-  handleSendRequestWithoutNote = () => {
-    const { firePrivateAnalyticsEvent, requestTrialAccessWithoutNote, onComplete } = this.props;
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
-    firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note-button.clicked');
-    requestTrialAccessWithoutNote()
+    if (noteText) {
+      this.setState({ noteText });
+    }
+    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
+    requestTrialAccessWithNote(this.state.noteText)
       .then(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.successful');
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
         this.setState({
           requestTrialSendNoteStatus: 'successful',
         });
         onComplete();
       })
       .catch(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-without-note.failed');
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
         this.setState({
           requestTrialSendNoteStatus: 'failed',
         });
       });
-  };
+  }
 
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent } = this.props;
@@ -135,6 +96,19 @@ class RequestTrialNote extends Component {
     this.setState({
       requestTrialSendNoteStatus: null,
     });
+  };
+
+  handleErrorFlagResendRequest = () => {
+    const {
+      firePrivateAnalyticsEvent,
+      requestTrialAccessWithNote,
+    } = this.props;
+    firePrivateAnalyticsEvent(
+      'xflow.request-trial-note.error-flag.resend-request');
+    this.setState({
+      requestTrialSendNoteStatus: null,
+    });
+    requestTrialAccessWithNote(this.state.noteText);
   };
 
   handleSuccessFlagDismiss = () => {
@@ -152,10 +126,14 @@ class RequestTrialNote extends Component {
       placeholder,
       prompt,
     } = this.props;
+    const {
+      awaitingRequest,
+      requestTrialSendNoteStatus,
+    } = this.state;
     return (
       <div>
         <ModalDialog
-          isOpen={!this.state.awaitingRequest}
+          isOpen={!awaitingRequest}
           width="small"
           header={
             <RequestTrialHeader>
@@ -166,16 +144,13 @@ class RequestTrialNote extends Component {
             </RequestTrialHeader>}
           footer={
             <RequestAccessFooter>
-              <Button appearance="primary" onClick={this.handleSendRequest}>
+              <Button
+                appearance="primary"
+                onClick={this.handleSendRequest}
+              >
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
                   defaultMessage="Send request"
-                />
-              </Button>
-              <Button appearance="subtle-link" onClick={this.handleSendRequestWithoutNote}>
-                <FormattedMessage
-                  id="xflow.generic.request-trial-note.request-without-note-button"
-                  defaultMessage="Send without note"
                 />
               </Button>
             </RequestAccessFooter>
@@ -187,17 +162,19 @@ class RequestTrialNote extends Component {
             : <p>
               {prompt}
             </p>}
-            <NoteText id="request-trial-note" placeholder={placeholder} />
+            <NoteText
+              id="request-trial-note"
+              placeholder={placeholder}
+            />
           </div>
         </ModalDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
-          showFlag={this.state.requestTrialSendNoteStatus === 'failed'}
+          showFlag={requestTrialSendNoteStatus === 'failed'}
           flagActions={[
             { content: 'Resend request',
-          // TODO: Work out how to resend the request and dismiss the flag
-              onClick: this.handleErrorFlagDismiss,
+              onClick: this.handleErrorFlagResendRequest,
             },
         { content: 'Not now', onClick: this.handleErrorFlagDismiss },
           ]}
@@ -205,7 +182,7 @@ class RequestTrialNote extends Component {
         <SuccessFlag
           title={intl.formatMessage(messages.successFlagTitle)}
           description={intl.formatMessage(messages.successFlagDescription)}
-          showFlag={this.state.requestTrialSendNoteStatus === 'successful'}
+          showFlag={requestTrialSendNoteStatus === 'successful'}
           onDismissed={this.handleSuccessFlagDismiss}
         />
       </div>
@@ -221,13 +198,11 @@ export default withXFlowProvider(
     xFlow: {
       config: { productLogo, requestTrial },
       requestTrialAccessWithNote,
-      requestTrialAccessWithoutNote,
     },
   }) => ({
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
     requestTrialAccessWithNote,
-    requestTrialAccessWithoutNote,
   })
 );

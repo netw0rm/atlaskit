@@ -8,7 +8,6 @@ import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 import { isUserTrusted } from './tenantContext';
 import requestTrialAccess from './requestTrialAccess';
 import requestTrialAccessWithNote from './requestTrialAccessWithNote';
-import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
 import cancelRequestTrialAccess from './cancelRequestTrialAccess';
 import startConfluenceTrial from './startConfluenceTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
@@ -216,7 +215,6 @@ export const defaultProps = intl => ({
 
   requestTrialAccess,
   requestTrialAccessWithNote,
-  requestTrialAccessWithoutNote,
   cancelRequestTrialAccess,
 
   startProductTrial: startConfluenceTrial,

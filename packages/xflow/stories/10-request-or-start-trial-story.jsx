@@ -86,7 +86,6 @@ const defaultProps = {
   closeLoadingDialog: async () => {},
   requestTrialAccess: () => delay(1000),
   requestTrialAccessWithNote: () => delay(1000),
-  requestTrialAccessWithoutNote: () => delay(1000),
   cancelRequestTrialAccess: async () => {},
 };
 

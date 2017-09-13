@@ -49,8 +49,7 @@ class RequestTrialNote extends Component {
   state = {
     requestTrialSendNoteStatus: null,
     awaitingRequest: false,
-    noteText: `Hi! I'd like to try Confluence. It helps give the team more context on anything
-    happening in JIRA Software - and it's free for 30 days.`,
+    noteText: this.props.placeholder,
   }
 
   componentDidMount() {

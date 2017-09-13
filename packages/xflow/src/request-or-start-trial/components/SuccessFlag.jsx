@@ -12,14 +12,12 @@ export default class SuccessFlag extends Component {
     description: PropTypes.string,
     showFlag: PropTypes.bool,
     onDismissed: PropTypes.func,
-    flagRetry: PropTypes.bool,
     flagActions: PropTypes.arrayOf(PropTypes.object),
   };
 
   render() {
     const {
       description,
-      flagRetry,
       flagActions,
       onDismissed,
       showFlag,
@@ -30,7 +28,7 @@ export default class SuccessFlag extends Component {
         {showFlag
           ? <Flag
             icon={Icon}
-            actions={flagRetry ? flagRetry && flagActions : flagActions}
+            actions={flagActions}
             id="SuccessFlag"
             key="SuccessFlag"
             title={title}

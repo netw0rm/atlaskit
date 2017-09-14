@@ -2,7 +2,6 @@ import {LinkItem} from '../../src';
 import {LinkProvider} from '../../src/providers/linkProvider';
 
 const linkId = 'some-link-id';
-const clientId = 'some-client-id';
 const collection = 'some-collection';
 const someLinkItem = <LinkItem> {
   type: 'link',
@@ -22,7 +21,7 @@ const mockObserver = () => {
 describe('LinkProvider', () => {
   it('should complete given link service resolves a link item', () => {
     const linkService = Mocks.linkServiceResolves();
-    const linkProvider = LinkProvider.fromLinkService(linkService, linkId, clientId, collection).observable();
+    const linkProvider = LinkProvider.fromLinkService(linkService, linkId, collection).observable();
     const observer = mockObserver();
 
     linkProvider.subscribe(observer);
@@ -46,7 +45,7 @@ describe('LinkProvider', () => {
 
   it('should error given link service rejects with an error', () => {
     const linkService = Mocks.linkServiceError();
-    const linkProvider = LinkProvider.fromLinkService(linkService, linkId, clientId, collection).observable();
+    const linkProvider = LinkProvider.fromLinkService(linkService, linkId, collection).observable();
     const observer = mockObserver();
 
     linkProvider.subscribe(observer);

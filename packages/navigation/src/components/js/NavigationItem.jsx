@@ -32,7 +32,7 @@ type Props = {|
   isCompact?: boolean,
   /** Used to apply correct dragging styles when also using react-beautiful-dnd. */
   isDragging?: boolean,
-  /** Set whether the icon should be highlighted as selected. Selected items have
+  /** Set whether the item should be highlighted as selected. Selected items have
   a different background color. */
   isSelected?: boolean,
   /** Set whether the item should be used to trigger a dropdown. If this is true,
@@ -45,7 +45,7 @@ type Props = {|
   linkComponent?: ReactClass,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
-  onClick ?: (e: MouseEvent) => void,
+  onClick?: (?MouseEvent) => void,
   /** Function to be called on click. This is passed down to a custom link component,
   if one is provided.  */
   onKeyDown?: (e: KeyboardEvent) => void,

@@ -1,7 +1,6 @@
 import {FileProvider} from '../../src/providers/fileProvider';
 
 const fileId = 'some-file-id';
-const clientId = 'some-client-id';
 const collection = 'some-collection';
 const succeededFileItem = {
   type: 'file',
@@ -28,7 +27,7 @@ const mockObserver = () => {
 describe('FileProvider', () => {
   it('should complete given file that succeeds immediately', () => {
     const fileService = Mocks.fileServiceSucceeded();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
     const observer = mockObserver();
 
     fileProvider.subscribe(observer);
@@ -52,7 +51,7 @@ describe('FileProvider', () => {
 
   it('should next partial items given file that succeeds in future', () => {
     const fileService = Mocks.fileServicePendingBeforeSucceeded();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
     const observer = mockObserver();
 
     fileProvider.subscribe(observer);
@@ -77,7 +76,7 @@ describe('FileProvider', () => {
 
   it('should error given file service rejects', () => {
     const fileService = Mocks.fileServiceError();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
     const observer = mockObserver();
 
     fileProvider.subscribe(observer);
@@ -101,7 +100,7 @@ describe('FileProvider', () => {
 
   it('should call the service only once for multiple observers', () => {
     const fileService = Mocks.fileServiceSucceeded();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
 
     const observer = mockObserver();
     const observer2 = mockObserver();
@@ -138,7 +137,7 @@ describe('FileProvider', () => {
 
   it('should replay last file item after completion', () => {
     const fileService = Mocks.fileServiceSucceeded();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
 
     const observer = mockObserver();
 
@@ -175,7 +174,7 @@ describe('FileProvider', () => {
 
   it('should replay complete event after completion', () => {
     const fileService = Mocks.fileServiceSucceeded();
-    const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();
+    const fileProvider = FileProvider.fromFileService(fileService, fileId, collection).observable();
 
     const observer = mockObserver();
 

@@ -13,16 +13,15 @@ export type SizeType = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxl
 export type StatusType = 'approved' | 'declined' | 'locked';
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
-export type AvatarClickType = ({ event: KeyboardEvent | MouseEvent, item: {} }) => void;
+export type AvatarClickType = (?{ event?: KeyboardEvent | MouseEvent, item: Object }) => void;
 
-/* eslint-disable react/no-unused-prop-types */
-export type AvatarPropTypes = {
+export type AvatarPropTypesBase = {
   /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
   can be used for 'container' objects. */
   appearance?: AppearanceType,
   /** Used to override the default border color of the presence indicator.
   Accepts any color argument that the border-color CSS property accepts. */
-  borderColor?: string | FunctionType,
+  borderColor?: string,
   /** A custom component to use instead of the default span. */
   component?: ComponentType,
   /** Display a tooltip on hover */
@@ -42,15 +41,13 @@ export type AvatarPropTypes = {
   /** Name will be displayed in a tooltip, also used by screen readers as fallback
   content if the image fails to load. */
   name?: string,
-  /** Handler to be called on click. */
-  onClick?: AvatarClickType,
   /** Indicates a user's online status by showing a small icon on the avatar.
   Refer to presence values on the Presence component.
   Alternatively accepts any React element. For best results, it is recommended to
   use square content with height and width of 100%. */
   presence?: PresenceType,
   /** Defines the size of the avatar */
-  size?: SizeType,
+  size: SizeType,
   /** A url to load an image from (this can also be a base64 encoded image). */
   src?: string,
   /** Indicates contextual information by showing a small icon on the avatar.
@@ -62,5 +59,9 @@ export type AvatarPropTypes = {
   tabIndex?: number,
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self',
+}
+
+export type AvatarPropTypes = AvatarPropTypesBase & {
+  /** Handler to be called on click. */
+  onClick?: AvatarClickType,
 };
-/* eslint-enable react/no-unused-prop-types */

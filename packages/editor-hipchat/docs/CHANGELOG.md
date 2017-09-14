@@ -1,5 +1,15 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.4 (2017-09-14)
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
+## 5.4.3 (2017-09-12)
+
+
+* bug fix; long links pushes content and button outside of viewable area (issues closed: ed-2707) ([a830bf1](https://bitbucket.org/atlassian/atlaskit/commits/a830bf1))
+## 5.4.2 (2017-09-12)
+
+* bug fix; long links pushes content and button outside of viewable area (issues closed: ed-2707) ([a830bf1](https://bitbucket.org/atlassian/atlaskit/commits/a830bf1))
 ## 5.4.1 (2017-09-11)
 
 * bug fix; fix dependency in story to get emoji support files via the Editor. ([6b20943](https://bitbucket.org/atlassian/atlaskit/commits/6b20943))

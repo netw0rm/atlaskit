@@ -2,7 +2,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
-import setupStorybookAnalytics from '../../../stories/util/setupStorybookAnalytics';
 import {
   ACTIVE,
   ACTIVATING,
@@ -20,6 +19,8 @@ import AlreadyStarted from '../../../src/start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/start-trial/components/ProgressIndicator';
 import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
 import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
+import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
+import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 
 const noop = () => {};
 
@@ -122,20 +123,22 @@ const defaultRequestOrStartTrialProps = {
   sourceContext: 'storybook-example-context',
 };
 
-describe.skip('@atlaskit/xflow', () => {
+describe('@atlaskit/xflow', () => {
   describe('new to confluence', () => {
     let xflow;
 
     beforeEach(() => {
       xflow = mount(
-        setupStorybookAnalytics(
-          <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => true}>
-            <RequestOrStartTrial
-              {...defaultRequestOrStartTrialProps}
-              onTrialActivating={() => true}
-            />
-          </MockConfluenceXFlow>
-        )
+        <XFlowIntlProvider locale="en_US">
+          <XFlowAnalyticsListener onEvent={noop}>
+            <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => true}>
+              <RequestOrStartTrial
+                {...defaultRequestOrStartTrialProps}
+                onTrialActivating={() => true}
+              />
+            </MockConfluenceXFlow>
+          </XFlowAnalyticsListener>
+        </XFlowIntlProvider>
       );
       expect(xflow.length).toBe(1);
     });
@@ -226,15 +229,17 @@ describe.skip('@atlaskit/xflow', () => {
 
     beforeEach(() => {
       xflow = mount(
-        setupStorybookAnalytics(
-          <MockConfluenceXFlow
-            {...defaultProps}
-            canCurrentUserAddProduct={async () => true}
-            productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
-          >
-            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-          </MockConfluenceXFlow>
-        )
+        <XFlowIntlProvider locale="en_US">
+          <XFlowAnalyticsListener onEvent={noop}>
+            <MockConfluenceXFlow
+              {...defaultProps}
+              canCurrentUserAddProduct={async () => true}
+              productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
+            >
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
+            </MockConfluenceXFlow>
+          </XFlowAnalyticsListener>
+        </XFlowIntlProvider>
       );
       expect(xflow.length).toBe(1);
     });
@@ -263,15 +268,17 @@ describe.skip('@atlaskit/xflow', () => {
 
     beforeEach(() => {
       xflow = mount(
-        setupStorybookAnalytics(
-          <MockConfluenceXFlow
-            {...defaultProps}
-            productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
-            canCurrentUserAddProduct={async () => true}
-          >
-            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-          </MockConfluenceXFlow>
-        )
+        <XFlowIntlProvider locale="en_US">
+          <XFlowAnalyticsListener onEvent={noop}>
+            <MockConfluenceXFlow
+              {...defaultProps}
+              productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
+              canCurrentUserAddProduct={async () => true}
+            >
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
+            </MockConfluenceXFlow>
+          </XFlowAnalyticsListener>
+        </XFlowIntlProvider>
       );
       expect(xflow.length).toBe(1);
     });
@@ -291,15 +298,17 @@ describe.skip('@atlaskit/xflow', () => {
 
     beforeEach(() => {
       xflow = mount(
-        setupStorybookAnalytics(
-          <MockConfluenceXFlow
-            {...defaultProps}
-            productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
-            canCurrentUserAddProduct={async () => true}
-          >
-            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-          </MockConfluenceXFlow>
-        )
+        <XFlowIntlProvider locale="en_US">
+          <XFlowAnalyticsListener onEvent={noop}>
+            <MockConfluenceXFlow
+              {...defaultProps}
+              productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
+              canCurrentUserAddProduct={async () => true}
+            >
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
+            </MockConfluenceXFlow>
+          </XFlowAnalyticsListener>
+        </XFlowIntlProvider>
       );
       expect(xflow.length).toBe(1);
     });
@@ -319,16 +328,18 @@ describe.skip('@atlaskit/xflow', () => {
 
     beforeEach(() => {
       xflow = mount(
-        setupStorybookAnalytics(
-          <MockConfluenceXFlow
-            {...defaultProps}
-            canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
-            requestTrialAccess={async () => true}
-            productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
-          >
-            <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-          </MockConfluenceXFlow>
-        )
+        <XFlowIntlProvider locale="en_US">
+          <XFlowAnalyticsListener onEvent={noop}>
+            <MockConfluenceXFlow
+              {...defaultProps}
+              canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
+              requestTrialAccess={async () => true}
+              productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
+            >
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
+            </MockConfluenceXFlow>
+          </XFlowAnalyticsListener>
+        </XFlowIntlProvider>
       );
       expect(xflow.length).toBe(1);
     });

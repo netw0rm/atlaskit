@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "config": {
     "access": "public"
   },
@@ -24,19 +24,17 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/tooltip": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/tooltip": "^6.0.0",
+    "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
-    "ak-icon": "^12.1.2",
-    "@atlaskit/icon": "^1.0.0",
-    "@atlaskit/breadcrumbs": "*",
-    "@atlaskit/theme": "^2.0.0"
+    "@atlaskit/icon": "^8.1.0",
+    "@atlaskit/breadcrumbs": "*"
   },
   "peerDependencies": {
     "react": "^15.3.2",

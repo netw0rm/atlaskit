@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { getTheme } from '@atlaskit/theme';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -113,29 +114,42 @@ type State = {|
   resizeDelta: number,
   isResizing: boolean,
   isTogglingIsOpen: boolean,
+  containerTheme: Provided,
+  globalTheme: Provided,
 |}
+
+// NOTE: Dark mode is a user preference that takes precedence over provided themes
+function defaultContainerTheme(containerTheme, mode) {
+  if (mode === 'dark') {
+    return presets.dark;
+  }
+  return containerTheme || presets.container;
+}
+function defaultGlobalTheme(globalTheme, mode) {
+  if (mode === 'dark') {
+    return presets.dark;
+  }
+  return globalTheme || presets.global;
+}
 
 export default class Navigation extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   state: State
-  /* eslint-enable */
+  /* eslint-enable react/sort-comp */
 
   static defaultProps = {
-    containerTheme: presets.container,
     drawers: [],
-    globalTheme: presets.global,
     globalSecondaryActions: [],
     isCollapsible: true,
     isOpen: true,
     isResizeable: true,
     isElectronMac: false,
     linkComponent: DefaultLinkComponent,
-    onCreateDrawerOpen: () => { },
-    /* eslint-disable no-unused-vars*/
-    onResize: (state) => { },
-    onResizeStart: () => { },
-    onSearchDrawerOpen: () => { },
+    onCreateDrawerOpen: () => {},
+    onResize: (state) => {}, // eslint-disable-line no-unused-vars
+    onResizeStart: () => {},
+    onSearchDrawerOpen: () => {},
     width: defaultWidth,
     topOffset: 0,
   };
@@ -143,7 +157,12 @@ export default class Navigation extends PureComponent {
   constructor(props: Props, context: mixed) {
     super(props, context);
 
+    const { containerTheme, globalTheme } = props;
+    const { mode } = getTheme(props);
+
     this.state = {
+      containerTheme: defaultContainerTheme(containerTheme, mode),
+      globalTheme: defaultGlobalTheme(globalTheme, mode),
       resizeDelta: 0,
       isResizing: false,
       isTogglingIsOpen: false,
@@ -165,7 +184,14 @@ export default class Navigation extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    const { containerTheme, globalTheme } = nextProps;
+    // TODO work out why nextProps.theme.__ATLASKIT_THEME__.mode always returns the mode
+    // that was applied at time of first page load.
+    const { mode } = getTheme(nextProps);
+
     this.setState({
+      containerTheme: defaultContainerTheme(containerTheme, mode),
+      globalTheme: defaultGlobalTheme(globalTheme, mode),
       isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
     });
 
@@ -246,14 +272,12 @@ export default class Navigation extends PureComponent {
     const {
       children,
       containerHeaderComponent,
-      containerTheme,
       drawers,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
-      globalTheme,
       hasScrollHintBottom,
       hasScrollHintTop,
       isCollapsible,
@@ -268,6 +292,8 @@ export default class Navigation extends PureComponent {
     } = this.props;
 
     const {
+      containerTheme,
+      globalTheme,
       isTogglingIsOpen,
       isResizing,
     } = this.state;

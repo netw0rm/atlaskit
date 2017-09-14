@@ -18,5 +18,6 @@ export { default as textColorPlugin } from './text-color';
 export { default as tablesPlugin } from './tables';
 export { default as insertBlockPlugin } from './insert-block';
 export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
+export { default as helpDialogPlugin } from './help-dialog';
 export { default as jiraIssuePlugin } from './jira-issue';
 export { default as unsupportedContentPlugin } from './unsupported-content';

@@ -50,7 +50,7 @@ class ConfirmTrial extends Component {
   state = {
     spinnerActive: this.props.spinnerActive,
     buttonsDisabled: this.props.buttonsDisabled,
-    confluenceFailedToStart: false,
+    productFailedToStart: false,
   };
 
   componentDidMount() {
@@ -68,7 +68,7 @@ class ConfirmTrial extends Component {
     this.setState({
       spinnerActive: true,
       buttonsDisabled: true,
-      confluenceFailedToStart: false,
+      productFailedToStart: false,
     });
 
     startProductTrial()
@@ -83,7 +83,7 @@ class ConfirmTrial extends Component {
           'xflow.confirm-trial.start-product-trial.failed' :
           'xflow.reactivate-trial.start-product-trial.failed');
         this.setState({
-          confluenceFailedToStart: true,
+          productFailedToStart: true,
           spinnerActive: false,
           buttonsDisabled: false,
         });
@@ -104,7 +104,7 @@ class ConfirmTrial extends Component {
       'xflow.confirm-trial.error-flag.dismissed' :
       'xflow.reactivate-trial.error-flag.dismissed');
     this.setState({
-      confluenceFailedToStart: false,
+      productFailedToStart: false,
     });
   };
 
@@ -162,7 +162,7 @@ class ConfirmTrial extends Component {
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
-          showFlag={this.state.confluenceFailedToStart}
+          showFlag={this.state.productFailedToStart}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

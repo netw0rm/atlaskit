@@ -67,7 +67,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(createInputRule(/(`([^\s`][^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
+    rules.push(createInputRule(/(`[^\s`].*`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
   if (rules.length !== 0) {

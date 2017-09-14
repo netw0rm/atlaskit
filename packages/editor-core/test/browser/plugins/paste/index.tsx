@@ -39,6 +39,24 @@ if(!browser.ie && !isMobileBrowser()) {
         dispatchPasteEvent(editorView, { plain: 'code single line', html: '<pre>code single line</pre>' });
         expect(editorView.state.doc).to.deep.equal(doc(p(code('code single line'))));
       });
+
+      it('should create code block for font-family monospace css', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { html: `<meta charset='utf-8'><div style="font-family: Menlo, Monaco, 'Courier New', monospace;white-space: pre;">Code :D</div>` });
+        expect(editorView.state.doc).to.deep.equal(doc(code_block()('Code :D')));
+      });
+
+      it('should create code block for whitespace pre css', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { html: `<meta charset='utf-8'><div style="white-space: pre;">Hello</div>` });
+        expect(editorView.state.doc).to.deep.equal(doc(code_block()('Hello')));
+      });
+
+      it('should not create code block for whitespace pre-wrap css', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { html: `<meta charset='utf-8'><div style="white-space: pre-wrap;">Hello</div>` });
+        expect(editorView.state.doc).to.deep.equal(doc(p('Hello')));
+      });
     });
   });
 }

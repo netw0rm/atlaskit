@@ -55,8 +55,14 @@ export default class Slider extends PureComponent {
     inputElement.removeEventListener(eventName, onInputChange);
   }
 
-  onInputChange = (e: any) => {
-    const value = parseFloat(e.target.value);
+  onInputChange = (e: Event) => {
+    // Event.target is typed as an EventTarget but we need to access properties on it which are
+    // specific to HTMLInputElement. Due limitations of the HTML spec flow doesn't know that an
+    // EventTarget can have these properties, so we cast it to Element through Object. This is
+    // the safest thing we can do in this situation.
+    // https://flow.org/en/docs/types/casting/#toc-type-casting-through-any
+    const target: HTMLInputElement = (e.target: Object);
+    const value = parseFloat(target.value);
     const { onChange } = this.props;
 
     this.setState({ value });

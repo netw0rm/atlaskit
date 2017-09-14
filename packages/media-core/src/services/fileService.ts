@@ -1,31 +1,29 @@
 import createRequest from './util/createRequest';
-import {FileItem, MediaApiConfig, MediaItem} from '../';
+import {FileItem, MediaApiConfig} from '../';
 import {LRUCache} from 'lru-fast';
 
 export interface FileService {
-  getFileItem(fileId: string, clientId: string, collection?: string): Promise<FileItem>;
+  getFileItem(fileId: string, collection?: string): Promise<FileItem>;
 }
 
 export class MediaFileService implements FileService {
 
-  constructor(private config: MediaApiConfig, private cache: LRUCache<string, MediaItem>) {
-
+  constructor(private config: MediaApiConfig, private fileItemCache: LRUCache<string, FileItem>) {
   }
 
-  getFileItem(fileId: string, clientId: string, collectionName?: string): Promise<FileItem> {
-    const request = createRequest({
-      config: this.config,
-      clientId: clientId,
-      collectionName: collectionName,
-      preventPreflight: true
-    });
-
+  getFileItem(fileId: string, collectionName?: string): Promise<FileItem> {
     const cacheKey = [fileId, 'file'].join('-');
-    const cachedValue = this.cache.get(cacheKey);
+    const cachedValue = this.fileItemCache.get(cacheKey);
 
     if (cachedValue) {
       return Promise.resolve(cachedValue);
     } else {
+      const request = createRequest({
+        config: this.config,
+        collectionName: collectionName,
+        preventPreflight: true
+      });
+
       return request({url: `/file/${fileId}`})
         .then(json => json.data)
         .then(fileDetails => {
@@ -42,7 +40,7 @@ export class MediaFileService implements FileService {
             }
           };
           if (fileDetails.processingStatus === 'succeeded') {
-            this.cache.set(cacheKey, fileItem);
+            this.fileItemCache.set(cacheKey, fileItem);
           }
           return fileItem;
         });

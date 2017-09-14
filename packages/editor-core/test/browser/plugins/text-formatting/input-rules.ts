@@ -330,6 +330,14 @@ describe('text-formatting input rules', () => {
   });
 
   describe('code rule', () => {
+    it('should convert "`t`" to code text', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+
+      insertText(editorView, '`t`', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('t'))));
+      expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
+    });
+
     it('should convert "`text`" to code text', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 

@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.6.2 (2017-09-14)
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
 ## 20.6.1 (2017-09-04)
 
 * bug fix; fix arrows on the filmstrip don't show up ([e6042a6](https://bitbucket.org/atlassian/atlaskit/commits/e6042a6))

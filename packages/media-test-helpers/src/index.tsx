@@ -1,4 +1,4 @@
-export * from './tokenProvider';
+export * from './authProvider';
 export * from './contextProvider';
 export * from './fakeContextProvider';
 export * from './story-list';

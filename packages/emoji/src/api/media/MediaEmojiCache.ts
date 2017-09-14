@@ -47,7 +47,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
       // Media is loaded, can use original URL now, so just return original emoji
       this.cachedImageUrls.set(mediaPath, emoji);
       return emoji;
-    }).catch(err => {
+    }).catch(() => {
       this.invalidImageUrls.add(mediaPath);
       return undefined;
     });
@@ -58,10 +58,10 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
   }
 
   static supported(mediaPath: string, mediaImageLoader: MediaImageLoader): Promise<boolean> {
-    return mediaImageLoader.loadMediaImage(mediaPath).then(dataURL =>
+    return mediaImageLoader.loadMediaImage(mediaPath).then(() =>
       // Image should be cached in browser, if supported it should be accessible from the cache by an <img/>
       // Try to load without via image to confirm this support (this fails in Firefox)
-      new Promise<boolean>((resolve, reject) => {
+      new Promise<boolean>((resolve) => {
         const img = new Image();
 
         img.addEventListener('load', () => {
@@ -73,7 +73,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
 
         img.src = mediaPath;
       })
-    ).catch(err => false);
+    ).catch(() => false);
   }
 }
 
@@ -130,7 +130,7 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
         debug('No caching as image is too large', dataURL.length, dataURL.slice(0,15), emoji.shortName);
       }
       return loadedEmoji;
-    }).catch(err => {
+    }).catch(() => {
         this.invalidImageUrls.add(mediaPath);
         return undefined;
     });
@@ -172,7 +172,7 @@ export default class MediaEmojiCache {
       // Promise based
       return emojiCache
         .then(cache => cache.loadEmoji(emoji))
-        .catch(err => undefined);
+        .catch(() => undefined);
     }
 
     return emojiCache.loadEmoji(emoji);
@@ -185,7 +185,7 @@ export default class MediaEmojiCache {
       // Promise based
       return emojiCache
         .then(cache => cache.optimisticRendering())
-        .catch(err => false);
+        .catch(() => false);
     }
 
     return emojiCache.optimisticRendering();
@@ -222,7 +222,7 @@ export default class MediaEmojiCache {
           return new BrowserCacheStrategy(this.mediaImageLoader);
         }
         return new MemoryCacheStrategy(this.mediaImageLoader);
-      }).catch(err => {
+      }).catch(() => {
         return this.initCache();
       });
   }

@@ -1,64 +1,193 @@
-import * as sinon from 'sinon';
-import createRequest from '../../src/services/util/createRequest';
+import {fakeServer} from 'sinon';
 
-let fakeXhr;
-let myFakeResponses;
+import createRequest from '../../src/services/util/createRequest';
+import {AuthProvider} from '../../src/auth';
+import * as UtilsModule from '../../src/utils';
 
 describe('createRequest()', () => {
   const token = 'ABC';
-  const clientId = '1234';
   const serviceHost = 'http://example.com';
+  let authProvider: AuthProvider;
+  let mockServer: sinon.SinonFakeServer;
 
   beforeEach(() => {
-    myFakeResponses = [];
-    fakeXhr = sinon.useFakeXMLHttpRequest();
-    fakeXhr.onCreate = res => myFakeResponses.push(res);
+    mockServer = fakeServer.create();
+    mockServer.autoRespond = true;
   });
 
   afterEach(() => {
-    fakeXhr.restore();
+    mockServer.restore();
   });
 
-  it('should send the client ID and auth token in header fields by default', () => {
-    const tokenProvider = sinon.stub().returns(Promise.resolve(token));
+  describe('with clientId/token auth method', () => {
+    const clientId = '1234';
 
-    const request = createRequest({
-      clientId,
-      config: {
-        tokenProvider,
-        serviceHost
-      }
+    beforeEach(() => {
+      authProvider = jest.fn(() => Promise.resolve({
+        token: token,
+        clientId: clientId
+      }));
     });
 
-    setTimeout(() => myFakeResponses[0].respond(200), 0);
+    it('should send the client ID and auth token in header fields by default', () => {
+      const request = createRequest({
+        config: {
+          serviceHost,
+          authProvider
+        }
+      });
 
-    return request({url: '/some-api/links'}).then(json => {
-      expect(tokenProvider.calledOnce).toBe(true);
-      expect(myFakeResponses[0].url).toBe('http://example.com/some-api/links');
-      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).toBe(clientId);
-      expect(myFakeResponses[0].requestHeaders['Authorization']).toBe(`Bearer ${token}`);
+      mockServer.respondWith('GET', 'http://example.com/some-api/links', '{}');
+
+      return request({url: '/some-api/links'}).then(() => {
+        expect(authProvider).toHaveBeenCalled();
+        expect(mockServer.requests).toHaveLength(1);
+        expect(mockServer.requests[0].requestHeaders['X-Client-Id']).toBe(clientId);
+        expect(mockServer.requests[0].requestHeaders['Authorization']).toBe(`Bearer ${token}`);
+      });
+    });
+
+    it('should send auth arguments using queryParams when preventPreflight is true', () => {
+      const request = createRequest ({
+        config: {
+          serviceHost,
+          authProvider
+        },
+        preventPreflight: true
+      });
+
+      mockServer.respondWith(
+        'GET',
+        `http://example.com/some-api/links?token=${token}&client=${clientId}`,
+        '{}'
+      );
+
+      return request({url: '/some-api/links'}).then(() => {
+        expect(authProvider).toHaveBeenCalled();
+        expect(mockServer.requests[0].requestHeaders['X-Client-Id']).toBeUndefined();
+        expect(mockServer.requests[0].requestHeaders['Authorization']).toBeUndefined();
+      });
     });
   });
 
-  it('should send auth arguments using queryParams when preventPreflight is true', () => {
-    const tokenProvider = sinon.stub().returns(Promise.resolve(token));
+  describe('with asapIssuer/token auth method', () => {
+    const asapIssuer = 'some-issuer';
 
-    const request = createRequest({
-      clientId,
-      config: {
-        tokenProvider,
-        serviceHost
-      },
-      preventPreflight: true
+    beforeEach(() => {
+      authProvider = jest.fn(() => Promise.resolve({token, asapIssuer}));
     });
 
-    setTimeout(() => myFakeResponses[0].respond(200), 0);
+    it('should send the asap issuer and auth token in header fields by default', () => {
+      const request = createRequest({
+        config: {
+          serviceHost,
+          authProvider
+        }
+      });
 
-    return request({url: '/some-api/links'}).then(json => {
-      expect(tokenProvider.calledOnce).toBe(true);
-      expect(myFakeResponses[0].url).toBe(`http://example.com/some-api/links?token=${token}&client=${clientId}`);
-      expect(myFakeResponses[0].requestHeaders['X-Client-Id']).toBeUndefined();
-      expect(myFakeResponses[0].requestHeaders['Authorization']).toBeUndefined();
+      mockServer.respondWith(
+        'GET',
+        `http://example.com/some-api/links`,
+        '{}'
+      );
+
+      return request({url: '/some-api/links'}).then(() => {
+        expect(authProvider).toHaveBeenCalled();
+        expect(mockServer.requests[0].requestHeaders['X-Issuer']).toBe(asapIssuer);
+        expect(mockServer.requests[0].requestHeaders['Authorization']).toBe(`Bearer ${token}`);
+      });
+    });
+
+    it('should send auth arguments using queryParams when preventPreflight is true', () => {
+      const request = createRequest ({
+        config: {
+          serviceHost,
+          authProvider
+        },
+        preventPreflight: true
+      });
+
+      mockServer.respondWith(
+        'GET',
+        `http://example.com/some-api/links?token=${token}&issuer=${asapIssuer}`,
+        '{}'
+      );
+
+      return request({url: '/some-api/links'}).then(() => {
+        expect(authProvider).toHaveBeenCalled();
+        expect(mockServer.requests[0].requestHeaders['X-Issuer']).toBeUndefined();
+        expect(mockServer.requests[0].requestHeaders['Authorization']).toBeUndefined();
+      });
+    });
+  });
+
+  describe('with responseType === image', () => {
+    let checkWebpSupportSpy;
+    const clientId = '1234';
+
+    beforeEach(() => {
+      authProvider = jest.fn(() => Promise.resolve({
+        token: token,
+        clientId: clientId
+      }));
+      checkWebpSupportSpy = jest.spyOn(UtilsModule, 'checkWebpSupport');
+    });
+
+    afterEach(() => {
+      checkWebpSupportSpy.mockRestore();
+    });
+
+    describe('when webp support is enabled', () => {
+
+      beforeEach(() => {
+        checkWebpSupportSpy.mockReturnValue(Promise.resolve(true));
+      });
+
+      it('should add webp headers', () => {
+        const request = createRequest ({
+          config: {
+            serviceHost,
+            authProvider
+          },
+          preventPreflight: true
+        });
+
+        mockServer.respondWith(
+          'GET',
+          `http://example.com/some-api/links?token=${token}&client=${clientId}`,
+          '{}'
+        );
+
+        return request({url: '/some-api/links', responseType: 'image'}).then(() => {
+          expect(mockServer.requests[0].requestHeaders['accept']).toBe('image/webp,image/*,*/*;q=0.8');
+        });
+      });
+    });
+
+    describe('when webp support is disabled', () => {
+      beforeEach(() => {
+        checkWebpSupportSpy.mockReturnValue(Promise.resolve(false));
+      });
+
+      it('should not add webp headers', () => {
+        const request = createRequest ({
+          config: {
+            serviceHost,
+            authProvider
+          },
+          preventPreflight: false
+        });
+
+        mockServer.respondWith(
+          'GET',
+          `http://example.com/some-api/links`,
+          '{}'
+        );
+
+        return request({url: '/some-api/links', responseType: 'image'}).then(() => {
+          expect(mockServer.requests[0].requestHeaders['accept']).toBe('image/*,*/*;q=0.8');
+        });
+      });
     });
   });
 });

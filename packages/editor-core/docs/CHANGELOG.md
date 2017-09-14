@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 47.0.1 (2017-09-14)
+
+* bug fix; cleanup ([9274a2a](https://bitbucket.org/atlassian/atlaskit/commits/9274a2a))
+* bug fix; fixed parsing jira issue keys (issues closed: ed-1407) ([ff7ef80](https://bitbucket.org/atlassian/atlaskit/commits/ff7ef80))
+## 47.0.0 (2017-09-13)
+
+
+* breaking; UI Renderer now has a "stat" field which has information about rendering. This is a breaking change ([26fff38](https://bitbucket.org/atlassian/atlaskit/commits/26fff38))
+* breaking; measure PM tree creating time and rendering time in the Renderer (issues closed: ed-2233) ([26fff38](https://bitbucket.org/atlassian/atlaskit/commits/26fff38))
+* bug fix; mention broken when select all and delete content. (issues closed: #ed-2705) ([cd5e52d](https://bitbucket.org/atlassian/atlaskit/commits/cd5e52d))
+* feature; adding plugin in new architecture for help dialog to add it in banana editor (issues closed: ed-2589) ([a63ec66](https://bitbucket.org/atlassian/atlaskit/commits/a63ec66))
+* bug fix; import styles from the right package ([caf8e1e](https://bitbucket.org/atlassian/atlaskit/commits/caf8e1e))
+* bug fix; regular text pastes as code (white-space: pre-wrap) (issues closed: ed-2627) ([252ef5b](https://bitbucket.org/atlassian/atlaskit/commits/252ef5b))
+* bug fix; it should be possible to convert a single character to inline code. (issues closed: #ed-2646) ([0afa7af](https://bitbucket.org/atlassian/atlaskit/commits/0afa7af))
+## 46.21.0 (2017-09-13)
+
+* feature; return Atlassian Document from EditorActions.getValue (issues closed: ed-2755) ([711cd34](https://bitbucket.org/atlassian/atlaskit/commits/711cd34))
+## 46.20.2 (2017-09-12)
+
+* bug fix; upgrade task-decision. Breaking changes not relevant to editor. (issues closed: fs-1371) ([652a38e](https://bitbucket.org/atlassian/atlaskit/commits/652a38e))
+## 46.20.1 (2017-09-12)
+
+* bug fix; fixed jiraissue and unsupportedcontent nodes ([731120e](https://bitbucket.org/atlassian/atlaskit/commits/731120e))
 ## 46.20.0 (2017-09-12)
 
 

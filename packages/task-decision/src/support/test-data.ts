@@ -22,8 +22,9 @@ import {
 
 import {
   getServiceDecisionsResponse,
-  getServiceItemsResponse,
   getServiceTasksResponse,
+  getServiceItemsResponse as getServiceItemsResponseWithParticipants,
+  getParticipants,
 } from './story-data';
 
 import * as addMinutes from 'date-fns/add_minutes';
@@ -33,8 +34,21 @@ import * as subMonths from 'date-fns/sub_months';
 // Just a re-export, but we may change datasets between stories and test at some point.
 export {
   getServiceDecisionsResponse,
-  getServiceItemsResponse,
   getServiceTasksResponse,
+  getParticipants,
+};
+
+export const getServiceItemsResponse = (): ServiceItemResponse => {
+  const decisions = getServiceDecisionsResponse();
+  const tasks = getServiceTasksResponse();
+
+  return {
+    elements: [
+      ...decisions.decisions,
+      ...tasks.tasks,
+    ],
+    meta: decisions.meta
+  };
 };
 
 export const getDecisionsResponse = (hasMore?: boolean): DecisionResponse => {
@@ -68,7 +82,15 @@ export interface GetItemsResponseOptions {
   groupByDateSize?: number;
 }
 
+export const getItemsResponseWithParticipants = (options?: GetItemsResponseOptions): ItemResponse => {
+  return getItemsResponseForResponse(getServiceItemsResponseWithParticipants(), options);
+};
+
 export const getItemsResponse = (options?: GetItemsResponseOptions): ItemResponse => {
+  return getItemsResponseForResponse(getServiceItemsResponse(), options);
+};
+
+const getItemsResponseForResponse = (serviceResponse: ServiceItemResponse, options?: GetItemsResponseOptions): ItemResponse => {
   const { dateField, groupByDateSize, hasMore, idOffset } = options || {} as GetItemsResponseOptions;
   let query;
 
@@ -88,7 +110,7 @@ export const getItemsResponse = (options?: GetItemsResponseOptions): ItemRespons
       cursor: 'cheese',
     };
   }
-  let itemResponse = convertServiceItemResponseToItemResponse(getServiceItemsResponse(), query);
+  let itemResponse = convertServiceItemResponseToItemResponse(serviceResponse, query);
   if (idOffset) {
     itemResponse = {
       items: itemResponse.items.map(item => ({

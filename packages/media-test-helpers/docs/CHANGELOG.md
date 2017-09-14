@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 8.2.0 (2017-09-14)
+
+* feature; add \`createStorybookContext\` default parameter ([6814e95](https://bitbucket.org/atlassian/atlaskit/commits/6814e95))
+
 ## 8.1.0 (2017-09-13)
 
 * feature; bump media-core dep and introduce asap issuer way of auth ([f348ccb](https://bitbucket.org/atlassian/atlaskit/commits/f348ccb))

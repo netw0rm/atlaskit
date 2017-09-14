@@ -1,5 +1,8 @@
 # @atlaskit/editor-bitbucket
 
+## 3.4.3 (2017-09-14)
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
 ## 3.4.2 (2017-09-11)
 
 * bug fix; fire onChange only when doc content is changed (issues closed: ed-2681) ([75dc43b](https://bitbucket.org/atlassian/atlaskit/commits/75dc43b))

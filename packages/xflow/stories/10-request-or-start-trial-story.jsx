@@ -84,7 +84,6 @@ const defaultProps = {
   grantAccessToUsers: () => delay(1000),
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialAccess: () => delay(1000),
   requestTrialAccessWithNote: () => delay(1000),
   cancelRequestTrialAccess: async () => {},
 };
@@ -187,7 +186,6 @@ storiesOf('RequestOrStartTrial')
         {...defaultProps}
         canCurrentUserAddProduct={() =>
           new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 500))}
-        requestTrialAccess={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlowProvider>

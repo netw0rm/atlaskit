@@ -111,7 +111,6 @@ const defaultProps = {
   grantAccessToUsers: async () => {},
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialAccess: async () => {},
   requestTrialAccessWithNote: async () => {},
   cancelRequestTrialAccess: async () => {},
 };
@@ -332,7 +331,6 @@ describe('@atlaskit/xflow', () => {
             <MockConfluenceXFlow
               {...defaultProps}
               canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
-              requestTrialAccess={async () => true}
               productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
             >
               <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />

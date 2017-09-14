@@ -78,8 +78,10 @@ class RequestTrialNote extends Component {
           requestTrialSendNoteStatus: 'successful',
         });
       })
-      .catch(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
+          errorMessage: e.message,
+        });
         this.setState({
           requestTrialSendNoteStatus: 'failed',
         });
@@ -109,8 +111,10 @@ class RequestTrialNote extends Component {
     });
     requestTrialAccessWithNote(this.state.noteText)
       .then(() => onComplete)
-      .catch(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
+          errorMessage: e.message,
+        });
         this.setState({
           requestTrialSendNoteStatus: 'failed',
         });

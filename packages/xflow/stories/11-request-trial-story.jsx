@@ -31,17 +31,6 @@ storiesOf('RequestTrial')
       />
     )
   )
-  .add('Request Trial (INACTIVE) with spinner', () =>
-    setupStorybookAnalytics(
-      <RequestTrialAccessBase
-        {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-        spinnerActive
-        buttonsDisabled
-      />
-    )
-  )
   .add('RequestTrialWithNote (INACTIVE), success flag after Send Note', () =>
     setupStorybookAnalytics(
       <RequestTrialNoteBase
@@ -54,7 +43,10 @@ storiesOf('RequestTrial')
     setupStorybookAnalytics(
       <RequestTrialNoteBase
         {...defaultProps}
-        requestTrialAccessWithNote={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+        requestTrialAccessWithNote={
+          () => new Promise((_, reject) =>
+          setTimeout(() =>
+          reject(new Error('It\'s borked')), 1500))}
         onComplete={() => Promise.resolve(true)}
       />
     )

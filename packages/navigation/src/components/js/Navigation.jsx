@@ -46,6 +46,8 @@ type Props = {|
   containerTheme?: Provided,
   /** Component(s) to be rendered as the header of the container.  */
   containerHeaderComponent?: () => ReactElement[],
+  /** Standard React ref for the container navigation scrollable element. */
+  containerScrollRef?: (ReactElement) => void,
   /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
   to be rendered. There is no decoration done to the components passed in here. */
   drawers?: ReactElement[],
@@ -272,6 +274,7 @@ export default class Navigation extends PureComponent {
     const {
       children,
       containerHeaderComponent,
+      containerScrollRef,
       drawers,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -370,6 +373,7 @@ export default class Navigation extends PureComponent {
                 horizontalOffset={containerOffsetX}
               >
                 <ContainerNavigation
+                  scrollRef={containerScrollRef}
                   theme={containerTheme}
                   showGlobalActions={!showGlobalNavigation}
                   globalCreateIcon={globalCreateIcon}

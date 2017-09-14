@@ -13,6 +13,7 @@ import BasicNavigation from './components/BasicNavigation';
 import { name } from '../package.json';
 import randomBadge from './components/RandomBadge';
 import NucleusIcon from './components/NucleusIcon';
+import ContainerRefScrollExample from './examples/ContainerRefScrollExample';
 
 const dropdownItemsSample = (
   <DropdownItemGroup title="Cities">
@@ -296,5 +297,12 @@ storiesOf(name, module)
           </ul>
         </div>
       </BasicNavigation>
+    </HtmlPage>
+  ))
+  .add('using containerScrollRef', () => (
+    <HtmlPage>
+      <ContainerRefScrollExample>
+        {manyNavigationItems()}
+      </ContainerRefScrollExample>
     </HtmlPage>
   ));

@@ -89,6 +89,7 @@
     "prosemirror-state": "^0.22.0",
     "prosemirror-tables": "^0.1.0",
     "prosemirror-transform": "^0.22.0",
+    "prosemirror-gapcursor": "^0.22.0",
     "prosemirror-view": "^0.22.0",
     "styled-components": "^1.4.6",
     "tslib": "^1.2.0"

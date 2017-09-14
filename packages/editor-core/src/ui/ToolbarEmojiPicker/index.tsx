@@ -8,6 +8,7 @@ import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@atlaskit/emoji';
 import Layer from '@atlaskit/layer';
 import ToolbarButton from '../ToolbarButton';
+import Popup from '../Popup';
 
 export interface Props {
   editorView: EditorView;
@@ -135,13 +136,19 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
 
     return (
-      <div>
+      <Popup
+        target={ReactDOM.findDOMNode(this.buttonRef) as any}
+        fitHeight={350}
+        fitWidth={350}
+        offset={[0, 3]}
+        mountTo={ReactDOM.findDOMNode(this.buttonRef) as any}
+      >
         <AkEmojiPicker
           emojiProvider={this.props.emojiProvider}
           onSelection={this.handleSelectedEmoji}
           onPickerRef={this.onPickerRef}
         />
-      </div>
+      </Popup>
     );
   }
 

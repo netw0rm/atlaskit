@@ -175,20 +175,20 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise();
       let expectedCategories = defaultCategories;
       return emojiProvider.then(provider => {
-        if (provider.calculateDynamicCategories) {
-          expectedCategories = expectedCategories.concat(provider.calculateDynamicCategories());
-        }
+        expect(provider.calculateDynamicCategories !== undefined, 'the provider is expected to implement calculateDynamicCategories for this test').to.equal(true);
+        return provider.calculateDynamicCategories().then(dynamicCategories => {
+          expectedCategories = expectedCategories.concat(dynamicCategories);
+          return setupPicker().then(component => {
+            const categorySelector = component.find(CategorySelector);
+            const buttons = categorySelector.find('button');
+            expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+            expectedCategories.sort(sortCategories);
 
-        return setupPicker().then(component => {
-          const categorySelector = component.find(CategorySelector);
-          const buttons = categorySelector.find('button');
-          expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
-          expectedCategories.sort(sortCategories);
-
-          for (let i = 0; i < buttons.length; i++) {
-            const button = buttons.at(i);
-            expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
-          }
+            for (let i = 0; i < buttons.length; i++) {
+              const button = buttons.at(i);
+              expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
+            }
+          });
         });
       });
     });

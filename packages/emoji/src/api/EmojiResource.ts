@@ -1,6 +1,6 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
-import { selectedToneStorageKey } from '../constants';
+import { customCategory, selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
 import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
@@ -143,7 +143,7 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    * Returns a list of all the non-standard categories with emojis in the EmojiRepository
    * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
    */
-  calculateDynamicCategories?(): string[];
+  calculateDynamicCategories?(): Promise<string[]>;
 }
 
 export interface UploadingEmojiProvider extends EmojiProvider {
@@ -239,28 +239,24 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 
   protected initSiteEmojiResource(emojiResponse: EmojiResponse, provider: ServiceConfig): Promise<void>  {
     if (!this.siteEmojiResource && emojiResponse.mediaApiToken) {
-      const siteEmojiResource = new SiteEmojiResource(provider, emojiResponse.mediaApiToken);
+      this.siteEmojiResource = new SiteEmojiResource(provider, emojiResponse.mediaApiToken);
 
       // Prime cache type + optimistic rendering by checking first Emoji.
       // If this is fails, it won't be primed until a good emoji is loaded later.
       const { emojis } = emojiResponse;
       if (emojis.length) {
-        const done = siteEmojiResource.optimisticRendering(emojis[0]);
+        const done = this.siteEmojiResource.optimisticRendering(emojis[0]);
         if (isPromise(done)) {
           return done.then(() => {
             debug('Primed siteEmojiResource');
-            this.siteEmojiResource = siteEmojiResource;
           }).catch(err => {
             debug('Failed to prime siteEmojiResource');
-            this.siteEmojiResource = siteEmojiResource;
           });
         } else {
           debug('Already primed siteEmojiResource');
-          this.siteEmojiResource = siteEmojiResource;
         }
       } else {
         debug('No emoji to prime siteEmojiResource with');
-        this.siteEmojiResource = siteEmojiResource;
       }
     }
     return Promise.resolve();
@@ -424,7 +420,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   }
 
   getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]> {
-    if (this.emojiRepository) {
+    if (this.isLoaded()) {
       return Promise.resolve(this.emojiRepository.getFrequentlyUsed(options));
     }
 
@@ -485,11 +481,23 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
   }
 
-  calculateDynamicCategories(): string[] {
-    if (!this.emojiRepository) {
-      return [];
+  calculateDynamicCategories(): Promise<string[]> {
+    if (this.isLoaded()) {
+      return this.isCustomCategoryRequired().then(required => {
+        return this.emojiRepository.getDynamicCategoryList(required);
+      });
     }
-    return this.emojiRepository.getDynamicCategoryList(!!this.siteEmojiResource);
+
+    return this.retryIfLoading(() => this.calculateDynamicCategories(), []);
+  }
+
+  protected isCustomCategoryRequired(): Promise<boolean> {
+    if (!this.emojiRepository) {
+      return Promise.resolve(false);
+    }
+
+    const customEmoji = this.emojiRepository.findInCategory(customCategory);
+    return Promise.resolve(customEmoji.length > 0);
   }
 
   protected addCustomEmoji(emoji: EmojiDescription) {
@@ -534,5 +542,11 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
       this.siteEmojiResource.prepareForUpload();
     }
     return this.retryIfLoading(() => this.prepareForUpload(), undefined);
+  }
+
+  protected isCustomCategoryRequired(): Promise<boolean> {
+    return this.isUploadSupported().then(supported => {
+      return supported || super.isCustomCategoryRequired();
+    });
   }
 }

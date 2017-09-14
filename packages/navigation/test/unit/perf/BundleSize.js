@@ -2,7 +2,7 @@ const bytes = require('bytes');
 const fs = require('fs');
 const sourceTrace = require('source-trace');
 // This threshold corresponds to 5% of the latest bundle value
-const thresholdBundle = 2000;
+const thresholdBundle = 3000;
 
 let threshold;
 

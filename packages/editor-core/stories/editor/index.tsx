@@ -42,6 +42,7 @@ import tasksAndDecisionsPlugin from '../../src/plugins/tasks-and-decisions';
 import reactNodeViewPlugins from '../../src/plugins/react-nodeview';
 import mediaPluginFactory, { stateKey as mediaStateKey } from '../../src/plugins/media';
 import textColorPlugins, { stateKey as textColorStateKey } from '../../src/plugins/text-color';
+import { fakeCursor } from '../../src/plugins/fakecursor';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -301,6 +302,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          fakeCursor(),
           ...pastePlugins(schema),
           ...(schema.nodes.mention ? mentionsPlugins(schema, this.providerFactory) : []), // mentions and emoji needs to be first
           ...(schema.nodes.emoji ? emojiPlugins(schema, this.providerFactory) : []),

@@ -59,7 +59,8 @@ export const panel: NodeSpec = {
   toDOM(node: Node) {
     const panelType = node.attrs['panelType'];
     const attrs: DOMAttributes = {
-      'data-panel-type': panelType
+      'data-panel-type': panelType,
+      'style': 'position: relative; display: flex;'
     };
     return [
       'div',

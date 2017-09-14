@@ -137,8 +137,11 @@ const ContentStyles = styled.div`
     white-space: pre-wrap;
   }
 
-  .ProseMirror li {
+  .ProseMirror ul, .ProseMirror ol {
     position: relative;
+  }
+
+  .ProseMirror li {
     /* Dont do weird stuff with marker clicks */
     pointer-events: none;
 

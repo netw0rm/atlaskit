@@ -7,6 +7,8 @@ import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider
 
 const defaultProps = {
   canCurrentUserAddProduct: async () => true,
+  optOutRequestTrialFeature: () => new Promise(resolve => setTimeout(resolve, 1000)),
+  cancelOptOut: async () => {},
 };
 
 const defaultOptOutProps = {
@@ -15,12 +17,10 @@ const defaultOptOutProps = {
   sourceContext: 'storybook-example-context',
 };
 
-storiesOf('Opt Out')
-  .add('Opt Out Dialog', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps}>
-        <OptOut {...defaultOptOutProps} />
-      </MockConfluenceXFlowProvider>
-    )
-  );
-
+storiesOf('Opt Out').add('Opt Out Dialog', () =>
+  setupStorybookAnalytics(
+    <MockConfluenceXFlowProvider {...defaultProps}>
+      <OptOut {...defaultOptOutProps} />
+    </MockConfluenceXFlowProvider>
+  )
+);

@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 const xflowEnabledProperty = 'xflow.non.admin.request.enabled.jira.confluence';
 
-export default async () => {
+export default async selectedOption => {
   const response = await fetch(`/jira/rest/api/2/application-properties/${xflowEnabledProperty}`, {
     method: 'PUT',
     credentials: 'include',

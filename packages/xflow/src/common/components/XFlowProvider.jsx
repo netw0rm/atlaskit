@@ -44,6 +44,18 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
+    optOut: {
+      optOutHeading: PropTypes.string,
+      optOutMessage: PropTypes.string,
+      optOutDefaultSelectedRadio: PropTypes.string,
+      optOutOptionItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string,
+          label: PropTypes.string,
+          note: PropTypes.string,
+        })
+      ),
+    },
   }),
 
   progress: PropTypes.number,
@@ -66,6 +78,8 @@ export const xFlowShape = PropTypes.shape({
   closeAlreadyStartedDialog: PropTypes.func,
   checkProductRequestFlag: PropTypes.func,
   setProductRequestFlag: PropTypes.func,
+  optOutRequestTrialFeature: PropTypes.func,
+  cancelOptOut: PropTypes.func,
 });
 
 export class XFlowProvider extends Component {

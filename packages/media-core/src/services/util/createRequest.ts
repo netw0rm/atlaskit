@@ -3,7 +3,7 @@ import {MediaApiConfig} from '../../auth';
 import {checkWebpSupport} from '../../utils';
 import {Auth, isAsapBasedAuth, isClientBasedAuth} from '../../auth';
 
-export type ResponseType = 'json' | 'image';
+export type ResponseType = 'json' | 'image' | 'blob';
 
 export interface CreateRequestFunc {
   (requestOptions: RequestOptions): Promise<any>;
@@ -36,9 +36,9 @@ const addAcceptHeader = (headers: any, responseType?: ResponseType) =>
   });
 
 const buildHeaders = (auth: Auth,
-                      baseHeaders?: Object,
-                      preventPreflight?: boolean,
-                      responseType?: ResponseType): Promise<object> => {
+  baseHeaders?: Object,
+  preventPreflight?: boolean,
+  responseType?: ResponseType): Promise<object> => {
   const headers = {
     ...baseHeaders,
     'Content-Type': 'application/json'
@@ -62,12 +62,12 @@ const buildHeaders = (auth: Auth,
 };
 
 const buildParams = (auth: Auth,
-                     baseParams?: Object,
-                     preventPreflight?: boolean,
-                     collection?: string): Promise<object> => {
+  baseParams?: Object,
+  preventPreflight?: boolean,
+  collection?: string): Promise<object> => {
   const authParams = {} as any;
 
-  if(preventPreflight){
+  if (preventPreflight) {
     authParams.token = auth.token;
     if (isClientBasedAuth(auth)) {
       authParams.client = auth.clientId;
@@ -83,10 +83,9 @@ const buildParams = (auth: Auth,
   });
 };
 
-const responseTypeToAxios = (responseType?: ResponseType): string => {
-  responseType = responseType || 'json';
-
+const responseTypeToAxios = (responseType: ResponseType = 'json'): string => {
   const responseTypeMap = {
+    blob: 'blob',
     image: 'blob',
     json: 'json'
   };

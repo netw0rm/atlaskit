@@ -1,6 +1,7 @@
-import createRequest, {CreateRequestFunc} from './util/createRequest';
+import { readBlob } from './util/blobReader';
+import createRequest, { CreateRequestFunc } from './util/createRequest';
 import { MediaItem } from '../';
-import {AuthProvider} from '../auth';
+import { AuthProvider } from '../auth';
 
 export type DataUri = string;
 export type ImageResizeMode = 'crop' | 'fit' | 'full-fit';
@@ -18,13 +19,13 @@ export class MediaDataUriService implements DataUriService {
     private readonly authProvider: AuthProvider,
     private readonly serviceHost: string,
     private readonly collectionName?: string) {
-      this.request = createRequest({
-        config: {
-          serviceHost: this.serviceHost,
-          authProvider: this.authProvider
-        },
-        collectionName: this.collectionName
-      });
+    this.request = createRequest({
+      config: {
+        serviceHost: this.serviceHost,
+        authProvider: this.authProvider
+      },
+      collectionName: this.collectionName
+    });
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
@@ -52,17 +53,6 @@ export class MediaDataUriService implements DataUriService {
       params,
       responseType: 'image'
     })
-      .then(this.readBlob);
-  }
-
-  private readBlob(blob: Blob): Promise<DataUri> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.addEventListener('load', () => resolve(reader.result));
-      reader.addEventListener('error', () => reject(reader.error));
-
-      reader.readAsDataURL(blob);
-    });
+      .then(readBlob);
   }
 }

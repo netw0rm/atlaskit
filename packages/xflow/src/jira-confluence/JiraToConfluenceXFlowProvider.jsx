@@ -108,7 +108,7 @@ const messages = defineMessages({
   // Request Trial
   accessHeading: {
     id: 'xflow.j2c.request-trial.access.heading',
-    defaultMessage: 'JIRA Software\'s perfect partner',
+    defaultMessage: 'Jira\'s perfect partner',
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',

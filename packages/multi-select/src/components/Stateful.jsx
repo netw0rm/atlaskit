@@ -153,8 +153,10 @@ export default class MultiSelect extends PureComponent {
   }
 
   handleOpenChange = (attrs) => {
+    if (this.state.isOpen !== attrs.isOpen) {
+      this.props.onOpenChange(attrs);
+    }
     this.setState({ isOpen: attrs.isOpen });
-    this.props.onOpenChange(attrs);
   }
 
   handleNewItemCreate = ({ value: textValue }) => {

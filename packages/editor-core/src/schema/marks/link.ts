@@ -13,6 +13,7 @@ export interface Definition {
     title?: string;
     id?: string;
     collection?: string;
+    occurrenceKey?: string;
   };
 }
 

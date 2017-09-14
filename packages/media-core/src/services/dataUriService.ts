@@ -55,8 +55,8 @@ export class MediaDataUriService implements DataUriService {
 
   fetchThumbnailDataUri(mediaItem: MediaItem, options?: FetchThumbnailOptions): Promise<DataUri> {
     if (isFileItem(mediaItem)) {
-      return this.fetchFileThumbnailHref(mediaItem, options)
-        .then((href) => this.fetchSomeDataUri(href, {
+      return this.fetchFileThumbnailUrl(mediaItem, options)
+        .then((url) => this.fetchSomeDataUri(url, {
           'max-age': this.maxAge,
           collection: this.collectionName
         }));
@@ -74,11 +74,11 @@ export class MediaDataUriService implements DataUriService {
       .then(readBlob);
   }
 
-  private fetchFileThumbnailHref({details}: FileItem, options: FetchThumbnailOptions = {}): Promise<string> {
+  private fetchFileThumbnailUrl({details}: FileItem, options: FetchThumbnailOptions = {}): Promise<string> {
     const artifactName = this.mapFileThumbnailSizeToArtifactName(options.size);
     const artifact = details.artifacts && details.artifacts[artifactName];
     if (artifact) {
-      return Promise.resolve(artifact.href);
+      return Promise.resolve(artifact.url);
     } else {
       return Promise.reject(new Error('no thumbnail is available for this file'));
     }

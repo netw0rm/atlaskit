@@ -23,8 +23,8 @@ const succeededFileDetails = {
   processingStatus: 'succeeded',
   size: 12345,
   artifacts: {
-    'document.pdf': {href: `/file/${fileId}/artifact/document.pdf`},
-    'presentation.ppt': {href: `/file/${fileId}/artifact/presentation.ppt`}
+    'document.pdf': {url: `/file/${fileId}/artifact/document.pdf`},
+    'presentation.ppt': {url: `/file/${fileId}/artifact/presentation.ppt`}
   }
 };
 

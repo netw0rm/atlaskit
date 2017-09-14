@@ -25,11 +25,11 @@ describe('MediaDataUriService', () => {
       id: fileId,
       artifacts: {
         'thumb.jpg': {
-          href: '/file/some-file-id/artifact/thumb_120.jpg/binary',
+          url: '/file/some-file-id/artifact/thumb_120.jpg/binary',
           processingStatus: 'succeeded'
         },
         'thumb_large.jpg': {
-          href: '/file/some-file-id/artifact/thumb_320.jpg/binary',
+          url: '/file/some-file-id/artifact/thumb_320.jpg/binary',
           processingStatus: 'succeeded'
         }
       }

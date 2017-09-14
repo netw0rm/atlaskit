@@ -15,7 +15,7 @@ export interface FileItem {
 export type FileProcessingStatus = 'pending' | 'running' | 'succeeded' | 'failed';
 
 export type FileArtifact = {
-  readonly href: string;
+  readonly url: string;
   readonly processingStatus: FileProcessingStatus;
 };
 

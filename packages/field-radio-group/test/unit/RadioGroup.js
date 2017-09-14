@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Base from 'ak-field-base';
+import Base from '@atlaskit/field-base';
 
 import Radio from '../../src/components/Radio';
 import AkFieldRadioGroup from '../../src/components/RadioGroupStateless';

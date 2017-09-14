@@ -28,10 +28,10 @@ export default class Item extends Component {
       dragHandleProps: PropTypes.object,
       innerRef: PropTypes.func,
     }),
-    /** Content to be shown before to the left of the main content (shown to the right of content
+    /** Content to be shown after the main content. Shown to the right of content (or to the left
       * in RTL mode). */
     elemAfter: PropTypes.node,
-    /** Content to be shown before to the right of the main content (shown to the left of content
+    /** Content to be shown before the main content. Shown to the left of content (or to the right
       * in RTL mode). */
     elemBefore: PropTypes.node,
     /** Link that the user will be redirected to when the item is clicked. If omitted, a

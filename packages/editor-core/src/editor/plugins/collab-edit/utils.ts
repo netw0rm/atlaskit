@@ -6,7 +6,7 @@ import {
   akColorT400,
   akColorP400,
   akColorN800,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 import {
   Decoration,

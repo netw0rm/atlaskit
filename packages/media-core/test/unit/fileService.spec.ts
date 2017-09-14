@@ -1,20 +1,22 @@
-import {useFakeXMLHttpRequest} from 'sinon';
+jest.mock('../../src/services/util/createRequest');
+
 import {LRUCache} from 'lru-fast';
 
+import {FileItem} from '../../src';
 import {MediaFileService} from '../../src/services/fileService';
-import {FileDetails, FileItem} from '../../src/item';
-import {AuthProvider} from '../../src/auth';
+import {CreateRequestFunc, default as createRequest} from '../../src/services/util/createRequest';
 
 const serviceHost = 'some-host';
-const token = 'some-token';
-
-const fileId = 'some-file-id';
-const unprocessedFileId = 'some-unprocessed-file-id';
 const clientId = 'some-client-id';
-const collection = 'some-collection';
-const authParams = `token=${token}&client=${clientId}`;
-const defaultFileDetails = {
-  id: 'some-file-id',
+const token = 'some-token';
+const authProvider = () => Promise.resolve({clientId, token});
+const config = {serviceHost, authProvider};
+const fileId = 'some-file-id';
+const collectionName = 'some-collection';
+const blob = new Blob(['hello']);
+const artifactName = 'document.txt';
+const succeededFileDetails = {
+  id: fileId,
   mediaType: 'image',
   mimeType: 'some-mime-type',
   name: 'some-name',
@@ -27,147 +29,118 @@ const defaultFileDetails = {
 };
 
 describe('MediaFileService', () => {
-  let fileService: MediaFileService;
+  const setup = (response: Promise<any>, cacheSize = 0) => {
+    const cache = new LRUCache<string, FileItem>(cacheSize);
+    const request = jest.fn().mockReturnValue(response);
 
-  let xhr: any;
-  let requests: Array<any>;
-  let authProvider: AuthProvider;
+    (createRequest as jest.Mock<CreateRequestFunc>).mockReturnValue(request);
 
-  const setupFakeXhr = () => {
-    xhr = useFakeXMLHttpRequest();
-    requests = [];
+    const fileService = new MediaFileService(config, cache);
 
-    xhr.onCreate = function (xhr: any) {
-      requests.push(xhr);
+    return {
+      request,
+      fileService
     };
   };
 
-  const respondFakeXhr = (fileDetails?: FileDetails) => {
-    setTimeout(() => {
-      const mockedResponse = {
-        data: fileDetails || defaultFileDetails
-      };
-      if (requests[0]) {
-        requests[0].respond(200, { 'Content-Type': 'application/json' }, JSON.stringify(mockedResponse));
-      }
-    });
-  };
-
-  const resetAuthProvider = () => {
-    authProvider = jest.fn(() => Promise.resolve({
-      token: token,
-      clientId: clientId
-    }));
-  };
-
-  beforeEach(() => {
-    setupFakeXhr();
-    const cache = new LRUCache<string, FileItem>(0);
-    resetAuthProvider();
-    fileService = new MediaFileService({ serviceHost, authProvider }, cache);
-  });
-
   afterEach(function () {
-    xhr.restore();
+    jest.resetAllMocks();
   });
 
-  it('should resolve file item from collection given or not', () => {
-    respondFakeXhr();
-    return fileService.getFileItem(fileId, collection)
-      .then(fileItem => {
-        expect(fileItem.type).toBe('file');
-        expect(fileItem.details).toEqual(defaultFileDetails);
-      })
-      .then(() => {
-        // Validate call to token provider
-        expect(authProvider).toHaveBeenCalledWith({collectionName: collection});
-      })
-      .then(() => {
-        expect(requests[0].url).toBe(`some-host/file/some-file-id?collection=some-collection&${authParams}`);
-      });
-  });
+  it('should resolve file item given collection is specified', async () => {
+    const {fileService, request} = setup(Promise.resolve({data: succeededFileDetails}));
 
-  it('should resolve file item from collection given', () => {
-    const response = fileService.getFileItem(fileId)
-      .then(fileItem => {
-        expect(fileItem.type).toBe('file');
-        expect(fileItem.details).toEqual(defaultFileDetails);
-      })
-      .then(() => {
-        // Validate call to token provider
-        expect(authProvider).toHaveBeenCalledWith({collectionName: undefined});
-      })
-      .then(() => {
-        expect(requests[0].url).toBe(`some-host/file/some-file-id?${authParams}`);
+    await expect(fileService.getFileItem(fileId, collectionName))
+      .resolves.toEqual({
+        type: 'file',
+        details: succeededFileDetails
       });
 
-    respondFakeXhr();
+    expect(createRequest).toBeCalledWith({
+      config,
+      collectionName,
+      preventPreflight: true
+    });
 
-    return response;
+    expect(request).toBeCalledWith({url: `/file/${fileId}`});
   });
 
-  it('should reject server responded with 500', () => {
-    const response = fileService.getFileItem('some-dodgy-file-id', collection)
-      .then(
-        () => { throw new Error('The function getFileItem should fail'); },
-        (error) => expect(error).toBeDefined()
-      );
+  it('should resolve file item given NO collection is specified', async () => {
+    const {fileService} = setup(Promise.resolve({data: succeededFileDetails}));
 
-    setTimeout(() => { requests[0].respond(500, { }, ''); });
-    return response;
+    await expect(fileService.getFileItem(fileId))
+      .resolves.toEqual({
+        type: 'file',
+        details: succeededFileDetails
+      });
+
+    expect(createRequest).toBeCalledWith({
+      config,
+      collectionName: undefined,
+      preventPreflight: true
+    });
+  });
+
+  it('should reject given request is rejected with some error', async () => {
+    const {fileService} = setup(Promise.reject('some-error'));
+
+    await expect(fileService.getFileItem(fileId, collectionName))
+      .rejects.toEqual('some-error');
   });
 
   describe('cache', () => {
-    const shouldReturnFileFromService = (id: string, cache: LRUCache<string, FileItem>, fileDetails?: FileDetails) => {
-      resetAuthProvider();
-      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
-      respondFakeXhr(fileDetails);
-      return fileService.getFileItem(id, collection).then(() => {
-        expect(authProvider).toHaveBeenCalledTimes(1);
-      });
-    };
+    it('should cache processed files', async () => {
+      const {fileService, request} = setup(Promise.resolve({data: succeededFileDetails}), 1);
+      const fileItem = await fileService.getFileItem(fileId, collectionName);
 
-    const shouldReturnFileFromCache = (id: string, cache: LRUCache<string, FileItem>) => {
-      resetAuthProvider();
-      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
-      return fileService.getFileItem(id, collection).then(() => {
-        expect(authProvider).not.toHaveBeenCalled();
-      });
-    };
-
-    it('should cache processed files', () => {
-      const cache = new LRUCache<string, FileItem>(1);
-      return shouldReturnFileFromService(fileId, cache)
-        .then(() => shouldReturnFileFromCache(fileId, cache));
+      await expect(fileService.getFileItem(fileId, collectionName)).resolves.toEqual(fileItem);
+      expect(request).toHaveBeenCalledTimes(1);
     });
 
-    it('should not cache processed files if caching is disabled', () => {
-      const cache = new LRUCache<string, FileItem>(0);
-      return shouldReturnFileFromService(fileId, cache).then(() => {
-        xhr.restore();
-        setupFakeXhr();
-        return shouldReturnFileFromService(fileId, cache);
-      });
+    it('should not cache processed files if caching is disabled', async () => {
+      const {fileService, request} = setup(Promise.resolve({data: succeededFileDetails}));
+      const fileItem = await fileService.getFileItem(fileId, collectionName);
+
+      await expect(fileService.getFileItem(fileId, collectionName)).resolves.toEqual(fileItem);
+      expect(request).toHaveBeenCalledTimes(2);
     });
 
-    it('should not cache unprocessed files', () => {
-      const unprocessedFileDetails: FileDetails = {
-        id: 'some-file-id',
-        mediaType: 'image',
-        mimeType: 'some-mime-type',
-        name: 'some-name',
-        processingStatus: 'pending',
-        size: 12345,
-        artifacts: {
-          'document.pdf': { href: `/file/${fileId}/artifact/document.pdf` },
-          'presentation.ppt': { href: `/file/${fileId}/artifact/presentation.ppt` }
-        }
+    it('should not cache unprocessed files', async () => {
+      const pendingFileDetails = {
+        ...succeededFileDetails,
+        processingStatus: 'pending'
       };
-      const cache = new LRUCache<string, FileItem>(1);
-      return shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails).then(() => {
-        xhr.restore();
-        setupFakeXhr();
-        return shouldReturnFileFromService(unprocessedFileId, cache, unprocessedFileDetails);
+      const {fileService, request} = setup(Promise.resolve({data: pendingFileDetails}), 1);
+      const fileItem = await fileService.getFileItem(fileId, collectionName);
+
+      await expect(fileService.getFileItem(fileId, collectionName)).resolves.toEqual(fileItem);
+      expect(request).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('getFileArtifactBinary', () => {
+    it('should resolve with a blob', async () => {
+      const {fileService} = setup(Promise.resolve(blob));
+
+      await expect(fileService.getFileArtifactBinary(fileId, artifactName))
+        .resolves.toEqual(blob);
+    });
+
+    it('should make a request to the media-api', async () => {
+      const {fileService, request} = setup(Promise.resolve(blob));
+
+      await expect(fileService.getFileArtifactBinary(fileId, artifactName, collectionName))
+        .resolves.toEqual(blob);
+
+      expect(createRequest).toBeCalledWith({
+        config,
+        collectionName,
+        preventPreflight: true
+      });
+
+      expect(request).toBeCalledWith({
+        url: `/file/${fileId}/artifact/${artifactName}/binary`,
+        responseType: 'blob'
       });
     });
   });

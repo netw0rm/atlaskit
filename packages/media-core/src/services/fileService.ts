@@ -1,13 +1,13 @@
 import createRequest from './util/createRequest';
-import {FileItem, MediaApiConfig} from '../';
+import {ArtifactName, FileDetails, FileItem, MediaApiConfig} from '../';
 import {LRUCache} from 'lru-fast';
 
 export interface FileService {
-  getFileItem(fileId: string, collection?: string): Promise<FileItem>;
+  getFileItem(fileId: string, collectionName?: string): Promise<FileItem>;
+  getFileArtifactBinary(fileId: string, artifactName: ArtifactName, collectionName?: string): Promise<Blob>;
 }
 
 export class MediaFileService implements FileService {
-
   constructor(private config: MediaApiConfig, private fileItemCache: LRUCache<string, FileItem>) {
   }
 
@@ -20,30 +20,35 @@ export class MediaFileService implements FileService {
     } else {
       const request = createRequest({
         config: this.config,
-        collectionName: collectionName,
+        collectionName,
         preventPreflight: true
       });
 
       return request({url: `/file/${fileId}`})
-        .then(json => json.data)
-        .then(fileDetails => {
-          const fileItem =  <FileItem> {
+        .then(json => json.data as FileDetails)
+        .then(details => {
+          const fileItem = {
             type: 'file',
-            details: {
-              id: fileDetails.id,
-              mediaType: fileDetails.mediaType,
-              mimeType: fileDetails.mimeType,
-              name: fileDetails.name,
-              processingStatus: fileDetails.processingStatus,
-              size: fileDetails.size,
-              artifacts: fileDetails.artifacts
-            }
-          };
-          if (fileDetails.processingStatus === 'succeeded') {
+            details
+          } as FileItem;
+          if (details.processingStatus === 'succeeded') {
             this.fileItemCache.set(cacheKey, fileItem);
           }
           return fileItem;
         });
     }
+  }
+
+  getFileArtifactBinary(fileId: string, artifactName: ArtifactName, collectionName?: string): Promise<Blob> {
+    const request = createRequest({
+      config: this.config,
+      collectionName,
+      preventPreflight: true
+    });
+
+    return request({
+      url: `/file/${fileId}/artifact/${artifactName}/binary`,
+      responseType: 'blob'
+    });
   }
 }

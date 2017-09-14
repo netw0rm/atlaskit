@@ -206,7 +206,8 @@ class Mocks {
   public static fileServiceSucceeded() {
     const stub = jest.fn(() => Promise.resolve(succeededFileItem));
     return {
-      getFileItem: stub
+      getFileItem: stub,
+      getFileArtifactBinary: jest.fn()
     };
   }
 
@@ -224,13 +225,15 @@ class Mocks {
     });
 
     return {
-      getFileItem: stub
+      getFileItem: stub,
+      getFileArtifactBinary: jest.fn()
     };
   }
 
   public static fileServiceError() {
     return {
-      getFileItem: jest.fn(() => Promise.reject(new Error('mock-error')))
+      getFileItem: jest.fn(() => Promise.reject(new Error('mock-error'))),
+      getFileArtifactBinary: jest.fn()
     };
   }
 }

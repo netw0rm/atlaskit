@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { action } from '@kadira/storybook';
 import { AkQuickSearch, AkNavigationItemGroup, quickSearchResultTypes } from '../../src';
+import { RoomResult } from '../examples/quicksearch/ExtendingResultTypes';
 
-const { PersonResult, RoomResult } = quickSearchResultTypes;
+const { PersonResult } = quickSearchResultTypes;
 
 const getPersonAvatarUrl = identity => `http://api.adorable.io/avatar/32/${identity}`;
 const getRoomAvatarUrl = idx => `http://lorempixel.com/32/32/nature/${idx}`;
@@ -210,7 +211,7 @@ const mapResultsDataToComponents = (resultData =>
       {group.items.map((props) => {
         const Result = availableResultTypes[props.type];
         return Result ? (
-          <Result key={props.resultId} {...props} />
+          <Result key={props.resultId} {...props} isSelected={false} />
           ) : null;
       })}
     </AkNavigationItemGroup>

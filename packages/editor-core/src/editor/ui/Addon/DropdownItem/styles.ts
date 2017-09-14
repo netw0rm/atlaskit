@@ -10,7 +10,7 @@ export const DropdownItem = styled.div`
   align-items: center;
   cursor: pointer;
   text-decoration: none;
-  padding: 8px 12px;
+  padding: 8px 32px 8px 12px;
   color: ${akColorN800};
   > span {
     display: flex;

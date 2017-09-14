@@ -1,4 +1,4 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 export const defaultMaxItems = 8;
-export const itemTruncateWidth = akGridSizeUnitless * 25;
+export const itemTruncateWidth = gridSize() * 25;

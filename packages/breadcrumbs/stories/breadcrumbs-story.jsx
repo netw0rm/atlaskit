@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import AtlassianIcon from 'ak-icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import Breadcrumbs, { BreadcrumbsItem } from '../src';
 import { name } from '../package.json';
@@ -54,7 +54,7 @@ storiesOf(name, module)
       </div>
     );
   }, {
-    imports: [...imports, ['AtlassianIcon', 'ak-icon/glyph/atlassian']],
+    imports: [...imports, ['AtlassianIcon', '@atlaskit/icon/glyph/atlassian']],
     overrides: {
       iconBefore: '<AtlassianIcon label="Test icon" />',
       iconAfter: '<AtlassianIcon label="Test icon" />',

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import AKButton from '@atlaskit/button';
-import BitbucketAdminIcon from 'ak-icon/glyph/bitbucket/admin';
+import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import AKInlineDialog from '@atlaskit/inline-dialog';
 
 class ButtonActivatedDialog extends PureComponent {
@@ -36,7 +36,7 @@ class ButtonActivatedDialog extends PureComponent {
       >
         <AKButton
           onClick={this.handleClick}
-          iconBefore={<BitbucketAdminIcon />}
+          iconBefore={<SettingsIcon />}
           isSelected
         />
       </AKInlineDialog>

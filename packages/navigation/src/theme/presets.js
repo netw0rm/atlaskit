@@ -1,32 +1,32 @@
 // @flow
-import * as style from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import type { Provided, ItemTheme, Background } from './types';
 
 // Currently shared by all the themes - but need not be
 const focus = {
-  outline: style.akColorB100,
+  outline: colors.B100,
 };
 
 export const container: Provided = ((): Provided => {
-  const primaryBackground: Background = style.akColorN20;
+  const primaryBackground: Background = colors.N20;
   const item: ItemTheme = {
     default: {
       background: 'transparent',
     },
     hover: {
-      background: style.akColorN20A,
+      background: colors.N20A,
     },
     active: {
-      background: style.akColorB50,
+      background: colors.B50,
     },
     selected: {
-      background: style.akColorN20A,
-      text: style.akColorB400,
+      background: colors.N20A,
+      text: colors.B400,
     },
     focus,
     dragging: {
       // similar to hover - but without opacity
-      background: style.akColorN30,
+      background: colors.N30,
     },
   };
 
@@ -35,7 +35,7 @@ export const container: Provided = ((): Provided => {
       background: item.hover.background,
     },
     hover: {
-      background: style.akColorN30A,
+      background: colors.N30A,
     },
     active: item.active,
     selected: item.selected,
@@ -47,11 +47,11 @@ export const container: Provided = ((): Provided => {
     background: {
       primary: primaryBackground,
       secondary: primaryBackground,
-      tertiary: style.akColorN0,
+      tertiary: colors.N0,
     },
-    text: style.akColorN500,
-    subText: style.akColorN300,
-    keyline: style.akColorN30A,
+    text: colors.N500,
+    subText: colors.N300,
+    keyline: colors.N30A,
     item,
     dropdown,
   };
@@ -59,28 +59,28 @@ export const container: Provided = ((): Provided => {
   return theme;
 })();
 
-export const settings: Provided = ((): Provided => {
-  const primaryBackground: Background = style.akColorN800;
-
+export const dark: Provided = ((): Provided => {
   const item: ItemTheme = {
     default: {
       background: 'transparent',
     },
     hover: {
-      background: style.akColorN700A,
+      background: colors.DN40,
     },
     active: {
       // Currently there is no ramp for white opacity
-      background: 'rgba(255, 255, 255, 0.08)',
+      background: colors.DN50,
     },
     selected: {
-      background: style.akColorN700A,
-      text: style.akColorB100,
+      background: colors.DN40,
+      text: colors.B100,
     },
-    focus,
+    focus: {
+      outline: colors.B75,
+    },
     dragging: {
       // Similar to active colour - but without opacity
-      background: style.akColorN600,
+      background: colors.DN50,
     },
   };
 
@@ -90,7 +90,62 @@ export const settings: Provided = ((): Provided => {
     },
     hover: {
       // Going lighter to be different from hover
-      background: style.akColorN90A,
+      background: colors.DN60,
+    },
+    active: item.active,
+    selected: item.selected,
+    focus: item.focus,
+    dragging: item.dragging,
+  };
+
+  const theme: Provided = {
+    background: {
+      primary: colors.DN10,
+      secondary: colors.DN20,
+      tertiary: colors.DN30,
+    },
+    text: colors.DN600,
+    subText: colors.DN400,
+    keyline: colors.DN50,
+    item,
+    dropdown,
+  };
+
+  return theme;
+})();
+
+export const settings: Provided = ((): Provided => {
+  const primaryBackground: Background = colors.N800;
+
+  const item: ItemTheme = {
+    default: {
+      background: 'transparent',
+    },
+    hover: {
+      background: colors.N700A,
+    },
+    active: {
+      // Currently there is no ramp for white opacity
+      background: 'rgba(255, 255, 255, 0.08)',
+    },
+    selected: {
+      background: colors.N700A,
+      text: colors.B100,
+    },
+    focus,
+    dragging: {
+      // Similar to active colour - but without opacity
+      background: colors.N600,
+    },
+  };
+
+  const dropdown: ItemTheme = {
+    default: {
+      background: item.hover.background,
+    },
+    hover: {
+      // Going lighter to be different from hover
+      background: colors.N90A,
     },
     active: item.active,
     selected: item.selected,
@@ -101,12 +156,12 @@ export const settings: Provided = ((): Provided => {
   const theme: Provided = {
     background: {
       primary: primaryBackground,
-      secondary: style.akColorN700,
-      tertiary: style.akColorN700,
+      secondary: colors.N700,
+      tertiary: colors.N700,
     },
-    text: style.akColorN0,
-    subText: style.akColorN70,
-    keyline: style.akColorN900,
+    text: colors.N0,
+    subText: colors.N70,
+    keyline: colors.N900,
     item,
     dropdown,
   };
@@ -117,26 +172,26 @@ export const settings: Provided = ((): Provided => {
 export const siteSettings: Provided = ((): Provided => {
   // deep copy settings and only re-assign the secondary color
   const theme: Provided = JSON.parse(JSON.stringify(settings));
-  theme.background.secondary = style.akColorN800;
+  theme.background.secondary = colors.N800;
   return theme;
 })();
 
 export const global: Provided = ((): Provided => {
-  const primaryBackground: Background = style.akColorB500;
-  const activeBackground: Background = style.akColorB200;
+  const primaryBackground: Background = colors.B500;
+  const activeBackground: Background = colors.B200;
   const item: ItemTheme = {
     default: {
       background: 'transparent',
     },
     hover: {
-      background: style.akColorN80A,
+      background: colors.N80A,
     },
     active: {
       background: activeBackground,
     },
     selected: {
-      background: style.akColorN50A,
-      text: style.akColorB50,
+      background: colors.N50A,
+      text: colors.B50,
     },
     focus,
     dragging: {
@@ -151,7 +206,7 @@ export const global: Provided = ((): Provided => {
     },
     hover: {
       // going darker than standard hover
-      background: style.akColorN90A,
+      background: colors.N90A,
     },
     active: item.active,
     selected: item.selected,
@@ -165,9 +220,9 @@ export const global: Provided = ((): Provided => {
       secondary: primaryBackground,
       tertiary: primaryBackground,
     },
-    text: style.akColorB50,
-    subText: style.akColorB75,
-    keyline: style.akColorN80A,
+    text: colors.B50,
+    subText: colors.B75,
+    keyline: colors.N80A,
     item,
     dropdown,
   };

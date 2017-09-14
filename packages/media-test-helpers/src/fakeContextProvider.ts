@@ -26,18 +26,19 @@ export const fakeContext = (stubbedContext = {}): Context => {
     {observable: sinon.stub().returns(Observable.of('nothing'))}
   );
 
-  const defaultContext = {
+  const defaultContext: Context = {
     getMediaItemProvider,
     getMediaCollectionProvider,
     getDataUriService,
     addLinkItem,
     getUrlPreviewProvider,
     refreshCollection: sinon.spy(),
-
     config: {
-      clientId: 'some-client',
       serviceHost: 'some-service-host',
-      tokenProvider: () => Promise.resolve('some-token')
+      authProvider: () => Promise.resolve({
+        clientId: 'some-client-id',
+        token: 'some-token'
+      })
     }
   };
 

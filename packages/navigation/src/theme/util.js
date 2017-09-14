@@ -9,6 +9,7 @@ export const rootKey = prefix('root');
 export const groupKey = prefix('group');
 export const isDropdownOverflowKey = prefix('isDropdownOverflow');
 export const isElectronMacKey = prefix('isElectronMac');
+export const electronMacTopPadding = 14;
 
 export const isElectronMac = (map?: Object): boolean =>
   map !== undefined && hasOwnProperty(map, isElectronMacKey) && map[isElectronMacKey];

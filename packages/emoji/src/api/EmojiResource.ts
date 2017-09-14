@@ -250,7 +250,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
           return done.then(() => {
             debug('Primed siteEmojiResource');
             this.siteEmojiResource = siteEmojiResource;
-          }).catch(err => {
+          }).catch(() => {
             debug('Failed to prime siteEmojiResource');
             this.siteEmojiResource = siteEmojiResource;
           });

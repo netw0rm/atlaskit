@@ -1,5 +1,10 @@
 # @atlaskit/media-test-helpers
 
+## 8.1.0 (2017-09-13)
+
+* feature; bump media-core dep and introduce asap issuer way of auth ([f348ccb](https://bitbucket.org/atlassian/atlaskit/commits/f348ccb))
+
+
 ## 7.2.0 (2017-08-08)
 
 * feature; add password protected PDF ([5afbf6a](https://bitbucket.org/atlassian/atlaskit/commits/5afbf6a))

@@ -478,6 +478,14 @@ describe('mentions', () => {
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).to.deep.equal(doc(p()));
     });
+    it('should call changeHandlers when mention is removed', () => {
+      const spy = sinon.spy();
+      const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
+      pluginState.subscribe(spy);
+      sendKeyToPm(editorView, 'Delete');
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+      expect(spy.callCount).to.deep.equal(1);
+    });
   });
 
   describe('onMentionResult', () => {

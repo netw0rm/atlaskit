@@ -1,5 +1,10 @@
 # @atlaskit/breadcrumbs
 
+## 2.5.2 (2017-09-13)
+
+* bug fix; update breadcrumb dependencies ([784b7ee](https://bitbucket.org/atlassian/atlaskit/commits/784b7ee))
+
+
 ## 2.5.1 (2017-08-21)
 
 * bug fix; fix PropTypes warning ([040d579](https://bitbucket.org/atlassian/atlaskit/commits/040d579))

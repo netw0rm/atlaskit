@@ -17,8 +17,9 @@ export interface FetchThumbnailOptions {
   readonly size?: ThumbnailSize;
 }
 
+const MAX_AGE = 3600;
+
 export class MediaDataUriService implements DataUriService {
-  private readonly maxAge = 3600;
   private readonly request: CreateRequestFunc;
 
   constructor(
@@ -37,7 +38,7 @@ export class MediaDataUriService implements DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
     return this.fetchSomeDataUri(
       `/file/${mediaItem.details.id}/binary`, {
-        'max-age': this.maxAge,
+        'max-age': MAX_AGE,
         collection: this.collectionName
       });
   }
@@ -48,7 +49,7 @@ export class MediaDataUriService implements DataUriService {
         width,
         height,
         mode,
-        'max-age': this.maxAge,
+        'max-age': MAX_AGE,
         collection: this.collectionName
       });
   }
@@ -57,7 +58,7 @@ export class MediaDataUriService implements DataUriService {
     if (isFileItem(mediaItem)) {
       return this.fetchFileThumbnailUrl(mediaItem, options)
         .then((url) => this.fetchSomeDataUri(url, {
-          'max-age': this.maxAge,
+          'max-age': MAX_AGE,
           collection: this.collectionName
         }));
     } else {

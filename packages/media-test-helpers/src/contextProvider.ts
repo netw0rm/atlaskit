@@ -13,13 +13,18 @@ export interface AuthParameter {
   authType: 'client' | 'asap';
 }
 
+const defaultAuthParameter: AuthParameter = {
+  serviceHost: defaultParams.serviceHost,
+  authType: 'client'
+};
+
 /**
  * Creates and returns `Context` (from `media-core`) based on the data provided in parameter object.
  *
  * @param {AuthParameter} authParameter specifies serviceName and whatever auth should be done with clientId or asapIssuer
  * @returns {Context}
  */
-export const createStorybookContext = (authParameter: AuthParameter): Context => {
+export const createStorybookContext = (authParameter: AuthParameter = defaultAuthParameter): Context => {
   const scopes = {
     'urn:filestore:file:*': ['read'],
     'urn:filestore:chunk:*': ['read']

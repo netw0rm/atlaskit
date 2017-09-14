@@ -9,6 +9,7 @@ import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
 import { EditorView } from 'prosemirror-view';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 import RecentSearch from '../RecentSearch';
+import { addLinkFakeCursor, removeLinkFakeCursor } from '../../plugins/hyperlink/linkfakecursor';
 
 const TEXT_NODE = 3;
 
@@ -64,12 +65,18 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.setState({
       inputActive: true,
     });
+    if (this.state.editorFocused) {
+      addLinkFakeCursor(this.props.editorView);
+    }
   }
 
   resetInputActive = () => {
     this.setState({
       inputActive: false,
     });
+    if (!this.state.editorFocused) {
+      removeLinkFakeCursor(this.props.editorView);
+    }
   }
 
   private getOffsetParent() {
@@ -224,7 +231,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { editorView, pluginState } = this.props;
     const { href, text } = this.state;
     if (editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+      pluginState.hideLinkPanel(editorView);
     } else if (!href || href.length === 0) {
       pluginState.removeLink(editorView);
     } else {

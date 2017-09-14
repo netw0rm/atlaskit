@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { TextSelection } from 'prosemirror-state';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block, code,
@@ -9,6 +10,7 @@ import {
 import defaultSchema from '../../../../src/test-helper/schema';
 import { setTextSelection } from '../../../../src/utils';
 import { analyticsService } from '../../../../src/analytics';
+import { LinkFakeCursor } from '../../../../src/plugins/hyperlink/linkfakecursor';
 
 chai.use(chaiPlugin);
 
@@ -673,6 +675,24 @@ describe('hyperlink', () => {
         expect(pluginState.activeLinkNode).to.equal(undefined);
         editorView.destroy();
       });
+
+      it('should add fake cursor in the editor', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+        pluginState.showLinkPanel(editorView);
+        expect(editorView.state.selection instanceof LinkFakeCursor).to.equal(true);
+        editorView.destroy();
+      });
+    });
+  });
+
+  describe('hideLinkPanel', () => {
+    it('should remove fake cursor from the editor', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('{<>}')));
+      pluginState.showLinkPanel(editorView);
+      expect(editorView.state.selection instanceof LinkFakeCursor).to.equal(true);
+      pluginState.hideLinkPanel(editorView);
+      expect(editorView.state.selection instanceof TextSelection).to.equal(true);
+      editorView.destroy();
     });
   });
 

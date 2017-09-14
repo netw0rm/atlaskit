@@ -12,7 +12,7 @@ export const enterKeyCommand = (state: EditorState, dispatch: (tr: Transaction) 
     const { listItem } = state.schema.nodes;
     const node = $from.node($from.depth);
     const wrapper = $from.node($from.depth - 1);
-    if (wrapper.type === listItem) {
+    if (wrapper && wrapper.type === listItem) {
       if (node.textContent.length === 0) {
         return commands.outdentList()(state, dispatch);
       } else {

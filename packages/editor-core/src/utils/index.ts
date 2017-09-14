@@ -5,6 +5,7 @@ import { EditorState, NodeSelection, Selection, TextSelection, Transaction } fro
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
 import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
+import { LinkFakeCursor } from '../plugins/hyperlink/linkfakecursor';
 
 export {
   default as ErrorReporter,
@@ -93,6 +94,10 @@ export function endPositionOfParent(resolvedPos: ResolvedPos): number {
  * allowed.
  */
 export function isMarkTypeAllowedInCurrentSelection(markType: MarkType, state: EditorState) {
+  if (state.selection instanceof LinkFakeCursor) {
+    return true;
+  }
+
   if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
 
   const { empty, $cursor, ranges } = state.selection as TextSelection;

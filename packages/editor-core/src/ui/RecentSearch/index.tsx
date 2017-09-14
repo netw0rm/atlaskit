@@ -155,7 +155,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
     const { linkAdded } = this.state;
 
     if (linkAdded || editorView.state.selection.empty && !pluginState.active) {
-      pluginState.hideLinkPanel();
+      pluginState.hideLinkPanel(editorView);
       editorView.focus();
     } else {
       pluginState.removeLink(editorView);

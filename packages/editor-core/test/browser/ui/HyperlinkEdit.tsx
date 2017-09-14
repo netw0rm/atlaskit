@@ -11,6 +11,7 @@ import {
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { setTextSelection } from '../../../src/utils';
+import { LinkFakeCursor } from '../../../src/plugins/hyperlink/linkfakecursor';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) => makeEditor<HyperlinkState>({
@@ -139,5 +140,14 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     sinon.assert.notCalled(updateLinkTextStub);
     updateLinkTextStub.restore();
     updateLinkStub.restore();
+  });
+
+  it('should add fake cursor when input HyperlinkEdit is focused', () => {
+    const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('www.atlas{<>}sian.com'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+    hyperlinkEdit.setState({ editorFocused: true });
+    const input = hyperlinkEdit.find(PanelTextInput);
+    input.simulate('mouseDown');
+    expect(editorView.state.selection instanceof LinkFakeCursor).to.equal(true);
   });
 });

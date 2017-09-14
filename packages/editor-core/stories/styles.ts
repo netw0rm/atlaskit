@@ -55,6 +55,28 @@ export const Content = styled.div`
     }
   }
 
+  //=============== LINK FAKE CURSOR STYLES=========
+  & .ProseMirror-link-fakecursor {
+    display: none;
+    pointer-events: none;
+    position: relative;
+    height: 15px;
+  }
+
+  & .ProseMirror-link-fakecursor:after {
+    content: "";
+    display: inline;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+  }
+
+  & .ProseMirror-link-fakecursor {
+    display: inline;
+  }
+  //=============== LINK FAKE CURSOR STYLES================
+
   & div.toolsDrawer {
     padding: 8px 16px;
     background: ${akColorN800};

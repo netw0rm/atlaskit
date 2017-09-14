@@ -7,6 +7,7 @@ import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
 import { EditorProps } from '../../editor/types/editor-props';
+import { addLinkFakeCursor, drawLinkFakeCursor, removeLinkFakeCursor } from './linkfakecursor';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -63,7 +64,7 @@ export class HyperlinkState {
         ? state.tr.insert($from.pos, state.schema.text(text || href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
-      view.dispatch(tr);
+        view.dispatch(tr);
     }
   }
 
@@ -102,7 +103,8 @@ export class HyperlinkState {
   }
 
   // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: any, dirty: boolean = false) {
+  update(editorView: EditorView & { docView?: any }, dirty: boolean = false) {
+    const { state, docView } = editorView;
     this.state = state;
 
     const nodeInfo = this.getActiveLinkNodeInfo();
@@ -154,16 +156,18 @@ export class HyperlinkState {
         this.changeHandlers.forEach(cb => cb(this));
       } else {
         this.addLink({ href: '' }, editorView);
-        this.update(editorView.state, editorView.docView);
+        this.update(editorView);
       }
+      addLinkFakeCursor(editorView);
       return true;
     }
     return false;
   }
 
-  hideLinkPanel() {
+  hideLinkPanel(editorView: EditorView) {
     this.showToolbarPanel = false;
     this.changeHandlers.forEach(cb => cb(this));
+    removeLinkFakeCursor(editorView);
   }
 
   getCoordinates(editorView: EditorView & { docView?: any } , offsetParent: Element): Coordinates {
@@ -338,6 +342,7 @@ function updateLinkOnChange(
 
 export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) => new Plugin({
   props: {
+    decorations: drawLinkFakeCursor,
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
       const pluginState = stateKey.getState(view.state);
       pluginState.escapeFromMark(view);
@@ -396,11 +401,11 @@ export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) => n
   key: stateKey,
   view: (view: EditorView & { docView?: any }) => {
     const pluginState = stateKey.getState(view.state);
-    pluginState.update(view.state, view.docView, true);
+    pluginState.update(view, true);
 
     return {
       update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
-        pluginState.update(view.state, view.docView);
+        pluginState.update(view);
       }
     };
   },

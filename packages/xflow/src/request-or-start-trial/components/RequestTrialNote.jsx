@@ -61,7 +61,6 @@ class RequestTrialNote extends Component {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
-      onComplete,
     } = this.props;
     const noteText = document.getElementById('request-trial-note').value;
     this.setState({
@@ -78,7 +77,6 @@ class RequestTrialNote extends Component {
         this.setState({
           requestTrialSendNoteStatus: 'successful',
         });
-        onComplete();
       })
       .catch(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
@@ -89,34 +87,44 @@ class RequestTrialNote extends Component {
   }
 
   handleErrorFlagDismiss = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.error-flag.dismissed');
     this.setState({
       requestTrialSendNoteStatus: null,
     });
+    setTimeout(onComplete, 1000);
   };
 
   handleErrorFlagResendRequest = () => {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
+      onComplete,
     } = this.props;
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.error-flag.resend-request');
     this.setState({
       requestTrialSendNoteStatus: null,
     });
-    requestTrialAccessWithNote(this.state.noteText);
+    requestTrialAccessWithNote(this.state.noteText)
+      .then(() => onComplete)
+      .catch(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+        this.setState({
+          requestTrialSendNoteStatus: 'failed',
+        });
+      });
   };
 
   handleSuccessFlagDismiss = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.success-flag.dismissed');
     this.setState({
       requestTrialSendNoteStatus: null,
     });
+    setTimeout(onComplete, 1000);
   };
 
   render() {

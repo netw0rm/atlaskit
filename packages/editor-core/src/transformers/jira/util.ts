@@ -124,7 +124,17 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
          */
         if (node.className === 'jira-issue-macro') {
           const jiraKey = node.dataset.jiraKey;
-          return jiraKey ? schema.text(jiraKey) : null;
+          const link = node.getElementsByTagName('a')[0];
+          if (jiraKey && link) {
+            return addMarks(
+              Fragment.from(schema.text(jiraKey)),
+              [schema.marks.link!.create({
+                href: link.getAttribute('href'),
+                title: link.getAttribute('title')
+              })]
+            );
+          }
+          return null;
         } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
           return null;
         } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA

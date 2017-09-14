@@ -1,5 +1,11 @@
 # @atlaskit/field-radio-group
 
+## 1.6.4 (2017-09-13)
+
+* bug fix; switch compontent to using theme over util-shared-styles ([bca2ebe](https://bitbucket.org/atlassian/atlaskit/commits/bca2ebe))
+* bug fix; update dependencies ([fee4616](https://bitbucket.org/atlassian/atlaskit/commits/fee4616))
+
+
 ## 1.6.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -1,5 +1,8 @@
 # @atlaskit/logo
 
+## 4.0.1 (2017-09-14)
+
+* bug fix; jSD and Statuspage logo icons have fixed gradients (issues closed: ak-3479) ([60d8aca](https://bitbucket.org/atlassian/atlaskit/commits/60d8aca))
 ## 4.0.0 (2017-09-11)
 
 * breaking; All logos have been updated with new assets, please test these inside your application to make sure ([c4db7fc](https://bitbucket.org/atlassian/atlaskit/commits/c4db7fc))

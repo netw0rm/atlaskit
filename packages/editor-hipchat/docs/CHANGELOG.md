@@ -1,5 +1,8 @@
 # @atlaskit/editor-hipchat
 
+## 5.4.4 (2017-09-14)
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
 ## 5.4.3 (2017-09-12)
 
 

@@ -1,5 +1,8 @@
 # @atlaskit/multi-select
 
+## 7.1.3 (2017-09-14)
+
+* bug fix; stateful Multi-select will fire onOpenChange only when the dropdown menu is opened o ([4d69a9d](https://bitbucket.org/atlassian/atlaskit/commits/4d69a9d))
 ## 7.1.2 (2017-09-11)
 
 * bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))

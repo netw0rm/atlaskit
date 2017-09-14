@@ -107,8 +107,14 @@ class RequestTrialNote extends Component {
     this.setState({
       requestTrialSendNoteStatus: null,
     });
-    requestTrialAccessWithNote(this.state.noteText);
-    setTimeout(onComplete, 1000);
+    requestTrialAccessWithNote(this.state.noteText)
+      .then(() => onComplete)
+      .catch(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+        this.setState({
+          requestTrialSendNoteStatus: 'failed',
+        });
+      });
   };
 
   handleSuccessFlagDismiss = () => {

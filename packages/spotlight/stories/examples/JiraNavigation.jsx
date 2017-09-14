@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import Lorem from 'react-lorem-component';
 import BasicNavigation from '../components/BasicNavigation';
 import { AkNavigationItem } from '@atlaskit/navigation';
 import NucleusIcon from '../components/NucleusIcon';
 import JiraProjectSwitcher from '../components/JiraProjectSwitcher';
 import JiraBoardSwitcher from '../components/JiraBoardSwitcher';
 import JiraSearchIcon from '../components/JiraSearchIcon';
+import Button from '@atlaskit/button';
+import Config from './config';
 
 import { Spotlight, SpotlightManager } from '../../src';
 
@@ -17,10 +18,33 @@ export default class JiraNavigation extends PureComponent {
 
   state = {
     isNavigationOpen: true,
+    currentStep: 'welcome',
   }
 
   onResize = (resizeState) => {
     this.setState({ isNavigationOpen: resizeState.isOpen });
+  }
+
+  createSpotlight = () => {
+    const stepData = Config[this.state.currentStep];
+    if (!stepData) return null;
+
+    return (
+      <Spotlight {...stepData.spotlightConfig}>
+        {stepData.spotlightContent}
+        {
+          stepData.spotlightConfig.targetOnClick ? null :
+          <Button onClick={() => this.moveNextStep(stepData.nextStep)}>Next</Button>
+        }
+
+      </Spotlight>
+    );
+  }
+
+  moveNextStep = (nextStep) => {
+    this.setState({
+      currentStep: nextStep,
+    });
   }
 
   render() {
@@ -40,16 +64,7 @@ export default class JiraNavigation extends PureComponent {
             />
             {this.props.children}
           </BasicNavigation>
-          <Spotlight
-            dialogPlacement="right top"
-            target="jira-project-switcher"
-            targetRadius={4}
-            targetBgColor="white"
-            targetOnClick={console.log}
-          >
-            <h3>Spotlight title</h3>
-            <Lorem />
-          </Spotlight>
+          {this.createSpotlight()}
         </div>
       </SpotlightManager>
     );

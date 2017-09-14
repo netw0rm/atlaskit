@@ -31,7 +31,7 @@ export default class JiraProjectSwitcher extends PureComponent {
 
   render() {
     return (
-      <SpotlightTarget name="jira-project-switcher">
+      <SpotlightTarget name="projectSwitcher">
         <AkContainerTitleDropdown
           text="Project Switcher very long text"
           icon={<NucleusIcon />}

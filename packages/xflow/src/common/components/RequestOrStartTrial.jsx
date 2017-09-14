@@ -30,12 +30,14 @@ class RequestOrStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
+    alreadyRequested: PropTypes.func,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
+    alreadyRequested: () => false,
   };
 
   state = {
@@ -128,6 +130,7 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const {
+      alreadyRequested,
       onComplete,
       onTrialRequested,
       onTrialActivating,
@@ -179,7 +182,11 @@ class RequestOrStartTrial extends Component {
                 return <AlreadyStarted onComplete={onComplete} />;
               }
               case Screens.REQUEST_TRIAL: {
-                return <RequestTrial onComplete={onComplete} onTrialRequested={onTrialRequested} />;
+                return (<RequestTrial
+                  alreadyRequested={alreadyRequested()}
+                  onComplete={onComplete}
+                  onTrialRequested={onTrialRequested}
+                />);
               }
               default: {
                 return <InitializingScreen />;

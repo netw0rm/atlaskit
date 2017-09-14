@@ -62,13 +62,13 @@ class RequestTrialNote extends Component {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
     } = this.props;
-    const noteText = document.getElementById('request-trial-note').value;
+    const noteTextValue = this.noteText.value;
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
-    if (noteText) {
-      this.setState({ noteText });
+    if (noteTextValue) {
+      this.setState({ noteText: noteTextValue });
     }
     firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
     requestTrialAccessWithNote(this.state.noteText)
@@ -78,8 +78,10 @@ class RequestTrialNote extends Component {
           requestTrialSendNoteStatus: 'successful',
         });
       })
-      .catch(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
+          errorMessage: e.message,
+        });
         this.setState({
           requestTrialSendNoteStatus: 'failed',
         });
@@ -109,8 +111,10 @@ class RequestTrialNote extends Component {
     });
     requestTrialAccessWithNote(this.state.noteText)
       .then(() => onComplete)
-      .catch(() => {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed');
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
+          errorMessage: e.message,
+        });
         this.setState({
           requestTrialSendNoteStatus: 'failed',
         });
@@ -170,7 +174,7 @@ class RequestTrialNote extends Component {
               {prompt}
             </p>}
             <NoteText
-              id="request-trial-note"
+              ref={noteText => { this.noteText = noteText; }}
               placeholder={placeholder}
             />
           </div>

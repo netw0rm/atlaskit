@@ -4,6 +4,14 @@
 
 * feature; bump media-core dep and introduce asap issuer way of auth ([f348ccb](https://bitbucket.org/atlassian/atlaskit/commits/f348ccb))
 
+* breaking; 
+`createStorybookContext` now takes 1 parameter object of type `AuthParameter`. It takes `serviceHost`
+and `authType`, that can be either `"client"` or `"asap"`, depending on what auth option you want to be used.
+Notice: `clientId` is not required anymore.
+
+* breaking;
+`StoryBookTokenProvider` is gone. Instead `StoryBookAuthProvider` has new method `create`, it takes 
+boolean `isAsapEnvironment` as first parameter and `scope` object as second. 
 
 ## 7.2.0 (2017-08-08)
 

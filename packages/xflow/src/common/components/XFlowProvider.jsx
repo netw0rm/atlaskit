@@ -13,6 +13,7 @@ export const xFlowShape = PropTypes.shape({
       accessMessage: PropTypes.node,
       notePrompt: PropTypes.node,
       notePlaceholder: PropTypes.string,
+      notePlaceholderShort: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
       confirmTrialHeading: PropTypes.string,

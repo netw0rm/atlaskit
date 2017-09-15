@@ -11,6 +11,7 @@ export default (
       accessMessage: 'Create requirements and stay in sync with your entire team.',
       notePrompt: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
       notePlaceholder: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and it\'s free for 30 days.',
+      notePlaceholderShort: 'Hi! I\'d like to try Confluence.',
     }}
   >
     <RequestTrial />

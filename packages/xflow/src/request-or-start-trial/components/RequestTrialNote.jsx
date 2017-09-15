@@ -38,6 +38,7 @@ class RequestTrialNote extends Component {
     onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
+    placeholderShort: PropTypes.string,
     requestTrialAccessWithNote: PropTypes.func,
     setProductRequestFlag: PropTypes.func,
   };
@@ -58,19 +59,24 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent('xflow.request-trial-note.displayed');
   }
 
-  handleSendRequest = () => {
+  handleSendRequest = withNote => () => {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
       setProductRequestFlag,
+      placeholderShort,
     } = this.props;
-    const noteTextValue = this.noteText.value;
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
-    if (noteTextValue) {
-      this.setState({ noteText: noteTextValue });
+    if (withNote) {
+      const noteTextValue = this.noteText.value;
+      if (noteTextValue) {
+        this.setState({ noteText: noteTextValue });
+      }
+    } else {
+      this.setState({ noteText: placeholderShort });
     }
     firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
     requestTrialAccessWithNote(this.state.noteText)
@@ -176,11 +182,20 @@ class RequestTrialNote extends Component {
             <RequestAccessFooter>
               <Button
                 appearance="primary"
-                onClick={this.handleSendRequest}
+                onClick={this.handleSendRequest(true)}
               >
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
-                  defaultMessage="Send request"
+                  defaultMessage="Send note"
+                />
+              </Button>
+              <Button
+                appearance="subtle-link"
+                onClick={this.handleSendRequest(false)}
+              >
+                <FormattedMessage
+                  id="xflow.generic.request-trial-note.close-button"
+                  defaultMessage="Skip"
                 />
               </Button>
             </RequestAccessFooter>
@@ -234,6 +249,7 @@ export default withXFlowProvider(
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
+    placeholderShort: requestTrial.notePlaceholderShort,
     requestTrialAccessWithNote,
     setProductRequestFlag,
   })

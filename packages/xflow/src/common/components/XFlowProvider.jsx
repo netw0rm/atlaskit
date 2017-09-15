@@ -62,8 +62,9 @@ export const xFlowShape = PropTypes.shape({
   retrieveUsers: PropTypes.func,
   goToProduct: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
-
   closeAlreadyStartedDialog: PropTypes.func,
+  checkProductRequestFlag: PropTypes.func,
+  setProductRequestFlag: PropTypes.func,
 });
 
 export class XFlowProvider extends Component {

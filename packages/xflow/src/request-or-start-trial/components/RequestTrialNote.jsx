@@ -39,6 +39,7 @@ class RequestTrialNote extends Component {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     requestTrialAccessWithNote: PropTypes.func,
+    setProductRequestFlag: PropTypes.func,
   };
 
   static defaultProps = {
@@ -61,6 +62,7 @@ class RequestTrialNote extends Component {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
+      setProductRequestFlag,
     } = this.props;
     const noteTextValue = this.noteText.value;
     this.setState({
@@ -77,6 +79,12 @@ class RequestTrialNote extends Component {
         this.setState({
           requestTrialSendNoteStatus: 'successful',
         });
+        setProductRequestFlag()
+          .catch(e => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-request-flag.failed', {
+              errorMessage: e.message,
+            });
+          });
       })
       .catch(e => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
@@ -102,7 +110,7 @@ class RequestTrialNote extends Component {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
-      onComplete,
+      setProductRequestFlag,
     } = this.props;
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.error-flag.resend-request');
@@ -110,7 +118,18 @@ class RequestTrialNote extends Component {
       requestTrialSendNoteStatus: null,
     });
     requestTrialAccessWithNote(this.state.noteText)
-      .then(() => onComplete)
+      .then(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
+        this.setState({
+          requestTrialSendNoteStatus: 'successful',
+        });
+        setProductRequestFlag()
+          .catch(e => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-request-flag.failed', {
+              errorMessage: e.message,
+            });
+          });
+      })
       .catch(e => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
           errorMessage: e.message,
@@ -209,11 +228,13 @@ export default withXFlowProvider(
     xFlow: {
       config: { productLogo, requestTrial },
       requestTrialAccessWithNote,
+      setProductRequestFlag,
     },
   }) => ({
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
     requestTrialAccessWithNote,
+    setProductRequestFlag,
   })
 );

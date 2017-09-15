@@ -16,6 +16,8 @@ import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import confluenceStatusChecker from './confluenceStatusChecker';
+import checkConfluenceRequestFlag from './checkConfluenceRequestFlag';
+import setConfluenceRequestFlag from './setConfluenceRequestFlag';
 
 const messages = defineMessages({
   // Start Trial
@@ -223,6 +225,8 @@ export const defaultProps = intl => ({
   goToProduct,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
+  checkProductRequestFlag: checkConfluenceRequestFlag,
+  setProductRequestFlag: setConfluenceRequestFlag,
 });
 
 export class JiraToConfluenceXFlowProviderBase extends Component {

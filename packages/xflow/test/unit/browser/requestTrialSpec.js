@@ -29,6 +29,7 @@ const defaultProps = {
   requestTrialAccessWithNote: async () => Promise.resolve(),
   cancelRequestTrialAccess: async () => {},
   onTrialActivating: () => true,
+  checkProductRequestFlag: async () => Promise.resolve(),
 };
 
 const defaultRequestOrStartTrialProps = {
@@ -80,7 +81,7 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialAccess), 'Request a trial');
 
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
-      clickOnText(xflow.find(RequestTrialNote), 'Send request');
+      clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
       expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('Your request is sent');
@@ -118,7 +119,7 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialAccess), 'Request a trial');
 
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
-      clickOnText(xflow.find(RequestTrialNote), 'Send request');
+      clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
       expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
@@ -136,7 +137,7 @@ describe('@atlaskit/xflow', () => {
             <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => false}>
               <RequestOrStartTrial
                 {...defaultRequestOrStartTrialProps}
-                alreadyRequested={() => true}
+                checkProductRequestFlag={() => true}
               />
             </MockConfluenceXFlow>
           </XFlowAnalyticsListener>

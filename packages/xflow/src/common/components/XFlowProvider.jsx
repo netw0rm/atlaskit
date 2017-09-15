@@ -26,14 +26,14 @@ export const xFlowShape = PropTypes.shape({
       grantAccessSelectLabel: PropTypes.string,
       grantAccessUserSelectPlaceholder: PropTypes.string,
       grantAccessDefaultSelectedRadio: PropTypes.string,
-      grantAccessUsersOption: PropTypes.sting,
+      grantAccessUsersOption: PropTypes.string,
       grantAccessOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
           label: PropTypes.string,
         })
       ),
-      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
+      grantAccessLearnMoreLink: PropTypes.string,
 
       loadingProductHeading: PropTypes.string,
       loadingProductMessage: PropTypes.string,
@@ -44,7 +44,7 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
-    optOut: {
+    optOut: PropTypes.shape({
       optOutHeading: PropTypes.string,
       optOutMessage: PropTypes.string,
       optOutDefaultSelectedRadio: PropTypes.string,
@@ -55,7 +55,7 @@ export const xFlowShape = PropTypes.shape({
           note: PropTypes.string,
         })
       ),
-    },
+    }),
   }),
 
   progress: PropTypes.number,

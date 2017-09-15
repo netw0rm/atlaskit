@@ -1,5 +1,10 @@
 # @atlaskit/field-base
 
+## 8.1.1 (2017-09-15)
+
+* bug fix; aK-3528: Add missing semicolons which broke styles (issues closed: ak-3528) ([891cedd](https://bitbucket.org/atlassian/atlaskit/commits/891cedd))
+
+
 ## 8.1.0 (2017-09-05)
 
 * bug fix; update styles for ie11 to respect flex-wrap ([7cec339](https://bitbucket.org/atlassian/atlaskit/commits/7cec339))

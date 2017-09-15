@@ -1,5 +1,9 @@
 # @atlaskit/icon
 
+## 9.0.1 (2017-09-15)
+
+* bug fix; removed glitched path from the People icon (issues closed: ak-3524) ([bb1da8a](https://bitbucket.org/atlassian/atlaskit/commits/bb1da8a))
+
 ## 9.0.0 (2017-09-11)
 
 * breaking; The company/product icons (AtlassianIcon, BitbucketIcon, ConfluenceIcon, HipchatIcon, JiraIcon) have ([8a502b1](https://bitbucket.org/atlassian/atlaskit/commits/8a502b1))

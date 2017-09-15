@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 24.0.1 (2017-09-15)
+
+
+* bug fix; bump theme dependency in navigation to patch bug from v23.0.0 breaking change ([af676b4](https://bitbucket.org/atlassian/atlaskit/commits/af676b4))
+
+
 ## 24.0.0 (2017-09-13)
 
 

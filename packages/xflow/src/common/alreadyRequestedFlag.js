@@ -27,7 +27,7 @@ export const setAlreadyRequestedFlag = async (productKey) => {
 /**
  * Attempt to retrieve the already requested flag
  *
- * Return true if they've requested already, false if they haven't, otherwise throw an error
+ * Return true if they've requested already, false if they haven't or there's an error
  */
 export const getAlreadyRequestedFlag = async (productKey) => {
   const response = await fetch(userPreferencesEndpoint(productKey), {

@@ -163,8 +163,6 @@ export default withXFlowProvider(
     heading: requestTrial.accessHeading,
     message: requestTrial.accessMessage,
     learnMoreLink: requestTrial.accessLearnMoreLink,
-    prompt: requestTrial.notePrompt,
-    placeholder: requestTrial.notePlaceholder,
     requestTrialAccess,
     cancelRequestTrialAccess,
   })

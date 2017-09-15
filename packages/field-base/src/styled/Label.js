@@ -35,8 +35,8 @@ export const LabelInner = styled.div`
   color: ${props => (props.isDisabled ? getDisabledColor(props) : getColor(props))};
   font-size: ${fontSize}px;
   font-weight: 600;
-  line-height: ${lineHeight}
-  ${getPadding}
+  line-height: ${lineHeight};
+  ${getPadding};
 
   ${p => (p.isHidden && 'display: none;')}
 `;

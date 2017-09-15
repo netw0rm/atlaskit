@@ -4,7 +4,7 @@
 import 'jest-styled-components';
 import * as React from 'react';
 import {shallow} from 'enzyme';
-import {Wrapper, defaultWidth, defaultHeight} from '../../../../src/links/embedCard/styled';
+import {Wrapper, defaultWidth, defaultHeight} from '../../../../../src/links/embed/urlEmbedCard/styled';
 
 describe('Wrapper', () => {
 

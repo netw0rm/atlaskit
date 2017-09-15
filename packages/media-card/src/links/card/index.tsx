@@ -7,7 +7,8 @@ import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { LinkCardImageView } from '../cardImageView';
-import { EmbedCard } from '../embedCard';
+import { URLEmbedCard } from '../embed/urlEmbedCard';
+import { HTMLEmbedCard } from '../embed/htmlEmbedCard';
 import { A } from './styled';
 
 export interface LinkCardProps extends SharedCardProps {
@@ -40,10 +41,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
       default:
         if (smartCard) {
           return this.renderSmartCard();
-        } else if (app && this.isEmbedCard(app)) {
-          return this.renderEmbedCard(app);
-        } else if (player && this.isEmbedCard(player)) {
-          return this.renderEmbedCard(player);
+        } else if (app && this.isEmbed(app)) {
+          return this.renderEmbed(app);
+        } else if (player && this.isEmbed(player)) {
+          return this.renderEmbed(player);
         } else if (image) {
           return this.renderLinkCardImage();
         } else {
@@ -67,21 +68,62 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
   }
 
-  private isEmbedCard(embed: Resource) {
-    // we can't display embed cards when we don't know how high they are
+  private isURLEmbed(embed: Resource): boolean {
+    const {type, url, height, aspect_ratio} = embed;
+
+    // we can only embed HTML pages in an iframe
+    if (type !== 'text/html') {
+      return false;
+    }
+
+    // we need a height to know how big to show the iframe, otherwise, for some embeds,
+    // we will be cutting off the content, or showing too much whitespace around the content.
+    // we don't care as much about the width - most will stretch content to the width, or center content
+    return Boolean(url && (height || aspect_ratio));
+
+  }
+
+  private isHTMLEmbed(embed: Resource): boolean {
+    const {type, html} = embed;
+
+    // we can only embed HTML pages in an iframe
+    if (type !== 'text/html') {
+      return false;
+    }
+
+    return Boolean(html);
+  }
+
+  private isEmbed(embed: Resource): boolean {
+    return this.isURLEmbed(embed) || this.isHTMLEmbed(embed);
+  }
+
+  private renderURLEmbed(embed: Resource): JSX.Element {
+    const {url, width, height, aspect_ratio} = embed;
     return (
-      embed
-      && embed.url
-      && embed.type === 'text/html'
-      && (embed.height || embed.aspect_ratio !== 1)
+      <URLEmbedCard url={url || ''} width={width} height={height} aspectRatio={aspect_ratio}/>
     );
   }
 
-  private renderEmbedCard(embed: Resource) {
-    const {url = '', width, height, aspect_ratio} = embed;
+  private renderHTMLEmbed(embed: Resource): JSX.Element {
+    const {html} = embed;
     return (
-      <EmbedCard url={url} width={width} height={height} aspectRatio={aspect_ratio}/>
+      <HTMLEmbedCard html={html || ''}/>
     );
+  }
+
+  private renderEmbed(embed: Resource) {
+
+    if (this.isURLEmbed(embed)) {
+      return this.renderURLEmbed(embed);
+    }
+
+    if (this.isHTMLEmbed(embed)) {
+      return this.renderHTMLEmbed(embed);
+    }
+
+    // this case should never occur provided we've called `isEmbed(embed)` before calling this method
+    return null;
   }
 
   private renderSmartCard(): JSX.Element {

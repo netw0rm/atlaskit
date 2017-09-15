@@ -1,19 +1,17 @@
 import * as React from 'react';
 import {Wrapper, Iframe} from './styled';
 
-export interface EmbedCardProps {
+export interface URLEmbedCardProps {
   url: string;
   aspectRatio?: number;
   width?: number;
   height?: number;
-
 }
 
-export interface EmbedCardState {
+export interface URLEmbedCardState {
 }
 
-export class EmbedCard extends React.Component<EmbedCardProps, EmbedCardState> {
-
+export class URLEmbedCard extends React.Component<URLEmbedCardProps, URLEmbedCardState> {
   render() {
     const {url, aspectRatio, width, height} = this.props;
     return (
@@ -22,5 +20,4 @@ export class EmbedCard extends React.Component<EmbedCardProps, EmbedCardState> {
       </Wrapper>
     );
   }
-
 }

@@ -57,7 +57,9 @@ class AdminSettings extends Component {
   handleContinueClick = async () => {
     const { firePrivateAnalyticsEvent, optOutRequestTrialFeature } = this.props;
     const { selectedRadio } = this.state;
-    firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked');
+    firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
+      selectedRadio,
+    });
     this.setState({
       spinnerActive: true,
       buttonsDisabled: true,

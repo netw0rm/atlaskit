@@ -9,7 +9,6 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
-import RadioGroupSpacing from '../styled/RadioGroupSpacing';
 import CustomLabel from '../styled/CustomLabel';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
@@ -129,25 +128,23 @@ class AdminSettings extends Component {
           </OptOutFooter>
         }
       >
-        <RadioGroupSpacing>
-          <AkFieldRadioGroup
-            label={message}
-            onRadioChange={this.handleRadioChange}
-            items={optionItems.map(({ value, label, note }) => ({
-              value,
-              label: note ? (
-                <CustomLabel>
-                  {label}
-                  <br />
-                  <small>{note}</small>
-                </CustomLabel>
-              ) : (
-                label
-              ),
-              isSelected: this.state.selectedRadio === value,
-            }))}
-          />
-        </RadioGroupSpacing>
+        <AkFieldRadioGroup
+          label={message}
+          onRadioChange={this.handleRadioChange}
+          items={optionItems.map(({ value, label, note }) => ({
+            value,
+            label: note ? (
+              <CustomLabel>
+                {label}
+                <br />
+                <small>{note}</small>
+              </CustomLabel>
+            ) : (
+              label
+            ),
+            isSelected: this.state.selectedRadio === value,
+          }))}
+        />
         {this.props.children}
       </ModalDialog>
     );

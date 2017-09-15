@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 47.0.2 (2017-09-15)
+
+* bug fix; entering 2 back ticks followed by character between should create a code mark. (issues closed: #ed-2418) ([c7a8e66](https://bitbucket.org/atlassian/atlaskit/commits/c7a8e66))
+## 47.0.1 (2017-09-14)
+
+* bug fix; cleanup ([9274a2a](https://bitbucket.org/atlassian/atlaskit/commits/9274a2a))
+* bug fix; fixed parsing jira issue keys (issues closed: ed-1407) ([ff7ef80](https://bitbucket.org/atlassian/atlaskit/commits/ff7ef80))
 ## 47.0.0 (2017-09-13)
 
 

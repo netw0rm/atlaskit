@@ -20,6 +20,7 @@ const GlobalItemInner = styled.span`
   border-radius: 50%;
   cursor: pointer;
   display: flex;
+  line-height: 1;
   width: ${({ size }) => globalItemSizes[size]}px;
   height: ${({ size }) => globalItemSizes[size]}px;
   justify-content: center;

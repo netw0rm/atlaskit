@@ -11,11 +11,16 @@ describe('Person Result', () => {
     );
   });
 
-  it('should render an avatar', () => {
+  it('should render an avatar if `avatarUrl` is provided', () => {
+    personResultWrapper.setProps({ avatarUrl: 'not null' });
     expect(personResultWrapper.find(Avatar)).toHaveLength(1);
   });
 
-  it('should render name prop', () => {
+  it('should render an avatar if `avatarUrl` is not provided', () => {
+    expect(personResultWrapper.find(Avatar)).toHaveLength(1);
+  });
+
+  it('should render `name` prop', () => {
     const name = 'Charlie Atlas';
     personResultWrapper.setProps({ name });
     expect(personResultWrapper.text()).toEqual(expect.stringContaining(name));

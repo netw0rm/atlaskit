@@ -7,7 +7,7 @@ import {
   EditorView,
   Schema,
 } from '../../prosemirror';
-
+import { analyticsService } from '../../analytics';
 import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
@@ -319,6 +319,23 @@ export class TextFormattingState {
     return state.doc.rangeHasMark(from, to, markType);
   }
 
+  textInputHandler(view: EditorView, from: number, to: number, text: string): boolean {
+    const { state } = view;
+    if(state.selection.empty) {
+      const nodeContent = state.selection.$from.node().textContent;
+      const start = state.selection.$from.start();
+      const charBefore = nodeContent[from - start - 1];
+      const charAfter = nodeContent[from - start];
+      if (charBefore === '`' && charAfter === '`') {
+        analyticsService.trackEvent(`atlassian.editor.format.code.autoformatting`);
+        const tr = state.tr.delete(from - 1, from + 1).insertText(text);
+        view.dispatch(transformToCodeAction(state, from - 1, from, tr));
+        return true;
+      }
+    }
+    return false;
+  }
+
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
@@ -350,6 +367,9 @@ export const plugin = new Plugin({
   props: {
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
+    },
+    handleTextInput(view: EditorView, from: number, to: number, text: string) {
+      return stateKey.getState(view.state).textInputHandler(view, from, to, text);
     }
   }
 });

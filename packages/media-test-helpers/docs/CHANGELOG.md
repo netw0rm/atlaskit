@@ -1,5 +1,25 @@
 # @atlaskit/media-test-helpers
 
+## 8.2.1 (2017-09-15)
+
+* bug fix; fix bug where authProvider impl has wrong API ([f8fbeee](https://bitbucket.org/atlassian/atlaskit/commits/f8fbeee))
+## 8.2.0 (2017-09-14)
+
+* feature; add \`createStorybookContext\` default parameter ([6814e95](https://bitbucket.org/atlassian/atlaskit/commits/6814e95))
+
+## 8.1.0 (2017-09-13)
+
+* feature; bump media-core dep and introduce asap issuer way of auth ([f348ccb](https://bitbucket.org/atlassian/atlaskit/commits/f348ccb))
+
+* breaking; 
+`createStorybookContext` now takes 1 parameter object of type `AuthParameter`. It takes `serviceHost`
+and `authType`, that can be either `"client"` or `"asap"`, depending on what auth option you want to be used.
+Notice: `clientId` is not required anymore.
+
+* breaking;
+`StoryBookTokenProvider` is gone. Instead `StoryBookAuthProvider` has new method `create`, it takes 
+boolean `isAsapEnvironment` as first parameter and `scope` object as second. 
+
 ## 7.2.0 (2017-08-08)
 
 * feature; add password protected PDF ([5afbf6a](https://bitbucket.org/atlassian/atlaskit/commits/5afbf6a))

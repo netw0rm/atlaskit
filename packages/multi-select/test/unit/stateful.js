@@ -122,6 +122,19 @@ describe(`${name} - smart`, () => {
         instance.handleOpenChange({ isOpen: false });
         expect(wrapper.state().isOpen).toBe(false);
       });
+
+      it('should fire onOpenChange only when isOpen changed', () => {
+        instance.handleOpenChange(attrs);
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        onOpenChangeSpy.mockClear();
+
+        instance.handleOpenChange({ isOpen: false });
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
+        onOpenChangeSpy.mockClear();
+
+        instance.handleOpenChange({ isOpen: false });
+        expect(onOpenChangeSpy).toHaveBeenCalledTimes(0);
+      });
     });
 
     describe('handleFilterChange', () => {

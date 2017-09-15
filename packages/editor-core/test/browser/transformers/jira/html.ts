@@ -331,21 +331,4 @@ describe('JIRATransformer html:', () => {
       '<hr /><hr />',
       doc(hr(), hr()));
   });
-
-  describe('issue macros', () => {
-    checkParse('to plain text',
-      schema,
-      [
-        '<span class="jira-issue-macro" data-jira-key="ED-1" >' +
-        '<a href="https://product-fabric.atlassian.net/browse/ED-1" class="jira-issue-macro-key issue-link"  title="BitBucket RTE experiment" >' +
-        '<img class="icon" src="https://product-fabric.atlassian.net/images/icons/issuetypes/epic.svg" />' +
-        'ED-1' +
-        '</a>' +
-        '<span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current jira-macro-single-issue-export-pdf">' +
-        'In Progress' +
-        '</span>' +
-        '</span>'
-      ],
-      doc(p('ED-1')));
-  });
 });

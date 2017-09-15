@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq
 
+## 4.8.4 (2017-09-14)
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
 ## 4.8.3 (2017-09-06)
 
 * bug fix; fix save button has spinner during media upload (issues closed: ed-2273) ([67a5997](https://bitbucket.org/atlassian/atlaskit/commits/67a5997))

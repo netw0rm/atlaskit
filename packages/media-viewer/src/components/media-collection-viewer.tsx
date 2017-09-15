@@ -33,8 +33,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     super(props);
 
     const { context, collectionName, basePath, MediaViewer, mediaViewerConfiguration } = props;
-    const { config } = context;
-    const { clientId, tokenProvider } = config;
+    const { config: {authProvider} } = context;
     const pageSize = this.props.pageSize || MediaCollectionViewer.defaultPageSize;
 
     this.state = {
@@ -44,7 +43,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
         assets: {
           basePath: basePath
         },
-        fetchToken: fetchToken(clientId, tokenProvider, collectionName)
+        fetchToken: fetchToken(authProvider, collectionName)
       })
     };
   }

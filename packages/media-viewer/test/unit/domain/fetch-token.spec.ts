@@ -1,11 +1,13 @@
+import { extract, parse } from 'query-string';
+import { AuthProvider } from '@atlaskit/media-core';
+
 import { fetchToken } from '../../../src/domain/fetch-token';
 import { MediaFile } from '../../../src/mediaviewer';
-import { extract, parse } from 'query-string';
 
 const clientId = 'some-client';
 const token = 'some-token';
 const collectionName = 'some-collection';
-const tokenProvider = () => Promise.resolve(token);
+const authProvider: AuthProvider = () => Promise.resolve({clientId, token});
 
 describe('fetchToken', () => {
   const authQueryString = `client=${clientId}&collection=${collectionName}&token=${token}`;
@@ -25,7 +27,7 @@ describe('fetchToken', () => {
 
   it('should add token and client query parameters', () =>
     new Promise<void>((resolve, reject) => {
-      fetchToken(clientId, tokenProvider, collectionName)(Mocks.file)
+      fetchToken(authProvider, collectionName)(Mocks.file)
         .then(result => {
           if (result) {
             assertUrl(`https://some-host.com/file?${authQueryString}`, result.src);
@@ -41,7 +43,7 @@ describe('fetchToken', () => {
 
   it('should refresh token of pre authenticated file', () =>
     new Promise<void>((resolve, reject) => {
-      fetchToken(clientId, tokenProvider, collectionName)(Mocks.authenticatedFile)
+      fetchToken(authProvider, collectionName)(Mocks.authenticatedFile)
         .then(result => {
           if (result) {
             assertUrl(`https://some-host.com/file?${authQueryString}`, result.src);

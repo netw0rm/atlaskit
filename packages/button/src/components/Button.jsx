@@ -47,6 +47,7 @@ export default class Button extends Component {
       'subtle',
       'subtle-link',
       'warning',
+      'help',
     ]),
     /** Pass aria-controls to underlying html button. */
     ariaControls: PropTypes.string,

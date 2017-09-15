@@ -31,7 +31,6 @@ export const getPropertyAppearance =
   }
 
   const state = getState(props);
-  console.log('getPropertyAppearance', state);
 
   return propertyStyles[state] || propertyStyles.default || fallbacks[property];
 };

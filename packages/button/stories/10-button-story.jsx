@@ -121,8 +121,8 @@ const buildBackgroundStory = () => {
             Subtle link Disabled
           </Button>
           <Button {...extraProps} appearance="help" isDisabled>
-          Help link Disabled
-        </Button>
+            Help link Disabled
+          </Button>
         </div>
         <span> Disabled variations </span>
       </div>

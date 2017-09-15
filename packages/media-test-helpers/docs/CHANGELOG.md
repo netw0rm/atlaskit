@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 8.2.1 (2017-09-15)
+
+* bug fix; fix bug where authProvider impl has wrong API ([f8fbeee](https://bitbucket.org/atlassian/atlaskit/commits/f8fbeee))
 ## 8.2.0 (2017-09-14)
 
 * feature; add \`createStorybookContext\` default parameter ([6814e95](https://bitbucket.org/atlassian/atlaskit/commits/6814e95))

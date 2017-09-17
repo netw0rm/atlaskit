@@ -1,14 +1,14 @@
 import axios, {AxiosPromise, AxiosRequestConfig} from 'axios';
 import {defaultCollectionName} from './collectionNames';
-import {Auth, AuthProvider} from '../../media-core/src/auth';
+import {Auth, AuthProvider, AuthContext} from '@atlaskit/media-core';
 
 const cachedAuths: {[key: string]: Auth} = {};
 const baseURL = 'https://media-playground.internal.app.dev.atlassian.io';
 
 export class StoryBookAuthProvider {
-
   static create(isAsapEnvironment: boolean, access?: { [resourceUrn: string]: string[] }): AuthProvider {
-    return (collectionName: string = defaultCollectionName,): Promise<Auth> => {
+    return (authContext?: AuthContext): Promise<Auth> => {
+      const collectionName = authContext && authContext.collectionName || defaultCollectionName;
       const accessStr = access ? JSON.stringify(access) : '';
       const cacheKey = `${collectionName}-${accessStr}-${isAsapEnvironment}`;
 

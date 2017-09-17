@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 24.0.2 (2017-09-15)
+
+* bug fix; navigation global icon isn't square, affects wrapping behaviour (issues closed: ak-3532) ([252db5b](https://bitbucket.org/atlassian/atlaskit/commits/252db5b))
+## 24.0.1 (2017-09-15)
+
+
+* bug fix; bump theme dependency in navigation to patch bug from v23.0.0 breaking change ([af676b4](https://bitbucket.org/atlassian/atlaskit/commits/af676b4))
+
+
 ## 24.0.0 (2017-09-13)
 
 

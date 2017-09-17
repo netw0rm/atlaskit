@@ -1,9 +1,9 @@
 import { Transaction, EditorState, ReplaceStep, Step } from '../../prosemirror';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(state: EditorState<any>, from: number, to: number): Transaction {
+export function transformToCodeAction(state: EditorState<any>, from: number, to: number, transaction?: Transaction): Transaction {
   const replaceSteps: Step[] = [];
-  let tr = state.tr;
+  let tr = transaction || state.tr;
 
   // Traverse through all the nodes within the range and replace them with their plaintext counterpart
   state.doc.nodesBetween(from, to, (node, nodePos) => {

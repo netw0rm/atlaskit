@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { browser } from '../../../../src';
 import {
   sendKeyToPm, doc, strike, plain, strong, em, underline, code, p,
-  subsup, chaiPlugin, makeEditor, mention
+  subsup, chaiPlugin, makeEditor, mention, insertText
 } from '../../../../src/test-helper';
 import textFormattingPlugins, { TextFormattingState } from '../../../../src/plugins/text-formatting';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -147,6 +147,14 @@ describe('text-formatting', () => {
         });
       });
     }
+    describe('code rule', () => {
+      it('should convert when "``" is entered followed by a character in it', () => {
+        const { editorView, sel } = editor(doc(p('`{<>}`')));
+        insertText(editorView, 'c', sel);
+        expect(editorView.state.doc).to.deep.equal(doc(p(code('c'))));
+        expect(trackEvent.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
+      });
+    });
 
   });
 

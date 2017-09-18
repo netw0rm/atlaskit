@@ -9,7 +9,6 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
-import RadioGroupSpacing from '../styled/RadioGroupSpacing';
 import CustomLabel from '../styled/CustomLabel';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
@@ -17,25 +16,35 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 class AdminSettings extends Component {
   static propTypes = {
-    header: PropTypes.string.isRequired,
+    heading: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
+    defaultSelectedRadio: PropTypes.string.isRequired,
+    optionItems: PropTypes.arrayOf(
+      PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+        note: PropTypes.string,
+      })
+    ).isRequired,
     children: PropTypes.node,
     spinnerActive: PropTypes.bool,
-    continueButtonDisabled: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
     firePrivateAnalyticsEvent: PropTypes.func,
-    defaultSelectedRadio: PropTypes.string,
+    optOutRequestTrialFeature: PropTypes.func,
+    cancelOptOut: PropTypes.func,
   };
 
   static defaultProps = {
-    header: 'Confluence trial requests',
     spinnerActive: false,
-    continueButtonDisabled: false,
-    defaultSelectedRadio: 'personal-opt-out',
+    buttonsDisabled: false,
+    optOutRequestTrialFeature: () => {},
+    cancelOptOut: () => {},
   };
 
   state = {
     isOpen: true,
     spinnerActive: this.props.spinnerActive,
-    continueButtonDisabled: this.props.continueButtonDisabled,
+    buttonsDisabled: this.props.buttonsDisabled,
     selectedRadio: this.props.defaultSelectedRadio,
   };
 
@@ -44,21 +53,36 @@ class AdminSettings extends Component {
     firePrivateAnalyticsEvent('xflow.opt-out.displayed');
   }
 
-  handleContinueClick = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked');
+  handleContinueClick = async () => {
+    const { firePrivateAnalyticsEvent, optOutRequestTrialFeature } = this.props;
+    const { selectedRadio } = this.state;
+    firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
+      selectedRadio,
+    });
     this.setState({
       spinnerActive: true,
-      continueButtonDisabled: true,
+      buttonsDisabled: true,
     });
+    try {
+      await optOutRequestTrialFeature(selectedRadio);
+      this.setState({
+        isOpen: false,
+      });
+    } catch (e) {
+      this.setState({
+        spinnerActive: false,
+        buttonsDisabled: false,
+      });
+    }
   };
 
-  handleCancelClick = () => {
-    const { firePrivateAnalyticsEvent } = this.props;
+  handleCancelClick = async () => {
+    const { firePrivateAnalyticsEvent, cancelOptOut } = this.props;
     firePrivateAnalyticsEvent('xflow.opt-out.cancel-button.clicked');
     this.setState({
       isOpen: false,
     });
+    await cancelOptOut();
   };
 
   handleRadioChange = evt => {
@@ -72,11 +96,13 @@ class AdminSettings extends Component {
   };
 
   render() {
+    const { heading, message, optionItems } = this.props;
+
     return (
       <ModalDialog
         isOpen={this.state.isOpen}
         width="small"
-        header={<OptOutHeader>{this.props.header}</OptOutHeader>}
+        header={<OptOutHeader>{heading}</OptOutHeader>}
         footer={
           <OptOutFooter>
             <SpinnerDiv>
@@ -86,42 +112,40 @@ class AdminSettings extends Component {
               id="xflow-opt-out-continue-button"
               onClick={this.handleContinueClick}
               appearance="primary"
-              isDisabled={this.state.continueButtonDisabled}
+              isDisabled={this.state.buttonsDisabled}
             >
               <FormattedMessage
                 id="xflow-generic.opt-out.continue-button"
                 defaultMessage="Continue"
               />
             </Button>
-            <Button onClick={this.handleCancelClick} appearance="subtle-link">
+            <Button
+              onClick={this.handleCancelClick}
+              appearance="subtle-link"
+              isDisabled={this.state.buttonsDisabled}
+            >
               <FormattedMessage id="xflow-generic.opt-out.cancel-button" defaultMessage="Cancel" />
             </Button>
           </OptOutFooter>
         }
       >
-        <RadioGroupSpacing>
-          <AkFieldRadioGroup
-            label="Change your notifications, or stop requests completely."
-            onRadioChange={this.handleRadioChange}
-            items={[
-              {
-                value: 'personal-opt-out',
-                label: (
-                  <CustomLabel>
-                    I don&apos;t want to get trial requests from users<br />
-                    <small>I Any other site admins will still receive trial requests</small>
-                  </CustomLabel>
-                ),
-                isSelected: this.state.selectedRadio === 'personal-opt-out',
-              },
-              {
-                value: 'blanket-opt-out',
-                label: 'Turn off trial requesting for all users',
-                isSelected: this.state.selectedRadio === 'blanket-opt-out',
-              },
-            ]}
-          />
-        </RadioGroupSpacing>
+        <AkFieldRadioGroup
+          label={message}
+          onRadioChange={this.handleRadioChange}
+          items={optionItems.map(({ value, label, note }) => ({
+            value,
+            label: note ? (
+              <CustomLabel>
+                {label}
+                <br />
+                <small>{note}</small>
+              </CustomLabel>
+            ) : (
+              label
+            ),
+            isSelected: this.state.selectedRadio === value,
+          }))}
+        />
         {this.props.children}
       </ModalDialog>
     );
@@ -130,4 +154,26 @@ class AdminSettings extends Component {
 
 export const AdminSettingsBase = withAnalytics(AdminSettings);
 
-export default withXFlowProvider(AdminSettingsBase);
+export default withXFlowProvider(
+  AdminSettingsBase,
+  ({
+    xFlow: {
+      config: {
+        productLogo,
+        optOut: { optOutHeading, optOutMessage, optOutOptionItems, optOutDefaultSelectedRadio },
+      },
+      status,
+      optOutRequestTrialFeature,
+      cancelOptOut,
+    },
+  }) => ({
+    productLogo,
+    optOutRequestTrialFeature,
+    cancelOptOut,
+    status,
+    heading: optOutHeading,
+    message: optOutMessage,
+    optionItems: optOutOptionItems,
+    defaultSelectedRadio: optOutDefaultSelectedRadio,
+  })
+);

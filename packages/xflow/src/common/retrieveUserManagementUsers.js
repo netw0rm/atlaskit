@@ -1,3 +1,6 @@
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
 // This aligns with User Management's pagination value
 const PAGINATION = 30;
 // export const CONFLUENCE_GROUP = 'confluence-users';
@@ -9,13 +12,13 @@ export const SITE_ADMINS_GROUP = 'site-admins';
 const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
 
 const usernamesEndpoint = (groupName, startIndex) =>
-`/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
-`&activeFilter=active&start-index=${startIndex}&max-results=${PAGINATION}`;
+  `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
+  `&activeFilter=active&start-index=${startIndex}&max-results=${PAGINATION}`;
 
 const CACHE_TIMEOUT = 100000; // 100 seconds
 const cache = new Map();
 
-const resolveGroupnameErrors = async (response) => {
+const resolveGroupnameErrors = async response => {
   let resolvedErrorResponse = null;
   if (response.status === 404) {
     const result = await response.json();
@@ -59,10 +62,10 @@ const getActiveUsernamesList = async (groupName, startIndex = 0) => {
   return result.length
     ? [
       ...result,
-    // Only fetch more if there are likely to be more to fetch
+        // Only fetch more if there are likely to be more to fetch
       ...(result.length >= PAGINATION
-      ? await getActiveUsernamesList(groupName, startIndex + PAGINATION)
-      : []),
+          ? await getActiveUsernamesList(groupName, startIndex + PAGINATION)
+          : []),
     ]
     : [];
 };
@@ -73,7 +76,7 @@ const getActiveUsernamesList = async (groupName, startIndex = 0) => {
  * for the 'everyone' and 'specific-users' options
  * @returns {Function}
  */
-export default (validGroups) => {
+export default validGroups => {
   /**
    * Retrieve the active groups on the instance that are valid for retrieval
    * @returns Array of active group names in valid groups array
@@ -94,7 +97,7 @@ export default (validGroups) => {
       .map(group => group.name);
   };
 
-  const getUsersInGroup = async (group) => {
+  const getUsersInGroup = async group => {
     let users;
     if (group === 'site-admins') {
       users = getActiveUsernamesList(SITE_ADMINS_GROUP);

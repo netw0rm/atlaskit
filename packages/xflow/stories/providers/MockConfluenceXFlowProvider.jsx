@@ -16,12 +16,17 @@ const overrideImplementations = {
   requestTrialAccessWithNote: notImplemented,
   cancelRequestTrialAccess: notImplemented,
 
+  waitForActivation: notImplemented,
   cancelStartProductTrial: notImplemented,
   grantAccessToUsers: notImplemented,
   retrieveUsers: notImplemented,
   goToProduct: notImplemented,
   closeLoadingDialog: notImplemented,
   checkProductRequestFlag: notImplemented,
+  closeAlreadyStartedDialog: notImplemented,
+
+  optOutRequestTrialFeature: notImplemented,
+  cancelOptOut: notImplemented,
 };
 
 export default class MockConfluenceXFlowProvider extends JiraToConfluenceXFlowProvider {

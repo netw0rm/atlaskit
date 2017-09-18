@@ -26,14 +26,14 @@ export const xFlowShape = PropTypes.shape({
       grantAccessSelectLabel: PropTypes.string,
       grantAccessUserSelectPlaceholder: PropTypes.string,
       grantAccessDefaultSelectedRadio: PropTypes.string,
-      grantAccessUsersOption: PropTypes.sting,
+      grantAccessUsersOption: PropTypes.string,
       grantAccessOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
           label: PropTypes.string,
         })
       ),
-      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
+      grantAccessLearnMoreLink: PropTypes.string,
 
       loadingProductHeading: PropTypes.string,
       loadingProductMessage: PropTypes.string,
@@ -43,6 +43,18 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedHeading: PropTypes.string,
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,
+    }),
+    optOut: PropTypes.shape({
+      optOutHeading: PropTypes.string,
+      optOutMessage: PropTypes.string,
+      optOutDefaultSelectedRadio: PropTypes.string,
+      optOutOptionItems: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string,
+          label: PropTypes.string,
+          note: PropTypes.string,
+        })
+      ),
     }),
   }),
 
@@ -66,6 +78,8 @@ export const xFlowShape = PropTypes.shape({
   closeAlreadyStartedDialog: PropTypes.func,
   checkProductRequestFlag: PropTypes.func,
   setProductRequestFlag: PropTypes.func,
+  optOutRequestTrialFeature: PropTypes.func,
+  cancelOptOut: PropTypes.func,
 });
 
 export class XFlowProvider extends Component {

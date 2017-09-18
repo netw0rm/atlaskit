@@ -333,8 +333,8 @@ class GrantAccess extends Component {
                 defaultMessage="Continue"
               />
             </Button>
-            {this.state.showSkipLink
-              ? <Button
+            {this.state.showSkipLink ? (
+              <Button
                 id="xflow-grant-access-skip-button"
                 onClick={this.handleSkipClick}
                 appearance="link"
@@ -345,28 +345,30 @@ class GrantAccess extends Component {
                   defaultMessage="Skip"
                 />
               </Button>
-              : !this.state.changeUsers && <Button
-                id="xflow-grant-access-manage-button"
-                onClick={this.handleManageClick}
-                appearance="link"
-              >
-                <FormattedMessage
-                  id="xflow.generic.grant-access.manage"
-                  defaultMessage="Manage"
-                />
-              </Button>}
+            ) : (
+              !this.state.changeUsers && (
+                <Button
+                  id="xflow-grant-access-manage-button"
+                  onClick={this.handleManageClick}
+                  appearance="link"
+                >
+                  <FormattedMessage
+                    id="xflow.generic.grant-access.manage"
+                    defaultMessage="Manage"
+                  />
+                </Button>
+              )
+            )}
           </GrantAccessFooter>
         }
       >
         <div id="xflow-grant-access">
           <StartTrialHeader>
-            <div>
-              {heading}
-            </div>
+            <div>{heading}</div>
           </StartTrialHeader>
 
-          {this.state.changeUsers
-            ? <div>
+          {this.state.changeUsers ? (
+            <div>
               <AkFieldRadioGroup
                 ref={radioGroup => {
                   this.radioGroup = radioGroup;
@@ -423,11 +425,11 @@ class GrantAccess extends Component {
                 </GrantAccessLearnMoreSpan>
               </AffectMyBillText>
             </div>
-            : <GrantAccessDefaultAccessDiv>
-              <div>
-                {defaultAccess}
-              </div>
-            </GrantAccessDefaultAccessDiv>}
+          ) : (
+            <GrantAccessDefaultAccessDiv>
+              <div>{defaultAccess}</div>
+            </GrantAccessDefaultAccessDiv>
+          )}
 
           <StartTrialProgressDiv>
             <input

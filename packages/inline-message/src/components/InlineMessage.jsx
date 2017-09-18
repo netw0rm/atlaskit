@@ -63,6 +63,7 @@ export default class InlineMessage extends PureComponent {
           <Button
             appearance="subtle-link"
             onClick={this.toggleDialog}
+            spacing="none"
           >
             <ButtonContents isHovered={isHovered}>
               <IconForType

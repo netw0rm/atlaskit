@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 5.2.4 (2017-09-18)
+
+* bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
 ## 5.2.3 (2017-09-07)
 
 * bug fix; renderLinkCardChildren.tsx hipster mode on ([6852141](https://bitbucket.org/atlassian/atlaskit/commits/6852141))

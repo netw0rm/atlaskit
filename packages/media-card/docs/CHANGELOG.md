@@ -1,5 +1,12 @@
 # @atlaskit/media-card
 
+## 21.1.0 (2017-09-18)
+
+* bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
+* feature; added Twitter and Trello embed cards. ([d337c60](https://bitbucket.org/atlassian/atlaskit/commits/d337c60))
+
+
+
 ## 21.0.2 (2017-08-29)
 
 * bug fix; update the small appearance to adhere to the latest designs ([db2c7ab](https://bitbucket.org/atlassian/atlaskit/commits/db2c7ab))

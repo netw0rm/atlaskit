@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 8.0.5 (2017-09-18)
+
+* bug fix; fix avatar isInteractive style ([1296049](https://bitbucket.org/atlassian/atlaskit/commits/1296049))
+
+
+
+
 ## 8.0.4 (2017-09-12)
 
 * bug fix; avatars now display in Firefox when used in an Avatar Group ([1db854f](https://bitbucket.org/atlassian/atlaskit/commits/1db854f))

@@ -112,6 +112,20 @@ describe('inputrules', () => {
           expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'java' })('hello\nworld')));
           editorView.destroy();
         });
+
+        it('should convert "``` " in middle of paragraph to a code block', () => {
+          const { editorView, sel } = editor(doc(p('code ```{<>}')));
+          insertText(editorView, ' ', sel);
+          expect(editorView.state.doc).to.deep.equal(doc(code_block()('code ')));
+          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
+        });
+
+        it('should convert "``` " in middle of paragraph to a code block and set language correctly', () => {
+          const { editorView, sel } = editor(doc(p('code ```java{<>}')));
+          insertText(editorView, ' ', sel);
+          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'java' })('code ')));
+          expect(trackEvent.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
+        });
       });
 
       context('when there are more than 3 backticks', () => {
@@ -120,6 +134,11 @@ describe('inputrules', () => {
           sendKeyToPm(editorView, 'Enter');
           expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'js' })('')));
           editorView.destroy();
+        });
+        it('should convert "code `````js" to a code block with attr "language: js" in middle of paragraph', () => {
+          const { editorView } = editor(doc(p('code `````js{<>}')));
+          sendKeyToPm(editorView, 'Enter');
+          expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'js' })('code ')));
         });
       });
     });

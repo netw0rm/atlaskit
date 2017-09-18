@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.1.0 (2017-09-18)
+
+* feature; add JSON as a supported language for code blocks (issues closed: ed-2767) ([b6debbf](https://bitbucket.org/atlassian/atlaskit/commits/b6debbf))
 ## 47.0.2 (2017-09-15)
 
 * bug fix; entering 2 back ticks followed by character between should create a code mark. (issues closed: #ed-2418) ([c7a8e66](https://bitbucket.org/atlassian/atlaskit/commits/c7a8e66))

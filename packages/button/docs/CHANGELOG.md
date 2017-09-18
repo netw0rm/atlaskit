@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 5.3.0 (2017-09-18)
+
+
+* feature; support new Help button appearance (issues closed: ak-3535) ([69728ed](https://bitbucket.org/atlassian/atlaskit/commits/69728ed))
 ## 5.2.0 (2017-09-12)
 
 * feature; we need the ability to reference elements ([cbf5c12](https://bitbucket.org/atlassian/atlaskit/commits/cbf5c12))

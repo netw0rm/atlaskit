@@ -56,7 +56,7 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
   }
 
   filter(query?: string, options?: SearchOptions) {
-    debug('MockEmojiResource.filter', query);
+    debug('MockNonUploadingEmojiResource.filter', query);
     if (query) {
       this.lastQuery = query;
     } else {
@@ -138,11 +138,11 @@ export class MockNonUploadingEmojiResource extends AbstractResource<string, Emoj
     }
   }
 
-  calculateDynamicCategories(): string[] {
+  calculateDynamicCategories(): Promise<string[]> {
     if (!this.emojiRepository) {
-      return [];
+      return Promise.resolve([]);
     }
-    return this.emojiRepository.getDynamicCategoryList();
+    return Promise.resolve(this.emojiRepository.getDynamicCategoryList());
   }
 }
 
@@ -163,16 +163,6 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
       this.uploadSupported = !!config.uploadSupported;
       this.uploadError = config.uploadError;
     }
-  }
-
-  filter(query?: string, options?: SearchOptions) {
-    debug('MockEmojiResource.filter', query);
-    if (query) {
-      this.lastQuery = query;
-    } else {
-      this.lastQuery = '';
-    }
-    this.promiseBuilder(this.emojiRepository.search(query, options), 'filter').then((result: EmojiSearchResult) => this.notifyResult(result));
   }
 
   isUploadSupported(): Promise<boolean> {
@@ -211,11 +201,11 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
     return emoji;
   }
 
-  calculateDynamicCategories(): string[] {
+  calculateDynamicCategories(): Promise<string[]> {
     if (!this.emojiRepository) {
-      return [];
+      return Promise.resolve([]);
     }
-    return this.emojiRepository.getDynamicCategoryList(true);
+    return Promise.resolve(this.emojiRepository.getDynamicCategoryList(true));
   }
 }
 

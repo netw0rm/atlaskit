@@ -32,7 +32,7 @@
   "dependencies": {
     "@atlaskit/button": "^1.0.10",
     "@atlaskit/field-base": "^5.0.0",
-    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/icon": "^9.0.0",
     "@atlaskit/layer": "^2.5.1",
     "@atlaskit/spinner": "^2.0.0",
     "@atlaskit/tooltip": "^3.1.0",

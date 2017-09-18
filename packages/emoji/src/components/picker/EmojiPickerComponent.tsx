@@ -15,6 +15,7 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { EmojiProvider, OnEmojiProviderChange, supportsUploadFeature } from '../../api/EmojiResource';
+import { getEmojiVariation } from '../../api/EmojiRepository';
 
 const FREQUENTLY_USED_MAX = 16;
 
@@ -111,10 +112,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const prevEmojiProvider = this.props.emojiProvider;
     const nextEmojiProvider = nextProps.emojiProvider;
     if (prevEmojiProvider !== nextEmojiProvider) {
-      prevEmojiProvider.unsubscribe(this.onProviderChange);
-
-      nextEmojiProvider.subscribe(this.onProviderChange);
-      this.onSearch(this.state.query);
       if (supportsUploadFeature(nextEmojiProvider)) {
         nextEmojiProvider.isUploadSupported().then(this.onUploadSupported);
       }
@@ -122,9 +119,24 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
+    const prevEmojiProvider = prevProps.emojiProvider;
+    const currentEmojiProvider = this.props.emojiProvider;
+
     if (this.state.uploading && this.state.uploading !== prevState.uploading) {
       // Showing upload panel, ensure custom category in view due to increased height
       this.scrollToEndOfList();
+    }
+
+    if (prevEmojiProvider !== currentEmojiProvider) {
+      prevEmojiProvider.unsubscribe(this.onProviderChange);
+      currentEmojiProvider.subscribe(this.onProviderChange);
+
+      // We changed provider which means we subscribed to filter results for a new subscriber.
+      // So we refresh the emoji display with onSearch and we do it here, after the new props have
+      // been set since onSearch leads to filter being called on the current emojiProvider.
+      // (Calling onSearch in a '...Will...' lifecycle method would lead to filter being called on
+      // an emojiProvider we have already unsubscribed from)
+      this.onSearch(this.state.query);
     }
   }
 
@@ -149,7 +161,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     emojiProvider.findInCategory(categoryId).then(emojisInCategory => {
       const { disableCategories } = this.state;
       if (!disableCategories) {
-        const selectedEmoji = emojisInCategory[0];
+        let selectedEmoji;
+        if (emojisInCategory && emojisInCategory.length > 0) {
+          selectedEmoji = getEmojiVariation(emojisInCategory[0], { skinTone: this.state.selectedTone });
+        }
+
         this.setState({
           activeCategory: categoryId,
           selectedCategory: categoryId,
@@ -220,13 +236,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
    * or the frequently used emoji have updated.)
    */
   private setStateAfterEmojiChange(query: string, emojiToRender: EmojiDescription[], searchEmoji: EmojiDescription[], frequentEmoji: EmojiDescription[]) {
-    const { dynamicCategories, filteredEmojis } = this.state;
+    const { filteredEmojis } = this.state;
 
     // Only enable categories for full emoji list (non-search)
     const disableCategories = !!query;
-    let newDynamicCategories = dynamicCategories;
     if (!disableCategories && emojiToRender.length !== filteredEmojis.length) {
-      newDynamicCategories = this.getDynamicCategories();
+      this.getDynamicCategories().then(categories => {
+        this.onDynamicCategoryChange(categories);
+      });
     }
 
     let selectedEmoji;
@@ -247,11 +264,16 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       frequentlyUsedEmojis: frequentEmoji,
       selectedEmoji,
       activeCategory,
-      dynamicCategories: newDynamicCategories,
       disableCategories,
       query,
       loading: false,
     } as State);
+  }
+
+  private onDynamicCategoryChange = (categories: string[]) => {
+    this.setState({
+      dynamicCategories: categories
+    });
   }
 
   private onProviderChange: OnEmojiProviderChange = {
@@ -263,7 +285,8 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       selectedTone: toneValue,
     } as State);
     this.props.emojiProvider.setSelectedTone(toneValue);
-    this.updateEmojis('', { skinTone: toneValue });
+    const { query = '' } = this.state;
+    this.updateEmojis(query, { skinTone: toneValue });
   }
 
   /**
@@ -350,8 +373,12 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     });
   }
 
-  private getDynamicCategories() {
-    return this.props.emojiProvider.calculateDynamicCategories ? this.props.emojiProvider.calculateDynamicCategories() : [];
+  private getDynamicCategories(): Promise<string[]> {
+    if (!this.props.emojiProvider.calculateDynamicCategories) {
+      return Promise.resolve([]);
+    }
+
+    return this.props.emojiProvider.calculateDynamicCategories();
   }
 
   private handlePickerRef = (ref: any) => {

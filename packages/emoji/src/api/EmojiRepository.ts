@@ -207,9 +207,13 @@ export default class EmojiRepository {
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {
-    return this.all().emojis.filter(
-      emoji => emoji.category === categoryId
-    );
+    if (categoryId === frequentCategory) {
+      return this.getFrequentlyUsed();
+    } else {
+      return this.all().emojis.filter(
+        emoji => emoji.category === categoryId
+      );
+    }
   }
 
   addCustomEmoji(emoji: EmojiDescription) {

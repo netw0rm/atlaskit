@@ -309,8 +309,8 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
         });
 
         if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
-          // Custom group wasn't rendered, but upload is supports, so add
-          // group with lone upload action
+          // Custom group wasn't rendered, but upload is supported, so add group with lone upload action
+          this.categoryTracker.add(customCategory, items.length);
 
           items = [
             ...items,

@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 8.0.0 (2017-09-18)
+
+
+* breaking; media-core peer dependency has changed to strictly v 10 ([ba73022](https://bitbucket.org/atlassian/atlaskit/commits/ba73022))
+* breaking; update media-core and media-test-helpers version ([ba73022](https://bitbucket.org/atlassian/atlaskit/commits/ba73022))
 ## 7.0.0 (2017-09-18)
 
 * breaking; media-core peer dependency has changed to strictly v 10 ([ba73022](https://bitbucket.org/atlassian/atlaskit/commits/ba73022))

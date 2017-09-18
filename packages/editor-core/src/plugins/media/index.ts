@@ -402,23 +402,27 @@ export class MediaPluginState {
       stateManager,
     } = this;
 
-    // create pickers if they don't exist, re-use otherwise
-    if (!pickers.length) {
-      pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
-      pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
-      pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
-      pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
+    require.ensure([], (require) => {
+      const mediaPicker = require('mediapicker');
 
-      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      // create pickers if they don't exist, re-use otherwise
+      if (!pickers.length) {
+        pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter, mediaPicker));
+        pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter, mediaPicker));
+        pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter, mediaPicker));
+        pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter, mediaPicker));
 
-      this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-    }
+        pickers.forEach(picker => picker.onNewMedia(this.insertFile));
 
-    // set new upload params for the pickers
-    pickers.forEach(picker => picker.setUploadParams(uploadParams));
+        this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      }
+
+      // set new upload params for the pickers
+      pickers.forEach(picker => picker.setUploadParams(uploadParams));
+    });
   }
 
   private collectionFromProvider(): string | undefined {

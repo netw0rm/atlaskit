@@ -36,6 +36,7 @@ storiesOf('RequestTrial')
       <RequestTrialNoteBase
         {...defaultProps}
         onComplete={() => Promise.resolve(true)}
+        setProductRequestFlag={() => Promise.resolve()}
       />
     )
   )

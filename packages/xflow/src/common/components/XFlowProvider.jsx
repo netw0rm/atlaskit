@@ -13,6 +13,7 @@ export const xFlowShape = PropTypes.shape({
       accessMessage: PropTypes.node,
       notePrompt: PropTypes.node,
       notePlaceholder: PropTypes.string,
+      notePlaceholderShort: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
       confirmTrialHeading: PropTypes.string,
@@ -62,8 +63,9 @@ export const xFlowShape = PropTypes.shape({
   retrieveUsers: PropTypes.func,
   goToProduct: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
-
   closeAlreadyStartedDialog: PropTypes.func,
+  checkProductRequestFlag: PropTypes.func,
+  setProductRequestFlag: PropTypes.func,
 });
 
 export class XFlowProvider extends Component {

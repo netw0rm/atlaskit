@@ -15,7 +15,6 @@ import ErrorFlag from './ErrorFlag';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import GrantAccessFooter from '../styled/GrantAccessFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
-import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
 import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
 import InputLabel from '../styled/InputLabel';
@@ -367,7 +366,7 @@ class GrantAccess extends Component {
           </StartTrialHeader>
 
           {this.state.changeUsers
-            ? <GrantAccessChangeUsersDiv>
+            ? <div>
               <AkFieldRadioGroup
                 ref={radioGroup => {
                   this.radioGroup = radioGroup;
@@ -423,7 +422,7 @@ class GrantAccess extends Component {
                   </span>
                 </GrantAccessLearnMoreSpan>
               </AffectMyBillText>
-            </GrantAccessChangeUsersDiv>
+            </div>
             : <GrantAccessDefaultAccessDiv>
               <div>
                 {defaultAccess}

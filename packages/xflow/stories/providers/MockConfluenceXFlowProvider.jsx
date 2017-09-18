@@ -21,6 +21,7 @@ const overrideImplementations = {
   retrieveUsers: notImplemented,
   goToProduct: notImplemented,
   closeLoadingDialog: notImplemented,
+  checkProductRequestFlag: notImplemented,
 };
 
 export default class MockConfluenceXFlowProvider extends JiraToConfluenceXFlowProvider {

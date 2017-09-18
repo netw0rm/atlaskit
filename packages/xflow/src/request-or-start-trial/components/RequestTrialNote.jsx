@@ -38,7 +38,9 @@ class RequestTrialNote extends Component {
     onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
+    placeholderShort: PropTypes.string,
     requestTrialAccessWithNote: PropTypes.func,
+    setProductRequestFlag: PropTypes.func,
   };
 
   static defaultProps = {
@@ -57,26 +59,39 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent('xflow.request-trial-note.displayed');
   }
 
-  handleSendRequest = () => {
+  handleSendRequest = withNote => () => {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
+      setProductRequestFlag,
+      placeholderShort,
     } = this.props;
-    const noteTextValue = this.noteText.value;
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
-    if (noteTextValue) {
-      this.setState({ noteText: noteTextValue });
+    if (withNote) {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
+      const noteTextValue = this.noteText.value;
+      if (noteTextValue) {
+        this.setState({ noteText: noteTextValue });
+      }
+    } else {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
+      this.setState({ noteText: placeholderShort });
     }
-    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
     requestTrialAccessWithNote(this.state.noteText)
       .then(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
         this.setState({
           requestTrialSendNoteStatus: 'successful',
         });
+        setProductRequestFlag()
+          .catch(e => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-request-flag.failed', {
+              errorMessage: e.message,
+            });
+          });
       })
       .catch(e => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
@@ -102,7 +117,7 @@ class RequestTrialNote extends Component {
     const {
       firePrivateAnalyticsEvent,
       requestTrialAccessWithNote,
-      onComplete,
+      setProductRequestFlag,
     } = this.props;
     firePrivateAnalyticsEvent(
       'xflow.request-trial-note.error-flag.resend-request');
@@ -110,7 +125,18 @@ class RequestTrialNote extends Component {
       requestTrialSendNoteStatus: null,
     });
     requestTrialAccessWithNote(this.state.noteText)
-      .then(() => onComplete)
+      .then(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
+        this.setState({
+          requestTrialSendNoteStatus: 'successful',
+        });
+        setProductRequestFlag()
+          .catch(e => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-request-flag.failed', {
+              errorMessage: e.message,
+            });
+          });
+      })
       .catch(e => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
           errorMessage: e.message,
@@ -157,11 +183,20 @@ class RequestTrialNote extends Component {
             <RequestAccessFooter>
               <Button
                 appearance="primary"
-                onClick={this.handleSendRequest}
+                onClick={this.handleSendRequest(true)}
               >
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
-                  defaultMessage="Send request"
+                  defaultMessage="Send note"
+                />
+              </Button>
+              <Button
+                appearance="subtle-link"
+                onClick={this.handleSendRequest(false)}
+              >
+                <FormattedMessage
+                  id="xflow.generic.request-trial-note.skip-button"
+                  defaultMessage="Skip"
                 />
               </Button>
             </RequestAccessFooter>
@@ -209,11 +244,14 @@ export default withXFlowProvider(
     xFlow: {
       config: { productLogo, requestTrial },
       requestTrialAccessWithNote,
+      setProductRequestFlag,
     },
   }) => ({
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
+    placeholderShort: requestTrial.notePlaceholderShort,
     requestTrialAccessWithNote,
+    setProductRequestFlag,
   })
 );

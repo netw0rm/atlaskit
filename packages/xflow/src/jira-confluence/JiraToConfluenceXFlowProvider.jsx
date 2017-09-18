@@ -16,6 +16,8 @@ import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import confluenceStatusChecker from './confluenceStatusChecker';
+import checkConfluenceRequestFlag from './checkConfluenceRequestFlag';
+import setConfluenceRequestFlag from './setConfluenceRequestFlag';
 
 const messages = defineMessages({
   // Start Trial
@@ -122,6 +124,10 @@ const messages = defineMessages({
     id: 'xflow.j2c.request-trial.note.placeholder',
     defaultMessage: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and it\'s free for 30 days.',
   },
+  notePlaceholderShort: {
+    id: 'xflow.j2c.request-trial.note.placeholder.short',
+    defaultMessage: 'Hi! I\'d like to try Confluence.',
+  },
 });
 
 export const defaultProps = intl => ({
@@ -134,6 +140,7 @@ export const defaultProps = intl => ({
       accessLearnMoreLink: 'https://www.atlassian.com/software/confluence',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
+      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     startTrial: {
       confirmTrialHeading: intl.formatMessage(messages.confirmTrialHeading),
@@ -223,6 +230,8 @@ export const defaultProps = intl => ({
   goToProduct,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
+  checkProductRequestFlag: checkConfluenceRequestFlag,
+  setProductRequestFlag: setConfluenceRequestFlag,
 });
 
 export class JiraToConfluenceXFlowProviderBase extends Component {

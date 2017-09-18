@@ -30,14 +30,15 @@ class RequestOrStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
-    alreadyRequested: PropTypes.func,
+    // ESLint doesn't detect prop types only used in async functions
+    // eslint-disable-next-line react/no-unused-prop-types
+    checkProductRequestFlag: PropTypes.func,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
-    alreadyRequested: () => false,
   };
 
   state = {
@@ -45,9 +46,15 @@ class RequestOrStartTrial extends Component {
     error: null,
     initializingCheckFailed: false,
     activationState: UNKNOWN,
+    alreadyRequested: false,
   };
 
   async componentWillMount() {
+    const { checkProductRequestFlag } = this.props;
+    const alreadyRequested = await checkProductRequestFlag();
+    this.setState({
+      alreadyRequested,
+    });
     return this.resetRequestOrStartTrial();
   }
 
@@ -130,14 +137,18 @@ class RequestOrStartTrial extends Component {
 
   render() {
     const {
-      alreadyRequested,
       onComplete,
       onTrialRequested,
       onTrialActivating,
       sourceComponent,
       sourceContext,
     } = this.props;
-    const { activationState, initializingCheckFailed, showInitializationError } = this.state;
+    const {
+      activationState,
+      alreadyRequested,
+      initializingCheckFailed,
+      showInitializationError,
+    } = this.state;
 
     return (
       <XFlowAnalyticsListener
@@ -183,7 +194,7 @@ class RequestOrStartTrial extends Component {
               }
               case Screens.REQUEST_TRIAL: {
                 return (<RequestTrial
-                  alreadyRequested={alreadyRequested()}
+                  alreadyRequested={alreadyRequested}
                   onComplete={onComplete}
                   onTrialRequested={onTrialRequested}
                 />);
@@ -203,8 +214,14 @@ export const RequestOrStartTrialBase = withAnalytics(RequestOrStartTrial);
 
 export default withXFlowProvider(
   RequestOrStartTrialBase,
-  ({ xFlow: { canCurrentUserAddProduct, getProductActivationState, waitForActivation } }) => ({
+  ({ xFlow: {
+      canCurrentUserAddProduct,
+      checkProductRequestFlag,
+      getProductActivationState,
+      waitForActivation,
+  } }) => ({
     canCurrentUserAddProduct,
+    checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
   })

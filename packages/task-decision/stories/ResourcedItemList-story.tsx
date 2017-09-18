@@ -117,15 +117,13 @@ storiesOf('<ResourcedItemList/>', module)
     const { renderDocument, taskDecisionProvider } = createProviders({ hasMore: true, lag: 500 });
 
     return (
-      <SidebarContainer>
-        <ResourcedItemListWithReset
-          renderDocument={renderDocument}
-          initialQuery={initialQuery}
-          taskDecisionProvider={taskDecisionProvider}
-          useInfiniteScroll={true}
-          height="100%"
-        />
-      </SidebarContainer>
+      <ResourcedItemListWithReset
+        renderDocument={renderDocument}
+        initialQuery={initialQuery}
+        taskDecisionProvider={taskDecisionProvider}
+        useInfiniteScroll={true}
+        height="100%"
+      />
     );
   })
   .add('Group by last update date', () => {

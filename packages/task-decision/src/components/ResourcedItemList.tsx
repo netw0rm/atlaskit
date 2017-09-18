@@ -7,6 +7,7 @@ import { defaultSortCriteria } from '../constants';
 import { contentToDocument } from '../api/TaskDecisionUtils';
 import { loadLatestItems } from '../api/TaskDecisionLoader';
 import InfiniteScroll from './InfiniteScroll';
+import ListContainer from '../styled/ListContainer';
 import ListWrapper from '../styled/ListWrapper';
 import DateGroup from '../styled/DateGroup';
 import DateGroupHeader from '../styled/DateGroupHeader';
@@ -205,7 +206,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
   }
 
   private renderItems() {
-    const { groupItems, initialQuery } = this.props;
+    const { appearance, groupItems, initialQuery } = this.props;
     const { items } = this.state;
 
     if (!items) {
@@ -214,11 +215,18 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
 
     const { sortCriteria } = initialQuery;
 
+    let renderedItems;
     if (groupItems && isDateSortCriteria(sortCriteria)) {
-      return this.renderItemsGroupedByDate(items);
+      renderedItems = this.renderItemsGroupedByDate(items);
+    } else {
+      renderedItems = this.renderItemsUngrouped(items);
     }
 
-    return this.renderItemsUngrouped(items);
+    return (
+      <ListContainer theme={{ appearance }}>
+          {renderedItems}
+      </ListContainer>
+    );
   }
 
   private renderItemsUngrouped(items: Item[]) {

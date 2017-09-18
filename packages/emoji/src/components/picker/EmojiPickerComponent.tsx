@@ -285,10 +285,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       selectedTone: toneValue,
     } as State);
     this.props.emojiProvider.setSelectedTone(toneValue);
-    let query = '';
-    if (this.state.query) {
-      query = this.state.query;
-    }
+    const { query = '' } = this.state;
     this.updateEmojis(query, { skinTone: toneValue });
   }
 

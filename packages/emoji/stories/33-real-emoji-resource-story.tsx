@@ -3,10 +3,13 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-
+import { customCategory } from '../src/constants';
 import UploadingEmojiResource from '../src/api/EmojiResource';
 import ResourcedEmojiControl from './demo-resource-control';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
+import { ResourcedFilteredEmojiList } from './demo-resourced-emoji-list';
+import { EmojiDescription } from '../src/types';
+
 
 declare var require: {
     <T>(path: string): T;
@@ -46,6 +49,21 @@ storiesOf(`${name}/real-emoji-resource`, module)
         emojiConfig={getEmojiConfig()}
         customEmojiProvider={defaultEmojiProvider}
         children={picker}
+      />
+    );
+  })
+  .add('ResourcedEmoji', () => {
+    const filter = (emoji: EmojiDescription) => (emoji.category === customCategory);
+    const emojiList = (
+      <ResourcedFilteredEmojiList
+        filter={filter}
+        emojiProvider={defaultEmojiProvider}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={getEmojiConfig()}
+        children={emojiList}
       />
     );
   });

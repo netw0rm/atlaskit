@@ -1,28 +1,17 @@
-import styled from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import { getHeight, paddingUnitless, transition } from './constants';
 
-const colorOptions = {
-  default: colors.N0,
-  checkedDisabled: '#A1DCC4',
-  uncheckedDisabled: '#AFB6C2',
-};
+const backgroundColor = themed({ light: colors.N0, dark: colors.DN0 });
 
-const getBackgroundColor = ({ isChecked, isDisabled }) => {
-  let color = colorOptions.default;
-
-  if (isDisabled) color = colorOptions.uncheckedDisabled;
-  if (isDisabled && isChecked) color = colorOptions.checkedDisabled;
-
-  return color;
-};
 const getTransform = ({ isChecked, size }) => (isChecked
   ? `translateX(${getHeight({ size })}px)`
   : 'initial'
 );
 
 export default styled.span`
-  background-color: ${getBackgroundColor};
+  ${({ isDisabled }) => (isDisabled ? css`opacity: 0.5` : '')}
+  background-color: ${backgroundColor};
   border-radius: 50%;
   bottom: ${2 * paddingUnitless}px;
   content: "";

@@ -10,7 +10,9 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Toggle"
+    "name": "Toggle",
+    "dark": true
+
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

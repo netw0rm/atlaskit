@@ -60,7 +60,7 @@ export default function getButtonStyles(props: Object) {
   const background = getPropertyAppearance('background', props);
   const color = getPropertyAppearance('color', props);
   const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
-  const boxShadow = boxShadowColor ? `0 0 0 2px ${boxShadowColor}` : null;
+  const boxShadow = boxShadowColor ? css`0 0 0 2px ${boxShadowColor}` : null;
   const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact

@@ -7,7 +7,6 @@ import { CardList, CardListEvent } from '../src';
 import { CardSwitcherWrapper, CardSwitcherRow, CardSwitcherBtn, CardSwitcherTitle } from './styled';
 
 const wrongCollection = 'adfasdf';
-const wrongClientId = 'wrong-client-id';
 
 // TODO: Add CollectionCardDelete into media-core. see: https://jira.atlassian.com/browse/FIL-4004
 // const deleteAction = CollectionCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
@@ -33,7 +32,10 @@ const annotateAction = {
 // TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004
 const cardsActions = [/*deleteAction, */anotherAction, annotateAction];
 const context = createStorybookContext();
-const wrongContext = createStorybookContext(wrongClientId);
+const wrongContext = createStorybookContext({
+  serviceHost: 'http://example.com',
+  authType: 'client'
+});
 
 storiesOf('CardList', {})
   .add('Normal cards', () => (

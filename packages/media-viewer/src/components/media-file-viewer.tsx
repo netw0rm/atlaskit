@@ -26,8 +26,7 @@ export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileVi
 
   componentDidMount(): void {
     const { context, fileId, collectionName, basePath, onClose, MediaViewer, mediaViewerConfiguration } = this.props;
-    const { config } = context;
-    const { serviceHost, clientId, tokenProvider } = config;
+    const { config: {serviceHost, authProvider} } = context;
 
     this.setState({
       mediaViewer: new MediaViewer({
@@ -35,7 +34,7 @@ export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileVi
         assets: {
           basePath: basePath
         },
-        fetchToken: fetchToken(clientId, tokenProvider, collectionName)
+        fetchToken: fetchToken(authProvider, collectionName)
       })
     }, () => {
       const { mediaViewer } = this.state;

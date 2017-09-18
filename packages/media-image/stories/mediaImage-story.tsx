@@ -1,10 +1,16 @@
-import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { Component } from 'react';
+import { storiesOf } from '@kadira/storybook';
 import FieldText from '@atlaskit/field-text';
+import { Auth, isClientBasedAuth } from '@atlaskit/media-core';
+import { genericFileId,
+  defaultParams,
+  defaultCollectionName,
+  StoryBookAuthProvider
+} from '@atlaskit/media-test-helpers';
+
 import {MediaImage} from '../src';
 import { name } from '../package.json';
-import { genericFileId, defaultServiceHost, defaultClientId, defaultCollectionName, StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
 
 export interface WrapperProps {
 
@@ -26,14 +32,23 @@ export class Wrapper extends Component<WrapperProps, WrapperState> {
       token: '',
       imageId: genericFileId.id,
       collectionName: defaultCollectionName,
-      clientId: defaultClientId,
-      serviceHost: defaultServiceHost
+      clientId: defaultParams.clientId,
+      serviceHost: defaultParams.serviceHost
     };
   }
 
   componentDidMount() {
-    StoryBookTokenProvider.tokenProvider(defaultCollectionName).then(token => {
-      this.setState({token});
+    const authProvider = StoryBookAuthProvider.create(false);
+    authProvider({collectionName: defaultCollectionName}).then((auth: Auth) => {
+      this.setState({
+        token: auth.token
+      });
+
+      if (isClientBasedAuth(auth)) {
+        this.setState({
+          clientId: auth.clientId
+        });
+      }
     });
   }
 

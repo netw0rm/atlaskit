@@ -19,10 +19,15 @@ const getItemState = stateName => ({ theme }) => {
 
 const getPadding = ({ isCompact, theme }) => {
   const paddingKey = isCompact ? 'compact' : 'default';
-  const padding = getThemeStyle(theme[themeNamespace], paddingKey, 'padding');
+  const {
+    bottom = 0,
+    left = 0,
+    right = 0,
+    top = 0,
+  } = getThemeStyle(theme[themeNamespace], paddingKey, 'padding');
 
   return css`
-    padding: ${padding.y}px ${padding.x}px;
+    padding: ${top}px ${right}px ${bottom}px ${left}px;
   `;
 };
 

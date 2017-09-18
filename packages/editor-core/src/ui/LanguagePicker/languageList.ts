@@ -4,6 +4,7 @@ export const DEFAULT_LANGUAGES = [
   { name: 'CSharp', alias: ['csharp', 'c#'] },
   { name: 'Python', alias: ['python', 'py'] },
   { name: 'JavaScript', alias: ['javascript', 'js'] },
+  { name: 'JSON', alias: ['json'] },
   { name: 'Html', alias: ['html'] },
   { name: 'C++', alias: ['c++', 'cpp'] },
   { name: 'Ruby', alias: ['ruby', 'rb', 'duby'] },

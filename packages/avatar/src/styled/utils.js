@@ -36,10 +36,10 @@ export function getAvatarDimensions(
 }
 
 // expose here for use with multiple element types
-export function getInnerStyles(props: AvatarPropTypes) {
+export function getInnerStyles(props: AvatarPropTypes & { isInteractive?: boolean }) {
   const boxSizing: string = 'content-box';
   const borderWidth: string = `${BORDER_WIDTH[props.size]}px`;
-  const isInteractive: boolean = Boolean(props.href || props.onClick);
+  const isInteractive: boolean = Boolean(props.isInteractive || props.href || props.onClick);
 
   let backgroundColor = props.borderColor || colors.background;
   let cursor = 'default';

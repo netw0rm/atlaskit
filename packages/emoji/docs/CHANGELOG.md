@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 29.0.0 (2017-09-18)
+
+
+* breaking; EmojiProvider.calculateDynamicCategories() now returns a Promise<string[]> instead of string[] ([c19395f](https://bitbucket.org/atlassian/atlaskit/commits/c19395f))
+* breaking; a few bug fixes around emoji upload plus Atlassian icon change. (issues closed: fs-1271) ([c19395f](https://bitbucket.org/atlassian/atlaskit/commits/c19395f))
 ## 28.0.2 (2017-09-13)
 
 * bug fix; fixed typescript errors ([db466da](https://bitbucket.org/atlassian/atlaskit/commits/db466da))

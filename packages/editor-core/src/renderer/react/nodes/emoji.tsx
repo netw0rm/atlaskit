@@ -10,7 +10,7 @@ export interface EmojiProps extends EmojiAttributes {
 
 export default class EmojiItem extends PureComponent<EmojiProps, {}> {
   render() {
-    const { id, shortName, text } = this.props;
+    const { id, providers, shortName, text } = this.props;
 
     return (
       <Emoji
@@ -18,6 +18,7 @@ export default class EmojiItem extends PureComponent<EmojiProps, {}> {
         id={id}
         shortName={shortName}
         fallback={text}
+        providers={providers}
       />
     );
   }

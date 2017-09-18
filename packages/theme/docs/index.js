@@ -48,7 +48,7 @@ export const description = (
     </p>
     <h3>colors object</h3>
     <p>
-      The colors object is an export that has the adg colors attached to it, for
+      The colors object is an export that has the ADG colors attached to it, for
       easy use.
     </p>
   </div>

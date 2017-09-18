@@ -35,7 +35,6 @@ class AdminSettings extends Component {
   };
 
   static defaultProps = {
-    heading: 'Confluence trial requests',
     spinnerActive: false,
     buttonsDisabled: false,
     optOutRequestTrialFeature: () => {},

@@ -28,7 +28,7 @@ export class FileCard extends Component<FileCardProps, {}> {
     const {status, dimensions, selectable, selected, details, dataURI, progress, resizeMode} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
-    const errorMessage = this.isError ? 'Error loading card' : undefined;
+    const errorMessage = this.isError ? 'Failed to load file' : undefined;
 
     if (this._isSmall()) {
       const subtitle = toHumanReadableMediaSize(size || 0);

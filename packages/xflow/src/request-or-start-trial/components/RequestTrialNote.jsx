@@ -71,14 +71,15 @@ class RequestTrialNote extends Component {
       awaitingRequest: true,
     });
     if (withNote) {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
       const noteTextValue = this.noteText.value;
       if (noteTextValue) {
         this.setState({ noteText: noteTextValue });
       }
     } else {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
       this.setState({ noteText: placeholderShort });
     }
-    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
     requestTrialAccessWithNote(this.state.noteText)
       .then(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
@@ -194,7 +195,7 @@ class RequestTrialNote extends Component {
                 onClick={this.handleSendRequest(false)}
               >
                 <FormattedMessage
-                  id="xflow.generic.request-trial-note.close-button"
+                  id="xflow.generic.request-trial-note.skip-button"
                   defaultMessage="Skip"
                 />
               </Button>

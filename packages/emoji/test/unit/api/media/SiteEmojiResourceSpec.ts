@@ -66,8 +66,8 @@ class TestSiteEmojiResource extends SiteEmojiResource {
     this.mockMediaPicker = mockMediaPicker;
   }
 
-  protected createMediaPicker(type, mpConfig) {
-    return this.mockMediaPicker;
+  protected createMediaPicker(type, mpConfig): Promise<any> {
+    return Promise.resolve(this.mockMediaPicker);
   }
 }
 

@@ -16,7 +16,7 @@ export const testErrorBackgroundColor = colors.R400;
 export const testErrorTextColor = colors.N0;
 export const backgroundColor = themed('appearance', {
   error: { light: colors.R400, dark: colors.R300 },
-  warning: { light: colors.Y200, dark: colors.Y300 },
+  warning: { light: colors.Y300, dark: colors.Y300 },
 });
 export const textColor = themed('appearance', {
   error: { light: colors.N0, dark: colors.DN40 },

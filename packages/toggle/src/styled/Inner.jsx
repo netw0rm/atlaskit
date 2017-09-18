@@ -1,25 +1,14 @@
-import styled from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import { transition } from './constants';
 
-const colorOptions = {
-  default: colors.N0,
-  checkedDisabled: '#A1DCC4',
-  uncheckedDisabled: '#AFB6C2',
-};
+const color = themed({ light: colors.N0, dark: colors.DN0 });
 
-const getColor = ({ isChecked, isDisabled }) => {
-  let color = colorOptions.default;
-
-  if (isDisabled) color = colorOptions.uncheckedDisabled;
-  if (isDisabled && isChecked) color = colorOptions.checkedDisabled;
-
-  return color;
-};
 const getFlexDirection = ({ isChecked }) => (isChecked ? 'row' : 'row-reverse');
 
 export default styled.div`
-  color: ${getColor};
+  color: ${color};
+  ${({ isDisabled }) => (isDisabled ? css`opacity: 0.5` : '')}
   display: inline-flex;
   flex-direction: ${getFlexDirection};
   height: 100%;

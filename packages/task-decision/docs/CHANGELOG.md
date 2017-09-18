@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.0.1 (2017-09-18)
+
+* bug fix; make sure box shadow for card style is rendered inside the enclosing container. (issues closed: fs-1382) ([4b441f9](https://bitbucket.org/atlassian/atlaskit/commits/4b441f9))
 ## 4.0.0 (2017-09-12)
 
 * feature; support attribution label depending on state/creator/updaters. (issues closed: fs-1368) ([8955414](https://bitbucket.org/atlassian/atlaskit/commits/8955414))

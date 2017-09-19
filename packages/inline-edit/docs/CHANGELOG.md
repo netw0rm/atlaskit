@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.0 (2017-09-19)
+
+* feature; allow readview of inline-edit to fit container width (issues closed: #ak-3118) ([652edaf](https://bitbucket.org/atlassian/atlaskit/commits/652edaf))
 ## 4.4.6 (2017-09-06)
 
 

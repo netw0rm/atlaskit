@@ -84,13 +84,13 @@ class AdminSettings extends Component {
 
     try {
       await optOutRequestTrialFeature(selectedRadio);
-      firePrivateAnalyticsEvent('xflow.opt-out.send.successful');
+      firePrivateAnalyticsEvent('xflow.opt-out.request.successful');
       this.setState({
         optOutRequestStatus: 'successful',
         isOpen: false,
       });
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.opt-out.send.failed', {
+      firePrivateAnalyticsEvent('xflow.opt-out.request.failed', {
         errorMessage: e.message,
       });
       this.setState({

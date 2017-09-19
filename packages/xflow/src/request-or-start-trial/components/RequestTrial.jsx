@@ -6,7 +6,7 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import { MultiStep, Step } from '../../common/components/multi-step';
 
-import RequestTrialAccess from './RequestTrialAccess';
+import ConfirmRequest from './ConfirmRequest';
 import RequestTrialNote from './RequestTrialNote';
 
 class RequestTrial extends Component {
@@ -34,7 +34,7 @@ class RequestTrial extends Component {
       <MultiStep start={0} onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
-            <RequestTrialAccess
+            <ConfirmRequest
               onComplete={async () => {
                 await onTrialRequested();
                 if (alreadyRequested) {

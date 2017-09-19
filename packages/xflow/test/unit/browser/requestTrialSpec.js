@@ -4,7 +4,7 @@ import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
-import RequestTrialAccess from '../../../src/request-or-start-trial/components/RequestTrialAccess';
+import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
 import RequestTrialNote from '../../../src/request-or-start-trial/components/RequestTrialNote';
 import ErrorFlag from '../../../src/request-or-start-trial/components/ErrorFlag';
 import SuccessFlag from '../../../src/request-or-start-trial/components/SuccessFlag';
@@ -59,16 +59,16 @@ describe('@atlaskit/xflow', () => {
 
     it('should render Request Trial Access component when user doesn\'t have access', async () => {
       // eventually render to request trial screen
-      await waitUntil(() => xflow.find(RequestTrialAccess).length === 1);
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
       const requestTrialHeading = getXFlowProviderConfig().requestTrial.accessHeading;
-      expect(xflow.find(RequestTrialAccess).text()).toMatch(requestTrialHeading);
+      expect(xflow.find(ConfirmRequest).text()).toMatch(requestTrialHeading);
     });
 
     it('should render Request Trial with Note', async () => {
       // eventually render to request trial screen
-      await waitUntil(() => xflow.find(RequestTrialAccess).length === 1);
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
       // click on Request a trial
-      clickOnText(xflow.find(RequestTrialAccess), 'Request a trial');
+      clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
 
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       const requestTrialNotePrompt = getXFlowProviderConfig().requestTrial.notePrompt;
@@ -77,8 +77,8 @@ describe('@atlaskit/xflow', () => {
 
     it('should render Success Flag', async () => {
       // eventually render to request trial screen
-      await waitUntil(() => xflow.find(RequestTrialAccess).length === 1);
-      clickOnText(xflow.find(RequestTrialAccess), 'Request a trial');
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
+      clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
 
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
@@ -115,8 +115,8 @@ describe('@atlaskit/xflow', () => {
 
     it('should render Error Flag', async () => {
       // eventually render to request trial screen
-      await waitUntil(() => xflow.find(RequestTrialAccess).length === 1);
-      clickOnText(xflow.find(RequestTrialAccess), 'Request a trial');
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
+      clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
 
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
@@ -148,9 +148,9 @@ describe('@atlaskit/xflow', () => {
 
     it('should render Already Requested version if the user has already raised a request', async () => {
       // eventually render to request trial screen
-      await waitUntil(() => xflow.find(RequestTrialAccess).length === 1);
-      expect(xflow.find(RequestTrialAccess).text()).toMatch('Requested');
-      expect(xflow.find(RequestTrialAccess).text()).toMatch('Learn more');
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
+      expect(xflow.find(ConfirmRequest).text()).toMatch('Requested');
+      expect(xflow.find(ConfirmRequest).text()).toMatch('Learn more');
     });
   });
 });

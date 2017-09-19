@@ -5,8 +5,8 @@ import Button from '@atlaskit/button';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import ErrorFlag from '../../common/ErrorFlag';
-import SuccessFlag from '../../common/SuccessFlag';
+import ErrorFlag from '../../common/components/ErrorFlag';
+import SuccessFlag from '../../common/components/SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestAccessFooter from '../styled/RequestAccessFooter';

@@ -18,11 +18,13 @@ const defaultOptOutProps = {
   onComplete: () => Promise.resolve(true),
 };
 
-storiesOf('Request Product Opt Out').add('Opt Out Dialog', () =>
-  setupStorybookAnalytics(
-    <MockConfluenceXFlowProvider {...defaultProps}>
-      <OptOut {...defaultOptOutProps} />
-    </MockConfluenceXFlowProvider>
+storiesOf('Request Product Opt Out')
+  .add('Opt Out Dialog', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlowProvider {...defaultProps}>
+        <OptOut {...defaultOptOutProps} />
+      </MockConfluenceXFlowProvider>
+    )
   )
   .add('Opt Out, error flag after failed request', () =>
     setupStorybookAnalytics(

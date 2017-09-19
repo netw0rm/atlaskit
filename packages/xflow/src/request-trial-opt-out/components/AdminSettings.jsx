@@ -7,8 +7,8 @@ import Spinner from '@atlaskit/spinner';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import ErrorFlag from '../../common/ErrorFlag';
-import SuccessFlag from '../../common/SuccessFlag';
+import ErrorFlag from '../../common/components/ErrorFlag';
+import SuccessFlag from '../../common/components/SuccessFlag';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';

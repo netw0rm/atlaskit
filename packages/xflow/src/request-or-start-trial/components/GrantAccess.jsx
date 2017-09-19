@@ -10,7 +10,7 @@ import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-i
 import { withAnalytics } from '@atlaskit/analytics';
 
 import ProgressIndicator from './ProgressIndicator';
-import ErrorFlag from '../../common/ErrorFlag';
+import ErrorFlag from '../../common/components/ErrorFlag';
 
 import StartTrialHeader from '../styled/StartTrialHeader';
 import GrantAccessFooter from '../styled/GrantAccessFooter';

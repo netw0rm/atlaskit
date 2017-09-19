@@ -6,7 +6,7 @@ import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import ModalDialog from '@atlaskit/modal-dialog';
-import ErrorFlag from '../../common/ErrorFlag';
+import ErrorFlag from '../../common/components/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialHeader from '../styled/StartTrialHeader';

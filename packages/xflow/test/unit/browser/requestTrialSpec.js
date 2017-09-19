@@ -6,8 +6,8 @@ import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowP
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
 import RequestTrialNote from '../../../src/request-or-start-trial/components/RequestTrialNote';
-import ErrorFlag from '../../../src/request-or-start-trial/components/ErrorFlag';
-import SuccessFlag from '../../../src/request-or-start-trial/components/SuccessFlag';
+import ErrorFlag from '../../../src/common/components/ErrorFlag';
+import SuccessFlag from '../../../src/common/components/SuccessFlag';
 import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';

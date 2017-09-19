@@ -11,26 +11,28 @@ import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition 
 
 export default class Layer extends PureComponent {
   static propTypes = {
-    position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
     autoFlip: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.arrayOf(PropTypes.oneOf(['top', 'right', 'bottom', 'left'])),
     ]),
     boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
-    offset: PropTypes.string,
-    content: PropTypes.node,
-    onFlippedChange: PropTypes.func,
     children: PropTypes.node,
+    content: PropTypes.node,
+    offset: PropTypes.string,
+    onFlippedChange: PropTypes.func,
+    position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
+    zIndex: PropTypes.number,
   }
 
   static defaultProps = {
-    position: POSITION_ATTRIBUTE_ENUM.default,
-    boundariesElement: 'viewport',
     autoFlip: true,
-    offset: '0 0',
-    content: null,
-    onFlippedChange: () => {},
+    boundariesElement: 'viewport',
     children: null,
+    content: null,
+    offset: '0 0',
+    onFlippedChange: () => {},
+    position: POSITION_ATTRIBUTE_ENUM.default,
+    zIndex: akZIndexLayer,
   }
 
   constructor(props) {
@@ -152,7 +154,9 @@ export default class Layer extends PureComponent {
   }
 
   render() {
+    const { zIndex } = this.props;
     const { cssPosition, transform } = this.state;
+
     return (
       <div>
         <div ref={ref => (this.targetRef = ref)}>
@@ -160,7 +164,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex }}
         >
           {this.props.content}
         </div>

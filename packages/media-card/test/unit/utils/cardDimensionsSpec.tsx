@@ -2,8 +2,8 @@ import {
   getCardMinHeight,
   minSmallCardDimensions,
   minImageCardDimensions,
-  defaultHorizontalCardDimensions,
-  defaultSquareCardDimensions
+  minHorizontalCardDimensions,
+  minSquareCardDimensions
 } from '../../../src/utils';
 
 describe('cardDimensions.ts', () => {
@@ -16,8 +16,8 @@ describe('cardDimensions.ts', () => {
       expect(getCardMinHeight('auto')).toBe(minSmallCardDimensions.height);
       expect(getCardMinHeight('small')).toBe(minSmallCardDimensions.height);
       expect(getCardMinHeight('image')).toBe(minImageCardDimensions.height);
-      expect(getCardMinHeight('horizontal')).toBe(defaultHorizontalCardDimensions.height);
-      expect(getCardMinHeight('square')).toBe(defaultSquareCardDimensions.height);
+      expect(getCardMinHeight('horizontal')).toBe(minHorizontalCardDimensions.height);
+      expect(getCardMinHeight('square')).toBe(minSquareCardDimensions.height);
     });
   });
 });

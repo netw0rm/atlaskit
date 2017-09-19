@@ -122,6 +122,11 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     }
   }
 
+  // This method is called when card fails and user press 'Retry'
+  private onRetry = () => {
+    this.updateState(this.props);
+  }
+
   render() {
     const {mediaItemType, provider, dataURIService, onLoadingChange, resizeMode, ...otherProps} = this.props;
     const {metadata, status} = this.state;
@@ -135,6 +140,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         status={status}
         metadata={metadata}
         mediaItemType={mediaItemType}
+        onRetry={this.onRetry}
       />
     );
   }

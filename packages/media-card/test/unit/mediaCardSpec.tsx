@@ -283,6 +283,27 @@ describe('MediaCard', () => {
       expect(newUnsubscribe).not.toHaveBeenCalled();
     });
 
+    it('should reset the state when onRetry method is called', () => {
+      const successResponse = {foo: 1};
+      const error = 'some error';
+      const provider = {
+        observable: () => Observable.throw(new Error(error))
+      }  as any;
+      const element = shallow(
+        <MediaCard
+          provider={provider}
+        />
+      ) as any;
+      const instance = element.instance() as MediaCard;
+
+      instance.componentDidMount();
+      expect(element.prop('status')).toEqual('error');
+      provider.observable = () => Observable.of(successResponse);
+      element.simulate('retry');
+      expect(element.prop('status')).toEqual('complete');
+      expect(element.prop('metadata')).toEqual(successResponse);
+    });
+
   });
 
 });

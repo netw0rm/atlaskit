@@ -12,6 +12,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly details?: FileDetails;
   readonly dataURI?: string;
   readonly progress?: number;
+  readonly onRetry?: () => void;
   readonly resizeMode?: ImageResizeMode;
 }
 

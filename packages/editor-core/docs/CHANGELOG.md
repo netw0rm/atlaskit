@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 47.3.0 (2017-09-19)
+
+* bug fix; revert quick tooltip fix for emoji picker. (issues closed: fs-1330) ([a47a20d](https://bitbucket.org/atlassian/atlaskit/commits/a47a20d))
+
+* feature; help dialog should show hints for only those nodes and marks supported by the schem (issues closed: #ed-2671) ([7181eac](https://bitbucket.org/atlassian/atlaskit/commits/7181eac))
+* bug fix; code splitted avatar and logo (issues closed: ed-2776) ([1cad4c1](https://bitbucket.org/atlassian/atlaskit/commits/1cad4c1))
 ## 47.2.0 (2017-09-19)
 
 * feature; revise text color palette to a reduced set (issues closed: ed-2679) ([9673a86](https://bitbucket.org/atlassian/atlaskit/commits/9673a86))

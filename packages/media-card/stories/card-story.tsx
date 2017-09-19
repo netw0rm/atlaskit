@@ -205,7 +205,7 @@ storiesOf('Card', {})
     // link cards
     const smallLinkCard = <Card context={context} identifier={genericUrlIdentifier} appearance="small" dimensions={{width: '200px'}} />;
     const linkCardImage = <Card context={context} identifier={genericUrlIdentifier} appearance="image" />;
-    const horizontalLinkCard = <Card context={context} identifier={genericUrlIdentifier} />;
+    const horizontalLinkCard = <Card context={context} identifier={genericUrlIdentifier} appearance="horizontal" />;
     const squareLinkCard = <Card context={context} identifier={genericUrlIdentifier} appearance="square" />;
 
     return (

@@ -1,79 +1,101 @@
 import * as React from 'react';
 import { Container, Wrapper, Header, IconWrapper, Dialog, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
 import * as keymaps from '../../../../keymaps';
-import { browser, EditorView } from '../../../../prosemirror';
+import { browser, EditorView, Schema } from '../../../../prosemirror';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import CloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { closeHelpCommand, stopPropagationCommand } from '../../../plugins/help-dialog';
 
 export interface Format {
   name: string;
+  type: string;
   keymap?: keymaps.Keymap;
   autoFormatting?: Function;
 }
 
 export const formatting: Format[] = [{
     name: 'Bold',
+    type: 'strong',
     keymap: keymaps.toggleBold,
     autoFormatting: () => <span><CodeLg>**Bold**</CodeLg></span>
   }, {
     name: 'Italic',
+    type: 'em',
     keymap: keymaps.toggleItalic,
     autoFormatting: () => <span><CodeLg>*Italic*</CodeLg></span>,
   }, {
     name: 'Underline',
+    type: 'underline',
     keymap: keymaps.toggleUnderline,
   }, {
     name: 'Strikethrough',
+    type: 'strike',
     keymap: keymaps.toggleStrikethrough,
     autoFormatting: () => <span><CodeLg>~~strikethrough~~</CodeLg></span>,
   }, {
     name: 'Heading 1',
+    type: 'heading',
     autoFormatting: () => <span><CodeSm>#</CodeSm> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Heading 5',
+    type: 'heading',
     autoFormatting: () => <span><CodeLg>#####</CodeLg> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Numbered list',
+    type: 'orderedList',
     keymap: keymaps.toggleOrderedList,
     autoFormatting: () => <span><CodeSm>1.</CodeSm> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Bulleted list',
+    type: 'bulletList',
     keymap: keymaps.toggleBulletList,
     autoFormatting: () => <span><CodeSm>*</CodeSm> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Quote',
+    type: 'blockquote',
     keymap: keymaps.toggleBlockQuote,
     autoFormatting: () => <span><CodeLg>></CodeLg> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Code block',
+    type: 'codeBlock',
     autoFormatting: () => <span><CodeLg>```</CodeLg> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Divider',
+    type: 'hardBreak',
     keymap: keymaps.insertRule,
     autoFormatting: () => <span><CodeLg>---</CodeLg></span>,
   }, {
     name: 'Link',
+    type: 'link',
     keymap: keymaps.addLink,
     autoFormatting: () => <span><CodeLg>[Link](http://a.com)</CodeLg></span>,
   }, {
     name: 'Code',
+    type: 'code',
     keymap: keymaps.toggleCode,
     autoFormatting: () => <span><CodeLg>`code`</CodeLg></span>,
   }, {
     name: 'Actions',
+    type: 'taskItem',
     autoFormatting: () => <span><CodeSm>[]</CodeSm> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Decisions',
+    type: 'decisionItem',
     autoFormatting: () => <span><CodeSm>&lt;&gt;</CodeSm> + <CodeLg>space</CodeLg></span>,
   }, {
     name: 'Emoji',
+    type: 'emoji',
     autoFormatting: () => <span><CodeLg>:</CodeLg></span>,
   }, {
     name: 'Mention',
+    type: 'mention',
     autoFormatting: () => <span><CodeLg>@</CodeLg></span>,
   },
 ];
+
+export const getSupportedFormatting = (schema: Schema<any, any>): Format[] => {
+  return formatting.filter(({ type }) => schema.nodes[type] || schema.marks[type]);
+};
 
 export const getComponentFromKeymap = (keymap): any => {
   const currentMap = keymap[browser.mac ? 'mac' : 'windows'];
@@ -100,6 +122,14 @@ export interface Props {
 }
 
 export default class HelpDialog extends React.Component<Props, any> {
+
+  private formatting: Format[];
+
+  constructor(props) {
+    super(props);
+    const { schema } = this.props.editorView.state;
+    this.formatting = getSupportedFormatting(schema);
+  }
 
   closeDialog = () => {
     const { state: { tr }, dispatch } = this.props.editorView;
@@ -144,7 +174,7 @@ export default class HelpDialog extends React.Component<Props, any> {
               <ColumnLeft>
                 <Title>Text Formatting</Title>
                 <div>
-                  {formatting.map(form =>
+                  {this.formatting.map(form =>
                     form.keymap &&
                     <Row key={`textFormatting-${form.name}`}>
                       <span>{form.name}</span>
@@ -156,7 +186,7 @@ export default class HelpDialog extends React.Component<Props, any> {
               <ColumnRight>
                 <Title>Markdown</Title>
                   <div>
-                  {formatting.map(form =>
+                  {this.formatting.map(form =>
                     form.autoFormatting &&
                     <Row key={`autoFormatting-${form.name}`}>
                       <span>{form.name}</span>

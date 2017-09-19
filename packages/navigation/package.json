@@ -58,6 +58,7 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/app-switcher": "^3.2.0",
     "@atlaskit/badge": "^4.5.2",
     "@atlaskit/banner": "2.4.2",
     "@atlaskit/button": "^5.1.1",

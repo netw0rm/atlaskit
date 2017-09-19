@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 import {
-  minimalLinkDetailsContainingASmartCard, genericLinkDetails, imageLinkDetails, emptyLinkDetails,
+  minimalLinkDetailsContainingASmartCard, genericLinkDetails, emptyLinkDetails,
   spotifyLinkDetails, youtubeLinkDetails
  } from '@atlaskit/media-test-helpers';
 
@@ -17,11 +17,6 @@ import { AppCardView } from '../../../src/app';
 describe('LinkCard', () => {
 
   describe('.render()', () => {
-
-    it('should render image preview for a image link', () => {
-      const linkCard = shallow(<LinkCard details={imageLinkDetails} status="complete" />);
-      expect(linkCard.find(LinkCardImageView).props().thumbnailUrl).toEqual('image-url.png');
-    });
 
     it('should render LinkCardViewSmall when appearance="small"', () => {
       const card = shallow(<LinkCard status="complete" appearance="small" details={genericLinkDetails}/>);
@@ -113,11 +108,6 @@ describe('LinkCard', () => {
       };
       const card = shallow(<LinkCard status="complete" details={app}/>);
       expect(card.find(HTMLEmbedCard).exists()).toBeTruthy();
-    });
-
-    it('should render LinkCardImageView when appearance is undefined and details contains an image', () => {
-      const card = shallow(<LinkCard status="complete" details={imageLinkDetails}/>);
-      expect(card.find(LinkCardImageView).exists()).toBeTruthy();
     });
 
     it('should render LinkCardGenericView when appearance is undefined and details do not contain anything special', () => {

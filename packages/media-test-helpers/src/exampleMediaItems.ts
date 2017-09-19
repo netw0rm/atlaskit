@@ -215,11 +215,55 @@ export const genericLinkDetails: LinkDetails = {
   ...genericUrlPreview
 };
 
- export const emptyLinkDetails: UrlPreview = {
+export const transparentLinkDetails: LinkDetails = {
+  id: '',
+  ...genericUrlPreview,
+  resources: {
+    thumbnail: {
+      url: 'https://tctechcrunch2011.files.wordpress.com/2015/11/atlassian_logo-rgb-navy.png',
+      type: 'image/png',
+      width: 400,
+      height: 400
+    }
+  }
+};
+
+export const linkNoImageDetails: LinkDetails = {
+  id: '',
+  ...genericUrlPreview,
+  resources: {
+
+  }
+};
+
+export const emptyLinkDetails: UrlPreview = {
   url: '',
   type: 'link',
-  title: 'Atlassian',
+  title: '',
   resources: {}
+};
+
+export const erroredLinkDetails: LinkDetails = {
+  id: '',
+  type: 'link',
+  url: 'https://www.atlassian.comx',
+  title: ''
+};
+
+export const noTitleLinkDetails: LinkDetails = {
+  id: '',
+  type: 'link',
+  url: 'https://www.atlassian.com',
+  title: '',
+  description: 'Such description'
+};
+
+export const longLinkDetails: LinkDetails = {
+  id: '',
+  type: 'link',
+  url: 'https://www.atlassian.com1234567890Cupidatat et cupidatat nisi ut anim proident excepteur ex incididunt.',
+  title: 'Dolor magna fugiat do quis occaecat exercitation fugiat fugiat esse nisi consequat amet sed id ullamco magna laborum officia laboris irure anim veniam enim nostrud sed ullamco consectetur ut ut officia amet elit do officia ut adipisicing fugiat et.',
+  description: 'Adipisicing in aliquip dolore ea id adipisicing dolor sint in aliqua est eu irure irure deserunt cillum excepteur qui culpa.'
 };
 
 export const imageLinkDetails: UrlPreview = {

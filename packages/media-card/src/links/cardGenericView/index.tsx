@@ -1,26 +1,38 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
-
+import ImageIcon from '@atlaskit/icon/glyph/image';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import LinkIcon from '@atlaskit/icon/glyph/link';
+import Button from '@atlaskit/button';
 import {CardDimensions, CardAppearance} from '../../index';
 // We are being verbose requiring utilities "utils" to avoid circular dependencies
-import {ErrorIcon} from '../../utils/errorIcon';
 import {Ellipsify} from '../../utils/ellipsify';
-import {Menu} from '../../utils/menu';
-import {MediaImage} from '../../utils/mediaImage';
-import {CardLoading} from '../../utils/cardLoading';
-import {getCSSUnitValue} from '../../utils/getCSSUnitValue';
-import {breakpointSize, BreakpointSizeValue} from '../../utils/breakpointSize';
-import {defaultHorizontalCardDimensions, defaultSquareCardDimensions, maxHorizontalCardDimensions} from '../../utils/cardDimensions';
-import {Details, Wrapper} from '../styled';
+import {Wrapper} from '../styled';
 import {
   Title,
   Description,
-  Footer,
-  Link,
   ErrorContainer,
-  ErrorHeader
+  ContentWrapper,
+  Header,
+  Icon,
+  SiteName,
+  Thumbnail,
+  ImagePlaceholderWrapper,
+  WarningIconWrapper,
+  ErrorMessage,
+  LinkIconWrapper,
+  ErrorImage,
+  ThumbnailPlaceholder,
+  IconPlaceholder,
+  TitlePlaceholder,
+  DescriptionPlaceholder,
+  ErrorWrapper,
+  Details
 } from './styled';
+import ElementPlaceholder from '../../utils/elementPlaceholder';
+import {noImageIcon, linkErrorIcon} from './icons';
+import {defaultLinkCardAppearance} from '../card';
 
 export interface LinkCardGenericViewProps {
   linkUrl: string;
@@ -33,9 +45,9 @@ export interface LinkCardGenericViewProps {
   appearance?: CardAppearance;
   dimensions?: CardDimensions;
 
-  loading?: boolean;
-  error?: string;
-
+  isLoading?: boolean;
+  errorMessage?: string;
+  onRetry?: () => void;
   actions?: Array<CardAction>;
 }
 
@@ -44,17 +56,14 @@ export interface LinkCardGenericViewState {
   iconError?: boolean;
 }
 
-const breakpointSizes = {
-  small: 344,
-  large: Infinity
-};
+const shouldNotDisplayThumbnail = (thumbnailUrl, thumbnailError): Boolean => !thumbnailUrl || thumbnailError;
 
 export class LinkCardGenericView extends Component<LinkCardGenericViewProps, LinkCardGenericViewState> {
   static defaultProps = {
     title: '',
     description: '',
     actions: [],
-    appearance: 'auto'
+    appearance: defaultLinkCardAppearance
   };
 
   state: LinkCardGenericViewState = {
@@ -74,124 +83,158 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     });
   }
 
-  get width(): string {
-    const {dimensions} = this.props;
-    const {width} = dimensions || {width: undefined};
-    const defaultWidth = this.isHorizontal ? defaultHorizontalCardDimensions.width : defaultSquareCardDimensions.width;
-    const maxWidth = this.isHorizontal ? maxHorizontalCardDimensions.width : Infinity;
+  private get siteName() {
+    const {linkUrl, site, isLoading, errorMessage} = this.props;
 
-    return getCSSUnitValue(
-      Math.min(parseInt(`${width}`, 10) || defaultWidth, maxWidth)
+    if (errorMessage) { return null; }
+
+    if (isLoading) {
+      return <ElementPlaceholder dimensions={{width: 125, height: 12}} />;
+    }
+
+    return (
+      <SiteName>
+        {site || linkUrl}
+      </SiteName>
     );
-  }
-
-  private get height(): string {
-    const {dimensions} = this.props;
-    const {height} = dimensions || {height: undefined};
-    const defaultHeight = this.isHorizontal ? defaultHorizontalCardDimensions.height : defaultSquareCardDimensions.height;
-
-    return getCSSUnitValue(height || defaultHeight);
-  }
-
-  get cardSize(): BreakpointSizeValue | undefined {
-    return this.isHorizontal ? breakpointSize(this.width, breakpointSizes) : undefined;
   }
 
   private get isHorizontal() {
     const {appearance} = this.props;
-    return appearance === 'horizontal' || appearance === 'auto';
+    return appearance === 'horizontal';
   }
 
   private getThumbnail = (): JSX.Element | null => {
-    const shouldNotDisplayThumbnail = (thumbnailUrl, thumbnailError): Boolean => {
-      return !thumbnailUrl || thumbnailError;
-    };
-
-    const {thumbnailUrl} = this.props;
+    const {isHorizontal} = this;
+    const {thumbnailUrl, errorMessage, isLoading, appearance} = this.props;
     const {thumbnailError} = this.state;
 
-    if (shouldNotDisplayThumbnail(thumbnailUrl, thumbnailError)) {
-      return null;
-    }
+    if (errorMessage) { return null; }
 
-    return <MediaImage key="thumbnail" dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
+    if (isLoading || shouldNotDisplayThumbnail(thumbnailUrl, thumbnailError)) {
+      if (isHorizontal) {
+        if (isLoading) {
+          return <ThumbnailPlaceholder dimensions={{width: 68, height: 68}} />;
+        }
+
+        return null;
+      }
+
+      const icon = thumbnailUrl ? <ImageIcon label="image" size="xlarge"/> : noImageIcon;
+
+      return (
+        <ImagePlaceholderWrapper>
+          {icon}
+        </ImagePlaceholderWrapper>
+      );
+    }
+    const dataURI = thumbnailUrl || '';
+    const isCropped = !isHorizontal;
+
+    return <Thumbnail appearance={appearance} crop={isCropped} key="thumbnail" dataURI={dataURI} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {
-    const {title, iconUrl} = this.props;
+    const {iconError} = this.state;
+    const {title, iconUrl, isLoading, errorMessage} = this.props;
 
-    return (iconUrl && !this.state.iconError)
-      ? <img src={iconUrl} alt={title} onError={this.iconError}/>
-      : null;
+    if (isLoading) {
+      return <IconPlaceholder dimensions={{width: 16, height: 16}} />;
+    }
+
+    if (errorMessage) {
+      return (
+        <WarningIconWrapper>
+          <WarningIcon label="error" size="small" />
+        </WarningIconWrapper>
+      );
+    }
+
+    return (iconUrl && !iconError)
+      ? <Icon src={iconUrl} alt={title} onError={this.iconError}/>
+      : <LinkIconWrapper><LinkIcon label="icon" size="small" /></LinkIconWrapper>;
+  }
+
+  private getHeader() {
+    const {siteName} = this;
+    const icon = this.getIcon();
+
+    return (
+      <Header>
+        {icon}
+        {siteName}
+      </Header>
+    );
   }
 
   render() {
-    const {appearance} = this.props;
-    const {height, width, cardSize} = this;
-    const cardStyle = {height, width};
-    const content = this.getContentToRender();
+    const {appearance, errorMessage} = this.props;
+    const content = errorMessage ? this.renderError() : this.renderContent();
+    const header = this.getHeader();
 
     return (
-      <Wrapper className={appearance} style={cardStyle} cardSize={cardSize}>
-        {content}
+      <Wrapper appearance={appearance}>
+        {header}
+        <ContentWrapper appearance={appearance}>
+          {content}
+        </ContentWrapper>
       </Wrapper>
     );
   }
 
-  private getContentToRender = () => {
-    const {error, loading} = this.props;
-
-    if (error) {
-      return this.renderError(error);
-    }
-
-    if (loading) {
-      return this.renderLoading();
-    }
-
-    return this.renderDetails();
-  }
-
-  private renderDetails() {
-    const {linkUrl, title, site, description, actions} = this.props;
+  private renderContent = () => {
+    let title;
+    let description;
+    const {title: linkTitle, description: linkDescription, isLoading, appearance} = this.props;
     const thumbnail = this.getThumbnail();
-    const icon = this.getIcon();
+
+    if (isLoading) {
+      title = <TitlePlaceholder dimensions={{height: 16}} />;
+      description = [
+        <DescriptionPlaceholder dimensions={{width: '80%', height: 12}} />,
+        <ElementPlaceholder dimensions={{width: '60%', height: 12}} />
+      ];
+    } else {
+      title = linkTitle ? (
+        <Title>
+          {linkTitle}
+        </Title>
+      ) : null;
+      description = (
+        <Description>
+          <Ellipsify text={linkDescription || ''} lines={2} endLength={0} />
+        </Description>
+      );
+    }
 
     return [
       thumbnail,
-      <Details key="details" className="details">
-        <Title className="card-title">
-          {title}
-        </Title>
-        <Description>
-          <Ellipsify text={description || ''} lines={2} endLength={0} />
-        </Description>
-
-        <Footer>
-          <Link>
-            {icon}
-            <span>
-              {site || linkUrl}
-            </span>
-          </Link>
-          <Menu actions={actions} />
-        </Footer>
+      <Details appearance={appearance} key="details">
+        {title}
+        {description}
       </Details>
     ];
   }
 
-  private renderLoading() {
-    return <CardLoading mediaItemType="link" iconSize="large"/>;
-  }
+  renderError = () => {
+    const {isHorizontal} = this;
+    const {appearance, onRetry} = this.props;
+    const retryButton = onRetry ? (
+      <Button onClick={onRetry}>
+        Try again
+      </Button>
+    ) : null;
 
-  private renderError(errorMessage: string) {
     return (
-      <ErrorContainer>
-        <ErrorHeader>{errorMessage}</ErrorHeader>
-        <div>
-          <ErrorIcon />
-        </div>
-      </ErrorContainer>
+      <ErrorWrapper appearance={appearance}>
+        <ErrorContainer appearance={appearance}>
+          {isHorizontal ? null : <ErrorImage src={linkErrorIcon} alt="Error" />}
+          <ErrorMessage appearance={appearance}>
+            We stumbled a bit here.
+          </ErrorMessage>
+          {retryButton}
+        </ErrorContainer>
+      </ErrorWrapper>
     );
   }
 }

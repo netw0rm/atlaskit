@@ -6,6 +6,7 @@ import {
   videoFileDetails,
   imageFileDetails,
   audioFileDetails,
+  emptyLinkDetails,
   docFileDetails,
   unknownFileDetails,
   genericLinkDetails,
@@ -14,7 +15,13 @@ import {
   smallTransparentImage,
   tallImage,
   wideImage,
-  wideTransparentImage
+  wideTransparentImage,
+  imageLinkDetails,
+  erroredLinkDetails,
+  longLinkDetails,
+  transparentLinkDetails,
+  linkNoImageDetails,
+  noTitleLinkDetails
 } from '@atlaskit/media-test-helpers';
 import {ImageResizeMode, MediaItemType} from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
@@ -38,7 +45,14 @@ const metadataOptions = [
   { value: 'fileAudio', label: 'File audio' },
   { value: 'fileDoc', label: 'File doc' },
   { value: 'fileUnknown', label: 'File unknown' },
-  { value: 'genericLink', label: 'Link generic' }
+  { value: 'genericLink', label: 'Link generic' },
+  { value: 'transparentLink', label: 'Link transparent' },
+  { value: 'noImageLink', label: 'Link no image' },
+  { value: 'noTitleLink', label: 'Link no title' },
+  { value: 'longLink', label: 'Link long' },
+  { value: 'imageLink', label: 'Link image' },
+  { value: 'emptyLink', label: 'Link empty' },
+  { value: 'erroredLink', label: 'Link errored' }
 ];
 const mediaItemTypeOptions = [
   { value: 'file', label: 'File' },
@@ -74,7 +88,14 @@ export const generateStoriesForEditableCards = () => {
     fileAudio: audioFileDetails,
     fileDoc: docFileDetails,
     fileUnknown: unknownFileDetails,
-    genericLink: genericLinkDetails
+    genericLink: genericLinkDetails,
+    emptyLink: emptyLinkDetails,
+    imageLink: imageLinkDetails,
+    longLink: longLinkDetails,
+    transparentLink: transparentLinkDetails,
+    noImageLink: linkNoImageDetails,
+    erroredLink: erroredLinkDetails,
+    noTitleLink: noTitleLinkDetails
   };
   const getStateFromLocalStorage = () :EditableCardState | null => {
     const previousState = localStorage.getItem(localStorageKeyName);
@@ -103,6 +124,7 @@ export const generateStoriesForEditableCards = () => {
     appearance: CardAppearance;
     status: CardStatus;
     dimensions: CardDimensions;
+    parentDimensions: CardDimensions;
     metadata: string;
     dataURI: string;
     progress: number;
@@ -129,6 +151,10 @@ export const generateStoriesForEditableCards = () => {
           width: defaultImageCardDimensions.width,
           height: defaultImageCardDimensions.height
         },
+        parentDimensions: {
+          width: '100%',
+          height: '100%'
+        },
         progress: 0,
         menuActions: actions,
         selectable: false,
@@ -148,10 +174,12 @@ export const generateStoriesForEditableCards = () => {
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, metadata: metadataKey, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
+      const {appearance, status, dataURI, dimensions, parentDimensions, metadata: metadataKey, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
       const metadata = metadataOptionsMap[metadataKey];
+      const {width: parentWidth, height: parentHeight} = parentDimensions;
+      const parentStyle = {width: parentWidth, height: parentHeight};
 
       return (
         <div>
@@ -159,12 +187,26 @@ export const generateStoriesForEditableCards = () => {
             <h3>Edit me</h3>
             <SliderWrapper>
               <div>
-                Width ({width})
-                <Slider value={width} min={144} max={1000} onChange={this.onWidthChange} />
+                Card dimensions <hr />
+                <div>
+                  Width ({width})
+                  <Slider value={width} min={144} max={1000} onChange={this.onWidthChange} />
+                </div>
+                <div>
+                  Height ({height})
+                  <Slider value={height} min={50} max={1000} onChange={this.onHeightChange} />
+                </div>
               </div>
               <div>
-                Height ({height})
-                <Slider value={height} min={50} max={1000} onChange={this.onHeightChange} />
+                Parent dimensions <hr />
+                <div>
+                  Width ({parentWidth})
+                  <Slider value={parentWidth} min={50} max={1000} onChange={this.onParentWidthChange} />
+                </div>
+                <div>
+                  Height ({parentHeight})
+                  <Slider value={parentHeight} min={50} max={1000} onChange={this.onParentHeightChange} />
+                </div>
               </div>
               <div>
                 Progress ({progress})
@@ -242,11 +284,17 @@ export const generateStoriesForEditableCards = () => {
               />
             </OptionsWrapper>
           </EditableCardOptions>
-          <EditableCardContent>
-            <CardDimensionsWrapper>
-              {width}x{height}
-            </CardDimensionsWrapper>
+          <CardDimensionsWrapper>
+            <div>
+              Card dimensions: {width}x{height}
+            </div>
+            <div>
+              Parent dimensions: {parentWidth}x{parentHeight}
+            </div>
+          </CardDimensionsWrapper>
+          <EditableCardContent style={parentStyle}>
             <CardView
+              onRetry={action('onRetry')}
               appearance={appearance}
               status={status}
               metadata={metadata}
@@ -355,6 +403,20 @@ export const generateStoriesForEditableCards = () => {
 
       dimensions.height = e;
       this.setState({dimensions});
+    }
+
+    onParentWidthChange = (width) => {
+      const parentDimensions = this.state.parentDimensions;
+
+      parentDimensions.width = width;
+      this.setState({parentDimensions});
+    }
+
+    onParentHeightChange = (height) => {
+      const parentDimensions = this.state.parentDimensions;
+
+      parentDimensions.height = height;
+      this.setState({parentDimensions});
     }
 
     onProgressChange = (progress) => {

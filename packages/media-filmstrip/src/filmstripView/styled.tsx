@@ -42,6 +42,8 @@ export const FilmStripListItem = styled.li`
   padding: 0 4px;
   display: inline-block;
   vertical-align: middle;
+  // Fixes issue with child Cards using inline-block
+  font-size: 0;
 
   &:first-child {
     /* align the first card flush with the left edge (the editor adds their own padding) */

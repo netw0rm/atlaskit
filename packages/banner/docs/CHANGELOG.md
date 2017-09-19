@@ -1,5 +1,8 @@
 # @atlaskit/banner
 
+## 4.0.1 (2017-09-18)
+
+* bug fix; update darkmode colors ([7ae860b](https://bitbucket.org/atlassian/atlaskit/commits/7ae860b))
 ## 4.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -1,5 +1,8 @@
 # @atlaskit/toggle
 
+## 2.6.0 (2017-09-18)
+
+* feature; add dark mode to toggle ([ec57939](https://bitbucket.org/atlassian/atlaskit/commits/ec57939))
 ## 2.5.0 (2017-09-13)
 
 * feature; update dependencies for toggle ([ae1a0ca](https://bitbucket.org/atlassian/atlaskit/commits/ae1a0ca))

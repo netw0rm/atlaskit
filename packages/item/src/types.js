@@ -9,8 +9,10 @@ type ItemState = {|
 |}
 
 type Padding = {|
-  x: number,
-  y: number,
+  bottom: number,
+  left: number,
+  right: number,
+  top: number,
 |}
 
 export type ItemTheme = {|

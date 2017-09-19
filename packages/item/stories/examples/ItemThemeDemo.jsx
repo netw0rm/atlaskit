@@ -33,12 +33,16 @@ const generateTheme = (
   },
   padding: {
     default: {
-      x: padding,
-      y: padding,
+      bottom: padding,
+      left: padding,
+      right: padding,
+      top: padding,
     },
     compact: {
-      x: padding * 0.5,
-      y: padding * 0.5,
+      bottom: padding * 0.5,
+      left: padding * 0.5,
+      right: padding * 0.5,
+      top: padding * 0.5,
     },
   },
   default: {

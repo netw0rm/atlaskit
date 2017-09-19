@@ -9,6 +9,7 @@ describe('<Participants/>', () => {
   it('AvatarGroup created with participants', () => {
     const participants = getParticipants(2);
     const component = mount(<Participants participants={participants} />);
+    component.setState({ AvatarGroup });
     expect(component.find(AvatarGroup).length).toEqual(1);
     const avatars = component.find(Avatar);
     expect(avatars.length).toEqual(2);

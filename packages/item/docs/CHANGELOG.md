@@ -1,5 +1,9 @@
 # @atlaskit/item
 
+## 4.0.0 (2017-09-19)
+
+* breaking; item theme accepts top/right/bottom/left options for padding rather than x/y ([bedf215](https://bitbucket.org/atlassian/atlaskit/commits/bedf215))
+* breaking; item theme accepts top/right/bottom/left options for padding rather than x/y (issues closed: ak-3418) ([bedf215](https://bitbucket.org/atlassian/atlaskit/commits/bedf215))
 ## 3.1.4 (2017-09-11)
 
 * bug fix; selected item text colour is now unchanged when hovered (issues closed: ak-3308) ([e8be246](https://bitbucket.org/atlassian/atlaskit/commits/e8be246))

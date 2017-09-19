@@ -26,6 +26,8 @@ export default class InlineEdit extends PureComponent {
     editView: PropTypes.node,
     /** Whether the component shows the readView or the editView. */
     isEditing: PropTypes.bool.isRequired,
+    /** Set whether the read view should fit width, most obvious when hovered. */
+    isFitContainerWidthReadView: PropTypes.bool,
     /** Greys out text and shows spinner. Does not disable input. */
     isWaiting: PropTypes.bool,
     /** Sets yellow border with warning symbol at end of input. Removes confirm
@@ -152,22 +154,31 @@ export default class InlineEdit extends PureComponent {
 
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
-  wrapWithFieldBase = children => (
-    <FieldBase
-      isInvalid={this.props.isInvalid}
-      isFocused={this.isReadOnly() ? false : undefined}
-      isReadOnly={this.isReadOnly()}
-      isFitContainerWidthEnabled={this.props.isEditing}
-      appearance={this.props.isEditing ? 'standard' : 'subtle'}
-      isDisabled={this.shouldRenderSpinner()}
-      isLoading={this.shouldRenderSpinner()}
-      shouldReset={this.state.shouldResetFieldBase}
-      invalidMessage={this.props.invalidMessage}
-      onDialogClick={this.onDialogClick}
-    >
-      {children}
-    </FieldBase>
-  )
+  wrapWithFieldBase = children => {
+    const {
+      invalidMessage,
+      isEditing,
+      isFitContainerWidthReadView,
+      isInvalid,
+    } = this.props;
+
+    return (
+      <FieldBase
+        isInvalid={isInvalid}
+        isFocused={this.isReadOnly() ? false : undefined}
+        isReadOnly={this.isReadOnly()}
+        isFitContainerWidthEnabled={isEditing || isFitContainerWidthReadView}
+        appearance={isEditing ? 'standard' : 'subtle'}
+        isDisabled={this.shouldRenderSpinner()}
+        isLoading={this.shouldRenderSpinner()}
+        shouldReset={this.state.shouldResetFieldBase}
+        invalidMessage={invalidMessage}
+        onDialogClick={this.onDialogClick}
+      >
+        {children}
+      </FieldBase>
+    );
+  }
 
   renderActionButtons = () => (
     this.props.isEditing && !this.props.areActionButtonsHidden ?

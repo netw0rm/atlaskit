@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/toggle",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "config": {
     "access": "public"
   },
@@ -12,7 +12,6 @@
   "ak:component": {
     "name": "Toggle",
     "dark": true
-
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

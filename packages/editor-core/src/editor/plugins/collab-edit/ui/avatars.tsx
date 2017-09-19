@@ -67,11 +67,18 @@ const AvatarItem: any = styled.div`
   }
 `;
 
-export interface ItemState {
+declare interface ItemProps {
+  name: string;
+  sessionId: string;
+  email: string;
+  src: string;
+}
+
+declare interface ItemState {
   Avatar?: React.ComponentClass<any>;
 }
 
-class Item extends React.Component<{ name: string, sessionId: string, email: string, src: string }, ItemState> {
+class Item extends React.Component<ItemProps, ItemState> {
   state: ItemState = {};
 
   componentDidMount () {

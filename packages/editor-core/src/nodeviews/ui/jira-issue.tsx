@@ -76,9 +76,8 @@ export default class JIRAIssueNode extends React.Component<Props, State> {
   }
 
   render () {
-    const { node } = this.props;
+    const { node: { attrs: { issueKey } } } = this.props;
     const { JiraLogo } = this.state;
-    const { issueKey } = node.attrs;
 
     return (
       <WrapperNode>

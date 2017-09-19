@@ -74,6 +74,7 @@ class RequestTrialNote extends Component {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
       const noteTextValue = this.noteText.value;
       if (noteTextValue) {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included');
         this.setState({ noteText: noteTextValue });
       }
     } else {
@@ -188,7 +189,7 @@ class RequestTrialNote extends Component {
           <div>
             {React.isValidElement(prompt) ? prompt : <p>{prompt}</p>}
             <NoteText
-              ref={noteText => {
+              innerRef={noteText => {
                 this.noteText = noteText;
               }}
               placeholder={placeholder}

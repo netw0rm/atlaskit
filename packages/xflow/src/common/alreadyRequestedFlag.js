@@ -1,6 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
+// This endpoint is Jira specific, will not work for non-Jira -> x flows
 export const userPreferencesEndpoint = (productKey) =>
   `/rest/api/2/mypreferences?key=xflow.already.requested.${productKey}`;
 

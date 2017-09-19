@@ -50,7 +50,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
         boundariesElement={popupsBoundariesElement}
         isOpen={isOpen && !disabled && !this.props.disabled}
         onOpenChange={this.handleOpenChange}
-        fitWidth={210}
+        fitWidth={242}
         fitHeight={80}
         trigger={
           <ToolbarButton

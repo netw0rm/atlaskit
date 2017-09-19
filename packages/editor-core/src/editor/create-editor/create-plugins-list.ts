@@ -22,7 +22,8 @@ import {
   collabEditPlugin,
   helpDialogPlugin,
   jiraIssuePlugin,
-  unsupportedContentPlugin
+  unsupportedContentPlugin,
+  panelPlugin
 } from '../plugins';
 
 /**
@@ -104,6 +105,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.allowUnsupportedContent) {
     plugins.push(unsupportedContentPlugin);
+  }
+
+  if(props.allowPanel) {
+    plugins.push(panelPlugin);
   }
 
   // UI only plugins

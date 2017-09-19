@@ -1,5 +1,8 @@
 # @atlaskit/media-filmstrip
 
+## 5.3.0 (2017-09-19)
+
+* feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))
 ## 5.2.4 (2017-09-18)
 
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))

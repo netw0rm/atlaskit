@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 8.3.0 (2017-09-19)
+
+* feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))
 ## 8.2.1 (2017-09-15)
 
 * bug fix; fix bug where authProvider impl has wrong API ([f8fbeee](https://bitbucket.org/atlassian/atlaskit/commits/f8fbeee))

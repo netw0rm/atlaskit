@@ -1,0 +1,18 @@
+{
+  "extends": "../../build/types/tsconfig.editor",
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/json-schema"
+  ],
+  "compilerOptions": {
+    "types": [
+      "jest",
+      "react",
+      "enzyme",
+      "node"
+    ]
+  }
+}

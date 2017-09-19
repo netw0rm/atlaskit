@@ -8,14 +8,14 @@ import PanelEdit from '../../../ui/PanelEdit';
 const panelPlugin: EditorPlugin = {
   nodes() {
     return [
-      { rank: 900, name: 'panel', node: panel }
+      { rank: 1100, name: 'panel', node: panel }
     ];
   },
 
   pmPlugins() {
     return [
-      { rank: 910, plugin: () => plugin },
-      { rank: 920, plugin: schema => inputRulePlugin(schema) }
+      { rank: 1110, plugin: () => plugin },
+      { rank: 1120, plugin: schema => inputRulePlugin(schema) }
     ];
   },
 

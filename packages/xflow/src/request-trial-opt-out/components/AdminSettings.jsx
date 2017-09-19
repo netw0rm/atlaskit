@@ -23,15 +23,23 @@ const messages = defineMessages({
     defaultMessage: 'Oops... Something went wrong',
   },
   errorFlagDescription: {
-    id: 'xflow.generic.request-tral-note.error-flag.description',
+    id: 'xflow.generic.opt-out.error-flag.description',
     defaultMessage: "That request didn't make it through. Shall we try again?",
+  },
+  errorFlagResendRequest: {
+    id: 'xflow.generic.opt-out.error-flag.resend-request',
+    defaultMessage: 'Resend request',
+  },
+  errorFlagNotNow: {
+    id: 'xflow.generic.opt-out.error-flag.not-now',
+    defaultMessage: 'Not now',
   },
   successFlagTitle: {
     id: 'xflow.generic.opt-out.success-flag.title',
     defaultMessage: 'Your request is sent',
   },
   successFlagDescription: {
-    id: 'xflow.generic.request-tral-note.success-flag.description',
+    id: 'xflow.generic.opt-out.success-flag.description',
     defaultMessage: 'Props for helping your admin out!',
   },
 });
@@ -226,10 +234,12 @@ class AdminSettings extends Component {
           showFlag={optOutRequestStatus === 'failed'}
           flagActions={[
             {
-              content: 'Resend request',
+              content: intl.formatMessage(messages.errorFlagResendRequest),
               onClick: this.handleErrorFlagResendRequest,
             },
-            { content: 'Not now', onClick: this.handleErrorFlagDismiss },
+            { content: intl.formatMessage(messages.errorFlagNotNow),
+              onClick: this.handleErrorFlagDismiss,
+            },
           ]}
         />
         <SuccessFlag

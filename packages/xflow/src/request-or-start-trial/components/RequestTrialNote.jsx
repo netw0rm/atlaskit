@@ -21,6 +21,14 @@ const messages = defineMessages({
     id: 'xflow.generic.request-tral-note.error-flag.description',
     defaultMessage: "That request didn't make it through. Shall we try again?",
   },
+  errorFlagResendRequest: {
+    id: 'xflow.generic.request-trial-note.error-flag.resend-request',
+    defaultMessage: 'Resend request',
+  },
+  errorFlagNotNow: {
+    id: 'xflow.generic.request-trial-note.error-flag.not-now',
+    defaultMessage: 'Not now',
+  },
   successFlagTitle: {
     id: 'xflow.generic.request-trial-note.success-flag.title',
     defaultMessage: 'Your request is sent',
@@ -192,10 +200,11 @@ class RequestTrialNote extends Component {
           showFlag={requestTrialSendNoteStatus === 'failed'}
           flagActions={[
             {
-              content: 'Resend request',
+              content: intl.formatMessage(messages.errorFlagResendRequest),
               onClick: this.handleErrorFlagResendRequest,
             },
-            { content: 'Not now', onClick: this.handleErrorFlagDismiss },
+            { content: intl.formatMessage(messages.errorFlagNotNow),
+              onClick: this.handleErrorFlagDismiss },
           ]}
         />
         <SuccessFlag

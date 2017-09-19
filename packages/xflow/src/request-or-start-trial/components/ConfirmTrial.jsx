@@ -5,7 +5,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
-import ErrorFlag from './ErrorFlag';
+import ErrorFlag from '../../common/ErrorFlag';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
@@ -55,16 +55,18 @@ class ConfirmTrial extends Component {
 
   componentDidMount() {
     const { firePrivateAnalyticsEvent, status } = this.props;
-    firePrivateAnalyticsEvent(status === INACTIVE ?
-      'xflow.confirm-trial.displayed' :
-      'xflow.reactivate-trial.displayed');
+    firePrivateAnalyticsEvent(
+      status === INACTIVE ? 'xflow.confirm-trial.displayed' : 'xflow.reactivate-trial.displayed'
+    );
   }
 
   handleConfirmClick = () => {
     const { status, startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent(status === INACTIVE ?
-      'xflow.confirm-trial.confirm-button.clicked' :
-      'xflow.reactivate-trial.confirm-button.clicked');
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.confirm-button.clicked'
+        : 'xflow.reactivate-trial.confirm-button.clicked'
+    );
     this.setState({
       spinnerActive: true,
       buttonsDisabled: true,
@@ -73,15 +75,19 @@ class ConfirmTrial extends Component {
 
     startProductTrial()
       .then(() => {
-        firePrivateAnalyticsEvent(status === INACTIVE ?
-          'xflow.confirm-trial.start-product-trial.successful' :
-          'xflow.reactivate-trial.start-product-trial.successful');
+        firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.start-product-trial.successful'
+            : 'xflow.reactivate-trial.start-product-trial.successful'
+        );
         onComplete();
       })
       .catch(() => {
-        firePrivateAnalyticsEvent(status === INACTIVE ?
-          'xflow.confirm-trial.start-product-trial.failed' :
-          'xflow.reactivate-trial.start-product-trial.failed');
+        firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.start-product-trial.failed'
+            : 'xflow.reactivate-trial.start-product-trial.failed'
+        );
         this.setState({
           productFailedToStart: true,
           spinnerActive: false,
@@ -92,17 +98,21 @@ class ConfirmTrial extends Component {
 
   handleCancelClick = () => {
     const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent, status } = this.props;
-    firePrivateAnalyticsEvent(status === INACTIVE ?
-      'xflow.confirm-trial.cancel-button.clicked' :
-      'xflow.reactivate-trial.cancel-button.clicked');
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.cancel-button.clicked'
+        : 'xflow.reactivate-trial.cancel-button.clicked'
+    );
     cancelStartProductTrial().then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent, status } = this.props;
-    firePrivateAnalyticsEvent(status === INACTIVE ?
-      'xflow.confirm-trial.error-flag.dismissed' :
-      'xflow.reactivate-trial.error-flag.dismissed');
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.error-flag.dismissed'
+        : 'xflow.reactivate-trial.error-flag.dismissed'
+    );
     this.setState({
       productFailedToStart: false,
     });

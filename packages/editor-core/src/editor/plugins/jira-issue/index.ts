@@ -10,7 +10,7 @@ const createPlugin = (schema, providerFactory) => {
     key: pluginKey,
     props: {
       nodeViews: {
-        jiraIssue: nodeViewFactory(providerFactory, { jiraIssue: ReactJIRAIssueNode })
+        confluenceJiraIssue: nodeViewFactory(providerFactory, { confluenceJiraIssue: ReactJIRAIssueNode })
       }
     }
   });

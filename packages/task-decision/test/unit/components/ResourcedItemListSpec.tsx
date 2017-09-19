@@ -9,6 +9,7 @@ import ResourcedItemList from '../../../src/components/ResourcedItemList';
 import DecisionItem from '../../../src/components/DecisionItem';
 import ResourcedTaskItem from '../../../src/components/ResourcedTaskItem';
 import TaskItem from '../../../src/components/TaskItem';
+import { AvatarGroup } from '@atlaskit/avatar';
 
 import {
   buildDecision,
@@ -331,6 +332,7 @@ describe('<ResourcedItemList/>', () => {
       const component = mount(
         <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
+      component.setState({ AvatarGroup });
       const decisionCount = countType(participantResponse.items, 'DECISION');
       return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
         // First item (a task) will have 2 participant
@@ -357,6 +359,7 @@ describe('<ResourcedItemList/>', () => {
       const component = mount(
         <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
+      component.setState({ AvatarGroup });
       const decisionCount = countType(attributionResponse.items, 'DECISION');
       return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
         // First item (a task) will have 2 participant
@@ -380,6 +383,7 @@ describe('<ResourcedItemList/>', () => {
       const component = mount(
         <ResourcedItemList initialQuery={query} taskDecisionProvider={Promise.resolve(provider)} renderDocument={renderer} />
       );
+      component.setState({ AvatarGroup });
       const decisionCount = countType(attributionResponse.items, 'DECISION');
       return waitUntil(() => decisionItemsRendered(component, decisionCount)).then(() => {
         // First item (a task) will have 2 participant

@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import { Gateway, GatewayRegistry } from './gateway';
 import Portal from './Portal';
+
 // eslint-disable-next-line
-export default function withRenderTarget({ target }: Event, WrappedComponent: ReactClass<*>) { 
+export default function withRenderTarget({ target }: string, WrappedComponent: ReactClass<*>) {
   return class extends Component {
     static contextTypes = {
       gatewayRegistry: PropTypes.instanceOf(GatewayRegistry),

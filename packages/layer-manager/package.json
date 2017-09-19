@@ -23,10 +23,12 @@
     "dist"
   ],
   "dependencies": {
+    "focusin": "^2.0.0",
     "prop-types": "^15.5.10",
     "react-gateway": "^2.7.0",
     "react-transition-group": "^2.2.0",
-    "styled-components": "^2.1.0"
+    "styled-components": "^2.1.0",
+    "tabbable": "^1.0.6"
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^3.0.0",

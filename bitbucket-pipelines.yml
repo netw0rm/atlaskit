@@ -67,6 +67,7 @@ pipelines:
           # --bail is used to make jest fail fast when it finds a test failure
           - npm run test:unit -- --runInBand --bail
           - npm run test:base
+          - npm run test:custom
           - yarn run "pr/storybook"
         # caches:
           # - node

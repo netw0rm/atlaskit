@@ -211,6 +211,7 @@
     "test:browser": "node --max-old-space-size=4096 node_modules/.bin/karma start ./build/config/karma/config.js",
     "test:browserstack": "./build/bin/test.browserstack.sh",
     "test:codemod": "jest codemod",
+    "test:custom": "lerna run test:custom",
     "test:unit": "jest -c ./build/config/jest.config.js",
     "validate": "npm ls >/dev/null && lerna exec -- npm ls >/dev/null",
     "validate/eslint": "./build/bin/lint.eslint.sh",

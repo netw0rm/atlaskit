@@ -11,7 +11,7 @@
   "types": "dist/es5/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish && npm run build/json-schema",
-    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",
+    "build": "npm run test:json-schema-compat && ../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5 && npm run build/json-schema",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
     "build/es5": "mkdir -p dist/es5 && cp -Rf src/prosemirror dist/es5/ && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
     "build/json-schema": "mkdir -p dist/json-schema/v1 && ../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./dist/json-schema/v1/full.json",
@@ -19,9 +19,8 @@
     "validate/typescript": "../../build/bin/validate.typescript.sh",
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
-    "test:browser": "npm run test:json-schema-compat && npm run test:karma",
-    "test:json-schema-compat": "tempdir=$(mktemp -d) && curl -H 'User-Agent: atlaskit/0.0.0' -o $tempdir/editor-core.tar.gz $(npm v @atlaskit/editor-core dist.tarball) && tar -zxf $tempdir/editor-core.tar.gz --directory $tempdir && json-schema-diff-validator $tempdir/package/dist/json-schema/v1/full.json dist/json-schema/v1/full.json",
-    "test:karma": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js"
+    "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js",
+    "test:json-schema-compat": "tempdir=$(mktemp -d) && curl -H 'User-Agent: atlaskit/0.0.0' -o $tempdir/editor-core.tar.gz $(npm v @atlaskit/editor-core dist.tarball) && tar -zxf $tempdir/editor-core.tar.gz --directory $tempdir && json-schema-diff-validator $tempdir/package/dist/json-schema/v1/full.json dist/json-schema/v1/full.json"
   },
   "files": [
     "dist/es5/**/*.js",

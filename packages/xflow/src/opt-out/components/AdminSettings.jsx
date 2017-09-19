@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withAnalytics } from '@atlaskit/analytics';
+
+import ErrorFlag from '../../common/ErrorFlag';
+import SuccessFlag from '../../common/SuccessFlag';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
@@ -13,6 +16,25 @@ import CustomLabel from '../styled/CustomLabel';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
+
+const messages = defineMessages({
+  errorFlagTitle: {
+    id: 'xflow.generic.opt-out.error-flag.title',
+    defaultMessage: 'Oops... Something went wrong',
+  },
+  errorFlagDescription: {
+    id: 'xflow.generic.request-tral-note.error-flag.description',
+    defaultMessage: "That request didn't make it through. Shall we try again?",
+  },
+  successFlagTitle: {
+    id: 'xflow.generic.opt-out.success-flag.title',
+    defaultMessage: 'Your request is sent',
+  },
+  successFlagDescription: {
+    id: 'xflow.generic.request-tral-note.success-flag.description',
+    defaultMessage: 'Props for helping your admin out!',
+  },
+});
 
 class AdminSettings extends Component {
   static propTypes = {
@@ -30,8 +52,10 @@ class AdminSettings extends Component {
     spinnerActive: PropTypes.bool,
     buttonsDisabled: PropTypes.bool,
     firePrivateAnalyticsEvent: PropTypes.func,
+    intl: intlShape.isRequired,
     optOutRequestTrialFeature: PropTypes.func,
     cancelOptOut: PropTypes.func,
+    onComplete: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -46,6 +70,7 @@ class AdminSettings extends Component {
     spinnerActive: this.props.spinnerActive,
     buttonsDisabled: this.props.buttonsDisabled,
     selectedRadio: this.props.defaultSelectedRadio,
+    requestTrialSendNoteStatus: null,
   };
 
   componentDidMount() {
@@ -53,8 +78,32 @@ class AdminSettings extends Component {
     firePrivateAnalyticsEvent('xflow.opt-out.displayed');
   }
 
-  handleContinueClick = async () => {
+  handleSendOptOutRequest = async () => {
     const { firePrivateAnalyticsEvent, optOutRequestTrialFeature } = this.props;
+    const { selectedRadio } = this.state;
+
+    try {
+      await optOutRequestTrialFeature(selectedRadio);
+      firePrivateAnalyticsEvent('xflow.opt-out.send.successful');
+      this.setState({
+        optOutRequestStatus: 'successful',
+        isOpen: false,
+      });
+    } catch (e) {
+      firePrivateAnalyticsEvent('xflow.opt-out.send.failed', {
+        errorMessage: e.message,
+      });
+      this.setState({
+        spinnerActive: false,
+        buttonsDisabled: false,
+        isOpen: false,
+        optOutRequestStatus: 'failed',
+      });
+    }
+  };
+
+  handleContinueClick = async () => {
+    const { firePrivateAnalyticsEvent } = this.props;
     const { selectedRadio } = this.state;
     firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
       selectedRadio,
@@ -63,23 +112,14 @@ class AdminSettings extends Component {
       spinnerActive: true,
       buttonsDisabled: true,
     });
-    try {
-      await optOutRequestTrialFeature(selectedRadio);
-      this.setState({
-        isOpen: false,
-      });
-    } catch (e) {
-      this.setState({
-        spinnerActive: false,
-        buttonsDisabled: false,
-      });
-    }
+    return this.handleSendOptOutRequest();
   };
 
   handleCancelClick = async () => {
     const { firePrivateAnalyticsEvent, cancelOptOut } = this.props;
     firePrivateAnalyticsEvent('xflow.opt-out.cancel-button.clicked');
     this.setState({
+      optOutRequestStatus: null,
       isOpen: false,
     });
     await cancelOptOut();
@@ -95,64 +135,115 @@ class AdminSettings extends Component {
     });
   };
 
+  handleErrorFlagResendRequest = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.opt-out.error-flag.resend-request');
+    this.setState({
+      optOutRequestStatus: null,
+    });
+    return this.handleSendOptOutRequest();
+  };
+
+  handleErrorFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.opt-out.error-flag.dismissed');
+    this.setState({
+      optOutRequestStatus: null,
+    });
+    setTimeout(onComplete, 1000);
+  };
+
+  handleSuccessFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.opt-out.success-flag.dismissed');
+    this.setState({
+      optOutRequestStatus: null,
+    });
+    setTimeout(onComplete, 1000);
+  };
+
   render() {
-    const { heading, message, optionItems } = this.props;
+    const { intl, heading, message, optionItems } = this.props;
+    const { optOutRequestStatus } = this.state;
 
     return (
-      <ModalDialog
-        isOpen={this.state.isOpen}
-        width="small"
-        header={<OptOutHeader>{heading}</OptOutHeader>}
-        footer={
-          <OptOutFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.spinnerActive} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-opt-out-continue-button"
-              onClick={this.handleContinueClick}
-              appearance="primary"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow-generic.opt-out.continue-button"
-                defaultMessage="Continue"
-              />
-            </Button>
-            <Button
-              onClick={this.handleCancelClick}
-              appearance="subtle-link"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage id="xflow-generic.opt-out.cancel-button" defaultMessage="Cancel" />
-            </Button>
-          </OptOutFooter>
-        }
-      >
-        <AkFieldRadioGroup
-          label={message}
-          onRadioChange={this.handleRadioChange}
-          items={optionItems.map(({ value, label, note }) => ({
-            value,
-            label: note ? (
-              <CustomLabel>
-                {label}
-                <br />
-                <small>{note}</small>
-              </CustomLabel>
-            ) : (
-              label
-            ),
-            isSelected: this.state.selectedRadio === value,
-          }))}
+      <div>
+        <ModalDialog
+          isOpen={this.state.isOpen}
+          width="small"
+          header={<OptOutHeader>{heading}</OptOutHeader>}
+          footer={
+            <OptOutFooter>
+              <SpinnerDiv>
+                <Spinner isCompleting={!this.state.spinnerActive} />
+              </SpinnerDiv>
+              <Button
+                id="xflow-opt-out-continue-button"
+                onClick={this.handleContinueClick}
+                appearance="primary"
+                isDisabled={this.state.buttonsDisabled}
+              >
+                <FormattedMessage
+                  id="xflow-generic.opt-out.continue-button"
+                  defaultMessage="Continue"
+                />
+              </Button>
+              <Button
+                onClick={this.handleCancelClick}
+                appearance="subtle-link"
+                isDisabled={this.state.buttonsDisabled}
+              >
+                <FormattedMessage
+                  id="xflow-generic.opt-out.cancel-button"
+                  defaultMessage="Cancel"
+                />
+              </Button>
+            </OptOutFooter>
+          }
+        >
+          <AkFieldRadioGroup
+            label={message}
+            onRadioChange={this.handleRadioChange}
+            items={optionItems.map(({ value, label, note }) => ({
+              value,
+              label: note ? (
+                <CustomLabel>
+                  {label}
+                  <br />
+                  <small>{note}</small>
+                </CustomLabel>
+              ) : (
+                label
+              ),
+              isSelected: this.state.selectedRadio === value,
+            }))}
+          />
+          {this.props.children}
+        </ModalDialog>
+        <ErrorFlag
+          title={intl.formatMessage(messages.errorFlagTitle)}
+          description={intl.formatMessage(messages.errorFlagDescription)}
+          showFlag={optOutRequestStatus === 'failed'}
+          flagActions={[
+            {
+              content: 'Resend request',
+              onClick: this.handleErrorFlagResendRequest,
+            },
+            { content: 'Not now', onClick: this.handleErrorFlagDismiss },
+          ]}
         />
-        {this.props.children}
-      </ModalDialog>
+        <SuccessFlag
+          title={intl.formatMessage(messages.successFlagTitle)}
+          description={intl.formatMessage(messages.successFlagDescription)}
+          showFlag={optOutRequestStatus === 'successful'}
+          onDismissed={this.handleSuccessFlagDismiss}
+        />
+      </div>
     );
   }
 }
 
-export const AdminSettingsBase = withAnalytics(AdminSettings);
+export const AdminSettingsBase = withAnalytics(injectIntl(AdminSettings));
 
 export default withXFlowProvider(
   AdminSettingsBase,

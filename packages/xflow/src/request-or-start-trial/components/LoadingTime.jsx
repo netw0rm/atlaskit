@@ -6,7 +6,7 @@ import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import ModalDialog from '@atlaskit/modal-dialog';
-import ErrorFlag from './ErrorFlag';
+import ErrorFlag from '../../common/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialHeader from '../styled/StartTrialHeader';
@@ -115,7 +115,9 @@ class LoadingTime extends Component {
   handleCloseClick = async () => {
     const { firePrivateAnalyticsEvent, status, closeLoadingDialog, onComplete } = this.props;
     const convertStatusFromSymbolToString = String(status).slice(7, -1);
-    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', { status: convertStatusFromSymbolToString });
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.close', {
+      status: convertStatusFromSymbolToString,
+    });
     this.setState({
       showErrorFlag: false,
     });
@@ -196,20 +198,14 @@ class LoadingTime extends Component {
         }
       >
         <div id="xflow-loading-time">
-          <StartTrialHeader>
-            {this.showHeading()}
-          </StartTrialHeader>
+          <StartTrialHeader>{this.showHeading()}</StartTrialHeader>
           <LoadingTimeTextDiv>
             <WhereToFindNewProductSVGDiv>
               <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
             </WhereToFindNewProductSVGDiv>
             <WhereToFindNewProductDiv>
-              <h5>
-                {heading}
-              </h5>
-              <WhereToFindNewProductText>
-                {message}
-              </WhereToFindNewProductText>
+              <h5>{heading}</h5>
+              <WhereToFindNewProductText>{message}</WhereToFindNewProductText>
             </WhereToFindNewProductDiv>
           </LoadingTimeTextDiv>
         </div>

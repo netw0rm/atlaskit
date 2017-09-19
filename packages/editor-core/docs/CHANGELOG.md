@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.2.0 (2017-09-19)
+
+* feature; revise text color palette to a reduced set (issues closed: ed-2679) ([9673a86](https://bitbucket.org/atlassian/atlaskit/commits/9673a86))
 ## 47.1.1 (2017-09-18)
 
 * bug fix; update editor schema with json code block language (issues closed: ed-2756) ([211a8b6](https://bitbucket.org/atlassian/atlaskit/commits/211a8b6))

@@ -1,5 +1,10 @@
 # @atlaskit/task-decision
 
+## 4.0.2 (2017-09-19)
+
+* bug fix; fixed jest tests when require.ensure is undefined ([245707a](https://bitbucket.org/atlassian/atlaskit/commits/245707a))
+* bug fix; fixed tests for task-decision ([619792f](https://bitbucket.org/atlassian/atlaskit/commits/619792f))
+* bug fix; code splitted avatar in mention and task-decision packages (issues closed: ed-2776) ([19f8276](https://bitbucket.org/atlassian/atlaskit/commits/19f8276))
 ## 4.0.1 (2017-09-18)
 
 * bug fix; make sure box shadow for card style is rendered inside the enclosing container. (issues closed: fs-1382) ([4b441f9](https://bitbucket.org/atlassian/atlaskit/commits/4b441f9))

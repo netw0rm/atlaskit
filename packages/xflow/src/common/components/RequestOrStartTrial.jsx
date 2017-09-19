@@ -5,7 +5,8 @@ import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import { StartTrial, RequestTrial, AlreadyStarted, ErrorFlag } from '../../request-or-start-trial/';
+import { StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial/';
+import ErrorFlag from '../../common/components/ErrorFlag';
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';

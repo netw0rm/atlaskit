@@ -7,8 +7,8 @@ import Spinner from '@atlaskit/spinner';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withAnalytics } from '@atlaskit/analytics';
 
-import ErrorFlag from '../../common/ErrorFlag';
-import SuccessFlag from '../../common/SuccessFlag';
+import ErrorFlag from '../../common/components/ErrorFlag';
+import SuccessFlag from '../../common/components/SuccessFlag';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
@@ -23,15 +23,23 @@ const messages = defineMessages({
     defaultMessage: 'Oops... Something went wrong',
   },
   errorFlagDescription: {
-    id: 'xflow.generic.request-tral-note.error-flag.description',
+    id: 'xflow.generic.opt-out.error-flag.description',
     defaultMessage: "That request didn't make it through. Shall we try again?",
+  },
+  errorFlagResendRequest: {
+    id: 'xflow.generic.opt-out.error-flag.resend-request',
+    defaultMessage: 'Resend request',
+  },
+  errorFlagNotNow: {
+    id: 'xflow.generic.opt-out.error-flag.not-now',
+    defaultMessage: 'Not now',
   },
   successFlagTitle: {
     id: 'xflow.generic.opt-out.success-flag.title',
     defaultMessage: 'Your request is sent',
   },
   successFlagDescription: {
-    id: 'xflow.generic.request-tral-note.success-flag.description',
+    id: 'xflow.generic.opt-out.success-flag.description',
     defaultMessage: 'Props for helping your admin out!',
   },
 });
@@ -84,13 +92,13 @@ class AdminSettings extends Component {
 
     try {
       await optOutRequestTrialFeature(selectedRadio);
-      firePrivateAnalyticsEvent('xflow.opt-out.send.successful');
+      firePrivateAnalyticsEvent('xflow.opt-out.request.successful');
       this.setState({
         optOutRequestStatus: 'successful',
         isOpen: false,
       });
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.opt-out.send.failed', {
+      firePrivateAnalyticsEvent('xflow.opt-out.request.failed', {
         errorMessage: e.message,
       });
       this.setState({
@@ -226,10 +234,12 @@ class AdminSettings extends Component {
           showFlag={optOutRequestStatus === 'failed'}
           flagActions={[
             {
-              content: 'Resend request',
+              content: intl.formatMessage(messages.errorFlagResendRequest),
               onClick: this.handleErrorFlagResendRequest,
             },
-            { content: 'Not now', onClick: this.handleErrorFlagDismiss },
+            { content: intl.formatMessage(messages.errorFlagNotNow),
+              onClick: this.handleErrorFlagDismiss,
+            },
           ]}
         />
         <SuccessFlag

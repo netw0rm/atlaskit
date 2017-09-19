@@ -15,7 +15,7 @@ import RequestAccessLozengeDiv from '../styled/RequestAccessLozengeDiv';
 import RequestAccessImage from '../styled/RequestAccessImage';
 import RequestAccessDiv from '../styled/RequestAccessDiv';
 
-class RequestTrialAccess extends Component {
+class ConfirmRequest extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
     cancelRequestTrialAccess: PropTypes.func,
@@ -151,10 +151,10 @@ class RequestTrialAccess extends Component {
   }
 }
 
-export const RequestTrialAccessBase = withAnalytics(RequestTrialAccess);
+export const ConfirmRequestBase = withAnalytics(ConfirmRequest);
 
 export default withXFlowProvider(
-  RequestTrialAccessBase,
+  ConfirmRequestBase,
   ({
     xFlow: { config: { productLogo, requestTrial }, requestTrialAccess, cancelRequestTrialAccess },
   }) => ({

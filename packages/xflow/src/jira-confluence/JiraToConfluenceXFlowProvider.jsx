@@ -210,7 +210,7 @@ export const defaultProps = intl => ({
       ),
     },
     optOut: {
-      optOutHeading: 'Confluence trial requests',
+      optOutHeading: 'Product trial requests',
       optOutMessage: 'Change your notifications, or stop requests completely.',
       optOutDefaultSelectedRadio: 'admin-opt-out',
       optOutOptionItems: [

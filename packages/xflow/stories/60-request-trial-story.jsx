@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { RequestTrialAccessBase } from '../src/request-or-start-trial/components/RequestTrialAccess';
+import { ConfirmRequestBase } from '../src/request-or-start-trial/components/ConfirmRequest';
 import { RequestTrialNoteBase } from '../src/request-or-start-trial/components/RequestTrialNote';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import { INACTIVE } from '../src/common/productProvisioningStates';
@@ -24,7 +24,7 @@ const defaultProps = {
 storiesOf('RequestTrial')
   .add('Request Trial (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <RequestTrialAccessBase
+      <ConfirmRequestBase
         {...defaultProps}
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
@@ -54,7 +54,7 @@ storiesOf('RequestTrial')
   )
   .add('Already Requested Trial (INACTIVE)', () =>
   setupStorybookAnalytics(
-    <RequestTrialAccessBase
+    <ConfirmRequestBase
       {...defaultProps}
       onComplete={() => Promise.resolve(true)}
       onCancel={() => Promise.resolve(true)}

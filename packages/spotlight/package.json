@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "A template for creating AtlasKit components",
+  "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "main": "dist/bundle.js",
   "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",
@@ -36,7 +36,6 @@
     "@atlaskit/dropdown-menu": "^3.10.1",
     "@atlaskit/icon": "^8.1.0",
     "@atlaskit/navigation": "^24.0.2",
-    "@atlaskit/spotlight": "*",
     "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/util-readme": "^3.0.0"
   },

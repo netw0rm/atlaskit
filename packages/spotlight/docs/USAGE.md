@@ -1,6 +1,30 @@
-# AkUtilComponentTemplate
+# Spotlight
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+The spotlight component is used typically during onboarding to highlight elements
+of the UI to the user in a modal dialog.
+
+## Example
+
+```js
+import { Spotlight, SpotlightManager, SpotlightTarget } from '@atlaskit/spotlight';
+
+class MyClass extends Component {
+  render() {
+    return (
+      <SpotlightManager>
+        <div>
+          <SpotlightTarget name="foo">
+            <span>bar</span>
+          </SpotlightTarget>
+          <Spotlight target="foo">
+            <span>baz</span>
+          </Spotlight>
+        </div>
+      </SpotlightManager>
+    );
+  }
+}
+```
 
 ## Try it out
 

@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 47.3.0 (2017-09-19)
+
+* bug fix; revert quick tooltip fix for emoji picker. (issues closed: fs-1330) ([a47a20d](https://bitbucket.org/atlassian/atlaskit/commits/a47a20d))
+
+* feature; help dialog should show hints for only those nodes and marks supported by the schem (issues closed: #ed-2671) ([7181eac](https://bitbucket.org/atlassian/atlaskit/commits/7181eac))
+* bug fix; code splitted avatar and logo (issues closed: ed-2776) ([1cad4c1](https://bitbucket.org/atlassian/atlaskit/commits/1cad4c1))
+## 47.2.0 (2017-09-19)
+
+* feature; revise text color palette to a reduced set (issues closed: ed-2679) ([9673a86](https://bitbucket.org/atlassian/atlaskit/commits/9673a86))
+## 47.1.1 (2017-09-18)
+
+* bug fix; update editor schema with json code block language (issues closed: ed-2756) ([211a8b6](https://bitbucket.org/atlassian/atlaskit/commits/211a8b6))
+* bug fix; fix emoji rendering no longer passing down the providerFactory (issues closed: fs-1383) ([03110dd](https://bitbucket.org/atlassian/atlaskit/commits/03110dd))
+* bug fix; quick fix for emoji picker location in editor-core. Quick fix to disable tooltip whe (issues closed: fs-1379 / fs-1330) ([6b80bf7](https://bitbucket.org/atlassian/atlaskit/commits/6b80bf7))
 ## 47.1.0 (2017-09-18)
 
 * feature; add JSON as a supported language for code blocks (issues closed: ed-2767) ([b6debbf](https://bitbucket.org/atlassian/atlaskit/commits/b6debbf))

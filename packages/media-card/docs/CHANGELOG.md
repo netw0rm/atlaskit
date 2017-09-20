@@ -1,5 +1,11 @@
 # @atlaskit/media-card
 
+## 21.3.0 (2017-09-19)
+
+* feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))
+## 21.2.1 (2017-09-18)
+
+* bug fix; updated copy on error view of file cards to be "Failed to load file" (issues closed: hnw-2303) ([d849c43](https://bitbucket.org/atlassian/atlaskit/commits/d849c43))
 ## 21.2.0 (2017-09-18)
 
 

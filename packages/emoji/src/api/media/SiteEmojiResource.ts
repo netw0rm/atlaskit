@@ -1,4 +1,3 @@
-import { MediaPicker } from 'mediapicker';
 import { ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 
 import { customType } from '../../constants';
@@ -90,29 +89,30 @@ export default class SiteEmojiResource {
           },
         };
 
-        const mpBinary = this.createMediaPicker('binary', mpConfig);
-        mpBinary.on('upload-end', (result: MediaUploadEnd) => {
-          const totalUploadTime = Date.now() - startTime;
-          const mediaUploadTime = totalUploadTime - tokenLoadTime;
-          debug('total upload / media upload times', totalUploadTime, mediaUploadTime);
-          this.postToEmojiService(upload, result.public).then(emoji => {
-            resolve(emoji);
-          }).catch(httpError => {
-            reject(httpError.reason || httpError);
-          });
-        });
-        mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
-          reject(errorResult.error);
-        });
-        mpBinary.on('upload-status-update', (statusUpdate: MediaUploadStatusUpdate) => {
-          debug('upload progress', statusUpdate.progress);
-          if (progressCallback) {
-            progressCallback({
-              percent: statusUpdate.progress.portion * mediaProportionOfProgress,
+        this.createMediaPicker('binary', mpConfig).then(mpBinary => {
+          mpBinary.on('upload-end', (result: MediaUploadEnd) => {
+            const totalUploadTime = Date.now() - startTime;
+            const mediaUploadTime = totalUploadTime - tokenLoadTime;
+            debug('total upload / media upload times', totalUploadTime, mediaUploadTime);
+            this.postToEmojiService(upload, result.public).then(emoji => {
+              resolve(emoji);
+            }).catch(httpError => {
+              reject(httpError.reason || httpError);
             });
-          }
+          });
+          mpBinary.on('upload-error', (errorResult: MediaUploadError) => {
+            reject(errorResult.error);
+          });
+          mpBinary.on('upload-status-update', (statusUpdate: MediaUploadStatusUpdate) => {
+            debug('upload progress', statusUpdate.progress);
+            if (progressCallback) {
+              progressCallback({
+                percent: statusUpdate.progress.portion * mediaProportionOfProgress,
+              });
+            }
+          });
+          mpBinary.upload(upload.dataURL, upload.filename);
         });
-        mpBinary.upload(upload.dataURL, upload.filename);
       });
     });
   }
@@ -168,8 +168,13 @@ export default class SiteEmojiResource {
   /**
    * Intended to be overridden for unit testing.
    */
-  protected createMediaPicker(type, mpConfig) {
-    return MediaPicker(type, mpConfig);
+  protected createMediaPicker(type, mpConfig): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      require.ensure([], (require) => {
+        const { MediaPicker } = require('mediapicker');
+        resolve(MediaPicker(type, mpConfig));
+      });
+    });
   }
 
   private postToEmojiService = (upload: EmojiUpload, mediaApiData: MediaApiData): Promise<EmojiDescription> => {

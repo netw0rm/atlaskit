@@ -1,13 +1,15 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import HelpDialog, { formatting, getComponentFromKeymap } from '../../../../../../src/editor/plugins/help-dialog/ui';
+import HelpDialog, { formatting, getComponentFromKeymap, getSupportedFormatting } from '../../../../../../src/editor/plugins/help-dialog/ui';
 import createEditor from '../../../../../helpers/create-editor';
 import helpDialog from '../../../../../../src/editor/plugins/help-dialog';
 import * as keymaps from '../../../../../../src/keymaps';
 import { browser } from '../../../../../../src/prosemirror';
 import { EditorView } from '../../../../../../src/prosemirror';
 import EditorActions from '../../../../../../src/editor/actions';
+import { createSchema } from '../../../../../../src/schema';
+import { doc } from '../../../../../../src/schema/nodes/doc';
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 
@@ -54,6 +56,25 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       const autoformat = formatting.filter(f => f.name === 'Quote')[0].autoFormatting;
       const label = mount(<div>{autoformat!()}</div>);
       expect(label.text()).to.equal('> + space');
+    });
+  });
+
+  describe('getSupportedFormatting', () => {
+    it('should return only the list of formatting supported by schema', () => {
+      const completeSchema = createSchema({
+        nodes: ['paragraph', 'text', 'mention', 'emoji', 'decisionList', 'decisionItem', 'taskList',
+          'taskItem', 'mediaGroup', 'media', 'codeBlock', 'orderedList', 'bulletList', 'listItem',
+        ],
+        marks: ['link', 'em', 'underline', 'mentionQuery', 'emojiQuery', 'textColor', 'code'],
+        customNodeSpecs: { doc, }
+      });
+      const formatting = getSupportedFormatting(completeSchema);
+      expect(formatting.filter(f => f.type === 'mention').length).to.equal(1);
+      expect(formatting.filter(f => f.type === 'hardBreak').length).to.equal(0);
+      expect(formatting.filter(f => f.type === 'em').length).to.equal(1);
+      expect(formatting.filter(f => f.type === 'strong').length).to.equal(0);
+      expect(formatting.filter(f => f.type === 'codeBlock').length).to.equal(1);
+      expect(formatting.filter(f => f.type === 'blockquote').length).to.equal(0);
     });
   });
 });

@@ -1,6 +1,7 @@
 /* tslint:disable:variable-name */
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
-import {defaultTransitionDuration} from './config';
+import { CardAppearance } from '../../index';
+import { defaultTransitionDuration } from './config';
 
 export const ellipsis = (maxWidth: string | number = '100%') => {
   const unit = typeof maxWidth === 'number' ? 'px' : '';
@@ -94,5 +95,9 @@ export const absolute = (top = 0, left = 0) => `
   top: ${top}px;
   left: ${left}px;
 `;
+
+export const withAppearance = (styleMap: {[key in CardAppearance]?: string}) => ({appearance}: {appearance?: CardAppearance}) => (
+  appearance && styleMap[appearance] || ''
+);
 
 export default ellipsis;

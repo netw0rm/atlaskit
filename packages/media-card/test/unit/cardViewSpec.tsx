@@ -3,6 +3,7 @@ import * as React from 'react';
 import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
+import {ErrorWrapper} from '../../src/links/cardGenericView/styled';
 import {CardView} from '../../src/root/cardView';
 import {LinkCard} from '../../src/links';
 import {FileCard} from '../../src/files';
@@ -144,6 +145,14 @@ describe('CardView', () => {
     expect(hoverHandler).toHaveBeenCalledTimes(1);
     const hoverHandlerArg = hoverHandler.mock.calls[0][0];
     expect(hoverHandlerArg.mediaItemDetails).toEqual(link);
+  });
+
+  it('should fire onRetry when there is an error and callback is passed', () => {
+    const onRetryHandler = jest.fn();
+    const card = mount(<CardView status="error" metadata={link} onRetry={onRetryHandler} />);
+
+    card.find(ErrorWrapper).find('button').simulate('click');
+    expect(onRetryHandler).toHaveBeenCalledTimes(1);
   });
 
   it('should NOT fire onSelectChange when card is NOT selectable', () => {

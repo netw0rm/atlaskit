@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 29.0.1 (2017-09-19)
+
+* bug fix; code splitted mediapicker in emoji package (issues closed: ed-2776) ([8649f12](https://bitbucket.org/atlassian/atlaskit/commits/8649f12))
 ## 29.0.0 (2017-09-18)
 
 

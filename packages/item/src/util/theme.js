@@ -35,12 +35,16 @@ export const defaultTheme: ItemTheme = {
   },
   padding: {
     default: {
-      x: akGridSizeUnitless / 2,
-      y: akGridSizeUnitless / 2,
+      bottom: akGridSizeUnitless / 2,
+      left: akGridSizeUnitless / 2,
+      right: akGridSizeUnitless / 2,
+      top: akGridSizeUnitless / 2,
     },
     compact: {
-      x: akGridSizeUnitless,
-      y: akGridSizeUnitless,
+      bottom: akGridSizeUnitless,
+      left: akGridSizeUnitless,
+      right: akGridSizeUnitless,
+      top: akGridSizeUnitless,
     },
   },
   default: {

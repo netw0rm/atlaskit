@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { default as Avatar, AvatarGroup } from '@atlaskit/avatar';
+import Spinner from '@atlaskit/spinner';
 import WithPluginState from '../../../ui/WithPluginState';
 import { EditorView } from '../../../../prosemirror';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -67,27 +67,62 @@ const AvatarItem: any = styled.div`
   }
 `;
 
-class Item extends React.Component<{ name: string, sessionId: string, email: string, src: string }, {}> {
+declare interface ItemProps {
+  name: string;
+  sessionId: string;
+  email: string;
+  src: string;
+}
+
+declare interface ItemState {
+  Avatar?: React.ComponentClass<any>;
+}
+
+class Item extends React.Component<ItemProps, ItemState> {
+  state: ItemState = {};
+
+  componentDidMount () {
+    require.ensure([], (require) => {
+      // tslint:disable-next-line:variable-name
+      const Avatar = require('@atlaskit/avatar').default;
+      this.setState({ Avatar });
+    });
+  }
+
   render() {
     const { props } =  this;
+    const { Avatar } = this.state;
     const color = getAvatarColor(props.sessionId).color.solid;
     const avatar = props.name.substr(0, 1).toUpperCase();
 
     return (
       <AvatarItem badgeColor={color} avatar={avatar}>
-        <Avatar {...props} />
+        {Avatar ? <Avatar {...props} /> : <Spinner />}
       </AvatarItem>
     );
   }
 }
 
-export default class Avatars extends React.Component<Props, {}> {
+export interface State {
+  AvatarGroup?: React.ComponentClass<any>;
+}
+
+export default class Avatars extends React.Component<Props, State> {
+  state: State = {};
+
+  componentDidMount () {
+    require.ensure([], (require) => {
+      const { AvatarGroup } = require('@atlaskit/avatar');
+      this.setState({ AvatarGroup });
+    });
+  }
 
   private onAvatarClick = (data) => {
   }
 
   private renderAvatars = ({ data }) => {
     const { sessionId, activeParticipants } = data;
+    const { AvatarGroup } = this.state;
 
     const avatars = activeParticipants.map(p => ({
       email: p.email,
@@ -99,13 +134,15 @@ export default class Avatars extends React.Component<Props, {}> {
 
     return (
       <AvatarContainer>
-        <AvatarGroup
-          appearance="stack"
-          size="medium"
-          data={avatars}
-          onAvatarClick={this.onAvatarClick}
-          avatar={Item}
-        />
+        {AvatarGroup ?
+          <AvatarGroup
+            appearance="stack"
+            size="medium"
+            data={avatars}
+            onAvatarClick={this.onAvatarClick}
+            avatar={Item}
+          /> : <Spinner />
+        }
       </AvatarContainer>
     );
   }

@@ -154,7 +154,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
         onClick={this.toggleOpen}
         iconBefore={<EmojiIcon label="Insert emoji (:)" />}
         ref={this.handleButtonRef}
-        title={isOpen ? '' : 'Insert emoji (:)'}
+        title="Insert emoji (:)"
       />
     );
 

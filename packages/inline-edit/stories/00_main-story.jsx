@@ -119,6 +119,16 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('with readview set to container width', () => (
+    <div style={containerStyle}>
+      <InlineEdit
+        isFitContainerWidthReadView
+        label="full-hover"
+        readView="Hover all the way"
+        editView="Not an inspiring edit view"
+      />
+    </div>
+  ))
   .add('with confirm on blur disabled', () => (
     <div style={containerStyle}>
       <TextInlineEdit

@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 7.4.2 (2017-09-19)
+
+* bug fix; code splitted avatar in mention and task-decision packages (issues closed: ed-2776) ([19f8276](https://bitbucket.org/atlassian/atlaskit/commits/19f8276))
 ## 7.4.1 (2017-09-13)
 
 

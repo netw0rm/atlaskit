@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardStatus } from '../..';
+import { SharedCardProps, CardStatus, CardAppearance } from '../..';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
@@ -15,16 +15,17 @@ export interface LinkCardProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly details?: UrlPreview;
   readonly resizeMode?: ImageResizeMode;
+  readonly onRetry?: () => void;
 }
 
-export class LinkCard extends Component<LinkCardProps, {}> {
+export const defaultLinkCardAppearance: CardAppearance = 'square';
 
+export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
-    const {resources: {smartCard, app, player, image}} = this;
+    const {resources: {smartCard, app, player}} = this;
     const {appearance} = this.props;
 
     switch (appearance) {
-
       case 'small':
         return this.renderSmallCard();
 
@@ -32,11 +33,10 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         return this.renderLinkCardImage();
 
       case 'horizontal':
-        // https://product-fabric.atlassian.net/browse/MSW-155
-        return this.renderGenericLink();
+        return this.renderGenericLink(appearance);
 
       case 'square':
-        return this.renderGenericLink();
+        return this.renderGenericLink(appearance);
 
       default:
         if (smartCard) {
@@ -45,21 +45,17 @@ export class LinkCard extends Component<LinkCardProps, {}> {
           return this.renderEmbed(app);
         } else if (player && this.isEmbed(player)) {
           return this.renderEmbed(player);
-        } else if (image) {
-          return this.renderLinkCardImage();
         } else {
-          return this.renderGenericLink();
+          return this.renderGenericLink(defaultLinkCardAppearance);
         }
-
     }
-
   }
 
   private renderInLink(link, child): JSX.Element  {
     const {isLoading, isError} = this;
     if (link && !isLoading && !isError) {
       return (
-        <A linkUrl={link}>
+        <A linkUrl={link} className="link-wrapper">
           {child}
         </A>
       );
@@ -141,15 +137,15 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     );
   }
 
-  private renderGenericLink(): JSX.Element | null {
+  private renderGenericLink(appearance: CardAppearance): JSX.Element | null {
     const { url, title, site, description } = this.urlPreview;
-    const { dimensions, actions, appearance } = this.props;
+    const { dimensions, actions, onRetry } = this.props;
     const { errorMessage } = this;
 
     return this.renderInLink(
       url,
       <LinkCardGenericView
-        error={errorMessage}
+        errorMessage={errorMessage}
         linkUrl={url}
         title={title}
         site={site}
@@ -158,8 +154,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         iconUrl={this.iconUrl}
         dimensions={dimensions}
         appearance={appearance}
-        loading={this.isLoading}
+        isLoading={this.isLoading}
         actions={actions}
+        onRetry={onRetry}
       />
     );
   }

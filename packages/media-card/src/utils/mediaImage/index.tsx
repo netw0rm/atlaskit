@@ -4,7 +4,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Component} from 'react';
-import * as cx from 'classnames';
 
 import {ImageViewWrapper, transparentFallbackBackground} from './styled';
 
@@ -15,6 +14,7 @@ export interface MediaImageProps {
   transparentFallback?: boolean;
   width?: string;
   height?: string;
+  className?: string;
   onError?: (this: HTMLElement, ev: ErrorEvent) => any;
 }
 
@@ -83,19 +83,17 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   render() {
-    const {transparentFallback, crop, dataURI, fadeIn} = this.props;
+    const {transparentFallback, crop, dataURI, fadeIn, className} = this.props;
     const {implicitNoCrop, backgroundSize} = this;
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
       backgroundSize,
       backgroundImage: `url(${dataURI})${transparentBg}`
     };
-    const className = cx('media-card', {
-      'fade-in': fadeIn,
-      crop: crop && !implicitNoCrop
-    });
+    const isCropped = crop && !implicitNoCrop;
+    const classNames = `media-card ${className}`;
 
-    return <ImageViewWrapper className={className} style={style} />;
+    return <ImageViewWrapper fadeIn={fadeIn} isCropped={isCropped} className={classNames} style={style} />;
   }
 
   private get isSmallerThanWrapper() {

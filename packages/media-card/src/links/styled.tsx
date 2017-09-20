@@ -1,69 +1,38 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorN0, akColorN20 } from '@atlaskit/util-shared-styles';
-import { Root, borderRadius, spaceAround, cardShadow } from '../styles';
-import { BreakpointSizeValue } from '../utils/breakpointSize';
+import { akColorN20, akColorN30, akColorB50 } from '@atlaskit/util-shared-styles';
+import { CardAppearance } from '../..';
+import { Root, borderRadius, withAppearance } from '../styles';
+import { getCSSBoundaries } from '../utils/cardDimensions';
 
-export interface CardProps {
-  cardSize?: BreakpointSizeValue;
+export interface WrapperProps {
+  appearance?: CardAppearance;
 }
 
-const cardSize = ({cardSize}: CardProps) => {
-  switch (cardSize) {
-    case 'small':
-      return `
-        .media-card {
-          width: 116px;
-        }
-      `;
-
-    case 'large':
-      return `
-        .media-card {
-          width: 174px;
-        }
-      `;
-  }
-
-  return '';
-};
- // min-width required in Details to get proper text wrapping in IE11
-export const Details = styled.div`
-  ${spaceAround}
-  padding: 10px;
-  background-color: ${akColorN20};
-  height: 100%;
-`;
-
 export const Wrapper = styled(Root)`
-  ${cardSize}
-  user-select: none;
-  background-color: ${akColorN0};
-  line-height: initial;
-
   ${borderRadius}
-  ${cardShadow}
+  ${({appearance}: WrapperProps) => getCSSBoundaries(appearance)}
+  user-select: none;
+  background-color: ${akColorN20};
+  line-height: initial;
+  padding: 0 8px 8px 8px;
+  transition: background .3s;
 
-  &.square {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-
-    .details {
-      height: 116px;
-      flex-grow: 0;
-      min-width: initial;
-      border-radius: 0 0 3px 3px;
-    }
-
-    .media-card {
-      height: 185px;
-      border-radius: 3px 3px 0 0;
-    }
+  .link-wrapper:hover & {
+    background-color: ${akColorN30};
   }
 
-  .media-card {
-    border-radius: 3px 0 0 3px;
-    float: left;
+  .link-wrapper:active & {
+    background-color: ${akColorB50};
   }
+
+  ${withAppearance({
+    square: `
+      display: block;
+      justify-content: flex-end;
+    `,
+    horizontal: `
+      display: block;
+    `
+  })}
 `;

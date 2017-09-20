@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   CardStatus,
   CardDimensions,
-  MediaIdentifier,
+  Identifier,
 } from '@atlaskit/media-card';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
@@ -32,7 +32,7 @@ export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 // we do something similar in src/schema/nodes/media.tsx:82
 export const MEDIA_HEIGHT = 125;
 export const FILE_WIDTH = 156;
-export const LINK_WIDTH = 343;
+export const LINK_WIDTH = 400;
 
 type PlaceholderProps = { dimensions?: CardDimensions };
 
@@ -172,6 +172,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
         <CardView
           metadata={{ type: mediaItemType, url, title: '' }}
           status="loading"
+          appearance="horizontal"
           mediaItemType={mediaItemType}
           dimensions={cardDimensions}
         />
@@ -196,7 +197,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return this.renderLoadingCard();
     }
 
-    const identifier: MediaIdentifier = {
+    const identifier: Identifier = {
       mediaItemType: 'link',
       collectionName: collection,
       id,

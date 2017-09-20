@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
+import { colors, layers, themed } from '@atlaskit/theme';
 
 // NOTE:
 // we can't use @atlaskit/blanket because the z-index is insufficient
@@ -14,5 +14,5 @@ export default styled.div`
   right: 0;
   top: 0;
   transition: opacity 220ms;
-  z-index: 301;
+  z-index: ${layers.spotlight};
 `;

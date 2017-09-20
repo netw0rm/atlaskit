@@ -1,7 +1,9 @@
 import styled, { css, keyframes } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, layers } from '@atlaskit/theme';
 
-// Pulse: rgb from colors.P300
+// NOTE:
+ // Pulse color "rgb(101, 84, 192)" derived from "colors.P300"
+
 const baseShadow = css`0 0 0 2px ${colors.P300}`;
 const easing = 'cubic-bezier(0.55, 0.055, 0.675, 0.19)';
 const pulseKeframes = keyframes`
@@ -24,7 +26,7 @@ export const Div = styled.div`
   ${backgroundColor}
   ${borderRadius}
   position: absolute;
-  z-index: 501;
+  z-index: ${layers.spotlight};
 `;
 
 // absolute position anchors the Popper.js dialog

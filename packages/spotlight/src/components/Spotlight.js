@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FocusScope, ScrollLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
+import { layers } from '@atlaskit/theme';
+
 import type { ComponentType, ElementType, FunctionType } from '../types';
 import { Dialog, DialogBody, DialogPositioner, FillScreen } from '../styled/Dialog';
 import Blanket from '../styled/Blanket';
@@ -175,25 +177,26 @@ class Spotlight extends Component {
             {children}
           </DialogBody>
           {footer}
-          <ScrollLock />
         </Dialog>
       </FocusScope>
     );
 
     return (
-      <Fill scrollDistance={scrollY} {...this.props}>
+      <Fill scrollDistance={scrollY} in>
         <Blanket />
+        <ScrollLock />
         {target ? (
           <Layer
             boundariesElement="scrollParent"
             content={dialog}
             offset="0 8"
             position={dialogPlacement}
+            zIndex={layers.spotlight(this.props)}
           >
             {this.renderTargetClone()}
           </Layer>
         ) : (
-          <Positioner {...this.props} size={size}>
+          <Positioner in size={size}>
             {dialog}
           </Positioner>
         )}

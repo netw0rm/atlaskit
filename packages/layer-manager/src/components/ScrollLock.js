@@ -1,43 +1,44 @@
 // @flow
 import { PureComponent } from 'react';
 
-type Props = {
-  /**
-    Account for scrollbars; add padding to stop content jumping around when
-    overflow is hidden on the body.
-  */
-  detectScrollbars?: boolean,
-};
+const target = document.body;
 
-const styles = {
+let scrollLocksActive = 0;
+const styleKeys = ['boxSizing', 'height', 'overflow', 'paddingRight', 'position'];
+const originalStyles = {};
+styleKeys.forEach(key => (originalStyles[key] = target.style[key]));
+
+const lockStyles = {
   boxSizing: 'border-box', // account for possible `width: 100%;` declaration on body
+  height: '100%',
   overflow: 'hidden',
   position: 'relative',
-  height: '100%',
 };
-const styleKeys = Object.keys(styles);
+
+function applyScrollLock() {
+  // apply the target padding if this is the first scroll lock applied
+  if (scrollLocksActive < 1) {
+    const newPaddingRight = (window.innerWidth - document.body.clientWidth)
+      + parseInt(originalStyles.paddingRight, 10) || 0;
+    Object.keys(lockStyles).forEach(rule => (target.style[rule] = lockStyles[rule]));
+    target.style.paddingRight = `${newPaddingRight}px`;
+  }
+  scrollLocksActive++;
+}
+
+function removeScrollLock() {
+  scrollLocksActive = Math.max(scrollLocksActive - 1, 0);
+  if (scrollLocksActive < 1) {
+    styleKeys.forEach(rule => (target.style[rule] = originalStyles[rule]));
+  }
+}
 
 export default class ScrollLock extends PureComponent {
-  props: Props // eslint-disable-line react/sort-comp
-  target = document.body
-  static defaultProps = { detectScrollbars: true }
   componentDidMount() {
-    const scrollbarWidth = window.innerWidth - document.body.clientWidth;
-
-    if (this.props.detectScrollbars) {
-      this.target.style.paddingRight = `${scrollbarWidth}px`;
-    }
-
-    styleKeys.forEach(rule => {
-      const val = styles[rule];
-      this.target.style[rule] = val;
-    });
+    applyScrollLock(this.props);
   }
   componentWillUnmount() {
-    if (this.props.detectScrollbars) {
-      this.target.style.paddingRight = '';
-    }
-    styleKeys.forEach(rule => (this.target.style[rule] = ''));
+    removeScrollLock();
   }
   render() {
     return null;

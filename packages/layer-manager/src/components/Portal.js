@@ -20,7 +20,11 @@ class Portal extends Component {
     if (document.body) {
       document.body.appendChild(node);
       this.portalElement = node;
-      this.componentDidUpdate();
+      // mounting components in portals can have side effects (e.g. modals
+      // applying scroll / focus locks). Because the unmounting of other portals
+      // happens asynchronously, we wait for a moment before mounting new
+      // portals to avoid race conditions in unmount handlers
+      setTimeout(() => this.componentDidUpdate(), 1);
     }
   }
   componentDidUpdate() {

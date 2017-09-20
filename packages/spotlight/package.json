@@ -23,9 +23,9 @@
   "dependencies": {
     "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/button": "^5.1.2",
-    "@atlaskit/layer": "^2.5.3",
+    "@atlaskit/layer": "^2.5.4",
     "@atlaskit/layer-manager": "^2.0.1",
-    "@atlaskit/theme": "2.0.1",
+    "@atlaskit/theme": "^2.0.1",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "react-transition-group": "^2.2.0",

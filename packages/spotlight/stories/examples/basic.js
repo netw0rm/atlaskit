@@ -64,98 +64,108 @@ class Example extends Component {
         }}
       />
     );
-    switch (this.state.mode) {
-      // eslint-disable-next-line no-case-declarations
-      case 'welcome':
-        return (
-          <Spotlight
-            header={welcomeHeader}
-            key="welcome"
-          >
-            <div style={{ textAlign: 'center' }}>
-              <Title>Experience your new JIRA</Title>
-              <p>Switch context, jump between project, and get back to work quickly with our new
-                look and feel.</p>
-              <p>Take it for a spin and let us know what you think.</p>
-              <div style={{ paddingBottom: '1em', paddingTop: '1em' }}>
-                <ButtonGroup>
-                  <Button onClick={this.spotlightInput} appearance="help">
-                    Switch to the new JIRA
-                  </Button>
-                  <Button onClick={this.spotlightInput} appearance="subtle">
-                    Remind me later
-                  </Button>
-                </ButtonGroup>
-              </div>
+    const variants = {
+      welcome: (
+        <Spotlight
+          header={welcomeHeader}
+          key="welcome"
+        >
+          <div style={{ textAlign: 'center' }}>
+            <Title>Experience your new JIRA</Title>
+            <p>Switch context, jump between project, and get back to work quickly with our new
+              look and feel.</p>
+            <p>Take it for a spin and let us know what you think.</p>
+            <div style={{ paddingBottom: '1em', paddingTop: '1em' }}>
+              <ButtonGroup>
+                <Button onClick={this.spotlightInput} appearance="help">
+                  Switch to the new JIRA
+                </Button>
+                <Button onClick={this.spotlightInput} appearance="subtle">
+                  Remind me later
+                </Button>
+              </ButtonGroup>
             </div>
-          </Spotlight>
-        );
-      case 'dropdown':
-        return (
-          <Spotlight
-            dialogPlacement="top left"
-            key="dropdown"
-            target="dropdown"
-            targetBgColor="white"
-            targetOnClick={console.log}
-            targetRadius={3}
-          >
-            <Title>This is a dropdown</Title>
-            <Lorem count={1} />
-            <button onClick={this.spotlightParagraph}>Tell me more</button>
-          </Spotlight>
-        );
-      case 'parargraph':
-        return (
-          <Spotlight
-            key="parargraph"
-            dialogPlacement="top center"
-            target="parargraph"
-            targetReplacementComponent={p => (
-              <Pulse style={p}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: 'white',
-                    height: p.height,
-                    width: p.width,
-                  }}
-                >
-                  <h3>I am replacing a parargraph of text</h3>
-                </div>
-              </Pulse>
-            )}
-          >
-            <Title>This is a replacement component</Title>
-            <p>
-              The consumer can use the <code>targetReplacementComponent</code> property to
-              abort the clone operation and provide their own component.
-            </p>
-            <button onClick={this.spotlightInput}>Previous</button>
-            <button onClick={this.spotlightDropdown}>Next</button>
-          </Spotlight>
-        );
-      case 'avatar':
-        return (
-          <Spotlight
-            dialogPlacement="right top"
-            key="avatar"
-            target="avatar"
-            targetRadius={40}
-          >
-            <Title>This is an avatar</Title>
-            <p>
-              The consumer can provide a <code>targetRadius</code> property to support circles
-              and rounded rectangles.
-            </p>
-            <button onClick={this.finishOnboarding}>I get it</button>
-          </Spotlight>
-        );
-      default:
-        return null;
-    }
+          </div>
+        </Spotlight>
+      ),
+      dropdown: (
+        <Spotlight
+          dialogPlacement="top left"
+          key="dropdown"
+          target="dropdown"
+          targetBgColor="white"
+          targetOnClick={console.log}
+          targetRadius={3}
+        >
+          <p>
+            The spotlight component uses react-dom{"'"}s <code>findDOMNode</code> so you don{"'"}t have to pass refs around.
+          </p>
+          <p style={{ marginBottom: '1em' }}>
+            Sometimes the target inherits its background color from an ancestor, which
+            can look strange once the blanket is rendered. To avoid this a consumer can
+            provide a <code>targetBgColor</code> to the cloned node.
+          </p>
+          <Button appearance="help" onClick={this.spotlightParagraph}>
+            Tell me more
+          </Button>
+        </Spotlight>
+      ),
+      parargraph: (
+        <Spotlight
+          key="parargraph"
+          dialogPlacement="top center"
+          target="parargraph"
+          targetReplacementComponent={p => (
+            <Pulse style={p}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'white',
+                  height: p.height,
+                  width: p.width,
+                }}
+              >
+                <h3>I am replacing a parargraph of text</h3>
+              </div>
+            </Pulse>
+          )}
+        >
+          <p style={{ marginBottom: '1em' }}>
+            The consumer can use the <code>targetReplacementComponent</code> property to
+            circumvent the clone operation and provide their own component.
+          </p>
+          <ButtonGroup>
+            <Button onClick={this.spotlightInput} appearance="help">
+              Prev
+            </Button>
+            <Button onClick={this.spotlightDropdown} appearance="help">
+              Next
+            </Button>
+          </ButtonGroup>
+        </Spotlight>
+      ),
+      avatar: (
+        <Spotlight
+          dialogPlacement="right top"
+          key="avatar"
+          target="avatar"
+          targetRadius={40}
+        >
+          <p style={{ marginBottom: '1em' }}>
+            For round targets the consumer can provide a <code>targetRadius</code> property,
+            which is passed on to the wrapping element, providing support for circles and
+            rounded rectangles.
+          </p>
+          <Button onClick={this.finishOnboarding} appearance="help">
+            Got it
+          </Button>
+        </Spotlight>
+      ),
+    };
+
+    return variants[this.state.mode];
   }
   render() {
     const parargraphStyle = {

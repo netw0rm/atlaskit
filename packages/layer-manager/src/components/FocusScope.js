@@ -1,4 +1,5 @@
 // @flow
+
 import { Children, Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
@@ -6,6 +7,13 @@ import PropTypes from 'prop-types';
 import type { ElementType, ChildrenType } from '../types';
 import * as focusScope from '../utils/focus-scope';
 import * as focusStore from '../utils/focus-store';
+
+/**
+  NOTE: mounting more than one focusScope component at a time will cause
+  unexpected behaviour, and unmounting any mounted focusScope will remove all
+  focusScope locks from the document
+*/
+let mountedFocusScopes = 0;
 
 type Props = {
   /**
@@ -36,6 +44,11 @@ export default class FocusScope extends Component {
   }
 
   componentDidMount() {
+    if (mountedFocusScopes > 0) {
+      // eslint-disable-next-line no-console
+      console.warn('Warning: more than one FocusScope has been mounted. This will cause unpredictable behaviour.');
+    }
+    mountedFocusScopes++;
     this._ariaHiddenNode = this.props.ariaHiddenNode || this.context.ariaHiddenNode;
 
     document.addEventListener('keydown', this.handleKeyDown, false);
@@ -46,6 +59,8 @@ export default class FocusScope extends Component {
     if (this._ariaHiddenNode) this._ariaHiddenNode.setAttribute('aria-hidden', true);
   }
   componentWillUnmount() {
+    mountedFocusScopes = Math.max(mountedFocusScopes - 1, 0);
+
     document.removeEventListener('keydown', this.handleKeyDown, false);
 
     if (this._ariaHiddenNode) this._ariaHiddenNode.removeAttribute('aria-hidden');

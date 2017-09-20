@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, layers, math, themed } from '@atlaskit/theme';
 
 export const DIALOG_WIDTH = {
   small: 400,
@@ -48,7 +48,7 @@ export const DialogPositioner = styled.div`
   margin: ${gutter}px auto;
   position: relative;
   width: ${dialogWidth};
-  z-index: 501;
+  z-index: ${layers.spotlight};
 `;
 
 export const Dialog = styled.div`
@@ -60,7 +60,7 @@ export const Dialog = styled.div`
   display: flex;
   flex-direction: column;
   width: ${dialogWidth};
-  z-index: 501;
+  z-index: ${layers.spotlight};
 `;
 export const DialogBody = styled.div`
   flex: 1 1 auto;

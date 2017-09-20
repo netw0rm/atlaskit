@@ -30,11 +30,13 @@ export default class JiraNavigation extends PureComponent {
     if (!stepData) return null;
 
     return (
-      <Spotlight {...stepData.spotlightConfig}>
+      <Spotlight key={this.state.currentStep} {...stepData.spotlightConfig}>
         {stepData.spotlightContent}
         {
           stepData.spotlightConfig.targetOnClick ? null :
-          <Button onClick={() => this.moveNextStep(stepData.nextStep)}>Next</Button>
+          <Button appearance="help" onClick={() => this.moveNextStep(stepData.nextStep)}>
+            Next
+          </Button>
         }
 
       </Spotlight>

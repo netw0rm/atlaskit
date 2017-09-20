@@ -1,5 +1,10 @@
 # @atlaskit/media-card
 
+## 21.3.1 (2017-09-20)
+
+* bug fix; add line-height to link card title ([37f494b](https://bitbucket.org/atlassian/atlaskit/commits/37f494b))
+* bug fix; fix horizontal card padding to not cut letters ([2c66125](https://bitbucket.org/atlassian/atlaskit/commits/2c66125))
+* bug fix; make small cards to grow up again ([28182ab](https://bitbucket.org/atlassian/atlaskit/commits/28182ab))
 ## 21.3.0 (2017-09-19)
 
 * feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))

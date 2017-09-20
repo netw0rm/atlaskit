@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 3.7.2 (2017-09-20)
+
+* bug fix; fix non array value of \`oneOf\` proptype in profilecard.jsx ([39131f7](https://bitbucket.org/atlassian/atlaskit/commits/39131f7))
 ## 3.7.1 (2017-09-08)
 
 * bug fix; limit profilecards error types to the two available from the api (issues closed: dir-376) ([b9b8532](https://bitbucket.org/atlassian/atlaskit/commits/b9b8532))

@@ -21,6 +21,7 @@ describe('Emoji', () => {
     const fallbackSpan = component.find('span');
     expect(fallbackSpan.length).to.equal(1);
     expect(fallbackSpan.text()).to.equal('fallback');
+    component.unmount();
   });
 
   it('should still render resourced emoji if allowTextFallback=true', () => {
@@ -37,6 +38,7 @@ describe('Emoji', () => {
     );
 
     expect(component.find(ResourcedEmoji)).to.have.length(1);
+    component.unmount();
   });
 
   it('should render "fallback" if there is no emojiProvider prop and no fallback', () => {
@@ -50,6 +52,7 @@ describe('Emoji', () => {
     const fallbackSpan = component.find('span');
     expect(fallbackSpan.length).to.equal(1);
     expect(fallbackSpan.text()).to.equal(':anything:');
+    component.unmount();
   });
 
   it('should render a EmojiWrapper component if emojiProvider supplied', () => {
@@ -68,6 +71,7 @@ describe('Emoji', () => {
     expect(resourcedEmoji.length).to.equal(1);
     expect(resourcedEmoji.prop('emojiId')).to.deep.equal(emojiId);
     expect(resourcedEmoji.prop('emojiProvider')).to.equal(emojiProvider);
+    component.unmount();
   });
 
 });

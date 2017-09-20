@@ -34,11 +34,13 @@ describe(name, () => {
     it('should render ToolbarButton', () => {
       const toolbar = mount(<AddonToolbar dropdownItems={addons} />);
       expect(toolbar.find(ToolbarButton).length).to.equal(1);
+      toolbar.unmount();
     });
 
     it('should not render ToolbarButton if dropdownItems prop is missing', () => {
       const toolbar = mount(<AddonToolbar />);
       expect(toolbar.find(ToolbarButton).length).to.equal(0);
+      toolbar.unmount();
     });
   });
 });

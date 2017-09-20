@@ -18,6 +18,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     editorView = editor.editorView;
   });
 
+  afterEach(() => {
+    editorView.destroy();
+  });
+
   describe('pluginKey', () => {
     it('should not be undefined', () => {
       expect(pluginKey).to.not.equal(undefined);

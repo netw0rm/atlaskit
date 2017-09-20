@@ -18,6 +18,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     const toolbarOption = mount(<ToolbarHelp showHelp={false} toggleHelp={noop} />);
     toolbarOption.find(AkButton).simulate('click');
     expect(trackEvent.calledWith('atlassian.editor.help.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should always have ToolbarButton to open help dialog rendered', () => {
@@ -25,6 +26,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.isEmpty()).to.equal(false);
     expect(toolbarButton.prop('title')).to.equal('Open help dialog');
+    toolbarOption.unmount();
   });
 
   it('should not have HelpDialog by default', () => {
@@ -32,12 +34,14 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     expect(toolbarHelp.prop('showHelp')).to.equal(false);
     const helpDialog = toolbarHelp.find(HelpDialog);
     expect(helpDialog.isEmpty()).to.equal(true);
+    toolbarHelp.unmount();
   });
 
   it('should have visible HelpDialog if showHelp property is true', () => {
     const toolbarHelp = mount(<ToolbarHelp showHelp={true} toggleHelp={noop} />);
     const helpDialog = toolbarHelp.find(HelpDialog);
     expect(helpDialog.isEmpty()).to.equal(false);
+    toolbarHelp.unmount();
   });
 
   it('should have hidden HelpDialog if closeHelp becomes true', () => {
@@ -45,5 +49,6 @@ describe('@atlaskit/editor-core/ui/ToolbarHelp', () => {
     toolbarHelp.setProps({ closeHelp: true });
     const helpDialog = toolbarHelp.find(HelpDialog);
     expect(helpDialog.isEmpty()).to.equal(true);
+    toolbarHelp.unmount();
   });
 });

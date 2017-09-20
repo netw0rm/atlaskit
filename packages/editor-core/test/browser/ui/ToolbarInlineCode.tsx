@@ -27,6 +27,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
     );
 
     expect(codeButton.find(ToolbarButton).prop('disabled')).to.equal(true);
+    codeButton.unmount();
   });
 
   it('should trigger toggleCode in pluginState when clicked', () => {
@@ -42,6 +43,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
     pluginState.toggleCode = spyFunc;
     codeButton.find('button').simulate('click');
     expect(spyFunc.callCount).to.equal(1);
+    codeButton.unmount();
   });
 
   it('should not render button if isEnabled is false', () => {
@@ -55,6 +57,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
 
     codeButton.setState({ isEnabled: false });
     expect(codeButton.find(ToolbarButton).length).to.equal(0);
+    codeButton.unmount();
   });
 
   describe('analytics', () => {
@@ -70,6 +73,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInlineCode', () => {
       );
       toolbarOption.find(AkButton).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.format.code.toggle')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 });

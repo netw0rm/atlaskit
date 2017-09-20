@@ -249,5 +249,6 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     const resolvedMediaProvider = await mediaProvider;
     await (media as any).node.handleMediaProvider(resolvedMediaProvider);
+    media.unmount();
   });
 });

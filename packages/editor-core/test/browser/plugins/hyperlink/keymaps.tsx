@@ -102,6 +102,7 @@ describe('hyperink - keymaps', () => {
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).to.equal(1);
+      hyperlinkEdit.unmount();
     });
 
     it('should not work for message editor', () => {
@@ -114,6 +115,7 @@ describe('hyperink - keymaps', () => {
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).to.equal(0);
+      hyperlinkEdit.unmount();
     });
   });
 

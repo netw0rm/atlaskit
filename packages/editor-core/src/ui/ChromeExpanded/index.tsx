@@ -376,7 +376,15 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           {/* NOTE (to be refactored in ED-2565): ToolbarEmojiPicker.numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker in the SecondaryToolbar */}
           <SecondaryToolbar>
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} numFollowingButtons={2}/> : null}
+            {pluginStateEmojis && emojiProvider ?
+              <ToolbarEmojiPicker
+                pluginKey={emojiPluginKey}
+                editorView={editorView}
+                emojiProvider={emojiProvider}
+                numFollowingButtons={2}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+              /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>

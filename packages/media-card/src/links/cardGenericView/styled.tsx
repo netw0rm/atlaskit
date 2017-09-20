@@ -22,6 +22,7 @@ const aspectRatio = `
 
 export const Title = styled.div`
   ${ellipsis('100%')}
+  line-height: 21px;
   font-weight: 500;
   color: ${akColorN800};
   user-select: text;

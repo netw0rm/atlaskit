@@ -171,6 +171,7 @@ class RequestOrStartTrial extends Component {
                       title="Oops... Something went wrong"
                       description="Let's try again."
                       showFlag={showInitializationError}
+                      source="request-or-start-trial"
                       onDismissed={() => {
                         this.setState({
                           showInitializationError: false,

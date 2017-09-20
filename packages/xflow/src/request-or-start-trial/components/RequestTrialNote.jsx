@@ -211,6 +211,7 @@ class RequestTrialNote extends Component {
           title={intl.formatMessage(messages.successFlagTitle)}
           description={intl.formatMessage(messages.successFlagDescription)}
           showFlag={requestTrialSendNoteStatus === 'successful'}
+          source="request-trial-note"
           onDismissed={this.handleSuccessFlagDismiss}
         />
       </div>

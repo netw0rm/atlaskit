@@ -232,6 +232,7 @@ class AdminSettings extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={optOutRequestStatus === 'failed'}
+          source="opt-out"
           flagActions={[
             {
               content: intl.formatMessage(messages.errorFlagResendRequest),
@@ -246,6 +247,7 @@ class AdminSettings extends Component {
           title={intl.formatMessage(messages.successFlagTitle)}
           description={intl.formatMessage(messages.successFlagDescription)}
           showFlag={optOutRequestStatus === 'successful'}
+          source="opt-out"
           onDismissed={this.handleSuccessFlagDismiss}
         />
       </div>

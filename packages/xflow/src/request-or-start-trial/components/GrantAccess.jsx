@@ -451,6 +451,7 @@ class GrantAccess extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.failedToGrantAccess}
+          source="grant-access"
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

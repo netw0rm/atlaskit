@@ -175,6 +175,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     });
   }
 
+  private onSelectedCategoryResolved = (): void => {
+    this.setState({ selectedCategory: undefined });
+  }
+
   private onUploadSupported = (supported: boolean) => {
     this.setState({
       uploadSupported: supported,
@@ -341,7 +345,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       emojiProvider.uploadCustomEmoji(upload).then(emojiDescription => {
         this.setState({
           activeCategory: customCategory,
-          selectedCategory: customCategory,
           selectedEmoji: emojiDescription,
           uploading: false,
         });
@@ -425,6 +428,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           onCategoryActivated={this.onCategoryActivated}
           onOpenUpload={this.onOpenUpload}
           onSearch={this.onSearch}
+          onSelectedCategoryResolved={this.onSelectedCategoryResolved}
           query={query}
           selectedTone={selectedTone}
           loading={loading}

@@ -253,49 +253,35 @@ describe('<EmojiPicker />', () => {
     it('selecting category should show that category', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
 
         return waitUntil(() => emojisVisible(list)).then(() => {
           expect(categoryVisible('flags', component), 'Flag category not rendered as not in view').to.equal(false);
 
           return showCategory('flags', component);
         }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === 'FLAGS' && categoryVisible('flags', component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
+          return waitUntil(() => categoryVisible('flags', component)).then(() => {
+            // Can't grab first in list as some SYMBOL emojis are still 'visible'
+            const emoji = findEmoji(list).at(8);
+            expect(emoji.prop('emoji').category, 'Emoji shown in list is in flag category').to.equal('FLAGS');
           });
         });
       })
     );
 
-    it('selecting custom category - should show preview with media first emoji loading', () =>
+    it('selecting custom category scrolls to bottom', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
 
         return waitUntil(() => emojisVisible(list)).then(() => {
           expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
 
           return showCategory(customCategory, component);
         }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
-          });
-        });
-      })
-    );
-
-    it('selecting custom category - should show preview with media first emoji loading', () =>
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
-
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
-
-          return showCategory(customCategory, component);
-        }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
+          return  waitUntil(() => categoryVisible(customCategory, component)).then(() => {
+            const emojis = findEmoji(list);
+            // Grab last emoji in list since only one custom emoji
+            const customEmoji = emojis.at(emojis.length - 1);
+            expect(customEmoji.prop('emoji').category).to.equal(customCategory);
           });
         });
       })

@@ -39,6 +39,7 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Mod-z');
 
       expect(pluginState.ignoreLinks).to.equal(true);
+      editorView.destroy();
     });
   });
 
@@ -50,6 +51,7 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Backspace');
 
       expect(removeMediaNodeSpy.calledOnce).to.equal(true);
+      editorView.destroy();
     });
   });
 
@@ -61,6 +63,7 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Enter');
 
       expect(splitMediaGroupSpy.calledOnce).to.equal(true);
+      editorView.destroy();
     });
   });
 
@@ -72,6 +75,7 @@ describe('media - keymaps', () => {
       sendKeyToPm(editorView, 'Shift-Enter');
 
       expect(splitMediaGroupSpy.calledOnce).to.equal(true);
+      editorView.destroy();
     });
   });
 });

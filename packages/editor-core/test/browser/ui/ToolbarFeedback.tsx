@@ -15,6 +15,7 @@ describe('@atlaskit/editor-core/ui/ToolbarFeedback', () => {
       const toolbarOption = mount(<ToolbarFeedback />);
       toolbarOption.find(AkButton).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.feedback.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 });

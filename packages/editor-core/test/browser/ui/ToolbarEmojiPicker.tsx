@@ -12,6 +12,7 @@ import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 import pluginKey from '../../../src/plugins/emojis/plugin-key';
+import Popup from '../../../src/ui/Popup';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -28,11 +29,21 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
   });
 
+  it('should have Popup component defined in it', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    const popup = toolbarEmojiPicker.find(Popup);
+    expect(popup.length > 0).to.equal(true);
+    toolbarEmojiPicker.unmount();
+  });
+
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {
     const { editorView } = editor(doc(p('')));
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(true);
+    toolbarEmojiPicker.unmount();
   });
 
   it('should render the picker if the button has been clicked once', () => {
@@ -41,6 +52,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
 
     expect(toolbarEmojiPicker.find(AkEmojiPicker)).to.have.length(1);
+    toolbarEmojiPicker.unmount();
   });
 
   it('should not render the picker if the button has not been clicked', () => {
@@ -48,6 +60,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
 
     expect(toolbarEmojiPicker.find(AkEmojiPicker)).to.have.length(0);
+    toolbarEmojiPicker.unmount();
   });
 
   it('should have an onSelection handler in the rendered picker', () => {
@@ -56,6 +69,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const picker = toolbarEmojiPicker.find(AkEmojiPicker);
     expect(picker.prop('onSelection')).to.not.equal(undefined);
+    toolbarEmojiPicker.unmount();
   });
 
   it('should insert an emoji into editor if the picker registers a selection', () => {
@@ -73,6 +87,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
         )
       )
     );
+    toolbarEmojiPicker.unmount();
   });
 
   it('should close the picker if an external node is clicked', () => {
@@ -82,6 +97,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).parent().simulate('click');
 
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
+    toolbarEmojiPicker.unmount();
   });
 
   describe('analytics', () => {
@@ -99,6 +115,7 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
       );
       toolbarOption.find(EmojiIcon).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.emoji.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 
@@ -107,5 +124,6 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
 
     expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
+    toolbarEmojiPicker.unmount();
   });
 });

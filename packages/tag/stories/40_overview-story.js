@@ -109,5 +109,36 @@ storiesOf(name, module)
         text="greyLight color"
         color="greyLight"
       />
+
+      <Component
+        text="red color"
+        color="red"
+        href="https://atlaskit.atlassian.com/"
+      />
+      <Component
+        text="yellow color"
+        color="yellow"
+        href="https://atlaskit.atlassian.com/"
+      />
+      <Component
+        text="grey color"
+        color="grey"
+        href="https://atlaskit.atlassian.com/"
+      />
+      <Component
+        text="greenLight color"
+        color="greenLight"
+        href="https://atlaskit.atlassian.com/"
+      />
+      <Component
+        text="tealLight color"
+        color="tealLight"
+        href="https://atlaskit.atlassian.com/"
+      />
+      <Component
+        text="blueLight color"
+        color="blueLight"
+        href="https://atlaskit.atlassian.com/"
+      />
     </div>
   ), { imports });

@@ -40,18 +40,21 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should be false if all present blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({ language: 'java' })('code>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
   });
 
@@ -69,6 +72,7 @@ describe('clear-formatting', () => {
 
         pluginState.clearFormatting(editorView);
         expect(pluginState.formattingIsPresent).to.equal(false);
+        editorView.destroy();
       });
     });
 
@@ -78,6 +82,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove panel block if present', () => {
@@ -86,6 +91,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove panel block even if selection is at the end of the block', () => {
@@ -94,6 +100,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove block-quote if present', () => {
@@ -102,6 +109,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove link if present', () => {
@@ -110,6 +118,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove ordered list item if present', () => {
@@ -118,6 +127,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove nested ordered list item if present', () => {
@@ -126,6 +136,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should remove nested ordered list item of type panel', () => {
@@ -134,6 +145,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.equal(true);
+      editorView.destroy();
     });
 
     it('should remove nested ordered list item even if selection is on partial list', () => {
@@ -142,6 +154,7 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
   });
 
@@ -160,6 +173,7 @@ describe('clear-formatting', () => {
 
       expect(pluginState.formattingIsPresent).to.equal(false);
       expect(trackEvent.calledWith('atlassian.editor.format.clear.keyboard')).to.equal(true);
+      editorView.destroy();
     });
   });
 });

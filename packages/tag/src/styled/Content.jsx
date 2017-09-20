@@ -1,14 +1,14 @@
 import styled, { css } from 'styled-components';
-import { gridSize, fontSize, link, linkHover } from '@atlaskit/theme';
+import { gridSize, fontSize, link, linkHover, math } from '@atlaskit/theme';
 import { buttonWidthUnitless, maxTextWidth, maxTextWidthUnitless } from './constants';
 
 // Common styles for Text & Link
 const COMMON_STYLES = css`
-  font-size: ${`${fontSize()}px`};
+  font-size: ${fontSize}px;
   font-weight: normal;
   line-height: 1;
-  margin-left: ${gridSize() / 2}px;
-  margin-right: ${gridSize() / 2}px;
+  margin-left: ${math.divide(gridSize, 2)}px;
+  margin-right: ${math.divide(gridSize, 2)}px;
   padding: 2px 0;
   max-width: ${({ isRemovable }) => (isRemovable
     ? `${maxTextWidthUnitless - buttonWidthUnitless}px`
@@ -24,13 +24,18 @@ export const Text = styled.span`
 
 // Styles exclusive to Link
 
-const getFocusedStyles = ({ isFocused }) => (isFocused ? `color: ${link}` : null);
+const getFocusedStyles = ({ isFocused, color, ...rest }) => {
+  if (color !== 'standard') return css`color: inherit`;
+  if (isFocused) return css`color: ${link(rest)}`;
+  return null;
+};
 export const Link = styled.a`
   ${COMMON_STYLES}
   ${getFocusedStyles}
-  text-decoration: none;
+  text-decoration: ${({ color }) => (color === 'standard' ? 'none' : 'underline')};
 
   &:hover {
     color: ${linkHover};
+    ${({ color }) => (color === 'standard' ? '' : css`color: inherit`)}
   }
 `;

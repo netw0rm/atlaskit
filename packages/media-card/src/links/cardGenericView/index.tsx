@@ -114,7 +114,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     if (isLoading || shouldNotDisplayThumbnail(thumbnailUrl, thumbnailError)) {
       if (isHorizontal) {
         if (isLoading) {
-          return <ThumbnailPlaceholder dimensions={{width: 68, height: 68}} />;
+          return <ThumbnailPlaceholder key="thumbnail" dimensions={{width: 68, height: 68}} />;
         }
 
         return null;
@@ -123,7 +123,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       const icon = thumbnailUrl ? <ImageIcon label="image" size="xlarge"/> : noImageIcon;
 
       return (
-        <ImagePlaceholderWrapper>
+        <ImagePlaceholderWrapper key="thumbnail">
           {icon}
         </ImagePlaceholderWrapper>
       );
@@ -191,8 +191,8 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     if (isLoading) {
       title = <TitlePlaceholder dimensions={{height: 16}} />;
       description = [
-        <DescriptionPlaceholder dimensions={{width: '80%', height: 12}} />,
-        <ElementPlaceholder dimensions={{width: '60%', height: 12}} />
+        <DescriptionPlaceholder key="descriptionRow1" dimensions={{width: '80%', height: 12}} />,
+        <ElementPlaceholder key="descriptionRow2" dimensions={{width: '60%', height: 12}} />
       ];
     } else {
       title = linkTitle ? (
@@ -201,7 +201,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
         </Title>
       ) : null;
       description = (
-        <Description>
+        <Description key="description">
           <Ellipsify text={linkDescription || ''} lines={2} endLength={0} />
         </Description>
       );

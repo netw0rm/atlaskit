@@ -16,6 +16,7 @@ import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
+import { EditorProps } from '../../editor/types/editor-props';
 
 import stateKey from './plugin-key';
 export { stateKey };
@@ -280,7 +281,7 @@ function isReplaceStep(step?: Step): step is ReplaceStep {
 const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
 
 function updateLinkOnChange(
-  transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>
+  transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>, isMessageEditor: boolean
 ): Transaction | undefined {
   if (!transactions) {
     return;
@@ -305,11 +306,13 @@ function updateLinkOnChange(
     let href;
     let end = $from.pos;
     const start = end - newNodeBefore.nodeSize;
+    let hasSameUrlAndTitle = false;
 
     if (
       oldNodeAfter && oldLinkMarkAfter &&
       oldLinkMarkBefore.attrs.href === normalizeUrl(`${oldNodeBefore.text}${oldNodeAfter.text}`)
     ) {
+      hasSameUrlAndTitle = true;
       if (newNodeAfter && newLinkMarkAfter) {
         // Middle of a link https://goo<|>gle.com/
         end += newNodeAfter.nodeSize;
@@ -319,6 +322,7 @@ function updateLinkOnChange(
         href = newNodeBefore.text;
       }
     } else if (oldLinkMarkBefore.attrs.href === normalizeUrl(oldNodeBefore.text || '')) {
+      hasSameUrlAndTitle = true;
       // End of a link https://google.com/<|>
       if (newNodeBefore.text !== oldNodeBefore.text) {
         href = newNodeBefore.text;
@@ -326,7 +330,7 @@ function updateLinkOnChange(
     }
 
     const match: Match | null = getLinkMatch(href);
-    if (match || /^[a-z]+:\/\//i.test(href)) {
+    if (match || (isMessageEditor && hasSameUrlAndTitle)) {
       const tr = newState.tr.removeMark(start, end, schema.marks.link);
       if (match) {
         const markType = schema.mark('link', { href: match.url });
@@ -337,7 +341,7 @@ function updateLinkOnChange(
   }
 }
 
-export const plugin = new Plugin({
+export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps = {}) => new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
       const pluginState = stateKey.getState(view.state);
@@ -406,12 +410,12 @@ export const plugin = new Plugin({
     };
   },
   appendTransaction: (transactions, oldState, newState) => {
-    return updateLinkOnChange(transactions, oldState, newState);
+    return updateLinkOnChange(transactions, oldState, newState, editorProps.appearance === 'message');
   },
 });
 
-const plugins = (schema: Schema<any, any>, props = {}) => {
-  return [plugin, inputRulePlugin(schema), keymapPlugin(schema, props)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, props: EditorProps = {}) => {
+  return [createPlugin(schema, props), inputRulePlugin(schema), keymapPlugin(schema, props)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -15,7 +15,7 @@ import { analyticsService } from '../../../../src/analytics';
 
 chai.use(chaiPlugin);
 
-describe('hyperink - keymaps', () => {
+describe('hyperlink - keymap', () => {
   const editor = (doc: any) => makeEditor<HyperlinkState>({
     doc,
     plugins: hyperlinkPlugins(defaultSchema),

@@ -34,7 +34,7 @@ export interface Attributes {
   __displayType?: DisplayType | null;
 }
 
-const defaultAttrs = {
+export const defaultAttrs = {
   id: { default: '' },
   type: { default: '' },
   collection: { default: null },
@@ -52,17 +52,21 @@ export const media: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="media"]',
     getAttrs: (dom: HTMLElement) => {
-      const { id, type, collection, occurrenceKey } = dom.dataset;
-      const attrs = { id, type, collection, occurrenceKey } as Attributes;
-      Object.keys(dom.dataset).forEach(key => {
-        if (defaultAttrs[`__${key}`]) {
-          attrs[`__${key}`] = dom.dataset[key];
+      const attrs = {} as Attributes;
+
+      Object.keys(defaultAttrs).forEach(k => {
+        const key = camelCaseToKebabCase(k).replace(/^__/,'');
+        const value = dom.getAttribute(`data-${key}`);
+        if (value) {
+          attrs[k] = value;
         }
       });
+
       // Need to do validation & type conversion manually
       if (attrs.__fileSize) {
         attrs.__fileSize = +attrs.__fileSize;
       }
+
       return attrs;
     }
   }],
@@ -88,7 +92,7 @@ export const media: NodeSpec = {
   }
 };
 
-const camelCaseToKebabCase = str => str.replace(/([^A-Z]+)([A-Z])/g, (_, x, y) => `${x}-${y.toLowerCase()}`);
+export const camelCaseToKebabCase = str => str.replace(/([^A-Z]+)([A-Z])/g, (_, x, y) => `${x}-${y.toLowerCase()}`);
 
 export const copyOptionalAttrs = (from: Object, to: Object, map?: (string) => string) => {
   Object.keys(media.attrs).forEach(key => {

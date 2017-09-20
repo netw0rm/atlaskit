@@ -10,6 +10,8 @@ export interface Definition {
   attrs: {
     href: string;
     title?: string;
+    collection?: string;
+    occurrenceKey?: string;
   };
 }
 

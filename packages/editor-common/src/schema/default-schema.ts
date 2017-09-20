@@ -22,6 +22,7 @@ export const defaultSchema: Schema = createSchema({
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
+    'inlineMacro',
     'hardBreak',
     'emoji',
     'table',

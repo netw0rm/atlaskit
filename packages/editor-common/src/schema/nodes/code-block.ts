@@ -13,7 +13,7 @@ export interface Definition {
     language?: 'abap' | 'actionscript' | 'ada' | 'arduino' | 'autoit' | 'c' | 'c++' | 'clojure'
     | 'coffeescript' | 'csharp' | 'css' | 'cuda' | 'd' | 'dart' | 'delphi' | 'elixir'
     | 'erlang' | 'fortran' | 'foxpro' | 'go' | 'groovy' | 'haskell' | 'haxe' | 'html'
-    | 'java' | 'javascript' | 'julia' | 'kotlin' | 'latex' | 'livescript' | 'lua'
+    | 'java' | 'javascript' | 'json' | 'julia' | 'kotlin' | 'latex' | 'livescript' | 'lua'
     | 'mathematica' | 'matlab' | 'objective-c' | 'objective-j' | 'objectpascal'
     | 'ocaml' | 'octave' | 'perl' | 'php' | 'powershell' | 'prolog' | 'puppet'
     | 'python' | 'qml' | 'r' | 'racket' | 'restructuredtext' | 'ruby' | 'rust'
@@ -24,7 +24,7 @@ export interface Definition {
 }
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
-  return dom.dataset['language'];
+  return dom.getAttribute('data-language') || undefined;
 };
 
 // example of BB style:

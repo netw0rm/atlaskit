@@ -15,6 +15,7 @@ export const confluenceSchema: Schema = createSchema({
     'mediaGroup',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
+    'inlineMacro',
     'listItem',
     'mention',
     'text',
@@ -34,6 +35,7 @@ export const confluenceSchema: Schema = createSchema({
     'subsup',
     'underline',
     'mentionQuery',
-    'code'
+    'code',
+    'textColor',
   ]
 });

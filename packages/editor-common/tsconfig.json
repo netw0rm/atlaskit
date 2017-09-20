@@ -11,8 +11,7 @@
     "types": [
       "jest",
       "react",
-      "enzyme",
-      "node"
+      "enzyme"
     ]
   }
 }

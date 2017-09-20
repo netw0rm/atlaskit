@@ -40,7 +40,6 @@ const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
-
 const getFreshMediaProvider = () => {
   return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
 };

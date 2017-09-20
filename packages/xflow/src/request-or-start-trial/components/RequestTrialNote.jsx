@@ -194,6 +194,7 @@ class RequestTrialNote extends Component {
                 this.noteText = noteText;
               }}
               placeholder={placeholder}
+              maxLength={300}
             />
           </div>
         </ModalDialog>

@@ -11,6 +11,8 @@ import {
 
 export const selected = 'selected';
 
+export const dark = 'dark';
+
 export const emojiTypeAhead = 'emoji-typeahead';
 
 export const typeAheadListContainer = 'typeahead-list-container';
@@ -22,6 +24,11 @@ export const typeAheadList = style({
   boxShadow: noDialogContainerBoxShadow,
   color: '#333',
   width: emojiTypeAheadWidth,
+});
+
+export const typeAheadListDark = style({
+  background: 'black',
+  border: `1px solid gray`,
 });
 
 export const typeAheadEmpty = style({
@@ -38,6 +45,9 @@ export const typeAheadItem = style({
   $nest: {
     [`&.${selected}`]: {
       backgroundColor: emojiPreviewSelectedColor,
+    },
+    [`&.${selected}.${dark}`]: {
+      backgroundColor: 'gray',
     },
   },
 });

@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import { CategoryDescription, OnCategory } from '../../types';
+import { CategoryDescription, OnCategory, ThemeType } from '../../types';
 import { customCategory, defaultCategories } from '../../constants';
 
 import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
@@ -23,6 +23,7 @@ export interface Props {
   activeCategoryId?: string;
   disableCategories?: boolean;
   onCategorySelected?: OnCategory;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -147,17 +148,21 @@ export default class CategorySelector extends PureComponent<Props, State> {
   }
 
   render() {
-    const { disableCategories } = this.props;
+    const { disableCategories, theme } = this.props;
     const { categories } = this.state;
     let categoriesSection;
     if (categories) {
+      const categoryClassName = {
+        [styles.category]: true,
+        [styles.categoryDark]: theme === 'dark',
+      };
       categoriesSection = (
         <ul>
           {categories.map((categoryId) => {
             const category = CategoryDescriptionMap[categoryId];
-            const categoryClasses = [styles.category];
+            const categoryClasses = {...categoryClassName};
             if (categoryId === this.props.activeCategoryId) {
-              categoryClasses.push(styles.active);
+              categoryClasses[styles.active] = true;
             }
 
             const onClick = (e) => {
@@ -168,7 +173,7 @@ export default class CategorySelector extends PureComponent<Props, State> {
               }
             };
             if (disableCategories) {
-              categoryClasses.push(styles.disable);
+              categoryClasses[styles.disable] = true;
             }
 
             // tslint:disable-next-line:variable-name
@@ -193,8 +198,12 @@ export default class CategorySelector extends PureComponent<Props, State> {
         </ul>
       );
     }
-    return (
-      <div className={classNames([styles.categorySelector])}>
+    const categorySelectorClassName = classNames({
+      [styles.categorySelector]: true,
+      [styles.categorySelectorDark]: theme === 'dark',
+    });
+  return (
+      <div className={categorySelectorClassName}>
         {categoriesSection}
       </div>
     );

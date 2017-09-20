@@ -11,7 +11,9 @@ export const ScrollableStyle = styled.div`
   padding: 4px 0;
   margin: 0;
 
-  background: white;
+  background: ${props => props.theme === 'dark' ? 'black' : 'white'};
+  color: ${props => props.theme === 'dark' ? 'white' : 'default'};
+
   maxHeight: ${scrollableMaxHeight};
 
   borderRadius: ${akBorderRadius};

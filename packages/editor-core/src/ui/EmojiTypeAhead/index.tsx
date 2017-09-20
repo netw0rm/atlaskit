@@ -5,6 +5,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import Popup from '../Popup';
 import { EmojiState } from '../../plugins/emojis';
 import { EditorView, PluginKey } from '../../prosemirror';
+import { pluginKey as themePluginKey } from '../../editor/plugins/theme';
 
 export interface Props {
   editorView?: EditorView;
@@ -74,7 +75,9 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   render() {
     const { anchorElement, query, queryActive } = this.state;
-    const { popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
+    const { editorView, popupsBoundariesElement, popupsMountPoint, emojiProvider } = this.props;
+    const themePluginState = editorView && themePluginKey.getState(editorView!.state);
+    const theme = themePluginState && themePluginState.theme;
 
     if (!this.pluginState || !anchorElement || !queryActive || !emojiProvider) {
       return null;
@@ -93,6 +96,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
           emojiProvider={emojiProvider}
           onSelection={this.handleSelectedEmoji}
           query={query}
+          theme={theme}
           ref={this.handleEmojiTypeAheadRef}
         />
       </Popup>

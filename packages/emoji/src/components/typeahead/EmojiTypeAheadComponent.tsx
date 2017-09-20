@@ -5,7 +5,7 @@ import { PureComponent } from 'react';
 import * as styles from './styles';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
-import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, SearchSort, SearchOptions, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiSearchResult, OnEmojiEvent, SearchSort, SearchOptions, ToneSelection, ThemeType } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
@@ -27,6 +27,7 @@ export interface EmojiTypeAheadBaseProps {
 
 export interface Props extends EmojiTypeAheadBaseProps {
   emojiProvider: EmojiProvider;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -199,7 +200,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
   }
 
   render() {
-    const { emojiProvider, onSelection } = this.props;
+    const { emojiProvider, onSelection, theme } = this.props;
     const recordUsageOnSelection = createRecordSelectionDefault(emojiProvider, onSelection);
 
     const { visible, emojis, loading } = this.state;
@@ -219,6 +220,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
           onEmojiSelected={recordUsageOnSelection}
           ref={this.onEmojiListRef}
           loading={loading}
+          theme={theme}
         />
       </div>
     );

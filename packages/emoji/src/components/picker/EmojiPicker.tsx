@@ -4,13 +4,14 @@ import * as styles from './styles';
 import LoadingEmojiComponent, { Props as LoadingProps, State as LoadingState } from '../common/LoadingEmojiComponent';
 import EmojiPickerComponent, { PickerRefHandler } from './EmojiPickerComponent';
 import { LoadingItem } from './EmojiPickerVirtualItems';
-import { OnEmojiEvent } from '../../types';
+import { OnEmojiEvent, ThemeType } from '../../types';
 import { EmojiProvider } from '../../api/EmojiResource';
 
 export interface Props extends LoadingProps {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
+  theme?: ThemeType;
 }
 
 export default class EmojiPicker extends LoadingEmojiComponent<Props,LoadingState> {

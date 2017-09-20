@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { MentionDescription, OnMentionEvent } from '../../types';
+import { MentionDescription, OnMentionEvent, ThemeType } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider, PresenceMap } from '../../api/PresenceResource';
 import MentionList from '../MentionList';
@@ -39,6 +39,7 @@ export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
   query?: string;
+  theme?: ThemeType;
   onSelection?: OnMentionEvent;
   resourceError?: Error;
 }
@@ -216,11 +217,13 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
   }
 
   render() {
+    const { theme } = this.props;
     const { mentions, resourceError } = this.state;
 
     return (
       <MentionList
         mentions={mentions}
+        theme={theme}
         resourceError={resourceError}
         onSelection={this.notifySelection}
         ref={this.handleMentionListRef}

@@ -34,6 +34,8 @@ export interface OnMentionEvent {
   (mention: MentionDescription, event?: SyntheticEvent<any>): void;
 }
 
+export type ThemeType = 'light' | 'dark' | undefined;
+
 export enum MentionType {
   SELF,
   RESTRICTED,

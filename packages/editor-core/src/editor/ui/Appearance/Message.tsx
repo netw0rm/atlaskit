@@ -8,7 +8,9 @@ import {
   EditorAppearanceComponentProps,
   EditorAppearance
 } from '../../types';
+import { EditorTheme } from '../../types/editor-props';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { pluginKey as themePluginKey } from '../../plugins/theme';
 import { AddonToolbar } from '../Addon';
 
 const pulseBackground = keyframes`
@@ -32,12 +34,17 @@ const pulseBackgroundReverse = keyframes`
 export interface MessageEditorProps {
   isMaxContentSizeReached?: boolean;
   maxHeight?: number;
+  theme?: EditorTheme;
 }
 
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
-  border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0' };
+  border: 1px solid ${
+    (props: MessageEditorProps) => props.theme === 'dark' ?
+    'gray' :
+    props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0'
+  };
   border-radius: 3px;
   height: auto;
   min-height: 30px;
@@ -46,6 +53,8 @@ const MessageEditor: any = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
   animation: ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? `.25s ease-in-out ${pulseBackground}` : 'none'};
+  ${(props: MessageEditorProps) => props.theme === 'dark' ? 'color: white;' : ''}
+  ${(props: MessageEditorProps) => props.theme === 'dark' ? 'background-color: black;' : ''}
 
   &.-flash {
     animation: .25s ease-in-out ${pulseBackgroundReverse};
@@ -105,14 +114,17 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
+    const themePluginState = editorView && themePluginKey.getState(editorView!.state);
+    const theme = themePluginState && themePluginState.theme;
 
     return (
       <MessageEditor
         className={this.flashToggle ? '-flash' : ''}
         isMaxContentSizeReached={maxContentSizeReached}
         maxHeight={maxHeight}
+        theme={theme}
       >
-        <ContentArea innerRef={this.handleRef}>
+        <ContentArea innerRef={this.handleRef} theme={theme}>
           {customContentComponents}
           <PluginSlot
             editorView={editorView}

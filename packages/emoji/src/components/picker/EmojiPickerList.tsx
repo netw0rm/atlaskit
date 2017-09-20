@@ -5,7 +5,7 @@ import * as uid from 'uid';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
 import { atlassianCategory, customCategory, defaultCategories, frequentCategory, MAX_ORDINAL } from '../../constants';
-import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent, ToneSelection, ThemeType } from '../../types';
 import { sizes } from './EmojiPickerSizes';
 import {
   CategoryHeadingItem,
@@ -38,6 +38,7 @@ export interface Props {
   onSearch?: OnSearch;
   loading?: boolean;
   query?: string;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -198,13 +199,14 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
   private buildCategory = (group: EmojiGroup, showUploadPrompt: boolean): VirtualItem<any>[] => {
-    const { onEmojiSelected, onOpenUpload } = this.props;
+    const { onEmojiSelected, onOpenUpload, theme } = this.props;
     const items: VirtualItem<any>[] = [];
 
     items.push(new CategoryHeadingItem({
       id: this.categoryId(group.category),
       title: group.title,
       className: categoryClassname,
+      theme,
     }));
 
     const showUploadButton = showUploadPrompt && group.emojis.length > 0;

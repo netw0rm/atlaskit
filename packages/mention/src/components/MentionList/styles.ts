@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ThemeType } from '../../types';
 
 import {
   mentionListWidth,
@@ -9,6 +10,7 @@ import {
 
 export interface MentionListStyleProps {
   empty?: boolean;
+  theme?: ThemeType;
 }
 
 // tslint:disable:next-line variable-name
@@ -19,7 +21,7 @@ export const MentionListStyle = styled.div`
   width: ${mentionListWidth};
   color: #333;
 
-  border: 1px solid ${noDialogContainerBorderColor};
+  border: 1px solid ${(props: MentionListStyleProps) => props.theme === 'dark' ? 'gray' : noDialogContainerBorderColor};
   border-radius: ${noDialogContainerBorderRadius};
   box-shadow: ${noDialogContainerBoxShadow};
 `;

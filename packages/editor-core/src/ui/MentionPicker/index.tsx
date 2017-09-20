@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { EditorView, PluginKey } from '../../prosemirror';
 import { MentionsState } from '../../plugins/mentions';
+import { pluginKey as themePluginKey } from '../../editor/plugins/theme';
 import Popup from '../Popup';
 
 export interface Props {
@@ -91,7 +92,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   render() {
     const { anchorElement, query, mentionProvider } = this.state;
-    const { popupsBoundariesElement, popupsMountPoint, presenceProvider } = this.props;
+    const { editorView, popupsBoundariesElement, popupsMountPoint, presenceProvider } = this.props;
+    const themePluginState = editorView && themePluginKey.getState(editorView!.state);
+    const theme = themePluginState && themePluginState.theme;
 
     if (!anchorElement || query === undefined || !mentionProvider) {
       return null;
@@ -111,6 +114,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
           presenceProvider={presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
+          theme={theme}
           ref={this.handleMentionPickerRef}
         />
       </Popup>

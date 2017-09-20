@@ -29,6 +29,8 @@ storiesOf(name, module)
           analyticsHandler={analyticsHandler}
           maxHeight={305}
 
+          theme="dark"
+
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           mediaProvider={mediaProvider}
@@ -117,6 +119,7 @@ storiesOf(name, module)
               emojiProvider={emojiProvider}
               mediaProvider={mediaProvider}
 
+              theme="dark"
               onChange={onChange}
               onSave={SAVE_ACTION}
 

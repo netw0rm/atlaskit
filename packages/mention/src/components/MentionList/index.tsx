@@ -6,7 +6,7 @@ import { MentionListStyle } from './styles';
 import MentionListError from '../MentionListError';
 import MentionItem from '../MentionItem';
 import Scrollable from '../Scrollable';
-import { MentionDescription, OnMentionEvent } from '../../types';
+import { MentionDescription, OnMentionEvent, ThemeType } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
 
@@ -41,6 +41,7 @@ export interface Props {
   mentions: MentionDescription[];
   resourceError?: Error;
   onSelection?: OnMentionEvent;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -176,7 +177,7 @@ export default class MentionList extends PureComponent<Props, State> {
   }
 
   private renderItems(): JSX.Element | null {
-    const { mentions } = this.props;
+    const { mentions, theme } = this.props;
 
     if (mentions && mentions.length) {
       this.items = {};
@@ -190,6 +191,7 @@ export default class MentionList extends PureComponent<Props, State> {
                 mention={mention}
                 selected={this.isSelectedMention(mention, idx)}
                 key={key}
+                theme={theme}
                 onMouseMove={this.selectIndexOnHover}
                 /* Cannot use onclick, as onblur will close the element, and prevent
                  * onClick from firing.
@@ -223,7 +225,7 @@ export default class MentionList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentions, resourceError } = this.props;
+    const { mentions, resourceError, theme } = this.props;
     const hasMentions = mentions && mentions.length;
 
     // If we get an error, but existing mentions are displayed, lets
@@ -236,14 +238,14 @@ export default class MentionList extends PureComponent<Props, State> {
       errorSection = (<MentionListError error={resourceError} />);
     } else if (hasMentions) {
       resultSection = (
-        <Scrollable ref={this.handleScrollableRef}>
+        <Scrollable ref={this.handleScrollableRef} theme={theme}>
           {this.renderItems()}
         </Scrollable>
       );
     }
 
     return (
-      <MentionListStyle empty={!hasMentions && !resourceError}>
+      <MentionListStyle empty={!hasMentions && !resourceError} theme={theme}>
         {errorSection}
         {resultSection}
       </MentionListStyle>

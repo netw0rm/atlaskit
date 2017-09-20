@@ -2,9 +2,12 @@ import * as React from 'react';
 import { PureComponent, ReactNode } from 'react';
 import { findDOMNode } from 'react-dom';
 import { ScrollableStyle } from './styles';
+import { ThemeType } from '../../types';
+
 
 export interface Props {
   children?: ReactNode | ReactNode[];
+  theme?: ThemeType;
 }
 
 export default class Scrollable extends PureComponent<Props, undefined> {
@@ -31,8 +34,9 @@ export default class Scrollable extends PureComponent<Props, undefined> {
   }
 
   render() {
+    const { theme } = this.props;
     return (
-      <ScrollableStyle innerRef={this.handleRef}>
+      <ScrollableStyle innerRef={this.handleRef} theme={theme}>
         {this.props.children}
       </ScrollableStyle>
     );

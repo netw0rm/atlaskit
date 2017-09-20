@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { RelativePosition } from '../../types';
+import { RelativePosition, ThemeType } from '../../types';
 import { EmojiProvider } from '../../api/EmojiResource';
 import LoadingEmojiComponent, { Props as LoadingProps, State as LoadingState } from '../common/LoadingEmojiComponent';
 import EmojiTypeAheadComponent, { EmojiTypeAheadBaseProps } from './EmojiTypeAheadComponent';
@@ -11,6 +11,7 @@ export const defaultListLimit = 50;
 
 export interface Props extends EmojiTypeAheadBaseProps, LoadingProps {
   /** CSS selector, or target HTML element */
+  theme?: ThemeType;
   target?: string | HTMLElement;
   position?: RelativePosition;
   zIndex?: number | string;

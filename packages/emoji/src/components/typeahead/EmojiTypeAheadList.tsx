@@ -7,7 +7,7 @@ import * as styles from './styles';
 import { emojiTypeAheadMaxHeight } from '../../shared-styles';
 import EmojiItem from './EmojiTypeAheadItem';
 import Scrollable from '../common/Scrollable';
-import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
+import { EmojiDescription, EmojiId, OnEmojiEvent, ThemeType } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
 import { toEmojiId } from '../../type-helpers';
@@ -37,6 +37,7 @@ export interface Props {
   emojis: EmojiDescription[];
   onEmojiSelected?: OnEmojiEvent;
   loading?: boolean;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -174,7 +175,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   private renderItems(emojis: EmojiDescription[]) {
     if (emojis && emojis.length) {
       this.items = {};
-
+      const { theme } = this.props;
       return (
         <div>
           {emojis.map((emoji, idx) => {
@@ -186,6 +187,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
                 selected={this.isSelectedEmoji(emoji, idx)}
                 onMouseMove={this.selectIndexOnHover}
                 onSelection={this.itemSelected}
+                theme={theme}
                 // tslint:disable-next-line:jsx-no-lambda
                 ref={(ref) => {
                   if (ref) {
@@ -210,13 +212,14 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojis, loading } = this.props;
+    const { emojis, loading, theme } = this.props;
 
     const hasEmoji = emojis && emojis.length;
 
     const classes = classNames({
       'ak-emoji-typeahead-list': true,
       [styles.typeAheadList]: true,
+      [styles.typeAheadListDark]: theme === 'dark',
       [styles.typeAheadEmpty]: !hasEmoji && !loading,
     });
 

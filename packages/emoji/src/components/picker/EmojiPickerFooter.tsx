@@ -5,7 +5,7 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 import EmojiPreview from '../common/EmojiPreview';
 import EmojiUploadPicker, { OnUploadEmoji } from '../common/EmojiUploadPicker';
-import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection, ThemeType } from '../../types';
 
 export interface Props {
   selectedEmoji?: EmojiDescription;
@@ -17,6 +17,7 @@ export interface Props {
   uploadErrorMessage?: string;
   onUploadCancelled: () => void;
   onUploadEmoji: OnUploadEmoji;
+  theme?: ThemeType;
 }
 
 export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
@@ -31,12 +32,14 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
       toneEmoji,
       uploadErrorMessage,
       uploading,
+      theme,
     } = this.props;
 
-    const previewFooterClassnames = classNames([
-      styles.emojiPickerFooter,
-      styles.emojiPickerFooterWithTopShadow,
-    ]);
+    const previewFooterClassnames = classNames({
+      [styles.emojiPickerFooter]: true,
+      [styles.emojiPickerFooterWithTopShadow]: true,
+      [styles.emojiPickerFooterWithTopShadowDark]: theme === 'dark',
+    });
 
     if (uploading) {
       return (
@@ -58,6 +61,7 @@ export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
           toneEmoji={toneEmoji}
           selectedTone={selectedTone}
           onToneSelected={onToneSelected}
+          theme={theme}
         />
       </div>
     );

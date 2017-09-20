@@ -110,7 +110,7 @@ const ContentStyles = styled.div`
 
   .ProseMirror blockquote {
     padding-left: ${akGridSizeUnitless * 2}px;
-    border-left: 2px solid ${akEditorBlockquoteBorderColor};
+    border-left: 2px solid ${(props) => props.theme === 'dark' ? 'white' : akEditorBlockquoteBorderColor};
     margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
     margin-right: 0;
 

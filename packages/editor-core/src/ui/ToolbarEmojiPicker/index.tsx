@@ -7,6 +7,7 @@ import { EditorView, PluginKey } from '../../prosemirror';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import ToolbarButton from '../ToolbarButton';
+import { pluginKey as themePluginKey } from '../../editor/plugins/theme';
 import Popup from '../Popup';
 
 export interface Props {
@@ -132,7 +133,9 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   private renderPopup() {
     const { disabled, isOpen, button } = this.state;
-    const { popupsMountPoint, popupsBoundariesElement, emojiProvider } = this.props;
+    const { editorView, popupsMountPoint, popupsBoundariesElement, emojiProvider } = this.props;
+    const themePluginState = editorView && themePluginKey.getState(editorView!.state);
+    const theme = themePluginState && themePluginState.theme;
     if (disabled || !isOpen || !button) {
       return null;
     }
@@ -150,6 +153,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
           emojiProvider={emojiProvider}
           onSelection={this.handleSelectedEmoji}
           onPickerRef={this.onPickerRef}
+          theme={theme}
         />
       </Popup>
     );

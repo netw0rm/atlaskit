@@ -5,7 +5,7 @@ import * as classNames from 'classnames';
 import * as styles from './styles';
 
 import { customCategory, frequentCategory } from '../../constants';
-import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection } from '../../types';
+import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection, ThemeType } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
 import { SearchSort } from '../../types';
 import { getToneEmoji } from '../../util/filters';
@@ -28,6 +28,7 @@ export interface Props {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -390,7 +391,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojiProvider, onSelection } = this.props;
+    const { emojiProvider, onSelection, theme } = this.props;
     const {
       activeCategory,
       disableCategories,
@@ -408,15 +409,19 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
 
     const recordUsageOnSelection = createRecordSelectionDefault(emojiProvider, onSelection);
 
-    const classes = [styles.emojiPicker];
+    const emojiPickerClassname = classNames({
+      [styles.emojiPicker]: true,
+      [styles.emojiPickerDark]: theme === 'dark',
+    });
 
     const picker = (
-      <div className={classNames(classes)} ref={this.handlePickerRef}>
+      <div className={emojiPickerClassname} ref={this.handlePickerRef}>
         <CategorySelector
           activeCategoryId={activeCategory}
           dynamicCategories={dynamicCategories}
           disableCategories={disableCategories}
           onCategorySelected={this.onCategorySelected}
+          theme={theme}
         />
         <EmojiPickerList
           emojis={filteredEmojis}
@@ -431,8 +436,10 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           showCustomCategory={uploadSupported}
           showUploadOption={uploadSupported && !uploading}
           ref="emojiPickerList"
+          theme={theme}
         />
         <EmojiPickerFooter
+          theme={theme}
           initialUploadName={query}
           selectedEmoji={selectedEmoji}
           selectedTone={selectedTone}

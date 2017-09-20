@@ -6,7 +6,7 @@ import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-
+import { ThemeType } from '../../types';
 import {
   AvatarStyle,
   FullNameStyle,
@@ -30,7 +30,7 @@ interface Part {
 }
 
 // tslint:disable:next-line variable-name
-function renderHighlight(ReactComponent: ReactComponentConstructor, value?: string, highlights?: HighlightDetail[], prefix?: string) {
+function renderHighlight(ReactComponent: ReactComponentConstructor, value?: string, highlights?: HighlightDetail[], prefix?: string, theme?: ThemeType) {
   if (!value) {
     return null;
   }
@@ -70,7 +70,7 @@ function renderHighlight(ReactComponent: ReactComponentConstructor, value?: stri
   }
 
   return (
-    <ReactComponent>
+    <ReactComponent theme={theme}>
       {prefixText}
       {parts.map((part, index) => {
         if (part.matches) {
@@ -101,6 +101,7 @@ function renderTime(time) {
 export interface Props {
   mention: MentionDescription;
   selected?: boolean;
+  theme?: ThemeType;
   onMouseMove?: OnMentionEvent;
   onSelection?: OnMentionEvent;
 }
@@ -121,7 +122,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const { mention, selected } = this.props;
+    const { mention, selected, theme } = this.props;
     const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
     const { status, time } = presence || {} as Presence;
     const restricted = isRestricted(accessLevel);
@@ -133,6 +134,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
     return (
       <MentionItemStyle
         selected={selected}
+        theme={theme}
         onMouseDown={this.onMentionSelected}
         onMouseMove={this.onMentionMenuItemMouseMove}
         data-mention-id={id}
@@ -143,8 +145,8 @@ export default class MentionItem extends PureComponent<Props, undefined> {
             <Avatar src={avatarUrl} size="medium" presence={status} borderColor={borderColor} />
           </AvatarStyle>
           <NameSectionStyle restricted={restricted}>
-            {renderHighlight(FullNameStyle, name, nameHighlights)}
-            {renderHighlight(NicknameStyle, nickname, nicknameHighlights, '@')}
+            {renderHighlight(FullNameStyle, name, nameHighlights, undefined, theme)}
+            {renderHighlight(NicknameStyle, nickname, nicknameHighlights, '@', theme)}
           </NameSectionStyle>
           <InfoSectionStyle restricted={restricted}>
             {renderLozenge(lozenge)}

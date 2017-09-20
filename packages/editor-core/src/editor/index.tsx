@@ -15,7 +15,8 @@ export interface State {
 
 export default class Editor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
-    appearance: 'message'
+    appearance: 'message',
+    theme: 'light'
   };
 
   static contextTypes = {

@@ -41,6 +41,12 @@ export const emojiPicker = style({
   marginBottom: '8px',
 });
 
+export const emojiPickerDark = style({
+  background: 'black',
+  border: '1px solid gray',
+  boxShadow: '0 3px 6px rgba(255, 255, 255, 0.2)',
+});
+
 // Level 2
 
 /// Category Selector
@@ -79,6 +85,10 @@ export const categorySelector = style({
       verticalAlign: 'middle',
     },
   },
+});
+
+export const categorySelectorDark = style({
+  backgroundColor: 'gray',
 });
 
 export const category = style({
@@ -126,6 +136,10 @@ export const category = style({
       outline: '0',
     },
   },
+});
+
+export const categoryDark = style({
+  color: 'white',
 });
 
 /// EmojiPickerList
@@ -223,6 +237,10 @@ export const emojiCategoryTitle = style({
   }
 });
 
+export const emojiCategoryTitleDark = style({
+  color: 'white',
+});
+
 export const emojiItem = style({
   display: 'inline-block',
   textAlign: 'center',
@@ -290,4 +308,9 @@ export const emojiPickerFooter = style({
 export const emojiPickerFooterWithTopShadow = style({
   borderTop: `2px solid ${akColorN30A}`,
   boxShadow: emojiFooterBoxShadow,
+});
+
+export const emojiPickerFooterWithTopShadowDark = style({
+  borderTop: `2px solid white`,
+  boxShadow: '0px -1px 1px 0px rgba(255, 255, 255, 0.75)',
 });

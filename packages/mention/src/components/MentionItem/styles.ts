@@ -5,9 +5,11 @@ import {
   akColorN500,
   akColorN900
 } from '@atlaskit/util-shared-styles';
+import { ThemeType } from '../../types';
 
 export interface MentionItemStyleProps {
   selected?: boolean;
+  theme?: ThemeType;
 }
 
 export interface AvatarSectionStyleProps {
@@ -55,12 +57,12 @@ export const FullNameStyle = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${akColorN900};
+  color: ${props => props.theme === 'dark' ? 'white' : akColorN900};
 `;
 
 // tslint:disable:next-line variable-name
 export const NicknameStyle = styled.span`
-  color: ${akColorN100};
+  color: ${props => props.theme === 'dark' ? 'white' : akColorN100};
   font-size: 12px;
 
   margin-top: 2px;
@@ -96,7 +98,11 @@ export const TimeStyle = styled.div`
 
 // tslint:disable:next-line variable-name
 export const MentionItemStyle = styled.div`
-  background-color: ${(props: MentionItemStyleProps) => props.selected ? akColorN30 : 'transparent'};
+  background-color: ${
+    (props: MentionItemStyleProps) =>
+    props.selected ? props.theme === 'dark' ? 'gray' : akColorN30 :
+    'transparent'
+  };
   display: block;
   overflow: hidden;
   list-style-type: none;

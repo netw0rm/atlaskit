@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import { EmojiDescription, OnEmojiEvent } from '../../types';
+import { EmojiDescription, OnEmojiEvent, ThemeType } from '../../types';
 import { toEmojiId } from '../../type-helpers';
 import EmojiPreview from '../common/EmojiPreview';
 import { leftClick } from '../../util/mouse';
@@ -13,6 +13,7 @@ export interface Props {
   onSelection: OnEmojiEvent;
   selected: boolean;
   emoji: EmojiDescription;
+  theme?: ThemeType;
 }
 
 export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> {
@@ -34,10 +35,11 @@ export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> 
   }
 
   render() {
-    const { selected, emoji } = this.props;
+    const { selected, emoji, theme } = this.props;
     const classes = classNames({
       'ak-emoji-typeahead-item': true,
       [styles.typeAheadItem]: true,
+      [styles.dark]: theme === 'dark',
       [styles.selected]: selected,
     });
 
@@ -51,6 +53,7 @@ export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> 
         <div className={styles.typeAheadItemRow}>
           <EmojiPreview
             emoji={emoji}
+            theme={theme}
           />
         </div>
       </div>

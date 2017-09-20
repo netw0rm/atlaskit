@@ -8,6 +8,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
+export type EditorTheme = 'light' | 'dark';
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
@@ -48,6 +49,7 @@ export interface EditorProps {
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 
+  theme?: EditorTheme;
   maxHeight?: number;
   maxContentSize?: number;
   placeholder?: string;

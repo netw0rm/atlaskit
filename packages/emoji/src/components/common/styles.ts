@@ -106,6 +106,8 @@ export const previewImg = 'preview-image';
 export const previewText = 'preview-text';
 export const name = 'name';
 export const shortName = 'shortname';
+export const nameDark = 'name-dark';
+export const shortNameDark = 'shortname-dark';
 export const previewSingleLine = 'preview-single-line';
 export const toneSelectorContainer = 'tone-selector-container';
 export const withToneSelector = 'with-tone-selector';
@@ -182,6 +184,10 @@ export const emojiPreview = style({
               },
             },
 
+            [`.${nameDark}`]: {
+              color: 'white',
+            },
+
             [`.${shortName}`]: {
               display: 'block',
               color: akColorN200,
@@ -192,6 +198,10 @@ export const emojiPreview = style({
               paddingBottom: '2px',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+            },
+
+            [`.${shortNameDark}`]: {
+              color: 'white',
             },
           },
         },
@@ -235,7 +245,6 @@ export const emojiPreview = style({
 // Scrollable
 
 export const emojiScrollable = style({
-  border: '1px solid #fff',
   borderRadius: akBorderRadius,
   display: 'block',
   margin: '0',

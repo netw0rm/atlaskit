@@ -7,6 +7,7 @@ import {
 } from '../../prosemirror';
 
 import { DecisionItem } from '@atlaskit/task-decision';
+import { pluginKey as themePluginKey } from '../../editor/plugins/theme';
 
 type getPosHandler = () => number;
 
@@ -20,9 +21,11 @@ class Decision implements NodeView {
   private domRef: HTMLElement | undefined;
   private contentDOMRef: HTMLElement | undefined;
   private showPlaceholder: boolean = false;
+  private view?: EditorView;
 
   constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
     this.showPlaceholder = node.content.childCount === 0;
+    this.view = view;
     this.renderReactComponent();
   }
 
@@ -33,10 +36,12 @@ class Decision implements NodeView {
   private renderReactComponent() {
     this.domRef = document.createElement('li');
     this.domRef.style['list-style-type'] = 'none';
+    const themePluginState = this.view && themePluginKey.getState(this.view!.state);
+    const theme = themePluginState && themePluginState.theme;
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
-      <DecisionItem contentRef={this.handleRef} showPlaceholder={this.showPlaceholder} />,
+      <DecisionItem contentRef={this.handleRef} showPlaceholder={this.showPlaceholder} theme={theme} />,
       this.domRef
     );
   }

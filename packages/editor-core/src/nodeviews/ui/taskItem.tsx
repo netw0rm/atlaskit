@@ -7,6 +7,7 @@ import {
 } from '../../prosemirror';
 
 import { TaskItem } from '@atlaskit/task-decision';
+import { pluginKey as themePluginKey } from '../../editor/plugins/theme';
 
 type getPosHandler = () => number;
 
@@ -59,11 +60,14 @@ class Task implements NodeView {
 
     const node = this.node;
     const { localId } = node.attrs;
+    const themePluginState = this.view && themePluginKey.getState(this.view!.state);
+    const theme = themePluginState && themePluginState.theme;
 
     // tslint:disable-next-line:variable-name
     ReactDOM.render(
       <TaskItem
         taskId={localId}
+        theme={theme}
         contentRef={this.handleRef}
         isDone={node.attrs.state === 'DONE'}
         onChange={this.handleOnChange}

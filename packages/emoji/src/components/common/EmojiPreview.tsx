@@ -6,13 +6,14 @@ import * as styles from './styles';
 import EmojiButton from '../../components/common/EmojiButton';
 import CachingEmoji from '../../components/common/CachingEmoji';
 import ToneSelector from './ToneSelector';
-import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected, ToneSelection, ThemeType } from '../../types';
 
 export interface Props {
   emoji?: EmojiDescription;
   toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: ToneSelection;
   onToneSelected?: OnToneSelected;
+  theme?: ThemeType;
 }
 
 export interface State {
@@ -82,7 +83,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderEmojiPreview() {
-    const emoji = this.props.emoji;
+    const { emoji, theme } = this.props;
 
     if (!emoji || this.state.selectingTone) {
       return null;
@@ -98,14 +99,24 @@ export default class EmojiPreview extends PureComponent<Props, State> {
       [styles.previewSingleLine]: !emoji.name,
     });
 
+    const nameClasses = classNames({
+      [styles.name]: true,
+      [styles.nameDark]: theme === 'dark',
+    });
+
+    const shortNameClasses = classNames({
+      [styles.shortName]: true,
+      [styles.shortNameDark]: theme === 'dark',
+    });
+
     return (
       <div className={previewClasses}>
         <span className={styles.previewImg}>
           <CachingEmoji emoji={emoji} />
         </span>
         <div className={previewTextClasses}>
-          <span className={styles.name}>{emoji.name}</span>
-          <span className={styles.shortName}>{emoji.shortName}</span>
+          <span className={nameClasses}>{emoji.name}</span>
+          <span className={shortNameClasses}>{emoji.shortName}</span>
         </div>
       </div>
     );

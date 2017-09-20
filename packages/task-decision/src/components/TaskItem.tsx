@@ -24,6 +24,7 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  theme?: 'light' | 'dark';
 }
 
 let taskCount = 0;

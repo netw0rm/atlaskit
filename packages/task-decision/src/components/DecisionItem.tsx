@@ -23,6 +23,7 @@ export interface Props {
   contentRef?: ContentRef;
   showPlaceholder?: boolean;
   appearance?: Appearance;
+  theme?: 'light' | 'dark';
   participants?: User[];
   showParticipants?: boolean;
   creator?: User;

@@ -19,6 +19,7 @@ import {
   textColorPlugin,
   insertBlockPlugin,
   tablesPlugin,
+  themePlugin,
   collabEditPlugin,
   helpDialogPlugin,
   jiraIssuePlugin,
@@ -113,6 +114,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   // UI only plugins
   plugins.push(insertBlockPlugin);
+  plugins.push(themePlugin);
 
   return plugins;
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
-import { OnMentionEvent } from '../../types';
+import { OnMentionEvent, ThemeType } from '../../types';
 import { MentionProvider } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
@@ -29,6 +29,7 @@ export interface Props {
   onOpen?: OnOpen;
   onClose?: OnClose;
 
+  theme?: ThemeType;
   target?: string;
   position?: Position;
   zIndex?: number | string;
@@ -199,7 +200,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private handleMentionListRef = (ref) => { this.mentionListRef = ref; };
 
   render() {
-    const { resourceProvider, presenceProvider, onSelection, query,
+    const { theme, resourceProvider, presenceProvider, onSelection, query,
       target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible, info } = this.state;
 
@@ -209,6 +210,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         presenceProvider={presenceProvider}
         onSelection={onSelection}
         query={query}
+        theme={theme}
         ref={this.handleMentionListRef}
       />
     );

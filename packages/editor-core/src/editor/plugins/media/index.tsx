@@ -33,7 +33,7 @@ const mediaPlugin: EditorPlugin = {
     ];
   },
 
-  secondaryToolbarComponent(editorView, providerFactory) {
+  secondaryToolbarComponent(editorView, eventDispatcher) {
     return <ToolbarMedia editorView={editorView} pluginKey={pluginKey} />;
   }
 };

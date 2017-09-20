@@ -64,6 +64,8 @@ export interface MediaApiRepresentation extends EmojiImageRepresentation {
 
 export type EmojiRepresentation = SpriteRepresentation | ImageRepresentation | MediaApiRepresentation | undefined;
 
+export type ThemeType = 'light' | 'dark' | undefined;
+
 export interface EmojiDescription extends EmojiId {
   name?: string;
   order?: number;

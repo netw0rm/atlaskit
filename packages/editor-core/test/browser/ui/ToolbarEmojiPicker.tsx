@@ -12,6 +12,7 @@ import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
 import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 import pluginKey from '../../../src/plugins/emojis/plugin-key';
+import Popup from '../../../src/ui/Popup';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -26,6 +27,14 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
+  });
+
+  it('should have Popup component defined in it', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    const popup = toolbarEmojiPicker.find(Popup);
+    expect(popup.length > 0).to.equal(true);
   });
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {

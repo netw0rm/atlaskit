@@ -5,9 +5,9 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
 import { EditorView, PluginKey } from '../../prosemirror';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth } from '@atlaskit/emoji';
-import Layer from '@atlaskit/layer';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import ToolbarButton from '../ToolbarButton';
+import Popup from '../Popup';
 
 export interface Props {
   editorView: EditorView;
@@ -19,6 +19,8 @@ export interface Props {
    * TODO: Implement a better solution as part of ED-2565
    */
   numFollowingButtons: number;
+  popupsMountPoint?: HTMLElement | undefined;
+  popupsBoundariesElement?: HTMLElement | undefined;
 }
 
 export interface State {
@@ -129,24 +131,32 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
   }
 
   private renderPopup() {
-    const { disabled, isOpen } = this.state;
-    if (disabled || !isOpen) {
+    const { disabled, isOpen, button } = this.state;
+    const { popupsMountPoint, popupsBoundariesElement, emojiProvider } = this.props;
+    if (disabled || !isOpen || !button) {
       return null;
     }
 
     return (
-      <div>
+      <Popup
+        target={button}
+        fitHeight={350}
+        fitWidth={350}
+        offset={[0, 3]}
+        mountTo={popupsMountPoint}
+        boundariesElement={popupsBoundariesElement}
+      >
         <AkEmojiPicker
-          emojiProvider={this.props.emojiProvider}
+          emojiProvider={emojiProvider}
           onSelection={this.handleSelectedEmoji}
           onPickerRef={this.onPickerRef}
         />
-      </div>
+      </Popup>
     );
   }
 
   render() {
-    const { isOpen, disabled, button }  = this.state;
+    const { isOpen, disabled }  = this.state;
     const toolbarButton = (
       <ToolbarButton
         selected={isOpen}
@@ -158,39 +168,12 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       />
     );
 
-    if (!button) {
-      return toolbarButton;
-    }
-
     return (
       <div>
-        {this.renderTrigger(this.renderPopup(), toolbarButton)}
+        {toolbarButton}
+        {this.renderPopup()}
       </div>
     );
-  }
-
-  private renderTrigger(content, trigger) {
-    const { button } = this.state;
-
-    // Check already occurs in render() but needed for typescript
-    if (!button) {
-      return null;
-    }
-
-    const offset = `${this.getOffsetX(button.getBoundingClientRect())} 0`;
-    return (
-      <Layer
-        content={content}
-        position="top left"
-        offset={offset}
-      >
-        {trigger}
-      </Layer>
-    );
-  }
-
-  private getOffsetX = (buttonRect: ClientRect): number => {
-    return -(emojiPickerWidth - this.props.numFollowingButtons * buttonRect.width);
   }
 
   @analytics('atlassian.editor.emoji.button')

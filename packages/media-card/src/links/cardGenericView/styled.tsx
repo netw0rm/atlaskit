@@ -208,7 +208,7 @@ export const DescriptionPlaceholder = styled(ElementPlaceholder)`
 export const Details = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 14px 16px 16px 16px;
+  padding: 12px 8px 0 16px;
   height: 100%;
 
   ${withAppearance({

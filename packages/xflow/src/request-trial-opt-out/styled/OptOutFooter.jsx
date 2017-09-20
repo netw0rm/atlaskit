@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
+import { gridSize } from '@atlaskit/theme';
+
 const OptOutFooter = styled.div`
-  margin-bottom: 8px;
-  margin-right: 8px;
+  margin-bottom: ${gridSize}px;
+  margin-right: ${gridSize}px;
   text-align: right;
 `;
 

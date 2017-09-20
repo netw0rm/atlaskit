@@ -23,6 +23,7 @@ describe('inputrules', () => {
         insertText(editorView, '```', sel);
 
         expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('```hello')))));
+        editorView.destroy();
       });
     });
 
@@ -34,6 +35,7 @@ describe('inputrules', () => {
           insertText(editorView, '```', sel);
 
           expect(editorView.state.doc).to.deep.equal(doc(p('```')));
+          editorView.destroy();
         });
       });
 

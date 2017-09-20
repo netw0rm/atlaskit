@@ -22,6 +22,10 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     editorView = editor.editorView;
   });
 
+  afterEach(() => {
+    editorView.destroy();
+  });
+
   it('should not be null if isVisible is true', () => {
     const helpDialog = mount(<HelpDialog editorView={editorView} isVisible={true} />);
     expect(helpDialog).to.not.equal(null);

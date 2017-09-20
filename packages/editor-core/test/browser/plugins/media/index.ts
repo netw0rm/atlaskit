@@ -410,6 +410,7 @@ describe('Media plugin', () => {
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
           )
         ));
+        editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -423,6 +424,7 @@ describe('Media plugin', () => {
         pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc(p()));
+        editorView.destroy(); pluginState.destroy();
       });
 
       it('returns true', () => {
@@ -431,6 +433,7 @@ describe('Media plugin', () => {
         setNodeSelection(editorView, 1);
 
         expect(pluginState.removeSelectedMediaNode()).to.equal(true);
+        editorView.destroy(); pluginState.destroy();
       });
     });
 
@@ -443,6 +446,7 @@ describe('Media plugin', () => {
         pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc(hr, mediaGroup(deletingMediaNode)));
+        editorView.destroy(); pluginState.destroy();
       });
 
       it('returns false', () => {
@@ -451,6 +455,7 @@ describe('Media plugin', () => {
         setNodeSelection(editorView, 1);
 
         expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+        editorView.destroy(); pluginState.destroy();
       });
     });
 
@@ -462,6 +467,7 @@ describe('Media plugin', () => {
         pluginState.removeSelectedMediaNode();
 
         expect(editorView.state.doc).to.deep.equal(doc('hello', mediaGroup(deletingMediaNode)));
+        editorView.destroy(); pluginState.destroy();
       });
 
       it('returns false', () => {
@@ -469,6 +475,7 @@ describe('Media plugin', () => {
         const { pluginState } = editor(doc('hello{<>}', mediaGroup(deletingMediaNode)));
 
         expect(pluginState.removeSelectedMediaNode()).to.equal(false);
+        pluginState.destroy();
       });
     });
   });
@@ -491,6 +498,7 @@ describe('Media plugin', () => {
         p(),
       ),
     );
+    editorView.destroy(); pluginState.destroy();
   });
 
   it(`should copy optional attributes from MediaState to Node attrs`, () => {
@@ -535,6 +543,7 @@ describe('Media plugin', () => {
         const linksRanges = pluginState.detectLinkRangesInSteps(tr, state);
 
         expect(linksRanges).to.deep.equal([]);
+        editorView.destroy(); pluginState.destroy();
       });
 
       it('resets ignore links flag to false', () => {
@@ -547,6 +556,7 @@ describe('Media plugin', () => {
         pluginState.detectLinkRangesInSteps(tr, state);
 
         expect(pluginState.ignoreLinks).to.equal(false);
+        editorView.destroy(); pluginState.destroy();
       });
     });
 
@@ -565,6 +575,7 @@ describe('Media plugin', () => {
           { href: 'www.google.com', pos: 1 },
           { href: 'www.baidu.com', pos: 'google'.length + 1 },
         ]);
+        editorView.destroy(); pluginState.destroy();
       });
     });
   });
@@ -597,6 +608,7 @@ describe('Media plugin', () => {
         mediaGroup(media({ id: `${linkIds![0]}`, type: 'link', collection: testCollectionName })),
         p(),
       ));
+      editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -618,6 +630,7 @@ describe('Media plugin', () => {
           media({ id: 'media1', type: 'file', collection: testCollectionName }),
         )
       ));
+      editorView.destroy(); pluginState.destroy();
     });
 
     context('when insert text in the middle of media group', () => {
@@ -639,6 +652,7 @@ describe('Media plugin', () => {
             media({ id: 'media2', type: 'file', collection: testCollectionName }),
           )
         ));
+        editorView.destroy(); pluginState.destroy();
       });
     });
   });
@@ -647,11 +661,13 @@ describe('Media plugin', () => {
     it('should set to true when at the beginning of a link', () => {
       const { pluginState } = editor(doc(p(a({ href: 'www.google.com' })('{<>}www.google.com'))));
       expect(pluginState.ignoreLinks).to.equal(true);
+      pluginState.destroy();
     });
 
     it('should set to true when at the end of a link', () => {
       const { pluginState } = editor(doc(p(a({ href: 'www.google.com' })('www.google.com{<>}'))));
       expect(pluginState.ignoreLinks).to.equal(true);
+      pluginState.destroy();
     });
 
     it('should switch from true to false when insert space after a link', () => {
@@ -659,6 +675,7 @@ describe('Media plugin', () => {
       expect(pluginState.ignoreLinks).to.equal(true);
       insertText(editorView, ' ', sel);
       expect(pluginState.ignoreLinks).to.equal(false);
+      editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -683,6 +700,7 @@ describe('Media plugin', () => {
             ),
             p('hello')
           ));
+          editorView.destroy(); pluginState.destroy();
         });
       });
 
@@ -703,6 +721,7 @@ describe('Media plugin', () => {
             ),
             p('hello')
           ));
+          editorView.destroy(); pluginState.destroy();
         });
       });
     });

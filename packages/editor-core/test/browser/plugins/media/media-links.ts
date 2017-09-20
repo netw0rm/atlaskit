@@ -77,6 +77,7 @@ describe('media-links', () => {
           { href: href1, pos: 0 },
           { href: href2, pos: title1.length },
         ]);
+        editorView.destroy();
       });
 
       it('detects links inside nested content', () => {
@@ -99,6 +100,7 @@ describe('media-links', () => {
           { href: href1, pos: 2 },
           { href: href2, pos: 2 + title1.length },
         ]);
+        editorView.destroy();
       });
 
       context('when included link has no href', () => {
@@ -120,6 +122,7 @@ describe('media-links', () => {
           expect(linksRanges).to.deep.equal([
             { href: href2, pos: title1.length },
           ]);
+          editorView.destroy();
         });
       });
     });
@@ -138,6 +141,7 @@ describe('media-links', () => {
         expect(linksRanges).to.deep.equal([
           { href, pos: 1 },
         ]);
+        editorView.destroy();
       });
 
       context('when included link has no href', () => {
@@ -151,6 +155,7 @@ describe('media-links', () => {
           const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
           expect(linksRanges).to.deep.equal([]);
+          editorView.destroy();
         });
       });
     });
@@ -181,6 +186,7 @@ describe('media-links', () => {
           { href: href2, pos: title1.length },
           { href: href3, pos: 1 },
         ]);
+        editorView.destroy();
       });
     });
 
@@ -197,6 +203,7 @@ describe('media-links', () => {
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
         expect(linksRanges).to.deep.equal([]);
+        editorView.destroy();
       });
     });
 
@@ -214,6 +221,7 @@ describe('media-links', () => {
         const linksRanges = detectLinkRangesInSteps(tr, editorView.state.schema.marks.link, 0);
 
         expect(linksRanges).to.deep.equal([]);
+        editorView.destroy();
       });
     });
   });
@@ -236,6 +244,7 @@ describe('media-links', () => {
 
         sinon.assert.notCalled(handle);
         expect(editorView.state.doc).to.deep.equal(doc(p(`${text} `)));
+        editorView.destroy();
       });
     });
 
@@ -263,6 +272,7 @@ describe('media-links', () => {
             mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
             p(),
           ));
+          editorView.destroy();
         });
 
         context('latest pos in range is out of doc range', () => {
@@ -288,6 +298,7 @@ describe('media-links', () => {
               mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
               p(),
             ));
+            editorView.destroy();
           });
         });
 
@@ -316,6 +327,7 @@ describe('media-links', () => {
               mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
               p('hello'),
             ));
+            editorView.destroy();
           });
         });
 
@@ -338,6 +350,7 @@ describe('media-links', () => {
           );
 
           sinon.assert.alwaysCalledWithExactly(spy, 'atlassian.editor.media.link');
+          editorView.destroy();
         });
       });
 
@@ -370,6 +383,7 @@ describe('media-links', () => {
               media({ id, type: 'link', collection: testCollectionName }),
             )
           ));
+          editorView.destroy();
         });
 
         context('latest pos in range is out of doc range', () => {
@@ -401,6 +415,7 @@ describe('media-links', () => {
                 media({ id, type: 'link', collection: testCollectionName }),
               )
             ));
+            editorView.destroy();
           });
         });
       });
@@ -455,6 +470,7 @@ describe('media-links', () => {
           ),
           p('hello'),
         ));
+        editorView.destroy();
       });
     });
 
@@ -485,6 +501,7 @@ describe('media-links', () => {
         mediaGroup(media({ id, type: 'link', collection: testCollectionName })),
         p(),
       ));
+      editorView.destroy();
     });
   });
 
@@ -505,6 +522,7 @@ describe('media-links', () => {
 
       sinon.assert.notCalled(handle);
       expect(editorView.state.doc).to.deep.equal(itemDoc);
+      editorView.destroy();
     });
 
     it('link insertion ignored for decision item', async () => {
@@ -523,6 +541,7 @@ describe('media-links', () => {
 
       sinon.assert.notCalled(handle);
       expect(editorView.state.doc).to.deep.equal(decisionDoc);
+      editorView.destroy();
     });
   });
 });

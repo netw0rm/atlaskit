@@ -40,7 +40,7 @@ describe(name, () => {
 
         sinon.assert.calledOnce(pluginState.binaryPicker!.upload as any);
         expect((pluginState.binaryPicker!.upload as any).calledOnce).to.equal(true);
-        collectionFromProvider.restore(); pluginState.destroy();
+        collectionFromProvider.restore(); pluginState.destroy(); editorView.destroy();
       });
     });
   });

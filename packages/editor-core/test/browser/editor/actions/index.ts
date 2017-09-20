@@ -19,6 +19,10 @@ describe(name, () => {
       editorView = editor.editorView;
     });
 
+    afterEach(() => {
+      editorView.destroy();
+    });
+
     describe('#focus', () => {
       it('should set focus to an editor', () => {
         expect(editorActions.focus()).to.equal(true);

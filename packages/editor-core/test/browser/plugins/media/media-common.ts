@@ -67,6 +67,7 @@ describe('media-common', () => {
                 media({ id: 'media1', type: 'file', collection: testCollectionName }),
               ),
             ));
+            editorView.destroy();
         });
 
         it('is not able to undo', () => {
@@ -92,6 +93,7 @@ describe('media-common', () => {
               media({ id: 'media1', type: 'file', collection: testCollectionName }),
             ),
           ));
+          editorView.destroy();
         });
       });
 
@@ -121,6 +123,7 @@ describe('media-common', () => {
                 media({ id: 'media1', type: 'file', collection: testCollectionName }),
               )
             ));
+            editorView.destroy();
         });
 
         it('is able to undo', () => {
@@ -147,6 +150,7 @@ describe('media-common', () => {
               deletingMediaNode,
             ),
           ));
+          editorView.destroy();
         });
       });
 
@@ -169,6 +173,7 @@ describe('media-common', () => {
             removeMediaNode(editorView, deletingMediaNode, () => positionOfDeletingNode);
 
             expect(editorView.state.selection.from).to.equal(sel);
+            editorView.destroy();
           });
         });
 
@@ -190,6 +195,7 @@ describe('media-common', () => {
 
             const selectedNode = (editorView.state.selection as NodeSelection).node;
             expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
+            editorView.destroy();
           });
         });
       });
@@ -212,6 +218,7 @@ describe('media-common', () => {
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
           expect(selectedNode && selectedNode.attrs.id).to.equal('media1');
+          editorView.destroy();
         });
       });
 
@@ -234,6 +241,7 @@ describe('media-common', () => {
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
           expect(selectedNode && selectedNode.attrs.id).to.equal('media3');
+          editorView.destroy();
         });
 
         it('removes the node', () => {
@@ -256,6 +264,7 @@ describe('media-common', () => {
               media({ id: 'media3', type: 'file', collection: testCollectionName }),
             )
           ));
+          editorView.destroy();
         });
       });
 
@@ -277,6 +286,7 @@ describe('media-common', () => {
           const selectedNode = (editorView.state.selection as NodeSelection).node;
 
           expect(selectedNode && selectedNode.attrs.id).to.equal('media2');
+          editorView.destroy();
         });
       });
 
@@ -299,6 +309,7 @@ describe('media-common', () => {
 
             expect(editorView.state.selection instanceof TextSelection).to.equal(true);
             expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);
+            editorView.destroy();
           });
         });
 
@@ -319,6 +330,7 @@ describe('media-common', () => {
 
             expect(editorView.state.selection instanceof TextSelection).to.equal(true);
             expect(editorView.state.selection.from).to.equal(positionOfDeletingNode);
+            editorView.destroy();
           });
         });
       });
@@ -340,6 +352,7 @@ describe('media-common', () => {
         const result = splitMediaGroup(editorView);
 
         expect(result).to.equal(true);
+        editorView.destroy();
       });
 
       context('when media node is the first one in media group', () => {
@@ -367,6 +380,7 @@ describe('media-common', () => {
               p('text'),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -397,6 +411,7 @@ describe('media-common', () => {
               p('text'),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -433,6 +448,7 @@ describe('media-common', () => {
               p('text'),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -454,6 +470,7 @@ describe('media-common', () => {
               p('text'),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -472,6 +489,7 @@ describe('media-common', () => {
         const result = splitMediaGroup(editorView);
 
         expect(result).to.equal(false);
+        editorView.destroy();
       });
 
       it('does nothing', () => {
@@ -494,6 +512,7 @@ describe('media-common', () => {
             p('text'),
           )
         );
+        editorView.destroy();
       });
     });
 
@@ -512,6 +531,7 @@ describe('media-common', () => {
         const result = splitMediaGroup(editorView);
 
         expect(result).to.equal(false);
+        editorView.destroy();
       });
 
       it('does nothing', () => {
@@ -540,6 +560,7 @@ describe('media-common', () => {
             p('text'),
           )
         );
+        editorView.destroy();
       });
     });
   });

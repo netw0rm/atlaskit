@@ -29,6 +29,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     expect(node.type.name).to.deep.equal('codeBlock');
+    editorView.destroy();
   });
 
  it('should return a defined codeMirrorNodeView object', () => {
@@ -36,6 +37,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0);
     expect(codeNodeView).to.not.equal(undefined);
+    editorView.destroy();
   });
 
  it('should have dom defined as public member of codeMirrorNodeView object', () => {
@@ -46,6 +48,7 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     expect(codeNodeView.update).to.not.equal(undefined);
     expect(codeNodeView.selectNode).to.not.equal(undefined);
     expect(codeNodeView.destroy).to.not.equal(undefined);
+    editorView.destroy();
   });
 
  it('should have callBacks defined as public member of codeMirrorNodeView object', () => {
@@ -57,18 +60,21 @@ describe('@atlaskit/nodeviews/code-mirror', () => {
     expect(codeNodeView.selectNode).to.not.equal(undefined);
     expect(codeNodeView.stopEvent).to.not.equal(undefined);
     expect(codeNodeView.destroy).to.not.equal(undefined);
+    editorView.destroy();
   });
 
   it('should add a uniqueId to code block node', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     expect(!!node.attrs['uniqueId']).to.equal(true);
+    editorView.destroy();
   });
 
   it('should add a isCodeMirror to code block node', () => {
     const { editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
     const node = editorView.state.selection.$from.node(1);
     expect(!!node.attrs['isCodeMirror']).to.equal(true);
+    editorView.destroy();
   });
 
     it('should call unsubscribeFocusHandlers menthod of code-block plugin editor is destroyed', () => {

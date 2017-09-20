@@ -19,12 +19,13 @@ describe(name, () => {
     it('should pass function openHelp as parameter to render method', () => {
       const stub = sinon.stub();
       stub.returns(<div>test</div>);
-      mount(
+      const wrapper = mount(
         <EditorContext>
           <WithHelpTrigger render={stub} />
         </EditorContext>);
       expect(stub.called).to.equal(true);
       expect(stub.getCall(0).args.length).to.equal(1);
+      wrapper.unmount();
     });
   });
 });

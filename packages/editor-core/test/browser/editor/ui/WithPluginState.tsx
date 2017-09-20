@@ -48,6 +48,7 @@ describe(name, () => {
         }}
       />);
       wrapper.unmount();
+      editorView.destroy();
     });
   });
 });

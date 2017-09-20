@@ -66,6 +66,7 @@ describe('Renderer - ReactSerializer', () => {
       expect(link.text()).to.equal('Hello, World!');
       expect(link.props()).to.have.property('href', 'https://www.atlassian.com');
       expect(strong.text()).to.equal('World!');
+      reactDoc.unmount();
     });
 
   });

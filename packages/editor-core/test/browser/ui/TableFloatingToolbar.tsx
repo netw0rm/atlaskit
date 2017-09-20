@@ -85,6 +85,7 @@ describe('TableFloatingToolbar', () => {
       expect(floatingToolbar.html()).to.not.equal(null);
       plugin.props.onBlur!(editorView, event);
       expect(floatingToolbar.html()).to.equal(null);
+      floatingToolbar.unmount();
     });
   });
 

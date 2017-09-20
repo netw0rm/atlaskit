@@ -22,9 +22,14 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     editorView = editor.editorView;
   });
 
+  afterEach(() => {
+    editorView.destroy();
+  });
+
   it('should not be null if isVisible is true', () => {
     const helpDialog = mount(<HelpDialog editorView={editorView} isVisible={true} />);
     expect(helpDialog).to.not.equal(null);
+    helpDialog.unmount();
   });
 
   it('should return correct description of codemap when getComponentFromKeymap is called', () => {
@@ -35,6 +40,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     } else {
       expect(shortcut.text()).to.equal('ctrl + b');
     }
+    shortcut.unmount();
   });
 
   describe('formatting', () => {
@@ -56,6 +62,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       const autoformat = formatting.filter(f => f.name === 'Quote')[0].autoFormatting;
       const label = mount(<div>{autoformat!()}</div>);
       expect(label.text()).to.equal('> + space');
+      label.unmount();
     });
   });
 

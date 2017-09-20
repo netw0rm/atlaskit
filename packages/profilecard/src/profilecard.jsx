@@ -30,7 +30,7 @@ export default class Profilecard extends PureComponent {
     isLoading: PropTypes.bool,
     hasError: PropTypes.bool,
     errorType: PropTypes.shape({
-      reason: PropTypes.oneOf('default', 'NotFound'),
+      reason: PropTypes.oneOf(['default', 'NotFound']),
     }),
     clientFetchProfile: PropTypes.func,
     analytics: PropTypes.func,

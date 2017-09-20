@@ -29,6 +29,7 @@ describe('ToolbarTextFormatting', () => {
     toolbarTextColor.find(ToolbarButton).forEach(node => {
       expect(node.prop('disabled')).to.equal(true);
     });
+    toolbarTextColor.unmount();
   });
 
   describe('analytics', () => {
@@ -44,6 +45,10 @@ describe('ToolbarTextFormatting', () => {
       );
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
+    });
+
+    afterEach(() => {
+      toolbarOption.unmount();
     });
 
     it('should trigger analyticsService.trackEvent when bold button is clicked', () => {

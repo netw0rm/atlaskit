@@ -27,6 +27,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         />
       );
       expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+      toolbarOption.unmount();
   });
 
   it('should render disabled ToolbarButton if current selection is blockquote', () => {
@@ -39,6 +40,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         />
       );
       expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+      toolbarOption.unmount();
   });
 
   it('should not render disabled ToolbarButton if current selection is panel', () => {
@@ -50,6 +52,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         />
       );
       expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(false);
+      toolbarOption.unmount();
   });
 
   it('should render disabled ToolbarButton if code-block is selected', () => {
@@ -62,6 +65,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         />
       );
       expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+      toolbarOption.unmount();
   });
 
   describe('analytics', () => {
@@ -79,6 +83,11 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
     });
+
+    afterEach(() => {
+      toolbarOption.unmount();
+    });
+
     [
       { value: 'normal', name: 'Normal text' },
       { value: 'heading1', name: 'Heading 1' },

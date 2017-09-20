@@ -125,5 +125,6 @@ describe('MediaGroup', () => {
     expect(items.length).to.equal(2);
     expect(items[0]).to.deep.equal(imageFileId.id);
     expect(items[1]).to.deep.equal(youtubeLinkId.id);
+    mediaGroup.unmount();
   });
 });

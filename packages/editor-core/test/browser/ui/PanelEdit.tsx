@@ -46,6 +46,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     plugin.props.handleClick!(editorView, sel, event);
     pluginState.update(editorView.state, editorView.docView, true);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
+    panelEditOptions.unmount();
   });
 
   it('should set toolbarVisible to false when panel is blur', () => {
@@ -53,6 +54,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
     plugin.props.onBlur!(editorView, event);
     expect(panelEditOptions.state('toolbarVisible')).not.to.equal(true);
+    panelEditOptions.unmount();
   });
 
   it('should continue toolbarVisible to true when panelType is changed', () => {
@@ -61,6 +63,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     plugin.props.onFocus!(editorView, event);
     pluginState.changePanelType(editorView, { panelType: 'note' });
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
+    panelEditOptions.unmount();
   });
 
   it('should set toolbarVisible to false when panel is removed', () => {
@@ -69,6 +72,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     plugin.props.onFocus!(editorView, event);
     pluginState.removePanel(editorView);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(false);
+    panelEditOptions.unmount();
   });
 
   describe('analytics', () => {
@@ -81,6 +85,9 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
       plugin.props.handleClick!(editorView, sel, event);
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
+    });
+    afterEach(() => {
+      toolbarOption.unmount();
     });
     ['info', 'note', 'tip', 'warning'].forEach((panelType, index) => {
       it(`should trigger analyticsService.trackEvent when ${panelType} button is clicked`, () => {

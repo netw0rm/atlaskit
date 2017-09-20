@@ -24,6 +24,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     pluginState.showLinkPanel = spyFunc;
     toolbarHyperlink.find(LinkIcon).simulate('click');
     expect(spyFunc.callCount).to.equal(1);
+    toolbarHyperlink.unmount();
   });
 
   it('should state variable showToolbarPanel should be true when toolbar hyperlink button is clicked without a selection', () => {
@@ -31,6 +32,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(LinkIcon).simulate('click');
     expect(pluginState.showToolbarPanel).to.equal(true);
+    toolbarHyperlink.unmount();
   });
 
   it('should state variable showToolbarPanel should be false when toolbar hyperlink button is clicked with a selection', () => {
@@ -38,6 +40,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(ToolbarButton).simulate('click');
     expect(pluginState.showToolbarPanel).to.equal(false);
+    toolbarHyperlink.unmount();
   });
 
   it('should render disabled ToolbarButton if disabled property is true', () => {
@@ -51,6 +54,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     );
 
     expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarTextColor.unmount();
   });
 
   describe('analytics', () => {
@@ -66,6 +70,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
       );
       toolbarOption.find(AkButton).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 

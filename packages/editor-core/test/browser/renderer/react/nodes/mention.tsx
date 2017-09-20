@@ -9,11 +9,13 @@ describe('Renderer - React/Nodes/Mention', () => {
   it('should render UI mention component', () => {
     const mention = mount(<MentionNode id="abcd-abcd-abcd" text="@Oscar Wallhult"/>);
     expect(mention.find(Mention)).to.have.length(1);
+    mention.unmount();
   });
 
   it('should render with access level if prop exists', () => {
     const mention = mount(<MentionNode id="abcd-abcd-abcd" text="@Oscar Wallhult" accessLevel="APPLICATION"/>);
     expect(mention.find(Mention).prop('accessLevel')).to.equal('APPLICATION');
+    mention.unmount();
   });
 
   it('should pass event handlers into resourced mention', () => {
@@ -29,5 +31,6 @@ describe('Renderer - React/Nodes/Mention', () => {
     const resourcedMention = mention.find(ResourcedMention);
 
     expect(resourcedMention.prop('onClick')).to.equal(onClick);
+    mention.unmount();
   });
 });

@@ -25,6 +25,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       <ToolbarAdvancedTextFormatting editorView={editorView} />
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should have 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
@@ -38,6 +39,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(5);
+    toolbarOption.unmount();
   });
 
   it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
@@ -50,6 +52,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(4);
+    toolbarOption.unmount();
   });
 
   it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
@@ -62,6 +65,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should render disabled toolbar button when all marks and strikethrough and clearformatting are disabled', () => {
@@ -79,6 +83,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
@@ -98,6 +103,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       .find('Element');
     strikeButton.simulate('click');
     expect(textFormattingPluginSet[0].getState(editorView.state).toggleStrike.callCount).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should not have Strikethrough option if strikeHidden is true', () => {
@@ -113,6 +119,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.find(ToolbarButton).simulate('click');
     const strikeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Strikethrough');
     expect(strikeButton.length).to.equal(0);
+    toolbarOption.unmount();
   });
 
   it('should trigger clearFormatting function of pluginStateTextFormatting when clearFormatting option is clicked', () => {
@@ -133,6 +140,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       .find('Element');
     clearFormattingButton.simulate('click');
     expect(clearformattingPluginSet[0].getState(editorView.state).clearFormatting.callCount).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
@@ -146,6 +154,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should render disabled ToolbarButton if all marks and strikethrough and clearformatting are disabled', () => {
@@ -163,6 +172,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should be selected inside strike', () => {
@@ -176,6 +186,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('selected')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   describe('analytics', () => {
@@ -193,6 +204,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       toolbarOption.find('button').simulate('click');
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
+    });
+
+    afterEach(() => {
+      toolbarOption.unmount();
     });
 
     [

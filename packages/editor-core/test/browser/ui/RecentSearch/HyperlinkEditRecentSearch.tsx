@@ -84,6 +84,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
 
     expect(hyperlinkEdit.find(RecentSearch)).to.have.lengthOf(1);
+    hyperlinkEdit.unmount();
   });
 
   it('should not show the recent search input when editing an existing link', async () => {
@@ -91,6 +92,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     const hyperlinkEdit = await openLinkPanel(editorView, pluginState);
 
     expect(hyperlinkEdit.find(RecentSearch)).to.have.lengthOf(0);
+    hyperlinkEdit.unmount();
   });
 
   it('should show recent items by default', async () => {
@@ -100,6 +102,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
 
     expect(recentSearch.find(RecentItem)).to.have.lengthOf(3);
     expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'recent item 1');
+    hyperlinkEdit.unmount();
   });
 
   it('should search recent items when typing into the input field', async () => {
@@ -111,6 +114,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
 
     expect(recentSearch.find(RecentItem)).to.have.lengthOf(1);
     expect(recentSearch.find(RecentItem).at(0).prop('item')).to.have.property('name', 'recent item 1');
+    hyperlinkEdit.unmount();
   });
 
   it('should allow clicking on a link form the search results to insert it', async () => {
@@ -122,6 +126,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     recentSearch.find(RecentItem).at(0).simulate('mousedown');
 
     expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1'))));
+    hyperlinkEdit.unmount();
   });
 
   it('should allow inserting an arbitrary link', async () => {
@@ -133,6 +138,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressReturnInputField(recentSearch);
 
     expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('example.com'))));
+    hyperlinkEdit.unmount();
   });
 
   it('should allow inserting a link from search results by pressing return', async () => {
@@ -144,6 +150,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressReturnInputField(recentSearch);
 
     expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('recent item 1'))));
+    hyperlinkEdit.unmount();
   });
 
   it('should allow selecting a link from search results with the keyboard and inserting it by pressing return', async () => {
@@ -157,6 +164,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressReturnInputField(recentSearch);
 
     expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent2-url.com' })('recent item 2'))));
+    hyperlinkEdit.unmount();
   });
 
   it('should allow inserting a link from a text selection', async () => {
@@ -168,6 +176,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEditRecentSearch', () => {
     pressReturnInputField(recentSearch);
 
     expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://recent1-url.com' })('Page'))));
+    hyperlinkEdit.unmount();
   });
 });
 

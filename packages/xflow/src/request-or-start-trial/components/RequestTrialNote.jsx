@@ -111,8 +111,11 @@ class RequestTrialNote extends Component {
     if (withNote) {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
       const noteTextValue = this.noteText.value;
+      const noteLength = this.noteText.value.length;
       if (noteTextValue) {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included');
+        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
+          noteLength,
+        });
         this.setState({ noteText: noteTextValue });
       }
     } else {
@@ -191,6 +194,7 @@ class RequestTrialNote extends Component {
                 this.noteText = noteText;
               }}
               placeholder={placeholder}
+              maxLength={300}
             />
           </div>
         </ModalDialog>
@@ -211,6 +215,7 @@ class RequestTrialNote extends Component {
           title={intl.formatMessage(messages.successFlagTitle)}
           description={intl.formatMessage(messages.successFlagDescription)}
           showFlag={requestTrialSendNoteStatus === 'successful'}
+          source="request-trial-note"
           onDismissed={this.handleSuccessFlagDismiss}
         />
       </div>

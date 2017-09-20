@@ -3,26 +3,34 @@ import PropTypes from 'prop-types';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import { colors } from '@atlaskit/theme';
+import { withAnalytics } from '@atlaskit/analytics';
 
 const Icon = <CheckCircleIcon label="Success icon" primaryColor={colors.G300} />;
 
-export default class SuccessFlag extends Component {
+class SuccessFlagBase extends Component {
   static propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     showFlag: PropTypes.bool,
+    source: PropTypes.string,
     onDismissed: PropTypes.func,
     flagActions: PropTypes.arrayOf(PropTypes.object),
+    firePrivateAnalyticsEvent: PropTypes.func,
   };
 
   render() {
     const {
       description,
+      firePrivateAnalyticsEvent,
       flagActions,
       onDismissed,
       showFlag,
+      source,
       title,
     } = this.props;
+    if (showFlag) {
+      firePrivateAnalyticsEvent(`xflow.${source}.success-flag.displayed`);
+    }
     return (
       <FlagGroup onDismissed={onDismissed}>
         {showFlag
@@ -39,3 +47,7 @@ export default class SuccessFlag extends Component {
     );
   }
 }
+
+const SuccessFlag = withAnalytics(SuccessFlagBase);
+
+export default SuccessFlag;

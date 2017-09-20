@@ -213,6 +213,7 @@ class LoadingTime extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={showErrorFlag}
+          source="loading-product-trial"
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

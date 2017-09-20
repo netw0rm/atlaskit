@@ -111,8 +111,11 @@ class RequestTrialNote extends Component {
     if (withNote) {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
       const noteTextValue = this.noteText.value;
+      const noteLength = this.noteText.value.length;
       if (noteTextValue) {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included');
+        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
+          noteLength,
+        });
         this.setState({ noteText: noteTextValue });
       }
     } else {

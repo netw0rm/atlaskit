@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.4.0 (2017-09-20)
+
+* feature; bump media-card ([06caa58](https://bitbucket.org/atlassian/atlaskit/commits/06caa58))
+* feature; bump media-card and media-filmstrip ([e3baf5b](https://bitbucket.org/atlassian/atlaskit/commits/e3baf5b))
 ## 47.3.1 (2017-09-20)
 
 * bug fix; upgrading emoji toolbar button to use new popup component for select. (issues closed: #ed-1523) ([2741a7b](https://bitbucket.org/atlassian/atlaskit/commits/2741a7b))

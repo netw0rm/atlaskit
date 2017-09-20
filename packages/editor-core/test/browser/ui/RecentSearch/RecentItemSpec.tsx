@@ -25,5 +25,6 @@ describe('@atlaskit/editor-core/ui/RecentSearch/RecentItem', () => {
 
     expect(component.find(Name).text()).to.equal('name');
     expect(component.find(ContainerName).text()).to.equal('container');
+    component.unmount();
   });
 });

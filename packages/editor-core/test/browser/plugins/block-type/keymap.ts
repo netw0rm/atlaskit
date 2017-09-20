@@ -53,6 +53,7 @@ describe('codeBlock - keymaps', () => {
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
             expect(trackEvent.calledWith('atlassian.editor.format.blockquote.keyboard')).to.equal(true);
+            editorView.destroy();
           });
         });
 
@@ -73,6 +74,7 @@ describe('codeBlock - keymaps', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+            editorView.destroy();
           });
         });
 
@@ -82,6 +84,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'Shift-Enter');
             expect(editorView.state.doc).to.deep.equal(doc(h1('t', hardBreak(), 't')));
             expect(trackEvent.calledWith('atlassian.editor.newline.keyboard')).to.equal(true);
+            editorView.destroy();
           });
         });
       });
@@ -95,6 +98,7 @@ describe('codeBlock - keymaps', () => {
         sendKeyToPm(editorView, 'Mod-z');
         expect(editorView.state.doc).to.deep.equal(doc(p('# ')));
         expect(trackEvent.calledWith('atlassian.editor.undo.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -107,6 +111,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'Enter');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('```\n')));
+            editorView.destroy();
           });
         });
 
@@ -118,6 +123,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('')));
+              editorView.destroy();
             });
 
             it('trims the spaces', () => {
@@ -126,6 +132,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('   hello @bar1')));
+              editorView.destroy();
             });
           });
 
@@ -136,6 +143,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(code_block()('')));
+              editorView.destroy();
             });
 
             it('trims the spaces', () => {
@@ -144,6 +152,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(code_block()('   hello')));
+              editorView.destroy();
             });
 
             it('does not convert to code block if it does not start with fence', () => {
@@ -152,6 +161,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'Enter');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('hello```    '), p('   hello')));
+              editorView.destroy();
             });
           });
         });
@@ -167,6 +177,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowUp');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
+            editorView.destroy();
           });
         });
 
@@ -179,6 +190,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+                editorView.destroy();
               });
             });
 
@@ -189,6 +201,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
+                editorView.destroy();
               });
             });
 
@@ -199,6 +212,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(p('text'), code_block()('text')));
+                editorView.destroy();
               });
             });
 
@@ -210,6 +224,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(''), code_block()('text')));
+                  editorView.destroy();
                 });
 
                 it('does not ignore @mention', () => {
@@ -219,6 +234,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
+                  editorView.destroy();
                 });
               });
 
@@ -229,6 +245,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(''), ul(li(p('text')))));
+                  editorView.destroy();
                 });
               });
 
@@ -239,6 +256,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(''), table(tr(tdEmpty, tdEmpty, tdEmpty))));
+                  editorView.destroy();
                 });
               });
             });
@@ -254,6 +272,7 @@ describe('codeBlock - keymaps', () => {
 
 
                   expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(p('text'))));
+                  editorView.destroy();
                 });
               });
 
@@ -264,6 +283,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(''), blockquote(p('text'))));
+                  editorView.destroy();
                 });
               });
             });
@@ -281,6 +301,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
+              editorView.destroy();
             });
           });
 
@@ -293,6 +314,7 @@ describe('codeBlock - keymaps', () => {
 
               expect(editorView.state.doc).to.deep.equal(doc(p(''), hr, code_block()('text')));
               expect(trackEvent.calledWith('atlassian.editor.moveup.keyboard')).to.equal(true);
+              editorView.destroy();
             });
           });
         });
@@ -306,6 +328,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'ArrowUpv');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(hr, code_block()('text'))));
+              editorView.destroy();
             });
           });
 
@@ -317,6 +340,7 @@ describe('codeBlock - keymaps', () => {
               sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).to.deep.equal(doc(p(''), blockquote(hr, code_block()('text'))));
+              editorView.destroy();
             });
           });
         });
@@ -332,6 +356,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
+            editorView.destroy();
           });
         });
 
@@ -344,6 +369,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
+                editorView.destroy();
               });
             });
 
@@ -354,6 +380,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), p('text')));
+                editorView.destroy();
               });
             });
 
@@ -365,6 +392,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowDown');
 
                   expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), p('')));
+                  editorView.destroy();
                 });
               });
               context('list item', () => {
@@ -374,6 +402,7 @@ describe('codeBlock - keymaps', () => {
                   sendKeyToPm(editorView, 'ArrowDown');
 
                   expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
+                  editorView.destroy();
                 });
               });
             });
@@ -385,6 +414,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty)), p('')));
+                editorView.destroy();
               });
             });
           });
@@ -400,6 +430,7 @@ describe('codeBlock - keymaps', () => {
 
 
                 expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('text')));
+                editorView.destroy();
               });
             });
 
@@ -410,6 +441,7 @@ describe('codeBlock - keymaps', () => {
                 sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('')));
+                editorView.destroy();
               });
             });
           });
@@ -427,6 +459,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
+            editorView.destroy();
           });
         });
 
@@ -438,6 +471,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), hr, p('')));
+            editorView.destroy();
           });
         });
       });
@@ -451,6 +485,7 @@ describe('codeBlock - keymaps', () => {
             sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(hr, code_block()('text')), p('text')));
+            editorView.destroy();
           });
         });
 
@@ -463,6 +498,7 @@ describe('codeBlock - keymaps', () => {
 
             expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
             expect(trackEvent.calledWith('atlassian.editor.movedown.keyboard')).to.equal(true);
+            editorView.destroy();
           });
         });
       });

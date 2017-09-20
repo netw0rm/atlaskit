@@ -23,6 +23,7 @@ describe('codeBlock - keymaps', () => {
         sendKeyToPm(editorView, 'Enter');
         sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).to.deep.equal(doc(code_block()('codeBlock\n\n')));
+        editorView.destroy();
       });
     });
 
@@ -34,6 +35,7 @@ describe('codeBlock - keymaps', () => {
         sendKeyToPm(editorView, 'Enter');
         sendKeyToPm(editorView, 'Enter');
         expect(editorView.state.doc).to.deep.equal(doc(code_block()('codeBlock'), p('{<>}')));
+        editorView.destroy();
       });
     });
   });

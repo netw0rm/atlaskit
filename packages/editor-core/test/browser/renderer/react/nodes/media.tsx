@@ -25,6 +25,7 @@ describe('Media', () => {
       />);
 
     expect(mediaComponent.find(MediaComponent).length).to.equal(1);
+    mediaComponent.unmount();
   });
 
 });

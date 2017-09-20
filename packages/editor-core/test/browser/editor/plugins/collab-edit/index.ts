@@ -55,7 +55,7 @@ describe('editor/plugins/collab-edit', () => {
           }
         ]
       });
-
+      editorView.destroy();
     });
 
   });
@@ -75,6 +75,7 @@ describe('editor/plugins/collab-edit', () => {
           }
         ]
       });
+      editorView.destroy();
     });
 
     it('should call .send()-method on provider', async () => {
@@ -84,6 +85,7 @@ describe('editor/plugins/collab-edit', () => {
 
       editorView.dispatch(editorView.state.tr.insertText('hello world'));
       expect(spy.called).to.equal(true);
+      editorView.destroy();
     });
 
   });
@@ -131,8 +133,8 @@ describe('editor/plugins/collab-edit', () => {
           }
         ]
       });
+      editorView.destroy();
     });
-
   });
 
   describe('telepointers', () => {
@@ -157,6 +159,7 @@ describe('editor/plugins/collab-edit', () => {
         },
         'sessionId': 'test'
       })).to.equal(true);
+      editorView.destroy();
     });
 
     it('should keep track of remote telepointers in plugin state', async () => {
@@ -180,6 +183,7 @@ describe('editor/plugins/collab-edit', () => {
           'sessionId': 'test'
         }
       });
+      editorView.destroy();
     });
 
   });
@@ -205,7 +209,7 @@ describe('editor/plugins/collab-edit', () => {
         'lastActive': 1,
         'sessionId': 'test'
       }]);
-
+      editorView.destroy();
     });
 
     it('should remove participants who left', async () => {
@@ -239,7 +243,7 @@ describe('editor/plugins/collab-edit', () => {
         'lastActive': 1,
         'avatar': 'avatar-2.png'
       }]);
-
+      editorView.destroy();
     });
   });
 

@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.0.3 (2017-09-20)
+
+* bug fix; workaround chromium 56 bug for background svg's blurring (issues closed: fs-1392) ([727ed6c](https://bitbucket.org/atlassian/atlaskit/commits/727ed6c))
 ## 4.0.2 (2017-09-19)
 
 * bug fix; fixed jest tests when require.ensure is undefined ([245707a](https://bitbucket.org/atlassian/atlaskit/commits/245707a))

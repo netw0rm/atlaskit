@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.3.1 (2017-09-20)
+
+* bug fix; upgrading emoji toolbar button to use new popup component for select. (issues closed: #ed-1523) ([2741a7b](https://bitbucket.org/atlassian/atlaskit/commits/2741a7b))
 ## 47.3.0 (2017-09-19)
 
 * bug fix; revert quick tooltip fix for emoji picker. (issues closed: fs-1330) ([a47a20d](https://bitbucket.org/atlassian/atlaskit/commits/a47a20d))

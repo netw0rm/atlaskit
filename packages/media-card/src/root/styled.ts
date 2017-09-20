@@ -19,12 +19,19 @@ export const Wrapper = styled.div`
         ${getCSSBoundaries(appearance)}
         position: relative;
       `;
-    } else {
+    } else if (appearance === 'small') {
       return `
         display: inline-block;
+        width: 100%;
         ${getWrapperHeight}
         ${getWrapperWidth}
       `;
     }
+
+    return `
+      display: inline-block;
+      ${getWrapperHeight}
+      ${getWrapperWidth}
+    `;
   }}
 `;

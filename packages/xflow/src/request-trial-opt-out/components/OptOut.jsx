@@ -12,18 +12,14 @@ export default class OptOut extends Component {
   };
 
   static propTypes = {
-    sourceComponent: PropTypes.string.isRequired,
-    sourceContext: PropTypes.string.isRequired,
     onAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   handleAnalyticsEvent = (name, data) => {
-    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    const { onAnalyticsEvent } = this.props;
     if (onAnalyticsEvent) {
       onAnalyticsEvent(name, {
         ...data,
-        sourceComponent,
-        sourceContext,
       });
     }
   };

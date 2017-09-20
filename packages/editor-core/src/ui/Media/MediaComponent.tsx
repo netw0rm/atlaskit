@@ -94,7 +94,7 @@ function mapMediaStatusIntoCardStatus(state: MediaState): CardStatus {
 }
 
 export default class MediaComponent extends React.PureComponent<Props, State> {
-  private thumbnailWm = new WeakMap();
+  private thumbnailWm = new Map();
   private destroyed = false;
 
   state: State = {
@@ -147,6 +147,13 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const stateManager = this.getStateManagerFromEditorPlugin();
     if (stateManager) {
       stateManager.unsubscribe(id, this.handleMediaStateChange);
+    }
+
+    if (this.thumbnailWm) {
+      Object.keys(this.thumbnailWm).forEach(thumbnailUrl => {
+        URL.revokeObjectURL(thumbnailUrl);
+        this.thumbnailWm.delete(thumbnailUrl);
+      });
     }
   }
 

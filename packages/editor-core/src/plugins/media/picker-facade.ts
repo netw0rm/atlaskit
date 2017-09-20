@@ -1,9 +1,15 @@
-import * as mediapicker from 'mediapicker';
 import {
+  MediaPicker,
   ModuleConfig,
   MediaPickerComponent,
   MediaPickerComponents,
   ComponentConfigs,
+
+  Popup,
+  Browser,
+  Dropzone,
+  Clipboard,
+  BinaryUploader,
 
   UploadStartPayload,
   UploadPreviewUpdatePayload,
@@ -13,7 +19,6 @@ import {
   UploadErrorPayload,
   UploadEndPayload,
 } from 'mediapicker';
-
 import {
   ContextConfig,
   MediaStateManager,
@@ -30,7 +35,6 @@ export default class PickerFacade {
   private onStartListeners: Array<(state: MediaState) => void> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
-  private mediaPickerModule: any;
 
   constructor(
     pickerType: PickerType,
@@ -38,19 +42,16 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerModule: any,
-    mediaPickerFactory?: (pickerType: PickerType, pickerConfig: ModuleConfig, extraConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType],
+    mediaPickerFactory?: (pickerType: PickerType, pickerConfig: ModuleConfig, extraConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
-    this.mediaPickerModule = <typeof mediapicker>mediaPickerModule;
-    const { MediaPicker, Dropzone, Clipboard } = <typeof mediapicker>mediaPickerModule;
 
     if (!mediaPickerFactory) {
       mediaPickerFactory = MediaPicker;
     }
 
-    const picker = this.picker = mediaPickerFactory!(
+    const picker = this.picker = mediaPickerFactory(
       pickerType,
       this.buildPickerConfigFromContext(contextConfig),
       pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined
@@ -70,7 +71,6 @@ export default class PickerFacade {
   }
 
   destroy() {
-    const { Popup, Browser, Dropzone, Clipboard } = <typeof mediapicker>this.mediaPickerModule;
     const { picker } = this;
 
     if (!picker) {
@@ -104,7 +104,6 @@ export default class PickerFacade {
   }
 
   show(): void {
-    const { Popup } = <typeof mediapicker>this.mediaPickerModule;
     if (this.picker instanceof Popup) {
       try {
         this.picker.show();
@@ -115,8 +114,6 @@ export default class PickerFacade {
   }
 
   cancel(tempId: string): void {
-    const { Popup } = <typeof mediapicker>this.mediaPickerModule;
-
     if (this.picker instanceof Popup) {
       const state = this.stateManager.getState(tempId);
 
@@ -143,7 +140,6 @@ export default class PickerFacade {
   }
 
   upload(url: string, fileName: string): void {
-    const { BinaryUploader } = <typeof mediapicker>this.mediaPickerModule;
     if (this.picker instanceof BinaryUploader) {
       this.picker.upload(url, fileName);
     }

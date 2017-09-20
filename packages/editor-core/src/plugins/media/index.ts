@@ -24,7 +24,7 @@ import {
   NodeSelection,
   Mark,
 } from '../../prosemirror';
-import PickerFacade from './picker-facade';
+import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
@@ -51,8 +51,8 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
+  public pickers: PickerFacadeType[] = [];
+  public binaryPicker?: PickerFacadeType;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
@@ -63,9 +63,9 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacade;
-  private clipboardPicker?: PickerFacade;
-  private dropzonePicker?: PickerFacade;
+  private popupPicker?: PickerFacadeType;
+  private clipboardPicker?: PickerFacadeType;
+  private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
@@ -403,21 +403,22 @@ export class MediaPluginState {
     } = this;
 
     require.ensure([], (require) => {
-      const mediaPicker = require('mediapicker');
+      // tslint:disable-next-line:variable-name
+      const PickerFacade = require('./picker-facade').default;
 
       // create pickers if they don't exist, re-use otherwise
       if (!pickers.length) {
-        pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter, mediaPicker));
-        pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter, mediaPicker));
-        pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter, mediaPicker));
-        pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter, mediaPicker));
+        pickers.push(this.binaryPicker = new PickerFacade('binary', uploadParams, context, stateManager, errorReporter));
+        pickers.push(this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager, errorReporter));
+        pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
+        pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
         pickers.forEach(picker => picker.onNewMedia(this.insertFile));
 
-        this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-        this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-        this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-        this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.binaryPicker!.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.popupPicker!.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.clipboardPicker!.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+        this.dropzonePicker!.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
       }
 
       // set new upload params for the pickers

@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as chaiAsPromised from 'chai-as-promised';
-import * as mediapicker from 'mediapicker';
 
 import {
   DefaultMediaStateManager,
@@ -77,7 +76,7 @@ describe('Media PickerFacade', () => {
 
         return mockPicker;
       };
-      facade = new (PickerFacade as any)('mock', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new (PickerFacade as any)('mock', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -121,7 +120,7 @@ describe('Media PickerFacade', () => {
       });
 
       it('respects dropzone container config', () => {
-        const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mediapicker, mockPickerFactory);
+        const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
         expect(dropzoneFacade).to.be.an('object');
         expect(mockPicker.extraConfig).to.have.property('container',  dropzoneContainer);
       });
@@ -319,7 +318,7 @@ describe('Media PickerFacade', () => {
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
       mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockPopupPicker;
-      facade = new PickerFacade('popup', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new PickerFacade('popup', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -363,7 +362,7 @@ describe('Media PickerFacade', () => {
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
       mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockBrowserPicker;
-      facade = new PickerFacade('browser', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new PickerFacade('browser', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -384,7 +383,7 @@ describe('Media PickerFacade', () => {
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
       mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockClipboardPicker;
-      facade = new PickerFacade('clipboard', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new PickerFacade('clipboard', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -409,7 +408,7 @@ describe('Media PickerFacade', () => {
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
       mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockDropzonePicker;
-      facade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -434,7 +433,7 @@ describe('Media PickerFacade', () => {
     beforeEach(() => {
       stateManager = new DefaultMediaStateManager();
       mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => mockBinaryUploaderPicker;
-      facade = new PickerFacade('binary', uploadParams, contextConfig, stateManager, errorReporter, mediapicker, mockPickerFactory);
+      facade = new PickerFacade('binary', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {

@@ -635,7 +635,7 @@ describe('Media plugin', () => {
 
     context('when insert text in the middle of media group', () => {
       it('splits media group', () => {
-        const { editorView } = editor(doc(
+        const { editorView, pluginState } = editor(doc(
           mediaGroup(
             media({ id: 'media1', type: 'file', collection: testCollectionName }),
             media({ id: 'media2', type: 'file', collection: testCollectionName }),

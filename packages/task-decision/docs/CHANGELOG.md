@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.0.5 (2017-09-21)
+
+* bug fix; Revert code splitting of mentions/task-decisions as it introduces a performance problem (issues closed: fs-1396 / hnw-3183) ([bbecb14](https://bitbucket.org/atlassian/atlaskit/commits/bbecb14))
 ## 4.0.4 (2017-09-21)
 
 * bug fix; fix :derp: ([088588f](https://bitbucket.org/atlassian/atlaskit/commits/088588f))

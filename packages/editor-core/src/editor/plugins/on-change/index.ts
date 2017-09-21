@@ -1,4 +1,4 @@
-import { EditorView, EditorState, Plugin, PluginKey } from '../../../prosemirror';
+import { EditorView, Plugin, PluginKey } from '../../../prosemirror';
 import { EditorPlugin } from '../../types';
 
 export const pluginKey = new PluginKey('onChangePlugin');
@@ -8,24 +8,14 @@ export function createPlugin(onChange?: (editorView: EditorView) => void): Plugi
     return;
   }
 
-  let view;
-
   return new Plugin({
     key: pluginKey,
-    state: {
-      init(config, state: EditorState<any>) {
-        return state;
-      },
-      apply(tr, value, oldState, newState) {
-        if (tr.docChanged) {
-          onChange(view);
-        }
-        return value;
-      }
-    },
     view(editorView: EditorView) {
-      view = editorView;
-      return {};
+      return {
+        update(editorView) {
+          onChange(editorView);
+        }
+      };
     }
   });
 }

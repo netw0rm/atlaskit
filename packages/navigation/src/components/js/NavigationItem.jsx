@@ -23,7 +23,7 @@ type Props = {|
   component if one is provided. */
   href?: string,
   /** Target frame for item `href` link to be aimed at. */
-  target: PropTypes.string,
+  target: string,
   /** React element to appear to the left of the text. This should be an
   @atlaskit/icon component. */
   icon?: ReactElement,

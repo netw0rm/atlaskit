@@ -12,6 +12,7 @@ import SuccessFlag from '../../common/components/SuccessFlag';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
+import OptOutRadioDiv from '../styled/OptOutRadioDiv';
 import CustomLabel from '../styled/CustomLabel';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
@@ -20,7 +21,7 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 const messages = defineMessages({
   errorFlagTitle: {
     id: 'xflow.generic.opt-out.error-flag.title',
-    defaultMessage: 'Oops... Something went wrong',
+    defaultMessage: 'Oops... something went wrong',
   },
   errorFlagDescription: {
     id: 'xflow.generic.opt-out.error-flag.description',
@@ -36,11 +37,11 @@ const messages = defineMessages({
   },
   successFlagTitle: {
     id: 'xflow.generic.opt-out.success-flag.title',
-    defaultMessage: 'Your request is sent',
+    defaultMessage: 'You have opted out',
   },
   successFlagDescription: {
     id: 'xflow.generic.opt-out.success-flag.description',
-    defaultMessage: 'Props for helping your admin out!',
+    defaultMessage: 'You will no longer receive product trial requests!',
   },
 });
 
@@ -56,7 +57,6 @@ class AdminSettings extends Component {
         note: PropTypes.string,
       })
     ).isRequired,
-    children: PropTypes.node,
     spinnerActive: PropTypes.bool,
     buttonsDisabled: PropTypes.bool,
     firePrivateAnalyticsEvent: PropTypes.func,
@@ -209,24 +209,25 @@ class AdminSettings extends Component {
             </OptOutFooter>
           }
         >
-          <AkFieldRadioGroup
-            label={message}
-            onRadioChange={this.handleRadioChange}
-            items={optionItems.map(({ value, label, note }) => ({
-              value,
-              label: note ? (
-                <CustomLabel>
-                  {label}
-                  <br />
-                  <small>{note}</small>
-                </CustomLabel>
-              ) : (
-                label
-              ),
-              isSelected: this.state.selectedRadio === value,
-            }))}
-          />
-          {this.props.children}
+          <OptOutRadioDiv>
+            <AkFieldRadioGroup
+              label={message}
+              onRadioChange={this.handleRadioChange}
+              items={optionItems.map(({ value, label, note }) => ({
+                value,
+                label: note ? (
+                  <CustomLabel>
+                    {label}
+                    <br />
+                    <small>{note}</small>
+                  </CustomLabel>
+                ) : (
+                  label
+                ),
+                isSelected: this.state.selectedRadio === value,
+              }))}
+            />
+          </OptOutRadioDiv>
         </ModalDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.5.0 (2017-09-21)
+
+* feature; upgrade to latest emoji support, with latest upload features (issues closed: fs-1395) ([a0a6f34](https://bitbucket.org/atlassian/atlaskit/commits/a0a6f34))
+* bug fix; add support for deleted / non-existant users to profile cards (issues closed: hnw-3062, ed-2762) ([86b8848](https://bitbucket.org/atlassian/atlaskit/commits/86b8848))
 ## 47.4.1 (2017-09-21)
 
 * bug fix; fix typescript validation error in test. ([a6f3d53](https://bitbucket.org/atlassian/atlaskit/commits/a6f3d53))

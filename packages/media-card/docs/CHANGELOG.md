@@ -1,5 +1,9 @@
 # @atlaskit/media-card
 
+## 21.3.2 (2017-09-21)
+
+* bug fix; remove not necessary React key attr ([98cf168](https://bitbucket.org/atlassian/atlaskit/commits/98cf168))
+* bug fix; add missing React key attributes to LinkCardGenericView ([ff1d60e](https://bitbucket.org/atlassian/atlaskit/commits/ff1d60e))
 ## 21.3.1 (2017-09-20)
 
 * bug fix; add line-height to link card title ([37f494b](https://bitbucket.org/atlassian/atlaskit/commits/37f494b))

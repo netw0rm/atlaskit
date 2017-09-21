@@ -119,17 +119,6 @@ describe('hyperlink', () => {
       });
     });
 
-    context('when hitting backspace in a link', () => {
-      it('removes link mark when its not more valid link', () => {
-        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
-        editorView.destroy();
-      });
-    });
-
     context('when select the whole hyperlink text from end to start', () => {
       it('returns link element', () => {
         const { editorView, pluginState, refs } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
@@ -870,6 +859,31 @@ describe('hyperlink', () => {
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test')));
         editorView.destroy();
       });
+    });
+  });
+
+  describe('Message Appearance', () => {
+    const messageEditor = (doc: any) => makeEditor<HyperlinkState>({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
+    });
+
+    it('should remove link mark if visible text is not a valid link - 1', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.a.com' })('www.{<}a{>}.com'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('www..com')));
+    });
+
+    it('should remove link mark if visible text is not a valid link - 2', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('www.atlassian.c{<}om{>}'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('www.atlassian.c')));
+    });
+
+    it('should remove link mark if visible text is not a valid link - 3', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://{<}www.atlassian.com{>}'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
     });
   });
 });

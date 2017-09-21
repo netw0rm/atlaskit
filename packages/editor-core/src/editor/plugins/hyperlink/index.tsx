@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { WithProviders } from '../../../providerFactory/withProviders';
-import { plugin } from '../../../plugins/hyperlink';
-import inputRulePlugin from '../../../plugins/hyperlink/input-rule';
-import keymap from '../../../plugins/hyperlink/keymap';
+import { createPlugin } from '../../../plugins/hyperlink';
+import { createInputRulePlugin } from '../../../plugins/hyperlink/input-rule';
+import { createKeymapPlugin } from '../../../plugins/hyperlink/keymap';
 import { link } from '../../../schema/marks/link';
 import pluginKey from '../../../plugins/hyperlink/plugin-key';
 import HyperlinkEdit from '../../../ui/HyperlinkEdit';
@@ -16,9 +16,9 @@ const hyperlinkPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { rank: 900, plugin: () => plugin },
-      { rank: 910, plugin: (schema) => inputRulePlugin(schema) },
-      { rank: 920, plugin: (schema, props) => keymap(schema, props) },
+      { rank: 900, plugin: createPlugin },
+      { rank: 910, plugin: createInputRulePlugin },
+      { rank: 920, plugin: createKeymapPlugin },
     ];
   },
 

@@ -48,6 +48,7 @@ export const xFlowShape = PropTypes.shape({
       optOutHeading: PropTypes.string,
       optOutMessage: PropTypes.string,
       optOutDefaultSelectedRadio: PropTypes.string,
+      optOutNotePlaceholder: PropTypes.string,
       optOutOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,

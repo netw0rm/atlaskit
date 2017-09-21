@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 29.0.2 (2017-09-21)
+
+* bug fix; shows tone selector by default in preview (issues closed: fs-1346) ([d4fbaf8](https://bitbucket.org/atlassian/atlaskit/commits/d4fbaf8))
+* bug fix; fS-1297 picker row to fit emoji if custom is uploaded (issues closed: fs-1297) ([cf42328](https://bitbucket.org/atlassian/atlaskit/commits/cf42328))
 ## 29.0.1 (2017-09-19)
 
 * bug fix; code splitted mediapicker in emoji package (issues closed: ed-2776) ([8649f12](https://bitbucket.org/atlassian/atlaskit/commits/8649f12))

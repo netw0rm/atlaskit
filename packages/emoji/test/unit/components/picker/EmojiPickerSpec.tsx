@@ -193,12 +193,13 @@ describe('<EmojiPicker />', () => {
       });
     });
 
-    it('should empty preview by default', () =>
+    it('should tone selector in preview by default', () =>
       setupPicker().then(component => {
         const footer = component.find(EmojiPickerFooter);
         const previewEmoji = footer.find(Emoji);
 
-        expect(previewEmoji.length, 'No emoji preview by default').to.equal(0);
+        expect(previewEmoji.length, 'Only contains tone emoji').to.equal(1);
+        expect(previewEmoji.at(0).prop('emoji').shortName).to.equal(':raised_hand:');
       })
     );
 

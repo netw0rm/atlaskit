@@ -48,8 +48,8 @@ export default class EmojiPreview extends PureComponent<Props, State> {
   }
 
   renderTones() {
-    const { emoji, toneEmoji, selectedTone } = this.props;
-    if (!toneEmoji || !emoji) {
+    const { toneEmoji, selectedTone } = this.props;
+    if (!toneEmoji) {
       return null;
     }
 

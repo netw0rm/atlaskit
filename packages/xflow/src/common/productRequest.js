@@ -10,7 +10,8 @@ import {
   queryUsername,
 } from './tenantContext';
 
-export const PRODUCT_REQUEST_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/productrequest';
+export const PRODUCT_REQUEST_ENDPOINT_EAST =
+  'https://xflow.us-east-1.prod.public.atl-paas.net/request-admins-for-product-trial';
 
 async function getCurrentUserAvatarUrl() {
   const currentUser = getCurrentUsername();

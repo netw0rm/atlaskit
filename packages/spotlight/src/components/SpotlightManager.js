@@ -1,15 +1,32 @@
-import { Component } from 'react';
+// @flow
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import SpotlightRegistry from './SpotlightRegistry';
+import { ScrollLock } from '@atlaskit/layer-manager';
 
-export default class SpotlightManager extends Component {
+import SpotlightRegistry from './SpotlightRegistry';
+import type { ChildrenType, ComponentType } from '../types';
+import Blanket from '../styled/Blanket';
+
+type Props = {
+  children: ChildrenType,
+  component: ComponentType,
+}
+type State = {
+  mounted: number,
+}
+
+export default class SpotlightManager extends PureComponent {
   static childContextTypes = {
     spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
   };
-
-  static propTypes = {
-    children: PropTypes.element,
+  static defaultProps = {
+    component: 'div',
   };
+
+  /* eslint-disable react/sort-comp */
+  props: Props
+  state: State = { mounted: 0 }
+  /* eslint-enable react/sort-comp */
 
   constructor(props, context) {
     super(props, context);
@@ -22,7 +39,29 @@ export default class SpotlightManager extends Component {
     };
   }
 
+  componentWillMount() {
+    this.spotlightRegistry.addChangeListener('mount', this.handleMount);
+    this.spotlightRegistry.addChangeListener('unmount', this.handleUnmount);
+  }
+  componentWillUnmount() {
+    this.spotlightRegistry.removeChangeListener('mount', this.handleMount);
+    this.spotlightRegistry.removeChangeListener('unmount', this.handleUnmount);
+  }
+
+  handleMount = () => this.setState(state => ({ mounted: state.mounted + 1 }))
+  handleUnmount = () => this.setState(state => ({ mounted: state.mounted - 1 }))
+
   render() {
-    return this.props.children;
+    const { children, component: Tag } = this.props;
+    const { mounted } = this.state;
+    const dialogIsVisible = Boolean(mounted);
+
+    return (
+      <Tag>
+        {children}
+        {dialogIsVisible && <Blanket />}
+        {dialogIsVisible && <ScrollLock />}
+      </Tag>
+    );
   }
 }

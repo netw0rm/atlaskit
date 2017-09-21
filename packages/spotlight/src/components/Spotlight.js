@@ -1,17 +1,14 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FocusScope, ScrollLock, withRenderTarget } from '@atlaskit/layer-manager';
+import { FocusScope, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
 import type { ComponentType, ElementType, FunctionType } from '../types';
 import { Dialog, DialogBody, DialogPositioner, FillScreen } from '../styled/Dialog';
-import Blanket from '../styled/Blanket';
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
-
-import SpotlightRegistry from './SpotlightRegistry';
+import withScrollMeasurements from '../hoc/withScrollMeasurements';
 import { Fade, SlideUp } from './Animation';
 
 // Rename transition components for easier parsing of the render method
@@ -44,21 +41,6 @@ type Props = {|
   /** alternative element to render than the wrapped target */
   targetReplacementComponent?: ComponentType,
 |};
-type State = {
-  scrollY: number,
-}
-
-function getScrollY() {
-  return window.pageYOffset
-  || document.documentElement.scrollTop
-  || document.body.scrollTop
-  || 0;
-}
-function getInitialState() {
-  return {
-    scrollY: getScrollY(),
-  };
-}
 
 /* eslint-disable react/prop-types, react/no-danger */
 const Clone = ({ html }) => (
@@ -71,91 +53,57 @@ const Clone = ({ html }) => (
 
 class Spotlight extends Component {
   props: Props;
-  state: State = getInitialState();
 
   static defaultProps = {
     pulse: true,
   };
-  componentWillMount() {
-    // NOTE: we don't document the spotlightRegistry prop type because it
-    // is provided by the HOC and not part of the public API.
-    // eslint-disable-next-line react/prop-types
-    const { spotlightRegistry, target } = this.props;
-
-    if (!spotlightRegistry) {
-      throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
-    }
-
-    if (target) {
-      this._node = spotlightRegistry.get(target);
-      this.measureAndScroll(this._node);
-    }
-  }
 
   handleTargetClick = (event) => {
     const { targetOnClick, target } = this.props;
 
-    if (targetOnClick) targetOnClick({ event, target });
-  }
-  measureAndScroll = (node) => {
-    const { height, left, top, width } = node.getBoundingClientRect();
-    const gutter = 10; // enough room to be comfortable and not crop the pulse animation
-
-    let adjustedTop = top;
-
-    // get adjusted measurements after scrolling
-    if ((top < 0) || (top > window.innerHeight)) {
-      adjustedTop = gutter;
-      window.scrollTo(0, top - gutter);
-    }
-
-    this.setState({
-      height,
-      left,
-      scrollY: getScrollY(),
-      top: adjustedTop,
-      width,
-    });
+    targetOnClick({ event, target });
   }
 
   renderTargetClone() {
+    // NOTE: `clone` & `rect` are NOT public API
     const {
+      clone, // eslint-disable-line react/prop-types
       pulse,
+      rect, // eslint-disable-line react/prop-types
       target,
       targetBgColor,
+      targetOnClick,
       targetRadius,
       targetReplacementComponent: Replacement,
     } = this.props;
-
-    const { height, left, top, width } = this.state;
-    const dimensions = { height, left, top, width };
 
     if (!target) {
       throw Error(`Spotlight couldn't find a target matching "${target}".`);
     }
 
     return Replacement ? (
-      <Replacement {...dimensions} />
+      <Replacement {...rect} />
     ) : (
-      <TargetOuter style={dimensions}>
-        <TargetInner pulse={pulse} bgColor={targetBgColor} radius={targetRadius} style={dimensions}>
-          <Clone html={this._node.outerHTML} />
-          <TargetOverlay onClick={this.handleTargetClick} />
+      <TargetOuter style={rect}>
+        <TargetInner pulse={pulse} bgColor={targetBgColor} radius={targetRadius} style={rect}>
+          <Clone html={clone} />
+          <TargetOverlay onClick={targetOnClick && this.handleTargetClick} />
         </TargetInner>
       </TargetOuter>
     );
   }
 
   render() {
+    // NOTE: `in` & `scrollY` are NOT public API, so are undocumented
     const {
-      children, dialogAppearance, dialogPlacement, dialogWidth, footer, header, target,
+      children, dialogAppearance, dialogPlacement, dialogWidth,
+      footer, header, in: inProp, scrollY, target, // eslint-disable-line react/prop-types
     } = this.props;
-    const { scrollY } = this.state;
 
     // NOTE: the `in` property is provided by a container -- react-transition-group.
     // It is not part of the public API, so should NOT be documented.
     // eslint-disable-next-line react/prop-types
-    if (!this.props.in) return null;
+    // if (!this.props.in) return null;
 
     // If an appearance is supplied use that. Otherwise use help when a target
     // is present and default when modal
@@ -181,10 +129,10 @@ class Spotlight extends Component {
       </FocusScope>
     );
 
+    // console.log('props', this.props);
+
     return (
-      <Fill scrollDistance={scrollY} in>
-        <Blanket />
-        <ScrollLock />
+      <Fill scrollDistance={scrollY} in={inProp}>
         {target ? (
           <Layer
             boundariesElement="scrollParent"
@@ -196,7 +144,7 @@ class Spotlight extends Component {
             {this.renderTargetClone()}
           </Layer>
         ) : (
-          <Positioner in size={size}>
+          <Positioner in={inProp} size={size}>
             {dialog}
           </Positioner>
         )}
@@ -205,15 +153,9 @@ class Spotlight extends Component {
   }
 }
 
-const SpotlightWithRenderTarget = withRenderTarget({ target: 'spotlight' }, Spotlight);
-
-class SpotlightWrapper extends Component {
-  static contextTypes = {
-    spotlightRegistry: PropTypes.instanceOf(SpotlightRegistry).isRequired,
-  };
-  render() {
-    return <SpotlightWithRenderTarget {...this.props} {...this.context} />;
-  }
-}
-
-export default SpotlightWrapper;
+export default withScrollMeasurements(
+  withRenderTarget(
+    { target: 'spotlight' },
+    Spotlight
+  )
+);

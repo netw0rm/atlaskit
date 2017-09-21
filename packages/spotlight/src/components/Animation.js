@@ -3,7 +3,7 @@ import React from 'react';
 import { Transition } from 'react-transition-group';
 import { ChildrenType, ComponentType } from '../types';
 
-const duration = 500;
+const duration = 300;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
 const verticalOffset = 16;
 
@@ -95,12 +95,8 @@ export const Fade = props => (
 // SLIDE UP
 // ==============================
 
-export const SlideUp = (
-  { stackIndex, ...props }:
-  { stackIndex: number, props: Array<any> }
-) => {
-  const translateY = stackIndex * (verticalOffset / 2);
-  const restingTransform = `translate3d(0, ${translateY}px, 0)`;
+export const SlideUp = (props) => {
+  const restingTransform = 'translate3d(0, 0, 0)';
 
   return (
     <Animation
@@ -120,6 +116,10 @@ export const SlideUp = (
         exiting: {
           opacity: 0,
           transform: `translate3d(0, -${verticalOffset * 2}px, 0)`,
+        },
+        exited: {
+          opacity: 0,
+          transform: `translate3d(0, ${verticalOffset * 2}px, 0)`,
         },
       }}
       {...props}

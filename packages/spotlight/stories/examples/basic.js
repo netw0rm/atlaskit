@@ -49,9 +49,9 @@ class Example extends Component {
   state = { mode: null }
   setMode = (mode) => this.setState({ mode })
   startOnboarding = () => this.setMode('welcome')
-  spotlightInput = () => this.setMode('dropdown')
+  spotlightDropdown = () => this.setMode('dropdown')
   spotlightParagraph = () => this.setMode('parargraph')
-  spotlightDropdown = () => this.setMode('avatar')
+  spotlightAvatar = () => this.setMode('avatar')
   finishOnboarding = () => this.setMode(null)
   renderMode() {
     const welcomeHeader = (
@@ -77,10 +77,10 @@ class Example extends Component {
             <p>Take it for a spin and let us know what you think.</p>
             <div style={{ paddingBottom: '1em', paddingTop: '1em' }}>
               <ButtonGroup>
-                <Button onClick={this.spotlightInput} appearance="help">
+                <Button onClick={this.spotlightDropdown} appearance="help">
                   Switch to the new JIRA
                 </Button>
-                <Button onClick={this.spotlightInput} appearance="subtle">
+                <Button onClick={this.spotlightDropdown} appearance="subtle">
                   Remind me later
                 </Button>
               </ButtonGroup>
@@ -137,10 +137,10 @@ class Example extends Component {
             circumvent the clone operation and provide their own component.
           </p>
           <ButtonGroup>
-            <Button onClick={this.spotlightInput} appearance="help">
+            <Button onClick={this.spotlightDropdown} appearance="help">
               Prev
             </Button>
-            <Button onClick={this.spotlightDropdown} appearance="help">
+            <Button onClick={this.spotlightAvatar} appearance="help">
               Next
             </Button>
           </ButtonGroup>

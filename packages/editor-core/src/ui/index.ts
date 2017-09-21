@@ -17,3 +17,4 @@ export { default as ToolbarLists } from './ToolbarLists';
 export { default as ToolbarTask } from './ToolbarTask';
 export { default as ToolbarTextFormatting } from './ToolbarTextFormatting';
 export { default as ToolbarMedia } from './ToolbarMedia';
+export { default as HelpDialog } from './HelpDialog';

@@ -141,6 +141,17 @@ const showCategory = (category: string, component): Promise<any> => {
   });
 };
 
+const findEmojiInCategory = (emojis, categoryId: string): EmojiDescription | undefined => {
+  categoryId = categoryId.toLocaleUpperCase();
+  for (let i = 0; i < emojis.length; i++) {
+    const emoji = emojis.at(i).prop('emoji');
+    if (emoji.category === categoryId) {
+      return emoji;
+    }
+  }
+  return undefined;
+};
+
 const findHandEmoji = (emojis): number => {
   let offset = -1;
   emojis.forEach((emoji, index) => {
@@ -258,12 +269,10 @@ describe('<EmojiPicker />', () => {
           expect(categoryVisible('flags', component), 'Flag category not rendered as not in view').to.equal(false);
 
           return showCategory('flags', component);
-        }).then(() => {
-          return waitUntil(() => categoryVisible('flags', component)).then(() => {
-            // Can't grab first in list as some SYMBOL emojis are still 'visible'
-            const emoji = findEmoji(list).at(8);
-            expect(emoji.prop('emoji').category, 'Emoji shown in list is in flag category').to.equal('FLAGS');
-          });
+        }).then(() => waitUntil(() => categoryVisible('flags', component))
+         ).then(() => {
+          const emoji = findEmojiInCategory(findEmoji(list), 'flags');
+          expect(emoji!.category, 'Emoji shown in list is in flag category').to.equal('FLAGS');
         });
       })
     );
@@ -276,13 +285,10 @@ describe('<EmojiPicker />', () => {
           expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
 
           return showCategory(customCategory, component);
-        }).then(() => {
-          return  waitUntil(() => categoryVisible(customCategory, component)).then(() => {
-            const emojis = findEmoji(list);
-            // Grab last emoji in list since only one custom emoji
-            const customEmoji = emojis.at(emojis.length - 1);
-            expect(customEmoji.prop('emoji').category).to.equal(customCategory);
-          });
+        }).then(() => waitUntil(() => categoryVisible(customCategory, component))
+         ).then(() => {
+          const emoji = findEmojiInCategory(findEmoji(list), customCategory);
+          expect(emoji!.category, 'Emoji shown in list is in custom category').to.equal(customCategory);
         });
       })
     );

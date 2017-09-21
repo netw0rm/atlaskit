@@ -26,7 +26,7 @@ export interface OnSearch {
   (query: string): void;
 }
 
-export interface Props {
+interface Props {
   emojis: EmojiDescription[];
   showCustomCategory?: boolean;
   showUploadOption?: boolean;
@@ -42,8 +42,7 @@ export interface Props {
   query?: string;
 }
 
-export interface State {
-  scrollToIndex?: number;
+interface State {
 }
 
 interface EmojiGroup {

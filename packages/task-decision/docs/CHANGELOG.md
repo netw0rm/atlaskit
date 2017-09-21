@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 4.0.4 (2017-09-21)
+
+* bug fix; fix :derp: ([088588f](https://bitbucket.org/atlassian/atlaskit/commits/088588f))
+* bug fix; fix typescript validation error in test. ([a6f3d53](https://bitbucket.org/atlassian/atlaskit/commits/a6f3d53))
 ## 4.0.3 (2017-09-20)
 
 * bug fix; workaround chromium 56 bug for background svg's blurring (issues closed: fs-1392) ([727ed6c](https://bitbucket.org/atlassian/atlaskit/commits/727ed6c))

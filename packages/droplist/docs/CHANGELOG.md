@@ -1,5 +1,14 @@
 # @atlaskit/droplist
 
+## 4.11.1 (2017-09-21)
+
+* bug fix; update item dependency (issues closed: ak-3418) ([4f64804](https://bitbucket.org/atlassian/atlaskit/commits/4f64804))
+
+
+
+
+
+
 ## 4.11.0 (2017-08-31)
 
 * bug fix; droplist dependencies bumped to latest (issues closed: ak-3392) ([f24b3ba](https://bitbucket.org/atlassian/atlaskit/commits/f24b3ba))

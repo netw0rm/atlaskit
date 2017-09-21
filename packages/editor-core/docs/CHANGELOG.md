@@ -1,5 +1,15 @@
 # @atlaskit/editor-core
 
+## 47.4.1 (2017-09-21)
+
+* bug fix; fix typescript validation error in test. ([a6f3d53](https://bitbucket.org/atlassian/atlaskit/commits/a6f3d53))
+* bug fix; added editorView.destroy(); to plugin tests ([adfb751](https://bitbucket.org/atlassian/atlaskit/commits/adfb751))
+* bug fix; add unmount to all ui tests (issues closed: ed-2836) ([621681a](https://bitbucket.org/atlassian/atlaskit/commits/621681a))
+
+
+* bug fix; attempt 1 to fix the build ([3c5796f](https://bitbucket.org/atlassian/atlaskit/commits/3c5796f))
+* bug fix; fix code splitted mediapicker in editor-core (issues closed: ed-2776) ([46b96c7](https://bitbucket.org/atlassian/atlaskit/commits/46b96c7))
+* bug fix; code splitted mediapicker from editor-core (issues closed: ed-2776) ([310cfb9](https://bitbucket.org/atlassian/atlaskit/commits/310cfb9))
 ## 47.4.0 (2017-09-20)
 
 * feature; bump media-card ([06caa58](https://bitbucket.org/atlassian/atlaskit/commits/06caa58))

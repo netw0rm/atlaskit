@@ -122,7 +122,7 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... something went wrong');
       expect(xflow.find(ErrorFlag).text()).toMatch('That request didn\'t make it through. Shall we try again?');
     });
   });

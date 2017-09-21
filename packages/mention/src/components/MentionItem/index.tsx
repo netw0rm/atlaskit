@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
-import Spinner from '@atlaskit/spinner';
+import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';
@@ -105,20 +105,7 @@ export interface Props {
   onSelection?: OnMentionEvent;
 }
 
-export interface State {
-  Avatar?: React.ComponentClass<any>;
-}
-
-export default class MentionItem extends PureComponent<Props, State> {
-  state: State = {};
-
-  componentWillMount() {
-    require.ensure([], (require) => {
-      const Avatar = require('@atlaskit/avatar').default;
-      this.setState({ Avatar });
-    });
-  }
-
+export default class MentionItem extends PureComponent<Props, undefined> {
   // internal, used for callbacks
   private onMentionSelected = (event: MouseEvent<any>) => {
     if (leftClick(event) && this.props.onSelection) {
@@ -135,7 +122,6 @@ export default class MentionItem extends PureComponent<Props, State> {
 
   render() {
     const { mention, selected } = this.props;
-    const { Avatar } = this.state;
     const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge, accessLevel } = mention;
     const { status, time } = presence || {} as Presence;
     const restricted = isRestricted(accessLevel);
@@ -154,10 +140,7 @@ export default class MentionItem extends PureComponent<Props, State> {
       >
         <RowStyle>
           <AvatarStyle restricted={restricted}>
-            {Avatar
-              ? <Avatar src={avatarUrl} size="medium" presence={status} borderColor={borderColor} />
-              : <Spinner />
-            }
+            <Avatar src={avatarUrl} size="medium" presence={status} borderColor={borderColor} />
           </AvatarStyle>
           <NameSectionStyle restricted={restricted}>
             {renderHighlight(FullNameStyle, name, nameHighlights)}

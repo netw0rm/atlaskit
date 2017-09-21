@@ -4,11 +4,3 @@
   @see https://facebook.github.io/jest/docs/configuration.html#setuptestframeworkscriptfile-string
 */
 require('jest-styled-components');
-
-if (!require.ensure) {
-  Object.defineProperties(Object.getPrototypeOf(require), {
-    ensure: {
-      value: (deps, cb) => cb(require),
-    },
-  });
-}

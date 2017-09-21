@@ -15,7 +15,7 @@ import NoteText from '../styled/NoteText';
 const messages = defineMessages({
   errorFlagTitle: {
     id: 'xflow.generic.request-trial-note.error-flag.title',
-    defaultMessage: 'Oops... Something went wrong',
+    defaultMessage: 'Oops... something went wrong',
   },
   errorFlagDescription: {
     id: 'xflow.generic.request-tral-note.error-flag.description',

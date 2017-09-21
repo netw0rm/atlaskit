@@ -12,9 +12,44 @@ function assertEqual(actual, expected) {
   expect(render(actual)).toBe(render(expected));
 }
 
+/* eslint-disable jest/no-disabled-tests */
 describe(name, () => {
-  // eslint-disable-next-line jest/no-focused-tests
-  describe.only('target', () => {
+  describe('manager', () => {
+    it('should render as a div by default', () => {
+      assertEqual(
+        <SpotlightManager>
+          <span>foo</span>
+        </SpotlightManager>,
+        // should equal
+        <div>
+          <span>foo</span>
+        </div>
+      );
+    });
+    it('should accept component as a prop', () => {
+      assertEqual(
+        <SpotlightManager component="section">
+          <span>foo</span>
+        </SpotlightManager>,
+        // should equal
+        <section>
+          <span>foo</span>
+        </section>
+      );
+    });
+    it('should accept complex component as a prop', () => {
+      assertEqual(
+        <SpotlightManager component={props => <blockquote {...props} />}>
+          <span>foo</span>
+        </SpotlightManager>,
+        // should equal
+        <blockquote>
+          <span>foo</span>
+        </blockquote>
+      );
+    });
+  });
+  describe('target', () => {
     it('should render its children only', () => {
       assertEqual(
         <SpotlightManager>
@@ -23,11 +58,13 @@ describe(name, () => {
           </SpotlightTarget>
         </SpotlightManager>,
         // should equal
-        <span>foo</span>
+        <div>
+          <span>foo</span>
+        </div>
       );
     });
   });
-  describe('spotlight', () => {
+  describe.skip('spotlight', () => {
     it('should render content', () => {
       assertEqual(
         <SpotlightManager>

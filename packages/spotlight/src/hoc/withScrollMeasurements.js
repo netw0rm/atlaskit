@@ -20,6 +20,9 @@ function getInitialState() {
     scrollY: getScrollY(),
   };
 }
+
+let withScrollMeasurementsId = 0;
+
 export default function withScrollMeasurements(WrappedComponent) {
   return class SpotlightWrapper extends Component {
     state: State = getInitialState();
@@ -37,7 +40,7 @@ export default function withScrollMeasurements(WrappedComponent) {
         throw Error('`Spotlight` requires `SpotlightManager` as an ancestor.');
       }
 
-      spotlightRegistry.mount(target || 'no_target');
+      spotlightRegistry.mount(target || `no_target_${++withScrollMeasurementsId}`);
 
       if (target) {
         const node = spotlightRegistry.get(target);
@@ -49,7 +52,7 @@ export default function withScrollMeasurements(WrappedComponent) {
       const { target } = this.props;
       const { spotlightRegistry } = this.context;
 
-      spotlightRegistry.unmount(target || 'no_target');
+      spotlightRegistry.unmount(target || `no_target_${withScrollMeasurementsId}`);
     }
     measureAndScroll = (node) => {
       const { height, left, top: initialTop, width } = node.getBoundingClientRect();
@@ -64,9 +67,9 @@ export default function withScrollMeasurements(WrappedComponent) {
         window.scrollTo(0, scrollY + (initialTop - gutter));
 
       // hidden below viewport
-      } else if (initialTop > scrollY + window.innerHeight) {
+      } else if ((initialTop + height) > (scrollY + window.innerHeight)) {
         top = gutter;
-        window.scrollTo(0, initialTop - gutter);
+        window.scrollTo(0, (initialTop + scrollY) - gutter);
       }
 
       // get adjusted measurements after scrolling

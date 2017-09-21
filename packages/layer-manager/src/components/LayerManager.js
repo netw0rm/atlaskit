@@ -35,7 +35,6 @@ export default class LayerManager extends PureComponent {
             name="modal"
           />
           <GatewayDest
-            component={TransitionGroup}
             id="gateway-destination-spotlight"
             name="spotlight"
           />

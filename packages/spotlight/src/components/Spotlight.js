@@ -94,16 +94,11 @@ class Spotlight extends Component {
   }
 
   render() {
-    // NOTE: `in` & `scrollY` are NOT public API, so are undocumented
+    // NOTE: `scrollY` is NOT public API, so is undocumented
     const {
       children, dialogAppearance, dialogPlacement, dialogWidth,
-      footer, header, in: inProp, scrollY, target, // eslint-disable-line react/prop-types
+      footer, header, scrollY, target, // eslint-disable-line react/prop-types
     } = this.props;
-
-    // NOTE: the `in` property is provided by a container -- react-transition-group.
-    // It is not part of the public API, so should NOT be documented.
-    // eslint-disable-next-line react/prop-types
-    // if (!this.props.in) return null;
 
     // If an appearance is supplied use that. Otherwise use help when a target
     // is present and default when modal
@@ -114,7 +109,7 @@ class Spotlight extends Component {
     const size = dialogWidth || (target ? 'small' : 'medium');
 
     const dialog = (
-      <FocusScope key={target}>
+      <FocusScope>
         <Dialog
           appearance={appearance}
           size={size}
@@ -129,10 +124,8 @@ class Spotlight extends Component {
       </FocusScope>
     );
 
-    // console.log('props', this.props);
-
     return (
-      <Fill scrollDistance={scrollY} in={inProp}>
+      <Fill in scrollDistance={scrollY}>
         {target ? (
           <Layer
             boundariesElement="scrollParent"
@@ -144,7 +137,7 @@ class Spotlight extends Component {
             {this.renderTargetClone()}
           </Layer>
         ) : (
-          <Positioner in={inProp} size={size}>
+          <Positioner in size={size}>
             {dialog}
           </Positioner>
         )}

@@ -2,7 +2,11 @@
 import React, { PureComponent } from 'react';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import { colors, themed } from '@atlaskit/theme';
+import { withTheme, ThemeProvider } from 'styled-components';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
+
+const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
+const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
 type Props = {|
   /** Sets whether the checkbox is checked or unchecked. */
@@ -16,6 +20,8 @@ type Props = {|
   label: string,
   /** The name of the submitted field in a checkbox. */
   name: string,
+  /** Marks the field as invalid. Changes style of unchecked component. */
+  isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   state the checkbox will naturally be set to. The stateless version does not
@@ -32,7 +38,7 @@ type State = {|
   isHovered: boolean,
 |};
 
-export default class CheckboxStateless extends PureComponent {
+class CheckboxStateless extends PureComponent {
   props: Props // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,
@@ -50,12 +56,18 @@ export default class CheckboxStateless extends PureComponent {
     if (this.checkbox && this.checkbox.focus) this.checkbox.focus(e);
   }
 
-  onBlur = () => this.setState({ isActive: false, isFocused: false })
+  onBlur = () => this.setState({
+    // onBlur is called after onMouseDown if the checkbox was focused, however
+    // in this case on blur is called immediately after, and we need to check
+    // whether the mouse is down.
+    isActive: this.state.mouseIsDown && this.state.isActive,
+    isFocused: false,
+  })
   onFocus = () => this.setState({ isFocused: true })
   onMouseLeave = () => this.setState({ isActive: false, isHovered: false })
   onMouseEnter = () => this.setState({ isHovered: true })
-  onMouseUp = () => this.setState({ isActive: false })
-  onMouseDown = () => this.setState({ isActive: true })
+  onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false })
+  onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true })
 
   onKeyDown = (event: KeyboardEvent) => {
     if (this.actionKeys.includes(event.key)) {
@@ -68,41 +80,37 @@ export default class CheckboxStateless extends PureComponent {
     }
   }
 
+  // The secondary color represents the tick
   getSecondaryColor = (): string => {
     const { isChecked, isDisabled, ...rest } = this.props;
-    const { isHovered, isActive } = this.state;
+    const { isActive } = this.state;
 
-    let color = themed({ light: colors.N0, dark: colors.N0 });
+    let color = themed({ light: colors.N0, dark: colors.DN10 });
 
-    if (isDisabled) {
-      color = themed({ light: colors.N30, dark: colors.N30 });
-    } else if (isActive) {
-      color = themed({ light: colors.B50, dark: colors.B50 });
-    } else if (isHovered && !isChecked) {
-      color = themed({ light: colors.N50, dark: colors.N50 });
+    if (isDisabled && !isChecked) {
+      color = themed({ light: colors.N70, dark: colors.DN90 });
+    } else if (isActive && isChecked) {
+      color = themed({ light: colors.B400, dark: colors.DN10 });
     } else if (!isChecked) {
-      color = themed({ light: colors.N30, dark: colors.N30 });
+      color = transparent;
     }
-
     return color(rest);
   }
-
+  // The secondary color represents the box color
   getPrimaryColor = (): string => {
     const { isChecked, isDisabled, ...rest } = this.props;
     const { isHovered, isActive } = this.state;
-    let color = themed({ light: colors.N30, dark: colors.N30 });
+    let color = backgroundColor;
     if (isDisabled) {
-      color = isChecked
-      ? themed({ light: colors.N70A, dark: colors.N70A })
-      : themed({ light: colors.N30, dark: colors.N30 });
+      color = themed({ light: colors.N20A, dark: colors.DN10 });
     } else if (isActive) {
-      color = themed({ light: colors.B400, dark: colors.B400 });
+      color = themed({ light: colors.B75, dark: colors.B200 });
+    } else if (isHovered && isChecked) {
+      color = themed({ light: colors.B300, dark: colors.B75 });
     } else if (isHovered) {
-      color = isChecked
-        ? themed({ light: colors.B300, dark: colors.B300 })
-        : themed({ light: colors.N50, dark: colors.N50 });
+      color = themed({ light: colors.N50A, dark: colors.DN30 });
     } else if (isChecked) {
-      color = colors.blue;
+      color = themed({ light: colors.B300, dark: colors.B100 });
     }
 
     return color(rest);
@@ -111,14 +119,16 @@ export default class CheckboxStateless extends PureComponent {
   render() {
     const {
       isChecked,
-      onChange,
-      label,
-      value,
-      isFullWidth,
       isDisabled,
+      isFullWidth,
+      isInvalid,
+      label,
       name,
+      onChange,
+      value,
     } = this.props;
-    const { isFocused } = this.state;
+    const { isFocused, isActive, isHovered } = this.state;
+    // console.log('isFocused:', isFocused, 'isActive:', isActive);
     return (
       <Label
         isDisabled={isDisabled}
@@ -146,6 +156,9 @@ export default class CheckboxStateless extends PureComponent {
             isChecked={isChecked}
             isDisabled={isDisabled}
             isFocused={isFocused}
+            isActive={isActive}
+            isHovered={isHovered}
+            isInvalid={isInvalid}
           >
             <CheckboxIcon
               primaryColor={this.getPrimaryColor()}
@@ -158,4 +171,16 @@ export default class CheckboxStateless extends PureComponent {
       </Label>
     );
   }
+}
+
+const CheckboxWithTheme = withTheme(CheckboxStateless);
+
+const emptyTheme = {};
+
+export default function (props) {
+  return (
+    <ThemeProvider theme={emptyTheme}>
+      <CheckboxWithTheme {...props} />
+    </ThemeProvider>
+  );
 }

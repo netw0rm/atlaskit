@@ -32,18 +32,28 @@ type IconWrapperProps = {
   isFocused: boolean,
 }
 
-const borderColor = themed({ light: colors.N40A, dark: colors.N40A });
+const borderColor = themed({ light: colors.N50A, dark: colors.DN80 });
 const focusBorder = css`
-  stroke: ${themed({ light: colors.B100, dark: colors.B100 })};
+  stroke: ${themed({ light: colors.N50A, dark: colors.B75 })};
+  stroke-width: 2px;
+`;
+const invalidBorder = css`
+  stroke: ${themed({ light: colors.R100, dark: colors.R100 })};
   stroke-width: 2px;
 `;
 const border = css`
-  stroke: ${borderColor};
+  stroke: ${({ isHovered, ...rest }) => (
+    isHovered
+    ? themed({ light: colors.N50A, dark: colors.DN200 })(rest)
+    : borderColor(rest)
+  )};
   stroke-width: 1px;
 `;
 
 const getBorderColor = (props: IconWrapperProps) => {
   if (props.isDisabled) return '';
+  if (props.isInvalid && !props.isChecked) return invalidBorder;
+  if ((props.isChecked && !props.isFocused) || props.isActive) return '';
   if (props.isFocused) return focusBorder;
   return border;
 };

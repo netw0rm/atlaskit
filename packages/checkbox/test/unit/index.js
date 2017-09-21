@@ -16,8 +16,8 @@ describe(name, () => {
         onChange={() => {}}
         value="stub value"
       />);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N30);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N30);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N40A);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should have correct checked styles', () => {
       const cb = mount(<CheckboxStateless
@@ -25,7 +25,7 @@ describe(name, () => {
         onChange={() => {}}
         value="stub value"
       />);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be correctly styled disabled', () => {
@@ -35,8 +35,8 @@ describe(name, () => {
         value="stub value"
         isDisabled
       />);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N30);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N30);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N70);
     });
     it('should be correctly styled when hovered', () => {
       const cb = mount(<CheckboxStateless
@@ -45,8 +45,8 @@ describe(name, () => {
         value="stub value"
       />);
       cb.simulate('mouseenter');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N50);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N50);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N50A);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should be correctly styled when hovered and checked', () => {
       const cb = mount(<CheckboxStateless
@@ -66,7 +66,7 @@ describe(name, () => {
       />);
       cb.simulate('mouseenter');
       cb.simulate('mouseleave');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be active if mousedown and checked', () => {
@@ -76,9 +76,8 @@ describe(name, () => {
         value="stub value"
       />);
       cb.simulate('mousedown');
-      expect(cb.state('isActive')).toBe(true);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.B50);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.B400);
     });
     it('should be active if mousedown and unchecked', () => {
       const cb = mount(<CheckboxStateless
@@ -87,9 +86,8 @@ describe(name, () => {
         value="stub value"
       />);
       cb.simulate('mousedown');
-      expect(cb.state('isActive')).toBe(true);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.B50);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B75);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should not be active if mousedown and disabled', () => {
       const cb = mount(<CheckboxStateless
@@ -99,9 +97,8 @@ describe(name, () => {
         isDisabled
       />);
       cb.simulate('mousedown');
-      expect(cb.state('isActive')).toBe(true);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N30);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N30);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N70);
     });
     it('should call onchange on change', () => {
       const myMock = jest.fn();
@@ -111,18 +108,18 @@ describe(name, () => {
         value="stub value"
       />);
       cb.find(HiddenCheckbox).simulate('change', { target: { checked: true } });
-      expect(cb.prop('isChecked')).toBe(false);
+      expect(cb.find('CheckboxStateless').prop('isChecked')).toBe(false);
       expect(myMock.mock.calls.length).toBe(1);
     });
   });
   describe('<Checkbox />', () => {
     it('should render initiallyChecked', () => {
       const cb = mount(<Checkbox value="stub value" initiallyChecked />);
-      expect(cb.find(CheckboxStateless).prop('isChecked')).toBe(true);
+      expect(cb.find('CheckboxStateless').prop('isChecked')).toBe(true);
     });
     it('should render initiallyChecked={false}', () => {
       const cb = mount(<Checkbox value="stub value" />);
-      expect(cb.find(CheckboxStateless).prop('isChecked')).toBe(false);
+      expect(cb.find('CheckboxStateless').prop('isChecked')).toBe(false);
     });
   });
   describe('<CheckboxGroup />', () => {

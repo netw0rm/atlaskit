@@ -8,7 +8,7 @@ export const sizes = {
   emojiRowHeight: 40,         // 32px button height + 4px padding top/bottom
   addEmojiHeight: 32,         // 32px height
   loadingRowHeight: 150,      // Fills remaining space without scrolling when loading.
-  uploadActionHeight: 32,     // 32px height
+  uploadActionHeight: 40,     // 40px height
 
   emojiPerRow: 8,
 };

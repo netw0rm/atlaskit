@@ -104,6 +104,7 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   onExpanded?: (editor?: Editor) => void;
+  onParseFail?: () => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
@@ -486,7 +487,9 @@ export default class Editor extends PureComponent<Props, State> {
           }
         }
       });
-
+      if (!this.transformer.isValid(this.props.defaultValue) && this.props.onParseFail) {
+        this.props.onParseFail();
+      }
       analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ editorView }, this.focus);

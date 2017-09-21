@@ -72,16 +72,42 @@ export default class JIRATransformer implements Transformer<string> {
       .replace(/&amp;/g, '&');
   }
 
-  parse(html: string): PMNode {
-    const convertedNodes = new WeakMap<Node, Fragment | PMNode | null | undefined>();
-    const dom = fixDoc(parseHtml(html)).querySelector('body')!;
-    const nodes = bfsOrder(dom);
+  parse(html: string): PMNode | undefined {
+    try {
+      const dom = fixDoc(parseHtml(html)).querySelector('body')!;
+      const nodes = bfsOrder(dom);
 
-    // JIRA encodes empty content as a single nbsp
-    if (nodes.length === 1 && nodes[0].textContent === '\xa0') {
-      const schemaNodes = this.schema.nodes;
-      return schemaNodes.doc.create({}, schemaNodes.paragraph.create());
+      // JIRA encodes empty content as a single nbsp
+      if (nodes.length === 1 && nodes[0].textContent === '\xa0') {
+        const schemaNodes = this.schema.nodes;
+        return schemaNodes.doc.create({}, schemaNodes.paragraph.create());
+      }
+      return this.createEditorContent(nodes, dom);
     }
+    catch(ex) {
+      return;
+    }
+  }
+
+  isValid(html?: string): boolean {
+    try {
+      if (!html) {
+        return true;
+      }
+      const dom = fixDoc(parseHtml(html)).querySelector('body')!;
+      const nodes = bfsOrder(dom);
+      const doc = this.createEditorContent(nodes, dom);
+      if(dom.textContent && !doc.textContent) {
+        return false;
+      }
+      return true;
+    } catch(ex) {
+      return false;
+    }
+  }
+
+  private createEditorContent(nodes: Node[], dom: Element) {
+    const convertedNodes = new WeakMap<Node, Fragment | PMNode | null | undefined>();
 
     // Process through nodes in reverse (so deepest child elements are first).
     for (let i = nodes.length - 1; i >= 0; i--) {
@@ -106,8 +132,7 @@ export default class JIRATransformer implements Transformer<string> {
     const compatibleContent = this.schema.nodes.doc.validContent(content)
       ? content
       : ensureBlocks(content, this.schema);
-
-    return this.schema.nodes.doc.createChecked({}, compatibleContent);
+      return this.schema.nodes.doc.createChecked({}, compatibleContent);
   }
 
   /*

@@ -34,7 +34,7 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/button": "^5.1.1",
-    "@atlaskit/editor-core": "^47.0.0",
+    "@atlaskit/editor-core": "^47.6.2",
     "@atlaskit/mention": "^7.3.1",
     "@atlaskit/spinner": "^1.0.3",
     "collapse-whitespace": "^1.1.4",

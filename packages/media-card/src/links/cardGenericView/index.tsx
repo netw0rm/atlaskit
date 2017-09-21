@@ -201,7 +201,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
         </Title>
       ) : null;
       description = (
-        <Description key="description">
+        <Description>
           <Ellipsify text={linkDescription || ''} lines={2} endLength={0} />
         </Description>
       );

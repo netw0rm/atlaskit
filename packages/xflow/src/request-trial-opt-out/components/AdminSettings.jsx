@@ -14,6 +14,7 @@ import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
 import OptOutRadioDiv from '../styled/OptOutRadioDiv';
 import CustomLabel from '../styled/CustomLabel';
+import NoteText from '../styled/NoteText';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -49,6 +50,7 @@ class AdminSettings extends Component {
   static propTypes = {
     heading: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
+    notePlaceholder: PropTypes.string.isRequired,
     defaultSelectedRadio: PropTypes.string.isRequired,
     optionItems: PropTypes.arrayOf(
       PropTypes.shape({
@@ -78,7 +80,6 @@ class AdminSettings extends Component {
     spinnerActive: this.props.spinnerActive,
     buttonsDisabled: this.props.buttonsDisabled,
     selectedRadio: this.props.defaultSelectedRadio,
-    requestTrialSendNoteStatus: null,
   };
 
   componentDidMount() {
@@ -113,8 +114,11 @@ class AdminSettings extends Component {
   handleContinueClick = async () => {
     const { firePrivateAnalyticsEvent } = this.props;
     const { selectedRadio } = this.state;
+    const noteTextValue = this.noteText.value;
+
     firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
       selectedRadio,
+      noteText: noteTextValue,
     });
     this.setState({
       spinnerActive: true,
@@ -171,7 +175,7 @@ class AdminSettings extends Component {
   };
 
   render() {
-    const { intl, heading, message, optionItems } = this.props;
+    const { intl, heading, message, optionItems, notePlaceholder } = this.props;
     const { optOutRequestStatus } = this.state;
 
     return (
@@ -227,6 +231,13 @@ class AdminSettings extends Component {
                 isSelected: this.state.selectedRadio === value,
               }))}
             />
+            <NoteText
+              innerRef={noteText => {
+                this.noteText = noteText;
+              }}
+              placeholder={notePlaceholder}
+              maxLength={300}
+            />
           </OptOutRadioDiv>
         </ModalDialog>
         <ErrorFlag
@@ -264,7 +275,8 @@ export default withXFlowProvider(
     xFlow: {
       config: {
         productLogo,
-        optOut: { optOutHeading, optOutMessage, optOutOptionItems, optOutDefaultSelectedRadio },
+        optOut: { optOutHeading, optOutMessage, optOutOptionItems,
+          optOutDefaultSelectedRadio, optOutNotePlaceholder },
       },
       status,
       optOutRequestTrialFeature,
@@ -279,5 +291,6 @@ export default withXFlowProvider(
     message: optOutMessage,
     optionItems: optOutOptionItems,
     defaultSelectedRadio: optOutDefaultSelectedRadio,
+    notePlaceholder: optOutNotePlaceholder,
   })
 );

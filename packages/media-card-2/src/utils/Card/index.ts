@@ -10,6 +10,7 @@ export interface CardProps {
 }
 
 export const Card = styled.div`
+  position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;

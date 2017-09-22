@@ -1,7 +1,7 @@
 import * as React from 'react';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
 import {DetailLayout} from '../DetailLayout';
-import {TitleWrapper, IconWrapper} from './styled';
+import {TitleWrapper} from './styled';
+import {ErrorIcon} from '../ErrorIcon';
 
 // TODO: add actions
 export interface ErrorViewProps {
@@ -16,9 +16,7 @@ export function ErroredView(props: ErrorViewProps) {
         </TitleWrapper>
       }
       icon={
-        <IconWrapper>
-          <WarningIcon label="error" size="small"/>
-        </IconWrapper>
+        <ErrorIcon/>
       }
     />
   );

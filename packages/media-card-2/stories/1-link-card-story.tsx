@@ -2,9 +2,8 @@
 import {storiesOf} from '@kadira/storybook';
 import {injectGlobal} from 'styled-components';
 import {
-  file,
-  link
-} from './card-story/index';
+  generic
+} from './link-card-story/index';
 
 injectGlobal`
   body {
@@ -12,7 +11,6 @@ injectGlobal`
   }
 `;
 
-storiesOf('Card', {})
-  .add('File', file)
-  .add('Link', link)
+storiesOf('LinkCard', {})
+  .add('Generic', generic)
 ;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FileViewModel} from '../../types';
+import {Status, MediaType} from '../../types';
 import {Card} from '../../utils/Card';
 import {Actions, Action} from '../../utils/Actions';
 import {ErroredView} from '../../utils/ErroredView';
@@ -8,16 +8,23 @@ import {ProgressBar} from '../../utils/ProgressBar';
 import {DetailLayout} from '../../utils/DetailLayout';
 import {TypeIcon} from './TypeIcon';
 import {toHumanReadableSize} from './toHumanReadableSize';
+import {Thumbnail, Details} from './styled';
 
 export {Action as Action};
 
-export interface FileViewProps extends FileViewModel {
+export interface FileViewProps {
+  status: Status;
+  type?: MediaType;
+  name?: string;
+  size?: number;
+  progress?: number;
   actions?: Action[];
+  thumbnailURI?: string;
 }
 
 export class FileView extends React.Component<FileViewProps, {}> {
 
-  renderUploading() { // TODO: overlay for images
+  renderUploading(): JSX.Element {
     const {name, actions} = this.props;
     return (
       <DetailLayout
@@ -28,13 +35,13 @@ export class FileView extends React.Component<FileViewProps, {}> {
     );
   }
 
-  renderLoading() {
+  renderLoading(): JSX.Element {
     return (
       <LoadingView type="file"/>
     );
   }
 
-  renderLoaded() { // TODO: overlay for images
+  renderLoaded(): JSX.Element {
     const {type, name, size, actions} = this.props;
     return (
       <DetailLayout
@@ -46,13 +53,13 @@ export class FileView extends React.Component<FileViewProps, {}> {
     );
   }
 
-  renderErrored() {
+  renderErrored(): JSX.Element {
     return (
       <ErroredView/>
     );
   }
 
-  renderContent() {
+  renderDetails(): JSX.Element {
     const {status} = this.props;
 
     switch (status) {
@@ -60,6 +67,7 @@ export class FileView extends React.Component<FileViewProps, {}> {
       case 'uploading':
         return this.renderUploading();
 
+      case 'waiting':
       case 'loading':
         return this.renderLoading();
 
@@ -73,11 +81,16 @@ export class FileView extends React.Component<FileViewProps, {}> {
   }
 
   render() {
+    const {thumbnailURI} = this.props;
     return (
       <Card width={156} height={116}>
-        {this.renderContent()}
+        {thumbnailURI && <Thumbnail src={thumbnailURI}/>}
+        <Details isOverlay={Boolean(thumbnailURI)}>
+        {this.renderDetails()}
+        </Details>
       </Card>
     );
   }
 
 }
+

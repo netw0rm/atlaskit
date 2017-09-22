@@ -6,7 +6,7 @@ import {
   loading,
   loaded,
   error
-} from './file-card-view-story/index';
+} from './file-view-story/index';
 
 injectGlobal`
   body {
@@ -14,7 +14,7 @@ injectGlobal`
   }
 `;
 
-storiesOf('FileCardView', {})
+storiesOf('FileView', {})
   .add('Uploading', uploading)
   .add('Loading', loading)
   .add('Loaded', loaded)

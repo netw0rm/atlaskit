@@ -26,10 +26,9 @@ import {
 export interface WithDetailsProps {
   context: Context;
   identifier: Identifier;
+  initialDetails?: Details;
   onChange?: (status: Status, details?: Details) => void;
-
-  // I would prefer to name the prop "children", but Typescript doesn't let me type "children"
-  render: (status: Status, details?: Details) => JSX.Element;
+  children: (status: Status, details?: Details) => JSX.Element;
 }
 
 export interface WithDetailsState {
@@ -40,11 +39,18 @@ export interface WithDetailsState {
 
 export class WithDetails extends React.Component<WithDetailsProps, WithDetailsState> {
 
+  state: WithDetailsState;
   subscription: Subscription;
 
-  state: WithDetailsState = {
-    status: 'loading'
-  };
+  constructor(props, context) {
+    super(props, context);
+    const {initialDetails} = props;
+    this.state = {
+      status: initialDetails ? 'loaded' : 'loading', // TODO: if file is pending this should be "waiting"
+      details: initialDetails
+    };
+
+  }
 
   isLinkPreviewIdentifier(identifier: Identifier): identifier is LinkPreviewIdentifier {
     const preview = identifier as LinkPreviewIdentifier;
@@ -124,7 +130,7 @@ export class WithDetails extends React.Component<WithDetailsProps, WithDetailsSt
 
     // re-subscribe when the context or identifier changes
     const {context: prevContext, identifier: prevIdentifier} = prevProps;
-    const {context: currContext, identifier: currIdentifier} = prevProps;
+    const {context: currContext, identifier: currIdentifier} = this.props;
     if (currContext !== prevContext || currIdentifier !== prevIdentifier) {
       this.subscribe();
     }
@@ -139,9 +145,9 @@ export class WithDetails extends React.Component<WithDetailsProps, WithDetailsSt
   }
 
   render() {
-    const {render} = this.props;
+    const {children} = this.props;
     const {status, details} = this.state;
-    return render(status, details);
+    return children(status, details);
   }
 
 }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {action} from '@kadira/storybook';
-import {LinkCardView, Action} from '../../src/LinkCardView';
 
 export function uploading() {
   const actions: Action[] = [

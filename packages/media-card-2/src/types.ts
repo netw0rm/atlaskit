@@ -47,16 +47,7 @@ export type Status =
 
 export type Details = FileDetails | LinkDetails | UrlPreview;
 
-export {Context, FileDetails, LinkDetails, UrlPreview};
-
-export interface FileViewModel {
-  status: Status;
-  type?: MediaType;
-  name?: string;
-  size?: number;
-  progress?: number;
-  actions?: Action[];
-}
+export {Context, FileDetails, LinkDetails, UrlPreview, MediaType};
 
 export interface LinkViewModel {
   status: Status;

@@ -155,7 +155,37 @@ describe('codeBlock - keymaps', () => {
               editorView.destroy();
             });
 
-            it('does not convert to code block if it does not start with fence', () => {
+            it('should convert to code block even if there are more than 3 backticks', () => {
+              const { editorView } = editor(doc(p('`````{<>}')));
+              sendKeyToPm(editorView, 'Enter');
+              expect(editorView.state.doc).to.deep.equal(doc(code_block()()));
+            });
+
+            it('should convert to code block even if its in middle of paragraph', () => {
+              const { editorView } = editor(doc(p('code ```{<>}')));
+              sendKeyToPm(editorView, 'Enter');
+              expect(editorView.state.doc).to.deep.equal(doc(code_block()('code ')));
+            });
+
+            it('should convert to code block even if there are more than 3 backticks in middle of paragraph', () => {
+              const { editorView } = editor(doc(p('code `````{<>}')));
+              sendKeyToPm(editorView, 'Enter');
+              expect(editorView.state.doc).to.deep.equal(doc(code_block()('code ')));
+            });
+
+            it('should convert to code block even if its in middle of paragraph with trailing spaces', () => {
+              const { editorView } = editor(doc(p('code ```     {<>}')));
+              sendKeyToPm(editorView, 'Enter');
+              expect(editorView.state.doc).to.deep.equal(doc(code_block()('code ')));
+            });
+
+            it('should convert to code block even and set language correctly even if its in middle of paragraph', () => {
+              const { editorView } = editor(doc(p('code ```java     {<>}')));
+              sendKeyToPm(editorView, 'Enter');
+              expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'java' })('code ')));
+            });
+
+            it('does not convert to code block if it is in middle of line and there is no space before it', () => {
               const { editorView } = editor(doc(p('hello```    {<>}   hello')));
 
               sendKeyToPm(editorView, 'Enter');

@@ -213,7 +213,8 @@ export const defaultProps = intl => ({
       optOutHeading: 'Product trial requests',
       optOutMessage: 'Change your notifications, or stop requests completely.',
       optOutDefaultSelectedRadio: 'admin-opt-out',
-      optOutNotePlaceholder: 'Can you tell us why you are turning off this feature? Your feedback helps improve future releases.',
+      optOutNotePlaceholder:
+        'Can you tell us why you are turning off this feature? Your feedback helps improve future releases.',
       optOutOptionItems: [
         {
           value: 'admin-opt-out',

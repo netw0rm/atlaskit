@@ -31,7 +31,6 @@ export const spriteEmoji: EmojiDescription = {
     width: 72,
   },
   searchable: true,
-  ascii: undefined,
 };
 
 export const imageEmoji: EmojiDescription = {
@@ -46,7 +45,6 @@ export const imageEmoji: EmojiDescription = {
     width: 24,
     height: 24,
   },
-  ascii: undefined,
   searchable: true,
 };
 
@@ -68,7 +66,6 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
     width: 24,
     height: 24,
   },
-  ascii: undefined,
   searchable: true,
 };
 
@@ -90,7 +87,6 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
     height: 24,
   },
   skinVariations: [],
-  ascii: undefined,
   searchable: true,
 };
 

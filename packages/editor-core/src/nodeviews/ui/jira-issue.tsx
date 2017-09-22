@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Node as PMNode } from '../../prosemirror';
-import Spinner from '@atlaskit/spinner';
+import { JiraLogo } from '@atlaskit/logo';
 import {
   akBorderRadius,
   akColorN30,
@@ -61,34 +61,15 @@ export interface Props {
   node: PMNode;
 }
 
-export interface State {
-  JiraLogo?: React.ComponentClass<any>;
-}
+export default function JIRAIssueNode(props: Props) {
+  const { node: { attrs: { issueKey } } } = props;
 
-export default class JIRAIssueNode extends React.Component<Props, State> {
-  state: State = {};
-
-  componentDidMount () {
-    require.ensure([], (require) => {
-      const { JiraLogo } = require('@atlaskit/logo');
-      this.setState({ JiraLogo });
-    });
-  }
-
-  render () {
-    const { node: { attrs: { issueKey } } } = this.props;
-    const { JiraLogo } = this.state;
-
-    return (
-      <WrapperNode>
-        <SvgChildNode>
-          {JiraLogo
-            ? <JiraLogo size="small" collapseTo="icon"/>
-            : <Spinner />
-          }
-        </SvgChildNode>
-        <JiraChildNode>{issueKey}</JiraChildNode>
-      </WrapperNode>
-    );
-  }
+  return (
+    <WrapperNode>
+      <SvgChildNode>
+        <JiraLogo size="small" collapseTo="icon"/>
+      </SvgChildNode>
+      <JiraChildNode>{issueKey}</JiraChildNode>
+    </WrapperNode>
+  );
 }

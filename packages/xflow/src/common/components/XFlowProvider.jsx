@@ -78,7 +78,7 @@ export const xFlowShape = PropTypes.shape({
       confirmReactivateMessage: PropTypes.node,
 
       grantAccessHeading: PropTypes.string,
-      grantAccessDefaultAccess: PropTypes.string,
+      grantAccessDefaultAccess: PropTypes.node,
       grantAccessSelectLabel: PropTypes.string,
       grantAccessUserSelectPlaceholder: PropTypes.string,
       grantAccessDefaultSelectedRadio: PropTypes.string,

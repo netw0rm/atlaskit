@@ -155,6 +155,22 @@ class LoadingTime extends Component {
 
     const { isReady, showErrorFlag } = this.state;
 
+    const loadingMessage = heading.trim() || message.trim() ? (
+      <LoadingTimeTextDiv>
+        <WhereToFindNewProductSVGDiv>
+          <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
+        </WhereToFindNewProductSVGDiv>
+        <WhereToFindNewProductDiv>
+          <h5>
+            {heading}
+          </h5>
+          <WhereToFindNewProductText>
+            {message}
+          </WhereToFindNewProductText>
+        </WhereToFindNewProductDiv>
+      </LoadingTimeTextDiv>
+    ) : '';
+
     return (
       <ModalDialog
         isOpen
@@ -199,19 +215,7 @@ class LoadingTime extends Component {
           <StartTrialHeader>
             {this.showHeading()}
           </StartTrialHeader>
-          <LoadingTimeTextDiv>
-            <WhereToFindNewProductSVGDiv>
-              <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
-            </WhereToFindNewProductSVGDiv>
-            <WhereToFindNewProductDiv>
-              <h5>
-                {heading}
-              </h5>
-              <WhereToFindNewProductText>
-                {message}
-              </WhereToFindNewProductText>
-            </WhereToFindNewProductDiv>
-          </LoadingTimeTextDiv>
+          {loadingMessage}
         </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

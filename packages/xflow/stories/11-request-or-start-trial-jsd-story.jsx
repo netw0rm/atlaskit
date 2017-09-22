@@ -3,9 +3,9 @@ import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider';
+import MockJSDXFlowProvider from './providers/MockJSDXFlowProvider';
 
-import mockConfluenceStatusChecker from './providers/mockConfluenceStatusChecker';
+import mockJSDStatusChecker from './providers/mockJSDStatusChecker';
 import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -92,67 +92,67 @@ const defaultProps = {
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
 };
 
-storiesOf('RequestOrStartTrial')
+storiesOf('RequestOrStartTrial (Jira Service Desk)')
   .add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+      <MockJSDXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
         />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
         canCurrentUserAddProduct={async () => true}
-        productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
+        productStatusChecker={mockJSDStatusChecker(DEACTIVATED)}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('User can add a product (ACTIVATING), Already Started with progress bar', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
-        productStatusChecker={mockConfluenceStatusChecker(ACTIVATING)}
+        productStatusChecker={mockJSDStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('User can add a product (ACTIVE), Already Started', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
-        productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
+        productStatusChecker={mockJSDStatusChecker(ACTIVE)}
         canCurrentUserAddProduct={async () => false}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('User cannot add a product (INACTIVE), Request Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps}>
+      <MockJSDXFlowProvider {...defaultProps}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialRequested={action('onTrialRequested')}
         />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('Initializing dialog, awaiting current product status (never resolves)', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
         productStatusChecker={{
           check() {
@@ -163,12 +163,12 @@ storiesOf('RequestOrStartTrial')
         }}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('Initializing dialog, Error flag after product status check fails (UNKNOWN)', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
         productStatusChecker={{
           check() {
@@ -179,18 +179,18 @@ storiesOf('RequestOrStartTrial')
         }}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   )
   .add('Initialisation error, Error flag after trusted user check failed', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSDXFlowProvider
         {...defaultProps}
         canCurrentUserAddProduct={() =>
           new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 500))}
         requestTrialAccess={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSDXFlowProvider>
     )
   );

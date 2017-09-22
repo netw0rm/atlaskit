@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 24.0.4 (2017-09-22)
+
+* bug fix; global primary icon in drawer is now slightly lighter (N300) (issues closed: ak-3529) ([68958a6](https://bitbucket.org/atlassian/atlaskit/commits/68958a6))
+
 ## 24.0.3 (2017-09-21)
 
 * bug fix; update item dependency (issues closed: ak-3418) ([4f64804](https://bitbucket.org/atlassian/atlaskit/commits/4f64804))

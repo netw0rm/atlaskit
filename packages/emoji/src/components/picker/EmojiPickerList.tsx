@@ -34,8 +34,6 @@ export interface Props {
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
   onOpenUpload?: () => void;
-  onSelectedCategoryResolved?: () => void;
-  selectedCategory?: string;
   selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
@@ -155,15 +153,6 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
         ...emoji,
       }
     };
-  }
-
-  componentWillReceiveProps = (nextProps: Props) => {
-    if (nextProps.selectedCategory) {
-      this.reveal(nextProps.selectedCategory);
-      if (nextProps.onSelectedCategoryResolved) {
-        nextProps.onSelectedCategoryResolved();
-      }
-    }
   }
 
   componentWillUpdate = (nextProps: Props, nextState: State) => {

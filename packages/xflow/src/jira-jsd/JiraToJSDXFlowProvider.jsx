@@ -55,11 +55,19 @@ const messages = defineMessages({
   },
   grantAccessDefaultAccessTo: {
     id: 'xflow.j2jsd.start-trial.grant-access.default-access.to',
+<<<<<<< HEAD
     defaultMessage: 'will be available in Jira Service Desk.',
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.everyone',
     defaultMessage: 'Everyone in Jira Software',
+=======
+    defaultMessage: 'will have access to Jira Service Desk.',
+  },
+  grantAccessOptionItemsLabelEveryone: {
+    id: 'xflow.j2jsd.start-trial.grant-access.option.everyone',
+    defaultMessage: 'Everyone in JIRA',
+>>>>>>> feat(component): include Jira Service Desk as a product in the xflow package.
   },
   grantAccessOptionItemsLabelSiteAdmins: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.site-admins',
@@ -71,7 +79,11 @@ const messages = defineMessages({
   },
   grantAccessSelectLabel: {
     id: 'xflow.j2jsd.start-trial.grant-access.select-label',
+<<<<<<< HEAD
     defaultMessage: 'Who can start solving problems in Jira Service Desk?',
+=======
+    defaultMessage: 'Who can start solving problems in JIRA Service Desk?',
+>>>>>>> feat(component): include Jira Service Desk as a product in the xflow package.
   },
   grantAccessUserSelectPlaceholder: {
     id: 'xflow.j2jsd.start-trial.grant-access.select-placeholder',
@@ -117,7 +129,11 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2jsd.request-trial.access.message',
+<<<<<<< HEAD
     defaultMessage: 'Send a request for your admin to activate Jira Service Desk',
+=======
+    defaultMessage: 'Send a request for your admin to activate confluence',
+>>>>>>> feat(component): include Jira Service Desk as a product in the xflow package.
   },
   notePrompt: {
     id: 'xflow.j2jsd.request-trial.note.prompt',
@@ -178,8 +194,11 @@ export const defaultProps = intl => ({
       ),
       grantAccessDefaultSelectedRadio: 'everyone',
       grantAccessUsersOption: 'specific-users',
+<<<<<<< HEAD
       grantAccessShowNotifyUsersOption: false,
       grantAccessShowProgressIndicator: false,
+=======
+>>>>>>> feat(component): include Jira Service Desk as a product in the xflow package.
       grantAccessOptionItems: [
         {
           value: 'everyone',
@@ -237,8 +256,6 @@ export const defaultProps = intl => ({
   closeAlreadyStartedDialog,
   checkProductRequestFlag: () => (false),
   setProductRequestFlag: null,
-  optOutRequestTrialFeature: null,
-  cancelOptOut: null,
 });
 
 export class JiraToJSDXFlowProviderBase extends Component {

@@ -166,7 +166,9 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         }
 
         const emojiPickerList = this.refs.emojiPickerList as EmojiPickerList;
-        emojiPickerList.reveal(categoryId);
+        if (emojiPickerList) {
+          emojiPickerList.reveal(categoryId);
+        }
 
         this.setState({
           activeCategory: categoryId,

@@ -55,7 +55,7 @@ const messages = defineMessages({
   },
   grantAccessDefaultAccessTo: {
     id: 'xflow.j2jsd.start-trial.grant-access.default-access.to',
-    defaultMessage: 'will have access to Jira Service Desk.',
+    defaultMessage: 'will be available in Jira Service Desk.',
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.everyone',
@@ -178,6 +178,7 @@ export const defaultProps = intl => ({
       ),
       grantAccessDefaultSelectedRadio: 'everyone',
       grantAccessUsersOption: 'specific-users',
+      grantAccessShowNotifyUsersOption: false,
       grantAccessOptionItems: [
         {
           value: 'everyone',
@@ -193,8 +194,6 @@ export const defaultProps = intl => ({
         },
       ],
       grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
-
-      showLoadingText: false,
 
       loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
       loadingProductMessage: intl.formatMessage(messages.loadingProductMessage),

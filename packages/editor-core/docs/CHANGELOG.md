@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.6.2 (2017-09-22)
+
+* bug fix; triple backticks in middle of paragraph if followed by space or enter should create ([58c2754](https://bitbucket.org/atlassian/atlaskit/commits/58c2754))
+
 ## 47.6.1 (2017-09-22)
 
 

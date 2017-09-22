@@ -7,7 +7,8 @@ export interface Definition {
   type: 'mention';
   attrs: {
     id: string;
-    text: string;
+    text?: string;
+    type?: 'DEFAULT' | 'SPECIAL' | 'APP' | 'SYSTEM';
   };
 }
 
@@ -24,14 +25,16 @@ export const mention: NodeSpec = {
     getAttrs: (dom: Element) => ({
       id: dom.getAttribute('data-mention-id')!,
       text: dom.textContent!,
-      accessLevel: dom.getAttribute('data-access-level')!
+      accessLevel: dom.getAttribute('data-access-level')!,
+      type: dom.getAttribute('data-mention-type'),
     })
   }],
   toDOM(node: any): [string, any, string] {
-    const { id, accessLevel, text } = node.attrs;
+    const { id, accessLevel, text, type } = node.attrs;
     const attrs = {
       'data-mention-id': id,
       'data-access-level': accessLevel,
+      'data-mention-type': type,
       'contenteditable': 'false',
     };
     return ['span', attrs, text];

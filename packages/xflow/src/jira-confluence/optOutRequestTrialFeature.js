@@ -1,7 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-const xflowEnabledProperty = 'xflow.non.admin.request.enabled.jira.confluence';
+const xflowEnabledProperty = 'xflow.non.admin.request.enabled';
 export const optOutEndpoint = `/rest/api/2/application-properties/${xflowEnabledProperty}`;
 
 export default async () => {

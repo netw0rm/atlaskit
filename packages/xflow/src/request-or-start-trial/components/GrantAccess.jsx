@@ -88,7 +88,7 @@ class GrantAccess extends Component {
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     heading: PropTypes.string,
-    defaultAccess: PropTypes.string,
+    defaultAccess: PropTypes.node,
 
     intl: intlShape.isRequired,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,

@@ -96,7 +96,7 @@ const defaultRequestOrStartTrialProps = {
   sourceContext: 'storybook-example-context',
 };
 
-storiesOf('RequestOrStartTrial')
+storiesOf('RequestOrStartTrial (Confluence)')
   .add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>

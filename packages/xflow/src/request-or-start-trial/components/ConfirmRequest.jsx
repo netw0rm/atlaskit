@@ -91,10 +91,10 @@ class ConfirmRequest extends Component {
                     id="xflow.generic.request-trial.requested-lozenge"
                     defaultMessage="Requested"
                   /> :
-                    <FormattedMessage
-                      id="xflow.generic.request-trial.inactive-lozenge"
-                      defaultMessage="Inactive on your site"
-                    />}
+                  <FormattedMessage
+                    id="xflow.generic.request-trial.inactive-lozenge"
+                    defaultMessage="Inactive on your site"
+                  />}
                 </Lozenge>
               </RequestTrialLozengeDiv>
             </RequestTrialHeader>
@@ -121,15 +121,15 @@ class ConfirmRequest extends Component {
                   />
                 </Button>
               </span> :
-                <Button
-                  appearance="primary"
-                  onClick={this.handleRequestTrialClick}
-                >
-                  <FormattedMessage
-                    id="xflow.generic.request-trial.request-button"
-                    defaultMessage="Request a trial"
-                  />
-                </Button>}
+              <Button
+                appearance="primary"
+                onClick={this.handleRequestTrialClick}
+              >
+                <FormattedMessage
+                  id="xflow.generic.request-trial.request-button"
+                  defaultMessage="Request a trial"
+                />
+              </Button>}
             <Button
               appearance="subtle-link"
               onClick={this.handleCloseClick}

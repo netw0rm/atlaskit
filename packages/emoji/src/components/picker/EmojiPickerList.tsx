@@ -34,7 +34,6 @@ export interface Props {
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
   onOpenUpload?: () => void;
-  selectedCategory?: string;
   selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
@@ -42,7 +41,6 @@ export interface Props {
 }
 
 export interface State {
-  scrollToIndex?: number;
 }
 
 interface EmojiGroup {
@@ -142,16 +140,6 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
 
   constructor(props) {
     super(props);
-
-    let selectedEmoji = props.emojis[0];
-    if (props.selectedCategory) {
-      const emojiInCategory = props.emojis
-        .filter(emoji => emoji.category === props.selectedCategory);
-      if (emojiInCategory) {
-        selectedEmoji = emojiInCategory[0];
-      }
-    }
-
     this.state = {};
 
     this.buildGroups(props.emojis);
@@ -165,12 +153,6 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
         ...emoji,
       }
     };
-  }
-
-  componentWillReceiveProps = (nextProps: Props) => {
-    if (nextProps.selectedCategory && nextProps.selectedCategory !== this.props.selectedCategory) {
-      this.reveal(nextProps.selectedCategory);
-    }
   }
 
   componentWillUpdate = (nextProps: Props, nextState: State) => {

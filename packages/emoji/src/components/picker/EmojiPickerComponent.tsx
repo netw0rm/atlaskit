@@ -41,7 +41,6 @@ export interface State {
   activeCategory?: string;
   disableCategories?: boolean;
   dynamicCategories: string[];
-  selectedCategory?: string;
   selectedTone?: ToneSelection;
   toneEmoji?: OptionalEmojiDescriptionWithVariations;
   query: string;
@@ -166,9 +165,13 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
           selectedEmoji = getEmojiVariation(emojisInCategory[0], { skinTone: this.state.selectedTone });
         }
 
+        const emojiPickerList = this.refs.emojiPickerList as EmojiPickerList;
+        if (emojiPickerList) {
+          emojiPickerList.reveal(categoryId);
+        }
+
         this.setState({
           activeCategory: categoryId,
-          selectedCategory: categoryId,
           selectedEmoji,
         } as State);
       }
@@ -341,7 +344,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       emojiProvider.uploadCustomEmoji(upload).then(emojiDescription => {
         this.setState({
           activeCategory: customCategory,
-          selectedCategory: customCategory,
           selectedEmoji: emojiDescription,
           uploading: false,
         });
@@ -396,7 +398,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       filteredEmojis,
       loading,
       query,
-      selectedCategory,
       selectedEmoji,
       selectedTone,
       toneEmoji,
@@ -419,7 +420,6 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         />
         <EmojiPickerList
           emojis={filteredEmojis}
-          selectedCategory={selectedCategory}
           onEmojiSelected={recordUsageOnSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}

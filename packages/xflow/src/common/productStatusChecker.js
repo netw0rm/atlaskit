@@ -1,12 +1,8 @@
+import 'es6-promise/auto';
+import 'whatwg-fetch';
 import bezier from 'cubic-bezier';
 
-import {
-  ACTIVE,
-  ACTIVATING,
-  INACTIVE,
-  DEACTIVATED,
-  UNKNOWN,
-} from './productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from './productProvisioningStates';
 
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
@@ -25,7 +21,7 @@ export const PROSPECTIVE_PRICES_URL = '/admin/rest/billing/api/instance/prospect
  * @param productKey product key being activated
  * @returns {*} Product checker object
  */
-export default (productKey) => {
+export default productKey => {
   let interval = null;
   let startTime = 0;
   let currentStatus = UNKNOWN;
@@ -69,9 +65,7 @@ export default (productKey) => {
 
     const pricing = await response.json();
 
-    const isActive = pricing.activeProducts.some(
-      product => product.productKey === productKey
-    );
+    const isActive = pricing.activeProducts.some(product => product.productKey === productKey);
     const isActivating = pricing.activatingProducts.includes(productKey);
 
     if (isActivating) {
@@ -122,9 +116,8 @@ export default (productKey) => {
         const poll = async () => {
           const status = await updateStatus();
           const timeElapsed = Date.now() - startTime;
-          const progress = (status === ACTIVE)
-            ? 1 :
-            easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
+          const progress =
+            status === ACTIVE ? 1 : easeOutFn(Math.min(timeElapsed / POLLING_TIMEOUT, 1));
 
           if (progress === 1) {
             setTimeout(() => this.stop(), PROGRESS_COMPLETE_DELAY);

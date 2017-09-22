@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import { LoadingTimeBase } from '../src/start-trial/components/LoadingTime';
+import { LoadingTimeBase } from '../src/request-or-start-trial/components/LoadingTime';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 

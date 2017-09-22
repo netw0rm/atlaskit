@@ -48,7 +48,8 @@ export interface EditorPlugin {
   primaryToolbarComponent?: UIComponentFactory;
 
   /*
-   * Optional UI-component that will be added to the toolbar at the bottom right of the editor. In compact mode this toolbar lives on the right-hand side of the editor.
+   * Optional UI-component that will be added to the toolbar at the bottom right of the editor. (doesn't exist in the full-page editor)
+   * In compact mode this toolbar lives on the right-hand side of the editor.
    */
   secondaryToolbarComponent?: UIComponentFactory;
 }

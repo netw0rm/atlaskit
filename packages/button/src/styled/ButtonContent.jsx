@@ -14,7 +14,6 @@ const ButtonContent = styled.span`
   margin: ${getMargin};
   max-width: 100%;
   overflow: hidden;
-  pointer-events: none;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

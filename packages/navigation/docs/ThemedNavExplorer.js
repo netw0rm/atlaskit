@@ -6,7 +6,7 @@ import Navigation, {
   AkSearchDrawer,
   AkSearch,
   AkCreateDrawer,
-  createGlobalTheme,
+  presetThemes,
 } from '@atlaskit/navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
@@ -44,20 +44,15 @@ class ExampleNavNav extends React.PureComponent {
     const {
       createDrawerOpen,
       isOpen,
-      primaryColor,
       searchDrawerOpen,
-      secondaryColor,
       value,
       width,
     } = this.state;
-    const containerTheme = createGlobalTheme(primaryColor, secondaryColor);
-    const globalTheme = createGlobalTheme(secondaryColor, primaryColor);
-    console.log(containerTheme);
     return (
       <Navigation
         // Styling
-        containerTheme={containerTheme}
-        globalTheme={globalTheme}
+        containerTheme={presetThemes.dark2}
+        globalTheme={presetThemes.dark2}
         // AkNavigationItems added will not gain this link component
         linkComponent={CustomLinkComponent}
         // All information relative to size and changing size/open state

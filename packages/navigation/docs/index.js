@@ -13,6 +13,12 @@ import MaximumComplexity from './MaximumComplexity';
 import maximumComplexitySrc from '!raw-loader!./MaximumComplexity';
 import ThemedNavExplorer from './ThemedNavExplorer';
 import themedNavExplorerSrc from '!raw-loader!./ThemedNavExplorer';
+import CDO from './CDO';
+import CDOSrc from '!raw-loader!./CDO';
+import CIG from './CIG';
+import CIGSrc from '!raw-loader!./CIG';
+import MGE from './MGE';
+import MGESrc from '!raw-loader!./MGE';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -110,6 +116,21 @@ export const description = (
 );
 
 export const examples = [
+  {
+    title: 'CDO',
+    Component: CDO,
+    src: CDOSrc,
+  },
+  {
+    title: 'CIG',
+    Component: CIG,
+    src: CIGSrc,
+  },
+  {
+    title: 'MGE',
+    Component: MGE,
+    src: MGESrc,
+  },
   {
     title: 'Basic Navigation',
     Component: SimplestExample,

@@ -15,6 +15,7 @@ const ContainerNavigationInner = styled.div`
 
     return background.primary;
   }};
+  ${({ theme }) => console.log('in container', getProvided(theme))};
   color: ${({ theme }) => getProvided(theme).text};
   display: flex;
   flex-direction: column;

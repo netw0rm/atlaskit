@@ -6,7 +6,7 @@ export interface Definition {
     id: string;
     name: string;
     placeholderUrl: string;
-    params: Object;
+    params: object;
   };
 }
 

@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.6.1 (2017-09-22)
+
+
+* bug fix; added panel support to new editor architecture (issues closed: ed-2804) ([c56e5fd](https://bitbucket.org/atlassian/atlaskit/commits/c56e5fd))
 ## 47.6.0 (2017-09-22)
 
 * feature; addes in occurrenceKey in link mark (issues closed: ed-2765) ([b4687a0](https://bitbucket.org/atlassian/atlaskit/commits/b4687a0))

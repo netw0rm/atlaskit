@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "20.6.2",
+  "version": "20.6.3",
   "config": {
     "access": "public"
   },

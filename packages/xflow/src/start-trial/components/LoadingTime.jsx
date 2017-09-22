@@ -155,7 +155,7 @@ class LoadingTime extends Component {
 
     const { isReady, showErrorFlag } = this.state;
 
-    const loadingMessage = heading.trim() || message.trim() ? (
+    const loadingMessage = (heading && heading.trim()) || (message && message.trim()) ? (
       <LoadingTimeTextDiv>
         <WhereToFindNewProductSVGDiv>
           <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />

@@ -70,7 +70,7 @@ const toBeOneOf = (...values) => ({
   asymmetricMatch: actual => values.includes(actual),
 });
 
-describe('jsdStatusChecker', () => {
+describe('confluenceStatusChecker', () => {
   beforeEach(() => {
     jest.clearAllTimers();
     fetchMock.restore();

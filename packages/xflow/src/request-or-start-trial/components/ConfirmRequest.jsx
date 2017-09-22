@@ -18,7 +18,7 @@ import RequestTrialDiv from '../styled/RequestTrialDiv';
 class ConfirmRequest extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
-    cancelRequestTrialAccess: PropTypes.func,
+    cancelRequestTrial: PropTypes.func,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     heading: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
@@ -31,7 +31,7 @@ class ConfirmRequest extends Component {
 
   static defaultProps = {
     productLogo: <AtlassianLogo />,
-    cancelRequestTrialAccess: () => Promise.resolve(),
+    cancelRequestTrial: () => Promise.resolve(),
   };
 
   componentDidMount() {
@@ -66,13 +66,13 @@ class ConfirmRequest extends Component {
     const {
       alreadyRequested,
       firePrivateAnalyticsEvent,
-      cancelRequestTrialAccess,
+      cancelRequestTrial,
       onCancel,
     } = this.props;
     firePrivateAnalyticsEvent(alreadyRequested ?
       'xflow.already-requested-trial.close-button.clicked' :
       'xflow.request-trial.close-button.clicked');
-    Promise.resolve(cancelRequestTrialAccess()).then(onCancel);
+    Promise.resolve(cancelRequestTrial()).then(onCancel);
   };
 
   render() {
@@ -156,14 +156,13 @@ export const ConfirmRequestBase = withAnalytics(ConfirmRequest);
 export default withXFlowProvider(
   ConfirmRequestBase,
   ({
-    xFlow: { config: { productLogo, requestTrial }, requestTrialAccess, cancelRequestTrialAccess },
+    xFlow: { config: { productLogo, requestTrial }, cancelRequestTrial },
   }) => ({
     productLogo,
     image: requestTrial.accessImage,
     heading: requestTrial.accessHeading,
     message: requestTrial.accessMessage,
     learnMoreLink: requestTrial.accessLearnMoreLink,
-    requestTrialAccess,
-    cancelRequestTrialAccess,
+    cancelRequestTrial,
   })
 );

@@ -66,8 +66,8 @@ export const xFlowShape = PropTypes.shape({
   getProductActivationState: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,
 
-  requestTrialAccessWithNote: PropTypes.func,
-  cancelRequestTrialAccess: PropTypes.func,
+  requestTrialWithNote: PropTypes.func,
+  cancelRequestTrial: PropTypes.func,
 
   startProductTrial: PropTypes.func,
   waitForActivation: PropTypes.func,

@@ -13,8 +13,8 @@ const overrideImplementations = {
   isProductInstalledOrActivating: notImplemented,
   canCurrentUserGrantAccessToProducts: notImplemented,
 
-  requestTrialAccessWithNote: notImplemented,
-  cancelRequestTrialAccess: notImplemented,
+  requestTrialWithNote: notImplemented,
+  cancelRequestTrial: notImplemented,
 
   waitForActivation: notImplemented,
   cancelStartProductTrial: notImplemented,

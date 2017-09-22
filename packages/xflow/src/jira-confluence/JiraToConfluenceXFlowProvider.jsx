@@ -6,8 +6,8 @@ import { XFlowProvider } from '../common/components/XFlowProvider';
 import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 
 import { isUserTrusted } from '../common/tenantContext';
-import requestTrialAccessWithNote from './requestTrialAccessWithNote';
-import cancelRequestTrialAccess from './cancelRequestTrialAccess';
+import requestTrialWithNote from './requestTrialWithNote';
+import cancelRequestTrial from './cancelRequestTrial';
 import startConfluenceTrial from './startConfluenceTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
@@ -231,8 +231,8 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
 
-  requestTrialAccessWithNote,
-  cancelRequestTrialAccess,
+  requestTrialWithNote,
+  cancelRequestTrial,
 
   startProductTrial: startConfluenceTrial,
   cancelStartProductTrial,

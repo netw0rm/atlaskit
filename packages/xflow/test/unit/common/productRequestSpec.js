@@ -33,8 +33,8 @@ describe('productRequest', () => {
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };
     mockRequestTrialEastEndpointWithResponse(xflowResponse);
-    const requestConfluenceTrialAccess = productRequest('confluence.ondemand');
-    const result = await requestConfluenceTrialAccess('Please let me innovate');
+    const requestConfluenceTrial = productRequest('confluence.ondemand');
+    const result = await requestConfluenceTrial('Please let me innovate');
     expect(result).toEqual(xflowResponse);
     expect(fetchMock.done('REQUEST_TRIAL')).toBe(true);
 
@@ -54,10 +54,10 @@ describe('productRequest', () => {
   it('should return a rejected promise if PRODUCT_REQUEST_ENDPOINT_EAST returns a 500 response', async () => {
     fetchMock.mock(PRODUCT_REQUEST_ENDPOINT_EAST, 500);
     expect.assertions(1);
-    const requestConfluenceTrialAccess = productRequest('confluence.ondemand');
+    const requestConfluenceTrial = productRequest('confluence.ondemand');
 
     try {
-      await requestConfluenceTrialAccess('never to be seen comment');
+      await requestConfluenceTrial('never to be seen comment');
     } catch (e) {
       expect(e).toEqual(
         new Error('Unable to request product: Unable to request product from end user. Status: 500')

@@ -44,7 +44,7 @@ storiesOf('RequestTrial')
     setupStorybookAnalytics(
       <RequestTrialNoteBase
         {...defaultProps}
-        requestTrialAccessWithNote={
+        requestTrialWithNote={
           () => new Promise((_, reject) =>
           setTimeout(() =>
           reject(new Error('It\'s borked')), 1500))}

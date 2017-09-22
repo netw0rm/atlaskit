@@ -26,8 +26,8 @@ const getXFlowProviderConfig = () =>
 
 const defaultProps = {
   status: INACTIVE,
-  requestTrialAccessWithNote: async () => Promise.resolve(),
-  cancelRequestTrialAccess: async () => {},
+  requestTrialWithNote: async () => Promise.resolve(),
+  cancelRequestTrial: async () => {},
   onTrialActivating: () => true,
   checkProductRequestFlag: async () => Promise.resolve(),
 };
@@ -99,7 +99,7 @@ describe('@atlaskit/xflow', () => {
             <MockConfluenceXFlow
               {...defaultProps}
               canCurrentUserAddProduct={async () => false}
-              requestTrialAccessWithNote={
+              requestTrialWithNote={
                 () => new Promise((_, reject) =>
                 reject(new Error('It\'s borked')))}
             >

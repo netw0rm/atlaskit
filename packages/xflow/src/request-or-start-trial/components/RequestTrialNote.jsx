@@ -47,13 +47,13 @@ class RequestTrialNote extends Component {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     placeholderShort: PropTypes.string,
-    requestTrialAccessWithNote: PropTypes.func,
+    requestTrialWithNote: PropTypes.func,
     setProductRequestFlag: PropTypes.func,
   };
 
   static defaultProps = {
     onRequestTrialClick: () => {},
-    requestTrialAccessWithNote: () => Promise.resolve(),
+    requestTrialWithNote: () => Promise.resolve(),
   };
 
   state = {
@@ -70,10 +70,10 @@ class RequestTrialNote extends Component {
   handleSendingNote = () => {
     const {
       firePrivateAnalyticsEvent,
-      requestTrialAccessWithNote,
+      requestTrialWithNote,
       setProductRequestFlag,
     } = this.props;
-    requestTrialAccessWithNote(this.state.noteText)
+    requestTrialWithNote(this.state.noteText)
     .then(() => {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
       this.setState({
@@ -230,7 +230,7 @@ export default withXFlowProvider(
   ({
     xFlow: {
       config: { productLogo, requestTrial },
-      requestTrialAccessWithNote,
+      requestTrialWithNote,
       setProductRequestFlag,
     },
   }) => ({
@@ -238,7 +238,7 @@ export default withXFlowProvider(
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
     placeholderShort: requestTrial.notePlaceholderShort,
-    requestTrialAccessWithNote,
+    requestTrialWithNote,
     setProductRequestFlag,
   })
 );

@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-const RequestTrialHeader = styled.div`
-  display: inline-flex;
-  align-items: center;
+const RequestTrialHeader = styled.h3`
+  margin-top: 0px;
 `;
 
 RequestTrialHeader.displayName = 'RequestTrialHeader';

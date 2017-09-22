@@ -8,12 +8,12 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
+import RequestTrialHeading from '../styled/RequestTrialHeading';
+import RequestTrialFooter from '../styled/RequestTrialFooter';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
-import RequestAccessFooter from '../styled/RequestAccessFooter';
-import RequestAccessHeader from '../styled/RequestAccessHeader';
-import RequestAccessLozengeDiv from '../styled/RequestAccessLozengeDiv';
-import RequestAccessImage from '../styled/RequestAccessImage';
-import RequestAccessDiv from '../styled/RequestAccessDiv';
+import RequestTrialLozengeDiv from '../styled/RequestTrialLozengeDiv';
+import RequestTrialImage from '../styled/RequestTrialImage';
+import RequestTrialDiv from '../styled/RequestTrialDiv';
 
 class ConfirmRequest extends Component {
   static propTypes = {
@@ -41,7 +41,7 @@ class ConfirmRequest extends Component {
       'xflow.request-trial.displayed');
   }
 
-  handleRequestAccessClick = () => {
+  handleRequestTrialClick = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial.request-button.clicked');
     onComplete();
@@ -83,26 +83,26 @@ class ConfirmRequest extends Component {
         width={'400px'}
         header={
           <div>
-            <RequestAccessHeader>
+            <RequestTrialHeader>
               {productLogo}
-              <RequestAccessLozengeDiv>
+              <RequestTrialLozengeDiv>
                 <Lozenge isBold>
                   {alreadyRequested ? <FormattedMessage
                     id="xflow.generic.request-trial.requested-lozenge"
                     defaultMessage="Requested"
                   /> :
-                  <FormattedMessage
-                    id="xflow.generic.request-trial.inactive-lozenge"
-                    defaultMessage="Inactive on your site"
-                  />}
+                    <FormattedMessage
+                      id="xflow.generic.request-trial.inactive-lozenge"
+                      defaultMessage="Inactive on your site"
+                    />}
                 </Lozenge>
-              </RequestAccessLozengeDiv>
-            </RequestAccessHeader>
-            <RequestAccessImage src={image} alt="files" />
+              </RequestTrialLozengeDiv>
+            </RequestTrialHeader>
+            <RequestTrialImage src={image} alt="files" />
           </div>
         }
         footer={
-          <RequestAccessFooter>
+          <RequestTrialFooter>
             {alreadyRequested ?
               <span
                 onMouseDown={this.handleLearnMoreAlternateClick}
@@ -121,15 +121,15 @@ class ConfirmRequest extends Component {
                   />
                 </Button>
               </span> :
-              <Button
-                appearance="primary"
-                onClick={this.handleRequestAccessClick}
-              >
-                <FormattedMessage
-                  id="xflow.generic.request-trial.request-button"
-                  defaultMessage="Request a trial"
-                />
-              </Button>}
+                <Button
+                  appearance="primary"
+                  onClick={this.handleRequestTrialClick}
+                >
+                  <FormattedMessage
+                    id="xflow.generic.request-trial.request-button"
+                    defaultMessage="Request a trial"
+                  />
+                </Button>}
             <Button
               appearance="subtle-link"
               onClick={this.handleCloseClick}
@@ -139,13 +139,13 @@ class ConfirmRequest extends Component {
                 defaultMessage="Close"
               />
             </Button>
-          </RequestAccessFooter>
+          </RequestTrialFooter>
         }
       >
-        <RequestAccessDiv>
-          <RequestTrialHeader>{heading}</RequestTrialHeader>
+        <RequestTrialDiv>
+          <RequestTrialHeading>{heading}</RequestTrialHeading>
           {React.isValidElement(message) ? message : <p>{message}</p>}
-        </RequestAccessDiv>
+        </RequestTrialDiv>
       </ModalDialog>
     );
   }

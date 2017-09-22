@@ -9,7 +9,7 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
-import RequestAccessFooter from '../styled/RequestAccessFooter';
+import RequestTrialFooter from '../styled/RequestTrialFooter';
 import NoteText from '../styled/NoteText';
 
 const messages = defineMessages({
@@ -52,7 +52,7 @@ class RequestTrialNote extends Component {
   };
 
   static defaultProps = {
-    onRequestAccessClick: () => {},
+    onRequestTrialClick: () => {},
     requestTrialAccessWithNote: () => Promise.resolve(),
   };
 
@@ -171,7 +171,7 @@ class RequestTrialNote extends Component {
             </RequestTrialHeader>
           }
           footer={
-            <RequestAccessFooter>
+            <RequestTrialFooter>
               <Button appearance="primary" onClick={this.handleSendRequest(true)}>
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
@@ -184,7 +184,7 @@ class RequestTrialNote extends Component {
                   defaultMessage="Skip"
                 />
               </Button>
-            </RequestAccessFooter>
+            </RequestTrialFooter>
           }
         >
           <div>

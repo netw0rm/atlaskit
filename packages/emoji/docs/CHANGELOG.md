@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 29.0.3 (2017-09-22)
+
+* bug fix; remove code splitting from emoji ([94a5901](https://bitbucket.org/atlassian/atlaskit/commits/94a5901))
 ## 29.0.2 (2017-09-21)
 
 * bug fix; shows tone selector by default in preview (issues closed: fs-1346) ([d4fbaf8](https://bitbucket.org/atlassian/atlaskit/commits/d4fbaf8))

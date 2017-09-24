@@ -9,7 +9,7 @@ import {
   PluginKey
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 import { Node } from '../../prosemirror/prosemirror-model/node';
 import { Transaction } from '../../prosemirror/prosemirror-state/transaction';
@@ -184,7 +184,7 @@ export class MentionsState {
   isEnabled(state?: EditorState<any>) {
     const currentState = state ? state : this.state;
     const { mentionQuery } = currentState.schema.marks;
-    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, currentState);
+    return isMarkTypeAllowedInCurrentSelection(mentionQuery, currentState);
   }
 
   private findMentionQueryMarks(active: boolean = true) {

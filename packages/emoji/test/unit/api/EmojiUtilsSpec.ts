@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { customCategory } from '../../../src/constants';
-import { EmojiServiceResponse, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
+import { EmojiServiceResponse, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
 import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
 import { isEmojiVariationDescription } from '../../../src/type-helpers';
 
@@ -169,6 +169,80 @@ describe('EmojiUtils', () => {
       });
       expect(emojiResponse.emojis[0].ascii).to.deep.equal([':D', ':-D', '=D']);
     });
+
+    it('denormalise includes emoji created date and creator user id when present', () => {
+      const expectedDate = '2017-09-21T07:47:35Z';
+      const expectedUserId = '655363:79c1186c-f343-4c9f-a84a-3a7680327da9';
+      const spriteRef = 'http://spriteref/test.png';
+      const emoji: EmojiServiceDescription = {
+        id: '1f600',
+        name: 'monkey trousers',
+        shortName: 'monkey_trousers',
+        type: 'CUSTOM',
+        category: 'PEOPLE',
+        order: 1,
+        representation: {
+          spriteRef,
+          x: 216,
+          y: 2304,
+          height: 72,
+          width: 75,
+          xIndex: 3,
+          yIndex: 32,
+        },
+        searchable: true,
+        creatorUserId: expectedUserId,
+        createdDate: expectedDate
+      };
+
+      const emojiResponse = denormaliseEmojiServiceResponse({
+        emojis: [emoji],
+        meta: {},
+      });
+
+      const emojis = emojiResponse.emojis;
+      expect(emojis.length).to.equal(1);
+      const e = emojis[0];
+
+      expect(e.createdDate).to.equal(expectedDate);
+      expect(e.creatorUserId).to.equal(expectedUserId);
+    });
+  });
+
+  it('denormalise works when created date and creator user id are not present', () => {
+    const expectedName = 'monkey trousers';
+    const spriteRef = 'http://spriteref/test.png';
+    const emoji: EmojiServiceDescription = {
+      id: '1f600',
+      name: expectedName,
+      shortName: 'monkey_trousers',
+      type: 'CUSTOM',
+      category: 'PEOPLE',
+      order: 1,
+      representation: {
+        spriteRef,
+        x: 216,
+        y: 2304,
+        height: 72,
+        width: 75,
+        xIndex: 3,
+        yIndex: 32,
+      },
+      searchable: true,
+    };
+
+    const emojiResponse = denormaliseEmojiServiceResponse({
+      emojis: [emoji],
+      meta: {},
+    });
+
+    const emojis = emojiResponse.emojis;
+    expect(emojis.length).to.equal(1);
+    const e = emojis[0];
+
+    expect(e.createdDate === undefined).to.equal(true);
+    expect(e.creatorUserId === undefined).to.equal(true);
+    expect(e.name).to.equal(expectedName);
   });
 
   describe('#denormaliseServiceRepresentation', () => {

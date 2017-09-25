@@ -67,7 +67,7 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   } else if (isImageRepresentation(representation)) {
     const { height, width, imagePath } = representation;
     if (isMediaApiUrl(imagePath, meta)) {
-      // Convert to MediaRepresentation
+      // Convert to MediaApiRepresentation
       return {
         height,
         width,
@@ -110,22 +110,16 @@ export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariation
  */
 export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
-    const { id, name, shortName, type, category, order, fallback, ascii, searchable } = emoji;
-    const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
-    const skinVariations = denormaliseSkinEmoji(emoji, emojiData.meta);
+    const newRepresentation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
+    const newSkinVariations = denormaliseSkinEmoji(emoji, emojiData.meta);
+
+    // create trimmedServiceDesc which is emoi with no representation or skinVariations
+    const { representation, skinVariations, ...trimmedServiceDesc } = emoji;
 
     return {
-      id,
-      name,
-      shortName,
-      fallback,
-      type,
-      category,
-      order,
-      representation,
-      skinVariations,
-      ascii,
-      searchable,
+      ...trimmedServiceDesc,
+      representation: newRepresentation,
+      skinVariations: newSkinVariations
     };
   });
 

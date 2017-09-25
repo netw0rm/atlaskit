@@ -59,6 +59,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'ArrowUp');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
@@ -72,6 +73,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'ArrowUp');
             expect(spy.called).to.equal(false);
+            editorView.destroy();
           });
       });
 
@@ -87,6 +89,7 @@ describe('mentions', () => {
             sendKeyToPm(editorView, 'ArrowUp');
             expect(spy.called).to.equal(true);
             expect(spy.returned(false)).to.equal(true);
+            editorView.destroy();
           });
       });
     });
@@ -112,6 +115,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'ArrowDown');
             expect(spy.called).to.equal(false);
+            editorView.destroy();
           });
       });
 
@@ -127,6 +131,7 @@ describe('mentions', () => {
             sendKeyToPm(editorView, 'ArrowDown');
             expect(spy.called).to.equal(true);
             expect(spy.returned(false)).to.equal(true);
+            editorView.destroy();
           });
       });
     });
@@ -139,6 +144,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Enter');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
@@ -152,6 +158,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Enter');
             expect(spy.called).to.equal(false);
+            editorView.destroy();
           });
       });
 
@@ -167,6 +174,7 @@ describe('mentions', () => {
             sendKeyToPm(editorView, 'Enter');
             expect(spy.called).to.equal(true);
             expect(spy.returned(false)).to.equal(true);
+            editorView.destroy();
           });
       });
     });
@@ -179,6 +187,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Shift-Enter');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should be ignored if there is no active query', async () => {
@@ -190,6 +199,7 @@ describe('mentions', () => {
 
         sendKeyToPm(editorView, 'Shift-Enter');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should call "onSelectCurrent"', async () => {
@@ -201,6 +211,7 @@ describe('mentions', () => {
 
         sendKeyToPm(editorView, 'Shift-Enter');
         expect(spy.called).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -212,6 +223,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
@@ -225,6 +237,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Space');
             expect(spy.called).to.equal(false);
+            editorView.destroy();
           });
       });
 
@@ -242,6 +255,7 @@ describe('mentions', () => {
             sendKeyToPm(editorView, 'Space');
             expect(spy.called).to.equal(true);
             expect(trackEvent.calledWith('atlassian.editor.mention.try.insert.previous')).to.equal(true);
+            editorView.destroy();
           });
       });
     });
@@ -254,6 +268,7 @@ describe('mentions', () => {
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Esc');
         expect(spy.called).to.equal(false);
+        editorView.destroy();
       });
 
       it('should be ignored if there is no active query', () => {
@@ -267,6 +282,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Esc');
             expect(spy.called).to.equal(false);
+            editorView.destroy();
           });
       });
 
@@ -281,6 +297,7 @@ describe('mentions', () => {
             sendKeyToPm(editorView, 'Esc');
             expect(spy.called).to.equal(true);
             expect(spy.returned(true)).to.equal(true);
+            editorView.destroy();
           });
       });
     });
@@ -299,6 +316,7 @@ describe('mentions', () => {
       });
 
       expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
+      editorView.destroy();
     });
 
     it('should insert a space after the mention-node', () => {
@@ -321,6 +339,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should not insert a space after the mention-node if next character is already a space', () => {
@@ -343,6 +362,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should render the mention-node using a nickname if present', () => {
@@ -366,6 +386,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should allow inserting multiple @-mentions next to eachother', () => {
@@ -393,7 +414,7 @@ describe('mentions', () => {
           )
         )
       );
-
+      editorView.destroy();
     });
 
     it('should allow inserting @-mention on new line after hard break', () => {
@@ -417,6 +438,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should not break list into two when inserting mention inside list item', () => {
@@ -448,6 +470,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should insert only 1 mention at a time inside blockqoute', () => {
@@ -476,6 +499,7 @@ describe('mentions', () => {
 
       expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(mentionNode);
       expect(editorView.state.doc.nodeAt(10)).to.equal(null);
+      editorView.destroy();
     });
 
     it('should insert mention at the position of the provided inactive mark', () => {
@@ -502,6 +526,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
   });
 
@@ -510,7 +535,9 @@ describe('mentions', () => {
       const { editorView } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).to.deep.equal(doc(p()));
+      editorView.destroy();
     });
+
     it('should call changeHandlers when mention is removed', () => {
       const spy = sinon.spy();
       const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('{<}@os{>}'))));
@@ -518,12 +545,11 @@ describe('mentions', () => {
       sendKeyToPm(editorView, 'Delete');
       expect(editorView.state.doc).to.deep.equal(doc(p()));
       expect(spy.callCount).to.deep.equal(1);
+      editorView.destroy();
     });
   });
 
   describe('onMentionResult', () => {
-
-
     it('should not replace active mark ', () => {
       const { editorView, pluginState } = editor(doc(p(mentionQuery({ active: true })('@os{<>}'))));
 
@@ -542,6 +568,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should not modify current selection when resolving', () => {
@@ -557,6 +584,7 @@ describe('mentions', () => {
 
       const newSelectionFrom = editorView.state.selection.from;
       expect(newSelectionFrom).to.equal(9);
+      editorView.destroy();
     });
 
   });
@@ -574,6 +602,7 @@ describe('mentions', () => {
           )
         )
       );
+      editorView.destroy();
     });
 
     it('should remove stored mentions  mark', () => {
@@ -582,18 +611,21 @@ describe('mentions', () => {
       pluginState.dismiss();
 
       expect(editorView.state.storedMarks).to.equal(null);
+      editorView.destroy();
     });
   });
 
   describe('isEnabled', () => {
     it('returns true when the mention mark can be applied', () => {
-      const { pluginState } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
       expect(pluginState.isEnabled()).to.equal(true);
+      editorView.destroy();
     });
 
     it('returns false when the mention mark cannot be applied', () => {
-      const { pluginState } = editor(doc(p(code('te{<>}xt'))));
+      const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))));
       expect(pluginState.isEnabled()).to.equal(false);
+      editorView.destroy();
     });
   });
 
@@ -621,6 +653,7 @@ describe('mentions', () => {
 
           expect(spy.called).to.equal(true);
           expect(trackEvent.calledWith('atlassian.editor.mention.try.select.current')).to.equal(true);
+          editorView.destroy();
         });
     });
 
@@ -648,6 +681,7 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).to.equal(false);
+          editorView.destroy();
         });
     });
 
@@ -671,6 +705,7 @@ describe('mentions', () => {
           ], 'oscar');
 
           expect(pluginState.trySelectCurrent()).to.equal(false);
+          editorView.destroy();
         });
     });
 
@@ -687,6 +722,7 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).to.equal(true);
+          editorView.destroy();
         });
     });
 
@@ -703,6 +739,7 @@ describe('mentions', () => {
           pluginState.trySelectCurrent();
 
           expect(spy.called).to.equal(true);
+          editorView.destroy();
         });
     });
 
@@ -724,6 +761,7 @@ describe('mentions', () => {
 
           expect(spy.called).to.equal(true);
           expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.no.match')).to.equal(true);
+          editorView.destroy();
         });
     });
   });
@@ -755,6 +793,7 @@ describe('mentions', () => {
 
           expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
           expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')).to.equal(true);
+          editorView.destroy();
         });
     });
   });

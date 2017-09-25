@@ -117,7 +117,7 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2jsd.request-trial.access.message',
-    defaultMessage: 'Send a request for your admin to activate confluence',
+    defaultMessage: 'Send a request for your admin to activate Jira Service Desk',
   },
   notePrompt: {
     id: 'xflow.j2jsd.request-trial.note.prompt',

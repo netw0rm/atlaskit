@@ -27,7 +27,10 @@ export default class OptOut extends Component {
   render() {
     return (
       <XFlowAnalyticsListener onEvent={this.handleAnalyticsEvent}>
-        <AdminSettings {...this.props} />
+        <AdminSettings
+          id="xflow-opt-out-dialog"
+          {...this.props}
+        />
       </XFlowAnalyticsListener>
     );
   }

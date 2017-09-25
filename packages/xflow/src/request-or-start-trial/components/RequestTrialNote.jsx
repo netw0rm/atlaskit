@@ -15,7 +15,7 @@ import NoteText from '../styled/NoteText';
 const messages = defineMessages({
   errorFlagTitle: {
     id: 'xflow.generic.request-trial-note.error-flag.title',
-    defaultMessage: 'Oops... something went wrong',
+    defaultMessage: 'Uh oh. something\'s up',
   },
   errorFlagDescription: {
     id: 'xflow.generic.request-tral-note.error-flag.description',
@@ -31,11 +31,11 @@ const messages = defineMessages({
   },
   successFlagTitle: {
     id: 'xflow.generic.request-trial-note.success-flag.title',
-    defaultMessage: 'Your request is sent',
+    defaultMessage: 'That\'s sent!',
   },
   successFlagDescription: {
     id: 'xflow.generic.request-tral-note.success-flag.description',
-    defaultMessage: 'Props for helping your admin out!',
+    defaultMessage: 'We\'ll let your admin know why you\'re keen to try Confluence.',
   },
 });
 
@@ -158,7 +158,7 @@ class RequestTrialNote extends Component {
     const { intl, placeholder, prompt } = this.props;
     const { awaitingRequest, requestTrialSendNoteStatus } = this.state;
     return (
-      <div>
+      <div id="xflow-request-trial-note">
         <ModalDialog
           isOpen={!awaitingRequest}
           width="small"
@@ -166,7 +166,7 @@ class RequestTrialNote extends Component {
             <RequestTrialHeader>
               <FormattedMessage
                 id="xflow.generic.request-trial-note.heading"
-                defaultMessage="Ping your site admin"
+                defaultMessage="Message your site admin"
               />
             </RequestTrialHeader>
           }

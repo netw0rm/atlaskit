@@ -13,8 +13,9 @@ import SuccessFlag from '../../common/components/SuccessFlag';
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
 import OptOutRadioDiv from '../styled/OptOutRadioDiv';
+import OptOutNoteDiv from '../styled/OptOutNoteDiv';
 import CustomLabel from '../styled/CustomLabel';
-import NoteText from '../styled/NoteText';
+import OptOutNoteText from '../styled/OptOutNoteText';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -114,11 +115,11 @@ class AdminSettings extends Component {
   handleContinueClick = async () => {
     const { firePrivateAnalyticsEvent } = this.props;
     const { selectedRadio } = this.state;
-    const noteTextValue = this.noteText.value;
+    const OptOutNoteTextValue = this.noteText.value;
 
     firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
       selectedRadio,
-      noteText: noteTextValue,
+      OptOutNoteText: OptOutNoteTextValue,
     });
     this.setState({
       spinnerActive: true,
@@ -179,10 +180,10 @@ class AdminSettings extends Component {
     const { optOutRequestStatus } = this.state;
 
     return (
-      <div>
+      <div id="xflow-opt-out">
         <ModalDialog
           isOpen={this.state.isOpen}
-          width="small"
+          width="500px"
           header={<OptOutHeader>{heading}</OptOutHeader>}
           footer={
             <OptOutFooter>
@@ -231,13 +232,15 @@ class AdminSettings extends Component {
                 isSelected: this.state.selectedRadio === value,
               }))}
             />
-            <NoteText
-              innerRef={noteText => {
-                this.noteText = noteText;
-              }}
-              placeholder={notePlaceholder}
-              maxLength={300}
-            />
+            <OptOutNoteDiv>
+              <OptOutNoteText
+                innerRef={noteText => {
+                  this.noteText = noteText;
+                }}
+                placeholder={notePlaceholder}
+                maxLength={300}
+              />
+            </OptOutNoteDiv>
           </OptOutRadioDiv>
         </ModalDialog>
         <ErrorFlag

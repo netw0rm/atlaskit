@@ -84,8 +84,8 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
       expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
-      expect(xflow.find(SuccessFlag).text()).toMatch('Your request is sent');
-      expect(xflow.find(SuccessFlag).text()).toMatch('Props for helping your admin out!');
+      expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
+      expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know why you\'re keen to try Confluence');
     });
   });
 
@@ -122,7 +122,7 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... something went wrong');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Uh oh. something\'s up');
       expect(xflow.find(ErrorFlag).text()).toMatch('That request didn\'t make it through. Shall we try again?');
     });
   });

@@ -232,14 +232,14 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     return false;
   }
 
-  protected _notifyListeners(mentionsResult: MentionsResult): void {
+  protected _notifyListeners(mentionsResult: MentionsResult, query?: string): void {
     debug('ak-mention-resource._notifyListeners',
       mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
       this.changeListeners);
 
     this.changeListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -247,14 +247,14 @@ class AbstractMentionResource extends AbstractResource<MentionDescription[]> imp
     });
   }
 
-  protected _notifyAllResultsListeners(mentionsResult: MentionsResult): void {
+  protected _notifyAllResultsListeners(mentionsResult: MentionsResult, query?: string): void {
     debug('ak-mention-resource._notifyAllResultsListeners',
       mentionsResult && mentionsResult.mentions && mentionsResult.mentions.length,
       this.changeListeners);
 
     this.allResultsListeners.forEach((listener, key) => {
       try {
-        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), mentionsResult.query);
+        listener(mentionsResult.mentions.slice(0, MAX_NOTIFIED_ITEMS), query);
       } catch (e) {
         // ignore error from listener
         debug(`error from listener '${key}', ignoring`, e);
@@ -319,13 +319,13 @@ class MentionResource extends AbstractMentionResource {
   notify(searchTime: number, mentionResult: MentionsResult, query?: string) {
     if (searchTime > this.lastReturnedSearch) {
       this.lastReturnedSearch = searchTime;
-      this._notifyListeners(mentionResult);
+      this._notifyListeners(mentionResult, query);
     } else {
       const date = new Date(searchTime).toISOString().substr(17, 6);
       debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
     }
 
-    this._notifyAllResultsListeners(mentionResult);
+    this._notifyAllResultsListeners(mentionResult, query);
   }
 
   notifyError(error: Error, query?: string) {
@@ -339,10 +339,10 @@ class MentionResource extends AbstractMentionResource {
     const searchTime = Date.now();
 
     if (!query) {
-      this.initialState().then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
+      this.initialState().then((results: MentionsResult) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     } else {
       this.activeSearches.add(query);
-      this.search(query).then((results) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
+      this.search(query).then((results: MentionsResult) => this.notify(searchTime, results, query), error => this.notifyError(error, query));
     }
   }
 

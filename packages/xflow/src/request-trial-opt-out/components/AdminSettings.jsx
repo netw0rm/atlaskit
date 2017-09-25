@@ -27,11 +27,11 @@ const messages = defineMessages({
   },
   errorFlagDescription: {
     id: 'xflow.generic.opt-out.error-flag.description',
-    defaultMessage: "That request didn't make it through. Shall we try again?",
+    defaultMessage: "That setting wasn't saved.",
   },
   errorFlagResendRequest: {
     id: 'xflow.generic.opt-out.error-flag.resend-request',
-    defaultMessage: 'Resend request',
+    defaultMessage: 'Try again',
   },
   errorFlagNotNow: {
     id: 'xflow.generic.opt-out.error-flag.not-now',
@@ -183,7 +183,7 @@ class AdminSettings extends Component {
       <div id="xflow-opt-out">
         <ModalDialog
           isOpen={this.state.isOpen}
-          width="500px"
+          width="small"
           header={<OptOutHeader>{heading}</OptOutHeader>}
           footer={
             <OptOutFooter>

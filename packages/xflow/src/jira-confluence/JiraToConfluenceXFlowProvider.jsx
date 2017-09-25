@@ -214,12 +214,12 @@ export const defaultProps = intl => ({
       optOutMessage: 'Change your notifications or stop requests completely.',
       optOutDefaultSelectedRadio: 'admin-opt-out',
       optOutNotePlaceholder:
-        'Can you tell us why you are turning off this feature? \nYour feedback helps improve future releases.',
+        'Send us your feedback to help improve \nfuture releases.',
       optOutOptionItems: [
         {
           value: 'admin-opt-out',
-          label: 'Turn off my notifications',
-          note: 'Users can still request trials, other admins will still receive requests.',
+          label: 'Turn off notifications',
+          note: 'You won\'t get trial requests from users.',
         },
         {
           value: 'disable-requests',

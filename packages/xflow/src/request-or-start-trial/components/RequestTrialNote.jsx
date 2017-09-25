@@ -15,15 +15,15 @@ import NoteText from '../styled/NoteText';
 const messages = defineMessages({
   errorFlagTitle: {
     id: 'xflow.generic.request-trial-note.error-flag.title',
-    defaultMessage: 'Uh oh. something\'s up',
+    defaultMessage: "Uh oh. That didn't work.",
   },
   errorFlagDescription: {
     id: 'xflow.generic.request-tral-note.error-flag.description',
-    defaultMessage: "That request didn't make it through. Shall we try again?",
+    defaultMessage: "Your trial request wasn't sent.",
   },
   errorFlagResendRequest: {
     id: 'xflow.generic.request-trial-note.error-flag.resend-request',
-    defaultMessage: 'Resend request',
+    defaultMessage: 'Try again',
   },
   errorFlagNotNow: {
     id: 'xflow.generic.request-trial-note.error-flag.not-now',
@@ -35,7 +35,7 @@ const messages = defineMessages({
   },
   successFlagDescription: {
     id: 'xflow.generic.request-tral-note.success-flag.description',
-    defaultMessage: 'We\'ll let your admin know why you\'re keen to try Confluence.',
+    defaultMessage: 'We\'ll let your admin know right away.',
   },
 });
 

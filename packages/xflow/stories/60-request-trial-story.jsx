@@ -12,7 +12,7 @@ const defaultProps = {
   alreadyRequested: false,
   productLogo: <ConfluenceLogo />,
   heading: 'Jira\'s perfect partner',
-  message: 'Confluence helps your team create, capture and collaborate on project documentation and it integrates perfectly with Jira.',
+  message: 'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
   image: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
   prompt: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
   placeholder: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and it\'s free for 30 days.',

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const RequestTrialHeader = styled.h3`
+const RequestTrialHeading = styled.h3`
   margin-top: 0px;
 `;
 
-RequestTrialHeader.displayName = 'RequestTrialHeader';
-export default RequestTrialHeader;
+RequestTrialHeading.displayName = 'RequestTrialHeading';
+export default RequestTrialHeading;

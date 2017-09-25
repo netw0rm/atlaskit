@@ -8,7 +8,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import RequestTrialHeader from '../styled/RequestTrialHeader';
+import RequestTrialHeading from '../styled/RequestTrialHeading';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import NoteText from '../styled/NoteText';
 
@@ -163,12 +163,12 @@ class RequestTrialNote extends Component {
           isOpen={!awaitingRequest}
           width="small"
           header={
-            <RequestTrialHeader>
+            <RequestTrialHeading>
               <FormattedMessage
                 id="xflow.generic.request-trial-note.heading"
                 defaultMessage="Message your site admin"
               />
-            </RequestTrialHeader>
+            </RequestTrialHeading>
           }
           footer={
             <RequestTrialFooter>

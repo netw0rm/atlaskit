@@ -171,6 +171,39 @@ describe('mentions', () => {
       });
     });
 
+    describe('Shift-Enter', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should be ignored if there is no active query', async () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+
+        await pluginState.setMentionProvider(mentionProvider);
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
+
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should call "onSelectCurrent"', async () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+
+        await pluginState.setMentionProvider(mentionProvider);
+        forceUpdate(pluginState, editorView); // Force update to ensure active query.
+
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called).to.equal(true);
+      });
+    });
+
     describe('Space', () => {
       it('should be ignored if there is no mentionProvider', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));

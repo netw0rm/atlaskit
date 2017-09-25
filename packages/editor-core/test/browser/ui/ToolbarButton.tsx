@@ -80,6 +80,25 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     toolbarButtonElem.unmount();
   });
 
+  it('should not display tooltip if hideTooltip prop is passed in', () => {
+    const toolbarButtonElem = mount(<ToolbarButton
+      onClick={noop}
+      selected={false}
+      disabled={false}
+      title="tooltip text"
+      hideTooltip={true}
+    />);
+
+    const tooltip = toolbarButtonElem.find(Tooltip);
+    tooltip.simulate('mouseover');
+
+    const akButton = toolbarButtonElem.find(AkButton);
+    akButton.simulate('click');
+
+    expect(tooltip.prop('visible')).to.equal(false);
+    toolbarButtonElem.unmount();
+  });
+
   it('should pass titlePosition to tooltip position', () => {
     const toolbarButtonElem = mount(<ToolbarButton
       onClick={noop}

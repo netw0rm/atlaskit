@@ -17,7 +17,8 @@ import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({})
+  viewContext: Promise.resolve({}),
+  uploadContext: Promise.resolve({})
 });
 
 const providerFactory = new ProviderFactory();
@@ -73,7 +74,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 3 child elements if both pluginStateBlockType is defined', () => {
+  it('should have 3 child elements if pluginStateBlockType is defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -86,7 +87,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if both pluginStateTable is defined', () => {
+  it('should have 1 child elements if pluginStateTable is defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -99,8 +100,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if both pluginStateMedia is defined', () => {
+  it('should have 1 child elements if pluginStateMedia is defined', async () => {
     const { editorView } = editor(doc(p('text')));
+
+    const media = await mediaProvider;
+    await media.uploadContext;
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
@@ -112,8 +117,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger showMediaPicker of pluginStateMedia when File and Images option is clicked', () => {
+  it('should trigger showMediaPicker of pluginStateMedia when File and Images option is clicked', async () => {
     const { editorView } = editor(doc(p('text')));
+
+    const media = await mediaProvider;
+    await media.uploadContext;
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}

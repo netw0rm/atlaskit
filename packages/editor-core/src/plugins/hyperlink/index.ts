@@ -12,7 +12,7 @@ import {
   ReplaceStep,
   Transaction,
 } from '../../prosemirror';
-import * as commands from '../../commands';
+import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { Match, getLinkMatch, normalizeUrl, linkifyContent } from './utils';
@@ -153,17 +153,21 @@ export class HyperlinkState {
   }
 
   showLinkPanel(editorView: EditorView) {
-    if (!(this.showToolbarPanel || editorView.hasFocus())) {
-      editorView.focus();
+    if (this.linkable) {
+      if (!(this.showToolbarPanel || editorView.hasFocus())) {
+        editorView.focus();
+      }
+      const { selection } = editorView.state;
+      if (selection.empty && !this.active) {
+        this.showToolbarPanel = !this.showToolbarPanel;
+        this.changeHandlers.forEach(cb => cb(this));
+      } else {
+        this.addLink({ href: '' }, editorView);
+        this.update(editorView.state, editorView.docView);
+      }
+      return true;
     }
-    const { selection } = editorView.state;
-    if (selection.empty && !this.active) {
-      this.showToolbarPanel = !this.showToolbarPanel;
-      this.changeHandlers.forEach(cb => cb(this));
-    } else {
-      this.addLink({ href: '' }, editorView);
-      this.update(editorView.state, editorView.docView);
-    }
+    return false;
   }
 
   hideLinkPanel() {
@@ -271,7 +275,7 @@ export class HyperlinkState {
 
   private isActiveNodeLinkable(): boolean {
     const { link } = this.state.schema.marks;
-    return !!link && commands.toggleMark(link)(this.state);
+    return !!link && isMarkTypeAllowedInCurrentSelection(link, this.state);
   }
 }
 

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
+  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block, code,
   makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -662,6 +662,15 @@ describe('hyperlink', () => {
 
         expect(pluginState.activeLinkNode).not.to.equal(undefined);
         expect(pluginState.text).not.to.equal(undefined);
+        editorView.destroy();
+      });
+
+      it('should not create a link node if selected incompatible mark', () => {
+        const { editorView, pluginState } = editor(doc(paragraph(code('tes{<}ting'), 'selecti{>}on')));
+
+        pluginState.showLinkPanel(editorView);
+
+        expect(pluginState.activeLinkNode).to.equal(undefined);
         editorView.destroy();
       });
     });

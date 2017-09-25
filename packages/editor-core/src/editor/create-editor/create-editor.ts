@@ -11,12 +11,14 @@ export function sortByRank(a: { rank: number }, b: { rank: number }): number {
 
 export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]: MarkSpec } {
   const markKeys = Object.keys(marks);
+  const markGroups = new Set(markKeys.map(mark => marks[mark].group));
+
   markKeys.map(markKey => {
     const mark = marks[markKey];
     if (mark.excludes) {
       mark.excludes = mark.excludes
         .split(' ')
-        .filter(exMarkKey => markKeys.indexOf(exMarkKey) > -1)
+        .filter(group => markGroups.has(group))
         .join(' ');
     }
   });

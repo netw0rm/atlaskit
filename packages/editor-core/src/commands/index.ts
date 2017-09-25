@@ -301,8 +301,7 @@ export function createCodeBlockFromFenceFormat(): Command {
 export function showLinkPanel(): Command {
   return function (state, dispatch, view) {
     const pluginState = hyperlinkPluginStateKey.getState(state);
-    pluginState.showLinkPanel(view);
-    return true;
+    return pluginState.showLinkPanel(view);
   };
 }
 

@@ -8,7 +8,7 @@ import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperl
 import HyperlinkEdit from '../../../../src/ui/HyperlinkEdit';
 import PanelTextInput from '../../../../src/ui/PanelTextInput';
 import {
-  chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em,
+  chaiPlugin, makeEditor, doc, p, a as link, sendKeyToPm, em, code
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -115,6 +115,15 @@ describe('hyperlink - keymap', () => {
       sendKeyToPm(editorView, 'Mod-k');
       let input = hyperlinkEdit.find(PanelTextInput);
       expect(input.length).to.equal(0);
+      hyperlinkEdit.unmount();
+    });
+
+    it('should not open floating toolbar if incompatible mark is selected', () => {
+      const { editorView, pluginState } = editor(doc(p(code('te{<>}xt'))));
+      const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
+      sendKeyToPm(editorView, 'Mod-k');
+      let input = hyperlinkEdit.find(PanelTextInput);
+      expect(input.exists()).to.equal(false);
       hyperlinkEdit.unmount();
     });
   });

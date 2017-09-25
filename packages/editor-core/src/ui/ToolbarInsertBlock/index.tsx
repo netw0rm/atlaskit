@@ -177,7 +177,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
         });
       }
     }
-    if (pluginStateMedia) {
+    const { mediaDisabled } = this.state;
+    if (pluginStateMedia && !mediaDisabled) {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },

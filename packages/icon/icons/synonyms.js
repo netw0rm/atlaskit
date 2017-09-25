@@ -95,7 +95,6 @@ module.exports = {
   'editor/edit': ['pencil', 'write'],
   'editor/emoji': ['emoticon', 'smiley'],
   'editor/error': ['warning', 'alert'],
-  'editor/expand': ['chevron', 'down'],
   'editor/feedback': ['announce', 'speaker', 'megaphone'],
   'editor/file': ['page', 'document', 'paper', 'sheet'],
   'editor/help': ['question'],

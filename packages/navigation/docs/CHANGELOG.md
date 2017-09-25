@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 24.1.0 (2017-09-25)
+
+* feature; added Navigation.containerScrollRef prop for listening to contain nav scroll (issues closed: ak-3530) ([7c7bc3f](https://bitbucket.org/atlassian/atlaskit/commits/7c7bc3f))
 ## 24.0.4 (2017-09-22)
 
 * bug fix; global primary icon in drawer is now slightly lighter (N300) (issues closed: ak-3529) ([68958a6](https://bitbucket.org/atlassian/atlaskit/commits/68958a6))

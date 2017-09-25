@@ -122,8 +122,8 @@ describe('@atlaskit/xflow', () => {
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Uh oh, something\'s up');
-      expect(xflow.find(ErrorFlag).text()).toMatch('That request didn\'t make it through. Shall we try again?');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Uh oh. That didn\'t work');
+      expect(xflow.find(ErrorFlag).text()).toMatch('Your trial request wasn\'t sent.');
     });
   });
 

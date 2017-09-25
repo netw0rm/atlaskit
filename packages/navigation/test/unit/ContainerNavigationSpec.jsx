@@ -8,11 +8,18 @@ import * as presets from '../../src/theme/presets';
 import Reveal from '../../src/components/js/Reveal';
 import GlobalNavigationSecondaryContainer from '../../src/components/styled/GlobalNavigationSecondaryContainer';
 import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
+import ScrollHintScrollContainer from '../../src/components/styled/ScrollHintScrollContainer';
 
 describe('<ContainerNavigation />', () => {
   describe('props', () => {
     it('should default theme to presets.container', () => {
       expect(mount(<ContainerNavigation />).props().theme).toBe(presets.container);
+    });
+
+    it('should supply the scrollRef when the scrollable container nav element', () => {
+      const myRef = () => {};
+      const wrapper = mount(<ContainerNavigation scrollRef={myRef} />);
+      expect(wrapper.find(ScrollHintScrollContainer).prop('innerRef')).toBe(myRef);
     });
   });
 

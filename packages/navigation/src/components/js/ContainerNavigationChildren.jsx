@@ -10,18 +10,20 @@ type Props = {
   children?: ReactElement,
   hasScrollHintBottom?: boolean,
   hasScrollHintTop?: boolean,
+  scrollRef?: () => void,
 };
 
 const ContainerNavigationChildren = ({
   children,
   hasScrollHintBottom,
   hasScrollHintTop,
+  scrollRef,
 }: Props) => (
   <ScrollHintWrapper
     hasScrollHintBottom={hasScrollHintBottom}
     hasScrollHintTop={hasScrollHintTop}
   >
-    <ScrollHintScrollContainer>
+    <ScrollHintScrollContainer innerRef={scrollRef}>
       <ContainerNavigationChildrenInner>
         {children}
       </ContainerNavigationChildrenInner>

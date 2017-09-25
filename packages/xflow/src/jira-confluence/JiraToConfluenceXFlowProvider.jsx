@@ -125,7 +125,7 @@ const messages = defineMessages({
   notePlaceholder: {
     id: 'xflow.j2c.request-trial.note.placeholder',
     defaultMessage:
-      "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and it's free for 30 days.",
+      "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and there's a free 30 day trial.",
   },
   notePlaceholderShort: {
     id: 'xflow.j2c.request-trial.note.placeholder.short',

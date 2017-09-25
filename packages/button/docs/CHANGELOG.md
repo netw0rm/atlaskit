@@ -1,5 +1,10 @@
 # @atlaskit/button
 
+## 5.4.0 (2017-09-22)
+
+* feature; buttons no longer prevent text selection (issues closed: ak-3270) ([9ab343b](https://bitbucket.org/atlassian/atlaskit/commits/9ab343b))
+
+
 ## 5.3.0 (2017-09-18)
 
 

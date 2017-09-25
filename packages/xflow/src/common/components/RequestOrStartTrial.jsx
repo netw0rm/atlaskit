@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
+import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
-import App from './App';
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import { StartTrial, AlreadyStarted, ErrorFlag } from '../../start-trial/';
-import RequestTrial from '../../request-trial/';
+import { StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial/';
+import ErrorFlag from '../../common/components/ErrorFlag';
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
@@ -31,6 +31,9 @@ class RequestOrStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
+    // ESLint doesn't detect prop types only used in async functions
+    // eslint-disable-next-line react/no-unused-prop-types
+    checkProductRequestFlag: PropTypes.func,
   };
 
   static defaultProps = {
@@ -44,9 +47,15 @@ class RequestOrStartTrial extends Component {
     error: null,
     initializingCheckFailed: false,
     activationState: UNKNOWN,
+    alreadyRequested: false,
   };
 
   async componentWillMount() {
+    const { checkProductRequestFlag } = this.props;
+    const alreadyRequested = await checkProductRequestFlag();
+    this.setState({
+      alreadyRequested,
+    });
     return this.resetRequestOrStartTrial();
   }
 
@@ -116,24 +125,41 @@ class RequestOrStartTrial extends Component {
     },
   ];
 
+  handleAnalyticsEvent = (name, data) => {
+    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    if (onAnalyticsEvent) {
+      onAnalyticsEvent(name, {
+        ...data,
+        sourceComponent,
+        sourceContext,
+      });
+    }
+  };
+
   render() {
     const {
-      onAnalyticsEvent,
       onComplete,
       onTrialRequested,
       onTrialActivating,
       sourceComponent,
       sourceContext,
     } = this.props;
-    const { activationState, initializingCheckFailed, showInitializationError } = this.state;
+    const {
+      activationState,
+      alreadyRequested,
+      initializingCheckFailed,
+      showInitializationError,
+    } = this.state;
 
     return (
-      <App
-        onAnalyticsEvent={onAnalyticsEvent}
-        sourceComponent={sourceComponent}
-        sourceContext={sourceContext}
+      <XFlowAnalyticsListener
+        onEvent={this.handleAnalyticsEvent}
       >
-        <RequestOrStartTrialDialog id="xflow-request-or-start-trial-dialog">
+        <RequestOrStartTrialDialog
+          id="xflow-request-or-start-trial-dialog"
+          sourceComponent={sourceComponent}
+          sourceContext={sourceContext}
+        >
           {(() => {
             switch (this.state.screen) {
               case Screens.INITIALIZING: {
@@ -141,11 +167,11 @@ class RequestOrStartTrial extends Component {
                   <div>
                     <InitializingScreen isOpen={!initializingCheckFailed} />
                     <ErrorFlag
-                      flagRetry
                       flagActions={this.flagActions}
                       title="Oops... Something went wrong"
                       description="Let's try again."
                       showFlag={showInitializationError}
+                      source="request-or-start-trial"
                       onDismissed={() => {
                         this.setState({
                           showInitializationError: false,
@@ -169,7 +195,11 @@ class RequestOrStartTrial extends Component {
                 return <AlreadyStarted onComplete={onComplete} />;
               }
               case Screens.REQUEST_TRIAL: {
-                return <RequestTrial onComplete={onComplete} onTrialRequested={onTrialRequested} />;
+                return (<RequestTrial
+                  alreadyRequested={alreadyRequested}
+                  onComplete={onComplete}
+                  onTrialRequested={onTrialRequested}
+                />);
               }
               default: {
                 return <InitializingScreen />;
@@ -177,7 +207,7 @@ class RequestOrStartTrial extends Component {
             }
           })()}
         </RequestOrStartTrialDialog>
-      </App>
+      </XFlowAnalyticsListener>
     );
   }
 }
@@ -186,8 +216,14 @@ export const RequestOrStartTrialBase = withAnalytics(RequestOrStartTrial);
 
 export default withXFlowProvider(
   RequestOrStartTrialBase,
-  ({ xFlow: { canCurrentUserAddProduct, getProductActivationState, waitForActivation } }) => ({
+  ({ xFlow: {
+      canCurrentUserAddProduct,
+      checkProductRequestFlag,
+      getProductActivationState,
+      waitForActivation,
+  } }) => ({
     canCurrentUserAddProduct,
+    checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
   })

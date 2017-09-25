@@ -130,7 +130,6 @@ export default function getButtonStyles(props: Object) {
     text-decoration: ${textDecoration};
     transition-duration: ${transitionDuration};
     transition: ${transition};
-    user-select: none;
     vertical-align: ${verticalAlign};
     white-space: nowrap;
 

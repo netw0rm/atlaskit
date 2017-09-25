@@ -116,7 +116,7 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Create requirements and stay in sync with your entire team.',
+    defaultMessage: 'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
@@ -210,21 +210,21 @@ export const defaultProps = intl => ({
       ),
     },
     optOut: {
-      optOutHeading: 'Product trial requests',
-      optOutMessage: 'Change your notifications, or stop requests completely.',
+      optOutHeading: 'Trial requests',
+      optOutMessage: 'Change your notifications or stop requests completely.',
       optOutDefaultSelectedRadio: 'admin-opt-out',
       optOutNotePlaceholder:
-        'Can you tell us why you are turning off this feature? Your feedback helps improve future releases.',
+        'Send us your feedback to help improve \nfuture releases.',
       optOutOptionItems: [
         {
           value: 'admin-opt-out',
-          label: "I don't want to get trial requests from users",
-          note: 'Any other site admins will still receive trial requests',
+          label: 'Turn off notifications',
+          note: 'You won\'t get trial requests from users.',
         },
         {
           value: 'disable-requests',
-          label: 'Turn off trial requesting for all users',
-          note: '',
+          label: 'Turn off trial requesting',
+          note: "Users can't request trials.",
         },
       ],
     },

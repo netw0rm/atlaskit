@@ -8,22 +8,22 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import RequestTrialHeader from '../styled/RequestTrialHeader';
+import RequestTrialHeading from '../styled/RequestTrialHeading';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import NoteText from '../styled/NoteText';
 
 const messages = defineMessages({
   errorFlagTitle: {
     id: 'xflow.generic.request-trial-note.error-flag.title',
-    defaultMessage: 'Oops... something went wrong',
+    defaultMessage: "Uh oh. That didn't work.",
   },
   errorFlagDescription: {
     id: 'xflow.generic.request-tral-note.error-flag.description',
-    defaultMessage: "That request didn't make it through. Shall we try again?",
+    defaultMessage: "Your trial request wasn't sent.",
   },
   errorFlagResendRequest: {
     id: 'xflow.generic.request-trial-note.error-flag.resend-request',
-    defaultMessage: 'Resend request',
+    defaultMessage: 'Try again',
   },
   errorFlagNotNow: {
     id: 'xflow.generic.request-trial-note.error-flag.not-now',
@@ -31,11 +31,11 @@ const messages = defineMessages({
   },
   successFlagTitle: {
     id: 'xflow.generic.request-trial-note.success-flag.title',
-    defaultMessage: 'Your request is sent',
+    defaultMessage: 'That\'s sent!',
   },
   successFlagDescription: {
     id: 'xflow.generic.request-tral-note.success-flag.description',
-    defaultMessage: 'Props for helping your admin out!',
+    defaultMessage: 'We\'ll let your admin know right away.',
   },
 });
 
@@ -158,17 +158,17 @@ class RequestTrialNote extends Component {
     const { intl, placeholder, prompt } = this.props;
     const { awaitingRequest, requestTrialSendNoteStatus } = this.state;
     return (
-      <div>
+      <div id="xflow-request-trial-note">
         <ModalDialog
           isOpen={!awaitingRequest}
           width="small"
           header={
-            <RequestTrialHeader>
+            <RequestTrialHeading>
               <FormattedMessage
                 id="xflow.generic.request-trial-note.heading"
-                defaultMessage="Ping your site admin"
+                defaultMessage="Message your site admin"
               />
-            </RequestTrialHeader>
+            </RequestTrialHeading>
           }
           footer={
             <RequestTrialFooter>

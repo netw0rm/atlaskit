@@ -82,7 +82,7 @@ class ConfirmRequest extends Component {
         isOpen
         width={'400px'}
         header={
-          <div>
+          <div id="xflow-confirm-request">
             <RequestTrialHeader>
               {productLogo}
               <RequestTrialLozengeDiv>

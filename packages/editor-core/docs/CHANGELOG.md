@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.7.1 (2017-09-25)
+
+* bug fix; don't show the media dropdown in the Insert Toolbar if no uploadContext is present (issues closed: ed-2865) ([b6d49d6](https://bitbucket.org/atlassian/atlaskit/commits/b6d49d6))
+* bug fix; revert code-splitting from editor-core ([c0586d0](https://bitbucket.org/atlassian/atlaskit/commits/c0586d0))
 ## 47.7.0 (2017-09-25)
 
 * bug fix; emoji TypeAhead doesn't go away after submitting a comment in BB (issues closed: ed-2633) ([3fc98cf](https://bitbucket.org/atlassian/atlaskit/commits/3fc98cf))

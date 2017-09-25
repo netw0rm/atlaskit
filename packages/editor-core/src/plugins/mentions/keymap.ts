@@ -33,6 +33,16 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
     return mentionsPlugin.onSelectCurrent();
   }, list);
 
+  keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, (state: any, dispatch) => {
+    const mentionsPlugin = pluginKey.getState(state) as MentionsState;
+    if (!mentionsPlugin.queryActive) {
+      return false;
+    }
+
+    mentionsPlugin.onSelectCurrent();
+    return false;
+  }, list);
+
   keymaps.bindKeymapWithCommand(keymaps.tab.common!, (state: any, dispatch) => {
     const mentionsPlugin = pluginKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {

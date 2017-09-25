@@ -38,6 +38,6 @@ export const inlineMacro: NodeSpec = {
       'data-params': JSON.stringify(params),
       'contenteditable': 'false',
     };
-    return ['span', attrs];
+    return ['span', attrs, ['img', {src: placeholderUrl}]];
   }
 };

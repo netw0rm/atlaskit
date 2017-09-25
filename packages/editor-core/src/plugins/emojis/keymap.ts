@@ -32,6 +32,16 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
     return emojisPlugin.onSelectCurrent();
   }, list);
 
+  keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, (state: any, dispatch) => {
+    const emojisPlugin = stateKey.getState(state) as EmojiState;
+    if (!emojisPlugin.queryActive) {
+      return false;
+    }
+
+    emojisPlugin.onSelectCurrent();
+    return false;
+  }, list);
+
   keymaps.bindKeymapWithCommand(keymaps.tab.common!, (state: any, dispatch) => {
     const emojisPlugin = stateKey.getState(state) as EmojiState;
     if (!emojisPlugin.queryActive) {

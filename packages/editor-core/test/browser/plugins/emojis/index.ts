@@ -160,6 +160,41 @@ describe('emojis', () => {
       });
     });
 
+    describe('Shift-Enter', () => {
+      it('should be ignored if there is no emojiProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
+
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called, 'was not called').to.equal(false);
+        editorView.destroy();
+      });
+
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello{<>}')));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
+
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called, 'was not called').to.equal(false);
+        editorView.destroy();
+      });
+
+      it('should call "onSelectCurrent" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
+        (pluginState as any).emojiProvider = true;
+        forceUpdate(editorView); // Force update to ensure active query.
+
+        sendKeyToPm(editorView, 'Shift-Enter');
+        expect(spy.called, 'was called').to.equal(true);
+        expect(spy.returned(false), 'return value').to.equal(true);
+        editorView.destroy();
+      });
+    });
+
     describe('Space', () => {
       it('should be ignored if there is no emojiProvider', () => {
         const { editorView, pluginState } = editor(doc(p(emojiQuery(':grin{<>}'))));

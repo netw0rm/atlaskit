@@ -85,8 +85,8 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
       onClick={noop}
       selected={false}
       disabled={false}
-      title="tooltip text"
       hideTooltip={true}
+      title="tooltip text"
     />);
 
     const tooltip = toolbarButtonElem.find(Tooltip);

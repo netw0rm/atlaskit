@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 47.7.0 (2017-09-25)
+
+* bug fix; emoji TypeAhead doesn't go away after submitting a comment in BB (issues closed: ed-2633) ([3fc98cf](https://bitbucket.org/atlassian/atlaskit/commits/3fc98cf))
+* bug fix; add editorView.destroy in mentions plugin ([cc8cc37](https://bitbucket.org/atlassian/atlaskit/commits/cc8cc37))
+* bug fix; mention type-ahead does not disappear when user uses keyboard shortcut Shift+Enter (issues closed: ed-2761, hnw-2580) ([12952c7](https://bitbucket.org/atlassian/atlaskit/commits/12952c7))
+* feature; display inline macro place holder as an image. ([c52fe97](https://bitbucket.org/atlassian/atlaskit/commits/c52fe97))
+* bug fix; check if link is compatible with existing marks before adding link (issues closed: ed-2218) ([f8578c9](https://bitbucket.org/atlassian/atlaskit/commits/f8578c9))
+* feature; add support for detecting mark-types in a selection ([f5ce040](https://bitbucket.org/atlassian/atlaskit/commits/f5ce040))
+* bug fix; fix error where mark type groups were not being properly filtered out (issues closed: ed-2805) ([b3f2f5d](https://bitbucket.org/atlassian/atlaskit/commits/b3f2f5d))
+* feature; update json-schema with inlineMacro node. ([ad90c0f](https://bitbucket.org/atlassian/atlaskit/commits/ad90c0f))
+* feature; added inlineMacro node. ([99c6b38](https://bitbucket.org/atlassian/atlaskit/commits/99c6b38))
 ## 47.6.3 (2017-09-22)
 
 

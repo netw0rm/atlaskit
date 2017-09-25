@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 29.1.0 (2017-09-25)
+
+* bug fix; emoji picker displays people emojis after frequent (issues closed: fs-1340) ([f2a089e](https://bitbucket.org/atlassian/atlaskit/commits/f2a089e))
+* feature; return creator user Id and created data in EmojiDescription (optionally) (issues closed: fs-1328) ([7949ff4](https://bitbucket.org/atlassian/atlaskit/commits/7949ff4))
 ## 29.0.4 (2017-09-22)
 
 

@@ -34,7 +34,7 @@ type IconWrapperProps = {
 
 const borderColor = themed({ light: colors.N50A, dark: colors.DN80 });
 const focusBorder = css`
-  stroke: ${themed({ light: colors.N50A, dark: colors.B75 })};
+  stroke: ${themed({ light: colors.B100, dark: colors.B75 })};
   stroke-width: 2px;
 `;
 const invalidBorder = css`
@@ -60,6 +60,7 @@ const getBorderColor = (props: IconWrapperProps) => {
 
 export const IconWrapper = styled.span`
   line-height: 0;
+  flex-shrink: 0;
 
   /* This is adding a property to the inner svg, to add a border to the checkbox */
   & rect {

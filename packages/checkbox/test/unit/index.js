@@ -36,7 +36,7 @@ describe(name, () => {
         isDisabled
       />);
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N70);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should be correctly styled when hovered', () => {
       const cb = mount(<CheckboxStateless
@@ -98,7 +98,7 @@ describe(name, () => {
       />);
       cb.simulate('mousedown');
       expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.N20A);
-      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N70);
+      expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe('transparent');
     });
     it('should call onchange on change', () => {
       const myMock = jest.fn();

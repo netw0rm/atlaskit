@@ -46,6 +46,11 @@ describe('<NavigationItem />', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(navigation.find('a').props().href).toBe('foo');
     });
+    it('with target and href should render the href and target on a link', () => {
+      const navigation = mountWithRootTheme(<NavigationItem href="foo" target="_blank" />);
+      navigation.find('a').simulate('click');
+      expect(navigation.find('a').props().target).toBe('_blank');
+    });
     it('linkComponent should render a custom link component', () => {
       const customLink = mountWithRootTheme(
         <NavigationItem

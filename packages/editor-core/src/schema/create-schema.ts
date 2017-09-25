@@ -45,6 +45,7 @@ import {
   decisionItem,
   taskList,
   taskItem,
+  inlineMacro,
   unknownBlock,
 } from './nodes';
 
@@ -135,6 +136,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'decisionItem', spec: decisionItem },
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
+  { name: 'inlineMacro', spec: inlineMacro },
   { name: 'unknownBlock', spec: unknownBlock },
 ];
 

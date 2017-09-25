@@ -29,6 +29,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
+    'inlineMacro',
   ],
   marks: [
     'em',

@@ -29,3 +29,4 @@ export { decisionList } from './decision-list';
 export { decisionItem } from './decision-item';
 export { taskList } from './task-list';
 export { taskItem } from './task-item';
+export { inlineMacro } from './inline-macro';

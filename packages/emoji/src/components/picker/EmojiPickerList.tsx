@@ -316,6 +316,12 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
       // Row count has not changed, so need to tell list to rerender.
       list.forceUpdateGrid();
     }
+    if (!query && list) {
+      // VirtualList can apply stale heights since it performs a shallow
+      // compare to check if the list has changed. Should manually recompute
+      // row heights for the case when frequent category come in later
+      list.recomputeRowHeights();
+    }
   }
 
   private buildGroups = (emojis: EmojiDescription[]): void => {

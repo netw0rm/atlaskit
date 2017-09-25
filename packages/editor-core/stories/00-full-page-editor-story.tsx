@@ -103,6 +103,7 @@ storiesOf(name, module)
           allowTables={true}
           allowJiraIssue={true}
           allowUnsupportedContent={true}
+          allowPanel={true}
 
           mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}

@@ -1,5 +1,15 @@
 # @atlaskit/emoji
 
+## 29.0.4 (2017-09-22)
+
+
+* bug fix; removed reference to selectedCategory ([7319aa2](https://bitbucket.org/atlassian/atlaskit/commits/7319aa2))
+* bug fix; export props and state of emojipickerlist ([3c2dde2](https://bitbucket.org/atlassian/atlaskit/commits/3c2dde2))
+
+* bug fix; fS-1349 refactor selectedCategory resolution logic in picker (issues closed: fs-1349) ([10c7487](https://bitbucket.org/atlassian/atlaskit/commits/10c7487))
+## 29.0.3 (2017-09-22)
+
+* bug fix; remove code splitting from emoji ([94a5901](https://bitbucket.org/atlassian/atlaskit/commits/94a5901))
 ## 29.0.2 (2017-09-21)
 
 * bug fix; shows tone selector by default in preview (issues closed: fs-1346) ([d4fbaf8](https://bitbucket.org/atlassian/atlaskit/commits/d4fbaf8))

@@ -31,6 +31,7 @@ export interface EditorProps {
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
+  allowPanel?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 47.6.3 (2017-09-22)
+
+
+* bug fix; triple backticks in middle of paragraph if followed by space or enter should create ([58c2754](https://bitbucket.org/atlassian/atlaskit/commits/58c2754))
+
+## 47.6.2 (2017-09-22)
+
+* bug fix; triple backticks in middle of paragraph if followed by space or enter should create ([58c2754](https://bitbucket.org/atlassian/atlaskit/commits/58c2754))
+
+## 47.6.1 (2017-09-22)
+
+
+* bug fix; added panel support to new editor architecture (issues closed: ed-2804) ([c56e5fd](https://bitbucket.org/atlassian/atlaskit/commits/c56e5fd))
+## 47.6.0 (2017-09-22)
+
+* feature; addes in occurrenceKey in link mark (issues closed: ed-2765) ([b4687a0](https://bitbucket.org/atlassian/atlaskit/commits/b4687a0))
+* feature; addes in optional id and collection for link mark. These two properties will be ins (issues closed: ed-2750) ([c3ed647](https://bitbucket.org/atlassian/atlaskit/commits/c3ed647))
+* feature; remove bottom toolbar from full-page editor (issues closed: ed-2783) ([cf7a7da](https://bitbucket.org/atlassian/atlaskit/commits/cf7a7da))
 ## 47.5.1 (2017-09-21)
 
 * bug fix; editing a link results in malformed / wrong links (issues closed: ed-2749, hnw-3015) ([4c9f314](https://bitbucket.org/atlassian/atlaskit/commits/4c9f314))

@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import ProgressBar from '../src/progress-bar/components/ProgressBar';
+import ProgressBar from '../src/common/components/ProgressBar';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 

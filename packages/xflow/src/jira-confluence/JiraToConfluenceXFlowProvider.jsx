@@ -116,7 +116,7 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Confluence helps your team create, capture and collaborate on project documentation and it integrates perfectly with Jira.',
+    defaultMessage: 'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',

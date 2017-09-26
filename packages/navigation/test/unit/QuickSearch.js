@@ -29,22 +29,25 @@ describe('<QuickSearch />', () => {
       <PersonResult resultId="3" name="three" onClick={onClickSpy} />
     </AkNavigationItemGroup>),
   ];
-  const QsComponent = (
-    <AkQuickSearch onSearchInput={noOp}>
-      {exampleChildren}
-    </AkQuickSearch>
-  );
 
   let wrapper;
   let searchInput;
 
-  beforeEach(() => {
+  const render = (props) => {
     wrapper = mountWithRootTheme(
-      QsComponent,
+      (
+        <AkQuickSearch {...props} onSearchInput={noOp}>
+          {(props && props.children) || exampleChildren}
+        </AkQuickSearch>
+      ),
       undefined,
       { context: { onAnalyticsEvent: onAnalyticsEventSpy } }
     );
     searchInput = wrapper.find(AkSearch).find('input');
+  };
+
+  beforeEach(() => {
+    render();
   });
 
   afterEach(() => {
@@ -57,7 +60,7 @@ describe('<QuickSearch />', () => {
   });
 
   it('should render its children', () => {
-    wrapper.setProps({ children: <div id="child" /> });
+    render({ children: <div id="child" /> });
     expect(wrapper.find('div#child').exists()).toBe(true);
   });
 
@@ -107,6 +110,32 @@ describe('<QuickSearch />', () => {
           call[0] === `${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`
         );
         expect(kbCtrlsUsedEventsFired).toHaveLength(1);
+      });
+    });
+    describe('should fire event on search term entered', () => {
+      it('should fire when search term is entered', () => {
+        wrapper.setProps({ value: 'hello' });
+        expectEventFiredLastToBe('query-entered');
+      });
+      it('should not fire if previous search term was not empty', () => {
+        // Set up non-empty-query state.
+        render({ value: 'hello' });
+        // Clear events fired from mounting
+        onAnalyticsEventSpy.mockReset();
+
+        wrapper.setProps({ value: 'goodbye' });
+        expect(onAnalyticsEventSpy).not.toHaveBeenCalled();
+      });
+      it('should only fire once per mount', () => {
+        wrapper.setProps({ value: 'hello' });
+        expectEventFiredLastToBe('query-entered');
+        onAnalyticsEventSpy.mockReset();
+
+        wrapper.setProps({ value: '' });
+        wrapper.setProps({ value: 'is anybody home?' });
+        wrapper.setProps({ value: '' });
+        wrapper.setProps({ value: 'HELLOOO?' });
+        expect(onAnalyticsEventSpy).not.toHaveBeenCalled();
       });
     });
   });

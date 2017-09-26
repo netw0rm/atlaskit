@@ -120,6 +120,16 @@ export class QuickSearch extends Component {
         selectedResultId: nextProps.selectedResultId || getResultIdByIndex(this.flatResults, 0),
       });
     }
+
+    /**
+     * Capture whether user needed to query in order to find their target result.
+     * Only fire once per mount. Only fire when a search term is entered and the previous search
+     * term was empty.
+     */
+    if (!this.hasSearchQueryEventFired && !this.props.value && nextProps.value) {
+      this.hasSearchQueryEventFired = true;
+      this.props.firePrivateAnalyticsEvent(`${ATLASKIT_QUICKSEARCH_NS}/query-entered`);
+    }
   }
 
   /**

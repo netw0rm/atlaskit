@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.7.4 (2017-09-26)
+
+* bug fix; use lowercased language names for code-block adf representation (issues closed: ed-2813) ([05ed3dc](https://bitbucket.org/atlassian/atlaskit/commits/05ed3dc))
 ## 47.7.3 (2017-09-26)
 
 * bug fix; make ToolbarInsertBlock's mediaDisabled key less ambiguous (issues closed: ed-2865) ([1890835](https://bitbucket.org/atlassian/atlaskit/commits/1890835))

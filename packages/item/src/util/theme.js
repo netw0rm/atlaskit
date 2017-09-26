@@ -1,16 +1,5 @@
 // @flow
-
-import {
-  akBorderRadius,
-  akColorB100,
-  akColorB75,
-  akColorN0,
-  akColorN20,
-  akColorN200,
-  akColorN500,
-  akColorN800,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize as akGridSize, borderRadius } from '@atlaskit/theme';
 
 import type { ItemTheme } from '../types';
 
@@ -20,14 +9,14 @@ export const themeNamespace = '@atlaskit-shared-theme/item';
 export const smallFontSize = 12;
 export const compactSmallFontSize = 10;
 export const compactLineHeight = 1.2;
-export const gridSize: number = akGridSizeUnitless;
+export const gridSize: number = akGridSize();
 
 export const defaultTheme: ItemTheme = {
-  afterItemSpacing: akGridSizeUnitless,
-  beforeItemSpacing: akGridSizeUnitless,
-  borderRadius: parseInt(akBorderRadius, 10),
+  afterItemSpacing: akGridSize(),
+  beforeItemSpacing: akGridSize(),
+  borderRadius: borderRadius(),
   focus: {
-    outline: akColorB100,
+    outline: colors.B100,
   },
   height: {
     compact: 0,
@@ -35,48 +24,48 @@ export const defaultTheme: ItemTheme = {
   },
   padding: {
     default: {
-      bottom: akGridSizeUnitless / 2,
-      left: akGridSizeUnitless / 2,
-      right: akGridSizeUnitless / 2,
-      top: akGridSizeUnitless / 2,
+      bottom: akGridSize() / 2,
+      left: akGridSize() / 2,
+      right: akGridSize() / 2,
+      top: akGridSize() / 2,
     },
     compact: {
-      bottom: akGridSizeUnitless,
-      left: akGridSizeUnitless,
-      right: akGridSizeUnitless,
-      top: akGridSizeUnitless,
+      bottom: akGridSize(),
+      left: akGridSize(),
+      right: akGridSize(),
+      top: akGridSize(),
     },
   },
   default: {
-    background: akColorN0,
-    text: akColorN500,
-    secondaryText: akColorN200,
+    background: colors.N0,
+    text: colors.N500,
+    secondaryText: colors.N200,
   },
   selected: {
-    background: akColorN0,
-    text: akColorN500,
-    secondaryText: akColorN200,
+    background: colors.N0,
+    text: colors.N500,
+    secondaryText: colors.N200,
   },
   active: {
-    background: akColorB75,
-    text: akColorN800,
-    secondaryText: akColorN200,
+    background: colors.B75,
+    text: colors.N800,
+    secondaryText: colors.N200,
   },
   hover: {
-    background: akColorN20,
-    text: akColorN800,
-    secondaryText: akColorN200,
+    background: colors.N20,
+    text: colors.N800,
+    secondaryText: colors.N200,
   },
   disabled: {
-    background: akColorN0,
-    text: akColorN200,
-    secondaryText: akColorN200,
+    background: colors.N0,
+    text: colors.N200,
+    secondaryText: colors.N200,
   },
   // same as hover in this case
   dragging: {
-    background: akColorN20,
-    text: akColorN800,
-    secondaryText: akColorN200,
+    background: colors.N20,
+    text: colors.N800,
+    secondaryText: colors.N200,
   },
 };
 

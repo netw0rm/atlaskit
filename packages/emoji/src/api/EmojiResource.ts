@@ -249,7 +249,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
         if (isPromise(done)) {
           return done.then(() => {
             debug('Primed siteEmojiResource');
-          }).catch(err => {
+          }).catch(() => {
             debug('Failed to prime siteEmojiResource');
           });
         } else {

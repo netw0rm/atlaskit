@@ -33,7 +33,7 @@ export interface State {
   isOpen?: boolean;
   tableActive: boolean;
   tableHidden: boolean;
-  mediaDisabled: boolean;
+  mediaUploadsDisabled: boolean;
   availableWrapperBlockTypes?: BlockType[];
 }
 
@@ -48,7 +48,7 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
     isOpen: false,
     tableActive: false,
     tableHidden: false,
-    mediaDisabled: false,
+    mediaUploadsDisabled: false,
   };
 
   componentDidMount() {
@@ -177,8 +177,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
         });
       }
     }
-    const { mediaDisabled } = this.state;
-    if (pluginStateMedia && !mediaDisabled) {
+    const { mediaUploadsDisabled } = this.state;
+    if (pluginStateMedia && !mediaUploadsDisabled) {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },
@@ -213,7 +213,7 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
 
   private handlePluginStateMediaChange = (pluginState: MediaPluginState) => {
     this.setState({
-      mediaDisabled: !pluginState.allowsUploads
+      mediaUploadsDisabled: !pluginState.allowsUploads
     });
   }
 

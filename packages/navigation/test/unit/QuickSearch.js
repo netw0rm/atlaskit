@@ -6,7 +6,7 @@ import {
   AkSearch,
   quickSearchResultTypes,
 } from '../../src';
-import { ATLASKIT_QUICKSEARCH_NS } from '../../src/components/js/QuickSearch';
+import { ATLASKIT_QUICKSEARCH_NS } from '../../src/components/js/quick-search/QuickSearch';
 import { mountWithRootTheme } from './_theme-util';
 
 const { PersonResult } = quickSearchResultTypes;

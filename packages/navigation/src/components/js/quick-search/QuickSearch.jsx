@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
-import { AkSearch } from '../../../src';
+import { AkSearch } from '../../../../src';
 
 export const ATLASKIT_QUICKSEARCH_NS = '@atlaskit/navigation/quick-search';
 

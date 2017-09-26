@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { ATLASKIT_QUICKSEARCH_NS } from '../QuickSearch';
-import { AkNavigationItem } from '../../../../src';
+import { AkNavigationItem } from '../../../../../src';
 
 const BASE_RESULT_TYPE = 'base';
 

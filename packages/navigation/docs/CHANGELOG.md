@@ -1,5 +1,13 @@
 # @atlaskit/navigation
 
+## 24.2.0 (2017-09-26)
+
+* feature; remove redundant click in the test ([325f4f1](https://bitbucket.org/atlassian/atlaskit/commits/325f4f1))
+* feature; added test to NavigationItem to make sure it passes "target" attribute down the cha ([605891b](https://bitbucket.org/atlassian/atlaskit/commits/605891b))
+* feature; made "target" attribute of NavigationItem to be optional ([ee24b3c](https://bitbucket.org/atlassian/atlaskit/commits/ee24b3c))
+
+* feature; fixed PropTypes field which is unknown to flow in NavigationItem ([f06c155](https://bitbucket.org/atlassian/atlaskit/commits/f06c155))
+* feature; allow to pass custom "target" attribute to NavigationItem ([3da2dc8](https://bitbucket.org/atlassian/atlaskit/commits/3da2dc8))
 ## 24.1.0 (2017-09-25)
 
 * feature; added Navigation.containerScrollRef prop for listening to contain nav scroll (issues closed: ak-3530) ([7c7bc3f](https://bitbucket.org/atlassian/atlaskit/commits/7c7bc3f))

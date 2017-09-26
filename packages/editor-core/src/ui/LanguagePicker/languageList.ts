@@ -1,80 +1,83 @@
-export const DEFAULT_LANGUAGES = [
-  { name: 'PHP', alias: ['php', 'php3', 'php4', 'php5'] },
-  { name: 'Java', alias: ['java'] },
+export type Language = { name: string, alias: [string] };
+
+// We expect alias[0] to be used for the ADF attribute, see ED-2813
+export const DEFAULT_LANGUAGES: Language[] = [
+  { name: 'ABAP', alias: ['abap'] },
+  { name: 'ActionScript', alias: ['actionscript', 'actionscript3', 'as'] },
+  { name: 'Ada', alias: ['ada', 'ada95', 'ada2005'] },
+  { name: 'AppleScript', alias: ['applescript'] },
+  { name: 'Arduino', alias: ['arduino'] },
+  { name: 'Autoit', alias: ['autoit'] },
+  { name: 'C', alias: ['c'] },
+  { name: 'C++', alias: ['c++', 'cpp'] },
+  { name: 'Clojure', alias: ['clojure', 'clj'] },
+  { name: 'CoffeeScript', alias: ['coffeescript', 'coffee-script', 'coffee'] },
+  { name: 'ColdFusion', alias: ['coldfusion'] },
   { name: 'CSharp', alias: ['csharp', 'c#'] },
-  { name: 'Python', alias: ['python', 'py'] },
+  { name: 'CSS', alias: ['css'] },
+  { name: 'CUDA', alias: ['cuda', 'cu'] },
+  { name: 'D', alias: ['d'] },
+  { name: 'Dart', alias: ['dart'] },
+  { name: 'Delphi', alias: ['delphi', 'pas', 'pascal', 'objectpascal'] },
+  { name: 'Diff', alias: ['diff'] },
+  { name: 'Elixir', alias: ['elixir', 'ex', 'exs'] },
+  { name: 'Erlang', alias: ['erlang', 'erl'] },
+  { name: 'Fortran', alias: ['fortran'] },
+  { name: 'FoxPro', alias: ['foxpro', 'vfp', 'clipper', 'xbase'] },
+  { name: 'Go', alias: ['go'] },
+  { name: 'Groovy', alias: ['groovy'] },
+  { name: 'Haskell', alias: ['haskell', 'hs'] },
+  { name: 'Haxe', alias: ['haxe', 'hx', 'hxsl'] },
+  { name: 'Html', alias: ['html'] },
+  { name: 'Java', alias: ['java'] },
+  { name: 'JavaFX', alias: ['javafx', 'jfx'] },
   { name: 'JavaScript', alias: ['javascript', 'js'] },
   { name: 'JSON', alias: ['json'] },
-  { name: 'Html', alias: ['html'] },
-  { name: 'C++', alias: ['c++', 'cpp'] },
-  { name: 'Ruby', alias: ['ruby', 'rb', 'duby'] },
-  { name: 'Objective-C', alias: ['objective-c', 'objectivec', 'obj-c', 'objc'] },
-  { name: 'C', alias: ['c'] },
-  { name: 'Swift', alias: ['swift'] },
-  { name: 'TeX', alias: ['tex', 'latex'] },
-  { name: 'Shell', alias: ['shell', 'bash', 'sh', 'ksh', 'zsh'] },
-  { name: 'Scala', alias: ['scala'] },
-  { name: 'Go', alias: ['go'] },
-  { name: 'ActionScript', alias: ['actionscript', 'actionscript3', 'as'] },
-  { name: 'AppleScript', alias: ['applescript'] },
-  { name: 'ColdFusion', alias: ['coldfusion'] },
-  { name: 'Diff', alias: ['diff'] },
-  { name: 'JavaFX', alias: ['javafx', 'jfx'] },
-  { name: 'VisualBasic', alias: ['visualbasic', 'vb'] },
-  { name: 'PlainText', alias: ['plaintext', 'text'] },
-  { name: 'VbNet', alias: ['vbnet', 'vb.net'] },
-  { name: 'MATLAB', alias: ['matlab'] },
-  { name: 'Groovy', alias: ['groovy'] },
-  { name: 'SQL', alias: ['sql', 'postgresql', 'postgres', 'plpgsql', 'psql', 'postgresql-console', 'postgres-console', 'tsql', 't-sql', 'mysql', 'sqlite'] },
-  { name: 'R', alias: ['r'] },
-  { name: 'Perl', alias: ['perl', 'pl'] },
-  { name: 'Lua', alias: ['lua'] },
-  { name: 'Delphi', alias: ['delphi', 'pas', 'pascal', 'objectpascal'] },
-  { name: 'XML', alias: ['xml'] },
-  { name: 'TypeScript', alias: ['typescript', 'ts'] },
-  { name: 'CoffeeScript', alias: ['coffeescript', 'coffee-script', 'coffee'] },
-  { name: 'Clojure', alias: ['clojure', 'clj'] },
-  { name: 'Haskell', alias: ['haskell', 'hs'] },
-  { name: 'Puppet', alias: ['puppet'] },
-  { name: 'Arduino', alias: ['arduino'] },
-  { name: 'Fortran', alias: ['fortran'] },
-  { name: 'Erlang', alias: ['erlang', 'erl'] },
-  { name: 'PowerShell', alias: ['powershell', 'posh', 'ps1', 'psm1'] },
-  { name: 'Haxe', alias: ['haxe', 'hx', 'hxsl'] },
-  { name: 'Elixir', alias: ['elixir', 'ex', 'exs'] },
-  { name: 'Verilog', alias: ['verilog', 'v'] },
-  { name: 'Rust', alias: ['rust'] },
-  { name: 'VHDL', alias: ['vhdl'] },
-  { name: 'Sass', alias: ['sass'] },
-  { name: 'OCaml', alias: ['ocaml'] },
-  { name: 'Dart', alias: ['dart'] },
-  { name: 'CSS', alias: ['css'] },
-  { name: 'reStructuredText', alias: ['restructuredtext', 'rst', 'rest'] },
-  { name: 'ObjectPascal', alias: ['objectpascal'] },
-  { name: 'Kotlin', alias: ['kotlin'] },
-  { name: 'D', alias: ['d'] },
-  { name: 'Octave', alias: ['octave'] },
-  { name: 'QML', alias: ['qbs'] },
-  { name: 'Prolog', alias: ['prolog'] },
-  { name: 'FoxPro', alias: ['foxpro', 'vfp', 'clipper', 'xbase'] },
-  { name: 'Scheme', alias: ['scheme', 'scm'] },
-  { name: 'CUDA', alias: ['cuda', 'cu'] },
   { name: 'Julia', alias: ['julia', 'jl'] },
-  { name: 'Racket', alias: ['racket', 'rkt'] },
-  { name: 'Ada', alias: ['ada', 'ada95', 'ada2005'] },
-  { name: 'Tcl', alias: ['tcl'] },
-  { name: 'Mathematica', alias: ['mathematica', 'mma', 'nb'] },
-  { name: 'Autoit', alias: ['autoit'] },
-  { name: 'StandardML', alias: ['standardmL', 'sml'] },
-  { name: 'Objective-J', alias: ['objective-j', 'objectivej', 'obj-j', 'objj'] },
-  { name: 'Smalltalk', alias: ['smalltalk', 'squeak', 'st'] },
-  { name: 'Vala', alias: ['vala', 'vapi'] },
-  { name: 'ABAP', alias: ['abap'] },
+  { name: 'Kotlin', alias: ['kotlin'] },
   { name: 'LiveScript', alias: ['livescript', 'live-script'] },
+  { name: 'Lua', alias: ['lua'] },
+  { name: 'Mathematica', alias: ['mathematica', 'mma', 'nb'] },
+  { name: 'MATLAB', alias: ['matlab'] },
+  { name: 'Objective-C', alias: ['objective-c', 'objectivec', 'obj-c', 'objc'] },
+  { name: 'Objective-J', alias: ['objective-j', 'objectivej', 'obj-j', 'objj'] },
+  { name: 'ObjectPascal', alias: ['objectpascal'] },
+  { name: 'OCaml', alias: ['ocaml'] },
+  { name: 'Octave', alias: ['octave'] },
+  { name: 'Perl', alias: ['perl', 'pl'] },
+  { name: 'PHP', alias: ['php', 'php3', 'php4', 'php5'] },
+  { name: 'PlainText', alias: ['plaintext', 'text'] },
+  { name: 'PowerShell', alias: ['powershell', 'posh', 'ps1', 'psm1'] },
+  { name: 'Prolog', alias: ['prolog'] },
+  { name: 'Puppet', alias: ['puppet'] },
+  { name: 'Python', alias: ['python', 'py'] },
+  { name: 'QML', alias: ['qbs'] },
+  { name: 'R', alias: ['r'] },
+  { name: 'Racket', alias: ['racket', 'rkt'] },
+  { name: 'reStructuredText', alias: ['restructuredtext', 'rst', 'rest'] },
+  { name: 'Ruby', alias: ['ruby', 'rb', 'duby'] },
+  { name: 'Rust', alias: ['rust'] },
+  { name: 'Sass', alias: ['sass'] },
+  { name: 'Scala', alias: ['scala'] },
+  { name: 'Scheme', alias: ['scheme', 'scm'] },
+  { name: 'Shell', alias: ['shell', 'bash', 'sh', 'ksh', 'zsh'] },
+  { name: 'Smalltalk', alias: ['smalltalk', 'squeak', 'st'] },
+  { name: 'SQL', alias: ['sql', 'postgresql', 'postgres', 'plpgsql', 'psql', 'postgresql-console', 'postgres-console', 'tsql', 't-sql', 'mysql', 'sqlite'] },
+  { name: 'StandardML', alias: ['standardmL', 'sml'] },
+  { name: 'Swift', alias: ['swift'] },
+  { name: 'Tcl', alias: ['tcl'] },
+  { name: 'TeX', alias: ['tex', 'latex'] },
+  { name: 'TypeScript', alias: ['typescript', 'ts'] },
+  { name: 'Vala', alias: ['vala', 'vapi'] },
+  { name: 'VbNet', alias: ['vbnet', 'vb.net'] },
+  { name: 'Verilog', alias: ['verilog', 'v'] },
+  { name: 'VHDL', alias: ['vhdl'] },
+  { name: 'VisualBasic', alias: ['visualbasic', 'vb'] },
+  { name: 'XML', alias: ['xml'] },
   { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] }
 ];
 
-export function findMatchedLanguage(supportedLanguages: any[], language?: string): string | undefined {
+export function findMatchedLanguage(supportedLanguages: Language[], language?: string) {
   if (!language) {
     return undefined;
   }
@@ -84,13 +87,13 @@ export function findMatchedLanguage(supportedLanguages: any[], language?: string
   });
 
   if (matches.length > 0) {
-    return matches[0].name;
+    return matches[0];
   }
 
   return undefined;
 }
 
-export function filterSupportedLanguages (supportedLanguages) {
+export function filterSupportedLanguages (supportedLanguages): Language[] {
   if (!supportedLanguages || !supportedLanguages.length) {
     return DEFAULT_LANGUAGES;
   }
@@ -106,6 +109,14 @@ export function filterSupportedLanguages (supportedLanguages) {
   });
 }
 
-export function createLanguageList (supportedLanguages) {
-  return supportedLanguages.map((language) => language.name).sort();
+export function getLanguageIdentifier (language: Language): string {
+  return language.alias[0];
+}
+
+export function createLanguageList (supportedLanguages: Language[]) {
+  return supportedLanguages.sort((left, right) => {
+    if (left.name > right.name) { return 1; }
+    if (left.name < right.name) { return -1; }
+    return 0;
+  });
 }

@@ -8,7 +8,7 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "jsnext:experimental:main": "dist/es/index.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "ak:webpack:raw": "src/index.js",
   "ak:component": {
     "name": "Modal Dialog",
     "dark": true

@@ -32,10 +32,12 @@ export default class WrapExample extends Component {
   render() {
     return (
       <AnalyticsListener onEvent={this.onEvent}>
-        <WrappedButton analyticsId="wrapped.button">Wrapped button</WrappedButton>
-        <WrappedButtonFunction analyticsId="wrapped.button.with.function">
-          Wrapped button with function
-        </WrappedButtonFunction>
+        <div>
+          <WrappedButton analyticsId="wrapped.button">Wrapped button</WrappedButton>
+          <WrappedButtonFunction analyticsId="wrapped.button.with.function">
+            Wrapped button with function
+          </WrappedButtonFunction>
+        </div>
       </AnalyticsListener>
     );
   }

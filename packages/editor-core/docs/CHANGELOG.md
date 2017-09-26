@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.7.2 (2017-09-26)
+
+
+* bug fix; fS-1330 disable tooltip when emoji picker is open (issues closed: fs-1330) ([cd875da](https://bitbucket.org/atlassian/atlaskit/commits/cd875da))
 ## 47.7.1 (2017-09-25)
 
 * bug fix; don't show the media dropdown in the Insert Toolbar if no uploadContext is present (issues closed: ed-2865) ([b6d49d6](https://bitbucket.org/atlassian/atlaskit/commits/b6d49d6))

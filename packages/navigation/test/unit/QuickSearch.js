@@ -6,6 +6,7 @@ import {
   AkSearch,
   quickSearchResultTypes,
 } from '../../src';
+import { ATLASKIT_QUICKSEARCH_NS } from '../../src/components/js/QuickSearch';
 import { mountWithRootTheme } from './_theme-util';
 
 const { PersonResult } = quickSearchResultTypes;
@@ -16,7 +17,9 @@ const isInputFocused = wrapper =>
   wrapper.find('input').getDOMNode() === document.activeElement;
 
 describe('<QuickSearch />', () => {
+  const onAnalyticsEventSpy = jest.fn();
   const onClickSpy = jest.fn();
+
   const exampleChildren = [
     (<AkNavigationItemGroup title="test group 1">
       <PersonResult resultId="1" name="one" onClick={onClickSpy} />
@@ -36,12 +39,17 @@ describe('<QuickSearch />', () => {
   let searchInput;
 
   beforeEach(() => {
-    wrapper = mountWithRootTheme(QsComponent);
+    wrapper = mountWithRootTheme(
+      QsComponent,
+      undefined,
+      { context: { onAnalyticsEvent: onAnalyticsEventSpy } }
+    );
     searchInput = wrapper.find(AkSearch).find('input');
   });
 
   afterEach(() => {
-    onClickSpy.mockClear();
+    onAnalyticsEventSpy.mockReset();
+    onClickSpy.mockReset();
   });
 
   it('should contain a Search component', () => {
@@ -51,6 +59,56 @@ describe('<QuickSearch />', () => {
   it('should render its children', () => {
     wrapper.setProps({ children: <div id="child" /> });
     expect(wrapper.find('div#child').exists()).toBe(true);
+  });
+
+  describe('Analytics events', () => {
+    const expectEventFiredLastToBe = (name) => {
+      const calls = onAnalyticsEventSpy.mock.calls;
+      expect(calls[calls.length - 1][0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/${name}`);
+    };
+    it('should fire event on mount', () => {
+      expectEventFiredLastToBe('open');
+    });
+    it('should fire event on unmount', () => {
+      wrapper.unmount();
+      expectEventFiredLastToBe('close');
+    });
+    it('should fire event on result click', () => {
+      const result = wrapper.find(AkNavigationItem).first();
+      result.simulate('click');
+      expectEventFiredLastToBe('submit/click');
+    });
+    it('should fire event on submit ENTER key stroke', () => {
+      searchInput.simulate('keydown', { key: 'Enter' });
+      expectEventFiredLastToBe('submit/keyboard');
+    });
+    describe('should fire event on keyboad controls used', () => {
+      it('ArrowUp', () => {
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        expectEventFiredLastToBe('keyboard-controls-used');
+      });
+
+      it('ArrowDown', () => {
+        searchInput.simulate('keydown', { key: 'ArrowDown' });
+        expectEventFiredLastToBe('keyboard-controls-used');
+      });
+
+      it('Enter', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        const calls = onAnalyticsEventSpy.mock.calls;
+        expect(calls[calls.length - 2][0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`);
+      });
+
+      it('should only fire once per mount', () => {
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(call =>
+          call[0] === `${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`
+        );
+        expect(kbCtrlsUsedEventsFired).toHaveLength(1);
+      });
+    });
   });
 
   describe('Keyboard controls', () => {

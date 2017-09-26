@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 import AudioCircleIcon from '@atlaskit/icon/glyph/audio-circle';
+import { AnalyticsListener } from '@atlaskit/analytics';
 
 import BasicNavigation from './components/BasicNavigation';
 import BasicQuickSearch from './components/BasicQuickSearch';
@@ -52,6 +53,14 @@ storiesOf(`${name}/QuickSearch`, module)
   ))
   .add('Example with custom result types', () => withRootTheme(
     QuickSearchWithCustomResults
+  ))
+  .add('Example that logs analytics', () => withRootTheme(
+    <AnalyticsListener matchPrivate onEvent={(...e) => { console.log(e); }}>
+      <BasicNavigation
+        openDrawer="search"
+        searchDrawerContent={<BasicQuickSearch />}
+      />
+    </AnalyticsListener>
   ))
   .add('Example results', () => withRootTheme(
     <div style={{ padding: '32px', maxWidth: '640px', textAlign: 'justify' }}>

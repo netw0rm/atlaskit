@@ -205,18 +205,26 @@ const availableResultTypes = {
   room: RoomResult,
 };
 
-const mapResultsDataToComponents = (resultData =>
-  resultData.map(group => (
+const dataTotal = data.reduce((total, group) => (total + group.items.length), 0);
+
+const mapResultsDataToComponents = resultData => {
+  let ii = 0;
+  return resultData.map(group => (
     <AkNavigationItemGroup title={group.title} key={group.title}>
       {group.items.map((props) => {
         const Result = availableResultTypes[props.type];
         return Result ? (
-          <Result key={props.resultId} {...props} isSelected={false} />
+          <Result
+            key={props.resultId}
+            {...props}
+            isSelected={false}
+            analyticsData={{ index: ii++, total: dataTotal }}
+          />
           ) : null;
       })}
     </AkNavigationItemGroup>
-  ))
-);
+  ));
+};
 
 function contains(string, query) {
   return string.toLowerCase().indexOf(query.toLowerCase()) > -1;

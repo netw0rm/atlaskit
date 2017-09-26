@@ -377,7 +377,7 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     { value: 'blockquote', name: 'Block quote' },
   ].forEach(blockType => {
     it(`atlassian.editor.format.${blockType.value}.button`, () => {
-      editor.find('ToolbarInsertBlock').find('ToolbarButton').simulate('click');
+      editor.find('ToolbarInsertBlock').find('ToolbarButton').last().simulate('click');
       editor
         .find('Item')
         .filterWhere(n => n.text().indexOf(blockType.name) > 0)

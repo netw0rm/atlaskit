@@ -19,11 +19,14 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   disabled?: boolean;
+  editorWidth?: number;
 }
 
 export default class PluginSlot extends React.Component<Props, any> {
+  wrapperRef?: HTMLDivElement = undefined;
+
   shouldComponentUpdate(nextProps: Props) {
-    const { editorView, items, providerFactory, eventDispatcher, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
+    const { editorView, items, providerFactory, eventDispatcher, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth } = this.props;
     return !(nextProps.editorView === editorView
       && nextProps.items === items
       && nextProps.providerFactory === providerFactory
@@ -31,21 +34,21 @@ export default class PluginSlot extends React.Component<Props, any> {
       && nextProps.popupsMountPoint === popupsMountPoint
       && nextProps.popupsBoundariesElement === popupsBoundariesElement
       && nextProps.disabled === disabled
+      && nextProps.editorWidth === editorWidth
     );
   }
 
   render() {
-    const { items, editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
+    const { items, editorWidth, editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
 
     if (!items) {
       return null;
     }
-
     return (
       <PluginsComponentsWrapper>
         {items.map((component, key) => {
-          const element = component(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled);
-          return element && React.cloneElement(element, { key });
+          const element = component(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled, editorWidth);
+          return element && React.cloneElement(element, { key, editorWidth });
         })}
       </PluginsComponentsWrapper>
     );

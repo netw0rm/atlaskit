@@ -45,6 +45,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         onClick={this.handleClick}
         target={this.props.target}
         theme={this.props.theme}
+        shouldFitContainer={true}
         iconBefore={this.props.iconBefore}
         iconAfter={this.props.iconAfter}
       >

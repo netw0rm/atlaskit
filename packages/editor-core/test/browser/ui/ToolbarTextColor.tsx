@@ -8,6 +8,7 @@ import ToolbarTextColor from '../../../src/ui/ToolbarTextColor';
 import { doc, code_block, p, makeEditor } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { analyticsService } from '../../../src/analytics';
+import EditorWidth from '../../../src/utils/editor-width';
 
 describe('ToolbarTextColor', () => {
   const editor = (doc: any) => makeEditor<TextColorState>({
@@ -28,6 +29,20 @@ describe('ToolbarTextColor', () => {
       expect(toolbarTextColor.state('disabled')).to.equal(false);
       toolbarTextColor.unmount();
     });
+  });
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextColor pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 - 1} />);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('none');
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { pluginState, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarTextColor pluginState={pluginState} editorView={editorView} editorWidth={EditorWidth.BreakPoint6 + 1} />);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('default');
+    toolbarOption.unmount();
   });
 
   context('when plugin is not enabled', () => {

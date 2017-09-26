@@ -67,6 +67,7 @@
     "@atlaskit/task-decision": "^4.0.0",
     "@atlaskit/tooltip": "^1.2.0",
     "@atlaskit/util-shared-styles": "^2.1.0",
+    "@atlaskit/size-detector": "^2.0.1",
     "@types/codemirror": "^0.0.40",
     "@types/orderedmap": "^1.0.0",
     "@types/prosemirror-commands": "^0.22.0",

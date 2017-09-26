@@ -13,6 +13,8 @@ import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 import pluginKey from '../../../src/plugins/emojis/plugin-key';
 import Popup from '../../../src/ui/Popup';
+import ToolbarButton from '../../../src/ui/ToolbarButton';
+import EditorWidth from '../../../src/utils/editor-width';
 
 const emojiProvider = emojiTestData.getEmojiResourcePromise();
 const grinEmoji = emojiTestData.grinEmoji;
@@ -73,6 +75,27 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     expect(toolbarEmojiPicker.state('disabled'), 'Toolbar state is disabled').to.equal(true);
     toolbarEmojiPicker.unmount();
+  });
+  
+  it('should be disabled if isDisabled property is true', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0} isDisabled={true} />);
+    expect(toolbarOption.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to none if editorWidth is less then breakpoint6', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0} editorWidth={EditorWidth.BreakPoint6 - 1} />);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('none');
+    toolbarOption.unmount();
+  });
+
+  it('should have spacing of toolbar button set to default if editorWidth is greater then breakpoint6', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0} editorWidth={EditorWidth.BreakPoint6 + 1} />);
+    expect(toolbarOption.find(ToolbarButton).prop('spacing')).to.equal('default');
+    toolbarOption.unmount();
   });
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {

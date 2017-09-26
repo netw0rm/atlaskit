@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
+import { colors, themed } from '@atlaskit/theme';
 import { Handle, IconWrapper, Inner, Input, Label, Slide } from './styled';
 
 export default class ToggleStateless extends PureComponent {
@@ -92,7 +93,10 @@ export default class ToggleStateless extends PureComponent {
               size={size}
             />
             <IconWrapper isChecked={isChecked} size={size}>
-              <Icon label={label || (isChecked ? 'Uncheck' : 'Check')} size={size === 'large' ? 'medium' : 'small'} />
+              <Icon
+                primaryColor={isChecked ? themed({ light: 'inherit', dark: colors.DN30 }) : 'inherit'}
+                label={label || (isChecked ? 'Uncheck' : 'Check')} size={size === 'large' ? 'medium' : 'small'}
+              />
             </IconWrapper>
           </Inner>
         </Slide>

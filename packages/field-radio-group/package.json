@@ -10,7 +10,8 @@
   "jsnext:experimental:main": "dist/es/index.js",
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
-    "name": "Radio Group"
+    "name": "Radio Group",
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

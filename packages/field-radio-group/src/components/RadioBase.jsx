@@ -50,7 +50,9 @@ export default class Radio extends PureComponent {
 
     let color = themed({ light: colors.N0, dark: colors.DN10 });
 
-    if (isActive && isSelected && !isDisabled) {
+    if (isDisabled && isSelected) {
+      color = themed({ light: colors.N70, dark: colors.DN10 });
+    } else if (isActive && isSelected && !isDisabled) {
       color = themed({ light: colors.B400, dark: colors.DN10 });
     } else if (!isSelected) {
       color = transparent;

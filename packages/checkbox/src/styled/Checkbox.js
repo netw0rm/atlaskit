@@ -61,6 +61,7 @@ const getBorderColor = (props: IconWrapperProps) => {
 export const IconWrapper = styled.span`
   line-height: 0;
   flex-shrink: 0;
+  margin: 0px 4px;
 
   /* This is adding a property to the inner svg, to add a border to the checkbox */
   & rect {

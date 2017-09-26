@@ -87,7 +87,9 @@ class CheckboxStateless extends PureComponent {
 
     let color = themed({ light: colors.N0, dark: colors.DN10 });
 
-    if (isActive && isChecked && !isDisabled) {
+    if (isDisabled && isChecked) {
+      color = themed({ light: colors.N70, dark: colors.DN90 });
+    } else if (isActive && isChecked && !isDisabled) {
       color = themed({ light: colors.B400, dark: colors.DN10 });
     } else if (!isChecked) {
       color = transparent;
@@ -126,7 +128,6 @@ class CheckboxStateless extends PureComponent {
       value,
     } = this.props;
     const { isFocused, isActive, isHovered } = this.state;
-    // console.log('isFocused:', isFocused, 'isActive:', isActive);
     return (
       <Label
         isDisabled={isDisabled}

@@ -236,8 +236,14 @@ export class MentionsState {
     if (mention && mentionData) {
       const activeMentionQueryMark = this.findActiveMentionQueryMark();
       const { start, end } = queryMark ? queryMark : activeMentionQueryMark;
-      const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
+      const { id, name, nickname, accessLevel, userType } = mentionData;
+      const renderName = nickname ? nickname : name;
+      const nodes = [mention.create({
+        text: `@${renderName}`,
+        id,
+        accessLevel,
+        userType: userType === 'DEFAULT' ?  null : userType,
+      })];
       if (!this.isNextCharacterSpace(end, currentTransaction.doc)) {
         nodes.push(state.schema.text(' '));
       }

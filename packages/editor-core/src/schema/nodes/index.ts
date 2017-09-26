@@ -12,7 +12,7 @@ export { orderedList } from './ordered-list';
 export { paragraph } from './paragraph';
 export { emoji } from './emoji';
 export { image } from './image';
-export { mention } from './mention';
+export { mention, Attributes as MentionAttributes } from './mention';
 export { listItem } from './list-item';
 export { panel } from './panel';
 export { text } from './text';

@@ -4,8 +4,6 @@ import styled, { css } from 'styled-components';
 import { fontSize, math } from '@atlaskit/theme';
 import { getThemeStyle, themeNamespace, smallFontSize, compactSmallFontSize, compactLineHeight } from '../util/theme';
 
-// const akFontSizeDefault = parseInt(akFontSizeDefaultPx, 10);
-
 // Checkbox/Radio wrapper -- sits left of the children
 export const InputWrapper = styled.span`
   display: flex;

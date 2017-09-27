@@ -34,6 +34,7 @@ export const confluenceSchema: Schema<any, any> = createSchema({
     'subsup',
     'underline',
     'mentionQuery',
-    'code'
+    'code',
+    'textColor'
   ]
 });

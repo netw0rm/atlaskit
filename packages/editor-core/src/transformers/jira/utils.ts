@@ -1,5 +1,3 @@
-import * as namedColors from 'css-color-names';
-
 import {
   isSchemaWithLists,
   isSchemaWithMentions,
@@ -19,6 +17,8 @@ import {
   Node as PMNode,
   Schema,
 } from '../../prosemirror';
+
+import { normalizeHexColor } from '../../utils/color';
 
 /**
  * Ensure that each node in the fragment is a block, wrapping
@@ -84,7 +84,7 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
         if (!isSchemaWithTextColor(schema)) {
           return null;
         }
-        const color = getValidColor(node.getAttribute('color'));
+        const color = normalizeHexColor(node.getAttribute('color'), '#333333');
         return color ? addMarks(content, [schema.marks.textColor.create({ color })]) : content;
       // Nodes
       case 'A':
@@ -319,34 +319,6 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
   return result;
 }
 
-function getValidColor(color: string | null): string | null {
-  if (!color) {
-    return null;
-  }
-
-  // Normalize
-  color = color.trim().toLowerCase();
-  if (color[0] === '#' && color.length === 4 || color.length === 7) {
-    if (/^#[\da-f]{3}$/.test(color)) {
-      color = color.split('').map(c => c === '#' ? '#' : `${c}${c}`).join('');
-    }
-  } else {
-    // http://dev.w3.org/csswg/css-color/#named-colors
-    if (namedColors[color]) {
-      color = namedColors[color];
-    }
-    else {
-      return null;
-    }
-  }
-
-  // Default colour from old JIRA colour palette
-  if (color === '#333333') {
-    return null;
-  }
-
-  return color;
-}
 
 function getNodeName(node: Node): string {
   return node.nodeName.toUpperCase();

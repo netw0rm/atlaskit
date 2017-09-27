@@ -1,3 +1,4 @@
+import { textColor } from './../../../../src/test-helper/schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
@@ -204,6 +205,14 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         doc(p(
           'Text with ',
           code('function bar() { return foo; }'),
+          '.'
+        )));
+
+      check('Colored text',
+        '<p>Text with <span style="color: rgb(34,34,34);">some colour</span>.</p>',
+        doc(p(
+          'Text with ',
+          textColor({ color: '#222222'})('some colour'),
           '.'
         )));
 

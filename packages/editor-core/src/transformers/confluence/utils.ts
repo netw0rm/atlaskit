@@ -4,7 +4,8 @@ import {
   Node as PMNode,
   Schema
 } from '../../';
-import { rgbToHex, isRGB } from '../../utils/color';
+
+import { normalizeHexColor } from '../../utils/color';
 
 /**
  * Deduce a set of marks from a style declaration.
@@ -29,12 +30,8 @@ export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclarat
         }
         break;
       case 'color':
-        if (value.match(/(0?\.?\d{1,3})%?\b/g)) {
-          const color = isRGB(value) ? rgbToHex(value) : value;
-          marks = schema.marks.textColor.create({ color: color }).addToSet(marks);
-          continue styles;
-        }
-        break;
+        marks = schema.marks.textColor.create({ color: normalizeHexColor(value) }).addToSet(marks);
+        continue styles;
       case 'font-family':
         if (value === 'monospace') {
           marks = schema.marks.code.create().addToSet(marks);

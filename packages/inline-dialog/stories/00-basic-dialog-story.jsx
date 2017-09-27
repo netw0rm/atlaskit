@@ -1,7 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Button from '@atlaskit/button';
-import { akColorG300 } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
+import { akColorG300, akColorY300 } from '@atlaskit/util-shared-styles';
 
 import InlineDialog from '../src';
 import { name } from '../package.json';
@@ -16,6 +17,12 @@ const centeredContainerStyles = {
 const targetStyles = {
   background: akColorG300,
   padding: '10px',
+};
+
+const oversizedStyles = {
+  height: `${(gridSize() + 1) * 60}px`,
+  width: `${(gridSize() + 1) * 62}px`,
+  background: akColorY300,
 };
 
 const codeExampleOverrrides = { style: '...' };
@@ -87,4 +94,17 @@ storiesOf(name, module)
         >I take full width</Button>
       </InlineDialog>
     </div>
-  ), { overrides: codeExampleOverrrides });
+  ), { overrides: codeExampleOverrrides })
+  .addCodeExampleStory('Dialog with oversized content', () => {
+    const dialogContent = <div style={oversizedStyles}>oversized content</div>;
+
+    return (
+      <div style={centeredContainerStyles}>
+        <InlineDialog
+          content={dialogContent}
+          isOpen
+        >
+          <div style={targetStyles}>I am the target</div>
+        </InlineDialog>
+      </div>);
+  }, { overrides: codeExampleOverrrides });

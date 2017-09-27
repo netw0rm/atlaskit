@@ -25,7 +25,7 @@ describe(name, () => {
         onChange={() => {}}
         value="stub value"
       />);
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be correctly styled disabled', () => {
@@ -66,7 +66,7 @@ describe(name, () => {
       />);
       cb.simulate('mouseenter');
       cb.simulate('mouseleave');
-      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B300);
+      expect(cb.find(CheckboxIcon).prop('primaryColor')).toBe(colors.B400);
       expect(cb.find(CheckboxIcon).prop('secondaryColor')).toBe(colors.N0);
     });
     it('should be active if mousedown and checked', () => {

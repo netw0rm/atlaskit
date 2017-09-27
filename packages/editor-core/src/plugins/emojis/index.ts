@@ -5,7 +5,7 @@ import {
   Schema,
   Plugin,
 } from '../../prosemirror';
-import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -126,7 +126,7 @@ export class EmojiState {
   isEnabled() {
     const { schema } = this.state;
     const { emojiQuery } = schema.marks;
-    return isMarkTypeAllowedAtCurrentPosition(emojiQuery, this.state);
+    return isMarkTypeAllowedInCurrentSelection(emojiQuery, this.state);
   }
 
   private findEmojiQueryMark() {

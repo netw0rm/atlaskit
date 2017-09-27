@@ -26,6 +26,7 @@ describe('ToolbarTextColor', () => {
       );
 
       expect(toolbarTextColor.state('disabled')).to.equal(false);
+      toolbarTextColor.unmount();
     });
   });
 
@@ -40,6 +41,7 @@ describe('ToolbarTextColor', () => {
       );
 
       expect(toolbarTextColor.state('disabled')).to.equal(true);
+      toolbarTextColor.unmount();
     });
   });
 
@@ -55,6 +57,7 @@ describe('ToolbarTextColor', () => {
     expect(toolbarTextColor.state('isOpen')).to.equal(false);
     toolbarTextColor.find('button').simulate('click');
     expect(toolbarTextColor.state('isOpen')).to.equal(true);
+    toolbarTextColor.unmount();
   });
 
   it('should make isOpen false when a color is clicked', () => {
@@ -70,6 +73,7 @@ describe('ToolbarTextColor', () => {
     expect(toolbarTextColor.state('isOpen')).to.equal(true);
     toolbarTextColor.find('ColorPalette button').first().simulate('click');
     expect(toolbarTextColor.state('isOpen')).to.equal(false);
+    toolbarTextColor.unmount();
   });
 
   it('should render disabled ToolbarButton if disabled property is true', () => {
@@ -83,6 +87,7 @@ describe('ToolbarTextColor', () => {
     );
 
     expect(toolbarTextColor.find(ToolbarButton).prop('disabled')).to.equal(true);
+    toolbarTextColor.unmount();
   });
 
   describe('analytics', () => {
@@ -99,6 +104,7 @@ describe('ToolbarTextColor', () => {
       toolbarOption.find('button').simulate('click');
       toolbarOption.find('ColorPalette button').first().simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.format.textcolor.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 });

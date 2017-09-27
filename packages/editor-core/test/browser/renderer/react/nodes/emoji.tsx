@@ -16,6 +16,7 @@ describe('Emoji', () => {
     );
 
     expect(component.find(UIEmoji)).to.have.length(1);
+    component.unmount();
   });
 
   it('should convert text to fallback attribute', () => {
@@ -28,5 +29,6 @@ describe('Emoji', () => {
     );
 
     expect(component.find(UIEmoji).prop('fallback')).to.equal('fallback');
+    component.unmount();
   });
 });

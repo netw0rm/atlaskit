@@ -18,7 +18,8 @@ const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   // TODO: deep modification while respecting types
   const newTheme = clone(original);
 
-  newTheme.padding.default.x = containerTitleHorizontalPadding;
+  newTheme.padding.default.left = containerTitleHorizontalPadding;
+  newTheme.padding.default.right = containerTitleHorizontalPadding;
   newTheme.height.default = 0;
   newTheme.beforeItemSpacing.default = containerTitleIconSpacing;
 

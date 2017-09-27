@@ -52,6 +52,8 @@ type Props = {|
   onGlobalCreateActivate?: () => void,
   /** Function to be called when the globalSearchIcon is clicked on. */
   onGlobalSearchActivate?: () => void,
+  /** Standard React ref for the scrollable element on the container navigation. */
+  scrollRef?: () => void,
   /** Sets whether the globalyPrimaryActions should be displayed. These should be
   components shared with the GlobalNavigation component, so they can be included
   in the ContainerNavigation when Navigation is collapsed. */
@@ -100,6 +102,7 @@ export default class ContainerNavigation extends Component {
 
   render() {
     const {
+      scrollRef,
       showGlobalActions,
       globalSecondaryActions,
       children,
@@ -150,6 +153,7 @@ export default class ContainerNavigation extends Component {
           <ContainerNavigationChildren
             hasScrollHintBottom={hasScrollHintBottom}
             hasScrollHintTop={hasScrollHintTop}
+            scrollRef={scrollRef}
           >
             {children}
           </ContainerNavigationChildren>

@@ -124,7 +124,7 @@ export type PanelStateSubscriber = (state: PanelState) => any;
 
 export const stateKey = new PluginKey('panelPlugin');
 
-const plugin = new Plugin({
+export const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
       return new PanelState(state);

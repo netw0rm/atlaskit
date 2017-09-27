@@ -35,19 +35,23 @@ describe(name, () => {
     describe('#fixExcludes', () => {
       it('should remove all unused marks from exclude', () => {
         const marks = {
-          link: {
-            excludes: 'code underline'
-          },
           code: {
-            excludes: 'link'
+            excludes: 'textStyle emojiQuery',
+            group: 'code'
+          },
+          em: {
+            excludes: 'code',
+            group: 'textStyle'
           }
         };
         const result  = {
-          link: {
-            excludes: 'code'
-          },
           code: {
-            excludes: 'link'
+            excludes: 'textStyle',
+            group: 'code'
+          },
+          em: {
+            excludes: 'code',
+            group: 'textStyle'
           }
         };
 

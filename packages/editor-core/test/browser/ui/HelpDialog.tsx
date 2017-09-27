@@ -18,6 +18,7 @@ describe('@atlaskit/editor-core/ui/HelpDialog', () => {
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={spy} />);
     toolbarHelp.find(AkButton).simulate('click');
     expect(spy.callCount).to.equal(1);
+    toolbarHelp.unmount();
   });
 
   it('should call analytics event when open help button is clicked', () => {
@@ -26,6 +27,7 @@ describe('@atlaskit/editor-core/ui/HelpDialog', () => {
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={noop} />);
     toolbarHelp.find(AkButton).simulate('click');
     expect(trackEvent.calledWith('atlassian.editor.help.button')).to.equal(true);
+    toolbarHelp.unmount();
   });
 
   it('should call toggleHelp when wrapping div is clicked', () => {
@@ -33,6 +35,7 @@ describe('@atlaskit/editor-core/ui/HelpDialog', () => {
     const toolbarHelp = mount(<ToolbarHelp  showHelp={false} toggleHelp={spy} />);
     toolbarHelp.find(AkButton).simulate('click');
     expect(spy.callCount).to.equal(1);
+    toolbarHelp.unmount();
   });
 
   it('should return correct description of codemap when getComponentFromKeymap is called', () => {
@@ -43,6 +46,7 @@ describe('@atlaskit/editor-core/ui/HelpDialog', () => {
     } else {
       expect(shortcut.text()).to.equal('ctrl + b');
     }
+    shortcut.unmount();
   });
 
   describe('formatting', () => {
@@ -64,6 +68,7 @@ describe('@atlaskit/editor-core/ui/HelpDialog', () => {
       const autoformat = formatting.filter(f => f.name === 'Quote')[0].autoFormatting;
       const label = mount(<div>{autoformat!()}</div>);
       expect(label.text()).to.equal('> + space');
+      label.unmount();
     });
   });
 });

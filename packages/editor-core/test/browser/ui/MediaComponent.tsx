@@ -15,7 +15,6 @@ import { MediaType } from '../../../src/schema';
 import {
   Card,
   CardView,
-  CardViewProps,
   CardProps,
 } from '@atlaskit/media-card';
 import {
@@ -65,10 +64,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
       />);
-    const props: CardViewProps = mediaComponent.find(CardView).props();
     expect(mediaComponent.find(CardView).length).to.equal(1);
-    expect(props.mediaItemType).to.equal('file');
-    expect(props.status).to.equal('loading');
   });
 
   it('should render a Card component if the media is a public file with provider', async () => {
@@ -106,7 +102,6 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     expect(mediaComponent.find(CardView).length).to.equal(1);
   });
-
 
   it('should render nothing if media type is link without provider', async () => {
     const mediaProvider = getFreshResolvedProvider();
@@ -249,5 +244,6 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     const resolvedMediaProvider = await mediaProvider;
     await (media as any).node.handleMediaProvider(resolvedMediaProvider);
+    media.unmount();
   });
 });

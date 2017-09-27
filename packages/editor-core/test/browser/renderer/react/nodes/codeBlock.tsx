@@ -8,5 +8,6 @@ describe('Renderer - React/Nodes/CodeBlock', () => {
   it('should render @atlaskit/code component', () => {
     const node = mount(<CodeBlock language="javascript">foo</CodeBlock>);
     expect(node.find(AkCodeBlock)).to.have.length(1);
+    node.unmount();
   });
 });

@@ -62,8 +62,7 @@ import {
 import { JSONSerializer } from '@atlaskit/editor-core/dist/es5/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import { ActivityProvider } from '@atlaskit/activity';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import * as React from 'react';
 import { PureComponent } from 'react';

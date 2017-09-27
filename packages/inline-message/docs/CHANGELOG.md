@@ -1,5 +1,9 @@
 # @atlaskit/inline-message
 
+## 3.0.1 (2017-09-21)
+
+* bug fix; removed unnecessary horizontal spacing on inline-messages (issues closed: ak-2603) ([d608d79](https://bitbucket.org/atlassian/atlaskit/commits/d608d79))
+
 ## 3.0.0 (2017-08-24)
 
 

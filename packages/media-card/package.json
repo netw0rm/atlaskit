@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "21.2.1",
+  "version": "21.3.2",
   "config": {
     "access": "public"
   },
@@ -70,7 +70,6 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/droplist": "^4.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/media-core": "^10.1.0",

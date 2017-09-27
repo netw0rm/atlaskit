@@ -22,7 +22,7 @@ export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) =
   });
 }
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function createInputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (!schema.marks.link) {
     return;
   }
@@ -55,4 +55,4 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   });
 }
 
-export default inputRulePlugin;
+export default createInputRulePlugin;

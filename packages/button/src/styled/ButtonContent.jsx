@@ -10,11 +10,10 @@ const getMargin = p => (p.spacing === 'none'
 const ButtonContent = styled.span`
   align-items: ${getAlignment};
   align-self: ${getAlignment};
-  flex-shrink: 0;
+  flex: 1 1 auto;
   margin: ${getMargin};
   max-width: 100%;
   overflow: hidden;
-  pointer-events: none;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

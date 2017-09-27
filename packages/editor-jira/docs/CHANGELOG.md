@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 20.6.3 (2017-09-22)
+
+* bug fix; upgrading button and button group to fix issue around button spacing. ([7a1b29d](https://bitbucket.org/atlassian/atlaskit/commits/7a1b29d))
 ## 20.6.2 (2017-09-14)
 
 * bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))

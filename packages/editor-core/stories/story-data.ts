@@ -1178,6 +1178,35 @@ System.out.println("There are " + count + " values >= 5");`
             {
               type: 'text',
               text: '.'
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: 'error:NotFound',
+                text: '@NoLongerWorksHere',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'is not',
+              marks: [
+                {
+                  type: 'strong'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'here.',
             }
           ]
         },

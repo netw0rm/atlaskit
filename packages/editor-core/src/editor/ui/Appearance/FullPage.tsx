@@ -98,8 +98,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       editorView,
       eventDispatcher,
       providerFactory,
-      contentComponents, primaryToolbarComponents, secondaryToolbarComponents,
-      customPrimaryToolbarComponents, customContentComponents, customSecondaryToolbarComponents
+      contentComponents, primaryToolbarComponents,
+      customPrimaryToolbarComponents, customContentComponents
     } = this.props;
 
     return (
@@ -128,16 +128,6 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             />
           </ContentArea>
         </ScrollContainer>
-        <SecondaryToolbar>
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            items={secondaryToolbarComponents}
-          />
-          {customSecondaryToolbarComponents}
-        </SecondaryToolbar>
       </FullPageEditorWrapper>
     );
   }

@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
 import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../../src/api/MentionResource';
-import { resultC, resultCraig } from '../_mention-search-results';
+import { resultC, resultCraig, resultPolly } from '../_mention-search-results';
 
 const baseUrl = 'https://bogus/mentions';
 
@@ -50,6 +50,11 @@ describe('MentionResource', () => {
       .mock(/\/mentions\/search\?.*query=c(&|$)/, {
         body: {
           mentions: resultC,
+        },
+      })
+      .mock(/\/mentions\/search\?.*query=polly(&|$)/, {
+        body: {
+          mentions: resultPolly,
         },
       })
       .mock(/\/mentions\/search\?.*query=delay(&|$)/, new Promise((resolve) => {
@@ -185,6 +190,17 @@ describe('MentionResource', () => {
         done();
       });
       resource.filter('broken');
+    });
+
+    it('add APP lozenge for user of type App', (done) => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
+        expect(mentions.length).to.equal(1);
+        expect(mentions[0].lozenge).to.equal('APP');
+
+        done();
+      });
+      resource.filter('polly');
     });
   });
 

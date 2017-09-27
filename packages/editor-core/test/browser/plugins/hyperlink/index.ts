@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import hyperlinkPlugins, { HyperlinkState } from '../../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block,
+  chaiPlugin, createEvent, doc, insert, insertText, a as link, code_block, code,
   makeEditor, p as paragraph, sendKeyToPm, dispatchPasteEvent
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -29,6 +29,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -40,6 +41,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.active).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -51,6 +53,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.active).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -62,6 +65,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -73,6 +77,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -110,16 +115,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element!.tagName).to.eq('A');
-      });
-    });
-
-    context('when hitting backspace in a link', () => {
-      it('removes link mark when its not more valid link', () => {
-        const { editorView } = editor(doc(paragraph(link({ href: 'http://www.xxx.com' })('http://{<}www.xxx.com{>}'))));
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        sendKeyToPm(editorView, 'Backspace');
-        expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
+        editorView.destroy();
       });
     });
 
@@ -131,6 +127,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.element!.tagName).to.eq('A');
+        editorView.destroy();
       });
     });
 
@@ -142,6 +139,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.element!.tagName).to.eq('A');
+        editorView.destroy();
       });
     });
 
@@ -153,6 +151,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element!.tagName).to.eq('A');
+        editorView.destroy();
       });
     });
 
@@ -164,6 +163,7 @@ describe('hyperlink', () => {
         setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element!.tagName).to.eq('A');
+        editorView.destroy();
       });
     });
 
@@ -215,6 +215,7 @@ describe('hyperlink', () => {
       setTextSelection(editorView, refs['pos']);
 
       expect(spy.callCount).to.equal(2);
+      editorView.destroy();
     });
 
     it('sets linkable to false when in a context where links are not supported by the schema', () => {
@@ -239,6 +240,7 @@ describe('hyperlink', () => {
       setTextSelection(editorView, pos2);
 
       expect(spy.callCount).to.equal(2);
+      editorView.destroy();
     });
 
     it('emits change when the selection leaves a link', () => {
@@ -252,6 +254,7 @@ describe('hyperlink', () => {
       setTextSelection(editorView, textPos);
 
       expect(spy.callCount).to.equal(2);
+      editorView.destroy();
     });
 
     it('permits adding a link to an empty selection using the href', () => {
@@ -261,6 +264,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
+      editorView.destroy();
     });
 
     it('permits adding a link to an empty selection using the href and text', () => {
@@ -271,6 +275,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href, text }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(text))));
+      editorView.destroy();
     });
 
     it('should add http:// for a link without protocol', () => {
@@ -281,6 +286,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: hrefWithProtocol })(href))));
+      editorView.destroy();
     });
 
     it('should add mailto: for a link if it is an email', () => {
@@ -291,6 +297,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: hrefWithProtocol })(href))));
+      editorView.destroy();
     });
 
     it('does not permit adding a link to an existing link', () => {
@@ -299,6 +306,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href: 'http://www.example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('link'))));
+      editorView.destroy();
     });
 
     it('does not permit adding a link when not supported by the schema', () => {
@@ -307,6 +315,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href: 'http://www.atlassian.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
+      editorView.destroy();
     });
 
     it('requires href when adding a link', () => {
@@ -315,6 +324,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href: 'http://example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('text'))));
+      editorView.destroy();
     });
 
     it('should not be a part of the link when typing before it', () => {
@@ -326,6 +336,7 @@ describe('hyperlink', () => {
       insertText(editorView, 'bar', before);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(`abar`, link({ href })('text'))));
+      editorView.destroy();
     });
 
     it('should be a part of the link when typing in it', () => {
@@ -337,6 +348,7 @@ describe('hyperlink', () => {
       insertText(editorView, 'bar', middle);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })('tebarxt'))));
+      editorView.destroy();
     });
 
     it('should create a link if href is invalid', () => {
@@ -346,6 +358,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })(href))));
+      editorView.destroy();
     });
 
     it('should not be a part of the link when typing after it', () => {
@@ -357,6 +370,7 @@ describe('hyperlink', () => {
       insertText(editorView, 'bar', end);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href })('text'), 'bar')));
+      editorView.destroy();
     });
 
     it('should allow links to be added when the selection is empty', () => {
@@ -372,6 +386,7 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('text'), paragraph(link({ href })('text'))));
+      editorView.destroy();
     });
 
     it('should not be able to unlink a node that has no link', () => {
@@ -380,6 +395,7 @@ describe('hyperlink', () => {
       pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('text')));
+      editorView.destroy();
     });
 
     it('should be able to unlink an existing link', () => {
@@ -388,6 +404,7 @@ describe('hyperlink', () => {
       pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('text')));
+      editorView.destroy();
     });
 
     it('should be able to unlink an existing link', () => {
@@ -396,6 +413,7 @@ describe('hyperlink', () => {
       pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('hello text')));
+      editorView.destroy();
     });
 
     context('when a link is in the second paragraph', () => {
@@ -405,6 +423,7 @@ describe('hyperlink', () => {
         pluginState.removeLink(editorView);
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('hello'), paragraph('text')));
+        editorView.destroy();
       });
     });
 
@@ -414,6 +433,7 @@ describe('hyperlink', () => {
       pluginState.updateLink({ href: 'http://example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('text'))));
+      editorView.destroy();
     });
 
     it('should be able to update existing links text', () => {
@@ -422,6 +442,7 @@ describe('hyperlink', () => {
       pluginState.updateLinkText('Atlassian', editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+      editorView.destroy();
     });
 
     it('should allow updating a link if new href is empty', () => {
@@ -430,6 +451,7 @@ describe('hyperlink', () => {
       pluginState.updateLink({ href: '' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: '' })('text'))));
+      editorView.destroy();
     });
 
     it('should not be able to update when not in a link', () => {
@@ -438,6 +460,7 @@ describe('hyperlink', () => {
       pluginState.updateLink({ href: 'http://example.com/foo' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('text')));
+      editorView.destroy();
     });
 
     it('should escape from link mark when typing at the beginning of the link', () => {
@@ -446,6 +469,7 @@ describe('hyperlink', () => {
       insertText(editorView, '1', 1, 1);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph('1', link({ href: 'http://example.com' })('text'))));
+      editorView.destroy();
     });
 
     it('should not escape from link mark when typing at the middle of the link', () => {
@@ -454,6 +478,7 @@ describe('hyperlink', () => {
       insertText(editorView, '1', 2, 2);
 
       expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('t1ext'))));
+      editorView.destroy();
     });
 
 
@@ -465,6 +490,7 @@ describe('hyperlink', () => {
       plugin.props.handleClick!(editorView, 2, createEvent('event'));
 
       expect(spy.callCount).to.equal(2);
+      editorView.destroy();
     });
 
     it('should call subscribers when link was focused and then editor is blur', () => {
@@ -475,6 +501,7 @@ describe('hyperlink', () => {
       plugin.props.onBlur!(editorView, event);
 
       expect(spy.callCount).to.equal(2);
+      editorView.destroy();
     });
 
     it('should not call subscribers if link was not focused when editor is blur', () => {
@@ -485,6 +512,7 @@ describe('hyperlink', () => {
       plugin.props.onBlur!(editorView, event);
 
       expect(spy.callCount).to.equal(1);
+      editorView.destroy();
     });
 
     it('should not call subscribers if editor is focused but link is not focused', () => {
@@ -496,6 +524,7 @@ describe('hyperlink', () => {
       plugin.props.onFocus!(editorView, event);
 
       expect(spy.callCount).to.equal(1);
+      editorView.destroy();
     });
 
     it('should return referring DOM element', () => {
@@ -513,6 +542,7 @@ describe('hyperlink', () => {
         insertText(editorView, 'x', sel);
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.cxo' })('http://example.cxo'))));
+        editorView.destroy();
       });
 
       it('inserts a character at the end of a link', () => {
@@ -520,6 +550,7 @@ describe('hyperlink', () => {
         insertText(editorView, 'x', sel);
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.com' })('http://example.com'), 'x')));
+        editorView.destroy();
       });
 
       it('inserts a character at the beginning of a link', () => {
@@ -527,6 +558,7 @@ describe('hyperlink', () => {
         insertText(editorView, 'x', sel);
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('x', link({ href: 'http://example.com' })('http://example.com'))));
+        editorView.destroy();
       });
 
       // Sending Backspace with a empty selection doesn't work
@@ -535,12 +567,14 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Backspace');
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.co' })('http://example.co'))));
+        editorView.destroy();
       });
 
       it('replaces a character inside a link', () => {
         const { editorView } = editor(doc(paragraph(link({ href: 'http://example.com' })('http://exampl{<}e{>}.com'))));
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://exampl.com' })('http://exampl.com'))));
+        editorView.destroy();
       });
 
       it('replaces end of the link with extended content', () => {
@@ -548,6 +582,7 @@ describe('hyperlink', () => {
         insert(editorView, [' Atlassian']);
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://example.co' })('http://example.co'), ' Atlassian')));
+        editorView.destroy();
       });
 
       it('works with valid URLs without scheme', () => {
@@ -555,6 +590,7 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Backspace');
 
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.exampl.com' })('www.exampl.com'))));
+        editorView.destroy();
       });
     });
   });
@@ -568,6 +604,7 @@ describe('hyperlink', () => {
         plugin.props.onFocus!(editorView, event);
 
         expect(pluginState.editorFocused).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -578,6 +615,7 @@ describe('hyperlink', () => {
         plugin.props.onBlur!(editorView, event);
 
         expect(pluginState.editorFocused).not.to.equal(true);
+        editorView.destroy();
       });
     });
   });
@@ -588,6 +626,7 @@ describe('hyperlink', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
         pluginState.showLinkPanel(editorView, );
         expect(pluginState.showToolbarPanel).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -598,6 +637,7 @@ describe('hyperlink', () => {
         pluginState.subscribe(spy);
         pluginState.showLinkPanel(editorView);
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -609,6 +649,7 @@ describe('hyperlink', () => {
 
         pluginState.showLinkPanel(editorView);
         expect(spy.callCount).to.equal(1);
+        editorView.destroy();
       });
     });
 
@@ -621,6 +662,16 @@ describe('hyperlink', () => {
 
         expect(pluginState.activeLinkNode).not.to.equal(undefined);
         expect(pluginState.text).not.to.equal(undefined);
+        editorView.destroy();
+      });
+
+      it('should not create a link node if selected incompatible mark', () => {
+        const { editorView, pluginState } = editor(doc(paragraph(code('tes{<}ting'), 'selecti{>}on')));
+
+        pluginState.showLinkPanel(editorView);
+
+        expect(pluginState.activeLinkNode).to.equal(undefined);
+        editorView.destroy();
       });
     });
   });
@@ -638,6 +689,7 @@ describe('hyperlink', () => {
 
         expect(spy.callCount).to.equal(2);
         expect(trackEvent.calledWith('atlassian.editor.format.hyperlink.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -650,6 +702,7 @@ describe('hyperlink', () => {
         sendKeyToPm(editorView, 'Mod-k');
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -662,6 +715,7 @@ describe('hyperlink', () => {
 
         expect(pluginState.activeLinkNode).not.to.equal(undefined);
         expect(pluginState.text).not.to.equal(undefined);
+        editorView.destroy();
       });
     });
   });
@@ -675,6 +729,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -690,6 +745,7 @@ describe('hyperlink', () => {
             href: 'http://www.atlassian.com/test@atlassian.com'
           })('http://www.atlassian.com/test@atlassian.com'),
         )));
+        editorView.destroy();
       });
     });
 
@@ -705,6 +761,7 @@ describe('hyperlink', () => {
             href: 'http://www.atlassian.com/www.temp.com'
           })('http://www.atlassian.com/www.temp.com'),
         )));
+        editorView.destroy();
       });
     });
 
@@ -716,6 +773,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.(atlassian).com' })('http://www.(atlassian).com'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -727,6 +785,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -738,6 +797,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -749,6 +809,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('testing ', link({ href: 'http://www.atlassian.com' })('Atlassian'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -760,6 +821,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'http://www.atlassian.com' })('Atlassian'))));
+        editorView.destroy();
       });
     });
 
@@ -770,6 +832,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -780,6 +843,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -790,6 +854,7 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph('test ', link({ href: 'mailto:test@atlassian.com' })('test@atlassian.com'), ' test')));
+        editorView.destroy();
       });
     });
 
@@ -801,7 +866,33 @@ describe('hyperlink', () => {
           return this.skip();
         }
         expect(editorView.state.doc).to.deep.equal(doc(paragraph(link({ href: 'mailto:test@atlassian.com' })('Atlassian'), ' test')));
+        editorView.destroy();
       });
+    });
+  });
+
+  describe('Message Appearance', () => {
+    const messageEditor = (doc: any) => makeEditor<HyperlinkState>({
+      doc,
+      plugins: hyperlinkPlugins(defaultSchema, { appearance: 'message' }),
+    });
+
+    it('should remove link mark if visible text is not a valid link - 1', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.a.com' })('www.{<}a{>}.com'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('www..com')));
+    });
+
+    it('should remove link mark if visible text is not a valid link - 2', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('www.atlassian.c{<}om{>}'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('www.atlassian.c')));
+    });
+
+    it('should remove link mark if visible text is not a valid link - 3', () => {
+      const { editorView } = messageEditor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('http://{<}www.atlassian.com{>}'))));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('http://')));
     });
   });
 });

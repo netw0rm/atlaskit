@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import Radio from '../../src/components/Radio';
+import AkRadio from '../../src/components/Radio';
+import Radio from '../../src/components/RadioBase';
 import { name } from '../../package.json';
 
 describe(name, () => {
@@ -24,7 +25,7 @@ describe(name, () => {
         const content = 'content';
         const wrapper = mount(<Radio>{content}</Radio>);
         expect(wrapper.find('input').length).toBe(1);
-        expect(wrapper.text()).toBe(content);
+        expect(wrapper.text()).toBe(`radioIcon${content}`);
       });
 
       it('should render content with markup correctly', () => {
@@ -39,7 +40,7 @@ describe(name, () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
-          const wrapper = mount(<Radio {...props} />);
+          const wrapper = mount(<AkRadio {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }

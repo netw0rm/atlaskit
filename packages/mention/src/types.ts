@@ -49,7 +49,9 @@ enum UserAccessLevel {
 
 enum UserType {
   DEFAULT,
-  SPECIAL
+  SPECIAL,
+  APP,
+  SYSTEM
 }
 
 export function isRestricted(accessLevel) {
@@ -58,4 +60,8 @@ export function isRestricted(accessLevel) {
 
 export function isSpecialMention(mention: MentionDescription) {
   return mention.userType && mention.userType === UserType[UserType.SPECIAL];
+}
+
+export function isAppMention(mention: MentionDescription) {
+  return mention.userType && mention.userType === UserType[UserType.APP];
 }

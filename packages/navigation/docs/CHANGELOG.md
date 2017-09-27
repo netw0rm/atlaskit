@@ -1,5 +1,24 @@
 # @atlaskit/navigation
 
+## 24.2.0 (2017-09-26)
+
+* feature; remove redundant click in the test ([325f4f1](https://bitbucket.org/atlassian/atlaskit/commits/325f4f1))
+* feature; added test to NavigationItem to make sure it passes "target" attribute down the cha ([605891b](https://bitbucket.org/atlassian/atlaskit/commits/605891b))
+* feature; made "target" attribute of NavigationItem to be optional ([ee24b3c](https://bitbucket.org/atlassian/atlaskit/commits/ee24b3c))
+
+* feature; fixed PropTypes field which is unknown to flow in NavigationItem ([f06c155](https://bitbucket.org/atlassian/atlaskit/commits/f06c155))
+* feature; allow to pass custom "target" attribute to NavigationItem ([3da2dc8](https://bitbucket.org/atlassian/atlaskit/commits/3da2dc8))
+## 24.1.0 (2017-09-25)
+
+* feature; added Navigation.containerScrollRef prop for listening to contain nav scroll (issues closed: ak-3530) ([7c7bc3f](https://bitbucket.org/atlassian/atlaskit/commits/7c7bc3f))
+## 24.0.4 (2017-09-22)
+
+* bug fix; global primary icon in drawer is now slightly lighter (N300) (issues closed: ak-3529) ([68958a6](https://bitbucket.org/atlassian/atlaskit/commits/68958a6))
+
+## 24.0.3 (2017-09-21)
+
+* bug fix; update item dependency (issues closed: ak-3418) ([4f64804](https://bitbucket.org/atlassian/atlaskit/commits/4f64804))
+
 ## 24.0.2 (2017-09-15)
 
 * bug fix; navigation global icon isn't square, affects wrapping behaviour (issues closed: ak-3532) ([252db5b](https://bitbucket.org/atlassian/atlaskit/commits/252db5b))

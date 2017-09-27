@@ -145,7 +145,8 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   private formatCard(left: JSX.Element, right: JSX.Element) {
     const {actions, loading, error} = this.props;
     const cardStyle = this.wrapperStyles;
-    const cardClass = cx('media-card', {loading: loading});
+    const cardClass = cx('media-card', {loading});
+
     return (
       <SmallCard className={cardClass} style={cardStyle}>
         <ImgWrapper shadow={!loading && !error}>

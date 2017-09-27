@@ -36,6 +36,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -51,6 +52,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -64,6 +66,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -80,6 +83,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -97,6 +101,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(32);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.next_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
   });
@@ -112,6 +117,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -128,6 +134,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -145,6 +152,7 @@ describe('table keymap', () => {
         expect(editorView.state.selection.$from.pos).to.equal(4);
         expect(editorView.state.selection.empty).to.equal(true);
         expect(trackEvent.calledWith('atlassian.editor.format.table.previous_cell.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -158,6 +166,7 @@ describe('table keymap', () => {
         const { editorView } = editor(doc(p('{<>}')));
         sendKeyToPm(editorView, 'Shift-Alt-T');
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
+        editorView.destroy();
       });
     });
   });
@@ -172,6 +181,7 @@ describe('table keymap', () => {
         plugin.props.onFocus!(editorView, event);
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.selection.$from.pos).to.equal(nextPos);
+        editorView.destroy();
       });
     });
 
@@ -186,6 +196,7 @@ describe('table keymap', () => {
         sendKeyToPm(editorView, 'Backspace');
         expect(editorView.state.doc).to.deep.equal(doc(table(tr(tdEmpty, tdEmpty, tdEmpty))));
         expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -209,6 +220,7 @@ describe('table keymap', () => {
           expect(editorView.state.doc).to.deep.equal(doc(table(rows)));
           expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
+          editorView.destroy();
         });
       });
 
@@ -232,6 +244,7 @@ describe('table keymap', () => {
           expect(editorView.state.doc).to.deep.equal(doc(table(emptyRow, tr(columns))));
           expect(cursorPos).to.equal(editorView.state.selection.$from.pos);
           expect(trackEvent.calledWith('atlassian.editor.format.table.delete_content.keyboard')).to.equal(true);
+          editorView.destroy();
         });
       });
     });

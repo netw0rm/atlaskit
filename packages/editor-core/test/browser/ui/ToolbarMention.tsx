@@ -23,6 +23,7 @@ describe('ToolbarMention', () => {
     toolbarMention.find(MentionIcon).simulate('click');
     const { state } = editorView;
     expect(state.doc.rangeHasMark(0, 2, state.schema.marks.mentionQuery)).to.equal(true);
+    toolbarMention.unmount();
   });
 
   describe('analytics', () => {
@@ -33,6 +34,7 @@ describe('ToolbarMention', () => {
       const toolbarOption = mount(<ToolbarMention pluginKey={pluginKey} editorView={editorView} />);
       toolbarOption.find(MentionIcon).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.mention.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 });

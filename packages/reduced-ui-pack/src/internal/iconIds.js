@@ -93,7 +93,6 @@ const iconIds = [
   'editor/edit',
   'editor/emoji',
   'editor/error',
-  'editor/expand',
   'editor/feedback',
   'editor/file',
   'editor/help',

@@ -31,6 +31,12 @@ storiesOf(name, module)
           icon={<DashboardIcon label="Dashboard" />}
           text="No href and no onClick"
         />
+        <AkNavigationItem
+          href="//atlassian.com"
+          target="_blank"
+          icon={<DashboardIcon label="Dashboard" />}
+          text="A href that opens in new tab"
+        />
       </BasicNavigation>
       <div>
         <Lorem count="30" />

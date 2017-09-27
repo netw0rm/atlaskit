@@ -158,9 +158,12 @@ const renderAsImage = (props: Props) => {
     handleImageError(props, event);
   };
 
+  // Pass src attribute as key to force React to rerender img node since browser does not
+  // change preview image until loaded
   const emojiNode = (
     <img
       src={src}
+      key={src}
       alt={emoji.shortName}
       style={{ visibility: 'visible' }}
       onError={onError}

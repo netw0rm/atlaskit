@@ -1,4 +1,7 @@
-export default async (key) => {
+import 'es6-promise/auto';
+import 'whatwg-fetch';
+
+export default async key => {
   const response = fetch('/rest/api/2/mypermissions', {
     credentials: 'same-origin',
   });

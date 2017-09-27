@@ -42,7 +42,7 @@ const profilecardPropTypes = {
   isLoading: 'bool',
   hasError: 'bool',
   errorType: `PropTypes.shape({
-    reason: PropTypes.oneOf('default', 'NotFound')
+    reason: PropTypes.oneOf(['default', 'NotFound'])
   })`,
   clientFetchProfile: 'func',
 };

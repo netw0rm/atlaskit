@@ -1,5 +1,79 @@
 # @atlaskit/editor-core
 
+## 47.7.4 (2017-09-26)
+
+* bug fix; use lowercased language names for code-block adf representation (issues closed: ed-2813) ([05ed3dc](https://bitbucket.org/atlassian/atlaskit/commits/05ed3dc))
+## 47.7.3 (2017-09-26)
+
+* bug fix; make ToolbarInsertBlock's mediaDisabled key less ambiguous (issues closed: ed-2865) ([1890835](https://bitbucket.org/atlassian/atlaskit/commits/1890835))
+## 47.7.2 (2017-09-26)
+
+
+* bug fix; fS-1330 disable tooltip when emoji picker is open (issues closed: fs-1330) ([cd875da](https://bitbucket.org/atlassian/atlaskit/commits/cd875da))
+## 47.7.1 (2017-09-25)
+
+* bug fix; don't show the media dropdown in the Insert Toolbar if no uploadContext is present (issues closed: ed-2865) ([b6d49d6](https://bitbucket.org/atlassian/atlaskit/commits/b6d49d6))
+* bug fix; revert code-splitting from editor-core ([c0586d0](https://bitbucket.org/atlassian/atlaskit/commits/c0586d0))
+## 47.7.0 (2017-09-25)
+
+* bug fix; emoji TypeAhead doesn't go away after submitting a comment in BB (issues closed: ed-2633) ([3fc98cf](https://bitbucket.org/atlassian/atlaskit/commits/3fc98cf))
+* bug fix; add editorView.destroy in mentions plugin ([cc8cc37](https://bitbucket.org/atlassian/atlaskit/commits/cc8cc37))
+* bug fix; mention type-ahead does not disappear when user uses keyboard shortcut Shift+Enter (issues closed: ed-2761, hnw-2580) ([12952c7](https://bitbucket.org/atlassian/atlaskit/commits/12952c7))
+* feature; display inline macro place holder as an image. ([c52fe97](https://bitbucket.org/atlassian/atlaskit/commits/c52fe97))
+* bug fix; check if link is compatible with existing marks before adding link (issues closed: ed-2218) ([f8578c9](https://bitbucket.org/atlassian/atlaskit/commits/f8578c9))
+* feature; add support for detecting mark-types in a selection ([f5ce040](https://bitbucket.org/atlassian/atlaskit/commits/f5ce040))
+* bug fix; fix error where mark type groups were not being properly filtered out (issues closed: ed-2805) ([b3f2f5d](https://bitbucket.org/atlassian/atlaskit/commits/b3f2f5d))
+* feature; update json-schema with inlineMacro node. ([ad90c0f](https://bitbucket.org/atlassian/atlaskit/commits/ad90c0f))
+* feature; added inlineMacro node. ([99c6b38](https://bitbucket.org/atlassian/atlaskit/commits/99c6b38))
+## 47.6.3 (2017-09-22)
+
+
+* bug fix; triple backticks in middle of paragraph if followed by space or enter should create ([58c2754](https://bitbucket.org/atlassian/atlaskit/commits/58c2754))
+
+## 47.6.2 (2017-09-22)
+
+* bug fix; triple backticks in middle of paragraph if followed by space or enter should create ([58c2754](https://bitbucket.org/atlassian/atlaskit/commits/58c2754))
+
+## 47.6.1 (2017-09-22)
+
+
+* bug fix; added panel support to new editor architecture (issues closed: ed-2804) ([c56e5fd](https://bitbucket.org/atlassian/atlaskit/commits/c56e5fd))
+## 47.6.0 (2017-09-22)
+
+* feature; addes in occurrenceKey in link mark (issues closed: ed-2765) ([b4687a0](https://bitbucket.org/atlassian/atlaskit/commits/b4687a0))
+* feature; addes in optional id and collection for link mark. These two properties will be ins (issues closed: ed-2750) ([c3ed647](https://bitbucket.org/atlassian/atlaskit/commits/c3ed647))
+* feature; remove bottom toolbar from full-page editor (issues closed: ed-2783) ([cf7a7da](https://bitbucket.org/atlassian/atlaskit/commits/cf7a7da))
+## 47.5.1 (2017-09-21)
+
+* bug fix; editing a link results in malformed / wrong links (issues closed: ed-2749, hnw-3015) ([4c9f314](https://bitbucket.org/atlassian/atlaskit/commits/4c9f314))
+* bug fix; trigger onChange only after content has actually changed (issues closed: ed-2841) ([3b77318](https://bitbucket.org/atlassian/atlaskit/commits/3b77318))
+## 47.5.0 (2017-09-21)
+
+* feature; upgrade to latest emoji support, with latest upload features (issues closed: fs-1395) ([a0a6f34](https://bitbucket.org/atlassian/atlaskit/commits/a0a6f34))
+* bug fix; add support for deleted / non-existant users to profile cards (issues closed: hnw-3062, ed-2762) ([86b8848](https://bitbucket.org/atlassian/atlaskit/commits/86b8848))
+## 47.4.1 (2017-09-21)
+
+* bug fix; fix typescript validation error in test. ([a6f3d53](https://bitbucket.org/atlassian/atlaskit/commits/a6f3d53))
+* bug fix; added editorView.destroy(); to plugin tests ([adfb751](https://bitbucket.org/atlassian/atlaskit/commits/adfb751))
+* bug fix; add unmount to all ui tests (issues closed: ed-2836) ([621681a](https://bitbucket.org/atlassian/atlaskit/commits/621681a))
+
+
+* bug fix; attempt 1 to fix the build ([3c5796f](https://bitbucket.org/atlassian/atlaskit/commits/3c5796f))
+* bug fix; fix code splitted mediapicker in editor-core (issues closed: ed-2776) ([46b96c7](https://bitbucket.org/atlassian/atlaskit/commits/46b96c7))
+* bug fix; code splitted mediapicker from editor-core (issues closed: ed-2776) ([310cfb9](https://bitbucket.org/atlassian/atlaskit/commits/310cfb9))
+## 47.4.0 (2017-09-20)
+
+* feature; bump media-card ([06caa58](https://bitbucket.org/atlassian/atlaskit/commits/06caa58))
+* feature; bump media-card and media-filmstrip ([e3baf5b](https://bitbucket.org/atlassian/atlaskit/commits/e3baf5b))
+## 47.3.1 (2017-09-20)
+
+* bug fix; upgrading emoji toolbar button to use new popup component for select. (issues closed: #ed-1523) ([2741a7b](https://bitbucket.org/atlassian/atlaskit/commits/2741a7b))
+## 47.3.0 (2017-09-19)
+
+* bug fix; revert quick tooltip fix for emoji picker. (issues closed: fs-1330) ([a47a20d](https://bitbucket.org/atlassian/atlaskit/commits/a47a20d))
+
+* feature; help dialog should show hints for only those nodes and marks supported by the schem (issues closed: #ed-2671) ([7181eac](https://bitbucket.org/atlassian/atlaskit/commits/7181eac))
+* bug fix; code splitted avatar and logo (issues closed: ed-2776) ([1cad4c1](https://bitbucket.org/atlassian/atlaskit/commits/1cad4c1))
 ## 47.2.0 (2017-09-19)
 
 * feature; revise text color palette to a reduced set (issues closed: ed-2679) ([9673a86](https://bitbucket.org/atlassian/atlaskit/commits/9673a86))

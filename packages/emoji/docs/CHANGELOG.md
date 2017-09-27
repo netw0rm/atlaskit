@@ -1,5 +1,23 @@
 # @atlaskit/emoji
 
+## 29.1.0 (2017-09-25)
+
+* bug fix; emoji picker displays people emojis after frequent (issues closed: fs-1340) ([f2a089e](https://bitbucket.org/atlassian/atlaskit/commits/f2a089e))
+* feature; return creator user Id and created data in EmojiDescription (optionally) (issues closed: fs-1328) ([7949ff4](https://bitbucket.org/atlassian/atlaskit/commits/7949ff4))
+## 29.0.4 (2017-09-22)
+
+
+* bug fix; removed reference to selectedCategory ([7319aa2](https://bitbucket.org/atlassian/atlaskit/commits/7319aa2))
+* bug fix; export props and state of emojipickerlist ([3c2dde2](https://bitbucket.org/atlassian/atlaskit/commits/3c2dde2))
+
+* bug fix; fS-1349 refactor selectedCategory resolution logic in picker (issues closed: fs-1349) ([10c7487](https://bitbucket.org/atlassian/atlaskit/commits/10c7487))
+## 29.0.3 (2017-09-22)
+
+* bug fix; remove code splitting from emoji ([94a5901](https://bitbucket.org/atlassian/atlaskit/commits/94a5901))
+## 29.0.2 (2017-09-21)
+
+* bug fix; shows tone selector by default in preview (issues closed: fs-1346) ([d4fbaf8](https://bitbucket.org/atlassian/atlaskit/commits/d4fbaf8))
+* bug fix; fS-1297 picker row to fit emoji if custom is uploaded (issues closed: fs-1297) ([cf42328](https://bitbucket.org/atlassian/atlaskit/commits/cf42328))
 ## 29.0.1 (2017-09-19)
 
 * bug fix; code splitted mediapicker in emoji package (issues closed: ed-2776) ([8649f12](https://bitbucket.org/atlassian/atlaskit/commits/8649f12))

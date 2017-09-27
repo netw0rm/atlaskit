@@ -32,6 +32,7 @@ describe('emojis - input rules', () => {
     const { emojiQuery } = editorView.state.schema.marks;
     const cursorFocus = editorView.state.selection.$to.nodeBefore!;
     expect(!!emojiQuery.isInSet(cursorFocus.marks)).to.equal(expected);
+    editorView.destroy();
   };
 
   it('should replace a standalone ":" with emoji-query-mark', () => {

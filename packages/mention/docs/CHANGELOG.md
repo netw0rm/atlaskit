@@ -1,5 +1,12 @@
 # @atlaskit/mention
 
+## 7.5.0 (2017-09-26)
+
+* feature; fS-1372 Show an APP flag for App users like Bot ([0ff41fc](https://bitbucket.org/atlassian/atlaskit/commits/0ff41fc))
+
+## 7.4.3 (2017-09-21)
+
+* bug fix; Revert code splitting of mentions/task-decisions as it introduces a performance problem (issues closed: fs-1396 / hnw-3183) ([bbecb14](https://bitbucket.org/atlassian/atlaskit/commits/bbecb14))
 ## 7.4.2 (2017-09-19)
 
 * bug fix; code splitted avatar in mention and task-decision packages (issues closed: ed-2776) ([19f8276](https://bitbucket.org/atlassian/atlaskit/commits/19f8276))

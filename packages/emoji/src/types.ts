@@ -70,6 +70,8 @@ export interface EmojiDescription extends EmojiId {
   type: string;
   category: string;
   ascii?: string[];
+  createdDate?: string;
+  creatorUserId?: string;
   representation: EmojiRepresentation;
   searchable: boolean;
 }
@@ -99,6 +101,8 @@ export interface EmojiServiceDescription {
   order?: number;
   fallback?: string;
   ascii?: string[];
+  createdDate?: string;
+  creatorUserId?: string;
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;

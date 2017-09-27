@@ -259,6 +259,13 @@ describe('<Navigation />', () => {
       ).find(GlobalNavigation).props().theme).toBe(theme);
     });
 
+    it('should pass containerScrollRef to ContainerNavigation.scrollRef', () => {
+      const myRef = () => {};
+      expect(shallow(
+        <Navigation containerScrollRef={myRef} />
+      ).find(ContainerNavigation).props().scrollRef).toBe(myRef);
+    });
+
     it('should pass containerTheme onto <ContainerNavigation />', () => {
       const theme = presets.settings;
       expect(mount(

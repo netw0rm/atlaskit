@@ -110,29 +110,29 @@ export default function getButtonStyles(props: Object) {
   return css`
     align-items: baseline;
     background: ${background};
-    box-sizing: border-box;
-    box-shadow: ${boxShadow};
     border-radius: ${borderRadius}px;
     border-width: 0;
-    width: ${width};
+    box-shadow: ${boxShadow};
+    box-sizing: border-box;
     color: ${color} !important;
     cursor: ${cursor};
     display: inline-flex;
-    font-style: normal;
     font-size: inherit;
+    font-style: normal;
     height: ${height};
     line-height: ${lineHeight};
     margin: 0;
+    max-width: 100%;
     outline: ${outline} !important;
     padding: ${padding};
     pointer-events: ${pointerEvents};
     text-align: center;
     text-decoration: ${textDecoration};
-    transition-duration: ${transitionDuration};
     transition: ${transition};
-    user-select: none;
+    transition-duration: ${transitionDuration};
     vertical-align: ${verticalAlign};
     white-space: nowrap;
+    width: ${width};
 
     &::-moz-focus-inner {
       border: 0;

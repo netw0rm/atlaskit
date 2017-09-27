@@ -278,12 +278,19 @@ export function createCodeBlockFromFenceFormat(): Command {
       return false;
     }
 
-    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
+    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos);
 
-    const matches = /^```(`+)?([^\s]+)?/.exec(fencePart);
+    const matcheStart = /(^`{3,}(\S*)\s*$)/.exec(fencePart);
+    const matchMiddle = /\s(`{3,}(\S*)\s*$)/.exec(fencePart);
+    const matches = matcheStart || matchMiddle;
 
     if (matches && isConvertableToCodeBlock(state)) {
-      dispatch(transformToCodeBlockAction(state, { language: matches[2] }).delete(startPos, $from.pos));
+      const attributes: {language?: string} = {};
+
+      if (matches[2]) {
+        attributes.language = matches[2];
+      }
+      dispatch(transformToCodeBlockAction(state, attributes).delete($from.pos - matches[1].length, $from.pos));
       return true;
     }
 
@@ -294,8 +301,7 @@ export function createCodeBlockFromFenceFormat(): Command {
 export function showLinkPanel(): Command {
   return function (state, dispatch, view) {
     const pluginState = hyperlinkPluginStateKey.getState(state);
-    pluginState.showLinkPanel(view);
-    return true;
+    return pluginState.showLinkPanel(view);
   };
 }
 

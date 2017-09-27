@@ -18,16 +18,33 @@ const sizes = {
   default: 8,
   large: 12,
 };
+const spacingDivision = {
+  comfortable: 2,
+  cozy: 4,
+  compact: 8,
+};
 
-const getDimensions = ({ size }) => {
+const getDimensions = ({ size, spacing }) => {
   const val = sizes[size];
-  const margin = val / 4;
+  const margin = val / spacingDivision[spacing];
+  const hitslop = val + (margin * 2);
 
   return css`
+    height: ${val}px;
     margin-left: ${margin}px;
     margin-right: ${margin}px;
-    height: ${val}px;
+    position: relative;
     width: ${val}px;
+
+    &::before {
+      content: "";
+      display: block;
+      height: ${hitslop}px;
+      left: -${margin}px;
+      position: absolute;
+      top: -${margin}px;
+      width: ${hitslop}px;
+    }
   `;
 };
 const getColor = ({ appearance, selected }) => (
@@ -35,6 +52,11 @@ const getColor = ({ appearance, selected }) => (
     ? selectedColorMap[appearance]
     : colorMap[appearance]
 );
+const commonRules = css`
+  ${getDimensions}
+  background-color: ${getColor};
+  border-radius: 50%;
+`;
 
 export const Container = styled.div`
   justify-content: center;
@@ -42,15 +64,11 @@ export const Container = styled.div`
 `;
 
 export const IndicatorButton = styled.button`
-  ${getDimensions}
-  background-color: ${getColor};
+  ${commonRules}
   border: 0;
-  border-radius: 50%;
   cursor: pointer;
   padding: 0;
 `;
 export const IndicatorDiv = styled.div`
-  ${getDimensions}
-  background-color: ${getColor};
-  border-radius: 50%;
+  ${commonRules}
 `;

@@ -8,9 +8,11 @@ import { AtlasKitThemeProvider, colors, themed } from '@atlaskit/theme';
 // import { ProgressIndicator } from '@atlaskit/progress-indicator';
 import { ProgressDots } from '../../src';
 
-const values = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+const appearances = ['default', 'primary', 'help', 'inverted'];
 const themes = ['light', 'dark'];
-const appearances = ['default', 'help', 'inverted', 'primary'];
+const sizes = ['small', 'default', 'large'];
+const spacing = ['comfortable', 'cozy', 'compact'];
+const values = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
 
 const Bar = styled.div`
   align-items: center;
@@ -25,25 +27,33 @@ const Footer = styled(Bar)`
   margin: 1em -1em;
   padding: 1em;
 `;
+const Heading = styled.div`
+  color: ${colors.subtleText};
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-bottom: 0.8em;
+  text-transform: uppercase;
+`;
 const Header = styled(Bar)`margin-bottom: 2em;`;
 const Page = styled.div`
   margin: 0 auto;
   padding: 2em 0;
-  width: 640px;
+  max-width: 840px;
 `;
 const Input = styled.input`
   margin-right: 0.5em;
 `;
 const Label = styled.label`
   display: block;
-  margin-bottom: 2em;
 `;
 
 export default class ProgressIndicatorDots extends PureComponent {
   state = {
-    interactiveIndicators: true,
+    isInteractive: true,
     selectedIndex: 0,
-    selectedAppearance: appearances[0],
+    selectedAppearance: appearances[1],
+    selectedSize: sizes[1],
+    selectedSpacing: spacing[0],
     themeIndex: 0,
   }
   handlePrev = () => {
@@ -57,10 +67,15 @@ export default class ProgressIndicatorDots extends PureComponent {
   }
   toggleTheme = () => this.setState((state) => ({ themeIndex: state.themeIndex + 1 }));
   toggleAppearance = (selectedAppearance) => this.setState({ selectedAppearance });
-  toggleInteractivity = (event) => this.setState({ interactiveIndicators: event.target.checked });
+  toggleSize = (selectedSize) => this.setState({ selectedSize });
+  toggleSpacing = (selectedSpacing) => this.setState({ selectedSpacing });
+  toggleInteractivity = (event) => this.setState({ isInteractive: event.target.checked });
 
   render() {
-    const { interactiveIndicators, selectedAppearance, selectedIndex, themeIndex } = this.state;
+    const {
+      isInteractive, selectedAppearance, selectedIndex, selectedSpacing,
+      selectedSize, themeIndex,
+    } = this.state;
     const selectedTheme = themes[themeIndex % 2];
     const buttonAppearance = selectedAppearance === 'inverted' ? 'primary' : selectedAppearance;
 
@@ -68,30 +83,66 @@ export default class ProgressIndicatorDots extends PureComponent {
       <AtlasKitThemeProvider mode={selectedTheme}>
         <Page>
           <Header>
-            <ButtonGroup>
-              {appearances.map(a => (
-                <Button
-                  key={a}
-                  onClick={() => this.toggleAppearance(a)}
-                  isSelected={selectedAppearance === a}
-                >
-                  {a}
-                </Button>
-              ))}
-            </ButtonGroup>
+            <div>
+              <Heading>Appearance</Heading>
+              <ButtonGroup>
+                {appearances.map(app => (
+                  <Button
+                    isSelected={selectedAppearance === app}
+                    key={app}
+                    onClick={() => this.toggleAppearance(app)}
+                    spacing="compact"
+                  >
+                    {app}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+            <div>
+              <Heading>Spacing</Heading>
+              <ButtonGroup>
+                {spacing.map(spc => (
+                  <Button
+                    isSelected={selectedSpacing === spc}
+                    key={spc}
+                    onClick={() => this.toggleSpacing(spc)}
+                    spacing="compact"
+                  >
+                    {spc}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+            <div>
+              <Heading>Size</Heading>
+              <ButtonGroup>
+                {sizes.map(sz => (
+                  <Button
+                    isSelected={selectedSize === sz}
+                    key={sz}
+                    onClick={() => this.toggleSize(sz)}
+                    spacing="compact"
+                  >
+                    {sz}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+          </Header>
+          <Header>
+            <Label htmlFor="input">
+              <Input
+                checked={isInteractive}
+                id="input"
+                onChange={this.toggleInteractivity}
+                type="checkbox"
+              />
+              <strong>Allow interaction with indicators</strong>
+            </Label>
             <Button onClick={this.toggleTheme}>
               Theme: {selectedTheme}
             </Button>
           </Header>
-          <Label htmlFor="input">
-            <Input
-              checked={interactiveIndicators}
-              id="input"
-              onChange={this.toggleInteractivity}
-              type="checkbox"
-            />
-            <strong>Allow interaction with indicators</strong>
-          </Label>
           <Lorem count={3} />
           <Footer appearance={selectedAppearance}>
             <Button
@@ -103,8 +154,10 @@ export default class ProgressIndicatorDots extends PureComponent {
             </Button>
             <ProgressDots
               appearance={selectedAppearance}
-              onSelect={interactiveIndicators ? this.handleSelect : null}
+              onSelect={isInteractive ? this.handleSelect : null}
               selectedIndex={selectedIndex}
+              size={selectedSize}
+              spacing={selectedSpacing}
               values={values}
             />
             <Button

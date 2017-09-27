@@ -7,7 +7,13 @@ import {
   AkSearch,
   quickSearchResultTypes,
 } from '../../src';
-import { ATLASKIT_QUICKSEARCH_NS } from '../../src/components/js/quick-search/QuickSearch';
+import {
+  QS_ANALYTICS_EV_CLOSE,
+  QS_ANALYTICS_EV_KB_CTRLS_USED,
+  QS_ANALYTICS_EV_OPEN,
+  QS_ANALYTICS_EV_QUERY_ENTERED,
+  QS_ANALYTICS_EV_SUBMIT,
+} from '../../src/components/js/quick-search/constants';
 import { mountWithRootTheme } from './_theme-util';
 
 const { PersonResult } = quickSearchResultTypes;
@@ -73,19 +79,19 @@ describe('<QuickSearch />', () => {
       const calls = onAnalyticsEventSpy.mock.calls;
       return calls[calls.length - 1];
     };
-    const expectEventFiredLastToBe = (name) => expect(getLastEventFired()[0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/${name}`);
+    const expectEventFiredLastToBe = (name) => expect(getLastEventFired()[0]).toBe(name);
     it('should fire event on mount', () => {
-      expectEventFiredLastToBe('open');
+      expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
     });
     it('should fire event on unmount', () => {
       wrapper.unmount();
-      expectEventFiredLastToBe('close');
+      expectEventFiredLastToBe(QS_ANALYTICS_EV_CLOSE);
     });
     describe('submit/click event', () => {
       it('should fire event on result click', () => {
         const result = wrapper.find(AkNavigationItem).first();
         result.simulate('click');
-        expectEventFiredLastToBe('submit/click');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
       });
       it('should carry payload of resultCount, queryLength, index and type', () => {
         const result = wrapper.find(AkNavigationItem).first();
@@ -102,7 +108,7 @@ describe('<QuickSearch />', () => {
     describe('submit/keyboard event', () => {
       it('should fire event on submit ENTER key stroke', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
-        expectEventFiredLastToBe('submit/keyboard');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
       });
       it('should carry payload of resultCount, queryLength, index and type', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
@@ -118,18 +124,18 @@ describe('<QuickSearch />', () => {
     describe('keyboard-controls-used event', () => {
       it('ArrowUp', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
-        expectEventFiredLastToBe('keyboard-controls-used');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
       it('ArrowDown', () => {
         searchInput.simulate('keydown', { key: 'ArrowDown' });
-        expectEventFiredLastToBe('keyboard-controls-used');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
       it('Enter', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
         const calls = onAnalyticsEventSpy.mock.calls;
-        expect(calls[calls.length - 2][0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`);
+        expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
       it('should only fire once per mount', () => {
@@ -137,7 +143,7 @@ describe('<QuickSearch />', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(call =>
-          call[0] === `${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`
+          call[0] === QS_ANALYTICS_EV_KB_CTRLS_USED
         );
         expect(kbCtrlsUsedEventsFired).toHaveLength(1);
       });
@@ -145,7 +151,7 @@ describe('<QuickSearch />', () => {
     describe('query-entered event', () => {
       it('should fire when search term is entered', () => {
         wrapper.setProps({ value: 'hello' });
-        expectEventFiredLastToBe('query-entered');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_QUERY_ENTERED);
       });
       it('should not fire if previous search term was not empty', () => {
         // Set up non-empty-query state.
@@ -158,7 +164,7 @@ describe('<QuickSearch />', () => {
       });
       it('should only fire once per mount', () => {
         wrapper.setProps({ value: 'hello' });
-        expectEventFiredLastToBe('query-entered');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_QUERY_ENTERED);
         onAnalyticsEventSpy.mockReset();
 
         wrapper.setProps({ value: '' });

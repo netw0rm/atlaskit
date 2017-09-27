@@ -32,6 +32,7 @@ export interface EditorProps {
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
+  allowInlineMacro?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

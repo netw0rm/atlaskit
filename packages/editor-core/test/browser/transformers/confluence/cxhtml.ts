@@ -11,7 +11,7 @@ import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
-  table, tr, td, th
+  table, tr, td, th, inlineMacro
 } from './_schema-builder';
 chai.use(chaiPlugin);
 import { confluenceSchema as schema } from '../../../../src/schema';
@@ -553,6 +553,27 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               schemaVersion: '1',
               server: 'JIRA (product-fabric.atlassian.net)',
               serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
+            })
+          )
+        )
+      );
+    });
+
+    describe('inline-macro', () => {
+      const macroId = '39f3436e-880e-4411-8494-869a59eb203f';
+      const name = 'status';
+      const placeholderUrl = 'www.google.com/placeholder.png';
+
+      check(
+        'basic',
+        `<ac:structured-macro ac:name= "${name}" ac:schema-version= "1" ac:macro-id= "${macroId}"><ac:parameter ac:name= "subtle">true</ac:parameter><ac:parameter ac:name= "colour">Red</ac:parameter><fab:placeholder-url>${placeholderUrl}</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
+        doc(
+          p(
+            inlineMacro({
+              macroId,
+              name,
+              placeholderUrl,
+              params: {subtle: 'true', colour: 'Red'}
             })
           )
         )

@@ -19,6 +19,7 @@ export const confluenceSchema: Schema<any, any> = createSchema({
     'mention',
     'text',
     'confluenceUnsupportedInline',
+    'inlineMacro',
     'media',
     'rule',
     'table',

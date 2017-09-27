@@ -212,6 +212,7 @@ storiesOf(name, module)
                         allowJiraIssue={true}
                         allowUnsupportedContent={true}
                         allowPanel={true}
+                        allowInlineMacro={true}
 
                         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
                         emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}

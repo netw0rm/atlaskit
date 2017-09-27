@@ -8,12 +8,18 @@ export function createPlugin(onChange?: (editorView: EditorView) => void): Plugi
     return;
   }
 
+  let debounced: number | null = null;
+
   return new Plugin({
     key: pluginKey,
     view(editorView: EditorView) {
       return {
         update(editorView) {
-          onChange(editorView);
+          if (debounced) {
+            clearTimeout(debounced);
+          }
+
+          debounced = setTimeout(() => onChange(editorView), 200);
         }
       };
     }

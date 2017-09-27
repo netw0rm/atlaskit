@@ -9,11 +9,6 @@ import type { ComponentType, ElementType, FunctionType } from '../types';
 import { Dialog, DialogBody, DialogPositioner, FillScreen } from '../styled/Dialog';
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import withScrollMeasurements from '../hoc/withScrollMeasurements';
-import { Fade, SlideUp } from './Animation';
-
-// Rename transition components for easier parsing of the render method
-const Fill = props => <Fade component={FillScreen} {...props} />;
-const Positioner = props => <SlideUp component={DialogPositioner} {...props} />;
 
 type Props = {|
   /** The elements rendered in the modal */
@@ -125,7 +120,7 @@ class Spotlight extends Component {
     );
 
     return (
-      <Fill in scrollDistance={scrollY}>
+      <FillScreen in scrollDistance={scrollY}>
         {target ? (
           <Layer
             boundariesElement="scrollParent"
@@ -137,18 +132,21 @@ class Spotlight extends Component {
             {this.renderTargetClone()}
           </Layer>
         ) : (
-          <Positioner in size={size}>
+          <DialogPositioner in size={size}>
             {dialog}
-          </Positioner>
+          </DialogPositioner>
         )}
-      </Fill>
+      </FillScreen>
     );
   }
 }
 
 export default withScrollMeasurements(
   withRenderTarget(
-    { target: 'spotlight' },
+    {
+      target: 'spotlight',
+      wrapWithTransitionGroup: false,
+    },
     Spotlight
   )
 );

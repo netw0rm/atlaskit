@@ -30,7 +30,6 @@ export const Container = styled.div`
   color: ${colors.text};
   max-height: ${math.multiply(gridSize, 60)}px;
   max-width: ${math.multiply(gridSize, 62)}px;
-  overflow: auto;
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 3)}px;
   z-index: 200;
 `;

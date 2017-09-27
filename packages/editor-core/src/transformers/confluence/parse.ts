@@ -195,6 +195,13 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
 
         return output;
 
+      case 'AC:INLINE-COMMENT-MARKER':
+        if (!content) {
+          return null;
+        }
+        const attrs = { reference: node.getAttribute('ac:ref') };
+        return addMarks(content, [schema.marks.inlineCommentMarker.create(attrs)]);
+
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(schema, node) || unsupportedInline;
       case 'FAB:LINK':

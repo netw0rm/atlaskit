@@ -166,6 +166,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
+          case schema.marks.inlineCommentMarker:
+            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -206,7 +209,6 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
 
   function encodeLink(node: PMNode) {
     const link: HTMLAnchorElement = doc.createElement('a');
-    link.innerHTML = node.text || '';
     let href = '';
     if (node.marks) {
       node.marks.forEach(mark => {
@@ -217,6 +219,20 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     }
     link.href = href;
     return link;
+  }
+
+  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
+    const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
+    let reference = '';
+    if (node.marks) {
+      node.marks.forEach(mark => {
+        if (mark.type.name === schema.marks.inlineCommentMarker.name) {
+          reference = mark.attrs.reference;
+        }
+      });
+    }
+    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
+    return marker;
   }
 
   function encodeCodeBlock(node: PMNode) {

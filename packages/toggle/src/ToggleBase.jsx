@@ -41,19 +41,31 @@ export default class ToggleStateless extends PureComponent {
     isFocused: false,
   }
 
-  componentDidUpdate() {
-    // TODO: This is a hack. find a way to make it work with preventDefault onMouseDown event
-    if (this.mouseWasDown) {
-      this.input.blur();
-      this.mouseWasDown = false;
+  onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false })
+  onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true })
+
+  onKeyDown = (event: KeyboardEvent) => {
+    if (this.actionKeys.includes(event.key)) {
+      this.setState({ isActive: true });
+    }
+  }
+  onKeyUp = (event: KeyboardEvent) => {
+    if (this.actionKeys.includes(event.key)) {
+      this.setState({ isActive: false });
     }
   }
 
-  handleMouseDown = () => (
-    this.mouseWasDown = true
-  )
+  handleMouseDown = () => {
+    this.setState({ isActive: true, mouseIsDown: true });
+  }
   handleBlur = (e) => {
-    this.setState({ isFocused: false });
+    this.setState({
+      // onBlur is called after onMouseDown if the checkbox was focused, however
+      // in this case on blur is called immediately after, and we need to check
+      // whether the mouse is down.
+      isActive: this.state.mouseIsDown && this.state.isActive,
+      isFocused: false,
+    });
     this.props.onBlur(e);
   }
   handleChange = (e) => {
@@ -66,14 +78,22 @@ export default class ToggleStateless extends PureComponent {
 
   render() {
     const { isChecked, isDisabled, label, name, size, value, ...rest } = this.props;
-    const { isFocused } = this.state;
-    const styledProps = { isChecked, isDisabled, isFocused, size };
+    const { isFocused, isActive } = this.state;
+    const styledProps = { isChecked, isDisabled, isFocused: isFocused || isActive, size };
     const Icon = isChecked ? ConfirmIcon : CloseIcon;
     const id = uid();
     const primaryColor = isChecked ? themed({ light: 'inherit', dark: colors.DN30 })(rest) : 'inherit';
 
     return (
-      <Label size={size} isDisabled={isDisabled} htmlFor={id} onMouseDown={this.handleMouseDown}>
+      <Label
+        size={size}
+        isDisabled={isDisabled}
+        htmlFor={id}
+        onMouseDown={this.handleMouseDown}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+        onMouseUp={this.onMouseUp}
+      >
         <Input
           checked={isChecked}
           disabled={isDisabled}

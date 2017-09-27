@@ -38,8 +38,12 @@ const getHoverStyles = ({ isChecked, isDisabled, ...rest }) => {
     }
   `;
 };
-const getBorderColor = ({ isFocused }) => (isFocused ? colors.B100 : 'transparent');
-// icon color should be 50% white when disabled
+
+const getBorderColor = ({ isFocused, ...rest }) => (isFocused
+  ? themed({ light: colors.B100, dark: colors.B75 })(rest)
+  : 'transparent'
+);
+
 export default styled.div`
   background-clip: content-box;
   background-color: ${getBgColor};

@@ -62,7 +62,6 @@ export const placeholderContainer = style({
 
 export const placeholderEmoji = style({
   display: 'inline-block',
-  fill: '#f7f7f7',
   verticalAlign: 'middle',
   whiteSpace: 'nowrap',
 });

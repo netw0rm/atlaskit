@@ -130,7 +130,7 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
     }
 
     return this.emojiWrapper((
-      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip}/>
+      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip} />
     ));
   }
 

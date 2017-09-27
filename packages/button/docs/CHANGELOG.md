@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.1 (2017-09-27)
+
+* bug fix; button will truncate if wider than its parent (issues closed: ak-3332) ([a701ea1](https://bitbucket.org/atlassian/atlaskit/commits/a701ea1))
 ## 5.4.0 (2017-09-22)
 
 * feature; buttons no longer prevent text selection (issues closed: ak-3270) ([9ab343b](https://bitbucket.org/atlassian/atlaskit/commits/9ab343b))

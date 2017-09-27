@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 29.1.1 (2017-09-27)
+
+
+
+* bug fix; fS-1348 preview displays correct img (issues closed: fs-1348) ([6b0d167](https://bitbucket.org/atlassian/atlaskit/commits/6b0d167))
 ## 29.1.0 (2017-09-25)
 
 * bug fix; emoji picker displays people emojis after frequent (issues closed: fs-1340) ([f2a089e](https://bitbucket.org/atlassian/atlaskit/commits/f2a089e))

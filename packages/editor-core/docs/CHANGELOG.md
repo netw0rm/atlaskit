@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.8.0 (2017-09-27)
+
+* bug fix; debounce onChange in editor-core ([d2ac593](https://bitbucket.org/atlassian/atlaskit/commits/d2ac593))
+* feature; add a userType attribute to the mention node (issues closed: ed-2826) ([24ed8de](https://bitbucket.org/atlassian/atlaskit/commits/24ed8de))
 ## 47.7.4 (2017-09-26)
 
 * bug fix; use lowercased language names for code-block adf representation (issues closed: ed-2813) ([05ed3dc](https://bitbucket.org/atlassian/atlaskit/commits/05ed3dc))

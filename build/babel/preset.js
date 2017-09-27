@@ -17,6 +17,7 @@ module.exports = function atlaskit(context, opts = {}) {
       'transform-runtime',
       'transform-class-properties',
       'react-flow-props-to-prop-types',
+      ['transform-react-remove-prop-types', { mode: 'wrap' }],
     ],
   };
 };

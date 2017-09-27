@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.1.0 (2017-09-27)
+
+* feature; convert item to use theme package ([e860165](https://bitbucket.org/atlassian/atlaskit/commits/e860165))
 ## 4.0.0 (2017-09-19)
 
 * breaking; item theme accepts top/right/bottom/left options for padding rather than x/y ([bedf215](https://bitbucket.org/atlassian/atlaskit/commits/bedf215))

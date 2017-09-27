@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../../src';
+import FieldRadioGroup, { AkFieldRadioGroup } from '../../src';
 import { name } from '../../package.json';
+import Radio from '../../src/components/RadioBase';
 
 describe(name, () => {
   describe('FieldRadioGroup (smart)', () => {
@@ -46,11 +47,11 @@ describe(name, () => {
 
     describe('props', () => {
       describe('defaultValue prop', () => {
-        it('renders an AkRadio with correct props for each item in the array', () => {
+        it('renders an Radio with correct props for each item in the array', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper.find(AkRadio).length).toBe(sampleItems.length);
+          expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
-          const radios = wrapper.find(AkRadio);
+          const radios = wrapper.find(Radio);
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
             const item = sampleItems[i];
@@ -69,13 +70,13 @@ describe(name, () => {
 
         it('selects the item by default', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
-          expect(wrapper.find(AkRadio).at(2).prop('isSelected')).toBe(true);
+          expect(wrapper.find(Radio).at(2).prop('isSelected')).toBe(true);
         });
 
         it('is overridden when an item is selected', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
 
-          const radios = wrapper.find(AkRadio);
+          const radios = wrapper.find(Radio);
           radios.at(0).find('input').simulate('change');
 
           expect(wrapper.state('selectedValue')).toBe(sampleItemsWithDefault[0].value);
@@ -89,14 +90,14 @@ describe(name, () => {
         it('should be called when a value is selected', () => {
           const spy = jest.fn();
           const wrapper = mount(<FieldRadioGroup items={sampleItems} onRadioChange={spy} />);
-          wrapper.find(AkRadio).first().find('input').simulate('change');
+          wrapper.find(Radio).first().find('input').simulate('change');
           expect(spy).toHaveBeenCalledTimes(1);
         });
 
         it('updates the selectedValue state when a radio is changed', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
           expect(wrapper.state('selectedValue')).toBe(null);
-          wrapper.find(AkRadio).first().find('input').simulate('change');
+          wrapper.find(Radio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).toBe(sampleItems[0].value);
         });
       });

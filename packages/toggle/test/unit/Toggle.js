@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 
@@ -10,7 +10,7 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 describe('Toggle', () => {
   it('defaults', () => {
-    const wrapper = shallow(<Toggle />);
+    const wrapper = mount(<Toggle />);
     const input = wrapper.find(Input);
     const label = wrapper.find(Label);
     const iconWrapper = wrapper.find(IconWrapper);
@@ -26,40 +26,40 @@ describe('Toggle', () => {
 
   describe('properties', () => {
     it('isChecked=true', () => {
-      const wrapper = shallow(<Toggle isChecked />);
+      const wrapper = mount(<Toggle isChecked />);
       expect(wrapper.find(Input).prop('checked')).toBe(true);
       expect(wrapper.find(ConfirmIcon).exists()).toBe(true);
       expect(wrapper.find(CloseIcon).exists()).toBe(false);
     });
     it('isChecked=false', () => {
-      const wrapper = shallow(<Toggle />);
+      const wrapper = mount(<Toggle />);
       expect(wrapper.find(Input).prop('checked')).toBe(false);
       expect(wrapper.find(ConfirmIcon).exists()).toBe(false);
       expect(wrapper.find(CloseIcon).exists()).toBe(true);
     });
     it('isDisabled=true', () => {
-      const wrapper = shallow(<Toggle isDisabled />);
+      const wrapper = mount(<Toggle isDisabled />);
       expect(wrapper.find(Input).prop('disabled')).toBe(true);
     });
     it('isDisabled=false', () => {
-      const wrapper = shallow(<Toggle />);
+      const wrapper = mount(<Toggle />);
       expect(wrapper.find(Input).prop('disabled')).toBe(false);
     });
 
     it('name', () =>
-      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).toBe('test')
+      expect(mount(<Toggle name="test" />).find(Input).prop('name')).toBe('test')
     );
     it('value', () =>
-      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).toBe('test')
+      expect(mount(<Toggle value="test" />).find(Input).prop('value')).toBe('test')
     );
     it('size', () =>
-      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).toBe('large')
+      expect(mount(<Toggle size="large" />).find(Label).prop('size')).toBe('large')
     );
 
     it('label', () => {
-      expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon).prop('label'))
+      expect(mount(<Toggle isChecked label="test" />).find(ConfirmIcon).prop('label'))
         .toBe('test');
-      expect(shallow(<Toggle label="test" />).find(CloseIcon).prop('label'))
+      expect(mount(<Toggle label="test" />).find(CloseIcon).prop('label'))
         .toBe('test');
     });
 

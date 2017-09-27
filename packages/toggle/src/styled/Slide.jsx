@@ -8,13 +8,13 @@ import {
 } from './constants';
 
 const colorOptions = {
-  bgChecked: themed({ light: colors.G300, dark: colors.G300 }),
-  bgCheckedHover: themed({ light: colors.G500, dark: colors.G200 }), // hover go lighter
-  bgCheckedDisabled: themed({ light: colors.G400, dark: colors.G400 }),
+  bgChecked: themed({ light: colors.G400, dark: colors.G300 }),
+  bgCheckedHover: themed({ light: colors.G300, dark: colors.G200 }), // hover go lighter
+  bgCheckedDisabled: themed({ light: colors.N20, dark: colors.DN70 }),
 
-  bgUnchecked: themed({ light: colors.N80, dark: colors.DN80 }),
-  bgUncheckedHover: themed({ light: colors.N200, dark: colors.DN200 }),
-  bgUncheckedDisabled: themed({ light: colors.N300, dark: colors.DN300 }),
+  bgUnchecked: themed({ light: colors.N200, dark: colors.DN70 }),
+  bgUncheckedHover: themed({ light: colors.N70, dark: colors.DN60 }),
+  bgUncheckedDisabled: themed({ light: colors.N20, dark: colors.DN70 }),
 };
 
 const getBgColor = ({ isChecked, isDisabled, ...rest }) => {
@@ -38,8 +38,12 @@ const getHoverStyles = ({ isChecked, isDisabled, ...rest }) => {
     }
   `;
 };
-const getBorderColor = ({ isFocused }) => (isFocused ? colors.B100 : 'transparent');
-// icon color should be 50% white when disabled
+
+const getBorderColor = ({ isFocused, ...rest }) => (isFocused
+  ? themed({ light: colors.B100, dark: colors.B75 })(rest)
+  : 'transparent'
+);
+
 export default styled.div`
   background-clip: content-box;
   background-color: ${getBgColor};

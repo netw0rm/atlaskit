@@ -6,10 +6,10 @@ import Navigation, {
   AkContainerTitle,
 } from '@atlaskit/navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { akColorP400, akColorN20 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
-const containerTheme = createGlobalTheme(akColorN20, akColorP400);
-const globalTheme = createGlobalTheme(akColorP400, akColorN20);
+const containerTheme = createGlobalTheme(colors.N20, colors.P400);
+const globalTheme = createGlobalTheme(colors.P400, colors.N20);
 
 class ExampleNavNav extends React.PureComponent {
   state = {

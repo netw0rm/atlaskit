@@ -1,9 +1,9 @@
 // @flow
-
 import {
-  akColorB200,
-  akColorPrimary3,
-  akGridSizeUnitless,
+  colors,
+  gridSize as akGridSize,
+} from '@atlaskit/theme';
+import {
   akZIndexBlanket,
   akZIndexNavigation,
 } from '@atlaskit/util-shared-styles';
@@ -12,7 +12,7 @@ import {
 * NOTE: changing the width of the Navigation is considered a breaking change
 */
 
-export const gridSize: number = akGridSizeUnitless;
+export const gridSize: number = akGridSize();
 
 const defaultClosedWidth = gridSize * 8;
 
@@ -68,8 +68,8 @@ export const zIndex = {
 
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
-  resizer: akColorB200,
-  presenceIconBg: akColorPrimary3,
+  resizer: colors.B200,
+  presenceIconBg: colors.N0,
   scrollbarBackground: 'rgba(0,0,0,0.2)',
   scrollbarHoverBackground: 'rgba(0,0,0,0.4)',
 };

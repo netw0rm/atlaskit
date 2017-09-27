@@ -13,7 +13,7 @@ import AkDropdownMenu, {
   DropdownItemRadio,
   DropdownItemGroupRadio,
 } from '@atlaskit/dropdown-menu';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize, math } from '@atlaskit/theme';
 import { AkNavigationItem } from '../../src';
 import { createGlobalTheme } from '../../src/theme/create-provided-theme';
 import BasicNavigation from './BasicNavigation';
@@ -201,15 +201,15 @@ export default class ThemePreview extends PureComponent {
 }
 
 const SwatchContainer = styled.div`
-  margin: ${akGridSizeUnitless * 2}px auto;
+  margin: ${math.multiply(gridSize, 2)}px auto;
 `;
 
-const DropdownWrapper = styled.div`padding-bottom: ${akGridSizeUnitless / 2}px`;
+const DropdownWrapper = styled.div`padding-bottom: ${math.divide(gridSize, 2)}px`;
 
 const Item = styled.a`
-  border-radius: ${akGridSizeUnitless * 2.5}px;
-  width: ${akGridSizeUnitless * 5}px;
-  height: ${akGridSizeUnitless * 5}px;
+  border-radius: ${math.multiply(gridSize, 2.5)}px;
+  width: ${math.multiply(gridSize, 5)}px;
+  height: ${math.multiply(gridSize, 5)}px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -235,7 +235,7 @@ const Item = styled.a`
 const Swatch = styled.div`
   background-color: ${props => props.theme.background.primary};
   color: ${props => props.theme.text};
-  padding: ${akGridSizeUnitless}px;
+  padding: ${gridSize}px;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -243,9 +243,9 @@ const Swatch = styled.div`
 
 const ColorPickerParent = styled.span`
   display: inline-block;
-  margin-right: ${akGridSizeUnitless}px;
+  margin-right: ${gridSize}px;
 
   input {
-    margin-left: ${akGridSizeUnitless}px;
+    margin-left: ${gridSize}px;
   }
 `;

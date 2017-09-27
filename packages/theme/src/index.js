@@ -17,3 +17,14 @@ export const fontFamily = () =>
   '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif';
 export const codeFontFamily = () =>
   '"SFMono-Medium", "SF Mono", "Segoe UI Mono", "Roboto Mono", "Ubuntu Mono", Menlo, Courier, monospace';
+
+export const layers = {
+  card: () => 100,
+  dialog: () => 200,
+  navigation: () => 300,
+  layer: () => 400,
+  blanket: () => 500,
+  modal: () => 510,
+  flag: () => 600,
+  spotlight: () => 700,
+};

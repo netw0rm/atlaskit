@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { ATLASKIT_QUICKSEARCH_NS } from '../QuickSearch';
+import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import { AkNavigationItem } from '../../../../../src';
 
 const BASE_RESULT_TYPE = 'base';
@@ -65,7 +65,7 @@ export default class ResultBase extends PureComponent {
   handleClick = () => {
     const { analyticsData, onClick, resultId, sendAnalytics, type } = this.props;
     sendAnalytics(
-      `${ATLASKIT_QUICKSEARCH_NS}/submit/click`,
+      QS_ANALYTICS_EV_SUBMIT,
       {
         ...analyticsData,
         type,

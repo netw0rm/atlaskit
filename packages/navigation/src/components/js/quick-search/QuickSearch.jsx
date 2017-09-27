@@ -4,8 +4,13 @@ import { withAnalytics } from '@atlaskit/analytics';
 import { AkSearch } from '../../../../src';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
-
-export const ATLASKIT_QUICKSEARCH_NS = '@atlaskit/navigation/quick-search';
+import {
+  QS_ANALYTICS_EV_CLOSE,
+  QS_ANALYTICS_EV_KB_CTRLS_USED,
+  QS_ANALYTICS_EV_OPEN,
+  QS_ANALYTICS_EV_QUERY_ENTERED,
+  QS_ANALYTICS_EV_SUBMIT,
+} from './constants';
 
 const noOp = () => {};
 
@@ -107,11 +112,11 @@ export class QuickSearch extends Component {
   }
 
   componentDidMount() {
-    this.props.firePrivateAnalyticsEvent(`${ATLASKIT_QUICKSEARCH_NS}/open`);
+    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_OPEN);
   }
 
   componentWillUnmount() {
-    this.props.firePrivateAnalyticsEvent(`${ATLASKIT_QUICKSEARCH_NS}/close`);
+    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_CLOSE);
   }
 
   /** Update flatResults array whenever `children` prop changes */
@@ -130,7 +135,7 @@ export class QuickSearch extends Component {
      */
     if (!this.hasSearchQueryEventFired && !this.props.value && nextProps.value) {
       this.hasSearchQueryEventFired = true;
-      this.props.firePrivateAnalyticsEvent(`${ATLASKIT_QUICKSEARCH_NS}/query-entered`);
+      this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_QUERY_ENTERED);
     }
   }
 
@@ -195,7 +200,7 @@ export class QuickSearch extends Component {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'Enter') {
       if (!this.hasKeyDownEventFired) {
         this.hasKeyDownEventFired = true;
-        firePrivateAnalyticsEvent(`${ATLASKIT_QUICKSEARCH_NS}/keyboard-controls-used`, { key: event.key });
+        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, { key: event.key });
       }
     }
 
@@ -212,7 +217,7 @@ export class QuickSearch extends Component {
       // Capture when users are using the keyboard to submit
       if (typeof firePrivateAnalyticsEvent === 'function') {
         firePrivateAnalyticsEvent(
-          `${ATLASKIT_QUICKSEARCH_NS}/submit/keyboard`,
+          QS_ANALYTICS_EV_SUBMIT,
           {
             index: this.flatResults.indexOf(result),
             method: 'keyboard',

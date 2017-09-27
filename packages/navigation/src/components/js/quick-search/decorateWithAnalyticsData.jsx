@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AnalyticsDecorator } from '@atlaskit/analytics';
+import { QS_ANALYTICS_EV_SUBMIT } from './constants';
+
+const escapeRegexString = (regexString) => regexString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 export default (WrappedQuickSearch) =>
   class extends Component {
@@ -24,7 +27,7 @@ export default (WrappedQuickSearch) =>
       return (
         <AnalyticsDecorator
           matchPrivate
-          match={/(submit)/}
+          match={RegExp(`${escapeRegexString(QS_ANALYTICS_EV_SUBMIT)}`)}
           data={{
             resultCount: this.countChildren(),
             queryLength: this.props.value.length,

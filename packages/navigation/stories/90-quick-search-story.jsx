@@ -55,11 +55,13 @@ storiesOf(`${name}/QuickSearch`, module)
     QuickSearchWithCustomResults
   ))
   .add('Example that logs analytics', () => withRootTheme(
-    <AnalyticsListener matchPrivate onEvent={(...e) => { console.log(e); }}>
-      <BasicNavigation
-        openDrawer="search"
-        searchDrawerContent={<BasicQuickSearch />}
-      />
+    <AnalyticsListener onEvent={(...e) => { console.log('Public event', e); }}>
+      <AnalyticsListener matchPrivate onEvent={(...e) => { console.log('Private event', e); }}>
+        <BasicNavigation
+          openDrawer="search"
+          searchDrawerContent={<BasicQuickSearch />}
+        />
+      </AnalyticsListener>
     </AnalyticsListener>
   ))
   .add('Example results', () => withRootTheme(

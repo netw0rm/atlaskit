@@ -33,12 +33,14 @@ const EmojiPlaceholder = (props: Props) => {
 
   const style = {
     fill: 'f7f7f7',
+    width: `${width}px`,
+    height: `${height}px`,
   };
-  const border = akGridSizeUnitless;
+  const pad = akGridSizeUnitless/2;
 
   const placeholderNode = (
-    <svg className={placeholderEmoji} style={style} width={width} height={height} xmlns="http://www.w3.org/2000/svg" >
-      <rect width={width-2} height={height} rx={border/2} ry={border/2} aria-label={shortName} />
+    <svg className={placeholderEmoji} style={style} xmlns="http://www.w3.org/2000/svg" >
+      <rect width={width} height={height} rx={pad} ry={pad} aria-label={shortName} />
     </svg>
   );
   return (

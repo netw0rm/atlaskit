@@ -110,7 +110,7 @@ class CheckboxStateless extends PureComponent {
     } else if (isHovered) {
       color = themed({ light: colors.N50A, dark: colors.DN30 });
     } else if (isChecked) {
-      color = themed({ light: colors.B300, dark: colors.B100 });
+      color = colors.blue;
     }
 
     return color(rest);

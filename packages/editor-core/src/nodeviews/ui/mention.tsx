@@ -17,13 +17,14 @@ export interface Props {
 export default class MentionNode extends PureComponent<Props, {}> {
   render() {
     const { node, providerFactory } = this.props;
-    const { id, text, accessLevel } = node.attrs;
+    const { id, text, accessLevel, userType } = node.attrs;
 
     return (
       <Mention
         id={id}
         text={text}
         accessLevel={accessLevel}
+        userType={userType}
         providers={providerFactory}
       />
     );

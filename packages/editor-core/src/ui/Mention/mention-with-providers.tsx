@@ -5,6 +5,7 @@ import {
   ResourcedMention,
 } from '@atlaskit/mention';
 
+import { UserType } from '../../schema/nodes/mention';
 import { MentionEventHandlers } from '../Renderer';
 import ResourcedMentionWithProfilecard from './mention-with-profilecard';
 import { ProfilecardProvider } from './types';
@@ -13,6 +14,7 @@ export interface Props {
   id: string;
   text: string;
   accessLevel?: string;
+  userType?: UserType;
   mentionProvider?: Promise<MentionProvider>;
   profilecardProvider?: Promise<ProfilecardProvider>;
   eventHandlers?: MentionEventHandlers;
@@ -55,6 +57,7 @@ export default class MentionWithProviders extends PureComponent<Props, State> {
   render() {
     const {
       accessLevel,
+      userType,
       eventHandlers,
       id,
       mentionProvider,
@@ -79,6 +82,7 @@ export default class MentionWithProviders extends PureComponent<Props, State> {
         id={id}
         text={text}
         accessLevel={accessLevel}
+        userType={userType}
         mentionProvider={mentionProvider}
         profilecardProvider={profilecardProvider}
         portal={portal}

@@ -6,6 +6,7 @@ import {
   ResourcedMention,
 } from '@atlaskit/mention';
 
+import { UserType } from '../../schema/nodes/mention';
 import { ProfilecardProvider } from './types';
 import ProfileCard, { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
 import { MentionEventHandler } from '../Renderer';
@@ -24,6 +25,7 @@ export interface Props {
   id: string;
   text: string;
   accessLevel?: string;
+  userType?: UserType;
   mentionProvider?: Promise<MentionProvider>;
   portal?: HTMLElement;
   profilecardProvider: ProfilecardProvider;

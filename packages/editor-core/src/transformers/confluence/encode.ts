@@ -7,6 +7,8 @@ import {
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
+import { getNodeMarkOfType } from './utils';
+import { hexToRgb } from '../../utils/color';
 
 export default function encode(node: PMNode, schema: Schema<any, any>) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -166,6 +168,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
+          case schema.marks.textColor:
+            elem = elem.appendChild(encodeTextColor(node, schema));
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -217,6 +222,14 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     }
     link.href = href;
     return link;
+  }
+
+  function encodeTextColor(node: PMNode, schema: Schema<any, any>) {
+    const elem: HTMLSpanElement = doc.createElement('span');
+    const mark = getNodeMarkOfType(node, schema.marks.textColor);
+    const hexColor = mark ? mark.attrs.color : '';
+    elem.style.color = hexToRgb(hexColor);
+    return elem;
   }
 
   function encodeCodeBlock(node: PMNode) {

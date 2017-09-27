@@ -4,6 +4,7 @@ import {
   Node as PMNode,
   Schema
 } from '../../';
+import { rgbToHex, isRGB } from '../../utils/color';
 
 /**
  * Deduce a set of marks from a style declaration.
@@ -25,6 +26,13 @@ export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclarat
           case 'line-through':
             marks = schema.marks.strike.create().addToSet(marks);
             continue styles;
+        }
+        break;
+      case 'color':
+        if (value.match(/(0?\.?\d{1,3})%?\b/g)) {
+          const color = isRGB(value) ? rgbToHex(value) : value;
+          marks = schema.marks.textColor.create({ color: color }).addToSet(marks);
+          continue styles;
         }
         break;
       case 'font-family':
@@ -54,6 +62,14 @@ export function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     result = result.replaceChild(i, newChild);
   }
   return result;
+}
+
+export function getNodeMarkOfType(node: PMNode, markType): Mark | null {
+  if (!node.marks) {
+    return null;
+  }
+  const foundMarks = node.marks.filter(mark => mark.type.name === markType.name);
+  return foundMarks.length ? foundMarks[foundMarks.length - 1] : null;
 }
 
 /**

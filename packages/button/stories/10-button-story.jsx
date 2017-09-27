@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 
 import React from 'react';
+import styled from 'styled-components';
 import Calendar from '@atlaskit/icon/glyph/confluence/calendar';
 import Page from '@atlaskit/icon/glyph/confluence/page';
 import Question from '@atlaskit/icon/glyph/question';
@@ -34,6 +35,18 @@ const css = `
   }
   .truncated {
     max-width: 100px;
+  }
+`;
+
+const NarrowWrapper = styled.div`
+  margin: 10px;
+  padding: 10px;
+  width: 190px;
+  border: 1px solid red;
+
+  & > * {
+    margin-bottom: 10px;
+    &:last-child { margin-bottom: 0; }
   }
 `;
 
@@ -440,5 +453,12 @@ storiesOf(name, module)
         </ButtonGroup>
       </Row>
     </Row>
+  ))
+  .add('with truncation', () => (
+    <NarrowWrapper>
+      <div><Button appearance="primary">I am wider than my parent</Button></div>
+      <div><Button appearance="primary" iconBefore={<Question label="Icon before" />}>I am wider than my parent</Button></div>
+      <div><Button appearance="primary" iconAfter={<Expand label="Icon after" />}>I am wider than my parent</Button></div>
+    </NarrowWrapper>
   )
 );

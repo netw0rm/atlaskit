@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { AkSearch } from '../../../../src';
 
+import decorateWithAnalyticsData from './decorateWithAnalyticsData';
+
 export const ATLASKIT_QUICKSEARCH_NS = '@atlaskit/navigation/quick-search';
 
 const noOp = () => {};
@@ -213,7 +215,6 @@ export class QuickSearch extends Component {
           `${ATLASKIT_QUICKSEARCH_NS}/submit/keyboard`,
           {
             index: this.flatResults.indexOf(result),
-            total: this.flatResults.length,
             method: 'keyboard',
             type: result.props.type,
           }
@@ -239,6 +240,7 @@ export class QuickSearch extends Component {
    * Render QuickSearch's children, attaching extra props for interactions
    */
   renderChildren() {
+    let ii = 0;
     /** Attach mouse interaction handlers and determine whether this result is selected */
     const renderResult = (result) => {
       const isSelected = Boolean(result.props) &&
@@ -246,6 +248,7 @@ export class QuickSearch extends Component {
       return React.cloneElement(
         result,
         {
+          analyticsData: { ...result.props.analyticsData, index: ii++ },
           isSelected,
           onMouseEnter: this.handleResultMouseEnter,
           onMouseLeave: this.handleResultMouseLeave,
@@ -282,4 +285,17 @@ export class QuickSearch extends Component {
   }
 }
 
-export default withAnalytics(QuickSearch, {}, { analyticsId: 'atlaskit/navigation/quicksearch' });
+/**
+ * HOCs:
+ * `decorateWithAnalyticsData` - Wrapper that decorates analytics events with additional data.
+ * `withAnalytics` - Injects analytics firing methods that are picked up by
+ * @atlaskit/analytics/AnalyticsListener.
+ */
+export default
+  decorateWithAnalyticsData(
+    withAnalytics(
+      QuickSearch,
+      {},
+      { analyticsId: 'atlaskit/navigation/quicksearch' }
+    )
+  );

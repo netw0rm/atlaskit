@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   AkQuickSearch,
   AkNavigationItem,
@@ -41,7 +42,10 @@ describe('<QuickSearch />', () => {
         </AkQuickSearch>
       ),
       undefined,
-      { context: { onAnalyticsEvent: onAnalyticsEventSpy } }
+      {
+        context: { onAnalyticsEvent: onAnalyticsEventSpy },
+        childContextTypes: { onAnalyticsEvent: PropTypes.func },
+      }
     );
     searchInput = wrapper.find(AkSearch).find('input');
   };
@@ -65,10 +69,11 @@ describe('<QuickSearch />', () => {
   });
 
   describe('Analytics events', () => {
-    const expectEventFiredLastToBe = (name) => {
+    const getLastEventFired = () => {
       const calls = onAnalyticsEventSpy.mock.calls;
-      expect(calls[calls.length - 1][0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/${name}`);
+      return calls[calls.length - 1];
     };
+    const expectEventFiredLastToBe = (name) => expect(getLastEventFired()[0]).toBe(`${ATLASKIT_QUICKSEARCH_NS}/${name}`);
     it('should fire event on mount', () => {
       expectEventFiredLastToBe('open');
     });
@@ -76,16 +81,41 @@ describe('<QuickSearch />', () => {
       wrapper.unmount();
       expectEventFiredLastToBe('close');
     });
-    it('should fire event on result click', () => {
-      const result = wrapper.find(AkNavigationItem).first();
-      result.simulate('click');
-      expectEventFiredLastToBe('submit/click');
+    describe('submit/click event', () => {
+      it('should fire event on result click', () => {
+        const result = wrapper.find(AkNavigationItem).first();
+        result.simulate('click');
+        expectEventFiredLastToBe('submit/click');
+      });
+      it('should carry payload of resultCount, queryLength, index and type', () => {
+        const result = wrapper.find(AkNavigationItem).first();
+        result.simulate('click');
+        const eventData = getLastEventFired()[1];
+        expect(eventData).toMatchObject({
+          index: expect.any(Number),
+          queryLength: expect.any(Number),
+          resultCount: expect.any(Number),
+          type: expect.any(String),
+        });
+      });
     });
-    it('should fire event on submit ENTER key stroke', () => {
-      searchInput.simulate('keydown', { key: 'Enter' });
-      expectEventFiredLastToBe('submit/keyboard');
+    describe('submit/keyboard event', () => {
+      it('should fire event on submit ENTER key stroke', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        expectEventFiredLastToBe('submit/keyboard');
+      });
+      it('should carry payload of resultCount, queryLength, index and type', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        const eventData = getLastEventFired()[1];
+        expect(eventData).toMatchObject({
+          index: expect.any(Number),
+          queryLength: expect.any(Number),
+          resultCount: expect.any(Number),
+          type: expect.any(String),
+        });
+      });
     });
-    describe('should fire event on keyboad controls used', () => {
+    describe('keyboard-controls-used event', () => {
       it('ArrowUp', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         expectEventFiredLastToBe('keyboard-controls-used');
@@ -112,7 +142,7 @@ describe('<QuickSearch />', () => {
         expect(kbCtrlsUsedEventsFired).toHaveLength(1);
       });
     });
-    describe('should fire event on search term entered', () => {
+    describe('query-entered event', () => {
       it('should fire when search term is entered', () => {
         wrapper.setProps({ value: 'hello' });
         expectEventFiredLastToBe('query-entered');

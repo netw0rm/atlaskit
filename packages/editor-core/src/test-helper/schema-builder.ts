@@ -1,4 +1,4 @@
-import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes } from '../';
+import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes, MentionAttributes } from '../';
 import { NodeSpec, MarkSpec } from '../prosemirror';
 import matches from './matches';
 import sampleSchema from './schema';
@@ -245,7 +245,7 @@ export const emoji = (attrs: { shortName: string, id?: string, fallback?: string
   };
   return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
 };
-export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
+export const mention = (attrs: MentionAttributes) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);

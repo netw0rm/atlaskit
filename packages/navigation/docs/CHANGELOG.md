@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 24.3.0 (2017-09-27)
+
+* feature; darkmode drawers for navigation ([aba00b2](https://bitbucket.org/atlassian/atlaskit/commits/aba00b2))
 ## 24.2.0 (2017-09-26)
 
 * feature; remove redundant click in the test ([325f4f1](https://bitbucket.org/atlassian/atlaskit/commits/325f4f1))

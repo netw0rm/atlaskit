@@ -1,5 +1,9 @@
 # @atlaskit/field-radio-group
 
+## 1.7.0 (2017-09-27)
+
+
+* feature; add darkmode to radio group (issues closed: #ak3548) ([ec174b1](https://bitbucket.org/atlassian/atlaskit/commits/ec174b1))
 ## 1.6.4 (2017-09-13)
 
 * bug fix; switch compontent to using theme over util-shared-styles ([bca2ebe](https://bitbucket.org/atlassian/atlaskit/commits/bca2ebe))

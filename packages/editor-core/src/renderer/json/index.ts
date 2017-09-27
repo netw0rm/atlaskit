@@ -1,6 +1,7 @@
 import { Node as PMNode, Schema, Fragment } from '../../prosemirror';
 import { Serializer } from '../serializer';
 import { toJSON as mediaToJSON } from '../../schema/nodes/media';
+import { toJSON as mentionToJSON } from '../../schema/nodes/mention';
 
 export type JSONNode = {
   type: string,
@@ -17,6 +18,7 @@ export type JSONDocNode = {
 };
 
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
+const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
 
 const toJSON = (node: PMNode) : JSONNode => {
@@ -24,6 +26,8 @@ const toJSON = (node: PMNode) : JSONNode => {
 
   if (isMediaNode(node)) {
     obj.attrs = mediaToJSON(node).attrs;
+  } else if (isMentionNode(node)) {
+    obj.attrs = mentionToJSON(node).attrs;
   } else if (Object.keys(node.attrs).length) {
     obj.attrs = node.attrs;
   }

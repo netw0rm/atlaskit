@@ -1,7 +1,6 @@
 // @flow
-
 import styled, { css } from 'styled-components';
-import { akColorN60A } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -46,7 +45,7 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging, isSelected }) => 
       ${getItemState('dragging')}
       /* e200 but without zindex */
       /* using the same colour for all themes */
-      box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+      box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};
     `;
   }
 

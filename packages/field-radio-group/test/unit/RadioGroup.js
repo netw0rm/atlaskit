@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from '@atlaskit/field-base';
 
-import Radio from '../../src/components/Radio';
+import Radio from '../../src/components/RadioBase';
 import AkFieldRadioGroup from '../../src/components/RadioGroupStateless';
 import { name } from '../../package.json';
 
@@ -38,7 +38,7 @@ describe(name, () => {
     describe('props', () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
-          const wrapper = shallow(<AkFieldRadioGroup items={sampleItems} />);
+          const wrapper = mount(<AkFieldRadioGroup items={sampleItems} />);
           expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
           const radios = wrapper.find(Radio);

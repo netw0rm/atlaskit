@@ -41,7 +41,7 @@ describe('JSONSerializer', () => {
           emoji({ shortName: ':joy:' }),
           panel('hello from panel'),
           panelNote('hello from note panel'),
-          hr, mention({ id: 'foo' }),
+          hr,
         )
       );
       const pmDoc = editorView.state.doc;
@@ -76,6 +76,27 @@ describe('JSONSerializer', () => {
               collection: '',
             }
           }]
+        }]
+      });
+    });
+
+    it('should strip unused optional attrs from mention node', () => {
+      const { editorView } = editor(
+        doc(mention({
+          id: 'id-rick',
+          text: '@Rick Sanchez',
+        }))
+      );
+      expect(toJSON(editorView.state.doc)).to.deep.equal({
+        version: 1,
+        type: 'doc',
+        content: [{
+          type: 'mention',
+          attrs: {
+            id: 'id-rick',
+            text: '@Rick Sanchez',
+            accessLevel: '',
+          }
         }]
       });
     });

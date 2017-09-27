@@ -7,19 +7,18 @@ import type { ChildrenType } from '../types';
 
 type Props = { children: ChildrenType};
 
+/* eslint-disable react/sort-comp */
 export default class LayerManager extends PureComponent {
-  props: Props; // eslint-disable-line react/sort-comp
-  appId: string;
-  static childContextTypes : Object= { appId: PropTypes.string }
-  constructor(props: Props, context: mixed) {
-    super(props, context);
-    this.appId = 'app-wrapper';
-  }
+  state = { ariaHiddenNode: null }
+  props: Props;
+  static childContextTypes : Object = { ariaHiddenNode: PropTypes.object }
+
   getChildContext() {
     return {
-      appId: this.appId,
+      ariaHiddenNode: this.state.ariaHiddenNode,
     };
   }
+  getAppRef = (ref) => !this.state.ariaHiddenNode && this.setState({ ariaHiddenNode: ref })
 
   render() {
     const { children } = this.props;
@@ -27,13 +26,17 @@ export default class LayerManager extends PureComponent {
     return (
       <GatewayProvider>
         <div>
-          <div id={this.appId} style={{ position: 'relative', zIndex: 0 }}>
+          <div ref={this.getAppRef} style={{ position: 'relative', zIndex: 0 }}>
             {Children.only(children)}
           </div>
           <GatewayDest
             component={TransitionGroup}
             id="gateway-destination-modal"
             name="modal"
+          />
+          <GatewayDest
+            id="gateway-destination-spotlight"
+            name="spotlight"
           />
         </div>
       </GatewayProvider>

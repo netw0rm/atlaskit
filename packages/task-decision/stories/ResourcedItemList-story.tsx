@@ -23,6 +23,7 @@ interface WithResetState {
 
 const captureEvent = (name, data) => {
   // TODO replace with action('analyticsEvent') once working again
+  // tslint:disable-next-line:no-console
   console.log('analyticsEvent', name, data);
 };
 

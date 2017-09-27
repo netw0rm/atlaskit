@@ -107,6 +107,9 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
   }
 }
 
+// This is to ensure that the "type" is exported, as it gets lost and not exported along with TaskItem after
+// going through the high order component.
+// tslint:disable-next-line:variable-name
 const TaskItem = withAnalytics<typeof InternalTaskItem>(InternalTaskItem, {}, { analyticsId: 'atlassian.fabric.action' });
 type TaskItem = InternalTaskItem;
 

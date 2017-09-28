@@ -9,30 +9,17 @@ import ButtonContent from '../styled/ButtonContent';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import IconWrapper from '../styled/IconWrapper';
 
-const createStyledComponent = {
-  custom: () => {
-    // Override pseudo-state specificity.
-    // This is necessary because we don't know what DOM element the custom component will render.
-    const component = styled(CustomComponentProxy)`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
-    component.displayName = 'StyledCustomComponent';
-    return component;
-  },
-  button: () => {
-    const component = styled.button`${getButtonStyles}`;
-    component.displayName = 'StyledButton';
-    return component;
-  },
-  link: () => {
-    // Target the <a> here to override a:hover specificity.
-    const component = styled.a`a&{ ${getButtonStyles} }`;
-    component.displayName = 'StyledLink';
-    return component;
-  },
-  span: () => {
-    const component = styled.span`${getButtonStyles}`;
-    component.displayName = 'StyledSpan';
-    return component;
-  },
+const StyledButton = styled.button`${getButtonStyles}`;
+// Target the <a> here to override a:hover specificity.
+const StyledLink = styled.a`a&{ ${getButtonStyles} }`;
+const StyledSpan = styled.span`${getButtonStyles}`;
+
+const createStyledComponent = () => {
+  // Override pseudo-state specificity.
+  // This is necessary because we don't know what DOM element the custom component will render.
+  const component = styled(CustomComponentProxy)`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
+  component.displayName = 'StyledCustomComponent';
+  return component;
 };
 
 export default class Button extends Component {
@@ -109,7 +96,7 @@ export default class Button extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.component !== nextProps.component) {
-      delete this.styledComponents.custom;
+      delete this.customComponent;
     }
   }
 
@@ -128,30 +115,20 @@ export default class Button extends Component {
 
   onBlur = () => this.setState({ isFocus: false })
 
-  getCachedStyledComponent(type) {
-    if (!this.styledComponents[type]) {
-      this.styledComponents[type] = createStyledComponent[type]();
-    }
-    return this.styledComponents[type];
-  }
-
   getStyledComponent() {
     if (this.props.component) {
-      return this.getCachedStyledComponent('custom');
+      if (!this.customComponent) {
+        this.customComponent = createStyledComponent();
+      }
+      return this.customComponent;
     }
 
     if (this.props.href) {
-      if (this.props.isDisabled) {
-        return this.getCachedStyledComponent('span');
-      }
-
-      return this.getCachedStyledComponent('link');
+      return this.props.isDisabled ? StyledSpan : StyledLink;
     }
 
-    return this.getCachedStyledComponent('button');
+    return StyledButton;
   }
-
-  styledComponents = {};
 
   render() {
     const {
@@ -178,7 +155,7 @@ export default class Button extends Component {
           ) : null}
           {children ? (
             <ButtonContent
-              followsIcon={Boolean(iconBefore)}
+              followsIcon={!!iconBefore}
               spacing={buttonProps.spacing}
             >
               {children}

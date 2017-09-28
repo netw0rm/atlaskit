@@ -8,7 +8,7 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "jsnext:experimental:main": "dist/es/index.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
     "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
@@ -42,7 +42,8 @@
     "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "repository": {
     "type": "git",

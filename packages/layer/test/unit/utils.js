@@ -1,7 +1,7 @@
-import { getFlipBehavior } from '../../src/internal/helpers';
+import { getFlipBehavior } from '../../src/utils';
 
 describe('Layer', () => {
-  describe('helpers', () => {
+  describe('utils', () => {
     describe('getFlipBehavior', () => {
       it('with autoFlip = true, returns null', () => {
         const props = {

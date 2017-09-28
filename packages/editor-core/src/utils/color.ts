@@ -10,11 +10,12 @@ export function normalizeHexColor(color: string | null, defaultColor?: string): 
 
   // Normalize to hex
   color = color.trim().toLowerCase();
-  if (color[0] === '#' && color.length === 4 || color.length === 7) {
-    if (/^#[\da-f]{3}$/.test(color)) {
+  if (isHex(color)) {
+    // Normalize 3-hex to 6-hex colours
+    if (color.length === 4) {
       color = color.split('').map(c => c === '#' ? '#' : `${c}${c}`).join('');
     }
-  } else if(color.match(/rgb\(/)) {
+  } else if(isRgb(color)) {
     return rgbToHex(color);
   } else {
     // http://dev.w3.org/csswg/css-color/#named-colors
@@ -39,22 +40,20 @@ export function normalizeHexColor(color: string | null, defaultColor?: string): 
  *
  * @param hex - hex color string (#xxx, or #xxxxxx)
  */
-export function hexToRgb(hex: string): string | null {
-  const isHexColor = /^#([A-Fa-f0-9]{3}){1,2}$/.test(hex);
-  if (!isHexColor) {
+export function hexToRgb(color: string): string | null {
+  if (!isHex(color)) {
     return null;
   }
 
-  let colorBits = hex.substring(1).split('');
+  let colorBits = color.substring(1).split('');
   if(colorBits.length === 3){
     colorBits = [colorBits[0], colorBits[0], colorBits[1], colorBits[1], colorBits[2], colorBits[2]];
   }
 
-  const color = Number(`0x${colorBits.join('')}`);
+  const rgb = Number(`0x${colorBits.join('')}`);
   // tslint:disable-next-line:no-bitwise
-  return `rgb(${(color >> 16) & 255},${(color >> 8) & 255},${color & 255})`;
+  return `rgb(${(rgb >> 16) & 255},${(rgb >> 8) & 255},${rgb & 255})`;
 }
-
 
 export function rgbToHex(value: string): string | null {
   const matches = value.match(/(0?\.?\d{1,3})%?\b/g);
@@ -68,6 +67,10 @@ export function rgbToHex(value: string): string | null {
   return null;
 }
 
-export function isRGB(value: string): boolean {
-  return value.indexOf('rgb(') === 0;
+export function isRgb(color: string): boolean {
+  return /rgb\(/.test(color);
+}
+
+export function isHex(color: string): boolean {
+  return /^#([A-Fa-f0-9]{3}){1,2}$/.test(color);
 }

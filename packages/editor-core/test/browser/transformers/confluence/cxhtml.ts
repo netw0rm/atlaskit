@@ -215,6 +215,33 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           '.'
         )));
 
+      it('parses text color in hex', () => {
+        const actual = parse('<p>Text with <span style="color: #777777">some colour</span>.</p>');
+        expect(actual).to.deep.equal(doc(p(
+          'Text with ',
+          textColor({ color: '#777777' })('some colour'),
+          '.'
+        )));
+      });
+
+      it('normalizes 3-hex colours to 6-hex when parsing', () => {
+        const actual = parse('<p>Text with <span style="color: #777">some colour</span>.</p>');
+        expect(actual).to.deep.equal(doc(p(
+          'Text with ',
+          textColor({ color: '#777777' })('some colour'),
+          '.'
+        )));
+      });
+
+      it('normalizes named HTML colours to hex when parsing', () => {
+        const actual = parse('<p>Text with <span style="color: papayawhip">some colour</span>.</p>');
+        expect(actual).to.deep.equal(doc(p(
+          'Text with ',
+          textColor({ color: '#ffefd5' })('some colour'),
+          '.'
+        )));
+      });
+
       check('<i><sub> nesting',
         '<p>Text with <i><sub>subscript emphasised words</sub></i>.</p>',
         doc(p(

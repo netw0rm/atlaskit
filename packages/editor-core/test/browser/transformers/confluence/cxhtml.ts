@@ -1,4 +1,3 @@
-import { textColor } from './../../../../src/test-helper/schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
@@ -10,7 +9,7 @@ import {
 } from '../../../../src';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
   table, tr, td, th
 } from './_schema-builder';
@@ -209,10 +208,10 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         )));
 
       check('Colored text',
-        '<p>Text with <span style="color: rgb(34,34,34);">some colour</span>.</p>',
+        '<p>Text with <span style="color: rgb(34, 34, 34)">some colour</span>.</p>',
         doc(p(
           'Text with ',
-          textColor({ color: '#222222'})('some colour'),
+          textColor({ color: '#222222' })('some colour'),
           '.'
         )));
 
@@ -259,7 +258,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           ),
           ' and plain.'
         )));
-
     });
 
     describe('heading:', () => {

@@ -1,7 +1,6 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
-import TooltipWrapper from './TooltipWrapper';
 
 import * as styles from './styles';
 import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
@@ -95,6 +94,7 @@ const renderAsSprite = (props: Props) => {
     [styles.emojiContainer]: true,
     [styles.selected]: selected,
     [styles.selectOnHover]: selectOnHover,
+    [styles.emojiTooltip]: showTooltip
   };
 
   if (className) {
@@ -133,10 +133,7 @@ const renderAsSprite = (props: Props) => {
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
     >
-      { showTooltip ?
-        <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
-        : emojiNode
-      }
+      {emojiNode}
     </span>
   );
 };
@@ -149,6 +146,7 @@ const renderAsImage = (props: Props) => {
     [styles.emoji]: true,
     [styles.selected]: selected,
     [styles.selectOnHover]: selectOnHover,
+    [styles.emojiTooltip]: showTooltip
   };
 
   if (className) {
@@ -204,10 +202,7 @@ const renderAsImage = (props: Props) => {
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
     >
-    { showTooltip ?
-      <TooltipWrapper description={emoji.shortName}>{emojiNode}</TooltipWrapper>
-      : emojiNode
-    }
+    {emojiNode}
     </span>
   );
 };

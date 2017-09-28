@@ -72,13 +72,6 @@ pipelines:
           # - node
 
   custom: # Pipelines that can be scheduled or triggered manually
-    build-website-production:
-      - step:
-          script:
-            - ./build/bin/setup.sh
-            - yarn
-            - cd packages/website
-            - npm run deploy
 
     build-website-staging:
       - step:
@@ -87,6 +80,21 @@ pipelines:
             - yarn
             - cd packages/website
             - npm run deploy-staging
+
+    # This build should only be called by the scheduled build
+    build-website-production:
+      - step:
+          script:
+            - ./build/bin/setup.sh
+            # to prevent someone running this in the wrong branch
+            - node exit.if.branch.name.not.matches.js "production-website-DO-NOT-USE" || exit
+            # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui
+            # and block actual master builds
+            - git checkout master
+            - git pull
+            - yarn
+            - cd packages/website
+            - npm run deploy
 
     run-browserstack: # this is to allow users to manually run BS for a commit
       - step:

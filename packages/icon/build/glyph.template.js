@@ -4,7 +4,6 @@
 module.exports = (svg, displayName) => `import React from 'react';
 import Icon from '@atlaskit/icon';
 
-const Svg = ({ title, ...svgProps }) => (${svg});
-const ${displayName} = props => (<Icon glyph={Svg} {...props} />);
+const ${displayName} = props => (<Icon glyph={\`${svg}\`} {...props} />);
 export default ${displayName};
 `;

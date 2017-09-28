@@ -10,7 +10,7 @@ import Button from '../src';
 
 class CustomComponent extends Component {
   render() {
-    const { children, ...props } = this.props;
+    const { children, innerRef, ...props } = this.props; // eslint-disable-line
     return (
       <div {...props}>{children}</div>
     );
@@ -21,8 +21,9 @@ const Buttons = styled.div`
   padding: 10px;
 `;
 
-const PER_RUN = 100;
-const TEST_RUNS = 5;
+const PER_RUN = 100; // how many button groups to render
+const TEST_RUNS = 5; // how many render passes to run during the test
+const BUTTON_COUNT = 5; // the number of buttons per group
 
 class PerfTest extends Component {
   state = {
@@ -38,7 +39,12 @@ class PerfTest extends Component {
       }
       if (runs === TEST_RUNS) {
         const time = Date.now() - startTime;
-        console.log(`Finished performance test in ${time}ms`);
+        let totalButtons = 0;
+        for (let i = 1; i <= TEST_RUNS; i++) {
+          totalButtons += BUTTON_COUNT * PER_RUN * i;
+        }
+        console.log('Finished performance test');
+        console.log(`Rendered ${totalButtons} buttons in ${time}ms (${TEST_RUNS} runs)`);
         return;
       }
       runs++;
@@ -50,13 +56,14 @@ class PerfTest extends Component {
     const { count } = this.state;
     const buttons = [];
     for (let i = 1; i <= count; i++) {
+      const buttonNumber = (i - 1) * BUTTON_COUNT;
       buttons.push(
         <Buttons key={`buttons-${i}`}>
-          <Button appearance="default">Button {i}</Button>
-          <Button appearance="danger">Button {i}</Button>
-          <Button appearance="primary">Button {i}</Button>
-          <Button appearance="help">Button {i}</Button>
-          <Button component={CustomComponent}>Button {i}</Button>
+          <Button appearance="default">Button {buttonNumber + 1}</Button>
+          <Button appearance="danger">Button {buttonNumber + 2}</Button>
+          <Button appearance="primary">Button {buttonNumber + 3}</Button>
+          <Button appearance="help">Button {buttonNumber + 4}</Button>
+          <Button component={CustomComponent}>Button {buttonNumber + 5}</Button>
         </Buttons>
       );
     }

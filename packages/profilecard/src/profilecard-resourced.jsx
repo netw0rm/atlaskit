@@ -8,7 +8,6 @@ export default class ProfilecardResourced extends PureComponent {
     userId: PropTypes.string.isRequired,
     cloudId: PropTypes.string.isRequired,
     containerAri: PropTypes.string,
-    giverId: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
       id: PropTypes.string,
@@ -19,6 +18,7 @@ export default class ProfilecardResourced extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    karmaGiverId: PropTypes.string,
     karmaClient: PropTypes.shape({
       getKarma: PropTypes.func,
       increaseKarma: PropTypes.func,
@@ -93,8 +93,8 @@ export default class ProfilecardResourced extends PureComponent {
       hasError: false,
     });
 
-    const { cloudId, userId, giverId, containerAri } = this.props;
-    this.props.karmaClient.increaseKarma(cloudId, userId, giverId, containerAri)
+    const { cloudId, userId, karmaGiverId, containerAri } = this.props;
+    this.props.karmaClient.increaseKarma(cloudId, userId, karmaGiverId, containerAri)
       .then(
         res => this.handleIncreaseKarmaSuccess(res),
         err => this.handleIncreaseKarmaError(err),

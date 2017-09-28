@@ -28,7 +28,6 @@ export default class ProfilecardTrigger extends PureComponent {
     userId: PropTypes.string.isRequired,
     cloudId: PropTypes.string,
     containerAri: PropTypes.string,
-    giverId: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
       label: PropTypes.string,
@@ -38,6 +37,7 @@ export default class ProfilecardTrigger extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    karmaGiverId: PropTypes.string,
     karmaClient: PropTypes.shape({
       getKarma: PropTypes.func,
       increaseKarma: PropTypes.func,
@@ -100,7 +100,7 @@ export default class ProfilecardTrigger extends PureComponent {
             userId={this.props.userId}
             cloudId={this.props.cloudId}
             containerAri={this.props.containerAri}
-            giverId={this.props.giverId}
+            karmaGiverId={this.props.karmaGiverId}
             resourceClient={this.props.resourceClient}
             karmaClient={this.props.karmaClient}
             actions={this.props.actions}

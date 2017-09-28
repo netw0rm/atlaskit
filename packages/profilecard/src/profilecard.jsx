@@ -21,6 +21,7 @@ export default class Profilecard extends PureComponent {
     nickname: PropTypes.string,
     location: PropTypes.string,
     timestring: PropTypes.string,
+    karma: PropTypes.string,
     presence: PropTypes.oneOf(Object.keys(presences)),
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.function,
@@ -122,6 +123,7 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>
+            <IconLabel icon="karma">{this.props.karma}</IconLabel>
           </div>
           <div className={styles.actionsFlexSpacer} />
           {this.renderActionsButtons()}

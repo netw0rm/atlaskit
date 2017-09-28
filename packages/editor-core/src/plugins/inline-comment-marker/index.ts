@@ -1,10 +1,13 @@
 import {
   EditorState,
   EditorView,
-  Schema,
+  Mark,
+  Node,
   Plugin,
   NodeViewDesc,
+  Schema,
   Transaction,
+  TextSelection,
 } from '../../prosemirror';
 import keymapPlugin from './keymap';
 import { EditorProps } from '../../editor/types/editor-props';
@@ -14,12 +17,14 @@ export { stateKey };
 
 export type InlineCommentMarkerStateSubscriber = (state: InlineCommentMarkerState) => any;
 export type StateChangeHandler = (state: InlineCommentMarkerState) => any;
-export type Coordinates = { left: number; right: number; top: number; bottom: number };
+interface NodeInfo {
+  node: Node;
+  startPos: number;
+}
 
 export class InlineCommentMarkerState {
   // public state
-  id?: string;
-  active: boolean = false;
+  activeID?: string;
   editorFocused: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -44,25 +49,69 @@ export class InlineCommentMarkerState {
   }
 
   update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
-    this.active = true;
     this.state = state;
-    this.notifySubscribers();
+
+    const nodeInfo = this.getActiveNodeInfo();
+    const activeMark = nodeInfo && this.getActiveMark(nodeInfo.node);
+    const activeID = activeMark && activeMark.attrs.reference;
+    const shouldNotify = activeID !== this.activeID;
+
+    this.activeID = activeID;
+
+    if (shouldNotify) {
+      this.notifySubscribers();
+    }
   }
 
   escapeFromMark(editorView: EditorView) {
+    const nodeInfo = this.getActiveNodeInfo();
+    const shouldEscape = this.shouldEscapeFromMark(nodeInfo);
+    if (nodeInfo && shouldEscape) {
+      // what should we do here?
+    }
+  }
 
+  private shouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
+    const parentOffset = this.state.selection.$from.parentOffset;
+    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
+  }
+
+  private getActiveMark(activeNode: Node): Mark | undefined {
+    const marks = activeNode.marks.filter((mark) => {
+      return mark.type === this.state.schema.marks.inlineCommentMarker;
+    });
+
+    return (marks as Mark[])[0];
+  }
+
+  private getActiveNodeInfo(): NodeInfo | undefined {
+    const { state } = this;
+    const { inlineCommentMarker } = state.schema.marks;
+    const { $from, empty } = state.selection as TextSelection;
+
+    if (inlineCommentMarker && $from) {
+      const { node, offset } = $from.parent.childAfter($from.parentOffset);
+      const parentNodeStartPos = $from.start($from.depth);
+
+      // offset is the end position of previous node
+      // This is to check whether the cursor is at the beginning of current node
+      if (empty && offset + 1 === $from.pos) {
+        return;
+      }
+
+      if (node && node.isText && inlineCommentMarker.isInSet(node.marks)) {
+        return {
+          node,
+          startPos: parentNodeStartPos + offset
+        };
+      }
+    }
   }
 }
-
-// const hasInlineCommentMarkerMark = (schema: any, node?: Node) => node && schema.marks.inlineCommentMarker.isInSet(node.marks) as Mark | null;
 
 function updateInlineCommentMarkerOnChange(
   transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>, isMessageEditor: boolean
-): Transaction | undefined {
-  if (!transactions) {
-    return;
-  }
-}
+): Transaction | undefined {}
 
 export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps = {}) => new Plugin({
   props: {
@@ -73,25 +122,22 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
     },
     handleClick(view: EditorView) {
       const pluginState: InlineCommentMarkerState = stateKey.getState(view.state);
-      if (pluginState.active) {
+      if (pluginState.activeID) {
         pluginState.notifySubscribers();
       }
       return false;
     },
     onBlur(view: EditorView) {
       const pluginState: InlineCommentMarkerState = stateKey.getState(view.state);
-
       pluginState.editorFocused = false;
-      if (pluginState.active) {
+      if (pluginState.activeID) {
         pluginState.notifySubscribers();
       }
-
       return true;
     },
     onFocus(view: EditorView) {
       const pluginState: InlineCommentMarkerState = stateKey.getState(view.state);
       pluginState.editorFocused = true;
-
       return true;
     },
   },

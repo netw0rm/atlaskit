@@ -3,6 +3,7 @@ import {
   akColorG300, akColorN80, akColorP300, akColorR300, akColorT300, akColorY400,
 } from '@atlaskit/util-shared-styles';
 import { COLOR } from '../groups';
+import { rgbToHex } from '../../utils/color';
 
 export interface Attributes {
   /**
@@ -22,15 +23,6 @@ export interface Definition {
 export interface TextColorMark extends Mark {
   attrs: Attributes;
 }
-
-const rgbToHex = (value: string): string | undefined => {
-  const matches = value.match(/(0?\.?\d{1,3})%?\b/g);
-  if (matches && matches.length >= 3) {
-    const [red, green, blue] = matches.map(Number);
-    // tslint:disable-next-line:no-bitwise
-    return '#' + ((blue | green << 8 | red << 16) | 1 << 24).toString(16).slice(1);
-  }
-};
 
 // @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/55979455/Colour+picker+decisions#Colourpickerdecisions-Visualdesigndecisions
 export const colorPalette = new Map<string, string>();

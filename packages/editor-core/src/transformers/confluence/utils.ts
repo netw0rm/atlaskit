@@ -5,6 +5,8 @@ import {
   Schema
 } from '../../';
 
+import { normalizeHexColor } from '../../utils/color';
+
 /**
  * Deduce a set of marks from a style declaration.
  */
@@ -27,6 +29,9 @@ export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclarat
             continue styles;
         }
         break;
+      case 'color':
+        marks = schema.marks.textColor.create({ color: normalizeHexColor(value) }).addToSet(marks);
+        continue styles;
       case 'font-family':
         if (value === 'monospace') {
           marks = schema.marks.code.create().addToSet(marks);
@@ -54,6 +59,14 @@ export function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     result = result.replaceChild(i, newChild);
   }
   return result;
+}
+
+export function getNodeMarkOfType(node: PMNode, markType): Mark | null {
+  if (!node.marks) {
+    return null;
+  }
+  const foundMarks = node.marks.filter(mark => mark.type.name === markType.name);
+  return foundMarks.length ? foundMarks[foundMarks.length - 1] : null;
 }
 
 /**

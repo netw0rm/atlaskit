@@ -12,7 +12,7 @@ import {
   bfsOrder,
   convert,
   ensureBlocks,
-} from './util';
+} from './utils';
 
 import {
   isSchemaWithLists,

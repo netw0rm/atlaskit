@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.8.1 (2017-09-28)
+
+* bug fix; fix text color parse/encode ([64c9859](https://bitbucket.org/atlassian/atlaskit/commits/64c9859))
 ## 47.8.0 (2017-09-27)
 
 * bug fix; debounce onChange in editor-core ([d2ac593](https://bitbucket.org/atlassian/atlaskit/commits/d2ac593))

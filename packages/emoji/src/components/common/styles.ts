@@ -4,11 +4,15 @@ import {
   akColorN300,
   akColorN900,
   akColorR500,
+  akColorN800,
+  akColorN0,
+  akGridSizeUnitless,
+  akGridSize,
 } from '@atlaskit/util-shared-styles';
 
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
-import { style } from 'typestyle';
+import { style, keyframes } from 'typestyle';
 
 export const selected = 'selected';
 export const selectOnHover = 'selectOnHover';
@@ -95,6 +99,70 @@ export const emojiButton = style({
     }
   },
 
+
+});
+
+const grid = akGridSizeUnitless / 2;
+const fontSize = 3 * grid;
+
+// const slideDown = keyframes({
+//   '0%': {
+//     'transform': 'translateY(-12px)',
+//     'opacity': 0,
+//     'animationTimingFunction': 'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)'
+//   },
+//   '20%': {
+//     'transform': 'translateY(-2.3999999999999986px)',
+//     'opacity': 0.8,
+//     'animationTimingFunction': 'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)'
+//   },
+//   '100%': {
+//     'transform': 'translateY(0px)',
+//     'opacity': 1
+//   }
+// });
+
+export const slideDown = keyframes({
+  '0%': {
+    'transform': 'translate(-50%, -12px)',
+    'opacity': 0,
+    'animationTimingFunction': 'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)'
+  },
+  '20%': {
+    'transform': 'translate(-50%, -2.3999999999999986px)',
+    'opacity': 0.8,
+    'animationTimingFunction': 'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)'
+  },
+  '100%': {
+    'transform': 'translate(-50%, 0px)',
+    'opacity': 1
+  }
+});
+
+export const emojiTooltip = style({
+  position: 'relative',
+
+  $nest: {
+    '&:hover::before': {
+      animationName: slideDown,
+      animationDelay: '0.1',
+      animationDuration: '1s',
+      animationFillMode: 'backwards',
+      content: 'attr(aria-label)',
+      position: 'absolute',
+      backgroundColor: akColorN800,
+      color: akColorN0,
+      fontSize: fontSize,
+      lineHeight: (4 * grid) / fontSize,
+      margin: `24px ${akGridSize}`,
+      padding: '2px 8px',
+      whiteSpace: 'nowrap',
+      borderRadius: '3px',
+      zIndex: 1,
+      boxSizing: 'border-box',
+      transform: 'translateX(-50%)'
+    }
+  }
 
 });
 

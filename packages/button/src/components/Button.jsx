@@ -10,9 +10,14 @@ import ButtonWrapper from '../styled/ButtonWrapper';
 import IconWrapper from '../styled/IconWrapper';
 
 const StyledButton = styled.button`${getButtonStyles}`;
+StyledButton.displayName = 'StyledButton';
+
 // Target the <a> here to override a:hover specificity.
 const StyledLink = styled.a`a&{ ${getButtonStyles} }`;
+StyledLink.displayName = 'StyledLink';
+
 const StyledSpan = styled.span`${getButtonStyles}`;
+StyledSpan.displayName = 'StyledSpan';
 
 const createStyledComponent = () => {
   // Override pseudo-state specificity.

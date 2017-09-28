@@ -115,7 +115,7 @@ class KarmaClient {
     };
     const data = {
       giverId: giverId,
-      amount: 1,
+      karma: 1,
       ari: containerAri,
     };
 

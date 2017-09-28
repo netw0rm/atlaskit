@@ -149,11 +149,14 @@ export default class ProfilecardResourced extends PureComponent {
       hasError: this.state.hasError,
       errorType: this.state.error,
       clientFetchProfile: this.clientFetchProfile,
-      increaseKarma: this.increaseKarma,
       analytics: this.props.analytics,
       karma: this.state.karma,
       ...this.state.data,
     };
+
+    if (this.props.karmaClient && this.props.increaseKarma) {
+      newProps['increaseKarma'] = this.props.increaseKarma;
+    }
 
     return (
       <AkProfilecardStatic {...newProps} actions={this.props.actions} />

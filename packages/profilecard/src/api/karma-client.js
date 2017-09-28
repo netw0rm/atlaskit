@@ -8,9 +8,9 @@ const buildHeaders = () => {
 };
 
 const buildUrl = (baseUrl, path, cloudId, userId) => {
-  let url = `${baseUrl}/${cloudId}/${userId}`;
+  let url = `${url}/${cloudId}/${userId}`;
   if (path) {
-    url = `${baseUrl}/${path}`;
+    url = `${url}/${path}`;
   }
   return url;
 };
@@ -89,7 +89,7 @@ class KarmaClient {
     };
 
     return new Promise((resolve, reject) => {
-      this.makeRequest('total', cloudId, userId, options)
+      this.makeRequest('count', cloudId, userId, options)
         .then((data) => {
           resolve(data);
         })

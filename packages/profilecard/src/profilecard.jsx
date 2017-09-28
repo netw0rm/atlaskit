@@ -34,6 +34,7 @@ export default class Profilecard extends PureComponent {
       reason: PropTypes.oneOf(['default', 'NotFound']),
     }),
     clientFetchProfile: PropTypes.func,
+    increaseKarma:  PropTypes.func,
     analytics: PropTypes.func,
   }
 
@@ -91,6 +92,23 @@ export default class Profilecard extends PureComponent {
     );
   }
 
+  renderKarmaButton() {
+    if (!this.props.increaseKarma) {
+      return null;
+    }
+
+    return (
+      <AkButton
+        appearance='default'
+        compact
+        key='karma'
+        onClick={() => {
+          this.props.increaseKarma();
+        }}
+      >Karma ++</AkButton>
+    );
+  }
+
   renderErrorMessage() {
     return (<ErrorMessage
       reload={this.props.clientFetchProfile && this.clientFetchProfile}
@@ -128,6 +146,7 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="karma">{karma}</IconLabel>
           </div>
           <div className={styles.actionsFlexSpacer} />
+          {this.renderKarmaButton()}
           {this.renderActionsButtons()}
         </div>
       </div>

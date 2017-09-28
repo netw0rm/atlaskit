@@ -7,20 +7,25 @@ const buildHeaders = () => {
   return headers;
 };
 
-const buildUrl = (baseUrl, cloudId, userId) => {
-  return `${baseUrl}/${cloudId}/${userId}`;
+const buildUrl = (baseUrl, path, cloudId, userId) => {
+  let baseUrl = `${baseUrl}/${cloudId}/${userId}`;
+  if (path) {
+    baseUrl = `${baseUrl}/${path}`;
+  }
+  return baseUrl;
 };
 
 /**
  * @param {string} serviceUrl - Karma service endpoint
+ * @param {string} path
  * @param {string} userId
  * @param {string} cloudId
  * @param {object} opts.method
  * @param {object} data
  */
-const requestService = (serviceUrl, cloudId, userId, opts, data) => {
+const requestService = (serviceUrl, path, cloudId, userId, opts, data) => {
   const headers = buildHeaders();
-  const url = buildUrl(serviceUrl, cloudId, userId);
+  const url = buildUrl(serviceUrl, path, cloudId, userId);
   const defaultOpts = {
     method: 'GET',
     credentials: 'include' as 'include',
@@ -63,17 +68,20 @@ class KarmaClient {
     this.config = config;
   }
 
-  makeRequest(cloudId, userId, options, data) {
+  makeRequest(path, cloudId, userId, options, data) {
     if (!this.config.baseUrl) {
       throw new Error('config.baseUrl is a required parameter');
     }
 
-    return requestService(this.config.baseUrl, cloudId, userId, options, data);
+    return requestService(this.config.baseUrl, path, cloudId, userId, options, data);
   }
 
   getKarma(cloudId, userId) {
-    if (!cloudId || !userId) {
-      return Promise.reject(new Error('cloudId or userId missing'));
+    if (!cloudId) {
+      return Promise.reject(new Error('cloudId missing'));
+    }
+    if (!userId) {
+      return Promise.reject(new Error('userId missing'));
     }
 
     const options = {
@@ -81,7 +89,7 @@ class KarmaClient {
     };
 
     return new Promise((resolve, reject) => {
-      this.makeRequest(cloudId, userId, options)
+      this.makeRequest('total', cloudId, userId, options)
         .then((data) => {
           resolve(data);
         })
@@ -91,20 +99,28 @@ class KarmaClient {
     });
   }
 
-  increaseKarma(cloudId, userId) {
-    if (!cloudId || !userId) {
-      return Promise.reject(new Error('cloudId or userId missing'));
+  increaseKarma(cloudId, userId, giverId, containerAri) {
+    if (!cloudId) {
+      return Promise.reject(new Error('cloudId missing'));
+    }
+    if (!userId) {
+      return Promise.reject(new Error('userId missing'));
+    }
+    if (!giverId) {
+      return Promise.reject(new Error('giverId missing'));
     }
 
     const options = {
       method: 'POST',
     };
     const data = {
-      karma: 1,
+      giverId: giverId,
+      amount: 1,
+      ari: containerAri,
     };
 
     return new Promise((resolve, reject) => {
-      this.makeRequest(cloudId, userId, options, data)
+      this.makeRequest('', cloudId, userId, options, data)
         .then((data) => {
           resolve(data);
         })

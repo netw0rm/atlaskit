@@ -7,13 +7,23 @@ import { getMockProfileClient } from './util';
 
 const mockClient = getMockProfileClient(10, 5000);
 
+let karma = 0;
 const mockKarmaClient = {
   getKarma: function(cloudId, userId) {
     const timeout = Math.floor(Math.random() * (1500 + 1)) + 500;
-    const karma = Math.floor(Math.random() * (100 + 1)) + 50;
+    karma = Math.floor(Math.random() * (100 + 1)) + 50;
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        return resolve({ karma: `${karma}` });
+        return resolve({ amount: `${karma}` });
+      }, timeout);
+    });
+  },
+  increaseKarma: function(cloudId, userId, giverId, containerAri) {
+    const timeout = Math.floor(Math.random() * (1500 + 1)) + 500;
+    return new Promise((resolve, reject) => {
+      karma++;
+      setTimeout(() => {
+        return resolve({ amount: `${karma}` });
       }, timeout);
     });
   }

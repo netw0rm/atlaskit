@@ -7,6 +7,8 @@ export default class ProfilecardResourced extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     cloudId: PropTypes.string.isRequired,
+    containerAri: PropTypes.string,
+    giverId: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
       id: PropTypes.string,
@@ -41,6 +43,7 @@ export default class ProfilecardResourced extends PureComponent {
     };
 
     this.clientFetchProfile = this.clientFetchProfile.bind(this);
+    this.increaseKarma = this.increaseKarma.bind(this);
   }
 
   componentDidMount() {
@@ -73,32 +76,65 @@ export default class ProfilecardResourced extends PureComponent {
     const profilePromise = this.props.resourceClient.getProfile(cloudId, userId);
     const karmaPromise = this.props.karmaClient ? this.props.karmaClient.getKarma(cloudId, userId) : Promise.resolve(null);
     Promise.all([profilePromise, karmaPromise])
-    .then(
-      res => this.handleClientSuccess(res),
-      err => this.handleClientError(err),
-    )
-    .catch(err => this.handleClientError(err));
+      .then(
+        res => this.handleClientSuccess(res),
+        err => this.handleClientError(err),
+      )
+      .catch(err => this.handleClientError(err));
+  }
+
+  increaseKarma() {
+    if (!this.props.karmaClient) {
+      return;
+    }
+
+    this.setState({
+      isLoading: true,
+      hasError: false,
+    });
+
+    const { cloudId, userId, giverId, containerAri } = this.props;
+    this.props.karmaClient.increaseKarma(cloudId, userId, giverId, containerAri)
+      .then(
+        res => this.handleIncreaseKarmaSuccess(res),
+        err => this.handleIncreaseKarmaError(err),
+      )
+      .catch(err => this.handleIncreaseKarmaError(err));
   }
 
   handleClientSuccess(res) {
     if (!this._isMounted) { return; }
 
-    let data = {};
-    if (res[0]) {
-      data = { ...data, ...res[0] };
-    }
-    if (res[1]) {
-      data = { ...data, ...res[1] };
-    }
+    const data = res[0] ? res[0] : undefined;
+    const karma = res[1] ? res[1].amount : undefined;
 
     this.setState({
       isLoading: false,
       hasError: false,
       data: data,
+      karma: karma,
     });
   }
 
   handleClientError(err) {
+    if (!this._isMounted) { return; }
+    this.setState({
+      isLoading: false,
+      hasError: true,
+      error: err,
+    });
+  }
+
+  handleIncreaseKarmaSuccess(res) {
+    if (!this._isMounted) { return; }
+    this.setState({
+      isLoading: false,
+      hasError: false,
+      karma: res.amount,
+    });
+  }
+
+  handleIncreaseKarmaError(err) {
     if (!this._isMounted) { return; }
     this.setState({
       isLoading: false,
@@ -113,7 +149,9 @@ export default class ProfilecardResourced extends PureComponent {
       hasError: this.state.hasError,
       errorType: this.state.error,
       clientFetchProfile: this.clientFetchProfile,
+      increaseKarma: this.increaseKarma,
       analytics: this.props.analytics,
+      karma: this.state.karma,
       ...this.state.data,
     };
 

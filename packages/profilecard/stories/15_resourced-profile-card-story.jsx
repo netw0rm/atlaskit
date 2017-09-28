@@ -7,6 +7,18 @@ import { getMockProfileClient } from './util';
 
 const mockClient = getMockProfileClient(10, 5000);
 
+const mockKarmaClient = {
+  getKarma: function(cloudId, userId) {
+    const timeout = Math.floor(Math.random() * (1500 + 1)) + 500;
+    const karma = Math.floor(Math.random() * (100 + 1)) + 50;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        return resolve({ karma: `${karma}` });
+      }, timeout);
+    });
+  }
+};
+
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };
 
@@ -57,6 +69,7 @@ class AkProfilecardMultiProfiles extends PureComponent {
             actions={actions}
             cloudId="DUMMY-CLOUDID"
             resourceClient={mockClient}
+            karmaClient={mockKarmaClient}
             userId={this.state.userId}
             analytics={analytics}
           /> : null

@@ -20,6 +20,7 @@ const fakeProfileData = {
   timestring: '9:00am',
   meta: profiles[6].User.meta,
   presence: 'available',
+  karma: '140',
   actions: [
     {
       label: 'View profile',
@@ -172,4 +173,19 @@ storiesOf(`${name}`, module)
     <div style={canvasStyle}>
       <InteractiveCard />
     </div>
-  ));
+  ))
+  .add('with Karma action', () => {
+    const actions = [
+      {
+        label: 'Karma',
+        id: 'action-karma',
+        callback: handleActionClick('Karma'),
+      }
+    ];
+    const data = fakeData({ actions });
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  });

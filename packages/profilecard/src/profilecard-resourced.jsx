@@ -17,6 +17,10 @@ export default class ProfilecardResourced extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    karmaClient: PropTypes.shape({
+      getKarma: PropTypes.func,
+      increaseKarma: PropTypes.func,
+    }),
     analytics: PropTypes.func,
   }
 
@@ -66,7 +70,9 @@ export default class ProfilecardResourced extends PureComponent {
       data: {},
     });
 
-    this.props.resourceClient.getProfile(cloudId, userId)
+    const profilePromise = this.props.resourceClient.getProfile(cloudId, userId);
+    const karmaPromise = this.props.karmaClient ? this.props.karmaClient.getKarma(cloudId, userId) : Promise.resolve(null);
+    Promise.all([profilePromise, karmaPromise])
     .then(
       res => this.handleClientSuccess(res),
       err => this.handleClientError(err),
@@ -77,10 +83,18 @@ export default class ProfilecardResourced extends PureComponent {
   handleClientSuccess(res) {
     if (!this._isMounted) { return; }
 
+    let data = {};
+    if (res[0]) {
+      data = { ...data, ...res[0] };
+    }
+    if (res[1]) {
+      data = { ...data, ...res[1] };
+    }
+
     this.setState({
       isLoading: false,
       hasError: false,
-      data: res,
+      data: data,
     });
   }
 

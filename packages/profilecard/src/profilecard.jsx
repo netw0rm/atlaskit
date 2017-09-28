@@ -108,6 +108,8 @@ export default class Profilecard extends PureComponent {
       duration: this._durationSince(this._timeOpen),
     });
 
+    const karma = this.props.karma ? `Karma: ${this.props.karma}` : undefined;
+
     return (
       <div className={cardClasses}>
         <div className={styles.avatarWrapper}>
@@ -123,7 +125,7 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>
-            <IconLabel icon="karma">{this.props.karma}</IconLabel>
+            <IconLabel icon="karma">{karma}</IconLabel>
           </div>
           <div className={styles.actionsFlexSpacer} />
           {this.renderActionsButtons()}

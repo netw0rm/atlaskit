@@ -106,7 +106,7 @@ export default class ProfilecardResourced extends PureComponent {
     if (!this._isMounted) { return; }
 
     const data = res[0] ? res[0] : undefined;
-    const karma = res[1] ? res[1] : '0';
+    const karma = res[1] ? +res[1] : 0;
 
     this.setState({
       isLoading: false,

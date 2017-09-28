@@ -23,7 +23,7 @@ export default class Profilecard extends PureComponent {
     nickname: PropTypes.string,
     location: PropTypes.string,
     timestring: PropTypes.string,
-    karma: PropTypes.string,
+    karma: PropTypes.number,
     presence: PropTypes.oneOf(Object.keys(presences)),
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.function,

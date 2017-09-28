@@ -2,7 +2,6 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Node,
   Plugin,
   NodeViewDesc,
   Transaction,
@@ -15,9 +14,6 @@ export { stateKey };
 
 export type InlineCommentMarkerStateSubscriber = (state: InlineCommentMarkerState) => any;
 export type StateChangeHandler = (state: InlineCommentMarkerState) => any;
-export interface InlineCommentMarkerOptions {
-  id: string;
-}
 export type Coordinates = { left: number; right: number; top: number; bottom: number };
 
 export class InlineCommentMarkerState {
@@ -31,6 +27,7 @@ export class InlineCommentMarkerState {
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
+    this.state = state;
   }
 
   subscribe(cb: InlineCommentMarkerStateSubscriber) {
@@ -42,13 +39,14 @@ export class InlineCommentMarkerState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  private notifySubs() {
+  notifySubscribers() {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
   update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
     this.active = true;
-    this.notifySubs();
+    this.state = state;
+    this.notifySubscribers();
   }
 
   escapeFromMark(editorView: EditorView) {
@@ -76,7 +74,7 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
     handleClick(view: EditorView) {
       const pluginState: InlineCommentMarkerState = stateKey.getState(view.state);
       if (pluginState.active) {
-        pluginState.changeHandlers.forEach(cb => cb(pluginState));
+        pluginState.notifySubscribers();
       }
       return false;
     },
@@ -85,7 +83,7 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
 
       pluginState.editorFocused = false;
       if (pluginState.active) {
-        pluginState.changeHandlers.forEach(cb => cb(pluginState));
+        pluginState.notifySubscribers();
       }
 
       return true;

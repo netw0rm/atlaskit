@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { akColorN30, akColorB75, akColorB50 } from '@atlaskit/util-shared-styles';
+import { akColorN30, akColorB50 } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import ContentStyles from '../ContentStyles';
@@ -43,13 +43,15 @@ const ContentArea = styled.div`
     padding-bottom: 50px;
 
     span[data-node-type="inlineComment"] {
-      border-bottom: 2px solid ${akColorB75};
+      box-shadow: inset 0px -2px 0px 0px rgba(179,212,255,1);
       cursor: pointer;
+      padding: 2px 0 3px 0;
+      transition: background-color 0.5s ease;
     }
 
     span[data-node-type="inlineComment"]:hover {
-      background: ${akColorB50};
-      border-bottom-color: ${akColorB50};
+      background-color: ${akColorB50};
+      box-shadow: none;
     }
   }
 `;

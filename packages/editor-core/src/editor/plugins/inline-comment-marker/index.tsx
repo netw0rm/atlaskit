@@ -28,7 +28,7 @@ const inlineCommentMarkerPlugin: EditorPlugin = {
 
     const renderNode = (providers) => {
       const pluginState = pluginKey.getState(editorView.state);
-      return <InlineCommentsContainer editorView={editorView} pluginState={pluginState} InlineCommentsProvider={providers.InlineCommentsProvider} />;
+      return <InlineCommentsContainer editorView={editorView} pluginState={pluginState} provider={providers.InlineCommentsProvider} />;
     };
 
     return (

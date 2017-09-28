@@ -3,17 +3,20 @@ import { PureComponent } from 'react';
 import Avatar from '@atlaskit/avatar';
 import styled from 'styled-components';
 
-const itemContainer: any = styled.div`
+// tslint:disable-next-line:variable-name
+const ItemContainer: any = styled.div`
   display: flex;
   flex-shrink: 0;
 `;
 
-const avatarContainer: any = styled.div`
+// tslint:disable-next-line:variable-name
+const AvatarContainer: any = styled.div`
   flex: 1 1 0%;
   padding: 4px;
 `;
 
-const commentContainer: any = styled.div`
+// tslint:disable-next-line:variable-name
+const CommentContainer: any = styled.div`
   flex: 1 1 100%;
   padding: 4px;
 `;
@@ -32,15 +35,15 @@ export default class InlineComment extends PureComponent<Props, {}> {
       authorDisplayName,
     } = this.props;
     return (
-      <itemContainer>
-        <avatarContainer>
+      <ItemContainer>
+        <AvatarContainer>
           <Avatar size="medium" src={authorAvatarUrl} />
-        </avatarContainer>
-        <commentContainer>
+        </AvatarContainer>
+        <CommentContainer>
           <div><strong>{authorDisplayName}</strong></div>
           <div dangerouslySetInnerHTML={{ __html: body }} />
-        </commentContainer>
-      </itemContainer>
+        </CommentContainer>
+      </ItemContainer>
     );
   }
 }

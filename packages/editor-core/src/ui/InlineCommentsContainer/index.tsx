@@ -15,7 +15,8 @@ export interface Props {
   provider: InlineCommentsProviderInterface;
 }
 
-const container: any = styled.div`
+// tslint:disable-next-line:variable-name
+const Container: any = styled.div`
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 4px;
@@ -26,9 +27,10 @@ const container: any = styled.div`
 
 /**
  * TODO:
- * - Make this show and hide based on InlineCommentMarkerState
+ * - Make this show and hide based on InlineCommentMarkerState.active
  * - Position this correctly based on where the comment node is
  * - Fetch comments
+ * - Show only comments relevant to the active id
  */
 
 export default class InlineCommentContainer extends PureComponent<Props, {}> {
@@ -67,9 +69,9 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
       />
     ));
     return (
-      <container>
+      <Container>
         {comments}
-      </container>
+      </Container>
     );
   }
 }

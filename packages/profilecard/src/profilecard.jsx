@@ -10,6 +10,8 @@ import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 import HeightTransitionWrapper from './components/HeightTransitionWrapper';
 
+import SparkleIcon from '@atlaskit/icon/glyph/sparkle';
+
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
@@ -74,6 +76,7 @@ export default class Profilecard extends PureComponent {
 
     return (
       <div className={styles.actionsWrapper}>
+        {this.renderKarmaButton()}
         {(this.props.actions).map((action, idx) => (
           <AkButton
             appearance={idx === 0 ? 'default' : 'subtle'}
@@ -97,15 +100,17 @@ export default class Profilecard extends PureComponent {
       return null;
     }
 
+    const karma = this.props.karma ? this.props.karma : 'Give Karma';
     return (
-      <AkButton
-        appearance='default'
-        compact
-        key='karma'
-        onClick={() => {
-          this.props.increaseKarma();
-        }}
-      >Karma ++</AkButton>
+      <div className={styles.karmaButtonWrapper}>
+        <AkButton
+          iconBefore={<SparkleIcon label="Karma" size="small" />}
+          key='karma'
+          onClick={() => {
+            this.props.increaseKarma();
+          }}
+        >{karma}</AkButton>
+      </div>
     );
   }
 
@@ -126,8 +131,6 @@ export default class Profilecard extends PureComponent {
       duration: this._durationSince(this._timeOpen),
     });
 
-    const karma = this.props.karma ? `Karma: ${this.props.karma}` : undefined;
-
     return (
       <div className={cardClasses}>
         <div className={styles.avatarWrapper}>
@@ -143,10 +146,8 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>
-            <IconLabel icon="karma">{karma}</IconLabel>
           </div>
           <div className={styles.actionsFlexSpacer} />
-          {this.renderKarmaButton()}
           {this.renderActionsButtons()}
         </div>
       </div>

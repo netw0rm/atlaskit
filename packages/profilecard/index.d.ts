@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
 
-export class AkProfileClient {
+export class AkProfileKarmaClient {
   constructor(config: AkProfileClientConfig);
+
+  makeRequest: (cloudId: string, userId: string) => Promise<any>;
+  getKarma: (cloudId: string, userId: string) => Promise<any>;
+  increaseKarma: (cloudId: string, userId: string) => Promise<any>;
+}
+
+export class AkProfileClient {
+  constructor(config: AkProfileKarmaClientConfig);
 
   makeRequest: (cloudId: string, userId: string) => Promise<any>;
   setCachedProfile: (cloudId: string, userId: string, cacheItem: any) => void;
@@ -40,4 +48,8 @@ export interface AkProfileClientConfig {
   url: string;
   cacheSize?: number;
   cacheMaxAge?: number;
+}
+
+export interface AkProfileKarmaClientConfig {
+  url: string;
 }

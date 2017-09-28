@@ -8,11 +8,11 @@ const buildHeaders = () => {
 };
 
 const buildUrl = (baseUrl, path, cloudId, userId) => {
-  let baseUrl = `${baseUrl}/${cloudId}/${userId}`;
+  let url = `${baseUrl}/${cloudId}/${userId}`;
   if (path) {
-    baseUrl = `${baseUrl}/${path}`;
+    url = `${baseUrl}/${path}`;
   }
-  return baseUrl;
+  return url;
 };
 
 /**
@@ -28,7 +28,7 @@ const requestService = (serviceUrl, path, cloudId, userId, opts, data) => {
   const url = buildUrl(serviceUrl, path, cloudId, userId);
   const defaultOpts = {
     method: 'GET',
-    credentials: 'include' as 'include',
+    credentials: 'include',
     mode: 'cors',
     ...{ headers },
   };

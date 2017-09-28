@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import EditorLocationIcon from '@atlaskit/icon/glyph/editor/location';
+import EditorLocationIcon from '@atlaskit/icon/glyph/location';
 import EditorRecentIcon from '@atlaskit/icon/glyph/editor/recent';
 import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
-import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import { Presence } from '@atlaskit/avatar';
 
 import styles from '../styles/profilecard.less';
@@ -13,7 +12,6 @@ const icons = {
   location: EditorLocationIcon,
   time: EditorRecentIcon,
   mention: EditorMentionIcon,
-  karma: GraphLineIcon,
   available: () => <Presence presence="online" />,
   unavailable: () => <Presence presence="offline" />,
   busy: () => <Presence presence="busy" />,

@@ -24,7 +24,7 @@ module.exports = () => {
       plugins: [
         { preventFocusing },
         { convertAttributesToCamelcase },
-        { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
+        { addAttributesToSVGElement: { attributes: ['style="width: 100%; height: 100%;"'] } },
         { addPresentationAttribute },
         { cleanupIDs: {
           // This is used to prefix IDs of LinearGradient fills with a unique ID in case multiple

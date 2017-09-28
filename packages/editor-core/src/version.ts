@@ -1,2 +1,2 @@
-export const version = '1-DEV';
+export const version = '47.7.4';
 export const name = '@atlaskit/editor-core';

@@ -18,11 +18,12 @@ export const inlineCommentMarker: MarkSpec = {
     }
   },
   parseDOM: [
-    { tag: 'span[data-reference]' }
+    { tag: 'span[data-node-type="inlineComment"]' }
   ],
   toDOM(node): [string, any] {
     return ['span', {
-      'data-reference': node.attrs.reference
+      'data-reference': node.attrs.reference,
+      'data-node-type': 'inlineComment',
     }];
   }
 };

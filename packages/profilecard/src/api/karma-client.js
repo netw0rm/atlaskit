@@ -8,7 +8,7 @@ const buildHeaders = () => {
 };
 
 const buildUrl = (baseUrl, path, cloudId, userId) => {
-  let url = `${url}/${cloudId}/${userId}`;
+  let url = `${baseUrl}/${cloudId}/${userId}`;
   if (path) {
     url = `${url}/${path}`;
   }
@@ -20,7 +20,7 @@ const buildUrl = (baseUrl, path, cloudId, userId) => {
  * @param {string} path
  * @param {string} userId
  * @param {string} cloudId
- * @param {object} opts.method
+ * @param {object} opts
  * @param {object} data
  */
 const requestService = (serviceUrl, path, cloudId, userId, opts, data) => {
@@ -34,7 +34,7 @@ const requestService = (serviceUrl, path, cloudId, userId, opts, data) => {
   };
   let options = { ...defaultOpts, ...opts };
   if (data) {
-    options = { ...options, body: data };
+    options = { ...options, body: JSON.stringify(data) };
   }
 
   return fetch(new Request(url, options))
@@ -53,7 +53,7 @@ const requestService = (serviceUrl, path, cloudId, userId, opts, data) => {
         });
       }
 
-      return json.data;
+      return json;
     });
   });
 };

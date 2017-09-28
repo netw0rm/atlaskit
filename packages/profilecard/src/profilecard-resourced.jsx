@@ -106,7 +106,7 @@ export default class ProfilecardResourced extends PureComponent {
     if (!this._isMounted) { return; }
 
     const data = res[0] ? res[0] : undefined;
-    const karma = res[1] ? res[1].amount : undefined;
+    const karma = res[1] ? res[1] : '0';
 
     this.setState({
       isLoading: false,
@@ -154,8 +154,8 @@ export default class ProfilecardResourced extends PureComponent {
       ...this.state.data,
     };
 
-    if (this.props.karmaClient && this.props.increaseKarma) {
-      newProps['increaseKarma'] = this.props.increaseKarma;
+    if (this.props.karmaClient) {
+      newProps['increaseKarma'] = this.increaseKarma;
     }
 
     return (

@@ -3,10 +3,13 @@ import { PureComponent } from 'react';
 import { EditorView } from '../../prosemirror';
 import { InlineCommentMarkerState } from '../../plugins/inline-comment-marker';
 import InlineComment from './InlineComment';
+import InlineCommentEditor from './InlineCommentEditor';
 import styled from 'styled-components';
 
 export interface InlineCommentsProviderInterface {
-  getInlineComment: () => void;
+  getComment: (ref: string) => Promise<any>;
+  getViewer: () => Promise<any>;
+  putComment: (authorID: string, comment: any) => void;
 }
 
 export interface Props {
@@ -57,11 +60,15 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
         hasResolvePermission: true,
         hasReplyPermission: true
       }
-    ]
+    ],
+    viewer: {
+      authorAvatarUrl: 'https://pug.jira-dev.com/wiki/aa-avatar/769b8c92aa2206c17e887b29778c6c0e?s=48&d=https%3A%2F%2Fpug.jira-dev.com%2Fwiki%2Fdownload%2Fattachments%2F1652097080%2Fuser-avatar%3FnoRedirect%3Dtrue',
+    }
   };
 
   render() {
-    const comments = this.state.comments.map(data => (
+    const { comments, viewer } = this.state;
+    const allComments = comments.map(data => (
       <InlineComment
         authorAvatarUrl={data.authorAvatarUrl}
         authorDisplayName={data.authorDisplayName}
@@ -70,7 +77,8 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
     ));
     return (
       <Container>
-        {comments}
+        {allComments}
+        <InlineCommentEditor authorAvatarUrl={viewer.authorAvatarUrl} />
       </Container>
     );
   }

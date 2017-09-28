@@ -6,7 +6,6 @@ import {
   Plugin,
   NodeViewDesc,
   Schema,
-  Transaction,
   TextSelection,
 } from '../../prosemirror';
 import keymapPlugin from './keymap';
@@ -54,11 +53,11 @@ export class InlineCommentMarkerState {
     const nodeInfo = this.getActiveNodeInfo();
     const activeMark = nodeInfo && this.getActiveMark(nodeInfo.node);
     const activeID = activeMark && activeMark.attrs.reference;
-    const shouldNotify = activeID !== this.activeID;
+    const hasChanged = activeID !== this.activeID;
 
     this.activeID = activeID;
 
-    if (shouldNotify) {
+    if (hasChanged) {
       this.notifySubscribers();
     }
   }
@@ -109,10 +108,6 @@ export class InlineCommentMarkerState {
   }
 }
 
-function updateInlineCommentMarkerOnChange(
-  transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>, isMessageEditor: boolean
-): Transaction | undefined {}
-
 export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps = {}) => new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
@@ -159,9 +154,6 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
         pluginState.update(view.state, view.docView);
       }
     };
-  },
-  appendTransaction: (transactions, oldState, newState) => {
-    return updateInlineCommentMarkerOnChange(transactions, oldState, newState, editorProps.appearance === 'message');
   },
 });
 

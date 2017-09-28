@@ -38,6 +38,8 @@ const ContentArea = styled.div`
   flex-grow: 1;
 
   & .ProseMirror {
+    line-height: 24px;
+    font-size: 14px;
     flex-grow: 1;
     box-sizing: border-box;
     padding-bottom: 50px;

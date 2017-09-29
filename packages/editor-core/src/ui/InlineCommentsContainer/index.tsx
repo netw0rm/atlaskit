@@ -78,18 +78,22 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
     }
   }
 
-  private submitReply = (content: any) => {
+  private submitReply = (editorActions: any) => {
     const { comments } = this.state;
     const commentID = comments[0].id; // EW
 
     this.setState({ saving: true });
+    editorActions.clear();
 
-    this.props.provider
-      .then(provider => provider.putComment(commentID, content))
-      .then(comment => this.setState({
-        saving: false,
-        comments: comments.concat([comment]),
-      }));
+    editorActions.getValue()
+      .then(content => {
+        this.props.provider
+          .then(provider => provider.putComment(commentID, content))
+          .then(comment => this.setState({
+            saving: false,
+            comments: comments.concat([comment]),
+          }));
+      });
   }
 
   render() {

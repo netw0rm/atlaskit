@@ -248,6 +248,10 @@ storiesOf(name, module)
                         inlineCommentProvider={Promise.resolve({
                           getComment: () => Promise.resolve(FAKE_COMMENTS),
                           getViewer: () => Promise.resolve(VIEWER),
+                          putComment: (id, content) => Promise.resolve({
+                            authorAvatarUrl: VIEWER.authorAvatarUrl,
+                            body: `<p>${content}</p>`
+                          }),
                         })}
 
                         placeholder="Write something..."

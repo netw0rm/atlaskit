@@ -5,6 +5,7 @@ import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
+import { InlineCommentProvider } from '../../ui/InlineCommentsContainer';
 import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
@@ -31,7 +32,6 @@ export interface EditorProps {
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
-  allowInlineCommentMarker?: boolean;
   allowPanel?: boolean;
 
   saveOnEnter?: boolean;
@@ -48,6 +48,7 @@ export interface EditorProps {
   mediaProvider?: Promise<any>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
+  inlineCommentProvider?: Promise<InlineCommentProvider>;
 
   maxHeight?: number;
   maxContentSize?: number;

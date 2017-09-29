@@ -28,13 +28,13 @@ const inlineCommentMarkerPlugin: EditorPlugin = {
 
     const renderNode = (providers) => {
       const pluginState = pluginKey.getState(editorView.state);
-      return <InlineCommentsContainer editorView={editorView} pluginState={pluginState} provider={providers.InlineCommentsProvider} />;
+      return <InlineCommentsContainer editorView={editorView} pluginState={pluginState} provider={providers.inlineCommentProvider} />;
     };
 
     return (
       <WithProviders
         providerFactory={providerFactory}
-        providers={['InlineCommentsProvider']}
+        providers={['inlineCommentProvider']}
         renderNode={renderNode}
       />
     );

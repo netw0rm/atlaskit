@@ -90,6 +90,33 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
+const VIEWER = {
+  authorAvatarUrl: 'https://pug.jira-dev.com/wiki/aa-avatar/769b8c92aa2206c17e887b29778c6c0e?s=48&d=https%3A%2F%2Fpug.jira-dev.com%2Fwiki%2Fdownload%2Fattachments%2F1652097080%2Fuser-avatar%3FnoRedirect%3Dtrue',
+};
+const FAKE_COMMENTS = [
+  {
+    id: 3155362498,
+    authorDisplayName: 'Marco De Jongh',
+    authorUserName: 'mdejongh',
+    authorAvatarUrl: 'https://pug.jira-dev.com/wiki/aa-avatar/769b8c92aa2206c17e887b29778c6c0e?s=48&d=https%3A%2F%2Fpug.jira-dev.com%2Fwiki%2Fdownload%2Fattachments%2F1652097080%2Fuser-avatar%3FnoRedirect%3Dtrue',
+    body: '<p>(by exception). Although if this service isnt worthy of a exception I don\'t know what is.</p>',
+    hasDeletePermission: true,
+    hasEditPermission: true,
+    lastModificationDate: 'Sep 14, 2017',
+    commentDateUrl: 'https://pug.jira-dev.com/pages/viewpage.action?pageId=3155264080&focusedCommentId=3155362498#comment-3155362498',
+    markerRef: 'd2d05cff-b952-4bd1-9a18-6ba2d9f1da6a',
+    parentCommentId: 0,
+    originalSelection: 'Is blessed',
+    resolveProperties: {
+      resolved: false,
+      resolvedTime: 0,
+      resolvedByDangling: false,
+    },
+    hasResolvePermission: true,
+    hasReplyPermission: true,
+  },
+];
+
 const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac:macro-id="1c61c2dd-3574-45f3-ac07-76d400504d84"><ac:parameter ac:name="language">js</ac:parameter><ac:parameter ac:name="theme">Confluence</ac:parameter><ac:parameter ac:name="title">Example</ac:parameter><ac:plain-text-body><![CDATA[if (true) {
   console.log('Hello World');
 }]]></ac:plain-text-body></ac:structured-macro>`;
@@ -210,7 +237,6 @@ storiesOf(name, module)
                         allowTables={true}
                         allowJiraIssue={true}
                         allowUnsupportedContent={true}
-                        allowInlineCommentMarker={true}
                         allowPanel={true}
 
                         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
@@ -219,6 +245,10 @@ storiesOf(name, module)
                         activityProvider={Promise.resolve(new MockActivityResource())}
                         // tslint:disable-next-line:jsx-no-lambda
                         contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
+                        inlineCommentProvider={Promise.resolve({
+                          getComment: () => Promise.resolve(FAKE_COMMENTS),
+                          getViewer: () => Promise.resolve(VIEWER),
+                        })}
 
                         placeholder="Write something..."
                         shouldFocus={false}

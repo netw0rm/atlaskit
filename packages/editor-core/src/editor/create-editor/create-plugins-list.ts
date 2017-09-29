@@ -108,7 +108,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(unsupportedContentPlugin);
   }
 
-  if(props.allowInlineCommentMarker) {
+  if (props.inlineCommentProvider) {
     plugins.push(inlineCommentMarkerPlugin);
   }
 

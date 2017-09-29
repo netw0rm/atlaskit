@@ -63,6 +63,10 @@ export const emojiContainer = style({
 
 export const placeholderContainer = style({
   display: 'inline-block',
+  background: '#f7f7f7',
+  borderRadius: '100%',
+  verticalAlign: 'middle',
+  whiteSpace: 'nowrap',
 });
 
 export const placeholderEmoji = style({
@@ -104,23 +108,6 @@ export const emojiButton = style({
 
 const grid = akGridSizeUnitless / 2;
 const fontSize = 3 * grid;
-
-// const slideDown = keyframes({
-//   '0%': {
-//     'transform': 'translateY(-12px)',
-//     'opacity': 0,
-//     'animationTimingFunction': 'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)'
-//   },
-//   '20%': {
-//     'transform': 'translateY(-2.3999999999999986px)',
-//     'opacity': 0.8,
-//     'animationTimingFunction': 'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)'
-//   },
-//   '100%': {
-//     'transform': 'translateY(0px)',
-//     'opacity': 1
-//   }
-// });
 
 export const slideDown = keyframes({
   '0%': {

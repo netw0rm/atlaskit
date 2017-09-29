@@ -1,6 +1,6 @@
 import * as React from 'react';
-import TooltipWrapper from './TooltipWrapper';
-import { placeholderEmoji, placeholderContainer } from './styles';
+import * as classNames from 'classnames';
+import { placeholderContainer, emojiTooltip } from './styles';
 import { defaultEmojiHeight } from '../../constants';
 
 export interface Props {
@@ -12,22 +12,16 @@ export interface Props {
 // tslint:disable-next-line:variable-name
 const EmojiPlaceholder = (props: Props) => {
   const { shortName, size = defaultEmojiHeight, showTooltip } = props;
-  const center = Math.floor(size / 2);
-  const radius = center - 1;
   const style = {
     width: `${size}px`,
     height: `${size}px`,
   };
-  const placeholderNode = (
-    <svg className={placeholderEmoji} style={style} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg" >
-      <circle cx={center} cy={center} r={radius} aria-label={shortName} />
-    </svg>
-  );
-  return (
-    showTooltip ?
-      <TooltipWrapper description={shortName} className={placeholderContainer}>{placeholderNode}</TooltipWrapper>
-      : placeholderNode
-    );
+  const classes = {
+    [placeholderContainer]: true,
+    [emojiTooltip]: showTooltip
+  };
+
+  return <span aria-label={shortName} className={classNames(classes)} style={style} />;
 };
 
 export default EmojiPlaceholder;

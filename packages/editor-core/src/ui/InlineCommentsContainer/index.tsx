@@ -4,13 +4,16 @@ import { EditorView } from '../../prosemirror';
 import { InlineCommentMarkerState } from '../../plugins/inline-comment-marker';
 import InlineComment from './InlineComment';
 import InlineCommentEditor from './InlineCommentEditor';
+import InlineCommentWrapper from './InlineCommentWrapper';
 import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
 
 export interface InlineCommentProvider {
   getComment: (ref: string) => Promise<any>;
-  getViewer: () => Promise<any>;
-  putComment: (authorID: string, comment: any) => void;
+  getViewer: () => Promise<{
+    authorAvatarUrl: string,
+  }>;
+  putComment: (commentID: string, comment: any) => void;
 }
 
 export interface Props {
@@ -21,9 +24,10 @@ export interface Props {
 
 // tslint:disable-next-line:variable-name
 const Container: any = styled.div`
-  border: 1px solid #ccc;
+  background: #fff;
   border-radius: 3px;
-  padding: 4px;
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31), 0 4px 8px -2px rgba(9, 30, 66, 0.25);
+  padding: 16px 16px 0;
   position: absolute;
   right: 10px;
   width: 300px;
@@ -48,6 +52,7 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
     comments: [],
     viewer: null,
     loading: false,
+    saving: false,
   };
 
   componentDidMount() {
@@ -73,8 +78,22 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
     }
   }
 
+  private submitReply = (content: any) => {
+    const { comments } = this.state;
+    const commentID = comments[0].id; // EW
+
+    this.setState({ saving: true });
+
+    this.props.provider
+      .then(provider => provider.putComment(commentID, content))
+      .then(comment => this.setState({
+        saving: false,
+        comments: comments.concat([comment]),
+      }));
+  }
+
   render() {
-    const { comments, viewer, loading } = this.state;
+    const { comments, viewer, loading, saving } = this.state;
     if (loading) {
       return <LoadingContainer><Spinner size="small" /></LoadingContainer>;
     }
@@ -94,7 +113,15 @@ export default class InlineCommentContainer extends PureComponent<Props, {}> {
     return (
       <Container>
         {allComments}
-        <InlineCommentEditor authorAvatarUrl={viewer.authorAvatarUrl} />
+        {saving ?
+          <InlineCommentWrapper authorAvatarUrl={viewer.authorAvatarUrl}>
+            <Spinner size="small" />
+          </InlineCommentWrapper> :
+          null
+        }
+        <InlineCommentWrapper authorAvatarUrl={viewer.authorAvatarUrl}>
+          <InlineCommentEditor onSubmit={this.submitReply} />
+        </InlineCommentWrapper>
       </Container>
     );
   }

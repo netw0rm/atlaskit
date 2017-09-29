@@ -75,6 +75,7 @@ class Icon extends PureComponent {
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
           size={size}
+          role="img"
           aria-label={this.props.label}
           dangerouslySetInnerHTML={{ __html: glyph }}
         />
@@ -87,6 +88,7 @@ class Icon extends PureComponent {
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
         size={size}
+        role="img"
         aria-label={this.props.label}
       >
         {glyph}

@@ -162,6 +162,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'A':
       case 'FAB:MENTION':
       case 'FAB:MEDIA':
+      case 'AC:INLINE-COMMENT-MARKER':
       case 'AC:STRUCTURED-MACRO':
         return true;
     }

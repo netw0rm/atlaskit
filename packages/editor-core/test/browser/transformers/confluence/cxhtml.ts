@@ -11,7 +11,8 @@ import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
-  table, tr, td, th
+  table, tr, td, th,
+  inlineCommentMarker
 } from './_schema-builder';
 chai.use(chaiPlugin);
 import { confluenceSchema as schema } from '../../../../src/schema';
@@ -591,6 +592,25 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           )
         )
       );
+    });
+
+    describe('inline comment marker', () => {
+      check(
+        'basic',
+        '<p><ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">inline comment</ac:inline-comment-marker></p>',
+        doc(
+          p(
+            inlineCommentMarker({
+              reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
+            })('inline comment')
+          )
+        )
+      );
+
+      check(
+        'when inline comment text was removed',
+        '<p>test <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a"></ac:inline-comment-marker> text</p>',
+        doc(p('test text')));
     });
   });
 

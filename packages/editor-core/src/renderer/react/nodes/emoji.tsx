@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import ProviderFactory from '../../../providerFactory';
 import { Attributes as EmojiAttributes } from '../../../schema/nodes/emoji';
 import Emoji from '../../../ui/Emoji';
@@ -8,18 +7,17 @@ export interface EmojiProps extends EmojiAttributes {
   providers?: ProviderFactory;
 }
 
-export default class EmojiItem extends PureComponent<EmojiProps, {}> {
-  render() {
-    const { id, providers, shortName, text } = this.props;
+export default function EmojiItem(props, params) {
+  const { id, providers, shortName, text } = props;
 
-    return (
-      <Emoji
-        allowTextFallback={true}
-        id={id}
-        shortName={shortName}
-        fallback={text}
-        providers={providers}
-      />
-    );
-  }
+  return (
+    <Emoji
+      key={params.key}
+      allowTextFallback={true}
+      id={id}
+      shortName={shortName}
+      fallback={text}
+      providers={providers}
+    />
+  );
 }

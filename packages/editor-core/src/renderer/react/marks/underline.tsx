@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 
-export default class Underline extends PureComponent<{}, {}> {
-  render() {
-    return <u>{this.props.children}</u>;
-  }
+export default function Underline(props, params) {
+  return <u key={params.key}>{params.children}</u>;
 }

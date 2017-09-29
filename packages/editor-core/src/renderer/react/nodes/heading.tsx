@@ -12,26 +12,21 @@ const H6 = styled.h6`${akTypographyMixins.h300}`;
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
-export interface Props {
-  level: HeadingLevel;
-}
-
-export default class Heading extends PureComponent<Props, {}> {
-  render() {
-    const { level, children } = this.props;
-    switch (level) {
-      case 1:
-        return <H1>{children}</H1>;
-      case 2:
-        return <H2>{children}</H2>;
-      case 3:
-        return <H3>{children}</H3>;
-      case 4:
-        return <H4>{children}</H4>;
-      case 5:
-        return <H5>{children}</H5>;
-      case 6:
-        return <H6>{children}</H6>;
-    }
+export default function Heading(props: { level: HeadingLevel } & React.Props<any>, params) {
+  const { level } = props;
+  const children = params.children;
+  switch (level) {
+    case 1:
+      return <h1 key={props.key}>{children}</h1>;
+    case 2:
+      return <h2 key={props.key}>{children}</h2>;
+    case 3:
+      return <h3 key={props.key}>{children}</h3>;
+    case 4:
+      return <h4 key={props.key}>{children}</h4>;
+    case 5:
+      return <h5 key={props.key}>{children}</h5>;
+    case 6:
+      return <h6 key={props.key}>{children}</h6>;
   }
 }

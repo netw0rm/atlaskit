@@ -1,18 +1,16 @@
 import * as React from 'react';
-import { PureComponent, Children } from 'react';
+import { Children } from 'react';
 
 import { DecisionList as AkDecisionList } from '@atlaskit/task-decision';
 
-export default class DecisionList extends PureComponent<{}, {}> {
-  render() {
-    const { children } = this.props;
+export default function DecisionList(props, params) {
+  const { children } = params;
 
-    if (Children.count(children) === 0) {
-      return null;
-    }
-
-    return (
-      <AkDecisionList>{children}</AkDecisionList>
-    );
+  if (Children.count(children) === 0) {
+    return null;
   }
+
+  return (
+    <AkDecisionList key={params.key}>{children}</AkDecisionList>
+  );
 }

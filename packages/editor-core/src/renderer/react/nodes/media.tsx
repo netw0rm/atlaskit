@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { EventHandlers } from '../../../ui/Renderer';
 import ProviderFactory from '../../../providerFactory';
 import UIMedia from '../../../ui/Media';
@@ -19,30 +18,29 @@ export interface MediaProps {
   resizeMode?: ImageResizeMode;
 }
 
-export default class Media extends PureComponent<MediaProps, {}> {
-  render() {
-    const {
-      eventHandlers,
-      id,
-      providers,
-      type,
-      collection,
-      cardDimensions,
-      appearance,
-      resizeMode,
-    } = this.props;
+export default function Media(props, params) {
+  const {
+    eventHandlers,
+    id,
+    providers,
+    type,
+    collection,
+    cardDimensions,
+    appearance,
+    resizeMode,
+  } = props;
 
-    return (
-      <UIMedia
-        id={id}
-        type={type}
-        collection={collection}
-        providers={providers}
-        onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
-        cardDimensions={cardDimensions}
-        appearance={appearance}
-        resizeMode={resizeMode}
-      />
-    );
-  }
+  return (
+    <UIMedia
+      id={id}
+      key={params.key}
+      type={type}
+      collection={collection}
+      providers={providers}
+      onClick={eventHandlers && eventHandlers.media && eventHandlers.media.onClick}
+      cardDimensions={cardDimensions}
+      appearance={appearance}
+      resizeMode={resizeMode}
+    />
+  );
 }

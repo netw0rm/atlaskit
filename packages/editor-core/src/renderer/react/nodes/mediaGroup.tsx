@@ -92,7 +92,11 @@ const SingleLinkWrapper = styled.div`
   ${center}
 `;
 
-export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGroupState> {
+export default function MediaGroupWrapper(props, params) {
+  return <MediaGroup key={params.key} {...props}>{params.children}</MediaGroup>;
+}
+
+export class MediaGroup extends PureComponent<MediaGroupProps, MediaGroupState> {
 
   state: MediaGroupState = {
     animate: false,

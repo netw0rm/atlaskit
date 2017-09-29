@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import {
   akBorderRadius,
   akGridSizeUnitless,
@@ -68,21 +67,14 @@ const ContentWrapper = styled.div`
   margin: 1px 0 1px ${akGridSizeUnitless * 4}px
 `;
 
-export default class Panel extends PureComponent<Props, {}> {
-  render() {
-    const { panelType, children } = this.props;
-    return (
-      <PanelWrapper panelType={panelType}>
-        <IconWrapper panelType={panelType}>{this.getIcon()}</IconWrapper>
-        <ContentWrapper>{children}</ContentWrapper>
-      </PanelWrapper>
-    );
-  }
-
-  getIcon() {
-    const { panelType } = this.props;
-    // tslint:disable-next-line:variable-name
-    const Icon = config[panelType].icon;
-    return <Icon label={`Panel {panelType}`} />;
-  }
+export default function Panel(props, params) {
+  const { panelType } = props;
+  // tslint:disable-next-line:variable-name
+  const Icon = config[panelType].icon;
+  return (
+    <PanelWrapper key={params.key} panelType={panelType}>
+      <IconWrapper panelType={panelType}><Icon label={`Panel {panelType}`} /></IconWrapper>
+      <ContentWrapper>{params.children}</ContentWrapper>
+    </PanelWrapper>
+  );
 }

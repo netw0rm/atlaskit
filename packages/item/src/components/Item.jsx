@@ -52,6 +52,7 @@ export default class Item extends Component {
     /** Function to be called when the item is pressed with a keyboard,
     * Receives the KeyboardEvent. */
     onKeyDown: PropTypes.func,
+    onMouseDown: PropTypes.func,
     /** Standard onmouseenter event */
     onMouseEnter: PropTypes.func,
     /** Standard onmouseleave event */
@@ -114,6 +115,7 @@ export default class Item extends Component {
     const {
       onClick,
       onKeyDown,
+      onMouseDown,
       isCompact,
       isDisabled,
       isDragging,
@@ -157,6 +159,8 @@ export default class Item extends Component {
         if (dragHandleProps && dragHandleProps.onMouseDown) {
           dragHandleProps.onMouseDown(event);
         }
+
+        onMouseDown(event);
 
         // We want to prevent the item from getting focus when clicked
         event.preventDefault();

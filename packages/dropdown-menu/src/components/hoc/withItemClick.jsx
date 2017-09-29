@@ -20,6 +20,7 @@ type Props = {
   href?: string,
   /** Standard onClick handler */
   onClick: (event?: Event) => void,
+  onMouseDown: (event?: Event) => void
 }
 
 // HOC that typically wraps @atlaskit/item
@@ -56,6 +57,10 @@ const withItemClick = (WrappedItem: ReactElement) => (
       }
     }
 
+    handleMouseDown = (event: MouseEvent) => {
+      this.props.onMouseDown(event);
+    }
+
     render() {
       const { children, ...otherProps } = this.props;
 
@@ -64,6 +69,7 @@ const withItemClick = (WrappedItem: ReactElement) => (
           {...otherProps}
           onClick={this.handleClick}
           onKeyDown={this.handleKeyDown}
+          onMouseDown={this.handleMouseDown}
         >
           {children}
         </WrappedItem>

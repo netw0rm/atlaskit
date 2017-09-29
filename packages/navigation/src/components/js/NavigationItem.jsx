@@ -55,6 +55,7 @@ type Props = {|
   onMouseEnter?: (e: MouseEvent) => void,
   /** Standard onmouseleave event */
   onMouseLeave?: (e: MouseEvent) => void,
+  onMouseDown?: (e: MouseEvent) => void,
   /** Text to be shown alongside the main `text`. */
   subText?: ?string,
   /** Main text to be displayed as the item. Accepts a react component but in most
@@ -119,6 +120,7 @@ export default class NavigationItem extends PureComponent {
 
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
+      onMouseDown: this.props.onMouseDown,
       onKeyDown: this.props.onKeyDown,
       onMouseEnter: this.props.onMouseEnter,
       onMouseLeave: this.props.onMouseLeave,

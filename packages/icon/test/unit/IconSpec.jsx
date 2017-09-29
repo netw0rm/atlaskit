@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { colors } from '../../../theme/src';
 import { name } from '../../package.json';
 import Icon, { size } from '../../src';
-import { Span, spanStyles } from '../../src/components/Icon';
+import { spanStyles } from '../../src/components/Icon';
 
 const sizeValues = {
   small: '16px',
@@ -32,8 +32,8 @@ describe(name, () => {
     });
 
     it('should be possible to create an Icon via a subclass', () => {
-      const myIcon = mount(<MyIcon label="My icon" />);
-      expect(myIcon.text()).toBe(secretContent);
+      const wrapper = mount(<MyIcon label="My icon" />);
+      expect(wrapper.find('span').is('[aria-label="My icon"]')).toBe(true);
     });
 
     describe('label property', () => {
@@ -45,40 +45,38 @@ describe(name, () => {
 
         const labelContent = 'label content';
         const wrapper = mount(<LabelIcon label={labelContent} />);
-        expect(wrapper.text()).toBe(labelContent);
+        expect(wrapper.find('span').is(`[aria-label="${labelContent}"]`)).toBe(true);
       });
     });
 
     describe('size property', () => {
       Object.values(size).forEach((s) => {
-        const span = mount(<Icon glyph={empty} label="My icon" size={s} />).find(Span);
-        const iconSize = spanStyles[5](span.props());
+        const span = mount(<Icon glyph={empty} label="My icon" size={s} />);
+        const iconSize = spanStyles[1](span.props());
 
         it(`with value ${s}`, () => {
-          expect(iconSize).toBe(sizeValues[s]);
-          expect(iconSize).toBe(sizeValues[s]);
+          expect(iconSize.includes(sizeValues[s])).toBe(true);
         });
       });
     });
 
     describe('primaryColor property', () => {
       it('is set to inherit the text color by default', () => {
-        const span = mount(<MyIcon label="default primaryColor" />).find(Span);
-        const color = spanStyles[1](span.props());
-
+        const span = mount(<MyIcon label="default primaryColor" />);
+        const color = spanStyles[3](span.props());
         expect(color).toBe('currentColor');
       });
       it('can be changed to a hex value', () => {
         const primaryColor = '#ff0000';
-        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />).find(Span);
-        const color = spanStyles[1](span.props());
+        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />);
+        const color = spanStyles[3](span.props());
 
         expect(color).toBe(primaryColor);
       });
       it('can be changed to a named color', () => {
         const primaryColor = 'rebeccapurple';
-        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />).find(Span);
-        const color = spanStyles[1](span.props());
+        const span = mount(<MyIcon label="hex primaryColor" primaryColor={primaryColor} />);
+        const color = spanStyles[3](span.props());
 
         expect(color).toBe(primaryColor);
       });
@@ -86,23 +84,23 @@ describe(name, () => {
 
     describe('secondaryColor property', () => {
       it('is set to the default theme background color by default', () => {
-        const span = mount(<MyIcon label="default secondaryColor" />).find(Span);
+        const span = mount(<MyIcon label="default secondaryColor" />);
         const props = span.props();
-        const fill = spanStyles[3](props)(props);
+        const fill = spanStyles[5](props)(props);
 
         expect(fill).toBe(colors.background(props));
       });
       it('can be changed to a hex value', () => {
         const secondaryColor = '#ff0000';
-        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />).find(Span);
-        const fill = spanStyles[3](span.props());
+        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />);
+        const fill = spanStyles[5](span.props());
 
         expect(fill).toBe(secondaryColor);
       });
       it('can be changed to a named color', () => {
         const secondaryColor = 'rebeccapurple';
-        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />).find(Span);
-        const fill = spanStyles[3](span.props());
+        const span = mount(<MyIcon label="hex secondaryColor" secondaryColor={secondaryColor} />);
+        const fill = spanStyles[5](span.props());
 
         expect(fill).toBe(secondaryColor);
       });

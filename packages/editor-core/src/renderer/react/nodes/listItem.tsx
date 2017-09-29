@@ -1,2 +1,2 @@
 import * as React from 'react';
-export default function ListItem(props: React.Props<any>) { return <li>{props.children}</li>; }
+export default function ListItem(props, params) { return <li key={props.key}>{props.children}</li>; }

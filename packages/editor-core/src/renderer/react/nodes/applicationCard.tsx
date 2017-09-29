@@ -7,22 +7,18 @@ export interface AppCardViewProps extends Attributes {
   eventHandlers?: EventHandlers;
 }
 
-export default class ApplicationCard extends React.Component<AppCardViewProps, any> {
-  private onClick = () => {
-    const { eventHandlers, link } = this.props;
-
+export default function ApplicationCard(props, params) {
+  const { eventHandlers, link } = props;
+  const onClick = () => {
     if (eventHandlers && eventHandlers.applicationCard && eventHandlers.applicationCard.onClick) {
       eventHandlers.applicationCard.onClick(link && link.url ? link.url : undefined);
     }
-  }
+  };
 
-  render() {
-    const { eventHandlers } = this.props;
-
-    return <AppCardView
-      onClick={this.onClick}
-      model={this.props}
-      onActionClick={eventHandlers && eventHandlers.applicationCard && eventHandlers.applicationCard.onActionClick}
-    />;
-  }
+  return <AppCardView
+    key={params.key}
+    onClick={onClick}
+    model={props}
+    onActionClick={eventHandlers && eventHandlers.applicationCard && eventHandlers.applicationCard.onActionClick}
+  />;
 }

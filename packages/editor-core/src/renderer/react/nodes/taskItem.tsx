@@ -13,7 +13,11 @@ export interface Props {
   providers?: ProviderFactory;
 }
 
-export default class TaskItem extends PureComponent<Props, {}> {
+export default function TaskItemWrapper(props, params) {
+  return <TaskItem key={params.key} {...props}>{params.children}</TaskItem>;
+}
+
+export class TaskItem extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
 
   constructor(props) {

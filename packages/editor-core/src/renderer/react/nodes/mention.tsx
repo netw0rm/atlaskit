@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 
 import Mention from '../../../ui/Mention';
 import { EventHandlers } from '../../../ui/Renderer';
@@ -14,26 +13,25 @@ export interface Props {
   portal?: HTMLElement;
 }
 
-export default class MentionItem extends PureComponent<Props, {}> {
-  render() {
-    const {
-      eventHandlers,
-      id,
-      portal,
-      providers,
-      text,
-      accessLevel,
-    } = this.props;
+export default function MentionItem(props, params) {
+  const {
+    eventHandlers,
+    id,
+    portal,
+    providers,
+    text,
+    accessLevel,
+  } = props;
 
-    return (
-      <Mention
-        id={id}
-        text={text}
-        accessLevel={accessLevel}
-        providers={providers}
-        portal={portal}
-        eventHandlers={eventHandlers && eventHandlers.mention}
-      />
-    );
-  }
+  return (
+    <Mention
+      key={params.key}
+      id={id}
+      text={text}
+      accessLevel={accessLevel}
+      providers={providers}
+      portal={portal}
+      eventHandlers={eventHandlers && eventHandlers.mention}
+    />
+  );
 }

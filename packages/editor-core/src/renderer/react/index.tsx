@@ -1,6 +1,3 @@
-import * as React from 'react';
-import { ComponentClass } from 'react';
-
 import {
   Fragment,
   Mark,
@@ -77,21 +74,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   // tslint:disable-next-line:variable-name
-  private renderNode(Node: ComponentClass<any>, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
-    return (
-      <Node key={key} {...props}>
-        {content}
-      </Node>
-    );
+  private renderNode(Node: any, props: any, key: string, content: (string | JSX.Element | any[] | null | undefined)): JSX.Element {
+    return Node(props, { children: content, key: key });
   }
 
   // tslint:disable-next-line:variable-name
-  private renderMark(Mark: ComponentClass<any>, props: any, key: string, content: any) {
-    return (
-      <Mark key={key} {...props}>
-        {content}
-      </Mark>
-    );
+  private renderMark(Mark: any, props: any, key: string, content: any) {
+    return Mark(props, { children: content, key: key });
   }
 
   private getProps(node: Node) {

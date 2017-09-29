@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import { AkCodeBlock } from '@atlaskit/code';
 
 const identity = (text: string): string => {
@@ -10,20 +9,17 @@ export interface Props {
   language: string;
 }
 
-export default class CodeBlock extends PureComponent<Props, {}> {
-  render() {
-    const {
-      children,
-      language,
-    } = this.props;
+export default function CodeBlock(props, params) {
+  const {
+    language,
+  } = props;
 
-    const codeProps = {
-      language,
-      text: React.Children.map(children, identity).join('')
-    };
+  const codeProps = {
+    language,
+    text: React.Children.map(params.children, identity).join('')
+  };
 
-    return (
-      <AkCodeBlock {...codeProps}/>
-    );
-  }
+  return (
+    <AkCodeBlock key={params.key} {...codeProps}/>
+  );
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import {
   akColorB300,
   akColorB400,
@@ -22,21 +21,19 @@ export interface Props {
   target?: string;
 }
 
-export default class Link extends PureComponent<Props, {}> {
-  render() {
-    const {
-      href,
-      target = '_blank',
-    } = this.props;
+export default function Link(props, params)  {
+  const {
+    href,
+    target = '_blank',
+  } = props;
 
-    const anchorProps: any = {
-      href,
-      target,
-      title: href,
-    };
+  const anchorProps: any = {
+    href,
+    target,
+    title: href,
+  };
 
-    return (
-      <StyledAnchor {...anchorProps}>{this.props.children}</StyledAnchor>
-    );
-  }
+  return (
+    <StyledAnchor key={params.key} {...anchorProps}>{params.children}</StyledAnchor>
+  );
 }

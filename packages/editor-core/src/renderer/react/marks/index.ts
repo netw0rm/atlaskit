@@ -10,6 +10,7 @@ import Subsup from './subsup';
 import TextColor from './textColor';
 import Underline from './underline';
 import ConfluenceInlineComment from './confluence-inline-comment';
+import Action from './action';
 
 export const markToReact = {
   'code': Code,
@@ -21,6 +22,7 @@ export const markToReact = {
   'textColor': TextColor,
   'underline': Underline,
   'confluenceInlineComment': ConfluenceInlineComment,
+  'action': Action
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {
@@ -37,4 +39,5 @@ export {
   TextColor,
   Underline,
   ConfluenceInlineComment,
+  Action
 };

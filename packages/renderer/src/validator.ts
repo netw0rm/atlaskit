@@ -554,6 +554,19 @@ export const getValidMark = (mark: Mark): Mark | null => {
           type,
         };
       }
+      case 'action': {
+        if (attrs && attrs.target && attrs.target.key){
+          return {
+            type,
+            attrs: {
+              title: attrs.title,
+              target: attrs.target,
+              parameters: attrs.parameters
+            }
+          };
+        }
+        break;
+      }
       case 'em': {
         return {
           type,

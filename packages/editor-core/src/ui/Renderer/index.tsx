@@ -10,7 +10,7 @@ import {
   RendererContext,
 } from '../../renderer';
 import { UnsupportedBlock } from '../../ui/';
-import { AppCardAction } from '@atlaskit/editor-common';
+import { AppCardAction, ActionMarkAction } from '@atlaskit/editor-common';
 import { RenderOutputStat } from '@atlaskit/renderer';
 import { Wrapper } from './style';
 
@@ -22,6 +22,7 @@ export interface CardSurroundings {
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
+export type ActionEventClickHandler = (action: ActionMarkAction) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
 
 export interface MentionEventHandlers {
@@ -34,6 +35,9 @@ export interface EventHandlers {
   mention?: MentionEventHandlers;
   media?: {
     onClick?: CardEventClickHandler;
+  };
+  action?: {
+    onClick?: ActionEventClickHandler;
   };
   applicationCard?: {
     onClick?: AppCardEventClickHandler;

@@ -4,6 +4,9 @@ import * as sinon from 'sinon';
 import ReactSerializer from '../../../../src/renderer/react';
 import schema from '../../../../stories/schema';
 import * as validator from '@atlaskit/renderer';
+import {
+  Action
+} from '../../../../src/renderer/react/marks';
 
 const doc = {
   'type': 'doc',
@@ -38,6 +41,23 @@ const doc = {
             }
           ]
         },
+        {
+          type: 'text',
+          text: 'Yo!',
+          marks: [
+            {
+              type: 'strong'
+            },
+            {
+              type: 'action',
+              attrs: {
+                target: {
+                  key: 'test'
+                }
+              }
+            }
+          ]
+        },
       ]
     }
   ]
@@ -57,7 +77,6 @@ describe('Renderer - ReactSerializer', () => {
       const paragraph = root.find('p');
       const link = paragraph.find('a');
       const strong = link.find('strong');
-
       expect(root.length).to.equal(1);
       expect(paragraph.length).to.equal(1);
       expect(link.length).to.equal(1);
@@ -99,6 +118,16 @@ describe('Renderer - ReactSerializer', () => {
       const spy = sinon.spy(validator, 'getMarksByOrder');
       ReactSerializer.getMarks(node);
       expect(spy.calledWith(node.marks)).to.equal(true);
+    });
+  });
+
+  describe('getMarkProps', () => {
+    it('should pass eventHandlers to mark component', () => {
+      const eventHandlers = {};
+      const reactSerializer = ReactSerializer.fromSchema(schema, undefined, eventHandlers);
+      const reactDoc = mount(reactSerializer.serializeFragment(docFromSchema.content) as any);
+      expect(reactDoc.find(Action).prop('eventHandlers')).to.equal(eventHandlers);
+      reactDoc.unmount();
     });
   });
 

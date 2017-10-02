@@ -87,6 +87,11 @@ const eventHandlers = {
       return action('onMediaClick')('[react.MouseEvent]', result.mediaItemDetails, surroundings);
     }
   },
+  action: {
+    onClick: (event) => {
+      return action('onClick')('[react.MouseEvent]', event);
+    }
+  },
   applicationCard: {
     onClick: action('onClick'),
     onActionClick: action('onActionClick'),

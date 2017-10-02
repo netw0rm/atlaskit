@@ -47,5 +47,6 @@ export const defaultSchema: Schema = createSchema({
     'emojiQuery',
     'textColor',
     'confluenceInlineComment',
+    'action'
   ]
 });

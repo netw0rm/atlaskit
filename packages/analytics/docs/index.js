@@ -18,6 +18,9 @@ import IntegratingExampleSrc from '!raw-loader!./IntegratingExample';
 
 import DefaultPropsExample from './DefaultPropsExample';
 import DefaultPropsExampleSrc from '!raw-loader!./DefaultPropsExample';
+
+import ReduxStoreExample from './ReduxStoreExample';
+import ReduxStoreExampleSrc from '!raw-loader!./ReduxStoreExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -77,6 +80,13 @@ export const description = (
       has options for filtering (event name and type) and can be nested within other listeners.
     </p>
     <p>
+      If you are using a state manager like Redux and need to fire events in the stores with the
+      decorated analyticsData then you can use <code>getParentAnalyticsData(analyticsId)</code>.
+      This function will traverse the hierarchy for <code>AnalyticsDecorators</code> and build
+      the extended analyticsData that would have been generated based on all the filtering logic.
+      This parentAnalyticsData can then be passed to the stores as a property on the action.
+    </p>
+    <p>
       Open up the browser console to see the analytic events in the examples.
     </p>
   </div>
@@ -107,5 +117,10 @@ export const examples = [
     title: 'Match Filtering',
     Component: MatchExample,
     src: MatchExampleSrc,
+  },
+  {
+    title: 'Redux Store',
+    Component: ReduxStoreExample,
+    src: ReduxStoreExampleSrc,
   },
 ];

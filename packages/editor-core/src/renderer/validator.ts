@@ -48,6 +48,7 @@ export const markOrder = [
   'subsup',
   'underline',
   'code',
+  'inlineCommentMarker',
 ];
 
 export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
@@ -604,6 +605,12 @@ export const getValidMark = (mark: Mark): Mark | null => {
       case 'underline': {
         return {
           type,
+        };
+      }
+      case 'inlineCommentMarker': {
+        return {
+          type,
+          attrs,
         };
       }
     }

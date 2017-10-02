@@ -45,5 +45,6 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'mentionQuery',
     'emojiQuery',
     'textColor',
+    'inlineCommentMarker'
   ]
 });

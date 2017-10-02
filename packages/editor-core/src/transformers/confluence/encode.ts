@@ -168,6 +168,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
+          case schema.marks.inlineCommentMarker:
+            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
+            break;
           case schema.marks.textColor:
             elem = elem.appendChild(encodeTextColor(node, schema));
             break;
@@ -211,17 +214,17 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
 
   function encodeLink(node: PMNode) {
     const link: HTMLAnchorElement = doc.createElement('a');
-    link.innerHTML = node.text || '';
-    let href = '';
-    if (node.marks) {
-      node.marks.forEach(mark => {
-        if (mark.type.name === 'link') {
-          href = mark.attrs.href;
-        }
-      });
-    }
-    link.href = href;
+    const mark = getNodeMarkOfType(node, schema.marks.link);
+    link.href = mark ? mark.attrs.href : '';
     return link;
+  }
+
+  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
+    const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
+    const mark = getNodeMarkOfType(node, schema.marks.inlineCommentMarker);
+    const reference = mark ? mark.attrs.reference : '';
+    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
+    return marker;
   }
 
   function encodeTextColor(node: PMNode, schema: Schema<any, any>) {

@@ -106,7 +106,10 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 
   private getMarkProps(mark: Mark): any {
-    return mark.attrs;
+    return {
+      eventHandlers: this.eventHandlers,
+      ...mark.attrs
+    };
   }
 
   static getChildNodes(fragment: Fragment): (Node | TextWrapper)[] {

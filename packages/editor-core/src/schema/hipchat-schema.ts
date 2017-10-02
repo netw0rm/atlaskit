@@ -78,6 +78,9 @@ export const hipchatSchema: Schema<any, any> = createSchema({
 
     // Represents inline code
     'code',
+
+    // Represents CaaS action target link
+    'action'
   ],
   customNodeSpecs: {
     // The top level node for a document.

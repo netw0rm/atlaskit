@@ -21,6 +21,7 @@ export interface CardSurroundings {
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
+export type ActionTargetClickHandler = (action: { target?: string }) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
 
 export interface MentionEventHandlers {
@@ -33,6 +34,9 @@ export interface EventHandlers {
   mention?: MentionEventHandlers;
   media?: {
     onClick?: CardEventClickHandler;
+  };
+  actionTarget?: {
+    onClick?: ActionTargetClickHandler;
   };
   applicationCard?: {
     onClick?: AppCardEventClickHandler;

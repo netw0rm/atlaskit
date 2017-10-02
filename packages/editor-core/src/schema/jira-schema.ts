@@ -5,6 +5,7 @@ export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
   allowLinks?: boolean;
+  allowActionTargets?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowCodeBlock?: boolean;
   allowBlockQuote?: boolean;
@@ -20,6 +21,10 @@ export default function makeSchema(config: JIRASchemaConfig) {
 
   if (config.allowLinks) {
     marks.push('link');
+  }
+
+  if (config.allowActionTargets) {
+    marks.push('actionTarget');
   }
 
   if (config.allowLists) {

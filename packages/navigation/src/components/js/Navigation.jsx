@@ -122,12 +122,16 @@ type State = {|
 
 // NOTE: Dark mode is a user preference that takes precedence over provided themes
 function defaultContainerTheme(containerTheme, mode) {
+  if (containerTheme && containerTheme.hasDarkmode) {
+    return containerTheme;
+  }
   if (mode === 'dark') {
     return presets.dark;
   }
   return containerTheme || presets.container;
 }
 function defaultGlobalTheme(globalTheme, mode) {
+  if (globalTheme && globalTheme.hasDarkmode) return globalTheme;
   if (mode === 'dark') {
     return presets.dark;
   }

@@ -35,6 +35,7 @@ export const confluenceSchema: Schema<any, any> = createSchema({
     'underline',
     'mentionQuery',
     'code',
-    'textColor'
+    'textColor',
+    'inlineCommentMarker'
   ]
 });

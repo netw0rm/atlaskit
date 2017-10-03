@@ -1,16 +1,19 @@
-import styled from 'styled-components';
+/* eslint-disable react/prop-types */
 
-const ButtonWrapper = styled.span`
-  align-self: center;
-  display: inline-flex;
-  flex-wrap: nowrap;
-  max-width: 100%;
-  ${props => (props.fit && `
-    width: 100%;
-    justify-content: center;
-  `)}
-`;
+import React from 'react';
 
-ButtonWrapper.displayName = 'ButtonWrapper';
+const ButtonWrapper = props => {
+  const style = {
+    alignSelf: 'center',
+    display: 'inline-flex',
+    flexWrap: 'nowrap',
+    maxWidth: '100%',
+  };
+  if (props.fit) {
+    style.width = '100%';
+    style.justifyContent = 'center';
+  }
+  return <span style={style}>{props.children}</span>;
+};
 
 export default ButtonWrapper;

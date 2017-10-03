@@ -211,6 +211,7 @@ storiesOf(name, module)
                         allowTables={true}
                         allowJiraIssue={true}
                         allowUnsupportedContent={true}
+                        allowInlineCommentMarker={true}
                         allowPanel={true}
 
                         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}

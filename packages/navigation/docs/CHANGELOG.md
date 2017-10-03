@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 24.4.0 (2017-10-03)
+
+* bug fix; fix tests following event name enumeration ([8b0e0ef](https://bitbucket.org/atlassian/atlaskit/commits/8b0e0ef))
+
+* feature; analytics for QuickSearch for open, close, submit + others ([e479030](https://bitbucket.org/atlassian/atlaskit/commits/e479030))
+
+
+
+
 ## 24.3.0 (2017-09-27)
 
 * feature; darkmode drawers for navigation ([aba00b2](https://bitbucket.org/atlassian/atlaskit/commits/aba00b2))

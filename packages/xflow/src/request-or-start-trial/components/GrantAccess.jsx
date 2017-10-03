@@ -104,12 +104,14 @@ class GrantAccess extends Component {
     onComplete: PropTypes.func.isRequired,
 
     showNotifyUsersOption: PropTypes.bool,
+    showProgressIndicator: PropTypes.bool,
   };
 
   static defaultProps = {
     grantAccessToUsers: async () => {},
     retrieveUsers: async () => [],
     showNotifyUsersOption: true,
+    showProgressIndicator: true,
   };
 
   state = {
@@ -310,7 +312,11 @@ class GrantAccess extends Component {
       heading,
       defaultAccess,
       showNotifyUsersOption,
+      showProgressIndicator,
     } = this.props;
+
+    const progressIndicator = showProgressIndicator ?
+      (<ProgressIndicator progress={progress} status={status} />) : '';
 
     return (
       <ModalDialog
@@ -319,7 +325,7 @@ class GrantAccess extends Component {
         header={
           <div>
             {productLogo}
-            <ProgressIndicator progress={progress} status={status} />
+            {progressIndicator}
           </div>
         }
         footer={
@@ -479,6 +485,7 @@ export default withXFlowProvider(
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
           grantAccessShowNotifyUsersOption,
+          grantAccessShowProgressIndicator,
           grantAccessLearnMoreLink,
           // grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
@@ -497,6 +504,7 @@ export default withXFlowProvider(
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
     showNotifyUsersOption: grantAccessShowNotifyUsersOption,
+    showProgressIndicator: grantAccessShowProgressIndicator,
     learnMoreLink: grantAccessLearnMoreLink,
     // selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,

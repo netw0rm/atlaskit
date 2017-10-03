@@ -1,7 +1,9 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import { ObjectResult } from '../../../src/components/js/results';
+import { quickSearchResultTypes } from '../../../src';
 import { mountWithRootTheme } from '../_theme-util';
+
+const { ObjectResult } = quickSearchResultTypes;
 
 describe('Atlassian Object Result', () => {
   let resultWrapper;

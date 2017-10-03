@@ -25,6 +25,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/analytics": "^2.0.0",
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/blanket": "^2.4.3",
     "@atlaskit/dropdown-menu": "^3.8.0",

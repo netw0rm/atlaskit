@@ -24,7 +24,7 @@ export const shallowWithTheme = (children, theme?: RootTheme = defaultTheme) =>
 // Taken from https://github.com/styled-components/styled-components/issues/624#issuecomment-289944633
 // Ideally this would not be needed and we would use WithTheme,
 // but some tests rely on wrapper.setProps and this can only be done on the root.
-export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) => {
+export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme, options = {}) => {
   const createBroadcast = (initialValue) => {
     let listeners = [];
     let currentValue = initialValue;
@@ -53,13 +53,16 @@ export const mountWithRootTheme = (children, theme?: RootTheme = defaultTheme) =
   }, {});
 
   return mount(children, {
+    ...options,
     context: {
       [CHANNEL]: broadcast.subscribe,
       ...theme,
+      ...options.context,
     },
     childContextTypes: {
       [CHANNEL]: broadcast.publish,
       ...themeContextTypes,
+      ...options.childContextTypes,
     },
   }
   );

@@ -6,8 +6,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { ContainerResult } from '../../../src/components/js/results';
+import { quickSearchResultTypes } from '../../../src';
 
+const { ContainerResult } = quickSearchResultTypes;
 const JIRA_PROJECT_RESULT_TYPE = 'jira-project';
 
 // ===================================================================

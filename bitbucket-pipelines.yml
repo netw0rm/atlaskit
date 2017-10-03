@@ -91,8 +91,6 @@ pipelines:
             - ./build/bin/setup.sh
             # need to run this so we have access to the Bitbucket credentials so we can pull master
             - ./build/bin/prep_for_release.sh
-            # it would be preferable to have this check below, but custom manual builds wont have
-            # an associated branch name
             - ./build/bin/exit.if.branch.name.not.matches.js "production-website-DO-NOT-USE" || exit
             # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui
             # and block actual master builds

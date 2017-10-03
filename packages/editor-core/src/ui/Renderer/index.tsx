@@ -10,12 +10,13 @@ import {
   RenderOutputStat,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
-import { style } from './style';
+import { Wrapper } from './style';
 
 export interface CardSurroundings {
   collectionName: string;
   list: string[];
 }
+
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
@@ -51,8 +52,6 @@ export interface Props {
   schema?: Schema<any, any>;
 }
 
-let hasStyle = false;
-
 export default class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer: ReactSerializer;
@@ -62,16 +61,6 @@ export default class Renderer extends PureComponent<Props, {}> {
     this.providerFactory = props.dataProviders || new ProviderFactory();
 
     this.updateSerializer(props);
-  }
-
-  componentWillMount() {
-    if (!hasStyle) {
-      const stylesheet = document.createElement('style') as HTMLStyleElement;
-      stylesheet.type = 'text/css';
-      stylesheet.innerHTML = style;
-      document.head.appendChild(stylesheet);
-      hasStyle = true;
-    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -98,7 +87,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       onComplete(stat);
     }
 
-    return <div className="akRenderer">{result}</div>;
+    return <Wrapper>{result}</Wrapper>;
   }
 
   componentWillUnmount() {

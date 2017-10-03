@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ReadViewContentWrapper = styled.div`
   display: flex;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   min-width: 0;
   width: 100%;
 `;

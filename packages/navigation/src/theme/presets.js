@@ -2,9 +2,22 @@
 import { colors, themed } from '@atlaskit/theme';
 import type { Provided, ItemTheme, Background } from './types';
 
+// the following colors have been added at request of Venn. These should either
+// be added to theme.colors or moved to specific AK colors
+const darkDrawerItemHoverBackground = '#313F57';
+const darkDrawerItemActiveBackground = '#2B374D';
+
+const darkItemHoverBackground = '#253247';
+const darkItemActiveBackground = '#202B3D';
+const darkItemSelectedBackground = '#202B3D';
+
+const derivedGlobalHoverBackground = '#192238';
+const derivedGlobalActiveBackground = '#202B3D';
+const derivedGlobalSelectedBackground = '#1D2842';
+
 // Currently shared by all the themes - but need not be
 const focus = {
-  outline: colors.B100,
+  outline: themed({ light: colors.B100, dark: colors.B75 }),
 };
 
 export const container: Provided = ((): Provided => {
@@ -14,10 +27,10 @@ export const container: Provided = ((): Provided => {
       background: 'transparent',
     },
     hover: {
-      background: themed({ light: colors.N20A, dark: colors.DN40 }),
+      background: themed({ light: colors.N20A, dark: darkDrawerItemHoverBackground }),
     },
     active: {
-      background: colors.B50,
+      background: themed({ light: colors.B50, dark: darkDrawerItemActiveBackground }),
     },
     selected: {
       background: colors.N20A,
@@ -47,7 +60,7 @@ export const container: Provided = ((): Provided => {
     background: {
       primary: primaryBackground,
       secondary: primaryBackground,
-      tertiary: themed({ light: colors.N0, dark: colors.DN50 }),
+      tertiary: themed({ light: colors.N0, dark: colors.DN30 }),
     },
     text: themed({ light: colors.N500, dark: colors.DN600 }),
     subText: colors.subText,
@@ -64,20 +77,19 @@ export const dark: Provided = ((): Provided => {
     default: {
       background: 'transparent',
     },
+
     hover: {
-      background: colors.DN40,
+      background: darkItemHoverBackground,
     },
     active: {
       // Currently there is no ramp for white opacity
-      background: colors.DN30,
+      background: darkItemActiveBackground,
     },
     selected: {
-      background: colors.DN40,
+      background: darkItemSelectedBackground,
       text: colors.DN900,
     },
-    focus: {
-      outline: colors.B75,
-    },
+    focus,
     dragging: {
       // Similar to active colour - but without opacity
       background: colors.DN50,
@@ -104,62 +116,8 @@ export const dark: Provided = ((): Provided => {
       secondary: colors.DN20,
       tertiary: colors.DN30,
     },
-    text: colors.DN600,
-    subText: colors.DN400,
-    keyline: colors.DN50,
-    item,
-    dropdown,
-  };
-
-  return theme;
-})();
-export const dark2: Provided = ((): Provided => {
-  const item: ItemTheme = {
-    default: {
-      background: 'transparent',
-    },
-    hover: {
-      background: colors.DN40,
-    },
-    active: {
-      // Currently there is no ramp for white opacity
-      background: colors.DN30,
-    },
-    selected: {
-      background: colors.DN40,
-      text: colors.DN900,
-    },
-    focus: {
-      outline: colors.B75,
-    },
-    dragging: {
-      // Similar to active colour - but without opacity
-      background: colors.DN50,
-    },
-  };
-
-  const dropdown: ItemTheme = {
-    default: {
-      background: item.hover.background,
-    },
-    hover: {
-      // Going lighter to be different from hover
-      background: colors.DN60,
-    },
-    active: item.active,
-    selected: item.selected,
-    focus: item.focus,
-    dragging: item.dragging,
-  };
-
-  const theme: Provided = {
-    background: {
-      primary: colors.DN0,
-      secondary: colors.DN0,
-      tertiary: colors.DN30,
-    },
-    text: colors.DN600,
-    subText: colors.DN400,
+    text: colors.DN400,
+    subText: colors.DN100,
     keyline: colors.DN50,
     item,
     dropdown,
@@ -238,13 +196,13 @@ export const global: Provided = ((): Provided => {
       background: 'transparent',
     },
     hover: {
-      background: colors.N80A,
+      background: themed({ light: colors.N80A, dark: derivedGlobalHoverBackground }),
     },
     active: {
-      background: activeBackground,
+      background: themed({ light: activeBackground, dark: derivedGlobalActiveBackground }),
     },
     selected: {
-      background: colors.N50A,
+      background: themed({ light: colors.N50A, dark: derivedGlobalSelectedBackground }),
       text: colors.B50,
     },
     focus,
@@ -270,13 +228,14 @@ export const global: Provided = ((): Provided => {
 
   const theme: Provided = {
     background: {
-      primary: primaryBackground,
-      secondary: primaryBackground,
-      tertiary: primaryBackground,
+      primary: themed({ light: primaryBackground, dark: colors.DN0 }),
+      secondary: themed({ light: primaryBackground, dark: colors.DN0 }),
+      tertiary: themed({ light: primaryBackground, dark: colors.DN0 }),
     },
-    text: colors.B50,
-    subText: colors.B75,
-    keyline: colors.N80A,
+    hasDarkmode: true,
+    text: themed({ light: colors.B50, dark: colors.DN400 }),
+    subText: themed({ light: colors.B75, dark: colors.DN100 }),
+    keyline: themed({ light: colors.N80A, dark: colors.DN50 }),
     item,
     dropdown,
   };

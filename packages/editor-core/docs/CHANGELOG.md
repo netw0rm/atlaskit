@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.10.0 (2017-10-03)
+
+* feature; only clear formatting of marks, and heading nodes; don't modify block nodes (issues closed: ed-2775) ([97131bd](https://bitbucket.org/atlassian/atlaskit/commits/97131bd))
 ## 47.9.1 (2017-10-03)
 
 * bug fix; refactored how inline-dialog handles max-width in order to better support scrollable ([20b62a6](https://bitbucket.org/atlassian/atlaskit/commits/20b62a6))

@@ -8,10 +8,11 @@ import {
   CONFlUENCE_LANGUAGE_MAP as LANGUAGE_MAP
 } from '../../../../src';
 import {
+  inlineMacro,
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
-  table, tr, td, th, inlineMacro
+  table, tr, td, th
 } from './_schema-builder';
 chai.use(chaiPlugin);
 import { confluenceSchema as schema } from '../../../../src/schema';
@@ -541,24 +542,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       });
     });
 
-    describe('jira issue', () => {
-      check(
-        'basic',
-        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
-        doc(
-          p(
-            confluenceJiraIssue({
-              issueKey: 'ED-1068',
-              macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
-              schemaVersion: '1',
-              server: 'JIRA (product-fabric.atlassian.net)',
-              serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
-            })
-          )
-        )
-      );
-    });
-
     describe('inline-macro', () => {
       const macroId = '39f3436e-880e-4411-8494-869a59eb203f';
       const name = 'status';
@@ -574,6 +557,24 @@ describe('ConfluenceTransformer: encode - parse:', () => {
               name,
               placeholderUrl,
               params: {subtle: 'true', colour: 'Red'}
+            })
+          )
+        )
+      );
+    });
+
+    describe('jira issue', () => {
+      check(
+        'basic',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        doc(
+          p(
+            confluenceJiraIssue({
+              issueKey: 'ED-1068',
+              macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
+              schemaVersion: '1',
+              server: 'JIRA (product-fabric.atlassian.net)',
+              serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
             })
           )
         )

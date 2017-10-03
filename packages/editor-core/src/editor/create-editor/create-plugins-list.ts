@@ -19,12 +19,12 @@ import {
   textColorPlugin,
   insertBlockPlugin,
   tablesPlugin,
+  inlineMacroPlugin,
   collabEditPlugin,
   helpDialogPlugin,
   jiraIssuePlugin,
   unsupportedContentPlugin,
-  panelPlugin,
-  inlineMacroPlugin
+  panelPlugin
 } from '../plugins';
 
 /**

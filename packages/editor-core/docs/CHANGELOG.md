@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.9.0 (2017-10-03)
+
+* bug fix; build for editor-core json-schema ([024b5c3](https://bitbucket.org/atlassian/atlaskit/commits/024b5c3))
+* feature; ac:inline-comment-marker cxhtml transformer added to editor-core confluence-schema ([09de9e0](https://bitbucket.org/atlassian/atlaskit/commits/09de9e0))
 ## 47.8.1 (2017-09-28)
 
 * bug fix; fix text color parse/encode ([64c9859](https://bitbucket.org/atlassian/atlaskit/commits/64c9859))

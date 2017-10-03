@@ -33,6 +33,7 @@ export interface EditorProps {
   allowUnsupportedContent?: boolean;
   allowInlineCommentMarker?: boolean;
   allowPanel?: boolean;
+  allowInlineMacro?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

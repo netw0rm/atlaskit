@@ -15,6 +15,7 @@ export const confluenceSchema: Schema<any, any> = createSchema({
     'mediaGroup',
     'confluenceUnsupportedBlock',
     'confluenceJiraIssue',
+    'inlineMacro',
     'listItem',
     'mention',
     'text',

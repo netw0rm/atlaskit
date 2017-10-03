@@ -20,9 +20,9 @@ export default class PositionExample extends PureComponent {
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div onClick={this.changeDirection}>
+      <div onClick={this.changeDirection} key={position}>
         <Tooltip description={position} position={position}>
-          <Target>Click Me!</Target>
+          <Target>Change Position</Target>
         </Tooltip>
       </div>
     );

@@ -1,18 +1,24 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import Layer from '@atlaskit/layer';
 import { getLayerPosition } from '../utils';
-import Tip, { TooltipTrigger } from '../styled/Tooltip';
+import Div, { TooltipTrigger } from '../styled/Tooltip';
+import { Slide } from './Animation';
+import { ChildrenType, FunctionType, PositionType } from '../types';
+
+const TransitionTip = props => <Slide component={Div} {...props} />;
+
+type Props = {
+  children: ChildrenType,
+  description: string,
+  isVisible: boolean,
+  onMouseOut: FunctionType,
+  onMouseOver: FunctionType,
+  position: PositionType,
+};
 
 export default class TooltipStateless extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    description: PropTypes.string,
-    isVisible: PropTypes.bool,
-    onMouseOut: PropTypes.func,
-    onMouseOver: PropTypes.func,
-    position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
-  }
+  props: Props // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     isVisible: false,
@@ -30,10 +36,11 @@ export default class TooltipStateless extends PureComponent {
   render() {
     const { children, description, isVisible, onMouseOut, onMouseOver, position } = this.props;
     const { isFlipped } = this.state;
+
     const tooltip = isVisible ? (
-      <Tip isFlipped={isFlipped} position={position}>
+      <TransitionTip in isFlipped={isFlipped} position={position}>
         {description}
-      </Tip>
+      </TransitionTip>
     ) : null;
 
     return (

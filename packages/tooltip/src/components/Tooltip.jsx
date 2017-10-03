@@ -1,13 +1,16 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import TooltipStateless from './TooltipStateless';
+import { ChildrenType, PositionType } from '../types';
+
+type Props = {
+  children: ChildrenType,
+  description: string,
+  position: PositionType,
+};
 
 export default class Tooltip extends PureComponent {
-  static propTypes = {
-    children: PropTypes.node,
-    description: PropTypes.string,
-    position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
-  }
+  props: Props // eslint-disable-line react/sort-comp
 
   static defaultProps = { position: 'bottom' }
 

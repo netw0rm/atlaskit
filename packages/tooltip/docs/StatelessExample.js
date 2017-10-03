@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { TooltipStateless as Tooltip } from '@atlaskit/tooltip';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 
 export default class FourWayTooltip extends PureComponent {
   state = { tooltipIsVisible: false }

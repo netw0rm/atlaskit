@@ -19,11 +19,10 @@ export default class FourWayTooltip extends PureComponent {
     const position = positions[this.state.position];
 
     return (
-      <Tooltip
-        description={position}
-        position={position}
-      >
-        <Button onClick={this.changeDirection}>Click to toggle position</Button>
+      <Tooltip description={position} key={position} position={position}>
+        <Button onClick={this.changeDirection}>
+          Click to toggle position
+        </Button>
       </Tooltip>
     );
   }

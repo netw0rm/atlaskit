@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-unused-prop-types */
 
-import React, { cloneElement, Children, PureComponent } from 'react';
+import React, { Children, PureComponent } from 'react';
 // Disabling eslint in the line below because we have an unexplained,
 // unreproducible issue in CI sometimes where popper is not always resolvable.
 // See AK-2971.
@@ -10,7 +10,6 @@ import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
 import type { ElementType, FunctionType, PlacementType } from '../types';
 import { getFlipBehavior, getPlacement } from '../utils';
-import Content from './Content';
 
 type Props = {
   autoFlip: boolean | Array<'top' | 'right' | 'bottom' | 'left'>,
@@ -83,6 +82,7 @@ export default class Layer extends PureComponent {
         originalPosition: this.state.originalPosition,
       });
     }
+
     if (prevState.contentRef !== this.state.contentRef) {
       this.applyPopper(prevProps);
     }
@@ -175,19 +175,21 @@ export default class Layer extends PureComponent {
 
     if (!content) return null;
 
+    const style = {
+      top: 0,
+      left: 0,
+      position: cssPosition,
+      transform,
+      zIndex,
+    };
+
+    // NOTE: the content element may contain a `transform` property,
+    // which overrides Popper.js transform. Wrapping the element
+    // in a span provides a node for the conflicting declarations.
     return (
-      <Content innerRef={this.getContentRef}>
-        {cloneElement(content, {
-          style: {
-            ...content.props.style,
-            top: 0,
-            left: 0,
-            position: cssPosition,
-            transform,
-            zIndex,
-          },
-        })}
-      </Content>
+      <span ref={this.getContentRef} style={style}>
+        {content}
+      </span>
     );
   }
 

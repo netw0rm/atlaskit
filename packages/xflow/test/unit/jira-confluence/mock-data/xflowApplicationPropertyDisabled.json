@@ -1,9 +1,4 @@
 {
-  "id": "xflow.non.admin.request.enabled.jira.confluence",
-  "key": "xflow.non.admin.request.enabled.jira.confluence",
-  "value": "false",
-  "name":
-    "Indicate whether or not to expose the non-admin request trial flow for Jira to Confluence cross-sell",
-  "type": "boolean",
-  "defaultValue": "true"
+  "key": "xflow.request.trial.enabled",
+  "value": "false"
 }

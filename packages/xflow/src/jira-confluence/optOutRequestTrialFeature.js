@@ -1,8 +1,8 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-const xflowEnabledProperty = 'xflow.non.admin.request.enabled';
-export const optOutEndpoint = `/rest/api/2/application-properties/${xflowEnabledProperty}`;
+const xflowEnabledProperty = 'xflow.request.trial.enabled';
+export const optOutEndpoint = '/rest/growth/1/store/global';
 
 export default async () => {
   const response = await fetch(optOutEndpoint, {
@@ -12,7 +12,7 @@ export default async () => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      id: xflowEnabledProperty,
+      key: xflowEnabledProperty,
       value: false,
     }),
   });

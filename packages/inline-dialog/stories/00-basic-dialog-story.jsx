@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Button from '@atlaskit/button';
-import { gridSize } from '@atlaskit/theme';
 import { akColorG300, akColorY300 } from '@atlaskit/util-shared-styles';
 
 import InlineDialog from '../src';
@@ -19,9 +18,15 @@ const targetStyles = {
   padding: '10px',
 };
 
+const scrollContainer = {
+  maxHeight: 'inherit',
+  maxWidth: 'inherit',
+  overflow: 'auto',
+};
+
 const oversizedStyles = {
-  height: `${(gridSize() + 1) * 60}px`,
-  width: `${(gridSize() + 1) * 62}px`,
+  height: '2000px',
+  width: '2000px',
   background: akColorY300,
 };
 
@@ -96,7 +101,13 @@ storiesOf(name, module)
     </div>
   ), { overrides: codeExampleOverrrides })
   .addCodeExampleStory('Dialog with oversized content', () => {
-    const dialogContent = <div style={oversizedStyles}>oversized content</div>;
+    const dialogContent = (
+      <div style={scrollContainer}>
+        <div style={oversizedStyles}>
+          The orange box, and the scrollable area should not break out of the inline-dialog area.
+        </div>
+      </div>
+    );
 
     return (
       <div style={centeredContainerStyles}>

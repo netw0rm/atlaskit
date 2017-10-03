@@ -144,6 +144,36 @@ storiesOf(name, module)
       />
     </div>
   ))
+  .add('where there is not enough space for the tab text', () => (
+    <div
+      style={{
+        width: 400,
+        height: 200,
+        margin: '16px auto',
+        border: `1px dashed ${akColorN100}`,
+        display: 'flex',
+      }}
+    >
+      <Tabs
+        tabs={[
+          {
+            label: 'Here is an incredibly super long label, too long really',
+            defaultSelected: true,
+            content: (
+              <div>Content is here</div>
+            ),
+          },
+          {
+            label: 'here, a short label',
+            defaultSelected: true,
+            content: (
+              <div>Content is here</div>
+            ),
+          },
+        ]}
+      />
+    </div>
+  ))
   .add('with example HipChat lobby usage', () => (
     <HipChatExample />
   ));

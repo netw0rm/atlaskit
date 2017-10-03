@@ -26,10 +26,10 @@ export const Container = styled.div`
   background: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-shadow: ${getBoxShadow};
-  box-sizing: border-box;
+  box-sizing: content-box; /* do not set this to border-box or it will break the overflow handling */
   color: ${colors.text};
-  max-height: ${math.multiply(gridSize, 60)}px;
-  max-width: ${math.multiply(gridSize, 62)}px;
+  max-height: ${math.multiply(gridSize, 56)}px;
+  max-width: ${math.multiply(gridSize, 56)}px;
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 3)}px;
   z-index: 200;
 `;

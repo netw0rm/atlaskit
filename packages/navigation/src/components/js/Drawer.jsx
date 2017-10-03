@@ -26,19 +26,19 @@ type Props = {
   children?: ReactElement,
   /** The header for this Drawer – often the ContainerTitle for a given Container */
   header?: ReactElement,
-  /**  */
+  /** Distance to offset the drawer contents and back icon from the top in px */
   iconOffset?: number,
   /** Set whether the drawer is visible. */
   isOpen?: boolean,
-  /** A function to call when the backIcon button is clicked, or when the blanket
-  behind the Drawer is clicked */
+  /** A function to call when the backIcon button is clicked, the blanket
+  behind the Drawer is clicked or the escape key is pressed */
   onBackButton: () => void,
-  /**  */
+  /** Standard onKeyDown callback */
   onKeyDown?: () => void,
   /** The primary icon in the Drawer – usually the globalPrimaryIcon that was
   given to the GlobalNavigation component */
   primaryIcon?: ReactElement,
-  /**  */
+  /** Controls the width of the drawer */
   width?: 'narrow' | 'wide' | 'full',
   /** Fires anayltics event. Injected by withAnalytics. */
   fireAnalyticsEvent: (eventName: string, eventData?: Object) => void,

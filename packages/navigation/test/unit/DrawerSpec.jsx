@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Blanket from '@atlaskit/blanket';
-import Drawer from '../../src/components/js/Drawer';
+import Drawer, { analyticsNamespace } from '../../src/components/js/Drawer';
 import ContainerHeader from '../../src/components/js/ContainerHeader';
 import DrawerBackIcon from '../../src/components/js/DrawerBackIcon';
 import DrawerSide from '../../src/components/styled/DrawerSide';
@@ -22,6 +22,7 @@ describe('<Drawer />', () => {
   };
 
   let drawerWrapper;
+  const onAnalyticsEventStub = jest.fn();
   const onBackButtonStub = jest.fn();
   const onKeyDownStub = jest.fn();
   beforeEach(() => {
@@ -30,13 +31,18 @@ describe('<Drawer />', () => {
         isOpen
         onBackButton={onBackButtonStub}
         onKeyDown={onKeyDownStub}
-      />
+      />,
+      {
+        context: { onAnalyticsEvent: onAnalyticsEventStub },
+        childContextTypes: { onAnalyticsEvent: PropTypes.func },
+      }
     );
   });
 
   afterEach(() => {
     // Remove keydown event listener on `window`
     drawerWrapper.unmount();
+    onAnalyticsEventStub.mockReset();
     onBackButtonStub.mockReset();
     onKeyDownStub.mockReset();
   });
@@ -192,5 +198,26 @@ describe('<Drawer />', () => {
         .simulate('click');
       expect(onBackButtonStub).toHaveBeenCalled();
     });
+  });
+
+  describe('analytics', () => {
+    it('should capture when the drawer is closed by blanket click', () => {
+      drawerWrapper
+        .find(Blanket)
+        .simulate('click');
+      expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'blanket' }, false);
+    });
+    it('should capture when the drawer is closed by esc key press', () => {
+      keyDown(escKeyCode);
+      expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'esc-key' }, false);
+    });
+    it('should capture when the drawer is closed by back button click', () => {
+      drawerWrapper
+          .find(DrawerTrigger)
+          .find(GlobalItem)
+          .simulate('click');
+      expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'back-btn' }, false);
+    });
+    it('should capture when the drawer is opened');
   });
 });

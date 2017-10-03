@@ -23,4 +23,4 @@ $LERNA_LOC exec --scope "$PKG" $@ -- git clean -Xdf .
 
 # then bootstrap it (passing on extra args for things like --include-filtered-dependencies)
 $CHALK --no-stdin -t "{blue bootstraping package(s)}"
-$LERNA_LOC bootstrap --scope "$PKG" $@
+$LERNA_LOC bootstrap --concurrency=2 --scope "$PKG" $@

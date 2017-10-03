@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.9.1 (2017-10-03)
+
+* bug fix; refactored how inline-dialog handles max-width in order to better support scrollable ([20b62a6](https://bitbucket.org/atlassian/atlaskit/commits/20b62a6))
+* bug fix; fix warning due to using component other than Button inside ButtonGroup (issues closed: #ed-2866) ([931a469](https://bitbucket.org/atlassian/atlaskit/commits/931a469))
 ## 47.9.0 (2017-10-03)
 
 * bug fix; build for editor-core json-schema ([024b5c3](https://bitbucket.org/atlassian/atlaskit/commits/024b5c3))

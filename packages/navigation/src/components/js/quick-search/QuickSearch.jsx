@@ -301,6 +301,6 @@ export default
     withAnalytics(
       QuickSearch,
       {},
-      { analyticsId: 'atlaskit/navigation/quicksearch' }
+      { analyticsId: 'atlaskit.navigation.quicksearch' }
     )
   );

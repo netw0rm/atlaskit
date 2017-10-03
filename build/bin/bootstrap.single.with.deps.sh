@@ -6,4 +6,4 @@ set -e
 # instead of the back
 
 BASEDIR=$(dirname $0)
-$BASEDIR/bootstrap.single.sh "$1" --include-filtered-dependencies
+$BASEDIR/bootstrap.single.sh "$1" --concurrency=2 --include-filtered-dependencies

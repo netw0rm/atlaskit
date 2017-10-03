@@ -141,8 +141,7 @@ export default class SiteEmojiResource {
     const path = `../${emojiId.id}`;
     return emojiRequest(this.siteServiceConfig, { path }).then(serviceResponse => {
       const response = denormaliseEmojiServiceResponse(serviceResponse);
-      const emoji = response.emojis[0];
-      return isSiteEmoji(emoji) ? emoji : undefined;
+      return response.emojis[0];
     }).catch(error => {
       debug('failed to load emoji', emojiId, error);
       return undefined;

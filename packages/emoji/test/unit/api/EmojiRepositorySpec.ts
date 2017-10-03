@@ -360,11 +360,11 @@ describe('EmojiRepository', () => {
     });
   });
 
-  describe('#addCustomEmoji', () => {
+  describe('#addUnknownEmoji', () => {
     it('add custom emoji', () => {
       const siteEmojiId = toEmojiId(siteTest);
       const repository = new EmojiRepository(allEmojis);
-      repository.addCustomEmoji(siteTest);
+      repository.addUnknownEmoji(siteTest);
       const searchEmojis = repository.search('').emojis;
       expect(searchEmojis.length, 'Extra emoji in results').to.equal(searchableEmojis.length + 1);
       expect(containsEmojiId(searchEmojis, siteEmojiId), 'Contains site emoji').to.equal(true);
@@ -373,14 +373,17 @@ describe('EmojiRepository', () => {
       expect(repository.findByShortName(siteEmojiId.shortName)).to.be.deep.equal(siteTest);
     });
 
-    it('add non-custom emoji rejected', () => {
-      try {
-        const repository = new EmojiRepository(allEmojis);
-        repository.addCustomEmoji(standardTest);
-        expect(false, 'Should throw exception').to.equal(true);
-      } catch (e) {
-        expect(true, 'Exception should be thrown').to.equal(true);
-      }
+    it('add non-custom emoji', () => {
+      const standardTest = allEmojis[0];
+      const repository = new EmojiRepository(allEmojis.slice(1));
+      const numSearchable = repository.search('').emojis.length;
+      repository.addUnknownEmoji(standardTest);
+      const searchEmojis = repository.search('').emojis;
+      expect(searchEmojis.length, 'All emojis in results').to.equal(numSearchable + 1);
+      expect(containsEmojiId(searchEmojis, toEmojiId(standardTest))).to.equal(true);
+
+      expect(repository.findById(standardTest.id as string)).to.be.deep.equal(standardTest);
+      expect(repository.findByShortName(standardTest.shortName)).to.be.deep.equal(standardTest);
     });
   });
 

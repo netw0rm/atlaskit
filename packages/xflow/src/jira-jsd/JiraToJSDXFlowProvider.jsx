@@ -59,7 +59,7 @@ const messages = defineMessages({
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.everyone',
-    defaultMessage: 'Everyone in JIRA',
+    defaultMessage: 'Everyone in Jira Software',
   },
   grantAccessOptionItemsLabelSiteAdmins: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.site-admins',
@@ -71,7 +71,7 @@ const messages = defineMessages({
   },
   grantAccessSelectLabel: {
     id: 'xflow.j2jsd.start-trial.grant-access.select-label',
-    defaultMessage: 'Who can start solving problems in JIRA Service Desk?',
+    defaultMessage: 'Who can start solving problems in Jira Service Desk?',
   },
   grantAccessUserSelectPlaceholder: {
     id: 'xflow.j2jsd.start-trial.grant-access.select-placeholder',
@@ -179,6 +179,7 @@ export const defaultProps = intl => ({
       grantAccessDefaultSelectedRadio: 'everyone',
       grantAccessUsersOption: 'specific-users',
       grantAccessShowNotifyUsersOption: false,
+      grantAccessShowProgressIndicator: false,
       grantAccessOptionItems: [
         {
           value: 'everyone',
@@ -193,7 +194,7 @@ export const defaultProps = intl => ({
           label: intl.formatMessage(messages.grantAccessOptionItemsLabelSpecificUsers),
         },
       ],
-      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
+      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/jira/service-desk/pricing?tab=cloud',
 
       loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
       loadingProductMessage: intl.formatMessage(messages.loadingProductMessage),
@@ -234,6 +235,10 @@ export const defaultProps = intl => ({
   goToProduct,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
+  checkProductRequestFlag: () => (false),
+  setProductRequestFlag: null,
+  optOutRequestTrialFeature: null,
+  cancelOptOut: null,
 });
 
 export class JiraToJSDXFlowProviderBase extends Component {

@@ -86,8 +86,7 @@ class RequestOrStartTrial extends Component {
         activationState: INACTIVE,
       });
     } else {
-      const activationState =
-        hasPermissionToAddProduct ? await getProductActivationState() : INACTIVE;
+      const activationState = await getProductActivationState();
       if (activationState === ACTIVE || activationState === ACTIVATING) {
         this.setState({
           screen: Screens.ALREADY_STARTED,

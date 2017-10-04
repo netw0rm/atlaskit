@@ -2,10 +2,6 @@
 import type { ItemTheme } from './types';
 import { containerTitleHorizontalPadding, containerTitleIconSpacing } from '../shared-variables';
 
-function clone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
-}
-
 const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   const original: ItemTheme = outerTheme[key];
 
@@ -16,7 +12,7 @@ const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   }
 
   // TODO: deep modification while respecting types
-  const newTheme = clone(original);
+  const newTheme = { ...original };
 
   newTheme.padding.default.left = containerTitleHorizontalPadding;
   newTheme.padding.default.right = containerTitleHorizontalPadding;

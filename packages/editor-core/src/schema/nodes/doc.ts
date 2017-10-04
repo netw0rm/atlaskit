@@ -20,6 +20,7 @@ import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
 import { Definition as InlineMacro } from './inline-macro';
+import { Definition as Extension } from './extension';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -39,7 +40,7 @@ import { Definition as InlineCommentMarker } from '../marks/inline-comment-marke
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList | Table
+  DecisionList | TaskList | Table | Extension
 >;
 
 /**

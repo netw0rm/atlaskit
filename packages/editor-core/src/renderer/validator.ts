@@ -518,6 +518,16 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
         }
         break;
       }
+      case 'extension': {
+        if (type) {
+          return {
+            type,
+            content,
+            attrs
+          };
+        }
+        break;
+      }
     }
   }
 

@@ -33,6 +33,7 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'taskList',
     'taskItem',
     'unknownBlock',
+    'extension',
   ],
   marks: [
     'link',

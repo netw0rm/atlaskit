@@ -9,6 +9,7 @@ import DecisionItem from './decisionItem';
 import DecisionList from './decisionList';
 import Doc from './doc';
 import Emoji from './emoji';
+import Extension from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import ListItem from './listItem';
@@ -36,6 +37,7 @@ export const nodeToReact = {
   'decisionList': DecisionList,
   'doc': Doc,
   'emoji': Emoji,
+  'extension': Extension,
   'hardBreak': HardBreak,
   'heading': Heading,
   'listItem': ListItem,
@@ -157,6 +159,7 @@ export {
   DecisionList,
   Doc,
   Emoji,
+  Extension,
   HardBreak,
   Heading,
   ListItem,

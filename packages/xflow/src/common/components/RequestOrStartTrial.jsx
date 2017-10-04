@@ -78,7 +78,8 @@ class RequestOrStartTrial extends Component {
     if (!hasPermissionToAddProduct) {
       this.setState({
         screen: Screens.REQUEST_TRIAL,
-        activationState: INACTIVE, // HACK: Assume that if they can't add, the product is inactive.
+        // We assume that the product is inactive if they don't have permission.
+        activationState: INACTIVE,
       });
     } else {
       const activationState =

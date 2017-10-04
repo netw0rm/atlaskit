@@ -127,17 +127,24 @@ const messages = defineMessages({
     id: 'xflow.j2jsd.request-trial.note.placeholder',
     defaultMessage: 'I would like to try Jira Service Desk because…',
   },
+  notePlaceholderShort: {
+    id: 'xflow.j2c.request-trial.note.placeholder.short',
+    defaultMessage: "Hi! I'd like to try Jira Service Desk.",
+  },
 });
 
 export const defaultProps = intl => ({
   config: {
     productLogo: <JiraServiceDeskLogo />,
     requestTrial: {
-      accessBanner: 'https://placehold.it/352x214',
+      accessImage:
+        'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
+      accessLearnMoreLink: 'https://www.atlassian.com/software/jira/service-desk',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
+      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     startTrial: {
       confirmTrialHeading: intl.formatMessage(messages.confirmTrialHeading),

@@ -77,13 +77,13 @@ export const dark: Provided = ((): Provided => {
     default: {
       background: 'transparent',
     },
-
     hover: {
       background: darkItemHoverBackground,
     },
     active: {
       // Currently there is no ramp for white opacity
       background: darkItemActiveBackground,
+      text: colors.B100,
     },
     selected: {
       background: darkItemSelectedBackground,
@@ -200,6 +200,7 @@ export const global: Provided = ((): Provided => {
     },
     active: {
       background: themed({ light: activeBackground, dark: derivedGlobalActiveBackground }),
+      text: themed({ light: colors.B50, dark: colors.B100 }),
     },
     selected: {
       background: themed({ light: colors.N50A, dark: derivedGlobalSelectedBackground }),

@@ -1,6 +1,7 @@
 // @flow
 import {
   colors,
+  themed,
   gridSize as akGridSize,
 } from '@atlaskit/theme';
 import {
@@ -68,7 +69,7 @@ export const zIndex = {
 
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
-  resizer: colors.B200,
+  resizer: themed({ light: colors.B200, dark: colors.B100 }),
   presenceIconBg: colors.N0,
   scrollbarBackground: 'rgba(0,0,0,0.2)',
   scrollbarHoverBackground: 'rgba(0,0,0,0.4)',

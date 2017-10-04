@@ -42,7 +42,7 @@ const itemThemeFromNavTheme = (
   },
   active: {
     background: navigationTheme.item.active.background,
-    text: navigationTheme.text,
+    text: navigationTheme.item.active.text || navigationTheme.text,
     secondaryText: navigationTheme.subText,
   },
   selected: {

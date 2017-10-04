@@ -3,7 +3,8 @@ import { drawerBackIconSize } from '../../utils/drawer-style-variables';
 import { getProvided } from '../../theme/util';
 
 const DrawerBackIconOuter = styled.div`
-  background-color: ${({ theme }) => getProvided(theme).item.hover.background};
+  background-color: red;
+  background-color: ${({ theme }) => getProvided(theme).item.default.background};
   border-radius: 50%;
   color: ${({ theme }) => getProvided(theme).text};
   cursor: pointer;

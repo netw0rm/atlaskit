@@ -103,7 +103,7 @@ const messages = defineMessages({
   },
   alreadyStartedMessage1: {
     id: 'xflow.j2jsd.start-trial.already-started.message.p1',
-    defaultMessage: 'You’re all set to create vital project documentation with your team.',
+    defaultMessage: 'With Jira Service Desk, IT and developer teams can collaborate on one platform to fix incidents faster and push changes with confidence.',
   },
   alreadyStartedGetStartedButtonText: {
     id: 'xflow.j2jsd.start-trial.already-started.get-started-button',

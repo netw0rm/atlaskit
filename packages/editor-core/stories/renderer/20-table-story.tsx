@@ -26,20 +26,12 @@ import {
 
 import { EventHandlers } from '../../src/ui/Renderer';
 import { CardEvent } from '@atlaskit/media-card';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('nodes/table', () => {
     const emojiProvider = emojiStoryData.getEmojiResource();
-    const mediaProvider = storyMediaProviderFactory({
-      defaultClientId,
-      defaultServiceHost,
-      defaultCollectionName,
-      StoryBookTokenProvider,
-    });
+    const mediaProvider = storyMediaProviderFactory();
     const providerFactory = new ProviderFactory();
     providerFactory.setProvider('emojiProvider', emojiProvider);
     providerFactory.setProvider('mediaProvider', mediaProvider);

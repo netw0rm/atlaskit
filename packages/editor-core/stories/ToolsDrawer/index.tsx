@@ -2,9 +2,6 @@ import * as React from 'react';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import Button from '@atlaskit/button';
 
 import { Content, ButtonGroup } from './../styles';
@@ -12,14 +9,6 @@ import { Content, ButtonGroup } from './../styles';
 import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';
 import { storyMediaProviderFactory } from '../../src/test-helper';
-
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => {});
@@ -42,11 +31,12 @@ const providers = {
     'undefined' : undefined,
   },
   mediaProvider: {
-    resolved: storyMediaProviderFactory(mediaTestHelpers),
+    resolved: storyMediaProviderFactory(),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
-    'w/o link cards': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, true, undefined, false),
+    'view only': storyMediaProviderFactory(undefined, undefined, undefined, false),
+    'w/o link cards': storyMediaProviderFactory(undefined, undefined, undefined, true, undefined, false),
+    'with userAuthProvider': storyMediaProviderFactory(undefined, undefined, undefined, true, undefined, true, true),
     'undefined' : undefined,
   },
   activityProvider: {

@@ -1,15 +1,20 @@
-import { GenericUploadEvents } from 'mediapicker';
+import {
+  GenericUploadEvents,
+  ModuleConfig,
+  ComponentConfigs
+} from 'mediapicker';
+import { PickerType } from '../../../../src/plugins/media/picker-facade';
 
 export default class MockMediaPicker {
-  public pickerType: string;
-  public pickerConfig: any;
-  public extraConfig?: any;
+  public pickerType: PickerType;
+  public moduleConfig: ModuleConfig;
+  public componentConfig?: ComponentConfigs;
   public activated = false;
   public shown = false;
   public torndown = false;
   public deactivated = false;
   public cancelled = false;
-  public listeners: {[eventName: string]: Array<(...args: any[]) => any> } = {};
+  public listeners: { [eventName: string]: Array<(...args: any[]) => any> } = {};
   public uploaded?: [string, string];
 
   on(eventName: string, cb: (...args: any[]) => any) {

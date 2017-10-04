@@ -5,7 +5,6 @@ import * as sinon from 'sinon';
 import {
   DefaultMediaStateManager,
 } from '@atlaskit/media-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   mediaPluginFactory,
   MediaPluginState,
@@ -41,7 +40,7 @@ const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
 const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  return storyMediaProviderFactory(undefined, testCollectionName, stateManager);
 };
 
 describe('Media plugin', () => {

@@ -14,10 +14,6 @@ import { CardEvent } from '@atlaskit/media-card';
 import ProviderFactory from '../../src/providerFactory';
 import { storyMediaProviderFactory, storyDecorator } from '../../src/test-helper';
 
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-
 import {
   videoFileId,
   audioFileId,
@@ -30,12 +26,7 @@ import {
   trelloLinkId,
 } from '@atlaskit/media-test-helpers';
 
-const mediaProvider = storyMediaProviderFactory({
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-});
+const mediaProvider = storyMediaProviderFactory();
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))

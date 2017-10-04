@@ -3,28 +3,26 @@ import {
   MediaProvider,
   MediaStateManager,
 } from '@atlaskit/media-core';
+import {
+  defaultCollectionName,
+  StoryBookAuthProvider,
+  StoryBookUserAuthProvider,
+  defaultParams
+} from '@atlaskit/media-test-helpers';
 
 /**
  * Add "import * as mediaTestHelpers from '@atlaskit/media-test-helpers'"
  * at the beginning of your file and pass "mediaTestHelpers" into this function
  */
-export function storyMediaProviderFactory (
-  mediaTestHelpers,
-  collection?: string,
+export function storyMediaProviderFactory(
+  serviceHost: string = defaultParams.serviceHost,
+  collectionName: string = defaultCollectionName,
   stateManager?: MediaStateManager,
   includeUploadContext = true,
   dropzoneContainer?: HTMLElement,
   includeLinkCreateContext = true,
+  includeUserAuthProvider = false,
 ) {
-  const {
-    defaultClientId,
-    defaultServiceHost,
-    defaultCollectionName,
-    StoryBookTokenProvider,
-  } = mediaTestHelpers;
-
-  const collectionName = collection || defaultCollectionName;
-
   return Promise.resolve<MediaProvider>({
     stateManager,
     uploadParams: {
@@ -32,26 +30,24 @@ export function storyMediaProviderFactory (
       dropzoneContainer,
     },
     viewContext: Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
-      serviceHost: defaultServiceHost,
-      tokenProvider: StoryBookTokenProvider.tokenProvider
+      serviceHost: serviceHost,
+      authProvider: StoryBookAuthProvider.create(false)
     }),
     uploadContext: !includeUploadContext ? undefined : Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
-      tokenProvider: StoryBookTokenProvider.withAccess({
+      authProvider: StoryBookAuthProvider.create(false, {
         [`urn:filestore:collection:${collectionName}`]: [
           'read', 'insert'
         ],
         'urn:filestore:chunk:*': ['create', 'read'],
         'urn:filestore:upload': ['create'],
         'urn:filestore:upload:*': ['read', 'update']
-      })
+      }),
+      userAuthProvider: !includeUserAuthProvider ? undefined : StoryBookUserAuthProvider.create()
     }),
     linkCreateContext: !includeLinkCreateContext ? undefined : Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
       serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
-      tokenProvider: StoryBookTokenProvider.withAccess({
+      authProvider: StoryBookAuthProvider.create(false, {
         [`urn:filestore:collection:${collectionName}`]: [
           'read', 'update'
         ],

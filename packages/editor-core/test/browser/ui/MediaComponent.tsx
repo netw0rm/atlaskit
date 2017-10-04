@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   Context,
   ContextConfig,
@@ -54,7 +53,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
   const getFreshResolvedProvider = () => {
-    return Promise.resolve(storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager)) as Promise<MediaProvider>;
+    return Promise.resolve(storyMediaProviderFactory(undefined, testCollectionName, stateManager)) as Promise<MediaProvider>;
   };
 
   it('should render a CardView component if the media type is file without provider', () => {

@@ -1,5 +1,12 @@
 # @atlaskit/tabs
 
+## 4.0.1 (2017-10-04)
+
+* bug fix; tabs now hide overflow, and ellipsis text-overflow (issues closed: #ak3519) ([aa91734](https://bitbucket.org/atlassian/atlaskit/commits/aa91734))
+
+
+
+
 ## 4.0.0 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -21,5 +21,5 @@ export default async () => {
     throw new Error(`Unable to complete opt-out request at this time. Status: ${response.status}`);
   }
 
-  return response.json();
+  return true;
 };

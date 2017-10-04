@@ -198,6 +198,33 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.actions is not an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: { yes: 'no' }
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "applicationCard" if attrs.actions is an array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [{
+              title: 'test',
+              target: 'test.target'
+            }]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+
       it('should return "text" if attrs.details is not an array', () => {
         const applicationCard = {
           type: 'applicationCard',

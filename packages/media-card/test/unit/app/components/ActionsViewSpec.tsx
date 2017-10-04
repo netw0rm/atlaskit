@@ -16,7 +16,7 @@ describe('ActionsView', () => {
   });
 
   it('should render a button and zero menu items when there is one action', () => {
-    const actions: AppCardAction[] = [{title: 'Open'}];
+    const actions: AppCardAction[] = [{title: 'Open', target: 'test.target.action'}];
     const element = shallow(<ActionsView actions={actions} isInversed={false}/>);
     expect(element.find(Button)).toHaveLength(1);
     expect(element.find(ActionsMenu)).toHaveLength(0);
@@ -24,9 +24,9 @@ describe('ActionsView', () => {
 
   it('should render a button and two menu items when there are more than one actions', () => {
     const actions: AppCardAction[] = [
-      {title: 'Open'},
-      {title: 'View'},
-      {title: 'Reply'}
+      {title: 'Open', target: 'test.target.open'},
+      {title: 'View', target: 'test.target.view'},
+      {title: 'Reply', target: 'test.target.reply'}
     ];
     const element = shallow(<ActionsView actions={actions} isInversed={false}/>);
     expect(element.find(Button)).toHaveLength(2);

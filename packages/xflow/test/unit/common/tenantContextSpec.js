@@ -80,7 +80,7 @@ describe('tenantContext', () => {
         await getUserDisplayName(TEST_USERNAME);
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to determine if the user was a site administrator. Status: 404')
+          new Error('Unable to retrieve information about a user. Status: 404')
         );
       }
     });
@@ -92,7 +92,7 @@ describe('tenantContext', () => {
         await getUserDisplayName(TEST_USERNAME);
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to determine if the user was a site administrator. Status: 500')
+          new Error('Unable to retrieve information about a user. Status: 500')
         );
       }
     });
@@ -128,7 +128,7 @@ describe('tenantContext', () => {
         await isUserTrusted(TEST_USERNAME);
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to determine if the user was a site administrator. Status: 404')
+          new Error('Unable to retrieve information about a user. Status: 404')
         );
       }
     });
@@ -140,7 +140,7 @@ describe('tenantContext', () => {
         await isUserTrusted(TEST_USERNAME);
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to determine if the user was a site administrator. Status: 500')
+          new Error('Unable to retrieve information about a user. Status: 500')
         );
       }
     });

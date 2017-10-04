@@ -71,8 +71,12 @@ class RequestOrStartTrial extends Component {
     try {
       hasPermissionToAddProduct = await canCurrentUserAddProduct();
     } catch (e) {
-      hasPermissionToAddProduct = false;
       firePrivateAnalyticsEvent('xflow.request-or-start-trial.trusted-user-check.failed');
+      this.setState({
+        initializingCheckFailed: true,
+        showInitializationError: true,
+      });
+      return;
     }
 
     if (!hasPermissionToAddProduct) {

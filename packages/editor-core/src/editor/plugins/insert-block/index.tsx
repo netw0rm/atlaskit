@@ -6,10 +6,11 @@ import { stateKey as tablesStateKey } from '../../../plugins/table';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
 
 const insertBlockPlugin: EditorPlugin = {
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance) {
+    const isComment = appearance === 'comment';
     const pluginStateBlockType = blockTypeStateKey.getState(editorView.state);
     const pluginStateTable = tablesStateKey.getState(editorView.state);
-    const pluginStateMedia = mediaStateKey.getState(editorView.state);
+    const pluginStateMedia = !isComment && mediaStateKey.getState(editorView.state);
     return <ToolbarInsertBlock
       editorView={editorView}
       pluginStateBlockType={pluginStateBlockType}

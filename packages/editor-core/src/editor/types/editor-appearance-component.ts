@@ -5,6 +5,8 @@ import { UIComponentFactory, ReactElement } from '../types';
 
 export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
+  onSave?: (editorView: EditorView) => void;
+  onCancel?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
   editorView?: EditorView;

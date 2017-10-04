@@ -213,6 +213,7 @@ storiesOf(name, module)
                         allowUnsupportedContent={true}
                         allowInlineCommentMarker={true}
                         allowPanel={true}
+                        allowInlineMacro={true}
 
                         mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
                         emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}

@@ -28,7 +28,7 @@ export default (productKey) => async (comment) => {
   try {
     const avatar = await getCurrentUserAvatarUrl();
     const cloudId = await getCloudId();
-    const displayName = getUserDisplayName();
+    const displayName = await getUserDisplayName();
     const instanceName = getInstanceName();
 
     const response = await fetch(PRODUCT_REQUEST_ENDPOINT_EAST, {

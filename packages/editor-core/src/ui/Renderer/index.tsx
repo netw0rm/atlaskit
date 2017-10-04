@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
 import { Schema } from '../../prosemirror';
@@ -9,11 +10,13 @@ import {
   RenderOutputStat,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
+import { Wrapper } from './style';
 
 export interface CardSurroundings {
   collectionName: string;
   list: string[];
 }
+
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
@@ -84,7 +87,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       onComplete(stat);
     }
 
-    return result;
+    return <Wrapper>{result}</Wrapper>;
   }
 
   componentWillUnmount() {

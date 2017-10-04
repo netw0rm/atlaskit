@@ -17,10 +17,10 @@ import GrantAccess from '../../../src/request-or-start-trial/components/GrantAcc
 import LoadingTime from '../../../src/request-or-start-trial/components/LoadingTime';
 import AlreadyStarted from '../../../src/request-or-start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/request-or-start-trial/components/ProgressIndicator';
-import ErrorFlag from '../../../src/common/components/ErrorFlag';
 import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
+import RequestTrial from '../../../src/request-or-start-trial/components/RequestTrial';
 
 const noop = () => {};
 
@@ -323,7 +323,7 @@ describe('@atlaskit/xflow', () => {
     });
   });
 
-  describe('error activating confluence', () => {
+  describe('error retrieving canCurrentUserAddProduct', () => {
     let xflow;
 
     beforeEach(() => {
@@ -343,15 +343,9 @@ describe('@atlaskit/xflow', () => {
       expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', async () => {
-      // eventually render to error flag
-      await waitUntil(() => xflow.find(ErrorFlag).length === 1);
-      // should render error messages
-      expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Dismiss flag');
-      expect(xflow.find(ErrorFlag).text()).toMatch("Let's try again.");
-      expect(xflow.find(ErrorFlag).text()).toMatch('Retry');
+    it('should render RequestTrial component', async () => {
+      // eventually render RequestTrail
+      await waitUntil(() => xflow.find(RequestTrial).length === 1);
     });
   });
 });

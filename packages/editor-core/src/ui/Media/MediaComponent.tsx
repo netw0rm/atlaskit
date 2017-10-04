@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-  Card,
-  CardView,
   CardStatus,
   CardDimensions,
   Identifier,
 } from '@atlaskit/media-card';
+import styled from 'styled-components';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 import {
   MediaItemType,
@@ -34,6 +34,23 @@ export const MEDIA_HEIGHT = 125;
 export const FILE_WIDTH = 156;
 export const LINK_WIDTH = 400;
 
+type PlaceholderProps = { dimensions?: CardDimensions };
+
+// tslint:disable-next-line
+const FilePlaceholder = styled.div`
+  background: ${akColorN30};
+  width: ${ ({ dimensions: { width = FILE_WIDTH} = {} }: PlaceholderProps) => width }px;
+  min-height: ${ ({ dimensions: { height = MEDIA_HEIGHT} = {} }: PlaceholderProps) => height }px;
+`;
+
+// tslint:disable-next-line
+const LinkPlaceholder = styled.div`
+  background: ${akColorN30};
+  width: ${ ({ dimensions: { width = LINK_WIDTH} = {} }: PlaceholderProps) => width }px;
+  min-height: ${ ({ dimensions: { height = MEDIA_HEIGHT} = {} }: PlaceholderProps) => height }px;
+`;
+
+
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
   editorView?: EditorView;
@@ -48,6 +65,8 @@ export interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
   linkCreateContext?: Context;
+  Card?: React.ComponentClass<any>;
+  CardView?: React.ComponentClass<any>;
 }
 
 /**
@@ -93,6 +112,11 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     if (mediaProvider) {
       mediaProvider.then(this.handleMediaProvider);
     }
+
+    require.ensure([], (require) => {
+      const { Card, CardView } = require('@atlaskit/media-card');
+      this.setState({ Card, CardView });
+    });
   }
 
   public componentWillReceiveProps(nextProps) {
@@ -139,27 +163,38 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private renderLoadingCard(mediaItemType: MediaItemType, url?: string) {
+  private renderLoadingCard(url?: string, mediaItemType: MediaItemType = 'link') {
+    const { CardView } = this.state;
     const { cardDimensions } = this.props;
 
-    return (
-      <CardView
-        metadata={{ type: mediaItemType, url, title: '' }}
-        status="loading"
-        appearance="horizontal"
-        mediaItemType={mediaItemType}
-        dimensions={cardDimensions}
-      />
-    );
+    if (CardView) {
+      return (
+        <CardView
+          metadata={{ type: mediaItemType, url, title: '' }}
+          status="loading"
+          appearance="horizontal"
+          mediaItemType={mediaItemType}
+          dimensions={cardDimensions}
+        />
+      );
+    }
+
+    if (mediaItemType === 'link') {
+      return <LinkPlaceholder dimensions={cardDimensions} />;
+    } else if (mediaItemType === 'file') {
+      return <FilePlaceholder dimensions={cardDimensions} />;
+    }
+
+    return null;
   }
 
   private renderLink() {
-    const { mediaProvider, linkCreateContext } = this.state;
+    const { mediaProvider, linkCreateContext, Card } = this.state;
     const { id, collection, cardDimensions, onDelete, appearance, ...otherProps } = this.props;
     const hasProviders = mediaProvider && linkCreateContext;
 
-    if (!hasProviders) {
-      return this.renderLoadingCard('link');
+    if (!hasProviders || !Card) {
+      return this.renderLoadingCard();
     }
 
     const identifier: Identifier = {
@@ -170,7 +205,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     if (id.substr(0, 10) === 'temporary:') {
       const url = id.substr(id.indexOf(':', 11) + 1);
-      return this.renderLoadingCard('link', url);
+      return this.renderLoadingCard(url);
     }
 
     if (onDelete) {
@@ -190,11 +225,21 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderFile() {
-    const { mediaProvider, viewContext } = this.state;
-    const { id } = this.props;
+    const { mediaProvider, viewContext, CardView } = this.state;
+    const { id, cardDimensions } = this.props;
 
     if (!mediaProvider || !viewContext) {
-      return this.renderLoadingCard('file');
+      if (!CardView) {
+        return <FilePlaceholder dimensions={cardDimensions} />;
+      }
+
+      return (
+        <CardView
+          status="loading"
+          mediaItemType="file"
+          dimensions={cardDimensions}
+        />
+      );
     }
 
     if (id.substr(0, 10) === 'temporary:') {
@@ -205,7 +250,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private renderPublicFile() {
-    const { viewContext } = this.state;
+    const { viewContext, Card } = this.state;
     const { cardDimensions, collection, id, onDelete, onClick } = this.props;
     const otherProps: any = {};
 
@@ -215,6 +260,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     if (onClick) {
       otherProps.onClick = onClick;
+    }
+
+    if (!Card) {
+      return <FilePlaceholder dimensions={cardDimensions} />;
     }
 
     return (
@@ -235,8 +284,8 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { thumbnail, fileName, fileSize, fileType } = state;
-    const { onDelete } = this.props;
+    const { thumbnail, fileName, fileSize, fileType, CardView } = state;
+    const { onDelete, cardDimensions } = this.props;
 
     // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
     let dataURI: string | undefined;
@@ -266,6 +315,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const otherProps: any = {};
     if (onDelete) {
       otherProps.actions = [CardDelete(onDelete)];
+    }
+
+    if (!CardView) {
+      return <FilePlaceholder dimensions={cardDimensions} />;
     }
 
     return <CardView

@@ -9,7 +9,6 @@ import {
 } from '../../../ui/Media/MediaComponent';
 import { MediaProps } from './media';
 import { CardEvent } from '@atlaskit/media-card';
-import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { CardSurroundings } from '../../../ui/Renderer';
 
 export interface MediaGroupProps {
@@ -19,6 +18,7 @@ export interface MediaGroupProps {
 export interface MediaGroupState {
   animate: boolean;
   offset: number;
+  FilmstripView?: React.ComponentClass<any>;
 }
 
 export const SINGLE_FILE_WIDTH = 275;
@@ -102,6 +102,13 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   private handleSize = ({offset}) => this.setState({offset});
   private handleScroll = ({animate, offset}) => this.setState({animate, offset});
 
+  componentWillMount() {
+    require.ensure(['@atlaskit/media-card'], (require) => {
+      const { FilmstripView } = require('@atlaskit/media-filmstrip');
+      this.setState({ FilmstripView });
+    });
+  }
+
   render() {
     const numChildren = React.Children.count(this.props.children);
 
@@ -150,7 +157,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
 
   renderStrip() {
     const { children } = this.props;
-    const { animate, offset } = this.state;
+    const { animate, offset, FilmstripView } = this.state;
     const listIds = React.Children.map(children, (child: ReactElement<MediaProps>) => child.props.id);
     if (!FilmstripView) {
       return (

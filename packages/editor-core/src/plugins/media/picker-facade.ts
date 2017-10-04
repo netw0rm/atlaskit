@@ -51,7 +51,7 @@ export default class PickerFacade {
       mediaPickerFactory = MediaPicker;
     }
 
-    const picker = this.picker = mediaPickerFactory!(
+    const picker = this.picker = mediaPickerFactory(
       pickerType,
       this.buildPickerConfigFromContext(contextConfig),
       pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined

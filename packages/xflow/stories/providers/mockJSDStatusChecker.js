@@ -2,10 +2,7 @@ import bezier from 'cubic-bezier';
 
 import {
   ACTIVE,
-  // ACTIVATING,
   INACTIVE,
-  // DEACTIVATED,
-  // UNKNOWN
 } from '../../src/common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it

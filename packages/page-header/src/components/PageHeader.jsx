@@ -5,25 +5,21 @@ import type { PropType } from 'babel-plugin-react-flow-props-to-prop-types'; // 
 
 import {
   Outer,
-  BreadcrumbsContainer,
   TitleWrapper,
   Title,
   ActionsWrapper,
   BottomBarWrapper,
+  BreadcrumbsContainer,
 } from '../styled/PageHeader';
 
-type DefaultProps = {
+type Props = {
   breadcrumbs?: PropType<Element<any>, any>,
   actions?: PropType<Element<any>, any>,
   bottomBar?: PropType<Element<any>, any>,
-};
-
-type Props = DefaultProps & {
-  children: PropType<Array<Element<any>> | Element<any>, any>,
+  children?: PropType<Array<Element<any>> | Element<any>, any>,
 };
 
 export default class PageHeader extends PureComponent {
-  defaultProps: DefaultProps = { breadcrumbs: undefined };
   props: Props;
   render() {
     const { breadcrumbs, actions, bottomBar, children } = this.props;

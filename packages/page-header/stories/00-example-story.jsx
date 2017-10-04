@@ -26,7 +26,7 @@ const breadcrumbs = (
 );
 const actionsContent = (
   <SpacingContainer>
-    <Button appearance="primary">Pimary Action</Button>
+    <Button appearance="primary">Primary Action</Button>
     <Button>Default</Button>
     <Button>...</Button>
   </SpacingContainer>

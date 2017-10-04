@@ -20,6 +20,7 @@ export interface ContextConfig {
   readonly serviceHost: string;
   readonly cacheSize?: number;
   readonly authProvider: AuthProvider;
+  readonly userAuthProvier?: AuthProvider;
 }
 
 export function isClientBasedAuth(auth: Auth): auth is ClientBasedAuth {

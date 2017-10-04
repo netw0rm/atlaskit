@@ -134,7 +134,7 @@ storiesOf('RequestOrStartTrial')
       <MockConfluenceXFlowProvider
         {...defaultProps}
         productStatusChecker={mockConfluenceStatusChecker(ACTIVE)}
-        canCurrentUserAddProduct={async () => false}
+        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlowProvider>
@@ -150,7 +150,7 @@ storiesOf('RequestOrStartTrial')
       </MockConfluenceXFlowProvider>
     )
   )
-  .add('Initializing dialog, awaiting current product status (never resolves)', () =>
+  .add('Initializing dialog, (user can add a product), awaiting current product status (never resolves)', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider
         {...defaultProps}
@@ -161,12 +161,13 @@ storiesOf('RequestOrStartTrial')
           start() {},
           stop() {},
         }}
+        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlowProvider>
     )
   )
-  .add('Initializing dialog, Error flag after product status check fails (UNKNOWN)', () =>
+  .add('Initializing dialog, (user can add a product), Error flag after product status check fails (UNKNOWN)', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider
         {...defaultProps}
@@ -177,12 +178,13 @@ storiesOf('RequestOrStartTrial')
           start() {},
           stop() {},
         }}
+        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockConfluenceXFlowProvider>
     )
   )
-  .add('Initialisation error, Error flag after trusted user check failed', () =>
+  .add('Failed to retrieve permission to add product, fallback to request trial', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider
         {...defaultProps}

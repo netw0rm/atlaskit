@@ -201,23 +201,39 @@ describe('<Drawer />', () => {
   });
 
   describe('analytics', () => {
-    it('should capture when the drawer is closed by blanket click', () => {
+    it('should fire event when the drawer is closed by blanket click', () => {
       drawerWrapper
         .find(Blanket)
         .simulate('click');
       expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'blanket' }, false);
     });
-    it('should capture when the drawer is closed by esc key press', () => {
+    it('should fire event when the drawer is closed by esc key press', () => {
       keyDown(escKeyCode);
       expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'esc-key' }, false);
     });
-    it('should capture when the drawer is closed by back button click', () => {
+    it('should fire event when the drawer is closed by back button click', () => {
       drawerWrapper
           .find(DrawerTrigger)
           .find(GlobalItem)
           .simulate('click');
       expect(onAnalyticsEventStub).toHaveBeenCalledWith(`${analyticsNamespace}.close`, { method: 'back-btn' }, false);
     });
-    it('should capture when the drawer is opened');
+    it('should fire event when the drawer is opened', () => {
+      const stub = jest.fn();
+      const closedDrawerWrapper = mount(
+        <Drawer
+          isOpen={false}
+        />,
+        {
+          context: { onAnalyticsEvent: stub },
+          childContextTypes: { onAnalyticsEvent: PropTypes.func },
+        }
+      );
+      closedDrawerWrapper.setProps({ isOpen: true });
+      expect(stub).toHaveBeenCalledWith(`${analyticsNamespace}.open`, {}, false);
+    });
+    it('should not fire event when the drawer mounted in the open state', () => {
+      expect(onAnalyticsEventStub).not.toHaveBeenCalledWith(`${analyticsNamespace}.open`, {}, false);
+    });
   });
 });

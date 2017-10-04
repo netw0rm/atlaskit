@@ -51,7 +51,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    }else {
+    } else if (node.type === schema.nodes.inlineMacro) {
+      return encodeInlineMacro(node);
+    } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -340,6 +342,28 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
     keyParam.textContent = node.attrs.issueKey;
     elem.appendChild(keyParam);
+
+    return elem;
+  }
+
+  function encodeInlineMacro(node: PMNode) {
+    const elem = createMacroElement(node.attrs.name);
+    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+
+    Object.keys(node.attrs.params).forEach(paramName => {
+      const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
+      el.textContent = node.attrs.params[paramName];
+      elem.appendChild(el);
+    });
+
+    const placeholderUrl = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
+    placeholderUrl.textContent = node.attrs.placeholderUrl;
+    elem.appendChild(placeholderUrl);
+
+    const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
+    displayType.textContent = 'INLINE';
+    elem.appendChild(displayType);
 
     return elem;
   }

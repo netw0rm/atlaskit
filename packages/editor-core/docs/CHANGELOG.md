@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 47.11.0 (2017-10-04)
+
+* feature; added inline-marco transformer (issues closed: ed-1811) ([fb3aba5](https://bitbucket.org/atlassian/atlaskit/commits/fb3aba5))
+
+* bug fix; remove code block when pressing backspace in an empty one (issues closed: ed-1572) ([7cd1579](https://bitbucket.org/atlassian/atlaskit/commits/7cd1579))
 ## 47.10.0 (2017-10-03)
 
 * feature; only clear formatting of marks, and heading nodes; don't modify block nodes (issues closed: ed-2775) ([97131bd](https://bitbucket.org/atlassian/atlaskit/commits/97131bd))

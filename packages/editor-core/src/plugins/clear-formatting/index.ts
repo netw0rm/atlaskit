@@ -6,7 +6,7 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { clearFormatting } from './commands';
+import { clearFormatting, FORMATTING_MARK_TYPES, FORMATTING_NODE_TYPES } from './commands';
 import keymapPlugin from './keymap';
 
 export type StateChangeHandler = (state: ClearFormattingState) => any;
@@ -15,9 +15,6 @@ export class ClearFormattingState {
   formattingIsPresent: boolean = false;
 
   private state: EditorState<any>;
-  private markTypes = [
-    'em', 'code', 'strike', 'strong', 'underline', 'link', 'textColor'
-  ];
   private activeMarkTypes: string[];
   private changeHandlers: StateChangeHandler[] = [];
 
@@ -39,7 +36,7 @@ export class ClearFormattingState {
     this.state = newEditorState;
     const { state } = this;
 
-    this.activeMarkTypes = this.markTypes.filter(
+    this.activeMarkTypes = FORMATTING_MARK_TYPES.filter(
       mark => state.schema.marks[mark] && this.markIsActive(state.schema.marks[mark])
     );
     const formattingIsPresent = this.activeMarkTypes.length > 0 || this.blockStylingIsPresent();
@@ -50,7 +47,7 @@ export class ClearFormattingState {
   }
 
   clearFormatting(view: EditorView) {
-    clearFormatting(this.markTypes)(view.state, view.dispatch);
+    clearFormatting()(view.state, view.dispatch);
   }
 
   private triggerOnChange() {
@@ -71,9 +68,11 @@ export class ClearFormattingState {
     let { from, to } = state.selection;
     let isBlockStyling = false;
     state.doc.nodesBetween(from, to, (node, pos) => {
-      if (node.isBlock && node.type !== state.schema.nodes.paragraph) {
+      if (FORMATTING_NODE_TYPES.indexOf(node.type.name) !== -1) {
         isBlockStyling = true;
+        return false;
       }
+      return true;
     });
     return isBlockStyling;
   }

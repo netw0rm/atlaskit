@@ -55,6 +55,7 @@ export interface Icon {
 
 export interface AppCardAction {
   title: string;
+  target: string;
 }
 
 export interface AppCardViewProps {

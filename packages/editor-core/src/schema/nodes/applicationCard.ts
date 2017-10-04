@@ -33,6 +33,7 @@ export interface Attributes {
   title: AppCardTitle;
   description?: AppCardDescription;
   details?: AppCardDetails[];
+  actions?: AppCardAction[];
   context?: AppCardContext;
 }
 
@@ -57,6 +58,11 @@ export interface AppCardDetails {
   badge?: AppCardBadge;
   lozenge?: AppCardLozenge;
   users?: AppCardUser[];
+}
+
+export interface AppCardAction {
+  title: string;
+  target: string;
 }
 
 export interface AppCardBadge {
@@ -95,6 +101,7 @@ const defaultAttrs = {
   title: { default: { text: '' } },
   description: { default: null },
   details: { default: null },
+  actions: { default: null },
   context: { default: null },
 };
 

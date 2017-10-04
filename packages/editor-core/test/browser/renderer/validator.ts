@@ -970,7 +970,7 @@ describe('Renderer - Validator', () => {
 
   describe('getValidMark', () => {
 
-    describe('unkown', () => {
+    describe('unknown', () => {
       it('should return null if type is unkown', () => {
         expect(getValidMark({ type: 'banana' })).to.equal(null);
       });
@@ -987,6 +987,10 @@ describe('Renderer - Validator', () => {
     describe('link', () => {
       it('should return null if attrs is missing', () => {
         expect(getValidMark({ type: 'link' })).to.equal(null);
+      });
+
+      it('should return null if both attrs.href and attrs.url are missing', () => {
+        expect(getValidMark({ type: 'link', attrs: {} })).to.equal(null);
       });
 
       it('should use attrs.href if present', () => {

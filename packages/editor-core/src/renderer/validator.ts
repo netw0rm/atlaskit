@@ -553,7 +553,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           const { href, url } = attrs;
           let linkHref = href || url;
 
-          if (linkHref.indexOf(':') === -1) {
+          if (linkHref && linkHref.indexOf(':') === -1) {
             linkHref = `http://${linkHref}`;
           }
 

@@ -13,6 +13,12 @@ const selectedColorMap = {
   inverted: themed({ light: colors.N0, dark: colors.DN30 }),
   primary: themed({ light: colors.B400, dark: colors.B100 }),
 };
+const outlineColorMap = {
+  default: themed({ light: colors.B75, dark: colors.B200 }),
+  help: themed({ light: colors.P75, dark: colors.DN70 }),
+  inverted: themed({ light: colors.B200, dark: colors.B75 }),
+  primary: themed({ light: colors.B75, dark: colors.DN70 }),
+};
 const sizes = {
   small: 4,
   default: 8,
@@ -24,9 +30,9 @@ const spacingDivision = {
   compact: 8,
 };
 
-const getDimensions = ({ size, spacing }) => {
+const getDimensions = ({ gutter, size }) => {
   const val = sizes[size];
-  const margin = val / spacingDivision[spacing];
+  const margin = val / spacingDivision[gutter];
   const hitslop = val + (margin * 2);
 
   return css`
@@ -59,15 +65,22 @@ const commonRules = css`
 `;
 
 export const Container = styled.div`
-  justify-content: center;
   display: flex;
+  justify-content: center;
 `;
 
 export const IndicatorButton = styled.button`
   ${commonRules}
   border: 0;
   cursor: pointer;
+  outline: 0;
   padding: 0;
+
+  ${p => (p.selected ? css`
+    &:focus {
+      box-shadow: 0 0 0 2px ${outlineColorMap[p.appearance]};
+    }
+  ` : null)}
 `;
 export const IndicatorDiv = styled.div`
   ${commonRules}

@@ -46,6 +46,10 @@ const Input = styled.input`
 const Label = styled.label`
   display: block;
 `;
+const Panels = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 export default class ProgressIndicatorDots extends PureComponent {
   state = {
@@ -143,7 +147,26 @@ export default class ProgressIndicatorDots extends PureComponent {
               Theme: {selectedTheme}
             </Button>
           </Header>
-          <Lorem count={3} />
+          <Panels>
+            {values.map((v, i) => {
+              const selected = i === selectedIndex;
+              const panelId = `panel${i}`;
+
+              return (
+                <div
+                  aria-hidden={!selected}
+                  aria-labelledby={`tab${i}`}
+                  key={v}
+                  id={panelId}
+                  role="tabpanel"
+                  style={{ display: selected ? 'inline-block' : 'none' }}
+                >
+                  <h4 style={{ marginBottom: '0.66em' }}>Panel {i + 1}</h4>
+                  <Lorem count={3} />
+                </div>
+              );
+            })}
+          </Panels>
           <Footer appearance={selectedAppearance}>
             <Button
               isDisabled={selectedIndex === 0}

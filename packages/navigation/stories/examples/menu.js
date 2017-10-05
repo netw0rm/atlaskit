@@ -75,7 +75,7 @@ const menu = [
       { component: <AkNavigationItem icon={<TrayIcon />} text="Link 20" /> },
     ],
   },
-  { component: <AkNavigationItem icon={<SettingsIcon />} text="Settings" /> },
+  { component: <AkNavigationItem icon={<SettingsIcon />} text="Settings" isSelected /> },
 ];
 
 export default menu;

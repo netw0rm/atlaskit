@@ -11,6 +11,8 @@ import SimpleCollapse from './SimpleCollapse';
 import simpleCollapseSrc from '!raw-loader!./SimpleCollapse';
 import MaximumComplexity from './MaximumComplexity';
 import maximumComplexitySrc from '!raw-loader!./MaximumComplexity';
+import GlobalNav from './GlobalNav';
+import globalNavSrc from '!raw-loader!./GlobalNav';
 /* eslint-enable import/no-duplicates, import/first */
 
 export const description = (
@@ -132,5 +134,10 @@ export const examples = [
     title: 'Using Search Drawer',
     Component: Example,
     src: exampleSrc,
+  },
+  {
+    title: 'Global Navigation',
+    Component: GlobalNav,
+    src: globalNavSrc,
   },
 ];

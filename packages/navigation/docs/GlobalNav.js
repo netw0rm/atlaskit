@@ -10,6 +10,7 @@ import Avatar from '@atlaskit/avatar';
 import InlineDialog from '@atlaskit/inline-dialog';
 import Tooltip from '@atlaskit/tooltip';
 import Navigation, {
+  presetThemes,
   AkContainerTitle,
   AkNavigationItemGroup,
   AkNavigationItem,
@@ -261,6 +262,8 @@ export default class GlobalNavExample extends PureComponent {
 
     return (
       <Navigation
+        containerTheme={presetThemes.global}
+        globalTheme={presetThemes.global}
         containerHeaderComponent={HeaderComponent}
         globalCreateIcon={globalCreateIcon}
         globalPrimaryIcon={globalPrimaryIcon}

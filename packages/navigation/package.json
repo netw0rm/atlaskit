@@ -11,7 +11,7 @@
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Navigation",
-    "pattern": true
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

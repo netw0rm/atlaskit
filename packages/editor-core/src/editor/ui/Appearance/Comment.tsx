@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorR100, akColorN40, akBorderRadius, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
@@ -182,16 +182,14 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           />
         </ContentArea>
         <SecondaryToolbar>
-          {!onSave ? null :
-            <span onClick={this.handleSave}>
-              <Button appearance="primary">Save</Button>
-            </span>
-          }
-          {!onCancel ? null :
-            <span onClick={this.handleCancel}>
-              <Button appearance="subtle">Cancel</Button>
-            </span>
-          }
+          <ButtonGroup>
+            {!onSave ? null :
+              <Button appearance="primary" onClick={this.handleSave}>Save</Button>
+            }
+            {!onCancel ? null :
+              <Button appearance="subtle" onClick={this.handleCancel}>Cancel</Button>
+            }
+          </ButtonGroup>
           <span style={{ flexGrow: 1 }} />
           <PluginSlot
             editorView={editorView}

@@ -10,6 +10,7 @@ import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
 
 const SAVE_ACTION = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const exampleDocument = {
   version: 1,
@@ -68,6 +69,7 @@ storiesOf(name, module)
 
                 onChange={onChange}
                 onSave={SAVE_ACTION}
+                onCancel={CANCEL_ACTION}
               />
             </div>}
         />

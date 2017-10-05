@@ -1,4 +1,4 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { defaultCollectionName } from './collectionNames';
 import { Auth, AuthProvider, AuthContext } from '@atlaskit/media-core';
 
@@ -8,7 +8,7 @@ const userAuthProviderBaseURL = 'https://dt-api.internal.app.dev.atlassian.io';
 
 export class StoryBookAuthProvider {
   static create(isAsapEnvironment: boolean, access?: { [resourceUrn: string]: string[] }): AuthProvider {
-    return (authContext?: AuthContext): Promise<Auth> => {
+    return async (authContext?: AuthContext): Promise<Auth> => {
       const collectionName = authContext && authContext.collectionName || defaultCollectionName;
       const accessStr = access ? JSON.stringify(access) : '';
       const cacheKey = `${collectionName}-${accessStr}-${isAsapEnvironment}`;
@@ -26,25 +26,23 @@ export class StoryBookAuthProvider {
         }
       };
 
-      let whenGotResponse: AxiosPromise;
+      let response: AxiosResponse;
       if (access) {
-        whenGotResponse = axios.post('/token', { access }, config);
+        response = await axios.post('/token', { access }, config);
       } else {
-        whenGotResponse = axios.get('/token', config);
+        response = await axios.get('/token', config);
       }
 
-      return whenGotResponse.then(response => {
-        const auth = response.data as Auth;
-        cachedAuths[cacheKey] = auth;
-        return auth;
-      });
+      const auth = response.data as Auth;
+      cachedAuths[cacheKey] = auth;
+      return auth;
     };
   }
 }
 
 export class StoryBookUserAuthProvider {
   static create(apiURL: string = userAuthProviderBaseURL) {
-    return (authContext?: AuthContext): Promise<Auth> => {
+    return async (authContext?: AuthContext): Promise<Auth> => {
       const config: AxiosRequestConfig = {
         baseURL: apiURL,
         headers: {},
@@ -52,17 +50,18 @@ export class StoryBookUserAuthProvider {
       };
       const cacheKey = apiURL;
 
-      const whenGotResponse = axios.get('/picker/auth/cookie', config);
+      const cachedAuth = cachedAuths[cacheKey];
+      if (cachedAuth) {
+        return Promise.resolve(cachedAuth);
+      }
 
-      return whenGotResponse.then(response => {
-        const client = response.data.data.client;
-        const auth = {
-          clientId: client.id,
-          token: client.token,
-        };
-        cachedAuths[cacheKey] = auth;
-        return auth;
-      });
+      const response = await axios.get('/picker/auth/cookie', config);
+
+      const { id: clientId, token } = response.data.data.client;
+      const auth = { clientId, token };
+
+      cachedAuths[cacheKey] = auth;
+      return auth;
     };
   }
 }

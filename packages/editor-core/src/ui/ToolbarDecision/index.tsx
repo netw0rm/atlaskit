@@ -30,7 +30,7 @@ export default class ToolbarDecision extends PureComponent<Props, State> {
     );
   }
 
-  @analytics('atlassian.fabric.decision.triggered.button')
+  @analytics('atlassian.fabric.decision.trigger.button')
   private handleInsertDecision = (): boolean => {
     const { editorView } = this.props;
     if (!editorView) {

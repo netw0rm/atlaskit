@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 21.4.0 (2017-10-05)
+
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
 ## 21.3.2 (2017-09-21)
 
 * bug fix; remove not necessary React key attr ([98cf168](https://bitbucket.org/atlassian/atlaskit/commits/98cf168))

@@ -21,7 +21,7 @@ const getXFlowProviderConfig = () =>
       <div />
     </JiraToConfluenceXFlowProvider>
   )
-    .find('XFlowProvider')
+    .find('XFlowProviderBase')
     .props().config;
 
 const defaultProps = {

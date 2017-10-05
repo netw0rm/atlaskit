@@ -124,7 +124,7 @@ export const xFlowShape = PropTypes.shape({
   setProductRequestFlag: PropTypes.func,
 });
 
-export class XFlowProviderBase extends Component {
+class XFlowProviderBase extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     intl: intlShape,
@@ -150,8 +150,8 @@ export class XFlowProviderBase extends Component {
 
     return {
       xFlow: {
-        ...this.props,
         ...optOutProps,
+        ...this.props,
         ...this.state,
         getProductActivationState: this.getProductActivationState,
         startProductTrial: this.startProductTrial,

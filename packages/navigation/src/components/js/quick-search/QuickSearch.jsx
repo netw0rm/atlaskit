@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AkSearch } from '../../../src';
+import { withAnalytics } from '@atlaskit/analytics';
+import { AkSearch } from '../../../../src';
+
+import decorateWithAnalyticsData from './decorateWithAnalyticsData';
+import {
+  QS_ANALYTICS_EV_CLOSE,
+  QS_ANALYTICS_EV_KB_CTRLS_USED,
+  QS_ANALYTICS_EV_OPEN,
+  QS_ANALYTICS_EV_QUERY_ENTERED,
+  QS_ANALYTICS_EV_SUBMIT,
+} from './constants';
 
 const noOp = () => {};
 
@@ -60,7 +70,7 @@ const adjustIndex = (arrayLength, currentIndex, adjustment) => {
   return adjustedIndex >= 0 ? adjustedIndex : adjustedIndex + arrayLength;
 };
 
-export default class QuickSearch extends Component {
+export class QuickSearch extends Component {
   static propTypes = {
     /** Search results in the form of AkNavigationItemGroups containing Result components */
     children: PropTypes.node,
@@ -78,10 +88,14 @@ export default class QuickSearch extends Component {
     value: PropTypes.string,
     /** Corresponds to the `resultId` of the selected result */
     selectedResultId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+    // Internal: injected by withAnalytics(). Fire a private analytics event
+    firePrivateAnalyticsEvent: PropTypes.func,
   }
 
   static defaultProps = {
     children: [],
+    firePrivateAnalyticsEvent: noOp,
     isLoading: false,
     onSearchBlur: noOp,
     onSearchKeyDown: noOp,
@@ -97,6 +111,14 @@ export default class QuickSearch extends Component {
     selectedResultId: this.props.selectedResultId || getResultIdByIndex(this.flatResults, 0),
   }
 
+  componentDidMount() {
+    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_OPEN);
+  }
+
+  componentWillUnmount() {
+    this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_CLOSE);
+  }
+
   /** Update flatResults array whenever `children` prop changes */
   componentWillReceiveProps(nextProps) {
     if (nextProps.children) {
@@ -104,6 +126,16 @@ export default class QuickSearch extends Component {
       this.setState({
         selectedResultId: nextProps.selectedResultId || getResultIdByIndex(this.flatResults, 0),
       });
+    }
+
+    /**
+     * Capture whether user needed to query in order to find their target result.
+     * Only fire once per mount. Only fire when a search term is entered and the previous search
+     * term was empty.
+     */
+    if (!this.hasSearchQueryEventFired && !this.props.value && nextProps.value) {
+      this.hasSearchQueryEventFired = true;
+      this.props.firePrivateAnalyticsEvent(QS_ANALYTICS_EV_QUERY_ENTERED);
     }
   }
 
@@ -161,7 +193,17 @@ export default class QuickSearch extends Component {
    * Enter - Submit selected result
    */
   handleSearchKeyDown = (event) => {
+    const { firePrivateAnalyticsEvent } = this.props;
     this.props.onSearchKeyDown();
+
+    // Capture whether users are using keyboard controls
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'Enter') {
+      if (!this.hasKeyDownEventFired) {
+        this.hasKeyDownEventFired = true;
+        firePrivateAnalyticsEvent(QS_ANALYTICS_EV_KB_CTRLS_USED, { key: event.key });
+      }
+    }
+
     if (event.key === 'ArrowUp') {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectPrevious();
@@ -171,6 +213,19 @@ export default class QuickSearch extends Component {
     } else if (event.key === 'Enter' && this.state.selectedResultId) {
       event.preventDefault(); // Don't fire submit event from input
       const result = getResultById(this.flatResults, this.state.selectedResultId);
+
+      // Capture when users are using the keyboard to submit
+      if (typeof firePrivateAnalyticsEvent === 'function') {
+        firePrivateAnalyticsEvent(
+          QS_ANALYTICS_EV_SUBMIT,
+          {
+            index: this.flatResults.indexOf(result),
+            method: 'keyboard',
+            type: result.props.type,
+          }
+        );
+      }
+
       if (!result.props) {
         return;
       }
@@ -190,6 +245,7 @@ export default class QuickSearch extends Component {
    * Render QuickSearch's children, attaching extra props for interactions
    */
   renderChildren() {
+    let ii = 0;
     /** Attach mouse interaction handlers and determine whether this result is selected */
     const renderResult = (result) => {
       const isSelected = Boolean(result.props) &&
@@ -197,9 +253,11 @@ export default class QuickSearch extends Component {
       return React.cloneElement(
         result,
         {
+          analyticsData: { ...result.props.analyticsData, index: ii++ },
           isSelected,
           onMouseEnter: this.handleResultMouseEnter,
           onMouseLeave: this.handleResultMouseLeave,
+          sendAnalytics: this.props.firePrivateAnalyticsEvent,
         }
       );
     };
@@ -231,3 +289,18 @@ export default class QuickSearch extends Component {
     );
   }
 }
+
+/**
+ * HOCs:
+ * `decorateWithAnalyticsData` - Wrapper that decorates analytics events with additional data.
+ * `withAnalytics` - Injects analytics firing methods that are picked up by
+ * @atlaskit/analytics/AnalyticsListener.
+ */
+export default
+  decorateWithAnalyticsData(
+    withAnalytics(
+      QuickSearch,
+      {},
+      { analyticsId: 'atlaskit/navigation/quicksearch' }
+    )
+  );

@@ -58,4 +58,5 @@ export interface AppCardContext {
 
 export interface AppCardAction {
   title: string;
+  target: string;
 }

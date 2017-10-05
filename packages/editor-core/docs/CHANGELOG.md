@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 47.12.0 (2017-10-05)
+
+* bug fix; build new JSON schema ([56b52fd](https://bitbucket.org/atlassian/atlaskit/commits/56b52fd))
+
+* bug fix; sending a link with missing href causes exception in the renderer (issues closed: ed-2875) ([a58a1da](https://bitbucket.org/atlassian/atlaskit/commits/a58a1da))
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
+* bug fix; mention picker selection should not break when user enters space. (issues closed: #ed-2863) ([ad54cdc](https://bitbucket.org/atlassian/atlaskit/commits/ad54cdc))
+## 47.11.0 (2017-10-04)
+
+* feature; added inline-marco transformer (issues closed: ed-1811) ([fb3aba5](https://bitbucket.org/atlassian/atlaskit/commits/fb3aba5))
+
+* bug fix; remove code block when pressing backspace in an empty one (issues closed: ed-1572) ([7cd1579](https://bitbucket.org/atlassian/atlaskit/commits/7cd1579))
+## 47.10.0 (2017-10-03)
+
+* feature; only clear formatting of marks, and heading nodes; don't modify block nodes (issues closed: ed-2775) ([97131bd](https://bitbucket.org/atlassian/atlaskit/commits/97131bd))
+## 47.9.1 (2017-10-03)
+
+* bug fix; refactored how inline-dialog handles max-width in order to better support scrollable ([20b62a6](https://bitbucket.org/atlassian/atlaskit/commits/20b62a6))
+* bug fix; fix warning due to using component other than Button inside ButtonGroup (issues closed: #ed-2866) ([931a469](https://bitbucket.org/atlassian/atlaskit/commits/931a469))
+## 47.9.0 (2017-10-03)
+
+* bug fix; build for editor-core json-schema ([024b5c3](https://bitbucket.org/atlassian/atlaskit/commits/024b5c3))
+* feature; ac:inline-comment-marker cxhtml transformer added to editor-core confluence-schema ([09de9e0](https://bitbucket.org/atlassian/atlaskit/commits/09de9e0))
 ## 47.8.1 (2017-09-28)
 
 * bug fix; fix text color parse/encode ([64c9859](https://bitbucket.org/atlassian/atlaskit/commits/64c9859))

@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { AkNavigationItem } from '../../../../src';
+import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
+import { AkNavigationItem } from '../../../../../src';
 
 const BASE_RESULT_TYPE = 'base';
+
+const noOp = () => {};
 
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
@@ -13,6 +16,8 @@ const BASE_RESULT_TYPE = 'base';
 
 export default class ResultBase extends PureComponent {
   static propTypes = {
+    /** Data to be sent with analytics events */
+    analyticsData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     /** Text to appear to the right of the text. It has a lower font-weight. */
     caption: PropTypes.string,
     /** Content to be shown after the main content. Shown to the right of content
@@ -41,22 +46,33 @@ export default class ResultBase extends PureComponent {
     text: PropTypes.string.isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string,
+
+    /** Fires an analytics event */
+    sendAnalytics: PropTypes.func,
   }
 
   static defaultProps = {
     isCompact: false,
     isSelected: false,
     isTabbingDisabled: false,
-    onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
+    onClick: noOp,
+    onMouseEnter: noOp,
+    onMouseLeave: noOp,
+    sendAnalytics: noOp,
     type: BASE_RESULT_TYPE,
   }
 
-  handleClick = () => this.props.onClick({
-    resultId: this.props.resultId,
-    type: this.props.type,
-  });
+  handleClick = () => {
+    const { analyticsData, onClick, resultId, sendAnalytics, type } = this.props;
+    sendAnalytics(
+      QS_ANALYTICS_EV_SUBMIT,
+      {
+        ...analyticsData,
+        type,
+      }
+    );
+    onClick({ resultId, type });
+  }
 
   handleMouseEnter = () => this.props.onMouseEnter({
     resultId: this.props.resultId,

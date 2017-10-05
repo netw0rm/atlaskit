@@ -1,7 +1,9 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import { ContainerResult } from '../../../src/components/js/results';
+import { quickSearchResultTypes } from '../../../src';
 import { mountWithRootTheme } from '../_theme-util';
+
+const { ContainerResult } = quickSearchResultTypes;
 
 describe('Atlassian Container Result', () => {
   let resultWrapper;

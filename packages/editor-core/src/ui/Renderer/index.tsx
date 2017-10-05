@@ -9,6 +9,7 @@ import {
   RenderOutputStat,
 } from '../../renderer';
 import { defaultSchema } from '../../schema';
+import { AppCardAction } from '../../schema/nodes/applicationCard';
 
 export interface CardSurroundings {
   collectionName: string;
@@ -18,9 +19,6 @@ export type MentionEventHandler = (mentionId: string, text: string, event?: Synt
 export type CardEventClickHandler = (result: CardEvent, surroundings?: CardSurroundings) => void;
 export type AppCardEventClickHandler = (url?: string) => void;
 export type AppCardActionEventClickHandler = (action: AppCardAction) => void;
-export interface AppCardAction {
-  title: string;
-}
 
 export interface MentionEventHandlers {
   onClick?: MentionEventHandler;

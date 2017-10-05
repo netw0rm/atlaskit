@@ -31,7 +31,9 @@ export interface EditorProps {
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
+  allowInlineCommentMarker?: boolean;
   allowPanel?: boolean;
+  allowInlineMacro?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

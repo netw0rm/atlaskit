@@ -323,7 +323,7 @@ describe('@atlaskit/xflow', () => {
     });
   });
 
-  describe('error activating confluence', () => {
+  describe('error retrieving canCurrentUserAddProduct', () => {
     let xflow;
 
     beforeEach(() => {
@@ -343,7 +343,7 @@ describe('@atlaskit/xflow', () => {
       expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', async () => {
+    it('should render an error flag', async () => {
       // eventually render to error flag
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       // should render error messages

@@ -66,49 +66,47 @@ class RequestOrStartTrial extends Component {
       waitForActivation,
       firePrivateAnalyticsEvent,
     } = this.props;
-    const activationState = await getProductActivationState();
 
-    let canAdd;
+    let hasPermissionToAddProduct;
     try {
-      canAdd =
-        activationState === INACTIVE || activationState === DEACTIVATED
-          ? await canCurrentUserAddProduct()
-          : false;
+      hasPermissionToAddProduct = await canCurrentUserAddProduct();
     } catch (e) {
-      // Do nothing. Leave "canAdd" undefined.
       firePrivateAnalyticsEvent('xflow.request-or-start-trial.trusted-user-check.failed');
-    }
-
-    if (activationState === ACTIVE || activationState === ACTIVATING) {
-      this.setState({
-        screen: Screens.ALREADY_STARTED,
-        activationState,
-      });
-      if (activationState === ACTIVATING) {
-        waitForActivation();
-      }
-    } else if (
-      (activationState === INACTIVE || activationState === DEACTIVATED) &&
-      canAdd === true
-    ) {
-      this.setState({
-        screen: Screens.START_TRIAL,
-        activationState,
-      });
-    } else if (
-      (activationState === INACTIVE || activationState === DEACTIVATED) &&
-      canAdd === false
-    ) {
-      this.setState({
-        screen: Screens.REQUEST_TRIAL,
-        activationState,
-      });
-    } else {
-      firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
       this.setState({
         initializingCheckFailed: true,
         showInitializationError: true,
       });
+      return;
+    }
+
+    if (!hasPermissionToAddProduct) {
+      this.setState({
+        screen: Screens.REQUEST_TRIAL,
+        // We assume that the product is inactive if they don't have permission.
+        activationState: INACTIVE,
+      });
+    } else {
+      const activationState = await getProductActivationState();
+      if (activationState === ACTIVE || activationState === ACTIVATING) {
+        this.setState({
+          screen: Screens.ALREADY_STARTED,
+          activationState,
+        });
+        if (activationState === ACTIVATING) {
+          waitForActivation();
+        }
+      } else if (activationState === INACTIVE || activationState === DEACTIVATED) {
+        this.setState({
+          screen: Screens.START_TRIAL,
+          activationState,
+        });
+      } else {
+        firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
+        this.setState({
+          initializingCheckFailed: true,
+          showInitializationError: true,
+        });
+      }
     }
   };
 

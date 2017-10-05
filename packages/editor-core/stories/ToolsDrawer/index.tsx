@@ -5,9 +5,9 @@ import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
 import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 
-import { Content } from './../styles';
+import { Content, ButtonGroup } from './../styles';
 
 import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';

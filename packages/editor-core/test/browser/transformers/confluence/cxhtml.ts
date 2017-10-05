@@ -11,7 +11,9 @@ import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
-  table, tr, td, th
+  table, tr, td, th,
+  inlineCommentMarker,
+  inlineMacro
 } from './_schema-builder';
 chai.use(chaiPlugin);
 import { confluenceSchema as schema } from '../../../../src/schema';
@@ -592,6 +594,46 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         )
       );
     });
+
+    describe('inline comment marker', () => {
+      check(
+        'basic',
+        '<p><ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">inline comment</ac:inline-comment-marker></p>',
+        doc(
+          p(
+            inlineCommentMarker({
+              reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
+            })('inline comment')
+          )
+        )
+      );
+
+      check(
+        'when inline comment text was removed',
+        '<p>test <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a"></ac:inline-comment-marker> text</p>',
+        doc(p('test text')));
+    });
+  });
+
+  describe('inline-macro', () => {
+    const macroId = '39f3436e-880e-4411-8494-869a59eb203f';
+    const name = 'status';
+    const placeholderUrl = 'www.google.com/placeholder.png';
+
+    check(
+      'basic',
+      `<ac:structured-macro ac:name= "${name}" ac:schema-version= "1" ac:macro-id= "${macroId}"><ac:parameter ac:name= "subtle">true</ac:parameter><ac:parameter ac:name= "colour">Red</ac:parameter><fab:placeholder-url>${placeholderUrl}</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
+      doc(
+        p(
+          inlineMacro({
+            macroId,
+            name,
+            placeholderUrl,
+            params: {subtle: 'true', colour: 'Red'}
+          })
+        )
+      )
+    );
   });
 
   describe('unsupported content', () => {

@@ -6,17 +6,15 @@ import optOutRequestTrialFeature, {
   optOutEndpoint,
 } from '../../../src/jira-confluence/optOutRequestTrialFeature';
 
-import xflowApplicationPropertyDisabled from './mock-data/xflowApplicationPropertyDisabled.json';
-
 describe('optOutRequestTrialFeature', () => {
   beforeEach(() => {
     fetchMock.restore();
   });
 
-  it('should return a resolved promise with no value if the endpoint returns a 202 response', async () => {
-    fetchMock.mock(optOutEndpoint, xflowApplicationPropertyDisabled);
+  it('should return a resolved promise with no value if the endpoint returns a 204 response', async () => {
+    fetchMock.mock(optOutEndpoint, 204);
     const result = await optOutRequestTrialFeature();
-    expect(result).toEqual(xflowApplicationPropertyDisabled);
+    expect(result).toEqual(true);
   });
 
   it('should return a rejected promise if the endpoint returns a 400 response', async () => {

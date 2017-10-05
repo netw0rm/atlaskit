@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "24.3.0",
+  "version": "24.4.0",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Navigation",
-    "pattern": true
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -25,6 +25,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/analytics": "^2.0.0",
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/blanket": "^2.4.3",
     "@atlaskit/dropdown-menu": "^3.8.0",

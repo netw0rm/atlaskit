@@ -44,7 +44,7 @@ export const queryUsername = username =>
   ).then((response) => {
     if (response.status !== 200) {
       throw new Error(
-        `Unable to determine if the user was a site administrator. Status: ${response.status}`
+        `Unable to retrieve information about a user. Status: ${response.status}`
       );
     } else {
       return response.json();

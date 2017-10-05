@@ -1,5 +1,11 @@
 # @atlaskit/button
 
+## 5.4.2 (2017-10-03)
+
+
+* bug fix; improve button performance ([1bbf0d1](https://bitbucket.org/atlassian/atlaskit/commits/1bbf0d1))
+
+
 ## 5.4.1 (2017-09-27)
 
 * bug fix; button will truncate if wider than its parent (issues closed: ak-3332) ([a701ea1](https://bitbucket.org/atlassian/atlaskit/commits/a701ea1))

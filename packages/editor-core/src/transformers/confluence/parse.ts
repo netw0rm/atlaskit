@@ -11,9 +11,7 @@ import {
   findTraversalPath,
   getNodeName,
   addMarks,
-  getAcName,
-  getAcParameter,
-  getAcTagContent,
+  parseMacro,
   createCodeFragment,
   getAcTagNode,
   getMacroAttribute,
@@ -195,6 +193,13 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
 
         return output;
 
+      case 'AC:INLINE-COMMENT-MARKER':
+        if (!content) {
+          return null;
+        }
+        const attrs = { reference: node.getAttribute('ac:ref') };
+        return addMarks(content, [schema.marks.inlineCommentMarker.create(attrs)]);
+
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(schema, node) || unsupportedInline;
       case 'FAB:LINK':
@@ -270,17 +275,22 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
 }
 
 function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragment | PMNode | null | undefined  {
-  const name = getAcName(node);
+  const {
+    macroName,
+    macroId,
+    macroType,
+    params,
+    properties
+  } = parseMacro(node);
 
-  switch (name) {
+  switch (macroName) {
     case 'CODE':
-      const language = getAcParameter(node, 'language');
-      const title = getAcParameter(node, 'title');
-      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
+      const { language, title } = params;
+      const codeContent = properties['ac:plain-text-body'] || ' ';
       return createCodeFragment(schema, codeContent, language, title);
 
     case 'NOFORMAT': {
-      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
+      const codeContent = properties['ac:plain-text-body'] || ' ';
       return schema.nodes.codeBlock.create({ language: null }, schema.text(codeContent));
     }
 
@@ -288,7 +298,7 @@ function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragme
     case 'INFO':
     case 'NOTE':
     case 'TIP':
-      const panelTitle = getAcParameter(node, 'title');
+      const panelTitle = params.title;
       const panelRichTextBody = getAcTagNode(node, 'AC:RICH-TEXT-BODY') || '';
       let panelBody: any[] = [];
 
@@ -305,14 +315,11 @@ function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragme
         panelBody.push(schema.nodes.paragraph.create({}));
       }
 
-      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+      return schema.nodes.panel.create({ panelType: macroName.toLowerCase() }, panelBody);
 
     case 'JIRA':
       const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
-      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
-      const server = getAcParameter(node, 'server');
-      const serverId = getAcParameter(node, 'serverId');
-      const issueKey = getAcParameter(node, 'key');
+      const { server, serverid: serverId, key: issueKey} = params;
 
       // if this is an issue list, render it as unsupported node
       // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
@@ -326,6 +333,17 @@ function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragme
         schemaVersion,
         server,
         serverId,
+      });
+  }
+
+  switch (macroType){
+    case 'NONE-INLINE':
+      const placeholderUrl = properties['fab:placeholder-url'];
+      return schema.nodes.inlineMacro.create({
+        macroId,
+        name: macroName.toLowerCase(),
+        placeholderUrl,
+        params
       });
   }
 

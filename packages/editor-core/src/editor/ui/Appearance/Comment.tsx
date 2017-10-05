@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import AkButton from '@atlaskit/button';
-import { akColorR100, akColorN40, akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
+import Button from '@atlaskit/button';
+import { akColorR100, akColorN40, akBorderRadius, akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import PluginSlot from '../PluginSlot';
 import WithPluginState from '../WithPluginState';
 import ContentStyles from '../ContentStyles';
@@ -76,12 +76,12 @@ const MainToolbar = styled.div`
   height: auto;
 
   & > div > * {
-    margin-left: 4px;
+    margin-left: ${akGridSizeUnitless/2}px;
   }
 
   & > div > *:first-child {
     margin-left: 0;
-    margin-right: 8px;
+    margin-right: ${akGridSize};
   }
 `;
 MainToolbar.displayName = 'MainToolbar';
@@ -184,12 +184,12 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
         <SecondaryToolbar>
           {!onSave ? null :
             <span onClick={this.handleSave}>
-              <AkButton appearance="primary">Save</AkButton>
+              <Button appearance="primary">Save</Button>
             </span>
           }
           {!onCancel ? null :
             <span onClick={this.handleCancel}>
-              <AkButton appearance="subtle">Cancel</AkButton>
+              <Button appearance="subtle">Cancel</Button>
             </span>
           }
           <span style={{ flexGrow: 1 }} />

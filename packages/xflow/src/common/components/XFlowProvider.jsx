@@ -1,8 +1,64 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl, intlShape, defineMessages } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
+import optOutRequestTrialFeature from '../optOutRequestTrialFeature';
+import cancelOptOut from '../cancelOptOut';
+
+const messages = defineMessages({
+  // - Opt out
+  optOutHeading: {
+    id: 'xflow.opt-out.heading',
+    defaultMessage: 'Trial requests',
+  },
+  optOutMessage: {
+    id: 'xflow.opt-out.message',
+    defaultMessage: 'Change your notifications or stop requests completely.',
+  },
+  optOutNotePlaceholder: {
+    id: 'xflow.opt-out.note-placeholder',
+    defaultMessage: 'Send us your feedback to help improve \nfuture releases.',
+  },
+  optOutOptionItemsLabelAdminNotifications: {
+    id: 'xflow.opt-out.option.label.admin-notifications',
+    defaultMessage: 'Turn off notifications',
+  },
+  optOutOptionItemsNoteAdminNotifications: {
+    id: 'xflow.opt-out.option.note.admin-notifications',
+    defaultMessage: 'You won\'t get trial requests from users.',
+  },
+  optOutOptionItemsLabelDisableRequests: {
+    id: 'xflow.opt-out.option.label.disable-requests',
+    defaultMessage: 'Turn off trial requesting',
+  },
+  optOutOptionItemsNoteDisableRequests: {
+    id: 'xflow.opt-out.option.note.disable-requests',
+    defaultMessage: 'Users can\'t request trials.',
+  },
+});
+
+export const defaultProps = intl => ({
+  optOut: {
+    optOutHeading: intl.formatMessage(messages.optOutHeading),
+    optOutMessage: intl.formatMessage(messages.optOutMessage),
+    optOutDefaultSelectedRadio: 'admin-opt-out',
+    optOutNotePlaceholder: intl.formatMessage(messages.optOutNotePlaceholder),
+    optOutOptionItems: [
+      {
+        value: 'admin-opt-out',
+        label: intl.formatMessage(messages.optOutOptionItemsLabelAdminNotifications),
+        note: intl.formatMessage(messages.optOutOptionItemsNoteAdminNotifications),
+      },
+      {
+        value: 'disable-requests',
+        label: intl.formatMessage(messages.optOutOptionItemsLabelDisableRequests),
+        note: intl.formatMessage(messages.optOutOptionItemsNoteDisableRequests),
+      },
+    ],
+  },
+});
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
@@ -44,19 +100,6 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
-    optOut: PropTypes.shape({
-      optOutHeading: PropTypes.string,
-      optOutMessage: PropTypes.string,
-      optOutDefaultSelectedRadio: PropTypes.string,
-      optOutNotePlaceholder: PropTypes.string,
-      optOutOptionItems: PropTypes.arrayOf(
-        PropTypes.shape({
-          value: PropTypes.string,
-          label: PropTypes.string,
-          note: PropTypes.string,
-        })
-      ),
-    }),
   }),
 
   progress: PropTypes.number,
@@ -79,13 +122,12 @@ export const xFlowShape = PropTypes.shape({
   closeAlreadyStartedDialog: PropTypes.func,
   checkProductRequestFlag: PropTypes.func,
   setProductRequestFlag: PropTypes.func,
-  optOutRequestTrialFeature: PropTypes.func,
-  cancelOptOut: PropTypes.func,
 });
 
-export class XFlowProvider extends Component {
+export class XFlowProviderBase extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
+    intl: intlShape,
     productStatusChecker: PropTypes.shape({
       start: PropTypes.func.isRequired,
       stop: PropTypes.func.isRequired,
@@ -103,13 +145,19 @@ export class XFlowProvider extends Component {
   };
 
   getChildContext() {
+    const { intl } = this.props;
+    const optOutProps = defaultProps(intl);
+
     return {
       xFlow: {
         ...this.props,
+        ...optOutProps,
         ...this.state,
         getProductActivationState: this.getProductActivationState,
         startProductTrial: this.startProductTrial,
         waitForActivation: this.waitForActivation,
+        optOutRequestTrialFeature,
+        cancelOptOut,
       },
     };
   }
@@ -147,9 +195,12 @@ export class XFlowProvider extends Component {
   };
 
   render() {
-    return Children.only(this.props.children);
+    const { children } = this.props;
+    return Children.only(children);
   }
 }
+
+export const XFlowProvider = injectIntl(XFlowProviderBase);
 
 export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}) =>
   class WithXFlowProvider extends Component {

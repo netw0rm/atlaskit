@@ -34,7 +34,8 @@ pipelines:
             - yarn run browserstack/tunnel/start
             - yarn run test:browserstack
             - yarn run browserstack/tunnel/stop
-            - yarn run release/check/is-workspace-clean --silent
+            # Disabled 2017-08-05 by LB, as json schema diffing is broken - Revert ASAP
+            # - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
             - run-p -ln "release/registry" "release/storybooks"

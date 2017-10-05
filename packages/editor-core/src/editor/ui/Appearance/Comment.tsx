@@ -10,7 +10,6 @@ import {
   EditorAppearance
 } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
-import ToolbarHelp from '../../../ui/ToolbarHelp';
 
 const pulseBackground = keyframes`
   50% {
@@ -139,8 +138,6 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     }
   }
 
-  private toggleHelp = () => this.setState({ showHelp: !this.state.showHelp });
-
   private renderChrome = ({ maxContentSize }) => {
     const {
       editorView,
@@ -173,9 +170,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
-          <span style={{ flexGrow: 1 }} />
-          <ToolbarHelp showHelp={this.state.showHelp} toggleHelp={this.toggleHelp} />
-         </MainToolbar>
+        </MainToolbar>
         <ContentArea innerRef={this.handleRef}>
           {customContentComponents}
           <PluginSlot

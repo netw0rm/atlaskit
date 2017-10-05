@@ -40,7 +40,7 @@ const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
 const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory(undefined, testCollectionName, stateManager);
+  return storyMediaProviderFactory({ collectionName: testCollectionName, stateManager, includeUserAuthProvider: true });
 };
 
 describe('Media plugin', () => {
@@ -408,7 +408,7 @@ describe('Media plugin', () => {
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
           )
         ));
-        editorView.destroy(); pluginState.destroy();
+      editorView.destroy(); pluginState.destroy();
     });
   });
 

@@ -17,7 +17,7 @@ class DemoEditor extends React.PureComponent<any, State> {
   render() {
     const { dropzoneRef } = this.state;
     const editor = !dropzoneRef ? null : <Editor
-      mediaProvider={storyMediaProviderFactory(undefined, undefined, undefined, undefined, dropzoneRef)}
+      mediaProvider={storyMediaProviderFactory({dropzoneContainer: dropzoneRef})}
       isExpandedByDefault={true}
       devTools={true}
     />;

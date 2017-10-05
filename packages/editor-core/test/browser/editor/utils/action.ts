@@ -9,7 +9,7 @@ import { insertFileFromDataUrl } from '../../../../src/editor/utils/action';
 
 const stateManager = new DefaultMediaStateManager();
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
-const getFreshMediaProvider = () => storyMediaProviderFactory(undefined, testCollectionName, stateManager);
+const getFreshMediaProvider = () => storyMediaProviderFactory({ collectionName: testCollectionName, stateManager });
 const mediaProvider = getFreshMediaProvider();
 const providerFactory = new ProviderFactory();
 providerFactory.setProvider('mediaProvider', mediaProvider);

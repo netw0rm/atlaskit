@@ -1,8 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
-import ButtonGroup from '@atlaskit/button-group';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';

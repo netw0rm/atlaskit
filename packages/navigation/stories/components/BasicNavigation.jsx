@@ -80,45 +80,49 @@ export default class BasicNavigation extends PureComponent {
         </AkNavigationItemGroup>
       </div>),
     globalSecondaryActions: [
+      <Tooltip position="right" description="Back">
+        <AkDropdownMenu
+          appearance="tall"
+          position="right bottom"
+          trigger={
+            <AkGlobalItem>
+              <QuestionCircleIcon
+                label="Help icon"
+                secondaryColor="inherit"
+                size="medium"
+              />
+            </AkGlobalItem>
+          }
+        >
+          <DropdownItemGroup title="Help">
+            <DropdownItem>Documentation</DropdownItem>
+            <DropdownItem>Learn Git</DropdownItem>
+            <DropdownItem>Keyboard shortcuts</DropdownItem>
+            <DropdownItem>Bitbucket tutorials</DropdownItem>
+            <DropdownItem>API</DropdownItem>
+            <DropdownItem>Support</DropdownItem>
+          </DropdownItemGroup>
+          <DropdownItemGroup title="Information">
+            <DropdownItem>Latest features</DropdownItem>
+            <DropdownItem>Blog</DropdownItem>
+            <DropdownItem>Plans & pricing</DropdownItem>
+            <DropdownItem>Site status</DropdownItem>
+            <DropdownItem>Version info</DropdownItem>
+          </DropdownItemGroup>
+          <DropdownItemGroup title="Legal">
+            <DropdownItem>Terms of service</DropdownItem>
+            <DropdownItem>Privacy policy</DropdownItem>
+          </DropdownItemGroup>
+        </AkDropdownMenu>
+      </Tooltip>,
       <AkDropdownMenu
         appearance="tall"
         position="right bottom"
         trigger={
           <AkGlobalItem>
-            <QuestionCircleIcon
-              label="Help icon"
-              secondaryColor="inherit"
-              size="medium"
-            />
-          </AkGlobalItem>
-        }
-      >
-        <DropdownItemGroup title="Help">
-          <DropdownItem>Documentation</DropdownItem>
-          <DropdownItem>Learn Git</DropdownItem>
-          <DropdownItem>Keyboard shortcuts</DropdownItem>
-          <DropdownItem>Bitbucket tutorials</DropdownItem>
-          <DropdownItem>API</DropdownItem>
-          <DropdownItem>Support</DropdownItem>
-        </DropdownItemGroup>
-        <DropdownItemGroup title="Information">
-          <DropdownItem>Latest features</DropdownItem>
-          <DropdownItem>Blog</DropdownItem>
-          <DropdownItem>Plans & pricing</DropdownItem>
-          <DropdownItem>Site status</DropdownItem>
-          <DropdownItem>Version info</DropdownItem>
-        </DropdownItemGroup>
-        <DropdownItemGroup title="Legal">
-          <DropdownItem>Terms of service</DropdownItem>
-          <DropdownItem>Privacy policy</DropdownItem>
-        </DropdownItemGroup>
-      </AkDropdownMenu>,
-      <AkDropdownMenu
-        appearance="tall"
-        position="right bottom"
-        trigger={
-          <AkGlobalItem>
-            <AkAvatar size="small" name="User profile" src={emmaAvatar} />
+            <Tooltip position="right" description="User profile">
+              <AkAvatar size="small" src={emmaAvatar} />
+            </Tooltip>
           </AkGlobalItem>
         }
       >
@@ -173,7 +177,7 @@ export default class BasicNavigation extends PureComponent {
 
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
-    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
+    const globalPrimaryIcon = <Tooltip position="right" description="Back"><AtlassianIcon label="Atlassian icon" size="large" /></Tooltip>;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
@@ -213,9 +217,9 @@ export default class BasicNavigation extends PureComponent {
             primaryIcon={globalPrimaryIcon}
           >
             {
-              this.props.searchDrawerContent ?
-              this.props.searchDrawerContent :
-              <BasicSearch />
+              this.props.searchDrawerContent
+              ? this.props.searchDrawerContent
+              : <BasicSearch />
             }
           </AkSearchDrawer>),
           (<AkCreateDrawer

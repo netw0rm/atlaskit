@@ -178,7 +178,7 @@ export class MockEmojiResource extends MockNonUploadingEmojiResource implements 
       upload,
       emoji,
     });
-    this.emojiRepository.addCustomEmoji(emoji);
+    this.emojiRepository.addUnknownEmoji(emoji);
     this.filter(this.lastQuery);
     return this.promiseBuilder(emoji, 'uploadCustomEmoji');
   }

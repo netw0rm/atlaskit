@@ -96,15 +96,18 @@ export class MediaPluginState {
     }
   }
 
+  resetPlugin = () => {
+    this.destroyPickers();
+
+    this.allowsLinks = false;
+    this.allowsUploads = false;
+    this.allowsMedia = false;
+    this.notifyPluginStateSubscribers();
+  }
+
   setMediaProvider = async (mediaProvider?: Promise<MediaProvider>) => {
+    this.resetPlugin();
     if (!mediaProvider) {
-      this.destroyPickers();
-
-      this.allowsLinks = false;
-      this.allowsUploads = false;
-      this.allowsMedia = false;
-      this.notifyPluginStateSubscribers();
-
       return;
     }
 
@@ -121,14 +124,6 @@ export class MediaPluginState {
     } catch (err) {
       const wrappedError = new Error(`Media functionality disabled due to rejected provider: ${err.message}`);
       this.errorReporter.captureException(wrappedError);
-
-      this.destroyPickers();
-
-      this.allowsLinks = false;
-      this.allowsUploads = false;
-      this.allowsMedia = false;
-      this.notifyPluginStateSubscribers();
-
       return;
     }
 
@@ -154,11 +149,7 @@ export class MediaPluginState {
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
         this.initPickers(resolvedMediaProvider.uploadParams, uploadContext);
-      } else {
-        this.destroyPickers();
       }
-    } else {
-      this.destroyPickers();
     }
 
     this.notifyPluginStateSubscribers();

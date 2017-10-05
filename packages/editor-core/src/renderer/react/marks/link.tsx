@@ -12,6 +12,10 @@ export default function Link(props: { children?: any; href: string; target?: str
     title: href,
   };
 
+  if (target === '_blank') {
+    anchorProps.rel = 'noreferrer noopener';
+  }
+
   return (
     <a {...anchorProps}>{props.children}</a>
   );

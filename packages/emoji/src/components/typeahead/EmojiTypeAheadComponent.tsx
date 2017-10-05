@@ -156,8 +156,7 @@ export default class EmojiTypeAheadComponent extends PureComponent<Props, State>
   }
 
   private onSearchResult = (result: EmojiSearchResult): void => {
-    const { emojis } = result;
-    const { query } = this.props;
+    const { emojis, query } = result;
     const wasVisible = this.state.visible;
     const visible = emojis.length > 0;
     debug('emoji-typeahead.applyPropChanges', emojis.length, wasVisible, visible);

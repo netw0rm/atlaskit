@@ -218,7 +218,7 @@ describe('mentions', () => {
     describe('Space', () => {
       it('should be ignored if there is no mentionProvider', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
@@ -228,7 +228,7 @@ describe('mentions', () => {
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
 
         return pluginState
           .setMentionProvider(mentionProvider)
@@ -241,9 +241,9 @@ describe('mentions', () => {
           });
       });
 
-      it('should call "trySelectCurrent"', () => {
+      it('should call "onSelectCurrent"', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@kai{<>}'))));
-        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
+        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
         const trackEvent = sinon.spy();
         analyticsService.trackEvent = trackEvent;
 
@@ -254,7 +254,6 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Space');
             expect(spy.called).to.equal(true);
-            expect(trackEvent.calledWith('atlassian.editor.mention.try.insert.previous')).to.equal(true);
             editorView.destroy();
           });
       });
@@ -784,15 +783,14 @@ describe('mentions', () => {
             }
           ], 'oscar');
 
-          sendKeyToPm(editorView, 'Space');
+          pluginState.trySelectCurrent();
           insertText(editorView, ' How', editorView.state.selection.from);
 
           pluginState.onMentionResult([], 'oscar How');
 
-          sendKeyToPm(editorView, 'Space');
+          pluginState.trySelectCurrent();
 
           expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
-          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')).to.equal(true);
           editorView.destroy();
         });
     });

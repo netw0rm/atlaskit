@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.1.1 (2017-10-05)
+
+* bug fix; fix item line height ([ec6a01f](https://bitbucket.org/atlassian/atlaskit/commits/ec6a01f))
 ## 4.1.0 (2017-09-27)
 
 * feature; convert item to use theme package ([e860165](https://bitbucket.org/atlassian/atlaskit/commits/e860165))

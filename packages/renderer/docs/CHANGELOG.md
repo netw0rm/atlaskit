@@ -1,6 +1,15 @@
 # @atlaskit/renderer
 
-## Unreleased
+## 5.6.0 (2017-10-05)
+
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
+
+
+
+
+
+
+
 
 ## 5.5.2 (2017-07-25)
 

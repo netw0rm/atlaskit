@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq
 
+## 4.9.0 (2017-10-05)
+
+* feature; bump editor-core to the latest version (issues closed: ed-2879) ([ad1a82e](https://bitbucket.org/atlassian/atlaskit/commits/ad1a82e))
 ## 4.8.4 (2017-09-14)
 
 * bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))

@@ -1,5 +1,18 @@
 # @atlaskit/navigation
 
+## 24.5.1 (2017-10-05)
+
+* bug fix; add Object.assign polyfill to nav module (issues closed: ak-3316) ([7d217d5](https://bitbucket.org/atlassian/atlaskit/commits/7d217d5))
+
+## 24.5.0 (2017-10-05)
+
+* bug fix; nav item groups now have 20px spacing above them, as per spec (issues closed: ak-1804) ([bf71d9c](https://bitbucket.org/atlassian/atlaskit/commits/bf71d9c))
+
+* bug fix; change style of back icon in drawer ([01b87c5](https://bitbucket.org/atlassian/atlaskit/commits/01b87c5))
+* bug fix; add placeholder text color to nav search ([03bf817](https://bitbucket.org/atlassian/atlaskit/commits/03bf817))
+* bug fix; small changes to darkmode colors ([0e1842a](https://bitbucket.org/atlassian/atlaskit/commits/0e1842a))
+* bug fix; container title broke with darkmode, changed clone object to spread ([c1c018b](https://bitbucket.org/atlassian/atlaskit/commits/c1c018b))
+* feature; update darkmode for nav, add option for provided themes to be darkmode-compatible ([c253e98](https://bitbucket.org/atlassian/atlaskit/commits/c253e98))
 ## 24.4.0 (2017-10-03)
 
 * bug fix; fix tests following event name enumeration ([8b0e0ef](https://bitbucket.org/atlassian/atlaskit/commits/8b0e0ef))

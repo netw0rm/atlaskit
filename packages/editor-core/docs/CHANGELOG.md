@@ -1,5 +1,24 @@
 # @atlaskit/editor-core
 
+## 47.14.0 (2017-10-05)
+
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+## 47.13.0 (2017-10-05)
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+## 47.12.0 (2017-10-05)
+
+* bug fix; build new JSON schema ([56b52fd](https://bitbucket.org/atlassian/atlaskit/commits/56b52fd))
+
+* bug fix; sending a link with missing href causes exception in the renderer (issues closed: ed-2875) ([a58a1da](https://bitbucket.org/atlassian/atlaskit/commits/a58a1da))
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
+* bug fix; mention picker selection should not break when user enters space. (issues closed: #ed-2863) ([ad54cdc](https://bitbucket.org/atlassian/atlaskit/commits/ad54cdc))
+## 47.11.0 (2017-10-04)
+
+* feature; added inline-marco transformer (issues closed: ed-1811) ([fb3aba5](https://bitbucket.org/atlassian/atlaskit/commits/fb3aba5))
+
+* bug fix; remove code block when pressing backspace in an empty one (issues closed: ed-1572) ([7cd1579](https://bitbucket.org/atlassian/atlaskit/commits/7cd1579))
 ## 47.10.0 (2017-10-03)
 
 * feature; only clear formatting of marks, and heading nodes; don't modify block nodes (issues closed: ed-2775) ([97131bd](https://bitbucket.org/atlassian/atlaskit/commits/97131bd))

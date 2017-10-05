@@ -216,11 +216,7 @@ export default class EmojiRepository {
     }
   }
 
-  addCustomEmoji(emoji: EmojiDescription) {
-    if (emoji.category !== customCategory) {
-      throw new Error(`Emoji is not a custom emoji, but from category ${emoji.category}`);
-    }
-
+  addUnknownEmoji(emoji: EmojiDescription) {
     this.emojis = [
       ...this.emojis,
       emoji,

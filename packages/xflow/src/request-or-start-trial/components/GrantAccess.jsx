@@ -88,7 +88,7 @@ class GrantAccess extends Component {
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     heading: PropTypes.string,
-    defaultAccess: PropTypes.string,
+    defaultAccess: PropTypes.node,
 
     intl: intlShape.isRequired,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
@@ -102,11 +102,16 @@ class GrantAccess extends Component {
     grantAccessToUsers: PropTypes.func,
     retrieveUsers: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
+
+    showNotifyUsersOption: PropTypes.bool,
+    showProgressIndicator: PropTypes.bool,
   };
 
   static defaultProps = {
     grantAccessToUsers: async () => {},
     retrieveUsers: async () => [],
+    showNotifyUsersOption: true,
+    showProgressIndicator: true,
   };
 
   state = {
@@ -168,6 +173,16 @@ class GrantAccess extends Component {
     return openIdAttr ? openIdAttr.values[0] : '';
   };
 
+  notifyDocumentOfUsersGrantedAccess = (users) => {
+    const grantedAccessToByUsername = users.map(user => (user.name));
+    const accessGrantedEvent = new CustomEvent('xflow.accessGranted', {
+      detail: {
+        users: grantedAccessToByUsername,
+      },
+    });
+    document.dispatchEvent(accessGrantedEvent);
+  };
+
   handleContinueClick = async () => {
     const { grantAccessToUsers, onComplete, usersOption, firePrivateAnalyticsEvent } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
@@ -197,6 +212,9 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
         atlassianAccountIds: grantedAccessTo.join(','),
       });
+
+      this.notifyDocumentOfUsersGrantedAccess(users);
+
       onComplete();
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access', {
@@ -306,7 +324,12 @@ class GrantAccess extends Component {
       status,
       heading,
       defaultAccess,
+      showNotifyUsersOption,
+      showProgressIndicator,
     } = this.props;
+
+    const progressIndicator = showProgressIndicator ?
+      (<ProgressIndicator progress={progress} status={status} />) : '';
 
     return (
       <ModalDialog
@@ -315,7 +338,7 @@ class GrantAccess extends Component {
         header={
           <div>
             {productLogo}
-            <ProgressIndicator progress={progress} status={status} />
+            {progressIndicator}
           </div>
         }
         footer={
@@ -432,21 +455,23 @@ class GrantAccess extends Component {
             </GrantAccessDefaultAccessDiv>
           )}
 
-          <StartTrialProgressDiv>
-            <input
-              type="checkbox"
-              id="xflow-grant-access-notify-users"
-              name="notify"
-              defaultChecked
-              onChange={this.handleCheckboxChange}
-            />
-            <InputLabel htmlFor="xflow-grant-access-notify-users">
-              <FormattedMessage
-                id="xflow.generic.grant-access.notify-users"
-                defaultMessage="Notify these users"
+          {showNotifyUsersOption
+            ? <StartTrialProgressDiv>
+              <input
+                type="checkbox"
+                id="xflow-grant-access-notify-users"
+                name="notify"
+                defaultChecked
+                onChange={this.handleCheckboxChange}
               />
-            </InputLabel>
-          </StartTrialProgressDiv>
+              <InputLabel htmlFor="xflow-grant-access-notify-users">
+                <FormattedMessage
+                  id="xflow.generic.grant-access.notify-users"
+                  defaultMessage="Notify these users"
+                />
+              </InputLabel>
+            </StartTrialProgressDiv>
+            : '' }
         </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
@@ -472,6 +497,8 @@ export default withXFlowProvider(
           grantAccessOptionItems,
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
+          grantAccessShowNotifyUsersOption,
+          grantAccessShowProgressIndicator,
           grantAccessLearnMoreLink,
           // grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
@@ -489,6 +516,8 @@ export default withXFlowProvider(
     optionItems: grantAccessOptionItems,
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
+    showNotifyUsersOption: grantAccessShowNotifyUsersOption,
+    showProgressIndicator: grantAccessShowProgressIndicator,
     learnMoreLink: grantAccessLearnMoreLink,
     // selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.13.0 (2017-10-05)
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
 ## 47.12.0 (2017-10-05)
 
 * bug fix; build new JSON schema ([56b52fd](https://bitbucket.org/atlassian/atlaskit/commits/56b52fd))

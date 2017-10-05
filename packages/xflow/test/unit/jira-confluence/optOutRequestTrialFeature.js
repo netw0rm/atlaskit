@@ -4,7 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import optOutRequestTrialFeature, {
   optOutEndpoint,
-} from '../../../src/jira-confluence/optOutRequestTrialFeature';
+} from '../../../src/common/optOutRequestTrialFeature';
 
 describe('optOutRequestTrialFeature', () => {
   beforeEach(() => {

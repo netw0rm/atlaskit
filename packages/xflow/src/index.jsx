@@ -2,5 +2,8 @@ export { withXFlowProvider, XFlowProvider, xFlowShape } from './common/component
 export { default as RequestOrStartTrial } from './common/components/RequestOrStartTrial';
 export { default as RequestProductTrialOptOut } from './request-trial-opt-out/components/OptOut';
 export {
+  default as JiraToJSDXFlowProvider,
+} from './jira-jsd/JiraToJSDXFlowProvider';
+export {
   default as JiraToConfluenceXFlowProvider,
 } from './jira-confluence/JiraToConfluenceXFlowProvider';

@@ -10,7 +10,7 @@ export const addUsersUrl = (groupname) => `/admin/rest/um/1/group/user/direct?gr
  * @param groupname
  * @param product
  */
-export default (groupname, product) => {
+export default (groupname, product, description = '') => {
   async function createUsersGroup() {
     // attempt to create group if it does not already exist
     const response = await fetch(CREATE_GROUP_URL, {
@@ -18,7 +18,7 @@ export default (groupname, product) => {
       credentials: 'same-origin',
       body: JSON.stringify({
         name: groupname,
-        description: '',
+        description,
         type: 'GROUP',
       }),
       headers: {

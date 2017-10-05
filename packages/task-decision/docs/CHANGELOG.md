@@ -1,5 +1,11 @@
 # @atlaskit/task-decision
 
+## 4.2.0 (2017-10-05)
+
+
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+
 ## 4.1.0 (2017-10-05)
 
 

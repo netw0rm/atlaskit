@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 24.5.1 (2017-10-05)
+
+* bug fix; add Object.assign polyfill to nav module (issues closed: ak-3316) ([7d217d5](https://bitbucket.org/atlassian/atlaskit/commits/7d217d5))
+
 ## 24.5.0 (2017-10-05)
 
 * bug fix; nav item groups now have 20px spacing above them, as per spec (issues closed: ak-1804) ([bf71d9c](https://bitbucket.org/atlassian/atlaskit/commits/bf71d9c))

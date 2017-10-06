@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
 import { Schema } from '../../prosemirror';

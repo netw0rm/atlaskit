@@ -244,8 +244,6 @@ export const defaultProps = intl => ({
   closeAlreadyStartedDialog,
   checkProductRequestFlag: () => (false),
   setProductRequestFlag: () => { /* do nothing */ },
-  optOutRequestTrialFeature: () => { /* do nothing */ },
-  cancelOptOut: () => { /* do nothing */ },
 });
 
 export class JiraToJSDXFlowProviderBase extends Component {

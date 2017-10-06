@@ -1,12 +1,6 @@
 import * as React from 'react';
 
-export interface Props {
-  children?: any;
-  href: string;
-  target?: string;
-}
-
-export default function Link(props: Props & React.Props<any>) {
+export default function Link(props: { children?: any; href: string; target?: string; } & React.Props<any>) {
   const {
     href,
     target = '_blank',

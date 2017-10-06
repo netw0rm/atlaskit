@@ -9,15 +9,15 @@ export default class TooltipStateless extends PureComponent {
     children: PropTypes.node,
     description: PropTypes.string,
     isVisible: PropTypes.bool,
-    onMouseOut: PropTypes.func,
-    onMouseOver: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onMouseEnter: PropTypes.func,
     position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
   }
 
   static defaultProps = {
     isVisible: false,
-    onMouseOut: () => {},
-    onMouseOver: () => {},
+    onMouseLeave: () => {},
+    onMouseEnter: () => {},
     position: 'bottom',
   }
 
@@ -28,7 +28,9 @@ export default class TooltipStateless extends PureComponent {
   }
 
   render() {
-    const { children, description, isVisible, onMouseOut, onMouseOver, position } = this.props;
+    const {
+      children, description, isVisible, onMouseLeave, onMouseEnter, position,
+    } = this.props;
     const { isFlipped } = this.state;
     const tooltip = isVisible ? (
       <Tip isFlipped={isFlipped} position={position}>
@@ -43,7 +45,7 @@ export default class TooltipStateless extends PureComponent {
         onFlippedChange={this.handleLayerFlipChange}
         position={getLayerPosition(position)}
       >
-        <TooltipTrigger onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+        <TooltipTrigger onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           {children}
         </TooltipTrigger>
       </Layer>

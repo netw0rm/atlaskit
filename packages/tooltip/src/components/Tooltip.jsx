@@ -24,8 +24,8 @@ export default class Tooltip extends PureComponent {
       <TooltipStateless
         description={description}
         isVisible={isVisible}
-        onMouseOut={this.hideTooltip}
-        onMouseOver={this.showTooltip}
+        onMouseLeave={this.hideTooltip}
+        onMouseEnter={this.showTooltip}
         position={position}
       >
         {children}

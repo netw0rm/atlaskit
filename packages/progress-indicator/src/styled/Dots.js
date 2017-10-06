@@ -9,15 +9,15 @@ const colorMap = {
 };
 const selectedColorMap = {
   default: themed({ light: colors.N900, dark: colors.DN600 }),
-  help: themed({ light: colors.P400, dark: colors.P200 }),
+  help: themed({ light: colors.P400, dark: colors.P300 }),
   inverted: themed({ light: colors.N0, dark: colors.DN30 }),
   primary: themed({ light: colors.B400, dark: colors.B100 }),
 };
 const outlineColorMap = {
   default: themed({ light: colors.B75, dark: colors.B200 }),
-  help: themed({ light: colors.P75, dark: colors.DN70 }),
+  help: themed({ light: colors.P75, dark: colors.P75 }),
   inverted: themed({ light: colors.B200, dark: colors.B75 }),
-  primary: themed({ light: colors.B75, dark: colors.DN70 }),
+  primary: themed({ light: colors.B75, dark: colors.B75 }),
 };
 const sizes = {
   small: 4,

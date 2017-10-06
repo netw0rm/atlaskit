@@ -34,11 +34,6 @@ const ContainerNavigationChildrenWrapper = styled.div`
       top: 0;
       content: ${({ hasScrollHintTop }) => (hasScrollHintTop ? '\'\'' : 'none')};
     }
-
-    &:after {
-      bottom: 0;
-      content: ${({ hasScrollHintBottom }) => (hasScrollHintBottom ? '\'\'' : 'none')};
-    }
   `}
 `;
 ContainerNavigationChildrenWrapper.displayName = 'ContainerNavigationChildrenWrapper';

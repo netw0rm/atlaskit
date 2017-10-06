@@ -287,15 +287,6 @@ describe('<Navigation />', () => {
       ).find(ContainerNavigation).props().globalCreateIcon).toBe(icon);
     });
 
-    it('should pass hasScrollHintBottom onto <ContainerNavigationChildren />', () => {
-      expect(
-        mount(<Navigation hasScrollHintBottom />)
-          .find(ContainerNavigationChildren)
-          .props()
-          .hasScrollHintBottom
-      ).toBe(true);
-    });
-
     it('should pass hasScrollHintTop onto <ContainerNavigationChildren />', () => {
       expect(
         mount(<Navigation hasScrollHintTop />)

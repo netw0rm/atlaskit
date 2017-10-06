@@ -15,8 +15,8 @@ export default class FourWayTooltip extends PureComponent {
       <ButtonGroup>
         <Tooltip
           description="Toggling Tooltip on click"
-          onMouseOut={() => console.log('Mouse left button')}
-          onMouseOver={() => console.log('Mouse entered button')}
+          onMouseEnter={() => console.log('Mouse left button')}
+          onMouseLeave={() => console.log('Mouse entered button')}
           position="right"
         >
           <Button>I have mouseover handlers</Button>

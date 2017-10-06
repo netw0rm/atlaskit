@@ -4,9 +4,16 @@ import TooltipStateless from './TooltipStateless';
 
 export default class Tooltip extends PureComponent {
   static propTypes = {
+    /** The content the tooltip will be displayed around. */
     children: PropTypes.node,
+    /** The text to be displayed in the tooltip. */
     description: PropTypes.string,
+    /** Where the tooltip should appear relative to its children. */
     position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
+    /**
+      Component to be rendered around the child. Can be used to adjust the size
+      and shape of the child.
+    */
     trigger: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string,

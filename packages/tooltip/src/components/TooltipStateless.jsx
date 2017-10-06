@@ -6,12 +6,22 @@ import Tip, { TooltipTrigger } from '../styled/Tooltip';
 
 export default class TooltipStateless extends PureComponent {
   static propTypes = {
+    /** The content the tooltip will be displayed around. */
     children: PropTypes.node,
+    /** The text to be displayed in the tooltip. */
     description: PropTypes.string,
+    /** Set whether the tooltip is displayed or not. */
     isVisible: PropTypes.bool,
+    /** Function to be called when a mouse enters the trigger. */
     onMouseLeave: PropTypes.func,
+    /** Function to be called when a mouse leaves the trigger. */
     onMouseEnter: PropTypes.func,
+    /** Where the tooltip should appear relative to its children. */
     position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
+    /**
+      Component to be rendered around the child. Can be used to adjust the size
+      and shape of the child.
+    */
     trigger: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string,

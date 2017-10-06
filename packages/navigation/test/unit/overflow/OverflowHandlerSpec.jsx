@@ -8,7 +8,7 @@ import OverflowDropdown from '../../../src/components/js/overflow/OverflowDropdo
 import { dropdownHeight, reservedGapHeight } from '../../../src/components/js/overflow/shared-variables';
 
 describe('<AkCollapseOverflow />', () => {
-  describe('calculateIndexOfLastVisibleChild', () => {
+  describe('calculateBreakItem', () => {
     let instance;
 
     beforeEach(() => {

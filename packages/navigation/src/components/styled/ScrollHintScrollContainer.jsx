@@ -26,7 +26,7 @@ const ScrollHintScrollContainer = styled.div`
 
   ${whenCollapsed`
     overflow-y: hidden;
-    padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;
+    padding: 0 ${gridSize}px;
   `}
 
   ${whenNotCollapsed`

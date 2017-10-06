@@ -5,6 +5,7 @@ import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
+import { MacroProvider } from '../types';
 import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
@@ -47,6 +48,7 @@ export interface EditorProps {
   emojiProvider?: Promise<any>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
+  macroProvider?: Promise<MacroProvider>;
   waitForMediaUpload?: boolean;
   contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
 

@@ -17,6 +17,8 @@ import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { ConfluenceTransformer } from '../';
 
+import { macroProviderPromise } from './mock-macro-provider';
+
 import {
   akEditorCodeBackground,
   akEditorCodeBlockPadding,
@@ -111,6 +113,7 @@ storiesOf(name, module)
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
           activityProvider={Promise.resolve(new MockActivityResource())}
+          macroProvider={macroProviderPromise}
           // tslint:disable-next-line:jsx-no-lambda
           contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 

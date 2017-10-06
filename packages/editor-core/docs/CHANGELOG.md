@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 47.14.1 (2017-10-06)
+
+* bug fix; incorrect behaviour around mentions (issues closed: ed-1831) ([0df6c9d](https://bitbucket.org/atlassian/atlaskit/commits/0df6c9d))
+* bug fix; incorrect behaviour around emojis (issues closed: ed-1831) ([a0f9ada](https://bitbucket.org/atlassian/atlaskit/commits/a0f9ada))
 ## 47.14.0 (2017-10-05)
 
 

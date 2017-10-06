@@ -94,6 +94,7 @@ const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
   sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 storiesOf('RequestOrStartTrial (Jira Service Desk)')

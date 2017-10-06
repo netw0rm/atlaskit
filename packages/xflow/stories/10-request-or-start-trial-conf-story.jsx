@@ -94,6 +94,7 @@ const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
   sourceComponent: 'storybook-example-compontent',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 storiesOf('RequestOrStartTrial (Confluence)')

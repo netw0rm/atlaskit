@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
+
 import {
   CheckBoxWrapper,
 } from '../styled/TaskItem';
@@ -24,12 +26,13 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  fireAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 let taskCount = 0;
 const getCheckBoxId = (localId: string) => `${localId}-${taskCount++}`;
 
-export default class TaskItem extends PureComponent<Props, {}> {
+export class InternalTaskItem extends PureComponent<Props, {}> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
@@ -48,9 +51,13 @@ export default class TaskItem extends PureComponent<Props, {}> {
   }
 
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
-    const { onChange, taskId, isDone } = this.props;
+    const { onChange, fireAnalyticsEvent, taskId, isDone } = this.props;
+    const newIsDone = !isDone;
     if (onChange) {
-      onChange(taskId, !isDone);
+      onChange(taskId, newIsDone);
+    }
+    if (fireAnalyticsEvent) {
+      fireAnalyticsEvent(newIsDone ? 'check' : 'uncheck', {});
     }
   }
 
@@ -99,3 +106,11 @@ export default class TaskItem extends PureComponent<Props, {}> {
     );
   }
 }
+
+// This is to ensure that the "type" is exported, as it gets lost and not exported along with TaskItem after
+// going through the high order component.
+// tslint:disable-next-line:variable-name
+const TaskItem = withAnalytics<typeof InternalTaskItem>(InternalTaskItem, {}, { analyticsId: 'atlassian.fabric.action' });
+type TaskItem = InternalTaskItem;
+
+export default TaskItem;

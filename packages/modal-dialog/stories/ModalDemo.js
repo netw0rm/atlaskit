@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';

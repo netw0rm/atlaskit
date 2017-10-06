@@ -26,6 +26,7 @@ export interface Definition {
 export const mention: NodeSpec = {
   inline: true,
   group: 'inline',
+  selectable: false,
   attrs: {
     id: { default: '' },
     text: { default: '' },

@@ -1,5 +1,16 @@
 # @atlaskit/task-decision
 
+## 4.2.0 (2017-10-05)
+
+
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+
+## 4.1.0 (2017-10-05)
+
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+
 ## 4.0.5 (2017-09-21)
 
 * bug fix; Revert code splitting of mentions/task-decisions as it introduces a performance problem (issues closed: fs-1396 / hnw-3183) ([bbecb14](https://bitbucket.org/atlassian/atlaskit/commits/bbecb14))

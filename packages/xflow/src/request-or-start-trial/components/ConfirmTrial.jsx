@@ -60,6 +60,15 @@ class ConfirmTrial extends Component {
     );
   }
 
+  notifyDocumentOfConfirmClick = (status) => {
+    const confirmClickedEvent = new CustomEvent('xflow.confirmClicked', {
+      detail: {
+        status,
+      },
+    });
+    document.dispatchEvent(confirmClickedEvent);
+  };
+
   handleConfirmClick = () => {
     const { status, startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent(
@@ -94,6 +103,8 @@ class ConfirmTrial extends Component {
           buttonsDisabled: false,
         });
       });
+
+    this.notifyDocumentOfConfirmClick(status);
   };
 
   handleCancelClick = () => {

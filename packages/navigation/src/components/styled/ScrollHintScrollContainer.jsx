@@ -30,6 +30,8 @@ const ScrollHintScrollContainer = styled.div`
   `}
 
   ${whenNotCollapsed`
+    overflow-y: auto;
+
     &:before,
     &:after {
       background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};

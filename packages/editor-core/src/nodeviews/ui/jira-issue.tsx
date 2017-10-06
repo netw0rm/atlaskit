@@ -62,27 +62,34 @@ export interface Props {
 }
 
 export interface State {
-  JiraLogo?: React.ComponentClass<any>;
+  isJiraLogoLoaded: boolean;
 }
 
 export default class JIRAIssueNode extends React.Component<Props, State> {
-  state: State = {};
+  static JiraLogo?: React.ComponentClass<any>;
+  state: State = {
+    isJiraLogoLoaded: typeof JIRAIssueNode.JiraLogo !== 'undefined',
+  };
 
   componentDidMount () {
     require.ensure([], (require) => {
       const { JiraLogo } = require('@atlaskit/logo');
-      this.setState({ JiraLogo });
+
+      JIRAIssueNode.JiraLogo = JiraLogo;
+
+      this.setState({ isJiraLogoLoaded: true });
     });
   }
 
   render () {
     const { node: { attrs: { issueKey } } } = this.props;
-    const { JiraLogo } = this.state;
-
+    const { isJiraLogoLoaded } = this.state;
+    const { JiraLogo } = JIRAIssueNode;
+    
     return (
       <WrapperNode>
         <SvgChildNode>
-          {JiraLogo
+          {isJiraLogoLoaded && JiraLogo
             ? <JiraLogo size="small" collapseTo="icon"/>
             : <Spinner />
           }

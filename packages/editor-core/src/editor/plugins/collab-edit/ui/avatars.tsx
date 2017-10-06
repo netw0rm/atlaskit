@@ -75,46 +75,60 @@ declare interface ItemProps {
 }
 
 declare interface ItemState {
-  Avatar?: React.ComponentClass<any>;
+  isAvatarLoaded: boolean;
 }
 
 class Item extends React.Component<ItemProps, ItemState> {
-  state: ItemState = {};
+  static Avatar?: React.ComponentClass<any>;
+  state: ItemState = {
+    isAvatarLoaded: typeof Item.Avatar !== 'undefined',
+  };
 
   componentDidMount () {
-    require.ensure([], (require) => {
-      // tslint:disable-next-line:variable-name
-      const Avatar = require('@atlaskit/avatar').default;
-      this.setState({ Avatar });
-    });
+    if (!this.state.isAvatarLoaded) {
+      require.ensure([], (require) => {
+        Item.Avatar = require('@atlaskit/avatar').default;      
+        this.setState({ isAvatarLoaded: true });
+      });
+    }
   }
 
   render() {
     const { props } =  this;
-    const { Avatar } = this.state;
+    const { isAvatarLoaded } = this.state;
+    const { Avatar } = Item;
     const color = getAvatarColor(props.sessionId).color.solid;
     const avatar = props.name.substr(0, 1).toUpperCase();
 
     return (
       <AvatarItem badgeColor={color} avatar={avatar}>
-        {Avatar ? <Avatar {...props} /> : <Spinner />}
+        {isAvatarLoaded && Avatar ? <Avatar {...props} /> : <Spinner />}
       </AvatarItem>
     );
   }
 }
 
 export interface State {
-  AvatarGroup?: React.ComponentClass<any>;
+  isAvatarGroupLoaded: boolean;
 }
 
 export default class Avatars extends React.Component<Props, State> {
-  state: State = {};
+  static AvatarGroup?: React.ComponentClass<any>;
+
+  state: State = {
+    isAvatarGroupLoaded: typeof Avatars.AvatarGroup !== 'undefined',
+  };
 
   componentDidMount () {
-    require.ensure([], (require) => {
-      const { AvatarGroup } = require('@atlaskit/avatar');
-      this.setState({ AvatarGroup });
-    });
+    if (!this.state.isAvatarGroupLoaded) {
+      require.ensure([], (require) => {
+        const { AvatarGroup } = require('@atlaskit/avatar');
+        Avatars.AvatarGroup = AvatarGroup;
+
+        this.setState({ isAvatarGroupLoaded: true });
+      });
+    }
+    
   }
 
   private onAvatarClick = (data) => {
@@ -122,7 +136,8 @@ export default class Avatars extends React.Component<Props, State> {
 
   private renderAvatars = ({ data }) => {
     const { sessionId, activeParticipants } = data;
-    const { AvatarGroup } = this.state;
+    const { isAvatarGroupLoaded } = this.state;
+    const { AvatarGroup } = Avatars;
 
     const avatars = activeParticipants.map(p => ({
       email: p.email,
@@ -134,7 +149,7 @@ export default class Avatars extends React.Component<Props, State> {
 
     return (
       <AvatarContainer>
-        {AvatarGroup ?
+        {isAvatarGroupLoaded && AvatarGroup ?
           <AvatarGroup
             appearance="stack"
             size="medium"

@@ -7,6 +7,10 @@ export default class Tooltip extends PureComponent {
     children: PropTypes.node,
     description: PropTypes.string,
     position: PropTypes.oneOf(['bottom', 'left', 'right', 'top']),
+    trigger: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string,
+    ]),
   }
 
   static defaultProps = { position: 'bottom' }
@@ -17,7 +21,7 @@ export default class Tooltip extends PureComponent {
   showTooltip = () => this.setState({ isVisible: true });
 
   render() {
-    const { children, description, position } = this.props;
+    const { children, description, position, trigger } = this.props;
     const { isVisible } = this.state;
 
     return (
@@ -27,6 +31,7 @@ export default class Tooltip extends PureComponent {
         onMouseLeave={this.hideTooltip}
         onMouseEnter={this.showTooltip}
         position={position}
+        trigger={trigger}
       >
         {children}
       </TooltipStateless>

@@ -7,6 +7,8 @@ import { name } from '../package.json';
 import PositionExample from './PositionExample';
 import { Container, Relative, Target } from './styled';
 
+const RelativeTrigger = props => <span style={{ display: 'inline-block' }} {...props} />;
+
 storiesOf(name, module)
   .add('a dumb tooltip', () => (
     <Container>
@@ -24,11 +26,11 @@ storiesOf(name, module)
   ))
   .add('a smart tooltip that changes position', () => (
     <Container>
-      <PositionExample />
+      <PositionExample trigger="div" />
     </Container>
   ))
   .add('a smart tooltip in a relatively positioned parent', () => (
     <Relative>
-      <PositionExample />
+      <PositionExample trigger={RelativeTrigger} />
     </Relative>
   ));

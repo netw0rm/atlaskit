@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import rafSchd from 'raf-schd';
 import OverflowHeightReportEnabler from './OverflowHeightReportEnabler';
 import OverflowDropdown from './OverflowDropdown';
 import HeightDetector from './HeightDetector';
@@ -116,7 +115,7 @@ export default class OverflowManager extends Component {
   render() {
     return (
       <div style={{ position: 'relative', height: '100%' }}>
-        <HeightDetector onHeightChange={rafSchd(this.handleAvailableHeightChange)}>
+        <HeightDetector onHeightChange={this.handleAvailableHeightChange}>
           <OverflowHeightReportEnabler>
             {this.props.children}
           </OverflowHeightReportEnabler>

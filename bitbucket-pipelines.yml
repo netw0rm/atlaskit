@@ -85,6 +85,11 @@ pipelines:
     # This build should only be called by the scheduled build. We are in a hard catch-22 though, to
     # make this build only be able to be run on a specific branch, we need to prevent being able to
     # to run it manually (prep_for_release.sh will fail as BITBUCKET_BRANCH will not be set)
+
+    ##################################################################################################
+    #  NOTE: If you are trying to change this script, you'll need to make sure you merge the changes #
+    #        into `production-website-DO-NOT-USE` or they wont happen in the scheduled build         #
+    ##################################################################################################
     build-website-production:
       - step:
           script:

@@ -1,8 +1,2 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
-
-export default class Strike extends PureComponent<{}, {}> {
-  render() {
-    return <span style={{textDecoration: 'line-through'}}>{this.props.children}</span>;
-  }
-}
+export default function Strike(props: React.Props<any>) { return <span style={{textDecoration: 'line-through'}}>{props.children}</span>; }

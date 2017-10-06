@@ -1,11 +1,2 @@
-import styled from 'styled-components';
-
-export default styled.ul`
-  list-style-type: disc;
-  & ul {
-    list-style-type: circle;
-  }
-  & ul ul {
-    list-style-type: square;
-  }
-`;
+import * as React from 'react';
+export default function BulletList(props: React.Props<any>) { return <ul>{props.children}</ul>; }

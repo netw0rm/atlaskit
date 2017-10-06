@@ -109,22 +109,6 @@ describe('@atlaskit/xflow', () => {
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(sinonTest, 'Hi! I\'d like to try Confluence.');
     });
-
-    // it('should render Success Flag with custom note', async () => {
-    //   // eventually render to request trial screen
-    //   await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
-    //   clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
-    //
-    //   await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
-    //   // TODO figure out how to simulate textarea modifications
-    //   xflow.find('NoteText').find('textarea').simulate('keyDown', { which: 'a' });
-    //   clickOnText(xflow.find(RequestTrialNote), 'Send note');
-    //   await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-    //   expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
-    //   expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
-    //   expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
-    //   sinon.assert.calledWith(sinonTest, 'a');
-    // });
   });
 
   describe('error activating confluence', () => {

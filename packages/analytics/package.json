@@ -24,7 +24,9 @@
     "dist"
   ],
   "devDependencies": {
-    "@atlaskit/theme": "^2.0.0"
+    "@atlaskit/theme": "^2.0.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2"
   },
   "dependencies": {
     "prop-types": "^15.5.10"

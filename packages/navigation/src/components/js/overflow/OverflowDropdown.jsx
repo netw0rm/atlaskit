@@ -6,9 +6,9 @@ import DropdownMenu from '@atlaskit/dropdown-menu';
 import Item from '@atlaskit/item';
 import MoreVerticalIcon from '@atlaskit/icon/glyph/more-vertical';
 import Tooltip from '@atlaskit/tooltip';
-import OverflowDropdownButtonWrapper from '../styled/OverflowDropdownButtonWrapper';
-import { isDropdownOverflowKey } from '../../theme/util';
-import type { ReactElement } from '../../types';
+import OverflowDropdownButtonWrapper from '../../styled/OverflowDropdownButtonWrapper';
+import { isDropdownOverflowKey } from '../../../theme/util';
+import type { ReactElement } from '../../../types';
 
 type State = {|
   isOpen: boolean,
@@ -18,14 +18,14 @@ type Props = {|
   children?: ReactElement,
 |}
 
-export default class NavigationOverflowDropdown extends Component {
+export default class OverflowDropdown extends Component {
   constructor(props: Props, context: any) {
     super(props, context);
     this.state = { isOpen: false };
   }
 
   state: State
-  props: Props
+  props: Props // eslint-disable-line react/sort-comp
 
   handleDropdownToggle = ({ isOpen }: any) => {
     this.setState({ isOpen });

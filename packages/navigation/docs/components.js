@@ -3,7 +3,9 @@ const path = require('path');
 module.exports = [
   { name: 'Navigation', src: path.join(__dirname, '../src/components/js/Navigation.jsx') },
   { name: 'AkNavigationItemGroup', src: path.join(__dirname, '../src/components/js/NavigationItemGroup.jsx') },
-  { name: 'AkCollapseOverflow', src: path.join(__dirname, '../src/components/js/NavigationOverflowHandler.jsx') },
+  { name: 'AkCollapseOverflow', src: path.join(__dirname, '../src/components/js/overflow/OverflowHandler.jsx') },
+  { name: 'AkCollapseOverflowItem', src: path.join(__dirname, '../src/components/js/overflow/OverflowItem.jsx') },
+  { name: 'AkCollapseOverflowItemGroup', src: path.join(__dirname, '../src/components/js/overflow/OverflowItemGroup.jsx') },
   { name: 'AkContainerLogo', src: path.join(__dirname, '../src/components/js/ContainerLogo.jsx') },
   { name: 'AkContainerTitle', src: path.join(__dirname, '../src/components/js/ContainerTitle.jsx') },
   { name: 'AkContainerNavigation', src: path.join(__dirname, '../src/components/js/ContainerNavigation.jsx') },

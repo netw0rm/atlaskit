@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { ItemGroup } from '@atlaskit/item';
 import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
@@ -23,13 +23,13 @@ type Props = {|
   innerRef?: (HTMLElement) => void,
 |};
 
-export default class NavigationItemGroup extends PureComponent {
+export default class NavigationItemGroup extends Component {
   static defaultProps = {
     isCompact: false,
     hasSeparator: false,
   }
 
-  props: Props
+  props: Props // eslint-disable-line react/sort-comp
 
   render() {
     const {

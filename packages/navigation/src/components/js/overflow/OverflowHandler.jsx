@@ -5,7 +5,12 @@ import rafSchd from 'raf-schd';
 import OverflowHeightReportEnabler from './OverflowHeightReportEnabler';
 import OverflowDropdown from './OverflowDropdown';
 import HeightDetector from './HeightDetector';
-import { overflowManagerNamespace, dropdownHeight, reservedGapHeight } from './shared-variables';
+import {
+  overflowManagerNamespace,
+  dropdownHeight,
+  reservedGapHeight,
+  isArrayFilled,
+} from './shared-variables';
 import type { ReactElement } from '../../../types';
 
 type Props = {
@@ -93,16 +98,7 @@ export default class OverflowManager extends Component {
     }
   }
 
-  hasAllGroupHeights = () => {
-    // Note: we can't use a simple this.heights.length check here because it always equals
-    // props.itemCount; We also can't use .filter() because that skips any undefined items.
-    for (let i = 0; i < this.groupHeights.length; i++) {
-      if (typeof this.groupHeights[i] === 'undefined') {
-        return false;
-      }
-    }
-    return true;
-  }
+  hasAllGroupHeights = () => isArrayFilled(this.groupHeights);
 
   handleItemGroupHeightReport = ({ groupIndex, ...groupHeightInfo }) => {
     this.groupHeights[groupIndex] = groupHeightInfo;

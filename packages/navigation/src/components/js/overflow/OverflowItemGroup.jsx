@@ -6,6 +6,7 @@ import {
   overflowManagerNamespace,
   overflowGroupNamespace,
   shouldReportItemHeight,
+  isArrayFilled,
 } from './shared-variables';
 import type { ReactElement } from '../../../types';
 
@@ -58,16 +59,7 @@ export default class OverflowItemGroup extends Component {
     );
   }
 
-  hasAllItemHeights = () => {
-    // Note: we can't use a simple this.heights.length check here because it always equals
-    // props.itemCount; We also can't use .filter() because that skips any undefined items.
-    for (let i = 0; i < this.heights.length; i++) {
-      if (typeof this.heights[i] === 'undefined') {
-        return false;
-      }
-    }
-    return true;
-  }
+  hasAllItemHeights = () => isArrayFilled(this.heights)
 
   combinedItemHeights = () =>
     this.heights.reduce((sum, value, i) => (

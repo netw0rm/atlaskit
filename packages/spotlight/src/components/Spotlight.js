@@ -18,7 +18,7 @@ type Props = {|
   /** Where the dialog should appear, relative to the contents of the children. */
   dialogPlacement?: 'top left' | 'top center' | 'top right' | 'right top' | 'right middle' | 'right bottom' | 'bottom left' | 'bottom center' | 'bottom right' | 'left top' | 'left middle' | 'left bottom',
   /** width of the dialog */
-  dialogWidth?: 'small' | 'medium',
+  dialogWidth?: number | 'small' | 'medium',
   /** Optional element rendered below the body */
   footer?: ElementType,
   /** Optional element rendered above the body */

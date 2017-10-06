@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
+import { AnalyticsListener } from '@atlaskit/analytics';
 import TaskItem from '../../../src/components/TaskItem';
 import Participants from '../../../src/components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../../src/styled/Item';
@@ -27,15 +28,38 @@ describe('<TaskItem/>', () => {
     expect(contentRef!.textContent).toEqual('Hello world');
   });
 
-  it('should call onChange when checkbox is clicked', () => {
-    const spy = sinon.spy();
-    const component = mount(
-      <TaskItem taskId="task-1" onChange={spy}>Hello <b>world</b></TaskItem>
-    );
-    component.find('input').simulate('change');
-    expect(spy.calledWith('task-1', true)).toEqual(true);
-  });
+  describe('clicking', () => {
+    it('should call onChange when checkbox is clicked', () => {
+      const spy = sinon.spy();
+      const component = mount(
+        <TaskItem taskId="task-1" onChange={spy}>Hello <b>world</b></TaskItem>
+      );
+      component.find('input').simulate('change');
+      expect(spy.calledWith('task-1', true)).toEqual(true);
+    });
 
+    it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
+      const spy = sinon.spy();
+      const component = mount(
+        <AnalyticsListener onEvent={spy}>
+          <TaskItem taskId="task-1">Hello <b>world</b></TaskItem>
+        </AnalyticsListener>
+      );
+      component.find('input').simulate('change');
+      expect(spy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
+    });
+
+    it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
+      const spy = sinon.spy();
+      const component = mount(
+        <AnalyticsListener onEvent={spy}>
+          <TaskItem taskId="task-1" isDone={true}>Hello <b>world</b></TaskItem>
+        </AnalyticsListener>
+      );
+      component.find('input').simulate('change');
+      expect(spy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
+    });
+  });
 
   describe('showPlaceholder', () => {
     it('should render placeholder if task is empty', () => {

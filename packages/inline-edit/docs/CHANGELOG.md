@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.1 (2017-10-05)
+
+* bug fix; stop invalid icon being pushed out of the field box and therefore hidden ([e65c163](https://bitbucket.org/atlassian/atlaskit/commits/e65c163))
 ## 4.5.0 (2017-09-19)
 
 * feature; allow readview of inline-edit to fit container width (issues closed: #ak-3118) ([652edaf](https://bitbucket.org/atlassian/atlaskit/commits/652edaf))

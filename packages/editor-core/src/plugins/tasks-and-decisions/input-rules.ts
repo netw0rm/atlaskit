@@ -3,7 +3,7 @@ import { analyticsService } from '../../analytics';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import uuid from '../../plugins/tasks-and-decisions/uuid';
 
-const createListRule = (regex: RegExp, name: string, list: any, item: any, schema: Schema<any, any>) => {
+const createListRule = (regex: RegExp, name: string, list: any, item: any, schema: Schema<any, any>, analyticType: string) => {
   const { paragraph, hardBreak } = schema.nodes;
 
   return createInputRule(
@@ -22,7 +22,7 @@ const createListRule = (regex: RegExp, name: string, list: any, item: any, schem
 
         const where = $from.before($from.depth);
 
-        analyticsService.trackEvent(`atlassian.editor.${name}.autoformatting`);
+        analyticsService.trackEvent(`atlassian.fabric.${analyticType}.trigger.shortcut`);
         const content = $from.node($from.depth).content;
         let shouldBreakNode = false;
 
@@ -63,11 +63,11 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   } = schema.nodes;
 
   if (decisionList && decisionItem) {
-    rules.push(createListRule(new RegExp(`(^|${leafNodeReplacementCharacter})\\<\\>\\s$`), 'decisionlist', decisionList, decisionItem, schema));
+    rules.push(createListRule(new RegExp(`(^|${leafNodeReplacementCharacter})\\<\\>\\s$`), 'decisionlist', decisionList, decisionItem, schema, 'decision'));
   }
 
   if (taskList && taskItem) {
-    rules.push(createListRule(new RegExp(`(^|${leafNodeReplacementCharacter})\\[\\]\\s$`), 'tasklist', taskList, taskItem, schema));
+    rules.push(createListRule(new RegExp(`(^|${leafNodeReplacementCharacter})\\[\\]\\s$`), 'tasklist', taskList, taskItem, schema, 'action'));
   }
 
   return inputRules({ rules });

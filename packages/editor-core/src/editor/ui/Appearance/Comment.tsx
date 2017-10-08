@@ -115,7 +115,6 @@ SecondaryToolbar.displayName = 'SecondaryToolbar';
 
 export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
   static displayName = 'CommentEditorAppearance';
-  state = { showHelp: false };
   private flashToggle = false;
 
   private appearance: EditorAppearance = 'comment';

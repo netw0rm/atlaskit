@@ -21,6 +21,9 @@ import DefaultPropsExampleSrc from '!raw-loader!./DefaultPropsExample';
 
 import ReduxStoreExample from './ReduxStoreExample';
 import ReduxStoreExampleSrc from '!raw-loader!./ReduxStoreExample';
+
+import VersionExample from './VersionExample';
+import VersionExampleSrc from '!raw-loader!./VersionExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Usage = styled.pre`
@@ -81,10 +84,19 @@ export const description = (
     </p>
     <p>
       If you are using a state manager like Redux and need to fire events in the stores with the
-      decorated analyticsData then you can use <code>getParentAnalyticsData(analyticsId)</code>.
+      decorated analyticsData then you can
+      use <code>getParentAnalyticsData(analyticsId, version?)</code>.
       This function will traverse the hierarchy for <code>AnalyticsDecorators</code> and build
       the extended analyticsData that would have been generated based on all the filtering logic.
       This parentAnalyticsData can then be passed to the stores as a property on the action.
+    </p>
+    <p>
+      If you need to version events you can can use the <code>analyticsVersion</code> property
+      on components or pass
+      a <code>version</code> to <code>fireAnalyticsEvent(event, data, version)</code>.
+      You can then create a new chain
+      of <code>AnalyticsListeners</code> and <code>AnalyticsDecorators</code> that process
+      these events by specifying a <code>matchVersion</code> property.
     </p>
     <p>
       Open up the browser console to see the analytic events in the examples.
@@ -122,5 +134,10 @@ export const examples = [
     title: 'Redux Store',
     Component: ReduxStoreExample,
     src: ReduxStoreExampleSrc,
+  },
+  {
+    title: 'Different Event Versions',
+    Component: VersionExample,
+    src: VersionExampleSrc,
   },
 ];

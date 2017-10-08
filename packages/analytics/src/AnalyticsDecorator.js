@@ -24,6 +24,9 @@ class AnalyticsDecorator extends Component {
     match?: string | ((name: string) => boolean),
     /** Sets wether to extended private or public events. */
     matchPrivate?: boolean,
+    /** Version of analytics event to decorate. Useful when firing analytics
+    in different event formats */
+    matchVersion?: number,
   };
   static defaultProps = {
     match: '*',
@@ -43,11 +46,17 @@ class AnalyticsDecorator extends Component {
       getParentAnalyticsData: this.getParentAnalyticsData,
     };
   }
-  getDecoratedAnalyticsData = (name: string, srcData: Object, isPrivate: boolean) => {
+  getDecoratedAnalyticsData = (
+    name: string,
+    srcData: Object,
+    isPrivate: boolean,
+    version: number) => {
     // Decorate the event data if this decorator matches the event name
-    const { data, getData, match, matchPrivate } = this.props;
+    const { data, getData, match, matchPrivate, matchVersion } = this.props;
     const decoratedData = { ...srcData };
-    if (matchPrivate === isPrivate && matchEvent(match, name)) {
+    if (matchPrivate === isPrivate &&
+        matchEvent(match, name) &&
+        matchVersion === version) {
       if (typeof data === 'object') {
         Object.assign(decoratedData, data);
       }
@@ -57,21 +66,21 @@ class AnalyticsDecorator extends Component {
     }
     return decoratedData;
   };
-  onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean) => {
+  onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean, version: number) => {
     // Check there is a listener to pass the event to, otherwise there's no need
     // to do any of this work
     const { onAnalyticsEvent } = this.context;
     if (typeof onAnalyticsEvent !== 'function') return;
-    const decoratedData = this.getDecoratedAnalyticsData(name, srcData, isPrivate);
+    const decoratedData = this.getDecoratedAnalyticsData(name, srcData, isPrivate, version);
     // Pass the decorated event data to the next listener up the hierarchy
-    onAnalyticsEvent(name, decoratedData, isPrivate);
+    onAnalyticsEvent(name, decoratedData, isPrivate, version);
   };
-  getParentAnalyticsData = (name: string, isPrivate: boolean) => {
-    const parentData = this.getDecoratedAnalyticsData(name, {}, isPrivate);
+  getParentAnalyticsData = (name: string, isPrivate: boolean, version: number) => {
+    const parentData = this.getDecoratedAnalyticsData(name, {}, isPrivate, version);
     // Get any analytics data from any decorators up the hierarchy
     const { getParentAnalyticsData } = this.context;
     if (typeof getParentAnalyticsData === 'function') {
-      Object.assign(parentData, getParentAnalyticsData(name, isPrivate));
+      Object.assign(parentData, getParentAnalyticsData(name, isPrivate, version));
     }
     return parentData;
   };

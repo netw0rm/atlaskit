@@ -193,4 +193,40 @@ describe('AnalyticsListener', () => {
     listener.find(Button).simulate('click');
     expect(spy).toHaveBeenCalledTimes(0);
   });
+
+  it('should send event when versions match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsListener onEvent={spy} matchVersion={1}>
+        <Button analyticsId="button" analyticsVersion={1} />
+      </AnalyticsListener>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not send event when versions do not match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsListener onEvent={spy} matchVersion={1}>
+        <Button analyticsId="button" analyticsVersion={0} />
+      </AnalyticsListener>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(0);
+  });
+
+  it('should send event when all matchers match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsListener onEvent={spy} match="button." matchVersion={1}>
+        <Button analyticsId="button" analyticsVersion={1} />
+      </AnalyticsListener>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });

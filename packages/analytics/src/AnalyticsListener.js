@@ -21,6 +21,9 @@ class AnalyticsListener extends Component {
     match?: string | ((name: string) => boolean),
     /** Sets wether to call `onEvent` for private or public events. */
     matchPrivate?: boolean,
+    /** Version of analytics event to listen for, useful when firing analytics
+    in different event formats */
+    matchVersion?: number,
   };
   static defaultProps = {
     match: '*',
@@ -37,12 +40,13 @@ class AnalyticsListener extends Component {
       onAnalyticsEvent: this.onAnalyticsEvent,
     };
   }
-  onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean) => {
+  onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean, version: number) => {
     // Call this component's onEvent method if it's a match
-    const { onEvent, match, matchPrivate } = this.props;
+    const { onEvent, match, matchPrivate, matchVersion } = this.props;
     if (
       matchPrivate === isPrivate &&
       matchEvent(match, name) &&
+      matchVersion === version &&
       typeof onEvent === 'function'
     ) {
       // send a clean data object so it can't be mutated between listeners
@@ -53,7 +57,7 @@ class AnalyticsListener extends Component {
     // Pass the event up the hierarchy
     const { onAnalyticsEvent } = this.context;
     if (typeof onAnalyticsEvent === 'function') {
-      onAnalyticsEvent(name, data, isPrivate);
+      onAnalyticsEvent(name, data, isPrivate, version);
     }
   };
   render() {

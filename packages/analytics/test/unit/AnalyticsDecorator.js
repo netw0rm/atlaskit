@@ -270,4 +270,34 @@ describe('AnalyticsDecorator', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
   });
+
+  it('should extend eventData when versions match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsListener onEvent={spy} matchVersion={1}>
+        <AnalyticsDecorator data={{ two: 2 }} matchVersion={1}>
+          <Button analyticsId="button" analyticsData={{ one: 1 }} analyticsVersion={1} />
+        </AnalyticsDecorator>
+      </AnalyticsListener>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('button.click', { one: 1, two: 2 });
+  });
+
+  it('should not extend eventData when versions do not match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsListener onEvent={spy} matchVersion={0}>
+        <AnalyticsDecorator data={{ two: 2 }} matchVersion={1}>
+          <Button analyticsId="button" analyticsData={{ one: 1 }} analyticsVersion={0} />
+        </AnalyticsDecorator>
+      </AnalyticsListener>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('button.click', { one: 1 });
+  });
 });

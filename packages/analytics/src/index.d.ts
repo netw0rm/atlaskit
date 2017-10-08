@@ -13,6 +13,7 @@ export type EventMapOrFunction =
 export type AnalyticsProps = {
   analyticsId?: string,
   analyticsData?: Object,
+  analyticsVersion?: number,
   innerRef?: Function,
 };
 
@@ -24,6 +25,7 @@ export interface AnalyticsListenerProps {
   onEvent: (eventName: string, eventData: Object) => any;
   match?: string | ((name: string) => boolean);
   matchPrivate?: boolean;
+  matchVersion?: number;
 }
 
 export class AnalyticsListener extends Component<AnalyticsListenerProps, {}> { }

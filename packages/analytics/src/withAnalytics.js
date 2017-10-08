@@ -14,6 +14,7 @@ type EventMapOrFunction =
 type AnalyticsProps = {
   analyticsId?: string,
   analyticsData?: Object,
+  analyticsVersion?: number,
   innerRef?: Function,
 };
 
@@ -32,7 +33,7 @@ the component consumer.
 const withAnalytics = (
   WrappedComponent,
   map: EventMapOrFunction = {},
-  defaultProps: AnalyticsProps = {}) =>
+  defaultProps: AnalyticsProps = { }) =>
 
   class WithAnalytics extends Component {
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
@@ -45,29 +46,32 @@ const withAnalytics = (
     static defaultProps = {
       analyticsId: defaultProps.analyticsId,
       analyticsData: defaultProps.analyticsData,
+      analyticsVersion: defaultProps.analyticsVersion,
     }
     componentWillMount() {
       this.evaluatedMap =
         typeof map === 'function' ? map(this.fireAnalyticsEvent) : map;
     }
-    fireAnalyticsEvent = (name: string, data: Object) => {
-      const { analyticsData, analyticsId } = this.props;
+    fireAnalyticsEvent = (name: string, data: Object, version: number) => {
+      const { analyticsData, analyticsId, analyticsVersion } = this.props;
       const { onAnalyticsEvent } = this.context;
+      const ver = version !== undefined ? version : analyticsVersion;
       if (!analyticsId || !onAnalyticsEvent) return;
       const eventData = { ...analyticsData, ...data };
-      onAnalyticsEvent(`${analyticsId}.${name}`, eventData, false);
+      onAnalyticsEvent(`${analyticsId}.${name}`, eventData, false, ver);
     };
-    privateAnalyticsEvent = (name: string, data: Object) => {
+    privateAnalyticsEvent = (name: string, data: Object, version: number) => {
       const { onAnalyticsEvent } = this.context;
       if (!onAnalyticsEvent) return;
-      onAnalyticsEvent(`${name}`, data, true);
+      onAnalyticsEvent(`${name}`, data, true, version);
     };
-    getParentAnalyticsData = (name: string) => {
+    getParentAnalyticsData = (name: string, version: number) => {
       const { getParentAnalyticsData } = this.context;
       let parentData = {};
       if (typeof getParentAnalyticsData === 'function') {
-        const { analyticsId } = this.props;
-        parentData = getParentAnalyticsData(`${analyticsId}.${name}`, false);
+        const { analyticsId, analyticsVersion } = this.props;
+        const ver = version !== undefined ? version : analyticsVersion;
+        parentData = getParentAnalyticsData(`${analyticsId}.${name}`, false, ver);
       }
       return parentData;
     };
@@ -76,6 +80,7 @@ const withAnalytics = (
       const {
         analyticsId,
         analyticsData,
+        analyticsVersion,
         ...componentProps
       } = this.props;
       /* eslint-enable no-unused-vars */

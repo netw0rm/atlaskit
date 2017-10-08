@@ -157,7 +157,7 @@ describe('getParentAnalyticsData', () => {
     expect(spy).toHaveBeenCalledWith({ two: 2 });
   });
 
-  it('should return parentData when regex match is false', () => {
+  it('should not return parentData when regex match is false', () => {
     const spy = jest.fn();
     const listener = mount(
       <AnalyticsDecorator data={{ two: 2 }} match={/^no.*$/}>
@@ -194,5 +194,57 @@ describe('getParentAnalyticsData', () => {
     listener.find(Button).simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({});
+  });
+
+  it('should return parentData when versions match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsDecorator data={{ two: 2 }} matchVersion={1}>
+        <Button analyticsId="button" testSpy={spy} analyticsVersion={1} />
+      </AnalyticsDecorator>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ two: 2 });
+  });
+
+  it('should not return parentData when versions do not match', () => {
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsDecorator data={{ two: 2 }} matchVersion={1}>
+        <Button analyticsId="button" testSpy={spy} analyticsVersion={0} />
+      </AnalyticsDecorator>
+    );
+
+    listener.find(Button).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({});
+  });
+
+  it('should use version over analyticsVersion when passed to getParentAnalyticsData', () => {
+    const VersionButton = withAnalytics(
+      class B extends Component {
+        onClick = () => {
+          const parentData = this.props.getParentAnalyticsData('click', 2);
+          this.props.testSpy(parentData);
+        };
+        render() {
+          const props = cleanProps(this.props);
+          return <button {...props} onClick={this.onClick} />;
+        }
+      }
+    );
+
+    const spy = jest.fn();
+    const listener = mount(
+      <AnalyticsDecorator data={{ two: 2 }} matchVersion={2}>
+        <VersionButton analyticsId="button" testSpy={spy} analyticsVersion={1} />
+      </AnalyticsDecorator>
+    );
+
+    listener.find(VersionButton).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({ two: 2 });
   });
 });

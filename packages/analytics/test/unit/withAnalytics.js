@@ -175,6 +175,81 @@ describe('withAnalytics', () => {
       listener.find(Button).simulate('click');
       expect(spy).toHaveBeenCalledTimes(0);
     });
+
+    it('should use analyticsVersion when no version is passed to fireAnalyticsEvent', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        props => <button {...cleanProps(props)} />,
+        {
+          onClick: 'click',
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy} matchVersion={1}>
+          <Button analyticsId="button" analyticsVersion={1} />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('button.click', {});
+    });
+
+    it('should not use analyticsVersion when version passed to fireAnalyticsEvent', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        class T extends Component {
+          onClick = () => {
+            this.props.fireAnalyticsEvent('click', {}, 2);
+          };
+          render() {
+            const { children, ...props } = this.props;
+            return (
+              <button {...cleanProps(props)} onClick={this.onClick}>
+                {children}
+              </button>
+            );
+          }
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy} matchVersion={2}>
+          <Button analyticsId="button" analyticsVersion={1} />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('button.click', {});
+    });
+
+    it('should never use analyticsVersion in firePrivateAnalyticsEvent', () => {
+      const spy = jest.fn();
+      const Button = withAnalytics(
+        class T extends Component {
+          onClick = () => {
+            this.props.firePrivateAnalyticsEvent('click');
+          };
+          render() {
+            const { children, ...props } = this.props;
+            return (
+              <button {...cleanProps(props)} onClick={this.onClick}>
+                {children}
+              </button>
+            );
+          }
+        }
+      );
+      const listener = mount(
+        <AnalyticsListener onEvent={spy} matchPrivate>
+          <Button analyticsId="button" analyticsVersion={1} />
+        </AnalyticsListener>
+      );
+
+      listener.find(Button).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('click', {});
+    });
   });
 
   describe('integrated usage', () => {

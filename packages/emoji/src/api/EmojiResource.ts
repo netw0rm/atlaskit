@@ -380,7 +380,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
                 // at least render an alternative
                 return this.findByShortName(shortName);
               }
-              this.addCustomEmoji(emoji);
+              this.addUnknownEmoji(emoji);
               return emoji;
             });
           }
@@ -500,8 +500,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     return Promise.resolve(customEmoji.length > 0);
   }
 
-  protected addCustomEmoji(emoji: EmojiDescription) {
-    this.emojiRepository.addCustomEmoji(emoji);
+  protected addUnknownEmoji(emoji: EmojiDescription) {
+    this.emojiRepository.addUnknownEmoji(emoji);
   }
 }
 
@@ -530,7 +530,7 @@ export default class UploadingEmojiResource extends EmojiResource implements Upl
       }
 
       return this.siteEmojiResource.uploadEmoji(upload).then(emoji => {
-        this.addCustomEmoji(emoji);
+        this.addUnknownEmoji(emoji);
         this.refreshLastFilter();
         return emoji;
       });

@@ -12,7 +12,7 @@ export default class TaskList extends PureComponent<{}, {}> {
     }
 
     return (
-      <AkTaskList>{children}</AkTaskList>
+      <div className="akTaskList"><AkTaskList>{children}</AkTaskList></div>
     );
   }
 }

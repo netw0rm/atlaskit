@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },
@@ -19,11 +19,14 @@
     "storybook:static": "../../build/bin/storybook/build.static.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
+  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@atlaskit/theme": "^2.0.0"
+    "@atlaskit/theme": "^2.0.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2"
   },
   "dependencies": {
     "prop-types": "^15.5.10"

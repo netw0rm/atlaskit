@@ -37,7 +37,10 @@ const withAnalytics = (
   class WithAnalytics extends Component {
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
       WrappedComponent.name})`;
-    static contextTypes = { onAnalyticsEvent: PropTypes.func };
+    static contextTypes = {
+      onAnalyticsEvent: PropTypes.func,
+      getParentAnalyticsData: PropTypes.func,
+    };
     props: AnalyticsProps;
     static defaultProps = {
       analyticsId: defaultProps.analyticsId,
@@ -58,6 +61,15 @@ const withAnalytics = (
       const { onAnalyticsEvent } = this.context;
       if (!onAnalyticsEvent) return;
       onAnalyticsEvent(`${name}`, data, true);
+    };
+    getParentAnalyticsData = (name: string) => {
+      const { getParentAnalyticsData } = this.context;
+      let parentData = {};
+      if (typeof getParentAnalyticsData === 'function') {
+        const { analyticsId } = this.props;
+        parentData = getParentAnalyticsData(`${analyticsId}.${name}`, false);
+      }
+      return parentData;
     };
     render() {
       /* eslint-disable no-unused-vars */
@@ -83,6 +95,7 @@ const withAnalytics = (
         <WrappedComponent
           fireAnalyticsEvent={this.fireAnalyticsEvent}
           firePrivateAnalyticsEvent={this.privateAnalyticsEvent}
+          getParentAnalyticsData={this.getParentAnalyticsData}
           analyticsId={analyticsId}
           ref={this.props.innerRef}
           {...componentProps}

@@ -73,3 +73,10 @@ export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
 
 export const inlineCommentMarker = (attrs: {} = {}) => markFactory(schema.marks.inlineCommentMarker, attrs);
 export const textColor = (attrs: { color?: string }) => markFactory(schema.marks.textColor, attrs);
+
+export const inlineMacro = (attrs: {
+  macroId: string;
+  name: string;
+  placeholderUrl?: string;
+  params?: object;
+}) => schema.nodes.inlineMacro.create(attrs);

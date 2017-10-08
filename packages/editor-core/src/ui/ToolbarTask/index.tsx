@@ -30,7 +30,7 @@ export default class ToolbarTask extends PureComponent<Props, State> {
     );
   }
 
-  @analytics('atlassian.fabric.action.triggered.button')
+  @analytics('atlassian.fabric.action.trigger.button')
   private handleInsertTask = (): boolean => {
     const { editorView } = this.props;
     if (!editorView) {

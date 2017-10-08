@@ -1,13 +1,2 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
-
-export interface Props {
-  color: string;
-}
-
-export default class TextColor extends PureComponent<Props, {}> {
-  render() {
-    const { color, children } = this.props;
-    return <span style={{color}}>{children}</span>;
-  }
-}
+export default function TextColor(props: { color: string } & React.Props<any>) { return <span style={{color: props.color}}>{props.children}</span>; }

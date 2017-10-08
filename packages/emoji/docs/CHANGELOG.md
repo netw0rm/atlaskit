@@ -1,5 +1,11 @@
 # @atlaskit/emoji
 
+## 30.0.0 (2017-10-05)
+
+* bug fix; fix typescript errors ([c577c6e](https://bitbucket.org/atlassian/atlaskit/commits/c577c6e))
+* breaking; EmojiResource and EmojiRepository implement addUnknownEmoji rather than addCustomEmoji ([f82b6ae](https://bitbucket.org/atlassian/atlaskit/commits/f82b6ae))
+* breaking; unknown emojis of any type can be resolved and added to the repository (issues closed: fs-1404) ([f82b6ae](https://bitbucket.org/atlassian/atlaskit/commits/f82b6ae))
+* bug fix; query auto converts to emoji on exact unique shortname match (issues closed: fs-1381) ([c16eb18](https://bitbucket.org/atlassian/atlaskit/commits/c16eb18))
 ## 29.1.1 (2017-09-27)
 
 

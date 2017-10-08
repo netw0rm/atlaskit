@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "24.3.0",
+  "version": "24.5.2",
   "config": {
     "access": "public"
   },
@@ -11,7 +11,7 @@
   "ak:webpack:raw": "src/index.jsx",
   "ak:component": {
     "name": "Navigation",
-    "pattern": true
+    "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
@@ -27,17 +27,18 @@
   "dependencies": {
     "@atlaskit/analytics": "^2.0.0",
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/blanket": "^2.4.3",
+    "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/dropdown-menu": "^3.8.0",
     "@atlaskit/field-base": "^8.0.1",
     "@atlaskit/icon": "^9.0.0",
-    "@atlaskit/item": "^4.0.0",
+    "@atlaskit/item": "^4.1.0",
     "@atlaskit/theme": "^2.1.0",
     "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.25.0",
     "chromatism": "^2.6.0",
+    "es6-object-assign": "^1.1.0",
     "invariant": "^2.2.2",
     "keycode": "^2.1.9",
     "memoize-one": "^3.0.1",

@@ -1,5 +1,13 @@
 # @atlaskit/analytics
 
+## 2.2.0 (2017-10-06)
+
+* feature; analytics library support for passing decorated data to stores (issues closed: ak-3614) ([43e3314](https://bitbucket.org/atlassian/atlaskit/commits/43e3314))
+## 2.1.0 (2017-10-05)
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+
+
 ## 2.0.0 (2017-09-13)
 
 * breaking; AnalyticsListener and AnalyticsDecorator now only accepts one child and will throw an error if ([92f1b3f](https://bitbucket.org/atlassian/atlaskit/commits/92f1b3f))

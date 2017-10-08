@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { AnalyticsListener } from '@atlaskit/analytics';
 
 import { Query } from '../src/types';
 import ResourcedItemList, { Props } from '../src/components/ResourcedItemList';
@@ -19,6 +20,12 @@ const initialQueryByLastUpdateDate: Query = {
 interface WithResetState {
   query: Query;
 }
+
+const captureEvent = (name, data) => {
+  // TODO replace with action('analyticsEvent') once working again
+  // tslint:disable-next-line:no-console
+  console.log('analyticsEvent', name, data);
+};
 
 class ResourcedItemListWithReset extends PureComponent<Props,WithResetState> {
 
@@ -66,6 +73,23 @@ storiesOf('<ResourcedItemList/>', module)
           taskDecisionProvider={taskDecisionProvider}
         />
       </SidebarContainer>
+    );
+  })
+  .add('Simple - capture analytics', () => {
+    const { renderDocument, taskDecisionProvider } = createProviders();
+
+    return (
+      <AnalyticsListener
+        onEvent={captureEvent}
+      >
+        <SidebarContainer>
+          <ResourcedItemList
+            renderDocument={renderDocument}
+            initialQuery={initialQuery}
+            taskDecisionProvider={taskDecisionProvider}
+          />
+        </SidebarContainer>
+      </AnalyticsListener>
     );
   })
   .add('Infinite loading', () => {

@@ -16,7 +16,7 @@ describe('codeBlock - keymaps', () => {
   });
 
   describe('Enter keypress', () => {
-    context('when enter key is pressed 2 times', () => {
+    describe('when enter key is pressed 2 times', () => {
       it('it should not exit code block', () => {
         const { editorView } = editor(doc(code_block()('codeBlock{<>}')));
 
@@ -27,7 +27,7 @@ describe('codeBlock - keymaps', () => {
       });
     });
 
-    context('when enter key is pressed 3 times', () => {
+    describe('when enter key is pressed 3 times', () => {
       it('it should exit code block', () => {
         const { editorView } = editor(doc(code_block()('codeBlock{<>}')));
 
@@ -37,6 +37,40 @@ describe('codeBlock - keymaps', () => {
         expect(editorView.state.doc).to.deep.equal(doc(code_block()('codeBlock'), p('{<>}')));
         editorView.destroy();
       });
+    });
+  });
+
+  describe('Backspace', () => {
+    it('should remove the code block if the cursor is at the beginning of the code block - 1', () => {
+      const { editorView } = editor(doc(code_block()('{<>}')));
+
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(p()));
+      editorView.destroy();
+    });
+
+    it('should remove the code block if the cursor is at the beginning of the code block - 2', () => {
+      const { editorView } = editor(doc(p('Hello'), code_block()('{<>}')));
+
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(p('Hello')));
+      editorView.destroy();
+    });
+
+    it('should remove the code block if the cursor is at the beginning of the code block - 2', () => {
+      const { editorView } = editor(doc(code_block()('{<>}const x = 10;')));
+
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(p('const x = 10;')));
+      editorView.destroy();
+    });
+
+    it('should not remove the code block if selection is not empty ', () => {
+      const { editorView } = editor(doc(code_block()('const x = 1{<}0{>};')));
+
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('const x = 1;')));
+      editorView.destroy();
     });
   });
 });

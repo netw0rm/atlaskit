@@ -1,5 +1,38 @@
 # @atlaskit/editor-core
 
+## 47.15.0 (2017-10-06)
+
+* feature; fixing renderer performance ([7e6c3cb](https://bitbucket.org/atlassian/atlaskit/commits/7e6c3cb))
+## 47.14.1 (2017-10-06)
+
+* bug fix; incorrect behaviour around mentions (issues closed: ed-1831) ([0df6c9d](https://bitbucket.org/atlassian/atlaskit/commits/0df6c9d))
+* bug fix; incorrect behaviour around emojis (issues closed: ed-1831) ([a0f9ada](https://bitbucket.org/atlassian/atlaskit/commits/a0f9ada))
+## 47.14.0 (2017-10-05)
+
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+## 47.13.0 (2017-10-05)
+
+* feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))
+## 47.12.0 (2017-10-05)
+
+* bug fix; build new JSON schema ([56b52fd](https://bitbucket.org/atlassian/atlaskit/commits/56b52fd))
+
+* bug fix; sending a link with missing href causes exception in the renderer (issues closed: ed-2875) ([a58a1da](https://bitbucket.org/atlassian/atlaskit/commits/a58a1da))
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
+* bug fix; mention picker selection should not break when user enters space. (issues closed: #ed-2863) ([ad54cdc](https://bitbucket.org/atlassian/atlaskit/commits/ad54cdc))
+## 47.11.0 (2017-10-04)
+
+* feature; added inline-marco transformer (issues closed: ed-1811) ([fb3aba5](https://bitbucket.org/atlassian/atlaskit/commits/fb3aba5))
+
+* bug fix; remove code block when pressing backspace in an empty one (issues closed: ed-1572) ([7cd1579](https://bitbucket.org/atlassian/atlaskit/commits/7cd1579))
+## 47.10.0 (2017-10-03)
+
+* feature; only clear formatting of marks, and heading nodes; don't modify block nodes (issues closed: ed-2775) ([97131bd](https://bitbucket.org/atlassian/atlaskit/commits/97131bd))
+## 47.9.1 (2017-10-03)
+
+* bug fix; refactored how inline-dialog handles max-width in order to better support scrollable ([20b62a6](https://bitbucket.org/atlassian/atlaskit/commits/20b62a6))
+* bug fix; fix warning due to using component other than Button inside ButtonGroup (issues closed: #ed-2866) ([931a469](https://bitbucket.org/atlassian/atlaskit/commits/931a469))
 ## 47.9.0 (2017-10-03)
 
 * bug fix; build for editor-core json-schema ([024b5c3](https://bitbucket.org/atlassian/atlaskit/commits/024b5c3))

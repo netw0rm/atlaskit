@@ -208,7 +208,7 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
     switch (type) {
       case 'applicationCard': {
         if (!attrs) { break; }
-        const { text, link, background, preview, title, description, details, context } = attrs;
+        const { text, link, background, preview, title, description, details, actions, context } = attrs;
         if (!isValidString(text) || !isValidObject(title) || !title.text) { break; }
 
         // title can contain at most two keys (text, user)
@@ -227,6 +227,8 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
         if (context && !isValidIcon(context.icon)) {
           break;
         }
+
+        if (actions && !Array.isArray(actions)) { break; }
 
         if (details && !Array.isArray(details)) { break; }
         if (details && details.some(meta => {
@@ -553,7 +555,7 @@ export const getValidMark = (mark: Mark): Mark | null => {
           const { href, url } = attrs;
           let linkHref = href || url;
 
-          if (linkHref.indexOf(':') === -1) {
+          if (linkHref && linkHref.indexOf(':') === -1) {
             linkHref = `http://${linkHref}`;
           }
 

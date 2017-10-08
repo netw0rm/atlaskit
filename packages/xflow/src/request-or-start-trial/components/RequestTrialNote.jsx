@@ -46,7 +46,7 @@ class RequestTrialNote extends Component {
     onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    placeholderShort: PropTypes.string,
+    placeholderShort: PropTypes.string.isRequired,
     requestTrialWithNote: PropTypes.func,
     setProductRequestFlag: PropTypes.func,
   };
@@ -116,13 +116,14 @@ class RequestTrialNote extends Component {
         firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
           noteLength,
         });
-        this.setState({ noteText: noteTextValue });
+        this.setState({ noteText: noteTextValue }, this.handleSendingNote);
+      } else {
+        this.handleSendingNote();
       }
     } else {
       firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
-      this.setState({ noteText: placeholderShort });
+      this.setState({ noteText: placeholderShort }, this.handleSendingNote);
     }
-    this.handleSendingNote();
   }
 
   handleErrorFlagDismiss = () => {

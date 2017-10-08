@@ -12,7 +12,7 @@ export default class DecisionList extends PureComponent<{}, {}> {
     }
 
     return (
-      <AkDecisionList>{children}</AkDecisionList>
+      <div className="akDecisionList"><AkDecisionList>{children}</AkDecisionList></div>
     );
   }
 }

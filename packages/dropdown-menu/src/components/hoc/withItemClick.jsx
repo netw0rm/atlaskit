@@ -4,7 +4,8 @@
 // requirement, we could just use a native click event all the way up to DropdownMenuStateless,
 // and could get rid of this HOC and DropdownItemClickManager.
 
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import getDisplayName from '../../util/getDisplayName';
 import safeContextCall from '../../util/safeContextCall';

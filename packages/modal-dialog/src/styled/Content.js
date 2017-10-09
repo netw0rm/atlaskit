@@ -7,6 +7,9 @@ const innerGutter = 16;
 const outerGutter = 20;
 const keylineColor = themed({ light: colors.N30, dark: colors.DN30 });
 export const keylineHeight = 2;
+const bodyPadding = ({ isChromeless }) => (
+  isChromeless ? '0' : `${keylineHeight}px ${outerGutter}px`
+);
 
 // Wrapper
 // ==============================
@@ -65,7 +68,7 @@ export const TitleIconWrapper = styled.span`
 export const Body = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: ${keylineHeight}px ${outerGutter}px;
+  padding: ${bodyPadding};
 `;
 
 // Footer

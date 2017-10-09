@@ -75,6 +75,10 @@ type Props = {
   */
   shouldCloseOnEscapePress?: boolean,
   /**
+    Boolean indicating content should be rendered on a transparent background.
+  */
+  isChromeless?: boolean,
+  /**
     Number representing where in the stack of modals, this modal sits
   */
   stackIndex?: number,
@@ -88,6 +92,7 @@ export default class Content extends Component {
   props: Props // eslint-disable-line react/sort-comp
   static defaultProps = {
     autoFocus: false,
+    isChromeless: false,
     stackIndex: 0,
   }
   static contextTypes = {
@@ -239,28 +244,34 @@ export default class Content extends Component {
   }
 
   render() {
-    const { actions, appearance, children, footer, header, heading, onClose } = this.props;
+    const {
+      actions, appearance, children, footer,
+      header, heading, onClose, isChromeless,
+    } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
 
     return (
       <Wrapper>
-        <Header
+        {!isChromeless && <Header
           appearance={appearance}
           component={header}
           heading={heading}
           onClose={onClose}
           showKeyline={showHeaderKeyline}
-        />
-        <Body innerRef={this.getScrollContainer}>
+        />}
+        <Body
+          innerRef={this.getScrollContainer}
+          isChromeless={isChromeless}
+        >
           {children}
         </Body>
-        <Footer
+        {!isChromeless && <Footer
           actions={actions}
           appearance={appearance}
           component={footer}
           onClose={onClose}
           showKeyline={showFooterKeyline}
-        />
+        />}
         <ScrollLock />
       </Wrapper>
     );

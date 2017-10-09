@@ -62,6 +62,7 @@ storiesOf(name, module)
                 allowTasksAndDecisions={true}
                 allowHyperlinks={true}
                 allowCodeBlocks={true}
+                allowLists={true}
 
                 mentionProvider={mentionProvider}
                 emojiProvider={emojiProvider}

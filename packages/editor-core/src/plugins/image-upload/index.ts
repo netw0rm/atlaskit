@@ -157,10 +157,17 @@ export class ImageUploadState {
   private canInsertImage(): boolean {
     const { state } = this;
     const { image } = state.schema.nodes;
-    const { $to } = state.selection;
+    const { $from } = state.selection;
 
-    return !!image
-      && $to.parent.canReplaceWith($to.parentOffset, $to.parentOffset, image);
+    if (image) {
+      for (let d = $from.depth; d >= 0; d--) {
+        let index = $from.index(d);
+        if ($from.node(d).canReplaceWith(index, index, image)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private isImageSelected(): boolean {

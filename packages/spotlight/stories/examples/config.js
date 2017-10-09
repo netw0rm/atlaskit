@@ -9,6 +9,7 @@ export default {
   projectSwitcher: {
     nextStep: 'search',
     spotlightConfig: {
+      dialogWidth: 200,
       target: 'projectSwitcher',
       dialogPlacement: 'right top',
       targetBgColor: '#fff',
@@ -19,6 +20,7 @@ export default {
   search: {
     nextStep: 'searchResult',
     spotlightConfig: {
+      dialogWidth: 500,
       target: 'search',
       dialogPlacement: 'right top',
       targetBgColor: '#fff',

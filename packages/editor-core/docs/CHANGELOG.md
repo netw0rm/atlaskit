@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 47.15.1 (2017-10-09)
+
+* bug fix; renderer should add appropriate "rel" attribute to prevent vulnerabilities in extern (issues closed: ed-2900) ([03907dd](https://bitbucket.org/atlassian/atlaskit/commits/03907dd))
+
+## 47.15.0 (2017-10-06)
+
+* feature; fixing renderer performance ([7e6c3cb](https://bitbucket.org/atlassian/atlaskit/commits/7e6c3cb))
 ## 47.14.1 (2017-10-06)
 
 * bug fix; incorrect behaviour around mentions (issues closed: ed-1831) ([0df6c9d](https://bitbucket.org/atlassian/atlaskit/commits/0df6c9d))

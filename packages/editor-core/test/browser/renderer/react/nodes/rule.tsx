@@ -7,7 +7,7 @@ describe('Renderer - React/Nodes/Rule', () => {
   const rule = shallow(<Rule />);
 
   it('should create a <hr>-tag', () => {
-    expect(rule.name()).to.equal('styled.hr');
+    expect(rule.name()).to.equal('hr');
   });
 
 });

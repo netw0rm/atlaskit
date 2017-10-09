@@ -6,7 +6,10 @@ export const DIALOG_WIDTH = {
   medium: 600,
 };
 const gutter = 60;
-const dialogWidth = p => css`${DIALOG_WIDTH[p.size]}px`;
+const dialogWidth = p => {
+  const widthValue = DIALOG_WIDTH[p.size] || p.size;
+  return css`${widthValue}px`;
+};
 
 const backgroundColor = props => (props.appearance === 'help'
   ? colors.P300

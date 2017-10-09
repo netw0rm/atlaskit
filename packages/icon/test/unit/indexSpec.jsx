@@ -41,7 +41,6 @@ describe(name, () => {
         'backlog',
         'billing-filled',
         'billing',
-      
         'bitbucket',
         'bitbucket/branches',
         'bitbucket/builds',
@@ -55,7 +54,6 @@ describe(name, () => {
         'bitbucket/repos',
         'bitbucket/snippets',
         'bitbucket/source',
-      
         'board',
         'book',
         'bullet-list',
@@ -98,7 +96,6 @@ describe(name, () => {
         'dropbox',
         'edit-filled',
         'edit',
-      
         'editor/add',
         'editor/addon',
         'editor/advanced',
@@ -146,9 +143,7 @@ describe(name, () => {
         'editor/undo',
         'editor/unlink',
         'editor/warning',
-      
         'email',
-      
         'emoji',
         'emoji/activity',
         'emoji/atlassian',
@@ -163,7 +158,6 @@ describe(name, () => {
         'emoji/people',
         'emoji/symbols',
         'emoji/travel',
-      
         'error',
         'export',
         'feedback',
@@ -179,7 +173,6 @@ describe(name, () => {
         'graph-line',
         'gsuite',
         'highlights',
-      
         'hipchat',
         'hipchat/audio-only',
         'hipchat/chevron-double-down',
@@ -191,7 +184,6 @@ describe(name, () => {
         'hipchat/media-attachment-count',
         'hipchat/outgoing-sound',
         'hipchat/sd-video',
-      
         'home-circle',
         'home-filled',
         'image-border',
@@ -202,12 +194,10 @@ describe(name, () => {
         'issue-raise',
         'issue',
         'issues',
-      
         'jira',
         'jira-core',
         'jira-service-desk',
         'jira-software',
-      
         'jira/blocker',
         'jira/capture',
         'jira/critical',
@@ -218,7 +208,6 @@ describe(name, () => {
         'jira/minor',
         'jira/test-session',
         'jira/trivial',
-      
         'lightbulb-filled',
         'lightbulb',
         'link-filled',
@@ -229,7 +218,6 @@ describe(name, () => {
         'lock-filled',
         'lock',
         'marketplace',
-      
         'media-services/actual-size',
         'media-services/add-comment',
         'media-services/annotate',
@@ -260,7 +248,6 @@ describe(name, () => {
         'media-services/zip',
         'media-services/zoom-in',
         'media-services/zoom-out',
-      
         'mention',
         'menu',
         'more-vertical',
@@ -321,7 +308,6 @@ describe(name, () => {
         'unlock',
         'upload',
         'user-avatar-circle',
-      
         'vid-audio-muted',
         'vid-audio-on',
         'vid-backward',
@@ -337,7 +323,6 @@ describe(name, () => {
         'vid-raised-hand',
         'vid-share-screen',
         'vid-speaking-circle',
-      
         'video-circle',
         'video-filled',
         'warning',

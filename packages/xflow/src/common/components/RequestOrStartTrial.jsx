@@ -23,6 +23,7 @@ class RequestOrStartTrial extends Component {
   static propTypes = {
     sourceComponent: PropTypes.string.isRequired,
     sourceContext: PropTypes.string.isRequired,
+    targetProduct: PropTypes.string.isRequired,
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     waitForActivation: PropTypes.func.isRequired,
@@ -124,12 +125,13 @@ class RequestOrStartTrial extends Component {
   ];
 
   handleAnalyticsEvent = (name, data) => {
-    const { onAnalyticsEvent, sourceComponent, sourceContext } = this.props;
+    const { onAnalyticsEvent, sourceComponent, sourceContext, targetProduct } = this.props;
     if (onAnalyticsEvent) {
       onAnalyticsEvent(name, {
         ...data,
         sourceComponent,
         sourceContext,
+        targetProduct,
       });
     }
   };

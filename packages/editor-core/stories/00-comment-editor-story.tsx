@@ -10,6 +10,7 @@ import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
 
 const SAVE_ACTION = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const exampleDocument = {
   version: 1,
@@ -36,7 +37,7 @@ const exampleDocument = {
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
-  .add('Chromeless Editor', () =>
+  .add('Comment Editor', () =>
     <EditorContext>
       <div>
         <WithEditorActions
@@ -51,25 +52,27 @@ storiesOf(name, module)
         <ToolsDrawer
           // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
-            <Editor
-              appearance="chromeless"
-              analyticsHandler={analyticsHandler}
-              shouldFocus={true}
+            <div style={{ padding: '20px' }}>
+              <Editor
+                appearance="comment"
+                analyticsHandler={analyticsHandler}
+                shouldFocus={true}
 
-              allowTextFormatting={true}
-              allowTasksAndDecisions={true}
-              allowHyperlinks={true}
-              allowCodeBlocks={true}
+                allowTextFormatting={true}
+                allowTasksAndDecisions={true}
+                allowHyperlinks={true}
+                allowCodeBlocks={true}
+                allowLists={true}
 
-              saveOnEnter={true}
+                mentionProvider={mentionProvider}
+                emojiProvider={emojiProvider}
+                mediaProvider={mediaProvider}
 
-              mentionProvider={mentionProvider}
-              emojiProvider={emojiProvider}
-              mediaProvider={mediaProvider}
-
-              onChange={onChange}
-              onSave={SAVE_ACTION}
-            />}
+                onChange={onChange}
+                onSave={SAVE_ACTION}
+                onCancel={CANCEL_ACTION}
+              />
+            </div>}
         />
       </div>
     </EditorContext>

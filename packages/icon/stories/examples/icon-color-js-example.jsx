@@ -9,8 +9,8 @@ export default class Example extends PureComponent {
   render() {
     return (
       <div>
-        <HomeCircleIcon primaryColor="rebeccapurple" secondaryColor="yellow" size="xlarge" />
-        <HomeCircleIcon primaryColor={akColorB500} secondaryColor={akColorB75} size="xlarge" />
+        <HomeCircleIcon primaryColor="rebeccapurple" secondaryColor="yellow" size="xlarge" label="" />
+        <HomeCircleIcon primaryColor={akColorB500} secondaryColor={akColorB75} size="xlarge" label="" />
       </div>
     );
   }

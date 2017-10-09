@@ -8,7 +8,7 @@ import {
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import {
-  findTraversalPath,
+  bfsOrder,
   getNodeName,
   addMarks,
   parseMacro,
@@ -25,6 +25,7 @@ import {
   listContentWrapper,
   listItemContentWrapper,
   ensureInline,
+  tableCellContentWrapper,
   docContentWrapper,
 } from './content-wrapper';
 
@@ -38,12 +39,18 @@ export default function(cxhtml: string, schema: Schema<any, any>) {
 }
 
 function parseDomNode(schema: Schema<any, any>, dom: Element): PMNode {
-  const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
+  const nodes = bfsOrder(dom);
 
   // Process through nodes in reverse (so deepest child elements are first).
   for (let i = nodes.length - 1; i >= 0; i--) {
-    const node = nodes[i];
-    const content = getContent(node, convertedNodes);
+    const node = nodes[i] as Element;
+    // for tables we take tbody content, because tbody is not in schema so the whole bfs thing wouldn't work
+    const targetNode = (
+      node.tagName && node.tagName.toUpperCase() === 'TABLE'
+        ? node.firstChild!
+        : node
+    );
+    const content = getContent(targetNode, convertedNodes);
     const candidate = converter(schema, content, node);
     if (typeof candidate !== 'undefined' && candidate !== null) {
       convertedNodes.set(node, candidate);
@@ -251,9 +258,23 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
         if (hasClass(node, 'wysiwyg-macro')) {
           return convertWYSIWYGMacro(schema, node) || unsupportedInline;
         } else if (hasClass(node, 'confluenceTable')) {
-          return convertTable(schema, node);
+          return schema.nodes.table.createChecked({}, content);
         }
         return unsupportedInline;
+      case 'TR':
+        return schema.nodes.tableRow!.createChecked({}, content);
+      case 'TD':
+        return schema.nodes.tableCell.createChecked({},
+          schema.nodes.tableCell.validContent(content)
+            ? content
+            : tableCellContentWrapper(schema, content, convertedNodesReverted)
+        );
+      case 'TH':
+        return schema.nodes.tableHeader.createChecked({},
+          schema.nodes.tableHeader.validContent(content)
+            ? content
+            : tableCellContentWrapper(schema, content, convertedNodesReverted)
+        );
 
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
@@ -386,23 +407,4 @@ function convertCodeFromView (schema: Schema<any, any>, node: Element): Fragment
 function convertNoFormatFromView (schema: Schema<any ,any>, node: Element): Fragment | PMNode | null | undefined  {
     const codeContent = node.querySelector('pre')!.textContent || ' ';
     return createCodeFragment(schema, codeContent);
-}
-
-function convertTable (schema: Schema<any, any>, node: Element) {
-  const { table, tableRow, tableCell, tableHeader } =  schema.nodes;
-  const rowNodes: PMNode[] = [];
-  const rows = node.querySelectorAll('tr');
-
-  for (let i = 0, rowsCount = rows.length; i < rowsCount; i ++) {
-    const cellNodes: PMNode[] = [];
-    const cols = rows[i].querySelectorAll('td,th');
-
-    for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
-      const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
-      const pmNode = parseDomNode(schema, cols[j]);
-      cellNodes.push(cell.createChecked(null, pmNode));
-    }
-    rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
-  }
-  return table.create(null, Fragment.from(rowNodes));
 }

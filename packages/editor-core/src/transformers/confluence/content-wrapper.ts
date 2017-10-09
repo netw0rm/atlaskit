@@ -7,6 +7,15 @@ import {
 import { default as encodeCxhtml } from './encode-cxhtml';
 import { children } from './utils';
 
+const createValidContent = (validSpecs: NodeSpec[]) => {
+  return (node: PMNode) => {
+    if (validSpecs.some((spec: NodeSpec) => spec === node.type)) {
+      return true;
+    }
+    return false;
+  };
+};
+
 export const docContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const validContent = (node: PMNode) => {
     if (node.type.spec.group === 'block') {
@@ -29,11 +38,7 @@ export const docContentWrapper = (schema: Schema<any, any>, content: Fragment, c
   return ensureBlock(schema, Fragment.fromArray(blockContent), convertedNodesReverted, validContent);
 };
 
-/**
- * @param content
- * @param convertedNodesReverted
- * Bullet List and Ordered List can only accept listItems
- */
+// Bullet List and Ordered List can only accept listItems
 export const listContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const result: PMNode[] = [];
 
@@ -50,54 +55,49 @@ export const listContentWrapper = (schema: Schema<any, any>, content: Fragment, 
   return Fragment.fromArray(result);
 };
 
-/**
- * @param node
- * @param convertedNodesReverted
- * A private method that used by listItemContentWrapper and blockquoteContentWrapper
- * to wrap invalid content in a paragraph
- */
+// A private method that used by listItemContentWrapper and blockquoteContentWrapper
+// to wrap invalid content in a paragraph
 const convertInvalidToParagraph = (schema: Schema<any, any>, node: PMNode, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const paragraphContent = ensureInline(schema, Fragment.from(node), convertedNodesReverted);
   const paragraph = schema.nodes.paragraph.createChecked({}, paragraphContent);
   return paragraph;
 };
 
-/**
- * @param content
- * @param convertedNodesReverted
- * ListItem content schema 'paragraph (paragraph | bulletList | orderedList)*'
- */
+// ListItem content schema 'paragraph (paragraph | bulletList | orderedList)*'
 export const listItemContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
-  const validSpec: NodeSpec[] = [schema.nodes.paragraph, schema.nodes.bulletList, schema.nodes.orderedList];
-  const validContent = (node: PMNode) => {
-    if (validSpec.some((spec: NodeSpec) => {
-      return spec === node.type;
-    })) {
-      return true;
-    }
-    return false;
-  };
+  const validContent = createValidContent([
+    schema.nodes.paragraph,
+    schema.nodes.bulletList,
+    schema.nodes.orderedList
+  ]);
   const convertInvalid = (node: PMNode) => {
     return convertInvalidToParagraph(schema, node, convertedNodesReverted);
   };
   return ensureBlock(schema, content, convertedNodesReverted, validContent, convertInvalid);
 };
 
-/**
- * @param content
- * @param convertedNodesReverted
- * blockquote schema supports one or more number of paragraph nodes
- */
+// blockquote schema supports one or more number of paragraph nodes
 export const blockquoteContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
-  const validSpec: NodeSpec[] = [schema.nodes.paragraph];
-  const validContent = (node: PMNode) => {
-    if (validSpec.some((spec: NodeSpec) => {
-      return spec === node.type;
-    })) {
-      return true;
-    }
-    return false;
+  const validContent = createValidContent([
+    schema.nodes.paragraph
+  ]);
+  const convertInvalid = (node: PMNode) => {
+    return convertInvalidToParagraph(schema, node, convertedNodesReverted);
   };
+  return ensureBlock(schema, content, convertedNodesReverted, validContent, convertInvalid);
+};
+
+export const tableCellContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+  const { table, tableCell, tableHeader } = schema.nodes;
+  const validSpec: NodeSpec[] = (
+    Object.keys(schema.nodes)
+      .filter(key => {
+        const node = schema.nodes[key];
+        return node.isBlock && (node !== table && node !== tableCell && node !== tableHeader);
+      })
+      .map(key => schema.nodes[key].spec)
+  );
+  const validContent = createValidContent(validSpec);
   const convertInvalid = (node: PMNode) => {
     return convertInvalidToParagraph(schema, node, convertedNodesReverted);
   };

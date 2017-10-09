@@ -71,42 +71,35 @@ export function getNodeMarkOfType(node: PMNode, markType): Mark | null {
   return foundMarks.length ? foundMarks[foundMarks.length - 1] : null;
 }
 
-/**
- *
- * Traverse the DOM node and build an array of the breadth-first-search traversal
- * through the tree.
- *
- * Detection of supported vs unsupported content happens at this stage. Unsupported
- * nodes do not have their children traversed. Doing this avoids attempting to
- * decode unsupported content descendents into ProseMirror nodes.
+/*
+ * Flattens DOM tree into single array
  */
-export function findTraversalPath(roots: Node[]) {
-  const inqueue = [...roots];
+export function bfsOrder(root: Node): Node[] {
+  const inqueue = [root];
   const outqueue = [] as Node[];
 
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    let children;
-    if (isNodeSupportedContent(elem) && (children = childrenOfNode(elem))) {
-      let childIndex;
-      for (childIndex = 0; childIndex < children.length; childIndex++) {
-        const child = children[childIndex];
-        inqueue.push(child);
+    let childIndex;
+
+    for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
+      const child = elem.childNodes[childIndex];
+      switch (child.nodeType) {
+        case Node.ELEMENT_NODE:
+        case Node.TEXT_NODE:
+        case Node.CDATA_SECTION_NODE:
+          inqueue.push(child);
+          break;
+        default:
+          console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
       }
     }
   }
+  outqueue.shift();
   return outqueue;
 }
 
-function childrenOfNode(node: Element): NodeList | null {
-  const tag = getNodeName(node);
-  if (tag === 'AC:STRUCTURED-MACRO') {
-    return getAcTagChildNodes(node, 'AC:RICH-TEXT-BODY');
-  }
-
-  return node.childNodes;
-}
 /**
  * Return an array containing the child nodes in a fragment.
  *
@@ -118,59 +111,6 @@ export function children(fragment: Fragment): PMNode[] {
     nodes.push(fragment.child(i));
   }
   return nodes;
-}
-
-/**
- * Quickly determine if a DOM node is supported (i.e. can be represented in the ProseMirror
- * schema).
- *
- * When a node is not supported, its children are not traversed — instead the entire node content
- * is stored inside an `unsupportedInline`.
- *
- * @param node
- */
-function isNodeSupportedContent(node: Node): boolean {
-  if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
-    return true;
-  }
-
-  if (node instanceof HTMLElement || node.nodeType === Node.ELEMENT_NODE) {
-    const tag = getNodeName(node);
-    switch (tag) {
-      case 'DEL':
-      case 'S':
-      case 'B':
-      case 'STRONG':
-      case 'I':
-      case 'EM':
-      case 'CODE':
-      case 'SUB':
-      case 'SUP':
-      case 'U':
-      case 'BLOCKQUOTE':
-      case 'SPAN':
-      case 'H1':
-      case 'H2':
-      case 'H3':
-      case 'H4':
-      case 'H5':
-      case 'H6':
-      case 'BR':
-      case 'HR':
-      case 'UL':
-      case 'OL':
-      case 'LI':
-      case 'P':
-      case 'A':
-      case 'FAB:MENTION':
-      case 'FAB:MEDIA':
-      case 'AC:INLINE-COMMENT-MARKER':
-      case 'AC:STRUCTURED-MACRO':
-        return true;
-    }
-  }
-
-  return false;
 }
 
 export function getAcName(node: Element): string | undefined {

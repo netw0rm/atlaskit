@@ -7,7 +7,7 @@ import {
 
 import { normalizeHexColor } from '../../utils/color';
 import { AC_XMLNS } from './encode-cxhtml';
-import { MacroType, Macro, DisplayType, BodyType } from './types';
+import { MacroType, Macro, DisplayType, BodyType } from './../../editor/types';
 
 /**
  * Deduce a set of marks from a style declaration.

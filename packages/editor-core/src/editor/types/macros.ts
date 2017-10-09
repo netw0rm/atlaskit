@@ -18,3 +18,20 @@ export interface Macro {
   properties: MacroProperties;
   params: any;
 }
+
+export interface MacroAttributes {
+  macroId: string;
+  params: any;
+}
+
+export interface MacroConfig {
+  placeholderBaseUrl: string;
+}
+
+export interface MacroProvider {
+  config: MacroConfig;
+  /**
+   * If "macro" param is passed in, it will open macro browser for editing the macro
+   */
+  openMacroBrowser(macro?: Macro): void;
+}

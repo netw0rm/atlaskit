@@ -49,7 +49,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.rendererContext = objectContext;
   }
 
-  serializeFragment(fragment: Fragment, props: any = {}, target: ComponentClass<any> = Doc, key: string = 'root-0'): JSX.Element | null {
+  serializeFragment(fragment: Fragment, props: any = {}, target: any = Doc, key: string = 'root-0'): JSX.Element | null {
     const content = ReactSerializer.getChildNodes(fragment).map((node, index) => {
       if (isTextWrapper(node.type.name)) {
         return this.serializeTextWrapper((node as TextWrapper).content);

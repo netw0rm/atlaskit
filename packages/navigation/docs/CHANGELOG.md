@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 24.5.2 (2017-10-06)
+
+* bug fix; update nav's blanket dependency to version which is darkmoded ([ae38bff](https://bitbucket.org/atlassian/atlaskit/commits/ae38bff))
 ## 24.5.1 (2017-10-05)
 
 * bug fix; add Object.assign polyfill to nav module (issues closed: ak-3316) ([7d217d5](https://bitbucket.org/atlassian/atlaskit/commits/7d217d5))

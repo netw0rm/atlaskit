@@ -7,6 +7,7 @@ export { default as ReactMentionNode } from './ui/mention';
 export { default as ReactJIRAIssueNode } from './ui/jira-issue';
 export { default as ReactUnsupportedBlockNode } from './ui/unsupported-block';
 export { default as ReactUnsupportedInlineNode } from './ui/unsupported-inline';
+export { default as MacroNode } from './ui/macro';
 
 export { panelNodeView } from './ui/panel';
 export { taskItemNodeView } from './ui/taskItem';

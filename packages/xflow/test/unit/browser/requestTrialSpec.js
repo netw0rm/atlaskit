@@ -37,6 +37,7 @@ const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: noop,
   sourceComponent: 'storybook-example-compontent',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 describe('@atlaskit/xflow', () => {

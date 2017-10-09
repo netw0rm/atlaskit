@@ -1,64 +1,12 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl, intlShape, defineMessages } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 import optOutRequestTrialFeature from '../optOutRequestTrialFeature';
 import cancelOptOut from '../cancelOptOut';
-
-const messages = defineMessages({
-  // - Opt out
-  optOutHeading: {
-    id: 'xflow.opt-out.heading',
-    defaultMessage: 'Trial requests',
-  },
-  optOutMessage: {
-    id: 'xflow.opt-out.message',
-    defaultMessage: 'Change your notifications or stop requests completely.',
-  },
-  optOutNotePlaceholder: {
-    id: 'xflow.opt-out.note-placeholder',
-    defaultMessage: 'Send us your feedback to help improve \nfuture releases.',
-  },
-  optOutOptionItemsLabelAdminNotifications: {
-    id: 'xflow.opt-out.option.label.admin-notifications',
-    defaultMessage: 'Turn off notifications',
-  },
-  optOutOptionItemsNoteAdminNotifications: {
-    id: 'xflow.opt-out.option.note.admin-notifications',
-    defaultMessage: 'You won\'t get trial requests from users.',
-  },
-  optOutOptionItemsLabelDisableRequests: {
-    id: 'xflow.opt-out.option.label.disable-requests',
-    defaultMessage: 'Turn off trial requesting',
-  },
-  optOutOptionItemsNoteDisableRequests: {
-    id: 'xflow.opt-out.option.note.disable-requests',
-    defaultMessage: 'Users can\'t request trials.',
-  },
-});
-
-export const defaultProps = intl => ({
-  optOut: {
-    optOutHeading: intl.formatMessage(messages.optOutHeading),
-    optOutMessage: intl.formatMessage(messages.optOutMessage),
-    optOutDefaultSelectedRadio: 'admin-opt-out',
-    optOutNotePlaceholder: intl.formatMessage(messages.optOutNotePlaceholder),
-    optOutOptionItems: [
-      {
-        value: 'admin-opt-out',
-        label: intl.formatMessage(messages.optOutOptionItemsLabelAdminNotifications),
-        note: intl.formatMessage(messages.optOutOptionItemsNoteAdminNotifications),
-      },
-      {
-        value: 'disable-requests',
-        label: intl.formatMessage(messages.optOutOptionItemsLabelDisableRequests),
-        note: intl.formatMessage(messages.optOutOptionItemsNoteDisableRequests),
-      },
-    ],
-  },
-});
+import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
@@ -146,7 +94,7 @@ class XFlowProviderBase extends Component {
 
   getChildContext() {
     const { intl } = this.props;
-    const optOutProps = defaultProps(intl);
+    const optOutProps = optOutMessagesDefaultProps(intl);
 
     return {
       xFlow: {

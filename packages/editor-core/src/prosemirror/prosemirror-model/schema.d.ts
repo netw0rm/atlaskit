@@ -1,10 +1,9 @@
 import OrderedMap = require('orderedmap');
-import { Fragment, Mark, Node, ParseRule } from './';
+import { Fragment, Mark, Node, ParseRule, ContentMatch } from './';
 import { DOMOutputSpec } from './to_dom';
 
 export interface AttributeSpec {
   default?: any;
-  compute?: () => any;
 }
 
 export interface MarkSpec {
@@ -19,6 +18,7 @@ export interface MarkSpec {
 export interface NodeSpec {
   atom?: boolean;
   content?: string;
+  marks?: string;
   group?: string;
   inline?: boolean;
   attrs?: { [key: string]: AttributeSpec };
@@ -36,17 +36,21 @@ export class NodeType {
   name: string;
   schema: Schema<any, any>;
   spec: NodeSpec;
+  contentMatch: ContentMatch;
+  inlineContent: boolean;
   isBlock: boolean;
   isText: boolean;
   isInline: boolean;
   isTextblock: boolean;
-  inlineContent: boolean;
   isLeaf: boolean;
   isAtom: boolean;
   create(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createChecked(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createAndFill(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node | null;
   validContent(content: Fragment, attrs?: { [key: string]: any }): boolean;
+  allowsMarkType(markType: MarkType): boolean;
+  allowsMarks(marks: Mark[]): boolean;
+  allowedMarks(marks: Mark[]): Mark[];
 }
 
 export class MarkType {

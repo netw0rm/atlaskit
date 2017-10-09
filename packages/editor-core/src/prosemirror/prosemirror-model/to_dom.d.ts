@@ -11,8 +11,6 @@ export class DOMSerializer {
 
   static renderSpec(doc: dom.Document, structure: DOMOutputSpec): { dom: dom.Node, contentDOM?: dom.Node };
   static fromSchema(schema: Schema<any, any>): DOMSerializer;
-  static nodesFromSchema(schema: Schema<any, any>): { [key: string]: (node: Node) => DOMOutputSpec };
-  static marksFromSchema(schema: Schema<any, any>): { [key: string]: (mark: Mark) => DOMOutputSpec };
 }
 
 export interface DOMOutputSpec {}

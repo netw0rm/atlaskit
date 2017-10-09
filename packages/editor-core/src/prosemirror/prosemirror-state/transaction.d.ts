@@ -4,11 +4,13 @@ import { PluginKey } from './';
 export class Transaction extends Transform {
   time: number;
   storedMarks?: Mark[];
-  docChanged: boolean;
   selection: Selection;
   setSelection(selection: Selection | CellSelection): Transaction;
   selectionSet: boolean;
   setStoredMarks(marks?: Mark[]): Transaction;
+  ensureMarks(marks: Mark[]): Transaction;
+  addStoredMark(mark: Mark): Transaction;
+  removeStoredMark(mark: Mark | MarkType): Transaction;
   storedMarksSet: boolean;
   setTime(time: number): Transaction;
   replaceSelection(slice: Slice): Transaction;
@@ -19,6 +21,4 @@ export class Transaction extends Transform {
   getMeta(key: string | Plugin | PluginKey): any;
   isGeneric: boolean;
   scrollIntoView(): Transaction;
-  addStoredMark(mark: Mark): Transaction;
-  removeStoredMark(mark: Mark | MarkType): Transaction;
 }

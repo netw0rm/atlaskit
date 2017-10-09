@@ -4,7 +4,11 @@ export function deleteSelection(state: EditorState<any>, dispatch?: (tr: Transac
 
 export function joinBackward(state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
 
+export function selectNodeBackward(state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
+
 export function joinForward(state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
+
+export function selectNodeForward(state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
 
 export function joinUp(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 

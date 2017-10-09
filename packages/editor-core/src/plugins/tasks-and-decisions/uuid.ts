@@ -1,13 +1,13 @@
 import { uuid } from '../utils';
 
-let staticValue: string | boolean = false;
+let staticValue: string|boolean = false;
 
 export default {
-  setStatic(value: string | boolean) {
+  setStatic(value: string|boolean) {
     staticValue = value;
   },
 
   generate() {
-    return staticValue || uuid();
+    return staticValue ? staticValue : uuid();
   }
 };

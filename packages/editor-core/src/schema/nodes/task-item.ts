@@ -17,7 +17,7 @@ export interface Definition {
 export const taskItem: NodeSpec = {
   content: 'inline<_>*',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
     state: { default: 'TODO' },
   },
   parseDOM: [{

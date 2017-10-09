@@ -21,7 +21,8 @@
   },
   "types": "src/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "devDependencies": {
     "@atlaskit/theme": "^2.0.0",

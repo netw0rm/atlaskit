@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 47.16.0 (2017-10-09)
+
+* feature; added Macro provider mock and Macro ui component (issues closed: ed-2878,ed-2917) ([ea3aaad](https://bitbucket.org/atlassian/atlaskit/commits/ea3aaad))
 ## 47.15.1 (2017-10-09)
 
 * bug fix; renderer should add appropriate "rel" attribute to prevent vulnerabilities in extern (issues closed: ed-2900) ([03907dd](https://bitbucket.org/atlassian/atlaskit/commits/03907dd))

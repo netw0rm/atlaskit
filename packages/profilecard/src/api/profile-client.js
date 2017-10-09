@@ -52,7 +52,7 @@ const buildUserQuery = (cloudId, userId) => ({
       meta: title,
       location,
       companyName,
-      avatarUrl(size: 100),
+      avatarUrl(size: 192),
       remoteWeekdayIndex: localTime(format: "d"),
       remoteWeekdayString: localTime(format: "ddd"),
       remoteTimeString: localTime(format: "h:mma"),

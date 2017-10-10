@@ -10,7 +10,9 @@ import TextField from '@atlaskit/field-text';
 import { storiesOf } from '@kadira/storybook';
 import PageHeader from '@atlaskit/page-header';
 
-const StoryStyle = styled.div`padding: 0 ${akGridSizeUnitless * 4}px;`;
+const StoryStyle = styled.div`
+  padding: 0 ${akGridSizeUnitless * 4}px;
+`;
 const SpacingContainer = styled.div`
   display: flex;
 
@@ -41,10 +43,7 @@ const barContent = (
 storiesOf('@atlaskit/page-header', module, { clearPadding: true })
   .addDecorator(story => <StoryStyle>{story()}Some page content that follow the header</StoryStyle>)
   .add('simple header', () => <PageHeader>Hello</PageHeader>)
-  .add('header with breadcrumbs', () => {
-    console.log(BreadcrumbsStateless);
-    return <PageHeader breadcrumbs={breadcrumbs}>I have breadcrumbs</PageHeader>;
-  })
+  .add('header with breadcrumbs', () => <PageHeader breadcrumbs={breadcrumbs}>I have breadcrumbs</PageHeader>)
   .add('with actions', () => (
     <PageHeader breadcrumbs={breadcrumbs} actions={actionsContent}>
       I have breadcrumbs & actions

@@ -1,17 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import EditorLocationIcon from '@atlaskit/icon/glyph/editor/location';
-import EditorRecentIcon from '@atlaskit/icon/glyph/editor/recent';
-import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
+import IconLocation from '@atlaskit/icon/glyph/location';
+import IconRecent from '@atlaskit/icon/glyph/recent';
+import IconMention from '@atlaskit/icon/glyph/mention';
 import { Presence } from '@atlaskit/avatar';
 
 import styles from '../styles/profilecard.less';
 
 const icons = {
-  location: EditorLocationIcon,
-  time: EditorRecentIcon,
-  mention: EditorMentionIcon,
+  location: IconLocation,
+  time: IconRecent,
+  mention: IconMention,
   available: () => <Presence presence="online" />,
   unavailable: () => <Presence presence="offline" />,
   busy: () => <Presence presence="busy" />,
@@ -19,7 +18,6 @@ const icons = {
 
 export default class IconLabel extends PureComponent {
   static propTypes = {
-    className: PropTypes.string,
     icon: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.string,
@@ -31,15 +29,10 @@ export default class IconLabel extends PureComponent {
     if (!this.props.children) { return null; }
 
     const IconElement = icons[this.props.icon];
-    const displayIcon = IconElement ? <IconElement label={`icon ${this.props.icon}`} /> : null;
-
-    const classes = classNames({
-      [styles.detailsLabel]: true,
-      [this.props.className]: this.props.className,
-    });
+    const displayIcon = IconElement ? <IconElement label={`icon ${this.props.icon}`} size="small" /> : null;
 
     return (
-      <div className={classes}>
+      <div className={styles.detailsLabel}>
         <div className={styles.detailsLabelIcon}>
           {displayIcon}
         </div>

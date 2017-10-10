@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
+import { Presence } from '@atlaskit/avatar';
 import styles from '../../src/styles/profilecard.less';
 
 import AkProfilecardResourced, { AkProfilecard, AkProfileClient } from '../../src';
@@ -47,7 +48,7 @@ describe('Profilecard', () => {
         presenceWithoutNone.forEach((presence) => {
           it(`should render label with content ${presence}`, () => {
             const card = mount(<AkProfilecard fullName="name" presence={presence} />);
-            const el = card.find(`.${styles.presence}`);
+            const el = card.find('IconLabel').first();
             expect(el.length).toBeGreaterThan(0);
             expect(el.text()).toBe(presences[presence]);
           });
@@ -56,8 +57,8 @@ describe('Profilecard', () => {
 
       it('should not render a presence label if property is not set', () => {
         const card = mount(<AkProfilecard fullName="name" />);
-        const el = card.find(`.${styles.presence}`);
-        expect(el.isEmpty()).toBe(true);
+        const el = card.find(Presence);
+        expect(el.exists()).toBe(false);
       });
     });
 
@@ -92,12 +93,15 @@ describe('Profilecard', () => {
     describe('actions property', () => {
       const actions = [
         {
+          id: 'one',
           label: 'one',
         },
         {
+          id: 'two',
           label: 'two',
         },
         {
+          id: 'three',
           label: 'three',
         },
       ];
@@ -105,7 +109,7 @@ describe('Profilecard', () => {
 
       it('should render an action button for every item in actions property', () => {
         const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
-        const buttonTexts = card.find('AkButton').children().map(node => node.text());
+        const buttonTexts = card.find(AkButton).children().map(node => node.text());
 
         expect(actionsWrapper.children()).toHaveLength(actions.length);
         expect(buttonTexts).toEqual(actions.map(action => action.label));
@@ -118,7 +122,7 @@ describe('Profilecard', () => {
           callback: spy,
         }] });
         const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
-        actionsWrapper.find('AkButton').first().simulate('click');
+        actionsWrapper.find(AkButton).first().simulate('click');
         expect(spy.mock.calls.length).toBe(1);
       });
 

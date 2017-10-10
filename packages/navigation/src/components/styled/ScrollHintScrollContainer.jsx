@@ -21,9 +21,6 @@ const ScrollHintScrollContainer = styled.div`
   overflow-y: ${props => (props.isCollapsed ? 'hidden' : 'auto')};
   transition: padding ${drawerContainerHeaderAnimationSpeed};
   padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
-  // Position relative is required so products can position fixed items at top or bottom
-  // of the container scrollable area.
-  position: relative;
 
   ${whenCollapsed`
     padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;

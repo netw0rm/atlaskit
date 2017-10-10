@@ -344,7 +344,7 @@ export class MediaPluginState {
       return false;
     }
     const { selection: { from }, schema, tr } = this.view.state;
-    this.view.dispatch(tr.setNodeType(from - 1, schema.nodes.singleImage, { alignment, display }));
+    this.view.dispatch(tr.setNodeMarkup(from - 1, schema.nodes.singleImage, { alignment, display }));
     return true;
   }
 

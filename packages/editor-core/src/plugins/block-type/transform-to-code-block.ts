@@ -16,7 +16,7 @@ export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any)
   const where = $from.before($from.depth);
   const tr = clearMarkupFor(state, where);
   return mergeContent(tr, state)
-    .setNodeType(where, codeBlock, attrs);
+    .setNodeMarkup(where, codeBlock, attrs);
 }
 
 export function isConvertableToCodeBlock(state: EditorState<any>): boolean {

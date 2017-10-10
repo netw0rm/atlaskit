@@ -28,7 +28,7 @@ export function createPlugin(){
         if (!!node.type && (node.type === decisionList || node.type === decisionItem || node.type === taskList || node.type === taskItem)) {
           const { localId, ...rest} = node.attrs;
           if (localId === undefined || localId === null || localId === '') {
-            tr.setNodeType(pos, undefined, { localId: uuid.generate(), ...rest });
+            tr.setNodeMarkup(pos, undefined, { localId: uuid.generate(), ...rest });
             modified = true;
           }
         }

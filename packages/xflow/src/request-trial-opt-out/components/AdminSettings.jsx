@@ -276,17 +276,18 @@ export default withXFlowProvider(
   AdminSettingsBase,
   ({
     xFlow: {
-      config: {
-        productLogo,
-        optOut: { optOutHeading, optOutMessage, optOutOptionItems,
-          optOutDefaultSelectedRadio, optOutNotePlaceholder },
+      optOut: {
+        optOutHeading,
+        optOutMessage,
+        optOutOptionItems,
+        optOutDefaultSelectedRadio,
+        optOutNotePlaceholder,
       },
       status,
       optOutRequestTrialFeature,
       cancelOptOut,
     },
   }) => ({
-    productLogo,
     optOutRequestTrialFeature,
     cancelOptOut,
     status,

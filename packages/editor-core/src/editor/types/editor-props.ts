@@ -8,7 +8,7 @@ import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../types';
 import { Transformer } from '../../';
 
-export type EditorAppearance = 'message' | 'inline-comments' | 'comments' | 'full-page' | 'chromeless' | undefined;
+export type EditorAppearance = 'message' | 'inline-comment' | 'comment' | 'full-page' | 'chromeless' | undefined;
 
 export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
@@ -59,4 +59,5 @@ export interface EditorProps {
 
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
+  onCancel?: (editorView: EditorView) => void;
 }

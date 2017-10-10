@@ -1,5 +1,17 @@
 # @atlaskit/editor-core
 
+## 47.17.0 (2017-10-09)
+
+* bug fix; enable lists in comment editor story ([cd8a647](https://bitbucket.org/atlassian/atlaskit/commits/cd8a647))
+* bug fix; remove erraneous showHelp state from Comment editor ([ff602b4](https://bitbucket.org/atlassian/atlaskit/commits/ff602b4))
+* bug fix; adding transformer for hipchat editor to remove empty task items and decision items ([562cf5e](https://bitbucket.org/atlassian/atlaskit/commits/562cf5e))
+* bug fix; file names should not get linkified. (issues closed: #ed-2887) ([adc5419](https://bitbucket.org/atlassian/atlaskit/commits/adc5419))
+* bug fix; use button group in comment appearance; show cancel button in story ([1a61d32](https://bitbucket.org/atlassian/atlaskit/commits/1a61d32))
+* bug fix; use ButtonGroup from @atlaskit/button package instead of depreciated source (issues closed: ed-2918) ([5184fdb](https://bitbucket.org/atlassian/atlaskit/commits/5184fdb))
+* bug fix; rename AkButton import and use Atlaskit grid size for styled-components ([5679d5b](https://bitbucket.org/atlassian/atlaskit/commits/5679d5b))
+* bug fix; do not show ToolbarHelp in new architecture ([bf8ea6d](https://bitbucket.org/atlassian/atlaskit/commits/bf8ea6d))
+* bug fix; pass correct type when we want to suppress media in comment appearance ([52d5010](https://bitbucket.org/atlassian/atlaskit/commits/52d5010))
+* feature; introduce the comment editor appearance 🎉 (issues closed: ed-2877) ([1e7d4df](https://bitbucket.org/atlassian/atlaskit/commits/1e7d4df))
 ## 47.16.0 (2017-10-09)
 
 * feature; added Macro provider mock and Macro ui component (issues closed: ed-2878,ed-2917) ([ea3aaad](https://bitbucket.org/atlassian/atlaskit/commits/ea3aaad))

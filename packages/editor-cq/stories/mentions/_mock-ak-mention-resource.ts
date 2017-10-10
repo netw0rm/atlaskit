@@ -56,6 +56,7 @@ class MentionResource extends AbstractMentionResource {
       }
       notify({
         mentions,
+        query
       });
     }, waitTime + 1);
   }

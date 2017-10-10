@@ -43,7 +43,7 @@ class MentionResource extends AbstractMentionResource {
           } else {
             notifyInfo('Continue typing to search for a user'); // TODO: 18n
           }
-          notify({mentions: []});
+          notify({mentions: [], query});
         } else {
           const allMentions = response.results.map((item, index) => {
             return {
@@ -61,7 +61,7 @@ class MentionResource extends AbstractMentionResource {
             ...allMentions.filter(item => !item.lozenge)
           ];
 
-          notify({ mentions });
+          notify({ mentions, query });
         }
       });
 

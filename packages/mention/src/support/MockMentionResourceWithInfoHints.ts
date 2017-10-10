@@ -65,6 +65,7 @@ export default class MockMentionResourceWithInfoHints extends AbstractMentionRes
       }
       notify({
         mentions,
+        query
       });
     }, waitTime + 1);
   }

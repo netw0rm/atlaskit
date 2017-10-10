@@ -29,7 +29,7 @@ export default class MentionResource extends AbstractMentionResource {
       if (query.length >= 3) {
         notifyInfo(`Found no matches for ${query}`);
       }
-      notify({mentions: []});
+      notify({mentions: [], query});
     } else {
       const mentions = results.map((item, index) => {
         return {
@@ -40,7 +40,7 @@ export default class MentionResource extends AbstractMentionResource {
         };
       }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
 
-      notify({ mentions });
+      notify({ mentions, query });
     }
   }
 }

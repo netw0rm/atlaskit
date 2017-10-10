@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.1.0 (2017-10-10)
+
+* feature; added CollapsedEditor component (issues closed: ed-2944) ([8172b3e](https://bitbucket.org/atlassian/atlaskit/commits/8172b3e))
 ## 50.0.0 (2017-10-10)
 
 

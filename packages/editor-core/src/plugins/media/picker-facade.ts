@@ -42,7 +42,7 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: PickerType, pickerConfig: ModuleConfig, extraConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
+    mediaPickerFactory?: (pickerType: PickerType, moduleConfig: ModuleConfig, componentConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
@@ -51,10 +51,22 @@ export default class PickerFacade {
       mediaPickerFactory = MediaPicker;
     }
 
+    let componentConfig;
+
+    if (pickerType === 'dropzone') {
+      componentConfig = { container: this.getDropzoneContainer() };
+    } else if (pickerType === 'popup') {
+      if (contextConfig.userAuthProvider) {
+        componentConfig = { userAuthProvider: contextConfig.userAuthProvider };
+      } else {
+        pickerType = 'browser';
+      }
+    }
+
     const picker = this.picker = mediaPickerFactory!(
       pickerType,
       this.buildPickerConfigFromContext(contextConfig),
-      pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined
+      componentConfig
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -110,6 +122,8 @@ export default class PickerFacade {
       } catch (ex) {
         this.errorReporter.captureException(ex);
       }
+    } else if (this.picker instanceof Browser) {
+      this.picker.browse();
     }
   }
 
@@ -153,10 +167,7 @@ export default class PickerFacade {
     return {
       uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
-      apiClientId: context.clientId,
-      tokenSource: { getter: (reject, resolve) => {
-        context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
-      }},
+      authProvider: context.authProvider,
     };
   }
 

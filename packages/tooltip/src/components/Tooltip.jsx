@@ -14,7 +14,7 @@ export default class Tooltip extends PureComponent {
       Component to be rendered around the child. Can be used to adjust the size
       and shape of the child.
     */
-    trigger: PropTypes.oneOfType([
+    target: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.string,
     ]),
@@ -28,7 +28,7 @@ export default class Tooltip extends PureComponent {
   showTooltip = () => this.setState({ isVisible: true });
 
   render() {
-    const { children, description, position, trigger } = this.props;
+    const { children, description, position, target } = this.props;
     const { isVisible } = this.state;
 
     return (
@@ -38,7 +38,7 @@ export default class Tooltip extends PureComponent {
         onMouseLeave={this.hideTooltip}
         onMouseEnter={this.showTooltip}
         position={position}
-        trigger={trigger}
+        target={target}
       >
         {children}
       </TooltipStateless>

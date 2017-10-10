@@ -18,8 +18,6 @@ import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import confluenceStatusChecker from './confluenceStatusChecker';
 import checkConfluenceRequestFlag from './checkConfluenceRequestFlag';
 import setConfluenceRequestFlag from './setConfluenceRequestFlag';
-import optOutRequestTrialFeature from './optOutRequestTrialFeature';
-import cancelOptOut from './cancelOptOut';
 
 const messages = defineMessages({
   // Start Trial
@@ -209,25 +207,6 @@ export const defaultProps = intl => ({
         messages.alreadyStartedGetStartedButtonText
       ),
     },
-    optOut: {
-      optOutHeading: 'Trial requests',
-      optOutMessage: 'Change your notifications or stop requests completely.',
-      optOutDefaultSelectedRadio: 'admin-opt-out',
-      optOutNotePlaceholder:
-        'Send us your feedback to help improve \nfuture releases.',
-      optOutOptionItems: [
-        {
-          value: 'admin-opt-out',
-          label: 'Turn off notifications',
-          note: 'You won\'t get trial requests from users.',
-        },
-        {
-          value: 'disable-requests',
-          label: 'Turn off trial requesting',
-          note: "Users can't request trials.",
-        },
-      ],
-    },
   },
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
@@ -245,8 +224,6 @@ export const defaultProps = intl => ({
   closeAlreadyStartedDialog,
   checkProductRequestFlag: checkConfluenceRequestFlag,
   setProductRequestFlag: setConfluenceRequestFlag,
-  optOutRequestTrialFeature,
-  cancelOptOut,
 });
 
 export class JiraToConfluenceXFlowProviderBase extends Component {

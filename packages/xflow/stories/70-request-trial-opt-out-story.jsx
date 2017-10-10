@@ -7,7 +7,6 @@ import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider
 
 const defaultProps = {
   canCurrentUserAddProduct: async () => true,
-  optOutRequestTrialFeature: () => new Promise(resolve => setTimeout(resolve, 1000)),
   cancelOptOut: async () => {},
 };
 
@@ -22,20 +21,25 @@ storiesOf('Request Trial Opt Out')
   .add('Opt Out Dialog', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider {...defaultProps}>
-        <RequestTrialOptOut {...defaultOptOutProps} />
+        <RequestTrialOptOut
+          {...defaultOptOutProps}
+          optOutRequestTrialFeature={() =>
+            new Promise(resolve => setTimeout(resolve, 1000)
+          )}
+        />
       </MockConfluenceXFlowProvider>
     )
   )
   .add('Opt Out, error flag after failed request', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
-        {...defaultProps}
-        optOutRequestTrialFeature={() =>
-          new Promise((_, reject) =>
-            setTimeout(() => reject({ message: 'Example failure' }), 1000)
-          )}
-      >
-        <RequestTrialOptOut {...defaultOptOutProps} />
+      <MockConfluenceXFlowProvider {...defaultProps}>
+        <RequestTrialOptOut
+          {...defaultOptOutProps}
+          optOutRequestTrialFeature={() =>
+            new Promise((_, reject) =>
+              setTimeout(() => reject({ message: 'Example failure' }), 1000)
+            )}
+        />
       </MockConfluenceXFlowProvider>
     )
   );

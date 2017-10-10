@@ -40,7 +40,7 @@ export function storyMediaProviderFactory(
       serviceHost: serviceHost || defaultParams.serviceHost,
       authProvider: StoryBookAuthProvider.create(false)
     }),
-    uploadContext: !(includeUploadContext || true) ? undefined : Promise.resolve<MediaContextConfig>({
+    uploadContext: includeUploadContext === false ? undefined : Promise.resolve<MediaContextConfig>({
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
       authProvider: StoryBookAuthProvider.create(false, {
         [`urn:filestore:collection:${collection}`]: [
@@ -52,7 +52,7 @@ export function storyMediaProviderFactory(
       }),
       userAuthProvider: !includeUserAuthProvider ? undefined : StoryBookUserAuthProvider.create()
     }),
-    linkCreateContext: !(includeLinkCreateContext || true) ? undefined : Promise.resolve<MediaContextConfig>({
+    linkCreateContext: includeLinkCreateContext === false ? undefined : Promise.resolve<MediaContextConfig>({
       serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
       authProvider: StoryBookAuthProvider.create(false, {
         [`urn:filestore:collection:${collection}`]: [

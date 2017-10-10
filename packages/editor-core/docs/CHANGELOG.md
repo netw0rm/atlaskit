@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.2.0 (2017-10-10)
+
+* feature; add support for alt-paste, fix clipboard analytics. (issues closed: ed-2882) ([9b2de80](https://bitbucket.org/atlassian/atlaskit/commits/9b2de80))
 ## 50.1.0 (2017-10-10)
 
 * feature; added CollapsedEditor component (issues closed: ed-2944) ([8172b3e](https://bitbucket.org/atlassian/atlaskit/commits/8172b3e))

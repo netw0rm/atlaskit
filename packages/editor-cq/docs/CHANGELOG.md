@@ -1,5 +1,8 @@
 # @atlaskit/editor-cq
 
+## 4.10.0 (2017-10-10)
+
+* feature; bumping editor-core to 47.17.0 (issues closed: ed-2953) ([fcb32af](https://bitbucket.org/atlassian/atlaskit/commits/fcb32af))
 ## 4.9.0 (2017-10-05)
 
 * feature; bump editor-core to the latest version (issues closed: ed-2879) ([ad1a82e](https://bitbucket.org/atlassian/atlaskit/commits/ad1a82e))

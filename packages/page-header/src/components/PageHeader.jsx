@@ -15,11 +15,12 @@ import {
 type Props = {
   /** Page breadcrumbs to be rendered above the title. */
   breadcrumbs?: PropType<Element<any>, any>,
-  /** Contents of the action bar to be rendered next to the page title. */
+  /** Contents of the action bar to be rendere\d next to the page title. */
   actions?: PropType<Element<any>, any>,
   /** Contents of the header bar to be rendered below the page title. */
   bottomBar?: PropType<Element<any>, any>,
-  /** Content of the page title. The text would be trimmed if it doesn't fit the header width and end with an ellipsis */
+  /** Content of the page title. The text would be trimmed if it doesn't fit the
+    header width and end with an ellipsis */
   children?: PropType<Array<Element<any>> | Element<any>, any>,
 };
 

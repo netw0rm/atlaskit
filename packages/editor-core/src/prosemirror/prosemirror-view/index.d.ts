@@ -11,6 +11,7 @@ export { browser };
 export class EditorView {
   constructor(place: dom.Node | ((_0: dom.Node) => void) | { mount: dom.Node } | null, props: EditorProps);
 
+  shiftKey: boolean; // Possibly unstable/internal - we should stop using it after implementing `EditorState.clipboardParser`
   state: EditorState<any>;
   dom: dom.Element;
   props: EditorProps;

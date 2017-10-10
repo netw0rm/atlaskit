@@ -1,5 +1,12 @@
 # @atlaskit/media-core
 
+## 10.2.0 (2017-10-10)
+
+* feature; updated contextConfig to include userAuthProvider. ([3cfb5d0](https://bitbucket.org/atlassian/atlaskit/commits/3cfb5d0))
+
+* feature; updated contextConfig to include userAuthProvider. ([03f200e](https://bitbucket.org/atlassian/atlaskit/commits/03f200e))
+
+
 ## 10.1.0 (2017-09-12)
 
 * feature; support asap issuer in media-core context ([eff2b56](https://bitbucket.org/atlassian/atlaskit/commits/eff2b56))

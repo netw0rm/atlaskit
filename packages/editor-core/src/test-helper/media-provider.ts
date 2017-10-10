@@ -3,56 +3,59 @@ import {
   MediaProvider,
   MediaStateManager,
 } from '@atlaskit/media-core';
+import {
+  defaultCollectionName,
+  StoryBookAuthProvider,
+  StoryBookUserAuthProvider,
+  defaultParams
+} from '@atlaskit/media-test-helpers';
+
+export interface MediaProviderFactoryConfig {
+  serviceHost?: string;
+  collectionName?: string;
+  stateManager?: MediaStateManager;
+  dropzoneContainer?: HTMLElement;
+  includeUploadContext?: boolean;
+  includeLinkCreateContext?: boolean;
+  includeUserAuthProvider?: boolean;
+}
 
 /**
  * Add "import * as mediaTestHelpers from '@atlaskit/media-test-helpers'"
  * at the beginning of your file and pass "mediaTestHelpers" into this function
  */
-export function storyMediaProviderFactory (
-  mediaTestHelpers,
-  collection?: string,
-  stateManager?: MediaStateManager,
-  includeUploadContext = true,
-  dropzoneContainer?: HTMLElement,
-  includeLinkCreateContext = true,
+export function storyMediaProviderFactory(
+  mediaProviderFactoryConfig: MediaProviderFactoryConfig = {}
 ) {
-  const {
-    defaultClientId,
-    defaultServiceHost,
-    defaultCollectionName,
-    StoryBookTokenProvider,
-  } = mediaTestHelpers;
-
-  const collectionName = collection || defaultCollectionName;
+  const { serviceHost, collectionName, stateManager, dropzoneContainer, includeUploadContext, includeLinkCreateContext, includeUserAuthProvider } = mediaProviderFactoryConfig;
+  const collection = collectionName || defaultCollectionName;
 
   return Promise.resolve<MediaProvider>({
     stateManager,
     uploadParams: {
-      collection: collectionName,
+      collection,
       dropzoneContainer,
     },
     viewContext: Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
-      serviceHost: defaultServiceHost,
-      tokenProvider: StoryBookTokenProvider.tokenProvider
+      serviceHost: serviceHost || defaultParams.serviceHost,
+      authProvider: StoryBookAuthProvider.create(false)
     }),
-    uploadContext: !includeUploadContext ? undefined : Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
+    uploadContext: includeUploadContext === false ? undefined : Promise.resolve<MediaContextConfig>({
       serviceHost: 'https://dt-api.internal.app.dev.atlassian.io',
-      tokenProvider: StoryBookTokenProvider.withAccess({
-        [`urn:filestore:collection:${collectionName}`]: [
+      authProvider: StoryBookAuthProvider.create(false, {
+        [`urn:filestore:collection:${collection}`]: [
           'read', 'insert'
         ],
         'urn:filestore:chunk:*': ['create', 'read'],
         'urn:filestore:upload': ['create'],
         'urn:filestore:upload:*': ['read', 'update']
-      })
+      }),
+      userAuthProvider: !includeUserAuthProvider ? undefined : StoryBookUserAuthProvider.create()
     }),
-    linkCreateContext: !includeLinkCreateContext ? undefined : Promise.resolve<MediaContextConfig>({
-      clientId: defaultClientId,
+    linkCreateContext: includeLinkCreateContext === false ? undefined : Promise.resolve<MediaContextConfig>({
       serviceHost: 'https://dt-api-filestore.internal.app.dev.atlassian.io',
-      tokenProvider: StoryBookTokenProvider.withAccess({
-        [`urn:filestore:collection:${collectionName}`]: [
+      authProvider: StoryBookAuthProvider.create(false, {
+        [`urn:filestore:collection:${collection}`]: [
           'read', 'update'
         ],
         'urn:filestore:file:*': ['read'],

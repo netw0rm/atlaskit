@@ -22,7 +22,7 @@ const getXFlowProviderConfig = () =>
       <div />
     </JiraToConfluenceXFlowProvider>
   )
-    .find('XFlowProvider')
+    .find('XFlowProviderBase')
     .props().config;
 
 const defaultProps = {
@@ -37,6 +37,7 @@ const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: noop,
   sourceComponent: 'storybook-example-compontent',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 describe('@atlaskit/xflow', () => {
@@ -94,6 +95,21 @@ describe('@atlaskit/xflow', () => {
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(sinonTest, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
+    });
+
+    it('should send a custom note', async () => {
+      // eventually render to request trial screen
+      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
+      clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
+
+      await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
+      xflow.find('textarea').node.value = 'Hey, look a custom note';
+      clickOnText(xflow.find(RequestTrialNote), 'Send note');
+      await waitUntil(() => xflow.find(SuccessFlag).length === 1);
+      expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
+      expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
+      expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
+      sinon.assert.calledWith(sinonTest, 'Hey, look a custom note');
     });
 
     it('should render Success Flag with no note', async () => {

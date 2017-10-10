@@ -22,7 +22,7 @@ async function fetchExistingJSONSchema() {
 expect.extend({
   toBeBackwardsCompatibleWith(received: any, argument: any) {
     try {
-      validateSchemaCompatibility(argument, received);
+      validateSchemaCompatibility(argument, received, { allowNewOneOf: true });
 
       return {
         pass: true,
@@ -37,7 +37,7 @@ expect.extend({
 });
 
 describe('JSON schema', () => {
-  it.skip('should be backwards compatible', async () => {
+  it('should be backwards compatible', async () => {
     const existingSchema = await fetchExistingJSONSchema();
 
     try {

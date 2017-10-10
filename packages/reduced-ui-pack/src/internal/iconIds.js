@@ -4,6 +4,7 @@ const iconIds = [
   'add-item',
   'add',
   'addon',
+  'app-access',
   'arrow-down-circle',
   'arrow-down',
   'arrow-left-circle',
@@ -17,6 +18,7 @@ const iconIds = [
   'audio-circle',
   'audio',
   'backlog',
+  'billing-filled',
   'billing',
 
   'bitbucket',
@@ -124,6 +126,8 @@ const iconIds = [
   'editor/unlink',
   'editor/warning',
 
+  'email',
+
   'emoji',
   'emoji/activity',
   'emoji/atlassian',
@@ -144,6 +148,7 @@ const iconIds = [
   'feedback',
   'file',
   'filter',
+  'flag-filled',
   'folder-filled',
   'folder',
   'followers',
@@ -151,6 +156,8 @@ const iconIds = [
   'googledrive',
   'graph-bar',
   'graph-line',
+  'gsuite',
+  'highlights',
 
   'hipchat',
   'hipchat/audio-only',
@@ -240,6 +247,7 @@ const iconIds = [
   'notification-all',
   'notification-direct',
   'notification',
+  'office-building-filled',
   'office-building',
   'open',
   'overview',
@@ -248,6 +256,7 @@ const iconIds = [
   'pdf',
   'people-group',
   'people',
+  'person-circle',
   'person',
   'portfolio',
   'preferences',

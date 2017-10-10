@@ -1,4 +1,4 @@
-import { Node } from '../../prosemirror';
+import { Node, Fragment, Schema } from '../../prosemirror';
 
 /**
  * Checks if node is an empty paragraph.
@@ -34,3 +34,19 @@ export function isEmpty(node?: Node): boolean {
     && !block.filter(childNode =>
         !!childNode.childCount && !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild))).length;
 }
+
+export const preprocessDoc = (schema: Schema<any, any>, doc: Node | undefined): Node | undefined => {
+  if (!doc) {
+    return;
+  }
+  const content: Node[] = [];
+  doc.content.forEach(node => {
+    const { taskList, decisionList } = schema.nodes;
+    if((node.type !== taskList && node.type !== decisionList) ||
+      node.textContent) {
+      content.push(node);
+    }
+  });
+  doc.content = Fragment.fromArray(content);
+  return doc;
+};

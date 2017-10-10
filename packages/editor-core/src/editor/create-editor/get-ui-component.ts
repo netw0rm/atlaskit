@@ -1,6 +1,7 @@
 import Message from '../ui/Appearance/Message';
 import FullPage from '../ui/Appearance/FullPage';
 import Chromeless from '../ui/Appearance/Chromeless';
+import Comment from '../ui/Appearance/Comment';
 import { EditorAppearance, EditorAppearanceComponentProps } from '../types';
 
 export default function getUiComponent(
@@ -15,6 +16,8 @@ export default function getUiComponent(
       return FullPage;
     case 'chromeless':
       return Chromeless;
+    case 'comment':
+      return Comment;
     default:
       throw new Error(`Appearance '${appearance}' is not supported by the editor.`);
   }

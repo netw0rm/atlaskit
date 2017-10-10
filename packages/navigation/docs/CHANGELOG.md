@@ -1,5 +1,15 @@
 # @atlaskit/navigation
 
+## 25.0.0 (2017-10-10)
+
+
+
+
+
+
+* breaking; Drawer's onBackButton callback is now only invoked if drawer was open (isOpen prop is true) ([d70bf83](https://bitbucket.org/atlassian/atlaskit/commits/d70bf83))
+* breaking; add analytics to Drawer for open and close. Captures method of close: esc-key, blan ([d70bf83](https://bitbucket.org/atlassian/atlaskit/commits/d70bf83))
+
 ## 24.5.2 (2017-10-06)
 
 * bug fix; update nav's blanket dependency to version which is darkmoded ([ae38bff](https://bitbucket.org/atlassian/atlaskit/commits/ae38bff))

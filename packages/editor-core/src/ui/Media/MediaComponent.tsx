@@ -327,7 +327,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       return;
     }
 
-    if ('clientId' in (context as ContextConfig)) {
+    if ('serviceHost' in (context as ContextConfig)) {
       context = ContextFactory.create(context as ContextConfig);
     }
 

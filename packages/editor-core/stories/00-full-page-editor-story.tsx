@@ -9,13 +9,12 @@ import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
 import { name } from '../package.json';
 import { storyMediaProviderFactory } from '../src/test-helper';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { ConfluenceTransformer } from '../';
+
+import { macroProviderPromise } from './mock-macro-provider';
 
 import {
   akEditorCodeBackground,
@@ -24,13 +23,6 @@ import {
 } from '../src/styles';
 
 import { akBorderRadius } from 'akutil-shared-styles';
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -107,10 +99,11 @@ storiesOf(name, module)
           allowPanel={true}
           allowInlineMacro={true}
 
-          mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+          mediaProvider={storyMediaProviderFactory()}
           emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
           mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
           activityProvider={Promise.resolve(new MockActivityResource())}
+          macroProvider={macroProviderPromise}
           // tslint:disable-next-line:jsx-no-lambda
           contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 

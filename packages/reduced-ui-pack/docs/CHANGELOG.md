@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.1.0 (2017-10-10)
+
+* feature; added 8 new icons, updated 4 others (issues closed: ak-3590) ([0cff900](https://bitbucket.org/atlassian/atlaskit/commits/0cff900))
 ## 8.0.0 (2017-09-25)
 
 * breaking; Removing the "editor/expand" icon. Use the appropriate chevron-up/chevron-down icons instead. ([dc2f175](https://bitbucket.org/atlassian/atlaskit/commits/dc2f175))

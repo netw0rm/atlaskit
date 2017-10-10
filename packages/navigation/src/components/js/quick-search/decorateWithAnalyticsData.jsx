@@ -4,6 +4,7 @@ import { AnalyticsDecorator } from '@atlaskit/analytics';
 import { QS_ANALYTICS_EV_SUBMIT } from './constants';
 
 const escapeRegexString = (regexString) => regexString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const matchQsEvents = RegExp(`${escapeRegexString(QS_ANALYTICS_EV_SUBMIT)}`);
 
 export default (WrappedQuickSearch) =>
   class extends Component {
@@ -20,14 +21,14 @@ export default (WrappedQuickSearch) =>
     }
 
     countChildren = () => React.Children.toArray(this.props.children).reduce(
-      (total, group) => (total + React.Children.toArray(group.props.children).length)
+      (total, group) => (total + React.Children.count(group.props.children))
       , 0);
 
     render() {
       return (
         <AnalyticsDecorator
           matchPrivate
-          match={RegExp(`${escapeRegexString(QS_ANALYTICS_EV_SUBMIT)}`)}
+          match={matchQsEvents}
           data={{
             resultCount: this.countChildren(),
             queryLength: this.props.value.length,

@@ -129,7 +129,7 @@ export const DetailsLabelIcon = styled.div`
   }
 `;
 
-export const DetailsLabelText = styled.div`
+export const DetailsLabelText = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${labelTextColor};

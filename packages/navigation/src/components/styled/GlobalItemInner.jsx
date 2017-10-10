@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { globalItemSizes, gridSize } from '../../shared-variables';
 import { focusOutline } from '../../utils/mixins';
 import { getProvided } from '../../theme/util';
@@ -10,7 +10,7 @@ const getOutline = (props) => {
   return focusOutline(provided.item.focus.outline);
 };
 
-const GlobalItemInner = styled.span`
+const globalItemStyles = css`
   color: ${({ theme }) => getProvided(theme).text};
   background-color: ${({ theme }) => getProvided(theme).item.default.background};
   /* fill controls the secondary color used by some icons like the help icon */
@@ -43,5 +43,12 @@ const GlobalItemInner = styled.span`
   }
 `;
 
+const GlobalItemInner = styled.button`
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  ${globalItemStyles}
+`;
+
 GlobalItemInner.displayName = 'GlobalItemInner';
 export default GlobalItemInner;
+export { globalItemStyles };

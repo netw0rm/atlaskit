@@ -119,7 +119,7 @@ export function createPlugin(schema: Schema<any, any>) {
         // with "stored marks".
         // @see prosemirror-view/src/clipboard.js:parseFromClipboard()).
         // @see prosemirror-view/src/input.js:doPaste().
-        if (view.shiftKey) { // <- we're using the same internal flag that prosemirror-view is using
+        if ((view as any).shiftKey) { // <- using the same internal flag that prosemirror-view is using
           analyticsService.trackEvent('atlassian.editor.paste.alt');
 
           let tr = view.state.tr.replaceSelection(slice);

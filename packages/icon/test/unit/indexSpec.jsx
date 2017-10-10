@@ -25,6 +25,7 @@ describe(name, () => {
         'add-item',
         'add',
         'addon',
+        'app-access',
         'arrow-down-circle',
         'arrow-down',
         'arrow-left-circle',
@@ -38,8 +39,8 @@ describe(name, () => {
         'audio-circle',
         'audio',
         'backlog',
+        'billing-filled',
         'billing',
-
         'bitbucket',
         'bitbucket/branches',
         'bitbucket/builds',
@@ -53,7 +54,6 @@ describe(name, () => {
         'bitbucket/repos',
         'bitbucket/snippets',
         'bitbucket/source',
-
         'board',
         'book',
         'bullet-list',
@@ -96,7 +96,6 @@ describe(name, () => {
         'dropbox',
         'edit-filled',
         'edit',
-
         'editor/add',
         'editor/addon',
         'editor/advanced',
@@ -144,7 +143,7 @@ describe(name, () => {
         'editor/undo',
         'editor/unlink',
         'editor/warning',
-
+        'email',
         'emoji',
         'emoji/activity',
         'emoji/atlassian',
@@ -159,12 +158,12 @@ describe(name, () => {
         'emoji/people',
         'emoji/symbols',
         'emoji/travel',
-
         'error',
         'export',
         'feedback',
         'file',
         'filter',
+        'flag-filled',
         'folder-filled',
         'folder',
         'followers',
@@ -172,7 +171,8 @@ describe(name, () => {
         'googledrive',
         'graph-bar',
         'graph-line',
-
+        'gsuite',
+        'highlights',
         'hipchat',
         'hipchat/audio-only',
         'hipchat/chevron-double-down',
@@ -184,7 +184,6 @@ describe(name, () => {
         'hipchat/media-attachment-count',
         'hipchat/outgoing-sound',
         'hipchat/sd-video',
-
         'home-circle',
         'home-filled',
         'image-border',
@@ -195,12 +194,10 @@ describe(name, () => {
         'issue-raise',
         'issue',
         'issues',
-
+        'jira',
         'jira-core',
         'jira-service-desk',
         'jira-software',
-        'jira',
-
         'jira/blocker',
         'jira/capture',
         'jira/critical',
@@ -211,7 +208,6 @@ describe(name, () => {
         'jira/minor',
         'jira/test-session',
         'jira/trivial',
-
         'lightbulb-filled',
         'lightbulb',
         'link-filled',
@@ -222,7 +218,6 @@ describe(name, () => {
         'lock-filled',
         'lock',
         'marketplace',
-
         'media-services/actual-size',
         'media-services/add-comment',
         'media-services/annotate',
@@ -253,7 +248,6 @@ describe(name, () => {
         'media-services/zip',
         'media-services/zoom-in',
         'media-services/zoom-out',
-
         'mention',
         'menu',
         'more-vertical',
@@ -261,6 +255,7 @@ describe(name, () => {
         'notification-all',
         'notification-direct',
         'notification',
+        'office-building-filled',
         'office-building',
         'open',
         'overview',
@@ -269,6 +264,7 @@ describe(name, () => {
         'pdf',
         'people-group',
         'people',
+        'person-circle',
         'person',
         'portfolio',
         'preferences',
@@ -312,7 +308,6 @@ describe(name, () => {
         'unlock',
         'upload',
         'user-avatar-circle',
-
         'vid-audio-muted',
         'vid-audio-on',
         'vid-backward',
@@ -328,7 +323,6 @@ describe(name, () => {
         'vid-raised-hand',
         'vid-share-screen',
         'vid-speaking-circle',
-
         'video-circle',
         'video-filled',
         'warning',
@@ -340,7 +334,7 @@ describe(name, () => {
 
       const actual = Object.keys(components);
 
-      expect(actual).toEqual(expected);
+      expect(actual).toEqual(expect.arrayContaining(expected));
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.
         // As the sole purpose of this component is providing icons:

@@ -55,6 +55,7 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null }, uniqueId: { default: null } },
   content: 'text*',
+  marks: '',
   group: 'block',
   code: true,
   defining: true,
@@ -65,7 +66,8 @@ export const codeBlock: NodeSpec = {
       const language = (
         getLanguageFromBitbucketStyle(dom.parentElement!) ||
         getLanguageFromEditorStyle(dom.parentElement!) ||
-        dom.getAttribute('data-language')!
+        dom.getAttribute('data-language') ||
+        null
       );
       dom = removeLastNewLine(dom);
       return { language };

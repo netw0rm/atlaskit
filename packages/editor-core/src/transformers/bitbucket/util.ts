@@ -53,7 +53,7 @@ export function transformHtml(html: string): HTMLElement {
     span.setAttribute('class', 'editor-entity-mention');
     span.setAttribute('contenteditable', 'false');
 
-    const title = a.getAttribute('title') || '';
+    const title = a.getAttribute('title') || null;
     if (title) {
       const usernameMatch = title.match(/^@(.*?)$/);
       if (usernameMatch) {
@@ -77,7 +77,7 @@ export function transformHtml(html: string): HTMLElement {
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
   arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
     const span = document.createElement('span');
-    let shortName = img.getAttribute('data-emoji-short-name') || '';
+    let shortName = img.getAttribute('data-emoji-short-name') || null;
 
     if (!shortName) {
       // Fallback to parsing Bitbucket's src attributes to find the

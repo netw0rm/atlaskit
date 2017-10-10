@@ -147,8 +147,8 @@ describe(name, () => {
       });
 
       it('should append text to a complex document', async () => {
-        const newDoc = doc(p('some text'), blockquote('some quote'), p(''));
-        const expected = doc(p('some text'), blockquote('some quote'), p(' appended'));
+        const newDoc = doc(p('some text'), blockquote(p('some quote')), p(''));
+        const expected = doc(p('some text'), blockquote(p('some quote')), p(' appended'));
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
@@ -158,7 +158,7 @@ describe(name, () => {
       });
 
       it(`should return false if the last node of a document isn't a paragraph`, async () => {
-        const newDoc = doc(p('some text'), blockquote('some quote'));
+        const newDoc = doc(p('some text'), blockquote(p('some quote')));
         editorActions.replaceDocument(newDoc);
         expect(editorActions.appendText(' appended')).to.equal(false);
       });

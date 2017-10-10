@@ -14,6 +14,7 @@ import {
   Clipboard,
   BinaryUploader,
 } from 'mediapicker';
+import { StoryBookAuthProvider, StoryBookUserAuthProvider } from '@atlaskit/media-test-helpers';
 
 import {
   chaiPlugin
@@ -35,11 +36,10 @@ describe('Media PickerFacade', () => {
     collection: 'mock',
     dropzoneContainer
   };
-  const tokenProvider = (collectionName?: string) => Promise.resolve('mock-token');
   const contextConfig = {
-    clientId: 'mock',
     serviceHost: 'http://test',
-    tokenProvider: tokenProvider
+    authProvider: StoryBookAuthProvider.create(false),
+    userAuthProvider: StoryBookUserAuthProvider.create()
   };
   const testFileId = `${Math.round(Math.random() * 100000)}`;
   const testTemporaryFileId = `temporary:${testFileId}`;
@@ -61,22 +61,22 @@ describe('Media PickerFacade', () => {
     timeLeft: 1,
   };
   const errorReporter: ErrorReportingHandler = {
-    captureException: (err: any) => {},
-    captureMessage: (msg: any) => {},
+    captureException: (err: any) => { },
+    captureMessage: (msg: any) => { },
   };
 
   describe('Generic Picker', () => {
     beforeEach(() => {
       mockPicker = new MockMediaPicker();
       stateManager = new DefaultMediaStateManager();
-      mockPickerFactory = (pickerType: string, pickerConfig: any, extraConfig?: any) => {
+      mockPickerFactory = (pickerType, moduleConfig, componentConfig?) => {
         mockPicker.pickerType = pickerType;
-        mockPicker.pickerConfig = pickerConfig;
-        mockPicker.extraConfig = extraConfig;
+        mockPicker.moduleConfig = moduleConfig;
+        mockPicker.componentConfig = componentConfig;
 
         return mockPicker;
       };
-      facade = new (PickerFacade as any)('mock', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
+      facade = new PickerFacade('popup', uploadParams, contextConfig, stateManager, errorReporter, mockPickerFactory);
     });
 
     afterEach(() => {
@@ -103,26 +103,32 @@ describe('Media PickerFacade', () => {
 
     describe('configures picker', () => {
       it('with correct upload params and context', () => {
-        expect(mockPicker.pickerType).to.eq('mock');
-        expect(mockPicker.pickerConfig).to.have.property('uploadParams', uploadParams);
-        expect(mockPicker.pickerConfig).to.have.property('apiUrl', contextConfig.serviceHost);
-        expect(mockPicker.pickerConfig).to.have.property('apiClientId', contextConfig.clientId);
-        expect(mockPicker.pickerConfig).to.have.property('tokenSource')
-          .which.has.property('getter')
-            .which.is.a('function');
+        expect(mockPicker.pickerType).to.eq('popup');
+        expect(mockPicker.moduleConfig).to.have.property('uploadParams', uploadParams);
+        expect(mockPicker.moduleConfig).to.have.property('apiUrl', contextConfig.serviceHost);
+        expect(mockPicker.moduleConfig).to.have.property('authProvider', contextConfig.authProvider);
       });
 
-      it('constructs correct tokenSource which calls resolve method', (done) => {
-        expect(contextConfig.tokenProvider()).to.eventually.eq('mock-token');
-
-        const getter = mockPicker.pickerConfig.tokenSource.getter;
-        getter(() => {}, () => done());
-      });
-
-      it('respects dropzone container config', () => {
+      it('respects dropzone component config', () => {
         const dropzoneFacade = new PickerFacade('dropzone', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
         expect(dropzoneFacade).to.be.an('object');
-        expect(mockPicker.extraConfig).to.have.property('container',  dropzoneContainer);
+        expect(mockPicker.componentConfig).to.have.property('container', dropzoneContainer);
+      });
+
+      it('respects popup component config', () => {
+        const popupFacade = new PickerFacade('popup', uploadParams, contextConfig, stateManager!, errorReporter, mockPickerFactory);
+        expect(popupFacade).to.be.an('object');
+        expect(mockPicker.componentConfig).to.have.property('userAuthProvider', contextConfig.userAuthProvider);
+      });
+
+      it('fallbacks to browser picker if userAuthProvider is not provided', () => {
+        const contextConfigWithoutUserAuthProvider = {
+          serviceHost: 'http://test',
+          authProvider: StoryBookAuthProvider.create(false)
+        };
+        const popupFacade = new PickerFacade('popup', uploadParams, contextConfigWithoutUserAuthProvider, stateManager!, errorReporter, mockPickerFactory);
+        expect(popupFacade).to.be.an('object');
+        expect(mockPicker.pickerType).to.eq('browser');
       });
     });
 
@@ -207,7 +213,7 @@ describe('Media PickerFacade', () => {
 
       it('for upload ready for finalization', () => {
         const cb = sinon.spy();
-        const finalizeCb = () => {};
+        const finalizeCb = () => { };
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-finalize-ready', {
           file: { ...testFileData, publicId: testFilePublicId },
@@ -262,7 +268,7 @@ describe('Media PickerFacade', () => {
     });
 
     it('After upload has transitioned from "uploading", subsequent "status update" events must not downgrade status (ED-2062)', () => {
-      const finalizeCb = () => {};
+      const finalizeCb = () => { };
       stateManager!.updateState(testTemporaryFileId, {
         id: testTemporaryFileId,
         status: 'uploading'
@@ -375,6 +381,12 @@ describe('Media PickerFacade', () => {
       (mockBrowserPicker as any).teardown.reset();
       facade!.destroy();
       sinon.assert.calledOnce((mockBrowserPicker as any).teardown);
+    });
+
+    it(`calls picker's browse() on show`, () => {
+      (mockBrowserPicker as any).browse.reset();
+      facade!.show();
+      sinon.assert.calledOnce((mockBrowserPicker as any).browse);
     });
   });
 

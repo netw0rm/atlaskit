@@ -1,8 +1,12 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl, intlShape } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
+import optOutRequestTrialFeature from '../optOutRequestTrialFeature';
+import cancelOptOut from '../cancelOptOut';
+import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
@@ -44,19 +48,6 @@ export const xFlowShape = PropTypes.shape({
       alreadyStartedMessage: PropTypes.node,
       alreadyStartedGetStartedButtonText: PropTypes.string,
     }),
-    optOut: PropTypes.shape({
-      optOutHeading: PropTypes.string,
-      optOutMessage: PropTypes.string,
-      optOutDefaultSelectedRadio: PropTypes.string,
-      optOutNotePlaceholder: PropTypes.string,
-      optOutOptionItems: PropTypes.arrayOf(
-        PropTypes.shape({
-          value: PropTypes.string,
-          label: PropTypes.string,
-          note: PropTypes.string,
-        })
-      ),
-    }),
   }),
 
   progress: PropTypes.number,
@@ -79,13 +70,12 @@ export const xFlowShape = PropTypes.shape({
   closeAlreadyStartedDialog: PropTypes.func,
   checkProductRequestFlag: PropTypes.func,
   setProductRequestFlag: PropTypes.func,
-  optOutRequestTrialFeature: PropTypes.func,
-  cancelOptOut: PropTypes.func,
 });
 
-export class XFlowProvider extends Component {
+class XFlowProviderBase extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
+    intl: intlShape,
     productStatusChecker: PropTypes.shape({
       start: PropTypes.func.isRequired,
       stop: PropTypes.func.isRequired,
@@ -103,13 +93,19 @@ export class XFlowProvider extends Component {
   };
 
   getChildContext() {
+    const { intl } = this.props;
+    const optOutProps = optOutMessagesDefaultProps(intl);
+
     return {
       xFlow: {
+        ...optOutProps,
         ...this.props,
         ...this.state,
         getProductActivationState: this.getProductActivationState,
         startProductTrial: this.startProductTrial,
         waitForActivation: this.waitForActivation,
+        optOutRequestTrialFeature,
+        cancelOptOut,
       },
     };
   }
@@ -147,9 +143,12 @@ export class XFlowProvider extends Component {
   };
 
   render() {
-    return Children.only(this.props.children);
+    const { children } = this.props;
+    return Children.only(children);
   }
 }
+
+export const XFlowProvider = injectIntl(XFlowProviderBase);
 
 export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}) =>
   class WithXFlowProvider extends Component {

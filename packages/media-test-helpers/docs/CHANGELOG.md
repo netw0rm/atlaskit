@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 8.4.0 (2017-10-10)
+
+* bug fix; fixed incompatible types between axioPromise and Promise. ([a227432](https://bitbucket.org/atlassian/atlaskit/commits/a227432))
+* feature; created userAuthProvider for storybook ([31b2e96](https://bitbucket.org/atlassian/atlaskit/commits/31b2e96))
 ## 8.3.0 (2017-09-19)
 
 * feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))

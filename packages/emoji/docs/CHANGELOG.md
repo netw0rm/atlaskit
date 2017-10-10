@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 30.1.0 (2017-10-10)
+
+
+* bug fix; emoji rendered with set width and height to reduce reflows (issues closed: fs-1156) ([4a2a3b9](https://bitbucket.org/atlassian/atlaskit/commits/4a2a3b9))
+* feature; allow size of emoji to be overridden (issues closed: fs-1156) ([98cd503](https://bitbucket.org/atlassian/atlaskit/commits/98cd503))
 ## 30.0.0 (2017-10-05)
 
 * bug fix; fix typescript errors ([c577c6e](https://bitbucket.org/atlassian/atlaskit/commits/c577c6e))

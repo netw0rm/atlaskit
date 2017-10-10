@@ -71,8 +71,8 @@
 .detailsGroup {
   display: flex;
   flex-direction: column;
-  margin-left: @ak-grid-size * 14;
-  width: @ak-grid-size * 25;
+  margin-left: @ak-grid-size * 14.5;
+  width: @ak-grid-size * 24.5;
 }
 
 .detailsFullname {
@@ -108,6 +108,8 @@
 }
 
 .detailsLabel {
+  display: flex;
+  align-items: center;
   line-height: @ak-grid-size * 3;
   font-size: @ak-grid-size * 1.5;
   margin: (@ak-grid-size * 2) 0 0 0;
@@ -116,10 +118,12 @@
   text-overflow: ellipsis;
 
   .detailsLabelIcon {
-    display: inline-block;
+    display: flex;
+    flex-shrink: 0;
     color: @ak-color-N60;
-    width: @ak-grid-size * 3;
-    height: @ak-grid-size * 3;
+    width: @ak-grid-size * 2;
+    height: @ak-grid-size * 2;
+    padding: @ak-grid-size * 0.5;
     vertical-align: top;
 
     svg {
@@ -128,23 +132,17 @@
     }
   }
 
-  &.presence {
-    .detailsLabelIcon {
-      width: @ak-grid-size * 2;
-      height: @ak-grid-size * 2;
-      line-height: @ak-grid-size * 2;
-      padding: @ak-grid-size * 0.5;
-    }
-  }
-
   span.label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: @ak-color-N800;
     padding-left: @ak-grid-size * 0.5;
   }
 }
 
 .detailsLabel + .detailsLabel {
-  margin-top: @ak-grid-size * 0.5;
+  margin-top: @ak-grid-size * 0.25;
 }
 
 .actionsFlexSpacer {

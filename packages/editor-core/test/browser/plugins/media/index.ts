@@ -5,7 +5,6 @@ import * as sinon from 'sinon';
 import {
   DefaultMediaStateManager,
 } from '@atlaskit/media-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   mediaPluginFactory,
   MediaPluginState,
@@ -41,7 +40,7 @@ const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
 const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  return storyMediaProviderFactory({ collectionName: testCollectionName, stateManager, includeUserAuthProvider: true });
 };
 
 describe('Media plugin', () => {
@@ -409,7 +408,7 @@ describe('Media plugin', () => {
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
           )
         ));
-        editorView.destroy(); pluginState.destroy();
+      editorView.destroy(); pluginState.destroy();
     });
   });
 

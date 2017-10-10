@@ -2,9 +2,6 @@ import * as React from 'react';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import Button from '@atlaskit/button';
 
 import { Content, ButtonGroup } from './../styles';
@@ -13,16 +10,8 @@ import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';
 import { storyMediaProviderFactory } from '../../src/test-helper';
 
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
-
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
-const pendingPromise = new Promise<any>(() => {});
+const pendingPromise = new Promise<any>(() => { });
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionStoryData.resourceProvider),
@@ -33,30 +22,31 @@ const providers = {
     })),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined' : undefined,
+    'undefined': undefined,
   },
   emojiProvider: {
     resolved: emojiStoryData.getEmojiResource({ uploadSupported: true }),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined' : undefined,
+    'undefined': undefined,
   },
   mediaProvider: {
-    resolved: storyMediaProviderFactory(mediaTestHelpers),
+    resolved: storyMediaProviderFactory(),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'view only': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, false),
-    'w/o link cards': storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, true, undefined, false),
-    'undefined' : undefined,
+    'view only': storyMediaProviderFactory({ includeUploadContext: false }),
+    'w/o link cards': storyMediaProviderFactory({ includeLinkCreateContext: false }),
+    'with userAuthProvider': storyMediaProviderFactory({ includeUserAuthProvider: true }),
+    'undefined': undefined,
   },
   activityProvider: {
     resolved: new MockActivityResource(),
     pending: pendingPromise,
     rejected: rejectedPromise,
-    'undefined' : undefined,
+    'undefined': undefined,
   }
 };
-rejectedPromise.catch(() => {});
+rejectedPromise.catch(() => { });
 
 interface State {
   editorEnabled: boolean;
@@ -101,19 +91,19 @@ export default class ToolsDrawer extends React.Component<any, State> {
     const { mentionProvider, emojiProvider, mediaProvider, activityProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
-        <div style={{ padding: '5px 0'}}>
+        <div style={{ padding: '5px 0' }}>
           ️️️⚠️ Atlassians, make sure you're logged into <a href="https://id.stg.internal.atlassian.com" target="_blank">staging Identity server</a>.
         </div>
         {
           editorEnabled ?
-          (this.props.renderEditor({
-            mediaProvider: providers.mediaProvider[mediaProvider],
-            mentionProvider: providers.mentionProvider[mentionProvider],
-            emojiProvider: providers.emojiProvider[emojiProvider],
-            activityProvider: providers.activityProvider[activityProvider],
-            onChange: this.onChange
-          })) :
-          ''
+            (this.props.renderEditor({
+              mediaProvider: providers.mediaProvider[mediaProvider],
+              mentionProvider: providers.mentionProvider[mentionProvider],
+              emojiProvider: providers.emojiProvider[emojiProvider],
+              activityProvider: providers.activityProvider[activityProvider],
+              onChange: this.onChange
+            })) :
+            ''
         }
         <div className="toolsDrawer">
           <div>

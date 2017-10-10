@@ -38,9 +38,9 @@ export default class Example extends PureComponent {
     return (
       <div>
         {styles}
-        <span className="purple"><HomeCircleIcon secondaryColor="inherit" size="xlarge" /></span>
-        <span className="blue"><HomeCircleIcon secondaryColor="inherit" size="xlarge" /></span>
-        <span className="rainbow"><HomeCircleIcon size="xlarge" /></span>
+        <span className="purple"><HomeCircleIcon secondaryColor="inherit" size="xlarge" label="" /></span>
+        <span className="blue"><HomeCircleIcon secondaryColor="inherit" size="xlarge" label="" /></span>
+        <span className="rainbow"><HomeCircleIcon size="xlarge" label="" /></span>
       </div>
     );
   }

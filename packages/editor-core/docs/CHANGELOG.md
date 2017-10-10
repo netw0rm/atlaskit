@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 49.0.0 (2017-10-10)
+
+* bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))
+* feature; always reset media plugin when set media provider ([5ef4d81](https://bitbucket.org/atlassian/atlaskit/commits/5ef4d81))
+* breaking; storyMediaProviderFactory API in test-helper accepts a config instead of multiple params ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; refactor storyMediaProviderFactory to accept a config instead of multiple param ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; updated media provider api for new authentication on media picker. updated media provider api in ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+* breaking; updated the API of media provider for new authentication on media picker. ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
 ## 47.17.0 (2017-10-09)
 
 * bug fix; enable lists in comment editor story ([cd8a647](https://bitbucket.org/atlassian/atlaskit/commits/cd8a647))

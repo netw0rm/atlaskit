@@ -8,9 +8,11 @@ import WithEditorActions from './../src/editor/ui/WithEditorActions';
 import ToolsDrawer from './ToolsDrawer';
 import { name, version } from '../package.json';
 import { storyDecorator } from '../src/test-helper';
+import CollapsedEditor from '../src/editor/ui/CollapsedEditor';
 
 const SAVE_ACTION = () => action('Save')();
 const CANCEL_ACTION = () => action('Cancel')();
+const EXPAND_ACTION = () => action('Expand')();
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const exampleDocument = {
   version: 1,
@@ -53,25 +55,30 @@ storiesOf(name, module)
           // tslint:disable-next-line:jsx-no-lambda
           renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
             <div style={{ padding: '20px' }}>
-              <Editor
-                appearance="comment"
-                analyticsHandler={analyticsHandler}
-                shouldFocus={true}
+              <CollapsedEditor
+                placeholder="What do you want to say?"
+              >
+                <Editor
+                  appearance="comment"
+                  analyticsHandler={analyticsHandler}
+                  shouldFocus={true}
 
-                allowTextFormatting={true}
-                allowTasksAndDecisions={true}
-                allowHyperlinks={true}
-                allowCodeBlocks={true}
-                allowLists={true}
+                  allowTextFormatting={true}
+                  allowTasksAndDecisions={true}
+                  allowHyperlinks={true}
+                  allowCodeBlocks={true}
+                  allowLists={true}
 
-                mentionProvider={mentionProvider}
-                emojiProvider={emojiProvider}
-                mediaProvider={mediaProvider}
+                  mentionProvider={mentionProvider}
+                  emojiProvider={emojiProvider}
+                  mediaProvider={mediaProvider}
 
-                onChange={onChange}
-                onSave={SAVE_ACTION}
-                onCancel={CANCEL_ACTION}
-              />
+                  onChange={onChange}
+                  onSave={SAVE_ACTION}
+                  onCancel={CANCEL_ACTION}
+                  onExpand={EXPAND_ACTION}
+                />
+              </CollapsedEditor>
             </div>}
         />
       </div>

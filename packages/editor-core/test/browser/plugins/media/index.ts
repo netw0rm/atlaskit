@@ -328,7 +328,7 @@ describe('Media plugin', () => {
     }
   });
 
-  it('should reset pickers when new media provider is set', async () => {
+  it('should set new upload params for existing pickers when new media provider is set', async () => {
     const { pluginState } = editor(doc(h1('text{<>}')));
     expect(pluginState.pickers).to.have.length(0);
 
@@ -337,16 +337,18 @@ describe('Media plugin', () => {
     const resolvedMediaProvider1 = await mediaProvider1;
     await resolvedMediaProvider1.uploadContext;
 
-    const initPickersSpy = sinon.spy(pluginState, 'initPickers');
-    const resetPluginSpy = sinon.spy(pluginState, 'resetPlugin');
+    pluginState.pickers.forEach(picker => {
+      picker.setUploadParams = sinon.spy();
+    });
 
     const mediaProvider2 = getFreshMediaProvider();
     pluginState.setMediaProvider(mediaProvider2);
     const resolvedMediaProvider2 = await mediaProvider2;
     await resolvedMediaProvider2.uploadContext;
 
-    expect(initPickersSpy.calledOnce).to.equal(true);
-    expect(resetPluginSpy.calledOnce).to.equal(true);
+    pluginState.pickers.forEach(picker => {
+      expect((picker.setUploadParams as any).calledOnce).to.equal(true);
+    });
   });
 
   it('should trigger analytics events for picking', async () => {

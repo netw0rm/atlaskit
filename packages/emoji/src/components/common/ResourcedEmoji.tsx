@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
+import { defaultEmojiHeight } from '../../constants';
 import { EmojiContext } from './internal-types';
 import CachingEmoji from './CachingEmoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
@@ -12,6 +13,7 @@ import EmojiProvider from '../../api/EmojiResource';
 export interface BaseResourcedEmojiProps {
   emojiId: EmojiId;
   showTooltip?: boolean;
+  fitToHeight?: number;
 }
 
 export interface Props extends BaseResourcedEmojiProps, LoadingProps {
@@ -109,7 +111,7 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   }
 
   render() {
-    const { emojiId, showTooltip } = this.props;
+    const { emojiId, fitToHeight = defaultEmojiHeight, showTooltip } = this.props;
     const { emoji, loaded } = this.state;
     const { shortName, fallback } = emojiId;
     if (emoji) {
@@ -117,6 +119,7 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
         <CachingEmoji
           emoji={emoji}
           showTooltip={showTooltip}
+          fitToHeight={fitToHeight}
         />
       ));
     } else if (loaded) {
@@ -127,7 +130,7 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
     }
 
     return this.emojiWrapper((
-      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip}/>
+      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip} />
     ));
   }
 

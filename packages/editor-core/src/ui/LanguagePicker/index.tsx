@@ -11,6 +11,8 @@ import {
   createLanguageList,
   filterSupportedLanguages,
   findMatchedLanguage,
+  getLanguageIdentifier,
+  Language
 } from './languageList';
 
 export interface Props {
@@ -23,9 +25,9 @@ export interface Props {
 export interface State {
   active?: boolean;
   element?: HTMLElement;
-  language?: string;
-  supportedLanguages?: object[];
-  toolbarVisible?: boolean;
+  activeLanguage?: Language;
+  supportedLanguages: Language[];
+  toolbarVisible: boolean;
   isLanguageSelectOpen?: boolean;
   languageSelectFocused?: boolean;
 }
@@ -48,7 +50,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { supportedLanguages } = this.state;
 
     this.items = [{
-      'items': createLanguageList(supportedLanguages).map((language) => ({ content: language, value: language }))
+      'items': createLanguageList(supportedLanguages)
+        .map(lang => ({ content: lang.name, value: getLanguageIdentifier(lang) }))
     }];
   }
 
@@ -71,13 +74,16 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
   render() {
     const {
-      language,
+      activeLanguage,
       element,
       toolbarVisible,
       languageSelectFocused
     } = this.state;
 
     const { popupsMountPoint, popupsBoundariesElement } = this.props;
+    const defaultLanguage = activeLanguage
+      ? { content: activeLanguage.name, value: getLanguageIdentifier(activeLanguage) }
+      : undefined;
 
     if (toolbarVisible || languageSelectFocused) {
         return (
@@ -99,7 +105,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
               shouldFocus={languageSelectFocused}
               items={this.items}
               onSelected={this.handleLanguageChange}
-              defaultSelected={{ content: language, value: language }}
+              defaultSelected={defaultLanguage}
               placeholder="Select language"
             />
             <Separator />
@@ -119,16 +125,17 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const { element, language, toolbarVisible } = pluginState;
     const { supportedLanguages } = this.state;
 
-    const updatedLanguage = findMatchedLanguage(supportedLanguages!, language);
+    const updatedLanguage = findMatchedLanguage(supportedLanguages, language);
 
     this.setState({
-      language: updatedLanguage,
+      activeLanguage: updatedLanguage,
       element,
       toolbarVisible,
     });
 
-    if (language !== updatedLanguage) {
-      this.props.pluginState.updateLanguage(updatedLanguage, this.props.editorView);
+    const activeLanguageValue = updatedLanguage ? getLanguageIdentifier(updatedLanguage) : undefined;
+    if (language !== activeLanguageValue) {
+      this.props.pluginState.updateLanguage(activeLanguageValue, this.props.editorView);
     }
   }
 

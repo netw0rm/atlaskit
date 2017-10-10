@@ -62,8 +62,7 @@ export interface Props {
 }
 
 export default function JIRAIssueNode(props: Props) {
-  const { node } = props;
-  const { issueKey } = node.attrs;
+  const { node: { attrs: { issueKey } } } = props;
 
   return (
     <WrapperNode>

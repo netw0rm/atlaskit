@@ -74,6 +74,8 @@ export const NavItem = styled.li`
   padding: ${math.divide(gridSize, 2)}px ${gridSize}px;
   position: relative;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     color: ${hoverLabelColor};

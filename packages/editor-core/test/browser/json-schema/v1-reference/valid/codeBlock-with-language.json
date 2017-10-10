@@ -188,6 +188,13 @@
       "type": "codeBlock",
       "content": [],
       "attrs": {
+        "language": "json"
+      }
+    },
+    {
+      "type": "codeBlock",
+      "content": [],
+      "attrs": {
         "language": "julia"
       }
     },

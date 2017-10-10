@@ -4,14 +4,14 @@ import classNames from 'classnames';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
-import styles from './styles/profilecard.less';
-
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 import HeightTransitionWrapper from './components/HeightTransitionWrapper';
 
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
+
+import styles from './styles/profilecard.less';
 
 export default class Profilecard extends PureComponent {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class Profilecard extends PureComponent {
     isLoading: PropTypes.bool,
     hasError: PropTypes.bool,
     errorType: PropTypes.shape({
-      reason: PropTypes.oneOf('default', 'NotFound'),
+      reason: PropTypes.oneOf(['default', 'NotFound']),
     }),
     clientFetchProfile: PropTypes.func,
     analytics: PropTypes.func,
@@ -116,7 +116,7 @@ export default class Profilecard extends PureComponent {
           <div className={styles.detailsGroup}>
             <span className={styles.detailsFullname}>{this.props.fullName}</span>
             { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
-            <IconLabel className={styles.presence} icon={this.props.presence}>
+            <IconLabel icon={this.props.presence}>
               {presences[this.props.presence]}
             </IconLabel>
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>

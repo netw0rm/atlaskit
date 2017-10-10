@@ -15,6 +15,7 @@ export default class Partipants extends PureComponent<Props,{}> {
     return this.props.participants.map(p => ({
       src: p.avatarUrl,
       name: p.displayName,
+      size: 'small',
     }));
   }
 

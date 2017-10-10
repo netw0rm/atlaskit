@@ -1,5 +1,5 @@
 import { EditorServicesConfig } from '../../../src';
-import { JwtTokenProvider, MediaProvider } from '@atlaskit/media-core';
+import { MediaProvider, AuthContext } from '@atlaskit/media-core';
 import { MentionResource } from '@atlaskit/mention';
 import { name } from '../../../package.json';
 import { EmojiResource } from '@atlaskit/emoji';
@@ -12,8 +12,11 @@ describe(name, () => {
     // from editor-core and external packages. This file will fail to compile
     // if any of the related packages' APIs change.
     it('should compile with TypeScript.', () => {
-      const stubJwtTokenProvider: JwtTokenProvider = (collectionName?: string) => {
-        return Promise.resolve('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
+      const stubAuthProvider = (context?: AuthContext) => {
+        return Promise.resolve({
+          clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
+        });
       };
 
       const configInstance: EditorServicesConfig = {
@@ -26,9 +29,8 @@ describe(name, () => {
               collection: 'mock',
             },
             viewContext: Promise.resolve({
-              clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
               serviceHost: 'http://media-api.host.com',
-              tokenProvider: stubJwtTokenProvider,
+              authProvider: stubAuthProvider,
             })
           });
         },

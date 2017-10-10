@@ -12,6 +12,7 @@ import {
   mentionQuery,
   emojiQuery,
   textColor,
+  inlineCommentMarker
 } from './marks';
 
 import {
@@ -45,6 +46,7 @@ import {
   decisionItem,
   taskList,
   taskItem,
+  inlineMacro,
   unknownBlock,
 } from './nodes';
 
@@ -135,6 +137,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'decisionItem', spec: decisionItem },
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
+  { name: 'inlineMacro', spec: inlineMacro },
   { name: 'unknownBlock', spec: unknownBlock },
 ];
 
@@ -149,6 +152,7 @@ const marksInOrder: SchemaBuiltInItem[] = [
   { name: 'mentionQuery', spec: mentionQuery },
   { name: 'emojiQuery', spec: emojiQuery },
   { name: 'textColor', spec: textColor },
+  { name: 'inlineCommentMarker', spec: inlineCommentMarker },
   ...markGroupDeclarations,
 ];
 

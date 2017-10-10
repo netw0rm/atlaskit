@@ -141,6 +141,17 @@ const showCategory = (category: string, component): Promise<any> => {
   });
 };
 
+const findEmojiInCategory = (emojis, categoryId: string): EmojiDescription | undefined => {
+  categoryId = categoryId.toLocaleUpperCase();
+  for (let i = 0; i < emojis.length; i++) {
+    const emoji = emojis.at(i).prop('emoji');
+    if (emoji.category === categoryId) {
+      return emoji;
+    }
+  }
+  return undefined;
+};
+
 const findHandEmoji = (emojis): number => {
   let offset = -1;
   emojis.forEach((emoji, index) => {
@@ -175,30 +186,31 @@ describe('<EmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise();
       let expectedCategories = defaultCategories;
       return emojiProvider.then(provider => {
-        if (provider.calculateDynamicCategories) {
-          expectedCategories = expectedCategories.concat(provider.calculateDynamicCategories());
-        }
+        expect(provider.calculateDynamicCategories !== undefined, 'the provider is expected to implement calculateDynamicCategories for this test').to.equal(true);
+        return provider.calculateDynamicCategories().then(dynamicCategories => {
+          expectedCategories = expectedCategories.concat(dynamicCategories);
+          return setupPicker().then(component => {
+            const categorySelector = component.find(CategorySelector);
+            const buttons = categorySelector.find('button');
+            expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
+            expectedCategories.sort(sortCategories);
 
-        return setupPicker().then(component => {
-          const categorySelector = component.find(CategorySelector);
-          const buttons = categorySelector.find('button');
-          expect(buttons.length, 'Number of category buttons').to.equal(expectedCategories.length);
-          expectedCategories.sort(sortCategories);
-
-          for (let i = 0; i < buttons.length; i++) {
-            const button = buttons.at(i);
-            expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
-          }
+            for (let i = 0; i < buttons.length; i++) {
+              const button = buttons.at(i);
+              expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
+            }
+          });
         });
       });
     });
 
-    it('should empty preview by default', () =>
+    it('should tone selector in preview by default', () =>
       setupPicker().then(component => {
         const footer = component.find(EmojiPickerFooter);
         const previewEmoji = footer.find(Emoji);
 
-        expect(previewEmoji.length, 'No emoji preview by default').to.equal(0);
+        expect(previewEmoji.length, 'Only contains tone emoji').to.equal(1);
+        expect(previewEmoji.at(0).prop('emoji').shortName).to.equal(':raised_hand:');
       })
     );
 
@@ -253,50 +265,31 @@ describe('<EmojiPicker />', () => {
     it('selecting category should show that category', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
 
         return waitUntil(() => emojisVisible(list)).then(() => {
           expect(categoryVisible('flags', component), 'Flag category not rendered as not in view').to.equal(false);
 
           return showCategory('flags', component);
-        }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === 'FLAGS' && categoryVisible('flags', component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
-          });
+        }).then(() => waitUntil(() => categoryVisible('flags', component))
+         ).then(() => {
+          const emoji = findEmojiInCategory(findEmoji(list), 'flags');
+          expect(emoji!.category, 'Emoji shown in list is in flag category').to.equal('FLAGS');
         });
       })
     );
 
-    it('selecting custom category - should show preview with media first emoji loading', () =>
+    it('selecting custom category scrolls to bottom', () =>
       setupPicker().then(component => {
         const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
 
         return waitUntil(() => emojisVisible(list)).then(() => {
           expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
 
           return showCategory(customCategory, component);
-        }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
-          });
-        });
-      })
-    );
-
-    it('selecting custom category - should show preview with media first emoji loading', () =>
-      setupPicker().then(component => {
-        const list = component.find(EmojiPickerList);
-        expect(list.prop('selectedCategory'), 'Custom category not yet selected').to.not.equal(customCategory);
-
-        return waitUntil(() => emojisVisible(list)).then(() => {
-          expect(categoryVisible(customCategory, component), 'Custom category not rendered as not in view').to.equal(false);
-
-          return showCategory(customCategory, component);
-        }).then(() => {
-          return waitUntil(() => list.prop('selectedCategory') === customCategory && categoryVisible(customCategory, component)).then(() => {
-            expect(list.prop('selectedCategory'), 'Custom category selected').to.equal(customCategory);
-          });
+        }).then(() => waitUntil(() => categoryVisible(customCategory, component))
+         ).then(() => {
+          const emoji = findEmojiInCategory(findEmoji(list), customCategory);
+          expect(emoji!.category, 'Emoji shown in list is in custom category').to.equal(customCategory);
         });
       })
     );

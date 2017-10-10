@@ -17,7 +17,8 @@ import ProviderFactory from '../../../src/providerFactory';
 import { analyticsService } from '../../../src/analytics';
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({})
+  viewContext: Promise.resolve({}),
+  uploadContext: Promise.resolve({})
 });
 
 const providerFactory = new ProviderFactory();
@@ -47,6 +48,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />
     );
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should not render disabled ToolbarButton even if current selection is code block', () => {
@@ -58,6 +60,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />
     );
     expect(toolbarOption.find(AkButton).prop('isDisabled')).to.equal(false);
+    toolbarOption.unmount();
   });
 
   it('should not render if none of the plugins are present', () => {
@@ -68,9 +71,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />
     );
     expect(toolbarOption.html()).to.equal(null);
+    toolbarOption.unmount();
   });
 
-  it('should have 3 child elements if both pluginStateBlockType is defined', () => {
+  it('should have 3 child elements if pluginStateBlockType is defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -80,9 +84,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(3);
+    toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if both pluginStateTable is defined', () => {
+  it('should have 1 child elements if pluginStateTable is defined', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
@@ -92,10 +97,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
+    toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if both pluginStateMedia is defined', () => {
+  it('should have 1 child elements if pluginStateMedia is defined', async () => {
     const { editorView } = editor(doc(p('text')));
+
+    const media = await mediaProvider;
+    await media.uploadContext;
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
@@ -104,10 +114,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     );
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.find(DropdownMenu).prop('items')[0]['items'].length).to.equal(1);
+    toolbarOption.unmount();
   });
 
-  it('should trigger showMediaPicker of pluginStateMedia when File and Images option is clicked', () => {
+  it('should trigger showMediaPicker of pluginStateMedia when File and Images option is clicked', async () => {
     const { editorView } = editor(doc(p('text')));
+
+    const media = await mediaProvider;
+    await media.uploadContext;
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
         pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
@@ -123,6 +138,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     mediaButton.simulate('click');
     expect(mediaPluginsSet[0].getState(editorView.state).showMediaPicker.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.media.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType of pluginStateBlockType when Panel option is clicked', () => {
@@ -142,6 +158,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     panelButton.simulate('click');
     expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.panel.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType of pluginStateBlockType when code block option is clicked', () => {
@@ -161,6 +178,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     codeblockButton.simulate('click');
     expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.codeblock.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should trigger insertBlockType of pluginStateBlockType when blockquote option is clicked', () => {
@@ -180,6 +198,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     blockquoteButton.simulate('click');
     expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.blockquote.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 
   it('should track table creation event when table menu is clicked option is clicked', () => {
@@ -200,5 +219,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     tableButton.simulate('click');
     expect(funcSpy.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.table.button')).to.equal(true);
+    toolbarOption.unmount();
   });
 });

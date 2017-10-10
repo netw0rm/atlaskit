@@ -38,6 +38,8 @@ import {
   ProviderFactory,
   MediaPluginState,
   MediaState,
+  textColorStateKey,
+  textColorPlugins,
   Slice,
 
   // nodeviews
@@ -260,6 +262,8 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
     const tableState = tablesEnabled && editorState && tableStateKey.getState(editorState);
+    const textColorState = editorState && textColorStateKey.getState(editorState);
+
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
@@ -280,6 +284,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateMedia={mediaState}
         pluginStatePanel={panelState}
         pluginStateTable={tableState}
+        pluginStateTextColor={textColorState}
         packageVersion={version}
         packageName={name}
         mentionProvider={this.mentionProvider}
@@ -334,6 +339,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...textFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
           ...reactNodeViewPlugins(schema),
+          ...textColorPlugins(schema),
           ...(tablesEnabled ? tablePlugins() : []),
           history(),
           keymap(cqKeymap),

@@ -253,6 +253,10 @@ export const emojiItem = style({
           width: '24px',
         }
       }
+    },
+    '&>svg': {
+      cursor: 'pointer',
+      padding: '7px',
     }
   },
 });

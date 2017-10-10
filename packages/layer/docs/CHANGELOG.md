@@ -1,5 +1,10 @@
 # @atlaskit/layer
 
+## 2.5.4 (2017-09-19)
+
+* bug fix; support z-index on layer's content ([42f6b69](https://bitbucket.org/atlassian/atlaskit/commits/42f6b69))
+
+
 ## 2.5.3 (2017-08-09)
 
 * bug fix; bump util-shared-styles dependency to latest to reduce app bundle sizes (issues closed: ak-3252) ([dbc406c](https://bitbucket.org/atlassian/atlaskit/commits/dbc406c))

@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { GrantAccessBase } from '../../../src/start-trial/components/GrantAccess';
+import { GrantAccessBase } from '../../../src/request-or-start-trial/components/GrantAccess';
 import { withAnalyticsSpy, waitFor } from '../../util';
 import { ACTIVATING } from '../../../src/common/productProvisioningStates';
 
@@ -18,7 +18,7 @@ const defaultProps = {
   optionItems: [
     {
       value: 'everyone',
-      label: 'Everyone in JIRA Software',
+      label: 'Everyone in Jira Software',
     },
     {
       value: 'site-admins',

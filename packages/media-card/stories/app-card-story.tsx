@@ -166,7 +166,8 @@ const modelWithLinkInContext: AppCardModel = {
 };
 
 const primaryAction: AppCardAction = {
-  title: 'View'
+  title: 'View',
+  target: 'test.target.action'
 };
 const detailsWithPrimaryAction: AppCardModel = {
   ...modelWithShortTitle,
@@ -175,9 +176,9 @@ const detailsWithPrimaryAction: AppCardModel = {
 
 const metaActions: AppCardAction[] = [
   primaryAction,
-  {title: 'Open'},
-  {title: 'Join'},
-  {title: 'Reply'}
+  {title: 'Open', target: 'test.target.open'},
+  {title: 'Join', target: 'test.target.join'},
+  {title: 'Reply', target: 'test.target.reply'}
 ];
 const detailsWithSecondaryActions: AppCardModel = {
   ...modelWithShortTitle,
@@ -228,8 +229,8 @@ const confluenceActivityModel: AppCardModel = {
     text: 'Design Home / … / Media Cards Design'
   },
   actions: [
-    {title: 'Reply'},
-    {title: 'Other'}
+    {title: 'Reply', target: 'test.target.reply'},
+    {title: 'Other', target: 'test.target.other'}
   ]
 };
 
@@ -244,8 +245,8 @@ const jiraIssueModel: AppCardModel = {
     text: 'DPM - 560'
   },
   actions: [
-    {title: 'View'},
-    {title: 'Other'}
+    {title: 'View', target: 'test.target.view' },
+    {title: 'Other', target: 'test.target.other'}
   ]
 };
 
@@ -260,8 +261,8 @@ const dropboxFileModel: AppCardModel = {
     text: 'Dropbox'
   },
   actions: [
-    {title: 'Download'},
-    {title: 'Other'}
+    {title: 'Download', target: 'test.target.download'},
+    {title: 'Other', target: 'test.target.other'}
   ]
 };
 
@@ -279,8 +280,8 @@ const trelloBoardModel: AppCardModel = {
     text: 'Trello - Board'
   },
   actions: [
-    {title: 'Join'},
-    {title: 'Other'}
+    {title: 'Join', target: 'test.target.join'},
+    {title: 'Other', target: 'test.target.other'}
   ]
 };
 
@@ -305,8 +306,8 @@ const trelloCardModel: AppCardModel = {
     text: 'Trello - Card in list Concepts'
   },
   actions: [
-    {title: 'Open'},
-    {title: 'Other'}
+    {title: 'Open', target: 'test.target.open'},
+    {title: 'Other', target: 'test.target.other'}
   ]
 };
 

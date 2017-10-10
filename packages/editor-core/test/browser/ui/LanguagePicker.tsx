@@ -9,7 +9,7 @@ import LanguagePicker from '../../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, createEvent } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
-describe('LanguagePicker', () => {
+describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   const event = createEvent('event');
   const editor = (doc: any) => makeEditor<CodeBlockState>({
     doc,
@@ -58,6 +58,7 @@ describe('LanguagePicker', () => {
       plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('toolbarVisible')).to.equal(true);
+      languagePicker.unmount();
     });
   });
 
@@ -69,6 +70,7 @@ describe('LanguagePicker', () => {
       plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('element')).to.equal(undefined);
+      languagePicker.unmount();
     });
   });
 
@@ -84,6 +86,7 @@ describe('LanguagePicker', () => {
       expect(languagePicker.html()).to.not.equal(null);
       plugin.props.onBlur!(editorView, event);
       expect(languagePicker.html()).to.equal(null);
+      languagePicker.unmount();
     });
   });
 
@@ -92,14 +95,16 @@ describe('LanguagePicker', () => {
       const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      expect(languagePicker.state('language')).to.equal('JavaScript');
+      expect(languagePicker.state('activeLanguage').name).to.equal('JavaScript');
+      languagePicker.unmount();
     });
 
     it('updates plugin with the formatted langauge', () => {
       const { editorView, pluginState } = editor(doc(code_block({ language: 'js' })('text')));
-      mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+      const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      expect(pluginState.language).to.equal('JavaScript');
+      expect(pluginState.language).to.equal('javascript');
+      languagePicker.unmount();
     });
   });
 
@@ -109,6 +114,7 @@ describe('LanguagePicker', () => {
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
       expect(languagePicker.state('language')).to.equal(undefined);
+      languagePicker.unmount();
     });
   });
 

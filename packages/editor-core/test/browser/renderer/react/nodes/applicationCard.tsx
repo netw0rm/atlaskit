@@ -12,6 +12,13 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
   let spyOnClick;
   let spyOnActionClick;
 
+  const actions = [
+    {
+      title: 'test',
+      target: 'test.target'
+    }
+  ];
+
   beforeEach(() => {
     spyOnClick = sinon.spy();
     spyOnActionClick = sinon.spy();
@@ -28,7 +35,8 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
       },
       link: {
         url: 'link-url'
-      }
+      },
+      actions: actions
     };
     applicationCard = shallow(
       <ApplicationCard
@@ -36,7 +44,6 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
         {...attrs}
       />
     );
-    applicationCard.setState({ AppCardView });
   });
 
   it('should wrap content with <AppCardView>-tag', () => {
@@ -45,6 +52,10 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
 
   it('should pass onActionClick to AppCardView', () => {
     expect(applicationCard.find(AppCardView).prop('onActionClick')).to.equal(spyOnActionClick);
+  });
+
+  it('should pass actions to AppCardView', () => {
+    expect(applicationCard.find(AppCardView).prop('model').actions).to.equal(actions);
   });
 
   it('should call onClick with link.url', () => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   AkQuickSearch,
   AkNavigationItem,
@@ -6,6 +7,13 @@ import {
   AkSearch,
   quickSearchResultTypes,
 } from '../../src';
+import {
+  QS_ANALYTICS_EV_CLOSE,
+  QS_ANALYTICS_EV_KB_CTRLS_USED,
+  QS_ANALYTICS_EV_OPEN,
+  QS_ANALYTICS_EV_QUERY_ENTERED,
+  QS_ANALYTICS_EV_SUBMIT,
+} from '../../src/components/js/quick-search/constants';
 import { mountWithRootTheme } from './_theme-util';
 
 const { PersonResult } = quickSearchResultTypes;
@@ -16,7 +24,9 @@ const isInputFocused = wrapper =>
   wrapper.find('input').getDOMNode() === document.activeElement;
 
 describe('<QuickSearch />', () => {
+  const onAnalyticsEventSpy = jest.fn();
   const onClickSpy = jest.fn();
+
   const exampleChildren = [
     (<AkNavigationItemGroup title="test group 1">
       <PersonResult resultId="1" name="one" onClick={onClickSpy} />
@@ -26,22 +36,33 @@ describe('<QuickSearch />', () => {
       <PersonResult resultId="3" name="three" onClick={onClickSpy} />
     </AkNavigationItemGroup>),
   ];
-  const QsComponent = (
-    <AkQuickSearch onSearchInput={noOp}>
-      {exampleChildren}
-    </AkQuickSearch>
-  );
 
   let wrapper;
   let searchInput;
 
-  beforeEach(() => {
-    wrapper = mountWithRootTheme(QsComponent);
+  const render = (props) => {
+    wrapper = mountWithRootTheme(
+      (
+        <AkQuickSearch {...props} onSearchInput={noOp}>
+          {(props && props.children) || exampleChildren}
+        </AkQuickSearch>
+      ),
+      undefined,
+      {
+        context: { onAnalyticsEvent: onAnalyticsEventSpy },
+        childContextTypes: { onAnalyticsEvent: PropTypes.func },
+      }
+    );
     searchInput = wrapper.find(AkSearch).find('input');
+  };
+
+  beforeEach(() => {
+    render();
   });
 
   afterEach(() => {
-    onClickSpy.mockClear();
+    onAnalyticsEventSpy.mockReset();
+    onClickSpy.mockReset();
   });
 
   it('should contain a Search component', () => {
@@ -49,8 +70,110 @@ describe('<QuickSearch />', () => {
   });
 
   it('should render its children', () => {
-    wrapper.setProps({ children: <div id="child" /> });
+    render({ children: <div id="child" /> });
     expect(wrapper.find('div#child').exists()).toBe(true);
+  });
+
+  describe('Analytics events', () => {
+    const getLastEventFired = () => {
+      const calls = onAnalyticsEventSpy.mock.calls;
+      return calls[calls.length - 1];
+    };
+    const expectEventFiredLastToBe = (name) => expect(getLastEventFired()[0]).toBe(name);
+    it('should fire event on mount', () => {
+      expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
+    });
+    it('should fire event on unmount', () => {
+      wrapper.unmount();
+      expectEventFiredLastToBe(QS_ANALYTICS_EV_CLOSE);
+    });
+    describe('submit/click event', () => {
+      it('should fire event on result click', () => {
+        const result = wrapper.find(AkNavigationItem).first();
+        result.simulate('click');
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
+      });
+      it('should carry payload of resultCount, queryLength, index and type', () => {
+        const result = wrapper.find(AkNavigationItem).first();
+        result.simulate('click');
+        const eventData = getLastEventFired()[1];
+        expect(eventData).toMatchObject({
+          index: expect.any(Number),
+          queryLength: expect.any(Number),
+          resultCount: expect.any(Number),
+          type: expect.any(String),
+        });
+      });
+    });
+    describe('submit/keyboard event', () => {
+      it('should fire event on submit ENTER key stroke', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
+      });
+      it('should carry payload of resultCount, queryLength, index and type', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        const eventData = getLastEventFired()[1];
+        expect(eventData).toMatchObject({
+          index: expect.any(Number),
+          queryLength: expect.any(Number),
+          resultCount: expect.any(Number),
+          type: expect.any(String),
+        });
+      });
+    });
+    describe('keyboard-controls-used event', () => {
+      it('ArrowUp', () => {
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
+      });
+
+      it('ArrowDown', () => {
+        searchInput.simulate('keydown', { key: 'ArrowDown' });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
+      });
+
+      it('Enter', () => {
+        searchInput.simulate('keydown', { key: 'Enter' });
+        const calls = onAnalyticsEventSpy.mock.calls;
+        expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
+      });
+
+      it('should only fire once per mount', () => {
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(call =>
+          call[0] === QS_ANALYTICS_EV_KB_CTRLS_USED
+        );
+        expect(kbCtrlsUsedEventsFired).toHaveLength(1);
+      });
+    });
+    describe('query-entered event', () => {
+      it('should fire when search term is entered', () => {
+        wrapper.setProps({ value: 'hello' });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_QUERY_ENTERED);
+      });
+      it('should not fire if previous search term was not empty', () => {
+        // Set up non-empty-query state.
+        render({ value: 'hello' });
+        // Clear events fired from mounting
+        onAnalyticsEventSpy.mockReset();
+
+        wrapper.setProps({ value: 'goodbye' });
+        expect(onAnalyticsEventSpy).not.toHaveBeenCalled();
+      });
+      it('should only fire once per mount', () => {
+        wrapper.setProps({ value: 'hello' });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_QUERY_ENTERED);
+        onAnalyticsEventSpy.mockReset();
+
+        wrapper.setProps({ value: '' });
+        wrapper.setProps({ value: 'is anybody home?' });
+        wrapper.setProps({ value: '' });
+        wrapper.setProps({ value: 'HELLOOO?' });
+        expect(onAnalyticsEventSpy).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('Keyboard controls', () => {

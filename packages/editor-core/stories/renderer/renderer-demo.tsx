@@ -7,9 +7,8 @@ import { CardEvent } from '@atlaskit/media-card';
 import { CardSurroundings } from '../../src/ui/Renderer';
 
 import {
-  StoryBookTokenProvider,
-  defaultClientId,
-  defaultServiceHost,
+  defaultParams,
+  StoryBookAuthProvider
 } from '@atlaskit/media-test-helpers';
 
 import ProviderFactory from '../../src/providerFactory';
@@ -41,9 +40,8 @@ const mentionProvider = Promise.resolve({
 
 const mediaProvider = Promise.resolve({
   viewContext: Promise.resolve({
-    clientId: defaultClientId,
-    serviceHost: defaultServiceHost,
-    tokenProvider: StoryBookTokenProvider.tokenProvider,
+    serviceHost: defaultParams.serviceHost,
+    authProvider: StoryBookAuthProvider.create(false)
   })
 });
 

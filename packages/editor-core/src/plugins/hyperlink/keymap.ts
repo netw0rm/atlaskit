@@ -3,8 +3,9 @@ import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { Match, getLinkMatch } from './utils';
+import { EditorProps } from '../../editor/types/editor-props';
 
-export function keymapPlugin(schema: Schema<any, any>, props: any): Plugin | undefined {
+export function createKeymapPlugin(schema: Schema<any, any>, props: EditorProps): Plugin | undefined {
   const list = {};
 
   if (props.appearance !== 'message') {
@@ -65,4 +66,4 @@ function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: T
   return false;
 }
 
-export default keymapPlugin;
+export default createKeymapPlugin;

@@ -1,6 +1,2 @@
-import { akColorN800 } from '@atlaskit/util-shared-styles';
-import styled from 'styled-components';
-
-export default styled.div`
-  color: ${akColorN800};
-`;
+import * as React from 'react';
+export default function Doc(props: React.Props<any>) { return <div>{props.children}</div>; }

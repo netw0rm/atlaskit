@@ -1,7 +1,7 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
-import { doc, p, blockquote } from '../../../../src/test-helper';
+import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
 import { EditorView, Node } from '../../../../src/prosemirror';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
@@ -17,6 +17,10 @@ describe(name, () => {
       editorActions = new EditorActions();
       editorActions._privateRegisterEditor(editor.editorView);
       editorView = editor.editorView;
+    });
+
+    afterEach(() => {
+      editorView.destroy();
     });
 
     describe('#focus', () => {
@@ -68,6 +72,14 @@ describe(name, () => {
         if (val instanceof Node) {
           expect(val!.toJSON()).to.deep.equal(result.toJSON());
         }
+      });
+
+      it('should filter out task and decision items', async () => {
+        doc(p('some text'), decisionList(decisionItem()));
+        const val = await editorActions.getValue();
+        expect(val).to.not.equal(undefined);
+        expect((val as any)!.content!.length).to.equal(1);
+        expect((val as any)!.content![0].type).to.equal('paragraph');
       });
     });
 

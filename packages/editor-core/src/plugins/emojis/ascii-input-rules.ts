@@ -1,7 +1,7 @@
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { EditorState, Transaction, Plugin, PluginKey, inputRules, Schema, Node } from '../../prosemirror';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
-import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 
 let matcher: AsciiEmojiMatcher;
@@ -47,7 +47,7 @@ function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [str
 function isEnabled(state: EditorState<Schema<any, any>>) {
   const emojiQuery = state.schema.marks.emojiQuery;
   const isEmojiQueryActive = state.selection.$from.marks().some(mark => mark.type === emojiQuery);
-  return isEmojiQueryActive || isMarkTypeAllowedAtCurrentPosition(emojiQuery, state);
+  return isEmojiQueryActive || isMarkTypeAllowedInCurrentSelection(emojiQuery, state);
 }
 
 type AsciiEmojiMatch = {

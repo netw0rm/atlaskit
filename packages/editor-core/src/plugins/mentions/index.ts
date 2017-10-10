@@ -9,7 +9,7 @@ import {
   PluginKey
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkTypeAllowedAtCurrentPosition } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 import { Node } from '../../prosemirror/prosemirror-model/node';
 import { Transaction } from '../../prosemirror/prosemirror-state/transaction';
@@ -184,7 +184,7 @@ export class MentionsState {
   isEnabled(state?: EditorState<any>) {
     const currentState = state ? state : this.state;
     const { mentionQuery } = currentState.schema.marks;
-    return isMarkTypeAllowedAtCurrentPosition(mentionQuery, currentState);
+    return isMarkTypeAllowedInCurrentSelection(mentionQuery, currentState);
   }
 
   private findMentionQueryMarks(active: boolean = true) {
@@ -236,8 +236,14 @@ export class MentionsState {
     if (mention && mentionData) {
       const activeMentionQueryMark = this.findActiveMentionQueryMark();
       const { start, end } = queryMark ? queryMark : activeMentionQueryMark;
-      const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const nodes = [mention.create({ text: `@${renderName}`, id: mentionData.id, accessLevel: mentionData.accessLevel })];
+      const { id, name, nickname, accessLevel, userType } = mentionData;
+      const renderName = nickname ? nickname : name;
+      const nodes = [mention.create({
+        text: `@${renderName}`,
+        id,
+        accessLevel,
+        userType: userType === 'DEFAULT' ?  null : userType,
+      })];
       if (!this.isNextCharacterSpace(end, currentTransaction.doc)) {
         nodes.push(state.schema.text(' '));
       }

@@ -5,6 +5,10 @@ import {
   Schema
 } from '../../';
 
+import { normalizeHexColor } from '../../utils/color';
+import { AC_XMLNS } from './encode-cxhtml';
+import { MacroType, Macro, DisplayType, BodyType } from './../../editor/types';
+
 /**
  * Deduce a set of marks from a style declaration.
  */
@@ -27,6 +31,9 @@ export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclarat
             continue styles;
         }
         break;
+      case 'color':
+        marks = schema.marks.textColor.create({ color: normalizeHexColor(value) }).addToSet(marks);
+        continue styles;
       case 'font-family':
         if (value === 'monospace') {
           marks = schema.marks.code.create().addToSet(marks);
@@ -54,6 +61,14 @@ export function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     result = result.replaceChild(i, newChild);
   }
   return result;
+}
+
+export function getNodeMarkOfType(node: PMNode, markType): Mark | null {
+  if (!node.marks) {
+    return null;
+  }
+  const foundMarks = node.marks.filter(mark => mark.type.name === markType.name);
+  return foundMarks.length ? foundMarks[foundMarks.length - 1] : null;
 }
 
 /**
@@ -149,6 +164,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'A':
       case 'FAB:MENTION':
       case 'FAB:MEDIA':
+      case 'AC:INLINE-COMMENT-MARKER':
       case 'AC:STRUCTURED-MACRO':
         return true;
     }
@@ -165,19 +181,8 @@ export function getNodeName(node: Node): string {
   return node.nodeName.toUpperCase();
 }
 
-export function getAcParameter(node: Element, parameter: string): string | null {
-  for (let i = 0; i < node.childNodes.length; i++) {
-    const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
-      return child.textContent;
-    }
-  }
-
-  return null;
-}
-
 export function getAcTagContent(node: Element, tagName: string): string | null {
-  for (let i = 0; i < node.childNodes.length; i++) {
+  for (let i = 0, len = node.childNodes.length; i < len; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
       return child.textContent;
@@ -197,7 +202,7 @@ export function getAcTagChildNodes(node: Element, tagName: string): NodeList | n
 }
 
 export function getAcTagNode(node: Element, tagName: string): Element | null {
-  for (let i = 0; i < node.childNodes.length; i++) {
+  for (let i = 0, len = node.childNodes.length; i < len; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
       return child;
@@ -260,4 +265,46 @@ export function getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | 
     }
   }
   return fragment;
+}
+
+export function getMacroType(params, properties): MacroType {
+  const displayType = properties['fab:display-type'] as DisplayType;
+  let bodyType = 'NONE' as BodyType;
+
+  if (params['rich-text-body']) {
+    bodyType = 'RICH-TEXT-BODY';
+  } else if (params['plain-text-body']) {
+    bodyType = 'PLAIN-TEXT-BODY';
+  }
+
+  return `${bodyType}-${displayType}` as MacroType;
+}
+
+export function parseMacro(node: Element): Macro {
+  const macroName = getAcName(node) || 'Unnamed Macro';
+  const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+  const properties = {};
+  const params = {};
+
+  for (let i = 0, len = node.childNodes.length; i < len; i++) {
+    const child = node.childNodes[i] as Element;
+    const nodeName = getNodeName(child);
+    const value = child.textContent;
+
+    // example: <ac:parameter ac:name=\"colour\">Red</ac:parameter>
+    if (nodeName === 'AC:PARAMETER') {
+      const key = getAcName(child);
+      if (key) {
+        params[key.toLowerCase()] = value;
+      }
+    }
+    // example: <fab:placeholder-url>, <fab:display-type>, <ac:rich-text-body>
+    else {
+      properties[nodeName.toLowerCase()] = value;
+    }
+  }
+
+  const macroType = getMacroType(params, properties);
+
+  return { macroId, macroName, properties, params, macroType };
 }

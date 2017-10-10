@@ -7,6 +7,8 @@ import {
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
+import { getNodeMarkOfType } from './utils';
+import { hexToRgb } from '../../utils/color';
 
 export default function encode(node: PMNode, schema: Schema<any, any>) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -49,7 +51,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
       return encodeMedia(node);
     } else if (node.type === schema.nodes.table) {
       return encodeTable(node);
-    }else {
+    } else if (node.type === schema.nodes.inlineMacro) {
+      return encodeInlineMacro(node);
+    } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -166,6 +170,12 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
+          case schema.marks.inlineCommentMarker:
+            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
+            break;
+          case schema.marks.textColor:
+            elem = elem.appendChild(encodeTextColor(node, schema));
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -206,17 +216,25 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
 
   function encodeLink(node: PMNode) {
     const link: HTMLAnchorElement = doc.createElement('a');
-    link.innerHTML = node.text || '';
-    let href = '';
-    if (node.marks) {
-      node.marks.forEach(mark => {
-        if (mark.type.name === 'link') {
-          href = mark.attrs.href;
-        }
-      });
-    }
-    link.href = href;
+    const mark = getNodeMarkOfType(node, schema.marks.link);
+    link.href = mark ? mark.attrs.href : '';
     return link;
+  }
+
+  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
+    const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
+    const mark = getNodeMarkOfType(node, schema.marks.inlineCommentMarker);
+    const reference = mark ? mark.attrs.reference : '';
+    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
+    return marker;
+  }
+
+  function encodeTextColor(node: PMNode, schema: Schema<any, any>) {
+    const elem: HTMLSpanElement = doc.createElement('span');
+    const mark = getNodeMarkOfType(node, schema.marks.textColor);
+    const hexColor = mark ? mark.attrs.color : '';
+    elem.style.color = hexToRgb(hexColor);
+    return elem;
   }
 
   function encodeCodeBlock(node: PMNode) {
@@ -324,6 +342,28 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
     keyParam.textContent = node.attrs.issueKey;
     elem.appendChild(keyParam);
+
+    return elem;
+  }
+
+  function encodeInlineMacro(node: PMNode) {
+    const elem = createMacroElement(node.attrs.name);
+    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+
+    Object.keys(node.attrs.params).forEach(paramName => {
+      const el = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      el.setAttributeNS(AC_XMLNS, 'ac:name', paramName);
+      el.textContent = node.attrs.params[paramName];
+      elem.appendChild(el);
+    });
+
+    const placeholderUrl = doc.createElementNS(FAB_XMLNS, 'fab:placeholder-url');
+    placeholderUrl.textContent = node.attrs.placeholderUrl;
+    elem.appendChild(placeholderUrl);
+
+    const displayType = doc.createElementNS(FAB_XMLNS, 'fab:display-type');
+    displayType.textContent = 'INLINE';
+    elem.appendChild(displayType);
 
     return elem;
   }

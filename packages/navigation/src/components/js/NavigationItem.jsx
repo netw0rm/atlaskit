@@ -22,6 +22,8 @@ type Props = {|
   /** Location to link out to on click. This is passed down to the custom link
   component if one is provided. */
   href?: string,
+  /** Target frame for item `href` link to be aimed at. */
+  target?: string,
   /** React element to appear to the left of the text. This should be an
   @atlaskit/icon component. */
   icon?: ReactElement,
@@ -135,6 +137,7 @@ export default class NavigationItem extends PureComponent {
         isCompact={this.props.isCompact}
         dnd={this.props.dnd}
         autoFocus={this.props.autoFocus}
+        target={this.props.target}
         {...interactiveWrapperProps}
       >
         {this.props.text}

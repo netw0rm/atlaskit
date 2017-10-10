@@ -22,6 +22,7 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
+    'inlineMacro',
     'hardBreak',
     'emoji',
     'table',
@@ -45,5 +46,6 @@ export const defaultSchema: Schema<any, any> = createSchema({
     'mentionQuery',
     'emojiQuery',
     'textColor',
+    'inlineCommentMarker'
   ]
 });

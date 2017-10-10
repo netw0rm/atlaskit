@@ -48,6 +48,7 @@ describe('media-links', () => {
           p(),
         )
       );
+      editorView.destroy();
     });
 
     it('puts cursor to the next paragraph after inserting media node', () => {
@@ -58,6 +59,7 @@ describe('media-links', () => {
       const paragraphNodeSize = p('text').nodeSize;
       const mediaGroupNodeSize = mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })).nodeSize;
       expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+      editorView.destroy();
     });
 
     it('should prepend media node to existing media group after it', () => {
@@ -77,6 +79,7 @@ describe('media-links', () => {
           )
         )
       );
+      editorView.destroy();
     });
   });
 
@@ -98,6 +101,7 @@ describe('media-links', () => {
           p('text'),
         )
       );
+      editorView.destroy();
     });
   });
 
@@ -115,6 +119,7 @@ describe('media-links', () => {
             p('xt'),
           )
         );
+        editorView.destroy();
       });
 
       it('moves cursor to the front of later part of the text', () => {
@@ -126,6 +131,7 @@ describe('media-links', () => {
         insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
         expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
+        editorView.destroy();
       });
     });
 
@@ -142,6 +148,7 @@ describe('media-links', () => {
             h1('xt'),
           )
         );
+        editorView.destroy();
       });
     });
   });
@@ -160,6 +167,7 @@ describe('media-links', () => {
               p('t'),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -177,6 +185,7 @@ describe('media-links', () => {
                   p(),
                 )
               );
+              editorView.destroy();
             });
           });
 
@@ -193,6 +202,7 @@ describe('media-links', () => {
                   p(),
                 )
               );
+              editorView.destroy();
             });
           });
         });
@@ -217,6 +227,7 @@ describe('media-links', () => {
                 ),
               )
             );
+            editorView.destroy();
           });
         });
       });
@@ -234,6 +245,7 @@ describe('media-links', () => {
               p(),
             )
           );
+          editorView.destroy();
         });
 
         it('prepends to exisiting media group after parent', () => {
@@ -253,6 +265,7 @@ describe('media-links', () => {
               )
             )
           );
+          editorView.destroy();
         });
       });
     });
@@ -272,6 +285,7 @@ describe('media-links', () => {
               p(),
             )
           );
+          editorView.destroy();
         });
       });
 
@@ -294,6 +308,7 @@ describe('media-links', () => {
               p('text'),
             )
           );
+          editorView.destroy();
         });
 
         it('sets cursor to the paragraph after', () => {
@@ -310,6 +325,7 @@ describe('media-links', () => {
           ).nodeSize;
 
           expect(editorView.state.selection.from).to.deep.equal(mediaGroupNodeSize);
+          editorView.destroy();
         });
       });
 
@@ -327,6 +343,7 @@ describe('media-links', () => {
                 p(),
               )
             );
+            editorView.destroy();
           });
         });
 
@@ -351,6 +368,7 @@ describe('media-links', () => {
                   p(),
                 )
               );
+              editorView.destroy();
             });
           });
 
@@ -372,6 +390,7 @@ describe('media-links', () => {
                   )
                 )
               );
+              editorView.destroy();
             });
           });
 
@@ -396,6 +415,7 @@ describe('media-links', () => {
                   ),
                 )
               );
+              editorView.destroy();
             });
           });
         });
@@ -414,6 +434,7 @@ describe('media-links', () => {
             p('xt'),
           )
         );
+        editorView.destroy();
       });
 
       it('prepends to exisiting media group before parent', () => {
@@ -433,6 +454,7 @@ describe('media-links', () => {
             p('xt'),
           )
         );
+        editorView.destroy();
       });
     });
   });
@@ -448,6 +470,7 @@ describe('media-links', () => {
         ),
         p(),
       ));
+      editorView.destroy();
   });
 
   it(`should insert media node into the document after current codeblock node`, () => {
@@ -462,6 +485,7 @@ describe('media-links', () => {
         ),
         p(),
       ));
+      editorView.destroy();
   });
 
   context('inside empty block', () => {
@@ -477,6 +501,7 @@ describe('media-links', () => {
           p(),
         )
       );
+      editorView.destroy();
     });
 
     it('apends media group to empty paragraph in an empty code block', () => {
@@ -491,6 +516,7 @@ describe('media-links', () => {
           p(),
         )
       );
+      editorView.destroy();
     });
 
     it('apends media group to empty paragraph in an empty heading', () => {
@@ -505,6 +531,7 @@ describe('media-links', () => {
           p(),
         )
       );
+      editorView.destroy();
     });
 
     it('prepends media to existing media group before the empty paragraph', () => {
@@ -524,6 +551,7 @@ describe('media-links', () => {
           p(),
         )
       );
+      editorView.destroy();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
@@ -537,6 +565,7 @@ describe('media-links', () => {
           p()
         )
       );
+      editorView.destroy();
     });
 
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
@@ -551,6 +580,7 @@ describe('media-links', () => {
           p()
         )
       );
+      editorView.destroy();
     });
 
     it('should insert all media nodes on the same line', async () => {
@@ -566,6 +596,7 @@ describe('media-links', () => {
         ),
         p(),
       ));
+      editorView.destroy();
     });
   });
 
@@ -577,6 +608,7 @@ describe('media-links', () => {
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(itemDoc);
+      editorView.destroy();
     });
 
     it('media insertion ignored for decision item', () => {
@@ -586,6 +618,7 @@ describe('media-links', () => {
       insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(decisionDoc);
+      editorView.destroy();
     });
   });
 });

@@ -16,6 +16,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     />);
 
     expect(toolbarButtonElem.find(Tooltip)).to.have.length(0);
+    toolbarButtonElem.unmount();
   });
 
   it('should render tooltip if title is set', () => {
@@ -27,6 +28,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     />);
 
     expect(toolbarButtonElem.find(Tooltip)).to.have.length(1);
+    toolbarButtonElem.unmount();
   });
 
   it('should show tooltip on mouseover', () => {
@@ -41,6 +43,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     tooltip.simulate('mouseover');
 
     expect(tooltip.prop('visible')).to.equal(true);
+    toolbarButtonElem.unmount();
   });
 
   it('should hide tooltip on mouseout', () => {
@@ -56,6 +59,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     tooltip.simulate('mouseout');
 
     expect(tooltip.prop('visible')).to.equal(false);
+    toolbarButtonElem.unmount();
   });
 
   it.skip('should hide tooltip on click', () => {
@@ -73,6 +77,26 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     akButton.simulate('click');
 
     expect(tooltip.prop('visible')).to.equal(false);
+    toolbarButtonElem.unmount();
+  });
+
+  it('should not display tooltip if hideTooltip prop is passed in', () => {
+    const toolbarButtonElem = mount(<ToolbarButton
+      onClick={noop}
+      selected={false}
+      disabled={false}
+      hideTooltip={true}
+      title="tooltip text"
+    />);
+
+    const tooltip = toolbarButtonElem.find(Tooltip);
+    tooltip.simulate('mouseover');
+
+    const akButton = toolbarButtonElem.find(AkButton);
+    akButton.simulate('click');
+
+    expect(tooltip.prop('visible')).to.equal(false);
+    toolbarButtonElem.unmount();
   });
 
   it('should pass titlePosition to tooltip position', () => {
@@ -87,5 +111,6 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     const tooltip = toolbarButtonElem.find(Tooltip);
     tooltip.simulate('mouseover');
     expect(tooltip.prop('position')).to.equal('left');
+    toolbarButtonElem.unmount();
   });
 });

@@ -5,14 +5,7 @@ import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
-import {
-  akColorN0,
-  akColorN40,
-  akColorN500,
-  akColorP75,
-  akColorP400,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { colors, gridSize } from '@atlaskit/theme';
 import Item from '../src';
 import { name } from '../package.json';
 import {
@@ -46,17 +39,17 @@ storiesOf(`${name}`, module)
       <ItemThemeDemo title="Gray with standard padding" />
       <ItemThemeDemo
         title="Purple with less padding"
-        padding={akGridSizeUnitless * 0.75}
-        backgroundColor={akColorP75}
-        secondaryTextColor={akColorP400}
-        focusColor={akColorN500}
+        padding={gridSize() * 0.75}
+        backgroundColor={colors.P75}
+        secondaryTextColor={colors.P400}
+        focusColor={colors.N500}
       />
       <ItemThemeDemo
         title="Dark with more padding and light text"
-        padding={akGridSizeUnitless * 2}
-        backgroundColor={akColorN500}
-        textColor={akColorN0}
-        secondaryTextColor={akColorN40}
+        padding={gridSize() * 2}
+        backgroundColor={colors.N500}
+        textColor={colors.N0}
+        secondaryTextColor={colors.N40}
       />
     </GroupsWrapper>
   ))
@@ -179,4 +172,3 @@ storiesOf(`${name}`, module)
   ))
 
 ;
-

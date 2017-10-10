@@ -21,6 +21,7 @@ describe('ToolbarImage', () => {
       const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
 
       expect(toolbarImage.state('disabled')).to.equal(false);
+      toolbarImage.unmount();
     });
   });
 
@@ -30,6 +31,7 @@ describe('ToolbarImage', () => {
       const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
 
       expect(toolbarImage.state('disabled')).to.equal(true);
+      toolbarImage.unmount();
     });
   });
 
@@ -42,6 +44,7 @@ describe('ToolbarImage', () => {
       const toolbarOption = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
       toolbarOption.find(AkButton).simulate('click');
       expect(trackEvent.calledWith('atlassian.editor.image.button')).to.equal(true);
+      toolbarOption.unmount();
     });
   });
 });

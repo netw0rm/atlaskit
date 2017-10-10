@@ -1,5 +1,13 @@
 # @atlaskit/toggle
 
+## 2.6.1 (2017-09-28)
+
+* bug fix; active state is now properly applied ([c1ee840](https://bitbucket.org/atlassian/atlaskit/commits/c1ee840))
+* bug fix; use withTheme to get theme for icon color ([1b554a1](https://bitbucket.org/atlassian/atlaskit/commits/1b554a1))
+* bug fix; update toggle darkmode colors ([e2e4727](https://bitbucket.org/atlassian/atlaskit/commits/e2e4727))
+## 2.6.0 (2017-09-18)
+
+* feature; add dark mode to toggle ([ec57939](https://bitbucket.org/atlassian/atlaskit/commits/ec57939))
 ## 2.5.0 (2017-09-13)
 
 * feature; update dependencies for toggle ([ae1a0ca](https://bitbucket.org/atlassian/atlaskit/commits/ae1a0ca))

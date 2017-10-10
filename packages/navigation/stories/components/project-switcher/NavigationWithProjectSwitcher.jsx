@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import ListIcon from '@atlaskit/icon/glyph/list';
+import { itemThemeNamespace } from '@atlaskit/item';
 import BasicNavigation from '../BasicNavigation';
 import NavigationItem from '../../../src/components/js/NavigationItem';
 import BasicProjectSwitcher from './BasicProjectSwitcher';
@@ -55,21 +56,37 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
             shouldFitContainer={this.state.isNavigationOpen}
             position={this.state.isNavigationOpen ? 'bottom left' : 'right top'}
             trigger={
-              this.state.isNavigationOpen ? (
-                <NavigationItem
-                  isDropdownTrigger
-                  icon={DropdownListIcon}
-                  dropIcon={<ExpandIcon label="Chevron" size="medium" />}
-                  {...this.props.navigationItemProps}
-                  text="Dropdown menu"
-                />
-              ) : (
-                <NavigationItem
-                  isDropdownTrigger
-                  text={DropdownListIcon}
-                  {...this.props.navigationItemProps}
-                />
-              )
+              <ThemeProvider
+                theme={theme => {
+                  const original = theme[itemThemeNamespace];
+                  if (!original || !original.padding) {
+                    return theme;
+                  }
+                  const newTheme = JSON.parse(JSON.stringify(original));
+                  newTheme.padding.default.right = 4;
+
+                  return {
+                    ...theme,
+                    [itemThemeNamespace]: newTheme,
+                  };
+                }}
+              >
+                {this.state.isNavigationOpen ? (
+                  <NavigationItem
+                    isDropdownTrigger
+                    icon={DropdownListIcon}
+                    dropIcon={<ExpandIcon label="Chevron" size="medium" />}
+                    {...this.props.navigationItemProps}
+                    text="Dropdown menu"
+                  />
+                ) : (
+                  <NavigationItem
+                    isDropdownTrigger
+                    text={DropdownListIcon}
+                    {...this.props.navigationItemProps}
+                  />
+                )}
+              </ThemeProvider>
             }
           >
             <NavigationItem

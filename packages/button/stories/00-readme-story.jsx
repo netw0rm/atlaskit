@@ -9,7 +9,7 @@ import { name, description } from '../package.json';
 import Button from '../src';
 
 const buttonPropDescriptions = {
-  appearance: 'Predefined appearances of an ak-button. One of: \'primary\', \'default\', \'subtle\', \'compact\', \'subtle-link\'',
+  appearance: 'Predefined appearances of an ak-button. One of: \'primary\', \'default\', \'subtle\', \'compact\', \'subtle-link\', \'help\'',
   type: 'Type of the ak-button. One of: \'button\', \'submit\'',
   href: 'href of the ak-button.',
   target: 'Standard target attribute for hyperlinks',

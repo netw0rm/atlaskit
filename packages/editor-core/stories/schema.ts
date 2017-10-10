@@ -29,6 +29,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
+    'inlineMacro',
   ],
   marks: [
     'em',
@@ -41,5 +42,6 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
+    'inlineCommentMarker'
   ]
 });

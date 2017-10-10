@@ -6,7 +6,7 @@ import { browser } from '../../../../src/prosemirror';
 import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, h1,
-  li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
+  li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline, textColor
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -21,13 +21,18 @@ describe('clear-formatting', () => {
 
   describe('formattingIsPresent', () => {
     it('should be true if some marks are present', () => {
-      const { pluginState } = editor(doc(p(strong('t{<ex>}t'))));
+      const { pluginState } = editor(doc(p(strong('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).to.equal(true);
     });
 
-    it('should be true if code blocks is present', () => {
-      const { pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+    it('should be true if a header is present', () => {
+      const { pluginState } = editor(doc(p(h1('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).to.equal(true);
+    });
+
+    it('should be false if a code blocks is present', () => {
+      const { pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+      expect(pluginState.formattingIsPresent).to.equal(false);
     });
 
     it('should be false if no marks are present', () => {
@@ -40,18 +45,21 @@ describe('clear-formatting', () => {
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should be false if all present blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({ language: 'java' })('code>}Block')));
+      const { editorView, pluginState } = editor(doc(p('parag{<}raph'), code_block({ language: 'java' })('code{>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
   });
 
@@ -65,83 +73,67 @@ describe('clear-formatting', () => {
     ].forEach(({ nodeName, nodeType }) => {
       it(`should clear ${nodeName} if present`, () => {
         const { editorView, pluginState } = editor(doc(p(nodeType('t{<}ex{>}t'))));
-        expect(pluginState.formattingIsPresent).to.equal(true);
 
         pluginState.clearFormatting(editorView);
-        expect(pluginState.formattingIsPresent).to.equal(false);
+        expect(editorView.state.doc).to.deep.equal(doc(p(nodeType('t'), 'ex', nodeType('t'))));
+
+        editorView.destroy();
       });
     });
 
+    it(`should clear text color if present`, () => {
+      const blackText = textColor({ color: '#FFFFFF' });
+      const { editorView, pluginState } = editor(doc(p(blackText('t{<}ex{>}t'))));
+
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p(blackText('t'), 'ex', blackText('t'))));
+
+      editorView.destroy();
+    });
+
     it('should remove heading blocks if present', () => {
-      const { editorView, pluginState } = editor(doc(h1(strike('t{<}ex{>}t'))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
+      const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+
+      editorView.destroy();
     });
 
-    it('should remove panel block if present', () => {
+    it('should not remove panel block if present', () => {
       const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
+      expect(editorView.state.doc).to.deep.equal(doc(panel(p('text'))));
+
+      editorView.destroy();
     });
 
-    it('should remove panel block even if selection is at the end of the block', () => {
-      const { editorView, pluginState } = editor(doc(panel(p('text{<>}'))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
-    });
-
-    it('should remove block-quote if present', () => {
+    it('should not remove block-quote if present', () => {
       const { editorView, pluginState } = editor(doc(blockquote(p('te{<>}xt'))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
+
+      editorView.destroy();
     });
 
-    it('should remove link if present', () => {
+    it('should not remove link if present', () => {
       const { editorView, pluginState } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('t{<}ex{>}t'))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
+      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.atlassian.com' })('text'))));
+
+      editorView.destroy();
     });
 
-    it('should remove ordered list item if present', () => {
+    it('should not remove ordered list item if present', () => {
       const { editorView, pluginState } = editor(doc(ol(li(p('te{<>}xt')))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
 
       pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
-    });
+      expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')))));
 
-    it('should remove nested ordered list item if present', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
-    });
-
-    it('should remove nested ordered list item of type panel', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(panel(p('text'))))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.equal(true);
-    });
-
-    it('should remove nested ordered list item even if selection is on partial list', () => {
-      const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')), li(p('text')))), li(p('text')))));
-      expect(pluginState.formattingIsPresent).to.equal(true);
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).to.equal(false);
+      editorView.destroy();
     });
   });
 
@@ -160,6 +152,7 @@ describe('clear-formatting', () => {
 
       expect(pluginState.formattingIsPresent).to.equal(false);
       expect(trackEvent.calledWith('atlassian.editor.format.clear.keyboard')).to.equal(true);
+      editorView.destroy();
     });
   });
 });

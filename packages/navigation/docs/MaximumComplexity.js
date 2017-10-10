@@ -1,105 +1,286 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { action } from '@kadira/storybook';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import SearchIcon from '@atlaskit/icon/glyph/search';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import AkDropdownMenu from '@atlaskit/dropdown-menu';
+import Avatar from '@atlaskit/avatar';
+import InlineDialog from '@atlaskit/inline-dialog';
+import Tooltip from '@atlaskit/tooltip';
 import Navigation, {
+  AkContainerTitle,
   AkNavigationItemGroup,
   AkNavigationItem,
-  AkContainerTitle,
   AkSearchDrawer,
-  AkSearch,
   AkCreateDrawer,
-  createGlobalTheme,
+  AkGlobalItem,
+  AkContainerNavigationNested,
 } from '@atlaskit/navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
-import SearchIcon from '@atlaskit/icon/glyph/search';
-import AddIcon from '@atlaskit/icon/glyph/add';
+import BasicSearch from '../stories/components/BasicSearch';
+import nucleusLogo from '../stories/nucleus.png';
+import emmaAvatar from '../stories/emma.png';
+import Menu from '../stories/examples/menu';
 
-const items = ['cat', 'dog', 'fish', 'lizard'];
-
-const CustomLinkComponent = ({ children }) => (
-  <span>{children}</span>
-);
-
-const containerTheme = createGlobalTheme('#A5ADBA', '#6554C0');
-const globalTheme = createGlobalTheme('#6554C0', '#A5ADBA');
-
-class ExampleNavNav extends React.PureComponent {
-  state = {
-    searchDrawerOpen: false,
-    isOpen: true,
-    value: '',
-    width: 304,
+export default class GlobalNavExample extends PureComponent {
+  constructor(...args) {
+    super(...args);
+    this.state = {
+      stack: [Menu],
+      isHeaderInlineDialogOpen: false,
+      openDrawer: this.props.openDrawer,
+      width: this.props.width,
+    };
   }
-  onResize = ({ isOpen, width }) => {
-    this.setState({ isOpen, width });
+
+  openDrawer = (name) => {
+    if (name === 'search') {
+      action('onSearchDrawerOpen')();
+    }
+
+    if (name === 'create') {
+      action('onCreateDrawerOpen')();
+    }
+    this.setState({
+      openDrawer: name,
+    });
   }
-  render() {
-    return (
-      <Navigation
-        // Styling
-        containerTheme={containerTheme}
-        globalTheme={globalTheme}
-        // AkNavigationItems added will not gain this link component
-        linkComponent={CustomLinkComponent}
-        // All information relative to size and changing size/open state
-        onResize={this.onResize}
-        isOpen={this.state.isOpen}
-        isResizeable
-        width={this.state.width}
-        // Props relevant to the global nav
-        globalPrimaryIcon={<AtlassianIcon size="xlarge" label="Atlassian" />}
-        globalPrimaryItemHref="/components/navigation"
-        globalSearchIcon={<SearchIcon label="search" />}
-        onSearchDrawerOpen={() => this.setState({ searchDrawerOpen: true })}
-        globalCreateIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
-        onCreateDrawerOpen={() => this.setState({ createDrawerOpen: true })}
-        drawerBackIcon={<ArrowLeft label="Back icon" size="medium" />}
-        drawers={[(
-          <AkSearchDrawer
-            backIcon={<ArrowLeft label="Back" />}
-            primaryIcon={<SearchIcon label="Search" />}
-            header="Some Header"
-            isOpen={this.state.searchDrawerOpen}
-            onBackButton={() => this.setState({ searchDrawerOpen: false })}
-          >
-            <AkSearch
-              onSearchClear={() => this.setState({ value: '' })}
-              onInput={e => this.setState({ value: e.target.value })}
-              value={this.state.value}
-            >
-              {items.filter(item => item.includes(this.state.value)).map(item => (
-                <AkNavigationItem text={item} />
-              ))}
-            </AkSearch>
-          </AkSearchDrawer>
-        ), (
-          <AkCreateDrawer
-            backIcon={<ArrowLeft label="Back" />}
-            primaryIcon={<AddIcon label="Search" />}
-            header="Some Header"
-            isOpen={this.state.createDrawerOpen}
-            onBackButton={() => this.setState({ createDrawerOpen: false })}
-          />
-        )]}
-        // Props relevant to the container
-        containerHeaderComponent={() => (
-          <AkContainerTitle icon={<AtlassianIcon label="Atlassian" />} text="Example Navbar" />
-        )}
+
+  closeDrawer = () => {
+    this.setState({
+      openDrawer: null,
+    });
+  }
+
+  resize = (resizeState) => {
+    action('onResize')();
+    this.setState({
+      isOpen: resizeState.isOpen,
+      width: resizeState.width,
+    });
+  }
+
+  stackPush = (newPage) => {
+    const stack = [...this.state.stack, newPage];
+    this.setState({ stack });
+  }
+
+  stackPop = () => {
+    if (this.state.stack.length <= 1) {
+      return false;
+    }
+
+    const stack = this.state.stack.slice(0, this.state.stack.length - 1);
+    return this.setState({ stack });
+  }
+
+  renderItem = (item) => {
+    const onClick = item.childMenu ? (
+      () => this.stackPush(item.childMenu)
+    ) : (
+      () => console.log(`Link item clicked: '${item.component.props.text}'`)
+    );
+    const key = item.component.props.text;
+
+    return !this.props.withtootips ?
+      React.cloneElement(item.component, { key, onClick })
+      : <Tooltip
+        description={key}
+        position="right"
       >
-        <AkNavigationItemGroup>
-          <AkNavigationItem text="Nav Item" subText="Some things have subtext" href="/components/navigation" />
-          <AkNavigationItem text="Selected Item" isSelected href="/components/navigation" />
+        {React.cloneElement(item.component, { key, onClick })}
+      </Tooltip>;
+  }
+
+  renderStack = () => this.state.stack.map(page => (
+    page.map(item => this.renderItem(item))
+  ))
+
+  render() {
+    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
+    const globalCreateIcon = (
+      <Tooltip position="right" description="Create">
+        <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+      </Tooltip>);
+    const globalSearchIcon = (
+      <Tooltip position="right" description="Search">
+        <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
+      </Tooltip>);
+
+    const headerComponent = (
+      <AkContainerTitle
+        href="#foo"
+        icon={
+          <img alt="nucleus" src={nucleusLogo} />
+        }
+        text="AtlasKit"
+        subText="Is the king"
+      />
+    );
+
+    // eslint-disable-no-static-element-interactions
+    const HeaderComponent = () => {
+      const backButton = this.state.stack.length > 1 ? (
+        <AkNavigationItem
+          icon={<ArrowLeftIcon label="Back" />}
+          onClick={() => this.stackPop()}
+          text="Back" key="2"
+        />
+      ) : null;
+
+      /* eslint-disable jsx-a11y/no-static-element-interactions */
+      return [
+        <InlineDialog
+          content={<div style={{ maxWidth: '200px' }}>Menu or something like the HipChat status form would go here</div>}
+          isOpen={this.state.isHeaderInlineDialogOpen}
+          position="bottom left"
+        >
+          <div
+            onClick={() => {
+              this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
+            }}
+          >
+            <Tooltip key="1" position="right" description="Header tooltip text">
+              {headerComponent}
+            </Tooltip>
+          </div>
+        </InlineDialog>,
+        backButton,
+      ];
+      /* eslint-enable jsx-a11y/no-static-element-interactions */
+    };
+
+    const helpMenu = (
+      <AkDropdownMenu
+        appearance="tall"
+        items={[
+          {
+            heading: 'Help',
+            items: [
+              { content: 'Documentation' },
+              { content: 'Learn Git' },
+              { content: 'Keyboard shortcuts' },
+              { content: 'Bitbucket tutorials' },
+              { content: 'API' },
+              { content: 'Support' },
+            ],
+          },
+          {
+            heading: 'Information',
+            items: [
+              { content: 'Latest features' },
+              { content: 'Blog' },
+              { content: 'Plans & pricing' },
+              { content: 'Site status' },
+              { content: 'Version info' },
+            ],
+          },
+          {
+            heading: 'Legal',
+            items: [
+              { content: 'Terms of service' },
+              { content: 'Privacy policy' },
+            ],
+          },
+        ]}
+        position="right bottom"
+      >
+        <AkGlobalItem href="">
+          <QuestionCircleIcon
+            label="Help icon"
+            secondaryColor="inherit"
+            size="medium"
+          />
+        </AkGlobalItem>
+      </AkDropdownMenu>
+      );
+
+    const userMenu = (
+      <AkDropdownMenu
+        appearance="tall"
+        items={[
+          {
+            heading: 'Luke Skywalker',
+            items: [
+              { content: 'View profile' },
+              { content: 'Manage Atlassian account' },
+              { content: 'Bitbucket settings' },
+              { content: 'Integrations' },
+              { content: 'Bitbucket labs' },
+              { content: 'Log out' },
+            ],
+          },
+        ]}
+      >
+        <AkGlobalItem href="">
+          <Avatar size="medium" src={emmaAvatar} />
+        </AkGlobalItem>
+      </AkDropdownMenu>
+      );
+
+    const searchDrawer = (
+      <AkSearchDrawer
+        backIcon={backIcon}
+        isOpen={this.state.openDrawer === 'search'}
+        key="search"
+        onBackButton={this.closeDrawer}
+        primaryIcon={globalPrimaryIcon}
+      >
+        <BasicSearch />
+      </AkSearchDrawer>
+      );
+
+    const createDrawer = (
+      <AkCreateDrawer
+        backIcon={backIcon}
+        header={headerComponent}
+        isOpen={this.state.openDrawer === 'create'}
+        key="create"
+        onBackButton={this.closeDrawer}
+        primaryIcon={globalPrimaryIcon}
+      >
+        <AkNavigationItem
+          text="Item outside a group"
+        />
+        <AkNavigationItemGroup
+          title="Create item group"
+        >
           <AkNavigationItem
-            icon={<AtlassianIcon
-              size="small"
-              label="Atlassian"
-            />}
-            text="With an Icon"
-            href="/components/navigation"
+            icon={<img alt="icon" src={nucleusLogo} />}
+            text="Item with an icon"
+          />
+          <AkNavigationItem
+            icon={<img alt="icon" src={nucleusLogo} />}
+            text="A really, really, quite long, actually super long container name"
           />
         </AkNavigationItemGroup>
+      </AkCreateDrawer>
+      );
+
+    return (
+      <Navigation
+        containerHeaderComponent={HeaderComponent}
+        globalCreateIcon={globalCreateIcon}
+        globalPrimaryIcon={globalPrimaryIcon}
+        globalPrimaryItemHref="//www.atlassian.com"
+        globalSearchIcon={globalSearchIcon}
+        isOpen={this.state.isOpen}
+        globalSecondaryActions={[helpMenu, userMenu]}
+        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
+        onResize={this.resize}
+        onResizeStart={action('resizeStart')}
+        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
+        openDrawer={this.state.openDrawer}
+        resizeHandler={action('resize')}
+        width={this.state.width}
+        drawers={[searchDrawer, createDrawer]}
+      >
+        <AkContainerNavigationNested
+          stack={this.renderStack()}
+        />
       </Navigation>
     );
   }
 }
-
-export default ExampleNavNav;

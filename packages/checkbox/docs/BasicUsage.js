@@ -24,6 +24,11 @@ const CheckboxExamples = class extends PureComponent {
           label="Disabled and checked"
           value="example4"
         />
+        <Checkbox
+          isInvalid
+          label="Invalid checkbox"
+          value="example5"
+        />
       </CheckboxGroup>
     );
   }

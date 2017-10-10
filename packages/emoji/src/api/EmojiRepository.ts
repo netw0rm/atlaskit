@@ -207,16 +207,16 @@ export default class EmojiRepository {
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {
-    return this.all().emojis.filter(
-      emoji => emoji.category === categoryId
-    );
+    if (categoryId === frequentCategory) {
+      return this.getFrequentlyUsed();
+    } else {
+      return this.all().emojis.filter(
+        emoji => emoji.category === categoryId
+      );
+    }
   }
 
-  addCustomEmoji(emoji: EmojiDescription) {
-    if (emoji.category !== customCategory) {
-      throw new Error(`Emoji is not a custom emoji, but from category ${emoji.category}`);
-    }
-
+  addUnknownEmoji(emoji: EmojiDescription) {
     this.emojis = [
       ...this.emojis,
       emoji,

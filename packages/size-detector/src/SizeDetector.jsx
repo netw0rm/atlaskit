@@ -32,7 +32,7 @@ export default class SizeDetector extends Component {
     /** Function that accepts an object parameter containing 'height' and 'width' properties */
     children: PropTypes.func.isRequired,
     /** Optional styles object to be applied to the containing element */
-    containerStyle: {},
+    containerStyle: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
 
   static defaultProps = { // eslint-disable-line react/sort-comp

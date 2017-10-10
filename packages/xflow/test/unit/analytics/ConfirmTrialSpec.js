@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { ConfirmTrialBase } from '../../../src/start-trial/components/ConfirmTrial';
+import { ConfirmTrialBase } from '../../../src/request-or-start-trial/components/ConfirmTrial';
 import { withAnalyticsSpy, waitFor } from '../../util';
 
 import { INACTIVE } from '../../../src/common/productProvisioningStates';

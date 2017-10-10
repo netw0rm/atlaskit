@@ -21,6 +21,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     expect(codeNodeView.codeMirrorPlugin.cm).to.not.equal(undefined);
+    editorView.destroy();
   });
 
   it('should have value of codeMirror instance same as text in code block', () => {
@@ -28,6 +29,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     expect(codeNodeView.codeMirrorPlugin.cm.getValue()).to.equal('test');
+    editorView.destroy();
   });
 
   it('should update language for code-mirror when updateLanguage function is called', () => {
@@ -36,6 +38,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     codeNodeView.codeMirrorPlugin.updateLanguage('javascript');
     expect(codeNodeView.codeMirrorPlugin.cm.getMode().name).to.equal('javascript');
+    editorView.destroy();
   });
 
   it('should codeMirrorPlugin.dom should be wrapper of codeMirror', () => {
@@ -43,6 +46,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const node = editorView.state.selection.$from.node(1);
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     expect(codeNodeView.codeMirrorPlugin.dom.firstChild.className.indexOf('CodeMirror') >= 0).to.equal(true);
+    editorView.destroy();
   });
 
   it('should update selection when setSelection is called', () => {
@@ -51,6 +55,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     codeNodeView.codeMirrorPlugin.setSelection(0, 2);
     expect(codeNodeView.codeMirrorPlugin.cm.getSelection()).to.equal('te');
+    editorView.destroy();
   });
 
   it('should set domRef to undefined when destroy is called', () => {
@@ -59,6 +64,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     const codeNodeView = codeMirrorNodeView(node, editorView, () => 0) as any;
     codeNodeView.codeMirrorPlugin.destroy();
     expect(codeNodeView.codeMirrorPlugin.dom).to.equal(undefined);
+    editorView.destroy();
   });
 
   it('should exit code block when Enter is pressed three times', () => {
@@ -68,6 +74,7 @@ describe('@atlaskit/nodeviews/code-mirror/codeMirrorPlugin', () => {
     sendKeyToPm(editorView, 'Enter');
     const { $from } = editorView.state.selection;
     expect($from.node($from.depth).type.name).to.equal('paragraph');
+    editorView.destroy();
   });
 
   describe('computeChange', () => {

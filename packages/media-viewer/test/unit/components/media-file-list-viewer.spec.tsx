@@ -7,12 +7,12 @@ import { Stubs } from '../_stubs';
 
 describe('<MediaFileListViewer />', () => {
   const token = 'some-token';
-  const tokenProvider = jest.fn(() => Promise.resolve(token));
+  const clientId = 'some-client-id';
   const serviceHost = 'some-service-host';
+  const authProvider = jest.fn(() => Promise.resolve({token, clientId}));
   const contextConfig = {
-    clientId: 'some-client',
     serviceHost,
-    tokenProvider
+    authProvider
   };
   const collectionName = 'some-collection';
   const basePath = 'some-base-path';

@@ -29,6 +29,7 @@ describe('ToolbarLists', () => {
     toolbarLists.find(ToolbarButton).forEach(node => {
       expect(node.prop('disabled')).to.equal(true);
     });
+    toolbarLists.unmount();
   });
 
   describe('analytics', () => {
@@ -44,6 +45,10 @@ describe('ToolbarLists', () => {
       );
       trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
+    });
+
+    afterEach(() => {
+      toolbarOption.unmount();
     });
 
     it('should trigger analyticsService.trackEvent when bulleted list button is clicked', () => {

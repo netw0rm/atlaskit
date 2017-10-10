@@ -38,6 +38,7 @@ export default createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
+    'inlineMacro',
   ],
   marks: [
     'em',
@@ -50,6 +51,7 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
+    'inlineCommentMarker'
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*' }

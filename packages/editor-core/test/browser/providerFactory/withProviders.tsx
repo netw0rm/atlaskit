@@ -15,5 +15,6 @@ describe('WithProviders', () => {
     const nonEmptyProviders = Object.keys(providers).filter(providerName => providers[providerName]);
 
     expect(nonEmptyProviders).to.have.length(2);
+    component.unmount();
   });
 });

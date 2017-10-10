@@ -6,13 +6,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { darken, mix } from 'polished';
 
 import Avatar from '@atlaskit/avatar';
+import { colors, gridSize, math } from '@atlaskit/theme';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
-import {
-  akColorN30,
-  akColorN80,
-  akColorN900,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
 
 import type { ItemTheme } from '../../src/types';
 
@@ -33,12 +28,16 @@ const generateTheme = (
   },
   padding: {
     default: {
-      x: padding,
-      y: padding,
+      bottom: padding,
+      left: padding,
+      right: padding,
+      top: padding,
     },
     compact: {
-      x: padding * 0.5,
-      y: padding * 0.5,
+      bottom: padding * 0.5,
+      left: padding * 0.5,
+      right: padding * 0.5,
+      top: padding * 0.5,
     },
   },
   default: {
@@ -79,10 +78,10 @@ class ItemThemeDemo extends PureComponent {
   }
 
   static defaultProps = {
-    backgroundColor: akColorN30,
-    padding: akGridSizeUnitless,
-    secondaryTextColor: akColorN80,
-    textColor: akColorN900,
+    backgroundColor: colors.N30,
+    padding: gridSize(),
+    secondaryTextColor: colors.N80,
+    textColor: colors.N900,
   }
 
   render() {
@@ -93,6 +92,7 @@ class ItemThemeDemo extends PureComponent {
       this.props.secondaryTextColor,
       this.props.focusColor,
     );
+
     return (
       <Root background={myTheme.default.background}>
         <ThemeProvider theme={{ [itemThemeNamespace]: myTheme }}>
@@ -132,7 +132,7 @@ class ItemThemeDemo extends PureComponent {
 
 const Root = styled.div`
   background-color: ${props => props.background};
-  margin: ${akGridSizeUnitless * 3}px 0;
+  margin: ${math.multiply(gridSize, 3)}px 0;
 `;
 
 export default ItemThemeDemo;

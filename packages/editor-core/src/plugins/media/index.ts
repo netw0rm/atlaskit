@@ -24,7 +24,7 @@ import {
   NodeSelection,
   Mark,
 } from '../../prosemirror';
-import PickerFacade from './picker-facade';
+import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
 
 import { MediaPluginOptions } from './media-plugin-options';
@@ -36,6 +36,7 @@ import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
 import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
+import PickerFacade from './picker-facade';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -51,8 +52,8 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
-  public pickers: PickerFacade[] = [];
-  public binaryPicker?: PickerFacade;
+  public pickers: PickerFacadeType[] = [];
+  public binaryPicker?: PickerFacadeType;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
@@ -63,9 +64,9 @@ export class MediaPluginState {
   private destroyed = false;
   private mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacade;
-  private clipboardPicker?: PickerFacade;
-  private dropzonePicker?: PickerFacade;
+  private popupPicker?: PickerFacadeType;
+  private clipboardPicker?: PickerFacadeType;
+  private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
@@ -108,7 +109,6 @@ export class MediaPluginState {
     }
 
     // TODO disable (not destroy!) pickers until mediaProvider is resolved
-
     let resolvedMediaProvider: MediaProvider;
 
     try {

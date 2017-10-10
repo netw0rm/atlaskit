@@ -1,4 +1,4 @@
-import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes } from '../';
+import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes, MentionAttributes } from '../';
 import { NodeSpec, MarkSpec } from '../prosemirror';
 import matches from './matches';
 import sampleSchema from './schema';
@@ -245,7 +245,7 @@ export const emoji = (attrs: { shortName: string, id?: string, fallback?: string
   };
   return sampleSchema.nodes.emoji.createChecked(emojiNodeAttrs);
 };
-export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
+export const mention = (attrs: MentionAttributes) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);
@@ -254,6 +254,7 @@ export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const mentionQuery = (attrs = { active: true }) => markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {} );
+export const inlineCommentMarker = (attrs = { reference: '' }) => markFactory(sampleSchema.marks.inlineCommentMarker, attrs ? attrs : {} );
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
@@ -285,3 +286,9 @@ export const confluenceJiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
+export const inlineMacro = (attrs: {
+  macroId: string;
+  name: string;
+  placeholderUrl?: string;
+  params?: object;
+}) => sampleSchema.nodes.inlineMacro.create(attrs);

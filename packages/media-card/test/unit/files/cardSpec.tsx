@@ -97,4 +97,20 @@ describe('FileCard', () => {
     expect(card.find(CardGenericViewSmall).length).toEqual(1);
     expect(card.find(CardGenericViewSmall).props().thumbnailUrl).toEqual(fakeDataUri);
   });
+
+  it('should pass "Failed to load file" copy to "small" card view', () => {
+    const card = shallow(
+      <FileCard appearance="small" status="error" />
+    );
+
+    expect(card.find(CardGenericViewSmall).props().error).toEqual('Failed to load file');
+  });
+
+  it('should pass "Failed to load file" copy to "image" card view', () => {
+    const card = shallow(
+      <FileCard appearance="image" status="error" />
+    );
+
+    expect(card.find(FileCardImageView).props().error).toEqual('Failed to load file');
+  });
 });

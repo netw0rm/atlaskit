@@ -2,28 +2,30 @@ import * as React from 'react';
 import { Component } from 'react';
 import { UrlPreview, ImageResizeMode, Resource } from '@atlaskit/media-core';
 
-import { SharedCardProps, CardStatus } from '../..';
+import { SharedCardProps, CardStatus, CardAppearance } from '../..';
 import { AppCardView } from '../../app';
 import { LinkCardGenericView } from '../cardGenericView';
 import { CardGenericViewSmall } from '../../utils/cardGenericViewSmall';
 import { LinkCardImageView } from '../cardImageView';
-import { EmbedCard } from '../embedCard';
+import { URLEmbedCard } from '../embed/urlEmbedCard';
+import { HTMLEmbedCard } from '../embed/htmlEmbedCard';
 import { A } from './styled';
 
 export interface LinkCardProps extends SharedCardProps {
   readonly status: CardStatus;
   readonly details?: UrlPreview;
   readonly resizeMode?: ImageResizeMode;
+  readonly onRetry?: () => void;
 }
 
-export class LinkCard extends Component<LinkCardProps, {}> {
+export const defaultLinkCardAppearance: CardAppearance = 'square';
 
+export class LinkCard extends Component<LinkCardProps, {}> {
   render(): JSX.Element | null {
-    const {resources: {smartCard, app, player, image}} = this;
+    const {resources: {smartCard, app, player}} = this;
     const {appearance} = this.props;
 
     switch (appearance) {
-
       case 'small':
         return this.renderSmallCard();
 
@@ -31,34 +33,29 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         return this.renderLinkCardImage();
 
       case 'horizontal':
-        // https://product-fabric.atlassian.net/browse/MSW-155
-        return this.renderGenericLink();
+        return this.renderGenericLink(appearance);
 
       case 'square':
-        return this.renderGenericLink();
+        return this.renderGenericLink(appearance);
 
       default:
         if (smartCard) {
           return this.renderSmartCard();
-        } else if (app && this.isEmbedCard(app)) {
-          return this.renderEmbedCard(app);
-        } else if (player && this.isEmbedCard(player)) {
-          return this.renderEmbedCard(player);
-        } else if (image) {
-          return this.renderLinkCardImage();
+        } else if (app && this.isEmbed(app)) {
+          return this.renderEmbed(app);
+        } else if (player && this.isEmbed(player)) {
+          return this.renderEmbed(player);
         } else {
-          return this.renderGenericLink();
+          return this.renderGenericLink(defaultLinkCardAppearance);
         }
-
     }
-
   }
 
   private renderInLink(link, child): JSX.Element  {
     const {isLoading, isError} = this;
     if (link && !isLoading && !isError) {
       return (
-        <A linkUrl={link}>
+        <A linkUrl={link} className="link-wrapper">
           {child}
         </A>
       );
@@ -67,21 +64,62 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
   }
 
-  private isEmbedCard(embed: Resource) {
-    // we can't display embed cards when we don't know how high they are
+  private isURLEmbed(embed: Resource): boolean {
+    const {type, url, height, aspect_ratio} = embed;
+
+    // we can only embed HTML pages in an iframe
+    if (type !== 'text/html') {
+      return false;
+    }
+
+    // we need a height to know how big to show the iframe, otherwise, for some embeds,
+    // we will be cutting off the content, or showing too much whitespace around the content.
+    // we don't care as much about the width - most will stretch content to the width, or center content
+    return Boolean(url && (height || aspect_ratio));
+
+  }
+
+  private isHTMLEmbed(embed: Resource): boolean {
+    const {type, html} = embed;
+
+    // we can only embed HTML pages in an iframe
+    if (type !== 'text/html') {
+      return false;
+    }
+
+    return Boolean(html);
+  }
+
+  private isEmbed(embed: Resource): boolean {
+    return this.isURLEmbed(embed) || this.isHTMLEmbed(embed);
+  }
+
+  private renderURLEmbed(embed: Resource): JSX.Element {
+    const {url, width, height, aspect_ratio} = embed;
     return (
-      embed
-      && embed.url
-      && embed.type === 'text/html'
-      && (embed.height || embed.aspect_ratio !== 1)
+      <URLEmbedCard url={url || ''} width={width} height={height} aspectRatio={aspect_ratio}/>
     );
   }
 
-  private renderEmbedCard(embed: Resource) {
-    const {url = '', width, height, aspect_ratio} = embed;
+  private renderHTMLEmbed(embed: Resource): JSX.Element {
+    const {html} = embed;
     return (
-      <EmbedCard url={url} width={width} height={height} aspectRatio={aspect_ratio}/>
+      <HTMLEmbedCard html={html || ''}/>
     );
+  }
+
+  private renderEmbed(embed: Resource) {
+
+    if (this.isURLEmbed(embed)) {
+      return this.renderURLEmbed(embed);
+    }
+
+    if (this.isHTMLEmbed(embed)) {
+      return this.renderHTMLEmbed(embed);
+    }
+
+    // this case should never occur provided we've called `isEmbed(embed)` before calling this method
+    return null;
   }
 
   private renderSmartCard(): JSX.Element {
@@ -99,15 +137,15 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     );
   }
 
-  private renderGenericLink(): JSX.Element | null {
+  private renderGenericLink(appearance: CardAppearance): JSX.Element | null {
     const { url, title, site, description } = this.urlPreview;
-    const { dimensions, actions, appearance } = this.props;
+    const { dimensions, actions, onRetry } = this.props;
     const { errorMessage } = this;
 
     return this.renderInLink(
       url,
       <LinkCardGenericView
-        error={errorMessage}
+        errorMessage={errorMessage}
         linkUrl={url}
         title={title}
         site={site}
@@ -116,8 +154,9 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         iconUrl={this.iconUrl}
         dimensions={dimensions}
         appearance={appearance}
-        loading={this.isLoading}
+        isLoading={this.isLoading}
         actions={actions}
+        onRetry={onRetry}
       />
     );
   }

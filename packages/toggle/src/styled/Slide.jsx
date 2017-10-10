@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
+import { colors, themed } from '@atlaskit/theme';
 import {
   borderWidth,
   getHeight,
@@ -8,38 +8,41 @@ import {
 } from './constants';
 
 const colorOptions = {
-  bgChecked: colors.G300,
-  bgCheckedHover: colors.G500,
-  bgCheckedDisabled: '#35B885',
+  bgChecked: themed({ light: colors.G400, dark: colors.G300 }),
+  bgCheckedHover: themed({ light: colors.G300, dark: colors.G200 }), // hover go lighter
+  bgCheckedDisabled: themed({ light: colors.N20, dark: colors.DN70 }),
 
-  bgUnchecked: colors.N80,
-  bgUncheckedHover: colors.N200,
-  bgUncheckedDisabled: '#f3f4f5',
+  bgUnchecked: themed({ light: colors.N200, dark: colors.DN70 }),
+  bgUncheckedHover: themed({ light: colors.N70, dark: colors.DN60 }),
+  bgUncheckedDisabled: themed({ light: colors.N20, dark: colors.DN70 }),
 };
 
-const getBgColor = ({ isChecked, isDisabled }) => {
+const getBgColor = ({ isChecked, isDisabled, ...rest }) => {
   let color = colorOptions.bgUnchecked;
-
   if (isChecked) color = colorOptions.bgChecked;
   if (isDisabled && !isChecked) color = colorOptions.bgUncheckedDisabled;
   if (isDisabled && isChecked) color = colorOptions.bgCheckedDisabled;
 
-  return color;
+  return color(rest);
 };
-const getHoverStyles = ({ isChecked, isDisabled }) => {
+const getHoverStyles = ({ isChecked, isDisabled, ...rest }) => {
   let bgcolor;
   if (!isDisabled) {
     bgcolor = isChecked ? colorOptions.bgCheckedHover : colorOptions.bgUncheckedHover;
   }
 
-  return `
+  return css`
     &:hover {
-      background-color: ${bgcolor};
+      ${bgcolor ? css`background-color: ${bgcolor(rest)}` : ''};
       cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
     }
   `;
 };
-const getBorderColor = ({ isFocused }) => (isFocused ? colors.B100 : 'transparent');
+
+const getBorderColor = ({ isFocused, ...rest }) => (isFocused
+  ? themed({ light: colors.B100, dark: colors.B75 })(rest)
+  : 'transparent'
+);
 
 export default styled.div`
   background-clip: content-box;

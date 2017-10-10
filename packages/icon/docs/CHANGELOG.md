@@ -1,5 +1,15 @@
 # @atlaskit/icon
 
+## 10.1.0 (2017-10-10)
+
+
+
+
+* feature; added 8 new icons, updated 4 others (issues closed: ak-3590) ([0cff900](https://bitbucket.org/atlassian/atlaskit/commits/0cff900))
+## 10.0.0 (2017-09-25)
+
+* breaking; Removing the "editor/expand" icon. Use the appropriate chevron-up/chevron-down icons instead. ([dc2f175](https://bitbucket.org/atlassian/atlaskit/commits/dc2f175))
+* breaking; removing the "expand" icon in preference to using the chevron ones instead (issues closed: ak-2157) ([dc2f175](https://bitbucket.org/atlassian/atlaskit/commits/dc2f175))
 ## 9.0.1 (2017-09-15)
 
 * bug fix; removed glitched path from the People icon (issues closed: ak-3524) ([bb1da8a](https://bitbucket.org/atlassian/atlaskit/commits/bb1da8a))

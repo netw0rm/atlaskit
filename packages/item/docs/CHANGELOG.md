@@ -1,5 +1,15 @@
 # @atlaskit/item
 
+## 4.1.1 (2017-10-05)
+
+* bug fix; fix item line height ([ec6a01f](https://bitbucket.org/atlassian/atlaskit/commits/ec6a01f))
+## 4.1.0 (2017-09-27)
+
+* feature; convert item to use theme package ([e860165](https://bitbucket.org/atlassian/atlaskit/commits/e860165))
+## 4.0.0 (2017-09-19)
+
+* breaking; item theme accepts top/right/bottom/left options for padding rather than x/y ([bedf215](https://bitbucket.org/atlassian/atlaskit/commits/bedf215))
+* breaking; item theme accepts top/right/bottom/left options for padding rather than x/y (issues closed: ak-3418) ([bedf215](https://bitbucket.org/atlassian/atlaskit/commits/bedf215))
 ## 3.1.4 (2017-09-11)
 
 * bug fix; selected item text colour is now unchanged when hovered (issues closed: ak-3308) ([e8be246](https://bitbucket.org/atlassian/atlaskit/commits/e8be246))

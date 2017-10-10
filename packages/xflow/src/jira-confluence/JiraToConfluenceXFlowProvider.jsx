@@ -5,11 +5,9 @@ import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-i
 import { XFlowProvider } from '../common/components/XFlowProvider';
 import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
 
-import { isUserTrusted } from './../common/tenantContext';
-import requestTrialAccess from './requestTrialAccess';
-import requestTrialAccessWithNote from './requestTrialAccessWithNote';
-import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
-import cancelRequestTrialAccess from './cancelRequestTrialAccess';
+import { isUserTrusted } from '../common/tenantContext';
+import requestTrialWithNote from './requestTrialWithNote';
+import cancelRequestTrial from './cancelRequestTrial';
 import startConfluenceTrial from './startConfluenceTrial';
 import cancelStartProductTrial from './cancelStartProductTrial';
 import grantAccessToUsers from './grantAccessToUsers';
@@ -18,6 +16,8 @@ import goToProduct from './goToProduct';
 import closeLoadingDialog from './closeLoadingDialog';
 import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
 import confluenceStatusChecker from './confluenceStatusChecker';
+import checkConfluenceRequestFlag from './checkConfluenceRequestFlag';
+import setConfluenceRequestFlag from './setConfluenceRequestFlag';
 
 const messages = defineMessages({
   // Start Trial
@@ -110,19 +110,24 @@ const messages = defineMessages({
   // Request Trial
   accessHeading: {
     id: 'xflow.j2c.request-trial.access.heading',
-    defaultMessage: 'Ask your admin for access',
+    defaultMessage: "Jira's perfect partner",
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Send a request for your admin to activate confluence',
+    defaultMessage: 'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
-    defaultMessage: 'Help your site administrator understand why you would like to use Confluence:',
+    defaultMessage: "Send a quick note telling your site admin why you're keen to try Confluence:",
   },
   notePlaceholder: {
     id: 'xflow.j2c.request-trial.note.placeholder',
-    defaultMessage: 'I would like to try Confluence because…',
+    defaultMessage:
+      "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and there's a free 30 day trial.",
+  },
+  notePlaceholderShort: {
+    id: 'xflow.j2c.request-trial.note.placeholder.short',
+    defaultMessage: "Hi! I'd like to try Confluence.",
   },
 });
 
@@ -130,11 +135,14 @@ export const defaultProps = intl => ({
   config: {
     productLogo: <ConfluenceLogo />,
     requestTrial: {
-      accessBanner: 'https://placehold.it/352x214',
+      accessImage:
+        'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
+      accessLearnMoreLink: 'https://www.atlassian.com/software/confluence',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
+      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     startTrial: {
       confirmTrialHeading: intl.formatMessage(messages.confirmTrialHeading),
@@ -150,15 +158,9 @@ export const defaultProps = intl => ({
       confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
       confirmReactivateMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage0)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage1)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage2)}
-          </p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage0)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage1)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage2)}</p>
         </div>
       ),
 
@@ -196,13 +198,9 @@ export const defaultProps = intl => ({
 
       alreadyStartedMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage0)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage0)}</p>
 
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage1)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage1)}</p>
         </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
@@ -213,10 +211,8 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
 
-  requestTrialAccess,
-  requestTrialAccessWithNote,
-  requestTrialAccessWithoutNote,
-  cancelRequestTrialAccess,
+  requestTrialWithNote,
+  cancelRequestTrial,
 
   startProductTrial: startConfluenceTrial,
   cancelStartProductTrial,
@@ -226,6 +222,8 @@ export const defaultProps = intl => ({
   goToProduct,
   closeLoadingDialog,
   closeAlreadyStartedDialog,
+  checkProductRequestFlag: checkConfluenceRequestFlag,
+  setProductRequestFlag: setConfluenceRequestFlag,
 });
 
 export class JiraToConfluenceXFlowProviderBase extends Component {

@@ -9,12 +9,16 @@ const itemThemeFromNavTheme = (
 ): GenericItemTheme => ({
   padding: {
     compact: {
-      x: gridSize,
-      y: gridSize,
+      bottom: gridSize,
+      left: gridSize,
+      right: gridSize,
+      top: gridSize,
     },
     default: {
-      x: gridSize * 1.5,
-      y: gridSize,
+      bottom: gridSize,
+      left: gridSize * 1.5,
+      right: gridSize * 1.5,
+      top: gridSize,
     },
   },
   borderRadius: 0,
@@ -38,7 +42,7 @@ const itemThemeFromNavTheme = (
   },
   active: {
     background: navigationTheme.item.active.background,
-    text: navigationTheme.text,
+    text: navigationTheme.item.active.text || navigationTheme.text,
     secondaryText: navigationTheme.subText,
   },
   selected: {

@@ -17,6 +17,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
     expect(onSubmitHandler.calledWith('http://atlassian.com')).to.equal(true);
+    panel.unmount();
   });
 
   it('should prevent KeyDown event if ENTER key is pressed', () => {
@@ -28,6 +29,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     input.simulate('keydown', { which: 'enter', keyCode: 13, preventDefault });
 
     expect(preventDefault.callCount, 'component didn`t call preventDefault').to.equal(1);
+    panel.unmount();
   });
 
   it('should not prevent KeyDown event if any other key is pressed', () => {
@@ -38,6 +40,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     input.simulate('keydown', { which: 'a', keyCode: 65, preventDefault });
 
     expect(preventDefault.called).to.equal(false);
+    panel.unmount();
   });
 
   it('should call onCancel when ESC key is pressed', () => {
@@ -48,6 +51,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     input.simulate('keydown', { which: 'esc', keyCode: 27 });
 
     expect(onCancelHandler.called).to.equal(true);
+    panel.unmount();
   });
 
   it('should call onKeyDown when a key is pressed', () => {
@@ -58,5 +62,6 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
     input.simulate('keydown', { which: 'a', keyCode: 65 });
 
     expect(onKeyDownHandler.called).to.equal(true);
+    panel.unmount();
   });
 });

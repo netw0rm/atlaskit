@@ -36,6 +36,7 @@ describe('code-block', () => {
         setTextSelection(editorView, pPos);
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -49,6 +50,7 @@ describe('code-block', () => {
         setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -62,6 +64,7 @@ describe('code-block', () => {
         setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -75,6 +78,7 @@ describe('code-block', () => {
         setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.not.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -87,6 +91,7 @@ describe('code-block', () => {
         plugin.props.onBlur!(editorView, event);
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -99,6 +104,7 @@ describe('code-block', () => {
         plugin.props.onBlur!(editorView, event);
 
         expect(spy.callCount).to.equal(1);
+        editorView.destroy();
       });
     });
 
@@ -111,6 +117,7 @@ describe('code-block', () => {
         plugin.props.handleClick!(editorView, sel, event);
 
         expect(spy.callCount).to.equal(2);
+        editorView.destroy();
       });
     });
 
@@ -123,6 +130,7 @@ describe('code-block', () => {
         plugin.props.handleClick!(editorView, sel, event);
 
         expect(spy.callCount).to.equal(1);
+        editorView.destroy();
       });
     });
 
@@ -137,6 +145,7 @@ describe('code-block', () => {
         setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.not.equal(2);
+        editorView.destroy();
       });
     });
   });
@@ -153,6 +162,7 @@ describe('code-block', () => {
         const currentElement = pluginState.element;
 
         expect(previousElement).to.eq(currentElement);
+        editorView.destroy();
       });
     });
 
@@ -167,7 +177,7 @@ describe('code-block', () => {
         const currentElement = pluginState.element;
 
         expect(previousElement).not.to.eq(currentElement);
-
+        editorView.destroy();
       });
     });
 
@@ -214,6 +224,7 @@ describe('code-block', () => {
         plugin.props.handleClick!(editorView, sel, event);
 
         expect(pluginState.domEvent).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -224,6 +235,7 @@ describe('code-block', () => {
         plugin.props.handleClick!(editorView, sel, event);
 
         expect(pluginState.domEvent).to.equal(false);
+        editorView.destroy();
       });
     });
 
@@ -235,6 +247,7 @@ describe('code-block', () => {
         setTextSelection(editorView, cbPos);
 
         expect(pluginState.domEvent).to.equal(false);
+        editorView.destroy();
       });
     });
   });
@@ -249,6 +262,7 @@ describe('code-block', () => {
       const currentElement = pluginState.element;
 
       expect(previousElement!.textContent).to.eq(currentElement!.textContent);
+      editorView.destroy();
     });
 
     it('can update language to be undefined', () => {
@@ -257,6 +271,7 @@ describe('code-block', () => {
       pluginState.updateLanguage(undefined, editorView);
 
       expect(pluginState.language).to.equal(undefined);
+      editorView.destroy();
     });
 
     it('updates language', () => {
@@ -265,6 +280,7 @@ describe('code-block', () => {
       pluginState.updateLanguage('php', editorView);
 
       expect(pluginState.language).to.eq('php');
+      editorView.destroy();
     });
 
     it('updates the node', () => {
@@ -276,6 +292,7 @@ describe('code-block', () => {
       const currentActiveCodeBlock = pluginState.activeCodeBlock;
 
       expect(previousActiveCodeBlock).to.not.eq(currentActiveCodeBlock);
+      editorView.destroy();
     });
   });
 
@@ -284,12 +301,14 @@ describe('code-block', () => {
       const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('{<>}codeBlock')));
       pluginState.removeCodeBlock(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('')));
+      editorView.destroy();
     });
 
     it('should not remove parent block when removing code_block', () => {
       const { pluginState, editorView } = editor(doc(blockquote(code_block({ language: 'java' })('codeBlock{<>}'))));
       pluginState.removeCodeBlock(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
+      editorView.destroy();
     });
   });
 
@@ -306,6 +325,7 @@ describe('code-block', () => {
       pluginState.updateLanguage('php', editorView);
 
       expect(pluginState.language).to.eq('php');
+      editorView.destroy();
     });
 
     it('sets language to null if no activeCodeBlock', () => {
@@ -324,6 +344,7 @@ describe('code-block', () => {
         plugin.props.onBlur!(editorView, event);
 
         expect(pluginState.toolbarVisible).to.equal(false);
+        editorView.destroy();
       });
     });
   });
@@ -337,6 +358,7 @@ describe('code-block', () => {
         plugin.props.onFocus!(editorView, event);
 
         expect(pluginState.editorFocused).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -347,6 +369,7 @@ describe('code-block', () => {
         plugin.props.onBlur!(editorView, event);
 
         expect(pluginState.editorFocused).not.to.equal(true);
+        editorView.destroy();
       });
     });
   });

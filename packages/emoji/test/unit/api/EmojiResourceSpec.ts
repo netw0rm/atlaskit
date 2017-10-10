@@ -6,7 +6,7 @@ import { OnProviderChange, SecurityOptions, ServiceConfig } from '@atlaskit/util
 
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { EmojiDescription, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation, SearchSort } from '../../../src/types';
+import { EmojiDescription, EmojiId, EmojiSearchResult, EmojiServiceResponse, MediaApiRepresentation, SearchSort } from '../../../src/types';
 import { selectedToneStorageKey } from '../../../src/constants';
 import SiteEmojiResource from '../../../src/api/media/SiteEmojiResource';
 import EmojiResource, {
@@ -716,6 +716,47 @@ describe('EmojiResource', () => {
           const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
           expect (fetchSiteEmojiCalls.length, 'Called fetch site emoji on server').to.equal(1);
           expect(emoji).to.deep.equal(missingMediaEmoji);
+        });
+    });
+
+    it('can resolve non-custom emojis from server', () => {
+      const standardEmoji = standardServiceEmojis.emojis[0];
+      const standardDescription = standardEmojis[0];
+      expect(standardEmoji.shortName, 'EmojiDescription/EmojiServiceDescription of same emoji').to.equal(standardDescription.shortName);
+      const standardId: EmojiId = {
+        shortName: standardEmoji.shortName,
+        id: standardEmoji.id,
+        fallback: standardEmoji.fallback,
+      };
+
+      const standardResponse: EmojiServiceResponse = {
+        emojis: [standardEmoji],
+      };
+
+      fetchMock.mock({
+        matcher: fetchSiteEmojiUrl(standardId),
+        response: standardResponse,
+        name: 'fetch-standard-emoji',
+      }).mock({
+        matcher: `begin:${siteUrl}`,
+        response: siteServiceEmojis(),
+        times: 1,
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [{
+          url: siteUrl,
+        }],
+      };
+      const resource = new EmojiResource(config);
+
+      return alwaysPromise(resource.findByEmojiId(standardId))
+        .then(emoji => {
+          const fetchStandardEmojiCalls = fetchMock.calls('fetch-standard-emoji');
+          expect (fetchStandardEmojiCalls.length, 'Called fetch standard emoji on server').to.equal(1);
+          expect(emoji).to.not.equal(undefined);
+          expect(emoji!.shortName).to.equal(standardDescription.shortName);
         });
     });
 

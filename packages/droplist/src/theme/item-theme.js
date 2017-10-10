@@ -3,8 +3,10 @@ import { itemThemeNamespace } from '@atlaskit/item';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
 const dropdownPadding = {
-  x: math.multiply(gridSize, 1.5),
-  y: gridSize,
+  bottom: gridSize,
+  left: math.multiply(gridSize, 1.5),
+  right: math.multiply(gridSize, 1.5),
+  top: gridSize,
 };
 
 const droplistItemTheme: Object = {

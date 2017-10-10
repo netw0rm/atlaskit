@@ -14,6 +14,8 @@ type Props = {|
   label: string,
   /** The name of the submitted field in a checkbox. */
   name: string,
+  /** Marks the field as invalid. Changes style of unchecked component. */
+  isInvalid?: boolean,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   new state of the checkbox. */
@@ -43,17 +45,18 @@ export default class Checkbox extends PureComponent {
   }
 
   render() {
-    const { label, value, isFullWidth, isDisabled, name } = this.props;
+    const { label, value, isFullWidth, isDisabled, isInvalid, name } = this.props;
     const { isChecked } = this.state;
     return (
       <CheckboxStateless
         isChecked={isChecked}
         isDisabled={isDisabled}
         isFullWidth={isFullWidth}
+        isInvalid={isInvalid}
         label={label}
+        name={name}
         onChange={this.onChange}
         value={value}
-        name={name}
       />
     );
   }

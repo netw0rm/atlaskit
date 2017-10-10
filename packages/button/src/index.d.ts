@@ -1,7 +1,7 @@
 import { Component, ReactElement } from 'react';
 
 interface Props {
-  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger';
+  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
   shouldFitContainer?: boolean;
   type?: 'button' | 'submit';
   href?: string;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 interface ButtonGroupProps {
-  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger';
+  appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
   children?: ReactElement<any>;
 }
 

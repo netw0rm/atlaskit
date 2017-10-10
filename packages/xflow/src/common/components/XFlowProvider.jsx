@@ -1,18 +1,23 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl, intlShape } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
+import optOutRequestTrialFeature from '../optOutRequestTrialFeature';
+import cancelOptOut from '../cancelOptOut';
+import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
 export const xFlowShape = PropTypes.shape({
   config: PropTypes.shape({
     productLogo: PropTypes.element,
     requestTrial: PropTypes.shape({
-      accessBanner: PropTypes.string,
+      accessImage: PropTypes.string,
       accessHeading: PropTypes.string,
       accessMessage: PropTypes.node,
       notePrompt: PropTypes.node,
       notePlaceholder: PropTypes.string,
+      notePlaceholderShort: PropTypes.string,
     }),
     startTrial: PropTypes.shape({
       confirmTrialHeading: PropTypes.string,
@@ -21,18 +26,18 @@ export const xFlowShape = PropTypes.shape({
       confirmReactivateMessage: PropTypes.node,
 
       grantAccessHeading: PropTypes.string,
-      grantAccessDefaultAccess: PropTypes.string,
+      grantAccessDefaultAccess: PropTypes.node,
       grantAccessSelectLabel: PropTypes.string,
       grantAccessUserSelectPlaceholder: PropTypes.string,
       grantAccessDefaultSelectedRadio: PropTypes.string,
-      grantAccessUsersOption: PropTypes.sting,
+      grantAccessUsersOption: PropTypes.string,
       grantAccessOptionItems: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
           label: PropTypes.string,
         })
       ),
-      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
+      grantAccessLearnMoreLink: PropTypes.string,
 
       loadingProductHeading: PropTypes.string,
       loadingProductMessage: PropTypes.string,
@@ -52,10 +57,8 @@ export const xFlowShape = PropTypes.shape({
   getProductActivationState: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,
 
-  requestTrialAccess: PropTypes.func,
-  requestTrialAccessWithNote: PropTypes.func,
-  requestTrialAccessWithoutNote: PropTypes.func,
-  cancelRequestTrialAccess: PropTypes.func,
+  requestTrialWithNote: PropTypes.func,
+  cancelRequestTrial: PropTypes.func,
 
   startProductTrial: PropTypes.func,
   waitForActivation: PropTypes.func,
@@ -64,13 +67,15 @@ export const xFlowShape = PropTypes.shape({
   retrieveUsers: PropTypes.func,
   goToProduct: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
-
   closeAlreadyStartedDialog: PropTypes.func,
+  checkProductRequestFlag: PropTypes.func,
+  setProductRequestFlag: PropTypes.func,
 });
 
-export class XFlowProvider extends Component {
+class XFlowProviderBase extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
+    intl: intlShape,
     productStatusChecker: PropTypes.shape({
       start: PropTypes.func.isRequired,
       stop: PropTypes.func.isRequired,
@@ -88,13 +93,19 @@ export class XFlowProvider extends Component {
   };
 
   getChildContext() {
+    const { intl } = this.props;
+    const optOutProps = optOutMessagesDefaultProps(intl);
+
     return {
       xFlow: {
+        ...optOutProps,
         ...this.props,
         ...this.state,
         getProductActivationState: this.getProductActivationState,
         startProductTrial: this.startProductTrial,
         waitForActivation: this.waitForActivation,
+        optOutRequestTrialFeature,
+        cancelOptOut,
       },
     };
   }
@@ -132,9 +143,12 @@ export class XFlowProvider extends Component {
   };
 
   render() {
-    return Children.only(this.props.children);
+    const { children } = this.props;
+    return Children.only(children);
   }
 }
+
+export const XFlowProvider = injectIntl(XFlowProviderBase);
 
 export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}) =>
   class WithXFlowProvider extends Component {

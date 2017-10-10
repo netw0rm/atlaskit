@@ -9,6 +9,7 @@ import {
   akColorN40,
   akColorN300,
   akColorN800,
+  akGridSizeUnitless,
 } from 'akutil-shared-styles';
 
 import styled from 'styled-components';
@@ -76,5 +77,14 @@ export const Content = styled.div`
 
   & legend {
     margin: 8px 0;
+  }
+`;
+
+// tslint:disable-next-line:variable-name
+export const ButtonGroup = styled.span`
+  display: flex;
+
+  & > button {
+    margin-left: ${akGridSizeUnitless/2}px;
   }
 `;

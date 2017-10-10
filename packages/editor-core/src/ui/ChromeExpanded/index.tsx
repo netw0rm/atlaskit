@@ -1,4 +1,4 @@
-import AkButton, { ButtonGroup as AkButtonGroup } from '@atlaskit/button';
+import AkButton from '@atlaskit/button';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { ActivityProvider } from '@atlaskit/activity';
@@ -47,7 +47,8 @@ import {
   Footer,
   FooterActions,
   Toolbar,
-  SecondaryToolbar
+  SecondaryToolbar,
+  ButtonGroup
 } from './styles';
 import { EditorView, browser } from '../../prosemirror';
 
@@ -354,7 +355,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         </Content>
         <Footer>
           <FooterActions>
-            <AkButtonGroup>
+            <ButtonGroup>
               {!onSave ? null :
                 <span onClick={this.handleSave}>
                   <AkButton
@@ -371,12 +372,20 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
                   <AkButton appearance="subtle">Cancel</AkButton>
                 </span>
               }
-            </AkButtonGroup>
+            </ButtonGroup>
           </FooterActions>
           {/* NOTE (to be refactored in ED-2565): ToolbarEmojiPicker.numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker in the SecondaryToolbar */}
           <SecondaryToolbar>
             {pluginStateMentions && mentionProvider && !disabled ? <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} /> : null}
-            {pluginStateEmojis && emojiProvider ? <ToolbarEmojiPicker pluginKey={emojiPluginKey} editorView={editorView} emojiProvider={emojiProvider} numFollowingButtons={2}/> : null}
+            {pluginStateEmojis && emojiProvider ?
+              <ToolbarEmojiPicker
+                pluginKey={emojiPluginKey}
+                editorView={editorView}
+                emojiProvider={emojiProvider}
+                numFollowingButtons={2}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+              /> : null}
             {pluginStateImageUpload && !disabled ? <ToolbarImage pluginState={pluginStateImageUpload} editorView={editorView} /> : null}
             {pluginStateMedia && !disabled ? <ToolbarMedia editorView={editorView} pluginKey={mediaPluginKey} /> : null}
           </SecondaryToolbar>

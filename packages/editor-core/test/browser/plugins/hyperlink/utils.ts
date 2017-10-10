@@ -88,5 +88,15 @@ describe('hyperlink', () => {
       expect(getLinkMatch(noise('x@example.com'))!.raw).to.equal('x@example.com');
       expect(getLinkMatch(noise('example-indeed@strange-example.com'))!.raw).to.equal('example-indeed@strange-example.com');
     });
+
+    it('should not match filename extensions', () => {
+      expect(getLinkMatch('test.sh')).to.equal(null);
+      expect(getLinkMatch('test.as')).to.equal(null);
+      expect(getLinkMatch('test.ms')).to.equal(null);
+      expect(getLinkMatch('test.py')).to.equal(null);
+      expect(getLinkMatch('test.ps')).to.equal(null);
+      expect(getLinkMatch('test.so')).to.equal(null);
+      expect(getLinkMatch('test.pl')).to.equal(null);
+    });
   });
 });

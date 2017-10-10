@@ -32,12 +32,13 @@ export const createRenderer = (provider: TaskDecisionProvider) => {
 
 // tslint:disable-next-line:variable-name
 export const MessageContainer = styled.div`
-  border: 10px solid #ccc;
+  border: 10px solid #fcc;
   width: 585px
 `;
 
 // tslint:disable-next-line:variable-name
 export const SidebarContainer = styled.div`
-  border: 10px solid #ccc;
-  width: 240px
+  border: 10px solid #fcc;
+  width: 240px;
+  overflow-x: hidden;
 `;

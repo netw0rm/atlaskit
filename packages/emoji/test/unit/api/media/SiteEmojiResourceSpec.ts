@@ -390,7 +390,7 @@ describe('SiteEmojiResource', () => {
       });
     });
 
-    it('Only returns emojis of type site', () => {
+    it('Returns emojis of non-site type', () => {
       const tokenManagerStub = sinon.createStubInstance(TokenManager) as any;
       const mockMediaPicker = new MockMediaPicker();
       const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
@@ -413,7 +413,7 @@ describe('SiteEmojiResource', () => {
       });
 
       return siteEmojiResource.findEmoji(atlassianId).then(emoji => {
-        expect(emoji, 'Emoji undefined').to.equal(undefined);
+        expect(emoji!.shortName).to.equal(atlassianEmoji.shortName);
         const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
         expect(fetchSiteEmojiCalls.length, 'Fetch site emoji from emoji service called').to.equal(1);
       });

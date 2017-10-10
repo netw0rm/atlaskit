@@ -1,20 +1,20 @@
-import { JwtTokenProvider } from '@atlaskit/media-core';
+import {AuthProvider, Auth, isClientBasedAuth} from '@atlaskit/media-core';
 import * as $ from 'jquery';
-import { parse, stringify } from 'query-string';
+import {parse, stringify} from 'query-string';
 
-import { MediaFile, MediaFileAttributes } from '../mediaviewer';
+import {MediaFile, MediaFileAttributes} from '../mediaviewer';
 
 export const fetchToken =
-  (clientId: string, tokenProvider: JwtTokenProvider, collectionName?: string) =>
-    ({ attributes }: MediaFile) => {
+  (authProvider: AuthProvider, collectionName?: string) =>
+    ({attributes}: MediaFile) => {
       const deferred = $.Deferred<MediaFileAttributes>();
-      tokenProvider(collectionName)
-        .then(token => {
+      authProvider({collectionName})
+        .then((auth: Auth) => {
           deferred.resolve({
-            src: refreshAuthentication(attributes.src, clientId, collectionName, token) || '',
-            srcDownload: refreshAuthentication(attributes.srcDownload, clientId, collectionName, token) || '',
-            src_hd: refreshAuthentication(attributes.src_hd, clientId, collectionName, token),
-            poster: refreshAuthentication(attributes.poster, clientId, collectionName, token),
+            src: refreshAuthentication(attributes.src, auth, collectionName,) || '',
+            srcDownload: refreshAuthentication(attributes.srcDownload, auth, collectionName) || '',
+            src_hd: refreshAuthentication(attributes.src_hd, auth, collectionName),
+            poster: refreshAuthentication(attributes.poster, auth, collectionName),
           });
         })
         .catch(deferred.reject);
@@ -23,36 +23,34 @@ export const fetchToken =
       return deferred.promise();
     };
 
-function refreshAuthentication(
-  url: string | undefined,
-  clientId: string,
-  collectionName: string | undefined,
-  token: string): string | undefined {
+function refreshAuthentication(url: string | undefined,
+                               auth: Auth,
+                               collectionName: string | undefined): string | undefined {
   if (url) {
-    const { urlWithoutQueryString, queryString } = split(url);
-    return `${urlWithoutQueryString}?${refreshQueryString(queryString, clientId, collectionName, token)}`;
+    const {urlWithoutQueryString, queryString} = split(url);
+    return `${urlWithoutQueryString}?${refreshQueryString(queryString, auth, collectionName)}`;
   }
 }
 
-function refreshQueryString(
-  queryString: string | undefined,
-  clientId: string,
-  collectionName: string | undefined,
-  token: string): string {
-  if (queryString) {
-    const query = parse(queryString);
-    query.client = clientId;
-    query.collection = collectionName;
-    query.token = token;
+function refreshQueryString(queryString: string | undefined,
+                            auth: Auth,
+                            collectionName: string | undefined): string {
 
-    return stringify(query);
-  } else {
-    return stringify({
-      client: clientId,
-      collection: collectionName,
-      token
-    });
+  let query = {} as any;
+
+  if (queryString) {
+    query = parse(queryString);
   }
+
+  if (isClientBasedAuth(auth)) {
+    query.client = auth.clientId;
+  } else {
+    query.issuer = auth.asapIssuer;
+  }
+  query.collection = collectionName;
+  query.token = auth.token;
+
+  return stringify(query);
 }
 
 function split(url: string): { urlWithoutQueryString: string, queryString?: string } {

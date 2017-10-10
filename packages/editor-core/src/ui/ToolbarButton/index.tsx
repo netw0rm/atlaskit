@@ -6,6 +6,7 @@ import { AkButton } from './styles';
 export interface Props {
   selected?: boolean;
   disabled?: boolean;
+  hideTooltip?: boolean;
   href?: string;
   title?: string;
   titlePosition?: string;
@@ -56,7 +57,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         <Tooltip
           position={this.props.titlePosition || 'top'}
           description={this.props.title}
-          visible={this.state.isTooltipVisible}
+          visible={this.isVisible()}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
         >
@@ -64,6 +65,10 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         </Tooltip>
       )
       : button;
+  }
+
+  private isVisible = (): boolean => {
+    return this.state.isTooltipVisible && !this.props.hideTooltip;
   }
 
   private handleClick = () => {

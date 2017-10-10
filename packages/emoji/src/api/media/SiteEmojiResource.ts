@@ -1,7 +1,5 @@
-import { MediaPicker } from 'mediapicker';
 import { ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
-
-import { customType } from '../../constants';
+import { MediaPicker } from 'mediapicker';
 
 import {
   EmojiDescription,
@@ -35,8 +33,6 @@ export interface EmojiProgessCallback {
 
 // Assume media is 95% of total upload time.
 export const mediaProportionOfProgress = 95/100;
-
-const isSiteEmoji = (emoji: EmojiDescription): boolean => emoji.type === customType;
 
 export default class SiteEmojiResource {
   private siteServiceConfig: ServiceConfig;
@@ -142,8 +138,7 @@ export default class SiteEmojiResource {
     const path = `../${emojiId.id}`;
     return emojiRequest(this.siteServiceConfig, { path }).then(serviceResponse => {
       const response = denormaliseEmojiServiceResponse(serviceResponse);
-      const emoji = response.emojis[0];
-      return isSiteEmoji(emoji) ? emoji : undefined;
+      return response.emojis[0];
     }).catch(error => {
       debug('failed to load emoji', emojiId, error);
       return undefined;

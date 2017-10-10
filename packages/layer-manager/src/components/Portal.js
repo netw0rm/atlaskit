@@ -8,6 +8,7 @@ import type { ChildrenType } from '../types';
 type Props = {
   children: ChildrenType,
   theme: Object,
+  wrapWithTransitionGroup: boolean,
 };
 
 const FirstChild = ({ children }) => Children.toArray(children)[0] || null;
@@ -20,7 +21,12 @@ class Portal extends Component {
     if (document.body) {
       document.body.appendChild(node);
       this.portalElement = node;
-      this.componentDidUpdate();
+
+      // mounting components in portals can have side effects (e.g. modals
+      // applying scroll / focus locks). Because the unmounting of other portals
+      // happens asynchronously, we wait for a moment before mounting new
+      // portals to avoid race conditions in unmount handlers
+      setTimeout(() => this.componentDidUpdate(), 1);
     }
   }
   componentDidUpdate() {
@@ -50,13 +56,15 @@ class Portal extends Component {
     );
   }
   renderChildren = (children) => {
-    const { theme } = this.props;
+    const { theme, wrapWithTransitionGroup } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
-        <TransitionGroup component={FirstChild}>
-          {children}
-        </TransitionGroup>
+        {wrapWithTransitionGroup ? (
+          <TransitionGroup component={FirstChild}>
+            {children}
+          </TransitionGroup>
+        ) : children}
       </ThemeProvider>
     );
   }

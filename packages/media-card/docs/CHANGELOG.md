@@ -1,5 +1,38 @@
 # @atlaskit/media-card
 
+## 21.4.0 (2017-10-05)
+
+* feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))
+## 21.3.2 (2017-09-21)
+
+* bug fix; remove not necessary React key attr ([98cf168](https://bitbucket.org/atlassian/atlaskit/commits/98cf168))
+* bug fix; add missing React key attributes to LinkCardGenericView ([ff1d60e](https://bitbucket.org/atlassian/atlaskit/commits/ff1d60e))
+## 21.3.1 (2017-09-20)
+
+* bug fix; add line-height to link card title ([37f494b](https://bitbucket.org/atlassian/atlaskit/commits/37f494b))
+* bug fix; fix horizontal card padding to not cut letters ([2c66125](https://bitbucket.org/atlassian/atlaskit/commits/2c66125))
+* bug fix; make small cards to grow up again ([28182ab](https://bitbucket.org/atlassian/atlaskit/commits/28182ab))
+## 21.3.0 (2017-09-19)
+
+* feature; new LinkCards UI ([06d49d2](https://bitbucket.org/atlassian/atlaskit/commits/06d49d2))
+## 21.2.1 (2017-09-18)
+
+* bug fix; updated copy on error view of file cards to be "Failed to load file" (issues closed: hnw-2303) ([d849c43](https://bitbucket.org/atlassian/atlaskit/commits/d849c43))
+## 21.2.0 (2017-09-18)
+
+
+* bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
+* feature; added Twitter and Trello embed cards. ([d337c60](https://bitbucket.org/atlassian/atlaskit/commits/d337c60))
+
+
+
+## 21.1.0 (2017-09-18)
+
+* bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))
+* feature; added Twitter and Trello embed cards. ([d337c60](https://bitbucket.org/atlassian/atlaskit/commits/d337c60))
+
+
+
 ## 21.0.2 (2017-08-29)
 
 * bug fix; update the small appearance to adhere to the latest designs ([db2c7ab](https://bitbucket.org/atlassian/atlaskit/commits/db2c7ab))

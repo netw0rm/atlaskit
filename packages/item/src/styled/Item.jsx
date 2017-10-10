@@ -1,7 +1,6 @@
 // @flow
-
 import styled, { css } from 'styled-components';
-import { akColorN60A } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import { getThemeStyle, themeNamespace } from '../util/theme';
 
 const getItemState = stateName => ({ theme }) => {
@@ -19,10 +18,15 @@ const getItemState = stateName => ({ theme }) => {
 
 const getPadding = ({ isCompact, theme }) => {
   const paddingKey = isCompact ? 'compact' : 'default';
-  const padding = getThemeStyle(theme[themeNamespace], paddingKey, 'padding');
+  const {
+    bottom = 0,
+    left = 0,
+    right = 0,
+    top = 0,
+  } = getThemeStyle(theme[themeNamespace], paddingKey, 'padding');
 
   return css`
-    padding: ${padding.y}px ${padding.x}px;
+    padding: ${top}px ${right}px ${bottom}px ${left}px;
   `;
 };
 
@@ -41,7 +45,7 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging, isSelected }) => 
       ${getItemState('dragging')}
       /* e200 but without zindex */
       /* using the same colour for all themes */
-      box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+      box-shadow: 0 4px 8px -2px ${colors.N60A}, 0 0 1px ${colors.N60A};
     `;
   }
 

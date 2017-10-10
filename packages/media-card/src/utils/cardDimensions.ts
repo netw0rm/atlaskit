@@ -1,4 +1,5 @@
-import {CardAppearance} from '..';
+import { getCSSUnitValue } from './getCSSUnitValue';
+import {CardAppearance, CardDimensions} from '..';
 
 // Default dimensions
 
@@ -9,12 +10,12 @@ export const defaultSmallCardDimensions = {
 
 export const defaultImageCardDimensions = {
   width: 156,
-  height: 116
+  height: 125
 };
 
-export const defaultHorizontalCardDimensions = {
+export const defaultHorizontalCardDimensions: CardDimensions = {
   width: 435,
-  height: 116
+  height: 125
 };
 
 export const defaultSquareCardDimensions = {
@@ -25,6 +26,7 @@ export const defaultSquareCardDimensions = {
 // Small dimensions
 
 export const minSmallCardDimensions = {
+  width: 0,
   height: 32
 };
 
@@ -32,6 +34,17 @@ export const minImageCardDimensions = {
   width: 144,
   height: 96
 };
+
+export const minSquareCardDimensions = {
+  width: 272,
+  height: 275
+};
+
+export const minHorizontalCardDimensions = {
+  width: 400,
+  height: 125
+};
+
 
 // Max dimensions
 
@@ -41,8 +54,13 @@ export const maxImageCardDimensions = {
 };
 
 export const maxHorizontalCardDimensions = {
-  width: 744,
+  width: 400,
   height: 116
+};
+
+export const maxSquareCardDimensions = {
+  width: 400,
+  height: 348
 };
 
 export const getCardMinHeight = (appearance?: CardAppearance) => {
@@ -55,12 +73,80 @@ export const getCardMinHeight = (appearance?: CardAppearance) => {
   }
 
   if (appearance === 'horizontal') {
-    return defaultHorizontalCardDimensions.height;
+    return minHorizontalCardDimensions.height;
   }
 
   if (appearance === 'square') {
-    return defaultSquareCardDimensions.height;
+    return minSquareCardDimensions.height;
   }
 
   return minSmallCardDimensions.height;
+};
+
+export const getCardMaxHeight = (appearance?: CardAppearance) => {
+  if (appearance === 'image') {
+    return maxImageCardDimensions.height;
+  }
+
+  if (appearance === 'horizontal') {
+    return maxHorizontalCardDimensions.height;
+  }
+
+  if (appearance === 'square') {
+    return maxSquareCardDimensions.height;
+  }
+
+  return maxSquareCardDimensions.width;
+};
+
+export const getCardMinWidth = (appearance?: CardAppearance) => {
+  if (appearance === 'small') {
+    return minSmallCardDimensions.width;
+  }
+
+  if (appearance === 'image') {
+    return minImageCardDimensions.width;
+  }
+
+  if (appearance === 'horizontal') {
+    return minHorizontalCardDimensions.width;
+  }
+
+  if (appearance === 'square') {
+    return minSquareCardDimensions.width;
+  }
+
+  return minSmallCardDimensions.width;
+};
+
+export const getCardMaxWidth = (appearance?: CardAppearance) => {
+  if (appearance === 'image') {
+    return maxImageCardDimensions.width;
+  }
+
+  if (appearance === 'horizontal') {
+    return maxHorizontalCardDimensions.width;
+  }
+
+  if (appearance === 'square') {
+    return maxSquareCardDimensions.width;
+  }
+
+  return maxSquareCardDimensions.width;
+};
+
+export const getCSSBoundaries = (appearance?: CardAppearance) => {
+  const width = `
+    min-width: ${getCSSUnitValue(getCardMinWidth(appearance))};
+    max-width: ${getCSSUnitValue(getCardMaxWidth(appearance))};
+  `;
+  let height = '';
+
+  if (appearance === 'horizontal') {
+    height = `
+      height: ${getCSSUnitValue(defaultHorizontalCardDimensions.height || '')};
+    `;
+  }
+
+  return width + height;
 };

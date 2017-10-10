@@ -1,5 +1,23 @@
 # @atlaskit/button
 
+## 5.4.2 (2017-10-03)
+
+
+* bug fix; improve button performance ([1bbf0d1](https://bitbucket.org/atlassian/atlaskit/commits/1bbf0d1))
+
+
+## 5.4.1 (2017-09-27)
+
+* bug fix; button will truncate if wider than its parent (issues closed: ak-3332) ([a701ea1](https://bitbucket.org/atlassian/atlaskit/commits/a701ea1))
+## 5.4.0 (2017-09-22)
+
+* feature; buttons no longer prevent text selection (issues closed: ak-3270) ([9ab343b](https://bitbucket.org/atlassian/atlaskit/commits/9ab343b))
+
+
+## 5.3.0 (2017-09-18)
+
+
+* feature; support new Help button appearance (issues closed: ak-3535) ([69728ed](https://bitbucket.org/atlassian/atlaskit/commits/69728ed))
 ## 5.2.0 (2017-09-12)
 
 * feature; we need the ability to reference elements ([cbf5c12](https://bitbucket.org/atlassian/atlaskit/commits/cbf5c12))

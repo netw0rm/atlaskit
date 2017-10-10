@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { GrantAccessBase } from '../src/start-trial/components/GrantAccess';
+import { GrantAccessBase } from '../src/request-or-start-trial/components/GrantAccess';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
 import { ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
@@ -12,7 +12,7 @@ const defaultProps = {
   optionItems: [
     {
       value: 'everyone',
-      label: 'Everyone in JIRA Software',
+      label: 'Everyone in Jira Software',
     },
     {
       value: 'site-admins',
@@ -31,7 +31,7 @@ const defaultProps = {
   progress: 0,
   status: ACTIVATING,
   heading: 'Who should have access?',
-  defaultAccess: 'Everyone in JIRA will have access to Confluence.',
+  defaultAccess: 'Everyone in Jira will have access to Confluence.',
 
   userSelectInFocus: false,
   userSelectIsInvalid: false,

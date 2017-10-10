@@ -5,9 +5,14 @@ import { getThemeStyle, gridSize, smallFontSize, themeNamespace } from '../util/
 
 const getPadding = ({ isCompact, theme }): Array<any> => {
   const paddingType = isCompact ? 'compact' : 'default';
-  const { x, y } = getThemeStyle(theme[themeNamespace], paddingType, 'padding');
+  const {
+    bottom = 0,
+    left = 0,
+    right = 0,
+    top = 0,
+  } = getThemeStyle(theme[themeNamespace], paddingType, 'padding');
   return css`
-    padding: ${y}px ${x}px;
+    padding: ${top}px ${right}px ${bottom}px ${left}px;
   `;
 };
 

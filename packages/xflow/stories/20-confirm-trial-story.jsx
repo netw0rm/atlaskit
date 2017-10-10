@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { ConfirmTrialBase } from '../src/start-trial/components/ConfirmTrial';
+import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ConfirmTrial';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
@@ -18,13 +18,13 @@ const defaultProps = {
       We will email your billing contact 3 days in advance.
     </p>
   ),
-  reactivateHeading: '[PLACEHOLDER] Reactivate Confluence',
+  reactivateHeading: 'Welcome back',
   reactivateMessage: (
-    <p>
-      [PLACEHOLDER] Once your trial finishes, billing will start.<br />
-      Easily cancel at anytime in <strong>Manage Application</strong>.<br />
-      We will email your billing contact 3 days in advance.
-    </p>
+    <div>
+      <p>If your instance is eligible for a trial, Confluence will be free for 30 days.</p>
+      <p>Otherwise, billing will start immediately.</p>
+      <p>{"We'll email your billing contact 3 days prior to the due date with any new charges."}</p>
+    </div>
   ),
   spinnerActive: false,
   getStartedButtonDisabled: false,

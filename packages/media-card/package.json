@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "21.0.2",
+  "version": "21.4.0",
   "config": {
     "access": "public"
   },
@@ -44,7 +44,8 @@
     "react-lazy-load-zz": "^3.0.14",
     "react-transition-group": "^1.1.2",
     "styled-components": "^1.3.0",
-    "tslib": "^1.2.0"
+    "tslib": "^1.2.0",
+    "uuid": "^3.1.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -60,7 +61,7 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@atlaskit/media-core": "^9.0.0",
+    "@atlaskit/media-core": "^9.0.0 || ^10.1.0",
     "react": "^15.3.2",
     "rxjs": "^5.1.0"
   },
@@ -69,11 +70,10 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/droplist": "^4.0.0",
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
-    "@atlaskit/media-core": "^9.0.0",
-    "@atlaskit/media-test-helpers": "^7.0.0",
+    "@atlaskit/media-core": "^10.1.0",
+    "@atlaskit/media-test-helpers": "^8.2.1",
     "@atlaskit/toggle": "^2.0.4",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"

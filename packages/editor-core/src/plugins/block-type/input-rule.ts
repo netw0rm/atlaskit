@@ -27,16 +27,18 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   }
 
   if (schema.nodes.codeBlock) {
-    rules.push(createInputRule(/^```(\S*)\s$/, (state, match, start, end): Transaction | undefined => {
+    rules.push(createInputRule(/((^`{3,})|(\s`{3,}))(\S*)\s$/, (state, match, start, end): Transaction | undefined => {
+
       const attributes: any = {};
-      if (match[1]) {
-        attributes.language = match[1];
+      if (match[4]) {
+        attributes.language = match[4];
       }
       if (isConvertableToCodeBlock(state)) {
+        const newStart = match[0][0] === ' ' ? start + 1 : start;
         analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
         return transformToCodeBlockAction(state, attributes)
           // remove markdown decorator ```
-          .delete(start, end)
+          .delete(newStart, end)
           .scrollIntoView();
       }
     }));

@@ -1,5 +1,11 @@
 # @atlaskit/modal-dialog
 
+## 3.0.2 (2017-10-05)
+
+* bug fix; resolve error in modal dialog (issues closed: ak-3623) ([2052679](https://bitbucket.org/atlassian/atlaskit/commits/2052679))
+## 3.0.1 (2017-09-26)
+
+* bug fix; update webpack raw path (issues closed: ak-3589) ([0aa9737](https://bitbucket.org/atlassian/atlaskit/commits/0aa9737))
 ## 3.0.0 (2017-09-13)
 
 

@@ -1,5 +1,47 @@
 # @atlaskit/emoji
 
+## 30.1.0 (2017-10-10)
+
+
+* bug fix; emoji rendered with set width and height to reduce reflows (issues closed: fs-1156) ([4a2a3b9](https://bitbucket.org/atlassian/atlaskit/commits/4a2a3b9))
+* feature; allow size of emoji to be overridden (issues closed: fs-1156) ([98cd503](https://bitbucket.org/atlassian/atlaskit/commits/98cd503))
+## 30.0.0 (2017-10-05)
+
+* bug fix; fix typescript errors ([c577c6e](https://bitbucket.org/atlassian/atlaskit/commits/c577c6e))
+* breaking; EmojiResource and EmojiRepository implement addUnknownEmoji rather than addCustomEmoji ([f82b6ae](https://bitbucket.org/atlassian/atlaskit/commits/f82b6ae))
+* breaking; unknown emojis of any type can be resolved and added to the repository (issues closed: fs-1404) ([f82b6ae](https://bitbucket.org/atlassian/atlaskit/commits/f82b6ae))
+* bug fix; query auto converts to emoji on exact unique shortname match (issues closed: fs-1381) ([c16eb18](https://bitbucket.org/atlassian/atlaskit/commits/c16eb18))
+## 29.1.1 (2017-09-27)
+
+
+
+* bug fix; fS-1348 preview displays correct img (issues closed: fs-1348) ([6b0d167](https://bitbucket.org/atlassian/atlaskit/commits/6b0d167))
+## 29.1.0 (2017-09-25)
+
+* bug fix; emoji picker displays people emojis after frequent (issues closed: fs-1340) ([f2a089e](https://bitbucket.org/atlassian/atlaskit/commits/f2a089e))
+* feature; return creator user Id and created data in EmojiDescription (optionally) (issues closed: fs-1328) ([7949ff4](https://bitbucket.org/atlassian/atlaskit/commits/7949ff4))
+## 29.0.4 (2017-09-22)
+
+
+* bug fix; removed reference to selectedCategory ([7319aa2](https://bitbucket.org/atlassian/atlaskit/commits/7319aa2))
+* bug fix; export props and state of emojipickerlist ([3c2dde2](https://bitbucket.org/atlassian/atlaskit/commits/3c2dde2))
+
+* bug fix; fS-1349 refactor selectedCategory resolution logic in picker (issues closed: fs-1349) ([10c7487](https://bitbucket.org/atlassian/atlaskit/commits/10c7487))
+## 29.0.3 (2017-09-22)
+
+* bug fix; remove code splitting from emoji ([94a5901](https://bitbucket.org/atlassian/atlaskit/commits/94a5901))
+## 29.0.2 (2017-09-21)
+
+* bug fix; shows tone selector by default in preview (issues closed: fs-1346) ([d4fbaf8](https://bitbucket.org/atlassian/atlaskit/commits/d4fbaf8))
+* bug fix; fS-1297 picker row to fit emoji if custom is uploaded (issues closed: fs-1297) ([cf42328](https://bitbucket.org/atlassian/atlaskit/commits/cf42328))
+## 29.0.1 (2017-09-19)
+
+* bug fix; code splitted mediapicker in emoji package (issues closed: ed-2776) ([8649f12](https://bitbucket.org/atlassian/atlaskit/commits/8649f12))
+## 29.0.0 (2017-09-18)
+
+
+* breaking; EmojiProvider.calculateDynamicCategories() now returns a Promise<string[]> instead of string[] ([c19395f](https://bitbucket.org/atlassian/atlaskit/commits/c19395f))
+* breaking; a few bug fixes around emoji upload plus Atlassian icon change. (issues closed: fs-1271) ([c19395f](https://bitbucket.org/atlassian/atlaskit/commits/c19395f))
 ## 28.0.2 (2017-09-13)
 
 * bug fix; fixed typescript errors ([db466da](https://bitbucket.org/atlassian/atlaskit/commits/db466da))

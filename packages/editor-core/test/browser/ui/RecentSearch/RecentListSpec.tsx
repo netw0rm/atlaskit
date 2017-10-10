@@ -27,6 +27,7 @@ describe('@atlaskit/editor-core/ui/RecentSearch/RecentList', () => {
     );
 
     expect(component.find(RecentItem)).to.have.lengthOf(1);
+    component.unmount();
   });
 
   it('should render a spinner when loading', () => {
@@ -40,6 +41,7 @@ describe('@atlaskit/editor-core/ui/RecentSearch/RecentList', () => {
     );
 
     expect(component.find(Spinner)).to.have.lengthOf(1);
+    component.unmount();
   });
 
   it('should not render a spinner when not loading', () => {
@@ -53,6 +55,7 @@ describe('@atlaskit/editor-core/ui/RecentSearch/RecentList', () => {
     );
 
     expect(component.find(Spinner)).to.have.lengthOf(0);
+    component.unmount();
   });
 
   it('should select the item on selectedIndex', () => {
@@ -83,5 +86,6 @@ describe('@atlaskit/editor-core/ui/RecentSearch/RecentList', () => {
     expect(component.find(RecentItem)).to.have.lengthOf(2);
     expect(component.find(RecentItem).at(0).props()).to.have.property('selected', false);
     expect(component.find(RecentItem).at(1).props()).to.have.property('selected', true);
+    component.unmount();
   });
 });

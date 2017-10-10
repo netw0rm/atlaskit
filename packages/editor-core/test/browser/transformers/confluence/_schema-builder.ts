@@ -56,6 +56,10 @@ export const media = (attrs: {
 
   return schema.nodes.media.create(mediaAttrs);
 };
+export const table = nodeFactory(schema.nodes.table, {});
+export const tr = nodeFactory(schema.nodes.tableRow, {});
+export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableCell, attrs);
+export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableHeader, attrs);
 
 // Marks
 export const code = markFactory(schema.marks.code);
@@ -66,7 +70,13 @@ export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
-export const table = nodeFactory(schema.nodes.table, {});
-export const tr = nodeFactory(schema.nodes.tableRow, {});
-export const td = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableCell, attrs);
-export const th = (attrs: { colspan?: number, rowspan?: number }) => nodeFactory(schema.nodes.tableHeader, attrs);
+
+export const inlineCommentMarker = (attrs: {} = {}) => markFactory(schema.marks.inlineCommentMarker, attrs);
+export const textColor = (attrs: { color?: string }) => markFactory(schema.marks.textColor, attrs);
+
+export const inlineMacro = (attrs: {
+  macroId: string;
+  name: string;
+  placeholderUrl?: string;
+  params?: object;
+}) => schema.nodes.inlineMacro.create(attrs);

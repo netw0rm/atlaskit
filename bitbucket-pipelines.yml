@@ -72,21 +72,39 @@ pipelines:
           # - node
 
   custom: # Pipelines that can be scheduled or triggered manually
-    build-website-production:
-      - step:
-          script:
-            - ./build/bin/setup.sh
-            - yarn
-            - cd packages/website
-            - npm run deploy
 
-    build-website-staging:
+    # We add "dev" to the name to make it come first alphabetically
+    build-website-dev-staging:
       - step:
           script:
             - ./build/bin/setup.sh
             - yarn
             - cd packages/website
             - npm run deploy-staging
+
+    # This build should only be called by the scheduled build. We are in a hard catch-22 though, to
+    # make this build only be able to be run on a specific branch, we need to prevent being able to
+    # to run it manually (prep_for_release.sh will fail as BITBUCKET_BRANCH will not be set)
+
+    ##################################################################################################
+    #  NOTE: If you are trying to change this script, you'll need to make sure you merge the changes #
+    #        into `production-website-DO-NOT-USE` or they wont happen in the scheduled build         #
+    ##################################################################################################
+    build-website-production:
+      - step:
+          script:
+            - ./build/bin/setup.sh
+            # need to run this so we have access to the Bitbucket credentials so we can pull master
+            - ./build/bin/prep_for_release.sh
+            - ./build/bin/exit.if.branch.name.not.matches.js "production-website-DO-NOT-USE" || exit
+            # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui
+            # and block actual master builds
+            - git fetch
+            - git checkout origin/master
+            - git pull
+            - yarn
+            - cd packages/website
+            - npm run deploy
 
     run-browserstack: # this is to allow users to manually run BS for a commit
       - step:

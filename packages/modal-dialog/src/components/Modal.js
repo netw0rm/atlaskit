@@ -213,4 +213,7 @@ class Modal extends Component {
   }
 }
 
-export default withRenderTarget({ target: 'modal' }, Modal);
+export default withRenderTarget({
+  target: 'modal',
+  wrapWithTransitionGroup: true,
+}, Modal);

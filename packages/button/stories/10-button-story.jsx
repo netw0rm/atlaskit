@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 
 import React from 'react';
+import styled from 'styled-components';
 import Calendar from '@atlaskit/icon/glyph/confluence/calendar';
 import Page from '@atlaskit/icon/glyph/confluence/page';
 import Question from '@atlaskit/icon/glyph/question';
@@ -34,6 +35,18 @@ const css = `
   }
   .truncated {
     max-width: 100px;
+  }
+`;
+
+const NarrowWrapper = styled.div`
+  margin: 10px;
+  padding: 10px;
+  width: 190px;
+  border: 1px solid red;
+
+  & > * {
+    margin-bottom: 10px;
+    &:last-child { margin-bottom: 0; }
   }
 `;
 
@@ -74,6 +87,9 @@ const buildBackgroundStory = () => {
           <Button {...extraProps} component={CustomComponent}>
             Custom Component
           </Button>
+          <Button {...extraProps} appearance="help">
+            Help
+          </Button>
         </div>
         <span> Normal States </span>
       </div>
@@ -97,6 +113,9 @@ const buildBackgroundStory = () => {
           <Button {...extraProps} isSelected iconAfter={<Open label="open icon" />}>
             Selected
           </Button>
+          <Button {...extraProps} appearance="help" iconAfter={<Unlink label="unlink icon" />}>
+            Help
+          </Button>
         </div>
         <span> Normal States + icons</span>
       </div>
@@ -113,6 +132,9 @@ const buildBackgroundStory = () => {
           </Button>
           <Button {...extraProps} appearance="subtle-link" isDisabled>
             Subtle link Disabled
+          </Button>
+          <Button {...extraProps} appearance="help" isDisabled>
+            Help link Disabled
           </Button>
         </div>
         <span> Disabled variations </span>
@@ -131,6 +153,9 @@ const buildBackgroundStory = () => {
           <Button {...extraProps} appearance="subtle-link" isDisabled iconAfter={<Calendar label="calendar icon" />}>
             Subtle link Disabled
           </Button>
+          <Button {...extraProps} appearance="help" isDisabled iconAfter={<Question label="question icon" />}>
+            Help link Disabled
+          </Button>
         </div>
         <span> Disabled variations + icons</span>
       </div>
@@ -148,6 +173,7 @@ const buildBackgroundStory = () => {
           <Button {...extraProps} spacing="none" isDisabled iconBefore={<Open label="open icon" />} />
           <Button {...extraProps} appearance="subtle" spacing="none" iconBefore={<Open label="open icon" />} />
           <Button {...extraProps} appearance="subtle-link" spacing="none" iconBefore={<Open label="open icon" />} />
+          <Button {...extraProps} appearance="help" spacing="none" iconBefore={<Open label="open icon" />} />
         </div>
         <span> No spacing buttons with only icons </span>
       </div>
@@ -392,6 +418,7 @@ storiesOf(name, module)
   .add('subtle states', buildStory({ appearance: 'subtle' }))
   .add('link states', buildStory({ appearance: 'link' }))
   .add('subtle-link states', buildStory({ appearance: 'subtle-link' }))
+  .add('help states', buildStory({ appearance: 'help' }))
   .add('different backgrounds', buildBackgroundStory)
   .add('button group', () => (
     <Row>
@@ -406,6 +433,7 @@ storiesOf(name, module)
         <ButtonGroup>
           <Button appearance="primary">Alpha</Button>
           <Button appearance="default">Beta</Button>
+          <Button appearance="help">Delta</Button>
           <Button appearance="link">Gamma</Button>
           <Button appearance="link">Delta</Button>
         </ButtonGroup>
@@ -425,5 +453,12 @@ storiesOf(name, module)
         </ButtonGroup>
       </Row>
     </Row>
+  ))
+  .add('with truncation', () => (
+    <NarrowWrapper>
+      <div><Button appearance="primary">I am wider than my parent</Button></div>
+      <div><Button appearance="primary" iconBefore={<Question label="Icon before" />}>I am wider than my parent</Button></div>
+      <div><Button appearance="primary" iconAfter={<Expand label="Icon after" />}>I am wider than my parent</Button></div>
+    </NarrowWrapper>
   )
 );

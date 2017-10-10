@@ -55,8 +55,10 @@ type GenericItemState = {|
 |}
 
 type GenericItemPadding = {|
-  x: number,
-  y: number,
+  bottom: number,
+  left: number,
+  right: number,
+  top: number,
 |}
 
 export type GenericItemTheme = {|

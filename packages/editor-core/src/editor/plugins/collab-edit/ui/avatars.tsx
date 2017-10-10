@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { default as Avatar, AvatarGroup } from '@atlaskit/avatar';
+import Avatar, { AvatarGroup } from '@atlaskit/avatar';
 import WithPluginState from '../../../ui/WithPluginState';
 import { EditorView } from '../../../../prosemirror';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -67,28 +67,30 @@ const AvatarItem: any = styled.div`
   }
 `;
 
-class Item extends React.Component<{ name: string, sessionId: string, email: string, src: string }, {}> {
-  render() {
-    const { props } =  this;
-    const color = getAvatarColor(props.sessionId).color.solid;
-    const avatar = props.name.substr(0, 1).toUpperCase();
-
-    return (
-      <AvatarItem badgeColor={color} avatar={avatar}>
-        <Avatar {...props} />
-      </AvatarItem>
-    );
-  }
+declare interface ItemProps {
+  name: string;
+  sessionId: string;
+  email: string;
+  src: string;
 }
 
-export default class Avatars extends React.Component<Props, {}> {
+function Item(props: ItemProps) {
+  const color = getAvatarColor(props.sessionId).color.solid;
+  const avatar = props.name.substr(0, 1).toUpperCase();
 
+  return (
+    <AvatarItem badgeColor={color} avatar={avatar}>
+      <Avatar {...props} />
+    </AvatarItem>
+  );
+}
+
+export default class Avatars extends React.Component<Props, any> {
   private onAvatarClick = (data) => {
   }
 
   private renderAvatars = ({ data }) => {
     const { sessionId, activeParticipants } = data;
-
     const avatars = activeParticipants.map(p => ({
       email: p.email,
       key: p.sessionId,

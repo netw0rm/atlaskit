@@ -1178,6 +1178,35 @@ System.out.println("There are " + count + " values >= 5");`
             {
               type: 'text',
               text: '.'
+            },
+            {
+              type: 'mention',
+              attrs: {
+                id: 'error:NotFound',
+                text: '@NoLongerWorksHere',
+                accessLevel: 'CONTAINER'
+              }
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'is not',
+              marks: [
+                {
+                  type: 'strong'
+                }
+              ]
+            },
+            {
+              type: 'text',
+              text: ' '
+            },
+            {
+              type: 'text',
+              text: 'here.',
             }
           ]
         },
@@ -1415,6 +1444,31 @@ System.out.println("There are " + count + " values >= 5");`
             }
           ]
         }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'this is -> '
+        },
+        {
+          type: 'text',
+          text: '<INLINE_COMMENT_MARKER>',
+          marks: [
+            {
+              type: 'inlineCommentMarker',
+              attrs: {
+                reference: 'this-is-ac-ref-hash'
+              }
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: ' <- that is'
+        },
       ]
     }
   ]

@@ -33,8 +33,8 @@ function validateNode(node: Node): boolean {
   return false;
 }
 
-function isMarkTypeExcludedFromMark(markType: MarkType, mark: Mark): boolean {
-  return mark.type.excludes(markType);
+function isMarkTypeCompatibleWithMark(markType: MarkType, mark: Mark): boolean {
+  return !mark.type.excludes(markType) && !markType.excludes(mark.type);
 }
 
 function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {
@@ -100,23 +100,34 @@ export function endPositionOfParent(resolvedPos: ResolvedPos): number {
 }
 
 /**
- * Check if a mark is allowed at the current position based on a given state.
- * This method looks both at the currently active marks as well as the node and marks
- * at the current position to determine if the given mark type is allowed.
- * If there's a non-empty selection, the current position corresponds to the start
- * of the selection.
+ * Check if a mark is allowed at the current selection / cursor based on a given state.
+ * This method looks at both the currently active marks on the transaction, as well as
+ * the node and marks at the current selection to determine if the given mark type is
+ * allowed.
  */
-export function isMarkTypeAllowedAtCurrentPosition(markType: MarkType, state: EditorState<any>) {
+export function isMarkTypeAllowedInCurrentSelection(markType: MarkType, state: EditorState<any>) {
   if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
 
-  let allowedInActiveMarks = true;
-  let excludesMarkType = mark => isMarkTypeExcludedFromMark(markType, mark);
-  if (state.tr.storedMarks) {
-    allowedInActiveMarks = !state.tr.storedMarks.some(excludesMarkType);
-  } else {
-    allowedInActiveMarks = !state.selection.$from.marks().some(excludesMarkType);
-  }
-  return allowedInActiveMarks;
+  const { empty, $cursor, ranges } = state.selection as TextSelection;
+  if (empty && !$cursor) { return false; }
+
+  let isCompatibleMarkType = mark => isMarkTypeCompatibleWithMark(markType, mark);
+
+  // Handle any new marks in the current transaction
+  if(state.tr.storedMarks && !state.tr.storedMarks.every(isCompatibleMarkType)) { return false; }
+
+  if ($cursor) { return $cursor.marks().every(isCompatibleMarkType); }
+
+  // Check every node in a selection - ensuring that it is compatible with the current mark type
+  return ranges.every(({ $from, $to }) => {
+    let allowedInActiveMarks = $from.depth === 0 ? state.doc.marks.every(isCompatibleMarkType) : true;
+
+    state.doc.nodesBetween($from.pos, $to.pos, node => {
+      allowedInActiveMarks = allowedInActiveMarks && node.marks.every(isCompatibleMarkType);
+    });
+
+    return allowedInActiveMarks;
+  });
 }
 
 /**

@@ -22,6 +22,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
 
     const mention = mount(<Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" providers={providerFactory}/>);
     expect(mention.find('WithProfilecardMention')).to.have.length(0);
+    mention.unmount();
   });
 
   it('should pass provider into resourced mention', () => {
@@ -33,6 +34,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
     const resourcedMention = mention.find(ResourcedMention);
 
     expect(resourcedMention.prop('mentionProvider')).to.equal(mentionProvider);
+    mention.unmount();
   });
 
   it('should not render ResourcedMentionWithProfilecard if profilecardProvider promise is rejected', async () => {
@@ -47,6 +49,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
     } catch (err) {
       expect(mention.find('WithProfilecardMention')).to.have.length(0);
     }
+    mention.unmount();
   });
 
   ['HipChat', 'all', 'here'].forEach(genericUserId => {
@@ -59,6 +62,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
       await profilecardProvider;
 
       expect(mention.find('WithProfilecardMention')).to.have.length(0);
+      mention.unmount();
     });
   });
 });

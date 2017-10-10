@@ -34,7 +34,6 @@ export interface Props {
   onEmojiActive?: OnEmojiEvent;
   onCategoryActivated?: OnCategory;
   onOpenUpload?: () => void;
-  selectedCategory?: string;
   selectedTone?: ToneSelection;
   onSearch?: OnSearch;
   loading?: boolean;
@@ -42,7 +41,6 @@ export interface Props {
 }
 
 export interface State {
-  scrollToIndex?: number;
 }
 
 interface EmojiGroup {
@@ -142,16 +140,6 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
 
   constructor(props) {
     super(props);
-
-    let selectedEmoji = props.emojis[0];
-    if (props.selectedCategory) {
-      const emojiInCategory = props.emojis
-        .filter(emoji => emoji.category === props.selectedCategory);
-      if (emojiInCategory) {
-        selectedEmoji = emojiInCategory[0];
-      }
-    }
-
     this.state = {};
 
     this.buildGroups(props.emojis);
@@ -165,12 +153,6 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
         ...emoji,
       }
     };
-  }
-
-  componentWillReceiveProps = (nextProps: Props) => {
-    if (nextProps.selectedCategory && nextProps.selectedCategory !== this.props.selectedCategory) {
-      this.reveal(nextProps.selectedCategory);
-    }
   }
 
   componentWillUpdate = (nextProps: Props, nextState: State) => {
@@ -309,8 +291,8 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
         });
 
         if (!customGroupRendered && (showUploadOption || showCustomCategory)) {
-          // Custom group wasn't rendered, but upload is supports, so add
-          // group with lone upload action
+          // Custom group wasn't rendered, but upload is supported, so add group with lone upload action
+          this.categoryTracker.add(customCategory, items.length);
 
           items = [
             ...items,
@@ -333,6 +315,12 @@ export default class EmojiPickerVirtualList extends PureComponent<Props, State> 
     if (!rowCountChanged && list) {
       // Row count has not changed, so need to tell list to rerender.
       list.forceUpdateGrid();
+    }
+    if (!query && list) {
+      // VirtualList can apply stale heights since it performs a shallow
+      // compare to check if the list has changed. Should manually recompute
+      // row heights for the case when frequent category come in later
+      list.recomputeRowHeights();
     }
   }
 

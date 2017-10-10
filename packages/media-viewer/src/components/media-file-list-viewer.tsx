@@ -31,8 +31,7 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
     super(props);
 
     const { context, collectionName, basePath, MediaViewer, mediaViewerConfiguration } = props;
-    const { config } = context;
-    const { clientId, tokenProvider } = config;
+    const { config: {authProvider} } = context;
 
     this.state = {
       mediaViewer: new MediaViewer({
@@ -40,7 +39,7 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
         assets: {
           basePath: basePath
         },
-        fetchToken: fetchToken(clientId, tokenProvider, collectionName)
+        fetchToken: fetchToken(authProvider, collectionName)
       })
     };
   }

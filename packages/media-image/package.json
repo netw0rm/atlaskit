@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-image",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "config": {
     "access": "public"
   },
@@ -37,7 +37,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^7.0.0",
+    "@atlaskit/media-core": "^10.1.0",
+    "@atlaskit/media-test-helpers": "^8.2.1",
     "@atlaskit/field-text": "^2.7.0",
     "akutil-common-test": "*"
   },

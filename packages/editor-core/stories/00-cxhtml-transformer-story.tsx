@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { Component } from 'react';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN80 } from '@atlaskit/util-shared-styles';
 
 import Editor from './../src/editor';
@@ -11,15 +10,14 @@ import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
 import { name, version } from '../package.json';
 import { storyDecorator, storyMediaProviderFactory } from '../src/test-helper';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import { ConfluenceTransformer } from '../';
 import Spinner from '@atlaskit/spinner';
 import { pd } from 'pretty-data';
+
+import { macroProviderPromise } from './mock-macro-provider';
 
 import {
   akEditorCodeBackground,
@@ -28,13 +26,6 @@ import {
 } from '../src/styles';
 
 import { akBorderRadius } from 'akutil-shared-styles';
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -96,7 +87,8 @@ const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac
 }]]></ac:plain-text-body></ac:structured-macro>`;
 const JIRA_ISSUE = '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>';
 const JIRA_ISSUES_LIST = '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>';
-
+const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
+const STATUS_MACRO = '<p><ac:structured-macro ac:name="status" ac:schema-version="1" ac:macro-id="5e394d20-1d16-4c7d-a67c-13c9cf15abd8"><ac:parameter ac:name="colour">Green</ac:parameter><ac:parameter ac:name="title">Cool macro</ac:parameter><fab:placeholder-url>/wiki/plugins/servlet/confluence/placeholder/macro?definition=e3N0YXR1czpjb2xvdXI9R3JlZW58dGl0bGU9Q29vbCBtYWNyb30&amp;locale=en_GB&amp;version=2</fab:placeholder-url><ac:body-type>NONE</ac:body-type><fab:display-type>INLINE</fab:display-type></ac:structured-macro></p>';
 
 storiesOf(name, module)
   .addDecorator(function (story: Function, context: { kind: string, story: string }) {
@@ -189,8 +181,10 @@ storiesOf(name, module)
               />
               <button onClick={this.handleImportClick}>Import</button>
               <button onClick={this.handleInsertCodeClick}>Insert Code</button>
+              <button onClick={this.handleInsertPanelClick}>Insert Panel</button>
               <button onClick={this.handleInsertJiraIssueClick}>Insert JIRA Issue</button>
               <button onClick={this.handleInsertJiraIssuesListClick}>Insert JIRA Issues List</button>
+              <button onClick={this.handleInsertStatusMacroClick}>Insert Status Macro</button>
             </fieldset>
             <Content>
               <EditorContext>
@@ -210,11 +204,15 @@ storiesOf(name, module)
                         allowTables={true}
                         allowJiraIssue={true}
                         allowUnsupportedContent={true}
+                        allowInlineCommentMarker={true}
+                        allowPanel={true}
+                        allowInlineMacro={true}
 
-                        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+                        mediaProvider={storyMediaProviderFactory()}
                         emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
                         mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
                         activityProvider={Promise.resolve(new MockActivityResource())}
+                        macroProvider={macroProviderPromise}
                         // tslint:disable-next-line:jsx-no-lambda
                         contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 
@@ -252,6 +250,8 @@ storiesOf(name, module)
       private handleInsertCodeClick = () => this.setState({ input: CODE_MACRO });
       private handleInsertJiraIssueClick = () => this.setState({ input: JIRA_ISSUE });
       private handleInsertJiraIssuesListClick = () => this.setState({ input: JIRA_ISSUES_LIST });
+      private handleInsertPanelClick = () => this.setState({ input: PANEL_MACRO });
+      private handleInsertStatusMacroClick = () => this.setState({ input: STATUS_MACRO });
     }
 
     return <Demo />;

@@ -1,5 +1,18 @@
 # @atlaskit/dropdown-menu
 
+## 3.10.3 (2017-10-06)
+
+* bug fix; replace React.PropTypes imports with prop-types ([8c17947](https://bitbucket.org/atlassian/atlaskit/commits/8c17947))
+
+
+## 3.10.2 (2017-09-21)
+
+* bug fix; update item dependency (issues closed: ak-3418) ([4f64804](https://bitbucket.org/atlassian/atlaskit/commits/4f64804))
+
+
+
+
+
 ## 3.10.1 (2017-09-06)
 
 * bug fix; Dropdown menu now closes when a non-link item is clicked (issues closed: ak-3288) ([3bdf62d](https://bitbucket.org/atlassian/atlaskit/commits/3bdf62d))

@@ -118,6 +118,25 @@ export default {
       },
     },
 
+    // Help appearance
+    help: {
+      background: {
+        default: themed({ light: colors.P400, dark: colors.P400 }),
+        hover: themed({ light: colors.P200, dark: colors.P200 }),
+        active: themed({ light: colors.P500, dark: colors.P500 }),
+        disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
+        selected: themed({ light: colors.R600, dark: colors.R600 }),
+      },
+      boxShadowColor: {
+        focus: themed({ light: colors.P100, dark: colors.P100 }),
+      },
+      color: {
+        default: themed({ light: colors.N0, dark: colors.N0 }),
+        disabled: themed({ light: colors.N70, dark: colors.DN30 }),
+        selected: themed({ light: colors.N0, dark: colors.N0 }),
+      },
+    },
+
     // Link appearance
     link: {
       background: {

@@ -22,7 +22,10 @@ import {
   collabEditPlugin,
   helpDialogPlugin,
   jiraIssuePlugin,
-  unsupportedContentPlugin
+  unsupportedContentPlugin,
+  inlineCommentMarkerPlugin,
+  panelPlugin,
+  inlineMacroPlugin
 } from '../plugins';
 
 /**
@@ -104,6 +107,18 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.allowUnsupportedContent) {
     plugins.push(unsupportedContentPlugin);
+  }
+
+  if(props.allowInlineCommentMarker) {
+    plugins.push(inlineCommentMarkerPlugin);
+  }
+
+  if(props.allowPanel) {
+    plugins.push(panelPlugin);
+  }
+
+  if(props.allowInlineMacro) {
+    plugins.push(inlineMacroPlugin);
   }
 
   // UI only plugins

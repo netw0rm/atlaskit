@@ -14,6 +14,7 @@ export interface CardViewProps extends SharedCardProps {
   readonly metadata?: MediaItemDetails;
   readonly resizeMode?: ImageResizeMode;
 
+  readonly onRetry?: () => void;
   readonly onClick?: (result: CardEvent) => void;
   readonly onMouseEnter?: (result: CardEvent) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
@@ -23,6 +24,10 @@ export interface CardViewProps extends SharedCardProps {
 }
 
 export class CardView extends React.Component<CardViewProps, {}> {  // tslint:disable-line:variable-name
+  static defaultProps = {
+    appearance: 'auto'
+  };
+
   componentWillReceiveProps(nextProps: CardViewProps) {
     const {selected: currSelected} = this.props;
     const {selectable: nextSelectable, selected: nextSelected} = nextProps;
@@ -46,7 +51,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
 
   render() {
     const {onClick, onMouseEnter} = this;
-    const {mediaItemType, dimensions} = this.props;
+    const {mediaItemType, dimensions, appearance} = this.props;
     let card;
 
     if (mediaItemType === 'link') {
@@ -58,7 +63,7 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
     }
 
     return (
-      <Wrapper dimensions={dimensions} onClick={onClick} onMouseEnter={onMouseEnter}>
+      <Wrapper appearance={appearance} dimensions={dimensions} onClick={onClick} onMouseEnter={onMouseEnter}>
         {card}
       </Wrapper>
     );
@@ -75,11 +80,12 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   }
 
   private renderLink = () => {
-    const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, ...otherProps} = this.props;
+    const {mediaItemType, status, metadata, onClick, onMouseEnter, onSelectChange, onRetry, ...otherProps} = this.props;
 
     return (
       <LinkCard
         {...otherProps}
+        onRetry={onRetry}
         status={status}
         details={metadata as LinkDetails | UrlPreview}
       />

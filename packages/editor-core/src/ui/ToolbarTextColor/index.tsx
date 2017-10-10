@@ -4,7 +4,7 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { EditorView, PluginKey } from '../../prosemirror';
 import { TextColorState } from '../../plugins/text-color';
 import ToolbarButton from '../ToolbarButton';
-import Icon from '@atlaskit/icon/lib/Icon';
+import Icon from '@atlaskit/icon';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import TextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import ColorPalette from './ColorPalette';
@@ -50,7 +50,7 @@ export default class ToolbarTextColor extends PureComponent<Props, State> {
         boundariesElement={popupsBoundariesElement}
         isOpen={isOpen && !disabled && !this.props.disabled}
         onOpenChange={this.handleOpenChange}
-        fitWidth={210}
+        fitWidth={242}
         fitHeight={80}
         trigger={
           <ToolbarButton

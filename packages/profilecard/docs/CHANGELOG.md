@@ -1,5 +1,13 @@
 # @atlaskit/profilecard
 
+## 3.7.3 (2017-10-10)
+
+
+* bug fix; align default status messages of profilecard with Stride (issues closed: dir-414) ([4d65674](https://bitbucket.org/atlassian/atlaskit/commits/4d65674))
+* bug fix; bump dependeny versions for profilecard to latest (issues closed: dir-408) ([839922d](https://bitbucket.org/atlassian/atlaskit/commits/839922d))
+## 3.7.2 (2017-09-20)
+
+* bug fix; fix non array value of \`oneOf\` proptype in profilecard.jsx ([39131f7](https://bitbucket.org/atlassian/atlaskit/commits/39131f7))
 ## 3.7.1 (2017-09-08)
 
 * bug fix; limit profilecards error types to the two available from the api (issues closed: dir-376) ([b9b8532](https://bitbucket.org/atlassian/atlaskit/commits/b9b8532))

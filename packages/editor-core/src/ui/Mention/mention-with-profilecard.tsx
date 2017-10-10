@@ -5,13 +5,16 @@ import {
   MentionProvider,
   ResourcedMention,
 } from '@atlaskit/mention';
-import Spinner from '@atlaskit/spinner';
 
+import { UserType } from '../../schema/nodes/mention';
 import { ProfilecardProvider } from './types';
-import { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
+import ProfileCard, { AkProfilecardTriggerActions } from '@atlaskit/profilecard';
 import { MentionEventHandler } from '../Renderer';
 import Popup from '../Popup';
 import withOuterListeners from '../with-outer-listeners';
+
+// tslint:disable-next-line:variable-name
+const ProfilecardResourcedWithListeners = withOuterListeners(ProfileCard);
 
 interface Coords {
   x: number;
@@ -22,6 +25,7 @@ export interface Props {
   id: string;
   text: string;
   accessLevel?: string;
+  userType?: UserType;
   mentionProvider?: Promise<MentionProvider>;
   portal?: HTMLElement;
   profilecardProvider: ProfilecardProvider;
@@ -38,7 +42,6 @@ export interface State {
   visible: boolean;
   popupAlignX: PopupAlignX;
   popupAlignY: PopupAlignY;
-  ProfilecardResourcedWithListeners?: React.ComponentClass<any>;
 }
 
 export default class MentionWithProfileCard extends PureComponent<Props, State> {
@@ -47,15 +50,6 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
 
   private handleRef = (target: HTMLElement | null) => {
     this.setState({ target });
-  }
-
-  componentDidMount () {
-    require.ensure([], () => {
-      const profilecard = require('@atlaskit/profilecard').default;
-      this.setState({
-        ProfilecardResourcedWithListeners: withOuterListeners(profilecard)
-      });
-    });
   }
 
   private calculateLayerPosition(): [PopupAlignX, PopupAlignY] {
@@ -143,7 +137,6 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
       popupAlignY,
       target,
       visible,
-      ProfilecardResourcedWithListeners
     } = this.state;
 
     const {
@@ -173,16 +166,14 @@ export default class MentionWithProfileCard extends PureComponent<Props, State> 
           alignX={popupAlignX}
           alignY={popupAlignY}
         >
-        {ProfilecardResourcedWithListeners ?
           <ProfilecardResourcedWithListeners
-              handleClickOutside={this.hideProfilecard}
-              handleEscapeKeydown={this.hideProfilecard}
-              cloudId={cloudId}
-              userId={id}
-              resourceClient={resourceClient}
-              actions={this.getActions(id, text, accessLevel)}
-          /> : <Spinner />
-        }
+            handleClickOutside={this.hideProfilecard}
+            handleEscapeKeydown={this.hideProfilecard}
+            cloudId={cloudId}
+            userId={id}
+            resourceClient={resourceClient}
+            actions={this.getActions(id, text, accessLevel)}
+          />
         </Popup>}
       </span>
     );

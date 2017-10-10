@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import 'es6-object-assign/auto';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -46,6 +47,8 @@ type Props = {|
   containerTheme?: Provided,
   /** Component(s) to be rendered as the header of the container.  */
   containerHeaderComponent?: () => ReactElement[],
+  /** Standard React ref for the container navigation scrollable element. */
+  containerScrollRef?: (ReactElement) => void,
   /** Location to pass in an array of drawers (AkCreateDrawer, AkSearchDrawer, AkCustomDrawer)
   to be rendered. There is no decoration done to the components passed in here. */
   drawers?: ReactElement[],
@@ -120,12 +123,16 @@ type State = {|
 
 // NOTE: Dark mode is a user preference that takes precedence over provided themes
 function defaultContainerTheme(containerTheme, mode) {
+  if (containerTheme && containerTheme.hasDarkmode) {
+    return containerTheme;
+  }
   if (mode === 'dark') {
     return presets.dark;
   }
   return containerTheme || presets.container;
 }
 function defaultGlobalTheme(globalTheme, mode) {
+  if (globalTheme && globalTheme.hasDarkmode) return globalTheme;
   if (mode === 'dark') {
     return presets.dark;
   }
@@ -272,6 +279,7 @@ export default class Navigation extends PureComponent {
     const {
       children,
       containerHeaderComponent,
+      containerScrollRef,
       drawers,
       globalCreateIcon,
       globalPrimaryIcon,
@@ -370,6 +378,7 @@ export default class Navigation extends PureComponent {
                 horizontalOffset={containerOffsetX}
               >
                 <ContainerNavigation
+                  scrollRef={containerScrollRef}
                   theme={containerTheme}
                   showGlobalActions={!showGlobalNavigation}
                   globalCreateIcon={globalCreateIcon}

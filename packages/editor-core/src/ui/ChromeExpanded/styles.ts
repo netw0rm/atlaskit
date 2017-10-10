@@ -85,3 +85,12 @@ export const SecondaryToolbar = styled.div`
   align-items: flex-start;
   display: flex;
 `;
+
+// tslint:disable-next-line:variable-name
+export const ButtonGroup = styled.span`
+  display: flex;
+
+  & > span:not(:first-child) {
+    margin-left: ${akGridSizeUnitless/2}px;
+  }
+`;

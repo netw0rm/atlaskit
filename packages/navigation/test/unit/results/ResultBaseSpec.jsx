@@ -1,6 +1,8 @@
 import React from 'react';
-import { ResultBase } from '../../../src/components/js/results';
+import { quickSearchResultTypes } from '../../../src';
 import { mountWithRootTheme } from '../_theme-util';
+
+const { ResultBase } = quickSearchResultTypes;
 
 describe('Result Base', () => {
   let resultWrapper;

@@ -9,9 +9,6 @@ import EditorContext from './../src/editor/ui/EditorContext';
 import WithEditorActions from './../src/editor/ui/WithEditorActions';
 import { name } from '../package.json';
 import { storyMediaProviderFactory } from '../src/test-helper';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
@@ -24,13 +21,6 @@ import {
 import { akBorderRadius } from 'akutil-shared-styles';
 
 import { collabEditProviderPromise } from './mock-collab-provider';
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -103,7 +93,7 @@ storiesOf(name, module)
             allowTextColor={true}
             allowTables={true}
 
-            mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+            mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProviderPromise}
@@ -142,7 +132,7 @@ storiesOf(name, module)
             allowTextColor={true}
             allowTables={true}
 
-            mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+            mediaProvider={storyMediaProviderFactory()}
             emojiProvider={emojiStoryData.getEmojiResource()}
             mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
             collabEditProvider={collabEditProviderPromise}

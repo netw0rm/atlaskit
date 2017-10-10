@@ -1,6 +1,6 @@
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 
-import { MentionDescription } from '../types';
+import { MentionDescription, isAppMention } from '../types';
 import debug from '../util/logger';
 import {SearchIndex} from '../util/searchIndex';
 
@@ -377,6 +377,7 @@ class MentionResource extends AbstractMentionResource {
     }
 
     return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
+      .then(result => this.transformServiceResponse(result))
       .then((result) => {
         this.searchIndex.reset();
         this.searchIndex.indexResults(result.mentions);
@@ -423,7 +424,21 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider)
+      .then(result => this.transformServiceResponse(result));
+  }
+
+  private transformServiceResponse(result: MentionsResult): MentionsResult {
+    const mentions = result.mentions.map(mention => {
+      let lozenge: string|undefined;
+      if (isAppMention(mention)) {
+        lozenge = mention.userType;
+      }
+
+      return {...mention, lozenge};
+    });
+
+    return {...result, mentions};
   }
 
   private recordSelection(mention: MentionDescription): Promise<void> {

@@ -33,6 +33,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('normal', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to heading1', () => {
@@ -40,6 +41,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading1', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to heading2', () => {
@@ -47,6 +49,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading2', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to heading3', () => {
@@ -54,6 +57,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading3', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to heading4', () => {
@@ -61,6 +65,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading4', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to heading5', () => {
@@ -68,6 +73,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading5', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
+    editorView.destroy();
   });
 
   it('should be able to change to block quote', () => {
@@ -75,6 +81,7 @@ describe('block-type', () => {
 
     pluginState.insertBlockType('blockquote', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
+    editorView.destroy();
   });
 
   context('when rendering a block quote', () => {
@@ -85,6 +92,7 @@ describe('block-type', () => {
       if (node) {
         expect(node.type.spec.selectable).to.equal(false);
       }
+      editorView.destroy();
     });
   });
 
@@ -95,6 +103,7 @@ describe('block-type', () => {
       pluginState.insertBlockType('codeblock', editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(p('te'), code_block()(), p('xt')));
+      editorView.destroy();
     });
   });
 
@@ -141,6 +150,7 @@ describe('block-type', () => {
     pluginState.toggleBlockType('normal', editorView);
     pluginState.insertBlockType('blockquote', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
+    editorView.destroy();
   });
 
   it('should not be able to change to the same block type', () => {
@@ -148,6 +158,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('normal', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    editorView.destroy();
   });
 
   it('should be able to change block types when selecting two nodes', () => {
@@ -155,6 +166,7 @@ describe('block-type', () => {
 
     pluginState.toggleBlockType('heading1', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(h1('line1'), h1('line2')));
+    editorView.destroy();
   });
 
   it('should be able to change multiple paragraphs into one blockquote', () => {
@@ -162,6 +174,7 @@ describe('block-type', () => {
 
     pluginState.insertBlockType('blockquote', editorView);
     expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3'))));
+    editorView.destroy();
   });
 
   it('should change state when selecting different block types', () => {
@@ -173,6 +186,7 @@ describe('block-type', () => {
 
     setTextSelection(editorView, pPos);
     expect(pluginState.currentBlockType.name).to.equal('normal');
+    editorView.destroy();
   });
 
   it('should get current state immediately once subscribed', () => {
@@ -194,6 +208,7 @@ describe('block-type', () => {
 
     expect(spy.callCount).to.equal(2);
     expect(spy.calledWith(pluginState)).to.equal(true);
+    editorView.destroy();
   });
 
   describe('toggleBlockType', () => {
@@ -205,6 +220,7 @@ describe('block-type', () => {
         pluginState.toggleBlockType('heading1', editorView);
 
         expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
+        editorView.destroy();
       });
     });
 
@@ -214,6 +230,7 @@ describe('block-type', () => {
 
         pluginState.toggleBlockType('heading1', editorView);
         expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+        editorView.destroy();
       });
     });
   });
@@ -223,48 +240,56 @@ describe('block-type', () => {
       const { pluginState, editorView } = editor(doc(p()));
       pluginState.insertBlockType('panel', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
+      editorView.destroy();
     });
 
     it('should wrap current selection in panel if possible', () => {
       const { pluginState, editorView } = editor(doc(h1('test{<>}')));
       pluginState.insertBlockType('panel', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(panel(h1('test{<>}'))));
+      editorView.destroy();
     });
 
     it('should be able to insert panel after current selection if current selection can not be wrapper in panel', () => {
       const { pluginState, editorView } = editor(doc(blockquote('test{<>}')));
       pluginState.insertBlockType('panel', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote('test'), panel(p())));
+      editorView.destroy();
     });
 
     it('should be able to insert blockquote', () => {
       const { pluginState, editorView } = editor(doc(p()));
       pluginState.insertBlockType('blockquote', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
+      editorView.destroy();
     });
 
     it('should wrap current selection in blockquote if possible', () => {
       const { pluginState, editorView } = editor(doc(p('test{<>}')));
       pluginState.insertBlockType('blockquote', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('test{<>}'))));
+      editorView.destroy();
     });
 
     it('should be able to insert blockquote after current selection if current selection can not be wrapper in blockquote', () => {
       const { pluginState, editorView } = editor(doc(h1('test{<>}')));
       pluginState.insertBlockType('blockquote', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(h1('test'), blockquote(p())));
+      editorView.destroy();
     });
 
     it('should be able to insert codeblock', () => {
       const { pluginState, editorView } = editor(doc(p()));
       pluginState.insertBlockType('codeblock', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(code_block()()));
+      editorView.destroy();
     });
 
     it('should insert code block after selection if selected block has text', () => {
       const { pluginState, editorView } = editor(doc(p('text{<>}')));
       pluginState.insertBlockType('codeblock', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text{<>}'), code_block()()));
+      editorView.destroy();
     });
   });
 

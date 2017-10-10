@@ -137,13 +137,15 @@ export class CachingMediaEmoji extends PureComponent<CachingEmojiProps,State> {
         />
       );
     } else {
-      const { emoji, showTooltip } = this.props;
-      const { shortName } = emoji;
+      const { emoji, placeholderSize, showTooltip, fitToHeight } = this.props;
+      const { shortName, representation } = emoji;
       emojiComponent = (
         <EmojiPlaceholder
+          size={placeholderSize}
           shortName={shortName}
           showTooltip={showTooltip}
-          size={placeholderSize}
+          representation={representation}
+          fitToHeight={fitToHeight}
         />
       );
     }

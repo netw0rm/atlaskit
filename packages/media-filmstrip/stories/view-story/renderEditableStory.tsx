@@ -42,8 +42,8 @@ const exampleActions = [
 ];
 
 const cards = [
-  <Card context={context} identifier={genericUrlPreviewId} actions={exampleActions}/>,
-  <Card context={context} identifier={genericLinkId} actions={exampleActions}/>,
+  <Card appearance="horizontal" context={context} identifier={genericUrlPreviewId} actions={exampleActions}/>,
+  <Card appearance="horizontal" context={context} identifier={genericLinkId} actions={exampleActions}/>,
   <Card context={context} identifier={genericFileId} actions={exampleActions}/>
 ];
 

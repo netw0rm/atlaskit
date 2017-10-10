@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 import {
-  minimalLinkDetailsContainingASmartCard, genericLinkDetails, imageLinkDetails, emptyLinkDetails,
+  minimalLinkDetailsContainingASmartCard, genericLinkDetails, emptyLinkDetails,
   spotifyLinkDetails, youtubeLinkDetails
  } from '@atlaskit/media-test-helpers';
 
@@ -10,17 +10,13 @@ import { LinkCard, LinkCardGenericView } from '../../../src/links';
 import { A } from '../../../src/links/card/styled';
 import { LinkCardImageView } from '../../../src/links/cardImageView';
 import { CardGenericViewSmall } from '../../../src/utils/cardGenericViewSmall';
-import { EmbedCard } from '../../../src/links/embedCard';
+import { URLEmbedCard } from '../../../src/links/embed/urlEmbedCard';
+import { HTMLEmbedCard } from '../../../src/links/embed/htmlEmbedCard';
 import { AppCardView } from '../../../src/app';
 
 describe('LinkCard', () => {
 
   describe('.render()', () => {
-
-    it('should render image preview for a image link', () => {
-      const linkCard = shallow(<LinkCard details={imageLinkDetails} status="complete" />);
-      expect(linkCard.find(LinkCardImageView).props().thumbnailUrl).toEqual('image-url.png');
-    });
 
     it('should render LinkCardViewSmall when appearance="small"', () => {
       const card = shallow(<LinkCard status="complete" appearance="small" details={genericLinkDetails}/>);
@@ -54,7 +50,7 @@ describe('LinkCard', () => {
       expect(element.find(AppCardView).exists()).toBeTruthy();
     });
 
-    it('should render EmbedCard when appearance is undefined and details contains an embed with a height', () => {
+    it('should render URLEmbedCard when appearance is undefined and details contains a URL embed with a height', () => {
       const app: UrlPreview = {
         type: 'link',
         url: 'http://fake-example.com/',
@@ -63,15 +59,15 @@ describe('LinkCard', () => {
           app: {
             url: 'http://fake-example.com/embed',
             type: 'text/html',
-            height: 1234
+            height: 456
           }
         }
       };
       const card = shallow(<LinkCard status="complete" details={app}/>);
-      expect(card.find(EmbedCard).exists()).toBeTruthy();
+      expect(card.find(URLEmbedCard).exists()).toBeTruthy();
     });
 
-    it('should render EmbedCard when appearance is undefined and details contains an embed with an aspect ratio', () => {
+    it('should render URLEmbedCard when appearance is undefined and details contains a URL embed with an aspect ratio', () => {
       const app: UrlPreview = {
         type: 'link',
         url: 'http://fake-example.com/',
@@ -85,22 +81,33 @@ describe('LinkCard', () => {
         }
       };
       const card = shallow(<LinkCard status="complete" details={app}/>);
-      expect(card.find(EmbedCard).exists()).toBeTruthy();
+      expect(card.find(URLEmbedCard).exists()).toBeTruthy();
     });
 
-    it('should render EmbedCard when appearance is undefined and details contains a player with a URL and a height', () => {
+    it('should render URLEmbedCard when appearance is undefined and details contains a player with a URL and a height', () => {
       const card = shallow(<LinkCard status="complete" details={spotifyLinkDetails}/>);
-      expect(card.find(EmbedCard).exists()).toBeTruthy();
+      expect(card.find(URLEmbedCard).exists()).toBeTruthy();
     });
 
-    it('should render EmbedCard when appearance is undefined and details contains a player with a URL and an aspect ratio', () => {
+    it('should render URLEmbedCard when appearance is undefined and details contains a player with a URL and an aspect ratio', () => {
       const card = shallow(<LinkCard status="complete" details={youtubeLinkDetails}/>);
-      expect(card.find(EmbedCard).exists()).toBeTruthy();
+      expect(card.find(URLEmbedCard).exists()).toBeTruthy();
     });
 
-    it('should render LinkCardImageView when appearance is undefined and details contains an image', () => {
-      const card = shallow(<LinkCard status="complete" details={imageLinkDetails}/>);
-      expect(card.find(LinkCardImageView).exists()).toBeTruthy();
+    it('should render HTMLEmbedCard when appearance is undefined and details contains a HTML embed', () => {
+      const app: UrlPreview = {
+        type: 'link',
+        url: 'http://fake-example.com/',
+        title: 'fake example',
+        resources: {
+          app: {
+            html: '<h1>Hello World</h1>',
+            type: 'text/html'
+          }
+        }
+      };
+      const card = shallow(<LinkCard status="complete" details={app}/>);
+      expect(card.find(HTMLEmbedCard).exists()).toBeTruthy();
     });
 
     it('should render LinkCardGenericView when appearance is undefined and details do not contain anything special', () => {

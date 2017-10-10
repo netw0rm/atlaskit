@@ -11,13 +11,13 @@ import {
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import mockConfluenceStatusChecker from '../../../stories/providers/mockConfluenceStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
-import StartTrial from '../../../src/start-trial/components/StartTrial';
-import ConfirmTrial from '../../../src/start-trial/components/ConfirmTrial';
-import GrantAccess from '../../../src/start-trial/components/GrantAccess';
-import LoadingTime from '../../../src/start-trial/components/LoadingTime';
-import AlreadyStarted from '../../../src/start-trial/components/AlreadyStarted';
-import ProgressIndicator from '../../../src/start-trial/components/ProgressIndicator';
-import ErrorFlag from '../../../src/start-trial/components/ErrorFlag';
+import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
+import ConfirmTrial from '../../../src/request-or-start-trial/components/ConfirmTrial';
+import GrantAccess from '../../../src/request-or-start-trial/components/GrantAccess';
+import LoadingTime from '../../../src/request-or-start-trial/components/LoadingTime';
+import AlreadyStarted from '../../../src/request-or-start-trial/components/AlreadyStarted';
+import ProgressIndicator from '../../../src/request-or-start-trial/components/ProgressIndicator';
+import ErrorFlag from '../../../src/common/components/ErrorFlag';
 import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
@@ -32,7 +32,7 @@ const getXFlowProviderConfig = () =>
       <div />
     </JiraToConfluenceXFlowProvider>
   )
-    .find('XFlowProvider')
+    .find('XFlowProviderBase')
     .props().config;
 
 const defaultProps = {
@@ -111,16 +111,17 @@ const defaultProps = {
   grantAccessToUsers: async () => {},
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialAccess: async () => {},
-  requestTrialAccessWithNote: async () => {},
-  requestTrialAccessWithoutNote: async () => {},
-  cancelRequestTrialAccess: async () => {},
+  requestTrialWithNote: async () => {},
+  cancelRequestTrial: async () => {},
+  checkProductRequestFlag: async () => {},
+  setProductRequestFlag: async () => {},
 };
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: noop,
   sourceComponent: 'storybook-example-compontent',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 describe('@atlaskit/xflow', () => {
@@ -323,7 +324,7 @@ describe('@atlaskit/xflow', () => {
     });
   });
 
-  describe('error activating confluence', () => {
+  describe('error retrieving canCurrentUserAddProduct', () => {
     let xflow;
 
     beforeEach(() => {
@@ -333,7 +334,6 @@ describe('@atlaskit/xflow', () => {
             <MockConfluenceXFlow
               {...defaultProps}
               canCurrentUserAddProduct={() => Promise.reject(new Error('Misc'))}
-              requestTrialAccess={async () => true}
               productStatusChecker={mockConfluenceStatusChecker(INACTIVE)}
             >
               <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
@@ -344,7 +344,7 @@ describe('@atlaskit/xflow', () => {
       expect(xflow.length).toBe(1);
     });
 
-    it('should render Start Trial component with already activated message', async () => {
+    it('should render an error flag', async () => {
       // eventually render to error flag
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       // should render error messages

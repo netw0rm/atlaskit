@@ -13,7 +13,7 @@ export interface Props {
 
 export default class ColorPalette extends PureComponent<Props, undefined> {
   render() {
-    const { palette, cols = 6, onClick, selectedColor } = this.props;
+    const { palette, cols = 7, onClick, selectedColor } = this.props;
     return (
       <ColorPaletteWrapper style={{ maxWidth: cols * 32 }}>
         {Array.from(palette).map(([color, label]) => (

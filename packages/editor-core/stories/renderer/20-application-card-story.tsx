@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 
 import * as React from 'react';
 import { name, version } from '../../package.json';
@@ -8,6 +8,13 @@ import {
   AppCardViewProps,
   ApplicationCard,
 } from '../../src/renderer/react/nodes';
+
+const eventHandlers: any = {
+  applicationCard: {
+    onClick: (url) => action('ApplicationCard click')('[react.MouseEvent]', url),
+    onActionClick: (applicationCardAction) => action('ApplicationCard action click')('[react.MouseEvent]', applicationCardAction)
+  }
+};
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
@@ -176,7 +183,22 @@ storiesOf(name, module)
         link: {
           url: 'https://confluence.atlassian.com/'
         }
-      }
+      },
+      actions: [
+        {
+          title: 'Primary action',
+          target: 'primary.target'
+        },
+        {
+          title: 'Secondary action',
+          target: 'secondary.target'
+        },
+        {
+          title: 'Another action',
+          target: 'anothr.target'
+        }
+      ],
+      eventHandlers
     };
 
     return (

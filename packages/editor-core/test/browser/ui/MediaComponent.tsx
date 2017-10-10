@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   Context,
   ContextConfig,
@@ -15,7 +14,6 @@ import { MediaType } from '../../../src/schema';
 import {
   Card,
   CardView,
-  CardViewProps,
   CardProps,
 } from '@atlaskit/media-card';
 import {
@@ -51,11 +49,11 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     }
   };
 
-  const stateManager = new DefaultMediaStateManager();
+  const defaultStateManager = new DefaultMediaStateManager();
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
-  const getFreshResolvedProvider = () => {
-    return Promise.resolve(storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager)) as Promise<MediaProvider>;
+  const getFreshResolvedProvider = (stateManager?: MediaStateManager) => {
+    return Promise.resolve(storyMediaProviderFactory({ collectionName: testCollectionName, stateManager: stateManager || defaultStateManager })) as Promise<MediaProvider>;
   };
 
   it('should render a CardView component if the media type is file without provider', () => {
@@ -65,16 +63,11 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
         type={file.attrs.type as MediaType}
         collection={file.attrs.collection}
       />);
-    const props: CardViewProps = mediaComponent.find(CardView).props();
     expect(mediaComponent.find(CardView).length).to.equal(1);
-    expect(props.mediaItemType).to.equal('file');
-    expect(props.status).to.equal('loading');
   });
 
   it('should render a Card component if the media is a public file with provider', async () => {
-    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-      viewContext: Promise.resolve({})
-    });
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={file.attrs.id}
@@ -90,9 +83,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should render a CardView component if the media is a temporary file with provider', async () => {
-    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-      viewContext: Promise.resolve({})
-    });
+    const mediaProvider = getFreshResolvedProvider();
     const mediaComponent = shallow(
       <MediaComponent
         id={tempFile.attrs.id}
@@ -106,7 +97,6 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     expect(mediaComponent.find(CardView).length).to.equal(1);
   });
-
 
   it('should render nothing if media type is link without provider', async () => {
     const mediaProvider = getFreshResolvedProvider();
@@ -202,22 +192,16 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should use stateManager from Plugin state in Editor mode', async () => {
-    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-      viewContext: Promise.resolve({})
-    });
-    let subscribeCalled = false;
-
-    // tslint:disable-next-line
-    MediaComponent.prototype.getStateManagerFromEditorPlugin = () => {
-      return {
-        getState: () => undefined,
-        updateState: () => { },
-        subscribe: () => {
-          subscribeCalled = true;
-        },
-        unsubscribe: () => { }
-      } as MediaStateManager;
+    const stateManager = {
+      getState: () => undefined,
+      updateState: () => { },
+      subscribe: () => {
+        subscribeCalled = true;
+      },
+      unsubscribe: () => { }
     };
+    const mediaProvider = getFreshResolvedProvider(stateManager);
+    let subscribeCalled = false;
 
     shallow(
       <MediaComponent
@@ -235,9 +219,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
   });
 
   it('should not raise exception if there is no linkCreateContext in mediaProvider', async () => {
-    const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-      viewContext: Promise.resolve({})
-    });
+    const mediaProvider = getFreshResolvedProvider();
 
     const media = mount(
       <MediaComponent
@@ -249,5 +231,6 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
 
     const resolvedMediaProvider = await mediaProvider;
     await (media as any).node.handleMediaProvider(resolvedMediaProvider);
+    media.unmount();
   });
 });

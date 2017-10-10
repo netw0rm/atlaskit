@@ -6,6 +6,7 @@ const TagsExample = () => (
     <Toggle />
     <Toggle size="large" />
     <Toggle isDisabled />
+    <Toggle isDisabled isDefaultChecked />
     <Toggle onChange={e => console.log(e.target.checked)} />
     <ToggleStateless />
   </div>

@@ -24,7 +24,7 @@ const description = (
     </p>
   </div>
 );
-console.log(defaultComponentSource);
+
 storiesOf(name, module)
   .add('📖 Export: Default', () => (
     <Readme

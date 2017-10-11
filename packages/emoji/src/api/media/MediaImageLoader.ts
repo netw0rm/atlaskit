@@ -25,6 +25,7 @@ export default class MediaImageLoader {
   private mediaImageQueue: MediaQueueItem[] = [];
   private activeProcessing = 0;
   private concurrentDownloadLimit: number;
+  private pendingRequests: Map<string, Promise<DataURL>> = new Map();
 
   constructor(tokenManager: TokenManager, options?: MediaImageLoaderOptions) {
     this.concurrentDownloadLimit = options && options.concurrentDownloadLimit || defaultConcurrentDownloadLimit;
@@ -32,14 +33,26 @@ export default class MediaImageLoader {
   }
 
   loadMediaImage(url: string): Promise<DataURL> {
-    return new Promise((resolve, reject) => {
+    let pending = this.pendingRequests.get(url);
+    if (pending !== undefined) {
+      return pending;
+    }
+
+    pending = new Promise((resolve, reject) => {
       this.mediaImageQueue.push({
         url,
         resolve,
         reject
       });
       this.processFromQueue();
-    });
+    }).then((result) => {
+      this.pendingRequests.delete(url);
+      return result;
+    }).catch(() => this.pendingRequests.delete(url));
+
+    this.pendingRequests.set(url, pending);
+
+    return pending;
   }
 
   getQueueSize() {

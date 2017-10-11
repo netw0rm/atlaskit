@@ -19,6 +19,14 @@ export function createPlugin(){
       },
     },
     key: stateKey,
+    /*
+     * After each transaction, we search through the document for any decisionList/Item & taskList/Item nodes
+     * that do not have the localId attribute set and generate a random UUID to use. This is to replace a previous
+     * Prosemirror capabibility where node attributes could be generated dynamically.
+     * See https://discuss.prosemirror.net/t/release-0-23-0-possibly-to-be-1-0-0/959/17 for a discussion of this approach.
+     *
+     * Note: we currently do not handle the edge case where two nodes may have the same localId
+     */
     appendTransaction: (transactions, oldState, newState) => {
       const tr = newState.tr;
       let modified = false;

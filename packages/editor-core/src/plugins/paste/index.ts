@@ -111,6 +111,11 @@ export function createPlugin(schema: Schema<any, any>) {
           return false;
         }
 
+        // Bail if copied content has files
+        if (event.clipboardData.types.indexOf('Files') > -1) {
+          return true;
+        }
+
         const { $from } = view.state.selection;
 
         // In case of SHIFT+CMD+V ("Paste and Match Style") we don't want to run the usual

@@ -172,7 +172,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "scripts": {
-    "bootstrap": "lerna exec -- git clean -Xdf . && lerna bootstrap",
+    "bootstrap": "lerna exec -- git clean -Xdf . && lerna bootstrap --concurrency=2",
     "bootstrap/single": "./build/bin/bootstrap.single.sh",
     "bootstrap/single/with-deps": "./build/bin/bootstrap.single.with.deps.sh",
     "browserstack/tunnel/start": "./build/bin/browserstack.tunnel.start.sh",

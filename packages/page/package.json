@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "4.4.2",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },

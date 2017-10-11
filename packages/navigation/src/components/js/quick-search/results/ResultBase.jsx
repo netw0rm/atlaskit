@@ -68,6 +68,7 @@ export default class ResultBase extends PureComponent {
       QS_ANALYTICS_EV_SUBMIT,
       {
         ...analyticsData,
+        method: 'click',
         type,
       }
     );

@@ -33,9 +33,6 @@ type Props = {|
   component. On click, onGlobalSearchActivate is called. It is recommended
   that you use an atlaskit icon. */
   globalSearchIcon?: ReactElement,
-  /** Whether to display a scroll hint shadow at the bottom of the ContainerNavigation
-   * wrapper. */
-  hasScrollHintBottom?: boolean,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
   hasScrollHintTop?: boolean,
@@ -110,7 +107,6 @@ export default class ContainerNavigation extends Component {
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
-      hasScrollHintBottom,
       hasScrollHintTop,
       headerComponent,
       linkComponent,
@@ -151,7 +147,6 @@ export default class ContainerNavigation extends Component {
             {headerComponent ? headerComponent({ isCollapsed }) : null}
           </ContainerHeader>
           <ContainerNavigationChildren
-            hasScrollHintBottom={hasScrollHintBottom}
             hasScrollHintTop={hasScrollHintTop}
             scrollRef={scrollRef}
           >

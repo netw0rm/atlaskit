@@ -1,6 +1,5 @@
 export { default as basePlugin } from './base';
 export { default as placeholderPlugin } from './placeholder';
-export { default as analyticsPastePlugin } from './analytics-paste';
 export { default as blockTypePlugin } from './block-type';
 export { default as textFormattingPlugin } from './text-formatting';
 export { default as mentionsPlugin } from './mentions';

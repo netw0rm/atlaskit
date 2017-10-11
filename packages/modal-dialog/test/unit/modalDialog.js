@@ -188,4 +188,24 @@ describe('modal-dialog', () => {
       });
     });
   });
+
+  describe('chromeless', () => {
+    it('header should not render if dialog is chromeless', () => {
+      const node = <span>My header</span>;
+      const wrapper = mount(<StubDialog isChromeless header={() => node} />);
+
+      wait(() => {
+        expect(wrapper.contains(node)).toBe(false);
+      });
+    });
+
+    it('footer should not render if dialog is chromeless', () => {
+      const node = <span>My footer</span>;
+      const wrapper = mount(<StubDialog isChromeless footer={() => node} />);
+
+      wait(() => {
+        expect(wrapper.contains(node)).toBe(false);
+      });
+    });
+  });
 });

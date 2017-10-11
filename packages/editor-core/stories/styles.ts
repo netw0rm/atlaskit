@@ -78,6 +78,10 @@ export const Content = styled.div`
   & legend {
     margin: 8px 0;
   }
+
+  & input {
+    font-size: 13px;
+  }
 `;
 
 // tslint:disable-next-line:variable-name

@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.1.1 (2017-10-11)
+
+* bug fix; fS-1360 Loading emojis for the first time uses more than 1 network call even for the ([866a41f](https://bitbucket.org/atlassian/atlaskit/commits/866a41f))
 ## 30.1.0 (2017-10-10)
 
 

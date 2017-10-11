@@ -1,5 +1,20 @@
 # @atlaskit/editor-core
 
+## 50.2.0 (2017-10-10)
+
+* feature; add support for alt-paste, fix clipboard analytics. (issues closed: ed-2882) ([9b2de80](https://bitbucket.org/atlassian/atlaskit/commits/9b2de80))
+## 50.1.0 (2017-10-10)
+
+* feature; added CollapsedEditor component (issues closed: ed-2944) ([8172b3e](https://bitbucket.org/atlassian/atlaskit/commits/8172b3e))
+## 50.0.0 (2017-10-10)
+
+
+* bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))
+* feature; always reset media plugin when set media provider ([5ef4d81](https://bitbucket.org/atlassian/atlaskit/commits/5ef4d81))
+* breaking; storyMediaProviderFactory API in test-helper accepts a config instead of multiple params ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; refactor storyMediaProviderFactory to accept a config instead of multiple param ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; updated media provider api for new authentication on media picker. updated media provider api in ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+* breaking; updated the API of media provider for new authentication on media picker. ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
 ## 49.0.0 (2017-10-10)
 
 * bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))

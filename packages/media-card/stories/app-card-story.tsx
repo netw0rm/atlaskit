@@ -167,7 +167,9 @@ const modelWithLinkInContext: AppCardModel = {
 
 const primaryAction: AppCardAction = {
   title: 'View',
-  target: 'test.target.action'
+  target: {
+    key: 'test.target.action'
+  }
 };
 const detailsWithPrimaryAction: AppCardModel = {
   ...modelWithShortTitle,
@@ -176,9 +178,36 @@ const detailsWithPrimaryAction: AppCardModel = {
 
 const metaActions: AppCardAction[] = [
   primaryAction,
-  {title: 'Open', target: 'test.target.open'},
-  {title: 'Join', target: 'test.target.join'},
-  {title: 'Reply', target: 'test.target.reply'}
+  {
+    title: 'Open',
+    target: {
+      app: 'some.app1',
+      key: 'test.target.open'
+    },
+    parameters: {
+      expenseId: 'some-id1'
+    }
+  },
+  {
+    title: 'Join',
+    target: {
+      app: 'some.app2',
+      key: 'test.target.join'
+    },
+    parameters: {
+      expenseId: 'some-id2'
+    }
+  },
+  {
+    title: 'Reply',
+    target: {
+      app: 'some.app3',
+      key: 'test.target.reply'
+    },
+    parameters: {
+      expenseId: 'some-id3'
+    }
+  }
 ];
 const detailsWithSecondaryActions: AppCardModel = {
   ...modelWithShortTitle,
@@ -229,8 +258,26 @@ const confluenceActivityModel: AppCardModel = {
     text: 'Design Home / … / Media Cards Design'
   },
   actions: [
-    {title: 'Reply', target: 'test.target.reply'},
-    {title: 'Other', target: 'test.target.other'}
+    {
+      title: 'Reply',
+      target: {
+        app: 'some.app1',
+        key: 'test.target.reply'
+      },
+      parameters: {
+        expenseId: 'some-id1'
+      }
+    },
+    {
+      title: 'Other',
+      target: {
+        app: 'some.app2',
+        key: 'test.target.other'
+      },
+      parameters: {
+        expenseId: 'some-id2'
+      }
+    }
   ]
 };
 
@@ -245,8 +292,26 @@ const jiraIssueModel: AppCardModel = {
     text: 'DPM - 560'
   },
   actions: [
-    {title: 'View', target: 'test.target.view' },
-    {title: 'Other', target: 'test.target.other'}
+    {
+      title: 'View',
+      target: {
+        app: 'some.app1',
+        key: 'test.target.view'
+      },
+      parameters: {
+        expenseId: 'some-id1'
+      }
+    },
+    {
+      title: 'Other',
+      target: {
+        app: 'some.app2',
+        key: 'test.target.other'
+      },
+      parameters: {
+        expenseId: 'some-id2'
+      }
+    }
   ]
 };
 
@@ -261,8 +326,26 @@ const dropboxFileModel: AppCardModel = {
     text: 'Dropbox'
   },
   actions: [
-    {title: 'Download', target: 'test.target.download'},
-    {title: 'Other', target: 'test.target.other'}
+    {
+      title: 'Download',
+      target: {
+        app: 'some.app1',
+        key: 'test.target.download'
+      },
+      parameters: {
+        expenseId: 'some-id1'
+      }
+    },
+    {
+      title: 'Other',
+      target: {
+        app: 'some.app2',
+        key: 'test.target.other'
+      },
+      parameters: {
+        expenseId: 'some-id2'
+      }
+    }
   ]
 };
 
@@ -280,8 +363,26 @@ const trelloBoardModel: AppCardModel = {
     text: 'Trello - Board'
   },
   actions: [
-    {title: 'Join', target: 'test.target.join'},
-    {title: 'Other', target: 'test.target.other'}
+    {
+      title: 'Join',
+      target: {
+        app: 'some.app1',
+        key: 'test.target.join'
+      },
+      parameters: {
+        expenseId: 'some-id1'
+      }
+    },
+    {
+      title: 'Other',
+      target: {
+        app: 'some.app2',
+        key: 'test.target.other'
+      },
+      parameters: {
+        expenseId: 'some-id2'
+      }
+    }
   ]
 };
 
@@ -306,8 +407,26 @@ const trelloCardModel: AppCardModel = {
     text: 'Trello - Card in list Concepts'
   },
   actions: [
-    {title: 'Open', target: 'test.target.open'},
-    {title: 'Other', target: 'test.target.other'}
+    {
+      title: 'Open',
+      target: {
+        app: 'some.app1',
+        key: 'test.target.open'
+      },
+      parameters: {
+        expenseId: 'some-id1'
+      }
+    },
+    {
+      title: 'Other',
+      target: {
+        app: 'some.app2',
+        key: 'test.target.other'
+      },
+      parameters: {
+        expenseId: 'some-id2'
+      }
+    }
   ]
 };
 

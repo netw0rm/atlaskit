@@ -114,9 +114,11 @@ export default class Content extends Component {
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
 
-    window.addEventListener('resize', this.determineKeylines, false);
-    this.scrollContainer.addEventListener('scroll', this.determineKeylines, false);
-    this.determineKeylines();
+    if (this.scrollContainer) {
+      window.addEventListener('resize', this.determineKeylines, false);
+      this.scrollContainer.addEventListener('scroll', this.determineKeylines, false);
+      this.determineKeylines();
+    }
 
     focusStore.storeFocus();
     this.initialiseFocus();
@@ -137,8 +139,10 @@ export default class Content extends Component {
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('keyup', this.handleKeyUp, false);
 
-    window.removeEventListener('resize', this.determineKeylines, false);
-    this.scrollContainer.removeEventListener('scroll', this.determineKeylines, false);
+    if (this.scrollContainer) {
+      window.removeEventListener('resize', this.determineKeylines, false);
+      this.scrollContainer.removeEventListener('scroll', this.determineKeylines, false);
+    }
 
     if (this._hideElement) this._hideElement.removeAttribute('aria-hidden');
 
@@ -250,28 +254,33 @@ export default class Content extends Component {
     } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
 
+    if (isChromeless) {
+      return (
+        <Wrapper>
+          {children}
+          <ScrollLock />
+        </Wrapper>
+      );
+    }
     return (
       <Wrapper>
-        {!isChromeless && <Header
+        <Header
           appearance={appearance}
           component={header}
           heading={heading}
           onClose={onClose}
           showKeyline={showHeaderKeyline}
-        />}
-        <Body
-          innerRef={this.getScrollContainer}
-          isChromeless={isChromeless}
-        >
+        />
+        <Body innerRef={this.getScrollContainer}>
           {children}
         </Body>
-        {!isChromeless && <Footer
+        <Footer
           actions={actions}
           appearance={appearance}
           component={footer}
           onClose={onClose}
           showKeyline={showFooterKeyline}
-        />}
+        />
         <ScrollLock />
       </Wrapper>
     );

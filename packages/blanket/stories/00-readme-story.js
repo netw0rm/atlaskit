@@ -24,8 +24,8 @@ const description = (
     </p>
   </div>
 );
-
-storiesOf()
+console.log(defaultComponentSource);
+storiesOf(name, module)
   .add('📖 Export: Default', () => (
     <Readme
       name={name}

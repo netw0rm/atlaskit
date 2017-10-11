@@ -107,12 +107,12 @@ export default class DynamicProps extends PureComponent {
                 name={propName}
                 required={prop.required}
                 defaultValue={prop.defaultValue}
-                type={prop.type}
+                type={prop.flowType}
               />
               {prop.description ? (
                 <PropTypeDescription>{prop.description}</PropTypeDescription>
               ) : null}
-              <PrettyPropType type={prop.type} />
+              <PrettyPropType type={prop.flowType} />
             </PropTypeWrapper>
           );
         })}

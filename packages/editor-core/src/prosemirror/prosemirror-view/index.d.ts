@@ -46,8 +46,6 @@ export interface PluginProps {
   handleContextMenu?: (view: EditorView, pos: number, event: dom.MouseEvent) => boolean;
   handlePaste?: (view: EditorView, event: dom.Event, slice: Slice) => boolean;
   handleDrop?: (view: EditorView, event: dom.Event, slice: Slice, moved: boolean) => boolean;
-  onFocus?: (view: EditorView, event: dom.Event) => void;
-  onBlur?: (view: EditorView, event: dom.Event) => void;
   createSelectionBetween?: (view: EditorView, anchor: ResolvedPos, head: ResolvedPos) => Selection | void;
   domParser?: DOMParser;
   clipboardParser?: DOMParser;

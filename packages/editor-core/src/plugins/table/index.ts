@@ -616,17 +616,21 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
       stateKey.getState(view.state).resetHoverSelection();
       return false;
     },
-    onFocus(view: EditorView, event) {
-      const pluginState: TableState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(true);
-      pluginState.update(view.docView, true);
-    },
-    onBlur(view: EditorView, event) {
-      const pluginState: TableState = stateKey.getState(view.state);
-      pluginState.updateEditorFocused(false);
-      pluginState.update(view.docView, true);
-      pluginState.resetHoverSelection();
-    },
+    handleDOMEvents: {
+      focus(view, event) {
+        const pluginState: TableState = stateKey.getState(view.state);
+        pluginState.updateEditorFocused(true);
+        pluginState.update(view.docView, true);
+        return false;
+      },
+      blur(view, event) {
+        const pluginState: TableState = stateKey.getState(view.state);
+        pluginState.updateEditorFocused(false);
+        pluginState.update(view.docView, true);
+        pluginState.resetHoverSelection();
+        return false;
+      }
+    }
   }
 });
 

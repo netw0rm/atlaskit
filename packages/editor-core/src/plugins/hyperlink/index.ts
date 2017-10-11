@@ -360,21 +360,24 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
       }
       return false;
     },
-    onBlur(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
+    handleDOMEvents: {
+      blur(view, event) {
+        const pluginState = stateKey.getState(view.state);
 
-      pluginState.editorFocused = false;
-      if (pluginState.active) {
-        pluginState.changeHandlers.forEach(cb => cb(pluginState));
+        pluginState.editorFocused = false;
+        if (pluginState.active) {
+          pluginState.changeHandlers.forEach(cb => cb(pluginState));
+        }
+        event.preventDefault();
+        return true;
+      },
+      focus(view, event) {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.editorFocused = true;
+
+        event.preventDefault();
+        return true;
       }
-
-      return true;
-    },
-    onFocus(view: EditorView) {
-      const pluginState = stateKey.getState(view.state);
-      pluginState.editorFocused = true;
-
-      return true;
     },
     /**
      * As we are adding linkifyContent, linkifyText can in fact be removed.

@@ -18,6 +18,7 @@ import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
 import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
 import GrantAccessChangeUsersDiv from '../styled/GrantAccessChangeUsersDiv';
+import GrantAccessChangeUsersWithLabelDiv from '../styled/GrantAccessChangeUsersWithLabelDiv';
 import InputLabel from '../styled/InputLabel';
 import UserSelectDiv from '../styled/UserSelectDiv';
 import AffectMyBillText from '../styled/AffectMyBillText';
@@ -82,8 +83,9 @@ class GrantAccess extends Component {
     ).isRequired,
     userSelectPlaceholder: PropTypes.string,
     usersOption: PropTypes.string,
+    laterOption: PropTypes.string,
     learnMoreLink: PropTypes.string,
-    // selectLabel: PropTypes.string,
+    selectLabel: PropTypes.string,
     defaultSelectedRadio: PropTypes.string,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
@@ -105,6 +107,7 @@ class GrantAccess extends Component {
 
     showNotifyUsersOption: PropTypes.bool,
     showProgressIndicator: PropTypes.bool,
+    showAffectMyBill: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -112,6 +115,7 @@ class GrantAccess extends Component {
     retrieveUsers: async () => [],
     showNotifyUsersOption: true,
     showProgressIndicator: true,
+    showAffectMyBill: true,
   };
 
   state = {
@@ -130,10 +134,16 @@ class GrantAccess extends Component {
   };
 
   componentDidMount = async () => {
-    const { firePrivateAnalyticsEvent, optionItems, retrieveUsers, usersOption } = this.props;
+    const {
+      firePrivateAnalyticsEvent,
+      optionItems,
+      retrieveUsers,
+      usersOption,
+      laterOption
+    } = this.props;
 
     try {
-      const userGroups = optionItems.map(option => option.value);
+      const userGroups = optionItems.map(option => option.value).filter(option => option !== laterOption);
       const fetchedUsers = await Promise.all(userGroups.map(retrieveUsers));
       const userSets = new Map([
         ...zip(
@@ -184,7 +194,7 @@ class GrantAccess extends Component {
   };
 
   handleContinueClick = async () => {
-    const { grantAccessToUsers, onComplete, usersOption, firePrivateAnalyticsEvent } = this.props;
+    const { grantAccessToUsers, onComplete, usersOption, laterOption, firePrivateAnalyticsEvent } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
     if (selectedRadio === usersOption && selectedUsers.length === 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.user-select.invalid');
@@ -203,6 +213,11 @@ class GrantAccess extends Component {
       continueButtonDisabled: true,
       failedToGrantAccess: false,
     });
+
+    if (selectedRadio === laterOption) {
+      onComplete();
+      return;
+    }
 
     try {
       const users =
@@ -319,7 +334,7 @@ class GrantAccess extends Component {
       optionItems,
       userSelectPlaceholder,
       learnMoreLink,
-      // selectLabel,
+      selectLabel,
       progress,
       status,
       heading,
@@ -330,6 +345,9 @@ class GrantAccess extends Component {
 
     const progressIndicator = showProgressIndicator ?
       (<ProgressIndicator progress={progress} status={status} />) : '';
+
+    const GrantAccessChangeUsers = selectLabel ?
+        GrantAccessChangeUsersWithLabelDiv : GrantAccessChangeUsersDiv;
 
     return (
       <ModalDialog
@@ -392,11 +410,12 @@ class GrantAccess extends Component {
           </StartTrialHeader>
 
           {this.state.changeUsers ? (
-            <GrantAccessChangeUsersDiv>
+            <GrantAccessChangeUsers>
               <AkFieldRadioGroup
                 ref={radioGroup => {
                   this.radioGroup = radioGroup;
                 }}
+                label={selectLabel}
                 onRadioChange={this.handleRadioChange}
                 items={optionItems.map(item => ({
                   ...item,
@@ -423,32 +442,34 @@ class GrantAccess extends Component {
                 />
               </UserSelectDiv>
 
-              <AffectMyBillText>
-                <FormattedMessage
-                  id="xflow.generic.grant-access.affect-bill"
-                  defaultMessage="How will this affect my bill?"
-                />
-                <GrantAccessLearnMoreSpan>
-                  <span
-                    onMouseDown={this.handleLearnMoreAlternateClick}
-                    id="xflow-grant-access-learn-more-span"
-                  >
-                    <Button
-                      id="xflow-grant-access-learn-more-button"
-                      onClick={this.handleLearnMoreClick}
-                      appearance="link"
-                      href={learnMoreLink}
-                      target="_blank"
+              {this.props.showAffectMyBill ? (
+                <AffectMyBillText>
+                  <FormattedMessage
+                    id="xflow.generic.grant-access.affect-bill"
+                    defaultMessage="How will this affect my bill?"
+                  />
+                  <GrantAccessLearnMoreSpan>
+                    <span
+                      onMouseDown={this.handleLearnMoreAlternateClick}
+                      id="xflow-grant-access-learn-more-span"
                     >
-                      <FormattedMessage
-                        id="xflow.generic.grant-access.learn-more"
-                        defaultMessage="Learn more"
-                      />
-                    </Button>
-                  </span>
-                </GrantAccessLearnMoreSpan>
-              </AffectMyBillText>
-            </GrantAccessChangeUsersDiv>
+                      <Button
+                        id="xflow-grant-access-learn-more-button"
+                        onClick={this.handleLearnMoreClick}
+                        appearance="link"
+                        href={learnMoreLink}
+                        target="_blank"
+                      >
+                        <FormattedMessage
+                          id="xflow.generic.grant-access.learn-more"
+                          defaultMessage="Learn more"
+                        />
+                      </Button>
+                    </span>
+                  </GrantAccessLearnMoreSpan>
+                </AffectMyBillText>
+              ) : null }
+            </GrantAccessChangeUsers>
           ) : (
             <GrantAccessDefaultAccessDiv>
               <div>{defaultAccess}</div>
@@ -497,10 +518,12 @@ export default withXFlowProvider(
           grantAccessOptionItems,
           grantAccessUserSelectPlaceholder,
           grantAccessUsersOption,
+          grantAccessLaterOption,
           grantAccessShowNotifyUsersOption,
           grantAccessShowProgressIndicator,
+          grantAccessShowAffectMyBill,
           grantAccessLearnMoreLink,
-          // grantAccessSelectLabel,
+          grantAccessSelectLabel,
           grantAccessDefaultSelectedRadio,
           grantAccessHeading,
           grantAccessDefaultAccess,
@@ -516,10 +539,12 @@ export default withXFlowProvider(
     optionItems: grantAccessOptionItems,
     userSelectPlaceholder: grantAccessUserSelectPlaceholder,
     usersOption: grantAccessUsersOption,
+    laterOption: grantAccessLaterOption,
     showNotifyUsersOption: grantAccessShowNotifyUsersOption,
     showProgressIndicator: grantAccessShowProgressIndicator,
+    showAffectMyBill: grantAccessShowAffectMyBill,
     learnMoreLink: grantAccessLearnMoreLink,
-    // selectLabel: grantAccessSelectLabel,
+    selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,
     grantAccessToUsers,
     retrieveUsers,

@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.0.1 (2017-10-11)
+
+* bug fix; fix relative positioning of nav scroll container ([7d48f76](https://bitbucket.org/atlassian/atlaskit/commits/7d48f76))
 ## 26.0.0 (2017-10-11)
 
 * bug fix; navigationItem now applies role=menuitem only when overflow dropdown (issues closed: ak-3617) ([a251558](https://bitbucket.org/atlassian/atlaskit/commits/a251558))

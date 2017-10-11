@@ -28,6 +28,7 @@ export default class Profilecard extends PureComponent {
     fullName: PropTypes.string,
     meta: PropTypes.string,
     nickname: PropTypes.string,
+    email: PropTypes.string,
     location: PropTypes.string,
     timestring: PropTypes.string,
     presence: PropTypes.oneOf(Object.keys(presences)),
@@ -125,6 +126,7 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon={this.props.presence}>
               {presences[this.props.presence]}
             </IconLabel>
+            <IconLabel icon="email">{this.props.email}</IconLabel>
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>

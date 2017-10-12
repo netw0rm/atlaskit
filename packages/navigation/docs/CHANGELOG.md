@@ -1,5 +1,26 @@
 # @atlaskit/navigation
 
+## 26.0.3 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
+* bug fix; change global nav items to use styled buttons or styled anchor ([c6ccb5d](https://bitbucket.org/atlassian/atlaskit/commits/c6ccb5d))
+## 26.0.2 (2017-10-12)
+
+* bug fix; updated theme prop types to accept colors from @atlaskit/theme (issues closed: ak-3682) ([6c3097c](https://bitbucket.org/atlassian/atlaskit/commits/6c3097c))
+## 26.0.1 (2017-10-11)
+
+* bug fix; fix relative positioning of nav scroll container ([7d48f76](https://bitbucket.org/atlassian/atlaskit/commits/7d48f76))
+## 26.0.0 (2017-10-11)
+
+* bug fix; navigationItem now applies role=menuitem only when overflow dropdown (issues closed: ak-3617) ([a251558](https://bitbucket.org/atlassian/atlaskit/commits/a251558))
+* breaking; The Navigation.hasScrollHintBottom prop has been removed. ([922b1e6](https://bitbucket.org/atlassian/atlaskit/commits/922b1e6))
+* breaking; remove unused Navigation.hasScrollHintBottom prop (issues closed: ak-3493) ([922b1e6](https://bitbucket.org/atlassian/atlaskit/commits/922b1e6))
+
+
+
+
+* breaking; AkCollapseOverflow now requires a groupCount number prop. There are two new components ([449c631](https://bitbucket.org/atlassian/atlaskit/commits/449c631))
+* breaking; akCollapseOverflow now splits at the item level (issues closed: ak-3411) ([449c631](https://bitbucket.org/atlassian/atlaskit/commits/449c631))
 ## 25.0.0 (2017-10-10)
 
 

@@ -2,7 +2,11 @@ import { storiesOf } from '@kadira/storybook';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
-import { presetThemes } from '@atlaskit/navigation';
+import {
+  presetThemes,
+  AkCollapseOverflowItemGroup,
+  AkCollapseOverflowItem,
+} from '@atlaskit/navigation';
 import { AkNavigationItem, AkNavigationItemGroup, AkCollapseOverflow } from '../src/index';
 import HtmlPage from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -12,12 +16,14 @@ const manyNavigationItems = (itemCount = 40) => {
   const items = [];
   for (let i = 0; i < itemCount; i++) {
     items.push(
-      <AkNavigationItem
-        href={`#${i}`}
-        key={i}
-        text={`${i} Test page`}
-        icon={<DashboardIcon size="medium" label="" />}
-      />
+      <AkCollapseOverflowItem overflowItemIndex={i}>
+        <AkNavigationItem
+          href={`#${i}`}
+          key={i}
+          text={`${i} Test page`}
+          icon={<DashboardIcon size="medium" label="" />}
+        />
+      </AkCollapseOverflowItem>
     );
   }
   return items;
@@ -27,9 +33,11 @@ const manyNavigationItemGroups = (groupCount = 1, itemsPerGroup = 40) => {
   const groups = [];
   for (let i = 0; i < groupCount; i++) {
     groups.push(
-      <AkNavigationItemGroup title="Hello">
-        {manyNavigationItems(itemsPerGroup)}
-      </AkNavigationItemGroup>
+      <AkCollapseOverflowItemGroup itemCount={itemsPerGroup} overflowGroupIndex={i}>
+        <AkNavigationItemGroup title={`Group ${i}`}>
+          {manyNavigationItems(itemsPerGroup)}
+        </AkNavigationItemGroup>
+      </AkCollapseOverflowItemGroup>
     );
   }
   return groups;
@@ -67,7 +75,7 @@ class NavWithOverflow extends Component {
         >
           {
             this.state.isNavOpen ? children : (
-              <AkCollapseOverflow>
+              <AkCollapseOverflow groupCount={React.Children.count(children)}>
                 {children}
               </AkCollapseOverflow>
             )
@@ -81,7 +89,11 @@ class NavWithOverflow extends Component {
 storiesOf(name, module)
   .add('with container overflow to dropdown', () => (
     <NavWithOverflow>
-      {manyNavigationItems()}
+      <AkCollapseOverflowItemGroup itemCount={40} overflowGroupIndex={0}>
+        <AkNavigationItemGroup>
+          {manyNavigationItems(40)}
+        </AkNavigationItemGroup>
+      </AkCollapseOverflowItemGroup>
     </NavWithOverflow>
   ))
   .add('with container overflow to dropdown with groups', () => (

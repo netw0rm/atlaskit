@@ -2,11 +2,14 @@ import styled, { css } from 'styled-components';
 import { borderRadius, colors, themed } from '@atlaskit/theme';
 import { WIDTH_ENUM } from '../shared-variables';
 
-const boxShadow = `
-  0 0 0 1px ${colors.N30A}, 0 2px 1px ${colors.N30A},
-  0 0 20px -6px ${colors.N60A}
-`;
-const dialogBgColor = themed({ light: colors.N0, dark: colors.DN50 });
+const boxShadow = ({ isChromeless }) => (
+  isChromeless ? 'none' : `
+    0 0 0 1px ${colors.N30A}, 0 2px 1px ${colors.N30A},
+    0 0 20px -6px ${colors.N60A}
+  `);
+const dialogBgColor = ({ isChromeless }) => (
+  isChromeless ? 'transparent' : themed({ light: colors.N0, dark: colors.DN50 })
+);
 const gutter = 60;
 const maxDimensions = css`calc(100% - ${gutter * 2}px)`;
 

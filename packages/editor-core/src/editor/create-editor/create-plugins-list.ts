@@ -2,7 +2,6 @@ import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
   placeholderPlugin,
-  analyticsPastePlugin,
   blockTypePlugin,
   textFormattingPlugin,
   mentionsPlugin,
@@ -32,7 +31,7 @@ import {
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [analyticsPastePlugin, pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
+  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
 }
 
 /**

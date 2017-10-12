@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
 import AkLayer from '@atlaskit/layer';
 
-import { getAnimationClass } from './internal/helpers';
 import PositionWrapper from './components/PositionWrapper';
 import withOuterListeners from './components/withOuterListeners';
 import AkProfilecardResourced from './profilecard-resourced';
+
+import { AnimationWrapper } from './styled/Trigger';
 
 const allowedPositions = [
   'top left',
@@ -79,17 +79,15 @@ export default class ProfilecardTrigger extends PureComponent {
   }
 
   renderProfilecard() {
-    const animationClass = getAnimationClass(
-      this.props.position,
-      this.state.isFlipped
-    );
-
     return (
       <PositionWrapper
         position={this.props.position}
         isFlipped={this.state.isFlipped}
       >
-        <div className={animationClass}>
+        <AnimationWrapper
+          position={this.props.position}
+          isFlipped={this.state.isFlipped}
+        >
           <AkProfilecardResourced
             userId={this.props.userId}
             cloudId={this.props.cloudId}
@@ -97,7 +95,7 @@ export default class ProfilecardTrigger extends PureComponent {
             actions={this.props.actions}
             analytics={this.props.analytics}
           />
-        </div>
+        </AnimationWrapper>
       </PositionWrapper>
     );
   }

@@ -1,7 +1,11 @@
 import React from 'react';
+import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
+import { ThemeProvider } from 'styled-components';
+import Navigation from '../../src/components/js/Navigation';
 import NavigationItem from '../../src/components/js/NavigationItem';
 import NavigationItemIcon from '../../src/components/styled/NavigationItemIcon';
 import NavigationItemAfter from '../../src/components/styled/NavigationItemAfter';
+import { isDropdownOverflowKey } from '../../src/theme/util';
 import { mountWithRootTheme } from './_theme-util';
 
 describe('<NavigationItem />', () => {
@@ -158,6 +162,31 @@ describe('<NavigationItem />', () => {
         preventDefault: spy,
       });
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('a11y nav item role dependening on context', () => {
+    it('should apply role=menuitem when in the context of an overflow dropdown', () => {
+      const wrapper = mountWithRootTheme(
+        <Navigation>
+          <ThemeProvider theme={{ [isDropdownOverflowKey]: true }}>
+            <NavigationItem />
+          </ThemeProvider>
+        </Navigation>
+      );
+      const navItem = wrapper.find(Item).find('[role]');
+      expect(navItem.length).toBe(1);
+      expect(navItem.props().role).toBe('menuitem');
+    });
+
+    it('should not apply role when not in the context of an overflow dropdown', () => {
+      const wrapper = mountWithRootTheme(
+        <Navigation>
+          <NavigationItem />
+        </Navigation>
+      );
+      const navItem = wrapper.find(Item).find('[role]');
+      expect(navItem.props().role).toBe(null);
     });
   });
 });

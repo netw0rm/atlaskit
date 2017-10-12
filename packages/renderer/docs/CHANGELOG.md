@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 5.6.1 (2017-10-12)
+
+* bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))
 ## 5.6.0 (2017-10-05)
 
 * feature; applicationCard buttons support in schema ([478b2ab](https://bitbucket.org/atlassian/atlaskit/commits/478b2ab))

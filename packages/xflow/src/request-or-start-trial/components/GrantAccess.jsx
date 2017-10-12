@@ -139,11 +139,13 @@ class GrantAccess extends Component {
       optionItems,
       retrieveUsers,
       usersOption,
-      laterOption
+      laterOption,
     } = this.props;
 
     try {
-      const userGroups = optionItems.map(option => option.value).filter(option => option !== laterOption);
+      const userGroups = optionItems
+        .map(option => option.value)
+        .filter(option => option !== laterOption);
       const fetchedUsers = await Promise.all(userGroups.map(retrieveUsers));
       const userSets = new Map([
         ...zip(
@@ -194,7 +196,13 @@ class GrantAccess extends Component {
   };
 
   handleContinueClick = async () => {
-    const { grantAccessToUsers, onComplete, usersOption, laterOption, firePrivateAnalyticsEvent } = this.props;
+    const {
+      grantAccessToUsers,
+      onComplete,
+      usersOption,
+      laterOption,
+      firePrivateAnalyticsEvent,
+    } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
     if (selectedRadio === usersOption && selectedUsers.length === 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.user-select.invalid');

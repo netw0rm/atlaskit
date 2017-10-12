@@ -46,7 +46,7 @@
     "@atlaskit/flag": "*",
     "@atlaskit/modal-dialog": "^2.6.0",
     "@atlaskit/navigation": "^19.0.2",
-    "@atlaskit/page": "^4.4.2",
+    "@atlaskit/page": "^5.0.0",
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/util-readme": "^3.6.2",
     "babel-plugin-react-flow-props-to-prop-types": "0.14.0"

@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import Spinner from '@atlaskit/spinner';
+import { colors } from '@atlaskit/theme';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
@@ -46,7 +47,7 @@ export default class ConnectionDemo extends PureComponent {
   getIcon = () => {
     switch (this.state.appearance) {
       case 'error':
-        return <ErrorIcon label="" />;
+        return <ErrorIcon label="" secondaryColor={colors.R400} />;
       case 'info':
         return (
           <SpinnerContainer>
@@ -54,11 +55,11 @@ export default class ConnectionDemo extends PureComponent {
           </SpinnerContainer>
         );
       case 'success':
-        return <SuccessIcon label="" />;
+        return <SuccessIcon label="" secondaryColor={colors.G400} />;
       case 'warning':
-        return <WarningIcon label="" />;
+        return <WarningIcon label="" secondaryColor={colors.Y200} />;
       default:
-        return <SuccessIcon label="" />;
+        return <SuccessIcon label="" secondaryColor={colors.G400} />;
     }
   }
 

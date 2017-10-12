@@ -3,6 +3,7 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
+import { colors } from '@atlaskit/theme';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import Flag, { FlagGroup } from '../../src';
@@ -12,6 +13,14 @@ import { AppearanceArray } from '../../src/types';
 const appearanceItems = AppearanceArray.map(val => (
   { name: val, value: val, label: val, defaultSelected: val === Flag.defaultProps.appearance }
 ));
+
+const color = {
+  error: colors.R400,
+  info: colors.N500,
+  normal: colors.N0,
+  success: colors.G400,
+  warning: colors.Y200,
+};
 
 function getRandomDescription() {
   const descriptions = [
@@ -52,6 +61,8 @@ export default class AnimationDemo extends PureComponent {
   }
 
   render() {
+    console.log(this.state.flags.map(flag => flag.appearance));
+
     return (
       <div>
         <ExampleNavigation>
@@ -84,12 +95,16 @@ export default class AnimationDemo extends PureComponent {
                 { content: 'Not right now thanks', onClick: action('Not right now thanks') },
               ]}
               description={flag.description}
-              icon={<SuccessIcon label="Success" />}
+              icon={<SuccessIcon
+                secondaryColor={color[flag.appearance]}
+                label="Success"
+              />}
               id={flag.index}
               key={flag.index}
               title={`${flag.index}: ${flag.title}`}
             />
-          ))}
+          )
+        )}
         </FlagGroup>
       </div>
     );

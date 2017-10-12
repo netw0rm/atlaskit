@@ -1,8 +1,8 @@
 export type DisplayType = 'INLINE' | 'BLOCK';
 
-export type BodyType = 'NONE' | 'RICH-TEXT-BODY' | 'PLAIN-TEXT-BODY';
+export type BodyType = 'BODYLESS' | 'RICH-TEXT-BODY' | 'PLAIN-TEXT-BODY';
 
-export type MacroType = 'NONE-INLINE' | 'NONE-BLOCK' | 'RICH-TEXT-BODY-BLOCK' | 'PLAIN-TEXT-BODY-BLOCK';
+export type MacroType = 'BODYLESS-INLINE' | 'BODYLESS-BLOCK' | 'RICH-TEXT-BODY-BLOCK' | 'PLAIN-TEXT-BODY-BLOCK';
 
 export interface Macro {
   macroId: string;

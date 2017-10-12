@@ -1,7 +1,7 @@
 import { DisplayType, BodyType, MacroType } from './types';
 
 export const getMacroType = (displayType: DisplayType, plainTextBody?: string, richTextBody?: any): MacroType => {
-  let bodyType = 'NONE' as BodyType;
+  let bodyType: BodyType = 'BODYLESS';
 
   if (richTextBody) {
     bodyType = 'RICH-TEXT-BODY';

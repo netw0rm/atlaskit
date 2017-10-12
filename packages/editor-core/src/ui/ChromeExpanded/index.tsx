@@ -303,10 +303,10 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
                   tableHidden={state.tableHidden}
 
                   mediaUploadsEnabled={state.mediaUploadsEnabled}
-                  showMediaPicker={state.showMediaPicker}
+                  onShowMediaPicker={state.showMediaPicker}
 
                   availableWrapperBlockTypes={state.availableWrapperBlockTypes}
-                  insertBlockType={state.insertBlockType}
+                  onInsertBlockType={state.insertBlockType}
                 />
               )}
             />

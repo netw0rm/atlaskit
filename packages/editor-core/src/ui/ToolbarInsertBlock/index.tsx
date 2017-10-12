@@ -28,9 +28,9 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   allowMacro?: boolean;
   macroProvider?: MacroProvider;
-  showMediaPicker?: () => void;
-  insertBlockType?: (name: string, view: EditorView) => void;
-  openMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
+  onShowMediaPicker?: () => void;
+  onInsertBlockType?: (name: string, view: EditorView) => void;
+  onOpenMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
 }
 
 export interface State {
@@ -166,9 +166,9 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
   private onItemActivated = ({ item }) => {
     const {
       editorView,
-      showMediaPicker,
-      insertBlockType,
-      openMacroBrowser,
+      onShowMediaPicker,
+      onInsertBlockType,
+      onOpenMacroBrowser,
       macroProvider
     } = this.props;
 
@@ -179,15 +179,15 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         tableCommands.createTable()(editorView.state, editorView.dispatch);
         break;
       case 'media':
-        showMediaPicker!();
+        onShowMediaPicker!();
         break;
       case 'codeblock':
       case 'blockquote':
       case 'panel':
-        insertBlockType!(item.value.name, editorView);
+        onInsertBlockType!(item.value.name, editorView);
         break;
       case 'macro':
-        openMacroBrowser!(editorView, macroProvider!);
+        onOpenMacroBrowser!(editorView, macroProvider!);
     }
   }
 }

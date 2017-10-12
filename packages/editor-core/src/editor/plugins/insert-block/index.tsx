@@ -1,11 +1,15 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { stateKey as blockTypeStateKey } from '../../../plugins/block-type';
+import { BlockType } from '../../../plugins/block-type/types';
 import { stateKey as mediaStateKey } from '../../../plugins/media';
 import { stateKey as tablesStateKey } from '../../../plugins/table';
 import { pluginKey as macroStateKey } from '../macro';
+import { MacroProvider } from '../macro/types';
+import { openMacroBrowser } from '../macro/actions';
 import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
+import { EditorView } from '../../../prosemirror';
 
 const insertBlockPlugin: EditorPlugin = {
   primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance) {
@@ -22,10 +26,10 @@ const insertBlockPlugin: EditorPlugin = {
       }}
       // tslint:disable-next-line:jsx-no-lambda
       render={({
-        blockTypeState = {} as any,
-        mediaState = {} as any,
-        tablesState = {} as any,
-        macroState = {} as any
+        blockTypeState = {} as { availableWrapperBlockTypes: BlockType[], insertBlockType: (name: string, view: EditorView) => void },
+        mediaState = {} as { allowsUploads: boolean, showMediaPicker: () => void },
+        tablesState = {} as { tableActive: boolean, tableHidden: boolean },
+        macroState = {} as { allowMacro: boolean, macroProvider: MacroProvider }
       }) => (
         <ToolbarInsertBlock
           editorView={editorView}
@@ -33,13 +37,13 @@ const insertBlockPlugin: EditorPlugin = {
           tableHidden={tablesState.tableHidden}
 
           mediaUploadsEnabled={mediaState.allowsUploads}
-          showMediaPicker={mediaState.showMediaPicker}
+          onShowMediaPicker={mediaState.showMediaPicker}
 
           availableWrapperBlockTypes={blockTypeState.availableWrapperBlockTypes}
-          insertBlockType={blockTypeState.insertBlockType}
+          onInsertBlockType={blockTypeState.insertBlockType}
 
           allowMacro={macroState.allowMacro}
-          openMacroBrowser={macroState.openMacroBrowser}
+          onOpenMacroBrowser={openMacroBrowser}
           macroProvider={macroState.macroProvider}
         />
       )}

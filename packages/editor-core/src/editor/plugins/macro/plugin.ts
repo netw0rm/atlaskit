@@ -9,12 +9,7 @@ import { MacroProvider } from './types';
 import ProviderFactory from '../../../providerFactory';
 import * as assert from 'assert';
 import { Dispatch } from '../../event-dispatcher';
-
-import {
-  handleStateChange,
-  openMacroBrowser,
-  STATE_CHANGE
-} from './actions';
+import { handleStateChange, STATE_CHANGE } from './actions';
 
 export const pluginKey = new PluginKey('macroPlugin');
 
@@ -63,7 +58,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
 
       if (tr.getMeta(STATE_CHANGE)) {
         const { allowMacro, macroProvider } = pluginState;
-        dispatch(pluginKey, { allowMacro, macroProvider, openMacroBrowser });
+        dispatch(pluginKey, { allowMacro, macroProvider });
       }
 
       return pluginState;

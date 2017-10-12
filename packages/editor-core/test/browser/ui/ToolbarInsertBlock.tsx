@@ -129,7 +129,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         mediaUploadsEnabled={true}
-        showMediaPicker={mediaPluginsSet[0].getState(editorView.state).showMediaPicker}
+        onShowMediaPicker={mediaPluginsSet[0].getState(editorView.state).showMediaPicker}
         editorView={editorView}
       />
     );
@@ -152,7 +152,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
-        insertBlockType={pluginStateBlockType.insertBlockType}
+        onInsertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
@@ -176,7 +176,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
-        insertBlockType={pluginStateBlockType.insertBlockType}
+        onInsertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
@@ -199,7 +199,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
-        insertBlockType={pluginStateBlockType.insertBlockType}
+        onInsertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
@@ -242,7 +242,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const toolbarOption = mount(
       <ToolbarInsertBlock
         allowMacro={true}
-        openMacroBrowser={openMacroBrowser}
+        onOpenMacroBrowser={openMacroBrowser}
         editorView={editorView}
       />
     );

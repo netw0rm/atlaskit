@@ -4,7 +4,8 @@ import { MacroProvider, MacroParams, Macro } from './types';
 export const STATE_CHANGE = 'macros.handleStateChange';
 
 export const handleStateChange = (view: EditorView) => {
-  if (view.docView) {
+  // make sure editable DOM node is mounted
+  if (view.dom.parentNode) {
     view.dispatch(view.state.tr.setMeta(STATE_CHANGE, true));
   }
 };
@@ -29,7 +30,7 @@ export const openMacroBrowser = async (view: EditorView, macroProvider: MacroPro
     let node;
 
     switch (getMacroType(displayType, plainTextBody, richTextBody)) {
-      case 'NONE-INLINE':
+      case 'BODYLESS-INLINE':
         node = schema.nodes.inlineMacro.create({ macroId, name, placeholderUrl, params });
     }
 

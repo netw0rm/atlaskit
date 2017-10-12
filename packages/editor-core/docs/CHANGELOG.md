@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.2.1 (2017-10-12)
+
+* bug fix; measure renderer stat with HiRes API (issues closed: ed-2954) ([3717b4e](https://bitbucket.org/atlassian/atlaskit/commits/3717b4e))
 ## 50.2.0 (2017-10-10)
 
 * feature; add support for alt-paste, fix clipboard analytics. (issues closed: ed-2882) ([9b2de80](https://bitbucket.org/atlassian/atlaskit/commits/9b2de80))

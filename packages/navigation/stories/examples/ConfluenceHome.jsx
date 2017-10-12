@@ -170,7 +170,6 @@ export default class ConfluenceHome extends PureComponent {
         ...this.state.stack,
         [
           <AkNavigationItem icon={<CalendarIcon label="Calendar" />} text="Calendars" />,
-
           <AkNavigationItem icon={<img alt="questions" src={QuestionConfluence} />} text="Questions" />,
         ],
       ],

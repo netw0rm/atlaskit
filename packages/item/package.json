@@ -30,7 +30,7 @@
     "@atlaskit/dropdown-menu": "^3.4.0",
     "@atlaskit/droplist": "^4.5.0",
     "@atlaskit/item": "*",
-    "@atlaskit/page": "^4.4.0",
+    "@atlaskit/page": "^5.0.0",
     "@atlaskit/tooltip": "^3.4.0",
     "@atlaskit/util-readme": "^3.6.0",
     "polished": "^1.3.0"

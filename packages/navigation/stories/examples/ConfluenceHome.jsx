@@ -35,7 +35,7 @@ import Navigation, {
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
-import QuestionConfluence from '../questions.png';
+import QuestionConfluence from '../questions-white.svg';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@atlaskit/icon/glyph/search';
@@ -170,7 +170,7 @@ export default class ConfluenceHome extends PureComponent {
         ...this.state.stack,
         [
           <AkNavigationItem icon={<CalendarIcon label="Calendar" />} text="Calendars" />,
-          <AkNavigationItem icon={<img alt="questions" src={QuestionConfluence} />} text="Questions" />,
+          <AkNavigationItem icon={<QuestionConfluence />} text="Questions" />,
         ],
       ],
     });

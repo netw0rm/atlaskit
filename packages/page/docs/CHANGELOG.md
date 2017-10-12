@@ -3,11 +3,7 @@
 ## 5.0.0 (2017-10-11)
 
 
-
-
-
-
-
+* breaking; PageContent will now shrink to match the viewport size when the content allows ([9f038db0bcf8](https://bitbucket.org/atlassian/atlaskit/commits/9f038db0bcf8))
 
 ## 4.4.2 (2017-07-27)
 

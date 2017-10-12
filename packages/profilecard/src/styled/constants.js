@@ -3,14 +3,24 @@ import {
   themed,
 } from '@atlaskit/theme';
 
+export const bgShadowColor = themed({
+  light: colors.N50A,
+  dark: colors.DN50A,
+});
+
+export const bgBorderColor = themed({
+  light: colors.N60A,
+  dark: colors.DN60A,
+});
+
 export const bgColor = themed({
   light: colors.N0,
-  dark: colors.DN0,
+  dark: colors.DN50,
 });
 
 export const headerBgColor = themed({
   light: colors.B500,
-  dark: colors.B500,
+  dark: colors.B100,
 });
 
 export const headerTextColor = themed({

@@ -64,7 +64,7 @@ export const FullNameLabel = styled.span`
 
   font-size: 18px;
   color: ${headerTextColor};
-  margin: ${props => getFullNameMargin(props)}
+  margin: ${props => getFullNameMargin(props)};
   line-height: ${math.divide(() => 24, 18)}em;
 `;
 

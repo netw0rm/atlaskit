@@ -8,12 +8,17 @@ import {
   gridSize,
   math,
 } from '@atlaskit/theme';
-import { bgColor } from '../styled/constants';
+
+import {
+  bgColor,
+  bgShadowColor,
+  bgBorderColor,
+} from '../styled/constants';
 
 const CardAnimationWrapper = styled.div`
   background-color: ${bgColor};
   border-radius: ${borderRadius}px;
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px -2px ${bgShadowColor}, 0 0 1px ${bgBorderColor};
   cursor: default;
   font-family: ${fontFamily};
   font-size: ${fontSize}px;

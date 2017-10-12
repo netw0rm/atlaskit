@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import { colors } from '@atlaskit/theme';
 import AkSpinner from '@atlaskit/spinner';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
 import ErrorMessage from './components/ErrorMessage';
 import HeightTransitionWrapper from './components/HeightTransitionWrapper';
-
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
@@ -114,7 +114,11 @@ export default class Profilecard extends PureComponent {
     return (
       <CardContainer>
         <ProfileImage>
-          <AkAvatar size="xlarge" src={this.props.avatarUrl} />
+          <AkAvatar
+            size="xlarge"
+            src={this.props.avatarUrl}
+            borderColor={colors.N0}
+          />
         </ProfileImage>
         <CardContent>
           <DetailsGroup>

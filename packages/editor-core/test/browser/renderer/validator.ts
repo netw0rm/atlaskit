@@ -210,7 +210,35 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
-      it('should return "applicationCard" if attrs.actions is an array', () => {
+      it('should return "text" if attrs.actions is an empty array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: []
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.actions[].tilte is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [{
+              target: {
+                key: 'test.target'
+              }
+            }]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.actions[].target.key is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
           attrs: {
@@ -218,7 +246,66 @@ describe('Renderer - Validator', () => {
             title: { text: 'applicationCard' },
             actions: [{
               title: 'test',
-              target: 'test.target'
+              target: {
+              }
+            }]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.actions[].target.app is not valid string', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [{
+              title: 'test',
+              target: {
+                app: 20,
+                key: 'test.target'
+              }
+            }]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "text" if attrs.actions[].parameters is not object', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [{
+              title: 'test',
+              target: {
+                key: 'test.target'
+              },
+              parameters: 'aaa'
+            }]
+          }
+        };
+        expect(getValidNode(applicationCard).type).to.equal('text');
+      });
+
+      it('should return "applicationCard" if attrs.actions is a valid array', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            actions: [{
+              title: 'test',
+              target: {
+                app: 'some.app',
+                key: 'test.target'
+              },
+              parameters: {
+                test: 10,
+                ext: 'ext'
+              }
             }]
           }
         };

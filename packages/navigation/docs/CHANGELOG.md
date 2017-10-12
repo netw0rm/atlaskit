@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.0.2 (2017-10-12)
+
+* bug fix; updated theme prop types to accept colors from @atlaskit/theme (issues closed: ak-3682) ([6c3097c](https://bitbucket.org/atlassian/atlaskit/commits/6c3097c))
 ## 26.0.1 (2017-10-11)
 
 * bug fix; fix relative positioning of nav scroll container ([7d48f76](https://bitbucket.org/atlassian/atlaskit/commits/7d48f76))

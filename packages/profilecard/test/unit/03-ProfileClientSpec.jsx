@@ -41,10 +41,9 @@ describe('Profilecard', () => {
 
       beforeEach(() => {
         jest.useFakeTimers();
-        fetchMock.post(
-          '*',
-          { data: 'foo' }
-        );
+        fetchMock
+          .post('*', { data: 'foo' })
+          .get('*', { status: 200 });
       });
 
       afterEach(() => {

@@ -22,7 +22,7 @@ import {
   helpDialogPlugin,
   jiraIssuePlugin,
   unsupportedContentPlugin,
-  inlineCommentMarkerPlugin,
+  confluenceInlineComment,
   panelPlugin,
   inlineMacroPlugin
 } from '../plugins';
@@ -108,8 +108,8 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(unsupportedContentPlugin);
   }
 
-  if(props.allowInlineCommentMarker) {
-    plugins.push(inlineCommentMarkerPlugin);
+  if(props.allowConfluenceInlineComment) {
+    plugins.push(confluenceInlineComment);
   }
 
   if(props.allowPanel) {

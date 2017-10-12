@@ -51,7 +51,7 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
-    'inlineCommentMarker'
+    'confluenceInlineComment'
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*' }

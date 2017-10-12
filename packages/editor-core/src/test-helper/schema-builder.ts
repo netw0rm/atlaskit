@@ -254,7 +254,7 @@ export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const mentionQuery = (attrs = { active: true }) => markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {} );
-export const inlineCommentMarker = (attrs = { reference: '' }) => markFactory(sampleSchema.marks.inlineCommentMarker, attrs ? attrs : {} );
+export const confluenceInlineComment = (attrs = { reference: '' }) => markFactory(sampleSchema.marks.confluenceInlineComment, attrs ? attrs : {} );
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);

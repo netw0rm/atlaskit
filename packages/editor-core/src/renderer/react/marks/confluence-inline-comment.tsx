@@ -5,9 +5,9 @@ export interface Props {
   reference: string;
 }
 
-export default class InlineCommentMarker extends Component<Props, {}> {
+export default class ConfluenceInlineComment extends Component<Props, {}> {
   render() {
     const { reference, children } = this.props;
-    return <span data-reference={reference}>{children}</span>;
+    return <span data-mark-type="confluenceInlineComment" data-reference={reference}>{children}</span>;
   }
 }

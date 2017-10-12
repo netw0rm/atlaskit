@@ -170,8 +170,8 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
-          case schema.marks.inlineCommentMarker:
-            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
+          case schema.marks.confluenceInlineComment:
+            elem = elem.appendChild(encodeConfluenceInlineComment(node, schema));
             break;
           case schema.marks.textColor:
             elem = elem.appendChild(encodeTextColor(node, schema));
@@ -221,9 +221,9 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     return link;
   }
 
-  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
+  function encodeConfluenceInlineComment(node: PMNode, schema: Schema<any, any>) {
     const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
-    const mark = getNodeMarkOfType(node, schema.marks.inlineCommentMarker);
+    const mark = getNodeMarkOfType(node, schema.marks.confluenceInlineComment);
     const reference = mark ? mark.attrs.reference : '';
     marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
     return marker;

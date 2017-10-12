@@ -12,7 +12,7 @@ import {
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
   table, tr, td, th,
-  inlineCommentMarker,
+  confluenceInlineComment,
   inlineMacro
 } from './_schema-builder';
 chai.use(chaiPlugin);
@@ -601,7 +601,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         '<p><ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">inline comment</ac:inline-comment-marker></p>',
         doc(
           p(
-            inlineCommentMarker({
+            confluenceInlineComment({
               reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
             })('inline comment')
           )

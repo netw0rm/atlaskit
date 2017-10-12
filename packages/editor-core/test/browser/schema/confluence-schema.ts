@@ -30,6 +30,6 @@ describe('Confluence schema', () => {
     expect(confluenceSchema.marks).to.have.property('underline');
     expect(confluenceSchema.marks).to.have.property('mentionQuery');
     expect(confluenceSchema.marks).to.have.property('code');
-    expect(confluenceSchema.marks).to.have.property('inlineCommentMarker');
+    expect(confluenceSchema.marks).to.have.property('confluenceInlineComment');
   });
 });

@@ -1458,7 +1458,7 @@ System.out.println("There are " + count + " values >= 5");`
           text: '<INLINE_COMMENT_MARKER>',
           marks: [
             {
-              type: 'inlineCommentMarker',
+              type: 'confluenceInlineComment',
               attrs: {
                 reference: 'this-is-ac-ref-hash'
               }

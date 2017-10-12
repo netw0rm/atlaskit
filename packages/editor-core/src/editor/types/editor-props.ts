@@ -32,7 +32,7 @@ export interface EditorProps {
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
-  allowInlineCommentMarker?: boolean;
+  allowConfluenceInlineComment?: boolean;
   allowPanel?: boolean;
   allowInlineMacro?: boolean;
 

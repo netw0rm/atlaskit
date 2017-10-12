@@ -71,7 +71,7 @@ export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
 
-export const inlineCommentMarker = (attrs: {} = {}) => markFactory(schema.marks.inlineCommentMarker, attrs);
+export const confluenceInlineComment = (attrs: {} = {}) => markFactory(schema.marks.confluenceInlineComment, attrs);
 export const textColor = (attrs: { color?: string }) => markFactory(schema.marks.textColor, attrs);
 
 export const inlineMacro = (attrs: {

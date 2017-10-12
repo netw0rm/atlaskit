@@ -204,7 +204,7 @@ storiesOf(name, module)
                         allowTables={true}
                         allowJiraIssue={true}
                         allowUnsupportedContent={true}
-                        allowInlineCommentMarker={true}
+                        allowConfluenceInlineComment={true}
                         allowPanel={true}
                         allowInlineMacro={true}
 

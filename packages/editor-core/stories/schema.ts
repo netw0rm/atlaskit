@@ -42,6 +42,6 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
-    'inlineCommentMarker'
+    'confluenceInlineComment'
   ]
 });

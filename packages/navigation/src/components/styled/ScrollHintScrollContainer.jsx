@@ -20,9 +20,6 @@ const ScrollHintScrollContainer = styled.div`
   justify-content: flex-start;
   transition: padding ${drawerContainerHeaderAnimationSpeed};
   padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
-  // Position relative is required so products can position fixed items at top or bottom
-  // of the container scrollable area.
-  position: relative;
 
   ${whenCollapsed`
     overflow-y: hidden;

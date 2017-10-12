@@ -1,5 +1,16 @@
 # @atlaskit/flag
 
+## 6.1.1 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
+
+
+
+
+
+
+
+
 ## 6.1.0 (2017-08-17)
 
 * feature; adding new AutoDismissFlag component (issues closed: ak-2974 ak-1503) ([9aa91c0](https://bitbucket.org/atlassian/atlaskit/commits/9aa91c0))

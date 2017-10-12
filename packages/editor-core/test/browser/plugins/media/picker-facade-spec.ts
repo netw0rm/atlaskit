@@ -254,7 +254,7 @@ describe('Media PickerFacade', () => {
         const cb = sinon.spy();
         stateManager!.subscribe(testTemporaryFileId, cb);
         mockPicker.__triggerEvent('upload-end', {
-          file: { ...testFileData, publicId: testFilePublicId }, public: {},
+          file: { ...testFileData, publicId: testFilePublicId }, public: { id: 'test-id' },
         });
         expect(cb.calledWithExactly({
           id: testTemporaryFileId,
@@ -307,7 +307,7 @@ describe('Media PickerFacade', () => {
       expect(stateManager!.getState(testTemporaryFileId)!.status).to.eq('processing');
 
       mockPicker.__triggerEvent('upload-end', {
-        file: { ...testFileData, publicId: testFilePublicId }, public: {},
+        file: { ...testFileData, publicId: testFilePublicId }, public: { id: 'test-id' },
       });
 
       mockPicker.__triggerEvent('upload-status-update', {

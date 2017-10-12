@@ -1,7 +1,32 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+import {
+  fontFamily,
+  fontSize,
+  borderRadius,
+  gridSize,
+  math,
+} from '@atlaskit/theme';
 
-import styles from '../styles/profilecard.less';
+import {
+  bgColor,
+  bgShadowColor,
+  bgBorderColor,
+} from '../styled/constants';
+
+const CardAnimationWrapper = styled.div`
+  background-color: ${bgColor};
+  border-radius: ${borderRadius}px;
+  box-shadow: 0 4px 8px -2px ${bgShadowColor}, 0 0 1px ${bgBorderColor};
+  cursor: default;
+  font-family: ${fontFamily};
+  font-size: ${fontSize}px;
+  overflow: hidden;
+  position: relative;
+  transition: height 0.25s ease;
+  width: ${math.multiply(gridSize, 45)}px;
+`;
 
 export default class HeightTransitionWrapper extends PureComponent {
   static propTypes = {
@@ -39,15 +64,13 @@ export default class HeightTransitionWrapper extends PureComponent {
     };
 
     return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        className={styles.cardAnimationWrapper}
+      <CardAnimationWrapper
         style={inlineHeight}
-        ref={ref => (this.ref = ref)}
+        innerRef={ref => (this.ref = ref)}
         onClick={this.preventDefault}
       >
         {this.props.children}
-      </div>
+      </CardAnimationWrapper>
     );
   }
 }

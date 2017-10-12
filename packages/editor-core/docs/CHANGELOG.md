@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 50.2.2 (2017-10-12)
+
+* bug fix; fix tests in picker-facade-spec.ts ([40887b6](https://bitbucket.org/atlassian/atlaskit/commits/40887b6))
+* bug fix; skip backwards compatibility test ([3a637c2](https://bitbucket.org/atlassian/atlaskit/commits/3a637c2))
+* bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))
 ## 50.2.1 (2017-10-12)
 
 * bug fix; measure renderer stat with HiRes API (issues closed: ed-2954) ([3717b4e](https://bitbucket.org/atlassian/atlaskit/commits/3717b4e))

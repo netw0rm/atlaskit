@@ -249,6 +249,17 @@ storiesOf(name, module)
       />
     </HtmlPage>
   ))
+  .add('with people directory slot', () => (
+    <HtmlPage>
+      <BasicNavigation
+        usePeopleSearch
+        onCreateDrawerClose={action('create-close')}
+        onCreateDrawerOpen={action('create-open')}
+        onSearchDrawerClose={action('search-close')}
+        onSearchDrawerOpen={action('search-open')}
+      />
+    </HtmlPage>
+  ))
   .add('with a long ContainerTitle', () => (
     <HtmlPage>
       <BasicNavigation

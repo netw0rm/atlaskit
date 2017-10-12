@@ -9,6 +9,7 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import PeopleIcon from '@atlaskit/icon/glyph/people';
 import AkDropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
@@ -29,6 +30,7 @@ export default class BasicNavigation extends PureComponent {
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     drawers: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
+    usePeopleSearch: PropTypes.bool,
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   }
@@ -136,6 +138,7 @@ export default class BasicNavigation extends PureComponent {
         </DropdownItemGroup>
       </AkDropdownMenu>,
     ],
+    usePeopleSearch: false,
   }
 
   constructor(...args) {
@@ -178,6 +181,10 @@ export default class BasicNavigation extends PureComponent {
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const globalPrimaryIcon = <Tooltip position="right" description="Back"><AtlassianIcon label="Atlassian icon" size="large" /></Tooltip>;
+    const globalPeopleIcon = this.props.usePeopleSearch
+      ? <Tooltip position="right" description="People"><PeopleIcon label="People icon" size="medium" /></Tooltip>
+      : null;
+
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
@@ -192,6 +199,8 @@ export default class BasicNavigation extends PureComponent {
         }
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
+        globalPeopleIcon={globalPeopleIcon}
+        globalPeopleItemHref="/people"
         globalSearchIcon={
           <Tooltip position="right" description="Search">
             <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />

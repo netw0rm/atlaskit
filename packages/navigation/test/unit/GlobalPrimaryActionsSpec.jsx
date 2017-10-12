@@ -25,6 +25,14 @@ describe('<GlobalPrimaryActions />', () => {
         createIcon={<img alt="foo" />}
       />).find(GlobalItem).length).toBe(3);
     });
+    it('renders 4 GlobalItems with a primaryIcon, searchIcon, createIcon and a peopleIcon', () => {
+      expect(mountWithRootTheme(<GlobalPrimaryActions
+        primaryIcon={<img alt="foo" />}
+        searchIcon={<img alt="foo" />}
+        createIcon={<img alt="foo" />}
+        peopleIcon={<img alt="foo" />}
+      />).find(GlobalItem).length).toBe(4);
+    });
   });
   describe('props', () => {
     it('appearance is passed onto all <GlobalItem />', () => {
@@ -61,6 +69,28 @@ describe('<GlobalPrimaryActions />', () => {
         createIcon={'c'}
         onCreateActivate={handler}
       />).find(DrawerTrigger).at(1).props().onActivate).toBe(handler);
+    });
+    it('peopleIcon is passed onto the last <GlobalItem />', () => {
+      const peopleIcon = <img alt="people" />;
+      expect(
+        shallowWithTheme(<GlobalPrimaryActions
+          peopleIcon={peopleIcon}
+          primaryIcon={<img alt="primary" />}
+          searchIcon={'s'}
+          createIcon={'c'}
+        />)
+        .find(GlobalItem).last().props().children
+      ).toBe(peopleIcon);
+    });
+    it('peopleItemHref is passed onto the last <GlobalItem />', () => {
+      expect(shallowWithTheme(<GlobalPrimaryActions
+        peopleIcon={<img alt="people" />}
+        peopleItemHref="#people"
+        primaryIcon={<img alt="primary" />}
+        primaryItemHref="#primary"
+        searchIcon={'s'}
+        createIcon={'c'}
+      />).find(GlobalItem).last().props().href).toBe('#people');
     });
   });
 });

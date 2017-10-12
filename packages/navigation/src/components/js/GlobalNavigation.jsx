@@ -17,6 +17,10 @@ type Props = {|
   /** A component that will be used to render links. A default link component is
   used if none is provided. */
   linkComponent?: ReactClass,
+  /** The people search icon to be placed in the global navigation  */
+  peopleIcon?: ReactElement,
+  /** A link to place around the people icon. */
+  peopleItemHref?: string,
   /** The topmost icon to be placed in the global navigation - usually the product
   logo, or the product home icon */
   primaryIcon?: ReactElement,
@@ -41,6 +45,7 @@ export default class GlobalNavigation extends PureComponent {
   static defaultProps = {
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
+    peopleIcon: null,
     secondaryActions: [],
     theme: presets.global,
   };
@@ -53,12 +58,15 @@ export default class GlobalNavigation extends PureComponent {
       linkComponent,
       onCreateActivate,
       onSearchActivate,
+      peopleIcon,
+      peopleItemHref,
       primaryIcon,
       primaryItemHref,
       searchIcon,
       secondaryActions,
       theme,
     } = this.props;
+
     return (
       <WithRootTheme provided={theme}>
         <GlobalNavigationInner>
@@ -71,6 +79,8 @@ export default class GlobalNavigation extends PureComponent {
               primaryIcon={primaryIcon}
               primaryItemHref={primaryItemHref}
               searchIcon={searchIcon}
+              peopleIcon={peopleIcon}
+              peopleItemHref={peopleItemHref}
             />
           </GlobalNavigationPrimaryContainer>
           <GlobalNavigationSecondaryContainer>

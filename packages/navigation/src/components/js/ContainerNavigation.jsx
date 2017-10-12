@@ -23,6 +23,12 @@ type Props = {|
   isCollapsed is true. When clicked, onGlobalCreateActivate is called. It is
   recommended that you use an atlaskit icon. */
   globalCreateIcon?: ReactElement,
+  /** Icon to be rendered at the bottom of the globalPrimaryActions internal component
+  when isCollapsed is true. It is renered as a linkComponent, using the
+  globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
+  globalPeopleIcon?: ReactElement,
+  /** href to be used around the globalPrimaryIcon. */
+  globalPeopleItemHref?: string,
   /** Icon to be rendered at the top of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the
   globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
@@ -104,6 +110,8 @@ export default class ContainerNavigation extends Component {
       globalSecondaryActions,
       children,
       globalCreateIcon,
+      globalPeopleIcon,
+      globalPeopleItemHref,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
@@ -119,6 +127,7 @@ export default class ContainerNavigation extends Component {
     // Only animating the revealing of GlobalPrimaryActions and GlobalSecondaryActions
     // after the first render. Before that it is rendered without animation.
     const { isInitiallyRendered } = this.state;
+    const withPeopleSearch = !!globalPeopleIcon;
 
     return (
       <WithRootTheme
@@ -131,13 +140,15 @@ export default class ContainerNavigation extends Component {
           <Reveal
             shouldAnimate={isInitiallyRendered}
             isOpen={showGlobalActions}
-            openHeight={globalPrimaryActions.height.outer}
+            openHeight={globalPrimaryActions.height(withPeopleSearch).outer}
           >
             <GlobalPrimaryActions
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}
               onSearchActivate={onGlobalSearchActivate}
+              peopleIcon={globalPeopleIcon}
+              peopleItemHref={globalPeopleItemHref}
               primaryIcon={globalPrimaryIcon}
               primaryItemHref={globalPrimaryItemHref}
               searchIcon={globalSearchIcon}

@@ -29,6 +29,10 @@ const globalItemStyles = css`
   outline: none;
   text-align: center;
 
+  & a:focus {
+    outline-offset: 0;
+  }
+
   &:hover {
     background-color: ${({ theme }) => getProvided(theme).item.hover.background};
   }

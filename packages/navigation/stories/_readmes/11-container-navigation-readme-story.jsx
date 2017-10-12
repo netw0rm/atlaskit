@@ -15,6 +15,8 @@ const containerNavigationPropDescriptions = {
   headerComponent: 'Used to render the header component of the ContainerNavigation - usually a ContainerTitle or a Logo',
   isCollapsed: 'Used to control whether the container navigation should be rendered in collapsed mode',
   linkComponent: 'Used to render all links in the ContainerNavigation. See linkComponent docs for more details',
+  globalPeopleItemHref: globalActionPropDescription,
+  globalPeopleIcon: globalActionPropDescription,
   globalPrimaryItemHref: globalActionPropDescription,
   globalPrimaryIcon: globalActionPropDescription,
   globalSearchIcon: globalActionPropDescription,

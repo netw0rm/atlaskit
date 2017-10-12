@@ -52,5 +52,25 @@ describe('<GlobalNavigation />', () => {
       const wrapper = mount(<GlobalNavigation />);
       expect(wrapper.find(GlobalSecondaryActions).length).toBe(0);
     });
+
+    it('peopleIcon prop is passed to <GlobalPrimaryActions />', () => {
+      const icon = <img alt="foo" />;
+      expect(shallow(<GlobalNavigation peopleIcon={icon} />)
+        .find(GlobalPrimaryActions).props().peopleIcon).toBe(icon);
+    });
+    it('peopleItemHref prop is passed to <GlobalPrimaryActions />', () => {
+      const icon = <img alt="foo" />;
+      expect(shallow(<GlobalNavigation peopleIcon={icon} peopleItemHref="http://google.com" />)
+        .find(GlobalPrimaryActions).props().peopleItemHref).toBe('http://google.com');
+    });
+    it('peopleIcon=null means no <GlobalItem /> is rendered', () => {
+      expect(shallow(<GlobalNavigation />)
+        .find(GlobalItem).length).toBe(0);
+    });
+    it('linkComponent is passed on to the people <GlobalPrimaryActions/>', () => {
+      const linkComponent = () => null;
+      expect(shallow(<GlobalNavigation peopleIcon="foo" linkComponent={linkComponent} />)
+        .find(GlobalPrimaryActions).props().linkComponent).toBe(linkComponent);
+    });
   });
 });

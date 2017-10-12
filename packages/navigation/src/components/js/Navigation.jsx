@@ -57,6 +57,11 @@ type Props = {|
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
   is clicked. */
   globalCreateIcon?: ReactElement,
+  /** Icon to be displayed at the bottom of the GlobalNavigation.
+   * This is wrapped in the linkComponent. */
+  globalPeopleIcon?: ReactElement,
+  /** Link to be passed to the linkComponent that wraps the globalPeopleIcon. */
+  globalPeopleItemHref?: string,
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
   the linkComponent. */
   globalPrimaryIcon?: ReactElement,
@@ -279,6 +284,8 @@ export default class Navigation extends PureComponent {
       containerScrollRef,
       drawers,
       globalCreateIcon,
+      globalPeopleIcon,
+      globalPeopleItemHref,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
@@ -341,6 +348,8 @@ export default class Navigation extends PureComponent {
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
           onSearchActivate={onSearchDrawerOpen}
+          peopleIcon={globalPeopleIcon}
+          peopleItemHref={globalPeopleItemHref}
           primaryIcon={globalPrimaryIcon}
           primaryItemHref={globalPrimaryItemHref}
           searchIcon={globalSearchIcon}
@@ -378,6 +387,8 @@ export default class Navigation extends PureComponent {
                   theme={containerTheme}
                   showGlobalActions={!showGlobalNavigation}
                   globalCreateIcon={globalCreateIcon}
+                  globalPeopleIcon={globalPeopleIcon}
+                  globalPeopleItemHref={globalPeopleItemHref}
                   globalPrimaryIcon={globalPrimaryIcon}
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}

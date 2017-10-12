@@ -94,11 +94,13 @@ export const globalPrimaryActions = (() => {
     bottom: gridSize * 2,
   };
 
-  const innerHeight = (itemSizes.medium * 3) + (gridSize * 2);
-
-  const height = {
-    inner: innerHeight,
-    outer: gridSize + margin.bottom + innerHeight,
+  const height = (withPeopleSearch?: boolean) => {
+    const itemCount = withPeopleSearch ? 4 : 3;
+    const innerHeight = (itemSizes.medium * itemCount) + (gridSize * 2);
+    return {
+      inner: innerHeight,
+      outer: gridSize + margin.bottom + innerHeight,
+    };
   };
 
   return {

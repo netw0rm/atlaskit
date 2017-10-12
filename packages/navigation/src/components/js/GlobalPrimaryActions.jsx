@@ -13,6 +13,8 @@ export default class GlobalPrimaryActions extends PureComponent {
     linkComponent: PropTypes.func,
     onCreateActivate: PropTypes.func,
     onSearchActivate: PropTypes.func,
+    peopleIcon: PropTypes.node,
+    peopleItemHref: PropTypes.string,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
     searchIcon: PropTypes.node,
@@ -28,10 +30,13 @@ export default class GlobalPrimaryActions extends PureComponent {
       linkComponent,
       onCreateActivate,
       onSearchActivate,
+      peopleIcon,
+      peopleItemHref,
       primaryIcon,
       primaryItemHref,
       searchIcon,
     } = this.props;
+
     return (
       <GlobalPrimaryActionsInner>
         {primaryIcon ?
@@ -57,6 +62,17 @@ export default class GlobalPrimaryActions extends PureComponent {
             </DrawerTrigger>
           : null}
         </GlobalPrimaryActionsItemsWrapper>
+        {peopleIcon ?
+          <GlobalPrimaryActionsPrimaryItem>
+            <GlobalItem
+              href={peopleItemHref}
+              linkComponent={linkComponent}
+              size="medium"
+            >
+              {peopleIcon}
+            </GlobalItem>
+          </GlobalPrimaryActionsPrimaryItem>
+        : null}
       </GlobalPrimaryActionsInner>
     );
   }

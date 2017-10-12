@@ -11,6 +11,8 @@ const globalNavigationPropDescriptions = {
   accountItem: 'The user profile item to place at the bottom, usually an avatar and a dropdown trigger',
   createIcon: 'The icon to use for the create item - usually a + plus sign',
   linkComponent: 'Used to render all links in the GlobalNavigation. See linkComponent docs for more details',
+  peopleIcon: 'The icon to be used at the bottom of the GlobalNavigation – usually for the people search icon',
+  peopleItemHref: 'The href that the people icon should link to – usually the people search',
   primaryIcon: 'The icon to be used at the top of the GlobalNavigation – usually a product logo or a global home icon',
   primaryItemHref: 'The href that the primary icon should link to – usually the product dashboard',
   secondaryActions: 'An array of nodes which will be placed at the bottom of global sidebar',

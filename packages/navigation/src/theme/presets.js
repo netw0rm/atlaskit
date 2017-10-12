@@ -64,7 +64,7 @@ export const container: Provided = ((): Provided => {
       tertiary: themed({ light: colors.N0, dark: colors.DN30 }),
     },
     text: themed({ light: colors.N500, dark: colors.DN600 }),
-    subText: colors.subText,
+    subText: colors.subtleText,
     keyline: themed({ light: colors.N30A, dark: colors.DN30A }),
     item,
     dropdown,

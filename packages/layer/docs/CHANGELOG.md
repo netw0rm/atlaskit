@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.5.5 (2017-10-12)
+
+* bug fix; fix issue where layer would flicker when Popper updated positioning (issues closed: ak-3600) ([379abba](https://bitbucket.org/atlassian/atlaskit/commits/379abba))
 ## 2.5.4 (2017-09-19)
 
 * bug fix; support z-index on layer's content ([42f6b69](https://bitbucket.org/atlassian/atlaskit/commits/42f6b69))

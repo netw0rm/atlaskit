@@ -129,6 +129,7 @@ export class MediaPluginState {
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
+      handleStateChange(this.view);
 
       return;
     }
@@ -446,7 +447,6 @@ export class MediaPluginState {
 
   private notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
-    handleStateChange(this.view);
   }
 
   private removeNodeById = (id: string) => {

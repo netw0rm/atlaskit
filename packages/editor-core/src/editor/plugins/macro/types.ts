@@ -4,22 +4,17 @@ export type BodyType = 'NONE' | 'RICH-TEXT-BODY' | 'PLAIN-TEXT-BODY';
 
 export type MacroType = 'NONE-INLINE' | 'NONE-BLOCK' | 'RICH-TEXT-BODY-BLOCK' | 'PLAIN-TEXT-BODY-BLOCK';
 
-export interface MacroProperties {
-  'fab:display-type'?: string;
-  'fab:placeholder-url'?: string;
-  'ac:rich-text-body'?: string;
-  'ac:plain-text-body'?: string;
-}
-
 export interface Macro {
   macroId: string;
-  macroName: string;
-  macroType: MacroType;
-  properties: MacroProperties;
-  params: any;
+  name: string;
+  placeholderUrl: string;
+  params: any; // (all "<ac:parameter>")
+  displayType: DisplayType;
+  plainTextBody?: string;
+  richTextBody?: any; // could have nested macros
 }
 
-export interface MacroAttributes {
+export interface MacroParams {
   macroId: string;
   params: any;
 }
@@ -33,5 +28,5 @@ export interface MacroProvider {
   /**
    * If "macro" param is passed in, it will open macro browser for editing the macro
    */
-  openMacroBrowser(macro?: Macro): void;
+  openMacroBrowser(macroParams?: MacroParams): Promise<Macro>;
 }

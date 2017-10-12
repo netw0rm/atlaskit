@@ -47,6 +47,9 @@ export default class WithPluginState extends React.Component<State, any> {
 
     const pluginsState = Object.keys(plugins).reduce((acc, propName) => {
       const pluginKey = plugins[propName];
+      if (!pluginKey) {
+        return acc;
+      }
       const handler = this.handlePluginStateChange.bind(this, propName);
       eventDispatcher.on(pluginKey.key, handler);
 

@@ -5,7 +5,7 @@ import { EditorView, Node, Schema } from '../../prosemirror';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
-import { MacroProvider } from '../types';
+import { MacroProvider } from '../plugins/macro/types';
 import { Transformer } from '../../';
 
 export type EditorAppearance = 'message' | 'inline-comment' | 'comment' | 'full-page' | 'chromeless' | undefined;

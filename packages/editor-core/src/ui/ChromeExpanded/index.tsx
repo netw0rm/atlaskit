@@ -51,6 +51,7 @@ import {
   ButtonGroup
 } from './styles';
 import { EditorView, browser } from '../../prosemirror';
+import ToolbarInsertBlockWrapper from '../ToolbarInsertBlock/ToolbarInsertBlockWrapper';
 
 export interface Props {
   editorView: EditorView;
@@ -287,14 +288,27 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             /> : null
           }
           {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
-            <ToolbarInsertBlock
-              isDisabled={disabled}
+            <ToolbarInsertBlockWrapper
               pluginStateTable={pluginStateTable}
               pluginStateMedia={pluginStateMedia}
               pluginStateBlockType={pluginStateBlockType}
-              editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              // tslint:disable-next-line:jsx-no-lambda
+              render={state => (
+                <ToolbarInsertBlock
+                  isDisabled={disabled}
+                  editorView={editorView}
+                  tableActive={state.tableActive}
+                  tableHidden={state.tableHidden}
+
+                  mediaUploadsEnabled={state.mediaUploadsEnabled}
+                  showMediaPicker={state.showMediaPicker}
+
+                  availableWrapperBlockTypes={state.availableWrapperBlockTypes}
+                  insertBlockType={state.insertBlockType}
+                />
+              )}
             />
           }
           <span style={{ flexGrow: 1 }} />

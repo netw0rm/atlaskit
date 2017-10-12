@@ -42,7 +42,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        tableHidden={false}
         editorView={editorView}
         isDisabled={true}
       />
@@ -55,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        tableHidden={false}
         editorView={editorView}
       />
     );
@@ -74,11 +74,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 3 child elements if pluginStateBlockType is defined', () => {
+  it('should have 3 child elements if pluginStateBlockType.availableWrapperBlockTypes is defined', () => {
     const { editorView } = editor(doc(p('text')));
+    const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
         editorView={editorView}
       />
     );
@@ -87,11 +88,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if pluginStateTable is defined', () => {
+  it('should have 1 child elements if tableHidden is defined and equals false', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
+        tableHidden={false}
         editorView={editorView}
       />
     );
@@ -100,7 +101,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should have 1 child elements if pluginStateMedia is defined', async () => {
+  it('should have 1 child elements if mediaUploadsEnabled is defined and equals true', async () => {
     const { editorView } = editor(doc(p('text')));
 
     const media = await mediaProvider;
@@ -108,7 +109,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
+        mediaUploadsEnabled={true}
         editorView={editorView}
       />
     );
@@ -123,14 +124,16 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const media = await mediaProvider;
     await media.uploadContext;
 
+    mediaPluginsSet[0].getState(editorView.state).showMediaPicker = sinon.spy();
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateMedia={mediaPluginsSet[0].getState(editorView.state)}
+        mediaUploadsEnabled={true}
+        showMediaPicker={mediaPluginsSet[0].getState(editorView.state).showMediaPicker}
         editorView={editorView}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    mediaPluginsSet[0].getState(editorView.state).showMediaPicker = sinon.spy();
     const mediaButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Files and images') > 0)
@@ -141,16 +144,20 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger insertBlockType of pluginStateBlockType when Panel option is clicked', () => {
+  it('should trigger insertBlockType when Panel option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
+    const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
+    pluginStateBlockType.insertBlockType = sinon.spy();
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
+        insertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    blockTypePluginsSet[0].getState(editorView.state).insertBlockType = sinon.spy();
+
     const panelButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Panel') > 0)
@@ -161,42 +168,48 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger insertBlockType of pluginStateBlockType when code block option is clicked', () => {
+  it('should trigger insertBlockType when code block option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
+    const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
+    pluginStateBlockType.insertBlockType = sinon.spy();
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
+        insertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    blockTypePluginsSet[0].getState(editorView.state).insertBlockType = sinon.spy();
     const codeblockButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Code block') > 0)
       .find('Element');
     codeblockButton.simulate('click');
-    expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).to.equal(1);
+    expect(pluginStateBlockType.insertBlockType.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.codeblock.button')).to.equal(true);
     toolbarOption.unmount();
   });
 
-  it('should trigger insertBlockType of pluginStateBlockType when blockquote option is clicked', () => {
+  it('should trigger insertBlockType when blockquote option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
+    const pluginStateBlockType = blockTypePluginsSet[0].getState(editorView.state);
+    pluginStateBlockType.insertBlockType = sinon.spy();
+
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateBlockType={blockTypePluginsSet[0].getState(editorView.state)}
+        availableWrapperBlockTypes={pluginStateBlockType.availableWrapperBlockTypes}
+        insertBlockType={pluginStateBlockType.insertBlockType}
         editorView={editorView}
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    blockTypePluginsSet[0].getState(editorView.state).insertBlockType = sinon.spy();
     const blockquoteButton = toolbarOption
       .find('Item')
       .filterWhere(n => n.text().indexOf('Block quote') > 0)
       .find('Element');
     blockquoteButton.simulate('click');
-    expect(blockTypePluginsSet[0].getState(editorView.state).insertBlockType.callCount).to.equal(1);
+    expect(pluginStateBlockType.insertBlockType.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.blockquote.button')).to.equal(true);
     toolbarOption.unmount();
   });
@@ -205,7 +218,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        pluginStateTable={tablePluginsSet[0].getState(editorView.state)}
+        tableHidden={false}
         editorView={editorView}
       />
     );

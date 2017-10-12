@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
@@ -7,10 +6,8 @@ import MediaIcon from '@atlaskit/icon/glyph/editor/image';
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import QuoteIcon from '@atlaskit/icon/glyph/quote';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { analyticsService as analytics } from '../../analytics';
-import { TableState } from '../../plugins/table';
-import { MediaPluginState } from '../../plugins/media';
-import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
 import { toggleTable, tooltip, findKeymapByDescription } from '../../keymaps';
 import { EditorView } from '../../prosemirror';
@@ -18,23 +15,26 @@ import DropdownMenu from '../DropdownMenu';
 import ToolbarButton from '../ToolbarButton';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
 import tableCommands from '../../plugins/table/commands';
+import { MacroProvider } from '../../editor/plugins/macro/types';
 
 export interface Props {
   isDisabled?: boolean;
   editorView: EditorView;
-  pluginStateTable?: TableState;
-  pluginStateMedia?: MediaPluginState;
-  pluginStateBlockType?: BlockTypeState;
+  tableActive?: boolean;
+  tableHidden?: boolean;
+  mediaUploadsEnabled?: boolean;
+  availableWrapperBlockTypes?: BlockType[];
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  allowMacro?: boolean;
+  macroProvider?: MacroProvider;
+  showMediaPicker?: () => void;
+  insertBlockType?: (name: string, view: EditorView) => void;
+  openMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
 }
 
 export interface State {
   isOpen?: boolean;
-  tableActive: boolean;
-  tableHidden: boolean;
-  mediaUploadsDisabled: boolean;
-  availableWrapperBlockTypes?: BlockType[];
 }
 
 const blockTypeIcons = {
@@ -43,70 +43,13 @@ const blockTypeIcons = {
   blockquote: QuoteIcon,
 };
 
-export default class ToolbarInsertBlock extends PureComponent<Props, State> {
+export default class ToolbarInsertBlock extends React.Component<Props, State> {
   state: State = {
-    isOpen: false,
-    tableActive: false,
-    tableHidden: false,
-    mediaUploadsDisabled: false,
+    isOpen: false
   };
 
-  componentDidMount() {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
-    if (pluginStateTable) {
-      pluginStateTable.subscribe(this.handlePluginStateTableChange);
-    }
-    if (pluginStateMedia) {
-      pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
-    }
-    if (pluginStateBlockType) {
-      pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { availableWrapperBlockTypes } = pluginStateBlockType;
-      this.setState({
-        availableWrapperBlockTypes,
-      });
-    }
-  }
-
-  componentWillReceiveProps(props: Props) {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = props;
-    const {
-      pluginStateTable: oldPluginStateTable,
-      pluginStateMedia: oldPluginStateMedia,
-      pluginStateBlockType: oldPluginStateBlockType,
-    } = this.props;
-    if (!oldPluginStateTable && pluginStateTable) {
-      pluginStateTable.subscribe(this.handlePluginStateTableChange);
-    }
-    if (!oldPluginStateMedia && pluginStateMedia) {
-      pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
-    }
-    if (!oldPluginStateBlockType && pluginStateBlockType) {
-      pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { availableWrapperBlockTypes } = pluginStateBlockType;
-      this.setState({
-        availableWrapperBlockTypes,
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
-    if (pluginStateTable) {
-      pluginStateTable.unsubscribe(this.handlePluginStateTableChange);
-    }
-    if (pluginStateMedia) {
-      pluginStateMedia.unsubscribe(this.handlePluginStateMediaChange);
-    }
-    if (pluginStateBlockType) {
-      pluginStateBlockType.unsubscribe(this.handlePluginStateBlockTypeChange);
-    }
-  }
-
   private onOpenChange = (attrs: any) => {
-    this.setState({
-      isOpen: attrs.isOpen,
-    });
+    this.setState({ isOpen: attrs.isOpen });
   }
 
   private handleTriggerClick = () => {
@@ -162,23 +105,27 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
   }
 
   private createItems = () => {
-    const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
+    const {
+      tableHidden,
+      tableActive,
+      mediaUploadsEnabled,
+      availableWrapperBlockTypes,
+      allowMacro
+    } = this.props;
     let items: any[] = [];
-    if (pluginStateTable) {
-      const { tableHidden, tableActive } = this.state;
-      if (!tableHidden) {
-        items.push({
-          content: 'Table',
-          value: { name: 'table' },
-          isActive: tableActive,
-          tooltipDescription: tooltip(toggleTable),
-          tooltipPosition: 'right',
-          elemBefore: <TableIcon label="Insert table"/>,
-        });
-      }
+
+    if (typeof tableHidden !== 'undefined' && !tableHidden) {
+      items.push({
+        content: 'Table',
+        value: { name: 'table' },
+        isActive: tableActive,
+        tooltipDescription: tooltip(toggleTable),
+        tooltipPosition: 'right',
+        elemBefore: <TableIcon label="Insert table"/>,
+      });
     }
-    const { mediaUploadsDisabled } = this.state;
-    if (pluginStateMedia && !mediaUploadsDisabled) {
+
+    if (mediaUploadsEnabled) {
       items.push({
         content: 'Files and images',
         value: { name: 'media' },
@@ -187,8 +134,8 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
         elemBefore: <MediaIcon label="Insert files and images"/>,
       });
     }
-    const { availableWrapperBlockTypes } = this.state;
-    if (pluginStateBlockType && availableWrapperBlockTypes) {
+
+    if (typeof availableWrapperBlockTypes !== 'undefined' && availableWrapperBlockTypes) {
       availableWrapperBlockTypes.forEach(blockType => {
         // tslint:disable-next-line:variable-name
         const BlockTypeIcon = blockTypeIcons[blockType.name];
@@ -201,43 +148,46 @@ export default class ToolbarInsertBlock extends PureComponent<Props, State> {
         });
       });
     }
+
+    if (typeof allowMacro !== 'undefined' && allowMacro) {
+      items.push({
+        content: 'View more',
+        value: { name: 'macro' },
+        tooltipDescription: 'View more',
+        tooltipPosition: 'right',
+        elemBefore: <EditorMoreIcon label="View more"/>,
+      });
+    }
     return [{
       items,
     }];
   }
 
-  private handlePluginStateTableChange = (pluginState: TableState) => {
-    const { tableActive, tableHidden } = pluginState;
-    this.setState({ tableActive, tableHidden });
-  }
-
-  private handlePluginStateMediaChange = (pluginState: MediaPluginState) => {
-    this.setState({
-      mediaUploadsDisabled: !pluginState.allowsUploads
-    });
-  }
-
-  private handlePluginStateBlockTypeChange = (pluginState: BlockTypeState) => {
-    this.setState({
-      availableWrapperBlockTypes: pluginState.availableWrapperBlockTypes,
-    });
-  }
-
   private onItemActivated = ({ item }) => {
-    const { editorView, pluginStateMedia } = this.props;
+    const {
+      editorView,
+      showMediaPicker,
+      insertBlockType,
+      openMacroBrowser,
+      macroProvider
+    } = this.props;
+
     analytics.trackEvent(`atlassian.editor.format.${item.value.name}.button`);
+
     switch(item.value.name) {
       case 'table':
         tableCommands.createTable()(editorView.state, editorView.dispatch);
         break;
       case 'media':
-        pluginStateMedia!.showMediaPicker();
+        showMediaPicker!();
         break;
       case 'codeblock':
       case 'blockquote':
       case 'panel':
-        const blockType = item.value;
-        this.props.pluginStateBlockType!.insertBlockType(blockType.name, this.props.editorView);
+        insertBlockType!(item.value.name, editorView);
+        break;
+      case 'macro':
+        openMacroBrowser!(editorView, macroProvider!);
     }
   }
 }

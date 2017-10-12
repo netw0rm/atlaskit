@@ -26,7 +26,7 @@ import {
 } from '../../prosemirror';
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
-
+import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
@@ -37,6 +37,7 @@ import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
+import { handleStateChange, STATE_CHANGE } from '../../editor/plugins/media/actions';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -445,6 +446,7 @@ export class MediaPluginState {
 
   private notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
+    handleStateChange(this.view);
   }
 
   private removeNodeById = (id: string) => {
@@ -514,7 +516,7 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
   return new Plugin({
     state: {
       init(config, state) {
@@ -531,6 +533,11 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        if (tr.getMeta(STATE_CHANGE) && dispatch) {
+          const { allowsUploads, showMediaPicker } = pluginState;
+          dispatch(stateKey, { allowsUploads, showMediaPicker });
         }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
@@ -570,8 +577,8 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
   });
 };
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

@@ -187,15 +187,27 @@ storiesOf(name, module)
       actions: [
         {
           title: 'Primary action',
-          target: 'primary.target'
+          target: {
+            app: 'some.app',
+            key: 'primary.target'
+          },
+          parameters: {
+            test: 10,
+            expenseId: 'test-id'
+          }
         },
         {
           title: 'Secondary action',
-          target: 'secondary.target'
+          target: {
+            key: 'secondary.target'
+          }
         },
         {
           title: 'Another action',
-          target: 'anothr.target'
+          target: {
+            app: 'another.app',
+            key: 'another.target'
+          }
         }
       ],
       eventHandlers

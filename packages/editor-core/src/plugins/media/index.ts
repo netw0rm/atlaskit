@@ -1,5 +1,7 @@
 import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import {
   Context,
@@ -23,6 +25,9 @@ import {
   Transaction,
   NodeSelection,
   Mark,
+  Decoration,
+  DecorationSet,
+  insertPoint,
 } from '../../prosemirror';
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
@@ -38,6 +43,7 @@ import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
 import { handleStateChange, STATE_CHANGE } from '../../editor/plugins/media/actions';
+import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -57,6 +63,7 @@ export class MediaPluginState {
   public binaryPicker?: PickerFacadeType;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
+  public showDropzone: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -412,6 +419,7 @@ export class MediaPluginState {
       pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
       pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      this.dropzonePicker.onDrag(this.handleDrag);
 
       this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
       this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
@@ -512,11 +520,26 @@ export class MediaPluginState {
 
     return (state && state.status) || 'ready';
   }
+
+  private handleDrag = (dragState: 'enter' | 'leave') => {
+    const isActive = dragState === 'enter';
+    if (this.showDropzone === isActive) {
+      return;
+    }
+    this.showDropzone = isActive;
+
+    const { dispatch, state } = this.view;
+    // Trigger state change to be able to pick it up in the decorations handler
+    dispatch(state.tr);
+  }
 }
 
 export const stateKey = new PluginKey('mediaPlugin');
 
 export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  const dropZone = document.createElement('div');
+  ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
+
   return new Plugin({
     state: {
       init(config, state) {
@@ -558,6 +581,35 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       };
     },
     props: {
+      decorations: (state: EditorState<any>) => {
+        const pluginState = stateKey.getState(state);
+        if (!pluginState.showDropzone) {
+          return;
+        }
+
+        const { schema, selection: { $anchor } } = state;
+        // When a media is already selected
+        if (state.selection instanceof NodeSelection) {
+          return;
+        }
+
+        let pos: number | null = $anchor.pos;
+        if (
+          $anchor.parent.type !== schema.nodes.paragraph &&
+          $anchor.parent.type !== schema.nodes.codeBlock
+        ) {
+          pos = insertPoint(state.doc, pos, schema.nodes.mediaGroup);
+        }
+
+        if (pos === null) {
+          return;
+        }
+
+        const dropPlaceholders: Decoration[] = [
+          Decoration.widget(pos, dropZone, { key: 'drop-placeholder' })
+        ];
+        return DecorationSet.create(state.doc, dropPlaceholders);
+      },
       nodeViews: {
         mediaGroup: nodeViewFactory(options.providerFactory, {
           mediaGroup: ReactMediaGroupNode,

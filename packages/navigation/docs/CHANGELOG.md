@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 26.0.3 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
+* bug fix; change global nav items to use styled buttons or styled anchor ([c6ccb5d](https://bitbucket.org/atlassian/atlaskit/commits/c6ccb5d))
 ## 26.0.2 (2017-10-12)
 
 * bug fix; updated theme prop types to accept colors from @atlaskit/theme (issues closed: ak-3682) ([6c3097c](https://bitbucket.org/atlassian/atlaskit/commits/6c3097c))

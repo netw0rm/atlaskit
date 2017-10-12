@@ -8,13 +8,12 @@ describe('<GlobalItem />', () => {
   describe('rendering', () => {
     it('if no href prop supplied, renders a GlobalItemInner (with tabIndex 0) and no DefaultLinkComponent', () => {
       const wrapper = mountWithRootTheme(<GlobalItem />);
-      expect(wrapper.find(GlobalItemInner).prop('tabIndex')).toBe(0);
+      expect(wrapper.find(GlobalItemInner).find('button').exists()).toBe(true);
       expect(wrapper.find(DefaultLinkComponent).exists()).toBe(false);
     });
     it('if href prop supplied, renders a DefaultLinkComponent containing a GlobalItemInner (without tabIndex', () => {
       const wrapper = mountWithRootTheme(<GlobalItem href="/" />);
-      expect(wrapper.find(DefaultLinkComponent).find(GlobalItemInner).exists()).toBe(true);
-      expect(wrapper.find(DefaultLinkComponent).find(GlobalItemInner).prop('tabIndex')).toBe(undefined);
+      expect(wrapper.find(DefaultLinkComponent).exists()).toBe(true);
     });
   });
 

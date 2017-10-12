@@ -171,7 +171,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         containerTheme={presetThemes.global}
-        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo /></AkContainerLogo>)}
+        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo size="small" /></AkContainerLogo>)}
         hasScrollHintTop
       >
         <AkNavigationItemGroup>

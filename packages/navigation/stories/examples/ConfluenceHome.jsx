@@ -35,6 +35,7 @@ import Navigation, {
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import QuestionConfluence from '../questions.png';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@atlaskit/icon/glyph/search';
@@ -82,7 +83,7 @@ export default class ConfluenceHome extends PureComponent {
               />}
             text="Add-ons"
             onClick={() => this.addOnsNestedNav()}
-            icon={<AddonIcon label="Add-ons icon" size="medium" /* onClick={() => this.addOnNested()} *//>}
+            icon={<AddonIcon label="Add-ons icon" size="medium" />}
           />,
           <AkNavigationItem
             text="Settings"
@@ -169,7 +170,8 @@ export default class ConfluenceHome extends PureComponent {
         ...this.state.stack,
         [
           <AkNavigationItem icon={<CalendarIcon label="Calendar" />} text="Calendars" />,
-          <AkNavigationItem src="https://confluence-questions.staging.atl-paas.net/images/questions-white.svg" text="Questions" />,
+
+          <AkNavigationItem icon={<img alt="questions" src={QuestionConfluence} />} text="Questions" />,
         ],
       ],
     });

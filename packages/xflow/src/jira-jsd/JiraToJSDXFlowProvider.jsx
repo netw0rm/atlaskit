@@ -59,11 +59,11 @@ const messages = defineMessages({
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.everyone',
-    defaultMessage: 'Everyone in Jira Software',
+    defaultMessage: 'All of your Jira Software users',
   },
-  grantAccessOptionItemsLabelSiteAdmins: {
-    id: 'xflow.j2jsd.start-trial.grant-access.option.site-admins',
-    defaultMessage: 'Site admins only',
+  grantAccessOptionItemsLabelLater: {
+    id: 'xflow.j2jsd.start-trial.grant-access.option.later',
+    defaultMessage: 'I\'ll choose my team later',
   },
   grantAccessOptionItemsLabelSpecificUsers: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.specific-users',
@@ -185,16 +185,18 @@ export const defaultProps = intl => ({
       ),
       grantAccessDefaultSelectedRadio: 'everyone',
       grantAccessUsersOption: 'specific-users',
+      grantAccessLaterOption: 'later',
       grantAccessShowNotifyUsersOption: false,
+      grantAccessShowAffectMyBill: false,
       grantAccessShowProgressIndicator: false,
       grantAccessOptionItems: [
         {
-          value: 'everyone',
-          label: intl.formatMessage(messages.grantAccessOptionItemsLabelEveryone),
+          value: 'later',
+          label: intl.formatMessage(messages.grantAccessOptionItemsLabelLater),
         },
         {
-          value: 'site-admins',
-          label: intl.formatMessage(messages.grantAccessOptionItemsLabelSiteAdmins),
+          value: 'everyone',
+          label: intl.formatMessage(messages.grantAccessOptionItemsLabelEveryone),
         },
         {
           value: 'specific-users',

@@ -5,6 +5,7 @@ import createEvent from './create-event';
 export interface PasteContent {
   plain?: string;
   html?: string;
+  types?: Array<string>;
 }
 
 /**
@@ -27,7 +28,7 @@ export default (editorView: EditorView, content: PasteContent) => {
         return content.html;
       }
     },
-    types: [],
+    types: content.types || [],
   };
 
   try {

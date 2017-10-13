@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/polyfills",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,8 @@
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "*.js"
   ],
   "dependencies": {
     "babel-runtime": "^6.11.6"

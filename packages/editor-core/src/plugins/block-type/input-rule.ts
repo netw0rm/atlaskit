@@ -5,27 +5,15 @@ import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { createInputRule, defaultInputRuleHandler } from '../utils';
 
-
-// : (NodeType, number) → InputRule
-// Given a node type and a maximum level, creates an input rule that
-// turns up to that number of `#` characters followed by a space at
-// the start of a textblock into a heading whose level corresponds to
-// the number of `#` signs.
 export function headingRule(nodeType: NodeType, maxLevel: number) {
   return textblockTypeInputRule(new RegExp('^(#{1,' + maxLevel + '})\\s$'),
                                 nodeType, match => ({level: match[1].length}));
 }
 
-// : (NodeType) → InputRule
-// Given a blockquote node type, returns an input rule that turns `"> "`
-// at the start of a textblock into a blockquote.
 export function blockQuoteRule(nodeType: NodeType) {
   return wrappingInputRule(/^\s*>\s$/, nodeType);
 }
 
-// : (NodeType) → InputRule
-// Given a code block node type, returns an input rule that turns a
-// textblock starting with three backticks into a code block.
 export function codeBlockRule(nodeType: NodeType) {
   return textblockTypeInputRule(/^```$/, nodeType);
 }

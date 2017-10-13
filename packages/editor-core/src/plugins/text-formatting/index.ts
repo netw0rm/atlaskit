@@ -43,7 +43,6 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
-  marksToRemove;
   keymapHandler;
 
   constructor(state: EditorState<any>) {

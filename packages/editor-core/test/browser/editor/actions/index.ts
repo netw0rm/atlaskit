@@ -4,10 +4,16 @@ import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
 import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { Transformer } from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
 
 const serializer = new JSONSerializer();
+
+const dummyTransformer: Transformer<string> = {
+  parse: content => doc(blockquote(content)),
+  encode: node => node.textContent
+};
 
 describe(name, () => {
   describe('EditorActions', () => {
@@ -81,6 +87,39 @@ describe(name, () => {
         expect(val).to.not.equal(undefined);
         expect((val as any)!.content!.length).to.equal(1);
         expect((val as any)!.content![0].type).to.equal('paragraph');
+      });
+    });
+
+    describe('#setValue', () => {
+      it('should not change the document if no transformer is set', async () => {
+        const wasSuccessful = editorActions.setValue('Hello World!');
+        expect(wasSuccessful).to.equal(false);
+        const actual = editorView.state.doc;
+        const emptyDocument = doc(p(''));
+        expect(actual!.toJSON()).to.deep.equal(emptyDocument.toJSON());
+      });
+
+      it('should update the document using the transformer', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const wasSuccessful = editorActions.setValue('Hello World!');
+        expect(wasSuccessful).to.equal(true);
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
+      });
+
+      it('should replace any existing content in the editor', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const tr = editorView.state.tr;
+        tr.insertText('some text', 1);
+        editorView.dispatch(tr);
+
+        editorActions.setValue('Hello World!');
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
       });
     });
 

@@ -72,6 +72,14 @@ export default class EditorActions {
     });
   }
 
+  setValue(content: string) {
+    if (!this.editorView || !this.contentTransformer) {
+      return false;
+    }
+    const doc = this.contentTransformer.parse(content);
+    return this.replaceDocument(doc);
+  }
+
   replaceDocument(rawValue: Node | string | Object): boolean {
     if (!this.editorView || !rawValue) {
       return false;

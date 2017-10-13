@@ -14,10 +14,24 @@ const messageEditorPropsPreset: EditorProps = {
   allowHelpDialog: true
 };
 
+const commentEditorPropsPreset: EditorProps = {
+  appearance: 'comment',
+
+  allowCodeBlocks: true,
+  allowHyperlinks: true,
+  allowLists: true,
+  allowMentions: true,
+  allowTables: true,
+  allowTextColor: true,
+  allowTextFormatting: true,
+};
+
 export default function getPropsPreset(appearance: EditorAppearance): EditorProps {
   switch (appearance) {
     case 'message':
       return { ...messageEditorPropsPreset };
+    case 'comment':
+      return { ...commentEditorPropsPreset };
     default:
       return {};
   }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import Base from '@atlaskit/field-base';
+import Base, { Label } from '@atlaskit/field-base';
 import Radio from './Radio';
 import { itemsPropType } from './constants';
 
@@ -51,18 +51,23 @@ export default class FieldRadioGroup extends PureComponent {
 
   render() {
     return (
-      <Base
-        appearance="none"
-        isRequired={this.props.isRequired}
-        label={this.props.label}
-      >
-        <div
-          aria-label={this.props.label}
-          role="group"
+      <div>
+        <Label
+          label={this.props.label}
+        />
+        <Base
+          appearance="none"
+          isRequired={this.props.isRequired}
+          label={this.props.label}
         >
-          {this.renderItems()}
-        </div>
-      </Base>
+          <div
+            aria-label={this.props.label}
+            role="group"
+          >
+            {this.renderItems()}
+          </div>
+        </Base>
+      </div>
     );
   }
 }

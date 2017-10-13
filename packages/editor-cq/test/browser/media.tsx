@@ -7,7 +7,6 @@ import {
   ToolbarMedia,
 } from '@atlaskit/editor-core';
 import { DefaultMediaStateManager } from '@atlaskit/media-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
 import {
   chaiPlugin,
   storyMediaProviderFactory,
@@ -18,7 +17,7 @@ import Editor from '../../src';
 chai.use(chaiPlugin);
 
 describe('media', () => {
-  const resolvedProvider = storyMediaProviderFactory(mediaTestHelpers);
+  const resolvedProvider = storyMediaProviderFactory();
   const noop = () => {};
 
   it('should show media icon if provider is set', async () => {
@@ -109,11 +108,7 @@ describe('media', () => {
 
   it('should show spinner only when the save button was clicked', async () => {
     const stateManager = new DefaultMediaStateManager();
-    const resolvedProvider = storyMediaProviderFactory(
-      mediaTestHelpers,
-      mediaTestHelpers.defaultCollectionName,
-      stateManager
-    );
+    const resolvedProvider = storyMediaProviderFactory({stateManager});
 
     const editor = mount(<Editor
       isExpandedByDefault={true}

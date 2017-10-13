@@ -2,7 +2,7 @@ import { Search } from 'js-search';
 
 import { MentionDescription } from '../types';
 import debug from '../util/logger';
-import { AbstractMentionResource, HttpError } from '../api/MentionResource';
+import { AbstractMentionResource, HttpError, MentionsResult } from '../api/MentionResource';
 import mentionData from './mention-data';
 import { MockMentionConfig } from './support-types';
 
@@ -27,7 +27,7 @@ export default class MockMentionResource extends AbstractMentionResource {
   filter(query: string): void {
     debug('_mock-ak-mention-resource filter', query);
     const searchTime = Date.now();
-    const notify = (mentions) => {
+    const notify = (mentions: MentionsResult) => {
       if (searchTime >= this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);

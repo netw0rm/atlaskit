@@ -15,6 +15,7 @@ export {
   MentionResource,
   PresenceProvider,
   PresenceResource,
+  MentionsResult,
 } from '@atlaskit/mention';
 
 export {

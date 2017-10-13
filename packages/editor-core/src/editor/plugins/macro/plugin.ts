@@ -32,7 +32,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
   key: pluginKey,
   view: (view: EditorView) => {
     providerFactory.subscribe('macroProvider', async (name, provider: Promise<MacroProvider>) => {
-      let resolvedProvider: MacroProvider;
+      let resolvedProvider: MacroProvider | null;
 
       try {
         resolvedProvider = await provider;
@@ -40,7 +40,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
           resolvedProvider && resolvedProvider.openMacroBrowser,
           `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`
         );
-      } catch (err) { return; }
+      } catch (err) { resolvedProvider = null; }
 
       view.dispatch(view.state.tr.setMeta(pluginKey, { provider: resolvedProvider }));
     });

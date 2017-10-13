@@ -60,10 +60,12 @@ export const emojiContainer = style({
   },
 });
 
+export const placeholder = 'placeholder';
+
 export const placeholderContainer = style({
   display: 'inline-block',
   background: '#f7f7f7',
-  borderRadius: '100%',
+  borderRadius: '20%',
   verticalAlign: 'middle',
   whiteSpace: 'nowrap',
 });

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-import { placeholderContainer, emojiTooltip } from './styles';
+import { placeholder, placeholderContainer, emojiTooltip } from './styles';
 import { defaultEmojiHeight } from '../../constants';
 import { EmojiImageRepresentation } from '../../types';
 import { isImageRepresentation, isMediaRepresentation } from '../../type-helpers';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 export interface Props {
   shortName: string;
@@ -37,6 +36,7 @@ const EmojiPlaceholder = (props: Props) => {
     height: `${height}px`,
   };
   const classes = {
+    [placeholder]: true,
     [placeholderContainer]: true,
     [emojiTooltip]: showTooltip
   };

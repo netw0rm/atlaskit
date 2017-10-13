@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';
 import Button from '@atlaskit/button';
+
 import LayerManager from '../../src';
 
 const sizes = ['Large', 'Medium', 'Small'];
@@ -44,8 +45,8 @@ export default class ExampleManyModals extends Component {
             <Modal
               autoFocus
               key={tshirt}
-              onDialogDismissed={this.closeModal}
-              title={tshirt}
+              onClose={this.closeModal}
+              heading={tshirt}
               width={tshirt.toLowerCase()}
               actions={[
                 { text: 'Close Modal', onClick: () => this.closeModal(tshirt) },

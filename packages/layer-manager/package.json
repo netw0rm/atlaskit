@@ -32,12 +32,12 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/button": "^5.1.0",
-    "@atlaskit/modal-dialog": "^2.6.0",
-    "@atlaskit/dropdown-menu": "^3.7.2",
-    "@atlaskit/inline-dialog": "^3.2.0",
+    "@atlaskit/button": "^5.4.2",
+    "@atlaskit/modal-dialog": "^3.1.1",
+    "@atlaskit/dropdown-menu": "^3.10.3",
+    "@atlaskit/inline-dialog": "^5.0.2",
     "@atlaskit/layer-manager": "*",
-    "react-lorem-component": "0.11.0"
+    "react-lorem-component": "^0.12.2"
   },
   "peerDependencies": {
     "react": "^15.3.2",

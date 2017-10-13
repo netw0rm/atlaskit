@@ -171,8 +171,8 @@ export default class Content extends Component {
 
   render() {
     const {
-      actions, appearance, children, footer,
-      header, heading, onClose, isChromeless,
+      actions, appearance, children, footer, header, heading, onClose,
+      isChromeless, shouldScroll,
     } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
 
@@ -184,6 +184,7 @@ export default class Content extends Component {
         </Wrapper>
       );
     }
+
     return (
       <Wrapper>
         <Header
@@ -193,7 +194,7 @@ export default class Content extends Component {
           onClose={onClose}
           showKeyline={showHeaderKeyline}
         />
-        <Body innerRef={this.getScrollContainer}>
+        <Body innerRef={this.getScrollContainer} shouldScroll={shouldScroll}>
           {children}
         </Body>
         <Footer

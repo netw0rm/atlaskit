@@ -23,13 +23,13 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   it('should produce null HTML when another block on editor is focused', () => {
     const { editorView, plugin, pluginState } = editor(doc(paragraph('te{<>}xt'), paragraph('before', link({ href: 'http://www.atlassian.com' })('text'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).to.equal(null);
   });
 
   it('should not produce null HTML when a link on editor is focused', () => {
     const { editorView, plugin, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
-    plugin.props.onFocus!(editorView, focusEvent);
+    plugin.props.handleDOMEvents!.focus(editorView, focusEvent);
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
     expect(hyperlinkEdit.html()).to.not.equal(null);
   });
@@ -37,7 +37,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   it('should produce null HTML when editor is blur', () => {
     const { editorView, plugin, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
-    plugin.props.onBlur!(editorView, blurEvent);
+    plugin.props.handleDOMEvents!.blur(editorView, blurEvent);
     expect(hyperlinkEdit.html()).to.equal(null);
   });
 

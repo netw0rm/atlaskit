@@ -107,7 +107,7 @@ describe('table plugin', () => {
     context('when editor is focused', () => {
       it('it is true', () => {
         const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(pluginState.editorFocused).to.equal(true);
         editorView.destroy();
       });
@@ -116,7 +116,7 @@ describe('table plugin', () => {
     context('when editor is not focused', () => {
       it('it is false', () => {
         const { plugin, editorView, pluginState } = editor(doc(table(tr(tdCursor, tdEmpty, tdEmpty))));
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.editorFocused).to.equal(false);
         editorView.destroy();
       });
@@ -128,7 +128,7 @@ describe('table plugin', () => {
       it('it should not create a new table and return false', () => {
         const tableNode = table(tr(tdCursor));
         const { plugin, editorView } = editor(doc(tableNode));
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
         expect(tableCommands.createTable()(editorView.state, editorView.dispatch)).to.equal(false);
         expect(editorView.state.doc).to.deep.equal(doc(tableNode));
         editorView.destroy();
@@ -175,7 +175,7 @@ describe('table plugin', () => {
       context('when it called with 0', () => {
         it('it should prepend a new column and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2{<>}'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(0);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, td({})(p('c1')), td({})(p('c2'))))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
@@ -186,7 +186,7 @@ describe('table plugin', () => {
       context('when it called with 1', () => {
         it('it should insert a new column in the middle and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(1);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), tdCursor, td({})(p('c2'))))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
@@ -197,7 +197,7 @@ describe('table plugin', () => {
       context('when it called with 2', () => {
         it('it should append a new column and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('c1{<>}')), td({})(p('c2'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertColumn(2);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('c1')), td({})(p('c2')), tdCursor))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.column.button')).to.equal(true);
@@ -213,7 +213,7 @@ describe('table plugin', () => {
       context('when it called with 0', () => {
         it('it should prepend a new row and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2{<>}'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(0);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(td({})(p('row1'))), tr(td({})(p('row2'))))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
@@ -224,7 +224,7 @@ describe('table plugin', () => {
       context('when it called with 1', () => {
         it('it should insert a new row in the middle and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(1);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(tdCursor), tr(td({})(p('row2'))))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
@@ -237,7 +237,7 @@ describe('table plugin', () => {
       context('when it called with 2', () => {
         it('it should append a new row and move cursor inside it\'s first cell', () => {
           const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(td({})(p('row1{<>}'))), tr(td({})(p('row2'))))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.insertRow(2);
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(td({})(p('row1'))), tr(td({})(p('row2'))), tr(tdCursor))));
           expect(trackEvent.calledWith('atlassian.editor.format.table.row.button')).to.equal(true);
@@ -253,7 +253,7 @@ describe('table plugin', () => {
         context(`when called with ${column}`, () => {
           it(`it should select ${column} column`, () => {
             const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             pluginState.selectColumn(column);
             const selection = editorView.state.selection as CellSelection;
             const map = TableMap.get(pluginState.tableNode!);
@@ -276,7 +276,7 @@ describe('table plugin', () => {
         context(`when called with ${row}`, () => {
           it(`it should select ${row} row`, () => {
             const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
-            plugin.props.onFocus!(editorView, event);
+            plugin.props.handleDOMEvents!.focus(editorView, event);
             pluginState.selectRow(row);
             const selection = editorView.state.selection as CellSelection;
             const anchor = selection.$anchorCell.index(-1);
@@ -294,7 +294,7 @@ describe('table plugin', () => {
   describe('selectTable()', () => {
     it('it should select the whole table', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
       pluginState.selectTable();
       const selection = editorView.state.selection as CellSelection;
       expect(selection.isRowSelection()).to.equal(true);
@@ -310,7 +310,7 @@ describe('table plugin', () => {
           context(`when called with ${column}`, () => {
             it(`it should return true`, () => {
               const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
-              plugin.props.onFocus!(editorView, event);
+              plugin.props.handleDOMEvents!.focus(editorView, event);
               pluginState.selectColumn(column);
               expect(pluginState.isColumnSelected(column)).to.equal(true);
               editorView.destroy();
@@ -328,7 +328,7 @@ describe('table plugin', () => {
           context(`when called with ${row}`, () => {
             it(`it should return true`, () => {
               const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
-              plugin.props.onFocus!(editorView, event);
+              plugin.props.handleDOMEvents!.focus(editorView, event);
               pluginState.selectRow(row);
               expect(pluginState.isRowSelected(row)).to.equal(true);
               editorView.destroy();
@@ -345,7 +345,7 @@ describe('table plugin', () => {
         it('it should remove the first column and move cursor to the first cell of the column to the left', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
@@ -359,7 +359,7 @@ describe('table plugin', () => {
         it('it should remove the middle column and move cursor to the first cell of the column to the left', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}')), tdCursor, tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
@@ -376,7 +376,7 @@ describe('table plugin', () => {
         });
         it('it should convert first following row to header if pluginState.isHeaderRowRequired is true', () => {
           const { plugin, pluginState, editorView } = editorTableHeader(doc(table(tr(thCursor), tr(tdEmpty), tr(tdEmpty))));
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(table(tr(th({})(p())), tr(tdEmpty))));
@@ -386,7 +386,7 @@ describe('table plugin', () => {
         it('it should move cursor to the first cell of the new header row', () => {
           const { plugin, pluginState, editorView, refs } = editorTableHeader(doc(table(tr(th({})(p('{nextPos}testing{<>}'))), tr(tdEmpty), tr(tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.selection.$from.pos).to.equal(nextPos);
@@ -399,7 +399,7 @@ describe('table plugin', () => {
         it('it should remove the last column and move cursor to the first cell of the previous column', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor, td({})(p('{nextPos}')), tdCursor))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectColumn(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor, tdEmpty))));
@@ -415,7 +415,7 @@ describe('table plugin', () => {
         it('it should remove the first row and move cursor to the first cell of the first row', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(td({})(p('{nextPos}'))), tr(tdCursor), tr(tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(0);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdCursor), tr(tdEmpty))));
@@ -429,7 +429,7 @@ describe('table plugin', () => {
         it('it should remove the middle row and move cursor to the first cell of the next row', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(1);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));
@@ -443,7 +443,7 @@ describe('table plugin', () => {
         it('it should remove the middle row and move cursor to the first cell of the previous row', () => {
           const { plugin, pluginState, editorView, refs } = editor(doc(p('text'), table(tr(tdCursor), tr(td({})(p('{nextPos}'))), tr(tdEmpty))));
           const { nextPos } = refs;
-          plugin.props.onFocus!(editorView, event);
+          plugin.props.handleDOMEvents!.focus(editorView, event);
           pluginState.selectRow(2);
           pluginState.remove();
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), table(tr(tdEmpty), tr(tdCursor))));

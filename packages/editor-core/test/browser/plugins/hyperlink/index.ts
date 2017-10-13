@@ -498,7 +498,7 @@ describe('hyperlink', () => {
       const spy = sinon.spy();
 
       pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
 
       expect(spy.callCount).to.equal(2);
       editorView.destroy();
@@ -509,7 +509,7 @@ describe('hyperlink', () => {
       const spy = sinon.spy();
 
       pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
 
       expect(spy.callCount).to.equal(1);
       editorView.destroy();
@@ -520,8 +520,8 @@ describe('hyperlink', () => {
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      plugin.props.onBlur!(editorView, event);
-      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleDOMEvents!.blur(editorView, event);
+      plugin.props.handleDOMEvents!.focus(editorView, event);
 
       expect(spy.callCount).to.equal(1);
       editorView.destroy();
@@ -600,8 +600,8 @@ describe('hyperlink', () => {
       it('it is true', () => {
         const { editorView, plugin, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
 
-        plugin.props.onBlur!(editorView, event);
-        plugin.props.onFocus!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
+        plugin.props.handleDOMEvents!.focus(editorView, event);
 
         expect(pluginState.editorFocused).to.equal(true);
         editorView.destroy();
@@ -612,7 +612,7 @@ describe('hyperlink', () => {
       it('it is false', () => {
         const { editorView, plugin, pluginState } = editor(doc(paragraph(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
 
-        plugin.props.onBlur!(editorView, event);
+        plugin.props.handleDOMEvents!.blur(editorView, event);
 
         expect(pluginState.editorFocused).not.to.equal(true);
         editorView.destroy();

@@ -369,14 +369,14 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
           pluginState.changeHandlers.forEach(cb => cb(pluginState));
         }
         event.preventDefault();
-        return true;
+        return false;
       },
       focus(view, event) {
         const pluginState = stateKey.getState(view.state);
         pluginState.editorFocused = true;
 
         event.preventDefault();
-        return true;
+        return false;
       }
     },
     /**

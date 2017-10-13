@@ -143,6 +143,14 @@ const mentionData = {
         "display_name": "Alica Armwood",
         "username": "Fatima"
       }
+    },
+    {
+      "id": "21",
+      "attributes": {
+        "is_teammate": true,
+        "display_name": "Raina Huang",
+        "username": "Happyface"
+      }
     }
   ]
 };

@@ -4,26 +4,16 @@ import ChromeCollapsed from '../../../ui/ChromeCollapsed';
 export interface Props {
   placeholder?: string;
   children?: any;
-}
-
-export interface State {
+  onFocus: (e) => void;
   isExpanded: boolean;
 }
 
-export default class CollapsedEditor extends React.Component<Props, State> {
-  state: State = {
-    isExpanded: false
-  };
-
-  private handleFocus = () => {
-    this.setState({ isExpanded: true });
-  }
-
+export default class CollapsedEditor extends React.Component<Props, void> {
   render() {
-    if (this.state.isExpanded) {
+    if (this.props.isExpanded) {
       return this.props.children;
     }
 
-    return <ChromeCollapsed onFocus={this.handleFocus} text={this.props.placeholder} />;
+    return <ChromeCollapsed onFocus={this.props.onFocus} text={this.props.placeholder} />;
   }
 }

@@ -1,7 +1,7 @@
 // @flow
+import '@atlaskit/polyfills/object-assign';
 import React, { PureComponent } from 'react';
 import { getTheme } from '@atlaskit/theme';
-import 'es6-object-assign/auto';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';

@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.0.5 (2017-10-13)
+
+* bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))
 ## 26.0.4 (2017-10-12)
 
 * bug fix; check not only hasOwnProperty but also whether this property is not undefined ([9ef8049](https://bitbucket.org/atlassian/atlaskit/commits/9ef8049))

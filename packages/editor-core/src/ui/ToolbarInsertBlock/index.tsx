@@ -113,7 +113,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
     } = this.props;
     let items: any[] = [];
 
-    if (typeof tableHidden !== 'undefined' && !tableHidden) {
+    if (tableHidden === false) {
       items.push({
         content: 'Table',
         value: { name: 'table' },

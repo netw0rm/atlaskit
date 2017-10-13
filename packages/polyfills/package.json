@@ -18,7 +18,8 @@
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "*.js"
   ],
   "dependencies": {
     "babel-runtime": "^6.11.6"

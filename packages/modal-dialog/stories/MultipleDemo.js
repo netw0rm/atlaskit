@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { action } from '@kadira/storybook';
 import LayerManager from '@atlaskit/layer-manager';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
 import Modal from '../src';
 
-const sizes = ['medium', 'small'];
+const sizes = ['large', 'medium', 'small'];
 
 export default class ShowHideDemo extends Component {
   state = { isOpen: [] }
@@ -18,8 +19,9 @@ export default class ShowHideDemo extends Component {
     openModals.pop();
     this.setState({ isOpen: openModals });
   }
-  handleStackChange = (idx) => {
-    console.info('handleStackChange', idx);
+  handleStackChange = (idx, name) => {
+    console.info(`"${name}" stack change`, idx);
+    action(`"${name}" stack change ${idx}`)();
   }
   handleCloseComplete = () => {
     console.info(`The exit animation of the "${sizes[0]}" modal has completed.`);
@@ -30,7 +32,7 @@ export default class ShowHideDemo extends Component {
 
     return (
       <LayerManager>
-        <div style={{ padding: 16 }}>
+        <div style={{ maxWidth: 400, padding: 16 }}>
           <ButtonGroup>
             {sizes.map(name => (
               <Button key={name} onClick={() => this.open(name)}>
@@ -38,20 +40,29 @@ export default class ShowHideDemo extends Component {
               </Button>
             ))}
           </ButtonGroup>
+          <p>
+            For illustrative purposes three {'"stacked"'} modals can be opened
+            in this demo, though ADG3 recommends only two at any time.
+          </p>
+          <p>
+            Check the storybook{"'"}s {'"action logger"'} (or your console) to
+            see how you can make use of the <code>onStackChange</code> property.
+          </p>
 
-          {sizes.filter(v => isOpen.includes(v)).map((name, idx) => {
-            const next = sizes[idx + 1];
+          {sizes.filter(v => isOpen.includes(v)).map((name) => {
+            const next = sizes[sizes.indexOf(name) + 1];
             const onClick = next ? () => this.open(next) : null;
             const actions = [{ text: 'Close', onClick: this.close }];
             if (next) actions.push({ text: `Open: ${next}`, onClick });
 
             return (
               <Modal
-                key={name}
                 actions={actions}
+                autoFocus
+                key={name}
                 onClose={this.close}
                 onCloseComplete={next && this.handleCloseComplete}
-                onStackChange={next && this.handleStackChange}
+                onStackChange={next ? (id) => this.handleStackChange(id, name) : null}
                 heading={`Modal: ${name}`}
                 width={name}
               >

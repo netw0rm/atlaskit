@@ -72,7 +72,7 @@ export default class ConnectionDemo extends PureComponent {
 
   getActions = () => {
     if (this.state.appearance === 'warning') {
-      return [{ content: 'Good luck!' }];
+      return [{ content: 'Good luck!', onClick: () => {} }];
     }
     return undefined;
   }
@@ -87,6 +87,7 @@ export default class ConnectionDemo extends PureComponent {
             title={this.getTitle()}
             description={this.getDescription()}
             actions={this.getActions()}
+            id="fake-flag"
           />
         </FlagGroup>
         <p>

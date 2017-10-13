@@ -115,6 +115,7 @@ storiesOf(name, module)
     <Modal
       heading="List of comments in a modal"
       isOpen
+      onClose={() => {}}
     >
       <InlineDeleteCommentList>
         <Comment

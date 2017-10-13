@@ -35,6 +35,7 @@ export default class MockMentionResourceWithInfoHints extends AbstractMentionRes
         const date = new Date(searchTime).toISOString().substr(17, 6);
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
       }
+      this._notifyAllResultsListeners(mentions);
     };
     const notifyInfo = (info) => {
       this._notifyInfoListeners(info);

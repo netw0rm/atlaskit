@@ -235,14 +235,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger openMacroBrowser when "[...] View More" option is clicked', () => {
+  it('should trigger insertMacroFromMacroBrowser when "[...] View More" option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
-    const openMacroBrowser = sinon.spy();
+    const insertMacroFromMacroBrowser = sinon.spy();
+    const macroProvider = {} as any;
 
     const toolbarOption = mount(
       <ToolbarInsertBlock
-        allowMacro={true}
-        onOpenMacroBrowser={openMacroBrowser}
+        macroProvider={macroProvider}
+        onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
         editorView={editorView}
       />
     );
@@ -253,7 +254,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       .filterWhere(n => n.text().indexOf('View more') > -1)
       .find('Element');
     button.simulate('click');
-    expect(openMacroBrowser.callCount).to.equal(1);
+    expect(insertMacroFromMacroBrowser.callCount).to.equal(1);
     expect(trackEvent.calledWith('atlassian.editor.format.macro.button')).to.equal(true);
     toolbarOption.unmount();
   });

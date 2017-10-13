@@ -26,11 +26,10 @@ export interface Props {
   availableWrapperBlockTypes?: BlockType[];
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-  allowMacro?: boolean;
-  macroProvider?: MacroProvider;
+  macroProvider?: MacroProvider | null;
   onShowMediaPicker?: () => void;
   onInsertBlockType?: (name: string, view: EditorView) => void;
-  onOpenMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
+  onInsertMacroFromMacroBrowser?: (view: EditorView, macroProvider: MacroProvider) => void;
 }
 
 export interface State {
@@ -110,7 +109,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       tableActive,
       mediaUploadsEnabled,
       availableWrapperBlockTypes,
-      allowMacro
+      macroProvider
     } = this.props;
     let items: any[] = [];
 
@@ -149,7 +148,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       });
     }
 
-    if (typeof allowMacro !== 'undefined' && allowMacro) {
+    if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
         content: 'View more',
         value: { name: 'macro' },
@@ -168,7 +167,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
       editorView,
       onShowMediaPicker,
       onInsertBlockType,
-      onOpenMacroBrowser,
+      onInsertMacroFromMacroBrowser,
       macroProvider
     } = this.props;
 
@@ -187,7 +186,7 @@ export default class ToolbarInsertBlock extends React.Component<Props, State> {
         onInsertBlockType!(item.value.name, editorView);
         break;
       case 'macro':
-        onOpenMacroBrowser!(editorView, macroProvider!);
+        onInsertMacroFromMacroBrowser!(editorView, macroProvider!);
     }
   }
 }

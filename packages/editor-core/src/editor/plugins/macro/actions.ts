@@ -1,16 +1,8 @@
 import { EditorView } from '../../../prosemirror';
 import { getMacroType } from './utils';
 import { MacroProvider, MacroParams, Macro } from './types';
-export const STATE_CHANGE = 'macros.handleStateChange';
 
-export const handleStateChange = (view: EditorView) => {
-  // make sure editable DOM node is mounted
-  if (view.dom.parentNode) {
-    view.dispatch(view.state.tr.setMeta(STATE_CHANGE, true));
-  }
-};
-
-export const openMacroBrowser = async (view: EditorView, macroProvider: MacroProvider, macroParams?: MacroParams) => {
+export const insertMacroFromMacroBrowser = async (view: EditorView, macroProvider: MacroProvider, macroParams?: MacroParams) => {
   if (!macroProvider) {
     return;
   }

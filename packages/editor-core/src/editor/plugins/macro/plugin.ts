@@ -1,5 +1,4 @@
 import {
-  EditorState,
   Plugin,
   PluginKey,
   EditorView
@@ -9,56 +8,22 @@ import { MacroProvider } from './types';
 import ProviderFactory from '../../../providerFactory';
 import * as assert from 'assert';
 import { Dispatch } from '../../event-dispatcher';
-import { handleStateChange, STATE_CHANGE } from './actions';
 
 export const pluginKey = new PluginKey('macroPlugin');
 
-export class MacroState {
-  allowMacro: boolean = false;
-  macroProvider: MacroProvider;
-
-  private view: EditorView;
-
-  constructor(providerFactory: ProviderFactory) {
-    providerFactory.subscribe('macroProvider', (name, provider: Promise<MacroProvider>) => this.setMacroProvider(provider));
-  }
-
-  setMacroProvider = async (macroProvider?: Promise<MacroProvider>) => {
-    if (!macroProvider) {
-      return;
-    }
-
-    let resolvedMacroProvider: MacroProvider;
-    try {
-      resolvedMacroProvider = await macroProvider;
-      assert(
-        resolvedMacroProvider && resolvedMacroProvider.openMacroBrowser,
-        `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedMacroProvider}`
-      );
-    } catch (err) {
-      return;
-    }
-
-    this.macroProvider = resolvedMacroProvider;
-    this.allowMacro = true;
-    handleStateChange(this.view);
-  }
-
-  setView(view: EditorView) {
-    this.view = view;
-  }
-}
+export type MacroState = {
+  macroProvider: MacroProvider | null
+};
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
-      return new MacroState(providerFactory);
-    },
+    init: () => ({ provider: null }),
+
     apply(tr, pluginState: MacroState) {
 
-      if (tr.getMeta(STATE_CHANGE)) {
-        const { allowMacro, macroProvider } = pluginState;
-        dispatch(pluginKey, { allowMacro, macroProvider });
+      const meta = tr.getMeta(pluginKey);
+      if (meta) {
+        dispatch(pluginKey, { macroProvider: meta.provider } as MacroState);
       }
 
       return pluginState;
@@ -66,8 +31,20 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
   },
   key: pluginKey,
   view: (view: EditorView) => {
-    const pluginState: MacroState = pluginKey.getState(view.state);
-    pluginState.setView(view);
+    providerFactory.subscribe('macroProvider', async (name, provider: Promise<MacroProvider>) => {
+      let resolvedProvider: MacroProvider;
+
+      try {
+        resolvedProvider = await provider;
+        assert(
+          resolvedProvider && resolvedProvider.openMacroBrowser,
+          `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`
+        );
+      } catch (err) { return; }
+
+      view.dispatch(view.state.tr.setMeta(pluginKey, { provider: resolvedProvider }));
+    });
+
     return {};
   },
   props: {

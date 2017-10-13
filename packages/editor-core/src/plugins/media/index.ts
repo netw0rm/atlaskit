@@ -42,7 +42,6 @@ import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
-import { handleStateChange, STATE_CHANGE } from '../../editor/plugins/media/actions';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
@@ -136,7 +135,6 @@ export class MediaPluginState {
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
-      handleStateChange(this.view);
 
       return;
     }
@@ -157,6 +155,13 @@ export class MediaPluginState {
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
+    const { view, allowsUploads } = this;
+
+    // make sure editable DOM node is mounted
+    if (view.dom.parentNode) {
+      // make PM plugin aware of the state change to update UI during 'apply' hook
+      view.dispatch(view.state.tr.setMeta(stateKey, { allowsUploads }));
+    }
 
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
@@ -558,8 +563,10 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           pluginState.ignoreLinks = true;
         }
 
-        if (tr.getMeta(STATE_CHANGE) && dispatch) {
-          const { allowsUploads, showMediaPicker } = pluginState;
+        const meta = tr.getMeta(stateKey);
+        if (meta && dispatch) {
+          const { showMediaPicker } = pluginState;
+          const { allowsUploads } = meta;
           dispatch(stateKey, { allowsUploads, showMediaPicker });
         }
 

@@ -113,8 +113,25 @@ const SecondaryToolbar = styled.div`
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
-export default class Editor extends React.Component<EditorAppearanceComponentProps, any> {
+export interface EditorAppearanceComponentState {
+  isExpanded: boolean;
+}
+
+export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
+  state: EditorAppearanceComponentState = {
+    isExpanded: false
+  };
+
   static displayName = 'CommentEditorAppearance';
+
+  componentDidUpdate () {
+    const { onExpand, editorView } = this.props;
+
+    if (onExpand && editorView && !this.state.isExpanded) {
+      this.setState({ isExpanded: true }, () => onExpand!(editorView));
+    }
+  }
+
   private flashToggle = false;
 
   private appearance: EditorAppearance = 'comment';

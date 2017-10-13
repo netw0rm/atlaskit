@@ -38,6 +38,7 @@ export default class Layer extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      hasExtractedStyles: false,
       position: null,
       transform: null,
       flipped: false,
@@ -86,6 +87,7 @@ export default class Layer extends PureComponent {
       const top = Math.round(state.offsets.popper.top);
 
       this.setState({
+        hasExtractedStyles: true,
         // position: fixed or absolute
         cssPosition: state.offsets.popper.position,
         transform: `translate3d(${left}px, ${top}px, 0px)`,
@@ -155,7 +157,8 @@ export default class Layer extends PureComponent {
 
   render() {
     const { zIndex } = this.props;
-    const { cssPosition, transform } = this.state;
+    const { cssPosition, transform, hasExtractedStyles } = this.state;
+    const opacity = hasExtractedStyles ? {} : { opacity: 0 };
 
     return (
       <div>
@@ -164,7 +167,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex, ...opacity }}
         >
           {this.props.content}
         </div>

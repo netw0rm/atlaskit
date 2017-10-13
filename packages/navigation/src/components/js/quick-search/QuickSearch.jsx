@@ -299,8 +299,6 @@ export class QuickSearch extends Component {
 export default
   decorateWithAnalyticsData(
     withAnalytics(
-      QuickSearch,
-      {},
-      { analyticsId: 'atlaskit/navigation/quicksearch' }
+      QuickSearch
     )
   );

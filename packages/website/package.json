@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "613.0.0",
+  "version": "632.0.0",
   "description": "The AtlasKit Website",
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production ATLASKIT_SITE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
@@ -25,7 +25,7 @@
     "@atlaskit/inline-message": "^3.0.0",
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/navigation": "^22.0.0",
-    "@atlaskit/page": "^4.4.2",
+    "@atlaskit/page": "^5.0.0",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "axios": "^0.16.1",

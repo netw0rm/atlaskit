@@ -65,6 +65,7 @@ yarn run prepublish/single my-component-name
 
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
 
+
 ## Document a component
 Components should be documented using storybook readmes. Look at existing components and the `@atlaskit/util-readme` component for examples of how to do this.
 
@@ -78,12 +79,12 @@ AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to 
 
 #### Viewing the storybook
 
-* To run a storybook for a single component: `yarn run storybook @atlaskit/my-component-name`
+* To run a storybook for a single component: `yarn run storybook my-component-name`
 
 #### Publishing the storybook
 
 * To output all storybooks as a static website: `yarn run storybook/static -- -o your_target_dir`
-* To output a single component storybook as a static website: `yarn run storybook/static/single @atlaskit/my-component-name -- -o your_target_dir`
+* To output a single component storybook as a static website: `yarn run storybook/static/single my-component-name -- -o your_target_dir`
 
 
 ### Browserstack tests

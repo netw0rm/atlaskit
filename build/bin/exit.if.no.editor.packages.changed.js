@@ -34,7 +34,7 @@ exec('git fetch origin')
   const changedEditorPackages = changedFilesToChangedPackages(changedFiles)
   // to avoid a bug when deleting a package
   .filter(packageExists)
-  .filter(pkgName => pkgName.startsWith('@atlaskit/editor'));
+  .filter(pkgName => pkgName.startsWith('@atlaskit/editor') && pkgName !== '@atlaskit/editor-common');
   if (changedEditorPackages.length !== 0) {
     console.log(chalk.green(`The following editor packages have changed ${changedEditorPackages.join(', ')}`));
     process.exit(1);

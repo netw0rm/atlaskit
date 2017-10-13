@@ -1,5 +1,35 @@
 # @atlaskit/editor-core
 
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
+## 50.3.0 (2017-10-12)
+
+
+* feature; add media drop placeholder (issues closed: ed-2377) ([dd1702f](https://bitbucket.org/atlassian/atlaskit/commits/dd1702f))
+## 50.2.2 (2017-10-12)
+
+* bug fix; fix tests in picker-facade-spec.ts ([40887b6](https://bitbucket.org/atlassian/atlaskit/commits/40887b6))
+* bug fix; skip backwards compatibility test ([3a637c2](https://bitbucket.org/atlassian/atlaskit/commits/3a637c2))
+* bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))
+## 50.2.1 (2017-10-12)
+
+* bug fix; measure renderer stat with HiRes API (issues closed: ed-2954) ([3717b4e](https://bitbucket.org/atlassian/atlaskit/commits/3717b4e))
+## 50.2.0 (2017-10-10)
+
+* feature; add support for alt-paste, fix clipboard analytics. (issues closed: ed-2882) ([9b2de80](https://bitbucket.org/atlassian/atlaskit/commits/9b2de80))
+## 50.1.0 (2017-10-10)
+
+* feature; added CollapsedEditor component (issues closed: ed-2944) ([8172b3e](https://bitbucket.org/atlassian/atlaskit/commits/8172b3e))
+## 50.0.0 (2017-10-10)
+
+
+* bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))
+* feature; always reset media plugin when set media provider ([5ef4d81](https://bitbucket.org/atlassian/atlaskit/commits/5ef4d81))
+* breaking; storyMediaProviderFactory API in test-helper accepts a config instead of multiple params ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; refactor storyMediaProviderFactory to accept a config instead of multiple param ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; updated media provider api for new authentication on media picker. updated media provider api in ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+* breaking; updated the API of media provider for new authentication on media picker. ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
 ## 49.0.0 (2017-10-10)
 
 * bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))

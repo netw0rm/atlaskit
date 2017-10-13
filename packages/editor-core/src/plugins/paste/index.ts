@@ -5,37 +5,16 @@ import {
   Slice,
   MarkdownParser,
   Schema,
+  EditorState,
+  keymap,
 } from '../../prosemirror';
 import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
 import { containsTable } from '../table/utils';
-import { isSingleLine } from './util';
-
-function isCode(str) {
-  const lines = str.split(/\r?\n|\r/);
-  if (3 > lines.length) {
-    return false;
-  }
-  let weight = 0;
-  lines.forEach(line => {
-    // Ends with : or ;
-    if (/[:;]$/.test(line)) { weight++; }
-    // Contains second and third braces
-    if (/[{}\[\]]/.test(line)) { weight++; }
-    // Contains <tag> or </
-    if ((/<\w+>/.test(line) || /<\//.test(line))) { weight++; }
-    // Contains () <- function calls
-    if (/\(\)/.test(line)) { weight++; }
-    // New line starts with less than two chars. e.g- if, {, <, etc
-    const token = /^(\s+)[a-zA-Z<{]{2,}/.exec(line);
-    if (token && 2 <= token[1].length) { weight++; }
-    if (/&&/.test(line)) { weight++; }
-  });
-  return 4 <= weight && weight >= 0.5 * lines.length;
-}
-
-export const stateKey = new PluginKey('pastePlugin');
+import { isSingleLine, isCode, filterMdToPmSchemaMapping } from './util';
+import { analyticsService } from '../../analytics';
+import * as keymaps from '../../keymaps';
 
 const pmSchemaToMdMapping = {
   nodes: {
@@ -57,7 +36,48 @@ const pmSchemaToMdMapping = {
   }
 };
 
-export const createPlugin = (schema: Schema<any, any>) => {
+const mdToPmMapping = {
+  blockquote: { block: 'blockquote' },
+  paragraph: { block: 'paragraph' },
+  em: { mark: 'em' },
+  strong: { mark: 'strong' },
+  link: {
+    mark: 'link', attrs: tok => ({
+      href: tok.attrGet('href'),
+      title: tok.attrGet('title') || null
+    })
+  },
+  hr: { node: 'rule' },
+  heading: { block: 'heading', attrs: tok => ({ level: +tok.tag.slice(1) }) },
+  code_block: { block: 'codeBlock' },
+  list_item: { block: 'listItem' },
+  bullet_list: { block: 'bulletList' },
+  ordered_list: { block: 'orderedList', attrs: tok => ({ order: +tok.attrGet('order') || 1 }) },
+  code_inline: { mark: 'code' },
+  fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || '' }) },
+  image: {
+    node: 'image', attrs: tok => ({
+      src: tok.attrGet('src'),
+      title: tok.attrGet('title') || null,
+      alt: tok.children[0] && tok.children[0].content || null,
+    })
+  },
+  emoji: {
+    node: 'emoji', attrs: tok => ({
+      shortName: `:${tok.markup}:`,
+      text: tok.content,
+    })
+  },
+  table: { block: 'table' },
+  tr: { block: 'tableRow' },
+  th: { block: 'tableHeader' },
+  td: { block: 'tableCell' },
+  s: { mark: 'strike' },
+};
+
+export const stateKey = new PluginKey('pastePlugin');
+
+export function createPlugin(schema: Schema<any, any>) {
   let atlassianMarkDownParser: MarkdownParser;
 
   const md = MarkdownIt('zero', { html: false, linkify: true });
@@ -81,54 +101,7 @@ export const createPlugin = (schema: Schema<any, any>) => {
     md.use(table);
   }
 
-  const filterMdToPmSchemaMapping = map => Object.keys(map).reduce((newMap, key) => {
-    const value = map[key];
-    const block = value.block || value.node;
-    const mark = value.mark;
-    if ((block && schema.nodes[block]) || (mark && schema.marks[mark])) {
-      newMap[key] = value;
-    }
-    return newMap;
-  }, {});
-
-  atlassianMarkDownParser = new MarkdownParser(schema, md, filterMdToPmSchemaMapping({
-    blockquote: { block: 'blockquote' },
-    paragraph: { block: 'paragraph' },
-    em: { mark: 'em' },
-    strong: { mark: 'strong' },
-    link: {
-      mark: 'link', attrs: tok => ({
-        href: tok.attrGet('href'),
-        title: tok.attrGet('title') || null
-      })
-    },
-    hr: { node: 'rule' },
-    heading: { block: 'heading', attrs: tok => ({ level: +tok.tag.slice(1) }) },
-    code_block: { block: 'codeBlock' },
-    list_item: { block: 'listItem' },
-    bullet_list: { block: 'bulletList' },
-    ordered_list: { block: 'orderedList', attrs: tok => ({ order: +tok.attrGet('order') || 1 }) },
-    code_inline: { mark: 'code' },
-    fence: { block: 'codeBlock', attrs: tok => ({ language: tok.info || '' }) },
-    image: {
-      node: 'image', attrs: tok => ({
-        src: tok.attrGet('src'),
-        title: tok.attrGet('title') || null,
-        alt: tok.children[0] && tok.children[0].content || null,
-      })
-    },
-    emoji: {
-      node: 'emoji', attrs: tok => ({
-        shortName: `:${tok.markup}:`,
-        text: tok.content,
-      })
-    },
-    table: { block: 'table' },
-    tr: { block: 'tableRow' },
-    th: { block: 'tableHeader' },
-    td: { block: 'tableCell' },
-    s: { mark: 'strike' },
-  }));
+  atlassianMarkDownParser = new MarkdownParser(schema, md, filterMdToPmSchemaMapping(schema, mdToPmMapping));
 
   return new Plugin({
     key: stateKey,
@@ -137,22 +110,51 @@ export const createPlugin = (schema: Schema<any, any>) => {
         if (!event.clipboardData) {
           return false;
         }
+
+        // Bail if copied content has files
+        if (event.clipboardData.types.indexOf('Files') > -1) {
+          return true;
+        }
+
+        const { $from } = view.state.selection;
+
+        // In case of SHIFT+CMD+V ("Paste and Match Style") we don't want to run the usual
+        // fuzzy matching of content. ProseMirror already handles this scenario and will
+        // provide us with slice containing paragraphs with plain text, which we decorate
+        // with "stored marks".
+        // @see prosemirror-view/src/clipboard.js:parseFromClipboard()).
+        // @see prosemirror-view/src/input.js:doPaste().
+        if ((view as any).shiftKey) { // <- using the same internal flag that prosemirror-view is using
+          analyticsService.trackEvent('atlassian.editor.paste.alt');
+
+          let tr = view.state.tr.replaceSelection(slice);
+          const { storedMarks } = view.state;
+          if (storedMarks && storedMarks.length) {
+            storedMarks.forEach(mark => tr = tr.addMark($from.pos, $from.pos + slice.size, mark));
+          }
+          view.dispatch(tr.scrollIntoView());
+
+          return true;
+        }
+
         const text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
         const node = slice.content.firstChild;
         const { schema } = view.state;
-        const { $from } = view.state.selection;
         const selectedNode = $from.node($from.depth);
 
+        // If we're in a code block, append the text contents of clipboard inside it
         if (text && selectedNode.type === schema.nodes.codeBlock) {
           view.dispatch(view.state.tr.insertText(text));
           return true;
         }
 
+        // If the clipboard contents looks like computer code, create a code block
         if (
           (text && isCode(text)) ||
           (text && html && node && node.type === schema.nodes.codeBlock)
         ) {
+          analyticsService.trackEvent('atlassian.editor.paste.code');
           let tr;
           if (isSingleLine(text)) {
             tr = view.state.tr.insertText(text);
@@ -165,7 +167,9 @@ export const createPlugin = (schema: Schema<any, any>) => {
           return true;
         }
 
+        // If the clipboard only contains plain text, attempt to parse it as Markdown
         if (text && !html && atlassianMarkDownParser) {
+          analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(text);
           if (doc && doc.content) {
             const tr = view.state.tr.replaceSelection(
@@ -176,6 +180,7 @@ export const createPlugin = (schema: Schema<any, any>) => {
           }
         }
 
+        // If the clipboard contains rich text, pass it through the schema and import what's allowed.
         if (html) {
           const tableState = tableStateKey.getState(view.state);
           if (tableState && tableState.isRequiredToAddHeader() && containsTable(view, slice)) {
@@ -191,6 +196,26 @@ export const createPlugin = (schema: Schema<any, any>) => {
       },
     }
   });
-};
+}
 
-export default (schema: Schema<any, any>) => [createPlugin(schema)];
+export function createKeymapPlugin(schema: Schema<any, any>): Plugin {
+  const list = {};
+
+  keymaps.bindKeymapWithCommand(keymaps.paste.common!, (state: EditorState<any>, dispatch) => {
+    analyticsService.trackEvent('atlassian.editor.paste');
+
+    return false;
+  }, list);
+
+  keymaps.bindKeymapWithCommand(keymaps.altPaste.common!, (state: EditorState<any>, dispatch) => {
+    analyticsService.trackEvent('atlassian.editor.paste');
+
+    return false;
+  }, list);
+
+  return keymap(list);
+}
+
+export default (schema: Schema<any, any>) => [
+  createPlugin(schema), createKeymapPlugin(schema)
+];

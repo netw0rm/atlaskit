@@ -18,18 +18,17 @@ const ScrollHintScrollContainer = styled.div`
   flex: 1 1 100%;
   height: 100%;
   justify-content: flex-start;
-  overflow-y: ${props => (props.isCollapsed ? 'hidden' : 'auto')};
   transition: padding ${drawerContainerHeaderAnimationSpeed};
   padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
-  // Position relative is required so products can position fixed items at top or bottom
-  // of the container scrollable area.
-  position: relative;
 
   ${whenCollapsed`
-    padding: 0 ${gridSize}px ${gridSize}px ${gridSize}px;
+    overflow-y: hidden;
+    padding: 0 ${gridSize}px;
   `}
 
   ${whenNotCollapsed`
+    overflow-y: auto;
+
     &:before,
     &:after {
       background: ${({ theme }) => getProvided(theme).background.secondary || getProvided(theme).background.primary};

@@ -4,7 +4,7 @@ import { isSingleLine } from '../../../../src/plugins/paste/util';
 
 describe('paste util', () => {
   it('should return true for single line of text', () => {
-    expect(isSingleLine('onle one line')).to.equal(true);
+    expect(isSingleLine('only one line')).to.equal(true);
   });
 
   it('should return false for multiple lines of text', () => {

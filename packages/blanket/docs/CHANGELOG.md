@@ -1,5 +1,12 @@
 # @atlaskit/blanket
 
+## 3.0.1 (2017-10-13)
+
+
+
+* bug fix; fix Blanket stories ([b9ac4ab](https://bitbucket.org/atlassian/atlaskit/commits/b9ac4ab))
+* bug fix; other fix for other issue ([014f79c](https://bitbucket.org/atlassian/atlaskit/commits/014f79c))
+* bug fix; fix render issue for Blanket storybook ([b277ff3](https://bitbucket.org/atlassian/atlaskit/commits/b277ff3))
 ## 3.0.0 (2017-08-31)
 
 * breaking; removed z-index ([b344810](https://bitbucket.org/atlassian/atlaskit/commits/b344810))

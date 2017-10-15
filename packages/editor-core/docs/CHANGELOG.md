@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
 ## 50.3.0 (2017-10-12)
 
 

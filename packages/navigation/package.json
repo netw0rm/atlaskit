@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "26.0.4",
+  "version": "26.0.5",
   "config": {
     "access": "public"
   },
@@ -32,6 +32,7 @@
     "@atlaskit/field-base": "^8.0.1",
     "@atlaskit/icon": "^9.0.0",
     "@atlaskit/item": "^4.1.0",
+    "@atlaskit/polyfills": "^1.0.0",
     "@atlaskit/size-detector": "^2.0.0",
     "@atlaskit/theme": "^2.1.0",
     "@atlaskit/tooltip": "^6.0.0",
@@ -67,7 +68,7 @@
     "@atlaskit/field-radio-group": "1.6.2",
     "@atlaskit/field-text": "^4.0.1",
     "@atlaskit/inline-dialog": "^3.6.0",
-    "@atlaskit/logo": "^3.5.1",
+    "@atlaskit/logo": "^4.0.1",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^5.0.0",
     "@atlaskit/single-select": "^2.0.1",

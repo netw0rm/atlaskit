@@ -113,9 +113,9 @@ class InlineDeleteCommentList extends React.PureComponent {
 storiesOf(name, module)
   .add('inline delete comment', () => (
     <Modal
-      footer={<span>&nbsp;</span>}
-      header={<h3>List of comments in a modal</h3>}
+      heading="List of comments in a modal"
       isOpen
+      onClose={() => {}}
     >
       <InlineDeleteCommentList>
         <Comment
@@ -140,5 +140,6 @@ storiesOf(name, module)
           content={<div><p>{`Comment 3. ${sampleText}`}</p></div>}
         />
       </InlineDeleteCommentList>
+      <span>&nbsp;</span>
     </Modal>
   ));

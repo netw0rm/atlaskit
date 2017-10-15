@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 26.0.6 (2017-10-15)
+
+* bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))
+
+
+
+
 ## 26.0.5 (2017-10-13)
 
 * bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))

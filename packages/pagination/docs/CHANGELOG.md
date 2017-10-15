@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 3.5.4 (2017-10-15)
+
+* bug fix; update dependencies for react 16 compatibility ([fc47c94](https://bitbucket.org/atlassian/atlaskit/commits/fc47c94))
 ## 3.5.3 (2017-08-11)
 
 * bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))

@@ -1,4 +1,5 @@
 // @flow
+import '@atlaskit/polyfills/array-prototype-includes';
 import React, { Component } from 'react';
 
 import { validIconSizes, propsOmittedFromClickData } from './constants';

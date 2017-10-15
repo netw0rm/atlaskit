@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
+## 50.3.0 (2017-10-12)
+
+
+* feature; add media drop placeholder (issues closed: ed-2377) ([dd1702f](https://bitbucket.org/atlassian/atlaskit/commits/dd1702f))
 ## 50.2.2 (2017-10-12)
 
 * bug fix; fix tests in picker-facade-spec.ts ([40887b6](https://bitbucket.org/atlassian/atlaskit/commits/40887b6))

@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.0.7 (2017-10-13)
+
+* bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))
 ## 8.0.6 (2017-10-09)
 
 * bug fix; remove the console error Invalid prop types for border ([de45a14](https://bitbucket.org/atlassian/atlaskit/commits/de45a14))

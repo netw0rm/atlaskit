@@ -33,6 +33,7 @@ export type PickerType = keyof MediaPickerComponents;
 export default class PickerFacade {
   private picker: MediaPickerComponent;
   private onStartListeners: Array<(state: MediaState) => void> = [];
+  private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
 
@@ -54,7 +55,10 @@ export default class PickerFacade {
     let componentConfig;
 
     if (pickerType === 'dropzone') {
-      componentConfig = { container: this.getDropzoneContainer() };
+      componentConfig = {
+        container: this.getDropzoneContainer(),
+        headless: true,
+      };
     } else if (pickerType === 'popup') {
       if (contextConfig.userAuthProvider) {
         componentConfig = { userAuthProvider: contextConfig.userAuthProvider };
@@ -77,6 +81,11 @@ export default class PickerFacade {
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
+    if (picker instanceof Dropzone) {
+      picker.on('drag-enter', this.handleDragEnter);
+      picker.on('drag-leave', this.handleDragLeave);
+    }
+
     if (picker instanceof Dropzone || picker instanceof Clipboard) {
       picker.activate();
     }
@@ -96,6 +105,9 @@ export default class PickerFacade {
     picker.removeAllListeners('upload-finalize-ready');
     picker.removeAllListeners('upload-error');
     picker.removeAllListeners('upload-end');
+
+    this.onStartListeners = [];
+    this.onDragListeners = [];
 
     try {
       if (picker instanceof Dropzone || picker instanceof Clipboard) {
@@ -161,6 +173,10 @@ export default class PickerFacade {
 
   onNewMedia(cb: (state: MediaState) => any) {
     this.onStartListeners.push(cb);
+  }
+
+  onDrag(cb: (state: 'enter' | 'leave') => any) {
+    this.onDragListeners.push(cb);
   }
 
   private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
@@ -281,5 +297,13 @@ export default class PickerFacade {
         thumbnail: event.preview
       });
     }
+  }
+
+  private handleDragEnter = () => {
+    this.onDragListeners.forEach(cb => cb.call(cb, 'enter'));
+  }
+
+  private handleDragLeave = () => {
+    this.onDragListeners.forEach(cb => cb.call(cb, 'leave'));
   }
 }

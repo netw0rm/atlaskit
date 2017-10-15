@@ -337,7 +337,7 @@ function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragme
   }
 
   switch (macroType){
-    case 'NONE-INLINE':
+    case 'BODYLESS-INLINE':
       const placeholderUrl = properties['fab:placeholder-url'];
       return schema.nodes.inlineMacro.create({
         macroId,

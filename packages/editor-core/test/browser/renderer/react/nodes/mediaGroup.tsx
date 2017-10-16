@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { imageFileId, youtubeLinkId } from '@atlaskit/media-test-helpers';
 import Media from '../../../../../src/renderer/react/nodes/media';
 import { storyMediaProviderFactory } from '../../../../../src/test-helper';
-import MediaGroup, { SINGLE_FILE_HEIGHT, SINGLE_LINK_HEIGHT } from '../../../../../src/renderer/react/nodes/mediaGroup';
+import MediaGroup from '../../../../../src/renderer/react/nodes/mediaGroup';
 import { CardView } from '@atlaskit/media-card';
 import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { EventHandlers } from '../../../../../src/ui/Renderer';
@@ -27,38 +27,6 @@ describe('MediaGroup', () => {
 
   afterEach(() => {
     document.body.removeChild(fixture);
-  });
-
-  it('should render a SingleFileWrapper if there is only one File media', () => {
-    const mediaGroup = shallow(
-      <MediaGroup>
-        <Media
-          id={imageFileId.id}
-          type={imageFileId.mediaItemType}
-          collection={imageFileId.collectionName}
-        />
-      </MediaGroup>
-    );
-    expect(mediaGroup.name()).to.equal('styled.div');
-
-    const dimensions = mediaGroup.find(Media).props().cardDimensions;
-    expect(dimensions!.height).to.equal(SINGLE_FILE_HEIGHT);
-  });
-
-  it('should render a SingleLinkWrapper if there is only one Link media', () => {
-    const mediaGroup = shallow(
-      <MediaGroup>
-        <Media
-          id={youtubeLinkId.id}
-          type={youtubeLinkId.mediaItemType}
-          collection={youtubeLinkId.collectionName}
-        />
-      </MediaGroup>
-    );
-    expect(mediaGroup.name()).to.equal('styled.div');
-
-    const dimensions = mediaGroup.find(Media).props().cardDimensions;
-    expect(dimensions!.height).to.equal(SINGLE_LINK_HEIGHT);
   });
 
   it('should render a FilmstripView component if it has more than one media node', () => {

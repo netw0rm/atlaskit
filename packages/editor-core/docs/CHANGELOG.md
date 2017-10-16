@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.5.0 (2017-10-16)
+
+* feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))
 ## 50.4.0 (2017-10-15)
 
 * bug fix; refactored ToolbarInsertBlock ([7629918](https://bitbucket.org/atlassian/atlaskit/commits/7629918))

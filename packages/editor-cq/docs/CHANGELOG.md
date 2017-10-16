@@ -1,5 +1,10 @@
 # @atlaskit/editor-cq
 
+## 5.0.0 (2017-10-16)
+
+* breaking; Upgraded mediaProvider API to use the new media picker authentication ([af6da7f](https://bitbucket.org/atlassian/atlaskit/commits/af6da7f))
+* breaking; fixed mentions and upgrade editor-core version. ([af6da7f](https://bitbucket.org/atlassian/atlaskit/commits/af6da7f))
+* bug fix; added missing method _notifyAllResultsListeners to mention mock service and fixed re ([f057300](https://bitbucket.org/atlassian/atlaskit/commits/f057300))
 ## 4.10.0 (2017-10-10)
 
 * feature; bumping editor-core to 47.17.0 (issues closed: ed-2953) ([fcb32af](https://bitbucket.org/atlassian/atlaskit/commits/fcb32af))

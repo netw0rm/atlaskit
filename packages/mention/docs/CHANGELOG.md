@@ -1,5 +1,12 @@
 # @atlaskit/mention
 
+## 7.6.0 (2017-10-16)
+
+* bug fix; fixed unit test failure. ([7878911](https://bitbucket.org/atlassian/atlaskit/commits/7878911))
+* bug fix; added missing _notifyAllResultsListeners ([28cbfb2](https://bitbucket.org/atlassian/atlaskit/commits/28cbfb2))
+* feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))
+* bug fix; added missing method _notifyAllResultsListeners to mention mock service and fixed re ([f057300](https://bitbucket.org/atlassian/atlaskit/commits/f057300))
+* feature; added a dummy data wit the same last name. ([2ed7d4d](https://bitbucket.org/atlassian/atlaskit/commits/2ed7d4d))
 ## 7.5.0 (2017-09-26)
 
 * feature; fS-1372 Show an APP flag for App users like Bot ([0ff41fc](https://bitbucket.org/atlassian/atlaskit/commits/0ff41fc))

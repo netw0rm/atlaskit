@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.0.7 (2017-10-16)
+
+* bug fix; padding in nav items fixed (issues closed: #ak-3636) ([ceb43e8](https://bitbucket.org/atlassian/atlaskit/commits/ceb43e8))
 ## 26.0.6 (2017-10-15)
 
 * bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))

@@ -20,7 +20,7 @@ export const decisionList: NodeSpec = {
   group: 'block',
   content: 'decisionItem+',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
   },
   parseDOM: [{
     tag: 'ol[data-decision-list-local-id]',
@@ -29,6 +29,7 @@ export const decisionList: NodeSpec = {
     // also used by ordered-list we need to make sure that we run this parser first.
     priority: 100,
 
+    // Will regenerate the localId on a paste
     getAttrs: (dom: Element) => ({
       localId: uuid.generate(),
     })

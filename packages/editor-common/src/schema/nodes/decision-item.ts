@@ -15,9 +15,10 @@ export interface Definition {
 }
 
 export const decisionItem: NodeSpec = {
-  content: 'inline<_>*',
+  content: 'inline*',
+  marks: '_',
   attrs: {
-    localId: { compute: uuid.generate },
+    localId: { default: '' },
     state: { default: 'DECIDED' },
   },
   parseDOM: [{
@@ -29,7 +30,7 @@ export const decisionItem: NodeSpec = {
 
     getAttrs: (dom: Element) => ({
       localId: uuid.generate(),
-      state: dom.getAttribute('data-decision-state')!,
+      state: dom.getAttribute('data-decision-state') || 'DECIDED',
     })
   }],
   toDOM(node: Node) {

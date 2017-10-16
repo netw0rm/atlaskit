@@ -37,9 +37,9 @@ export const mention: NodeSpec = {
     tag: 'span[data-mention-id]',
     getAttrs: (dom: Element) => {
       const attrs = {
-        id: dom.getAttribute('data-mention-id')!,
-        text: dom.textContent!,
-        accessLevel: dom.getAttribute('data-access-level')!,
+        id: dom.getAttribute('data-mention-id') || '',
+        text: dom.textContent || '',
+        accessLevel: dom.getAttribute('data-access-level') || '',
       };
 
       const userType = dom.getAttribute('data-user-type')!;

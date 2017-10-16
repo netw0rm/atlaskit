@@ -48,7 +48,9 @@
     "prosemirror-view": "^0.22.0"
   },
   "peerDependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "json-schema-diff-validator": "^0.0.4"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

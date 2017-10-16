@@ -1,4 +1,5 @@
-import { NodeSpec, MarkSpec, NodeView } from '../../prosemirror';
+import { NodeSpec, MarkSpec } from 'prosemirror-model';
+import { NodeView } from 'prosemirror-view';
 import { PMPluginFactory, UIComponentFactory } from './editor-plugin';
 
 export interface NodeConfig {

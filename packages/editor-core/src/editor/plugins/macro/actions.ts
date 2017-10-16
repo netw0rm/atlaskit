@@ -1,4 +1,4 @@
-import { EditorView } from '../../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import { getMacroType } from './utils';
 import { MacroProvider, MacroParams, Macro } from './types';
 import { pluginKey } from './plugin';

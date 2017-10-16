@@ -1,5 +1,7 @@
 import { analyticsService } from '../../../analytics';
-import { EditorView, EditorState, Plugin, TextSelection, keymap } from '../../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
 
 export function createPlugin(onSave?: (editorView: EditorView) => void): Plugin | undefined {
@@ -8,7 +10,7 @@ export function createPlugin(onSave?: (editorView: EditorView) => void): Plugin 
   }
 
   return keymap({
-    'Enter'(state: EditorState<any>, dispatch: (tr) => void, editorView: EditorView) {
+    'Enter'(state: EditorState, dispatch: (tr) => void, editorView: EditorView) {
       if (canSaveOnEnter(editorView)) {
         analyticsService.trackEvent('atlassian.editor.stop.submit');
         onSave(editorView);

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import { browser } from '../../../../src';
+import { browser } from '@atlaskit/editor-common';
 import {
   sendKeyToPm, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention, insertText

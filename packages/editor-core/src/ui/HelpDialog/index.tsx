@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container, Wrapper, Header, IconWrapper, Dialog, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
 import * as keymaps from '../../keymaps';
-import { browser } from '../../prosemirror';
+import { browser } from '@atlaskit/editor-common';
 import ToolbarButton from '../ToolbarButton';
 import CloseIcon from '@atlaskit/icon/glyph/editor/close';
 

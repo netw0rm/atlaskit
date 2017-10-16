@@ -5,11 +5,9 @@ import HelpDialog, { formatting, getComponentFromKeymap, getSupportedFormatting 
 import createEditor from '../../../../../helpers/create-editor';
 import helpDialog from '../../../../../../src/editor/plugins/help-dialog';
 import * as keymaps from '../../../../../../src/keymaps';
-import { browser } from '../../../../../../src/prosemirror';
-import { EditorView } from '../../../../../../src/prosemirror';
+import { browser, createSchema, doc } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
 import EditorActions from '../../../../../../src/editor/actions';
-import { createSchema } from '../../../../../../src/schema';
-import { doc } from '../../../../../../src/schema/nodes/doc';
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 

@@ -1,9 +1,5 @@
-import {
-  Mark as PMMark,
-  MarkSpec,
-  NodeSpec,
-  Schema
-} from '../prosemirror';
+import { Mark as PMMark, Schema } from 'prosemirror-model';
+import { defaultSchema } from '@atlaskit/editor-common';
 
 import { uuid } from '../plugins/utils';
 import { isSafeUrl } from './utils';
@@ -34,8 +30,6 @@ export interface MarkSimple {
   attrs?: any;
 }
 
-import { defaultSchema } from '../schema';
-
 /*
  * It's important that this order follows the marks rank defined here:
  * https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
@@ -48,7 +42,6 @@ export const markOrder = [
   'subsup',
   'underline',
   'code',
-  'inlineCommentMarker',
 ];
 
 export const isSubSupType = (type: string): type is 'sub' | 'sup' => {
@@ -73,7 +66,7 @@ export const isSameMark = (mark: PMMark | null, otherMark: PMMark | null) => {
   return mark.eq(otherMark);
 };
 
-export const getValidDocument = (doc: Doc, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Doc | null => {
+export const getValidDocument = (doc: Doc, schema: Schema = defaultSchema): Doc | null => {
 
   const node = getValidNode(doc as Node, schema);
 
@@ -84,13 +77,13 @@ export const getValidDocument = (doc: Doc, schema: Schema<NodeSpec, MarkSpec> = 
   return null;
 };
 
-export const getValidContent = (content: Node[], schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
+export const getValidContent = (content: Node[], schema: Schema = defaultSchema): Node[] => {
   return content.map(node => getValidNode(node, schema));
 };
 
 const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
 
-const flattenUnknownBlockTree = (node: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node[] => {
+const flattenUnknownBlockTree = (node: Node, schema: Schema = defaultSchema): Node[] => {
   const output: Node[] = [];
   let isPrevLeafNode = false;
 
@@ -184,7 +177,7 @@ export const getValidUnknownNode = (node: Node): Node => {
  * If a node is not recognized or is missing required attributes, we should return 'unknown'
  *
  */
-export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): Node => {
+export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema): Node => {
   const { attrs, marks, text, type } = originalNode;
   let { content } = originalNode;
 
@@ -616,12 +609,6 @@ export const getValidMark = (mark: Mark): Mark | null => {
       case 'underline': {
         return {
           type,
-        };
-      }
-      case 'inlineCommentMarker': {
-        return {
-          type,
-          attrs,
         };
       }
     }

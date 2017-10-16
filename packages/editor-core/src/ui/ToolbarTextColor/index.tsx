@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { EditorView, PluginKey } from '../../prosemirror';
 import { TextColorState } from '../../plugins/text-color';
 import ToolbarButton from '../ToolbarButton';
 import Icon from '@atlaskit/icon';

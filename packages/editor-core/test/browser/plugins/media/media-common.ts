@@ -18,9 +18,11 @@ import defaultSchema from '../../../../src/test-helper/schema';
 import {
   undo,
   history,
+} from 'prosemirror-history';
+import {
   NodeSelection,
   TextSelection,
-} from '../../../../src/prosemirror';
+} from 'prosemirror-state';
 import { setNodeSelection} from '../../../../src/utils';
 import { removeMediaNode, splitMediaGroup } from '../../../../src/plugins/media/media-common';
 

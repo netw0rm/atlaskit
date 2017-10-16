@@ -1,4 +1,5 @@
-import { EditorView, browser } from '../prosemirror';
+import { browser } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
 import { keyCodes } from '../keymaps';
 import { TestingEditorView } from './types/prosemirror';
 

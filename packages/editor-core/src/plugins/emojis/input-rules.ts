@@ -1,8 +1,10 @@
-import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import { Transaction, Plugin } from 'prosemirror-state';
 import { EmojiState, stateKey } from './';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {

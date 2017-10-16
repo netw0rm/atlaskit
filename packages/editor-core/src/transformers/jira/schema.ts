@@ -9,4 +9,4 @@ export {
   isSchemaWithMedia,
   isSchemaWithTextColor,
   isSchemaWithTables
-} from '../../schema/jira-schema';
+} from '@atlaskit/editor-common';

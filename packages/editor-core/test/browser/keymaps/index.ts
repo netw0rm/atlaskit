@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { browser } from '../../../src';
+import { browser } from '@atlaskit/editor-common';
 import * as keymaps from '../../../src/keymaps';
 
 describe('keymaps', () => {

@@ -1,9 +1,11 @@
-import { EditorState, Transaction, EditorView, ResolvedPos, Schema } from '../../prosemirror';
+import { Schema, ResolvedPos } from 'prosemirror-model';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import * as baseListCommand from 'prosemirror-schema-list';
 import * as commands from '../../commands';
-import * as baseListCommand from '../../prosemirror/prosemirror-schema-list';
 import { liftFollowingList } from '../../commands/lists';
 
-export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+export const enterKeyCommand = (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
   const { selection } = state;
   if (selection.empty) {
     const { $from } = selection;
@@ -22,7 +24,7 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
 };
 
 export const toggleList = (
-  state: EditorState<any>,
+  state: EditorState,
   dispatch: (tr: Transaction) => void,
   view: EditorView,
   listType: 'bulletList' | 'orderedList'
@@ -61,7 +63,7 @@ export const toggleList = (
 /**
  * The function will list paragraphs in selection out to level 1 below root list.
  */
-function liftSelectionList(state: EditorState<any>, tr: Transaction): Transaction {
+function liftSelectionList(state: EditorState, tr: Transaction): Transaction {
   const { from, to } = state.selection;
   const { paragraph } = state.schema.nodes;
   const listCol: any[] = [];
@@ -90,7 +92,7 @@ function liftSelectionList(state: EditorState<any>, tr: Transaction): Transactio
 /**
  * This will return (depth - 1) for root list parent of a list.
  */
-function listLiftTarget(schema: Schema<any, any>, resPos: ResolvedPos): number {
+function listLiftTarget(schema: Schema, resPos: ResolvedPos): number {
   let target = resPos.depth;
   const { bulletList, orderedList, listItem } = schema.nodes;
   for (let i = resPos.depth; i > 0; i--) {

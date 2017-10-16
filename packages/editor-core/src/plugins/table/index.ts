@@ -1,21 +1,22 @@
+import { Node, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Selection, TextSelection } from 'prosemirror-state';
 import {
-  EditorState,
-  EditorView,
-  Plugin,
-  PluginKey,
-  tableEditing,
-  NodeViewDesc,
+  addColumnAfter,
+  addColumnBefore,
+  addRowAfter,
+  addRowBefore,
   CellSelection,
-  Selection,
+  deleteTable,
+  deleteColumn,
+  deleteRow,
+  tableEditing,
   TableMap,
-  Node,
-  Slice,
-  Decoration,
-  DecorationSet,
-  TextSelection,
-} from '../../prosemirror';
+  toggleHeaderRow,
+
+} from 'prosemirror-tables';
+import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+
 import keymapHandler from './keymap';
-import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
 import {
   getColumnPos,
   getRowPos,
@@ -59,7 +60,7 @@ export class TableState {
   private isHeaderRowRequired: boolean = false;
   private changeHandlers: TableStateSubscriber[] = [];
 
-  constructor(state: EditorState<any>, pluginConfig: PluginConfig = {}) {
+  constructor(state: EditorState, pluginConfig: PluginConfig = {}) {
     this.changeHandlers = [];
 
     const { table, tableCell, tableRow, tableHeader } = state.schema.nodes;
@@ -78,14 +79,14 @@ export class TableState {
         // to add a column we need to move the cursor to an appropriate cell first
         const prevColPos = map.positionAt(0, column - 1, this.tableNode);
         this.moveCursorTo(prevColPos);
-        tableBaseCommands.addColumnAfter(this.view.state, dispatch);
+        addColumnAfter(this.view.state, dispatch);
         // then we move the cursor to the newly created cell
         const nextPos = TableMap.get(this.tableNode).positionAt(0, column, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(0, column, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addColumnBefore(this.view.state, dispatch);
+        addColumnBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
 
@@ -102,13 +103,13 @@ export class TableState {
       if (row === map.height) {
         const prevRowPos =  map.positionAt(row - 1, 0, this.tableNode);
         this.moveCursorTo(prevRowPos);
-        tableBaseCommands.addRowAfter(this.view.state, dispatch);
+        addRowAfter(this.view.state, dispatch);
         const nextPos = TableMap.get(this.tableNode).positionAt(row, 0, this.tableNode);
         this.moveCursorTo(nextPos);
       } else {
         const pos = map.positionAt(row, 0, this.tableNode);
         this.moveCursorTo(pos);
-        tableBaseCommands.addRowBefore(this.view.state, dispatch);
+        addRowBefore(this.view.state, dispatch);
         this.moveCursorTo(pos);
       }
 
@@ -126,7 +127,7 @@ export class TableState {
 
     // the whole table
     if (isRowSelected && isColumnSelected) {
-      tableBaseCommands.deleteTable(state, dispatch);
+      deleteTable(state, dispatch);
       this.focusEditor();
       analyticsService.trackEvent('atlassian.editor.format.table.delete.button');
     } else if (isColumnSelected) {
@@ -137,7 +138,7 @@ export class TableState {
       const { anchor, head } = getSelectedColumn(this.view.state, map);
       const column = Math.min(anchor, head);
       const nextPos =  map.positionAt(0, column > 0 ? column - 1 : 0, this.tableNode!);
-      tableBaseCommands.deleteColumn(state, dispatch);
+      deleteColumn(state, dispatch);
       this.moveCursorTo(nextPos);
     } else if (isRowSelected) {
       const { tableHeader } = this.view.state.schema.nodes;
@@ -151,7 +152,7 @@ export class TableState {
       const minRow = Math.min(anchor, head);
       const maxRow = Math.max(anchor, head);
       const isRemovingLastRow = maxRow === (map.height - 1);
-      tableBaseCommands.deleteRow(state, dispatch);
+      deleteRow(state, dispatch);
       if (headerRowSelected && this.isHeaderRowRequired) {
         this.convertFirstRowToHeader();
       }
@@ -168,7 +169,7 @@ export class TableState {
   convertFirstRowToHeader = () => {
     this.selectRow(0);
     const { state, dispatch } = this.view;
-    tableBaseCommands.toggleHeaderRow(state, dispatch);
+    toggleHeaderRow(state, dispatch);
   }
 
   subscribe(cb: TableStateSubscriber): void {
@@ -282,7 +283,7 @@ export class TableState {
     return false;
   }
 
-  update(docView: NodeViewDesc, domEvent: boolean = false) {
+  update(docView: any, domEvent: boolean = false) {
     let dirty = this.updateSelection();
     let controlsDirty = dirty;
     const { cellSelection } = this;
@@ -428,7 +429,7 @@ export class TableState {
     }
   }
 
-  private getTableElement(docView: NodeViewDesc): HTMLElement | undefined {
+  private getTableElement(docView: any): HTMLElement | undefined {
     const offset = this.tableStartPos();
     if (offset) {
       const { node } = docView.domFromPos(offset);
@@ -438,7 +439,7 @@ export class TableState {
     }
   }
 
-  private getFirstSelectedCellElement(docView: NodeViewDesc): HTMLElement | undefined {
+  private getFirstSelectedCellElement(docView: any): HTMLElement | undefined {
     const offset = this.firstSelectedCellStartPos();
     if (offset) {
       const { node } = docView.domFromPos(offset);
@@ -455,7 +456,7 @@ export class TableState {
     const offset = this.tableStartPos();
     if (offset) {
       const { state } = this.view;
-      const { $anchorCell, $headCell } = state.selection as CellSelection;
+      const { $anchorCell, $headCell } = (state.selection as any) as CellSelection;
       const { tableCell, tableHeader } = state.schema.nodes;
       const map = TableMap.get(this.tableNode);
       const start =  $anchorCell.start(-1);
@@ -495,7 +496,7 @@ export class TableState {
       const $anchor = state.doc.resolve(from + offset);
       const $head = state.doc.resolve(to + offset);
       this.view.dispatch(
-        this.view.state.tr.setSelection(new CellSelection($anchor, $head))
+        this.view.state.tr.setSelection(new (CellSelection as any)($anchor, $head))
       );
     }
   }
@@ -549,7 +550,7 @@ export class TableState {
     }
 
     const { tr, schema } = this.view.state;
-    const emptyCell = schema.nodes.tableCell.createAndFill().content;
+    const emptyCell = schema.nodes.tableCell.createAndFill()!.content;
     this.cellSelection.forEachCell((cell, pos) => {
       if (!cell.content.eq(emptyCell)) {
         const slice = new Slice(emptyCell, 0, 0);
@@ -586,7 +587,7 @@ export const stateKey = new PluginKey('tablePlugin');
 
 export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new TableState(state, pluginConfig);
     },
     apply(tr, pluginState: TableState, oldState, newState) {
@@ -594,20 +595,20 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
     }
   },
   key: stateKey,
-  view: (editorView: EditorView) => {
+  view: (editorView: EditorView & { docView?: any }) => {
     const pluginState: TableState = stateKey.getState(editorView.state);
     pluginState.setView(editorView);
     pluginState.update(editorView.docView);
     pluginState.keymapHandler = keymapHandler(pluginState);
 
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
         pluginState.update(view.docView);
       }
     };
   },
   props: {
-    decorations: (state: EditorState<any>) => stateKey.getState(state).decorations,
+    decorations: (state: EditorState) => stateKey.getState(state).decorations,
 
     handleKeyDown(view, event) {
       return stateKey.getState(view.state).keymapHandler(view, event);
@@ -616,12 +617,12 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
       stateKey.getState(view.state).resetHoverSelection();
       return false;
     },
-    onFocus(view: EditorView, event) {
+    onFocus(view: EditorView & { docView?: any }, event) {
       const pluginState: TableState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(true);
       pluginState.update(view.docView, true);
     },
-    onBlur(view: EditorView, event) {
+    onBlur(view: EditorView & { docView?: any }, event) {
       const pluginState: TableState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(false);
       pluginState.update(view.docView, true);
@@ -642,4 +643,3 @@ setTimeout(() => {
   document.execCommand('enableObjectResizing', false, 'false');
   document.execCommand('enableInlineTableEditing', false, 'false');
 });
-

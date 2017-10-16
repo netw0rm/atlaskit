@@ -1,14 +1,7 @@
 import { analyticsService } from '../../analytics';
-import {
-  EditorState,
-  PluginKey,
-  EditorView,
-  Schema,
-  NodeViewDesc,
-  TextSelection,
-  Plugin,
-  Node,
-} from '../../prosemirror';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { panelNodeView } from '../../nodeviews';
 import inputRulePlugin from './input-rules';
 
@@ -24,7 +17,7 @@ export const availablePanelType = [
 ];
 
 export class PanelState {
-  private state: EditorState<any>;
+  private state: EditorState;
   private activeNode: Node | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
 
@@ -33,7 +26,7 @@ export class PanelState {
   toolbarVisible?: boolean | undefined;
   editorFocused: boolean = false;
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
     this.state = state;
     this.toolbarVisible = false;
@@ -80,7 +73,8 @@ export class PanelState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
+  // TODO: Fix types (ED-2987)
+  update(state: EditorState, docView: any, domEvent: boolean = false) {
     this.state = state;
     const newPanel = this.getActivePanel(docView);
     if ((domEvent && newPanel) || this.activeNode !== newPanel) {
@@ -93,7 +87,7 @@ export class PanelState {
     }
   }
 
-  private getActivePanel(docView: NodeViewDesc): Node | undefined {
+  private getActivePanel(docView: any): Node | undefined {
     const { state } = this;
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
@@ -104,7 +98,7 @@ export class PanelState {
     }
   }
 
-  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
+  private getDomElement(docView: any): HTMLElement | undefined {
     const { state: { selection } } = this;
     if (selection instanceof TextSelection) {
       const { node } = docView.domFromPos(selection.$from.pos);
@@ -124,9 +118,10 @@ export type PanelStateSubscriber = (state: PanelState) => any;
 
 export const stateKey = new PluginKey('panelPlugin');
 
+// TODO: Fix types (ED-2987)
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new PanelState(state);
     },
     apply(tr, pluginState: PanelState, oldState, newState) {
@@ -140,7 +135,7 @@ export const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
         stateKey.getState(view.state).update(view.state, view.docView);
       }
     };
@@ -149,14 +144,14 @@ export const plugin = new Plugin({
     nodeViews: {
       panel: panelNodeView,
     },
-    handleClick(view: EditorView, event) {
+    handleClick(view: EditorView & { docView?: any }, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
     },
-    onBlur(view: EditorView, event) {
+    onBlur(view: EditorView & { docView?: any }, event) {
       const pluginState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(false);
       pluginState.update(view.state, view.docView, true);
@@ -164,7 +159,7 @@ export const plugin = new Plugin({
   },
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

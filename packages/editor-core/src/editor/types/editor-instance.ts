@@ -1,4 +1,4 @@
-import { EditorView } from './../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import { UIComponentFactory } from './editor-plugin';
 import { EventDispatcher } from '../event-dispatcher';
 import { Transformer } from '../../transformers';

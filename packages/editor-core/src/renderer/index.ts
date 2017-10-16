@@ -1,16 +1,11 @@
-import {
-  MarkSpec,
-  Node as PMNode,
-  NodeSpec,
-  Schema,
-} from '../prosemirror';
+import { Node as PMNode, Schema } from 'prosemirror-model';
+import { defaultSchema } from '@atlaskit/editor-common';
 
 import {
   getValidDocument,
 } from './validator';
 
 import { Serializer } from './serializer';
-import { defaultSchema } from '../schema';
 
 export { default as ReactSerializer } from './react';
 export { default as TextSerializer } from './text';
@@ -45,7 +40,7 @@ const withStopwatch = <T>(cb: () => T): ResultWithTime<T> => {
   return { output, time };
 };
 
-export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): RenderOutput<T | null> => {
+export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema = defaultSchema): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
   const {

@@ -2,7 +2,7 @@ import { chaiPlugin } from '../../../../dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { BitbucketTransformer } from '../../../../src/transformers';
-import { bitbucketSchema as schema } from '../../../../src/schema';
+import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import {
   a, blockquote, code_block, doc, h1, h2,
   h3, h4, h5, h6, hr, img, li, emoji, mention,

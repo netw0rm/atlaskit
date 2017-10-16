@@ -1,14 +1,7 @@
-import {
-  TableMap,
-  Node,
-  Slice,
-  Fragment,
-  Schema,
-  EditorState,
-  EditorView,
-  CellSelection,
-  Decoration
-} from '../../prosemirror';
+import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { TableMap } from 'prosemirror-tables';
+import { Decoration, EditorView } from 'prosemirror-view';
 import { TableState } from './';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -40,7 +33,7 @@ export const getTablePos = (tableNode: Node): TableRelativePosition => {
   return {from, to};
 };
 
-export const createTableNode = (rows: number, columns: number, schema: Schema<any, any>): Node => {
+export const createTableNode = (rows: number, columns: number, schema: Schema): Node => {
   const { table, tableRow, tableCell, tableHeader } = schema.nodes;
   const rowNodes: Node[] = [];
 
@@ -48,11 +41,11 @@ export const createTableNode = (rows: number, columns: number, schema: Schema<an
     const cell = i === 0 ? tableHeader : tableCell;
     const cellNodes: Node[] = [];
     for (let j = 0; j < columns; j ++) {
-      cellNodes.push(cell.createAndFill());
+      cellNodes.push(cell.createAndFill()!);
     }
-    rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
+    rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
   }
-  return table.create(null, Fragment.from(rowNodes));
+  return table.create(undefined, Fragment.from(rowNodes));
 };
 
 export const isIsolating = (node: Node): boolean => {
@@ -64,16 +57,16 @@ export interface SelectedCells {
   head: number;
 }
 
-export const getSelectedColumn = (state: EditorState<any>, map: TableMap): SelectedCells => {
-  const { $anchorCell, $headCell } = state.selection as CellSelection;
+export const getSelectedColumn = (state: EditorState, map: TableMap): SelectedCells => {
+  const { $anchorCell, $headCell } = state.selection as any; // TODO: Fix types (ED-2987)
   const start = $anchorCell.start(-1);
   const anchor = map.colCount($anchorCell.pos - start);
   const head = map.colCount($headCell.pos - start);
   return { anchor, head };
 };
 
-export const getSelectedRow = (state: EditorState<any>): SelectedCells => {
-  const { $anchorCell, $headCell } = state.selection as CellSelection;
+export const getSelectedRow = (state: EditorState): SelectedCells => {
+  const { $anchorCell, $headCell } = state.selection as any; // TODO: Fix types (ED-2987)
   const anchor = $anchorCell.index(-1);
   const head = $headCell.index(-1);
 

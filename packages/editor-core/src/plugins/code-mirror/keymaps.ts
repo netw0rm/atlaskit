@@ -1,4 +1,6 @@
-import { Selection, keymap, TextSelection, Plugin, EditorState, EditorView, Transaction } from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { EditorState, Plugin, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 export default function codeMirrorKeymapsPlugin(): Plugin {
   return keymap({
@@ -10,7 +12,7 @@ export default function codeMirrorKeymapsPlugin(): Plugin {
 }
 
 function arrowHandler(dir: 'up' | 'down' | 'left' | 'right') {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView) => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void, view: EditorView) => {
     if (state.selection.empty && view.endOfTextblock(dir)) {
       const side = dir === 'left' || dir === 'up' ? -1 : 1;
       const { $head } = state.selection;

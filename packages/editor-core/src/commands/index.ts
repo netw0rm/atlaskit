@@ -1,7 +1,9 @@
-import { Selection, EditorState, EditorView, Fragment, liftTarget, NodeSelection, TextSelection, Transaction, findWrapping } from '../prosemirror';
-import * as baseCommand from '../prosemirror/prosemirror-commands';
-import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
-export * from '../prosemirror/prosemirror-commands';
+import { Fragment } from 'prosemirror-model';
+import { EditorState, NodeSelection, Selection, TextSelection, Transaction  } from 'prosemirror-state';
+import { findWrapping, liftTarget } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
+import * as baseCommand from 'prosemirror-commands';
+import * as baseListCommand from 'prosemirror-schema-list';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import {
@@ -116,7 +118,7 @@ export function preventDefault(): Command {
 }
 
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+  return function (state: EditorState, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
     dispatch(state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
     state = view.state;
 
@@ -175,7 +177,7 @@ export function liftListItems(): Command {
 
         const target = range && liftTarget(range);
 
-        if (target === undefined) {
+        if (target === undefined || target === null) {
           return false;
         }
 
@@ -219,7 +221,7 @@ export function insertBlockType(view: EditorView, name: string): boolean {
  *  and set selection on it.
  */
 function wrapSelectionIn(type): Command {
-  return function (state: EditorState<any>, dispatch) {
+  return function (state: EditorState, dispatch) {
     const { tr } = state;
     const { $from, $to } = state.selection;
     const { paragraph } = state.schema.nodes;
@@ -240,12 +242,12 @@ function wrapSelectionIn(type): Command {
  * Function will insert code block at current selection if block is empty or below current selection and set focus on it.
  */
 export function insertCodeBlock(): Command {
-  return function (state: EditorState<any>, dispatch) {
+  return function (state: EditorState, dispatch) {
     const { tr } = state;
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
     const moveSel = $to.node($to.depth).textContent ? 1 : 0;
-    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill());
+    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill()!);
     tr.setSelection(Selection.near(tr.doc.resolve(state.selection.to + moveSel)));
     dispatch(tr);
     return true;
@@ -386,7 +388,7 @@ export function createNewParagraphBelow(view: EditorView): Command {
   };
 }
 
-function canCreateParagraphNear(state: EditorState<any>): boolean {
+function canCreateParagraphNear(state: EditorState): boolean {
   const { selection: { $from } } = state;
   const node = $from.node($from.depth);
   const insideCodeBlock = !!node && node.type === state.schema.nodes.codeBlock;
@@ -418,7 +420,7 @@ export function createParagraphNear(view: EditorView, append: boolean = true): v
   setTextSelection(view, insertPos + 1);
 }
 
-function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {
+function getInsertPosFromTextBlock(state: EditorState, append: boolean): void {
   const { $from, $to } = state.selection;
   let pos;
   const nodeType = $to.node($to.depth - 1).type;
@@ -453,7 +455,7 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
   return pos;
 }
 
-function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean): void {
+function getInsertPosFromNonTextBlock(state: EditorState, append: boolean): void {
   const { $from, $to } = state.selection;
   let pos;
 
@@ -476,5 +478,5 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 }
 
 export interface Command {
-  (state: EditorState<any>, dispatch: (tr: Transaction) => void, view?: EditorView): boolean;
+  (state: EditorState, dispatch: (tr: Transaction) => void, view?: EditorView): boolean;
 }

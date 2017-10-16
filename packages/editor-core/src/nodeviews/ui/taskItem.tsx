@@ -1,10 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {
-  EditorView,
-  Node as PMNode,
-  NodeView
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView,  NodeView } from 'prosemirror-view';
 
 import { TaskItem } from '@atlaskit/task-decision';
 

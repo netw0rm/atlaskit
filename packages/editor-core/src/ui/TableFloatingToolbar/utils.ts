@@ -1,4 +1,4 @@
-import { browser } from '../../prosemirror';
+import { browser } from '@atlaskit/editor-common';
 import { Keymap } from '../../keymaps';
 
 export function getShortcut(keymap: Keymap | undefined): string | undefined {

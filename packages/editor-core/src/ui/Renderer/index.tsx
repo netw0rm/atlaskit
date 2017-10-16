@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { defaultSchema } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
-import { Schema } from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
 import ProviderFactory from '../../providerFactory';
 import {
   ReactSerializer,
@@ -9,8 +10,7 @@ import {
   RendererContext,
   RenderOutputStat,
 } from '../../renderer';
-import { defaultSchema } from '../../schema';
-import { AppCardAction } from '../../schema/nodes/applicationCard';
+import { AppCardAction } from '@atlaskit/editor-common';
 import { Wrapper } from './style';
 
 export interface CardSurroundings {
@@ -47,7 +47,7 @@ export interface Props {
   onComplete?: (stat: RenderOutputStat) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
-  schema?: Schema<any, any>;
+  schema?: Schema;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {

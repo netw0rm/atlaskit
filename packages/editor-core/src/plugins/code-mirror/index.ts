@@ -1,8 +1,5 @@
-import {
-  Schema,
-  Plugin,
-  PluginKey,
-} from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import keymapPlugin from './keymaps';
 import codeMirrorNodeView from '../../nodeviews/ui/code-mirror';
 
@@ -17,7 +14,7 @@ const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, keymapPlugin()] as Plugin[];
 };
 

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 
-import { browser } from '../../../../src/prosemirror';
+import { browser } from '@atlaskit/editor-common';
 import rulePlugins from '../../../../src/plugins/rule';
 import {
   chaiPlugin, doc, hr, makeEditor, p, sendKeyToPm

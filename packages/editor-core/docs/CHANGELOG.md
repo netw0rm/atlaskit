@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.5.1 (2017-10-16)
+
+* bug fix; editor's filmstrip shows vertical bars when it shouldn't (issues closed: ed-2921) ([bec07ee](https://bitbucket.org/atlassian/atlaskit/commits/bec07ee))
 ## 50.5.0 (2017-10-16)
 
 * feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))

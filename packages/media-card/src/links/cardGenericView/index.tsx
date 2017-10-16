@@ -111,23 +111,61 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
 
     if (errorMessage) { return null; }
 
-    if (isLoading || shouldNotDisplayThumbnail(thumbnailUrl, thumbnailError)) {
-      if (isHorizontal) {
-        if (isLoading) {
-          return <ThumbnailPlaceholder key="thumbnail" dimensions={{width: 68, height: 68}} />;
+
+    const noImage = !thumbnailUrl || thumbnailError;
+
+    if(isHorizontal){
+      if(isLoading){
+        return <ThumbnailPlaceholder key="thumbnail" dimensions={{width: 68, height: 68}} />;
+        
+        if(noImage){
+
+        }else{
+
         }
+      }else{
+        if (noImage) {
 
-        return null;
+        } else {
+          
+        }
       }
+    }else{
+      if(isLoading){
+        if(noImage){
 
-      const icon = thumbnailUrl ? <ImageIcon label="image" size="xlarge"/> : noImageIcon;
+        }else{
 
-      return (
-        <ImagePlaceholderWrapper key="thumbnail">
-          {icon}
-        </ImagePlaceholderWrapper>
-      );
+        }
+      }else{
+        if (noImage) {
+
+        } else {
+          
+        }
+      }
     }
+
+    if (isHorizontal && isLoading) {
+      return <ThumbnailPlaceholder key="thumbnail" dimensions={{width: 68, height: 68}} />;
+    }
+
+    if(!isLoading && noImage){
+      return null;
+    }
+
+    if (!isHorizontal && isLoading) {
+      return <ImagePlaceholderWrapper key="thumbnail">
+        <ImageIcon label="image" size="xlarge"/>
+      </ImagePlaceholderWrapper>;
+    }
+
+    if (!isLoading && noImage){
+      return <ImagePlaceholderWrapper key="thumbnail">
+        {noImageIcon}
+      </ImagePlaceholderWrapper>;
+    }
+
     const dataURI = thumbnailUrl || '';
     const isCropped = !isHorizontal;
 

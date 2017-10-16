@@ -31,13 +31,27 @@ describe('Profilecard', () => {
       expect(icon.children().length).toBe(0);
     });
 
-    it('should render LabelIcon with icon', () => {
-      const wrapper = mount(<IconLabel icon="time">Labeltext</IconLabel>);
-      expect(wrapper.length).toBeGreaterThan(0);
-      expect(wrapper.find(DetailsLabelText).text()).toBe('Labeltext');
+    it('should render LabelIcon with valid icons', () => {
+      const validIcons = [
+        'location',
+        'time',
+        'mention',
+        'email',
+        'available',
+        'unavailable',
+        'busy',
+      ];
 
-      const icon = wrapper.find(DetailsLabelIcon);
-      expect(icon.children().length).toBe(1);
+      validIcons.forEach((presence) => {
+        it(`should render label with content ${presence}`, () => {
+          const wrapper = mount(<IconLabel icon="time">Labeltext</IconLabel>);
+          expect(wrapper.length).toBeGreaterThan(0);
+          expect(wrapper.find(DetailsLabelText).text()).toBe('Labeltext');
+
+          const icon = wrapper.find(DetailsLabelIcon);
+          expect(icon.children().length).toBe(1);
+        });
+      });
     });
   });
 });

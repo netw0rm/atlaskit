@@ -58,7 +58,12 @@ describe('Avatar', () =>
     describe('src property', () => {
       describe('set at mount time', () => {
         let wrapper;
-        beforeEach(() => (wrapper = mount(<AvatarImage src={src} />)));
+        beforeEach(() => {
+          wrapper = mount(<AvatarImage src={src} />);
+        });
+        afterEach(() => {
+          wrapper.instance().clearCache();
+        });
 
         it('should set the background image on the internal span to src', () => {
           expect(wrapper.prop('src')).toBe(src);
@@ -93,6 +98,7 @@ describe('Avatar', () =>
         });
 
         it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
+          wrapper.setProps({ src });
           wrapper.find('img').simulate('error');
           expect(wrapper.state('isLoading')).toBe(false);
           expect(wrapper.state('hasError')).toBe(true);

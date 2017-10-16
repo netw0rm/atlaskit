@@ -53,7 +53,7 @@ type Props = {
   size: SizeType,
 };
 
-const cache = {};
+let cache = {};
 
 export default class AvatarImage extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
@@ -75,6 +75,9 @@ export default class AvatarImage extends PureComponent {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  clearCache = () => {
+    cache = {};
+  }
   handleLoad = (hasError: boolean) => {
     if (this._isMounted) {
       this.setState({ hasError, isLoading: false });
@@ -93,6 +96,7 @@ export default class AvatarImage extends PureComponent {
     const { hasError, isLoading } = this.state;
     const showDefault = !isLoading && (!src || hasError);
     const spanStyle = src && (!isLoading || cache[src]) ? { backgroundImage: `url(${src})` } : null;
+    // console.log(src, cache[src]);
     return showDefault ? (
       <DefaultImage
         appearance={props.appearance}
@@ -109,12 +113,13 @@ export default class AvatarImage extends PureComponent {
         {...props}
       >
         {
-          !cache[src] && <HiddenImage
-            aria-hidden="true"
-            onLoad={this.handleLoadSuccess}
-            onError={this.handleLoadError}
-            src={src}
-          />
+          (src && !cache[src]) &&
+            <HiddenImage
+              aria-hidden="true"
+              onLoad={this.handleLoadSuccess}
+              onError={this.handleLoadError}
+              src={src}
+            />
         }
       </Span>
     );

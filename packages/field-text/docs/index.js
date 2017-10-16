@@ -25,7 +25,7 @@ export const description = (
       and passes all other props on to the stateless version.
     </p>
     <Usage>
-      {"import TextField, { FieldText } from '@atlaskit/field-text'"}
+      {"import TextField, { FieldTextStateless } from '@atlaskit/field-text'"}
     </Usage>
   </div>
 );

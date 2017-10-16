@@ -60,7 +60,7 @@ export default function getButtonStyles(props: Object) {
   const background = getPropertyAppearance('background', props);
   const color = getPropertyAppearance('color', props);
   const boxShadowColor = getPropertyAppearance('boxShadowColor', props);
-  const boxShadow = boxShadowColor ? css`0 0 0 2px ${boxShadowColor}` : null;
+  const boxShadow = boxShadowColor ? css`box-shadow: 0 0 0 2px ${boxShadowColor};` : null;
   const textDecoration = getPropertyAppearance('textDecoration', props);
 
   // Spacing: Compact
@@ -112,7 +112,6 @@ export default function getButtonStyles(props: Object) {
     background: ${background};
     border-radius: ${borderRadius}px;
     border-width: 0;
-    box-shadow: ${boxShadow};
     box-sizing: border-box;
     color: ${color} !important;
     cursor: ${cursor};
@@ -133,6 +132,7 @@ export default function getButtonStyles(props: Object) {
     vertical-align: ${verticalAlign};
     white-space: nowrap;
     width: ${width};
+    ${boxShadow}
 
     &::-moz-focus-inner {
       border: 0;

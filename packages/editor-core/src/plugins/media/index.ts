@@ -31,7 +31,7 @@ import {
 } from '../../prosemirror';
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
-
+import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
@@ -155,6 +155,13 @@ export class MediaPluginState {
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
+    const { view, allowsUploads } = this;
+
+    // make sure editable DOM node is mounted
+    if (view.dom.parentNode) {
+      // make PM plugin aware of the state change to update UI during 'apply' hook
+      view.dispatch(view.state.tr.setMeta(stateKey, { allowsUploads }));
+    }
 
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
@@ -534,7 +541,7 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
 
@@ -554,6 +561,13 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        const meta = tr.getMeta(stateKey);
+        if (meta && dispatch) {
+          const { showMediaPicker } = pluginState;
+          const { allowsUploads } = meta;
+          dispatch(stateKey, { allowsUploads, showMediaPicker });
         }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
@@ -622,8 +636,8 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
   });
 };
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

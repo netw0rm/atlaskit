@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.7.4",
+  "version": "3.8.0",
   "config": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
   "dependencies": {
     "@atlaskit/avatar": "^8.0.5",
     "@atlaskit/button": "^5.4.2",
-    "@atlaskit/icon": "^10.0.0",
+    "@atlaskit/icon": "^10.1.0",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/theme": "^2.2.0",

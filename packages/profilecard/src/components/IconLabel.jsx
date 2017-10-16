@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import IconLocation from '@atlaskit/icon/glyph/location';
 import IconRecent from '@atlaskit/icon/glyph/recent';
 import IconMention from '@atlaskit/icon/glyph/mention';
+import IconEmail from '@atlaskit/icon/glyph/email';
 import { Presence } from '@atlaskit/avatar';
 
 import {
@@ -15,6 +16,7 @@ const icons = {
   location: IconLocation,
   time: IconRecent,
   mention: IconMention,
+  email: IconEmail,
   available: () => <Presence presence="online" borderColor="transparent" />,
   unavailable: () => <Presence presence="offline" borderColor="transparent" />,
   busy: () => <Presence presence="busy" borderColor="transparent" />,

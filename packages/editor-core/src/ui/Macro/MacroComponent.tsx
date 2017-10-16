@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { MacroProvider } from '../../editor/types';
+import { MacroProvider } from '../../editor/plugins/macro/types';
 
 export interface Props {
   macroProvider?: Promise<MacroProvider>;

@@ -1,5 +1,9 @@
 # @atlaskit/editor-bitbucket
 
+## 3.4.4 (2017-10-16)
+
+* bug fix; add type to returns mention result so that consistent with API. ([b168339](https://bitbucket.org/atlassian/atlaskit/commits/b168339))
+* bug fix; added missing method _notifyAllResultsListeners to mention mock service and fixed re ([f057300](https://bitbucket.org/atlassian/atlaskit/commits/f057300))
 ## 3.4.3 (2017-09-14)
 
 * bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))

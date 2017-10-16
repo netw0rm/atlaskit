@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 50.5.1 (2017-10-16)
+
+* bug fix; editor's filmstrip shows vertical bars when it shouldn't (issues closed: ed-2921) ([bec07ee](https://bitbucket.org/atlassian/atlaskit/commits/bec07ee))
+## 50.5.0 (2017-10-16)
+
+* feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))
+## 50.4.0 (2017-10-15)
+
+* bug fix; refactored ToolbarInsertBlock ([7629918](https://bitbucket.org/atlassian/atlaskit/commits/7629918))
+* bug fix; updated macro plugin to dispatch macroProvider = null if it failed to resolve the pr ([43bea30](https://bitbucket.org/atlassian/atlaskit/commits/43bea30))
+* bug fix; refactored macro plugin ([fa0ee6c](https://bitbucket.org/atlassian/atlaskit/commits/fa0ee6c))
+* bug fix; merged master ([78ae215](https://bitbucket.org/atlassian/atlaskit/commits/78ae215))
+
+* bug fix; fixed failing media test ([d37addd](https://bitbucket.org/atlassian/atlaskit/commits/d37addd))
+* feature; added Macro to insert menu (issues closed: ed-2827) ([f166000](https://bitbucket.org/atlassian/atlaskit/commits/f166000))
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
 ## 50.3.0 (2017-10-12)
 
 

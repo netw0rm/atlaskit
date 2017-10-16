@@ -1,5 +1,11 @@
 # @atlaskit/field-text
 
+## 4.1.0 (2017-10-16)
+
+
+* feature; added support for min and max values, for type=number (issues closed: ak-3701) ([8c9cf4b](https://bitbucket.org/atlassian/atlaskit/commits/8c9cf4b))
+* feature; added support for relevant HTML input attrs and events (issues closed: ak-1743) ([b606a69](https://bitbucket.org/atlassian/atlaskit/commits/b606a69))
+
 ## 4.0.1 (2017-09-11)
 
 * bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))

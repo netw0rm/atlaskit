@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.3 (2017-10-16)
+
+* bug fix; fix issue where invalid box-shadow style was applied (issues closed: ak-3704) ([a786038](https://bitbucket.org/atlassian/atlaskit/commits/a786038))
 ## 5.4.2 (2017-10-03)
 
 

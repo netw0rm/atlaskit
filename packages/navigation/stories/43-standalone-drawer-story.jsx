@@ -12,6 +12,7 @@ storiesOf(name, module)
       isOpen
       isFullWidth
       primaryIcon={<AtlassianIcon size="medium" label="Logo" />}
+      onBackButton={() => {}}
     >
       <p>
         This is a standalone drawer.

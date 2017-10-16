@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "config": {
     "access": "public"
   },

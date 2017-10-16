@@ -25,9 +25,9 @@ type Props = {|
   globalCreateIcon?: ReactElement,
   /** Icon to be rendered at the bottom of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the
-  globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
+  globalPeopleItemHref. It is recommended that you use an atlaskit icon. */
   globalPeopleIcon?: ReactElement,
-  /** href to be used around the globalPrimaryIcon. */
+  /** href to be used around the globalPeopleItem. */
   globalPeopleItemHref?: string,
   /** Icon to be rendered at the top of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the

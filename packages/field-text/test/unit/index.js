@@ -95,6 +95,8 @@ describe('FieldTextStateless', () => {
         ['name', 'test'],
         ['placeholder', 'test placeholder'],
         ['maxLength', 5],
+        ['min', 1],
+        ['max', 10],
         ['required', true],
         ['autoComplete', 'on'],
         ['form', 'my-form'],

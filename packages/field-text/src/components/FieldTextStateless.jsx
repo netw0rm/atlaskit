@@ -58,6 +58,8 @@ export default class FieldTextStateless extends PureComponent {
             id={this.props.id}
             innerRef={this.handleInputRef}
             maxLength={this.props.maxLength}
+            min={this.props.min}
+            max={this.props.max}
             name={this.props.name}
             onBlur={this.props.onBlur}
             onChange={this.props.onChange}

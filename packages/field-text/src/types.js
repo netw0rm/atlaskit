@@ -26,6 +26,10 @@ export type FieldTextProps = {
   label?: string,
   /** Name value to be passed to the html input. */
   name?: string,
+  /** Standard input min attribute, to be used with type="number" */
+  min?: number,
+  /** Standard input max attribute, to be used with type="number" */
+  max?: number,
   /** Text to display in the input if the input is empty. */
   placeholder?: string,
   /** The value of the input. */

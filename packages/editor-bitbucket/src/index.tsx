@@ -130,10 +130,7 @@ export default class Editor extends PureComponent<Props, State> {
     let mentionProvider;
 
     if (mentionSource) {
-      const mentionsResourceProvider = new MentionResource({
-        minWait: 10,
-        maxWait: 25,
-      }, mentionSource);
+      const mentionsResourceProvider = new MentionResource(mentionSource);
 
       mentionProvider = Promise.resolve(mentionsResourceProvider);
     }

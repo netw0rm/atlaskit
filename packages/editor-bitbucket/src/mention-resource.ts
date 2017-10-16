@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from '@atlaskit/editor-core';
+import { AbstractMentionResource, MentionsResult } from '@atlaskit/editor-core';
 
 export interface MentionSource {
   query(query: string): void;
@@ -6,21 +6,17 @@ export interface MentionSource {
 }
 
 class MentionResource extends AbstractMentionResource {
-  private config: any;
-  private lastReturnedSearch: any;
   private mentionSource: MentionSource;
 
-  constructor(config: any, mentionSource: MentionSource) {
+  constructor(mentionSource: MentionSource) {
     super();
-
-    this.config = config;
-    this.lastReturnedSearch = 0;
     this.mentionSource = mentionSource;
   }
 
   filter(query: string) {
-    const notify = (mentions: any) => {
-      this._notifyListeners(mentions);
+    const notify = (mentionsResult: MentionsResult) => {
+      this._notifyListeners(mentionsResult);
+      this._notifyAllResultsListeners(mentionsResult);
     };
 
     const notifyInfo = (info: string) => {
@@ -43,15 +39,15 @@ class MentionResource extends AbstractMentionResource {
           } else {
             notifyInfo('Continue typing to search for a user'); // TODO: 18n
           }
-          notify({mentions: []});
+          notify({mentions: [], query});
         } else {
           const allMentions = response.results.map((item, index) => {
             return {
-              'id': item.attributes.username,
-              'name': item.attributes.display_name,
-              'mentionName': item.attributes.username,
-              'avatarUrl': item.attributes.avatar_url,
-              'lozenge': item.attributes.is_teammate ? 'teammate' : null
+              id: item.attributes.username,
+              avatarUrl: item.attributes.avatar_url,
+              name: item.attributes.display_name,
+              mentionName: item.attributes.username,
+              lozenge: item.attributes.is_teammate ? 'teammate' : ''
             };
           }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
 
@@ -61,7 +57,7 @@ class MentionResource extends AbstractMentionResource {
             ...allMentions.filter(item => !item.lozenge)
           ];
 
-          notify({ mentions });
+          notify({ mentions, query });
         }
       });
 
@@ -73,9 +69,6 @@ class MentionResource extends AbstractMentionResource {
     } else {
       notifyErrors(new Error('No mentions source provided'));
     }
-  }
-
-  recordMentionSelection(mention: any) {
   }
 }
 

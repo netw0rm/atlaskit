@@ -5,20 +5,10 @@ import { pd } from 'pretty-data';
 import { storyDecorator, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import InlineEdit from '@atlaskit/inline-edit';
 import Spinner from '@atlaskit/spinner';
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
 import { name, version } from '../package.json';
 import Editor from '../src';
 import MentionResource from './mentions/mention-resource';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 const analyticsHandler = (actionName, props) => action(actionName)(props);
 const CANCEL_ACTION = () => action('Cancel')();
@@ -116,7 +106,7 @@ storiesOf(name, module)
   .add('Editor with InlineEdit', () => {
     const fabricEditor = (
       <Editor
-        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+        mediaProvider={storyMediaProviderFactory()}
         onChange={handleChange}
         isExpandedByDefault={true}
         allowLists={true}
@@ -148,7 +138,7 @@ storiesOf(name, module)
       </div>
       <Editor
         onChange={handleChange}
-        mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+        mediaProvider={storyMediaProviderFactory()}
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
       />
@@ -198,7 +188,7 @@ storiesOf(name, module)
       allowTextColor={true}
       allowBlockQuote={true}
       analyticsHandler={analyticsHandler}
-      mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+      mediaProvider={storyMediaProviderFactory()}
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={mentionEncoder}
       // tslint:disable-next-line:jsx-no-lambda
@@ -247,7 +237,7 @@ storiesOf(name, module)
               allowSubSup={true}
               allowTextColor={true}
               allowBlockQuote={true}
-              mediaProvider={storyMediaProviderFactory(mediaTestHelpers)}
+              mediaProvider={storyMediaProviderFactory()}
               mentionProvider={Promise.resolve(new MentionResource())}
               mentionEncoder={mentionEncoder}
             />

@@ -94,7 +94,7 @@ const jsx = (<form onSubmit={e => e.preventDefault()}>
   </div>
   <div className="ak-field-group">
     <label htmlFor="number">Number</label>
-    <input type="number" className="ak-field-number ak-field__width-xsmall" maxlength="1" id="number" name="number" placeholder="1-5" min="1" max="5" required />
+    <input type="number" className="ak-field-number ak-field__width-xsmall" maxLength="1" id="number" name="number" placeholder="1-5" min="1" max="5" required />
   </div>
   <div className="ak-field-group">
     <label htmlFor="date">Date</label>

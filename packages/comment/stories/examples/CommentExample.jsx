@@ -6,7 +6,7 @@ const clickHandler = e => console.log(`${e.target.textContent} was clicked.`);
 
 export default (
   <Comment
-    avatar={<Avatar src="https://design.atlassian.com/images/avatars/project-128.png" label="AtlasKit avatar" size="medium" />}
+    avatar={<Avatar label="AtlasKit avatar" size="medium" />}
     author={<CommentAuthor href="/author">John Smith</CommentAuthor>}
     type="author"
     time={<CommentTime href="/time">30 August, 2016</CommentTime>}

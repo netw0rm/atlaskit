@@ -39,7 +39,7 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
           <BasicProjectSwitcher
             {...this.props.projectSwictherProps}
             text="Project Switcher very long text"
-            icon={<NucleusIcon />}
+            icon={<NucleusIcon label="nucleus icon" />}
             subText="Software project"
           >
             {this.props.dropdownItems}
@@ -47,7 +47,7 @@ export default class NavigationWithProjectSwitcher extends PureComponent {
         )}
       >
         <NavigationItem
-          icon={<NucleusIcon />}
+          icon={<NucleusIcon label="nucleus icon" />}
           text="Item with an icon"
           href="#2"
         />

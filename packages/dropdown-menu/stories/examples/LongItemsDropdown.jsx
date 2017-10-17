@@ -39,28 +39,29 @@ const multilineItems = (
 
 export default () => (
   <div>
-    <p>
-      This is an example a dropdown with long items showing the default behaviour
-    </p>
-    <p>
-      <DropdownMenu
-        defaultOpen
-        trigger="Long Items"
-        triggerType="button"
-      >
-        {items}
-      </DropdownMenu>
-    </p>
-    <p>
+    <div>
+      <span>This is an example a dropdown with long items showing the default behaviour</span>
+      <span>
+        <DropdownMenu
+          defaultOpen
+          trigger="Long Items"
+          triggerType="button"
+        >
+          {items}
+        </DropdownMenu>
+      </span>
+      <br />
+      <br />
+      <br />
+      <br />
       And this shows a dropdown with long items with multiline behaviour
-    </p>
-    <p>
+
       <DropdownMenu
         trigger="Long multiline Items"
         triggerType="button"
       >
         {multilineItems}
       </DropdownMenu>
-    </p>
+    </div>
   </div>
 );

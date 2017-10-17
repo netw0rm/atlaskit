@@ -69,7 +69,7 @@ export const simpleDropdownItemsWithRadio = [
     <DropdownItemRadio onClick={clickAction} id="java">Java</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="ruby">Ruby</DropdownItemRadio>
   </DropdownItemGroupRadio>,
-  <DropdownItemGroupRadio behavior="radio" title="Platforms">
+  <DropdownItemGroupRadio id="example-radio-group1" behavior="radio" title="Platforms">
     <DropdownItemRadio defaultSelected onClick={clickAction} id="mac">MacOS</DropdownItemRadio>
     <DropdownItemRadio onClick={clickAction} id="win">Windows</DropdownItemRadio>
   </DropdownItemGroupRadio>,

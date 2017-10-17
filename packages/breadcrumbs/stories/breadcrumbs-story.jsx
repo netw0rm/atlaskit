@@ -5,7 +5,7 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import Breadcrumbs, { BreadcrumbsItem } from '../src';
 import { name } from '../package.json';
 
-const imports = [
+const imports: Array<Array<string>> = [
   ['React', 'react'],
   ['Breadcrumbs, { BreadcrumbsItem }', 'ak-breadcrumbs'],
 ];
@@ -34,11 +34,6 @@ storiesOf(name, module)
       <BreadcrumbsItem href="/page" text="Page" />
     </Breadcrumbs>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with one item with very long text', () => (
-    <Breadcrumbs>
-      <BreadcrumbsItem href="/supercalifragilisticexpialidocious" text="Supercalifragilisticexpialidocious" />
-    </Breadcrumbs>
-  ), { imports })
   .addCodeExampleStory('ak-breadcrumbs with icons', () => {
     const TestIcon = <AtlassianIcon label="Test icon" />;
     return (
@@ -64,16 +59,6 @@ storiesOf(name, module)
     <Breadcrumbs>
       <BreadcrumbsItem href="/page" text="<b>Page</b>" />
       <BreadcrumbsItem href="/page" text="<script>alert();</script>" />
-    </Breadcrumbs>
-  ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with long and short items', () => (
-    <Breadcrumbs>
-      <BreadcrumbsItem href="/long" text="Supercalifragilisticexpialidocious" />
-      <BreadcrumbsItem href="/short" text="Item" />
-      <BreadcrumbsItem href="/short" text="Another item" />
-      <BreadcrumbsItem href="/long" text="Long item name which should be truncated" />
-      <BreadcrumbsItem href="/long" text="Another long item name which should be truncated" />
-      <BreadcrumbsItem href="/short" text="Short item" />
     </Breadcrumbs>
   ), { imports })
   .addCodeExampleStory('ak-breadcrumbs with many items', () => (
@@ -155,6 +140,18 @@ storiesOf(name, module)
       <Breadcrumbs>
         <BreadcrumbsItem onClick={action('Item1 click')} text="Item1 with onClick" />
         <BreadcrumbsItem onClick={action('Item2 Click')} text="Item2 with onClick" />
+      </Breadcrumbs>
+    </div>
+  ), { imports })
+  .addCodeExampleStory('ak-breadcrumbs with a truncationWidth provided', () => (
+    <div>
+      <Breadcrumbs>
+        <BreadcrumbsItem truncationWidth={200} href="/long" text="Supercalifragilisticexpialidocious" />
+        <BreadcrumbsItem truncationWidth={200} href="/short" text="Item" />
+        <BreadcrumbsItem truncationWidth={200} href="/short" text="Another item" />
+        <BreadcrumbsItem truncationWidth={200} href="/long" text="Long item name which should be truncated" />
+        <BreadcrumbsItem truncationWidth={200} href="/long" text="Another long item name which should be truncated" />
+        <BreadcrumbsItem truncationWidth={200} href="/short" text="Short item" />
       </Breadcrumbs>
     </div>
   ), { imports });

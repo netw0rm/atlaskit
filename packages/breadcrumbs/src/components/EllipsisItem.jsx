@@ -1,15 +1,16 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import Button from '../styled/Button';
+import { Button } from '../styled/Button';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Separator from '../styled/Separator';
 
-/* eslint-disable react/prefer-stateless-function */
+type Props = {|
+  hasSeparator: boolean,
+  onClick: (Event) => mixed,
+|};
+
 export default class EllipsisItem extends PureComponent {
-  static propTypes = {
-    hasSeparator: PropTypes.bool,
-    onClick: PropTypes.func,
-  }
+  props: Props // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     hasSeparator: false,

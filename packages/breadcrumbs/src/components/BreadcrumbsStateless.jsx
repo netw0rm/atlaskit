@@ -1,35 +1,36 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { Children, PureComponent } from 'react';
 import EllipsisItem from './EllipsisItem';
-import { defaultMaxItems } from '../constants';
 import Container from '../styled/BreadcrumbsContainer';
+import type { ChildrenType, ElementType } from '../types';
+
+const defaultMaxItems = 8;
 
 const { toArray } = Children;
 
+type Props = {|
+  /** Override collapsing of the nav when there are more than maxItems */
+  isExpanded?: boolean,
+  /** Set the maximum number of breadcrumbs to display. When there are more
+  than the maximum number, only the first and last will be shown, with an
+  ellipsis in between. */
+  maxItems?: number,
+  /** A function to be called when you are in the collapsed view and click
+  the ellpisis. */
+  onExpand: (Event) => mixed,
+  /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
+  children?: ChildrenType,
+|}
+
 export default class BreadcrumbsStateless extends PureComponent {
-  static propTypes = {
-    /** Override collapsing of the nav when there are more than maxItems */
-    isExpanded: PropTypes.bool,
-    /** Set the maximum number of breadcrumbs to display. When there are more
-    than the maximum number, only the first and last will be shown, with an
-    ellipsis in between. */
-    maxItems: PropTypes.number,
-    /** A function to be called when you are in the collapsed view and click
-    the ellpisis. */
-    onExpand: PropTypes.func.isRequired,
-    /** A single <BreadcrumbsItem> or an array of <BreadcrumbsItem>.  */
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
-  }
+  props: Props // eslint-disable-line react/sort-comp
 
   static defaultProps = {
     isExpanded: false,
     maxItems: defaultMaxItems,
   }
 
-  renderAllItems() {
+  renderAllItems(): [ElementType] {
     const allNonEmptyItems = toArray(this.props.children);
     return allNonEmptyItems.map((child, index) => React.cloneElement(child, {
       hasSeparator: index < allNonEmptyItems.length - 1,
@@ -50,9 +51,10 @@ export default class BreadcrumbsStateless extends PureComponent {
   }
 
   render() {
+    const { children, isExpanded, maxItems } = this.props;
     return (
       <Container>
-        {(this.props.isExpanded || toArray(this.props.children).length <= this.props.maxItems)
+        {(isExpanded || toArray(children).length <= maxItems)
           ? this.renderAllItems()
           : this.renderFirstAndLast()
         }

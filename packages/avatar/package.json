@@ -48,7 +48,7 @@
     "@atlaskit/button-group": "^1.5.1",
     "@atlaskit/lozenge": "^3.4.1",
     "@atlaskit/util-readme": "^3.2.0",
-    "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
+    "babel-plugin-react-flow-props-to-prop-types": "^0.15.0"
   },
   "repository": {
     "type": "git",

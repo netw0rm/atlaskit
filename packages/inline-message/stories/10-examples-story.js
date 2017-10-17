@@ -42,13 +42,13 @@ storiesOf(name, module)
   ))
   .add('Inline message — with long text', () => (
     <Chrome title="Inline message — with long text">
-      <p>The below paragraph is 400px wide.</p>
-      <p style={{ border: '2px solid #999', width: 400 }}>
+      <div>The below paragraph is 400px wide.</div>
+      <div style={{ border: '2px solid #999', width: 400 }}>
         <InlineMessage
           title="Cookie tart chocolate bar jelly toffee."
           secondaryText="Carrot cake chocolate bar caramels. Wafer jelly beans toffee chocolate ice cream jujubes candy canes. Sugar plum brownie jelly chocolate cake. Candy canes topping halvah tiramisu caramels dessert brownie jelly-o. Sweet tart cookie cupcake jelly-o jelly caramels bear claw."
         />
-      </p>
+      </div>
     </Chrome>
   ))
   .add('Inline message — with dialog on the right', () => (

@@ -1,3 +1,4 @@
+// @flow
 /* eslint-disable react/sort-comp */
 
 import React, { Component } from 'react';
@@ -18,7 +19,7 @@ class AnalyticsListener extends Component {
     `onEvent` based on event name. String filters use exact matching
     unless they end with a '.', in which case a partial match on the beginning
     of the event name will be used. */
-    match?: string | ((name: string) => boolean),
+    match?: string | ((name: string) => boolean) | RegExp,
     /** Sets wether to call `onEvent` for private or public events. */
     matchPrivate?: boolean,
   };

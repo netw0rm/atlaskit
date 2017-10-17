@@ -34,7 +34,7 @@ function formatCode(code) {
 
 export default class ReadmeCode extends PureComponent {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     code: PropTypes.string,
     language: PropTypes.string,
   }

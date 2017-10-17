@@ -33,7 +33,7 @@
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

@@ -24,8 +24,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0",
+    "react-dom": "^15.3.2 || ^16.0.0"
   },
   "dependencies": {
     "@atlaskit/button": "^5.4.2",

@@ -4,6 +4,7 @@ import { ActivityProvider } from '@atlaskit/activity';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
+import { ImageUploadHandler } from '../plugins/image-upload';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
 import { MacroProvider } from '../plugins/macro/types';
@@ -46,6 +47,7 @@ export interface EditorProps {
   collabEditProvider?: Promise<CollabEditProvider>;
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
+  imageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   macroProvider?: Promise<MacroProvider>;

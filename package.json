@@ -35,7 +35,7 @@
     "babel-jest": "^20.0.3",
     "babel-loader": "^6.2.5",
     "babel-plugin-incremental-dom": "^3.4.0",
-    "babel-plugin-react-flow-props-to-prop-types": "0.14.0",
+    "babel-plugin-react-flow-props-to-prop-types": "^0.15.0",
     "babel-plugin-rewire": "^1.0.0",
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-runtime": "^6.15.0",

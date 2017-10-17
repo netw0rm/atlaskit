@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Tip, { TooltipTrigger } from '../../src/styled/Tooltip';
+import Tip, { TooltipTarget } from '../../src/styled/Tooltip';
 
 // Testing the dumb component
 import { TooltipStateless as Tooltip } from '../../src';
@@ -49,28 +49,46 @@ describe('Tooltip', () => {
     });
   });
 
-  describe('onMouseOver callback', () => {
+  describe('onMouseEnter callback', () => {
     it('should be called when a mouse enters', () => {
       const spy = jest.fn();
-      const wrapper = shallow(<Tooltip onMouseOver={spy} />);
-      wrapper.find(TooltipTrigger).simulate('mouseOver');
+      const wrapper = shallow(<Tooltip onMouseEnter={spy} />);
+      wrapper.find(TooltipTarget).simulate('mouseEnter');
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not be called if the tooltip content is hovered (sanity check)', () => {
       const spy = jest.fn();
-      const wrapper = mount(<Tooltip isVisible onMouseOver={spy} description="Tooltip text" />);
+      const wrapper = mount(<Tooltip isVisible onMouseEnter={spy} description="Tooltip text" />);
       wrapper.find(Tip).simulate('mouseOver');
       expect(spy).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe('onMouseOut callback', () => {
+  describe('onMouseLeave callback', () => {
     it('should be called after the mouse leaves', () => {
       const spy = jest.fn();
-      const wrapper = shallow(<Tooltip onMouseOut={spy} />);
-      wrapper.find(TooltipTrigger).simulate('mouseOut');
+      const wrapper = shallow(<Tooltip onMouseLeave={spy} />);
+      wrapper.find(TooltipTarget).simulate('mouseLeave');
       expect(spy).toHaveBeenCalledTimes(1);
     });
+  });
+});
+
+describe('provide your own target', () => {
+  it('should accept a custom target', () => {
+    const NewTarget = (props) => <div {...props} />;
+    const spy = jest.fn();
+    const wrapper = mount(
+      <Tooltip
+        description="Tooltip text"
+        target={NewTarget}
+        onMouseEnter={spy}
+      >
+        <div>Foo</div>
+      </Tooltip>
+    );
+    wrapper.find(NewTarget).simulate('mouseEnter');
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

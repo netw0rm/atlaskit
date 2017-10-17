@@ -213,6 +213,10 @@ const ContentStyles = styled.div`
   .ProseMirror table ${tableStyle}
 
   .ProseMirror .telepointer ${telepointerStyle}
+
+  .ProseMirror img {
+    max-width: 100%;
+  }
 `;
 
 export default ContentStyles;

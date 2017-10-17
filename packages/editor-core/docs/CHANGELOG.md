@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 50.5.2 (2017-10-17)
+
+* bug fix; toolbarInsertBlockWrapper crashes without media provider (issues closed: ed-3010) ([87b1f88](https://bitbucket.org/atlassian/atlaskit/commits/87b1f88))
 ## 50.5.1 (2017-10-16)
 
 * bug fix; editor's filmstrip shows vertical bars when it shouldn't (issues closed: ed-2921) ([bec07ee](https://bitbucket.org/atlassian/atlaskit/commits/bec07ee))

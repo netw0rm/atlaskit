@@ -1,6 +1,0 @@
-{
-  "extends": "../../build/types/tsconfig.editor",
-  "include": [
-    "**/*"
-  ]
-}

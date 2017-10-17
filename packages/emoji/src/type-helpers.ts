@@ -10,6 +10,8 @@ import {
   SpriteServiceRepresentation,
 } from './types';
 
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+
 export const isSpriteServiceRepresentation = (rep): rep is SpriteServiceRepresentation => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
 export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(rep && (<SpriteRepresentation> rep).sprite);
 export const isImageRepresentation = (rep): rep is ImageRepresentation => !!(rep && (<ImageRepresentation> rep).imagePath);
@@ -68,5 +70,18 @@ export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?:
   return {
     ...emoji,
     representation
+  };
+};
+
+export const generateTooltipStyle = (width: number, height: number) => {
+  const left = `${width/2}px`;
+  const top = `${height + akGridSizeUnitless}px`;
+  return {
+    left,
+    top,
+    marginTop: `-${top}`,
+    marginBottom: top,
+    marginLeft: `-${left}`,
+    marginRight: left,
   };
 };

@@ -3,7 +3,8 @@ import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
 
 import * as styles from './styles';
-import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
+import { generateTooltipStyle, isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
+import { defaultEmojiHeight } from '../../constants';
 import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
@@ -115,7 +116,7 @@ const renderAsSprite = (props: Props) => {
     backgroundImage: `url(${sprite.url})`,
     backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
     backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
-    ...sizing,
+    ...sizing
   };
   const emojiNode = (
     <span
@@ -124,6 +125,8 @@ const renderAsSprite = (props: Props) => {
     />
   );
 
+  const size = fitToHeight || defaultEmojiHeight;
+  const tooltipStyle = showTooltip ? generateTooltipStyle(size, size) : {};
   return (
     <span
       className={classNames(classes)}
@@ -132,6 +135,7 @@ const renderAsSprite = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
+      style={tooltipStyle}
     >
       {emojiNode}
     </span>
@@ -167,10 +171,9 @@ const renderAsImage = (props: Props) => {
     height = representation.height;
   }
 
-  let sizing = {};
+  let sizing = { width, height };
   if (fitToHeight && width && height) {
     // Presize image, to prevent reflow due to size changes after loading
-    // const scaledHeight = Math.min(fitToHeight, height);
     sizing = {
       width: fitToHeight / height * width,
       height: fitToHeight,
@@ -193,6 +196,8 @@ const renderAsImage = (props: Props) => {
       {...sizing}
     />
   );
+  const tooltipStyle = showTooltip ? generateTooltipStyle(sizing.width, sizing.height) : {};
+
   return (
     <span
       className={classNames(classes)}
@@ -201,6 +206,7 @@ const renderAsImage = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
+      style={tooltipStyle}
     >
     {emojiNode}
     </span>

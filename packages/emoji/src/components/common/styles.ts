@@ -7,7 +7,6 @@ import {
   akColorN800,
   akColorN0,
   akGridSizeUnitless,
-  akGridSize,
 } from '@atlaskit/util-shared-styles';
 
 import { defaultEmojiHeight } from '../../constants';
@@ -141,13 +140,14 @@ export const emojiTooltip = style({
       color: akColorN0,
       fontSize: fontSize,
       lineHeight: (4 * grid) / fontSize,
-      margin: `24px ${akGridSize}`,
       padding: '2px 8px',
       whiteSpace: 'nowrap',
       borderRadius: '3px',
       zIndex: 1,
       boxSizing: 'border-box',
-      transform: 'translateX(-50%)'
+      transform: 'translateX(-50%)',
+      top: 'inherit',
+      left: 'inherit',
     }
   }
 

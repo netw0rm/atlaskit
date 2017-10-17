@@ -3,7 +3,7 @@ import * as classNames from 'classnames';
 import { placeholder, placeholderContainer, emojiTooltip } from './styles';
 import { defaultEmojiHeight } from '../../constants';
 import { EmojiImageRepresentation } from '../../types';
-import { isImageRepresentation, isMediaRepresentation } from '../../type-helpers';
+import { generateTooltipStyle, isImageRepresentation, isMediaRepresentation } from '../../type-helpers';
 
 export interface Props {
   shortName: string;
@@ -29,11 +29,12 @@ const EmojiPlaceholder = (props: Props) => {
   }
   const width: number = scaledWidth || size;
   const height: number = scaledHeight || size;
-
+  const tooltipStyle  = showTooltip ? generateTooltipStyle(width, height) : {};
   const style = {
     fill: 'f7f7f7',
     width: `${width}px`,
     height: `${height}px`,
+    ...tooltipStyle
   };
   const classes = {
     [placeholder]: true,

@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.2.2 (2017-10-17)
+
+* bug fix; fix console errors ([aa2f97f](https://bitbucket.org/atlassian/atlaskit/commits/aa2f97f))
 ## 2.2.1 (2017-10-09)
 
 * bug fix; added missing type definition file in package analytics build. ([24df127](https://bitbucket.org/atlassian/atlaskit/commits/24df127))

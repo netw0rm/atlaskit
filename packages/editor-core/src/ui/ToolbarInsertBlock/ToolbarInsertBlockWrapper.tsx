@@ -32,24 +32,29 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
       tableActive: false,
       tableHidden: false,
       mediaUploadsEnabled: false,
-      showMediaPicker: props.pluginStateMedia.showMediaPicker,
-      insertBlockType: props.pluginStateBlockType.insertBlockType
     } as State;
   }
 
   componentDidMount() {
     const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
+
     if (pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
     }
+
     if (pluginStateMedia) {
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
+      this.setState({
+        showMediaPicker: pluginStateMedia.showMediaPicker
+      });
     }
+
     if (pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
-      const { availableWrapperBlockTypes } = pluginStateBlockType;
+      const { availableWrapperBlockTypes, insertBlockType } = pluginStateBlockType;
       this.setState({
         availableWrapperBlockTypes,
+        insertBlockType
       });
     }
   }
@@ -61,12 +66,18 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
       pluginStateMedia: oldPluginStateMedia,
       pluginStateBlockType: oldPluginStateBlockType,
     } = this.props;
+
     if (!oldPluginStateTable && pluginStateTable) {
       pluginStateTable.subscribe(this.handlePluginStateTableChange);
     }
+
     if (!oldPluginStateMedia && pluginStateMedia) {
       pluginStateMedia.subscribe(this.handlePluginStateMediaChange);
+      this.setState({
+        showMediaPicker: pluginStateMedia.showMediaPicker
+      });
     }
+
     if (!oldPluginStateBlockType && pluginStateBlockType) {
       pluginStateBlockType.subscribe(this.handlePluginStateBlockTypeChange);
       const { availableWrapperBlockTypes, insertBlockType } = pluginStateBlockType;
@@ -79,6 +90,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
 
   componentWillUnmount() {
     const { pluginStateTable, pluginStateMedia, pluginStateBlockType } = this.props;
+
     if (pluginStateTable) {
       pluginStateTable.unsubscribe(this.handlePluginStateTableChange);
     }
@@ -110,6 +122,7 @@ export default class ToolbarInsertBlockWrapper extends React.Component<Props, St
 
   render() {
     const { render } = this.props;
+
     return render(this.state);
   }
 }

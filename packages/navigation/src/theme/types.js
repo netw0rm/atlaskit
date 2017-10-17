@@ -13,7 +13,7 @@ export type ItemTheme = {|
   |},
   active: {|
     background: Background,
-    text: Text,
+    text?: Text,
   |},
   focus: {|
     outline: Line,

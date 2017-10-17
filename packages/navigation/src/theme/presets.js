@@ -144,7 +144,6 @@ export const settings: Provided = ((): Provided => {
     },
     selected: {
       background: colors.N700A,
-      text: themed({ light: colors.B50, dark: colors.B100 }),
     },
     focus,
     dragging: {
@@ -187,7 +186,6 @@ export const siteSettings: Provided = ((): Provided => {
   // deep copy settings and re-assign some colors
   const theme: Provided = JSON.parse(JSON.stringify(settings));
   theme.background.secondary = colors.N800;
-  theme.item.selected.text = themed({ light: colors.B50, dark: colors.B100 });
   theme.item.active.text = colors.B100;
   return theme;
 })();

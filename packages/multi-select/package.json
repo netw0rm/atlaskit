@@ -27,8 +27,8 @@
   "dependencies": {
     "@atlaskit/droplist": "^4.10.0",
     "@atlaskit/field-base": "^8.0.0",
-    "@atlaskit/icon": "^6.5.2",
-    "@atlaskit/spinner": "^3.4.2",
+    "@atlaskit/icon": "^10.1.0",
+    "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/tag": "^3.0.0",
     "@atlaskit/tag-group": "^3.0.0",
     "@atlaskit/theme": "^2.0.1",
@@ -44,17 +44,14 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^2.0.2",
-    "@atlaskit/button": "^1.0.0",
-    "@atlaskit/code": "2.1.1",
+    "@atlaskit/avatar": "^8.0.8",
+    "@atlaskit/button": "^5.4.3",
+    "@atlaskit/code": "^2.1.1",
     "@atlaskit/multi-select": "*",
     "@atlaskit/util-readme": "^3.2.1"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    {
-      "name": "Nadia M"
-    },
     {
       "name": "Luke B"
     }

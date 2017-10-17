@@ -25,10 +25,10 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button": "^5.4.3",
     "@atlaskit/droplist": "^4.9.0",
     "@atlaskit/field-base": "^8.0.0",
-    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/icon": "^10.1.0",
     "@atlaskit/spinner": "^4.0.0",
     "@atlaskit/theme": "^2.0.1",
     "babel-runtime": "^6.11.6",

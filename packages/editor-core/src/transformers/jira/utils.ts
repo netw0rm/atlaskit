@@ -46,8 +46,6 @@ export function ensureBlocks(fragment: Fragment, schema: Schema<any, any>): Frag
 }
 
 /**
- * @param content
- * @param convertedNodesReverted
  * This function will convert all content to inline nodes
  */
 export const ensureInline = (schema: Schema<any, any>, content: Fragment, supportedMarks: Mark[]) => {

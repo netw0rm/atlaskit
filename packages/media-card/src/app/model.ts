@@ -64,3 +64,9 @@ export interface AppCardAction {
   };
   parameters?: object;
 }
+
+export interface AppCardActionCallbackHandlers {
+  progress();
+  success(message?: string);
+  failure(message?: string, tryAgain?: boolean, tryAgainLinkText?: string);
+}

@@ -1,8 +1,10 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import {
   AnalyticsDecorator,
+  AnalyticsDelegate,
   AnalyticsListener,
   cleanProps,
   withAnalytics,
@@ -17,6 +19,26 @@ const Button = withAnalytics(
       {children}
     </button>,
   { onClick: 'click' }
+);
+
+const OtherReactRootWithDelegation = withAnalytics(
+  ({ children, ...props }) => {
+    const { delegateAnalyticsEvent } = props;
+    const ref = reactRoot => {
+      if (reactRoot) {
+        ReactDOM.render(
+          <AnalyticsDelegate
+            delegateAnalyticsEvent={delegateAnalyticsEvent}
+          >
+            {children}
+          </AnalyticsDelegate>,
+          reactRoot
+        );
+      }
+    };
+    return <div ref={ref} />;
+  },
+  {}, {}, true
 );
 
 function handleAnalyticsEvent(eventName, eventData) {
@@ -82,4 +104,13 @@ storiesOf(name, module)
       </AnalyticsDecorator>
     </AnalyticsListener>
   )
-;
+  .add('bubble from another react root', () =>
+    <AnalyticsListener onEvent={handleAnalyticsEvent} match="button.full.click">
+      <OtherReactRootWithDelegation>
+        <Button analyticsId="button.full">
+          Send analytics
+        </Button>
+      </OtherReactRootWithDelegation>
+    </AnalyticsListener>
+  )
+  ;

@@ -177,6 +177,58 @@ describe('withAnalytics', () => {
     });
   });
 
+  describe('withDelegation', () => {
+    class TestComponent extends Component {
+      onClick = () => {
+        this.props.delegateAnalyticsEvent('click', { foo: 'bar' }, !!this.props.private);
+      };
+      render() {
+        const props = cleanProps(this.props);
+        return <button {...props} onClick={this.onClick} />;
+      }
+    }
+
+    it('should not pass through callback when false', () => {
+      const ComponentWithAnalytics = withAnalytics(TestComponent);
+      const mountWrapper = mount(<ComponentWithAnalytics />);
+      expect(mountWrapper.find('TestComponent').prop('delegateAnalyticsEvent')).toBe(undefined);
+    });
+
+    it('should pass through callback when true', () => {
+      const ComponentWithAnalytics = withAnalytics(TestComponent, {}, {}, true);
+      const mountWrapper = mount(<ComponentWithAnalytics />);
+      expect(mountWrapper.find('TestComponent').prop('delegateAnalyticsEvent')).not.toBe(undefined);
+    });
+
+    it('should pass through original public event (ignore analyticsId)', () => {
+      const ComponentWithAnalytics = withAnalytics(TestComponent, {}, {}, true);
+      const spy = jest.fn();
+      const listener = mount(
+        <AnalyticsListener onEvent={spy}>
+          <ComponentWithAnalytics />
+        </AnalyticsListener>
+      );
+      listener.find(TestComponent).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toBe('click');
+      expect(spy.mock.calls[0][1].foo).toBe('bar');
+    });
+
+    it('should pass through original private event (ignore analyticsId)', () => {
+      const ComponentWithAnalytics = withAnalytics(TestComponent, {}, {}, true);
+      const spy = jest.fn();
+      const listener = mount(
+        <AnalyticsListener matchPrivate onEvent={spy}>
+          <ComponentWithAnalytics private />
+        </AnalyticsListener>
+      );
+      listener.find(TestComponent).simulate('click');
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toBe('click');
+      expect(spy.mock.calls[0][1].foo).toBe('bar');
+    });
+  });
+
   describe('integrated usage', () => {
     class Button extends Component {
       onClick = () => {

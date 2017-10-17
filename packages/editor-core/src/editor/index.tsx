@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { PropTypes } from 'react';
+import { withAnalytics } from '@atlaskit/analytics';
+
 import { createEditor, getUiComponent } from './create-editor';
 import { createPluginsList } from './create-editor';
 import EditorActions from './actions';
@@ -13,7 +15,7 @@ export interface State {
   component?: React.ComponentClass<EditorAppearanceComponentProps>;
 }
 
-export default class Editor extends React.Component<EditorProps, State> {
+export class InternalEditor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
     appearance: 'message'
   };
@@ -158,3 +160,11 @@ export default class Editor extends React.Component<EditorProps, State> {
     );
   }
 }
+
+// This is to ensure that the "type" is exported, as it gets lost and not exported along with TaskItem after
+// going through the high order component.
+// tslint:disable-next-line:variable-name
+const Editor = withAnalytics<typeof InternalEditor>(InternalEditor, {}, {}, true);
+type Editor = InternalEditor;
+
+export default Editor;

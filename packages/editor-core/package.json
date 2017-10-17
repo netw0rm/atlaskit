@@ -58,6 +58,7 @@
     "@types/prosemirror-transform": "^0.21.1",
     "@types/prosemirror-view": "^0.21.1",
     "@atlaskit/activity": "^1.0.1",
+    "@atlaskit/analytics": "^2.3.0",
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/button": "^5.4.5",
     "@atlaskit/code": "^2.1.2",

@@ -1,5 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { AnalyticsDecorator, AnalyticsListener } from '@atlaskit/analytics';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/editor/ui/EditorContext';
@@ -23,19 +24,27 @@ storiesOf(name, module)
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
       renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
-        <Editor
-          {...getPropsPreset('message')}
+        <AnalyticsListener
+          onEvent={action('@atlaskit/analytics event')}
+        >
+          <AnalyticsDecorator
+            data={{ editorType: 'message' }}
+          >
+            <Editor
+              {...getPropsPreset('message')}
 
-          analyticsHandler={analyticsHandler}
-          maxHeight={305}
+              analyticsHandler={analyticsHandler}
+              maxHeight={305}
 
-          mentionProvider={mentionProvider}
-          emojiProvider={emojiProvider}
-          mediaProvider={mediaProvider}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              mediaProvider={mediaProvider}
 
-          onChange={onChange}
-          onSave={SAVE_ACTION}
-        />}
+              onChange={onChange}
+              onSave={SAVE_ACTION}
+            />
+          </AnalyticsDecorator>
+        </AnalyticsListener>}
     />)
   .add('Message Editor with Addons', () => {
     // tslint:disable-next-line:variable-name

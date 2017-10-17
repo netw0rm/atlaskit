@@ -44,6 +44,10 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
     return delegateOnChange(editorView);
   }
 
+  onEvent = (name, data) => {
+    action(name, data);
+  }
+
   private handleProviders(props: EditorProps) {
     const { emojiProvider, mentionProvider, mediaProvider } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);

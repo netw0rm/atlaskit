@@ -14,6 +14,7 @@ import { name } from '../package.json';
 import randomBadge from './components/RandomBadge';
 import NucleusIcon from './components/NucleusIcon';
 import ContainerRefScrollExample from './examples/ContainerRefScrollExample';
+import ToggleCallbackNavigation from './examples/ToggleCallbackNavigation';
 
 const dropdownItemsSample = (
   <DropdownItemGroup title="Cities">
@@ -216,6 +217,9 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation isCollapsible={false} />
     </HtmlPage>
+  ))
+  .add('with onToggle callbacks', () => (
+    <ToggleCallbackNavigation />
   ))
   .add('that starts closed', () => (
     <HtmlPage>

@@ -117,10 +117,11 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
       case 'H5':
       case 'H6':
         const level = Number(tag.charAt(1));
+        const supportedMarks = [schema.marks.link].filter(mark => !!mark);
         return schema.nodes.heading.createChecked({ level },
           schema.nodes.heading.validContent(content)
             ? content
-            : ensureInline(schema, content, convertedNodesReverted)
+            : ensureInline(schema, content, convertedNodesReverted, supportedMarks)
         );
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
@@ -258,7 +259,8 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
           const codeHeader = schema.text(node.textContent || '', [ schema.marks.strong.create() ]);
-          return schema.nodes.heading.createChecked({ level: 5 }, Fragment.from( codeHeader ));
+          const supportedMarks = [schema.marks.link].filter(mark => !!mark);
+          return schema.nodes.heading.createChecked({ level: 5 }, ensureInline(schema, Fragment.from( codeHeader ), convertedNodesReverted, supportedMarks));
         }
         else if (node.querySelector('.syntaxhighlighter')) {
           const codeblockNode = node.querySelector('.syntaxhighlighter');

@@ -1,5 +1,5 @@
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import { EditorState, EditorView, Node, Schema, MarkSpec, Plugin, Transaction } from '../../prosemirror';
+import { EditorState, EditorView, Node, Schema, MarkSpec, NodeSpec, Plugin, Transaction } from '../../prosemirror';
 import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
@@ -23,6 +23,17 @@ export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]
     }
   });
   return marks;
+}
+
+
+export function fixNodeContentSchema(nodes: { [key: string]: NodeSpec }, supportedMarks: { [key: string]: MarkSpec }): { [key: string]: NodeSpec } {
+  Object.keys(nodes).forEach(nodeKey => {
+    const node = nodes[nodeKey];
+    if (node.content && !supportedMarks['link']) {
+      node.content = node.content.replace('<link>', '');
+    }
+  });
+  return nodes;
 }
 
 export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
@@ -66,17 +77,19 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
 }
 
 export function createSchema(editorConfig: EditorConfig) {
-  const nodes = editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
-    acc[node.name] = node.node;
-    return acc;
-  }, {});
-
   const marks = fixExcludes(
     editorConfig.marks.sort(sortByRank).reduce((acc, mark) => {
       acc[mark.name] = mark.mark;
       return acc;
     }, {})
   );
+
+  const nodes = fixNodeContentSchema(
+    editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
+      acc[node.name] = node.node;
+      return acc;
+    }, {})
+  , marks);
 
   return new Schema({ nodes, marks });
 }

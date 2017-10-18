@@ -17,6 +17,14 @@ function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number)
       return;
     }
 
+    // fixes autoformatting in heading nodes: # Heading *bold*
+    // expected result: should not autoformat *bold*; <h1>Heading *bold*</h1>
+    if (state.doc.resolve(from).sameParent(state.doc.resolve(to))) {
+      if (!state.doc.resolve(from).parent.contentMatchAt(0).allowsMark(markType)) {
+        return;
+      }
+    }
+
     analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
 
     // apply mark to the range (from, to)
@@ -37,6 +45,13 @@ function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number)
 
 function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): InputRuleHandler<any> {
   return (state, match, start, end): Transaction | undefined => {
+    // fixes autoformatting in heading nodes: # Heading `bold`
+    // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
+    if (state.doc.resolve(start).sameParent(state.doc.resolve(end))) {
+      if (!state.doc.resolve(start).parent.contentMatchAt(0).allowsMark(markType)) {
+        return;
+      }
+    }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
     return transformToCodeAction(state, start, end).delete(start, start + specialChar.length).removeStoredMark(markType);
   };

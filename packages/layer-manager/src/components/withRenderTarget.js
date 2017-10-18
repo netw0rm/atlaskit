@@ -18,12 +18,15 @@ export default function withRenderTarget(
 
     render() {
       const { gatewayRegistry } = this.context;
-      const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
 
-      return (
-        <GatewayOrPortal into={target} wrapWithTransitionGroup={wrapWithTransitionGroup}>
+      return gatewayRegistry ? (
+        <Gateway into={target}>
           <WrappedComponent {...this.props} />
-        </GatewayOrPortal>
+        </Gateway>
+      ) : (
+        <Portal target={target} wrapWithTransitionGroup={wrapWithTransitionGroup}>
+          <WrappedComponent {...this.props} />
+        </Portal>
       );
     }
   };

@@ -5,8 +5,6 @@ import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 /* eslint-disable import/no-duplicates, import/first */
 import Example from './Example';
 import exampleSrc from '!raw-loader!./Example';
-import StatelessExample from './StatelessExample';
-import statelessExampleSrc from '!raw-loader!./StatelessExample';
 /* eslint-enable import/no-duplicates, import/first */
 
 const Pre = styled.pre`
@@ -27,7 +25,7 @@ export const description = (
       named export.
     </p>
     <Pre>
-      {"import ToolTip, { TooltipStateless } from '@atlaskit/tooltip'"}
+      {"import ToolTip from '@atlaskit/tooltip'"}
     </Pre>
     <p>
       The stateful component displays the tooltip automatically on mouseover.
@@ -40,10 +38,5 @@ export const examples = [
     title: 'Basic Example',
     Component: Example,
     src: exampleSrc,
-  },
-  {
-    title: 'Stateless Example',
-    Component: StatelessExample,
-    src: statelessExampleSrc,
   },
 ];

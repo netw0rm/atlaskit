@@ -11,11 +11,11 @@ describe('Tooltip', () => {
     expect(wrapper).not.toBe(undefined);
   });
 
-  describe('position prop', () => {
-    it('should be reflected into Layers position prop when Tooltip is isVisible', () => {
-      const wrapper = shallow(<Tooltip position="bottom" isVisible><div>Foo</div></Tooltip>);
+  describe('placement prop', () => {
+    it('should be reflected into Layers placement prop when Tooltip is isVisible', () => {
+      const wrapper = shallow(<Tooltip placement="bottom" isVisible><div>Foo</div></Tooltip>);
 
-      expect(wrapper.find('Layer').prop('position')).toBe('bottom center');
+      expect(wrapper.find('Layer').prop('placement')).toBe('bottom center');
     });
   });
 

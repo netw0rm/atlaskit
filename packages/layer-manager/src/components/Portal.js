@@ -17,7 +17,7 @@ class Portal extends Component {
   props: Props // eslint-disable-line react/sort-comp
   portalElement = null
   componentDidMount() {
-    const node = document.createElement('span');
+    const node = document.createElement('div');
     if (document.body) {
       document.body.appendChild(node);
       this.portalElement = node;

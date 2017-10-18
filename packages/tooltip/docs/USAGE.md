@@ -22,7 +22,7 @@ be handled for you. The dumb one on the other hand allows you to hook into event
 import Tooltip from '@NAME@';
 
 ReactDOM.render(<div>
-  <Tooltip description="Opens the user preferences screen in a new window" position="bottom">
+  <Tooltip description="Opens the user preferences screen in a new window" placement="bottom">
     <button>I do something!</button>
   </Tooltip>
 </div>, container);
@@ -54,7 +54,7 @@ function renderButtonInContainer() {
   ReactDOM.render(<div>
     <Tooltip
       description="Opens the user preferences screen in a new window"
-      position="bottom"
+      placement="bottom"
       visible={tooltipVisibleState}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
@@ -97,7 +97,7 @@ React component used to display floating tooltips next to a component.
 
 **HTML Example**
 ```js
-<Tooltip description="Foo!" position="right"><div>Foo</div></Tooltip>
+<Tooltip description="Foo!" placement="right"><div>Foo</div></Tooltip>
 ```
 <a name="Tooltip+position"></a>
 

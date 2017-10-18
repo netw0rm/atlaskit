@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 51.0.0 (2017-10-18)
+
+
+* bug fix; prevent text autoformatting within nodes that do not allow the given mark ([05f96d6](https://bitbucket.org/atlassian/atlaskit/commits/05f96d6))
+* breaking; Headings can no longer contain any marks other than link, bringing it to parity with the schema. ([5248d6f](https://bitbucket.org/atlassian/atlaskit/commits/5248d6f))
+* breaking; only allow inline nodes and link marks in headings (issues closed: ed-74) ([5248d6f](https://bitbucket.org/atlassian/atlaskit/commits/5248d6f))
+
+
 ## 50.5.2 (2017-10-17)
 
 * bug fix; toolbarInsertBlockWrapper crashes without media provider (issues closed: ed-3010) ([87b1f88](https://bitbucket.org/atlassian/atlaskit/commits/87b1f88))

@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 7.0.0 (2017-10-18)
+
+
+* breaking; Preparation work for splitting editor-core into editor and renderer. Renderer is now an empty ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
+* breaking; clean all renderer files ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
 ## 6.0.0 (2017-10-18)
 
 * breaking; Preparation work for splitting editor-core into editor and renderer. Renderer is now an empty ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))

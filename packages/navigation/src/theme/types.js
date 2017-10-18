@@ -16,7 +16,7 @@ export type ItemTheme = {|
     text?: Text,
   |},
   focus: {|
-    outline: Line,
+    outline?: Line,
   |},
   selected: {|
     background: Background,

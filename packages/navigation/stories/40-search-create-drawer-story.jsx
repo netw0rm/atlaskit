@@ -45,38 +45,38 @@ storiesOf(name, module)
             <AkNavigationItemGroup>
               <AkNavigationItem
                 href="#1"
-                icon={<EmojiObjectsIcon />}
+                icon={<EmojiObjectsIcon label="emoji objects icon" />}
                 text="Create item 1"
               />
               <AkNavigationItem
                 href="#2"
-                icon={<EmojiNatureIcon />}
+                icon={<EmojiNatureIcon label="emoji nature icon" />}
                 text="Create item 2"
               />
               <AkNavigationItem
                 href="#3"
-                icon={<EmojiObjectsIcon />}
+                icon={<EmojiObjectsIcon label="emoji objects icon" />}
                 text="Create item 3"
               />
               <AkNavigationItem
                 href="#4"
-                icon={<EmojiTravelIcon />}
+                icon={<EmojiTravelIcon label="emoji travel icon" />}
                 text="Create item 4"
               />
             </AkNavigationItemGroup>
             <AkNavigationItemGroup>
               <AkNavigationItem
-                icon={<ExpandIcon />}
+                icon={<ExpandIcon label="expand icon" />}
                 text="See more"
               />
             </AkNavigationItemGroup>
             <AkNavigationItemGroup title="Group with title">
               <AkNavigationItem
-                icon={<BitbucketBranchesIcon />}
+                icon={<BitbucketBranchesIcon label="bitbucket icon" />}
                 text={<span>Create a <strong>Bitbucket branch</strong></span>}
               />
               <AkNavigationItem
-                icon={<PageIcon />}
+                icon={<PageIcon label="page icon" />}
                 text={<span>Create a <strong>Confluence page</strong></span>}
               />
             </AkNavigationItemGroup>
@@ -108,13 +108,13 @@ storiesOf(name, module)
             />
             <AkNavigationItemGroup>
               <AkNavigationItem
-                icon={<FeedbackIcon />}
+                icon={<FeedbackIcon label="feedback icon" />}
                 text="Inside a group with no title"
               />
             </AkNavigationItemGroup>
             <AkNavigationItemGroup>
               <AkNavigationItem
-                icon={<IssuesIcon />}
+                icon={<IssuesIcon label="issues icon" />}
                 text="Inside a different group with no title"
               />
             </AkNavigationItemGroup>
@@ -174,6 +174,7 @@ storiesOf(name, module)
             isOpen
             key="create"
             primaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+            onBackButton={() => {}}
           >
             <VerticallyCenteredDrawerContent>
               <p>This content should be vertically centered.</p>

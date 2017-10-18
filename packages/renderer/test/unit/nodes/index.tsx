@@ -281,51 +281,51 @@ describe('Nodes', () => {
       });
     });
 
-    it('should try and render unknown nodes as text', () => {
-      const unknownNode1 = renderNode({ type: 'unknown', text: 'Hello world' });
-      const unknownNode2 = renderNode({ type: 'unknown', attrs: { text: 'Hello world' } });
-      expect(unknownNode1.type).to.equal('span');
-      expect(unknownNode2.type).to.equal('span');
-      expect(shallow(unknownNode1).text()).to.equal('Hello world');
-      expect(shallow(unknownNode2).text()).to.equal('Hello world');
-    });
+  //   it('should try and render unknown nodes as text', () => {
+  //     const unknownNode1 = renderNode({ type: 'unknown', text: 'Hello world' });
+  //     const unknownNode2 = renderNode({ type: 'unknown', attrs: { text: 'Hello world' } });
+  //     expect(unknownNode1.type).to.equal('span');
+  //     expect(unknownNode2.type).to.equal('span');
+  //     expect(shallow(unknownNode1).text()).to.equal('Hello world');
+  //     expect(shallow(unknownNode2).text()).to.equal('Hello world');
+  //   });
 
-    it('should return "Unknown type: {type}" if it cannot be rendered as text', () => {
-      const unknownNode = renderNode({ type: 'banana'});
-      expect(unknownNode.type).to.equal('span');
-      expect(shallow(unknownNode).text()).to.equal('Unknown type: "banana"');
-    });
+  //   it('should return "Unknown type: {type}" if it cannot be rendered as text', () => {
+  //     const unknownNode = renderNode({ type: 'banana'});
+  //     expect(unknownNode.type).to.equal('span');
+  //     expect(shallow(unknownNode).text()).to.equal('Unknown type: "banana"');
+  //   });
 
-    it('should return "Unknown format: {type}" if type is known but format is wrong', () => {
-      const unknownNode = renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } });
-      expect(unknownNode.type).to.equal('span');
-      expect(shallow(unknownNode).text()).to.equal('Unknown format: "mention"');
-    });
+  //   it('should return "Unknown format: {type}" if type is known but format is wrong', () => {
+  //     const unknownNode = renderNode({ type: 'mention', attrs: { 'name': 'Oscar', 'uuid': 'nah' } });
+  //     expect(unknownNode.type).to.equal('span');
+  //     expect(shallow(unknownNode).text()).to.equal('Unknown format: "mention"');
+  //   });
 
-    it('should default to a span if it has a content array containing renderable nodes', () => {
-      const invalidBlockNode = {
-        type: 'neckPillow',
-        content: [
-          {
-            type: 'text',
-            text: 'Here',
-            marks: [
-              {
-                type: 'em'
-              }
-            ]
-          },{
-            type: 'text',
-            text: ' is '
-          },{
-            type: 'text',
-            text: 'something'
-          },
-        ]
-      };
-      const rendered = renderNode(invalidBlockNode);
-      expect(rendered.type).to.equal('span');
-    });
+  //   it('should default to a span if it has a content array containing renderable nodes', () => {
+  //     const invalidBlockNode = {
+  //       type: 'neckPillow',
+  //       content: [
+  //         {
+  //           type: 'text',
+  //           text: 'Here',
+  //           marks: [
+  //             {
+  //               type: 'em'
+  //             }
+  //           ]
+  //         },{
+  //           type: 'text',
+  //           text: ' is '
+  //         },{
+  //           type: 'text',
+  //           text: 'something'
+  //         },
+  //       ]
+  //     };
+  //     const rendered = renderNode(invalidBlockNode);
+  //     expect(rendered.type).to.equal('span');
+  //   });
 
-  });
+  // });
 });

@@ -7,6 +7,7 @@ import { name } from '../../package.json';
 const data = {
   recentContainers: [
     {
+      content: '',
       name: 'Recent container',
       url: 'https://instance.atlassian.net/view/container',
       iconUrl: '',
@@ -48,10 +49,9 @@ const data = {
 describe(name, () => {
   it('should pass dropdown options to StatelessDropdown', () => {
     const wrapper = shallow(
-      <AppSwitcher {...data} dropdownOptions={{ test: 'test' }} />
+      <AppSwitcher {...data} dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }} />
     );
-
-    expect(wrapper.find(DropdownMenuStateless).prop('test')).toBe('test');
+    expect(wrapper.find(DropdownMenuStateless).prop('items')[0].items[0].content).toBe('test');
   });
 
   it('should pass isLoading to StatelessDropdown', () => {
@@ -59,6 +59,7 @@ describe(name, () => {
       <AppSwitcher
         {...data}
         isLoading
+        dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
       />).find(DropdownMenuStateless).prop('isLoading')
     ).toBe(true);
 
@@ -66,6 +67,7 @@ describe(name, () => {
       <AppSwitcher
         {...data}
         isLoading={false}
+        dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
       />).find(DropdownMenuStateless).prop('isLoading')
     ).toBe(false);
   });
@@ -73,7 +75,11 @@ describe(name, () => {
   it('should invoke the open callback when it opens', () => {
     const spy = jest.fn();
     const wrapper = shallow(
-      <AppSwitcher {...data} onAppSwitcherOpen={spy} />
+      <AppSwitcher
+        {...data}
+        dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
+        onAppSwitcherOpen={spy}
+      />
     );
     expect(spy).toHaveBeenCalledTimes(0);
 
@@ -95,7 +101,12 @@ describe(name, () => {
       }],
     };
     const wrapper = mount(
-      <AppSwitcher {...data} isDropdownOpenInitially linkedApplications={linkedApplications} />
+      <AppSwitcher
+        {...data}
+        isDropdownOpenInitially
+        // dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
+        linkedApplications={linkedApplications}
+      />
     );
     expect(wrapper.find('.app-switcher-suggested-application')).toHaveLength(1);
     wrapper.find('.app-switcher-suggested-application').simulate('click');
@@ -117,6 +128,7 @@ describe(name, () => {
         {...data}
         isDropdownOpenInitially
         isAnonymousUser
+        dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
         linkedApplications={linkedApplications}
       />
     );

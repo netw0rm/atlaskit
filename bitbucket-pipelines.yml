@@ -100,7 +100,7 @@ pipelines:
             # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui
             # and block actual master builds
             - git fetch
-            - git checkout origin/master
+            - git checkout master
             - git pull
             - yarn
             - cd packages/website

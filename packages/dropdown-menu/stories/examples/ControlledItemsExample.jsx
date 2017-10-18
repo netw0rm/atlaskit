@@ -49,11 +49,14 @@ export default class ControlledItemsExample extends PureComponent {
           trigger="Open dropdown"
           triggerType="button"
           appearance="tall"
+          position="bottom right"
+          shouldFlip={false}
         >
           <DropdownItemGroupCheckbox id="checkboxes" title="Checkbox items">
             {
               [0, 1, 2, 3].map(index => (
                 <DropdownItemCheckbox
+                  key={index}
                   id={`checkbox-${index}`}
                   isSelected={selectedIndex === index || selectedIndex - 1 === index}
                   onClick={this.setIndex(index)}
@@ -67,6 +70,7 @@ export default class ControlledItemsExample extends PureComponent {
             {
               [0, 1, 2, 3].map(index => (
                 <DropdownItemRadio
+                  key={index}
                   id={`radio-${index}`}
                   isSelected={selectedIndex === index}
                   onClick={this.setIndex(index)}

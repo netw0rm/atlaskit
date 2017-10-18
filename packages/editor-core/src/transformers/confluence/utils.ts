@@ -233,7 +233,7 @@ export function createCodeFragment(schema: Schema<any, any>, codeContent: string
   let nodeSize = 0;
 
   if (!!title) {
-    const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title, [schema.marks.strong.create()]));
+    const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title));
     content.push(titleNode);
     nodeSize += titleNode.nodeSize;
   }

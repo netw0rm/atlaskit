@@ -1,6 +1,7 @@
 import {
   Fragment,
   Node as PMNode,
+  Mark,
   NodeSpec,
   Schema
 } from '../../';
@@ -109,11 +110,12 @@ export const blockquoteContentWrapper = (schema: Schema<any, any>, content: Frag
  * @param convertedNodesReverted
  * This function will convert all content to inline nodes
  */
-export const ensureInline = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const ensureInline = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, supportedMarks?: Mark[]) => {
   const result: PMNode[] = [];
   content.forEach((node: PMNode) => {
     if (node.isInline) {
-      result.push(node);
+      const filteredMarks = node.marks.filter(mark => !supportedMarks || mark.isInSet(supportedMarks));
+      result.push(node.mark(filteredMarks));
       return;
     }
     // We replace an non-inline node with UnsupportedInline node

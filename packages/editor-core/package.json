@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "50.5.2",
+  "version": "51.0.0",
   "config": {
     "access": "public"
   },
@@ -62,6 +62,7 @@
     "@atlaskit/media-core": "^10.1.0",
     "@atlaskit/mention": "^7.3.4",
     "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/renderer": "^6.0.0",
     "@atlaskit/single-select": "^1.10.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/task-decision": "^4.0.0",

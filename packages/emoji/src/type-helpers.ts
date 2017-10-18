@@ -75,12 +75,12 @@ export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?:
 
 export const generateTooltipStyle = (width: number, height: number) => {
   const left = `${width/2}px`;
-  const top = `${height + akGridSizeUnitless}px`;
+  const bottom = `${height + akGridSizeUnitless}px`;
   return {
     left,
-    top,
-    marginTop: `-${top}`,
-    marginBottom: top,
+    bottom,
+    marginBottom: `-${bottom}`,
+    marginTop: bottom,
     marginLeft: `-${left}`,
     marginRight: left,
   };

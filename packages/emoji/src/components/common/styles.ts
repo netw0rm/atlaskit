@@ -108,14 +108,14 @@ export const emojiButton = style({
 const grid = akGridSizeUnitless / 2;
 const fontSize = 3 * grid;
 
-export const slideDown = keyframes({
+export const slideUp = keyframes({
   '0%': {
-    'transform': 'translate(-50%, -12px)',
+    'transform': 'translate(-50%, 12px)',
     'opacity': 0,
     'animationTimingFunction': 'cubic-bezier(0.23830050393398, 0, 0.25586732616931, 0.79011192334632)'
   },
   '20%': {
-    'transform': 'translate(-50%, -2.3999999999999986px)',
+    'transform': 'translate(-50%, 2.3999999999999986px)',
     'opacity': 0.8,
     'animationTimingFunction': 'cubic-bezier(0.21787238302442, 0.98324004924648, 0.58694150667646, 1)'
   },
@@ -130,8 +130,8 @@ export const emojiTooltip = style({
 
   $nest: {
     '&:hover::before': {
-      animationName: slideDown,
-      animationDelay: '0.1',
+      animationName: slideUp,
+      animationDelay: '0.1s',
       animationDuration: '1s',
       animationFillMode: 'backwards',
       content: 'attr(aria-label)',
@@ -146,8 +146,8 @@ export const emojiTooltip = style({
       zIndex: 1,
       boxSizing: 'border-box',
       transform: 'translateX(-50%)',
-      top: 'inherit',
       left: 'inherit',
+      bottom: 'inherit',
     }
   }
 

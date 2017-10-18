@@ -102,6 +102,7 @@ pipelines:
             - echo "https://$BITBUCKET_USER:$BITBUCKET_PASSWORD@bitbucket.org" > ~/.git-credentials
             - git remote set-url origin "https://bitbucket.org/atlassian/atlaskit.git"
             - git fetch origin
+            - git fetch
             # Prevent running this build if we are in a different branch
             - ./build/bin/exit.if.branch.name.not.matches.js "production-website-DO-NOT-USE" || exit
             # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui

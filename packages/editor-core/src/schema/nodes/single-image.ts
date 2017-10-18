@@ -11,8 +11,8 @@ export const singleImage: NodeSpec = {
   parseDOM: [{
     tag: 'div[data-node-type="singleImage"]',
     getAttrs: (dom: HTMLElement) => ({
-      'alignment': dom.dataset.alignment,
-      'display': dom.dataset.display,
+      'alignment': dom.getAttribute('data-alignment') || singleImage.attrs!.alignment.default,
+      'display': dom.getAttribute('data-display') || singleImage.attrs!.display.default
     })
   }],
   toDOM(node: Node): [string, any, number] {

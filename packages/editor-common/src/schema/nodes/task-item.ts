@@ -30,7 +30,7 @@ export const taskItem: NodeSpec = {
 
     getAttrs: (dom: Element) => ({
       localId: uuid.generate(),
-      state: dom.getAttribute('data-task-state') || 'TODO',
+      state: dom.getAttribute('data-task-state') || taskItem.attrs!.state.default,
     })
   }],
   toDOM(node: Node) {

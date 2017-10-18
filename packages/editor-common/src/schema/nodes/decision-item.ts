@@ -30,7 +30,7 @@ export const decisionItem: NodeSpec = {
 
     getAttrs: (dom: Element) => ({
       localId: uuid.generate(),
-      state: dom.getAttribute('data-decision-state') || 'DECIDED',
+      state: dom.getAttribute('data-decision-state') || decisionItem.attrs!.state.default,
     })
   }],
   toDOM(node: Node) {

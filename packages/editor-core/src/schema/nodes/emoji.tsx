@@ -26,9 +26,9 @@ export const emoji: NodeSpec = {
   parseDOM: [{
     tag: 'span[data-emoji-short-name]',
     getAttrs: (dom: Element) => ({
-      shortName: dom.getAttribute('data-emoji-short-name') || '',
-      id: dom.getAttribute('data-emoji-id') || '',
-      text: dom.getAttribute('data-emoji-text') || '',
+      shortName: dom.getAttribute('data-emoji-short-name') || emoji.attrs!.shortName.default,
+      id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
+      text: dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
     })
   }],
   toDOM(node: Node): [string, any, string] {

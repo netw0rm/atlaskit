@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 51.1.1 (2017-10-18)
+
+* bug fix; "Insert link" scrolls to top of page (issues closed: ed-2992) ([eee5586](https://bitbucket.org/atlassian/atlaskit/commits/eee5586))
 ## 51.1.0 (2017-10-18)
 
 

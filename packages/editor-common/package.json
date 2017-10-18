@@ -42,6 +42,7 @@
     "@types/prosemirror-schema-basic": "^0.21.0",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "linkify-it": "^2.0.3",
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
     "prosemirror-tables": "^0.1.0",

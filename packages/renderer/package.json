@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "5.6.1",
+  "version": "6.0.0",
   "config": {
     "access": "public"
   },
@@ -22,9 +22,7 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
@@ -39,9 +37,7 @@
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "keywords": [
     "fabric",
     "ui"

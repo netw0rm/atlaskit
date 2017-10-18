@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>editor/quote</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="editor/quote" fill="#42526E">
+            <path d="M8.30204714,7 C7.0310266,7 6,8.01750133 6,9.27289946 C6,10.52754 7.0310266,11.5457989 8.30204714,11.5457989 C10.6033048,11.5457989 9.06939619,15.9393136 6,15.9393136 L6,17 C11.4780196,17.0007576 13.6245443,7 8.30204714,7 L8.30204714,7 Z M12.632201,9.27289946 C12.632201,10.52754 13.6632276,11.5457989 14.9334587,11.5457989 C17.2355058,11.5457989 15.7015972,15.9393136 12.632201,15.9393136 L12.632201,17 C18.1094311,17.0007576 20.2559559,7 14.9334587,7 C13.6632276,7 12.632201,8.01750133 12.632201,9.27289946 Z" id="quote" transform="translate(12.000094, 12.000000) scale(-1, -1) translate(-12.000094, -12.000000) "></path>
+        </g>
+    </g>
+</svg>

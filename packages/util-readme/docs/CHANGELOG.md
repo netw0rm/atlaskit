@@ -1,6 +1,17 @@
 # @atlaskit/util-readme
 
-## Unreleased
+## 3.6.4 (2017-10-17)
+
+* bug fix; fix console errors ([aa2f97f](https://bitbucket.org/atlassian/atlaskit/commits/aa2f97f))
+## 3.6.3 (2017-10-13)
+
+
+* bug fix; other fix for other issue ([014f79c](https://bitbucket.org/atlassian/atlaskit/commits/014f79c))
+
+
+
+
+
 
 ## 3.6.2 (2017-07-27)
 

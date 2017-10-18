@@ -2,16 +2,14 @@ import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {
-  DefaultMediaStateManager,
-} from '@atlaskit/media-core';
-import * as mediaTestHelpers from '@atlaskit/media-test-helpers';
+import { DefaultMediaStateManager } from '@atlaskit/media-core';
+
 import {
   mediaPluginFactory,
   MediaPluginState,
   ProviderFactory,
 } from '../../../../src';
-import { undo, history } from '../../../../src/prosemirror';
+import { undo, history, EditorView } from '../../../../src/prosemirror';
 import {
   chaiPlugin,
   doc,
@@ -23,6 +21,7 @@ import {
   p,
   a,
   hr,
+  code_block,
   storyMediaProviderFactory,
   randomId,
   sleep,
@@ -41,7 +40,7 @@ const testLinkId = `mock-link-id${randomId()}`;
 const linkCreateContextMock = getLinkCreateContextMock(testLinkId);
 
 const getFreshMediaProvider = () => {
-  return storyMediaProviderFactory(mediaTestHelpers, testCollectionName, stateManager);
+  return storyMediaProviderFactory({ collectionName: testCollectionName, stateManager, includeUserAuthProvider: true });
 };
 
 describe('Media plugin', () => {
@@ -409,7 +408,7 @@ describe('Media plugin', () => {
           mediaGroup(media({ id: 'bar', type: 'file', collection: testCollectionName })
           )
         ));
-        editorView.destroy(); pluginState.destroy();
+      editorView.destroy(); pluginState.destroy();
     });
   });
 
@@ -723,6 +722,80 @@ describe('Media plugin', () => {
           editorView.destroy(); pluginState.destroy();
         });
       });
+    });
+  });
+
+  describe('Drop Placeholder', () => {
+    // Copied from MediaPicker DropZone test spec
+    const createDragOverOrLeaveEvent = (eventName: 'dragover' | 'dragleave', type?: string) => {
+      const event = document.createEvent('Event') as any;
+      event.initEvent(eventName, true, true);
+      event.preventDefault = () => {};
+      if (eventName === 'dragover') {
+        event.dataTransfer = {
+          types: [type || 'Files'],
+          effectAllowed: 'move'
+        };
+      }
+      return event;
+    };
+
+    const getWidgetDom = (editorView: EditorView): Node | null =>
+      (editorView.docView as any).dom.querySelector('.ProseMirror-widget');
+
+    let dropzoneContainer;
+    let mediaProvider;
+
+    beforeEach(() => {
+      dropzoneContainer = document.createElement('div');
+      mediaProvider = storyMediaProviderFactory({ stateManager, dropzoneContainer });
+      providerFactory.setProvider('mediaProvider', mediaProvider);
+    });
+
+    afterEach(() => {
+      dropzoneContainer = undefined;
+    });
+
+    it('should show the placeholder at the current position inside paragraph', async () => {
+      const { editorView } = editor(doc(p('hello{<>} world')));
+
+      const provider = await mediaProvider;
+      await provider.uploadContext;
+      // MediaPicker DropZone bind events inside a `whenDomReady`, so we have to wait for the next tick
+      await sleep(0);
+      expect(getWidgetDom(editorView)).to.equal(null);
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragover'));
+      const dragZoneDom = getWidgetDom(editorView);
+      expect(dragZoneDom).to.not.equal(null);
+      expect(dragZoneDom!.previousSibling!.textContent).to.equal('hello');
+      expect(dragZoneDom!.nextSibling!.textContent).to.equal(' world');
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragleave'));
+      // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
+      await sleep(50);
+      expect(getWidgetDom(editorView)).to.equal(null);
+    });
+
+    it('should show the placeholder for code block', async () => {
+      const { editorView } = editor(doc(code_block()('const foo = undefined;{<>}')));
+
+      const provider = await mediaProvider;
+      await provider.uploadContext;
+      // MediaPicker DropZone bind events inside a `whenDomReady`, so we have to wait for the next tick
+      await sleep(0);
+      expect(getWidgetDom(editorView)).to.equal(null);
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragover'));
+      const dragZoneDom = getWidgetDom(editorView);
+      expect(dragZoneDom).to.not.equal(null);
+      expect(dragZoneDom!.previousSibling!.textContent).to.equal('const foo = undefined;');
+      expect(dragZoneDom!.nextSibling!.textContent).to.equal('');
+
+      dropzoneContainer.dispatchEvent(createDragOverOrLeaveEvent('dragleave'));
+      // MediaPicker DropZone has a 50ms timeout on dragleave event, so we have to wait for at least 50ms
+      await sleep(50);
+      expect(getWidgetDom(editorView)).to.equal(null);
     });
   });
 });

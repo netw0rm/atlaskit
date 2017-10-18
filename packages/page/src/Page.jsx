@@ -34,7 +34,7 @@ const Navigation = styled.div`
 `;
 
 const PageContent = styled.div`
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   position: relative;
   z-index: 1;
 `;

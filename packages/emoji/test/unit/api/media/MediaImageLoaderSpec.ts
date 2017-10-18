@@ -46,6 +46,24 @@ describe('MediaImageLoader', () => {
       });
     });
 
+    it('load same url only once', () => {
+      const mediaImageLoader = createMediaImageLoader();
+      const blob = new Blob();
+      fetchMock.mock({
+        matcher: `begin:${mediaEmojiImagePath}`,
+        response: blobResponse(blob),
+        name: 'media-emoji'
+      });
+
+      return Promise.all([
+        mediaImageLoader.loadMediaImage(mediaEmojiImagePath),
+        mediaImageLoader.loadMediaImage(mediaEmojiImagePath)
+      ]).then(values => {
+        expect(fetchMock.calls('media-emoji').length, 'multiple calls for the same url').to.equal(1);
+      });
+
+    });
+
     it('image loaded when another item loading', () => {
       const mediaImageLoader = createMediaImageLoader();
       const mediaImage2 = `${mediaBaseUrl}/image2.png`;

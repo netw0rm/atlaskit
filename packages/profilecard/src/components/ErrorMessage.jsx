@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
+import IconError from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
 
-import styles from '../styles/profilecard.less';
+import {
+  ErrorWrapper,
+  ErrorTitle,
+  ErrorText,
+} from '../styled/Error';
 
 export default class ErrorMessage extends PureComponent {
   static propTypes = {
@@ -20,22 +24,29 @@ export default class ErrorMessage extends PureComponent {
   };
 
   renderNotFound = () => (
-    <p>The user is no longer available for the site</p>
+    <ErrorTitle>The user is no longer available for the site</ErrorTitle>
   )
 
   renderDefault = () => (
-    <div>
-      <p>
-        Oops, looks like we’re having issues
-        <br />
-        {this.props.reload ? <span>Try again and we’ll give it another shot</span> : null}
-      </p>
-      {this.props.reload ? <AkButton
+    <ErrorTitle>
+      Oops, looks like we’re having issues
+      <br />
+      {
+        this.props.reload
+        ? <ErrorText>Try again and we’ll give it another shot</ErrorText>
+        : null
+      }
+    </ErrorTitle>
+  );
+
+  renderRetryButton = () => (
+    this.props.reload
+      ? <AkButton
         appearance="link"
         compact
         onClick={this.props.reload}
-      >Try again</AkButton> : null}
-    </div>
+      >Try again</AkButton>
+      : null
   );
 
   renderErrorContent() {
@@ -52,10 +63,11 @@ export default class ErrorMessage extends PureComponent {
 
   render() {
     return (
-      <div className={styles.errorMessage}>
-        <CrossCircleIcon label="icon error" size="large" />
+      <ErrorWrapper>
+        <IconError label="icon error" size="xlarge" />
         {this.renderErrorContent()}
-      </div>
+        {this.renderRetryButton()}
+      </ErrorWrapper>
     );
   }
 }

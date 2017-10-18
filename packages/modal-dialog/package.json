@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "3.0.2",
+  "version": "3.1.1",
   "config": {
     "access": "public"
   },
@@ -56,7 +56,7 @@
     "@atlaskit/layer": "^2.5.2",
     "@atlaskit/modal-dialog": "*",
     "@atlaskit/navigation": "^18.0.0",
-    "@atlaskit/page": "^4.4.2",
+    "@atlaskit/page": "^5.0.0",
     "react-lorem-component": "0.12.2"
   },
   "repository": {

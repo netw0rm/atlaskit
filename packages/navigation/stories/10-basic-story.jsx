@@ -41,7 +41,7 @@ const manyNavigationItems = () => {
 storiesOf(name, module)
   .add('with a few container items', () => (
     <HtmlPage>
-      <BasicNavigation hasScrollHintTop hasScrollHintBottom>
+      <BasicNavigation hasScrollHintTop>
         <AkNavigationItem
           text="Test page"
           href="#1"
@@ -74,7 +74,7 @@ storiesOf(name, module)
   ))
   .add('with many container items', () => (
     <HtmlPage>
-      <BasicNavigation hasScrollHintTop hasScrollHintBottom>
+      <BasicNavigation hasScrollHintTop>
         <AkNavigationItem
           icon={<NucleusIcon />}
           isSelected
@@ -171,8 +171,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         containerTheme={presetThemes.global}
-        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo /></AkContainerLogo>)}
-        hasScrollHintBottom
+        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo size="small" /></AkContainerLogo>)}
         hasScrollHintTop
       >
         <AkNavigationItemGroup>

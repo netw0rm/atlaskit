@@ -296,7 +296,6 @@ storiesOf(name, module)
         const { avatarCount, avatarCountMax, gridWidth, mode, sizeIndex } = this.state;
         const sizes = Object.keys(AVATAR_SIZES);
         const avatarSize = sizes[sizeIndex];
-
         const stackSourceURLs = [];
         for (let i = 0; i < avatarCount; i++) stackSourceURLs.push(i);
 
@@ -348,6 +347,7 @@ storiesOf(name, module)
                   key: i,
                   name: `Grid Avatar ${i + 1}`,
                   src: avatarSource,
+                  size: avatarSize,
                 }))}
                 maxCount={avatarCountMax}
                 size={avatarSize}
@@ -364,8 +364,8 @@ storiesOf(name, module)
                 key: i,
                 name: `Stack Avatar ${i + 1}`,
                 src: avatarSource,
+                size: avatarSize,
               }))}
-              size={avatarSize}
             />
 
             <HR />
@@ -380,8 +380,8 @@ storiesOf(name, module)
                   key: i,
                   name: `Stack Avatar ${i + 1}`,
                   src: avatarSource,
+                  size: avatarSize,
                 }))}
-                size={avatarSize}
               />
               {mode === 'grid' ? (
                 <button onClick={() => this.setState({ mode: 'stack' })}>

@@ -2,6 +2,7 @@ import {
   MediaProvider,
   Schema,
 } from '@atlaskit/editor-core';
+import { ClientBasedAuth } from '@atlaskit/media-core';
 
 export interface ContextInfo {
   clientId: string;
@@ -45,9 +46,10 @@ export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>
       const viewContext: any = await resolvedMediaProvider.viewContext;
 
       if (viewContext) {
-        const collection = '';
-        const { clientId, serviceHost, tokenProvider } = viewContext.config || viewContext;
-        const token = await tokenProvider();
+        const { serviceHost, authProvider } = viewContext.config || viewContext;
+        const collection = resolvedMediaProvider.uploadParams && resolvedMediaProvider.uploadParams.collection || '';
+        const auth = (await authProvider({ collectionName: collection })) as ClientBasedAuth;
+        const { token, clientId } = auth;
 
         mediaContextInfo.viewContext = { clientId, serviceHost, token, collection };
       }
@@ -57,9 +59,10 @@ export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (uploadContext) {
-        const { clientId, serviceHost } = uploadContext;
+        const { serviceHost, authProvider } = uploadContext;
         const { collection } = resolvedMediaProvider.uploadParams;
-        const token = await uploadContext.tokenProvider(collection);
+        const auth: ClientBasedAuth = (await authProvider({ collectionName: collection })) as ClientBasedAuth;
+        const { token, clientId } = auth;
 
         mediaContextInfo.uploadContext = { clientId, serviceHost, token, collection };
       }

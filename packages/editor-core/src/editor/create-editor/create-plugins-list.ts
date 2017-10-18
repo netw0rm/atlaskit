@@ -2,7 +2,6 @@ import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
   placeholderPlugin,
-  analyticsPastePlugin,
   blockTypePlugin,
   textFormattingPlugin,
   mentionsPlugin,
@@ -25,14 +24,14 @@ import {
   unsupportedContentPlugin,
   inlineCommentMarkerPlugin,
   panelPlugin,
-  inlineMacroPlugin
+  macroPlugin
 } from '../plugins';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
  */
 export function getDefaultPluginsList(): EditorPlugin[] {
-  return [analyticsPastePlugin, pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
+  return [pastePlugin, basePlugin, blockTypePlugin, placeholderPlugin];
 }
 
 /**
@@ -118,7 +117,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if(props.allowInlineMacro) {
-    plugins.push(inlineMacroPlugin);
+    plugins.push(macroPlugin);
   }
 
   // UI only plugins

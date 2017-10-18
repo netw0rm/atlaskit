@@ -84,7 +84,7 @@ const defaultProps = {
   grantAccessToUsers: () => delay(1000),
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialWithNote: () => delay(1000),
+  requestTrialWithNote: async () => delay(1000),
   cancelRequestTrial: async () => {},
   checkProductRequestFlag: async () => {},
   setProductRequestFlag: async () => {},
@@ -94,6 +94,7 @@ const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
   sourceComponent: 'storybook-example-compontent',
   sourceContext: 'storybook-example-context',
+  targetProduct: 'storybook-example-product',
 };
 
 storiesOf('RequestOrStartTrial (Confluence)')

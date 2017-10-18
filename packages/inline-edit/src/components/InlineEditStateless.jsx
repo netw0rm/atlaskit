@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
-import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
-import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import ConfirmIcon from '@atlaskit/icon/glyph/check';
+import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
 import RootWrapper from '../styled/RootWrapper';

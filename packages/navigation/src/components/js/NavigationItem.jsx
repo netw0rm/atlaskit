@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { withTheme } from 'styled-components';
 // NavigationItem is an extension of DropdownItem because of the 'collapsed overflow' behaviour,
 // which places NavigationItems into a dropdown menu when there are too many to fit. Ideally we
 // would have the 'collapsed overflow' feature wrap the children in a HOC provided by dropdown,
@@ -12,6 +13,7 @@ import NavigationItemCaption from '../styled/NavigationItemCaption';
 import NavigationItemIcon from '../styled/NavigationItemIcon';
 import NavigationItemTextAfter from '../styled/NavigationItemTextAfter';
 import NavigationItemAfterWrapper from '../styled/NavigationItemAfterWrapper';
+import { isInOverflowDropdown } from '../../theme/util';
 import type { ReactElement, ReactClass, DragProvided } from '../../types';
 
 type Props = {|
@@ -66,7 +68,7 @@ type Props = {|
   autoFocus?: boolean
 |}
 
-export default class NavigationItem extends PureComponent {
+class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     isDropdownTrigger: false,
@@ -126,6 +128,10 @@ export default class NavigationItem extends PureComponent {
       linkComponent: this.props.linkComponent,
     };
 
+    // Theme prop is provided via withTheme(...) and is not public API
+    // eslint-disable-next-line react/prop-types
+    const role = isInOverflowDropdown(this.props.theme) ? 'menuitem' : null;
+
     return (
       <Item
         elemBefore={icon}
@@ -138,6 +144,7 @@ export default class NavigationItem extends PureComponent {
         dnd={this.props.dnd}
         autoFocus={this.props.autoFocus}
         target={this.props.target}
+        role={role}
         {...interactiveWrapperProps}
       >
         {this.props.text}
@@ -146,3 +153,5 @@ export default class NavigationItem extends PureComponent {
     );
   }
 }
+
+export default withTheme(NavigationItem);

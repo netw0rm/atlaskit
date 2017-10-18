@@ -2,12 +2,14 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
-import styles from '../../src/styles/profilecard.less';
-
-import AkProfilecardResourced, { AkProfilecard, AkProfileClient } from '../../src';
-import LoadingMessage from '../../src/components/LoadingMessage';
+import { Presence } from '@atlaskit/avatar';
+import AkProfilecardResourced, {
+  AkProfilecard,
+  AkProfileClient,
+} from '../../src';
 import ErrorMessage from '../../src/components/ErrorMessage';
 import presences from '../../src/internal/presences';
+import { FullNameLabel, ActionButtonGroup } from '../../src/styled/Card';
 
 describe('Profilecard', () => {
   it('should export default AkProfilecardResourced', () => {
@@ -28,9 +30,8 @@ describe('Profilecard', () => {
     describe('fullName property', () => {
       const fullName = 'This is an avatar!';
       const card = shallow(<AkProfilecard fullName={fullName} />);
-
       it('should show the full name on the card if property is set', () => {
-        const el = card.find(`.${styles.detailsFullname}`);
+        const el = card.find(FullNameLabel).dive();
         expect(el.text()).toBe(fullName);
       });
 
@@ -47,7 +48,7 @@ describe('Profilecard', () => {
         presenceWithoutNone.forEach((presence) => {
           it(`should render label with content ${presence}`, () => {
             const card = mount(<AkProfilecard fullName="name" presence={presence} />);
-            const el = card.find(`.${styles.presence}`);
+            const el = card.find('IconLabel').first();
             expect(el.length).toBeGreaterThan(0);
             expect(el.text()).toBe(presences[presence]);
           });
@@ -56,8 +57,8 @@ describe('Profilecard', () => {
 
       it('should not render a presence label if property is not set', () => {
         const card = mount(<AkProfilecard fullName="name" />);
-        const el = card.find(`.${styles.presence}`);
-        expect(el.isEmpty()).toBe(true);
+        const el = card.find(Presence);
+        expect(el.exists()).toBe(false);
       });
     });
 
@@ -66,7 +67,7 @@ describe('Profilecard', () => {
         const card = mount(
           <AkProfilecard isLoading />
         );
-        expect(card.find(LoadingMessage).length).toBe(1);
+        expect(card.find('SpinnerContainer').length).toBe(1);
       });
     });
 
@@ -92,20 +93,23 @@ describe('Profilecard', () => {
     describe('actions property', () => {
       const actions = [
         {
+          id: 'one',
           label: 'one',
         },
         {
+          id: 'two',
           label: 'two',
         },
         {
+          id: 'three',
           label: 'three',
         },
       ];
-      const card = shallow(<AkProfilecard fullName="name" actions={actions} />);
+      const card = mount(<AkProfilecard fullName="name" actions={actions} />);
 
       it('should render an action button for every item in actions property', () => {
-        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
-        const buttonTexts = card.find('AkButton').children().map(node => node.text());
+        const actionsWrapper = card.find(ActionButtonGroup);
+        const buttonTexts = card.find(AkButton).children().map(node => node.text());
 
         expect(actionsWrapper.children()).toHaveLength(actions.length);
         expect(buttonTexts).toEqual(actions.map(action => action.label));
@@ -117,14 +121,14 @@ describe('Profilecard', () => {
           label: 'test',
           callback: spy,
         }] });
-        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
-        actionsWrapper.find('AkButton').first().simulate('click');
+        const actionsWrapper = card.find(ActionButtonGroup);
+        actionsWrapper.find(AkButton).first().simulate('click');
         expect(spy.mock.calls.length).toBe(1);
       });
 
       it('should not render any action buttons if actions property is not set', () => {
         card.setProps({ actions: undefined });
-        const actionsWrapper = card.find(`.${styles.actionsWrapper}`);
+        const actionsWrapper = card.find(ActionButtonGroup);
         expect(actionsWrapper.children().length).toBe(0);
       });
     });

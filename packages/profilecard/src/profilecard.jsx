@@ -1,17 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
+import { colors } from '@atlaskit/theme';
+import AkSpinner from '@atlaskit/spinner';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
-import styles from './styles/profilecard.less';
-
-import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 import HeightTransitionWrapper from './components/HeightTransitionWrapper';
-
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
+
+import {
+  CardContainer,
+  SpinnerContainer,
+  ProfileImage,
+  CardContent,
+  DetailsGroup,
+  FullNameLabel,
+  JobTitleLabel,
+  ActionsFlexSpacer,
+  ActionButtonGroup,
+} from './styled/Card';
 
 export default class Profilecard extends PureComponent {
   static propTypes = {
@@ -19,6 +28,7 @@ export default class Profilecard extends PureComponent {
     fullName: PropTypes.string,
     meta: PropTypes.string,
     nickname: PropTypes.string,
+    email: PropTypes.string,
     location: PropTypes.string,
     timestring: PropTypes.string,
     presence: PropTypes.oneOf(Object.keys(presences)),
@@ -71,7 +81,7 @@ export default class Profilecard extends PureComponent {
     }
 
     return (
-      <div className={styles.actionsWrapper}>
+      <ActionButtonGroup>
         {(this.props.actions).map((action, idx) => (
           <AkButton
             appearance={idx === 0 ? 'default' : 'subtle'}
@@ -86,7 +96,7 @@ export default class Profilecard extends PureComponent {
             }}
           >{action.label}</AkButton>
         ))}
-      </div>
+      </ActionButtonGroup>
     );
   }
 
@@ -98,35 +108,37 @@ export default class Profilecard extends PureComponent {
   }
 
   renderProfilecard() {
-    const cardClasses = classNames([
-      styles.profilecard,
-      { [styles.noDetailsMeta]: !this.props.meta },
-    ]);
-
     this.props.analytics('profile-card.loaded', {
       duration: this._durationSince(this._timeOpen),
     });
 
     return (
-      <div className={cardClasses}>
-        <div className={styles.avatarWrapper}>
-          <AkAvatar size="xlarge" src={this.props.avatarUrl} />
-        </div>
-        <div className={styles.detailsWrapper}>
-          <div className={styles.detailsGroup}>
-            <span className={styles.detailsFullname}>{this.props.fullName}</span>
-            { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
-            <IconLabel className={styles.presence} icon={this.props.presence}>
+      <CardContainer>
+        <ProfileImage>
+          <AkAvatar
+            size="xlarge"
+            src={this.props.avatarUrl}
+            borderColor={colors.N0}
+          />
+        </ProfileImage>
+        <CardContent>
+          <DetailsGroup>
+            <FullNameLabel noMeta={!this.props.meta}>{this.props.fullName}</FullNameLabel>
+            {this.props.meta && (
+              <JobTitleLabel>{this.props.meta}</JobTitleLabel>
+            )}
+            <IconLabel icon={this.props.presence}>
               {presences[this.props.presence]}
             </IconLabel>
+            <IconLabel icon="email">{this.props.email}</IconLabel>
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>
-          </div>
-          <div className={styles.actionsFlexSpacer} />
+          </DetailsGroup>
+          <ActionsFlexSpacer />
           {this.renderActionsButtons()}
-        </div>
-      </div>
+        </CardContent>
+      </CardContainer>
     );
   }
 
@@ -138,7 +150,7 @@ export default class Profilecard extends PureComponent {
 
       cardContent = this.renderErrorMessage();
     } else if (this.props.isLoading) {
-      cardContent = <LoadingMessage />;
+      cardContent = <SpinnerContainer><AkSpinner /></SpinnerContainer>;
     } else if (this.props.fullName) {
       cardContent = this.renderProfilecard();
     }

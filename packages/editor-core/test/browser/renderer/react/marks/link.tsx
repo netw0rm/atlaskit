@@ -35,4 +35,16 @@ describe('Renderer - React/Marks/Link', () => {
     expect(mark.find('a').props()).to.have.property('target', '_top');
     mark.unmount();
   });
+
+  it('should set safety rel on links with target _blank', () => {
+    const mark = createLink();
+    expect(mark.find('a').props()).to.have.property('rel', 'noreferrer noopener');
+    mark.unmount();
+  });
+
+  it('should not set safety rel on links with target _blank', () => {
+    const mark = mount(<Link href="https://www.atlassian.com" target="_top">This is a link</Link>);
+    expect(mark.find('a').props()).to.not.have.property('rel');
+    mark.unmount();
+  });
 });

@@ -1,5 +1,83 @@
 # @atlaskit/editor-core
 
+## 50.5.2 (2017-10-17)
+
+* bug fix; toolbarInsertBlockWrapper crashes without media provider (issues closed: ed-3010) ([87b1f88](https://bitbucket.org/atlassian/atlaskit/commits/87b1f88))
+## 50.5.1 (2017-10-16)
+
+* bug fix; editor's filmstrip shows vertical bars when it shouldn't (issues closed: ed-2921) ([bec07ee](https://bitbucket.org/atlassian/atlaskit/commits/bec07ee))
+## 50.5.0 (2017-10-16)
+
+* feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))
+## 50.4.0 (2017-10-15)
+
+* bug fix; refactored ToolbarInsertBlock ([7629918](https://bitbucket.org/atlassian/atlaskit/commits/7629918))
+* bug fix; updated macro plugin to dispatch macroProvider = null if it failed to resolve the pr ([43bea30](https://bitbucket.org/atlassian/atlaskit/commits/43bea30))
+* bug fix; refactored macro plugin ([fa0ee6c](https://bitbucket.org/atlassian/atlaskit/commits/fa0ee6c))
+* bug fix; merged master ([78ae215](https://bitbucket.org/atlassian/atlaskit/commits/78ae215))
+
+* bug fix; fixed failing media test ([d37addd](https://bitbucket.org/atlassian/atlaskit/commits/d37addd))
+* feature; added Macro to insert menu (issues closed: ed-2827) ([f166000](https://bitbucket.org/atlassian/atlaskit/commits/f166000))
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
+## 50.3.0 (2017-10-12)
+
+
+* feature; add media drop placeholder (issues closed: ed-2377) ([dd1702f](https://bitbucket.org/atlassian/atlaskit/commits/dd1702f))
+## 50.2.2 (2017-10-12)
+
+* bug fix; fix tests in picker-facade-spec.ts ([40887b6](https://bitbucket.org/atlassian/atlaskit/commits/40887b6))
+* bug fix; skip backwards compatibility test ([3a637c2](https://bitbucket.org/atlassian/atlaskit/commits/3a637c2))
+* bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))
+## 50.2.1 (2017-10-12)
+
+* bug fix; measure renderer stat with HiRes API (issues closed: ed-2954) ([3717b4e](https://bitbucket.org/atlassian/atlaskit/commits/3717b4e))
+## 50.2.0 (2017-10-10)
+
+* feature; add support for alt-paste, fix clipboard analytics. (issues closed: ed-2882) ([9b2de80](https://bitbucket.org/atlassian/atlaskit/commits/9b2de80))
+## 50.1.0 (2017-10-10)
+
+* feature; added CollapsedEditor component (issues closed: ed-2944) ([8172b3e](https://bitbucket.org/atlassian/atlaskit/commits/8172b3e))
+## 50.0.0 (2017-10-10)
+
+
+* bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))
+* feature; always reset media plugin when set media provider ([5ef4d81](https://bitbucket.org/atlassian/atlaskit/commits/5ef4d81))
+* breaking; storyMediaProviderFactory API in test-helper accepts a config instead of multiple params ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; refactor storyMediaProviderFactory to accept a config instead of multiple param ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; updated media provider api for new authentication on media picker. updated media provider api in ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+* breaking; updated the API of media provider for new authentication on media picker. ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+## 49.0.0 (2017-10-10)
+
+* bug fix; fixed logic on media context setting in storybook. ([b280156](https://bitbucket.org/atlassian/atlaskit/commits/b280156))
+* feature; always reset media plugin when set media provider ([5ef4d81](https://bitbucket.org/atlassian/atlaskit/commits/5ef4d81))
+* breaking; storyMediaProviderFactory API in test-helper accepts a config instead of multiple params ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; refactor storyMediaProviderFactory to accept a config instead of multiple param ([b72892d](https://bitbucket.org/atlassian/atlaskit/commits/b72892d))
+* breaking; updated media provider api for new authentication on media picker. updated media provider api in ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+* breaking; updated the API of media provider for new authentication on media picker. ([b44eb3c](https://bitbucket.org/atlassian/atlaskit/commits/b44eb3c))
+## 47.17.0 (2017-10-09)
+
+* bug fix; enable lists in comment editor story ([cd8a647](https://bitbucket.org/atlassian/atlaskit/commits/cd8a647))
+* bug fix; remove erraneous showHelp state from Comment editor ([ff602b4](https://bitbucket.org/atlassian/atlaskit/commits/ff602b4))
+* bug fix; adding transformer for hipchat editor to remove empty task items and decision items ([562cf5e](https://bitbucket.org/atlassian/atlaskit/commits/562cf5e))
+* bug fix; file names should not get linkified. (issues closed: #ed-2887) ([adc5419](https://bitbucket.org/atlassian/atlaskit/commits/adc5419))
+* bug fix; use button group in comment appearance; show cancel button in story ([1a61d32](https://bitbucket.org/atlassian/atlaskit/commits/1a61d32))
+* bug fix; use ButtonGroup from @atlaskit/button package instead of depreciated source (issues closed: ed-2918) ([5184fdb](https://bitbucket.org/atlassian/atlaskit/commits/5184fdb))
+* bug fix; rename AkButton import and use Atlaskit grid size for styled-components ([5679d5b](https://bitbucket.org/atlassian/atlaskit/commits/5679d5b))
+* bug fix; do not show ToolbarHelp in new architecture ([bf8ea6d](https://bitbucket.org/atlassian/atlaskit/commits/bf8ea6d))
+* bug fix; pass correct type when we want to suppress media in comment appearance ([52d5010](https://bitbucket.org/atlassian/atlaskit/commits/52d5010))
+* feature; introduce the comment editor appearance 🎉 (issues closed: ed-2877) ([1e7d4df](https://bitbucket.org/atlassian/atlaskit/commits/1e7d4df))
+## 47.16.0 (2017-10-09)
+
+* feature; added Macro provider mock and Macro ui component (issues closed: ed-2878,ed-2917) ([ea3aaad](https://bitbucket.org/atlassian/atlaskit/commits/ea3aaad))
+## 47.15.1 (2017-10-09)
+
+* bug fix; renderer should add appropriate "rel" attribute to prevent vulnerabilities in extern (issues closed: ed-2900) ([03907dd](https://bitbucket.org/atlassian/atlaskit/commits/03907dd))
+
+## 47.15.0 (2017-10-06)
+
+* feature; fixing renderer performance ([7e6c3cb](https://bitbucket.org/atlassian/atlaskit/commits/7e6c3cb))
 ## 47.14.1 (2017-10-06)
 
 * bug fix; incorrect behaviour around mentions (issues closed: ed-1831) ([0df6c9d](https://bitbucket.org/atlassian/atlaskit/commits/0df6c9d))

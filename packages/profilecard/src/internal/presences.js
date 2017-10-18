@@ -1,8 +1,8 @@
 const presences = {
   none: '',
   available: 'Available',
-  busy: 'Unavailable',
-  unavailable: 'Offline',
+  busy: 'Busy',
+  unavailable: 'Away',
 };
 
 export default presences;

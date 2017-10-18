@@ -1,5 +1,6 @@
 import {
   MarkSpec,
+  Node as PMNode,
   NodeSpec,
   Schema,
 } from '../prosemirror';
@@ -28,24 +29,52 @@ export interface RenderOutputStat {
   serializeTime?: number;
 }
 
+export interface ResultWithTime<T> {
+  output: T;
+  time: number;
+}
+
+const SUPPORTS_HIRES_TIMER_API = performance && performance.now;
+
+const withStopwatch = <T>(cb: () => T): ResultWithTime<T> => {
+  const startTime = SUPPORTS_HIRES_TIMER_API ? performance.now() : Date.now();
+  const output = cb();
+  const endTime = SUPPORTS_HIRES_TIMER_API ? performance.now() : Date.now();
+  const time = endTime - startTime;
+
+  return { output, time };
+};
+
 export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: Schema<NodeSpec, MarkSpec> = defaultSchema): RenderOutput<T | null> => {
   const stat: RenderOutputStat = { sanitizeTime: 0 };
 
-  let startTime = Date.now();
-  const validDoc = getValidDocument(doc, schema);
-  stat.sanitizeTime = Date.now() - startTime;
+  const {
+    output: validDoc,
+    time: sanitizeTime,
+  } = withStopwatch(() => getValidDocument(doc, schema));
+
+  // save sanitize time to stats
+  stat.sanitizeTime = sanitizeTime;
 
   if (!validDoc) {
     return { stat, result: null };
   }
 
-  startTime = Date.now();
-  const node = schema.nodeFromJSON(validDoc);
-  stat.buildTreeTime = Date.now() - startTime;
+  const {
+    output: node,
+    time: buildTreeTime,
+  } = withStopwatch<PMNode>(() => schema.nodeFromJSON(validDoc));
 
-  startTime = Date.now();
-  const result = serializer.serializeFragment(node.content);
-  stat.serializeTime = Date.now() - startTime;
+  // save build tree time to stats
+  stat.buildTreeTime = buildTreeTime;
+
+  const {
+    output: result,
+    time: serializeTime,
+  } = withStopwatch<T | null>(() => serializer.serializeFragment(node.content));
+
+  // save serialize tree time to stats
+  stat.serializeTime = serializeTime;
 
   return { result, stat };
 };

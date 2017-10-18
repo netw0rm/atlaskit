@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 3.1.1 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
+## 3.1.0 (2017-10-11)
+
+
+
+* feature; add chromeless option to modal to support Connect JSAPI ([5ca6a65](https://bitbucket.org/atlassian/atlaskit/commits/5ca6a65))
 ## 3.0.2 (2017-10-05)
 
 * bug fix; resolve error in modal dialog (issues closed: ak-3623) ([2052679](https://bitbucket.org/atlassian/atlaskit/commits/2052679))

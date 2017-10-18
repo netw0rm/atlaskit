@@ -33,6 +33,7 @@ export type PickerType = keyof MediaPickerComponents;
 export default class PickerFacade {
   private picker: MediaPickerComponent;
   private onStartListeners: Array<(state: MediaState) => void> = [];
+  private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
 
@@ -42,7 +43,7 @@ export default class PickerFacade {
     contextConfig: ContextConfig,
     private stateManager: MediaStateManager,
     errorReporter: ErrorReportingHandler,
-    mediaPickerFactory?: (pickerType: PickerType, pickerConfig: ModuleConfig, extraConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
+    mediaPickerFactory?: (pickerType: PickerType, moduleConfig: ModuleConfig, componentConfig?: ComponentConfigs[PickerType]) => MediaPickerComponents[PickerType]
   ) {
     this.errorReporter = errorReporter;
     this.uploadParams = uploadParams;
@@ -51,10 +52,25 @@ export default class PickerFacade {
       mediaPickerFactory = MediaPicker;
     }
 
+    let componentConfig;
+
+    if (pickerType === 'dropzone') {
+      componentConfig = {
+        container: this.getDropzoneContainer(),
+        headless: true,
+      };
+    } else if (pickerType === 'popup') {
+      if (contextConfig.userAuthProvider) {
+        componentConfig = { userAuthProvider: contextConfig.userAuthProvider };
+      } else {
+        pickerType = 'browser';
+      }
+    }
+
     const picker = this.picker = mediaPickerFactory!(
       pickerType,
       this.buildPickerConfigFromContext(contextConfig),
-      pickerType === 'dropzone' ? { container: this.getDropzoneContainer() } : undefined
+      componentConfig
     );
 
     picker.on('upload-start', this.handleUploadStart);
@@ -64,6 +80,11 @@ export default class PickerFacade {
     picker.on('upload-finalize-ready', this.handleUploadFinalizeReady);
     picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
+
+    if (picker instanceof Dropzone) {
+      picker.on('drag-enter', this.handleDragEnter);
+      picker.on('drag-leave', this.handleDragLeave);
+    }
 
     if (picker instanceof Dropzone || picker instanceof Clipboard) {
       picker.activate();
@@ -84,6 +105,9 @@ export default class PickerFacade {
     picker.removeAllListeners('upload-finalize-ready');
     picker.removeAllListeners('upload-error');
     picker.removeAllListeners('upload-end');
+
+    this.onStartListeners = [];
+    this.onDragListeners = [];
 
     try {
       if (picker instanceof Dropzone || picker instanceof Clipboard) {
@@ -110,6 +134,8 @@ export default class PickerFacade {
       } catch (ex) {
         this.errorReporter.captureException(ex);
       }
+    } else if (this.picker instanceof Browser) {
+      this.picker.browse();
     }
   }
 
@@ -149,14 +175,15 @@ export default class PickerFacade {
     this.onStartListeners.push(cb);
   }
 
+  onDrag(cb: (state: 'enter' | 'leave') => any) {
+    this.onDragListeners.push(cb);
+  }
+
   private buildPickerConfigFromContext(context: ContextConfig): ModuleConfig {
     return {
       uploadParams: this.uploadParams,
       apiUrl: context.serviceHost,
-      apiClientId: context.clientId,
-      tokenSource: { getter: (reject, resolve) => {
-        context.tokenProvider(this.uploadParams.collection).then(resolve, reject);
-      }},
+      authProvider: context.authProvider,
     };
   }
 
@@ -270,5 +297,13 @@ export default class PickerFacade {
         thumbnail: event.preview
       });
     }
+  }
+
+  private handleDragEnter = () => {
+    this.onDragListeners.forEach(cb => cb.call(cb, 'enter'));
+  }
+
+  private handleDragLeave = () => {
+    this.onDragListeners.forEach(cb => cb.call(cb, 'leave'));
   }
 }

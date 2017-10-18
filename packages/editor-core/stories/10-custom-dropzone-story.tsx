@@ -1,20 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
-import { defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers/dist/es5/contextProvider';
-import { defaultCollectionName } from '@atlaskit/media-test-helpers/dist/es5/collectionNames';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers/dist/es5/tokenProvider';
-
 import Editor from './editor';
 import { name, version } from '../package.json';
 import { storyMediaProviderFactory, storyDecorator } from '../src/test-helper';
-
-const mediaTestHelpers = {
-  defaultClientId,
-  defaultServiceHost,
-  defaultCollectionName,
-  StoryBookTokenProvider,
-};
 
 type State = { dropzoneRef?: HTMLElement };
 
@@ -28,7 +17,7 @@ class DemoEditor extends React.PureComponent<any, State> {
   render() {
     const { dropzoneRef } = this.state;
     const editor = !dropzoneRef ? null : <Editor
-      mediaProvider={storyMediaProviderFactory(mediaTestHelpers, undefined, undefined, undefined, dropzoneRef)}
+      mediaProvider={storyMediaProviderFactory({dropzoneContainer: dropzoneRef})}
       isExpandedByDefault={true}
       devTools={true}
     />;

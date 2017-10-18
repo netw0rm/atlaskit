@@ -15,7 +15,13 @@ describe('Renderer - React/Nodes/ApplicationCard', () => {
   const actions = [
     {
       title: 'test',
-      target: 'test.target'
+      target: {
+        app: 'some.app',
+        key: 'test.target'
+      },
+      parameters: {
+        expenseId: 'some-id'
+      }
     }
   ];
 

@@ -15,12 +15,12 @@ export const isElectronMac = (map?: Object): boolean =>
   map !== undefined && hasOwnProperty(map, isElectronMacKey) && map[isElectronMacKey];
 
 export const getProvided = (map?: Object): Provided => {
-  if (map !== undefined && hasOwnProperty(map, rootKey)) {
+  if (map !== undefined && hasOwnProperty(map, rootKey) && map[rootKey]) {
     return map[rootKey].provided;
   }
   return container;
 };
-export const isCollapsed = (map: Object): bool => map[rootKey].isCollapsed;
+export const isCollapsed = (map: Object): bool => (map[rootKey] && map[rootKey].isCollapsed);
 
 export const isInOverflowDropdown = (map: Object): bool => (
   hasOwnProperty(map, isDropdownOverflowKey)

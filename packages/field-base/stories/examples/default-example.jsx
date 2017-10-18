@@ -9,6 +9,7 @@ export default (
         value="input children"
         isEditing
         id="fieldbase"
+        onChange={() => {}}
       />
     </FieldBase>
   </div>

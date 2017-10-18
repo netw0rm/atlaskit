@@ -1,25 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import EditorLocationIcon from '@atlaskit/icon/glyph/editor/location';
-import EditorRecentIcon from '@atlaskit/icon/glyph/editor/recent';
-import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
+import IconLocation from '@atlaskit/icon/glyph/location';
+import IconRecent from '@atlaskit/icon/glyph/recent';
+import IconMention from '@atlaskit/icon/glyph/mention';
+import IconEmail from '@atlaskit/icon/glyph/email';
 import { Presence } from '@atlaskit/avatar';
 
-import styles from '../styles/profilecard.less';
+import {
+  DetailsLabel,
+  DetailsLabelIcon,
+  DetailsLabelText,
+} from '../styled/Card';
 
 const icons = {
-  location: EditorLocationIcon,
-  time: EditorRecentIcon,
-  mention: EditorMentionIcon,
-  available: () => <Presence presence="online" />,
-  unavailable: () => <Presence presence="offline" />,
-  busy: () => <Presence presence="busy" />,
+  location: IconLocation,
+  time: IconRecent,
+  mention: IconMention,
+  email: IconEmail,
+  available: () => <Presence presence="online" borderColor="transparent" />,
+  unavailable: () => <Presence presence="offline" borderColor="transparent" />,
+  busy: () => <Presence presence="busy" borderColor="transparent" />,
 };
 
 export default class IconLabel extends PureComponent {
   static propTypes = {
-    className: PropTypes.string,
     icon: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.string,
@@ -33,18 +37,13 @@ export default class IconLabel extends PureComponent {
     const IconElement = icons[this.props.icon];
     const displayIcon = IconElement ? <IconElement label={`icon ${this.props.icon}`} /> : null;
 
-    const classes = classNames({
-      [styles.detailsLabel]: true,
-      [this.props.className]: this.props.className,
-    });
-
     return (
-      <div className={classes}>
-        <div className={styles.detailsLabelIcon}>
+      <DetailsLabel>
+        <DetailsLabelIcon>
           {displayIcon}
-        </div>
-        <span className={styles.label}>{this.props.children}</span>
-      </div>
+        </DetailsLabelIcon>
+        <DetailsLabelText>{this.props.children}</DetailsLabelText>
+      </DetailsLabel>
     );
   }
 }

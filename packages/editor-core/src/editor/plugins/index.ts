@@ -1,6 +1,5 @@
 export { default as basePlugin } from './base';
 export { default as placeholderPlugin } from './placeholder';
-export { default as analyticsPastePlugin } from './analytics-paste';
 export { default as blockTypePlugin } from './block-type';
 export { default as textFormattingPlugin } from './text-formatting';
 export { default as mentionsPlugin } from './mentions';
@@ -23,4 +22,4 @@ export { default as jiraIssuePlugin } from './jira-issue';
 export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as inlineCommentMarkerPlugin } from './inline-comment-marker';
 export { default as panelPlugin } from './panel';
-export { default as inlineMacroPlugin } from './inline-macro';
+export { default as macroPlugin } from './macro';

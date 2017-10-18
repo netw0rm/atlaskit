@@ -2,7 +2,7 @@ import { Search } from 'js-search';
 
 import { MentionDescription } from '../types';
 import debug from '../util/logger';
-import { AbstractMentionResource } from '../api/MentionResource';
+import { AbstractMentionResource, MentionsResult } from '../api/MentionResource';
 import mentionData from './mention-data';
 import { MockMentionConfig } from './support-types';
 
@@ -27,7 +27,7 @@ export default class MockMentionResourceWithInfoHints extends AbstractMentionRes
   filter(query: string): void {
     debug('_mock-ak-mention-resource filter', query);
     const searchTime = Date.now();
-    const notify = (mentions) => {
+    const notify = (mentions: MentionsResult) => {
       if (searchTime >= this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
@@ -35,6 +35,7 @@ export default class MockMentionResourceWithInfoHints extends AbstractMentionRes
         const date = new Date(searchTime).toISOString().substr(17, 6);
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
       }
+      this._notifyAllResultsListeners(mentions);
     };
     const notifyInfo = (info) => {
       this._notifyInfoListeners(info);
@@ -65,6 +66,7 @@ export default class MockMentionResourceWithInfoHints extends AbstractMentionRes
       }
       notify({
         mentions,
+        query
       });
     }, waitTime + 1);
   }

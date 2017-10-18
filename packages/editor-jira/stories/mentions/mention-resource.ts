@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from '@atlaskit/mention';
+import { AbstractMentionResource, MentionsResult } from '@atlaskit/mention';
 
 import { Search } from 'js-search';
 import mentionData from './mention-data';
@@ -10,8 +10,9 @@ search.addDocuments(mentionData.results);
 
 export default class MentionResource extends AbstractMentionResource {
   filter(query: string) {
-    const notify = (mentions: any) => {
-      this._notifyListeners(mentions);
+    const notify = (mentionsResult: MentionsResult) => {
+      this._notifyListeners(mentionsResult);
+      this._notifyAllResultsListeners(mentionsResult);
     };
 
     const notifyInfo = (info: string) => {
@@ -29,7 +30,7 @@ export default class MentionResource extends AbstractMentionResource {
       if (query.length >= 3) {
         notifyInfo(`Found no matches for ${query}`);
       }
-      notify({mentions: []});
+      notify({mentions: [], query});
     } else {
       const mentions = results.map((item, index) => {
         return {
@@ -40,7 +41,7 @@ export default class MentionResource extends AbstractMentionResource {
         };
       }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
 
-      notify({ mentions });
+      notify({ mentions, query });
     }
   }
 }

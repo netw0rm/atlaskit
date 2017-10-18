@@ -75,6 +75,10 @@ type Props = {
   */
   shouldCloseOnEscapePress?: boolean,
   /**
+    Boolean indicating content should be rendered on a transparent background.
+  */
+  isChromeless?: boolean,
+  /**
     Number representing where in the stack of modals, this modal sits
   */
   stackIndex?: number,
@@ -88,6 +92,7 @@ export default class Content extends Component {
   props: Props // eslint-disable-line react/sort-comp
   static defaultProps = {
     autoFocus: false,
+    isChromeless: false,
     stackIndex: 0,
   }
   static contextTypes = {
@@ -109,9 +114,11 @@ export default class Content extends Component {
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
 
-    window.addEventListener('resize', this.determineKeylines, false);
-    this.scrollContainer.addEventListener('scroll', this.determineKeylines, false);
-    this.determineKeylines();
+    if (this.scrollContainer) {
+      window.addEventListener('resize', this.determineKeylines, false);
+      this.scrollContainer.addEventListener('scroll', this.determineKeylines, false);
+      this.determineKeylines();
+    }
 
     focusStore.storeFocus();
     this.initialiseFocus();
@@ -132,8 +139,10 @@ export default class Content extends Component {
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('keyup', this.handleKeyUp, false);
 
-    window.removeEventListener('resize', this.determineKeylines, false);
-    this.scrollContainer.removeEventListener('scroll', this.determineKeylines, false);
+    if (this.scrollContainer) {
+      window.removeEventListener('resize', this.determineKeylines, false);
+      this.scrollContainer.removeEventListener('scroll', this.determineKeylines, false);
+    }
 
     if (this._hideElement) this._hideElement.removeAttribute('aria-hidden');
 
@@ -239,9 +248,20 @@ export default class Content extends Component {
   }
 
   render() {
-    const { actions, appearance, children, footer, header, heading, onClose } = this.props;
+    const {
+      actions, appearance, children, footer,
+      header, heading, onClose, isChromeless,
+    } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
 
+    if (isChromeless) {
+      return (
+        <Wrapper>
+          {children}
+          <ScrollLock />
+        </Wrapper>
+      );
+    }
     return (
       <Wrapper>
         <Header

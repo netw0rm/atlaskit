@@ -1,8 +1,2 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
-
-export default class Em extends PureComponent<{}, {}> {
-  render() {
-    return <em>{this.props.children}</em>;
-  }
-}
+export default function Em(props: React.Props<any>) { return <em>{props.children}</em>; }

@@ -19,7 +19,7 @@ storiesOf(name, module)
         <GridColumn>
           <DummyHeader />
         </GridColumn>
-        <GridColumn medium="12">
+        <GridColumn medium={12}>
           <DummyComment />
         </GridColumn>
       </Grid>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { Button, ButtonWrapper } from './styles';
-import Icon from '@atlaskit/icon/lib/Icon';
+import Icon from '@atlaskit/icon';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { akColorN0 } from '@atlaskit/util-shared-styles';
 

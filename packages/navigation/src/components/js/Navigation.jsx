@@ -1,7 +1,7 @@
 // @flow
+import '@atlaskit/polyfills/object-assign';
 import React, { PureComponent } from 'react';
 import { getTheme } from '@atlaskit/theme';
-import 'es6-object-assign/auto';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -69,9 +69,6 @@ type Props = {|
   These should be icons or other small elements. There should be no more than four.
   Secondary Actions will not be visible when nav is collapsed. */
   globalSecondaryActions?: ReactElement[],
-  /** Whether to display a scroll hint shadow at the bottom of the ContainerNavigation
-   * wrapper. */
-  hasScrollHintBottom?: boolean,
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
    * wrapper. */
   hasScrollHintTop?: boolean,
@@ -286,7 +283,6 @@ export default class Navigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
-      hasScrollHintBottom,
       hasScrollHintTop,
       isCollapsible,
       isElectronMac,
@@ -386,7 +382,6 @@ export default class Navigation extends PureComponent {
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}
                   globalSecondaryActions={globalSecondaryActions}
-                  hasScrollHintBottom={hasScrollHintBottom}
                   hasScrollHintTop={hasScrollHintTop}
                   headerComponent={containerHeaderComponent}
                   linkComponent={linkComponent}

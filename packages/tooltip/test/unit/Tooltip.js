@@ -23,7 +23,7 @@ describe('Tooltip (smart)', () => {
 
       expect((wrapper).state('isVisible')).toBe(false);
 
-      wrapper.simulate('mouseOver');
+      wrapper.simulate('mouseEnter');
       expect((wrapper).state('isVisible')).toBe(true);
     });
 
@@ -31,10 +31,10 @@ describe('Tooltip (smart)', () => {
       const wrapper = shallow(<Tooltip><div>foo</div></Tooltip>);
 
       // set up the negative case first
-      wrapper.simulate('mouseOver');
+      wrapper.simulate('mouseEnter');
       expect((wrapper).state('isVisible')).toBe(true);
 
-      wrapper.simulate('mouseOut');
+      wrapper.simulate('mouseLeave');
       expect((wrapper).state('isVisible')).toBe(false);
     });
   });

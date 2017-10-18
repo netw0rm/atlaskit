@@ -135,6 +135,7 @@ describe('<QuickSearch />', () => {
       it('Enter', () => {
         searchInput.simulate('keydown', { key: 'Enter' });
         const calls = onAnalyticsEventSpy.mock.calls;
+        // -2 because the MOST recent event should be the submit event
         expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 

@@ -1,5 +1,5 @@
 import { EditorView, TextSelection, Node } from '../../prosemirror';
-import { getEditorValueWithMedia, insertFileFromDataUrl } from '../utils';
+import { getEditorValueWithMedia, insertFileFromDataUrl, preprocessDoc } from '../utils';
 import { toJSON } from '../../utils';
 import { Transformer } from '../../transformers';
 export default class EditorActions {
@@ -62,10 +62,11 @@ export default class EditorActions {
 
   getValue(): Promise<string | Object | undefined> {
     return getEditorValueWithMedia(this.editorView && this.editorView.state).then(doc => {
-      if (this.contentTransformer && doc) {
-        return this.contentTransformer.encode(doc);
+      const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
+      if (this.contentTransformer && processedDoc) {
+        return this.contentTransformer.encode(processedDoc);
       }
-      return doc ? toJSON(doc) : doc;
+      return processedDoc ? toJSON(processedDoc) : processedDoc;
     });
   }
 

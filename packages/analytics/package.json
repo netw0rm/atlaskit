@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "2.1.0",
+  "version": "2.2.2",
   "config": {
     "access": "public"
   },
@@ -21,10 +21,13 @@
   },
   "types": "src/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "devDependencies": {
-    "@atlaskit/theme": "^2.0.0"
+    "@atlaskit/theme": "^2.0.0",
+    "react-redux": "^5.0.0",
+    "redux": "^3.7.2"
   },
   "dependencies": {
     "prop-types": "^15.5.10"

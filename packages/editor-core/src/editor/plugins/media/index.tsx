@@ -26,7 +26,8 @@ const mediaPlugin: EditorPlugin = {
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
               waitForMediaUpload: props.waitForMediaUpload
-            }
+            },
+            dispatch
           )
       },
       { rank: 1220, plugin: schema => keymapPlugin(schema) }

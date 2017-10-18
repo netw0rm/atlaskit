@@ -7,7 +7,8 @@ import {
 
 import { normalizeHexColor } from '../../utils/color';
 import { AC_XMLNS } from './encode-cxhtml';
-import { MacroType, Macro, DisplayType, BodyType } from './types';
+import { Macro } from './types';
+import { getMacroType } from '../../editor/plugins/macro/utils';
 
 /**
  * Deduce a set of marks from a style declaration.
@@ -267,19 +268,6 @@ export function getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | 
   return fragment;
 }
 
-export function getMacroType(params, properties): MacroType {
-  const displayType = properties['fab:display-type'] as DisplayType;
-  let bodyType = 'NONE' as BodyType;
-
-  if (params['rich-text-body']) {
-    bodyType = 'RICH-TEXT-BODY';
-  } else if (params['plain-text-body']) {
-    bodyType = 'PLAIN-TEXT-BODY';
-  }
-
-  return `${bodyType}-${displayType}` as MacroType;
-}
-
 export function parseMacro(node: Element): Macro {
   const macroName = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
@@ -304,7 +292,11 @@ export function parseMacro(node: Element): Macro {
     }
   }
 
-  const macroType = getMacroType(params, properties);
+  const macroType = getMacroType(
+    properties['fab:display-type'],
+    params['plain-text-body'],
+    params['rich-text-body']
+  );
 
   return { macroId, macroName, properties, params, macroType };
 }

@@ -35,7 +35,7 @@ export function normalizeHexColor(color: string | null, defaultColor?: string): 
 }
 
 /**
- * Converts hex color format to rgba.
+ * Converts hex color format to rgb.
  * Works well with full hex color format and shortcut as well.
  *
  * @param hex - hex color string (#xxx, or #xxxxxx)
@@ -53,6 +53,20 @@ export function hexToRgb(color: string): string | null {
   const rgb = Number(`0x${colorBits.join('')}`);
   // tslint:disable-next-line:no-bitwise
   return `rgb(${(rgb >> 16) & 255},${(rgb >> 8) & 255},${rgb & 255})`;
+}
+
+/**
+ * Converts hex color format to rgba.
+ * Works with full hex color format only.
+ *
+ * @param hex - hex color string (#xxxxxx)
+ */
+export function hexToRgba(color: string, alpha: number) {
+  if (!isHex(color) && color.length !== 7) {
+    return null;
+  }
+  const hex2rgb = (color: string) => color.match(/[a-z0-9]{2}/gi)!.map(hex => parseInt(hex, 16));
+  return `rgba(${hex2rgb(color).concat(alpha).join(',')})`;
 }
 
 export function rgbToHex(value: string): string | null {

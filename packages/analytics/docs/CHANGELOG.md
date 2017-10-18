@@ -1,5 +1,14 @@
 # @atlaskit/analytics
 
+## 2.2.2 (2017-10-17)
+
+* bug fix; fix console errors ([aa2f97f](https://bitbucket.org/atlassian/atlaskit/commits/aa2f97f))
+## 2.2.1 (2017-10-09)
+
+* bug fix; added missing type definition file in package analytics build. ([24df127](https://bitbucket.org/atlassian/atlaskit/commits/24df127))
+## 2.2.0 (2017-10-06)
+
+* feature; analytics library support for passing decorated data to stores (issues closed: ak-3614) ([43e3314](https://bitbucket.org/atlassian/atlaskit/commits/43e3314))
 ## 2.1.0 (2017-10-05)
 
 * feature; action/decision related analytics (issues closed: fs-1290) ([38ade4e](https://bitbucket.org/atlassian/atlaskit/commits/38ade4e))

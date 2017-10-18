@@ -109,6 +109,10 @@ type Props = {
   */
   shouldCloseOnEscapePress?: boolean,
   /**
+    Boolean indicating content should be rendered on a transparent background.
+  */
+  isChromeless?: boolean,
+  /**
     Number representing where this instance lives in the stack of modals.
   */
   stackIndex?: number,
@@ -127,6 +131,7 @@ class Modal extends Component {
     autoFocus: false,
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
+    isChromeless: false,
     stackIndex: 0,
     width: 'medium',
   }
@@ -150,7 +155,7 @@ class Modal extends Component {
     const {
       actions, appearance, autoFocus, children, footer, header, height,
       in: inProp, onClose, onCloseComplete, onOpenComplete, onStackChange,
-      shouldCloseOnEscapePress, stackIndex, heading, width,
+      shouldCloseOnEscapePress, isChromeless, stackIndex, heading, width,
     } = this.props;
 
     const { dialogNode, scrollDistance } = this.state;
@@ -186,6 +191,7 @@ class Modal extends Component {
             heightValue={height}
             innerRef={this.getDialogNode}
             onClick={this.handleDialogClick}
+            isChromeless={isChromeless}
             role="dialog"
             tabIndex="-1"
           >
@@ -201,6 +207,7 @@ class Modal extends Component {
                 onClose={onClose}
                 shouldCloseOnEscapePress={shouldCloseOnEscapePress}
                 onStackChange={onStackChange}
+                isChromeless={isChromeless}
                 stackIndex={stackIndex}
               >
                 {children}

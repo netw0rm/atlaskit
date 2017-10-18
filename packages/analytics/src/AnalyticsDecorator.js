@@ -21,7 +21,7 @@ class AnalyticsDecorator extends Component {
     with a '.', in which case a partial match on the beginning of the event
     name will be used.
     */
-    match?: string | ((name: string) => boolean),
+    match?: string | ((name: string) => boolean) | RegExp,
     /** Sets wether to extended private or public events. */
     matchPrivate?: boolean,
   };
@@ -31,21 +31,19 @@ class AnalyticsDecorator extends Component {
   };
   static contextTypes = {
     onAnalyticsEvent: PropTypes.func,
+    getParentAnalyticsData: PropTypes.func,
   };
   static childContextTypes = {
     onAnalyticsEvent: PropTypes.func,
+    getParentAnalyticsData: PropTypes.func,
   };
   getChildContext() {
     return {
       onAnalyticsEvent: this.onAnalyticsEvent,
+      getParentAnalyticsData: this.getParentAnalyticsData,
     };
   }
-  onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean) => {
-    // Check there is a listener to pass the event to, otherwise there's no need
-    // to do any of this work
-    const { onAnalyticsEvent } = this.context;
-    if (typeof onAnalyticsEvent !== 'function') return;
-
+  getDecoratedAnalyticsData = (name: string, srcData: Object, isPrivate: boolean) => {
     // Decorate the event data if this decorator matches the event name
     const { data, getData, match, matchPrivate } = this.props;
     const decoratedData = { ...srcData };
@@ -57,8 +55,25 @@ class AnalyticsDecorator extends Component {
         Object.assign(decoratedData, getData(name, decoratedData));
       }
     }
+    return decoratedData;
+  };
+  onAnalyticsEvent = (name: string, srcData: Object, isPrivate: boolean) => {
+    // Check there is a listener to pass the event to, otherwise there's no need
+    // to do any of this work
+    const { onAnalyticsEvent } = this.context;
+    if (typeof onAnalyticsEvent !== 'function') return;
+    const decoratedData = this.getDecoratedAnalyticsData(name, srcData, isPrivate);
     // Pass the decorated event data to the next listener up the hierarchy
     onAnalyticsEvent(name, decoratedData, isPrivate);
+  };
+  getParentAnalyticsData = (name: string, isPrivate: boolean) => {
+    const parentData = this.getDecoratedAnalyticsData(name, {}, isPrivate);
+    // Get any analytics data from any decorators up the hierarchy
+    const { getParentAnalyticsData } = this.context;
+    if (typeof getParentAnalyticsData === 'function') {
+      Object.assign(parentData, getParentAnalyticsData(name, isPrivate));
+    }
+    return parentData;
   };
   render() {
     const { children } = this.props; // eslint-disable-line react/prop-types

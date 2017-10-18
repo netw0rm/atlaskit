@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { Component } from 'react';
-
+import { EditorView } from '../../prosemirror';
 import {
   default as ProviderFactory,
   WithProviders
 } from '../../providerFactory';
 import MacroComponent from './MacroComponent';
+import { setMacroElement } from '../../editor/plugins/macro/actions';
 
 export interface Props {
   macroId: string;
   placeholderUrl: string;
+  view: EditorView;
   providerFactory?: ProviderFactory;
 }
 
@@ -30,7 +32,7 @@ export default class Macro extends Component<Props, any> {
   }
 
   private renderWithProvider = (providers) => {
-    const { macroId, placeholderUrl } = this.props;
+    const { macroId, placeholderUrl, view } = this.props;
     const { macroProvider } = providers;
 
     return (
@@ -38,6 +40,8 @@ export default class Macro extends Component<Props, any> {
         macroId={macroId}
         placeholderUrl={placeholderUrl}
         macroProvider={macroProvider}
+        view={view}
+        setMacroElement={setMacroElement}
       />
     );
   }

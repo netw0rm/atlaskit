@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 51.0.1 (2017-10-18)
+
+* bug fix; fix renderer dependency ([0b3d323](https://bitbucket.org/atlassian/atlaskit/commits/0b3d323))
 ## 51.0.0 (2017-10-18)
 
 

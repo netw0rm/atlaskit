@@ -12,7 +12,7 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 import {
-  Card,
+  // Card,
   CardDimensions,
   CardEvent,
   CardStatus,
@@ -20,6 +20,7 @@ import {
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
+import { Card } from '../../../media-card/src/root/card';
 
 import { Renderable } from './';
 import { CardEventClickHandler } from '../config';
@@ -176,6 +177,12 @@ export default class Media extends PureComponent<MediaProps, State> {
     result.event.preventDefault();
   }
 
+  private handlePublicFileCardViewClick(callback: Function) {
+      return (result: CardEvent) => {
+          callback(result.event);
+      };
+  }
+
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
     const { cardDimensions, item, onClick } = this.props;
@@ -257,7 +264,7 @@ export default class Media extends PureComponent<MediaProps, State> {
           collectionName: collection
         }}
         selectable={false}
-        onClick={onClick}
+        onClick={this.handlePublicFileCardViewClick(onClick)}
         resizeMode={this.resizeMode}
       />
     );

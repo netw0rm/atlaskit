@@ -33,7 +33,7 @@ export default class ExampleSingleModal extends Component {
           {modalIsOpen ? (
             <Modal
               autoFocus
-              onDialogDismissed={this.closeModal}
+              onClosed={this.closeModal}
               title="Modal Title"
               actions={[
                 { text: 'Close Modal', onClick: this.closeModal },

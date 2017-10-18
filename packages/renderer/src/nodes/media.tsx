@@ -12,7 +12,7 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 import {
-  // Card,
+  Card,
   CardDimensions,
   CardEvent,
   CardStatus,
@@ -20,7 +20,6 @@ import {
   MediaIdentifier,
   UrlPreviewIdentifier,
 } from '@atlaskit/media-card';
-import { Card } from '../../../media-card/src/root/card';
 
 import { Renderable } from './';
 import { CardEventClickHandler } from '../config';

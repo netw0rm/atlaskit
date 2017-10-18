@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
-import Tooltip from '@atlaskit/tooltip';
+import * as styles from '../../../../src/components/common/styles';
 
 import { EmojiDescription } from '../../../../src/types';
 import Emoji from '../../../../src/components/common/Emoji';
@@ -51,7 +51,8 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip)).to.have.length(0);
+      const tooltip = component.find(`.${styles.emojiTooltip} span`);
+      expect(tooltip).to.have.length(0);
     });
   });
 
@@ -64,7 +65,10 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip).prop('description')).to.equal(':grin:');
+      const tooltip = component.find(`.${styles.emojiTooltip} span`);
+      // Nested span in tooltip for ResourcedEmoji
+      expect(tooltip).to.have.length(2);
+      expect(tooltip.at(0).prop('aria-label')).to.equal(grinEmoji.shortName);
     });
   });
 
@@ -161,7 +165,9 @@ describe('<ResourcedEmoji />', () => {
 
     return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
       component.simulate('mouseenter');
-      expect(component.find(Tooltip).prop('description')).to.equal('doesnotexist');
+      const tooltip = component.find(`.${styles.emojiTooltip} span`);
+      expect(tooltip).to.have.length(1);
+      expect(tooltip.at(0).prop('aria-label')).to.equal('doesnotexist');
     });
   });
 });

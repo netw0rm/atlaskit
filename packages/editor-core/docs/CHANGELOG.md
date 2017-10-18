@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 51.1.0 (2017-10-18)
+
+
+* feature; added macro edit toolbar (issues closed: ed-1808) ([dc5d28b](https://bitbucket.org/atlassian/atlaskit/commits/dc5d28b))
 ## 51.0.1 (2017-10-18)
 
 * bug fix; fix renderer dependency ([0b3d323](https://bitbucket.org/atlassian/atlaskit/commits/0b3d323))

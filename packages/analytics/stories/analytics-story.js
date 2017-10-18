@@ -1,4 +1,4 @@
-import { action, storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

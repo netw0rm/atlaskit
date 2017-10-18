@@ -23,7 +23,6 @@ class AnalyticsDelegate extends Component {
     };
   }
   onAnalyticsEvent = (name: string, data: Object, isPrivate: boolean) => {
-    // Call this component's onEvent method if it's a match
     const { delegateAnalyticsEvent } = this.props;
 
     // send a clean data object so it can't be mutated between listeners

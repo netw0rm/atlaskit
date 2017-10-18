@@ -8,6 +8,8 @@ function cleanProps(props: Object) {
     analyticsData,
     fireAnalyticsEvent,
     firePrivateAnalyticsEvent,
+    getParentAnalyticsData,
+    testSpy,
     ...cleanedProps
   } = props;
   /* eslint-enable no-unused-vars */

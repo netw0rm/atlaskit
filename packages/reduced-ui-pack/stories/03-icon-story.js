@@ -60,7 +60,7 @@ const iconsAllyDesc = (<p>Use this story to verify icons work with screen reader
 
 storiesOf(name, module)
   .add('Icons', () => (
-    <Readme component={'reduced-ui-pack'} description={iconsDesc}>
+    <Readme component={'reduced-ui-pack'} description={iconsDesc.toString}>
       <Code code={iconSetupExample}>
         <Spritemap />
         <style>

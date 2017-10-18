@@ -1,5 +1,5 @@
 // @flow
-export type Color = string;
+export type Color = string | () => string;
 export type Background = Color;
 export type Text = Color;
 export type Line = Color;
@@ -12,7 +12,8 @@ export type ItemTheme = {|
     background: Background
   |},
   active: {|
-    background: Background
+    background: Background,
+    text?: Text,
   |},
   focus: {|
     outline: Line,
@@ -38,6 +39,7 @@ export type Provided = {|
   keyline: Line,
   item: ItemTheme,
   dropdown: ItemTheme,
+  hasDarkmode?: boolean,
 |}
 
 export type RootTheme = {|

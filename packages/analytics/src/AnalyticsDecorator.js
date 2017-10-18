@@ -21,7 +21,7 @@ class AnalyticsDecorator extends Component {
     with a '.', in which case a partial match on the beginning of the event
     name will be used.
     */
-    match?: string | ((name: string) => boolean),
+    match?: string | ((name: string) => boolean) | RegExp,
     /** Sets wether to extended private or public events. */
     matchPrivate?: boolean,
   };

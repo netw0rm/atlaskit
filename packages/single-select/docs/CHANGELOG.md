@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 2.0.2 (2017-10-16)
+
+* bug fix; disabled native autocomplete on the autocomplete component (issues closed: ak-3691) ([c4fd697](https://bitbucket.org/atlassian/atlaskit/commits/c4fd697))
 ## 2.0.1 (2017-09-11)
 
 * bug fix; standardise placeholders (issues closed: #ak-3406) ([95187e1](https://bitbucket.org/atlassian/atlaskit/commits/95187e1))

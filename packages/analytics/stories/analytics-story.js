@@ -11,7 +11,8 @@ import {
 import { name } from '../package.json';
 
 const Button = withAnalytics(
-  ({ children, ...props }) =>
+   /* eslint-disable no-unused-vars*/
+  ({ getParentAnalyticsData, children, ...props }) =>
     <button {...cleanProps(props)}>
       {children}
     </button>,

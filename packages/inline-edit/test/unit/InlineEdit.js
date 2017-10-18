@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
-import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import ConfirmIcon from '@atlaskit/icon/glyph/check';
+import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
 import InlineEditStateless from '../../src/components/InlineEditStateless';

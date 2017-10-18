@@ -1,8 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import styles from '../../src/styles/profilecard.less';
-
+import { shallow, mount } from 'enzyme';
 import IconLabel from '../../src/components/IconLabel';
+import {
+  DetailsLabelIcon,
+  DetailsLabelText,
+} from '../../src/styled/Card';
 
 describe('Profilecard', () => {
   describe('IconLabel', () => {
@@ -12,30 +14,44 @@ describe('Profilecard', () => {
     });
 
     it('should render LabelIcon without icon when icon property is not set', () => {
-      const wrapper = shallow(<IconLabel>Labeltext</IconLabel>);
+      const wrapper = mount(<IconLabel>Labeltext</IconLabel>);
       expect(wrapper.length).toBeGreaterThan(0);
-      expect(wrapper.find('span').text()).toBe('Labeltext');
+      expect(wrapper.find(DetailsLabelText).text()).toBe('Labeltext');
 
-      const icon = wrapper.find(`.${styles.detailsLabelIcon}`);
-      expect(icon.text()).toBe('');
+      const icon = wrapper.find(DetailsLabelIcon);
+      expect(icon.children().length).toBe(0);
     });
 
-    it('should render LabelIcon without icon when icon property is an available icon', () => {
-      const wrapper = shallow(<IconLabel icon="foobar">Labeltext</IconLabel>);
+    it('should render LabelIcon without icon when icon property is an unavailable icon', () => {
+      const wrapper = mount(<IconLabel icon="foobar">Labeltext</IconLabel>);
       expect(wrapper.length).toBeGreaterThan(0);
-      expect(wrapper.find('span').text()).toBe('Labeltext');
+      expect(wrapper.find(DetailsLabelText).text()).toBe('Labeltext');
 
-      const icon = wrapper.find(`.${styles['pf-icon']}`);
-      expect(icon.length).toBe(0);
+      const icon = wrapper.find(DetailsLabelIcon);
+      expect(icon.children().length).toBe(0);
     });
 
-    it('should render LabelIcon with icon', () => {
-      const wrapper = shallow(<IconLabel icon="time">Labeltext</IconLabel>);
-      expect(wrapper.length).toBeGreaterThan(0);
-      expect(wrapper.find('span').text()).toBe('Labeltext');
+    it('should render LabelIcon with valid icons', () => {
+      const validIcons = [
+        'location',
+        'time',
+        'mention',
+        'email',
+        'available',
+        'unavailable',
+        'busy',
+      ];
 
-      const icon = wrapper.find(`.${styles.detailsLabelIcon}`);
-      expect(icon.length).toBeGreaterThan(0);
+      validIcons.forEach((presence) => {
+        it(`should render label with content ${presence}`, () => {
+          const wrapper = mount(<IconLabel icon="time">Labeltext</IconLabel>);
+          expect(wrapper.length).toBeGreaterThan(0);
+          expect(wrapper.find(DetailsLabelText).text()).toBe('Labeltext');
+
+          const icon = wrapper.find(DetailsLabelIcon);
+          expect(icon.children().length).toBe(1);
+        });
+      });
     });
   });
 });

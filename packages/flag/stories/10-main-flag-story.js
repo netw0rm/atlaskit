@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Modal from '@atlaskit/modal-dialog';
+import { colors } from '@atlaskit/theme';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
@@ -51,7 +52,7 @@ storiesOf(name, module)
       <FlagGroup>
         <Flag
           appearance="success"
-          icon={<SuccessIcon label="Success" />}
+          icon={<SuccessIcon label="Success" secondaryColor={colors.G400} />}
           id="success"
           key="success"
           title="Connected"
@@ -68,7 +69,7 @@ storiesOf(name, module)
       <FlagGroup>
         <Flag
           appearance="warning"
-          icon={<WarningIcon label="Warning" />}
+          icon={<WarningIcon label="Warning" secondaryColor={colors.Y200} />}
           id="warning"
           key="warning"
           title="Presence isn't working"
@@ -86,7 +87,7 @@ storiesOf(name, module)
       <FlagGroup>
         <Flag
           appearance="error"
-          icon={<ErrorIcon label="Error" />}
+          icon={<ErrorIcon label="Error" secondaryColor={colors.R400} />}
           id="error"
           key="error"
           title="We couldn't connect"
@@ -103,7 +104,7 @@ storiesOf(name, module)
       <FlagGroup>
         <Flag
           appearance="info"
-          icon={<InfoIcon label="Info" />}
+          icon={<InfoIcon label="Info" secondaryColor={colors.N500} />}
           id="info"
           key="info"
           title="Connecting"

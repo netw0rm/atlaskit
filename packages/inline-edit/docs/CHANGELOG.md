@@ -1,5 +1,8 @@
 # @atlaskit/inline-edit
 
+## 4.5.2 (2017-10-15)
+
+* bug fix; update dependencies for react 16 compatibility ([fc47c94](https://bitbucket.org/atlassian/atlaskit/commits/fc47c94))
 ## 4.5.1 (2017-10-05)
 
 * bug fix; stop invalid icon being pushed out of the field box and therefore hidden ([e65c163](https://bitbucket.org/atlassian/atlaskit/commits/e65c163))

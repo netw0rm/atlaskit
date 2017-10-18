@@ -1,5 +1,14 @@
 # @atlaskit/profilecard
 
+## 3.8.0 (2017-10-16)
+
+* feature; add new detail label for a users email to the profilecard (issues closed: dir-324) ([84f12aa](https://bitbucket.org/atlassian/atlaskit/commits/84f12aa))
+## 3.7.4 (2017-10-12)
+
+* bug fix; fix dark mode colors for profilecard (issues closed: dir-413) ([27a6981](https://bitbucket.org/atlassian/atlaskit/commits/27a6981))
+
+* bug fix; fix unit tests for profilecard (issues closed: dir-407) ([9a488fe](https://bitbucket.org/atlassian/atlaskit/commits/9a488fe))
+* bug fix; refactor profilecard to styled components (issues closed: dir-407) ([2a0a834](https://bitbucket.org/atlassian/atlaskit/commits/2a0a834))
 ## 3.7.3 (2017-10-10)
 
 

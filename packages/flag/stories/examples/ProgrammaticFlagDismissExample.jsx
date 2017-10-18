@@ -11,6 +11,7 @@ export default class ProgrammaticFlagDismissExample extends PureComponent {
         key="flag1"
         title="Can I leave yet?"
         description="Dismiss me by clicking the button on the page"
+        icon=""
       />,
     ],
   };

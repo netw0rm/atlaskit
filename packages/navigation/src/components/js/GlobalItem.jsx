@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
-import GlobalItemInner from '../styled/GlobalItemInner';
+import styled from 'styled-components';
+import GlobalItemInner, { globalItemStyles } from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import type { ReactElement, ReactClass } from '../../types';
 
@@ -55,19 +56,22 @@ export default class GlobalItem extends PureComponent {
       role,
       onKeyDown: this.handleKeyDown,
     };
-
+    const ActualLink = styled(Link)`
+      ${globalItemStyles}
+      &:hover {
+        color: inherit;
+      }
+    `;
     if (href) {
       return (
-        <Link href={href} {...allyAndEventProps}>
-          <GlobalItemInner size={size}>
-            {this.props.children}
-          </GlobalItemInner>
-        </Link>
+        <ActualLink href={href} size={size} {...allyAndEventProps}>
+          {this.props.children}
+        </ActualLink>
       );
     }
 
     return (
-      <GlobalItemInner size={size} tabIndex={0} {...allyAndEventProps}>
+      <GlobalItemInner type="button" size={size} {...allyAndEventProps}>
         {this.props.children}
       </GlobalItemInner>
     );

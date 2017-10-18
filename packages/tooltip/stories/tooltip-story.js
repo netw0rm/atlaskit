@@ -1,11 +1,32 @@
 import { storiesOf } from '@kadira/storybook';
-import React from 'react';
+import React, { Component } from 'react';
 
 import Tooltip, { TooltipStateless } from '../src/index';
 import { name } from '../package.json';
 
 import PositionExample from './PositionExample';
 import { Container, Relative, Target } from './styled';
+
+const RelativeTrigger = props => <span style={{ display: 'inline-block' }} {...props} />;
+
+class OldAPI extends Component {
+  state ={ isVisible: false }
+  render() {
+    return (
+      <Container>
+        <TooltipStateless
+          position="top"
+          description='Tooltip with position "top"'
+          isVisible={this.state.isVisible}
+          onMouseOver={() => this.setState({ isVisible: true })}
+          onMouseOut={() => this.setState({ isVisible: false })}
+        >
+          <Target>Tooltips are great!</Target>
+        </TooltipStateless>
+      </Container>
+    );
+  }
+}
 
 storiesOf(name, module)
   .add('a dumb tooltip', () => (
@@ -15,6 +36,7 @@ storiesOf(name, module)
       </TooltipStateless>
     </Container>
   ))
+
   .add('a smart tooltip', () => (
     <Container>
       <Tooltip position="top" description='Tooltip with position "top"'>
@@ -24,11 +46,15 @@ storiesOf(name, module)
   ))
   .add('a smart tooltip that changes position', () => (
     <Container>
-      <PositionExample />
+      <PositionExample trigger="div" />
     </Container>
   ))
   .add('a smart tooltip in a relatively positioned parent', () => (
     <Relative>
-      <PositionExample />
+      <PositionExample trigger={RelativeTrigger} />
     </Relative>
-  ));
+  ))
+  .add('old tooltip api', () => (
+    <OldAPI />
+  ))
+;

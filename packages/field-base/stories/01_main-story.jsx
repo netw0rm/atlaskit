@@ -33,6 +33,7 @@ storiesOf(name, module)
             value="input children"
             isEditing
             id="fieldbase"
+            onChange={() => {}}
           />
         </BasicFieldBase>
       </div>
@@ -48,6 +49,7 @@ storiesOf(name, module)
         value="input children"
         isEditing
         id="fieldbase"
+        onChange={() => {}}
       />
     </BasicFieldBase>
   )
@@ -61,6 +63,7 @@ storiesOf(name, module)
         value="input children"
         isEditing
         id="fieldbase"
+        onChange={() => {}}
       />
     </BasicFieldBase>
   ))
@@ -69,13 +72,13 @@ storiesOf(name, module)
       <BasicFieldBase label="No maxWidth set" isFitContainerWidthEnabled>
         <Input isEditing />
       </BasicFieldBase>
-      <BasicFieldBase label="maxWidth=100" maxWidth="100" isFitContainerWidthEnabled>
+      <BasicFieldBase label="maxWidth=100" maxWidth={100} isFitContainerWidthEnabled>
         <Input isEditing />
       </BasicFieldBase>
-      <BasicFieldBase label="maxWidth=200" maxWidth="200" isFitContainerWidthEnabled>
+      <BasicFieldBase label="maxWidth=200" maxWidth={200} isFitContainerWidthEnabled>
         <Input isEditing />
       </BasicFieldBase>
-      <BasicFieldBase label="maxWidth=300" maxWidth="300" isFitContainerWidthEnabled>
+      <BasicFieldBase label="maxWidth=300" maxWidth={300} isFitContainerWidthEnabled>
         <Input isEditing />
       </BasicFieldBase>
     </div>
@@ -91,6 +94,7 @@ storiesOf(name, module)
           value="input children"
           isEditing
           id="fieldbase"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -103,6 +107,7 @@ storiesOf(name, module)
           id="fieldbase"
           isEditing
           value="input children"
+          onChange={() => {}}
         />
       </BasicFieldBase>
     </div>
@@ -120,6 +125,7 @@ storiesOf(name, module)
           isEditing
           id="fieldbase"
           value="Normal field"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -136,6 +142,7 @@ storiesOf(name, module)
           id="fieldbase"
           isEditing
           value="Compact field"
+          onChange={() => {}}
         />
       </BasicFieldBase>
     </div>
@@ -146,6 +153,7 @@ storiesOf(name, module)
         value="input children"
         isEditing
         id="fieldbase"
+        onChange={() => {}}
       />
     );
 
@@ -197,6 +205,7 @@ storiesOf(name, module)
           isEditing
           id="fieldbase"
           required
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <div style={{ padding: 20, paddingTop: 0 }}>
@@ -214,6 +223,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -225,6 +235,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -236,6 +247,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
         />
       </BasicFieldBase>
     </div>
@@ -249,6 +261,8 @@ storiesOf(name, module)
       <Input
         id="fieldbase"
         value="input children"
+        onChange={() => {}}
+        isEditing={false}
       />
     </BasicFieldBase>
   )
@@ -262,6 +276,8 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
+          isEditing
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -273,6 +289,8 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
+          isEditing
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -284,6 +302,8 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          onChange={() => {}}
+          isEditing
         />
       </BasicFieldBase>
     </div>
@@ -307,6 +327,7 @@ storiesOf(name, module)
                 id={id}
                 isEditing
                 value="input children"
+                onChange={() => {}}
               />
             </BasicFieldBase>
           );
@@ -431,6 +452,7 @@ storiesOf(name, module)
                 isEditing
                 value="a children input"
                 style={{ maxWidth: '200em' }}
+                onChange={() => {}}
               />
             </FieldBase>
           </Label>
@@ -442,6 +464,7 @@ storiesOf(name, module)
               id="fieldbase"
               isEditing
               value="a children input"
+              onChange={() => {}}
             />
           </FieldBase>
         </div>
@@ -487,6 +510,7 @@ storiesOf(name, module)
           value="input children"
           isEditing
           id="fieldbase"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -499,6 +523,7 @@ storiesOf(name, module)
           value="input children"
           isEditing
           id="fieldbase"
+          onChange={() => {}}
         />
       </BasicFieldBase>
       <BasicFieldBase
@@ -511,6 +536,7 @@ storiesOf(name, module)
           value="input children"
           isEditing
           id="fieldbase"
+          onChange={() => {}}
         />
       </BasicFieldBase>
     </div>

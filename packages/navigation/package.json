@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "26.0.1",
+  "version": "26.0.8",
   "config": {
     "access": "public"
   },
@@ -32,6 +32,7 @@
     "@atlaskit/field-base": "^8.0.1",
     "@atlaskit/icon": "^9.0.0",
     "@atlaskit/item": "^4.1.0",
+    "@atlaskit/polyfills": "^1.0.0",
     "@atlaskit/size-detector": "^2.0.0",
     "@atlaskit/theme": "^2.1.0",
     "@atlaskit/tooltip": "^6.0.0",
@@ -42,6 +43,7 @@
     "es6-object-assign": "^1.1.0",
     "invariant": "^2.2.2",
     "keycode": "^2.1.9",
+    "lodash.clonedeep": "^4.5.0",
     "memoize-one": "^3.0.1",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.0.1",
@@ -67,9 +69,9 @@
     "@atlaskit/field-radio-group": "1.6.2",
     "@atlaskit/field-text": "^4.0.1",
     "@atlaskit/inline-dialog": "^3.6.0",
-    "@atlaskit/logo": "^3.5.1",
+    "@atlaskit/logo": "^4.0.1",
     "@atlaskit/navigation": "*",
-    "@atlaskit/page": "^4.4.2",
+    "@atlaskit/page": "^5.0.0",
     "@atlaskit/single-select": "^2.0.1",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-readme": "^1.0.5",

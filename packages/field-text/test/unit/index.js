@@ -88,22 +88,52 @@ describe('FieldTextStateless', () => {
       });
     });
 
-    [
-      { type: 'search' },
-      { disabled: true },
-      { name: 'test' },
-      { placeholder: 'test placeholder' },
-      { maxLength: 5 },
-      { required: true },
-    ].forEach(prop =>
-      describe(JSON.stringify(prop), () =>
-        it('Input should have attribute defined', () => {
-          const key = Object.keys(prop)[0];
-          const value = prop[key];
-          expect(shallow(<FieldTextStateless {...prop} />).find(Input).prop(key)).toBe(value);
-        })
-      )
-    );
+    describe('native input attributes should be reflected to input element', () => {
+      [
+        ['type', 'search'],
+        ['disabled', true],
+        ['name', 'test'],
+        ['placeholder', 'test placeholder'],
+        ['maxLength', 5],
+        ['min', 1],
+        ['max', 10],
+        ['required', true],
+        ['autoComplete', 'on'],
+        ['form', 'my-form'],
+        ['pattern', '/.+/'],
+      ].forEach(([prop, propValue]) => {
+        it(prop, () => {
+          expect(shallow(
+            <FieldTextStateless {...{ [prop]: propValue }} />
+          ).find(Input).prop(prop)).toBe(propValue);
+        });
+      });
+    });
+
+    describe('native input events', () => {
+      [
+        'onBlur',
+        'onChange',
+        'onFocus',
+        'onKeyDown',
+        'onKeyPress',
+        'onKeyUp',
+      ].forEach(inputEvent => {
+        it(inputEvent, () => {
+          const eventSpy = jest.fn();
+          const wrapper = shallow(
+            <FieldTextStateless {...{ [inputEvent]: eventSpy }} />
+          );
+          const input = wrapper.find(Input);
+          expect(input.prop(inputEvent)).toBe(eventSpy);
+
+          const simulateEvent = inputEvent.replace(/^on/, '').toLowerCase();
+          input.simulate(simulateEvent);
+
+          expect(eventSpy).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
 
     it('Input should have value="something"', () =>
       expect(shallow(<FieldTextStateless value="something" />).find(Input).prop('value'))
@@ -129,14 +159,16 @@ describe('FieldTextStateless', () => {
 
   describe('FieldText input focus', () => {
     it('should get focus when focus() is called', () => {
-      let hasFocus = 0;
-      const wrapper = mount(<FieldText />);
-      wrapper.getDOMNode().addEventListener('focus', () => {
-        hasFocus = 1;
-      }, true);
-      wrapper.instance().focus();
+      const focusSpy = jest.fn();
+      const wrapper = mount(<FieldText onFocus={focusSpy} />);
 
-      expect(hasFocus).toBe(1);
+      // The onFocus prop doesn't actualy get fired by enzyme for some reason, so attaching
+      // the spy directly to the input.
+      wrapper.find('input').getDOMNode().addEventListener('focus', focusSpy);
+
+      expect(focusSpy).toHaveBeenCalledTimes(0);
+      wrapper.instance().focus();
+      expect(focusSpy).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,5 +1,31 @@
 # @atlaskit/navigation
 
+## 26.0.8 (2017-10-17)
+
+* bug fix; fixing selected item text colour for settings and siteSettings nav themes (issues closed: ak-3653) ([cd1daed](https://bitbucket.org/atlassian/atlaskit/commits/cd1daed))
+## 26.0.7 (2017-10-16)
+
+* bug fix; padding in nav items fixed (issues closed: #ak-3636) ([ceb43e8](https://bitbucket.org/atlassian/atlaskit/commits/ceb43e8))
+## 26.0.6 (2017-10-15)
+
+* bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))
+
+
+
+
+## 26.0.5 (2017-10-13)
+
+* bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))
+## 26.0.4 (2017-10-12)
+
+* bug fix; check not only hasOwnProperty but also whether this property is not undefined ([9ef8049](https://bitbucket.org/atlassian/atlaskit/commits/9ef8049))
+## 26.0.3 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
+* bug fix; change global nav items to use styled buttons or styled anchor ([c6ccb5d](https://bitbucket.org/atlassian/atlaskit/commits/c6ccb5d))
+## 26.0.2 (2017-10-12)
+
+* bug fix; updated theme prop types to accept colors from @atlaskit/theme (issues closed: ak-3682) ([6c3097c](https://bitbucket.org/atlassian/atlaskit/commits/6c3097c))
 ## 26.0.1 (2017-10-11)
 
 * bug fix; fix relative positioning of nav scroll container ([7d48f76](https://bitbucket.org/atlassian/atlaskit/commits/7d48f76))

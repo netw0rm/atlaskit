@@ -1,5 +1,8 @@
 # @atlaskit/field-radio-group
 
+## 1.7.1 (2017-10-16)
+
+* bug fix; add back in removed label (issues closed: #ak-3649) ([75d197b](https://bitbucket.org/atlassian/atlaskit/commits/75d197b))
 ## 1.7.0 (2017-09-27)
 
 

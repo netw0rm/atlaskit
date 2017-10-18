@@ -1,5 +1,7 @@
 import analyticsService from '../../analytics/service';
 import * as assert from 'assert';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import {
   Context,
@@ -23,10 +25,13 @@ import {
   Transaction,
   NodeSelection,
   Mark,
+  Decoration,
+  DecorationSet,
+  insertPoint,
 } from '../../prosemirror';
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
-
+import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
@@ -37,6 +42,7 @@ import { insertFile } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
+import DropPlaceholder from '../../ui/Media/DropPlaceholder';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -56,6 +62,7 @@ export class MediaPluginState {
   public binaryPicker?: PickerFacadeType;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
+  public showDropzone: boolean = false;
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private options: MediaPluginOptions;
   private view: EditorView;
@@ -148,6 +155,13 @@ export class MediaPluginState {
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
+    const { view, allowsUploads } = this;
+
+    // make sure editable DOM node is mounted
+    if (view.dom.parentNode) {
+      // make PM plugin aware of the state change to update UI during 'apply' hook
+      view.dispatch(view.state.tr.setMeta(stateKey, { allowsUploads }));
+    }
 
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
@@ -410,6 +424,7 @@ export class MediaPluginState {
       pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
       pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      this.dropzonePicker.onDrag(this.handleDrag);
 
       this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
       this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
@@ -510,11 +525,26 @@ export class MediaPluginState {
 
     return (state && state.status) || 'ready';
   }
+
+  private handleDrag = (dragState: 'enter' | 'leave') => {
+    const isActive = dragState === 'enter';
+    if (this.showDropzone === isActive) {
+      return;
+    }
+    this.showDropzone = isActive;
+
+    const { dispatch, state } = this.view;
+    // Trigger state change to be able to pick it up in the decorations handler
+    dispatch(state.tr);
+  }
 }
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  const dropZone = document.createElement('div');
+  ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
+
   return new Plugin({
     state: {
       init(config, state) {
@@ -531,6 +561,13 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        const meta = tr.getMeta(stateKey);
+        if (meta && dispatch) {
+          const { showMediaPicker } = pluginState;
+          const { allowsUploads } = meta;
+          dispatch(stateKey, { allowsUploads, showMediaPicker });
         }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
@@ -551,6 +588,35 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       };
     },
     props: {
+      decorations: (state: EditorState<any>) => {
+        const pluginState = stateKey.getState(state);
+        if (!pluginState.showDropzone) {
+          return;
+        }
+
+        const { schema, selection: { $anchor } } = state;
+        // When a media is already selected
+        if (state.selection instanceof NodeSelection) {
+          return;
+        }
+
+        let pos: number | null = $anchor.pos;
+        if (
+          $anchor.parent.type !== schema.nodes.paragraph &&
+          $anchor.parent.type !== schema.nodes.codeBlock
+        ) {
+          pos = insertPoint(state.doc, pos, schema.nodes.mediaGroup);
+        }
+
+        if (pos === null) {
+          return;
+        }
+
+        const dropPlaceholders: Decoration[] = [
+          Decoration.widget(pos, dropZone, { key: 'drop-placeholder' })
+        ];
+        return DecorationSet.create(state.doc, dropPlaceholders);
+      },
       nodeViews: {
         mediaGroup: nodeViewFactory(options.providerFactory, {
           mediaGroup: ReactMediaGroupNode,
@@ -570,8 +636,8 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
   });
 };
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

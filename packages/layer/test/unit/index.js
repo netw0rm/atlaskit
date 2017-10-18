@@ -17,10 +17,27 @@ describe('Layer', () => {
   });
 
   describe('children', () => {
-    const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
-
     it('should be rendered by Layer', () => {
+      const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
       expect(wrapper.find('#target').length).toBe(1);
+    });
+
+    // This is to avoid the layer appearing in the wrong part of the screen while Popper.js detects
+    // where the content should be positioned.
+    it('should be rendered with opacity:0 until Popper extracts styles', () => {
+      const wrapper = mount(<Layer><div id="target">Target</div></Layer>);
+      expect(wrapper.find('div[style]').props().style.opacity).toBe(0);
+
+      const dummyPopperState = {
+        offsets: {
+          popper: {
+            left: 0,
+            top: 0,
+          },
+        },
+      };
+      wrapper.instance().extractStyles(dummyPopperState);
+      expect(wrapper.find('div[style]').props().style.opacity).toBe(undefined);
     });
   });
 

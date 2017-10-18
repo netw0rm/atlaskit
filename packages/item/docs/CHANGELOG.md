@@ -1,5 +1,11 @@
 # @atlaskit/item
 
+## 4.1.3 (2017-10-16)
+
+* bug fix; selected items now receive hover style as expected (issues closed: ak-3650) ([f8f4510](https://bitbucket.org/atlassian/atlaskit/commits/f8f4510))
+## 4.1.2 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
 ## 4.1.1 (2017-10-05)
 
 * bug fix; fix item line height ([ec6a01f](https://bitbucket.org/atlassian/atlaskit/commits/ec6a01f))

@@ -229,6 +229,15 @@ export const getValidNode = (originalNode: Node, schema: Schema<NodeSpec, MarkSp
         }
 
         if (actions && !Array.isArray(actions)) { break; }
+        if (actions && !actions.length) { break; }
+        if (actions && actions.some(meta => {
+          const { title, target, parameters } = meta;
+          if (!isValidString(title)) { return true; }
+          if (!target) { return true; }
+          if (!isValidString(target.key)) { return true; }
+          if (target.app && !isValidString(target.app)) { return true; }
+          if (parameters && !isValidObject(parameters)) { return true; }
+        })) { break; }
 
         if (details && !Array.isArray(details)) { break; }
         if (details && details.some(meta => {

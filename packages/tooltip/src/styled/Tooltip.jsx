@@ -91,6 +91,6 @@ export default styled.div`
 
 // The inline-block here is needed to keep the tooltip appearing in the correct position
 // when nested inside a wider parent (see position: relative example).
-export const TooltipTrigger = styled.div`
+export const TooltipTarget = styled.div`
   display: inline-block;
 `;

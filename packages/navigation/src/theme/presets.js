@@ -64,7 +64,7 @@ export const container: Provided = ((): Provided => {
       tertiary: themed({ light: colors.N0, dark: colors.DN30 }),
     },
     text: themed({ light: colors.N500, dark: colors.DN600 }),
-    subText: colors.subText,
+    subText: colors.subtleText,
     keyline: themed({ light: colors.N30A, dark: colors.DN30A }),
     item,
     dropdown,
@@ -140,10 +140,10 @@ export const settings: Provided = ((): Provided => {
     active: {
       // Currently there is no ramp for white opacity
       background: 'rgba(255, 255, 255, 0.08)',
+      text: colors.B100,
     },
     selected: {
       background: colors.N700A,
-      text: colors.B100,
     },
     focus,
     dragging: {
@@ -183,9 +183,10 @@ export const settings: Provided = ((): Provided => {
 })();
 
 export const siteSettings: Provided = ((): Provided => {
-  // deep copy settings and only re-assign the secondary color
+  // deep copy settings and re-assign some colors
   const theme: Provided = JSON.parse(JSON.stringify(settings));
   theme.background.secondary = colors.N800;
+  theme.item.active.text = colors.B100;
   return theme;
 })();
 

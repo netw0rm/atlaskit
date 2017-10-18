@@ -101,14 +101,14 @@ export function getInnerStyles(props: AvatarPropTypes & { isInteractive?: boolea
     border-radius: ${getBorderRadius(props, { includeBorderWidth: true })};
     padding: ${borderWidth};
     box-sizing: ${boxSizing};
-    cursor: ${cursor}
+    cursor: ${cursor};
     display: flex;
     flex-direction: column;
     justify-content: center;
     outline: ${outline};
     overflow: hidden;
     pointer-events: ${pointerEvents};
-    position: ${position}
+    position: ${position};
     transform: ${transform};
     transition: background-color ${transitionDuration} ease-out;
 
@@ -122,7 +122,7 @@ export function getInnerStyles(props: AvatarPropTypes & { isInteractive?: boolea
       bottom: ${borderWidth};
       content: " ";
       left: ${borderWidth};
-      opacity: ${overlayOpacity}
+      opacity: ${overlayOpacity};
       pointer-events: none;
       position: absolute;
       right: ${borderWidth};

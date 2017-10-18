@@ -24,7 +24,7 @@ import {
   unsupportedContentPlugin,
   inlineCommentMarkerPlugin,
   panelPlugin,
-  inlineMacroPlugin
+  macroPlugin
 } from '../plugins';
 
 /**
@@ -117,7 +117,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if(props.allowInlineMacro) {
-    plugins.push(inlineMacroPlugin);
+    plugins.push(macroPlugin);
   }
 
   // UI only plugins

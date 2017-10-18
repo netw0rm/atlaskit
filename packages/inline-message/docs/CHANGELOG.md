@@ -1,5 +1,8 @@
 # @atlaskit/inline-message
 
+## 3.0.2 (2017-10-15)
+
+* bug fix; update dependencies for react 16 compatibility ([fc47c94](https://bitbucket.org/atlassian/atlaskit/commits/fc47c94))
 ## 3.0.1 (2017-09-21)
 
 * bug fix; removed unnecessary horizontal spacing on inline-messages (issues closed: ak-2603) ([d608d79](https://bitbucket.org/atlassian/atlaskit/commits/d608d79))

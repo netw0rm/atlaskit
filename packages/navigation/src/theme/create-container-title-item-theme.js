@@ -1,4 +1,5 @@
 // @flow
+import cloneDeep from 'lodash.clonedeep';
 import type { ItemTheme } from './types';
 import { containerTitleHorizontalPadding, containerTitleIconSpacing } from '../shared-variables';
 
@@ -12,7 +13,7 @@ const overrideItemTheme = (outerTheme: any, key: string): ItemTheme => {
   }
 
   // TODO: deep modification while respecting types
-  const newTheme = { ...original };
+  const newTheme = cloneDeep(original);
 
   newTheme.padding.default.left = containerTitleHorizontalPadding;
   newTheme.padding.default.right = containerTitleHorizontalPadding;

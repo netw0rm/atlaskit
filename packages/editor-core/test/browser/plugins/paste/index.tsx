@@ -57,6 +57,12 @@ if(!browser.ie && !isMobileBrowser()) {
         dispatchPasteEvent(editorView, { html: `<meta charset='utf-8'><div style="white-space: pre-wrap;">Hello</div>` });
         expect(editorView.state.doc).to.deep.equal(doc(p('Hello')));
       });
+
+      it('should not handle events with Files type', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { plain: 'my-awesome-mug.png', types: ['text/plain', 'Files'] });
+        expect(editorView.state.doc).to.deep.equal(doc(p('')));
+      });
     });
   });
 }

@@ -34,28 +34,28 @@ storiesOf(name, module)
             <tr>
               <td>Unchecked</td>
               <td>
-                <ToggleExample size="default" />
+                <ToggleExample disabled={false} checked={false} size="default" />
               </td>
               <td>
-                <ToggleExample size="large" />
+                <ToggleExample disabled={false} checked={false} size="large" />
               </td>
             </tr>
             <tr>
               <td>Checked</td>
               <td>
-                <ToggleExample checked size="default" />
+                <ToggleExample checked disabled={false} size="default" />
               </td>
               <td>
-                <ToggleExample checked size="large" />
+                <ToggleExample checked disabled={false} size="large" />
               </td>
             </tr>
             <tr>
               <td>Unchecked (disabled)</td>
               <td>
-                <ToggleExample disabled size="default" />
+                <ToggleExample checked={false} disabled size="default" />
               </td>
               <td>
-                <ToggleExample disabled size="large" />
+                <ToggleExample checked={false} disabled size="large" />
               </td>
             </tr>
             <tr>

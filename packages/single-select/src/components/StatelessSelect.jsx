@@ -545,6 +545,7 @@ export default class StatelessSelect extends PureComponent {
                     </Content> :
                     <AutocompleteWrapper>
                       <AutocompleteInput
+                        autoComplete="off"
                         onChange={this.handleInputOnChange}
                         placeholder={placeholder}
                         innerRef={ref => (this.inputNode = ref)}

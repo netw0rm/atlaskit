@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.1.1 (2017-10-12)
+
+* bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))
 ## 3.1.0 (2017-10-11)
 
 

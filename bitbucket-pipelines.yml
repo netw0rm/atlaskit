@@ -94,19 +94,8 @@ pipelines:
       - step:
           script:
             - ./build/bin/setup.sh
-            # We cant use prep_for_release.sh here because it creates a new .git and points the current
-            # branch to origin/$BRANCH_NAME which in the case of scheduled builds, makes it so that you
-            # are on "master" locally but it points to origin/production-website-DO-NOT-USE
-            # Instead, we just borrow the parts we need
-            - git config credential.helper store
-            - echo "https://$BITBUCKET_USER:$BITBUCKET_PASSWORD@bitbucket.org" > ~/.git-credentials
-            - git remote set-url origin "https://bitbucket.org/atlassian/atlaskit.git"
             - git fetch origin
             - git fetch
-            # Prevent running this build if we are in a different branch
-            - ./build/bin/exit.if.branch.name.not.matches.js "production-website-DO-NOT-USE" || exit
-            # we deliberately run this in a non-master branch so it doesnt clog up the pipelines ui
-            # and block actual master builds
             - git checkout master
             - git pull
             - yarn

@@ -167,7 +167,7 @@ const renderAsImage = (props: Props) => {
     height = representation.height;
   }
 
-  let sizing = { width, height };
+  let sizing = {};
   if (fitToHeight && width && height) {
     // Presize image, to prevent reflow due to size changes after loading
     sizing = {

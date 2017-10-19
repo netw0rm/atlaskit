@@ -34,7 +34,7 @@ export default class PersonResult extends PureComponent {
     /** A character with which to prefix the `mentionName`. Defaults to '@' */
     mentionPrefix: PropTypes.string,
     /** Name of the container. Provides the main text to be displayed as the item. */
-    name: PropTypes.string.isRequired,
+    name: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
     /** Triggered by mouseClick event. Called with { `resultId`, `type` }. */
     onClick: PropTypes.func,
     /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */

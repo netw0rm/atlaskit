@@ -43,7 +43,7 @@ export default class ResultBase extends PureComponent {
     /** Text to be shown alongside the main `text`. */
     subText: PropTypes.string,
     /** Main text to be displayed as the item. */
-    text: PropTypes.string.isRequired,
+    text: PropTypes.oneOfType([PropTypes.element, PropTypes.string]).isRequired,
     /** Type of the result. This is passed as a parameter to certain callbacks. */
     type: PropTypes.string,
 

@@ -14,7 +14,7 @@ import {
 import { isSafeUrl } from '../../../src/renderer/utils';
 
 import schema from '../../../stories/schema';
-import { createSchema } from '../../../src/schema';
+import { createSchema } from '@atlaskit/editor-common';
 
 describe('Renderer - Validator', () => {
 

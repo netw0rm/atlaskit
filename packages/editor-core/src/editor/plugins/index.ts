@@ -20,6 +20,5 @@ export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
 export { default as helpDialogPlugin } from './help-dialog';
 export { default as jiraIssuePlugin } from './jira-issue';
 export { default as unsupportedContentPlugin } from './unsupported-content';
-export { default as inlineCommentMarkerPlugin } from './inline-comment-marker';
 export { default as panelPlugin } from './panel';
 export { default as macroPlugin } from './macro';

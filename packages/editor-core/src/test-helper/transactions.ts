@@ -1,6 +1,4 @@
-import {
-  EditorView,
-} from '../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import {
   Refs,
   BuilderContent,

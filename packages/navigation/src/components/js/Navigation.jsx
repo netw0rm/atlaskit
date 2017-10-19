@@ -96,6 +96,10 @@ type Props = {|
   onCreateDrawerOpen?: () => void,
   /** Function called when the globalSearchIcon is clicked. */
   onSearchDrawerOpen?: () => void,
+  /** Function called when a collapse/expand starts */
+  onToggleStart: () => void,
+  /** Function called when a collapse/expand finishes */
+  onToggleEnd: () => void,
   /** The offset at the top of the page before the navigation begins. This allows
   absolute items such as a banner to be placed above nav, without lower nav items
   being pushed off the screen. **DO NOT** use this outside of this use-case. Changes
@@ -111,11 +115,11 @@ type Props = {|
 |}
 
 type State = {|
-  resizeDelta: number,
-  isResizing: boolean,
-  isTogglingIsOpen: boolean,
   containerTheme: Provided,
   globalTheme: Provided,
+  isResizing: boolean,
+  isTogglingIsOpen: boolean,
+  resizeDelta: number,
 |}
 
 // NOTE: Dark mode is a user preference that takes precedence over provided themes
@@ -153,6 +157,8 @@ export default class Navigation extends PureComponent {
     onCreateDrawerOpen: () => {},
     onResize: (state) => {}, // eslint-disable-line no-unused-vars
     onResizeStart: () => {},
+    onToggleStart: () => {},
+    onToggleEnd: () => {},
     onSearchDrawerOpen: () => {},
     width: defaultWidth,
     topOffset: 0,
@@ -175,6 +181,8 @@ export default class Navigation extends PureComponent {
     warnIfCollapsedPropsAreInvalid(props);
   }
 
+  spacerRef: ?Node
+
   // It is possible that Navigation.width will not be supplied by the product, which means the
   // default width will be used, which assumes a non-Electron environment. We update the width
   // for this specific case in componentDidMount.
@@ -193,10 +201,16 @@ export default class Navigation extends PureComponent {
     // that was applied at time of first page load.
     const { mode } = getTheme(nextProps);
 
+    const isTogglingIsOpen = this.props.isOpen !== nextProps.isOpen;
+
+    if (isTogglingIsOpen) {
+      this.props.onToggleStart();
+    }
+
     this.setState({
       containerTheme: defaultContainerTheme(containerTheme, mode),
       globalTheme: defaultGlobalTheme(globalTheme, mode),
-      isTogglingIsOpen: this.props.isOpen !== nextProps.isOpen,
+      isTogglingIsOpen,
     });
 
     warnIfCollapsedPropsAreInvalid(nextProps);
@@ -228,6 +242,7 @@ export default class Navigation extends PureComponent {
     return width;
   };
 
+  // eslint-disable-next-line react/sort-comp
   onResize = (resizeDelta: number) => {
     this.setState({
       isResizing: true,
@@ -267,9 +282,18 @@ export default class Navigation extends PureComponent {
   props: ReactElement
 
   triggerResizeButtonHandler = (resizeState: resizeObj) => {
-    if (resizeState && this.props.onResize) {
+    if (resizeState) {
       this.props.onResize(resizeState);
     }
+  }
+
+  registerSpacerRef = (spacerRef: Node) => { this.spacerRef = spacerRef; }
+
+  onSpacerTransitionEnd = (e: TransitionEvent) => {
+    if (!this.spacerRef || e.target !== this.spacerRef) {
+      return;
+    }
+    this.props.onToggleEnd();
   }
 
   render() {
@@ -365,6 +389,8 @@ export default class Navigation extends PureComponent {
         <div>
           {/* Used to push the page to the right the width of the nav */}
           <Spacer
+            innerRef={this.registerSpacerRef}
+            onTransitionEnd={this.onSpacerTransitionEnd}
             shouldAnimate={shouldAnimateContainer}
             width={renderedWidth}
           >

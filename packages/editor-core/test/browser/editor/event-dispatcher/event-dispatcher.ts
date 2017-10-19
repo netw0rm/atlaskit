@@ -2,7 +2,7 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { EventDispatcher, createDispatch } from '../../../../src/editor/event-dispatcher';
-import { PluginKey } from '../../../../src/prosemirror';
+import { PluginKey } from 'prosemirror-state';
 
 describe(name, () => {
   describe('Event Dispatcher', () => {
@@ -61,7 +61,7 @@ describe(name, () => {
         const data = { test: 1 };
         const pluginKey = new PluginKey('event');
         const dispatch = createDispatch(eventDispatcher);
-        eventDispatcher.on(pluginKey.key, listener);
+        eventDispatcher.on((pluginKey as any).key, listener);
         dispatch(pluginKey, data);
         expect(listener.calledOnce).to.eq(true);
         expect(listener.calledWithExactly(data)).to.eq(true);

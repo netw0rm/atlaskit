@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import createEditor from '../../../../helpers/create-editor';
 import helpDialog, { pluginKey, openHelpCommand, closeHelpCommand } from '../../../../../src/editor/plugins/help-dialog';
-import { EditorView } from '../../../../../src/prosemirror';
+import { EditorView } from 'prosemirror-view';
 import EditorActions from '../../../../../src/editor/actions';
 import { sendKeyToPm } from '../../../../../src/test-helper';
 import { analyticsService } from '../../../../../src/analytics';

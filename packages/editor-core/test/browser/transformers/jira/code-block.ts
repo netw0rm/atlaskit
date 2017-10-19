@@ -1,6 +1,6 @@
 import { nodeFactory } from '../../../../src/test-helper';
 import { checkParseEncodeRoundTrips, checkEncode, checkParse } from './_test-helpers';
-import { createJIRASchema } from '../../../../src/schema';
+import { createJIRASchema } from '@atlaskit/editor-common';
 
 const schema = createJIRASchema({ allowCodeBlock: true });
 

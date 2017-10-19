@@ -9,14 +9,14 @@ import {
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
   isSchemaWithTables
-} from './schema';
+} from '@atlaskit/editor-common';
 
 import {
   Fragment,
   Mark,
   Node as PMNode,
   Schema,
-} from '../../prosemirror';
+} from 'prosemirror-model';
 
 import { normalizeHexColor } from '../../utils/color';
 
@@ -24,7 +24,7 @@ import { normalizeHexColor } from '../../utils/color';
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
  */
-export function ensureBlocks(fragment: Fragment, schema: Schema<any, any>): Fragment {
+export function ensureBlocks(fragment: Fragment, schema: Schema): Fragment {
   // If all the nodes are inline, we want to wrap in a single paragraph.
   if (schema.nodes.paragraph.validContent(fragment)) {
     return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
@@ -45,7 +45,24 @@ export function ensureBlocks(fragment: Fragment, schema: Schema<any, any>): Frag
   return Fragment.fromArray(blockNodes);
 }
 
-export function convert(content: Fragment, node: Node, schema: Schema<any, any>): Fragment | PMNode | null | undefined {
+/**
+ * This function will convert all content to inline nodes
+ */
+export const ensureInline = (schema: Schema, content: Fragment, supportedMarks: Mark[]) => {
+  const result: PMNode[] = [];
+  content.forEach((node: PMNode) => {
+    if (node.isInline) {
+      const filteredMarks = node.marks.filter(mark => mark.isInSet(supportedMarks));
+      result.push(node.mark(filteredMarks));
+      return;
+    }
+    // We replace an non-inline node with UnsupportedInline node
+    result.push(schema.text(node.textContent));
+  });
+  return Fragment.fromArray(result);
+};
+
+export function convert(content: Fragment, node: Node, schema: Schema): Fragment | PMNode | null | undefined {
   // text
   if (node.nodeType === Node.TEXT_NODE) {
     const text = node.textContent;
@@ -171,7 +188,12 @@ export function convert(content: Fragment, node: Node, schema: Schema<any, any>)
       case 'H5':
       case 'H6':
         const level = Number(tag.charAt(1));
-        return schema.nodes.heading.createChecked({ level }, content);
+        const supportedMarks = [schema.marks.link].filter(mark => !!mark);
+        return schema.nodes.heading.createChecked(
+          { level },
+          schema.nodes.heading.validContent(content)
+            ? content
+            : ensureInline(schema, content, supportedMarks as any));
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
       case 'HR':

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import blockTypePlugin from '../../../../src/plugins/block-type';
-import { browser } from '../../../../src/prosemirror';
+import { browser, createSchema } from '@atlaskit/editor-common';
 import {
   insertText,
   sendKeyToPm,
@@ -24,7 +24,6 @@ import {
   tdCursor,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { createSchema } from '../../../../src/schema';
 import blockTypePlugins from '../../../../src/plugins/block-type';
 import { analyticsService } from '../../../../src/analytics';
 import { setNodeSelection } from '../../../../src/utils';

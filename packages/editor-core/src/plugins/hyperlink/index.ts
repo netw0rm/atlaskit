@@ -1,17 +1,7 @@
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Mark,
-  Node,
-  Plugin,
-  NodeViewDesc,
-  TextSelection,
-  Slice,
-  Step,
-  ReplaceStep,
-  Transaction,
-} from '../../prosemirror';
+import { Mark, Node, Schema, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, TextSelection, Transaction } from 'prosemirror-state';
+import { Step, ReplaceStep,} from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
@@ -46,11 +36,11 @@ export class HyperlinkState {
   activeLinkNode?: Node;
 
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
   private activeLinkMark?: Mark;
   private activeLinkStartPos?: number;
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
   }
 
@@ -111,7 +101,8 @@ export class HyperlinkState {
     }
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
+  // TODO: Fix types (ED-2987)
+  update(state: EditorState, docView: any, dirty: boolean = false) {
     this.state = state;
 
     const nodeInfo = this.getActiveLinkNodeInfo();
@@ -152,7 +143,7 @@ export class HyperlinkState {
     }
   }
 
-  showLinkPanel(editorView: EditorView) {
+  showLinkPanel(editorView: EditorView & { docView?: any }) {
     if (this.linkable) {
       if (!(this.showToolbarPanel || editorView.hasFocus())) {
         editorView.focus();
@@ -175,7 +166,7 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  getCoordinates(editorView: EditorView, offsetParent: Element): Coordinates {
+  getCoordinates(editorView: EditorView & { docView?: any } , offsetParent: Element): Coordinates {
     if (editorView.hasFocus()) {
       editorView.focus();
     }
@@ -247,7 +238,7 @@ export class HyperlinkState {
     return (linkMarks as Mark[])[0];
   }
 
-  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
+  private getDomElement(docView: any): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
       const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
 
@@ -263,7 +254,7 @@ export class HyperlinkState {
    * Returns active dom element for current selection.
    * Used by Hyperlink edit popup to position relative to cursor.
    */
-  private getActiveDomElement(selection, docView: NodeViewDesc): HTMLElement | undefined {
+  private getActiveDomElement(selection, docView: any): HTMLElement | undefined {
     if (selection.$from.pos !== selection.$to.pos) {
       return;
     }
@@ -282,10 +273,10 @@ export class HyperlinkState {
 function isReplaceStep(step?: Step): step is ReplaceStep {
   return !!step && step instanceof ReplaceStep;
 }
-const hasLinkMark = (schema: any, node?: Node) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
+const hasLinkMark = (schema: any, node?: Node | null) => node && schema.marks.link.isInSet(node.marks) as Mark | null;
 
 function updateLinkOnChange(
-  transactions: Transaction[], oldState: EditorState<any>, newState: EditorState<any>, isMessageEditor: boolean
+  transactions: Transaction[], oldState: EditorState, newState: EditorState, isMessageEditor: boolean
 ): Transaction | undefined {
   if (!transactions) {
     return;
@@ -345,7 +336,7 @@ function updateLinkOnChange(
   }
 }
 
-export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps = {}) => new Plugin({
+export const createPlugin = (schema: Schema, editorProps: EditorProps = {}) => new Plugin({
   props: {
     handleTextInput(view: EditorView, from: number, to: number, text: string) {
       const pluginState = stateKey.getState(view.state);
@@ -395,7 +386,7 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
     }
   },
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new HyperlinkState(state);
     },
     apply(tr, pluginState: HyperlinkState, oldState, newState) {
@@ -403,12 +394,12 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
     }
   },
   key: stateKey,
-  view: (view: EditorView) => {
+  view: (view: EditorView & { docView?: any }) => {
     const pluginState = stateKey.getState(view.state);
     pluginState.update(view.state, view.docView, true);
 
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
         pluginState.update(view.state, view.docView);
       }
     };
@@ -418,7 +409,7 @@ export const createPlugin = (schema: Schema<any, any>, editorProps: EditorProps 
   },
 });
 
-const plugins = (schema: Schema<any, any>, props: EditorProps = {}) => {
+const plugins = (schema: Schema, props: EditorProps = {}) => {
   return [createPlugin(schema, props), inputRulePlugin(schema), keymapPlugin(schema, props)].filter((plugin) => !!plugin) as Plugin[];
 };
 

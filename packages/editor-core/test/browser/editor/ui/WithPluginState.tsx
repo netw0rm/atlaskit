@@ -5,7 +5,7 @@ import * as React from 'react';
 import WithPluginState from '../../../../src/editor/ui/WithPluginState';
 import { EventDispatcher } from '../../../../src/editor/event-dispatcher';
 import { makeEditor, doc, p } from '../../../../src/test-helper';
-import { Plugin, PluginKey } from '../../../../src/prosemirror';
+import { Plugin, PluginKey } from 'prosemirror-state';
 
 describe(name, () => {
   const editor = (doc: any, plugin: Plugin) => makeEditor({

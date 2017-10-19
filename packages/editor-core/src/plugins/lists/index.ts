@@ -1,12 +1,7 @@
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  findWrapping,
-  NodeSelection,
-  Plugin,
-  PluginKey,
-} from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { findWrapping } from 'prosemirror-transform';
+import { EditorState,  NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import {
   findAncestorPosition,
 } from '../../utils';
@@ -33,7 +28,7 @@ export class ListsState {
   orderedListDisabled = false;
   orderedListHidden = false;
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
 
     // Checks what types of lists schema supports.
@@ -127,7 +122,7 @@ export const stateKey = new PluginKey('listsPlugin');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new ListsState(state);
     },
     apply(tr, pluginState: ListsState, oldState, newState) {
@@ -141,7 +136,7 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

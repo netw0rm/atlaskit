@@ -8,10 +8,8 @@ import {
 import UIMedia from '../../ui/Media';
 import ProviderFactory from '../../providerFactory';
 import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { CardDimensions } from '@atlaskit/media-card';
 
 // tslint:disable-next-line:variable-name

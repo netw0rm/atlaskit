@@ -10,7 +10,7 @@ import {
   DefaultMediaStateManager,
 } from '@atlaskit/media-core';
 import MediaComponent from '../../../src/ui/Media/MediaComponent';
-import { MediaType } from '../../../src/schema';
+import { MediaType } from '@atlaskit/editor-common';
 import {
   Card,
   CardView,

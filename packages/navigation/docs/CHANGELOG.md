@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 26.1.1 (2017-10-19)
+
+* bug fix; partially fix for console errors for navigation component ([b8a1568](https://bitbucket.org/atlassian/atlaskit/commits/b8a1568))
+
+## 26.1.0 (2017-10-18)
+
+* feature; add callbacks around nav's collapse/expand animation (issues closed: ak-3030) ([dbdf710](https://bitbucket.org/atlassian/atlaskit/commits/dbdf710))
 ## 26.0.8 (2017-10-17)
 
 * bug fix; fixing selected item text colour for settings and siteSettings nav themes (issues closed: ak-3653) ([cd1daed](https://bitbucket.org/atlassian/atlaskit/commits/cd1daed))

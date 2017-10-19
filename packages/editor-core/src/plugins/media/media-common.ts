@@ -1,10 +1,9 @@
-import {
-  EditorView,
-  Node as PMNode,
-  NodeSelection,
-} from '../../prosemirror';
+import { deleteSelection, splitBlock } from 'prosemirror-commands';
+import { Node as PMNode } from 'prosemirror-model';
+import { NodeSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { createParagraphNear } from '../../commands';
 import { moveLeft, atTheBeginningOfDoc, isTemporary } from '../../utils';
-import * as commands from '../../commands';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 
 export const removeMediaNode = (view: EditorView, node: PMNode, getPos: ProsemirrorGetPosHandler) => {
@@ -40,12 +39,12 @@ export const splitMediaGroup = (view: EditorView): boolean => {
     return false;
   }
 
-  commands.deleteSelection(view.state, view.dispatch);
+  deleteSelection(view.state, view.dispatch);
 
   // if selected media node is the last one, no need to insert a new p or split the block, prosemirror handled it.
   if (selection.$to.nodeAfter) {
-    commands.splitBlock(view.state, view.dispatch);
-    commands.createParagraphNear(view, false);
+    splitBlock(view.state, view.dispatch);
+    createParagraphNear(view, false);
   }
 
   return true;

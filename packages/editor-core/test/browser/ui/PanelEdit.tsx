@@ -44,7 +44,7 @@ describe('@atlaskit/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(<PanelEdit pluginState={pluginState} editorView={editorView} />);
     plugin.props.onFocus!(editorView, event);
     plugin.props.handleClick!(editorView, sel, event);
-    pluginState.update(editorView.state, editorView.docView, true);
+    pluginState.update(editorView.state, (editorView as any).docView, true);
     expect(panelEditOptions.state('toolbarVisible')).to.equal(true);
     panelEditOptions.unmount();
   });

@@ -1,6 +1,4 @@
-import {
-  EditorState,
-} from '../../../prosemirror';
+import { EditorState } from 'prosemirror-state';
 
 export interface Participant {
   lastActive: number;
@@ -15,7 +13,7 @@ export interface InitData {
 
 export interface RemoteData {
   json?: any;
-  newState?: EditorState<any>;
+  newState?: EditorState;
 }
 
 export interface ConnectionData {

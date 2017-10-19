@@ -21,8 +21,8 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '../../schema';
-import { EditorView } from '../../prosemirror';
+import { MediaAttributes } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
 import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 

@@ -7,10 +7,8 @@ import {
 import { ReactNodeViewComponents } from '../factory';
 import { ReactNodeViewState } from '../../plugins/react-nodeview';
 import ProviderFactory from '../../providerFactory';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { setNodeSelection } from '../../utils';
 
 interface Props {

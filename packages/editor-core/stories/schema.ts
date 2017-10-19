@@ -1,4 +1,4 @@
-import { createSchema } from '../src/schema';
+import { createSchema } from '@atlaskit/editor-common';
 
 export default createSchema({
   nodes: [
@@ -42,6 +42,5 @@ export default createSchema({
     'emojiQuery',
     'textColor',
     'subsup',
-    'inlineCommentMarker'
   ]
 });

@@ -1,4 +1,5 @@
-import { Node, NodeView, EditorView } from '../../../prosemirror';
+import { Node } from 'prosemirror-model';
+import { NodeView, EditorView } from 'prosemirror-view';
 import { CodeBlockState, codeBlockStateKey } from '../../../plugins';
 import codeMirrorPlugin from './codeMirrorPlugin';
 import './styles';

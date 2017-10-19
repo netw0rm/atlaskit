@@ -1,10 +1,12 @@
 import {
-  Fragment,
-  Node as PMNode,
   MediaAttributes,
   MediaType,
+} from '@atlaskit/editor-common';
+import {
+  Fragment,
+  Node as PMNode,
   Schema
-} from '../../';
+} from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import {
@@ -32,12 +34,12 @@ const convertedNodes = new WeakMap<Node, Fragment | PMNode>();
 // This reverted mapping is used to map Unsupported Node back to it's original cxhtml
 const convertedNodesReverted = new WeakMap<Fragment | PMNode, Node>();
 
-export default function(cxhtml: string, schema: Schema<any, any>) {
+export default function(cxhtml: string, schema: Schema) {
   const dom = parseCxhtml(cxhtml).querySelector('body')!;
   return schema.nodes.doc.createChecked({}, parseDomNode(schema, dom));
 }
 
-function parseDomNode(schema: Schema<any, any>, dom: Element): PMNode {
+function parseDomNode(schema: Schema, dom: Element): PMNode {
   const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
 
   // Process through nodes in reverse (so deepest child elements are first).
@@ -61,10 +63,10 @@ function parseDomNode(schema: Schema<any, any>, dom: Element): PMNode {
     // The document must have at least one block element.
     : schema.nodes.paragraph.createChecked({});
 
-  return compatibleContent;
+  return compatibleContent as PMNode;
 }
 
-function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fragment | PMNode | null | undefined {
+function converter(schema: Schema, content: Fragment, node: Node): Fragment | PMNode | null | undefined {
   // text
   if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
     const text = node.textContent;
@@ -117,10 +119,11 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
       case 'H5':
       case 'H6':
         const level = Number(tag.charAt(1));
+        const supportedMarks = [schema.marks.link].filter(mark => !!mark);
         return schema.nodes.heading.createChecked({ level },
           schema.nodes.heading.validContent(content)
             ? content
-            : ensureInline(schema, content, convertedNodesReverted)
+            : ensureInline(schema, content, convertedNodesReverted, supportedMarks as any)
         );
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
@@ -159,7 +162,7 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
             // combine them into one paragraph and empty the list
             if (textNodes.length) {
               const paragraph = schema.nodes.paragraph.createChecked({}, textNodes);
-              output = output.addToEnd(paragraph);
+              output = (output as any).addToEnd(paragraph);
 
               textNodes = [];
             }
@@ -170,7 +173,7 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
             // combine them into one mediaGroup and empty the list
             if (mediaNodes.length) {
               const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
-              output = output.addToEnd(mediaGroup);
+              output = (output as any).addToEnd(mediaGroup);
 
               mediaNodes = [];
             }
@@ -182,23 +185,16 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
         // combine remaining text nodes
         if (textNodes.length) {
           const paragraph = schema.nodes.paragraph.createChecked({}, ensureInline(schema, Fragment.fromArray(textNodes), convertedNodesReverted));
-          output = output.addToEnd(paragraph);
+          output = (output as any).addToEnd(paragraph);
         }
 
         // combine remaining media nodes
         if (mediaNodes.length) {
           const mediaGroup = schema.nodes.mediaGroup.createChecked({}, mediaNodes);
-          output = output.addToEnd(mediaGroup);
+          output = (output as any).addToEnd(mediaGroup);
         }
 
         return output;
-
-      case 'AC:INLINE-COMMENT-MARKER':
-        if (!content) {
-          return null;
-        }
-        const attrs = { reference: node.getAttribute('ac:ref') };
-        return addMarks(content, [schema.marks.inlineCommentMarker.create(attrs)]);
 
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(schema, node) || unsupportedInline;
@@ -258,7 +254,8 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
       case 'DIV':
         if (hasClass(node, 'codeHeader')) {
           const codeHeader = schema.text(node.textContent || '', [ schema.marks.strong.create() ]);
-          return schema.nodes.heading.createChecked({ level: 5 }, Fragment.from( codeHeader ));
+          const supportedMarks = [schema.marks.link].filter(mark => !!mark);
+          return schema.nodes.heading.createChecked({ level: 5 }, ensureInline(schema, Fragment.from( codeHeader ), convertedNodesReverted, supportedMarks as any));
         }
         else if (node.querySelector('.syntaxhighlighter')) {
           const codeblockNode = node.querySelector('.syntaxhighlighter');
@@ -274,7 +271,7 @@ function converter(schema: Schema<any, any>, content: Fragment, node: Node): Fra
   return unsupportedInline;
 }
 
-function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragment | PMNode | null | undefined  {
+function convertConfluenceMacro(schema: Schema, node: Element): Fragment | PMNode | null | undefined  {
   const {
     macroName,
     macroId,
@@ -350,7 +347,7 @@ function convertConfluenceMacro(schema: Schema<any, any>, node: Element): Fragme
   return null;
 }
 
-function convertWYSIWYGMacro (schema: Schema<any, any>, node: Element): Fragment | PMNode | null | undefined  {
+function convertWYSIWYGMacro (schema: Schema, node: Element): Fragment | PMNode | null | undefined  {
   const name = getMacroAttribute(node, 'name').toUpperCase();
 
   switch (name) {
@@ -364,7 +361,7 @@ function convertWYSIWYGMacro (schema: Schema<any, any>, node: Element): Fragment
   return null;
 }
 
-function convertCodeFromView (schema: Schema<any, any>, node: Element): Fragment | PMNode | null | undefined  {
+function convertCodeFromView (schema: Schema, node: Element): Fragment | PMNode | null | undefined  {
     const container = node.querySelector('.container');
 
     let content = '';
@@ -383,12 +380,12 @@ function convertCodeFromView (schema: Schema<any, any>, node: Element): Fragment
     return createCodeFragment(schema, content, language);
 }
 
-function convertNoFormatFromView (schema: Schema<any ,any>, node: Element): Fragment | PMNode | null | undefined  {
+function convertNoFormatFromView (schema: Schema, node: Element): Fragment | PMNode | null | undefined  {
     const codeContent = node.querySelector('pre')!.textContent || ' ';
     return createCodeFragment(schema, codeContent);
 }
 
-function convertTable (schema: Schema<any, any>, node: Element) {
+function convertTable (schema: Schema, node: Element) {
   const { table, tableRow, tableCell, tableHeader } =  schema.nodes;
   const rowNodes: PMNode[] = [];
   const rows = node.querySelectorAll('tr');
@@ -400,9 +397,9 @@ function convertTable (schema: Schema<any, any>, node: Element) {
     for (let j = 0, colsCount = cols.length; j < colsCount; j ++) {
       const cell = cols[j].nodeName === 'td' ? tableCell : tableHeader;
       const pmNode = parseDomNode(schema, cols[j]);
-      cellNodes.push(cell.createChecked(null, pmNode));
+      cellNodes.push(cell.createChecked(undefined, pmNode));
     }
-    rowNodes.push(tableRow.create(null, Fragment.from(cellNodes)));
+    rowNodes.push(tableRow.create(undefined, Fragment.from(cellNodes)));
   }
-  return table.create(null, Fragment.from(rowNodes));
+  return table.create(undefined, Fragment.from(rowNodes));
 }

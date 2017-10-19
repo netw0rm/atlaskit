@@ -1,4 +1,5 @@
-import { browser, EditorState, Transaction } from '../prosemirror';
+import { browser } from '@atlaskit/editor-common';
+import { EditorState, Transaction } from 'prosemirror-state';
 
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
 export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
@@ -109,11 +110,11 @@ export interface Keymap {
   common?: string;
 }
 
-export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState<any>, dispatch: (tr: Transaction) => void) => boolean, keymap: { [key: string]: Function }) {
+export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState, dispatch: (tr: Transaction) => void) => boolean, keymap: { [key: string]: Function }) {
   const oldCmd = keymap[shortcut];
   let newCmd = cmd;
   if (keymap[shortcut]) {
-    newCmd = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    newCmd = (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
       return oldCmd(state, dispatch) || cmd(state, dispatch);
     };
   }

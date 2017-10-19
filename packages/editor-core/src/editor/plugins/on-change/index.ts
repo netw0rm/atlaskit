@@ -1,4 +1,5 @@
-import { EditorView, Plugin, PluginKey } from '../../../prosemirror';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
 
 export const pluginKey = new PluginKey('onChangePlugin');

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { CellSelection } from 'prosemirror-tables';
+import { EditorView } from 'prosemirror-view';
 import { TableState } from '../../plugins/table';
 import tableCommands from '../../plugins/table/commands';
-import { EditorView, CellSelection } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';

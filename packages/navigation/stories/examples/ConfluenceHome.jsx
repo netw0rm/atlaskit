@@ -132,12 +132,14 @@ export default class ConfluenceHome extends PureComponent {
       key="seach"
       onBackButton={this.closeDrawer}
       primaryIcon={globalPrimaryIcon}
+      onInput={this._onInput}
     >
 
       <AkSearch
         placeholder="Search..."
         onInput={this._onInput}
         onSearchClear={this._clearSearch}
+        onKeyDown={() => {}}
       >
         <AkNavigationItemGroup title="RECENTLY VIEWED">
           <AkNavigationItem

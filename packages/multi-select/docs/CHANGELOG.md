@@ -1,5 +1,9 @@
 # @atlaskit/multi-select
 
+## 7.1.4 (2017-10-18)
+
+* bug fix; updated icon dependency to fix IE 11 issues (issues closed: ak-3709) ([8e93274](https://bitbucket.org/atlassian/atlaskit/commits/8e93274))
+
 ## 7.1.3 (2017-09-14)
 
 * bug fix; stateful Multi-select will fire onOpenChange only when the dropdown menu is opened o ([4d69a9d](https://bitbucket.org/atlassian/atlaskit/commits/4d69a9d))

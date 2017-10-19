@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { orderedList, bulletList, listItem } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/lists';
 import inputRulePlugin from '../../../plugins/lists/input-rule';
 import keymapPlugin from '../../../plugins/lists/keymap';
-import { orderedList } from '../../../schema/nodes/ordered-list';
-import { bulletList } from '../../../schema/nodes/bullet-list';
-import { listItem } from '../../../schema/nodes/list-item';
 import ToolbarLists from '../../../ui/ToolbarLists';
 
 const listPlugin: EditorPlugin = {

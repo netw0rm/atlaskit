@@ -1,4 +1,5 @@
-import { EditorView, EditorState } from '../../prosemirror';
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 export const nodeLen = (node: Node): number => {
   return node.nodeType === 3 && node.nodeValue ? node.nodeValue.length : node.childNodes.length;
@@ -75,7 +76,7 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   }
 };
 
-export const hasCode = (state: EditorState<any>, pos: number) : boolean => {
+export const hasCode = (state: EditorState, pos: number) : boolean => {
   const { code } = state.schema.marks;
   const node = pos >= 0 && state.doc.nodeAt(pos);
   if (node) {

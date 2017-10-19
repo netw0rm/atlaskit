@@ -2,10 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import Mention from '../../ui/Mention';
 import ProviderFactory from '../../providerFactory';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 
 export interface Props {
   children?: React.ReactNode;

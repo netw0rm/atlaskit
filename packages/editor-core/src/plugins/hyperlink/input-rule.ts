@@ -1,10 +1,13 @@
-import { Schema, inputRules, Plugin, InputRule, EditorState } from '../../prosemirror';
+import { inputRules, InputRule } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import {Plugin, EditorState } from 'prosemirror-state';
+
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 import { Match, LinkMatcher, normalizeUrl } from './utils';
 
 export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) => string): InputRule {
-  return createInputRule(regexp, (state: EditorState<any>, match: Match[], start: number, end: number) => {
+  return createInputRule(regexp, (state: EditorState, match: Match[], start: number, end: number) => {
     const { schema } = state;
     if (state.doc.rangeHasMark(start, end, schema.marks.link)) {
       return;
@@ -22,7 +25,7 @@ export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) =
   });
 }
 
-export function createInputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function createInputRulePlugin(schema: Schema): Plugin | undefined {
   if (!schema.marks.link) {
     return;
   }

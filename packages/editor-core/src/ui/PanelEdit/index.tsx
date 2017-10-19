@@ -5,8 +5,8 @@ import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import { EditorView } from 'prosemirror-view';
 import ToolbarButton from '../ToolbarButton';
-import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
 import { TrashToolbarButton, Separator, FloatingToolbar } from './styles';

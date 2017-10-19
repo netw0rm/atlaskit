@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { tableEditing } from '../../../prosemirror';
+import { table, tableCell, tableHeader, tableRow } from '@atlaskit/editor-common';
+import { tableEditing } from 'prosemirror-tables';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/table';
-import { table, tableCell, tableHeader, tableRow } from '../../../schema/nodes/tableNodes';
 import TableFloatingControls from '../../../ui/TableFloatingControls';
 import TableFloatingToolbar from '../../../ui/TableFloatingToolbar';
 

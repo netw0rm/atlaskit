@@ -1,4 +1,4 @@
-import { createSchema } from '../../src/schema';
+import { createSchema } from '@atlaskit/editor-common';
 export const schema = createSchema({
   nodes: [
     'doc',

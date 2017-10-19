@@ -169,7 +169,6 @@ Unless you're developing a new editor for a product, you've probably arrived at 
 
 - [editor-bitbucket](https://npmjs.com/package/@atlaskit/editor-bitbucket)
 - [editor-cq](https://npmjs.com/package/@atlaskit/editor-cq)
-- [editor-hipchat](https://npmjs.com/package/@atlaskit/editor-hipchat)
 - [editor-jira](https://npmjs.com/package/@atlaskit/editor-jira)
 
 If you're sure you want to consume this package, refer to one of the packages above for an example

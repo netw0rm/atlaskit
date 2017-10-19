@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react';
-import { Node } from '../../../prosemirror';
+import { Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
 import Blockquote from './blockquote';

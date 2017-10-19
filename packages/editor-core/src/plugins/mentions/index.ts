@@ -1,18 +1,10 @@
 import { MentionProvider, MentionDescription, isSpecialMention } from '@atlaskit/mention';
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Plugin,
-  Slice,
-  Fragment,
-  PluginKey
-} from '../../prosemirror';
+import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { inputRulePlugin } from './input-rules';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import ProviderFactory from '../../providerFactory';
-import { Node } from '../../prosemirror/prosemirror-model/node';
-import { Transaction } from '../../prosemirror/prosemirror-state/transaction';
 import { analyticsService } from '../../analytics';
 import mentionNodeView from './../../nodeviews/ui/mention';
 import nodeViewFactory from '../../nodeviews/factory';
@@ -44,7 +36,7 @@ export class MentionsState {
   onSelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
   private view: EditorView;
   private dirty;
   private currentQueryResult?: MentionDescription[];
@@ -52,7 +44,7 @@ export class MentionsState {
   private tokens: Map<string, QueryMark>;
   private previousQueryResultCount: number;
 
-  constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
+  constructor(state: EditorState, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
     this.dirty = false;
@@ -72,7 +64,7 @@ export class MentionsState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  apply(tr: Transaction, state: EditorState<any>) {
+  apply(tr: Transaction, state: EditorState) {
     if (!this.mentionProvider) {
       return;
     }
@@ -116,7 +108,7 @@ export class MentionsState {
     }
   }
 
-  update(state: EditorState<any>) {
+  update(state: EditorState) {
     this.state = state;
 
     if (!this.mentionProvider) {
@@ -181,7 +173,7 @@ export class MentionsState {
     return currentTransaction;
   }
 
-  isEnabled(state?: EditorState<any>) {
+  isEnabled(state?: EditorState) {
     const currentState = state ? state : this.state;
     const { mentionQuery } = currentState.schema.marks;
     return isMarkTypeAllowedInCurrentSelection(mentionQuery, currentState);
@@ -456,7 +448,7 @@ export interface Mention {
   id: string;
 }
 
-const plugins = (schema: Schema<any, any>, providerFactory) => {
+const plugins = (schema: Schema, providerFactory) => {
   return [createPlugin(providerFactory), inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

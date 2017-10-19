@@ -1,4 +1,6 @@
-import { EditorView, MarkType, keydownHandler } from '../../prosemirror';
+import { keydownHandler } from 'prosemirror-keymap';
+import { MarkType } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import * as keymaps from '../../keymaps';
 import { trackAndInvoke } from '../../analytics';
 import { TextFormattingState } from './';

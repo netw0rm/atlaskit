@@ -1,5 +1,5 @@
-import { Fragment, MarkType, Node, NodeType, Schema, Slice, MediaAttributes, MentionAttributes } from '../';
-import { NodeSpec, MarkSpec } from '../prosemirror';
+import { MediaAttributes, MentionAttributes } from '@atlaskit/editor-common';
+import { Fragment, MarkType, Node, NodeType, Schema, Slice } from 'prosemirror-model';
 import matches from './matches';
 import sampleSchema from './schema';
 
@@ -77,7 +77,7 @@ export interface RefsNode extends Node {
  * declaratively describe a position within some text, and then access the
  * position in the resulting node.
  */
-export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsContentItem {
+export function text(value: string, schema: Schema): RefsContentItem {
   let stripped = '';
   let textIndex = 0;
   const refs: Refs = {};
@@ -174,7 +174,7 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
 /**
  * Coerce builder content into ref nodes.
  */
-export function coerce(content: BuilderContent[], schema: Schema<NodeSpec, MarkSpec>) {
+export function coerce(content: BuilderContent[], schema: Schema) {
   const refsContent = content
     .map(item => typeof item === 'string'
       ? text(item, schema)
@@ -254,7 +254,6 @@ export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const mentionQuery = (attrs = { active: true }) => markFactory(sampleSchema.marks.mentionQuery, attrs ? attrs : {} );
-export const inlineCommentMarker = (attrs = { reference: '' }) => markFactory(sampleSchema.marks.inlineCommentMarker, attrs ? attrs : {} );
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);

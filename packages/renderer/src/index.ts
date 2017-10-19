@@ -77,3 +77,6 @@ export const renderDocument = <T>(doc: any, serializer: Serializer<T>, schema: S
 };
 
 export { Serializer };
+
+// TODO remove these exports when React renderer is finally extracted from editor-core
+export { getMarksByOrder, isSameMark } from './validator';

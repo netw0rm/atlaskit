@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 53.0.1 (2017-10-19)
+
+* bug fix; cleanup ([497ca27](https://bitbucket.org/atlassian/atlaskit/commits/497ca27))
+* bug fix; call onChange only on document change (issues closed: ed-2421) ([fbadb9a](https://bitbucket.org/atlassian/atlaskit/commits/fbadb9a))
 ## 53.0.0 (2017-10-19)
 
 * breaking; JSON renderer is now JSON transformer ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))

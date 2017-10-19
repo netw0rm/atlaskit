@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { Button } from '../styled/Button';
+import Button from '../styled/Button';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Separator from '../styled/Separator';
 

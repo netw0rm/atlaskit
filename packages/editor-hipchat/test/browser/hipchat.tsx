@@ -520,7 +520,7 @@ describe('@atlaskit/editor-hipchat', () => {
     });
   });
 
-  describe('Content Overflow', () => {
+  describe.skip('Content Overflow', () => {
     let editor;
     let container: HTMLDivElement;
 

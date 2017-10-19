@@ -1,4 +1,4 @@
-import MentionResource, { AbstractMentionResource, MentionProvider } from './api/MentionResource';
+import MentionResource, { AbstractMentionResource, MentionProvider, MentionsResult } from './api/MentionResource';
 import PresenceResource, { PresenceProvider, AbstractPresenceResource } from './api/PresenceResource';
 import MentionItem from './components/MentionItem';
 import MentionList from './components/MentionList';
@@ -20,6 +20,7 @@ export {
   MentionProvider,
   PresenceProvider,
   MentionDescription,
+  MentionsResult,
   // Components
   MentionItem,
   MentionList,

@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from '@atlaskit/mention';
+import { AbstractMentionResource, MentionsResult } from '@atlaskit/mention';
 import { Search } from 'js-search';
 import mentionData from './_mention-data';
 
@@ -30,11 +30,12 @@ class MentionResource extends AbstractMentionResource {
 
   filter(query: string) {
     const searchTime = Date.now();
-    const notify = (mentions) => {
+    const notify = (mentionsResult: MentionsResult) => {
       if (searchTime >= this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
-        this._notifyListeners(mentions);
+        this._notifyListeners(mentionsResult);
       }
+      this._notifyAllResultsListeners(mentionsResult);
     };
 
     const notifyErrors = (error) => {
@@ -56,6 +57,7 @@ class MentionResource extends AbstractMentionResource {
       }
       notify({
         mentions,
+        query
       });
     }, waitTime + 1);
   }

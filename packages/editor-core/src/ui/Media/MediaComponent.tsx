@@ -146,7 +146,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       <CardView
         metadata={{ type: mediaItemType, url, title: '' }}
         status="loading"
-        appearance="horizontal"
         mediaItemType={mediaItemType}
         dimensions={cardDimensions}
       />

@@ -1,5 +1,5 @@
 import { markFactory, nodeFactory } from '../../../../dist/es5/test-helper';
-import { bitbucketSchema as schema } from '../../../../src/schema';
+import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 
 // Nodes
 export const blockquote = nodeFactory(schema.nodes.blockquote);

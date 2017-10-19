@@ -1,13 +1,7 @@
+import { Schema  } from 'prosemirror-model';
+import { EditorState, NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Plugin,
-  PluginKey,
-  NodeSelection,
-  NodeViewDesc,
-} from '../../prosemirror';
 import inputRulePlugin from './input-rule';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;
@@ -51,11 +45,11 @@ export class ImageUploadState {
   element?: HTMLElement = undefined;
   changeHandlers: StateChangeHandler[] = [];
 
-  private state: EditorState<any>;
+  private state: EditorState;
   private config: ImageUploadPluginOptions;
   private uploadHandler?: ImageUploadHandler;
 
-  constructor(state: EditorState<any>, options?: ImageUploadPluginOptions) {
+  constructor(state: EditorState, options?: ImageUploadPluginOptions) {
     this.changeHandlers = [];
     this.state = state;
     this.config = { ...DEFAULT_OPTIONS, ...options };
@@ -72,7 +66,8 @@ export class ImageUploadState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, dirty = false): void {
+  // TODO: Fix types (ED-2987)
+  update(state: EditorState, docView: any, dirty = false): void {
     this.state = state;
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
@@ -143,7 +138,8 @@ export class ImageUploadState {
     }
   }
 
-  private getActiveImageElement(docView: NodeViewDesc): HTMLElement {
+  // TODO: Fix types (ED-2987)
+  private getActiveImageElement(docView: any): HTMLElement {
     const { $from } = this.state.selection;
     const { node, offset } = docView.domFromPos($from.pos);
 
@@ -174,7 +170,7 @@ export const stateKey = new PluginKey('imageUploadPlugin');
 
 const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new ImageUploadState(state);
     },
     apply(tr, pluginState: ImageUploadState, oldState, newState) {
@@ -182,11 +178,11 @@ const plugin = new Plugin({
     }
   },
   key: stateKey,
-  view: (view: EditorView) => {
+  view: (view: EditorView & { docView?: any }) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
 
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
         stateKey.getState(view.state).update(view.state, view.docView);
       }
     };
@@ -223,7 +219,7 @@ const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

@@ -6,7 +6,7 @@ import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { analyticsService as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import DropdownMenu from '../DropdownMenu';
 import { ButtonContent, ExpandIconWrapper } from './styles';
 

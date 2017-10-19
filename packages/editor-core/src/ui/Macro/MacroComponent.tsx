@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { MacroProvider } from '../../editor/plugins/macro/types';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import withOuterListeners from '../with-outer-listeners';
 import { Container, Overlay } from './styles';
 

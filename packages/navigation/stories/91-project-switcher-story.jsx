@@ -50,7 +50,7 @@ const dropdownItems = (
       items.map(item => <DropdownItem
         key={item}
         description="this is description"
-        elemBefore={<div style={{ marginRight: gridSize }}><NucleusIcon /></div>}
+        elemBefore={<div style={{ marginRight: gridSize }}><NucleusIcon label="nucleus icon" /></div>}
       >{item}</DropdownItem>)
     }
     <ViewAllItem>View all projects</ViewAllItem>
@@ -106,7 +106,7 @@ storiesOf(`${name}/ProjectSwitcher`, module)
                 headerComponent={() => (
                   <BasicProjectSwitcher
                     text="Project Switcher very long text"
-                    icon={<NucleusIcon />}
+                    icon={<NucleusIcon label="nucleus icon" />}
                     subText="Software project"
                   >
                     {dropdownItems}

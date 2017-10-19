@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import styled from 'styled-components';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { float, clear, textAlign } from '../../plugins/media/single-image';
 
 export interface MediaGroupNodeProps {

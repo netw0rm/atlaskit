@@ -1,13 +1,14 @@
-import { EditorState, EditorView, Transaction, TextSelection, Selection } from '../../prosemirror';
+import { EditorState, Transaction, TextSelection, Selection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { removeIgnoredNodesLeft, hasCode } from './utils';
 import { stateKey } from './';
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
+  (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
 }
 
 export const moveRight = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
     if (!empty || !$cursor) {
@@ -37,8 +38,8 @@ export const moveRight = (): Command => {
   };
 };
 
-export const moveLeft = (view: EditorView): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+export const moveLeft = (view: EditorView & { cursorWrapper?: any }): Command => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const { code } = state.schema.marks;
     const { empty, $cursor } = state.selection as TextSelection;
     if (!empty || !$cursor) {
@@ -98,7 +99,7 @@ export const moveLeft = (view: EditorView): Command => {
 
 // removing ignored nodes (cursor wrapper) when pressing Backspace to make sure cursor isn't stuck
 export const removeIgnoredNodes = (view: EditorView): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const { empty, $cursor } = state.selection as TextSelection;
     if (empty && $cursor && $cursor.nodeBefore) {
       removeIgnoredNodesLeft(view);

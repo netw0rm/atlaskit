@@ -2,9 +2,10 @@ import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import Popup from '../Popup';
 import { EmojiState } from '../../plugins/emojis';
-import { EditorView, PluginKey } from '../../prosemirror';
 
 export interface Props {
   editorView?: EditorView;

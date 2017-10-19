@@ -16,7 +16,7 @@ import {
 } from '../../../../src/test-helper';
 import tasksAndDecisionsPlugins from '../../../../src/plugins/tasks-and-decisions';
 import defaultSchema from '../../../../src/test-helper/schema';
-import uuid from '../../../../src/plugins/tasks-and-decisions/uuid';
+import { uuid } from '@atlaskit/editor-common';
 
 chai.use(chaiPlugin);
 describe('tasks and decisions - input rules', () => {

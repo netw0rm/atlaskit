@@ -1,8 +1,8 @@
 import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { EditorView } from '../../prosemirror';
 import ToolbarButton from '../ToolbarButton';
 import { changeToTaskDecision } from '../../plugins/tasks-and-decisions/commands';
 

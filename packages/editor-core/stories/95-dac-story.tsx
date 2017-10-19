@@ -12,7 +12,7 @@ import { PureComponent } from 'react';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import Editor from './editor';
-import { createSchema } from '../src/schema';
+import { createSchema } from '@atlaskit/editor-common';
 import { JSONSerializer } from '../src/renderer';
 import ProviderFactory from '../src/providerFactory';
 import { name } from '../package.json';

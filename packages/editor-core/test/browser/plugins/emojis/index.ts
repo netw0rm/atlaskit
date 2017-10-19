@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
-import { emoji as emojiNode } from '../../../../src';
+import { emoji as emojiNode } from '@atlaskit/editor-common';
 import emojiPlugins, { EmojiState } from '../../../../src/plugins/emojis';
 import {
   chaiPlugin,

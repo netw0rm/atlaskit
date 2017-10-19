@@ -1,7 +1,9 @@
-import { EditorState, Selection, TextSelection, Transaction, EditorView, Schema } from '../../prosemirror';
-import uuid from '../../plugins/tasks-and-decisions/uuid';
+import { uuid } from '@atlaskit/editor-common';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
-const getListTypes = (listType: TaskDecisionListType, schema: Schema<any,any>): { list, item } => {
+const getListTypes = (listType: TaskDecisionListType, schema: Schema): { list, item } => {
   const { decisionList, decisionItem, taskList, taskItem } = schema.nodes;
   if (listType === 'taskList') {
     return {
@@ -45,7 +47,7 @@ export const changeToTaskDecision = (
   return false;
 };
 
-export const createListAtSelection = (tr: Transaction, list: any, item: any, schema: Schema<any, any>, state: EditorState<any>): boolean => {
+export const createListAtSelection = (tr: Transaction, list: any, item: any, schema: Schema, state: EditorState): boolean => {
   const { selection: { $from, $to } } = state;
 
   if ($from.parent !== $to.parent) {

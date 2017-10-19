@@ -10,7 +10,7 @@ import {
 
 const menu = [
   {
-    component: <AkNavigationItem icon={<DashboardIcon />} text="Dashboards" />,
+    component: <AkNavigationItem icon={<DashboardIcon label="dashboard icon" />} text="Dashboards" />,
     childMenu: [
       { component: <AkNavigationItem text="JIRA" />,
         childMenu: [
@@ -30,7 +30,7 @@ const menu = [
     ],
   },
   {
-    component: <AkNavigationItem icon={<IssuesIcon />} text="Issues" />,
+    component: <AkNavigationItem icon={<IssuesIcon label="issues icon" />} text="Issues" />,
     childMenu: [
       { component: <AkNavigationItem text="My open issues" /> },
       { component: <AkNavigationItem text="Reported by me" /> },
@@ -44,14 +44,14 @@ const menu = [
     ],
   },
   {
-    component: <AkNavigationItem icon={<PortfolioIcon />} text="Portfolio" />,
+    component: <AkNavigationItem icon={<PortfolioIcon label="portfolio icon" />} text="Portfolio" />,
     childMenu: [
       { component: <AkNavigationItem text="View all plans" /> },
       { component: <AkNavigationItem text="Manage shared teams" /> },
     ],
   },
   {
-    component: <AkNavigationItem icon={<TrayIcon />} text="Lots of children" />,
+    component: <AkNavigationItem icon={<TrayIcon label="tray icon" />} text="Lots of children" />,
     childMenu: [
       { component: <AkNavigationItem icon={<TrayIcon />} text="Link 1" /> },
       { component: <AkNavigationItem icon={<TrayIcon />} text="Link 2" /> },
@@ -75,7 +75,7 @@ const menu = [
       { component: <AkNavigationItem icon={<TrayIcon />} text="Link 20" /> },
     ],
   },
-  { component: <AkNavigationItem icon={<SettingsIcon />} text="Settings" isSelected /> },
+  { component: <AkNavigationItem icon={<SettingsIcon label="settings icon" />} text="Settings" isSelected /> },
 ];
 
 export default menu;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ProviderFactory from '../../providerFactory';
-import { EditorView, Node as PMNode } from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import Macro from '../../ui/Macro';
 
 export interface Props {

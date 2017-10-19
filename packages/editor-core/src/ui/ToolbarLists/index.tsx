@@ -2,12 +2,12 @@ import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
 import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
-import { EditorView } from '../../prosemirror';
 import { ButtonGroup } from './styles';
 
 export interface Props {

@@ -1,4 +1,4 @@
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import ProviderFactory from '../../providerFactory';
 import { EventDispatcher } from '../event-dispatcher';
 import { UIComponentFactory, ReactElement } from '../types';

@@ -5,7 +5,7 @@ import { ActivityProvider, ActivityItem } from '@atlaskit/activity';
 
 import { HyperlinkState } from '../../plugins/hyperlink';
 import PanelTextInput from '../PanelTextInput';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import RecentList from './RecentList';
 
 // tslint:disable-next-line:variable-name

@@ -1,25 +1,18 @@
-import {
-  EditorState,
-  Selection,
-  TableMap,
-  Transaction,
-  CellSelection,
-  TextSelection
-} from '../../prosemirror';
-import * as tableBaseCommands from '../../prosemirror/prosemirror-tables';
+import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { CellSelection, goToNextCell as baseGotoNextCell, TableMap } from 'prosemirror-tables';
 import { stateKey } from './';
 import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
+  (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
 }
 
 const TAB_FORWARD_DIRECTION = 1;
 const TAB_BACKWARD_DIRECTION = -1;
 
 const createTable = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (pluginState.tableDisabled || pluginState.tableElement) {
       return false;
@@ -34,7 +27,7 @@ const createTable = (): Command => {
 };
 
 const goToNextCell = (direction: number): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.tableNode) {
       return false;
@@ -63,7 +56,7 @@ const goToNextCell = (direction: number): Command => {
     if (!pluginState.view.hasFocus()) {
       pluginState.view.focus();
     }
-    const result = tableBaseCommands.goToNextCell(direction)(state, dispatch);
+    const result = baseGotoNextCell(direction)(state, dispatch);
     // cancel text selection that is created by default
     if (result) {
       const latestState = pluginState.view.state;
@@ -74,7 +67,7 @@ const goToNextCell = (direction: number): Command => {
 };
 
 const cut = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
@@ -82,7 +75,7 @@ const cut = (): Command => {
 };
 
 const copy = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
@@ -90,7 +83,7 @@ const copy = (): Command => {
 };
 
 const paste = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     pluginState.closeFloatingToolbar();
     return true;
@@ -98,14 +91,14 @@ const paste = (): Command => {
 };
 
 const emptyCells = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.cellSelection) {
       return false;
     }
     pluginState.resetHoverSelection();
     pluginState.emptySelectedCells();
-    const { $head: { pos, parentOffset } } = state.selection as CellSelection;
+    const { $head: { pos, parentOffset } } = (state.selection as any) as CellSelection;
     const newPos = pos - parentOffset;
     pluginState.moveCursorInsideTableTo(newPos);
     analyticsService.trackEvent('atlassian.editor.format.table.delete_content.keyboard');
@@ -115,7 +108,7 @@ const emptyCells = (): Command => {
 };
 
 const moveCursorBackward = (): Command => {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+  return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     const { $cursor } = state.selection as TextSelection;
     // if cursor is in the middle of a text node, do nothing

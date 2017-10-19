@@ -1,10 +1,7 @@
 import * as React from 'react';
+import { decisionItem, decisionList, taskItem, taskList } from '@atlaskit/editor-common';
 import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
-import { decisionList } from '../../../schema/nodes/decision-list';
-import { decisionItem } from '../../../schema/nodes/decision-item';
-import { taskList } from '../../../schema/nodes/task-list';
-import { taskItem } from '../../../schema/nodes/task-item';
 import { createPlugin } from '../../../plugins/tasks-and-decisions';
 import inputRulePlugin from '../../../plugins/tasks-and-decisions/input-rules';
 import keymap from '../../../plugins/tasks-and-decisions/keymaps';

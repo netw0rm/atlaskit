@@ -42,7 +42,7 @@ const manyNavigationItems = () => {
 storiesOf(name, module)
   .add('with a few container items', () => (
     <HtmlPage>
-      <BasicNavigation hasScrollHintTop>
+      <BasicNavigation containerTheme={presetThemes.container} hasScrollHintTop>
         <AkNavigationItem
           text="Test page"
           href="#1"

@@ -2,7 +2,7 @@ import ImageIcon from '@atlaskit/icon/glyph/editor/image';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import { ImageUploadState } from '../../plugins/image-upload';
 import ToolbarButton from '../ToolbarButton';
 

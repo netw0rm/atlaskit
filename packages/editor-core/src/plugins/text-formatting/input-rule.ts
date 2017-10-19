@@ -1,9 +1,11 @@
-import { InputRule, inputRules, Plugin, Schema, Transaction, MarkType } from '../../prosemirror';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
+import { Schema, MarkType } from 'prosemirror-model';
+import { Plugin, Transaction } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { transformToCodeAction } from './transform-to-code';
 import { InputRuleHandler, createInputRule } from '../utils';
 
-function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number): InputRuleHandler<any> {
+function addMark(markType: MarkType, schema: Schema, charSize: number): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
@@ -43,7 +45,7 @@ function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number)
   };
 }
 
-function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): InputRuleHandler<any> {
+function addCodeMark(markType: MarkType, schema: Schema, specialChar: string): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     // fixes autoformatting in heading nodes: # Heading `bold`
     // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
@@ -57,7 +59,7 @@ function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: 
   };
 }
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.marks.strong) {

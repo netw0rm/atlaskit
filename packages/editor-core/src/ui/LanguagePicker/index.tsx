@@ -2,9 +2,9 @@ import Select from '@atlaskit/single-select';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import { EditorView } from 'prosemirror-view';
 
 import { CodeBlockState } from '../../plugins/code-block';
-import { EditorView } from '../../prosemirror';
 import { TrashToolbarButton, FloatingToolbar, Separator } from './styles';
 
 import {

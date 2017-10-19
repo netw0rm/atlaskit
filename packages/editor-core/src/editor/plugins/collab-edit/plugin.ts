@@ -1,10 +1,5 @@
-import {
-  Plugin,
-  PluginKey,
-  Transaction,
-  Decoration,
-  DecorationSet,
-} from '../../../prosemirror';
+import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
@@ -114,7 +109,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
   });
 };
 
-class Participants {
+export class Participants {
 
   private participants: Map<string, Participant>;
 
@@ -163,10 +158,10 @@ class Participants {
 const createTelepointer = (from: number, to: number, sessionId: string, isSelection: boolean) => {
   // TODO: Use Decoration.widget when there's no selection. (ED-2728)
   const color = getAvatarColor(sessionId).index.toString();
-  return Decoration.inline(from, to, { class: `telepointer color-${color} ${isSelection ? 'telepointer-selection' : 'telepointer-pointer'}` }, { pointer: { sessionId } });
+  return (Decoration as any).inline(from, to, { class: `telepointer color-${color} ${isSelection ? 'telepointer-selection' : 'telepointer-pointer'}` }, { pointer: { sessionId } });
 };
 
-class PluginState {
+export class PluginState {
 
   private decorationSet: DecorationSet;
   private participants: Participants;

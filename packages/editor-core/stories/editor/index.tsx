@@ -5,17 +5,12 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import applyDevTools from 'prosemirror-dev-tools';
 
-import {
-  baseKeymap,
-  EditorState,
-  EditorView,
-  history,
-  keymap,
-  Node,
-  TextSelection,
-  PluginKey,
-  Schema,
-} from '../../src/prosemirror';
+import { baseKeymap } from 'prosemirror-commands';
+import { history } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, TextSelection, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 import { default as schemaFull } from '../schema';
 import ProviderFactory from '../../src/providerFactory';
@@ -24,7 +19,6 @@ import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 import {
   MediaProvider,
   MediaState,
-  Plugin,
   ErrorReporter,
   ErrorReportingHandler,
 } from '../../src';
@@ -68,7 +62,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   height?: number;
-  schema?: Schema<any, any>;
+  schema?: Schema;
 }
 
 export interface State {
@@ -80,7 +74,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   private mediaPlugins: Plugin[];
-  private schema: Schema<any, any>;
+  private schema: Schema;
 
   state: State;
   providerFactory: ProviderFactory;
@@ -208,7 +202,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { mentionProvider, emojiProvider } = this.state;
     const { activityProvider } = this.props;
 
-    const getState = (editorState: EditorState<any> | undefined) => (stateKey: PluginKey) =>
+    const getState = (editorState: EditorState | undefined) => (stateKey: PluginKey) =>
       editorState && stateKey.getState(editorState);
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;

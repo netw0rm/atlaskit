@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Node as PMNode } from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
 import { JiraLogo } from '@atlaskit/logo';
 import {
   akBorderRadius,

@@ -1,10 +1,12 @@
-import { Schema, keymap, Plugin } from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { enterKeyCommand } from './commands';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema): Plugin | undefined {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.findShortcutByKeymap(keymaps.toggleOrderedList)!, trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', commands.toggleOrderedList()), list);
@@ -17,4 +19,3 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
 }
 
 export default keymapPlugin;
-

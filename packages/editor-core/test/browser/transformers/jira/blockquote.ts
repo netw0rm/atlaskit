@@ -1,6 +1,6 @@
 import { nodeFactory } from '../../../../src/test-helper';
 import { checkParse, checkParseEncodeRoundTrips } from './_test-helpers';
-import { createJIRASchema } from '../../../../src/schema';
+import { createJIRASchema } from '@atlaskit/editor-common';
 
 const schema = createJIRASchema({ allowBlockQuote: true,  allowLists: true  });
 

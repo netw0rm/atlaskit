@@ -146,6 +146,7 @@ export default class BasicSearch extends PureComponent {
         onInput={({ target }) => { this.search(target.value); }}
         value={this.state.query}
         isLoading={this.state.isLoading}
+        onKeyDown={() => {}}
       >
         {this.renderResults()}
       </AkSearch>

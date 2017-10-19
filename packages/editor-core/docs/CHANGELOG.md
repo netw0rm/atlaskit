@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 52.0.0 (2017-10-19)
+
+* bug fix; bump editor-common ([7640450](https://bitbucket.org/atlassian/atlaskit/commits/7640450))
+* bug fix; fix macro ([1e6fd61](https://bitbucket.org/atlassian/atlaskit/commits/1e6fd61))
+* breaking; Schema is now being published by editor-common ([9617437](https://bitbucket.org/atlassian/atlaskit/commits/9617437))
+* breaking; consume schema from editor-common and remove prosemirror-types ([9617437](https://bitbucket.org/atlassian/atlaskit/commits/9617437))
+## 51.1.1 (2017-10-18)
+
+* bug fix; "Insert link" scrolls to top of page (issues closed: ed-2992) ([eee5586](https://bitbucket.org/atlassian/atlaskit/commits/eee5586))
 ## 51.1.0 (2017-10-18)
 
 

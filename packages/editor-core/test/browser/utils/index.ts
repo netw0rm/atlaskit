@@ -3,7 +3,7 @@ import {
   doc, code_block, code, p, strong, makeEditor, panel, blockquote
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
-import * as commands from '../../../src/commands';
+import { toggleMark } from 'prosemirror-commands';
 
 import { isMarkTypeAllowedInCurrentSelection, areBlockTypesDisabled, moveCursorToTheEnd } from '../../../src/utils';
 
@@ -19,7 +19,7 @@ describe('@atlaskit/editore-core/utils', () => {
         it('returns true if given mark type is not excluded', () => {
           const { editorView } = editor(doc(p('{<>}')));
           const { mentionQuery, strong } = editorView.state.schema.marks;
-          commands.toggleMark(strong)(editorView.state, editorView.dispatch);
+          toggleMark(strong)(editorView.state, editorView.dispatch);
 
           let result = isMarkTypeAllowedInCurrentSelection(mentionQuery, editorView.state);
           expect(result).to.equal(true);
@@ -28,7 +28,7 @@ describe('@atlaskit/editore-core/utils', () => {
         it('returns false if given mark type is excluded', () => {
           const { editorView } = editor(doc(p('{<>}')));
           const { mentionQuery, code } = editorView.state.schema.marks;
-          commands.toggleMark(code)(editorView.state, editorView.dispatch);
+          toggleMark(code)(editorView.state, editorView.dispatch);
 
           let result = isMarkTypeAllowedInCurrentSelection(mentionQuery, editorView.state);
           expect(result).to.equal(false);

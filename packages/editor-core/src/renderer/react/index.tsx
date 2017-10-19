@@ -6,7 +6,7 @@ import {
   Mark,
   Node,
   Schema,
-} from '../../prosemirror';
+} from 'prosemirror-model';
 
 import {
   Serializer,
@@ -162,7 +162,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     }, [] as Mark[]);
   }
 
-  static fromSchema(schema: Schema<any, any>, providers?: ProviderFactory, eventHandlers?: EventHandlers): ReactSerializer {
+  static fromSchema(schema: Schema, providers?: ProviderFactory, eventHandlers?: EventHandlers): ReactSerializer {
     // TODO: Do we actually need the schema here?
     return new ReactSerializer(providers, eventHandlers);
   }

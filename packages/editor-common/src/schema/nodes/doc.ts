@@ -15,6 +15,7 @@ import { Definition as ApplicationCard } from './applicationCard';
 import { Definition as DecisionList } from './decision-list';
 import { Definition as TaskList } from './task-list';
 import { Table } from './tableNodes';
+import { Definition as ActionGroup } from './action-group';
 
 import { Definition as Text } from './text';
 import { Definition as HardBreak } from './hard-break';
@@ -39,7 +40,7 @@ import { Definition as TextColor } from '../marks/text-color';
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList | Table
+  DecisionList | TaskList | Table | ActionGroup
 >;
 
 /**
@@ -49,7 +50,7 @@ export type TopLevel = Array<
 export type TableCellContent = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList
+  DecisionList | TaskList | ActionGroup
 >;
 
 /**

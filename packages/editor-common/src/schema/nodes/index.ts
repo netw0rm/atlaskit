@@ -36,6 +36,8 @@ export {
   Attributes as ApplicationCardAttributes,
   AppCardAction,
 } from './applicationCard';
+export { actionGroup, Attributes as ActionGroupAttributes } from './action-group';
+export { action, Attributes as ActionAttributes, ActionGroupAction } from './action';
 export { decisionList } from './decision-list';
 export { decisionItem } from './decision-item';
 export { taskList } from './task-list';

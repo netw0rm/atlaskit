@@ -2,6 +2,8 @@ import { ComponentClass } from 'react';
 import { Node } from 'prosemirror-model';
 
 import ApplicationCard, { AppCardViewProps } from './applicationCard';
+import ActionGroup from './actionGroup';
+import Action from './action';
 import Blockquote from './blockquote';
 import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
@@ -28,6 +30,8 @@ import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 
 export const nodeToReact = {
+  'actionGroup': ActionGroup,
+  'action': Action,
   'applicationCard': ApplicationCard,
   'blockquote': Blockquote,
   'bulletList': BulletList,
@@ -150,6 +154,8 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
 export {
   AppCardViewProps,
   ApplicationCard,
+  ActionGroup,
+  Action,
   Blockquote,
   BulletList,
   CodeBlock,

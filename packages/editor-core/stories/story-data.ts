@@ -10,8 +10,8 @@ const toEmojiAttrs = (emoji) => {
 };
 
 const toEmojiId = (emoji) => {
-   const { shortName, id, fallback } = emoji;
-   return { shortName, id, fallback };
+  const { shortName, id, fallback } = emoji;
+  return { shortName, id, fallback };
 };
 
 export const grinEmojiAttrs = toEmojiAttrs(emojiTestData.grinEmoji);
@@ -26,6 +26,30 @@ export const document = {
   type: 'doc',
   version: 1,
   content: [
+
+    {
+      type: 'actionGroup',
+      attrs: {
+        localId: ''
+      },
+      content: Array.from(Array(7).keys()).map((index) => (
+        {
+          type: 'action',
+          attrs: {
+            localId: '',
+            text: `Approve ${index}`,
+            target: {
+              app: `expenseApp-${index}`,
+              key: `approveExpense-${index}`,
+            },
+            parameters: {
+              expenseId: `xxx-${index}`,
+            }
+          }
+        }
+      ))
+    },
+
     {
       type: 'paragraph',
       content: [
@@ -444,13 +468,13 @@ export const document = {
         {
           type: 'text',
           text: 'This is a line with '
-         },
-         {
+        },
+        {
           type: 'hardBreak'
-         },
-         {
-           type: 'text',
-           text: 'a hardbreak in it.'
+        },
+        {
+          type: 'text',
+          text: 'a hardbreak in it.'
         }
       ]
     },
@@ -591,7 +615,7 @@ int count = map.forEach(new IntIntProcedure()
    }
 }).count;
 System.out.println("There are " + count + " values >= 5");`
-        }
+}
       ],
       attrs: {
         language: 'javascript'

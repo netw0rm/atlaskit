@@ -8,6 +8,8 @@ export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
   nodes: [
     'doc',
+    'actionGroup',
+    'action',
     'applicationCard',
     'paragraph',
     'text',

@@ -2,6 +2,8 @@ import { createSchema } from '@atlaskit/editor-common';
 
 export default createSchema({
   nodes: [
+    'actionGroup',
+    'action',
     'applicationCard',
     'doc',
     'paragraph',

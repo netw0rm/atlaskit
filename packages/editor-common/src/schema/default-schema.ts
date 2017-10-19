@@ -3,6 +3,8 @@ import { Schema } from 'prosemirror-model';
 
 export const defaultSchema: Schema = createSchema({
   nodes: [
+    'actionGroup',
+    'action',
     'applicationCard',
     'doc',
     'paragraph',

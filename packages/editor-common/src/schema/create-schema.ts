@@ -41,6 +41,8 @@ import {
   tableHeader,
   tableRow,
   applicationCard,
+  actionGroup,
+  action,
   decisionList,
   decisionItem,
   taskList,
@@ -138,6 +140,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'taskItem', spec: taskItem },
   { name: 'inlineMacro', spec: inlineMacro },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'actionGroup', spec: actionGroup },
+  { name: 'action', spec: action }
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

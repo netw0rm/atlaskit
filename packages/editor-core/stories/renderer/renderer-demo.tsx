@@ -88,9 +88,12 @@ const eventHandlers = {
     }
   },
   applicationCard: {
-    onClick: action('onClick'),
-    onActionClick: action('onActionClick'),
+    onClick: action('onApplicationCardClick'),
+    onActionClick: action('onApplicationCardActionClick'),
   },
+  actionGroup: {
+    onClick: action('onActionGroupClick')
+  }
 };
 
 interface DemoRendererProps {

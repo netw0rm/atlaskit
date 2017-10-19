@@ -199,6 +199,25 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
 
   if (type) {
     switch (type) {
+      case 'actionGroup': {
+        return {
+          type,
+          content,
+          attrs: {
+            localId: attrs && attrs.localId || uuid(),
+          },
+        };
+      }
+      case 'action': {
+        return {
+          type,
+          content,
+          attrs: {
+            ...attrs,
+            localId: attrs && attrs.localId || uuid()
+          },
+        };
+      }
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details, actions, context } = attrs;

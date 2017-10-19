@@ -693,6 +693,66 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('actionGroup', () => {
+      it('should pass through attrs for actionGroup', () => {
+        const listAttrs = { localId: 'cheese' };
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'actionGroup', attrs: listAttrs, content: listContent });
+        expect(type).to.equal('actionGroup');
+        expect(attrs).to.deep.equal(listAttrs);
+        expect(content).to.deep.equal(listContent);
+      });
+
+      it('should generate localId for actionGroup if missing', () => {
+        const listContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'actionGroup', content: listContent });
+        expect(type).to.equal('actionGroup');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.localId).to.not.equal(undefined);
+        expect(content).to.deep.equal(listContent);
+      });
+
+      it('should pass through attrs for action', () => {
+        const itemAttrs = { localId: 'cheese' };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'action', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('action');
+        expect(attrs).to.deep.equal(itemAttrs);
+        expect(content).to.deep.equal(itemContent);
+      });
+
+      it('should generate localId for action if missing', () => {
+        const itemAttrs = { target: { app: 'app', key: 'key' } };
+        const itemContent = [
+          {
+            type: 'text',
+            text: 'content'
+          }
+        ];
+        const { type, attrs, content } = getValidNode({ type: 'action', attrs: itemAttrs, content: itemContent });
+        expect(type).to.equal('action');
+        expect(attrs).to.not.equal(undefined);
+        expect(attrs.target).to.equal(itemAttrs.target);
+        expect(attrs.localId).to.not.equal(undefined);
+        expect(content).to.deep.equal(itemContent);
+      });
+    });
+
     describe('decisions', () => {
       it('should pass through attrs for decisionList', () => {
         const listAttrs = { localId: 'cheese' };

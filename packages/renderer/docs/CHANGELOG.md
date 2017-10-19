@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 7.0.2 (2017-10-19)
+
+* bug fix; export default TS file for local development, export couple of functions for React r ([af88191](https://bitbucket.org/atlassian/atlaskit/commits/af88191))
 ## 7.0.1 (2017-10-19)
 
 * bug fix; copy all small files and validator from editor-core to renderer (issues closed: ed-3026) ([f86e146](https://bitbucket.org/atlassian/atlaskit/commits/f86e146))

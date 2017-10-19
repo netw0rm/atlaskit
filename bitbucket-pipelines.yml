@@ -96,7 +96,7 @@ pipelines:
             - ./build/bin/setup.sh
             - git fetch origin
             - git fetch
-            - git checkout master
+            - git checkout origin/master
             - git pull
             - yarn
             - cd packages/website

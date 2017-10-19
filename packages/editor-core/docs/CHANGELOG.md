@@ -1,5 +1,10 @@
 # @atlaskit/editor-core
 
+## 53.0.0 (2017-10-19)
+
+* breaking; JSON renderer is now JSON transformer ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+* breaking; move JSON Renderer into editor-core transformers (issues closed: ed-3024) ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+
 ## 52.0.0 (2017-10-19)
 
 * bug fix; bump editor-common ([7640450](https://bitbucket.org/atlassian/atlaskit/commits/7640450))

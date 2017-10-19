@@ -1,109 +1,163 @@
 // @flow
 import React, { Component } from 'react';
 
-import type { ComponentType, ElementType, PlacementType, PositionType } from '../types';
+import type { PlacementType, PositionType, SingleChild } from '../types';
 import { Tooltip as StyledTooltip } from '../styled/Tooltip';
 
 import Portal from './Portal';
-import TooltipMarshall from './Marshall';
+import TooltipMarshal from './Marshal';
 import Transition from './Transition';
-import Target from './Target';
 import { getPosition } from './utils';
 
 type Props = {|
-  children: ComponentType | ElementType,
-  description: string,
+  /** A single element, either Component or DOM node. */
+  children: SingleChild,
+  /** The content of the tooltip. */
+  content: string,
+  /** Function to be called when a mouse leaves the target. */
+  onMouseOut?: (MouseEvent) => void,
+  /** Function to be called when a mouse enters the target. */
+  onMouseOver?: (MouseEvent) => void,
+  /** Where the tooltip should appear relative to its target. */
   placement: PlacementType,
+  /** React <16.X requires a wrapping element. */
+  tag?: string,
 |};
 type State = {|
+  immediatelyHide: boolean,
+  immediatelyShow: boolean,
   isVisible: bool,
   placement: PlacementType,
   position: PositionType,
 |};
 
 // global tooltip marshall
-const marshall = new TooltipMarshall();
+const marshall = new TooltipMarshal();
 
 function getInitialState(props) {
   return {
+    immediatelyHide: false,
+    immediatelyShow: false,
     isVisible: false,
     placement: props.placement,
-    position: { left: 0, top: 0 },
+    position: null,
   };
 }
 
+/* eslint-disable react/sort-comp */
 export default class Tooltip extends Component {
-  props: Props // eslint-disable-line react/sort-comp
+  props: Props
   state: State = getInitialState(this.props)
-  static defaultProps = { placement: 'bottom' }
+  static defaultProps = {
+    placement: 'bottom',
+    tag: 'div',
+  }
 
-  handleTargetRef = (ref) => {
-    this.target = ref;
+  componentWillReceiveProps(nextProps) {
+    const { placement } = nextProps;
+
+    // handle rare case where placement is changed while visible
+    if (placement !== this.props.placement) {
+      this.setState({ placement, position: null });
+    }
+  }
+
+  handleWrapperRef = (ref) => {
+    this.wrapper = ref;
   }
 
   handleMeasureRef = (tooltip) => {
     if (!tooltip) return;
 
-    const { placement } = this.props;
-    const { target } = this;
+    const { placement } = this.state;
+    const target = this.wrapper.children.length
+      ? this.wrapper.children[0]
+      : this.wrapper;
 
-    this.setState(getPosition({ placement, target, tooltip }));
+    // NOTE: getPosition returns
+    // placement Enum(top | left | bottom | right)
+    //   - adjusted for edge collision
+    // position: Object(left: number, top: number, position: 'fixed' | 'absolute')
+    //   - coordinates passed to Transition
+    this.setState(
+      getPosition({ placement, target, tooltip })
+    );
   }
 
   renderTooltip() {
-    const { description } = this.props;
-    const { immediate, isVisible, placement, position } = this.state;
+    const { content } = this.props;
+    const { immediatelyHide, immediatelyShow, isVisible, placement, position } = this.state;
 
+    // bail immediately when not visible
     if (!isVisible) return null;
 
-    // render node for measuring
+    // render node for measuring in alternate tree via portal
     if (!position) {
       return (
         <Portal>
           <StyledTooltip innerRef={this.handleMeasureRef} style={{ visibility: 'hidden' }}>
-            {description}
+            {content}
           </StyledTooltip>
         </Portal>
       );
     }
 
-    // render tooltip when position available
-    const transitionProps = { immediate, placement, position };
+    // render and animate tooltip when position available
+    const transitionProps = { immediatelyHide, immediatelyShow, placement, position };
     return (
       <Transition {...transitionProps}>
-        {description}
+        {content}
       </Transition>
     );
   }
 
-  show = ({ immediate } = { immediate: false }) => {
-    this.setState({ immediate, isVisible: true, position: null });
+  show = ({ immediate }) => {
+    this.setState({ immediatelyShow: immediate, isVisible: true, position: null });
   }
-  hide = ({ immediate } = { immediate: false }) => {
-    this.setState({ immediate, isVisible: false, position: null });
+  hide = ({ immediate }) => {
+    // Update state twice to allow for the updated immediate prop to pass through
+    // to the Transition component before the tooltip is removed
+    this.setState({ immediatelyHide: immediate }, () => {
+      this.setState({ isVisible: false, position: null });
+    });
   }
 
-  handleMouseEnter = () => {
+  handleMouseOver = (event) => {
+    const { onMouseOver } = this.props;
+
+    // bail if over the wrapper, we only want to target the first child.
+    if (event.target === this.wrapper) return;
+
     marshall.show(this);
+
+    if (onMouseOver) onMouseOver(event);
   }
-  handleMouseLeave = () => {
+  handleMouseOut = (event) => {
+    const { onMouseOut } = this.props;
+
+    // bail if over the wrapper, we only want to target the first child.
+    if (event.target === this.wrapper) return;
+
     marshall.hide(this);
+
+    if (onMouseOut) onMouseOut(event);
   }
 
   render() {
-    const { children } = this.props;
+    // NOTE: removing `placement` from spread props
+    // eslint-disable-next-line no-unused-vars
+    const { children, placement, tag: Tag, ...rest } = this.props;
 
     return (
-      <div>
-        <Target
-          innerRef={this.handleTargetRef}
-          onMouseEnter={this.handleMouseEnter}
-          onMouseLeave={this.handleMouseLeave}
-        >
-          {children}
-        </Target>
+      <Tag
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
+        ref={this.handleWrapperRef}
+        {...rest}
+      >
+        {children}
         {this.renderTooltip()}
-      </div>
+      </Tag>
     );
   }
 }

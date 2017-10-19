@@ -38,8 +38,9 @@ const POSITIONS = {
 storiesOf(name, module)
   .add('Placement', () => (
     <Container pad>
-      <PositionExample />
-      <p>Hover the target to display, click the to change position.</p>
+      <PositionExample color="purple" />
+      <p>Mouse over the target to display, click the to change placement.</p>
+      <p>(rendered in a portal, before body close)</p>
     </Container>
   ))
   .add('Flip Behavior', () => (
@@ -47,8 +48,8 @@ storiesOf(name, module)
       <Center pad>
         {Object.keys(POSITIONS).map(p => (
           <div key={p} style={POSITIONS[p]}>
-            <Tooltip position={p} description={`Position "${p}"`} isVisible>
-              <Target>Target</Target>
+            <Tooltip placement={p} content={`Position "${p}"`}>
+              <Target color="blue">Target</Target>
             </Tooltip>
           </div>
         ))}
@@ -62,8 +63,9 @@ storiesOf(name, module)
   .add('Layer Manager', () => (
     <LayerManager>
       <Container pad>
-        <PositionExample />
-        <p>Hover the target to display, click the to change position.</p>
+        <PositionExample color="teal" />
+        <p>Mouse over the target to display, click the to change placement.</p>
+        <p>(rendered in the <em>last</em> slot of <code>@atlaskit/layer-manager</code>)</p>
       </Container>
     </LayerManager>
   ))
@@ -71,21 +73,54 @@ storiesOf(name, module)
     <Container pad>
       <Spacer style={{ height: 140 }}>
         <Box>
-          <PositionExample />
+          <PositionExample color="green" />
         </Box>
         <p>The parent is <code>postion: relative;</code></p>
       </Spacer>
       <Spacer style={{ height: 140 }}>
         <Box position="absolute">
-          <PositionExample />
+          <PositionExample color="yellow" />
         </Box>
         <p style={{ position: 'relative', top: 150 }}>The parent is <code>postion: absolute;</code></p>
       </Spacer>
       <Spacer style={{ height: 140 }}>
         <Box position="fixed">
-          <PositionExample />
+          <PositionExample color="red" />
         </Box>
         <p style={{ position: 'relative', top: 150 }}>The parent is <code>postion: fixed;</code></p>
       </Spacer>
     </Container>
-  ));
+  ))
+  .add('Hover Intent', () => (
+    <Container pad>
+      <p>
+        Tooltips should only appear when the user has paused on the target element.
+        They should remain visible if the user briefly moves the mouse off and back on
+        to the target.
+      </p>
+      <p>
+        Similarly tooltips should not immediately disappear, unless the user hovers
+        over another element with a tooltip.
+      </p>
+      <div style={{ display: 'flex', margin: '20px 0' }}>
+        <Tooltip content="Content 1" placement="top">
+          <Target color="purple" style={{ marginRight: 8 }}>Target 1</Target>
+        </Tooltip>
+        <Tooltip content="Content 2" placement="top">
+          <Target color="blue" style={{ marginRight: 8 }}>Target 2</Target>
+        </Tooltip>
+        <Tooltip content="Content 3" placement="top">
+          <Target color="teal" style={{ marginRight: 8 }}>Target 3</Target>
+        </Tooltip>
+        <Tooltip content="Content 4" placement="top">
+          <Target color="green">Target 4</Target>
+        </Tooltip>
+      </div>
+      <ol>
+        <li>Mouse over, then off, a single target for a fade transition.</li>
+        <li>Mouse between each target for an immediate transition.</li>
+        <li>Mouse over, off briefly, then back over &mdash; there will be no transition.</li>
+      </ol>
+    </Container>
+  ))
+;

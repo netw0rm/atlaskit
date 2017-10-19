@@ -1,94 +1,108 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import Tip, { TooltipTarget } from '../../src/styled/Tooltip';
+import React from "react";
+import { shallow, mount } from "enzyme";
+import Tip, { TooltipTarget } from "../../src/styled/Tooltip";
 
 // Testing the dumb component
-import { TooltipStateless as Tooltip } from '../../src';
+import { TooltipStateless as Tooltip } from "../../src";
 
-describe('Tooltip', () => {
-  it('should be possible to create a component', () => {
+describe("Tooltip", () => {
+  it("should be possible to create a component", () => {
     const wrapper = shallow(<Tooltip />);
     expect(wrapper).not.toBe(undefined);
   });
 
-  describe('placement prop', () => {
-    it('should be reflected into Layers placement prop when Tooltip is isVisible', () => {
-      const wrapper = shallow(<Tooltip placement="bottom" isVisible><div>Foo</div></Tooltip>);
+  describe("placement prop", () => {
+    it("should be reflected into Layers placement prop when Tooltip is isVisible", () => {
+      const wrapper = shallow(
+        <Tooltip placement="bottom" isVisible>
+          <div>Foo</div>
+        </Tooltip>
+      );
 
-      expect(wrapper.find('Layer').prop('placement')).toBe('bottom center');
+      expect(wrapper.find("Layer").prop("placement")).toBe("bottom center");
     });
   });
 
-  describe('description prop', () => {
-    it('should be reflected in the Layer content prop when Tooltip is isVisible', () => {
-      const wrapper = shallow(<Tooltip description="Some words!" isVisible><div>Foo</div></Tooltip>);
+  describe("content prop", () => {
+    it("should be reflected in the Layer content prop when Tooltip is isVisible", () => {
+      const wrapper = shallow(
+        <Tooltip content="Some words!" isVisible>
+          <div>Foo</div>
+        </Tooltip>
+      );
 
-      const layer = wrapper.find('Layer');
+      const layer = wrapper.find("Layer");
       expect(layer.length).toBeGreaterThan(0);
 
       // have to wrap the prop in shallow so that we can run assertions against it.
-      const layerContentProp = shallow(layer.prop('content'));
+      const layerContentProp = shallow(layer.prop("content"));
       expect(layerContentProp).not.toBe(undefined);
-      expect(layerContentProp.text()).toBe('Some words!');
+      expect(layerContentProp.text()).toBe("Some words!");
     });
 
-    it('should not be reflected in the Layer content prop when Tooltip is not isVisible', () => {
-      const wrapper = shallow(<Tooltip description="Some words!"><div>Foo</div></Tooltip>);
+    it("should not be reflected in the Layer content prop when Tooltip is not isVisible", () => {
+      const wrapper = shallow(
+        <Tooltip content="Some words!">
+          <div>Foo</div>
+        </Tooltip>
+      );
 
-      const layer = wrapper.find('Layer');
+      const layer = wrapper.find("Layer");
       expect(layer.length).toBeGreaterThan(0);
-      expect(layer.prop('content')).toBe(null);
+      expect(layer.prop("content")).toBe(null);
     });
   });
 
-  describe('children', () => {
-    const wrapper = shallow(<Tooltip><div id="shouldBeRendered">Target</div></Tooltip>);
+  describe("children", () => {
+    const wrapper = shallow(
+      <Tooltip>
+        <div id="shouldBeRendered">Target</div>
+      </Tooltip>
+    );
 
-    it('should be rendered by Tooltip', () => {
-      expect(wrapper.find('#shouldBeRendered').length).toBe(1);
+    it("should be rendered by Tooltip", () => {
+      expect(wrapper.find("#shouldBeRendered").length).toBe(1);
     });
   });
 
-  describe('onMouseEnter callback', () => {
-    it('should be called when a mouse enters', () => {
+  describe("onMouseEnter callback", () => {
+    it("should be called when a mouse enters", () => {
       const spy = jest.fn();
       const wrapper = shallow(<Tooltip onMouseEnter={spy} />);
-      wrapper.find(TooltipTarget).simulate('mouseEnter');
+      wrapper.find(TooltipTarget).simulate("mouseEnter");
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('should not be called if the tooltip content is hovered (sanity check)', () => {
+    it("should not be called if the tooltip content is hovered (sanity check)", () => {
       const spy = jest.fn();
-      const wrapper = mount(<Tooltip isVisible onMouseEnter={spy} description="Tooltip text" />);
-      wrapper.find(Tip).simulate('mouseOver');
+      const wrapper = mount(
+        <Tooltip isVisible onMouseOver={spy} content="Tooltip text" />
+      );
+      wrapper.find(Tip).simulate("mouseOver");
       expect(spy).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe('onMouseLeave callback', () => {
-    it('should be called after the mouse leaves', () => {
+  describe("onMouseLeave callback", () => {
+    it("should be called after the mouse leaves", () => {
       const spy = jest.fn();
       const wrapper = shallow(<Tooltip onMouseLeave={spy} />);
-      wrapper.find(TooltipTarget).simulate('mouseLeave');
+      wrapper.find(TooltipTarget).simulate("mouseLeave");
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 });
 
-describe('provide your own target', () => {
-  it('should accept a custom target', () => {
-    const NewTarget = (props) => <div {...props} />;
+describe("provide your own target", () => {
+  it("should accept a custom target", () => {
+    const NewTarget = props => <div {...props} />;
     const spy = jest.fn();
     const wrapper = mount(
-      <Tooltip
-        description="Tooltip text"
-        target={NewTarget}
-        onMouseEnter={spy}
-      >
+      <Tooltip description="Tooltip text" target={NewTarget} onMouseEnter={spy}>
         <div>Foo</div>
       </Tooltip>
     );
-    wrapper.find(NewTarget).simulate('mouseEnter');
+    wrapper.find(NewTarget).simulate("mouseEnter");
     expect(spy).toHaveBeenCalledTimes(1);
   });
 });

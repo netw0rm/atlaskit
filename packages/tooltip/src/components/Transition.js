@@ -6,7 +6,8 @@ import type { PlacementType } from '../types';
 
 type Props = {|
   children: string,
-  immediate: boolean,
+  immediatelyHide: boolean,
+  immediatelyShow: boolean,
   placement: PlacementType,
   // eslint-disable-next-line react/no-unused-prop-types
   position: { left: number, top: number },
@@ -16,18 +17,20 @@ class Tip extends PureComponent {
   props: Props // eslint-disable-line react/sort-comp
 
   render() {
-    // NOTE: `in` & `style` are NOT public API
-    // eslint-disable-next-line react/prop-types
-    const { children, immediate, in: transitionIn, placement, position } = this.props;
-    const { left, top } = position;
+    // NOTE: `in` is NOT public API
+    const {
+      in: transitionIn, // eslint-disable-line react/prop-types
+      children, immediatelyHide, immediatelyShow, placement, position,
+    } = this.props;
 
     return (
       <Slide
         component={Tooltip}
-        immediate={immediate}
+        immediatelyHide={immediatelyHide}
+        immediatelyShow={immediatelyShow}
         in={transitionIn}
         placement={placement}
-        style={{ left, top }}
+        style={position}
       >
         {children}
       </Slide>

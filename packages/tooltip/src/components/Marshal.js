@@ -1,12 +1,13 @@
 const SHOW_DELAY = 300;
 const HIDE_DELAY = 300;
 
-export default class TooltipMarshall {
+export default class TooltipMarshal {
   constructor() {
     this.queuedForShow = null;
     this.queuedForHide = null;
     this.visibleTooltip = null;
     this.showTimeout = null;
+    this.hideTimeout = null;
   }
   show(tooltip) {
     // if the tooltip is already queued for show, don't interfere
@@ -44,8 +45,9 @@ export default class TooltipMarshall {
 
     this.showTimeout = setTimeout(() => {
       this.queuedForShow = null;
+      this.showTimeout = null;
       this.visibleTooltip = tooltip;
-      tooltip.show();
+      tooltip.show({ immediate: false });
     }, SHOW_DELAY);
   }
   clearShowTimeout() {
@@ -71,8 +73,9 @@ export default class TooltipMarshall {
 
     this.hideTimeout = setTimeout(() => {
       this.queuedForHide = null;
+      this.hideTimeout = null;
       this.visibleTooltip = null;
-      tooltip.hide();
+      tooltip.hide({ immediate: false });
     }, HIDE_DELAY);
   }
   clearHideTimeout() {

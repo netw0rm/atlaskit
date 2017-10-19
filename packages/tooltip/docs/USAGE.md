@@ -53,7 +53,7 @@ function handleMouseOut() {
 function renderButtonInContainer() {
   ReactDOM.render(<div>
     <Tooltip
-      description="Opens the user preferences screen in a new window"
+      content="Opens the user preferences screen in a new window"
       placement="bottom"
       visible={tooltipVisibleState}
       onMouseOver={handleMouseOver}
@@ -87,7 +87,7 @@ Obviously your state would normally be stored in a component or value store.
 * Properties
 
     *  [tooltip.position](#Tooltip+position) : <code>string</code>
-    *  [tooltip.description](#Tooltip+description) : <code>string</code>
+    *  [tooltip.content](#Tooltip+content) : <code>string</code>
     *  [tooltip.visible](#Tooltip+visible) : <code>boolean</code>
 
 <a name="new_Tooltip_new"></a>
@@ -97,7 +97,7 @@ React component used to display floating tooltips next to a component.
 
 **HTML Example**
 ```js
-<Tooltip description="Foo!" placement="right"><div>Foo</div></Tooltip>
+<Tooltip content="Foo!" placement="right"><div>Foo</div></Tooltip>
 ```
 <a name="Tooltip+position"></a>
 
@@ -108,9 +108,9 @@ Allowed values: top, bottom, left and right.
 
 **Kind**: instance property of <code>[Tooltip](#Tooltip)</code>
 **Default**: <code>&quot;bottom&quot;</code>
-<a name="Tooltip+description"></a>
+<a name="Tooltip+content"></a>
 
-### tooltip.description : <code>string</code>
+### tooltip.content : <code>string</code>
 The text to display in the tooltip when a user hovers over the element.
 
 **Kind**: instance property of <code>[Tooltip](#Tooltip)</code>

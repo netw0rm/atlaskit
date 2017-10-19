@@ -48,7 +48,7 @@ class PerfTest extends Component {
     const items = [];
     for (let i = 1; i <= count; i++) {
       items.push(
-        <Tooltip key={i} description="Tooltip Content" placement="right">
+        <Tooltip key={i} content="Tooltip Content" placement="right">
           <button>Hover Me</button>
         </Tooltip>
       );

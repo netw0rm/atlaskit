@@ -156,7 +156,8 @@ describe('<QuickSearch />', () => {
       });
       it('should not fire if previous search term was not empty', () => {
         // Set up non-empty-query state.
-        render({ value: 'hello' });
+        render();
+        wrapper.setProps({ value: 'hello' });
         // Clear events fired from mounting
         onAnalyticsEventSpy.mockReset();
 

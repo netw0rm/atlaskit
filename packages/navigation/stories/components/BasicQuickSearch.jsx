@@ -205,8 +205,14 @@ const availableResultTypes = {
   room: RoomResult,
 };
 
-const mapResultsDataToComponents = resultData =>
-  resultData.map(group => (
+const mapResultsDataToComponents = resultData => {
+  console.log(resultData);
+  if (!resultData || !resultData.length) {
+    // return <i>Nothin` to see here</i>;
+    return 'Nothin` to see here';
+  }
+
+  return resultData.map(group => (
     <AkNavigationItemGroup title={group.title} key={group.title}>
       {group.items.map((props) => {
         const Result = availableResultTypes[props.type];
@@ -220,6 +226,7 @@ const mapResultsDataToComponents = resultData =>
       })}
     </AkNavigationItemGroup>
   ));
+};
 
 function contains(string, query) {
   return string.toLowerCase().indexOf(query.toLowerCase()) > -1;

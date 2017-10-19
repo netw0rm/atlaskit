@@ -1,9 +1,11 @@
-import { InputRule, inputRules, Plugin, Schema, Transaction, MarkType } from '../../prosemirror';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
+import { Schema, MarkType } from 'prosemirror-model';
+import { Plugin, Transaction } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { transformToCodeAction } from './transform-to-code';
 import { InputRuleHandler, createInputRule } from '../utils';
 
-function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number): InputRuleHandler<any> {
+function addMark(markType: MarkType, schema: Schema, charSize: number): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
     const to = end;
     // in case of *string* pattern it matches the text from beginning of the paragraph,
@@ -15,6 +17,14 @@ function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number)
     // expected result: should ignore special characters inside "code"
     if (state.schema.marks.code && state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
       return;
+    }
+
+    // fixes autoformatting in heading nodes: # Heading *bold*
+    // expected result: should not autoformat *bold*; <h1>Heading *bold*</h1>
+    if (state.doc.resolve(from).sameParent(state.doc.resolve(to))) {
+      if (!state.doc.resolve(from).parent.contentMatchAt(0).allowsMark(markType)) {
+        return;
+      }
     }
 
     analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
@@ -35,14 +45,21 @@ function addMark(markType: MarkType, schema: Schema<any, any>, charSize: number)
   };
 }
 
-function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): InputRuleHandler<any> {
+function addCodeMark(markType: MarkType, schema: Schema, specialChar: string): InputRuleHandler {
   return (state, match, start, end): Transaction | undefined => {
+    // fixes autoformatting in heading nodes: # Heading `bold`
+    // expected result: should not autoformat *bold*; <h1>Heading `bold`</h1>
+    if (state.doc.resolve(start).sameParent(state.doc.resolve(end))) {
+      if (!state.doc.resolve(start).parent.contentMatchAt(0).allowsMark(markType)) {
+        return;
+      }
+    }
     analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
     return transformToCodeAction(state, start, end).delete(start, start + specialChar.length).removeStoredMark(markType);
   };
 }
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.marks.strong) {

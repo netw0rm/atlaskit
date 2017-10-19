@@ -5,7 +5,7 @@ import Spinner from '@atlaskit/spinner';
 
 import FieldBase, { FieldBaseStateless } from '../../src';
 
-import { Content } from '../../src/styled/Content';
+import { ChildWrapper, Content } from '../../src/styled/Content';
 import { WarningIcon } from '../../src/components/ValidationElement';
 
 const defaultProps = {
@@ -82,19 +82,20 @@ describe('ak-field-base', () => {
       });
     });
 
-    describe('isFocused prop = true AND isInvalid prop = true', () =>
+    describe('isFocused prop = true AND isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBaseStateless {...defaultProps} isFocused isInvalid />);
         expect(wrapper.find(Content).prop('isFocused')).toBe(true);
         expect(wrapper.find(Content).prop('invalid')).toBe(false);
-      })
-    );
+      });
+    });
 
     describe('isCompact prop = true', () => {
-      it('should render the content with the compact prop', () =>
-        expect(shallow(<FieldBaseStateless {...defaultProps} isCompact />)
-          .find(Content).prop('compact')).toBe(true)
-      );
+      it('should render the content with the compact prop', () => {
+        const wrapper = shallow(<FieldBaseStateless {...defaultProps} isCompact />);
+        expect(wrapper.find(ChildWrapper).props().compact).toBe(true);
+        expect(wrapper.find(Content).props().compact).toBe(true);
+      });
     });
 
     describe('isDialogOpen prop', () => {

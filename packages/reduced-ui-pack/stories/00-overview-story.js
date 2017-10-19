@@ -24,6 +24,8 @@ const OverviewExample = `<!DOCTYPE html>
 storiesOf(name, module)
   .add('Overview', () => (
     <Readme component={name} description={description}>
-      <Code code={OverviewExample} />
+      <Code>
+        {OverviewExample}
+      </Code>
     </Readme>
   ));

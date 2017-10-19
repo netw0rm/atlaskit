@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { EmojiState } from '../../plugins/emojis';
-import { EditorView, PluginKey } from '../../prosemirror';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import ToolbarButton from '../ToolbarButton';

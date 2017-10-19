@@ -3,7 +3,7 @@ import { EditorPlugin } from '../../types';
 import { stateKey as blockTypeStateKey, BlockTypeState } from '../../../plugins/block-type';
 import { stateKey as mediaStateKey, MediaPluginState } from '../../../plugins/media';
 import { stateKey as tablesStateKey, TableState } from '../../../plugins/table';
-import { pluginKey as macroStateKey, MacroState } from '../macro';
+import { pluginKey as macroStateKey, MacroState } from '../macro/plugin';
 import { insertMacroFromMacroBrowser } from '../macro/actions';
 import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';

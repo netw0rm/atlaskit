@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { MediaState } from '@atlaskit/media-core';
 import { ActivityProvider } from '@atlaskit/activity';
-import { EditorView, Node, Schema } from '../../prosemirror';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { ErrorReportingHandler } from '../../utils/error-reporter';
 import { AnalyticsHandler } from '../../analytics';
 import { CollabEditProvider } from '../plugins/collab-edit';
@@ -32,7 +33,6 @@ export interface EditorProps {
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
   allowUnsupportedContent?: boolean;
-  allowInlineCommentMarker?: boolean;
   allowPanel?: boolean;
   allowInlineMacro?: boolean;
 
@@ -50,7 +50,7 @@ export interface EditorProps {
   mediaProvider?: Promise<any>;
   macroProvider?: Promise<MacroProvider>;
   waitForMediaUpload?: boolean;
-  contentTransformerProvider?: (schema: Schema<any, any>) => Transformer<string>;
+  contentTransformerProvider?: (schema: Schema) => Transformer<string>;
 
   maxHeight?: number;
   maxContentSize?: number;

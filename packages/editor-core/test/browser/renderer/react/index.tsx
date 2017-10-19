@@ -79,7 +79,7 @@ describe('Renderer - ReactSerializer', () => {
 
       const textNodes = [
         schema.text('Hello '),
-        schema.text('World!', strong.create())
+        schema.text('World!', [strong.create()])
       ];
 
       const output = ReactSerializer.buildMarkStructure(textNodes);

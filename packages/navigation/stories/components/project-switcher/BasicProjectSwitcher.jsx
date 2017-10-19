@@ -6,7 +6,7 @@ type Props = {|
   icon: ReactElement,
   text: string,
   subText?: string,
-  children: ReactElement,
+  children?: ReactElement,
   defaultDropdownOpen?: boolean,
   isDropdownOpen?: boolean,
   isDropdownLoading?: boolean,

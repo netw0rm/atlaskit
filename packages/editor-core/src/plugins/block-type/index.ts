@@ -1,11 +1,6 @@
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Plugin,
-  Node,
-  PluginKey,
-} from '../../prosemirror';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 import {
   NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
@@ -28,7 +23,7 @@ export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
  */
 export class BlockTypeState {
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
@@ -37,7 +32,7 @@ export class BlockTypeState {
   availableWrapperBlockTypes: BlockType[] = [];
   isCodeBlock: boolean = false;
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
     this.state = state;
 
@@ -156,7 +151,7 @@ export const stateKey = new PluginKey('blockTypePlugin');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new BlockTypeState(state);
     },
     apply(tr, pluginState: BlockTypeState, oldState, newState) {
@@ -178,7 +173,7 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

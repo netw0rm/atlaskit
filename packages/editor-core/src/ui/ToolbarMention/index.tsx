@@ -1,8 +1,9 @@
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { EditorView, PluginKey } from '../../prosemirror';
 import { MentionsState } from '../../plugins/mentions';
 import { ToolbarButton } from './styles';
 

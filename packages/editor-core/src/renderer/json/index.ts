@@ -1,7 +1,7 @@
-import { Node as PMNode, Schema, Fragment } from '../../prosemirror';
+import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
+import { mediaToJSON, mentionToJSON } from '@atlaskit/editor-common';
+
 import { Serializer } from '../serializer';
-import { toJSON as mediaToJSON } from '../../schema/nodes/media';
-import { toJSON as mentionToJSON } from '../../schema/nodes/mention';
 
 export type JSONNode = {
   type: string,
@@ -63,7 +63,7 @@ export default class JSONSerializer implements Serializer<JSONDocNode> {
     };
   }
 
-  static fromSchema(schema: Schema<any, any>): JSONSerializer {
+  static fromSchema(schema: Schema): JSONSerializer {
     return new JSONSerializer();
   }
 }

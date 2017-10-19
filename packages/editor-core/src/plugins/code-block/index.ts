@@ -1,13 +1,7 @@
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Node,
-  Plugin,
-  PluginKey,
-  NodeViewDesc,
-} from '../../prosemirror';
-import * as commands from '../../commands';
+import { setBlockType } from 'prosemirror-commands';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import keymapPlugin from './keymaps';
 
 export type CodeMirrorFocusSubscriber = (uniqueId: string | undefined) => any;
@@ -24,11 +18,11 @@ export class CodeBlockState {
   activeCodeBlock?: Node;
   editorFocused: boolean = false;
 
-  private state: EditorState<any>;
+  private state: EditorState;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private focusHandlers: CodeMirrorFocusSubscriber[] = [];
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
     this.focusHandlers = [];
     this.state = state;
@@ -53,7 +47,7 @@ export class CodeBlockState {
 
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      commands.setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
+      setBlockType(view.state.schema.nodes.codeBlock, { language, uniqueId: this.uniqueId })(view.state, view.dispatch);
       if (this.focusHandlers.length > 0) {
         this.triggerFocus();
       } else {
@@ -79,7 +73,8 @@ export class CodeBlockState {
     this.supportedLanguages = supportedLanguages;
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
+  // TODO: Fix types (ED-2987)
+  update(state: EditorState, docView: EditorView & { docView?: any }, domEvent: boolean = false) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
     if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
@@ -103,7 +98,8 @@ export class CodeBlockState {
     this.focusHandlers.forEach(cb => cb(this.uniqueId));
   }
 
-  private activeCodeBlockElement(docView: NodeViewDesc): HTMLElement {
+  // TODO: Fix types (ED-2987)
+  private activeCodeBlockElement(docView: any): HTMLElement {
     const offset = this.nodeStartPos();
     const { node } = docView.domFromPos(offset);
 
@@ -128,7 +124,7 @@ export const stateKey = new PluginKey('codeBlockPlugin');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new CodeBlockState(state);
     },
     apply(tr, pluginState: CodeBlockState, oldState, newState) {
@@ -140,23 +136,24 @@ export const plugin = new Plugin({
     }
   },
   key: stateKey,
-  view: (editorView: EditorView) => {
+  // TODO: Fix types (ED-2987)
+  view: (editorView: EditorView & { docView?: any }) => {
     stateKey.getState(editorView.state).update(editorView.state, editorView.docView);
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
         stateKey.getState(view.state).update(view.state, view.docView);
       }
     };
   },
   props: {
-    handleClick(view: EditorView, event) {
+    handleClick(view: EditorView & { docView?: any }, event) {
       stateKey.getState(view.state).update(view.state, view.docView, true);
       return false;
     },
     onFocus(view: EditorView, event) {
       stateKey.getState(view.state).updateEditorFocused(true);
     },
-    onBlur(view: EditorView, event) {
+    onBlur(view: EditorView & { docView?: any }, event) {
       const pluginState = stateKey.getState(view.state);
       pluginState.updateEditorFocused(false);
       pluginState.update(view.state, view.docView, true);
@@ -164,7 +161,7 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

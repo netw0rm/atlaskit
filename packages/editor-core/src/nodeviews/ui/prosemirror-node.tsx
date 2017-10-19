@@ -1,13 +1,11 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { ReactComponentConstructor } from './';
 import wrapComponentWithClickArea from './wrapper-click-area';
 import { ReactNodeViewComponents } from '../factory';
-import {
-  Node as PMNode,
-  EditorView,
-} from '../../prosemirror';
 import ProviderFactory from '../../providerFactory';
 import { stateKey as reactNodeViewStateKey } from '../../plugins/react-nodeview';
 

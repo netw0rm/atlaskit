@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { EditorView } from 'prosemirror-view';
 import ProviderFactory from '../../../providerFactory';
 import { EditorAppearance } from '../../types';
-import { EditorView } from '../../../prosemirror';
 import { EventDispatcher } from '../../event-dispatcher';
 
 // tslint:disable-next-line:variable-name

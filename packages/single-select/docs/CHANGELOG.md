@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 2.0.3 (2017-10-18)
+
+* bug fix; updated icon dependency to fix IE 11 issues (issues closed: ak-3709) ([8e93274](https://bitbucket.org/atlassian/atlaskit/commits/8e93274))
 ## 2.0.2 (2017-10-16)
 
 * bug fix; disabled native autocomplete on the autocomplete component (issues closed: ak-3691) ([c4fd697](https://bitbucket.org/atlassian/atlaskit/commits/c4fd697))

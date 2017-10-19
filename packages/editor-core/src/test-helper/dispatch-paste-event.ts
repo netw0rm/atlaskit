@@ -1,4 +1,4 @@
-import { EditorView } from '../';
+import { EditorView } from 'prosemirror-view';
 import { TestingEditorView } from './types/prosemirror';
 import createEvent from './create-event';
 

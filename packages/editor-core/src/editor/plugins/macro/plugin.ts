@@ -1,50 +1,38 @@
-import {
-  Plugin,
-  PluginKey,
-  EditorView
-} from '../../../prosemirror';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { nodeViewFactory, MacroNode } from '../../../nodeviews';
 import { MacroProvider } from './types';
 import ProviderFactory from '../../../providerFactory';
-import * as assert from 'assert';
+import { setMacroProvider } from './actions';
 import { Dispatch } from '../../event-dispatcher';
 
 export const pluginKey = new PluginKey('macroPlugin');
 
 export type MacroState = {
-  macroProvider: MacroProvider | null
+  macroProvider: MacroProvider | null;
+  macroElement: HTMLElement | null;
 };
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
   state: {
-    init: () => ({ provider: null }),
+    init: () => ({ macroProvider: null, macroElement: null }),
 
-    apply(tr, pluginState: MacroState) {
+    apply(tr, state: MacroState) {
 
       const meta = tr.getMeta(pluginKey);
       if (meta) {
-        dispatch(pluginKey, { macroProvider: meta.provider } as MacroState);
+        const newState = {...state, ...meta};
+        dispatch(pluginKey, newState);
+
+        return newState;
       }
 
-      return pluginState;
+      return state;
     }
   },
   key: pluginKey,
   view: (view: EditorView) => {
-    providerFactory.subscribe('macroProvider', async (name, provider: Promise<MacroProvider>) => {
-      let resolvedProvider: MacroProvider | null;
-
-      try {
-        resolvedProvider = await provider;
-        assert(
-          resolvedProvider && resolvedProvider.openMacroBrowser,
-          `MacroProvider promise did not resolve to a valid instance of MacroProvider - ${resolvedProvider}`
-        );
-      } catch (err) { resolvedProvider = null; }
-
-      view.dispatch(view.state.tr.setMeta(pluginKey, { provider: resolvedProvider }));
-    });
-
+    providerFactory.subscribe('macroProvider', (name, provider: Promise<MacroProvider>) => setMacroProvider(view, name, provider));
     return {};
   },
   props: {

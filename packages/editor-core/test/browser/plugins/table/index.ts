@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
 import tableCommands from '../../../../src/plugins/table/commands';
 import { getColumnPos, getRowPos, getTablePos } from '../../../../src/plugins/table/utils';
-import { CellSelection, TableMap } from '../../../../src/prosemirror';
+import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   createEvent, chaiPlugin, doc, p, makeEditor, thEmpty, table, tr, td, th,
   tdEmpty, tdCursor, code_block, code, thCursor
@@ -255,7 +255,7 @@ describe('table plugin', () => {
             const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor, tdEmpty, tdEmpty))));
             plugin.props.onFocus!(editorView, event);
             pluginState.selectColumn(column);
-            const selection = editorView.state.selection as CellSelection;
+            const selection = (editorView.state.selection as any) as CellSelection;
             const map = TableMap.get(pluginState.tableNode!);
             const start = selection.$anchorCell.start(-1);
             const anchor = map.colCount(selection.$anchorCell.pos - start);
@@ -278,7 +278,7 @@ describe('table plugin', () => {
             const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
             plugin.props.onFocus!(editorView, event);
             pluginState.selectRow(row);
-            const selection = editorView.state.selection as CellSelection;
+            const selection = (editorView.state.selection as any) as CellSelection;
             const anchor = selection.$anchorCell.index(-1);
             const head = selection.$headCell.index(-1);
             expect(anchor).to.equal(row);
@@ -296,7 +296,7 @@ describe('table plugin', () => {
       const { plugin, pluginState, editorView } = editor(doc(p('text'), table(tr(tdCursor), tr(tdEmpty), tr(tdEmpty))));
       plugin.props.onFocus!(editorView, event);
       pluginState.selectTable();
-      const selection = editorView.state.selection as CellSelection;
+      const selection =(editorView.state.selection as any) as CellSelection;
       expect(selection.isRowSelection()).to.equal(true);
       expect(selection.isColSelection()).to.equal(true);
       editorView.destroy();

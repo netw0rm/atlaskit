@@ -1,13 +1,15 @@
-import { Schema, inputRules, Plugin, EditorState } from '../../prosemirror';
+import { inputRules } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
 const availablePanelTypes = ['info', 'note', 'tip', 'warning'];
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const panelInputRule = createInputRule(
     /^\{(\S+)\}$/, (
-      state: EditorState<any>,
+      state: EditorState,
       match: Object | undefined,
       start: number,
       end: number

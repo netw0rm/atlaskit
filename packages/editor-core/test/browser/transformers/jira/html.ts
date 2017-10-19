@@ -1,7 +1,7 @@
 import { markFactory, nodeFactory } from '../../../../src/test-helper';
 import { checkParse, checkEncode, checkParseEncodeRoundTrips, encode, parseWithSchema } from './_test-helpers';
 
-import { createJIRASchema } from '../../../../src/schema';
+import { createJIRASchema } from '@atlaskit/editor-common';
 import { expect } from 'chai';
 
 export const schema = createJIRASchema({ allowSubSup: true });
@@ -297,27 +297,47 @@ describe('JIRATransformer html:', () => {
       '<h6><a name="Readallaboutit%21"></a>Read all about it!</h6>',
       doc(h6('Read all about it!')));
 
-    checkParseEncodeRoundTrips('<h1> with nested <b>',
-      schema,
-      '<h1><a name="Readallaboutit%21"></a>Read all <b>about</b> it!</h1>',
-      doc(
-        h1(
-          'Read all ',
-          strong('about'),
-          ' it!'
-        )
-      ));
+    context('lossy transformation', () => {
+      checkEncode('<h1> with nested <b>',
+        schema,
+        doc(
+          h1(
+            'Read all about it!'
+          )
+        ),
+        '<h1><a name="Readallaboutit%21"></a>Read all about it!</h1>',
+      );
 
-    checkParseEncodeRoundTrips('<h1> with nested <b><em>',
-      schema,
-      '<h1><a name="Readallaboutit%21"></a>Read all <em><b>about</b></em> it!</h1>',
-      doc(
-        h1(
-          'Read all ',
-          em(strong('about')),
-          ' it!'
+      checkEncode('<h1> with nested <b><em>',
+        schema,
+        doc(
+          h1(
+            'Read all about it!'
+          )
+        ),
+        '<h1><a name="Readallaboutit%21"></a>Read all about it!</h1>'
+      );
+
+      checkParse('<h1> with nested <b>',
+        schema,
+        ['<h1><a name="Readallaboutit%21"></a>Read all <b>about</b> it!</h1>'],
+        doc(
+          h1(
+            'Read all about it!'
+          )
         )
-      ));
+      );
+
+      checkParse('<h1> with nested <b><em>',
+        schema,
+        ['<h1><a name="Readallaboutit%21"></a>Read all <b><em>about</em></b> it!</h1>'],
+        doc(
+          h1(
+            'Read all about it!'
+          )
+        )
+      );
+    });
   });
 
   describe('horizontal rule', () => {

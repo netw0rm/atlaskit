@@ -1,4 +1,4 @@
-import { PluginKey } from '../../prosemirror';
+import { PluginKey } from 'prosemirror-state';
 
 export interface Listeners { [name: string]: Listener[]; }
 export type Listener = (data: any) => void;
@@ -46,7 +46,7 @@ export function createDispatch(eventDispatcher: EventDispatcher): Dispatch {
       throw new Error('event name is required!');
     }
 
-    const event = typeof eventName === 'string' ? eventName : eventName.key;
+    const event = typeof eventName === 'string' ? eventName : (eventName as any).key;
     eventDispatcher.emit(event, data);
   };
 }

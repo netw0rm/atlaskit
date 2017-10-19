@@ -88,7 +88,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
 
   private handleKeydown = (e: KeyboardEvent<any>) => {
     if (e.keyCode === 13 && this.props.onSubmit) {
-      e.preventDefault(); // Prevent from submiting if an editor is inside a form.
+      e.preventDefault(); // Prevent from submitting if an editor is inside a form.
       this.props.onSubmit(this.input!.value);
     } else if (e.keyCode === 27 && this.props.onCancel) {
       this.props.onCancel();
@@ -101,10 +101,11 @@ export default class PanelTextInput extends PureComponent<Props, State> {
 
   private handleRef = (input: HTMLInputElement | null) => {
     if (input instanceof HTMLInputElement) {
-      if (this.props.autoFocus) {
-        input.focus();
-      }
       this.input = input;
+      if (this.props.autoFocus) {
+        // Need this to prevent jumping when we render TextInput inside Portal @see ED-2992
+        setTimeout(() => input.focus());
+      }
     } else {
       this.input = undefined;
     }

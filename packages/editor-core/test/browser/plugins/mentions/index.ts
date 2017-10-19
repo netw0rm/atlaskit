@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { mention as mentionNode } from '../../../../src';
+import { mention as mentionNode } from '@atlaskit/editor-common';
 import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions';
 import ProviderFactory from '../../../../src/providerFactory';
 import {

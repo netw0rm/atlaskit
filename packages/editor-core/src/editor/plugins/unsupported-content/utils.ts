@@ -1,7 +1,7 @@
-import { Schema, Node as PMNode } from '../../../prosemirror';
+import { Schema, Node as PMNode } from 'prosemirror-model';
 import { analyticsService, AnalyticsProperties } from '../../../analytics';
 
-export const traverseNode = (node: PMNode, schema: Schema<any, any>): void => {
+export const traverseNode = (node: PMNode, schema: Schema): void => {
   let cxhtml = '';
   const { unsupportedInline, unsupportedBlock } = schema.nodes;
   if (node.attrs && node.attrs.cxhtml) {

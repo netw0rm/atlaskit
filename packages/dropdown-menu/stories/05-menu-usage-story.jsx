@@ -191,13 +191,11 @@ storiesOf(name, module)
   .add('with loading state', () => (
     <StoryContainer>
       <p>This is an example of a dropdown that is loading.</p>
-      <p>
-        <DropdownMenu
-          defaultOpen
-          isLoading
-          triggerType="button"
-        />
-      </p>
+      <DropdownMenu
+        defaultOpen
+        isLoading
+        triggerType="button"
+      />
     </StoryContainer>
   ))
   .add('with customized trigger button', () => (
@@ -209,12 +207,10 @@ storiesOf(name, module)
   .add('with item tooltips', () => (
     <StoryContainer>
       <div style={{ width: 600, margin: '0 auto' }}>
-        <p>Try hovering over items in the dropdown</p>
-        <p>
-          <DropdownMenu triggerType="button" trigger="Open me">
-            {itemsWithTooltips}
-          </DropdownMenu>
-        </p>
+        <div>Try hovering over items in the dropdown</div>
+        <DropdownMenu triggerType="button" trigger="Open me">
+          {itemsWithTooltips}
+        </DropdownMenu>
       </div>
     </StoryContainer>
   ))

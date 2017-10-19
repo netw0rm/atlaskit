@@ -8,6 +8,7 @@ import ContainerNavigation from '../../src/components/js/ContainerNavigation';
 import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
 import Resizer from '../../src/components/js/Resizer';
 import Spacer from '../../src/components/js/Spacer';
+import SpacerInner from '../../src/components/styled/SpacerInner';
 import WithElectronTheme from '../../src/theme/with-electron-theme';
 import * as presets from '../../src/theme/presets';
 import {
@@ -412,6 +413,28 @@ describe('<Navigation />', () => {
       const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(false);
+    });
+
+    it('should fire onToggleStart when the isOpen prop changes', () => {
+      const onToggleStart = jest.fn();
+      const wrapper = mount(<Navigation onToggleStart={onToggleStart} isOpen />);
+      wrapper.setProps({ isOpen: false });
+      wrapper.setProps({ isOpen: true });
+      expect(onToggleStart).toHaveBeenCalledTimes(2);
+    });
+
+    it('should fire onToggleEnd callback when a transition event on the Spacer completes', () => {
+      const onToggleEnd = jest.fn();
+      const wrapper = mount(<Navigation onToggleEnd={onToggleEnd} isOpen />);
+
+      // Enzyme doesn't support `.simulate('transitionend')`
+      // so we have to reach in and trigger it ourselves
+      // https://github.com/airbnb/enzyme/issues/1258
+      const spacer = wrapper.find(SpacerInner);
+      const e = { target: spacer.getDOMNode() };
+      spacer.props().onTransitionEnd(e);
+
+      expect(onToggleEnd).toBeCalled();
     });
   });
 

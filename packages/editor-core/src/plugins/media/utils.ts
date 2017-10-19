@@ -2,25 +2,22 @@ import {
   atTheEndOfBlock, atTheBeginningOfBlock,
   endPositionOfParent, startPositionOfParent
 } from '../../utils';
-import {
-  EditorState,
-  NodeSelection,
-  ResolvedPos,
-} from '../../prosemirror';
+import { ResolvedPos } from 'prosemirror-model';
+import { EditorState, NodeSelection } from 'prosemirror-state';
 
-export const posOfMediaGroupNearby = (state: EditorState<any>): number | undefined => {
+export const posOfMediaGroupNearby = (state: EditorState): number | undefined => {
   return posOfParentMediaGroup(state)
     || posOfFollowingMediaGroup(state)
     || posOfPreceedingMediaGroup(state);
 };
 
-export const isSelectionNonMediaBlockNode = (state: EditorState<any>): boolean => {
+export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
   const { node } = state.selection as NodeSelection;
 
   return node && node.type !== state.schema.nodes.media && node.isBlock;
 };
 
-export const posOfPreceedingMediaGroup = (state: EditorState<any>): number | undefined => {
+export const posOfPreceedingMediaGroup = (state: EditorState): number | undefined => {
   if (!atTheBeginningOfBlock(state)) {
     return;
   }
@@ -28,14 +25,14 @@ export const posOfPreceedingMediaGroup = (state: EditorState<any>): number | und
   return posOfMediaGroupAbove(state, state.selection.$from);
 };
 
-const posOfFollowingMediaGroup = (state: EditorState<any>): number | undefined => {
+const posOfFollowingMediaGroup = (state: EditorState): number | undefined => {
   if (!atTheEndOfBlock(state)) {
     return;
   }
   return posOfMediaGroupBelow(state, state.selection.$to);
 };
 
-const posOfMediaGroupAbove = (state: EditorState<any>, $pos: ResolvedPos): number | undefined => {
+const posOfMediaGroupAbove = (state: EditorState, $pos: ResolvedPos): number | undefined => {
   let adjacentPos;
   let adjacentNode;
 
@@ -56,13 +53,13 @@ const posOfMediaGroupAbove = (state: EditorState<any>, $pos: ResolvedPos): numbe
  * Determine whether the cursor is inside empty paragraph
  * or the selection is the entire paragraph
  */
-export const isInsidePotentialEmptyParagraph = (state: EditorState<any>): boolean => {
+export const isInsidePotentialEmptyParagraph = (state: EditorState): boolean => {
   const { $from } = state.selection;
 
   return $from.parent.type === state.schema.nodes.paragraph && atTheBeginningOfBlock(state) && atTheEndOfBlock(state);
 };
 
-export const posOfMediaGroupBelow = (state: EditorState<any>, $pos: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfMediaGroupBelow = (state: EditorState, $pos: ResolvedPos, prepend: boolean = true): number | undefined => {
   let adjacentPos;
   let adjacentNode;
 
@@ -79,7 +76,7 @@ export const posOfMediaGroupBelow = (state: EditorState<any>, $pos: ResolvedPos,
   }
 };
 
-export const posOfParentMediaGroup = (state: EditorState<any>, $pos?: ResolvedPos, prepend: boolean = true): number | undefined => {
+export const posOfParentMediaGroup = (state: EditorState, $pos?: ResolvedPos, prepend: boolean = true): number | undefined => {
   const { $from } = state.selection;
   $pos = $pos || $from;
 

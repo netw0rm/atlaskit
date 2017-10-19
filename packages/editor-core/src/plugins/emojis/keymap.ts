@@ -1,8 +1,10 @@
-import { Schema, keymap, Plugin } from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../keymaps';
 import { EmojiState, stateKey } from './';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin {
+export function keymapPlugin(schema: Schema): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
@@ -73,4 +75,3 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
 }
 
 export default keymapPlugin;
-

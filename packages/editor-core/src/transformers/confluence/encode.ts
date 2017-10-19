@@ -1,16 +1,12 @@
-import {
-  Fragment,
-  Node as PMNode,
-  MediaAttributes,
-  Schema
-} from '../../';
+import { MediaAttributes } from '@atlaskit/editor-common';
+import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
 import { getNodeMarkOfType } from './utils';
 import { hexToRgb } from '../../utils/color';
 
-export default function encode(node: PMNode, schema: Schema<any, any>) {
+export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
   const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
 
@@ -170,9 +166,6 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
-          case schema.marks.inlineCommentMarker:
-            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
-            break;
           case schema.marks.textColor:
             elem = elem.appendChild(encodeTextColor(node, schema));
             break;
@@ -221,15 +214,7 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     return link;
   }
 
-  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
-    const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
-    const mark = getNodeMarkOfType(node, schema.marks.inlineCommentMarker);
-    const reference = mark ? mark.attrs.reference : '';
-    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
-    return marker;
-  }
-
-  function encodeTextColor(node: PMNode, schema: Schema<any, any>) {
+  function encodeTextColor(node: PMNode, schema: Schema) {
     const elem: HTMLSpanElement = doc.createElement('span');
     const mark = getNodeMarkOfType(node, schema.marks.textColor);
     const hexColor = mark ? mark.attrs.color : '';

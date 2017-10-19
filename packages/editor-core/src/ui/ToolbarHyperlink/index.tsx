@@ -1,9 +1,10 @@
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { addLink, tooltip } from '../../keymaps';
-import { EditorView, PluginKey } from '../../prosemirror';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import ToolbarButton from '../ToolbarButton';
 import { OuterContainer } from './styles';

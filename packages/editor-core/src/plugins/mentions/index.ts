@@ -9,7 +9,7 @@ import {
   PluginKey
 } from '../../prosemirror';
 import { inputRulePlugin } from './input-rules';
-import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 import { Node } from '../../prosemirror/prosemirror-model/node';
 import { Transaction } from '../../prosemirror/prosemirror-state/transaction';
@@ -225,7 +225,14 @@ export class MentionsState {
 
   insertMention(mentionData?: MentionDescription, queryMark?: { start, end }) {
     const { view } = this;
-    view.dispatch(this.generateInsertMentionTransaction(mentionData, queryMark));
+    const tr = this.generateInsertMentionTransaction(mentionData, queryMark);
+
+    // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
+    if (isChromeWithSelectionBug) {
+      document.getSelection().empty();
+    }
+
+    view.dispatch(tr);
   }
 
   generateInsertMentionTransaction(mentionData?: MentionDescription, queryMark?: { start, end }, tr?: Transaction): Transaction {
@@ -254,7 +261,6 @@ export class MentionsState {
         const mentionMark = state.schema.mark('mentionQuery', {active: true});
         transaction = transaction.removeMark(end, activeMentionQueryMark.end, mentionMark);
       }
-
       transaction = transaction.replaceWith(start, end, nodes);
 
       return transaction;

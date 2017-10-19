@@ -27,14 +27,14 @@ const hyperlinkPlugin: EditorPlugin = {
     return <ToolbarHyperlink editorView={editorView} pluginState={pluginState} />;
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance) {
+  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     if (appearance === 'message') {
       return null;
     }
 
     const renderNode = (providers) => {
       const pluginState = pluginKey.getState(editorView.state);
-      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} />;
+      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
     };
 
     return (

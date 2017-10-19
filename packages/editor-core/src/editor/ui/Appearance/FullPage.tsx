@@ -99,7 +99,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       eventDispatcher,
       providerFactory,
       contentComponents, primaryToolbarComponents,
-      customPrimaryToolbarComponents, customContentComponents
+      customPrimaryToolbarComponents, customContentComponents,
+      popupsMountPoint, popupsBoundariesElement
     } = this.props;
 
     return (
@@ -111,6 +112,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={primaryToolbarComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}
@@ -125,6 +128,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
               providerFactory={providerFactory}
               appearance={this.appearance}
               items={contentComponents}
+              popupsMountPoint={popupsMountPoint}
+              popupsBoundariesElement={popupsBoundariesElement}
             />
           </ContentArea>
         </ScrollContainer>

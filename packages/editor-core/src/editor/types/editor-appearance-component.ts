@@ -25,4 +25,7 @@ export interface EditorAppearanceComponentProps {
   customSecondaryToolbarComponents?: ReactElement;
 
   addonToolbarComponents?: ReactElement;
+
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }

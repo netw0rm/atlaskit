@@ -9,7 +9,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
 
 const insertBlockPlugin: EditorPlugin = {
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const isCommentAppearance = appearance === 'comment';
 
     return <WithPluginState
@@ -41,6 +41,9 @@ const insertBlockPlugin: EditorPlugin = {
 
           onInsertMacroFromMacroBrowser={insertMacroFromMacroBrowser}
           macroProvider={macroState.macroProvider}
+
+          popupsMountPoint={popupsMountPoint}
+          popupsBoundariesElement={popupsBoundariesElement}
         />
       )}
     />;

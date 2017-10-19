@@ -25,9 +25,9 @@ const blockType: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarBlockType editorView={editorView} pluginState={pluginState} />;
+    return <ToolbarBlockType editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
   }
 };
 

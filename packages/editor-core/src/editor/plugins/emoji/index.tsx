@@ -29,9 +29,15 @@ const emojiPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory) {
+  contentComponent(editorView, eventDispatcher, providerFactory, apperance, popupsMountPoint, popupsBoundariesElement) {
     const renderNode = (providers) =>{
-      return <EmojiTypeAhead editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} />;
+      return <EmojiTypeAhead
+        editorView={editorView}
+        pluginKey={pluginKey}
+        emojiProvider={providers.emojiProvider}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />;
     };
 
     return (
@@ -43,10 +49,17 @@ const emojiPlugin: EditorPlugin = {
     );
   },
 
-  secondaryToolbarComponent(editorView, eventDispatcher, providerFactory) {
+  secondaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const renderNode = (providers) => {
       // numFollowingButtons must be changed if buttons are added after ToolbarEmojiPicker to the message editor
-      return <ToolbarEmojiPicker editorView={editorView} pluginKey={pluginKey} emojiProvider={providers.emojiProvider} numFollowingButtons={4}/>;
+      return <ToolbarEmojiPicker
+        editorView={editorView}
+        pluginKey={pluginKey}
+        emojiProvider={providers.emojiProvider}
+        numFollowingButtons={4}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />;
     };
 
     return (

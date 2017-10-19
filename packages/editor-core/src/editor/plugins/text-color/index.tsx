@@ -15,9 +15,9 @@ const textColorPlugin: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarTextColor editorView={editorView} pluginState={pluginState} />;
+    return <ToolbarTextColor editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement}/>;
   }
 };
 

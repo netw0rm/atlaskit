@@ -57,6 +57,9 @@ export interface EditorProps {
   placeholder?: string;
   defaultValue?: Node | string | Object;
 
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
+
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;

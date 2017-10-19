@@ -17,13 +17,13 @@ const codeBlockPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance) {
+  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     if (appearance === 'message') {
       return null;
     }
 
     const pluginState = stateKey.getState(editorView.state);
-    return <LanguagePicker editorView={editorView} pluginState={pluginState} />;
+    return <LanguagePicker editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
   }
 };
 

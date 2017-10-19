@@ -47,6 +47,12 @@ describe(name, () => {
         expect((processedContent as Node)!.content!.childCount).to.equal(1);
         expect((processedContent as Node)!.content!.firstChild!.type.name).to.equal('paragraph');
       });
+
+      it('should return new document', () => {
+        const editorContent = doc(p('some text'), decisionList(decisionItem()));
+        const processedContent = preprocessDoc(schema, editorContent);
+        expect(processedContent).to.not.equal(editorContent);
+      });
     });
   });
 });

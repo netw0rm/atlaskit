@@ -35,18 +35,19 @@ export function isEmpty(node?: Node): boolean {
         !!childNode.childCount && !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild))).length;
 }
 
-export const preprocessDoc = (schema: Schema, doc: Node | undefined): Node | undefined => {
-  if (!doc) {
+export const preprocessDoc = (schema: Schema, origDoc: Node | undefined): Node | undefined => {
+  if (!origDoc) {
     return;
   }
+
   const content: Node[] = [];
-  doc.content.forEach(node => {
+  origDoc.content.forEach(node => {
     const { taskList, decisionList } = schema.nodes;
     if((node.type !== taskList && node.type !== decisionList) ||
       node.textContent) {
       content.push(node);
     }
   });
-  doc.content = Fragment.fromArray(content);
-  return doc;
+
+  return schema.nodes.doc.create({}, Fragment.fromArray(content));
 };

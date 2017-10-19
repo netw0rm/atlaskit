@@ -19,9 +19,9 @@ describe('Tooltip', () => {
     });
   });
 
-  describe('description prop', () => {
+  describe('content prop', () => {
     it('should be reflected in the Layer content prop when Tooltip is isVisible', () => {
-      const wrapper = shallow(<Tooltip description="Some words!" isVisible><div>Foo</div></Tooltip>);
+      const wrapper = shallow(<Tooltip content="Some words!" isVisible><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
       expect(layer.length).toBeGreaterThan(0);
@@ -33,7 +33,7 @@ describe('Tooltip', () => {
     });
 
     it('should not be reflected in the Layer content prop when Tooltip is not isVisible', () => {
-      const wrapper = shallow(<Tooltip description="Some words!"><div>Foo</div></Tooltip>);
+      const wrapper = shallow(<Tooltip content="Some words!"><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
       expect(layer.length).toBeGreaterThan(0);
@@ -59,7 +59,7 @@ describe('Tooltip', () => {
 
     it('should not be called if the tooltip content is hovered (sanity check)', () => {
       const spy = jest.fn();
-      const wrapper = mount(<Tooltip isVisible onMouseOver={spy} description="Tooltip text" />);
+      const wrapper = mount(<Tooltip isVisible onMouseOver={spy} content="Tooltip text" />);
       wrapper.find(Tip).simulate('mouseOver');
       expect(spy).toHaveBeenCalledTimes(0);
     });

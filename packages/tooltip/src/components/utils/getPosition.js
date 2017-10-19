@@ -59,13 +59,17 @@ export default function getPosition({ placement, target, tooltip }) {
     : FLIPPED_PLACEMENT[placement];
 
   // adjust positions with scroll distance
-  const { scrollX, scrollY } = getScrollDistance(target);
+  const { scrollX, scrollY, isFixed } = getScrollDistance(target);
+  const leftOffset = PLACEMENT_POSITIONS[adjustedPlacement].left;
+  const topOffset = PLACEMENT_POSITIONS[adjustedPlacement].top;
+
+  // account for fixed position ancestors
+  const position = isFixed ? 'fixed' : 'absolute';
+  const left = isFixed ? leftOffset : leftOffset + scrollX;
+  const top = isFixed ? topOffset : topOffset + scrollY;
 
   return {
     placement: adjustedPlacement,
-    position: {
-      left: PLACEMENT_POSITIONS[adjustedPlacement].left + scrollX,
-      top: PLACEMENT_POSITIONS[adjustedPlacement].top + scrollY,
-    },
+    position: { left, top, position },
   };
 }

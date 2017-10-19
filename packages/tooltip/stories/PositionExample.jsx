@@ -2,27 +2,27 @@ import React, { PureComponent } from 'react';
 import Tooltip from '../src/';
 import { Target } from './styled';
 
-const positions = ['top', 'right', 'bottom', 'left'];
+const VALID_PLACEMENTS = ['top', 'right', 'bottom', 'left'];
 
 export default class PositionExample extends PureComponent {
   // we'll store the direction as an index and pull it from the list above,
   // just to simplify the `changeDirection` logic
-  state = { position: 0 }
+  state = { placement: 0 }
 
   changeDirection = () => {
     this.setState({
-      position: (this.state.position + 1) % positions.length,
+      placement: (this.state.placement + 1) % VALID_PLACEMENTS.length,
     });
   }
 
   render() {
-    const position = positions[this.state.position];
+    const placement = VALID_PLACEMENTS[this.state.placement];
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onClick={this.changeDirection}>
-        <Tooltip description={position} placement={position}>
-          <Target>Target</Target>
+        <Tooltip content={placement} placement={placement}>
+          <Target color={this.props.color}>Target</Target>
         </Tooltip>
       </div>
     );

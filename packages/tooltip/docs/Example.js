@@ -20,8 +20,8 @@ export default class FourWayTooltip extends PureComponent {
 
     return (
       <Tooltip
-        description={position}
-        position={position}
+        content={position}
+        placement={position}
       >
         <Button onClick={this.changeDirection}>Click to toggle position</Button>
       </Tooltip>

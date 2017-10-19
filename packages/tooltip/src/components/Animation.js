@@ -23,15 +23,13 @@ type Props = {
   in: boolean,
   style: {},
   styleDefault: {},
+  timeout: number | { enter: number, exit: number },
   transition: {
     entering?: {},
     entered?: {},
     exiting?: {},
     exited?: {},
   },
-};
-const DefaultProps = {
-  component: 'div',
 };
 
 // BASE
@@ -58,6 +56,7 @@ function Animation({
   onExited,
   style,
   styleDefault,
+  timeout,
   transition,
   ...props
 }: Props) {
@@ -71,7 +70,7 @@ function Animation({
     onExit,
     onExiting,
     onExited,
-    timeout: { enter: ENTER_DURATION, exit: EXIT_DURATION },
+    timeout,
     unmountOnExit: true,
   };
 
@@ -89,7 +88,9 @@ function Animation({
     </Transition>
   );
 }
-Animation.defaultProps = DefaultProps;
+Animation.defaultProps = {
+  component: 'div',
+};
 
 // SLIDE
 // ==============================
@@ -105,19 +106,27 @@ const yPos = {
 
 // eslint-disable-next-line import/prefer-default-export
 export const Slide = (
-  { immediate, placement, ...props }:
-  { immediate: boolean, placement: PlacementType, props: Array<any> }
+  { immediatelyHide, immediatelyShow, placement, ...props }:
+  {
+    immediatelyHide: boolean,
+    immediatelyShow: boolean,
+    placement: PlacementType,
+    props: Array<any>
+  }
 ) => {
   const horizontalOffset = xPos[placement] || 0;
   const verticalOffset = yPos[placement] || 0;
 
   const restingTransform = 'translate3d(0, 0, 0)';
-  const enter = immediate ? 0 : ENTER_DURATION;
+  const timeout = {
+    enter: immediatelyShow ? 1 : ENTER_DURATION,
+    exit: immediatelyHide ? 1 : EXIT_DURATION,
+  };
 
   return (
     <Animation
       styleDefault={{
-        transition: `transform ${enter}ms ${easing}, opacity ${enter}ms linear`,
+        transition: `transform ${timeout.enter}ms ${easing}, opacity ${timeout.enter}ms linear`,
         transform: restingTransform,
       }}
       transition={{
@@ -131,9 +140,10 @@ export const Slide = (
         },
         exiting: {
           opacity: 0,
-          transition: `opacity ${EXIT_DURATION}ms linear`,
+          transition: `opacity ${timeout.exit}ms linear`,
         },
       }}
+      timeout={timeout}
       {...props}
     />
   );

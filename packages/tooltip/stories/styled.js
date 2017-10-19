@@ -1,8 +1,18 @@
 import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 
+const color = {
+  blue: colors.B300,
+  green: colors.G300,
+  neutral: colors.N100,
+  purple: colors.P300,
+  red: colors.R300,
+  teal: colors.T300,
+  yellow: colors.Y300,
+};
+
 export const Target = styled.div`
-  background-color: ${colors.primary};
+  background-color: ${p => color[p.color] || colors.primary};
   border-radius: 3px;
   color: white;
   cursor: pointer;

@@ -8,7 +8,6 @@ import {
   emojiPlugin,
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
-  onChangePlugin,
   mediaPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
@@ -81,10 +80,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.saveOnEnter) {
     plugins.push(saveOnEnterPlugin);
-  }
-
-  if (props.onChange) {
-    plugins.push(onChangePlugin);
   }
 
   if (props.mediaProvider) {

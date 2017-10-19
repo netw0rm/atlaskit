@@ -20,12 +20,12 @@ const Usage = styled.pre`
 export const description = (
   <div>
     <p>
-      Text Field exports both a stateful default component, and a stateless
+      Text Field Area exports both a stateful default component, and a stateless
       component. The stateful component manages the value of the input for you
       and passes all other props on to the stateless version.
     </p>
     <Usage>
-      {"import TextField, { FieldText } from '@atlaskit/field-text'"}
+      {"import FieldTextArea, { FieldTextAreaStateless } from '@atlaskit/field-text'"}
     </Usage>
   </div>
 );

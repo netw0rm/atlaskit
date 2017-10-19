@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 53.1.0 (2017-10-19)
+
+* feature; add support for popupsMountPoint to the new architecture ([700c36f](https://bitbucket.org/atlassian/atlaskit/commits/700c36f))
 ## 53.0.1 (2017-10-19)
 
 * bug fix; cleanup ([497ca27](https://bitbucket.org/atlassian/atlaskit/commits/497ca27))

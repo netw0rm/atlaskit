@@ -2,7 +2,8 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
-import { EditorView, Node } from '../../../../src/prosemirror';
+import { Node } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
 

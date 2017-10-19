@@ -51,14 +51,14 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   it('should set state variable autoFocusInput to false when link href is defined', () => {
     const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
-    editorView.dom.click();
+    (editorView.dom as HTMLElement).click();
     expect(hyperlinkEdit.state('autoFocusInput')).to.not.equal(true);
   });
 
   it('should set state variable autoFocusInput to false when link href is defined', () => {
     const { editorView, pluginState } = editor(doc(paragraph('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={pluginState} editorView={editorView} />);
-    editorView.dom.click();
+    (editorView.dom as HTMLElement).click();
     expect(hyperlinkEdit.state('autoFocusInput')).to.not.equal(true);
   });
 

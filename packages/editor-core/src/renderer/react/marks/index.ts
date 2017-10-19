@@ -1,5 +1,5 @@
 import { ComponentClass } from 'react';
-import { Mark } from '../../../prosemirror';
+import { Mark } from 'prosemirror-model';
 
 import Code from './code';
 import Em from './em';
@@ -9,7 +9,6 @@ import Strong from './strong';
 import Subsup from './subsup';
 import TextColor from './textColor';
 import Underline from './underline';
-import InlineCommentMarker from './inline-comment-marker';
 
 export const markToReact = {
   'code': Code,
@@ -20,7 +19,6 @@ export const markToReact = {
   'subsup': Subsup,
   'textColor': TextColor,
   'underline': Underline,
-  'inlineCommentMarker': InlineCommentMarker
 };
 
 export const toReact = (mark: Mark): ComponentClass<any> => {
@@ -36,5 +34,4 @@ export {
   Subsup,
   TextColor,
   Underline,
-  InlineCommentMarker
 };

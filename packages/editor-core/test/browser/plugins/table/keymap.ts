@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
 import tablePlugins, { TableState } from '../../../../src/plugins/table';
-import { TableMap, CellSelection } from '../../../../src/prosemirror';
+import { TableMap, CellSelection } from 'prosemirror-tables';
 
 import {
   chaiPlugin, doc, createEvent, makeEditor, sendKeyToPm, table, tr, td, tdEmpty, tdCursor, thEmpty, p

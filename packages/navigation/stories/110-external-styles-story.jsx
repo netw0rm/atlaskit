@@ -29,9 +29,9 @@ const pageContent = (
 );
 
 const navItems = [
-  <AkNavigationItem isSelected icon={<DashboardIcon />} href="#foo" text="Link 1" />,
-  <AkNavigationItem icon={<DashboardIcon />} href="#foo" text="Link 2" />,
-  <AkNavigationItem icon={<DashboardIcon />} href="#foo" text="Link 3" />,
+  <AkNavigationItem isSelected icon={<DashboardIcon label="dashboard icon" />} href="#foo" text="Link 1" />,
+  <AkNavigationItem icon={<DashboardIcon label="dashboard icon" />} href="#foo" text="Link 2" />,
+  <AkNavigationItem icon={<DashboardIcon label="dashboard icon" />} href="#foo" text="Link 3" />,
 ];
 
 storiesOf(`${name}`, module)

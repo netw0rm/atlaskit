@@ -22,7 +22,6 @@ import {
   helpDialogPlugin,
   jiraIssuePlugin,
   unsupportedContentPlugin,
-  inlineCommentMarkerPlugin,
   panelPlugin,
   macroPlugin
 } from '../plugins';
@@ -106,10 +105,6 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.allowUnsupportedContent) {
     plugins.push(unsupportedContentPlugin);
-  }
-
-  if(props.allowInlineCommentMarker) {
-    plugins.push(inlineCommentMarkerPlugin);
   }
 
   if(props.allowPanel) {

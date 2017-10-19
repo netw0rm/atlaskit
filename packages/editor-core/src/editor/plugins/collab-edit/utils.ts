@@ -11,7 +11,7 @@ import {
 import {
   Decoration,
   DecorationSet,
-} from '../../../prosemirror';
+} from 'prosemirror-view';
 
 export interface Color {
   solid: string;
@@ -67,7 +67,7 @@ export const getAvatarColor = (str: string) => {
 export const findPointer = (id: string, decorations: DecorationSet): Decoration | undefined => {
   let current = decorations.find();
   for (let i = 0; i < current.length; i++) {
-    if (current[i].spec.pointer.sessionId === id) {
+    if ((current[i] as any).spec.pointer.sessionId === id) {
       return current[i];
     }
   }

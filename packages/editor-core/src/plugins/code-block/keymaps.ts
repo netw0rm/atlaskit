@@ -1,8 +1,10 @@
-import { Schema, keymap, Plugin, EditorState } from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin, EditorState } from 'prosemirror-state';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema): Plugin | undefined {
   return keymap({
-    'Enter': (state: EditorState<any>, dispatch) => {
+    'Enter': (state: EditorState, dispatch) => {
       const { selection, tr, schema: { nodes } } = state;
       const { $from, $to } = selection;
       const node = $from.node($from.depth);
@@ -17,7 +19,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
       }
       return false;
     },
-    'Backspace': (state: EditorState<any>, dispatch) => {
+    'Backspace': (state: EditorState, dispatch) => {
       const { selection, tr, schema: { nodes } } = state;
       if (!selection.empty || selection.from !== 1) {
         return false;

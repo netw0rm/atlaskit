@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { textColor } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/text-color';
-import { textColor } from '../../../schema/marks/text-color';
 import ToolbarTextColor from '../../../ui/ToolbarTextColor';
 
 const textColorPlugin: EditorPlugin = {

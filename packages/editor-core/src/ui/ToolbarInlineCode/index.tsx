@@ -1,11 +1,11 @@
 import CodeIcon from '@atlaskit/icon/glyph/editor/code';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { toggleCode, tooltip } from '../../keymaps';
-import { EditorView } from '../../prosemirror';
 
 export interface Props {
   disabled?: boolean;

@@ -1,13 +1,16 @@
 import * as React from 'react';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+
 import ProviderFactory from '../../providerFactory';
-import { Plugin, Schema, EditorView } from '../../prosemirror';
 import ErrorReporter from '../../utils/error-reporter';
 import { NodeConfig, MarkConfig } from './editor-config';
 import { EditorProps, EditorAppearance } from './editor-props';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 
 export type PMPluginFactory = (
-  schema: Schema<any, any>,
+  schema: Schema,
   props: EditorProps,
   dispatch: Dispatch,
   providerFactory: ProviderFactory,

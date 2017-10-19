@@ -1,4 +1,6 @@
-import { Plugin, PluginKey, DecorationSet, Decoration, Node } from '../../../prosemirror';
+import { Node } from 'prosemirror-model';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { DecorationSet, Decoration } from 'prosemirror-view';
 import { EditorPlugin } from '../../types';
 import { isEmpty, isEmptyParagraph } from '../../utils';
 

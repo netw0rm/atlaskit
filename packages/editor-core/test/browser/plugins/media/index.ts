@@ -9,7 +9,8 @@ import {
   MediaPluginState,
   ProviderFactory,
 } from '../../../../src';
-import { undo, history, EditorView } from '../../../../src/prosemirror';
+import { undo, history } from 'prosemirror-history';
+import { EditorView } from 'prosemirror-view';
 import {
   chaiPlugin,
   doc,
@@ -741,7 +742,7 @@ describe('Media plugin', () => {
     };
 
     const getWidgetDom = (editorView: EditorView): Node | null =>
-      (editorView.docView as any).dom.querySelector('.ProseMirror-widget');
+      (editorView as any).docView.dom.querySelector('.ProseMirror-widget');
 
     let dropzoneContainer;
     let mediaProvider;

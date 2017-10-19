@@ -1,11 +1,8 @@
-import {
-  Plugin,
-  Schema,
-  EditorState,
-  EditorView,
-  baseKeymap,
-  keymap,
-} from '../prosemirror';
+import { baseKeymap } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin, EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
 import { setTextSelection } from '../utils';
@@ -85,7 +82,7 @@ export default <T> (options: Options): EditorInstance<T> => {
   };
 };
 
-export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
+export interface ProseMirrorWithRefs extends EditorState {
   doc: RefsNode;
 }
 
@@ -94,7 +91,7 @@ export interface Options {
   plugin?: Plugin;
   plugins?: Plugin[];
   nodeViews?: { [key: string]: any };
-  schema?: Schema<any, any>;
+  schema?: Schema;
 }
 
 export interface EditorInstance<T> {

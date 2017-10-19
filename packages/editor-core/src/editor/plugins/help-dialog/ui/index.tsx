@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { browser } from '@atlaskit/editor-common';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import { Container, Wrapper, Header, IconWrapper, Dialog, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
 import * as keymaps from '../../../../keymaps';
-import { browser, EditorView, Schema } from '../../../../prosemirror';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import CloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { closeHelpCommand, stopPropagationCommand } from '../../../plugins/help-dialog';
@@ -93,7 +95,7 @@ export const formatting: Format[] = [{
   },
 ];
 
-export const getSupportedFormatting = (schema: Schema<any, any>): Format[] => {
+export const getSupportedFormatting = (schema: Schema): Format[] => {
   return formatting.filter(({ type }) => schema.nodes[type] || schema.marks[type]);
 };
 

@@ -3,7 +3,7 @@ import {
   Mark,
   Node as PMNode,
   Schema
-} from '../../';
+} from 'prosemirror-model';
 
 import { normalizeHexColor } from '../../utils/color';
 import { AC_XMLNS } from './encode-cxhtml';
@@ -13,7 +13,7 @@ import { getMacroType } from '../../editor/plugins/macro/utils';
 /**
  * Deduce a set of marks from a style declaration.
  */
-export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclaration): Mark[] {
+export function marksFromStyle(schema: Schema, style: CSSStyleDeclaration): Mark[] {
   let marks: Mark[] = [];
 
   styles: for (let i = 0; i < style.length; i++) {
@@ -228,7 +228,7 @@ export function getMacroParameters(node: Element): any {
   return params;
 }
 
-export function createCodeFragment(schema: Schema<any, any>, codeContent: string, language?: string | null, title?: string | null): Fragment {
+export function createCodeFragment(schema: Schema, codeContent: string, language?: string | null, title?: string | null): Fragment {
   const content: PMNode[] = [];
   let nodeSize = 0;
 

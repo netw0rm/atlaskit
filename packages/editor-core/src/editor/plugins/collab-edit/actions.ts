@@ -1,8 +1,6 @@
-import {
-  Step,
-  EditorView,
-  EditorState,
-} from '../../../prosemirror';
+import { Step } from 'prosemirror-transform';
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 import {
   InitData,
@@ -76,7 +74,7 @@ export const handleTelePointer = (telepointerData: TelepointerData, view: Editor
   );
 };
 
-export const getSendableSelection = (oldState: EditorState<any>, newState: EditorState<any>): SendableSelection | undefined => {
+export const getSendableSelection = (oldState: EditorState, newState: EditorState): SendableSelection | undefined => {
   const oldSelection = oldState.selection;
   const newSelection = newState.selection;
 

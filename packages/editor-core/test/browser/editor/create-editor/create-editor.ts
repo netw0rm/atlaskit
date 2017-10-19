@@ -1,6 +1,6 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
-import { Schema, Node } from '../../../../src/prosemirror';
+import { Schema, Node } from 'prosemirror-model';
 import createEditor from '../../../helpers/create-editor';
 import { sortByRank, fixExcludes, createPMPlugins, processDefaultDocument } from '../../../../src/editor/create-editor/create-editor';
 
@@ -73,7 +73,7 @@ describe(name, () => {
   });
 
   describe('#processDefaultDocument', () => {
-    let schema: Schema<any, any>;
+    let schema: Schema;
     beforeEach(() => {
       const editor = createEditor();
       schema = editor.editorView.state.schema;

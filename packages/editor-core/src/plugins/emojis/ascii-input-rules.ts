@@ -1,12 +1,14 @@
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
-import { EditorState, Transaction, Plugin, PluginKey, inputRules, Schema, Node } from '../../prosemirror';
+import { inputRules } from 'prosemirror-inputrules';
+import { Schema, Node } from 'prosemirror-model';
+import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 
 let matcher: AsciiEmojiMatcher;
 
-export function inputRulePlugin(schema: Schema<any, any>, providerFactory?: ProviderFactory): Plugin | undefined {
+export function inputRulePlugin(schema: Schema, providerFactory?: ProviderFactory): Plugin | undefined {
   if (schema.nodes.emoji && providerFactory) {
     initMatcher(providerFactory);
     const asciiEmojiRule = createInputRule(AsciiEmojiMatcher.REGEX, inputRuleHandler);
@@ -32,7 +34,7 @@ function initMatcher(providerFactory: ProviderFactory) {
   providerFactory.subscribe('emojiProvider', handleProvider);
 }
 
-function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [string], start: number, end: number): Transaction | undefined {
+function inputRuleHandler(state: EditorState, matchParts: [string], start: number, end: number): Transaction | undefined {
   if (!matcher) { return undefined; }
   if (!isEnabled(state)) { return undefined; }
 
@@ -44,7 +46,7 @@ function inputRuleHandler(state: EditorState<Schema<any, any>>, matchParts: [str
   return undefined;
 }
 
-function isEnabled(state: EditorState<Schema<any, any>>) {
+function isEnabled(state: EditorState) {
   const emojiQuery = state.schema.marks.emojiQuery;
   const isEmojiQueryActive = state.selection.$from.marks().some(mark => mark.type === emojiQuery);
   return isEmojiQueryActive || isMarkTypeAllowedInCurrentSelection(emojiQuery, state);
@@ -148,12 +150,12 @@ class RecordingAsciiEmojiMatcher extends AsciiEmojiMatcher {
 }
 
 class AsciiEmojiTransactionCreator {
-  private state: EditorState<Schema<any, any>>;
+  private state: EditorState;
   private match: AsciiEmojiMatch;
   private start: number;
   private end: number;
 
-  constructor(state: EditorState<Schema<any, any>>, match: AsciiEmojiMatch, start: number, end: number) {
+  constructor(state: EditorState, match: AsciiEmojiMatch, start: number, end: number) {
     this.state = state;
     this.match = match;
     this.start = start;
@@ -209,7 +211,7 @@ class AsciiEmojiTransactionCreator {
 
 export const stateKey = new PluginKey('asciiEmojiPlugin');
 
-const plugins = (schema: Schema<any, any>, providerFactory?: ProviderFactory) => {
+const plugins = (schema: Schema, providerFactory?: ProviderFactory) => {
   return [inputRulePlugin(schema, providerFactory)].filter((plugin) => !!plugin) as Plugin[];
 };
 

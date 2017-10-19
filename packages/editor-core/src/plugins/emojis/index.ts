@@ -1,10 +1,7 @@
 import { EmojiId, EmojiProvider, EmojiSearchResult, EmojiDescription } from '@atlaskit/emoji';
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Plugin,
-} from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Plugin } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
@@ -34,11 +31,11 @@ export class EmojiState {
   onSelectCurrent = (): boolean => false;
 
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
   private view: EditorView;
   private queryResult: EmojiDescription[] = [];
 
-  constructor(state: EditorState<any>, providerFactory: ProviderFactory) {
+  constructor(state: EditorState, providerFactory: ProviderFactory) {
     this.changeHandlers = [];
     this.state = state;
     providerFactory.subscribe('emojiProvider', this.handleProvider);
@@ -53,7 +50,7 @@ export class EmojiState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(state: EditorState<any>) {
+  update(state: EditorState) {
     this.state = state;
 
     if (!this.emojiProvider) {
@@ -271,7 +268,7 @@ export function createPlugin(providerFactory: ProviderFactory) {
   });
 }
 
-const plugins = (schema: Schema<any, any>, providerFactory) => {
+const plugins = (schema: Schema, providerFactory) => {
   return [createPlugin(providerFactory), inputRulePlugin(schema), keymapPlugin(schema)].filter(plugin => !!plugin) as Plugin[];
 };
 

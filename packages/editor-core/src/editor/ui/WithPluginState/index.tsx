@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { EditorView, PluginKey } from '../../../prosemirror';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { EventDispatcher } from '../../event-dispatcher';
 
 export interface State {
@@ -51,9 +52,9 @@ export default class WithPluginState extends React.Component<State, any> {
         return acc;
       }
       const handler = this.handlePluginStateChange.bind(this, propName);
-      eventDispatcher.on(pluginKey.key, handler);
+      eventDispatcher.on((pluginKey as any).key, handler);
 
-      this.listeners[pluginKey.key] = handler;
+      this.listeners[(pluginKey as any).key] = handler;
 
       acc[propName] = pluginKey.getState(editorView.state);
       return acc;

@@ -1,4 +1,4 @@
-import { Slice, Fragment, Node, Schema } from '../../prosemirror';
+import { Slice, Fragment, Node, Schema } from 'prosemirror-model';
 import * as LinkifyIt from 'linkify-it';
 
 export interface Match {
@@ -52,14 +52,14 @@ export function normalizeUrl(url: string) {
   return (match && match.url) || url;
 }
 
-export function linkifyContent(schema: Schema<any, any>, slice: Slice): Slice | undefined {
+export function linkifyContent(schema: Schema, slice: Slice): Slice | undefined {
   const fragment = linkinfyFragment(schema, slice.content);
   if (fragment) {
     return new Slice(fragment, slice.openStart, slice.openEnd);
   }
 }
 
-function linkinfyFragment(schema: Schema<any, any>, fragment: Fragment): Fragment | undefined {
+function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment | undefined {
   const linkified: Node[] = [];
   for (let i = 0, len = fragment.childCount; i < len; i++) {
     const child: Node = fragment.child(i);

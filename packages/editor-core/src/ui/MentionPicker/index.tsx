@@ -1,7 +1,8 @@
 import { MentionPicker as AkMentionPicker, MentionProvider, MentionDescription } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EditorView, PluginKey } from '../../prosemirror';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { MentionsState } from '../../plugins/mentions';
 import Popup from '../Popup';
 

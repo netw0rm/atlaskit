@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
-import { Node as PMNode } from '../../../../src/';
+import { Node as PMNode } from 'prosemirror-model';
 import { chaiPlugin } from '../../../../src/test-helper';
 import {
   ConfluenceTransformer,
@@ -12,11 +12,10 @@ import {
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
   table, tr, td, th,
-  inlineCommentMarker,
   inlineMacro
 } from './_schema-builder';
 chai.use(chaiPlugin);
-import { confluenceSchema as schema } from '../../../../src/schema';
+import { confluenceSchema as schema } from '@atlaskit/editor-common';
 
 const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
@@ -591,24 +590,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       );
     });
 
-    describe('inline comment marker', () => {
-      check(
-        'basic',
-        '<p><ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">inline comment</ac:inline-comment-marker></p>',
-        doc(
-          p(
-            inlineCommentMarker({
-              reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
-            })('inline comment')
-          )
-        )
-      );
-
-      check(
-        'when inline comment text was removed',
-        '<p>test <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a"></ac:inline-comment-marker> text</p>',
-        doc(p('test text')));
-    });
   });
 
   describe('inline-macro', () => {

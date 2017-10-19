@@ -1,8 +1,5 @@
-import {
-  Plugin,
-  PluginKey,
-  EditorView
-} from '../../../prosemirror';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { nodeViewFactory, MacroNode } from '../../../nodeviews';
 import { MacroProvider } from './types';
 import ProviderFactory from '../../../providerFactory';
@@ -18,7 +15,7 @@ export type MacroState = {
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
   state: {
-    init: () => ({ provider: null, macroElement: null }),
+    init: () => ({ macroProvider: null, macroElement: null }),
 
     apply(tr, state: MacroState) {
 

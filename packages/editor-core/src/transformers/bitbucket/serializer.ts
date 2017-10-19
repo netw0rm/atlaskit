@@ -1,14 +1,16 @@
 import {
-  Mark,
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
+} from 'prosemirror-markdown';
+import {
+  Mark,
   Node as PMNode,
-} from '../../prosemirror';
+} from 'prosemirror-model';
 import {
   escapeMarkdown,
   stringRepeat,
 } from './util';
-import { bitbucketSchema as schema } from '../../schema';
+import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import tableNodes from './tableSerializer';
 
 /**

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 
-import { browser } from '../../../../src/prosemirror';
+import { browser } from '@atlaskit/editor-common';
 import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, h1,

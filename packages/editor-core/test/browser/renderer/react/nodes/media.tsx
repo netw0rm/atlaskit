@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
 import Media from '../../../../../src/renderer/react/nodes/media';
-import { MediaType } from '../../../../../src/schema';
+import { MediaType } from '@atlaskit/editor-common';
 import MediaComponent from '../../../../../src/ui/Media/MediaComponent';
 
 describe('Media', () => {

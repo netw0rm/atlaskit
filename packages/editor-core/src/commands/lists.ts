@@ -1,10 +1,11 @@
-import { EditorState, Fragment, liftTarget, TextSelection, Transaction, ReplaceAroundStep, NodeRange, Slice } from '../prosemirror';
-
+import { Fragment, NodeRange, Slice } from 'prosemirror-model';
+import { EditorState, TextSelection, Transaction } from 'prosemirror-state';
+import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 /**
  * Function will lift list item following selection to level-1.
  */
 export function liftFollowingList(
-  state: EditorState<any>,
+  state: EditorState,
   from: number,
   to: number,
   rootListDepth: number,
@@ -31,7 +32,7 @@ export function liftFollowingList(
 /**
  * Lift list item.
  */
-function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
+function liftListItem(state: EditorState, selection, tr: Transaction): Transaction {
   let {$from, $to} = selection;
   const nodeType = state.schema.nodes.listItem;
   let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);
@@ -45,12 +46,13 @@ function liftListItem(state: EditorState<any>, selection, tr: Transaction): Tran
         endOfList,
         end,
         endOfList,
-        new Slice(Fragment.from(nodeType.create(null, range.parent.copy())), 1, 0),
+        new Slice(Fragment.from(nodeType.create(undefined, range.parent.copy())), 1, 0),
         1,
         true
       )
     );
-    range = new NodeRange(tr.doc.resolve($from.pos), tr.doc.resolve(endOfList), range.depth);
+    // TODO: Fix types (ED-2987) - Remove cast to any as soon as we've updated to prosemirror-model 0.24
+    range = new (NodeRange as any)(tr.doc.resolve($from.pos), tr.doc.resolve(endOfList), range.depth);
   }
   return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }

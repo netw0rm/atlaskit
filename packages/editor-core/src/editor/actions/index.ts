@@ -1,4 +1,6 @@
-import { EditorView, TextSelection, Node } from '../../prosemirror';
+import { Node } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { getEditorValueWithMedia, insertFileFromDataUrl, preprocessDoc } from '../utils';
 import { toJSON } from '../../utils';
 import { Transformer } from '../../transformers';
@@ -40,7 +42,7 @@ export default class EditorActions {
       return false;
     }
 
-    this.editorView.dom.blur();
+    (this.editorView.dom as HTMLElement).blur();
     return true;
   }
 

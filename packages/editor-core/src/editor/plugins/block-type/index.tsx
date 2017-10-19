@@ -1,11 +1,8 @@
 import * as React from 'react';
+import { heading, blockquote, rule, hardBreak } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/block-type';
 import inputRulePlugin from '../../../plugins/block-type/input-rule';
-import { heading } from '../../../schema/nodes/heading';
-import { blockquote } from '../../../schema/nodes/blockquote';
-import { rule } from '../../../schema/nodes/rule';
-import { hardBreak } from '../../../schema/nodes/hard-break';
 import ToolbarBlockType from '../../../ui/ToolbarBlockType';
 
 const blockType: EditorPlugin = {

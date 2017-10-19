@@ -6,7 +6,7 @@ import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import PanelTextInput from '../PanelTextInput';
 import { Separator, Container, FloatingToolbar, ToolbarButton } from './styles';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import { normalizeUrl } from '../../plugins/hyperlink/utils';
 import RecentSearch from '../RecentSearch';
 

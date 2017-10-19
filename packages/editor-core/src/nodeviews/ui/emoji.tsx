@@ -3,10 +3,8 @@ import { PureComponent } from 'react';
 import styled from 'styled-components';
 import ProviderFactory from '../../providerFactory';
 import Emoji from '../../ui/Emoji';
-import {
-  EditorView,
-  Node as PMNode,
-} from '../../prosemirror';
+import { Node as PMNode } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.span`

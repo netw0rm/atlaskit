@@ -1,14 +1,16 @@
-import { NodeSelection, Schema, inputRules, InputRule, Plugin, EditorState } from '../../prosemirror';
+import { uuid } from '@atlaskit/editor-common';
+import { inputRules, InputRule } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import { NodeSelection, Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
-import uuid from '../../plugins/tasks-and-decisions/uuid';
 
-const createListRule = (regex: RegExp, name: string, list: any, item: any, schema: Schema<any, any>, analyticType: string) => {
+const createListRule = (regex: RegExp, name: string, list: any, item: any, schema: Schema, analyticType: string) => {
   const { paragraph, hardBreak } = schema.nodes;
 
   return createInputRule(
       regex, (
-        state: EditorState<any>,
+        state: EditorState,
         match: Object | undefined,
         start: number,
         end: number
@@ -52,7 +54,7 @@ const createListRule = (regex: RegExp, name: string, list: any, item: any, schem
     );
 };
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin {
+export function inputRulePlugin(schema: Schema): Plugin {
   const rules: InputRule[] = [];
 
   const {

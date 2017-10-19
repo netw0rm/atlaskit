@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 
 import pastePlugins from '../../../../src/plugins/paste';
-import { browser } from '../../../../src/prosemirror';
+import { browser } from '@atlaskit/editor-common';
 import { chaiPlugin, code_block, doc, p, code, makeEditor, dispatchPasteEvent, isMobileBrowser } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 

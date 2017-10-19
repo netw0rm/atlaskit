@@ -1,6 +1,6 @@
 import { markFactory, nodeFactory } from '../../../../src/test-helper';
 import { checkParseEncodeRoundTrips } from './_test-helpers';
-import { createJIRASchema } from '../../../../src/schema';
+import { createJIRASchema } from '@atlaskit/editor-common';
 
 const schema = createJIRASchema({ allowLists: true });
 

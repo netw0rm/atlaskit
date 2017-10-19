@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { nodeFactory } from '../../../../src/test-helper';
 import { checkParse, checkEncode, checkParseEncodeRoundTrips } from './_test-helpers';
-import { createJIRASchema, MediaAttributes } from '../../../../src/schema';
+import { createJIRASchema, MediaAttributes } from '@atlaskit/editor-common';
 import { JIRATransformer } from '../../../../src/transformers';
 
 const schema = createJIRASchema({ allowMedia: true });

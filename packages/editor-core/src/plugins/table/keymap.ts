@@ -1,6 +1,6 @@
-import { keydownHandler } from '../../prosemirror';
-import * as keymaps from '../../keymaps';
+import { keydownHandler } from 'prosemirror-keymap';
 import tableCommands from './commands';
+import * as keymaps from '../../keymaps';
 import { TableState } from './';
 
 export function keymapHandler(pluginState: TableState): Function {

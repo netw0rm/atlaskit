@@ -70,13 +70,14 @@ export default class BreadcrumbsItem extends PureComponent {
     const {
       href, iconAfter, iconBefore, onClick, target, text, truncationWidth,
     } = this.props;
+    const { hasOverflow } = this.state;
 
     return (
       <Button
         truncationWidth={truncationWidth}
         appearance="subtle-link"
-        iconAfter={iconAfter}
-        iconBefore={iconBefore}
+        iconAfter={truncationWidth && hasOverflow ? null : iconAfter}
+        iconBefore={truncationWidth && hasOverflow ? null : iconBefore}
         onClick={onClick}
         spacing="none"
         href={href}
@@ -98,13 +99,16 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   render() {
+    const { hasSeparator, truncationWidth } = this.props;
+    const { hasOverflow } = this.state;
+
     return (
       <ItemWrapper>
-        {this.state.hasOverflow && this.props.truncationWidth
+        {hasOverflow && truncationWidth
           ? this.renderButtonWithTooltip()
           : this.renderButton()
         }
-        {this.props.hasSeparator
+        {hasSeparator
           ? <Separator>/</Separator>
           : null
         }

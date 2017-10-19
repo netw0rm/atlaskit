@@ -1,4 +1,5 @@
 export { default as JIRATransformer } from './jira';
+export { default as JSONTransformer } from './json';
 export { default as BitbucketTransformer } from './bitbucket';
 export {
   default as ConfluenceTransformer,

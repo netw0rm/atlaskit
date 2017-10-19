@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/panel';
-import { panel } from '../../../schema/nodes/panel';
 import inputRulePlugin from '../../../plugins/panel/input-rules';
 import PanelEdit from '../../../ui/PanelEdit';
 

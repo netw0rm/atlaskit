@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MentionWithProviders from './mention-with-providers';
-import { UserType } from '../../schema/nodes/mention';
+import { MentionUserType as UserType } from '@atlaskit/editor-common';
 
 import { MentionEventHandlers } from '../Renderer';
 import { ProfilecardProvider } from './types';

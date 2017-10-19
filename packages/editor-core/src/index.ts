@@ -27,45 +27,11 @@ import ProviderFactory, { WithProviders } from './providerFactory';
 export { version, name } from './version';
 export * from './config';
 export * from './plugins';
-export * from './schema';
 export * from './ui';
 export * from './analytics';
 export * from './nodeviews';
 export * from './transformers';
 export { ProviderFactory, WithProviders };
-export {
-  dom,
-  NodeSpec,
-  MarkSpec,
-  DOMSerializer,
-  DOMParser,
-  MarkdownSerializer,
-  MarkdownSerializerState,
-  Fragment,
-  Node,
-  Mark,
-  Slice,
-  Schema,
-  NodeSelection,
-  NodeType,
-  NodeView,
-  MarkType,
-  browser,
-  EditorView,
-  EditorState,
-  TextSelection,
-  Plugin,
-  history,
-  baseKeymap,
-  keymap,
-  Selection,
-  undo,
-  redo,
-  PluginKey,
-  tableNodes,
-  CellSelection,
-  tableEditing,
-} from './prosemirror';
 export {
   ErrorReporter,
   ErrorReportingHandler,
@@ -74,7 +40,6 @@ export {
   toJSON,
   filterContentByType,
 } from './utils';
-export { colorPalette } from './schema/marks/text-color';
 
 export { default as Editor } from './editor';
 export { default as EditorContext } from './editor/ui/EditorContext';

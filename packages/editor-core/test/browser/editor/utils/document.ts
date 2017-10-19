@@ -1,6 +1,6 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
-import { Node } from '../../../../src/prosemirror';
+import { Node } from 'prosemirror-model';
 import { doc, p, decisionList, decisionItem } from '../../../../src/test-helper';
 import { isEmpty, isEmptyParagraph, preprocessDoc } from '../../../../src/editor/utils/document';
 import schema from '../../../../src/test-helper/schema';

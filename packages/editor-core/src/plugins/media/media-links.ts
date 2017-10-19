@@ -1,15 +1,13 @@
 import { Context, MediaStateManager, MediaState } from '@atlaskit/media-core';
-import {
-  EditorView,
-  AddMarkStep,
-  ReplaceStep,
-  Transaction,
-  MarkType,
-} from '../../prosemirror';
+import { MarkType } from 'prosemirror-model';
+import { Transaction } from 'prosemirror-state';
+import { AddMarkStep, ReplaceStep } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
+
 import { endPositionOfParent } from '../../utils';
 import { posOfMediaGroupBelow, posOfParentMediaGroup } from './utils';
 import { uuid } from '../utils';
-import { unsupportedNodeTypesForMediaCards } from '../../schema/unsupported';
+import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 import analyticsService from '../../analytics/service';
 
 export interface URLInfo {
@@ -110,19 +108,19 @@ export const detectLinkRangesInSteps = (tr: Transaction, link: MarkType, offset:
 };
 
 const findRangesWithUrlsInAddMarkStep = (step: AddMarkStep, link: MarkType): Array<URLInfo> | undefined => {
-  const { mark } = step;
+  const { mark } = step as any; // TODO: Stop using internal API
 
   if (link.isInSet([ mark ]) && mark.attrs.href) {
     return [{
       href: mark.attrs.href,
-      pos: step.from,
+      pos: (step as any).from, // TODO: Stop using internal API
     }];
   }
 };
 
 const findRangesWithUrlsInReplaceStep = (step: ReplaceStep, link: MarkType, offset: number): Array<URLInfo> | undefined => {
   const urls = new Array<URLInfo>();
-  step.slice.content.descendants((child, pos, parent) => {
+  (step as any).slice.content.descendants((child, pos, parent) => { // TODO: Stop using internal API
     const linkMark = link.isInSet(child.marks);
 
     if (linkMark && linkMark.attrs.href) {

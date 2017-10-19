@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-import { Plugin, PluginKey, Schema, keymap, Transaction, EditorView, EditorState } from '../../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import WithPluginState from '../../ui/WithPluginState';
 import HelpDialog from './ui';
 import * as keymaps from '../../../keymaps';
@@ -28,7 +31,7 @@ export function createPlugin(dispatch: Function) {
       init() {
         return { isVisible: false };
       },
-      apply(tr: Transaction, value: any, state: EditorState<any>) {
+      apply(tr: Transaction, value: any, state: EditorState) {
         const isVisible = tr.getMeta(pluginKey);
         const currentState = pluginKey.getState(state);
         if (isVisible !== undefined && isVisible !== currentState.isVisible) {
@@ -63,7 +66,7 @@ const helpDialog: EditorPlugin = {
   }
 };
 
-const  keymapPlugin = (schema: Schema<any, any>): Plugin => {
+const  keymapPlugin = (schema: Schema): Plugin => {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.openHelp.common!,

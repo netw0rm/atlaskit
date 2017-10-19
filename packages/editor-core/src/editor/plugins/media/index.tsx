@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { media, mediaGroup } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { stateKey as pluginKey, createPlugin } from '../../../plugins/media';
 import keymapPlugin from '../../../plugins/media/keymap';
-import { media } from '../../../schema/nodes/media';
-import { mediaGroup } from '../../../schema/nodes/media-group';
 import ToolbarMedia from '../../../ui/ToolbarMedia';
 
 const mediaPlugin: EditorPlugin = {

@@ -3,7 +3,7 @@ import { TableState } from '../../plugins/table';
 import { MediaPluginState } from '../../plugins/media';
 import { BlockTypeState } from '../../plugins/block-type';
 import { BlockType } from '../../plugins/block-type/types';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 
 export interface Props {
   pluginStateTable?: TableState;

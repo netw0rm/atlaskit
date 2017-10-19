@@ -1,12 +1,11 @@
 import * as React from 'react';
+import { emoji, emojiQuery } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/emojis';
 import inputRulePlugin from '../../../plugins/emojis/input-rules';
 import keymap from '../../../plugins/emojis/keymap';
 import { inputRulePlugin as asciiInputRulePlugin } from '../../../plugins/emojis/ascii-input-rules';
-import { emoji } from '../../../schema/nodes/emoji';
-import { emojiQuery } from '../../../schema/marks/emoji-query';
 import pluginKey from '../../../plugins/emojis/plugin-key';
 import ToolbarEmojiPicker from '../../../ui/ToolbarEmojiPicker';
 import EmojiTypeAhead from '../../../ui/EmojiTypeAhead';

@@ -18,7 +18,7 @@ import ToolbarImage from '../../../src/ui/ToolbarImage';
 import ToolbarMedia from '../../../src/ui/ToolbarMedia';
 import { Content } from '../../../src/ui/ChromeExpanded/styles';
 import { analyticsService } from '../../../src/analytics';
-import { browser } from '../../../src/prosemirror';
+import { browser } from '@atlaskit/editor-common';
 
 const noop = () => {};
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
-import { browser } from '../../../src';
+import { browser } from '@atlaskit/editor-common';
 
 import {
   isBody, findOverflowScrollParent,

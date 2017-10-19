@@ -15,7 +15,7 @@ import {
   taskItem,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { Plugin } from '../../../../src/prosemirror';
+import { Plugin } from 'prosemirror-state';
 
 chai.use(chaiPlugin);
 

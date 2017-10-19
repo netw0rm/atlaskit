@@ -1,10 +1,11 @@
-import { EditorView, keydownHandler } from '../../prosemirror';
+import { redo, undo } from 'prosemirror-history';
+import { undoInputRule } from 'prosemirror-inputrules';
+import { keydownHandler } from 'prosemirror-keymap';
+import { EditorView } from 'prosemirror-view';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5, BLOCK_QUOTE } from './types';
-import { redo, undo } from '../../prosemirror/prosemirror-history';
-import { undoInputRule } from '../../prosemirror/prosemirror-inputrules';
 import { BlockTypeState } from './';
 
 export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Function {

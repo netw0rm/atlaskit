@@ -1,7 +1,8 @@
-import { EditorState, Node } from '../../prosemirror';
+import { Node } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
 import { stateKey as mediaStateKey, MediaPluginState } from '../../plugins/media';
 
-export async function getEditorValueWithMedia(editorState?: EditorState<any>): Promise<Node | undefined> {
+export async function getEditorValueWithMedia(editorState?: EditorState): Promise<Node | undefined> {
   if (!editorState) {
     return;
   }
@@ -16,7 +17,7 @@ export async function getEditorValueWithMedia(editorState?: EditorState<any>): P
   return editorState.doc;
 }
 
-export function insertFileFromDataUrl(editorState: EditorState<any> | undefined, url: string, fileName: string): void {
+export function insertFileFromDataUrl(editorState: EditorState | undefined, url: string, fileName: string): void {
   if (!editorState) {
     return;
   }

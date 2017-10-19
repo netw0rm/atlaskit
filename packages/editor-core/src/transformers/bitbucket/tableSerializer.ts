@@ -1,7 +1,5 @@
-import {
-  MarkdownSerializerState,
-  Node as PMNode,
-} from '../../prosemirror';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
+import { Node as PMNode } from 'prosemirror-model';
 
 const isHeaderRow = (row: PMNode): boolean => row.child(0).type.name === 'tableHeader';
 

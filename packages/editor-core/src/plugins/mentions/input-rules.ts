@@ -1,10 +1,12 @@
-import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
+import { Transaction, Plugin } from 'prosemirror-state';
 import { MentionsState } from './';
 import pluginKey from './plugin-key';
 import { createInputRule, leafNodeReplacementCharacter } from '../utils';
 import { analyticsService } from '../../analytics';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
 
   const rules: Array<InputRule> = [];
 

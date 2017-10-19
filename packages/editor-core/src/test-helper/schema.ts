@@ -1,8 +1,8 @@
-import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema } from '../prosemirror';
+import { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema } from 'prosemirror-model';
 import {
   paragraph,
   createSchema
-} from '../schema';
+} from '@atlaskit/editor-common';
 
 export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
@@ -51,7 +51,6 @@ export default createSchema({
     'subsup',
     'emojiQuery',
     'textColor',
-    'inlineCommentMarker'
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*' }

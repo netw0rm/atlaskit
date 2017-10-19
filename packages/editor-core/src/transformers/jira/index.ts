@@ -2,7 +2,7 @@ import {
   Fragment,
   Node as PMNode,
   Schema,
-} from '../../prosemirror';
+} from 'prosemirror-model';
 import { Transformer } from '../transformer';
 
 import parseHtml from './parse-html';
@@ -21,7 +21,7 @@ import {
   isSchemaWithBlockQuotes,
   isSchemaWithMedia,
   isSchemaWithTables,
-} from './schema';
+} from '@atlaskit/editor-common';
 
 export type CustomEncoder = (userId: string) => string;
 
@@ -42,12 +42,12 @@ export interface MediaContextInfo {
 }
 
 export default class JIRATransformer implements Transformer<string> {
-  private schema: Schema<any, any>;
+  private schema: Schema;
   private customEncoders: JIRACustomEncoders;
   private mediaContextInfo?: MediaContextInfo;
   private doc: Document;
 
-  constructor(schema: Schema<any, any>, customEncoders?: JIRACustomEncoders, mediaContextInfo?: MediaContextInfo) {
+  constructor(schema: Schema, customEncoders?: JIRACustomEncoders, mediaContextInfo?: MediaContextInfo) {
     this.schema = schema;
     this.customEncoders = customEncoders || {};
     this.mediaContextInfo = mediaContextInfo;

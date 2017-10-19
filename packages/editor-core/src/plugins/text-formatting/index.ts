@@ -1,14 +1,8 @@
-import {
-  Mark,
-  MarkType,
-  Plugin,
-  PluginKey,
-  EditorState,
-  EditorView,
-  Schema,
-} from '../../prosemirror';
+import { toggleMark } from 'prosemirror-commands';
+import { Mark, MarkType, Schema } from 'prosemirror-model';
+import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
-import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { transformToCodeAction } from './transform-to-code';
@@ -19,7 +13,7 @@ export type BlockTypeStateSubscriber = (state: TextFormattingState) => void;
 
 export class TextFormattingState {
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
 
   // public state
   emActive = false;
@@ -46,7 +40,7 @@ export class TextFormattingState {
   marksToRemove;
   keymapHandler;
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.state = state;
 
     this.emHidden = !state.schema.marks.em;
@@ -76,7 +70,7 @@ export class TextFormattingState {
         view.dispatch(transformToCodeAction(view.state, from, to));
         return true;
       }
-      return commands.toggleMark(code)(view.state, view.dispatch);
+      return toggleMark(code)(view.state, view.dispatch);
     }
     return false;
   }
@@ -141,7 +135,7 @@ export class TextFormattingState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(newEditorState: EditorState<any>) {
+  update(newEditorState: EditorState) {
     this.state = newEditorState;
 
     const { state } = this;
@@ -155,7 +149,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newCodeDisabled = !commands.toggleMark(code)(this.state);
+      const newCodeDisabled = !toggleMark(code)(this.state);
       if (newCodeDisabled !== this.codeDisabled) {
         this.codeDisabled = newCodeDisabled;
         dirty = true;
@@ -169,7 +163,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newEmDisabled = !commands.toggleMark(em)(this.state);
+      const newEmDisabled = !toggleMark(em)(this.state);
       if (this.codeActive || newEmDisabled !== this.emDisabled) {
         this.emDisabled = this.codeActive ? true : newEmDisabled;
         dirty = true;
@@ -183,7 +177,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrikeDisabled = !commands.toggleMark(strike)(this.state);
+      const newStrikeDisabled = !toggleMark(strike)(this.state);
       if (this.codeActive || newStrikeDisabled !== this.strikeDisabled) {
         this.strikeDisabled = this.codeActive ? true : newStrikeDisabled;
         dirty = true;
@@ -197,7 +191,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrongDisabled = !commands.toggleMark(strong)(this.state);
+      const newStrongDisabled = !toggleMark(strong)(this.state);
       if (this.codeActive || newStrongDisabled !== this.strongDisabled) {
         this.strongDisabled = this.codeActive ? true : newStrongDisabled;
         dirty = true;
@@ -214,7 +208,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.state);
+      const newSubscriptDisabled = !toggleMark(subsup, { type: 'sub' })(this.state);
       if (this.codeActive || newSubscriptDisabled !== this.subscriptDisabled) {
         this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
@@ -226,7 +220,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.state);
+      const newSuperscriptDisabled = !toggleMark(subsup, { type: 'sup' })(this.state);
       if (this.codeActive || newSuperscriptDisabled !== this.superscriptDisabled) {
         this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
         dirty = true;
@@ -240,7 +234,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newUnderlineDisabled = !commands.toggleMark(underline)(this.state);
+      const newUnderlineDisabled = !toggleMark(underline)(this.state);
       if (this.codeActive || newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;
@@ -339,7 +333,7 @@ export class TextFormattingState {
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
-      return commands.toggleMark(markType, attrs)(view.state, view.dispatch);
+      return toggleMark(markType, attrs)(view.state, view.dispatch);
     }
 
     return false;
@@ -350,7 +344,7 @@ export const stateKey = new PluginKey('textFormatting');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new TextFormattingState(state);
     },
     apply(tr, pluginState: TextFormattingState, oldState, newState) {
@@ -374,7 +368,7 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

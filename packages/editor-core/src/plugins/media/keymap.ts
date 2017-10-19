@@ -1,11 +1,11 @@
-import {
-  Schema, keymap, Plugin,
-  EditorState, Transaction
-} from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
+
 import * as keymaps from '../../keymaps';
 import { MediaPluginState, stateKey } from './';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin {
+export function keymapPlugin(schema: Schema): Plugin {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.backspace.common!, removeMediaNode, list);
@@ -16,18 +16,18 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin {
   return keymap(list);
 }
 
-function removeMediaNode(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+function removeMediaNode(state: EditorState, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
   return mediaPluginState.removeSelectedMediaNode();
 }
 
-function ignoreLinksInSteps(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+function ignoreLinksInSteps(state: EditorState, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
   mediaPluginState.ignoreLinks = true;
   return false;
 }
 
-function splitMediaGroup(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+function splitMediaGroup(state: EditorState, dispatch: (tr: Transaction) => void): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
   return mediaPluginState.splitMediaGroup();
 }

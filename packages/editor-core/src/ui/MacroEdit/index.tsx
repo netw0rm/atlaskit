@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import Popup from '../Popup';
 import ToolbarButton from '../ToolbarButton';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';

@@ -1,11 +1,6 @@
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  MarkType,
-  Plugin,
-  PluginKey,
-} from '../../prosemirror';
+import { MarkType, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { clearFormatting, FORMATTING_MARK_TYPES, FORMATTING_NODE_TYPES } from './commands';
 import keymapPlugin from './keymap';
 
@@ -14,11 +9,11 @@ export type StateChangeHandler = (state: ClearFormattingState) => any;
 export class ClearFormattingState {
   formattingIsPresent: boolean = false;
 
-  private state: EditorState<any>;
+  private state: EditorState;
   private activeMarkTypes: string[];
   private changeHandlers: StateChangeHandler[] = [];
 
-  constructor(state: EditorState<any>) {
+  constructor(state: EditorState) {
     this.changeHandlers = [];
     this.update(state);
   }
@@ -32,7 +27,7 @@ export class ClearFormattingState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(newEditorState: EditorState<any>) {
+  update(newEditorState: EditorState) {
     this.state = newEditorState;
     const { state } = this;
 
@@ -82,7 +77,7 @@ export const stateKey = new PluginKey('clearFormattingPlugin');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new ClearFormattingState(state);
     },
     apply(tr, pluginState: ClearFormattingState, oldState, newState) {
@@ -93,7 +88,7 @@ export const plugin = new Plugin({
   key: stateKey
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import {
   default as ProviderFactory,
   WithProviders

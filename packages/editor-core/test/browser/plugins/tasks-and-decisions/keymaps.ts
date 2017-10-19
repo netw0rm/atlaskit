@@ -13,7 +13,7 @@ import {
   taskItem,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import uuid from '../../../../src/plugins/tasks-and-decisions/uuid';
+import { uuid } from '@atlaskit/editor-common';
 
 chai.use(chaiPlugin);
 

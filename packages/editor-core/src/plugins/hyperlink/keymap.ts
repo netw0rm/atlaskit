@@ -1,11 +1,13 @@
-import { Schema, keymap, Plugin, EditorState, Transaction } from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import { Plugin, EditorState, Transaction } from 'prosemirror-state';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { Match, getLinkMatch } from './utils';
 import { EditorProps } from '../../editor/types/editor-props';
 
-export function createKeymapPlugin(schema: Schema<any, any>, props: EditorProps): Plugin | undefined {
+export function createKeymapPlugin(schema: Schema, props: EditorProps): Plugin | undefined {
   const list = {};
 
   if (props.appearance !== 'message') {
@@ -33,7 +35,7 @@ export function createKeymapPlugin(schema: Schema<any, any>, props: EditorProps)
 }
 
 
-function mayConvertLastWordToHyperlink(state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+function mayConvertLastWordToHyperlink(state: EditorState, dispatch: (tr: Transaction) => void): boolean {
   const nodeBefore = state.selection.$from.nodeBefore;
   if (!nodeBefore || !nodeBefore.isText) {
     return false;

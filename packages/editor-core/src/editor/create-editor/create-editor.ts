@@ -1,5 +1,7 @@
+import { Node, NodeSpec, Schema, MarkSpec } from 'prosemirror-model';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import { EditorState, EditorView, Node, Schema, MarkSpec, NodeSpec, Plugin, Transaction } from '../../prosemirror';
 import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
@@ -96,7 +98,7 @@ export function createSchema(editorConfig: EditorConfig) {
 
 export function createPMPlugins(
   editorConfig: EditorConfig,
-  schema: Schema<any, any>,
+  schema: Schema,
   props: EditorProps,
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
@@ -121,7 +123,7 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   analyticsService.trackEvent('atlassian.editor.start');
 }
 
-export function processDefaultDocument(schema: Schema<any, any>, rawDoc?: Node | string | Object): Node | undefined {
+export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | Object): Node | undefined {
   if (!rawDoc) {
     return;
   }
@@ -181,7 +183,7 @@ export default function createEditor(
     : processDefaultDocument(schema, defaultValue);
 
   const state = EditorState.create({ doc, schema, plugins });
-  const editorView = new EditorView(place, {
+  const editorView = new EditorView(place!, {
     state,
     dispatchTransaction(tr: Transaction) {
       tr.setMeta('isLocal', true);

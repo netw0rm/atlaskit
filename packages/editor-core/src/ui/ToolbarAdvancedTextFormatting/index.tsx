@@ -2,13 +2,13 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
 import { toggleUnderline, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import { TriggerWrapper, ExpandIconWrapper } from './styles';
-import { EditorView } from '../../prosemirror';
 import DropdownMenu from '../DropdownMenu';
 
 export interface Props {

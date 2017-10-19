@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
-import { inlineMacro } from '../../../schema/nodes/inline-macro';
+import { inlineMacro } from '@atlaskit/editor-common';
 import { createPlugin, pluginKey, MacroState } from './plugin';
 import MacroEdit from '../../../ui/MacroEdit';
 import WithPluginState from '../../ui/WithPluginState';

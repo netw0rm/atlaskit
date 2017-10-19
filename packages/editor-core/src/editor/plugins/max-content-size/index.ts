@@ -1,4 +1,4 @@
-import { Plugin, PluginKey, Transaction } from '../../../prosemirror';
+import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
 

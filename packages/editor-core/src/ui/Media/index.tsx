@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import MediaComponent, { Appearance } from './MediaComponent';
 import { CardEventClickHandler } from '../Renderer';
-import { MediaType } from '../../schema';
+import { MediaType } from '@atlaskit/editor-common';
 import { CardDimensions } from '@atlaskit/media-card';
 import {
   CardEventHandler,
@@ -12,7 +12,7 @@ import {
   default as ProviderFactory,
   WithProviders
 } from '../../providerFactory';
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 
 export interface MediaProps {
   id: string;

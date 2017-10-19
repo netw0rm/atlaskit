@@ -1,8 +1,5 @@
-import {
-  Schema,
-  Plugin,
-  PluginKey,
-} from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import inputRulePlugin from './input-rules';
 import keymapsPlugin from './keymaps';
 import { taskItemNodeView, decisionItemNodeView } from '../../nodeviews';
@@ -21,7 +18,7 @@ export function createPlugin(){
   });
 }
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [createPlugin(), inputRulePlugin(schema), keymapsPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 

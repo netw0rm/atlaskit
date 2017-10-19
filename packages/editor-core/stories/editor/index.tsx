@@ -128,18 +128,20 @@ export default class Editor extends PureComponent<Props, State> {
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
       props.emojiProvider !== nextProps.emojiProvider ||
-      props.activityProvider !== nextProps.activityProvider
+      props.activityProvider !== nextProps.activityProvider ||
+      props.imageUploadHandler !== nextProps.imageUploadHandler
     ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider, activityProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, activityProvider, imageUploadHandler } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
+    this.providerFactory.setProvider('imageUploadProvider', Promise.resolve(imageUploadHandler));
 
     this.setState({
       emojiProvider,
@@ -309,7 +311,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...rulePlugins(schema),
           ...(schema.marks.textColor ? textColorPlugins(schema) : []),
           ...(schema.nodes.media ? mediaPlugins : []),
-          ...(schema.nodes.image ? imageUploadPlugins(schema) : []),
+          ...(schema.nodes.image ? imageUploadPlugins(schema, this.providerFactory) : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible.
@@ -337,11 +339,6 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         }
       });
-
-      if (this.props.imageUploadHandler) {
-        const imageUploadState = imageUploadStateKey.getState(editorView.state);
-        imageUploadState.setUploadHandler(this.props.imageUploadHandler);
-      }
 
       if (this.props.devTools) {
         applyDevTools(editorView);

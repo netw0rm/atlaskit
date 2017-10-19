@@ -2,13 +2,15 @@ import { Schema  } from 'prosemirror-model';
 import { EditorState, NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
+import { default as ProviderFactory } from '../../providerFactory';
 import inputRulePlugin from './input-rule';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
   supportedImageTypes?: string[];
-  maxFileSizeInBytes: number;
+  maxFileSizeInBytes?: number;
+  providerFactory?: ProviderFactory;
 }
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -55,6 +57,13 @@ export class ImageUploadState {
     this.config = { ...DEFAULT_OPTIONS, ...options };
     this.hidden = !state.schema.nodes.image;
     this.enabled = this.canInsertImage();
+    if (options && options.providerFactory) {
+      options.providerFactory.subscribe('imageUploadProvider', this.handleProvider);
+    }
+  }
+
+  handleProvider = async (name: string, provider: Promise<ImageUploadHandler>) => {
+    this.uploadHandler = await provider;
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -92,10 +101,6 @@ export class ImageUploadState {
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
-  }
-
-  setUploadHandler(uploadHandler: ImageUploadHandler) {
-    this.uploadHandler = uploadHandler;
   }
 
   handleImageUpload(view: EditorView, event?: Event): boolean {
@@ -168,10 +173,10 @@ export class ImageUploadState {
 
 export const stateKey = new PluginKey('imageUploadPlugin');
 
-const plugin = new Plugin({
+export const createPlugin = (schema: Schema, options: ImageUploadPluginOptions) => new Plugin({
   state: {
     init(config, state: EditorState) {
-      return new ImageUploadState(state);
+      return new ImageUploadState(state, options);
     },
     apply(tr, pluginState: ImageUploadState, oldState, newState) {
       return pluginState;
@@ -179,11 +184,17 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView & { docView?: any }) => {
-    stateKey.getState(view.state).update(view.state, view.docView, true);
+    const pluginState: ImageUploadState = stateKey.getState(view.state);
+    pluginState.update(view.state, view.docView, true);
 
     return {
       update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
+        pluginState.update(view.state, view.docView);
+      },
+      destroy() {
+        if (options && options.providerFactory) {
+          options.providerFactory.unsubscribe('imageUploadProvider', pluginState.handleProvider);
+        }
       }
     };
   },
@@ -219,8 +230,8 @@ const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema, providerFactory?: ProviderFactory) => {
+  return [createPlugin(schema, { providerFactory }), inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

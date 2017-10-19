@@ -2,11 +2,12 @@ import * as React from 'react';
 import { browser } from '@atlaskit/editor-common';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { Container, Wrapper, Header, IconWrapper, Dialog, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
+import Modal from '@atlaskit/modal-dialog';
+import { Header, IconWrapper, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
 import * as keymaps from '../../../../keymaps';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import CloseIcon from '@atlaskit/icon/glyph/editor/close';
-import { closeHelpCommand, stopPropagationCommand } from '../../../plugins/help-dialog';
+import { closeHelpCommand } from '../../../plugins/help-dialog';
 
 export interface Format {
   name: string;
@@ -157,50 +158,50 @@ export default class HelpDialog extends React.Component<Props, any> {
       return null;
     }
     return (
-      <Container onClick={this.closeDialog}>
-        <Wrapper />
-        <Dialog onClick={stopPropagationCommand}>
-          <Header>
-            Keyboard shortcuts
-            <IconWrapper>
-              <ToolbarButton
-                onClick={this.closeDialog}
-                title="Close help dialog"
-                iconBefore={<CloseIcon label="Close help dialog" size="large" />}
-              />
-            </IconWrapper>
-          </Header>
-          <ContentWrapper>
-            <Line />
-            <Content>
-              <ColumnLeft>
-                <Title>Text Formatting</Title>
+      <Modal
+        width="large"
+        onClose={this.closeDialog}
+        header={() => <Header>
+          Keyboard shortcuts
+          <IconWrapper>
+            <ToolbarButton
+              onClick={this.closeDialog}
+              title="Close help dialog"
+              iconBefore={<CloseIcon label="Close help dialog" size="large" />}
+            />
+          </IconWrapper>
+        </Header>}
+      >
+        <ContentWrapper>
+          <Line />
+          <Content>
+            <ColumnLeft>
+              <Title>Text Formatting</Title>
+              <div>
+                {this.formatting.map(form =>
+                  form.keymap &&
+                  <Row key={`textFormatting-${form.name}`}>
+                    <span>{form.name}</span>
+                    {getComponentFromKeymap(form.keymap)}
+                  </Row>
+                )}
+              </div>
+            </ColumnLeft>
+            <ColumnRight>
+              <Title>Markdown</Title>
                 <div>
-                  {this.formatting.map(form =>
-                    form.keymap &&
-                    <Row key={`textFormatting-${form.name}`}>
-                      <span>{form.name}</span>
-                      {getComponentFromKeymap(form.keymap)}
-                    </Row>
-                  )}
-                </div>
-              </ColumnLeft>
-              <ColumnRight>
-                <Title>Markdown</Title>
-                  <div>
-                  {this.formatting.map(form =>
-                    form.autoFormatting &&
-                    <Row key={`autoFormatting-${form.name}`}>
-                      <span>{form.name}</span>
-                      {form.autoFormatting()}
-                    </Row>
-                  )}
-                </div>
-              </ColumnRight>
-            </Content>
-          </ContentWrapper>
-        </Dialog>
-      </Container>
+                {this.formatting.map(form =>
+                  form.autoFormatting &&
+                  <Row key={`autoFormatting-${form.name}`}>
+                    <span>{form.name}</span>
+                    {form.autoFormatting()}
+                  </Row>
+                )}
+              </div>
+            </ColumnRight>
+          </Content>
+        </ContentWrapper>
+      </Modal>
     );
   }
 }

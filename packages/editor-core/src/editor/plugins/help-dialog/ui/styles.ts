@@ -48,6 +48,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${(props) => props.showKeyline ? 'box-shadow: inset 0px 2px 0px 0px ${akColorN30};' : ''}
 `;
 
 // tslint:disable-next-line:variable-name
@@ -59,7 +60,6 @@ export const ContentWrapper = styled.div`
   padding: 20px 5%;
   border-bottom-right-radius: ${akBorderRadius};
   overflow: auto;
-  box-shadow: inset 0px 2px 0px 0px ${akColorN30};
   position: relative;
   width: 90%;
 `;

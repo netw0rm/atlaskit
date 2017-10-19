@@ -3,8 +3,7 @@ import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
 
 import * as styles from './styles';
-import { generateTooltipStyle, isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
-import { defaultEmojiHeight } from '../../constants';
+import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
 import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
@@ -125,8 +124,6 @@ const renderAsSprite = (props: Props) => {
     />
   );
 
-  const size = fitToHeight || defaultEmojiHeight;
-  const tooltipStyle = showTooltip ? generateTooltipStyle(size, size) : {};
   return (
     <span
       className={classNames(classes)}
@@ -135,7 +132,6 @@ const renderAsSprite = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
-      style={tooltipStyle}
     >
       {emojiNode}
     </span>
@@ -196,7 +192,6 @@ const renderAsImage = (props: Props) => {
       {...sizing}
     />
   );
-  const tooltipStyle = showTooltip ? generateTooltipStyle(sizing.width, sizing.height) : {};
 
   return (
     <span
@@ -206,7 +201,6 @@ const renderAsImage = (props: Props) => {
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
-      style={tooltipStyle}
     >
     {emojiNode}
     </span>

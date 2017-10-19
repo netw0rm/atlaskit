@@ -146,8 +146,8 @@ export const emojiTooltip = style({
       zIndex: 1,
       boxSizing: 'border-box',
       transform: 'translateX(-50%)',
-      left: 'inherit',
-      bottom: 'inherit',
+      left: '50%',
+      top: `-${20 + akGridSizeUnitless}px`, // tooltip height + grid spacing above emoji
     }
   }
 

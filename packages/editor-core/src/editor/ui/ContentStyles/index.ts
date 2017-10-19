@@ -96,6 +96,7 @@ const ContentStyles = styled.div`
   .ProseMirror .placeholder-decoration {
     position: absolute;
     width: 100%;
+    pointer-events: none;
 
     &::before {
       content: attr(data-text);

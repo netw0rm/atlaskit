@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppCardView } from '@atlaskit/media-card';
 import { ApplicationCardAttributes as Attributes } from '@atlaskit/editor-common';
-import { EventHandlers } from '../../../ui/Renderer';
+import { EventHandlers } from '../../../../editor-core/src/ui/Renderer'; // @TODO
 
 export interface AppCardViewProps extends Attributes {
   eventHandlers?: EventHandlers;

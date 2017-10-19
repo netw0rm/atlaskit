@@ -3,7 +3,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import { name } from '../package.json';
 // import { name, version } from '../../package.json';
-// import { storyDecorator } from '../../src/test-helper'; // @TODO need?
+// import { storyDecorator } from '../../src/test-helper'; // @TODO this isn't exported
 
 import {
   AppCardViewProps,

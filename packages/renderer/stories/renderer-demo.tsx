@@ -2,9 +2,9 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import { storyData as emojiStoryData } from '@atlaskit/emoji/support';
+import { storyData as emojiStoryData } from '../../emoji/src/support';
+// import { storyData as emojiStoryData } from '@atlaskit/emoji/support'; // @TODO figure out why symlink is not generating
 import { CardEvent } from '@atlaskit/media-card';
-import { CardSurroundings } from '../../editor-core/src/ui/Renderer'; // @TODO
 
 import {
   defaultParams,
@@ -16,7 +16,9 @@ import { document } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
-} from '../../editor-core/src/ui/Renderer'; // @TODO
+  CardSurroundings
+} from '../../editor-core/src/ui/Renderer';
+// } from '@atlaskit/editor-core/ui/Renderer'; // @TODO editor-common migration
 
 import {
   AkProfileClient,

@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import nucleusImage from './nucleus.png';
 
 import Breadcrumbs, { BreadcrumbsItem } from '../src';
 import { name } from '../package.json';
@@ -143,15 +144,50 @@ storiesOf(name, module)
       </Breadcrumbs>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-breadcrumbs with a truncationWidth provided', () => (
-    <div>
-      <Breadcrumbs>
-        <BreadcrumbsItem truncationWidth={200} href="/long" text="Supercalifragilisticexpialidocious" />
-        <BreadcrumbsItem truncationWidth={200} href="/short" text="Item" />
-        <BreadcrumbsItem truncationWidth={200} href="/short" text="Another item" />
-        <BreadcrumbsItem truncationWidth={200} href="/long" text="Long item name which should be truncated" />
-        <BreadcrumbsItem truncationWidth={200} href="/long" text="Another long item name which should be truncated" />
-        <BreadcrumbsItem truncationWidth={200} href="/short" text="Short item" />
-      </Breadcrumbs>
-    </div>
-  ), { imports });
+  .addCodeExampleStory('with truncation and icons', () => {
+    const TestIcon = <AtlassianIcon label="Test icon" />;
+    return (
+      <div>
+        <p>Using itemBefore and itemAfter API</p>
+        <Breadcrumbs>
+          <BreadcrumbsItem truncationWidth={200} href="/long" text="Supercalifragilisticexpialidocious" />
+          <BreadcrumbsItem truncationWidth={200} href="/short" text="Item" />
+          <BreadcrumbsItem truncationWidth={200} href="/short" text="Another item" />
+          <BreadcrumbsItem truncationWidth={200} href="/long" text="Long item name which should be truncated" />
+          <BreadcrumbsItem truncationWidth={200} href="/long" text="Another long item name which should be truncated" />
+          <BreadcrumbsItem truncationWidth={200} href="/short" text="Short item" />
+          <BreadcrumbsItem
+            truncationWidth={200}
+            href="/item"
+            iconBefore={TestIcon}
+            iconAfter={TestIcon}
+            text="Long content, icons before and after"
+          />
+        </Breadcrumbs>
+      </div>
+    );
+  }, {
+    imports: [...imports, ['AtlassianIcon', '@atlaskit/icon/glyph/atlassian']],
+    overrides: {
+      iconBefore: '<AtlassianIcon label="Test icon" />',
+      iconAfter: '<AtlassianIcon label="Test icon" />',
+    },
+  })
+  .addCodeExampleStory('ak-breadcrumbs with items having onClick handler and no href', () => {
+    const icon1 = <img alt="icon2" src={nucleusImage} height="16px" width="16px" />;
+    const icon2 = <img alt="icon1" src={nucleusImage} height="16px" width="16px" />;
+
+    return (
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbsItem
+            truncationWidth={200}
+            text="some very long text to be truncated"
+            iconBefore={icon1}
+          />
+          <BreadcrumbsItem text="some other text" iconBefore={icon2} />
+        </Breadcrumbs>
+      </div>
+    );
+  }, { imports })
+;

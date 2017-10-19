@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import AKTooltip from '@atlaskit/tooltip';
 import ItemWrapper from '../styled/BreadcrumbsItem';
-import { Button, ShortButton } from '../styled/Button';
+import Button from '../styled/Button';
 import Separator from '../styled/Separator';
 import type { ElementType } from '../types';
 
@@ -30,7 +30,6 @@ type Props = {|
 export default class BreadcrumbsItem extends PureComponent {
   props: Props // eslint-disable-line react/sort-comp
   button: ?ElementType
-  StyledButton = Button
 
   static defaultProps = {
     hasSeparator: false,
@@ -40,7 +39,6 @@ export default class BreadcrumbsItem extends PureComponent {
   state = { hasOverflow: false }
 
   componentDidMount() {
-    this.StyledButton = this.props.truncationWidth ? ShortButton : Button;
     this.updateOverflow();
   }
 
@@ -50,7 +48,6 @@ export default class BreadcrumbsItem extends PureComponent {
   }
 
   componentDidUpdate() {
-    this.StyledButton = this.props.truncationWidth ? ShortButton : Button;
     this.updateOverflow();
   }
 
@@ -70,13 +67,12 @@ export default class BreadcrumbsItem extends PureComponent {
   }
 
   renderButton = () => {
-    const StyledButton = this.StyledButton;
     const {
       href, iconAfter, iconBefore, onClick, target, text, truncationWidth,
     } = this.props;
 
     return (
-      <StyledButton
+      <Button
         truncationWidth={truncationWidth}
         appearance="subtle-link"
         iconAfter={iconAfter}
@@ -88,7 +84,7 @@ export default class BreadcrumbsItem extends PureComponent {
         ref={(el: ElementType) => (this.button = el)}
       >
         {text}
-      </StyledButton>
+      </Button>
     );
   }
 

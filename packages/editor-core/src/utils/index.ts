@@ -439,4 +439,4 @@ export const isTemporary = (id: string): boolean => {
 };
 
 // See: https://github.com/ProseMirror/prosemirror/issues/710
-export const isChromeWithSelectionBug = !!navigator.userAgent.match(/Chrome\/(5[89]|6[12])/);
+export const isChromeWithSelectionBug = !!navigator.userAgent.match(/Chrome\/(5[89]|6[012])/);

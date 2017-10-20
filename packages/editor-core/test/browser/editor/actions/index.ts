@@ -90,45 +90,22 @@ describe(name, () => {
       });
     });
 
-    describe('#setValue', () => {
-      it('should not change the document if no transformer is set', async () => {
-        const wasSuccessful = editorActions.setValue('Hello World!');
-        expect(wasSuccessful).to.equal(false);
-        const actual = editorView.state.doc;
-        const emptyDocument = doc(p(''));
-        expect(actual!.toJSON()).to.deep.equal(emptyDocument.toJSON());
-      });
-
-      it('should update the document using the transformer', async () => {
-        editorActions._privateRegisterEditor(editorView, dummyTransformer);
-
-        const wasSuccessful = editorActions.setValue('Hello World!');
-        expect(wasSuccessful).to.equal(true);
-        const actual = editorView.state.doc;
-        const expected = doc(blockquote('Hello World!'));
-        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
-      });
-
-      it('should replace any existing content in the editor', async () => {
-        editorActions._privateRegisterEditor(editorView, dummyTransformer);
-
-        const tr = editorView.state.tr;
-        tr.insertText('some text', 1);
-        editorView.dispatch(tr);
-
-        editorActions.setValue('Hello World!');
-        const actual = editorView.state.doc;
-        const expected = doc(blockquote('Hello World!'));
-        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
-      });
-    });
-
     describe('#replaceDocument', () => {
       const newDoc = doc(p('some new content'));
       beforeEach(() => {
         const tr = editorView.state.tr;
         tr.insertText('some text', 1);
         editorView.dispatch(tr);
+      });
+
+      it('should update the document using the transformer when a transformer is set', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const wasSuccessful = editorActions.replaceDocument('Hello World!');
+        expect(wasSuccessful).to.equal(true);
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
       });
 
       it('should accept a prosemirror node', async () => {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { akZIndexBlanket, akZIndexDialog, akBorderRadius, akColorN400, akColorN0, akColorN20, akColorN30 } from '@atlaskit/util-shared-styles';
+import { akZIndexBlanket, akBorderRadius, akColorN400, akColorN0, akColorN20, akColorN30 } from '@atlaskit/util-shared-styles';
 
 // tslint:disable-next-line:variable-name
 export const Container = styled.div`
@@ -15,53 +15,27 @@ export const Container = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-export const Wrapper = styled.div`
-  bottom: 0;
-  left: 0;
-  opacity: 0.5;
-  right: 0;
-  top: 0;
-  transition: opacity 220ms;
-  position: fixed;
-  background-color: ${akColorN400};
-`;
-
-// tslint:disable-next-line:variable-name
-export const Dialog = styled.div`
-  width: 80%;
-  height: 80%;
-  display: flex;
-  max-width: 800px;
-  max-height: 650px;
-  color: ${akColorN400};
-  flex-direction: column;
-  z-index: ${akZIndexDialog};
-  background-color: ${akColorN0};
-  border-radius: ${akBorderRadius};
-`;
-
-// tslint:disable-next-line:variable-name
-export const Header = styled.div`
+export const Header: any = styled.div`
+  z-index: 1;
   min-height: 24px;
-  padding: 20px 5%;
+  padding: 20px 40px;
   font-size: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${(props) => props.showKeyline ? 'box-shadow: inset 0px 2px 0px 0px ${akColorN30};' : ''}
-`;
-
-// tslint:disable-next-line:variable-name
-export const IconWrapper = styled.div`
+  box-shadow: ${(props: any) => props.showKeyline ? `0 2px 0 ${akColorN30}` : 'none'};
+  color: ${akColorN400};
+  background-color: ${akColorN0};
 `;
 
 // tslint:disable-next-line:variable-name
 export const ContentWrapper = styled.div`
-  padding: 20px 5%;
+  padding: 18px 20px;
   border-bottom-right-radius: ${akBorderRadius};
   overflow: auto;
   position: relative;
-  width: 90%;
+  color: ${akColorN400};
+  background-color: ${akColorN0};
 `;
 
 // tslint:disable-next-line:variable-name

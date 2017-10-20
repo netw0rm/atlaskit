@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { browser } from '@atlaskit/editor-common';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { browser } from '@atlaskit/editor-common';
+import CloseIcon from '@atlaskit/icon/glyph/editor/close';
 import Modal from '@atlaskit/modal-dialog';
-import { Header, IconWrapper, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
+import { Header, ContentWrapper, Line, Content, ColumnRight, ColumnLeft, Row, CodeSm, CodeMd, CodeLg, Title } from './styles';
 import * as keymaps from '../../../../keymaps';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import CloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { closeHelpCommand } from '../../../plugins/help-dialog';
+
+// tslint:disable-next-line:variable-name
+const AkModalDialog: React.ComponentClass<any> = Modal;
 
 export interface Format {
   name: string;
@@ -124,6 +127,20 @@ export interface Props {
   isVisible: boolean;
 }
 
+// tslint:disable-next-line:variable-name
+const ModalHeader = ({ onClose, showKeyline }) => (
+  <Header showKeyline={showKeyline}>
+    Keyboard shortcuts
+    <div>
+      <ToolbarButton
+        onClick={onClose}
+        title="Close help dialog"
+        iconBefore={<CloseIcon label="Close help dialog" size="large" />}
+      />
+    </div>
+  </Header>
+);
+
 export default class HelpDialog extends React.Component<Props, any> {
 
   private formatting: Format[];
@@ -157,20 +174,12 @@ export default class HelpDialog extends React.Component<Props, any> {
     if (!this.props.isVisible) {
       return null;
     }
+
     return (
-      <Modal
+      <AkModalDialog
         width="large"
         onClose={this.closeDialog}
-        header={() => <Header>
-          Keyboard shortcuts
-          <IconWrapper>
-            <ToolbarButton
-              onClick={this.closeDialog}
-              title="Close help dialog"
-              iconBefore={<CloseIcon label="Close help dialog" size="large" />}
-            />
-          </IconWrapper>
-        </Header>}
+        header={ModalHeader}
       >
         <ContentWrapper>
           <Line />
@@ -201,7 +210,7 @@ export default class HelpDialog extends React.Component<Props, any> {
             </ColumnRight>
           </Content>
         </ContentWrapper>
-      </Modal>
+      </AkModalDialog>
     );
   }
 }

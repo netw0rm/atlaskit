@@ -34,7 +34,7 @@ describe('FieldTextAreaStateless', () => {
     describe('disabled prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextAreaStateless disabled label="" />).find(Base).props().isDisabled
+          shallow(<FieldTextAreaStateless onChange={() => {}} disabled label="" />).find(Base).props().isDisabled
         ).toBe(true);
       });
     });
@@ -113,7 +113,7 @@ describe('FieldTextAreaStateless', () => {
         it('TextArea should have attribute defined', () => {
           const key = Object.keys(prop)[0];
           const value = prop[key];
-          expect(shallow(<FieldTextAreaStateless {...prop} />)
+          expect(shallow(<FieldTextAreaStateless onChange={() => {}} label="" {...prop} />)
             .find(TextArea)
             .prop(key))
             .toBe(value);

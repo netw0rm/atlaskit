@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
@@ -47,6 +49,13 @@ const data = {
 };
 
 describe(name, () => {
+  beforeEach(() => {
+    sinon.stub(console, 'error');
+  });
+
+  afterEach(() => {
+    console.error.restore();
+  });
   it('should pass dropdown options to StatelessDropdown', () => {
     const wrapper = shallow(
       <AppSwitcher {...data} dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }} />
@@ -94,6 +103,7 @@ describe(name, () => {
     const spy = jest.fn();
     const linkedApplications = {
       ...data.linkedApplications,
+      items: [{ items: [{ content: 'test' }] }],
       suggested: [{
         name: 'Confluence',
         product: 'confluence',
@@ -103,8 +113,8 @@ describe(name, () => {
     const wrapper = mount(
       <AppSwitcher
         {...data}
+        is
         isDropdownOpenInitially
-        // dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
         linkedApplications={linkedApplications}
       />
     );

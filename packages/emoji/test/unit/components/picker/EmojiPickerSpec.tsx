@@ -495,6 +495,15 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('upload', () => {
+    let consoleErrorStub;
+    beforeEach(() => {
+      consoleErrorStub = sinon.stub(console, 'error');
+    });
+
+    afterEach(() => {
+      consoleErrorStub.restore();
+    });
+
     const findCustomSection = (component => component.findWhere(wrapper => (
       wrapper.type() === EmojiPickerCategoryHeading && wrapper.prop('title') === customCategory
     )));
@@ -522,7 +531,7 @@ describe('<EmojiPicker />', () => {
 
     const findUploadError = (component) => component.find(`.${commonStyles.uploadError}`);
     const uploadErrorVisible = (component) => findUploadError(component).length > 0;
-
+  
     it('Non-uploading EmojiResource - no upload UI', () => {
       const emojiProvider = getNonUploadingEmojiResourcePromise();
       return setupPicker({ emojiProvider }).then(component =>

@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 53.1.1 (2017-10-20)
+
+* bug fix; makes editor placeholder non clickable (issues closed: ed-2939) ([b11a221](https://bitbucket.org/atlassian/atlaskit/commits/b11a221))
+* bug fix; preprocessDoc returns new document instead of updating existing one (issues closed: ed-3047) ([a539825](https://bitbucket.org/atlassian/atlaskit/commits/a539825))
 ## 53.1.0 (2017-10-19)
 
 * feature; add support for popupsMountPoint to the new architecture ([700c36f](https://bitbucket.org/atlassian/atlaskit/commits/700c36f))

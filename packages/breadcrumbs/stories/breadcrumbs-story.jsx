@@ -154,6 +154,7 @@ storiesOf(name, module)
           <BreadcrumbsItem truncationWidth={200} href="/short" text="Item" />
           <BreadcrumbsItem truncationWidth={200} href="/short" text="Another item" />
           <BreadcrumbsItem truncationWidth={200} href="/long" text="Long item name which should be truncated" />
+          <BreadcrumbsItem truncationWidth={200} href="/item" iconBefore={TestIcon} iconAfter={TestIcon} text="Before and after" />
           <BreadcrumbsItem truncationWidth={200} href="/long" text="Another long item name which should be truncated" />
           <BreadcrumbsItem truncationWidth={200} href="/short" text="Short item" />
           <BreadcrumbsItem

@@ -1,14 +1,14 @@
+// @flow
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import BreadcrumbsStateless from './BreadcrumbsStateless';
+import type { ChildrenType } from '../types';
+
+type Props = {|
+  children?: ChildrenType
+|};
 
 export default class Breadcrumbs extends PureComponent {
-  static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
-  }
+  props: Props // eslint-disable-line react/sort-comp
 
   state = { isExpanded: false }
 

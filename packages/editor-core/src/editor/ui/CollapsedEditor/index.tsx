@@ -8,7 +8,9 @@ export interface Props {
   isExpanded: boolean;
 }
 
-export default class CollapsedEditor extends React.Component<Props, void> {
+export interface State {}
+
+export default class CollapsedEditor extends React.Component<Props, State> {
   render() {
     if (this.props.isExpanded) {
       return this.props.children;

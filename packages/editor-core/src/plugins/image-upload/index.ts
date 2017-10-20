@@ -62,8 +62,16 @@ export class ImageUploadState {
     }
   }
 
-  handleProvider = async (name: string, provider: Promise<ImageUploadHandler>) => {
-    this.uploadHandler = await provider;
+  handleProvider = async (name: string, provider?: Promise<ImageUploadHandler>) => {
+    if (provider) {
+      try {
+        this.uploadHandler = await provider;
+      } catch (e) {
+        this.uploadHandler = undefined;
+      }
+    } else {
+      this.uploadHandler = undefined;
+    }
   }
 
   subscribe(cb: StateChangeHandler) {

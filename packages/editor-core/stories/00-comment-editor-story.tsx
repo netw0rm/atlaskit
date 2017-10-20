@@ -75,7 +75,7 @@ storiesOf(name, module)
               />
               <ToolsDrawer
                 // tslint:disable-next-line:jsx-no-lambda
-                renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
+                renderEditor={({ mentionProvider, emojiProvider, mediaProvider, imageUploadProvider, onChange }) =>
                   <div style={{ padding: '20px' }}>
                     <CollapsedEditor
                       placeholder="What do you want to say?"
@@ -96,6 +96,7 @@ storiesOf(name, module)
                         mentionProvider={mentionProvider}
                         emojiProvider={emojiProvider}
                         mediaProvider={mediaProvider}
+                        imageUploadProvider={imageUploadProvider}
 
                         onChange={onChange}
                         onSave={SAVE_ACTION}

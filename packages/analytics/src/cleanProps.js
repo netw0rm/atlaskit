@@ -6,6 +6,7 @@ function cleanProps(props: Object) {
   const {
     analyticsId,
     analyticsData,
+    delegateAnalyticsEvent,
     fireAnalyticsEvent,
     firePrivateAnalyticsEvent,
     getParentAnalyticsData,

@@ -44,7 +44,7 @@ const textFormatting: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint) {
     const textFormattingPluginState = textFormattingStateKey.getState(editorView.state);
     const clearFormattingPluginState = clearFormattingStateKey.getState(editorView.state);
 
@@ -56,6 +56,7 @@ const textFormatting: EditorPlugin = {
           editorView={editorView}
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
+          popupsMountPoint={popupsMountPoint}
         />
       </ButtonsGroup>
     );

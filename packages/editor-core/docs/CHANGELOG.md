@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 53.1.1 (2017-10-20)
+
+* bug fix; makes editor placeholder non clickable (issues closed: ed-2939) ([b11a221](https://bitbucket.org/atlassian/atlaskit/commits/b11a221))
+* bug fix; preprocessDoc returns new document instead of updating existing one (issues closed: ed-3047) ([a539825](https://bitbucket.org/atlassian/atlaskit/commits/a539825))
+## 53.1.0 (2017-10-19)
+
+* feature; add support for popupsMountPoint to the new architecture ([700c36f](https://bitbucket.org/atlassian/atlaskit/commits/700c36f))
+## 53.0.1 (2017-10-19)
+
+* bug fix; cleanup ([497ca27](https://bitbucket.org/atlassian/atlaskit/commits/497ca27))
+* bug fix; call onChange only on document change (issues closed: ed-2421) ([fbadb9a](https://bitbucket.org/atlassian/atlaskit/commits/fbadb9a))
+## 53.0.0 (2017-10-19)
+
+* breaking; JSON renderer is now JSON transformer ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+* breaking; move JSON Renderer into editor-core transformers (issues closed: ed-3024) ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+
 ## 52.0.0 (2017-10-19)
 
 * bug fix; bump editor-common ([7640450](https://bitbucket.org/atlassian/atlaskit/commits/7640450))

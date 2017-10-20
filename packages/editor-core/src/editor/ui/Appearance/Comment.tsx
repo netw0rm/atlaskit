@@ -163,6 +163,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       customContentComponents,
       primaryToolbarComponents, customPrimaryToolbarComponents,
       secondaryToolbarComponents, customSecondaryToolbarComponents,
+      popupsMountPoint, popupsBoundariesElement,
       maxHeight,
       onSave, onCancel
     } = this.props;
@@ -182,6 +183,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={primaryToolbarComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}
@@ -195,6 +198,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
         </ContentArea>
         <SecondaryToolbar>
@@ -213,6 +218,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={secondaryToolbarComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
           {customSecondaryToolbarComponents}
         </SecondaryToolbar>

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import TooltipWrapper from './TooltipWrapper';
-import { placeholderEmoji, placeholderContainer } from './styles';
+import * as classNames from 'classnames';
+import { placeholder, placeholderContainer, emojiTooltip } from './styles';
 import { defaultEmojiHeight } from '../../constants';
 import { EmojiImageRepresentation } from '../../types';
 import { isImageRepresentation, isMediaRepresentation } from '../../type-helpers';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 export interface Props {
   shortName: string;
@@ -30,24 +29,18 @@ const EmojiPlaceholder = (props: Props) => {
   }
   const width: number = scaledWidth || size;
   const height: number = scaledHeight || size;
-
   const style = {
     fill: 'f7f7f7',
     width: `${width}px`,
     height: `${height}px`,
   };
-  const pad = akGridSizeUnitless/2;
+  const classes = {
+    [placeholder]: true,
+    [placeholderContainer]: true,
+    [emojiTooltip]: showTooltip
+  };
 
-  const placeholderNode = (
-    <svg className={placeholderEmoji} style={style} xmlns="http://www.w3.org/2000/svg" >
-      <rect width={width} height={height} rx={pad} ry={pad} aria-label={shortName} />
-    </svg>
-  );
-  return (
-    showTooltip ?
-      <TooltipWrapper description={shortName} className={placeholderContainer}>{placeholderNode}</TooltipWrapper>
-      : placeholderNode
-    );
+  return <span aria-label={shortName} className={classNames(classes)} style={style} />;
 };
 
 export default EmojiPlaceholder;

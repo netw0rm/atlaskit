@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.2.0 (2017-10-19)
+
+* feature; quickSearch result components: allow React elements to be passed to the text prop (issues closed: dir-429) ([f9d495d](https://bitbucket.org/atlassian/atlaskit/commits/f9d495d))
 ## 26.1.1 (2017-10-19)
 
 * bug fix; partially fix for console errors for navigation component ([b8a1568](https://bitbucket.org/atlassian/atlaskit/commits/b8a1568))

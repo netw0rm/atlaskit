@@ -251,12 +251,12 @@ export const emojiItem = style({
         '&>.emoji-sprite': {
           height: '24px',
           width: '24px',
-        }
-      }
+        },
+      },
     },
-    '&>svg': {
-      cursor: 'pointer',
-      padding: '7px',
+    '&>.placeholder': {
+      padding: '0',
+      margin: '7px',
     }
   },
 });

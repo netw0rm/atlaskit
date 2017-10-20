@@ -2,8 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 import { profilecard as profilecardUtils } from '@atlaskit/util-data-test';
-import { storyData as emojiStoryData } from '../../emoji/src/support';
-// import { storyData as emojiStoryData } from '@atlaskit/emoji/support'; // @TODO figure out why symlink is not generating
+import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 import { CardEvent } from '@atlaskit/media-card';
 
 import {

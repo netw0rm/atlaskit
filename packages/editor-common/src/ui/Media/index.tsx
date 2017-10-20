@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MediaComponent, { Appearance } from './MediaComponent';
-import { CardEventClickHandler } from '../Renderer';
-import { MediaType } from '@atlaskit/editor-common';
+import { CardEventClickHandler } from '../handlers';
+import { MediaType } from '../../';
 import { CardDimensions } from '@atlaskit/media-card';
 import {
   CardEventHandler,

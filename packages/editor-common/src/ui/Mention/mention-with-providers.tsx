@@ -5,8 +5,8 @@ import {
   ResourcedMention,
 } from '@atlaskit/mention';
 
-import { MentionUserType as UserType } from '@atlaskit/editor-common';
-import { MentionEventHandlers } from '../Renderer';
+import { MentionUserType as UserType } from '../../';
+import { MentionEventHandlers } from '../handlers';
 import ResourcedMentionWithProfilecard from './mention-with-profilecard';
 import { ProfilecardProvider } from './types';
 

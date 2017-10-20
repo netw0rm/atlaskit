@@ -21,10 +21,10 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '@atlaskit/editor-common';
+import { MediaAttributes } from '../../';
 import { EditorView } from 'prosemirror-view';
 import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
-import { CardEventClickHandler } from '../Renderer';
+import { CardEventClickHandler } from '../handlers';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 

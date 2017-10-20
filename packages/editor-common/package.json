@@ -38,6 +38,13 @@
     }
   ],
   "dependencies": {
+    "@atlaskit/emoji": "^30.1.1",
+    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/media-card": "^21.3.1",
+    "@atlaskit/media-core": "^10.1.0",
+    "@atlaskit/mention": "^7.3.4",
+    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/util-shared-styles": "^2.1.0",
     "@types/prosemirror-model": "^0.21.0",
     "@types/prosemirror-schema-basic": "^0.21.0",
     "@types/prosemirror-view": "^0.21.1",

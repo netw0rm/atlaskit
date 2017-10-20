@@ -32,7 +32,8 @@ the component consumer.
 const withAnalytics = (
   WrappedComponent,
   map: EventMapOrFunction = {},
-  defaultProps: AnalyticsProps = {}) =>
+  defaultProps: AnalyticsProps = {},
+  withDelegation?: boolean) =>
 
   class WithAnalytics extends Component {
     static displayName = `WithAnalytics(${WrappedComponent.displayName ||
@@ -49,6 +50,11 @@ const withAnalytics = (
     componentWillMount() {
       this.evaluatedMap =
         typeof map === 'function' ? map(this.fireAnalyticsEvent) : map;
+    }
+    delegateAnalyticsEvent = (analyticsId: string, data: Object, isPrivate: boolean) => {
+      const { onAnalyticsEvent } = this.context;
+      if (!onAnalyticsEvent) return;
+      onAnalyticsEvent(analyticsId, data, isPrivate);
     }
     fireAnalyticsEvent = (name: string, data: Object) => {
       const { analyticsData, analyticsId } = this.props;
@@ -96,6 +102,7 @@ const withAnalytics = (
           fireAnalyticsEvent={this.fireAnalyticsEvent}
           firePrivateAnalyticsEvent={this.privateAnalyticsEvent}
           getParentAnalyticsData={this.getParentAnalyticsData}
+          delegateAnalyticsEvent={withDelegation ? this.delegateAnalyticsEvent : undefined}
           analyticsId={analyticsId}
           ref={this.props.innerRef}
           {...componentProps}

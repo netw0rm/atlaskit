@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 53.1.2 (2017-10-20)
+
+* bug fix; newlines removed from pasted text (issues closed: ed-2888) ([792f451](https://bitbucket.org/atlassian/atlaskit/commits/792f451))
 ## 53.1.1 (2017-10-20)
 
 * bug fix; makes editor placeholder non clickable (issues closed: ed-2939) ([b11a221](https://bitbucket.org/atlassian/atlaskit/commits/b11a221))

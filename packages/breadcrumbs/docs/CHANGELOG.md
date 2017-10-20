@@ -1,5 +1,14 @@
 # @atlaskit/breadcrumbs
 
+## 3.0.0 (2017-10-20)
+
+
+
+
+
+* breaking; By default, breadcrumbs will not truncate unless they are of greater width than the container. ([5b9099c](https://bitbucket.org/atlassian/atlaskit/commits/5b9099c))
+* breaking; update breadcrumbs to have setable truncationWidth (issues closed: #ak-3451, #ak-3555) ([5b9099c](https://bitbucket.org/atlassian/atlaskit/commits/5b9099c))
+* bug fix; make breadcrumb max-width important (issues closed: #ak-3541) ([e804650](https://bitbucket.org/atlassian/atlaskit/commits/e804650))
 ## 2.5.2 (2017-09-13)
 
 * bug fix; update breadcrumb dependencies ([784b7ee](https://bitbucket.org/atlassian/atlaskit/commits/784b7ee))

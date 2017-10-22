@@ -3,12 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const sourceTrace = require('source-trace');
 // This threshold corresponds to 5% of the latest bundle value
-// const thresholdBundle = 3000;
-// WARNING: We are using a new threshold while we migrate to styled-components
-// While this process is occurring, bundle size will be incorrectly calculated
-// through lack of hoisting. If this is still here after 2017-10-22, something
-// has gone wrong - Ben C
-const thresholdBundle = 20000;
+const thresholdBundle = 3000;
 
 let threshold;
 

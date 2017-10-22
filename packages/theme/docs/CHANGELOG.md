@@ -1,5 +1,8 @@
 # @atlaskit/tag-group
 
+## 2.2.1 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
 ## 2.2.0 (2017-09-27)
 
 * feature; export "layers" from theme ([15aebe6](https://bitbucket.org/atlassian/atlaskit/commits/15aebe6))

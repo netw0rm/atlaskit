@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.1.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
 ## 30.1.2 (2017-10-20)
 
 

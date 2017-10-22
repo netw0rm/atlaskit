@@ -1,5 +1,8 @@
 # @atlaskit/analytics
 
+## 2.3.1 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
 ## 2.3.0 (2017-10-20)
 
 * bug fix; lint fix. Remove bad comment. ([311ca12](https://bitbucket.org/atlassian/atlaskit/commits/311ca12))

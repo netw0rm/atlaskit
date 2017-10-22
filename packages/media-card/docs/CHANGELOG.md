@@ -1,5 +1,8 @@
 # @atlaskit/media-card
 
+## 21.4.2 (2017-10-22)
+
+* bug fix; update media card styled-component dependency ([2e6ec2e](https://bitbucket.org/atlassian/atlaskit/commits/2e6ec2e))
 ## 21.4.1 (2017-10-12)
 
 * bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))

@@ -1,5 +1,9 @@
 # @atlaskit/inline-dialog
 
+## 5.0.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
 ## 5.0.2 (2017-10-03)
 
 * bug fix; refactored how inline-dialog handles max-width in order to better support scrollable ([20b62a6](https://bitbucket.org/atlassian/atlaskit/commits/20b62a6))

@@ -1,5 +1,10 @@
 # @atlaskit/droplist
 
+## 4.11.2 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
+
 ## 4.11.1 (2017-09-21)
 
 * bug fix; update item dependency (issues closed: ak-3418) ([4f64804](https://bitbucket.org/atlassian/atlaskit/commits/4f64804))

@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.5.6 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
 ## 2.5.5 (2017-10-12)
 
 * bug fix; fix issue where layer would flicker when Popper updated positioning (issues closed: ak-3600) ([379abba](https://bitbucket.org/atlassian/atlaskit/commits/379abba))

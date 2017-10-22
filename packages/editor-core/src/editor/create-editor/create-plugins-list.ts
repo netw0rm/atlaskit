@@ -87,7 +87,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(mediaPlugin);
   }
 
-  if (props.imageUploadProvider) {
+  if (props.legacyImageUploadProvider) {
     plugins.push(imageUploadPlugin);
   }
 

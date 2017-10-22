@@ -47,7 +47,7 @@ export interface EditorProps {
   collabEditProvider?: Promise<CollabEditProvider>;
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<any>;
-  imageUploadProvider?: Promise<ImageUploadHandler>;
+  legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<any>;
   mediaProvider?: Promise<any>;
   macroProvider?: Promise<MacroProvider>;

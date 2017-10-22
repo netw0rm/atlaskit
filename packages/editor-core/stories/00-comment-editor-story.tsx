@@ -96,7 +96,7 @@ storiesOf(name, module)
                         mentionProvider={mentionProvider}
                         emojiProvider={emojiProvider}
                         mediaProvider={mediaProvider}
-                        imageUploadProvider={imageUploadProvider}
+                        legacyImageUploadProvider={imageUploadProvider}
 
                         onChange={onChange}
                         onSave={SAVE_ACTION}

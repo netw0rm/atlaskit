@@ -23,7 +23,6 @@ import {
 
 import { MediaAttributes } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
-import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
@@ -40,6 +39,7 @@ export interface Props extends MediaAttributes {
   onDelete?: CardEventHandler;
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
+  stateManager?: MediaStateManager;
 }
 
 export interface State extends MediaState {
@@ -118,7 +118,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
     }
 
-    const stateManager = this.getStateManagerFromEditorPlugin();
+    const { stateManager } = this.props;
     if (stateManager) {
       stateManager.unsubscribe(id, this.handleMediaStateChange);
     }
@@ -299,9 +299,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     /**
-     * Try to get stateManager from MediaProvider first, if not, try Editor Plugin
+     * Try to get stateManager from MediaProvider first, if not, get it from props
      */
-    const stateManager = mediaProvider.stateManager || this.getStateManagerFromEditorPlugin();
+    const stateManager = mediaProvider.stateManager || this.props.stateManager;
 
     this.setState({ mediaProvider });
 
@@ -328,21 +328,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ [contextName as any]: context as Context });
-  }
-
-  getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
-    const { editorView } = this.props;
-    if (!editorView) {
-      return;
-    }
-
-    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
-
-    if (!pluginState) {
-      return;
-    }
-
-    return pluginState.stateManager;
   }
 
   private get resizeMode(): ImageResizeMode {

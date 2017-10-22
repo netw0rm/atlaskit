@@ -125,14 +125,16 @@ describe('@atlaskit/editore-core/utils', () => {
 
   describe('#moveCursorToTheEnd', () => {
     it('should move cursor to the end of a document', () => {
-      const { editorView } = editor(doc(p('Som{<>}e text after the cursor')));
+      const { editorView, refs: { endPos } } = editor(doc(p('Som{<>}e text after the cursor{endPos}')));
       moveCursorToTheEnd(editorView);
-      expect(editorView.state.selection.anchor).to.equal(27);
+      expect(endPos).to.be.a('number');
+      expect(editorView.state.selection.anchor).to.equal(endPos);
     });
     it('should not blow up on empty document', () => {
-      const { editorView } = editor(doc(p('{<>}')));
+      const { editorView, refs: { endPos } } = editor(doc(p('{<>}{endPos}')));
       moveCursorToTheEnd(editorView);
-      expect(editorView.state.selection.anchor).to.equal(1);
+      expect(endPos).to.be.a('number');
+      expect(editorView.state.selection.anchor).to.equal(endPos);
     });
   });
 });

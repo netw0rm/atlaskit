@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 53.1.4 (2017-10-22)
+
+* bug fix; work around cursor position issues in Chrome 58-62 (issues closed: ed-2960) ([3d86c08](https://bitbucket.org/atlassian/atlaskit/commits/3d86c08))
 ## 53.1.3 (2017-10-20)
 
 * bug fix; editor font style dropdown now shows label correctly (issues closed: ak-3651 ed-2952) ([4047555](https://bitbucket.org/atlassian/atlaskit/commits/4047555))

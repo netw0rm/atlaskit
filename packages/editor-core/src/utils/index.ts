@@ -437,3 +437,6 @@ export function areBlockTypesDisabled(state: EditorState): boolean {
 export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
+
+// See: https://github.com/ProseMirror/prosemirror/issues/710
+export const isChromeWithSelectionBug = !!navigator.userAgent.match(/Chrome\/(5[89]|6[012])/);

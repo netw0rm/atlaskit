@@ -3,7 +3,7 @@ import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { inputRulePlugin } from './input-rules';
-import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
 import ProviderFactory from '../../providerFactory';
 import { analyticsService } from '../../analytics';
 import mentionNodeView from './../../nodeviews/ui/mention';
@@ -217,7 +217,14 @@ export class MentionsState {
 
   insertMention(mentionData?: MentionDescription, queryMark?: { start, end }) {
     const { view } = this;
-    view.dispatch(this.generateInsertMentionTransaction(mentionData, queryMark));
+    const tr = this.generateInsertMentionTransaction(mentionData, queryMark);
+
+    // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
+    if (isChromeWithSelectionBug) {
+      document.getSelection().empty();
+    }
+
+    view.dispatch(tr);
   }
 
   generateInsertMentionTransaction(mentionData?: MentionDescription, queryMark?: { start, end }, tr?: Transaction): Transaction {
@@ -246,7 +253,6 @@ export class MentionsState {
         const mentionMark = state.schema.mark('mentionQuery', {active: true});
         transaction = transaction.removeMark(end, activeMentionQueryMark.end, mentionMark);
       }
-
       transaction = transaction.replaceWith(start, end, nodes);
 
       return transaction;

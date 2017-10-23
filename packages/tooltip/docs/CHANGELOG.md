@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 6.2.1 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
 ## 6.2.0 (2017-10-18)
 
 

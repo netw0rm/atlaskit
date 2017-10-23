@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.1.2 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
 ## 3.1.1 (2017-10-12)
 
 * bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))

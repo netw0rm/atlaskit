@@ -1,5 +1,10 @@
 # @atlaskit/dropdown-menu
 
+## 3.10.4 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
+
 ## 3.10.3 (2017-10-06)
 
 * bug fix; replace React.PropTypes imports with prop-types ([8c17947](https://bitbucket.org/atlassian/atlaskit/commits/8c17947))

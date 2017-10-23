@@ -13,6 +13,7 @@ export interface Definition {
 export const inlineMacro: NodeSpec = {
   inline: true,
   group: 'inline',
+  selectable: true,
   attrs: {
     macroId: { default: null },
     name: { default: null },

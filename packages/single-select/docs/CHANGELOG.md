@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 2.0.4 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
 ## 2.0.3 (2017-10-18)
 
 * bug fix; updated icon dependency to fix IE 11 issues (issues closed: ak-3709) ([8e93274](https://bitbucket.org/atlassian/atlaskit/commits/8e93274))

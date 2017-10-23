@@ -6,7 +6,7 @@ import { toJSON } from '../../utils';
 import { Transformer } from '../../transformers';
 export default class EditorActions {
   private editorView?: EditorView;
-  private contentTransformer?: Transformer<string>;
+  private contentTransformer?: Transformer<any>;
 
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
@@ -14,7 +14,7 @@ export default class EditorActions {
   }
 
   // This method needs to be public for EditorContext component.
-  _privateRegisterEditor(editorView: EditorView, contentTransformer?: Transformer<string>): void {
+  _privateRegisterEditor(editorView: EditorView, contentTransformer?: Transformer<any>): void {
     if (!this.editorView && editorView) {
       this.editorView = editorView;
     } else if (this.editorView !== editorView) {
@@ -62,7 +62,7 @@ export default class EditorActions {
     return true;
   }
 
-  getValue(): Promise<string | Object | undefined> {
+  getValue(): Promise<any | undefined> {
     return getEditorValueWithMedia(this.editorView && this.editorView.state).then(doc => {
       const processedDoc = preprocessDoc(this.editorView!.state.schema, doc);
       if (this.contentTransformer && processedDoc) {
@@ -72,32 +72,33 @@ export default class EditorActions {
     });
   }
 
-  replaceDocument(rawValue: Node | string | Object): boolean {
-    if (!this.editorView || !rawValue) {
+  replaceDocument(rawValue: any): boolean {
+    if (!this.editorView || rawValue === undefined || rawValue === null) {
       return false;
     }
 
-    const state = this.editorView.state;
-    const schema = state.schema;
+    const { state } = this.editorView;
+    const { schema } = state;
 
-    let value;
-    if (typeof rawValue === 'string') {
+    let jsonDocument: any = {};
+
+    if (this.contentTransformer) {
+      jsonDocument = this.contentTransformer.parse(rawValue).toJSON();
+    } else if (typeof rawValue === 'string') {
       try {
-        value = JSON.parse(rawValue);
+        jsonDocument = JSON.parse(rawValue);
       } catch (e) {
         return false;
       }
     } else if (rawValue instanceof Node) {
       // If rawValue is instance of Node we convert it to JSON and re-create children,
       // so we get completely new document instead of changing the one that was passed to us
-      value = rawValue.toJSON();
-    } else {
-      value = rawValue;
+      jsonDocument = rawValue.toJSON();
     }
 
-    const content = (value.content || []).map(child => schema.nodeFromJSON(child));
+    const content = (jsonDocument.content || []).map(child => schema.nodeFromJSON(child));
 
-    if (!content.length) {
+    if (!content || content.length === 0) {
       return false;
     }
 

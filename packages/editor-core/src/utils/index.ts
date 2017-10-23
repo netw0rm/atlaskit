@@ -152,8 +152,8 @@ export function setTextSelection(view: EditorView, anchor: number, head?: number
 
 export function moveCursorToTheEnd(view: EditorView) {
   const { state } = view;
-  const anchor = Math.max(state.doc.nodeSize - 2, 0);
-  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor)).scrollIntoView();
+  const anchor = Selection.atEnd(state.doc);
+  const tr = state.tr.setSelection(anchor).scrollIntoView();
   view.dispatch(tr);
 }
 
@@ -437,3 +437,6 @@ export function areBlockTypesDisabled(state: EditorState): boolean {
 export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
+
+// See: https://github.com/ProseMirror/prosemirror/issues/710
+export const isChromeWithSelectionBug = !!navigator.userAgent.match(/Chrome\/(5[89]|6[012])/);

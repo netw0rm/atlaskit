@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 54.0.0 (2017-10-23)
+
+
+
+
+
+* bug fix; add imageUploadProvider to ToolDrawer, fix collapsededitor state ([1c232e0](https://bitbucket.org/atlassian/atlaskit/commits/1c232e0))
+* bug fix; absorb setValue into replaceDocument editor action ([85c79c8](https://bitbucket.org/atlassian/atlaskit/commits/85c79c8))
+* feature; port upload-image plugin to the new architecture ([af102fb](https://bitbucket.org/atlassian/atlaskit/commits/af102fb))
+* breaking; The imageUploadHandler prop has been removed in favor of imageUploadProvider. ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* breaking; set the imageUploadHandler using providers ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* bug fix; use library method to determine end of the document ([e2de547](https://bitbucket.org/atlassian/atlaskit/commits/e2de547))
+* bug fix; restrict image width in the editor, to the width of the editor ([6a21d5f](https://bitbucket.org/atlassian/atlaskit/commits/6a21d5f))
+* bug fix; fix use of upload-image plugin in story editor ([6aa9ae4](https://bitbucket.org/atlassian/atlaskit/commits/6aa9ae4))
+* feature; export CollapsedEditor from the editor-core repo ([a398ca3](https://bitbucket.org/atlassian/atlaskit/commits/a398ca3))
+* bug fix; allow consumers to fully control the collapsed state of CollapsedEditor ([b133030](https://bitbucket.org/atlassian/atlaskit/commits/b133030))
+* feature; add setValue action to the editor ([a08c28f](https://bitbucket.org/atlassian/atlaskit/commits/a08c28f))
+## 53.1.4 (2017-10-22)
+
+* bug fix; work around cursor position issues in Chrome 58-62 (issues closed: ed-2960) ([3d86c08](https://bitbucket.org/atlassian/atlaskit/commits/3d86c08))
+## 53.1.3 (2017-10-20)
+
+* bug fix; editor font style dropdown now shows label correctly (issues closed: ak-3651 ed-2952) ([4047555](https://bitbucket.org/atlassian/atlaskit/commits/4047555))
 ## 53.1.2 (2017-10-20)
 
 * bug fix; newlines removed from pasted text (issues closed: ed-2888) ([792f451](https://bitbucket.org/atlassian/atlaskit/commits/792f451))

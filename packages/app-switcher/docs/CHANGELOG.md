@@ -1,5 +1,9 @@
 # @atlaskit/app-switcher
 
+## 3.2.1 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
 ## 3.2.0 (2017-09-12)
 
 * feature; replace Home icon with Atlassian logo (issues closed: home-983) ([4f2a1c6](https://bitbucket.org/atlassian/atlaskit/commits/4f2a1c6))

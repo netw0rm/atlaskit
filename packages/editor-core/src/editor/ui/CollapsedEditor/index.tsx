@@ -5,21 +5,15 @@ import ChromeCollapsed from '../../../ui/ChromeCollapsed';
 export interface Props {
   placeholder?: string;
   children?: any;
-  onFocus?: (e) => void;
   isExpanded?: boolean;
 
+  onFocus?: (e) => void;
   onExpand?: () => void;
 }
 
 export interface State {}
 
 export default class CollapsedEditor extends React.Component<Props, State> {
-
-  defaultProps = {
-    onFocus: () => {},
-    onExpand: () => {}
-  };
-
   editorComponent?: Editor;
   shouldTriggerExpandEvent?: boolean;
 

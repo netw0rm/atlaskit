@@ -100,6 +100,16 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.unmount();
   });
 
+  it('should close the picker if ESC is pressed', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    toolbarEmojiPicker.find(EmojiIcon).parent().simulate('keydown', { keyCode: 27 });
+
+    expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
+    toolbarEmojiPicker.unmount();
+  });
+
   describe('analytics', () => {
     it('should trigger analyticsService.trackEvent when emoji icon is clicked', () => {
       const trackEvent = sinon.spy();

@@ -23,7 +23,6 @@ describe('theme', () => {
           <Item />
         </WithRootTheme>
       );
-      stub();
       expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
       });
@@ -110,9 +109,9 @@ describe('theme', () => {
     });
   });
 
-  // // Note: the tests for createGlobalTheme do not include a test the checks the exact
-  // // shape of the output, as this is already tested by Flow. The createGlobalTheme tests
-  // // check the mapping and calculation of output values.
+  // Note: the tests for createGlobalTheme do not include a test the checks the exact
+  // shape of the output, as this is already tested by Flow. The createGlobalTheme tests
+  // check the mapping and calculation of output values.
 
   describe('createGlobalTheme function', () => {
     describe('should map the text color to the output', () => {

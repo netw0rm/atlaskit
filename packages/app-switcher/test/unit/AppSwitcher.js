@@ -113,7 +113,6 @@ describe(name, () => {
     const wrapper = mount(
       <AppSwitcher
         {...data}
-        is
         isDropdownOpenInitially
         linkedApplications={linkedApplications}
       />

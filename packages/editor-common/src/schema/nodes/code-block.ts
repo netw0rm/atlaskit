@@ -23,25 +23,27 @@ export interface Definition {
   };
 }
 
-const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
-  return dom.getAttribute('data-language') || undefined;
+const getLanguageFromEditorStyle = (dom: HTMLElement): string | null => {
+  return dom.getAttribute('data-language') || null;
 };
 
 // example of BB style:
 // <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
-const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
+const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | null => {
   if (dom && dom.classList.contains('codehilite')) {
     // code block html from Bitbucket always contains an extra new line
     return extractLanguageFromClass(dom.className);
   }
+  return null;
 };
 
-const extractLanguageFromClass = (className: string): string | undefined => {
+const extractLanguageFromClass = (className: string): string | null => {
   const languageRegex = /(?:^|\s)language-([^\s]+)/;
   const result = languageRegex.exec(className);
   if (result && result[1]) {
     return result[1];
   }
+  return null;
 };
 
 const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
@@ -55,6 +57,7 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
 export const codeBlock: NodeSpec = {
   attrs: { language: { default: null }, uniqueId: { default: null } },
   content: 'text*',
+  marks: '',
   group: 'block',
   code: true,
   defining: true,
@@ -65,7 +68,8 @@ export const codeBlock: NodeSpec = {
       const language = (
         getLanguageFromBitbucketStyle(dom.parentElement!) ||
         getLanguageFromEditorStyle(dom.parentElement!) ||
-        dom.getAttribute('data-language')!
+        dom.getAttribute('data-language') ||
+        null
       );
       dom = removeLastNewLine(dom);
       return { language };

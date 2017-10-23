@@ -16,11 +16,11 @@ export const confluenceJiraIssue = {
   parseDOM: [{
     tag: `span[data-node-type="${name}"]`,
     getAttrs: (dom: HTMLElement) => ({
-      issueKey: dom.textContent,
-      macroId: dom.dataset.macroId,
-      schemaVersion: dom.dataset.schemaVersion,
-      server: dom.dataset.server,
-      serverId: dom.dataset.serverId,
+      issueKey: dom.textContent || confluenceJiraIssue.attrs.issueKey.default,
+      macroId: dom.dataset.macroId || confluenceJiraIssue.attrs.macroId.default,
+      schemaVersion: dom.dataset.schemaVersion || confluenceJiraIssue.attrs.schemaVersion.default,
+      server: dom.dataset.server || confluenceJiraIssue.attrs.server.default,
+      serverId: dom.dataset.serverId || confluenceJiraIssue.attrs.serverId.default
     })
   }],
   toDOM(node: any) {

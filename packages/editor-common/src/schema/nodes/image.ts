@@ -12,9 +12,9 @@ export const image: NodeSpec = {
   parseDOM: [{
     tag: 'img[src]', getAttrs(dom: HTMLElement) {
       return {
-        src: dom.getAttribute('src'),
-        alt: dom.getAttribute('alt'),
-        title: dom.getAttribute('title')
+        src: dom.getAttribute('src') || image.attrs!.src.default,
+        alt: dom.getAttribute('alt') || image.attrs!.alt.default,
+        title: dom.getAttribute('title') || image.attrs!.title.default
       };
     }
   }],

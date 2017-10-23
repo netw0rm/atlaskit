@@ -23,10 +23,10 @@ export const inlineMacro: NodeSpec = {
   parseDOM: [{
     tag: 'span[data-node-type="inlineMacro"]',
     getAttrs: (dom: HTMLElement) => ({
-      macroId: dom.getAttribute('data-macro-id'),
-      name: dom.getAttribute('data-name'),
-      placeholderUrl: dom.getAttribute('data-placeholder-url'),
-      params: JSON.parse(dom.getAttribute('data-params') || '{}'),
+      macroId: dom.getAttribute('data-macro-id') || inlineMacro.attrs!.macroId.default,
+      name: dom.getAttribute('data-name') || inlineMacro.attrs!.name.default,
+      placeholderUrl: dom.getAttribute('data-placeholder-url') || inlineMacro.attrs!.placeholderUrl.default,
+      params: JSON.parse(dom.getAttribute('data-params') || '{}') || inlineMacro.attrs!.params.default,
     })
   }],
   toDOM(node: PMNode) {

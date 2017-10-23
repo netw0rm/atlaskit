@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 54.0.1 (2017-10-23)
+
+* bug fix; pass popupsMountPoint and popupsBoundariesElement to all appearances (issues closed: ed-3060) ([0ab2923](https://bitbucket.org/atlassian/atlaskit/commits/0ab2923))
+* bug fix; update version of Button to omit empty ButtonGroup warning ([2836ca9](https://bitbucket.org/atlassian/atlaskit/commits/2836ca9))
 ## 54.0.0 (2017-10-23)
 
 

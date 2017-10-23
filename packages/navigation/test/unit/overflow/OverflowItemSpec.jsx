@@ -18,7 +18,7 @@ describe('<AkCollapseOverflowItem />', () => {
 
   it('should render null if !context.overflowGroupNamespace.shouldRenderItem', () => {
     const wrapper = shallow((
-      <OverflowItem>
+      <OverflowItem overflowItemIndex={0}>
         <span className="test-child" />
       </OverflowItem>
     ), { context: createContext(false) });

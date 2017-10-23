@@ -17,7 +17,7 @@ describe('FieldTextStateless', () => {
   });
 
   it('defaults', () => {
-    const wrapper = shallow(<FieldTextStateless />);
+    const wrapper = shallow(<FieldTextStateless label="" />);
     expect(wrapper.find(Base).length).toBe(1);
     expect(wrapper.find(Input).length).toBe(1);
   });
@@ -25,14 +25,14 @@ describe('FieldTextStateless', () => {
   describe('properties', () => {
     describe('compact prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless compact />).find(Base).props().isCompact).toBe(true);
+        expect(shallow(<FieldTextStateless label="" compact />).find(Base).props().isCompact).toBe(true);
       });
     });
 
     describe('disabled prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless disabled />).find(Base).props().isDisabled
+          shallow(<FieldTextStateless label="" disabled />).find(Base).props().isDisabled
         ).toBe(true);
       });
     });
@@ -40,21 +40,21 @@ describe('FieldTextStateless', () => {
     describe('isReadOnly prop', () => {
       describe('set to true', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldText isReadOnly />).find('input').props().readOnly).toBe(true);
+          expect(mount(<FieldText label="" isReadOnly />).find('input').props().readOnly).toBe(true);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(<FieldText isReadOnly />).find(Base).props().isReadOnly).toBe(true);
+          expect(mount(<FieldText label=""isReadOnly />).find(Base).props().isReadOnly).toBe(true);
         });
       });
 
       describe('set to false', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldText />).find('input').props().readOnly).toBe(false);
+          expect(mount(<FieldText label="" />).find('input').props().readOnly).toBe(false);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(<FieldText />).find(Base).props().isReadOnly).toBe(false);
+          expect(mount(<FieldText label="" />).find(Base).props().isReadOnly).toBe(false);
         });
       });
     });
@@ -62,7 +62,7 @@ describe('FieldTextStateless', () => {
     describe('required prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless required />).find(Base).props().isRequired
+          shallow(<FieldTextStateless label="" required />).find(Base).props().isRequired
         ).toBe(true);
       });
     });
@@ -70,21 +70,21 @@ describe('FieldTextStateless', () => {
     describe('isInvalid prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless isInvalid />).find(Base).props().isInvalid
+          shallow(<FieldTextStateless label="" isInvalid />).find(Base).props().isInvalid
         ).toBe(true);
       });
     });
 
     describe('spellCheck prop', () => {
       it('should render an input with a spellCheck prop', () => {
-        expect(shallow(<FieldTextStateless isSpellCheckEnabled />)
+        expect(shallow(<FieldTextStateless label="" isSpellCheckEnabled />)
           .find(Input).props().spellCheck).toBe(true);
       });
     });
 
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless invalidMessage="test" />).find(Base).props().invalidMessage).toBe('test');
+        expect(shallow(<FieldTextStateless label="" invalidMessage="test" />).find(Base).props().invalidMessage).toBe('test');
       });
     });
 
@@ -104,7 +104,7 @@ describe('FieldTextStateless', () => {
       ].forEach(([prop, propValue]) => {
         it(prop, () => {
           expect(shallow(
-            <FieldTextStateless {...{ [prop]: propValue }} />
+            <FieldTextStateless label="" {...{ [prop]: propValue }} />
           ).find(Input).prop(prop)).toBe(propValue);
         });
       });
@@ -122,7 +122,7 @@ describe('FieldTextStateless', () => {
         it(inputEvent, () => {
           const eventSpy = jest.fn();
           const wrapper = shallow(
-            <FieldTextStateless {...{ [inputEvent]: eventSpy }} />
+            <FieldTextStateless label="" {...{ [inputEvent]: eventSpy }} />
           );
           const input = wrapper.find(Input);
           expect(input.prop(inputEvent)).toBe(eventSpy);
@@ -136,13 +136,13 @@ describe('FieldTextStateless', () => {
     });
 
     it('Input should have value="something"', () =>
-      expect(shallow(<FieldTextStateless value="something" />).find(Input).prop('value'))
+      expect(shallow(<FieldTextStateless label="" value="something" />).find(Input).prop('value'))
         .toBe('something')
     );
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextStateless onChange={spy} />);
+      const wrapper = mount(<FieldTextStateless label="" onChange={spy} />);
       wrapper.find(Input).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -151,7 +151,7 @@ describe('FieldTextStateless', () => {
   describe('FieldText', () => {
     it('should call onChange when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldText onChange={spy} />);
+      const wrapper = mount(<FieldText label="" value="something" onChange={spy} />);
       wrapper.find(Input).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -160,7 +160,7 @@ describe('FieldTextStateless', () => {
   describe('FieldText input focus', () => {
     it('should get focus when focus() is called', () => {
       const focusSpy = jest.fn();
-      const wrapper = mount(<FieldText onFocus={focusSpy} />);
+      const wrapper = mount(<FieldText label="" onFocus={focusSpy} />);
 
       // The onFocus prop doesn't actualy get fired by enzyme for some reason, so attaching
       // the spy directly to the input.

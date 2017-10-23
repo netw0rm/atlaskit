@@ -32,7 +32,7 @@ describe(name, () => {
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Comment />);
+        const wrapper = shallow(<Comment avatar="" />);
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
@@ -46,7 +46,7 @@ describe(name, () => {
             <CommentAction>action content</CommentAction>,
             <CommentAction onClick={() => {}}>action content</CommentAction>,
           ];
-          const wrapper = mount(<Comment actions={actions} />);
+          const wrapper = mount(<Comment avatar="" actions={actions} />);
           const container = wrapper.find(ActionsContainer);
           expect(container.find(CommentAction).length).toBe(actions.length);
           actions.forEach((action) => {
@@ -58,7 +58,7 @@ describe(name, () => {
       describe('author prop', () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
-          const wrapper = mount(<Comment author={author} />);
+          const wrapper = mount(<Comment avatar="" author={author} />);
           expect(wrapper.find(Container).contains(author)).toBe(true);
         });
       });
@@ -74,13 +74,13 @@ describe(name, () => {
       describe('content prop', () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
-          const wrapper = mount(<Comment content={content} />);
+          const wrapper = mount(<Comment avatar="" content={content} />);
           expect(wrapper.find(Content).contains(content)).toBe(true);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
-          const wrapper = mount(<Comment content={textContent} />);
+          const wrapper = mount(<Comment avatar="" content={textContent} />);
           expect(wrapper.find(Content).text()).toBe(textContent);
         });
       });
@@ -88,7 +88,7 @@ describe(name, () => {
       describe('time prop', () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
-          const wrapper = mount(<Comment time={time} />);
+          const wrapper = mount(<Comment avatar="" time={time} />);
           expect(wrapper.find(Container).contains(time)).toBe(true);
         });
       });
@@ -96,7 +96,7 @@ describe(name, () => {
       describe('edited prop', () => {
         it('should render edited correctly', () => {
           const edited = <CommentEdited>Edited</CommentEdited>;
-          const wrapper = mount(<Comment edited={edited} />);
+          const wrapper = mount(<Comment avatar="" edited={edited} />);
           expect(wrapper.find(Container).contains(edited)).toBe(true);
         });
       });
@@ -104,27 +104,27 @@ describe(name, () => {
       describe('type prop', () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
-          const wrapper = mount(<Comment type={type} />);
+          const wrapper = mount(<Comment avatar="" type={type} />);
           expect(wrapper.find(TopItem).find(Lozenge).length).toBe(1);
         });
       });
 
       describe('restrictedTo prop', () => {
         it('should render a Lock icon and restrictedTo name when supplied', () => {
-          const wrapper = mount(<Comment restrictedTo="atlassian-staff" />);
+          const wrapper = mount(<Comment avatar="" restrictedTo="atlassian-staff" />);
           expect(wrapper.find(LockFilledIcon).length).toBe(1);
           expect(wrapper.text()).toEqual(expect.stringContaining('atlassian-staff'));
         });
 
         it('should not render a Lock icon if restrictedTo prop is not set', () => {
-          const wrapper = mount(<Comment />);
+          const wrapper = mount(<Comment avatar="" />);
           expect(wrapper.find(LockFilledIcon).length).toBe(0);
         });
       });
 
       describe('highlighted prop', () => {
         it('should render a highlight underlay inside the container', () => {
-          const wrapper = mount(<Comment highlighted />);
+          const wrapper = mount(<Comment avatar="" highlighted />);
           expect(wrapper.find(Highlight).length).toBe(1);
         });
       });
@@ -132,12 +132,12 @@ describe(name, () => {
       describe('isSaving and savingText props', () => {
         describe('if isSaving prop is set', () => {
           it('should render the default savingText if no savingText is set', () => {
-            const wrapper = mount(<Comment isSaving />);
+            const wrapper = mount(<Comment avatar="" isSaving />);
             expect(wrapper.text()).toEqual(expect.stringContaining('Sending...'));
           });
 
           it('should render the savingText text if it is set', () => {
-            const wrapper = mount(<Comment isSaving savingText="Saving..." />);
+            const wrapper = mount(<Comment avatar="" isSaving savingText="Saving..." />);
             expect(wrapper.text()).toEqual(expect.stringContaining('Saving...'));
           });
 
@@ -148,25 +148,25 @@ describe(name, () => {
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
             const wrapper = mount(
-              <Comment actions={actions} isSaving savingText="Saving..." isError errorActions={actions} />
+              <Comment avatar="" actions={actions} isSaving savingText="Saving..." isError errorActions={actions} />
             );
             expect(wrapper.find(CommentAction).length).toBe(0);
           });
 
           it('should apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment isSaving savingText="Saving..." />);
+            const wrapper = mount(<Comment avatar="" isSaving savingText="Saving..." />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(true);
           });
         });
 
         describe('if isSaving prop is not set', () => {
           it('should not render savingText', () => {
-            const wrapper = mount(<Comment savingText="Saving..." />);
+            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
             expect(wrapper.text()).not.toEqual(expect.stringContaining('Saving...'));
           });
 
           it('should not apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment savingText="Saving..." />);
+            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(false);
           });
         });
@@ -180,7 +180,7 @@ describe(name, () => {
 
         describe('if isError prop is set', () => {
           it('should render the default (empty) if no errorIconLabel is set', () => {
-            const wrapper = mount(<Comment isError errorActions={errorActions} />);
+            const wrapper = mount(<Comment avatar="" isError errorActions={errorActions} />);
             expect(wrapper.find(WarningIcon).length).toBe(1);
             expect(wrapper.find(WarningIcon).at(0).prop('label')).toBe('');
           });
@@ -188,7 +188,7 @@ describe(name, () => {
           it('should render the errorIconLabel text if it is set', () => {
             const label = 'Error';
             const wrapper = mount(
-              <Comment isError errorActions={errorActions} errorIconLabel={label} />
+              <Comment avatar="" isError errorActions={errorActions} errorIconLabel={label} />
             );
             expect(wrapper.find(WarningIcon).length).toBe(1);
             expect(wrapper.find(WarningIcon).at(0).prop('label')).toBe(label);
@@ -201,7 +201,7 @@ describe(name, () => {
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
             const wrapper = mount(
-              <Comment actions={actions} isError errorActions={errorActions} />
+              <Comment avatar="" actions={actions} isError errorActions={errorActions} />
             );
             expect(wrapper.find(CommentAction).length).toBe(2);
             const actionItems = wrapper.find(ActionsContainer);
@@ -212,20 +212,20 @@ describe(name, () => {
           });
 
           it('should apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment isError />);
+            const wrapper = mount(<Comment avatar="" isError />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(true);
           });
         });
 
         describe('if isError prop is not set', () => {
           it('should not render the icon and errorActions', () => {
-            const wrapper = mount(<Comment errorActions={errorActions} />);
+            const wrapper = mount(<Comment avatar="" errorActions={errorActions} />);
             expect(wrapper.find(WarningIcon).length).toBe(0);
             expect(wrapper.find(CommentAction).length).toBe(0);
           });
 
           it('should not apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment />);
+            const wrapper = mount(<Comment avatar="" />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(false);
           });
         });
@@ -234,7 +234,7 @@ describe(name, () => {
       describe('Top items', () => {
         it('Should render in the order author, type, time, restrictedTo', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
-          const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" />);
+          const wrapper = mount(<Comment author="Mary" avatar="" type="Type" time={time} restrictedTo="atlassian-staff" />);
           const topItems = wrapper.find(TopItemsContainer);
           expect(topItems.childAt(0).text()).toBe('Mary');
           expect(topItems.childAt(1).text()).toBe('Type');
@@ -243,7 +243,7 @@ describe(name, () => {
         });
 
         it('Should render in the order author, type, savingText, restrictedTo', () => {
-          const wrapper = mount(<Comment author="Mary" type="Type" restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
+          const wrapper = mount(<Comment author="Mary" avatar="" type="Type" restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
           const topItems = wrapper.find(TopItemsContainer);
           expect(topItems.childAt(0).text()).toBe('Mary');
           expect(topItems.childAt(1).text()).toBe('Type');
@@ -253,7 +253,7 @@ describe(name, () => {
 
         it('should not render time if isSaving is set', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
-          const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
+          const wrapper = mount(<Comment avatar="" author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
           expect(wrapper.find(CommentTime).length).toBe(0);
           expect(wrapper.text()).toEqual(expect.stringContaining('Saving...'));
         });
@@ -262,8 +262,8 @@ describe(name, () => {
 
     describe('nesting', () => {
       it('should reflect children to the CommentLayout', () => {
-        const childComment = <Comment content="child" />;
-        const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
+        const childComment = <Comment avatar="" content="child" />;
+        const wrapper = shallow(<Comment avatar="" content="parent'">{childComment}</Comment>);
         expect(wrapper.find(CommentLayout).prop('children')).toBe(childComment);
       });
     });

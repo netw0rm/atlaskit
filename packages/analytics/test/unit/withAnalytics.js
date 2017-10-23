@@ -180,11 +180,13 @@ describe('withAnalytics', () => {
   describe('withDelegation', () => {
     class TestComponent extends Component {
       onClick = () => {
-        this.props.delegateAnalyticsEvent('click', { foo: 'bar' }, !!this.props.private);
+        this.props.delegateAnalyticsEvent('click', { foo: 'bar' }, !!this.props.privateEvent);
       };
       render() {
-        const props = cleanProps(this.props);
-        return <button {...props} onClick={this.onClick} />;
+        /* eslint-disable no-unused-vars */
+        const { privateEvent, ...cleanedProps } = cleanProps(this.props);
+       /* eslint-enable no-unused-vars */
+        return <button {...cleanedProps} onClick={this.onClick} />;
       }
     }
 
@@ -219,7 +221,7 @@ describe('withAnalytics', () => {
       const spy = jest.fn();
       const listener = mount(
         <AnalyticsListener matchPrivate onEvent={spy}>
-          <ComponentWithAnalytics private />
+          <ComponentWithAnalytics privateEvent />
         </AnalyticsListener>
       );
       listener.find(TestComponent).simulate('click');

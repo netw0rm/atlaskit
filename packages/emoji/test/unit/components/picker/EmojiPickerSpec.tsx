@@ -495,6 +495,15 @@ describe('<EmojiPicker />', () => {
   });
 
   describe('upload', () => {
+    let consoleErrorStub;
+    beforeEach(() => {
+      consoleErrorStub = sinon.stub(console, 'error');
+    });
+
+    afterEach(() => {
+      consoleErrorStub.restore();
+    });
+
     const findCustomSection = (component => component.findWhere(wrapper => (
       wrapper.type() === EmojiPickerCategoryHeading && wrapper.prop('title') === customCategory
     )));

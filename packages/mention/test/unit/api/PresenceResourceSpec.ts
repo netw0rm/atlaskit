@@ -1,5 +1,6 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 import PresenceResource, {
   DefaultPresenceCache, DefaultPresenceParser, PresenceMap
@@ -17,6 +18,14 @@ const apiConfig = {
 const testIds = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 
 describe('PresenceParser', () => {
+  let consoleErrorStub;
+  beforeEach(() => {
+    consoleErrorStub = sinon.stub(console, 'error');
+  });
+
+  afterEach(() => {
+    consoleErrorStub.restore();
+  });
   it('should parse valid responses to presence updates', (done) => {
     const parser = new DefaultPresenceParser();
     const update = parser.parse(validPresenceData);

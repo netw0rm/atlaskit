@@ -1,4 +1,4 @@
-import { MediaAttributes } from '@atlaskit/editor-common';
+import { MediaAttributes, getEmojiAcName } from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
@@ -49,6 +49,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeTable(node);
     } else if (node.type === schema.nodes.inlineMacro) {
       return encodeInlineMacro(node);
+    } else if (node.type === schema.nodes.emoji) {
+      return encodeEmoji(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -69,6 +71,18 @@ export default function encode(node: PMNode, schema: Schema) {
       }
     });
     return documentFragment;
+  }
+
+  function encodeEmoji(node: PMNode) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:emoticon');
+    const { id, shortName, text } = node.attrs;
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', getEmojiAcName({id, shortName}));
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-id', id);
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-shortname', shortName);
+    if (text) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:emoji-fallback', text);
+    }
+    return elem;
   }
 
   function encodeHeading(node: PMNode) {
@@ -168,6 +182,9 @@ export default function encode(node: PMNode, schema: Schema) {
             break;
           case schema.marks.textColor:
             elem = elem.appendChild(encodeTextColor(node, schema));
+            break;
+          case schema.marks.emojiQuery:
+            elem.textContent = node.text;
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

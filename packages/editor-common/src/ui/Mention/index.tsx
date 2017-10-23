@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import MentionWithProviders from './mention-with-providers';
-import { MentionUserType as UserType } from '../../';
+import { MentionUserType as UserType } from '../../schema';
 
-import { MentionEventHandlers } from '../handlers';
+import { MentionEventHandlers } from '../EventHandlers';
 import { ProfilecardProvider } from './types';
 import {
   default as ProviderFactory,

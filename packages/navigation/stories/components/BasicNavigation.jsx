@@ -9,11 +9,21 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import AkDropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
+import AkDropdownMenu, {
+  DropdownItemGroup,
+  DropdownItem,
+} from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
 import Tooltip from '@atlaskit/tooltip';
 import BasicSearch from './BasicSearch';
-import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
+import Navigation, {
+  AkContainerTitle,
+  AkNavigationItemGroup,
+  AkNavigationItem,
+  AkSearchDrawer,
+  AkCreateDrawer,
+  AkGlobalItem,
+} from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -31,44 +41,41 @@ export default class BasicNavigation extends PureComponent {
     onResizeCallback: PropTypes.func,
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  }
+  };
 
   static defaultProps = {
     drawers: [],
     onResizeCallback: () => {},
-    children: (<div>
-      <AkNavigationItem
-        icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
-        text="Item A"
-      />
-      <AkNavigationItem
-        icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
-        isSelected
-        text="Selected item"
-      />
-      <AkNavigationItem
-        icon={<IssuesIcon label="Projects" secondaryColor="inherit" />}
-        text="Item C"
-      />
-    </div>),
+    children: (
+      <div>
+        <AkNavigationItem
+          icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
+          text="Item A"
+        />
+        <AkNavigationItem
+          icon={<SettingsIcon label="Settings" secondaryColor="inherit" />}
+          isSelected
+          text="Selected item"
+        />
+        <AkNavigationItem
+          icon={<IssuesIcon label="Projects" secondaryColor="inherit" />}
+          text="Item C"
+        />
+      </div>
+    ),
     defaultOpen: true,
     containerHeaderComponent: () => (
       <AkContainerTitle
         href="#foo"
-        icon={
-          <img alt="nucleus" src={nucleusLogo} />
-        }
+        icon={<img alt="nucleus" src={nucleusLogo} />}
         text="AtlasKit"
         subText="Is the king"
-      />),
+      />
+    ),
     createDrawerContent: (
       <div>
-        <AkNavigationItem
-          text="Item outside a group"
-        />
-        <AkNavigationItemGroup
-          title="Create item group"
-        >
+        <AkNavigationItem text="Item outside a group" />
+        <AkNavigationItemGroup title="Create item group">
           <AkNavigationItem
             icon={<img alt="icon" src={nucleusLogo} />}
             text="Item with an icon"
@@ -78,9 +85,10 @@ export default class BasicNavigation extends PureComponent {
             text="A really, really, quite long, actually super long container name"
           />
         </AkNavigationItemGroup>
-      </div>),
+      </div>
+    ),
     globalSecondaryActions: [
-      <Tooltip position="right" description="Back">
+      <Tooltip placement="right" content="Back">
         <AkDropdownMenu
           appearance="tall"
           position="right bottom"
@@ -120,7 +128,7 @@ export default class BasicNavigation extends PureComponent {
         position="right bottom"
         trigger={
           <AkGlobalItem>
-            <Tooltip position="right" description="User profile">
+            <Tooltip placement="right" content="User profile">
               <AkAvatar size="small" src={emmaAvatar} />
             </Tooltip>
           </AkGlobalItem>
@@ -136,7 +144,7 @@ export default class BasicNavigation extends PureComponent {
         </DropdownItemGroup>
       </AkDropdownMenu>,
     ],
-  }
+  };
 
   constructor(...args) {
     super(...args);
@@ -147,7 +155,7 @@ export default class BasicNavigation extends PureComponent {
     };
   }
 
-  openDrawer = (name) => {
+  openDrawer = name => {
     if (name === 'search') {
       action('onSearchDrawerOpen')();
     }
@@ -158,26 +166,34 @@ export default class BasicNavigation extends PureComponent {
     this.setState({
       openDrawer: name,
     });
-  }
+  };
 
   closeDrawer = () => {
     this.setState({
       openDrawer: null,
     });
-  }
+  };
 
-  resize = (resizeState) => {
+  resize = resizeState => {
     action('onResize')();
     this.props.onResizeCallback(resizeState);
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,
     });
-  }
+  };
 
   render() {
-    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
-    const globalPrimaryIcon = <Tooltip position="right" description="Back"><AtlassianIcon label="Atlassian icon" size="large" /></Tooltip>;
+    const backIcon = (
+      <Tooltip placement="right" content="Back">
+        <ArrowLeftIcon label="Back icon" size="medium" />
+      </Tooltip>
+    );
+    const globalPrimaryIcon = (
+      <Tooltip placement="right" content="Back">
+        <AtlassianIcon label="Atlassian icon" size="large" />
+      </Tooltip>
+    );
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
@@ -186,22 +202,35 @@ export default class BasicNavigation extends PureComponent {
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
         globalCreateIcon={
-          <Tooltip position="right" description="Create">
-            <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+          <Tooltip placement="right" content="Create">
+            <AddIcon
+              label="Create icon"
+              secondaryColor="inherit"
+              size="medium"
+            />
           </Tooltip>
         }
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={
-          <Tooltip position="right" description="Search">
-            <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>}
+          <Tooltip placement="right" content="Search">
+            <SearchIcon
+              label="Search icon"
+              secondaryColor="inherit"
+              size="medium"
+            />
+          </Tooltip>
+        }
         globalSecondaryActions={this.props.globalSecondaryActions}
         isOpen={this.state.isOpen}
-        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
+        onCreateDrawerOpen={() => {
+          this.openDrawer('create');
+        }}
         onResize={this.resize}
         onResizeStart={action('resizeStart')}
-        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
+        onSearchDrawerOpen={() => {
+          this.openDrawer('search');
+        }}
         openDrawer={this.state.openDrawer}
         position="right bottom"
         resizeHandler={action('resize')}
@@ -209,20 +238,20 @@ export default class BasicNavigation extends PureComponent {
         {...this.props}
         drawers={[
           ...this.props.drawers,
-          (<AkSearchDrawer
+          <AkSearchDrawer
             backIcon={backIcon}
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={this.closeDrawer}
             primaryIcon={globalPrimaryIcon}
           >
-            {
+            {this.props.searchDrawerContent ? (
               this.props.searchDrawerContent
-              ? this.props.searchDrawerContent
-              : <BasicSearch />
-            }
-          </AkSearchDrawer>),
-          (<AkCreateDrawer
+            ) : (
+              <BasicSearch />
+            )}
+          </AkSearchDrawer>,
+          <AkCreateDrawer
             backIcon={backIcon}
             header={<ContainerHeader />}
             isOpen={this.state.openDrawer === 'create'}
@@ -231,7 +260,7 @@ export default class BasicNavigation extends PureComponent {
             primaryIcon={globalPrimaryIcon}
           >
             {this.props.createDrawerContent}
-          </AkCreateDrawer>),
+          </AkCreateDrawer>,
         ]}
       >
         {this.props.children}

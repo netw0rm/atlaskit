@@ -20,7 +20,7 @@ import {
   insertText
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../../src/analytics';
 
 const mentionProvider = new Promise<any>(resolve => {

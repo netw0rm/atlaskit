@@ -9,7 +9,7 @@ export function defaultInputRuleHandler(inputRule: InputRule): InputRule {
   (inputRule as any).handler = (state: EditorState, match, start, end) => {
     // Skip any input rule inside code
     // https://product-fabric.atlassian.net/wiki/spaces/E/pages/37945345/Editor+content+feature+rules#Editorcontent/featurerules-Rawtextblocks
-    if (state.selection.$from.parent.type.spec.code) {
+    if (state.selection.$from.parent.type.spec.code || hasUnsupportedMark(state, start, end)) {
       return;
     }
     return originalHandler(state, match, start, end);
@@ -32,3 +32,14 @@ export const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g
   const r = Math.random() * 16 | 0;
   return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
 });
+
+const hasUnsupportedMark = (state: EditorState, start: number, end: number) => {
+  const { doc, schema: { marks }} = state;
+  let unsupportedMarksPresent = false;
+  doc.nodesBetween(start, end, node => {
+    unsupportedMarksPresent = unsupportedMarksPresent || node.marks.filter(
+      ({type}) => type === marks.code || type === marks.link
+    ).length > 0;
+  });
+  return unsupportedMarksPresent;
+};

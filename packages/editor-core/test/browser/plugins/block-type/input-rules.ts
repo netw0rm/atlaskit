@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { default as blockTypePlugins, BlockTypeState } from '../../../../src/plugins/block-type';
 import {
-  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, makeEditor, p,
+  sendKeyToPm, blockquote, br, code_block, chaiPlugin, doc, h1, h2, h3, insertText, makeEditor, p, code, a as link
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -81,6 +81,21 @@ describe('inputrules', () => {
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(blockquote(p())));
       expect(trackEvent.calledWith('atlassian.editor.format.blockquote.autoformatting')).to.equal(true);
+      editorView.destroy();
+    });
+
+    it('should not convert "> " inside code mark to blockquote', () => {
+      const { editorView, sel } = editor(doc(p(code('>{<>}'))));
+
+      insertText(editorView, ' ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('> '))));
+      editorView.destroy();
+    });
+
+    it('should not convert "> " inside link to blockquote', () => {
+      const { editorView, sel } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('>{<>}'))));
+      insertText(editorView, ' ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.atlassian.com' })('>'), ' ')));
       editorView.destroy();
     });
 

@@ -81,6 +81,7 @@ storiesOf(name, module)
                       placeholder="What do you want to say?"
                       isExpanded={this.state.isExpanded}
                       onFocus={this.onFocus}
+                      onExpand={EXPAND_ACTION}
                     >
                       <Editor
                         appearance="comment"
@@ -101,7 +102,6 @@ storiesOf(name, module)
                         onChange={onChange}
                         onSave={SAVE_ACTION}
                         onCancel={CANCEL_ACTION}
-                        onExpand={EXPAND_ACTION}
 
                         primaryToolbarComponents={<ToolbarFeedback packageVersion={version} packageName={name} />}
                       />

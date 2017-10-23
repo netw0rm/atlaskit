@@ -42,8 +42,8 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          decisionList(
-            decisionItem('')
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('')
           )
         )
       );
@@ -55,8 +55,8 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          decisionList(
-            decisionItem('Hello World')
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('Hello World')
           )
         )
       );
@@ -69,8 +69,8 @@ describe('tasks and decisions - input rules', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p('Hello'),
-          decisionList(
-            decisionItem('World')
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('World')
           )
         )
       );
@@ -101,8 +101,8 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          taskList(
-            taskItem('')
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })('')
           )
         )
       );
@@ -114,8 +114,8 @@ describe('tasks and decisions - input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          taskList(
-            taskItem('Hello World')
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })('Hello World')
           )
         )
       );
@@ -128,8 +128,8 @@ describe('tasks and decisions - input rules', () => {
       expect(editorView.state.doc).to.deep.equal(
         doc(
           p('Hello'),
-          taskList(
-            taskItem('World')
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })('World')
           )
         )
       );

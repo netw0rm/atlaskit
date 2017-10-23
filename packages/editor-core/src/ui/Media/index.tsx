@@ -20,9 +20,10 @@ export default class Media extends PureComponent<Props, {}> {
     }
 
     render() {
-        const stateManager = this.getStateManagerFromEditorPlugin();
+        // Pass in the fallback state manager from the editor plugin
+        const stateManagerFallback = this.getStateManagerFromEditorPlugin();
         const props = {
-            stateManager,
+            stateManagerFallback,
             ...this.props
         };
 

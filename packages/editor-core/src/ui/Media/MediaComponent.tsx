@@ -39,7 +39,7 @@ export interface Props extends MediaAttributes {
   onDelete?: CardEventHandler;
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
-  stateManager?: MediaStateManager;
+  stateManagerFallback?: MediaStateManager;
 }
 
 export interface State extends MediaState {
@@ -118,9 +118,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
     }
 
-    const { stateManager } = this.props;
-    if (stateManager) {
-      stateManager.unsubscribe(id, this.handleMediaStateChange);
+    const { stateManagerFallback } = this.props;
+    if (stateManagerFallback) {
+        stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -299,9 +299,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     /**
-     * Try to get stateManager from MediaProvider first, if not, get it from props
+     * Try to get stateManager from MediaProvider first, if not, get the fallback from props
      */
-    const stateManager = mediaProvider.stateManager || this.props.stateManager;
+    const stateManager = mediaProvider.stateManager || this.props.stateManagerFallback;
 
     this.setState({ mediaProvider });
 

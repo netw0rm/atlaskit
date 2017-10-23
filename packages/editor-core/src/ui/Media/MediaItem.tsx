@@ -26,7 +26,7 @@ export interface Props {
   onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
   appearance?: Appearance;
-  stateManager?: MediaStateManager;
+  stateManagerFallback?: MediaStateManager;
 }
 
 export default class MediaItem extends PureComponent<Props, {}> {
@@ -56,7 +56,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
       resizeMode,
       editorView,
       appearance,
-      stateManager
+      stateManagerFallback
     } = this.props;
 
     return (
@@ -71,7 +71,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
         onClick={onClick}
         editorView={editorView}
         appearance={appearance}
-        stateManager={stateManager}
+        stateManagerFallback={stateManagerFallback}
       />
     );
   }

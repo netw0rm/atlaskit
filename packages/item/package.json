@@ -24,7 +24,8 @@
     "@atlaskit/theme": "^2.1.0",
     "babel-runtime": "^6.23.0",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.6"
+    "styled-components": "^1.4.6",
+    "uid": "0.0.2"
   },
   "devDependencies": {
     "@atlaskit/dropdown-menu": "^3.4.0",

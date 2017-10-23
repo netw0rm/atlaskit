@@ -11,9 +11,7 @@ export interface Props {
   onExpand?: () => void;
 }
 
-export interface State {
-  shouldTriggerExpandEvent?: boolean;
-}
+export interface State {}
 
 export default class CollapsedEditor extends React.Component<Props, State> {
 
@@ -23,16 +21,20 @@ export default class CollapsedEditor extends React.Component<Props, State> {
   };
 
   editorComponent?: Editor;
+  shouldTriggerExpandEvent?: boolean;
 
   componentWillReceiveProps(nextProps, nextState) {
     if (!this.props.isExpanded && nextProps.isExpanded) {
-      this.setState({ shouldTriggerExpandEvent: true });
+      this.shouldTriggerExpandEvent = true;
     }
   }
 
   componentDidUpdate() {
-    if (this.state.shouldTriggerExpandEvent && this.editorComponent) {
-      this.setState({ shouldTriggerExpandEvent: false }, this.props.onExpand);
+    if (this.shouldTriggerExpandEvent && this.editorComponent) {
+      this.shouldTriggerExpandEvent = false;
+      if (this.props.onExpand) {
+        this.props.onExpand();
+      }
     }
   }
 

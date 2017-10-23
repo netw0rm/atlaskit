@@ -9,6 +9,7 @@ import {
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
   mediaPlugin,
+  imageUploadPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
   codeBlockPlugin,
@@ -84,6 +85,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.mediaProvider) {
     plugins.push(mediaPlugin);
+  }
+
+  if (props.legacyImageUploadProvider) {
+    plugins.push(imageUploadPlugin);
   }
 
   if (props.collabEditProvider) {

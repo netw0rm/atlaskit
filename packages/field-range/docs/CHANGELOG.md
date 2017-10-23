@@ -1,6 +1,21 @@
 # @atlaskit/field-range
 
-## Unreleased
+## 2.4.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 2.4.2 (2017-07-27)
 

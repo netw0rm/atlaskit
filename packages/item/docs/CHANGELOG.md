@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.1.4 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
 ## 4.1.3 (2017-10-16)
 
 * bug fix; selected items now receive hover style as expected (issues closed: ak-3650) ([f8f4510](https://bitbucket.org/atlassian/atlaskit/commits/f8f4510))

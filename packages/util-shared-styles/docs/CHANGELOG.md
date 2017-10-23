@@ -1,5 +1,13 @@
 # @atlaskit/util-shared-styles
 
+## 2.10.4 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
+
+
+
+
+
 ## 2.10.3 (2017-08-02)
 
 * bug fix; fix order of util-shared-styles exports so variables are available at compile time ([e9c2992](https://bitbucket.org/atlassian/atlaskit/commits/e9c2992))

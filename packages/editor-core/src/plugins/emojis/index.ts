@@ -2,7 +2,7 @@ import { EmojiId, EmojiProvider, EmojiSearchResult, EmojiDescription } from '@at
 import { Schema } from 'prosemirror-model';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { isMarkTypeAllowedInCurrentSelection } from '../../utils';
+import { isMarkTypeAllowedInCurrentSelection, isChromeWithSelectionBug } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -167,6 +167,12 @@ export class EmojiState {
       const { start, end } = this.findEmojiQueryMark();
       const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
       const textNode = state.schema.text(' ');
+
+      // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
+      if (isChromeWithSelectionBug) {
+        document.getSelection().empty();
+      }
+
       view.dispatch(
         state.tr.replaceWith(start, end, [node, textNode])
       );

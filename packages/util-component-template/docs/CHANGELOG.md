@@ -1,6 +1,13 @@
 # @atlaskit/util-component-template
 
-## Unreleased
+## 2.4.3 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
+
+
+
+
+
 
 ## 2.4.2 (2017-07-27)
 

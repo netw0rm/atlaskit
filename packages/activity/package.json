@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/activity",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },
@@ -41,7 +41,7 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0"
   },
   "repository": {
     "type": "git",

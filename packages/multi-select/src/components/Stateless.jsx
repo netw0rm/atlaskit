@@ -94,7 +94,7 @@ export default class StatelessMultiSelect extends PureComponent {
     loadingMessage: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
     including if there is one item that has been selected. */
-    noMatchesFound: PropTypes.string,
+    noMatchesFound: PropTypes.node,
     /** name property to be passed to the html select element. */
     name: PropTypes.string,
     /** Handler to be called when the filtered items changes.*/

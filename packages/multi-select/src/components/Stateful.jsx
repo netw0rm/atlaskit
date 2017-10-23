@@ -67,7 +67,7 @@ export default class MultiSelect extends PureComponent {
     name: PropTypes.string,
     /** Mesage to display in any group in items if there are no items in it,
     including if there is one item that has been selected. */
-    noMatchesFound: PropTypes.string,
+    noMatchesFound: PropTypes.node,
     /** Handler to be called when the filtered items changes.*/
     onFilterChange: PropTypes.func,
     /** Handler to be called when a new item is created.

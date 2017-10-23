@@ -59,7 +59,7 @@
     "@types/prosemirror-view": "^0.21.1",
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/button": "^5.4.5",
     "@atlaskit/code": "^2.1.2",
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",

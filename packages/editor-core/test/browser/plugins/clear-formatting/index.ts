@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import { browser } from '@atlaskit/editor-common';
 import clearFormattingPlugins, { ClearFormattingState } from '../../../../src/plugins/clear-formatting';
 import {
-  a as link, blockquote, chaiPlugin, code_block, code, doc, em, h1,
+  a as link, blockquote, chaiPlugin, code_block, code, doc, em, h1, subsup,
   li, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline, textColor
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
@@ -93,6 +93,24 @@ describe('clear-formatting', () => {
 
     it('should remove heading blocks if present', () => {
       const { editorView, pluginState } = editor(doc(h1('te{<>}xt')));
+
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+
+      editorView.destroy();
+    });
+
+    it('should remove superscript if present', () => {
+      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sup'})('{<}text{>}'))));
+
+      pluginState.clearFormatting(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+
+      editorView.destroy();
+    });
+
+    it('should remove subscript if present', () => {
+      const { editorView, pluginState } = editor(doc(p(subsup({ type: 'sub'})('{<}text{>}'))));
 
       pluginState.clearFormatting(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));

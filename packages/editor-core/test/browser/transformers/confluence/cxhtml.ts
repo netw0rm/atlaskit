@@ -10,8 +10,8 @@ import {
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
-  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
-  table, tr, td, th,
+  confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, confluenceInlineComment,
+  mediaGroup, media, table, tr, td, th,
   inlineMacro
 } from './_schema-builder';
 chai.use(chaiPlugin);
@@ -215,6 +215,120 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           textColor({ color: '#222222' })('some colour'),
           '.'
         )));
+
+      describe('confluence inline comments', () => {
+        check(
+          'basic',
+          `<p>
+            <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">
+              inline comment
+            </ac:inline-comment-marker>
+          </p>`,
+          doc(
+            p(
+              confluenceInlineComment({
+                reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
+              })('inline comment')
+            )
+          )
+        );
+
+        check(
+          'marker without text',
+          `<p>
+            test
+            <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a"></ac:inline-comment-marker>
+            text
+          </p>`,
+          doc(p('test text'))
+        );
+
+        check(
+          'tightly overlapping comments',
+          `<p>
+            <ac:inline-comment-marker ac:ref="foo">
+              <ac:inline-comment-marker ac:ref="bar">
+                <ac:inline-comment-marker ac:ref="baz">
+                  inline comment
+                </ac:inline-comment-marker>
+              </ac:inline-comment-marker>
+            </ac:inline-comment-marker>
+          </p>`,
+          doc(
+            p(
+              confluenceInlineComment({
+                reference: 'foo',
+              })(
+                  confluenceInlineComment({
+                    reference: 'bar',
+                  })(
+                    confluenceInlineComment({
+                      reference: 'baz',
+                    })('inline comment')
+                  )
+              )
+            )
+          )
+        );
+
+        check(
+          'loosly overlapping comments',
+          `<p>
+            <ac:inline-comment-marker ac:ref="foo">
+              lorem
+              <ac:inline-comment-marker ac:ref="bar">
+                ipsum
+              </ac:inline-comment-marker>
+              dolor
+            </ac:inline-comment-marker>
+          </p>`,
+          doc(
+            p(
+              confluenceInlineComment({
+                reference: 'foo',
+              })('lorem '),
+              confluenceInlineComment({
+                reference: 'foo',
+              })(confluenceInlineComment({
+                reference: 'bar',
+              })('ipsum ')),
+              confluenceInlineComment({
+                reference: 'foo',
+              })('dolor'),
+            )
+          )
+        );
+
+        check(
+          'partially overlapping comments',
+          `<p>
+            <ac:inline-comment-marker ac:ref="foo">
+              lorem
+              <ac:inline-comment-marker ac:ref="bar">
+                ipsum
+              </ac:inline-comment-marker>
+            </ac:inline-comment-marker>
+            <ac:inline-comment-marker ac:ref="bar">
+              dolor
+            </ac:inline-comment-marker>
+          </p>`,
+          doc(
+            p(
+              confluenceInlineComment({
+                reference: 'foo',
+              })('lorem '),
+              confluenceInlineComment({
+                reference: 'foo',
+              })(confluenceInlineComment({
+                reference: 'bar',
+              })('ipsum ')),
+              confluenceInlineComment({
+                reference: 'bar',
+              })('dolor'),
+            )
+          )
+        );
+      });
 
       it('parses text color in hex', () => {
         const actual = parse('<p>Text with <span style="color: #777777">some colour</span>.</p>');

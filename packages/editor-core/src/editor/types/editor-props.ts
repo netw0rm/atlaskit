@@ -35,6 +35,7 @@ export interface EditorProps {
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
   allowInlineMacro?: boolean;
+  allowConfluenceInlineComment?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

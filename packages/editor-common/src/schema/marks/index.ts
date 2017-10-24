@@ -8,3 +8,4 @@ export { emojiQuery } from './emoji-query';
 export { mentionQuery } from './mention-query';
 export { subsup } from './subsup';
 export { textColor, colorPalette } from './text-color';
+export { confluenceInlineComment } from './confluence-inline-comment';

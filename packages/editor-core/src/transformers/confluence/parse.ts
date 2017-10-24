@@ -240,6 +240,13 @@ function converter(schema: Schema, content: Fragment, node: Node): Fragment | PM
 
         return schema.nodes.media.create(mediaAttrs);
 
+      case 'AC:INLINE-COMMENT-MARKER':
+        if (!content) {
+          return null;
+        }
+        const attrs = { reference: node.getAttribute('ac:ref') };
+        return addMarks(content, [schema.marks.confluenceInlineComment.create(attrs)]);
+
       case 'PRE':
         return schema.nodes.codeBlock.create({ language: null }, schema.text(node.textContent || ''));
 

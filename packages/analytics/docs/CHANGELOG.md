@@ -1,5 +1,9 @@
 # @atlaskit/analytics
 
+## 2.3.2 (2017-10-24)
+
+
+* bug fix; update the cleanprops function ([e27ace3](https://bitbucket.org/atlassian/atlaskit/commits/e27ace3))
 ## 2.3.1 (2017-10-22)
 
 * bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))

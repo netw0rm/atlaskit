@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 56.0.0 (2017-10-24)
+
+* breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+* breaking; use base renderer files from renderer package ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
 ## 55.0.0 (2017-10-24)
 
 

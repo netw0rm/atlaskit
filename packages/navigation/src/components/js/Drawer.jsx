@@ -107,6 +107,11 @@ export class DrawerImpl extends PureComponent {
       width,
       iconOffset,
     } = this.props;
+    
+    // WIP - need to clean up rest of fn if this works
+    if (!isOpen) {
+      return null;
+    }
 
     const actualFullWidth = width === 'full';
 

@@ -21,13 +21,27 @@ const grinEmojiId = {
   id: grinEmoji.id,
   fallback: grinEmoji.fallback,
 };
-const providerFactory = new ProviderFactory();
-providerFactory.setProvider('emojiProvider', emojiProvider);
 
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
+  const providerFactory = new ProviderFactory();
+  providerFactory.setProvider('emojiProvider', emojiProvider);
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
+  });
+
+  const addSpy = sinon.spy(document, 'addEventListener');
+  const removeSpy = sinon.spy(document, 'removeEventListener');
+
+  beforeEach(() => {
+    addSpy.reset();
+    removeSpy.reset();
+  });
+
+  after(() => {
+    addSpy.restore();
+    removeSpy.restore();
+    providerFactory.destroy();
   });
 
   it('should have Popup component defined in it', () => {
@@ -132,7 +146,6 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   });
 
   it('should add an ESC keydown event listener on mount', () => {
-    const addSpy = sinon.spy(document, 'addEventListener');
     const { editorView } = editor(doc(p('')));
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     const picker = toolbarEmojiPicker.instance() as ToolbarEmojiPicker;
@@ -143,7 +156,6 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   });
 
   it('should remove an ESC keydown event listener on unmount', () => {
-    const removeSpy = sinon.spy(document, 'removeEventListener');
     const { editorView } = editor(doc(p('')));
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     const picker = toolbarEmojiPicker.instance() as ToolbarEmojiPicker;

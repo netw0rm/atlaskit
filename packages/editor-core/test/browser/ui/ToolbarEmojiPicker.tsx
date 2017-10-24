@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import emojiPlugins, { EmojiState } from '../../../src/plugins/emojis';
 import ToolbarEmojiPicker from '../../../src/ui/ToolbarEmojiPicker';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { doc, p, makeEditor, emoji } from '../../../src/test-helper';
+import { doc, p, makeEditor, emoji, code_block, mentionQuery } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
@@ -21,12 +21,14 @@ const grinEmojiId = {
   id: grinEmoji.id,
   fallback: grinEmoji.fallback,
 };
+const providerFactory = new ProviderFactory();
+providerFactory.setProvider('emojiProvider', emojiProvider);
 
 // TODO: Unskip this test in: https://product-fabric.atlassian.net/browse/ED-2201
-describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
+describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
-    plugins: emojiPlugins(defaultSchema, new ProviderFactory()),
+    plugins: emojiPlugins(defaultSchema, providerFactory),
   });
 
   it('should have Popup component defined in it', () => {
@@ -35,6 +37,28 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     const popup = toolbarEmojiPicker.find(Popup);
     expect(popup.length > 0).to.equal(true);
+    toolbarEmojiPicker.unmount();
+  });
+
+  it('should be enabled by default', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    expect(toolbarEmojiPicker.state('disabled')).to.equal(false);
+    toolbarEmojiPicker.unmount();
+  });
+
+  it('should disable the ToolbarEmojiPicker when in a code block', () => {
+    const { editorView } = editor(doc(code_block()('<{}>')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    expect(toolbarEmojiPicker.state('disabled'), 'Toolbar state is disabled').to.equal(true);
+    toolbarEmojiPicker.unmount();
+  });
+
+  it('should disable the ToolbarEmojiPicker when in an active mention query mark', () => {
+    const { editorView } = editor(doc(mentionQuery()('@')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    expect(toolbarEmojiPicker.state('disabled'), 'Toolbar state is disabled').to.equal(true);
     toolbarEmojiPicker.unmount();
   });
 
@@ -95,17 +119,6 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     toolbarEmojiPicker.find(EmojiIcon).parent().simulate('click');
-
-    expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
-    toolbarEmojiPicker.unmount();
-  });
-
-  it('should close the picker if ESC is pressed', () => {
-    const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
-    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
-    toolbarEmojiPicker.find(EmojiIcon).parent().simulate('keydown', { keyCode: 27 });
-
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
     toolbarEmojiPicker.unmount();
   });
@@ -115,25 +128,13 @@ describe.skip('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
       const trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('')));
-      const toolbarOption = mount(
-        <ToolbarEmojiPicker
-          pluginKey={pluginKey}
-          emojiProvider={emojiProvider}
-          editorView={editorView}
-          numFollowingButtons={0}
-        />
-      );
-      toolbarOption.find(EmojiIcon).simulate('click');
+      const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+      toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+      const onSelection = toolbarEmojiPicker.find(AkEmojiPicker).prop('onSelection');
+      onSelection!(grinEmojiId, grinEmoji);
+
       expect(trackEvent.calledWith('atlassian.editor.emoji.button')).to.equal(true);
-      toolbarOption.unmount();
+      toolbarEmojiPicker.unmount();
     });
-  });
-
-  it('should disable the ToolbarEmojiPicker when there in an active mention query mark', () => {
-    const { editorView } = editor(doc(p('@')));
-    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
-
-    expect(toolbarEmojiPicker.prop('disabled')).to.equal(true);
-    toolbarEmojiPicker.unmount();
   });
 });

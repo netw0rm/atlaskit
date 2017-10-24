@@ -53,6 +53,8 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     if (this.pluginState) {
       this.pluginState.subscribe(this.handlePluginStateChange);
     }
+    // Keymapping must be added here at the document level as editor focus is lost
+    // when the picker opens so plugins/emojis/keymaps.ts will not register ESC
     document.addEventListener('keydown', this.handleEscape);
   }
 
@@ -70,7 +72,6 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
   }
 
-
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
 
@@ -83,12 +84,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     if (pluginState) {
       this.pluginState = pluginState;
       pluginState.subscribe(this.handlePluginStateChange);
+      this.setState({
+        disabled: !pluginState.isEnabled()
+      });
     }
   }
 
   private handlePluginStateChange = (pluginState: EmojiState) => {
     this.setState({
-      disabled: !pluginState.enabled
+      disabled: !pluginState.isEnabled()
     });
   }
 
@@ -133,9 +137,9 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
   }
 
-  private handleEscape = (e: KeyboardEvent) => {
+  private handleEscape = (e) => {
     // ESC key pressed
-    if (e.which === 27 || e.keyCode === 27) {
+    if (this.state.isOpen && (e.which === 27 || e.keyCode === 27)) {
       this.close();
     }
   }

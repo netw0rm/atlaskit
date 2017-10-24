@@ -1,8 +1,6 @@
-import {
-  MediaProvider,
-  Schema,
-} from '@atlaskit/editor-core';
+import { MediaProvider } from '@atlaskit/editor-core';
 import { ClientBasedAuth } from '@atlaskit/media-core';
+import { Schema } from 'prosemirror-model';
 
 export interface ContextInfo {
   clientId: string;
@@ -16,23 +14,23 @@ export interface MediaContextInfo {
   uploadContext?: ContextInfo;
 }
 
-export function isSchemaWithMentions(schema: Schema<any, any>): boolean {
+export function isSchemaWithMentions(schema: Schema): boolean {
   return !!schema.nodes.mention;
 }
 
-export function isSchemaWithLinks(schema: Schema<any, any>): boolean {
+export function isSchemaWithLinks(schema: Schema): boolean {
   return !!schema.marks.link;
 }
 
-export function isSchemaWithCodeBlock(schema: Schema<any, any>): boolean {
+export function isSchemaWithCodeBlock(schema: Schema): boolean {
   return !!schema.nodes.codeBlock;
 }
 
-export function isSchemaWithMedia(schema: Schema<any, any>): boolean {
+export function isSchemaWithMedia(schema: Schema): boolean {
   return !!schema.nodes.mediaGroup && !!schema.nodes.media;
 }
 
-export function isSchemaWithTextColor(schema: Schema<any, any>): boolean {
+export function isSchemaWithTextColor(schema: Schema): boolean {
   return !!schema.marks.textColor;
 }
 
@@ -72,7 +70,7 @@ export async function getMediaContextInfo(mediaProvider?: Promise<MediaProvider>
   return mediaContextInfo;
 }
 
-export function isSchemaWithTables(schema: Schema<any, any>): boolean {
+export function isSchemaWithTables(schema: Schema): boolean {
   return (
     !!schema.nodes.table &&
     !!schema.nodes.tableCell &&

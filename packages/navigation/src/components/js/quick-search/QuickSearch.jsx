@@ -4,6 +4,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import { AkSearch } from '../../../../src';
 
 import decorateWithAnalyticsData from './decorateWithAnalyticsData';
+import isReactElement from './isReactElement';
 import {
   QS_ANALYTICS_EV_CLOSE,
   QS_ANALYTICS_EV_KB_CTRLS_USED,
@@ -18,6 +19,7 @@ const noOp = () => {};
 const flattenChildren = children => (
   React.Children
     .toArray(children)
+    .filter(childGroup => isReactElement(childGroup))
     .reduce((flatArray, childGroup) => (
       flatArray.concat(React.Children.toArray(childGroup.props.children))
     ), [])
@@ -248,6 +250,11 @@ export class QuickSearch extends Component {
     let ii = 0;
     /** Attach mouse interaction handlers and determine whether this result is selected */
     const renderResult = (result) => {
+      // return native element as-is
+      if (!isReactElement(result)) {
+        return result;
+      }
+
       const isSelected = Boolean(result.props) &&
         result.props.resultId === this.state.selectedResultId;
       return React.cloneElement(
@@ -263,13 +270,20 @@ export class QuickSearch extends Component {
     };
 
     /** Process a group of results */
-    const renderGroup = group => (
-      React.cloneElement(
-        group,
-        null,
-        React.Children.map(group.props.children, renderResult)
-      )
-    );
+    const renderGroup = group => {
+      // return native element as-is
+      if (!isReactElement(group)) {
+        return group;
+      }
+
+      return (
+        React.cloneElement(
+          group,
+          null,
+          React.Children.map(group.props.children, renderResult)
+        )
+      );
+    };
 
     return React.Children.map(this.props.children, renderGroup);
   }

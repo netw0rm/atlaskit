@@ -8,9 +8,9 @@ import {
   ReactSerializer,
   renderDocument,
   RendererContext,
-  RenderOutputStat,
 } from '../../renderer';
 import { AppCardAction } from '@atlaskit/editor-common';
+import { RenderOutputStat } from '@atlaskit/renderer';
 import { Wrapper } from './style';
 
 export interface CardSurroundings {

@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { createJIRASchema } from '@atlaskit/editor-core';
+import { createJIRASchema } from '@atlaskit/editor-common';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { parseIntoAtlassianDocument } from '../../src';
 

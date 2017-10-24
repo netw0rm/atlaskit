@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ReactSerializer from '../../../../src/renderer/react';
 import schema from '../../../../stories/schema';
-import * as validator from '../../../../src/renderer/validator';
+import * as validator from '@atlaskit/renderer';
 
 const doc = {
   'type': 'doc',

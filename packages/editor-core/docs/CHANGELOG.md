@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 56.0.0 (2017-10-24)
+
+* breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+* breaking; use base renderer files from renderer package ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+## 55.0.0 (2017-10-24)
+
+
+* feature; emoticons to emoji cxhtml transform ([3b72b96](https://bitbucket.org/atlassian/atlaskit/commits/3b72b96))
+
+* breaking; onExpand is no longer supported for the 'new-arch' editor. Consumers should use CollapsedEditor ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+* breaking; refactor CollapsedEditor to remove the need for onExpand prop in the new arch ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
 ## 54.0.1 (2017-10-23)
 
 * bug fix; pass popupsMountPoint and popupsBoundariesElement to all appearances (issues closed: ed-3060) ([0ab2923](https://bitbucket.org/atlassian/atlaskit/commits/0ab2923))

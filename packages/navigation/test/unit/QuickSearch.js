@@ -69,9 +69,19 @@ describe('<QuickSearch />', () => {
     expect(wrapper.find(AkSearch)).toHaveLength(1);
   });
 
-  it('should render its children', () => {
-    render({ children: <div id="child" /> });
-    expect(wrapper.find('div#child').exists()).toBe(true);
+  describe('(Prop) children', () => {
+    it('should render its children', () => {
+      render({ children: <div id="child" /> });
+      expect(wrapper.find('div#child').exists()).toBe(true);
+    });
+    it('should support non-component children', () => {
+      render({ children: 'child' });
+      /* Expect that no errors occur while parsing children */
+    });
+    it('should support non-component grandchildren', () => {
+      render({ children: <div>grandchild</div> });
+      /* Expect that no errors occur while parsing children */
+    });
   });
 
   describe('Analytics events', () => {

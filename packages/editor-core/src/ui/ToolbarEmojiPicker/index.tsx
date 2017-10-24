@@ -72,6 +72,13 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     }
   }
 
+  handleEscape = (e) => {
+    // ESC key pressed
+    if (this.state.isOpen && (e.which === 27 || e.keyCode === 27)) {
+      this.close();
+    }
+  }
+
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
 
@@ -133,13 +140,6 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     // still in the document, and one once it's detached. Does not always occur, and
     // may be a side effect of a react render optimisation
     if (!picker || (!isDetachedElement(e.target) && !picker.contains(e.target))) {
-      this.close();
-    }
-  }
-
-  private handleEscape = (e) => {
-    // ESC key pressed
-    if (this.state.isOpen && (e.which === 27 || e.keyCode === 27)) {
       this.close();
     }
   }

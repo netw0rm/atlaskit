@@ -24,7 +24,6 @@ const grinEmojiId = {
 const providerFactory = new ProviderFactory();
 providerFactory.setProvider('emojiProvider', emojiProvider);
 
-// TODO: Unskip this test in: https://product-fabric.atlassian.net/browse/ED-2201
 describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
@@ -67,6 +66,15 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     expect(toolbarEmojiPicker.state('isOpen')).to.equal(true);
+    toolbarEmojiPicker.unmount();
+  });
+
+  it('should have state variable isOpen set to false when toolbar emoji button is clicked twice', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    expect(toolbarEmojiPicker.state('isOpen')).to.equal(false);
     toolbarEmojiPicker.unmount();
   });
 
@@ -123,8 +131,39 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     toolbarEmojiPicker.unmount();
   });
 
+  it('should add an ESC keydown event listener on mount', () => {
+    const addSpy = sinon.spy(document, 'addEventListener');
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    const picker = toolbarEmojiPicker.instance() as ToolbarEmojiPicker;
+    toolbarEmojiPicker.unmount();
+    expect(addSpy.callCount).to.equal(1);
+    expect(addSpy.getCall(0).args[0]).to.equal('keydown');
+    expect(addSpy.getCall(0).args[1]).to.deep.equal(picker.handleEscape);
+  });
+
+  it('should remove an ESC keydown event listener on unmount', () => {
+    const removeSpy = sinon.spy(document, 'removeEventListener');
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    const picker = toolbarEmojiPicker.instance() as ToolbarEmojiPicker;
+    toolbarEmojiPicker.unmount();
+    expect(removeSpy.callCount).to.equal(1);
+    expect(removeSpy.getCall(0).args[0]).to.equal('keydown');
+    expect(removeSpy.getCall(0).args[1]).to.deep.equal(picker.handleEscape);
+  });
+
+  it('should close the picker on handleEscape', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(<ToolbarEmojiPicker pluginKey={pluginKey} emojiProvider={emojiProvider} editorView={editorView} numFollowingButtons={0}/>);
+    const picker = toolbarEmojiPicker.instance() as ToolbarEmojiPicker;
+    picker.handleEscape({ keyCode: 27 });
+    expect(toolbarEmojiPicker.find(AkEmojiPicker)).to.have.length(0);
+    toolbarEmojiPicker.unmount();
+  });
+
   describe('analytics', () => {
-    it('should trigger analyticsService.trackEvent when emoji icon is clicked', () => {
+    it('should trigger analyticsService.trackEvent when emoji is inserted via picker', () => {
       const trackEvent = sinon.spy();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('')));

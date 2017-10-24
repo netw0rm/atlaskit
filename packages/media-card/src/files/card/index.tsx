@@ -26,7 +26,7 @@ export class FileCard extends Component<FileCardProps, {}> {
   }
 
   renderFile(): JSX.Element {
-    const {status, dimensions, selectable, selected, details, dataURI, progress, resizeMode} = this.props;
+    const {status, dimensions, selectable, selected, details, dataURI, progress, resizeMode, onRetry} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
     const errorMessage = this.isError ? 'Failed to load file' : undefined;
@@ -60,6 +60,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           status={status}
           progress={progress}
           resizeMode={resizeMode}
+          onRetry={onRetry}
           actions={this._getActions()}
         />
       );

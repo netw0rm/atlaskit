@@ -231,18 +231,15 @@ export const ErrorMessage = styled.div`
 
 export const Retry = styled.div`
   ${antialiased}
-  position: absolute;
   box-sizing: border-box;
-  padding: 0 7px 7px 0;
-  bottom: 0;
-  width: 100%;
+  margin-left: 5px;
   font-weight: bold;
   color: ${akColorB400};
   font-size: 12px;
-  line-height: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
 `;
 
 export const TitleWrapper = styled.div`

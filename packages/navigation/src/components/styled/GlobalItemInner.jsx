@@ -12,7 +12,11 @@ const getOutline = (props) => {
 
 const globalItemStyles = css`
   color: ${({ theme }) => getProvided(theme).text};
-  background-color: ${({ theme }) => getProvided(theme).item.default.background};
+  background-color: ${({ isSelected, theme }) => (
+    isSelected
+      ? getProvided(theme).item.selected.background
+      : getProvided(theme).item.default.background
+  )};
   /* fill controls the secondary color used by some icons like the help icon */
   fill: ${({ theme }) => getProvided(theme).background.primary};
   align-items: center;

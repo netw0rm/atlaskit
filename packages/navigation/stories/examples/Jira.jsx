@@ -16,6 +16,7 @@ import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, 
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 import Menu from './menu';
+import SelectableDropdownMenu from '../components/SelectableDropdownMenu';
 
 export default class JIRAExample extends PureComponent {
   constructor(...args) {
@@ -148,7 +149,7 @@ export default class JIRAExample extends PureComponent {
     };
 
     const helpMenu = (
-      <AkDropdownMenu
+      <SelectableDropdownMenu
         appearance="tall"
         items={[
           {
@@ -181,16 +182,16 @@ export default class JIRAExample extends PureComponent {
           },
         ]}
         position="right bottom"
-      >
-        <AkGlobalItem href="">
+      >{isOpen => (
+        <AkGlobalItem href="" isSelected={isOpen}>
           <QuestionCircleIcon
             label="Help icon"
             secondaryColor="inherit"
             size="medium"
           />
         </AkGlobalItem>
-      </AkDropdownMenu>
-      );
+      )}</SelectableDropdownMenu>
+    );
 
     const userMenu = (
       <AkDropdownMenu

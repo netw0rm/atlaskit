@@ -22,9 +22,9 @@ const hyperlinkPlugin: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
     const pluginState = pluginKey.getState(editorView.state);
-    return <ToolbarHyperlink editorView={editorView} pluginState={pluginState} />;
+    return <ToolbarHyperlink disabled={disabled} editorView={editorView} pluginState={pluginState} />;
   },
 
   contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {

@@ -15,7 +15,8 @@ export interface State {
 
 export default class Editor extends React.Component<EditorProps, State> {
   static defaultProps: EditorProps = {
-    appearance: 'message'
+    appearance: 'message',
+    disabled: false
   };
 
   static contextTypes = {
@@ -132,6 +133,8 @@ export default class Editor extends React.Component<EditorProps, State> {
     return (
       <Component
         onUiReady={this.initEditor}
+
+        disabled={this.props.disabled}
 
         editorView={editorView}
         providerFactory={this.providerFactory}

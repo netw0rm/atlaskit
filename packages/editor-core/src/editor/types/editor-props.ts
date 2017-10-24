@@ -39,6 +39,7 @@ export interface EditorProps {
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
+  disabled?: boolean;
 
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;

@@ -15,7 +15,7 @@ import {
   mention,
   code,
 } from '../../../../src/test-helper';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
 

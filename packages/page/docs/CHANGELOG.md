@@ -1,5 +1,9 @@
 # @atlaskit/page
 
+## 5.0.2 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+
 ## 5.0.1 (2017-10-12)
 
 * bug fix; fix Changelog.md for 5.0.0 release ([bedd9fc](https://bitbucket.org/atlassian/atlaskit/commits/bedd9fc))

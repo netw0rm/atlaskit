@@ -1,8 +1,10 @@
 import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import { Schema, Node } from 'prosemirror-model';
+import { Selection } from 'prosemirror-state';
 import createEditor from '../../../helpers/create-editor';
 import { sortByRank, fixExcludes, createPMPlugins, processDefaultDocument } from '../../../../src/editor/create-editor/create-editor';
+import * as sinon from 'sinon';
 
 describe(name, () => {
   describe('create-editor', () => {
@@ -132,6 +134,23 @@ describe(name, () => {
           }
         ]
       })).to.be.an.instanceOf(Node);
+    });
+  });
+
+  describe('onChange', () => {
+    it('should call onChange only when document changes', () => {
+      const onChange = sinon.spy();
+      const editor = createEditor([], { onChange });
+      const { editorView } = editor;
+      editorView.dispatch(
+        editorView.state.tr.insertText('hello')
+      );
+      expect(onChange.callCount).to.equal(1);
+      const { tr } = editorView.state;
+      editorView.dispatch(
+        tr.setSelection(Selection.near(tr.doc.resolve(1)))
+      );
+      expect(onChange.callCount).to.equal(1);
     });
   });
 });

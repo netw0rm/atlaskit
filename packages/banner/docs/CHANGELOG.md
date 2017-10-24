@@ -1,5 +1,8 @@
 # @atlaskit/banner
 
+## 4.0.2 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
 ## 4.0.1 (2017-09-18)
 
 * bug fix; update darkmode colors ([7ae860b](https://bitbucket.org/atlassian/atlaskit/commits/7ae860b))

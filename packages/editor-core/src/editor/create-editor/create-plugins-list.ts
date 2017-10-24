@@ -8,8 +8,8 @@ import {
   emojiPlugin,
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
-  onChangePlugin,
   mediaPlugin,
+  imageUploadPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
   codeBlockPlugin,
@@ -83,12 +83,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(saveOnEnterPlugin);
   }
 
-  if (props.onChange) {
-    plugins.push(onChangePlugin);
-  }
-
   if (props.mediaProvider) {
     plugins.push(mediaPlugin);
+  }
+
+  if (props.legacyImageUploadProvider) {
+    plugins.push(imageUploadPlugin);
   }
 
   if (props.collabEditProvider) {

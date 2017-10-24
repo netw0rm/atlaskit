@@ -168,7 +168,7 @@ export default function createEditor(
 ): EditorInstance {
   const editorConfig = processPluginsList(editorPlugins);
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
-  const { contentTransformerProvider, defaultValue } = props;
+  const { contentTransformerProvider, defaultValue, onChange } = props;
 
   initAnalytics(props.analyticsHandler);
 
@@ -189,6 +189,9 @@ export default function createEditor(
       tr.setMeta('isLocal', true);
       const newState = editorView.state.apply(tr);
       editorView.updateState(newState);
+      if (onChange && tr.docChanged) {
+        onChange(editorView);
+      }
     }
   });
 

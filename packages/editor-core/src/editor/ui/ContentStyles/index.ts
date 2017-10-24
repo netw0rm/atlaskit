@@ -96,6 +96,7 @@ const ContentStyles = styled.div`
   .ProseMirror .placeholder-decoration {
     position: absolute;
     width: 100%;
+    pointer-events: none;
 
     &::before {
       content: attr(data-text);
@@ -213,6 +214,10 @@ const ContentStyles = styled.div`
   .ProseMirror table ${tableStyle}
 
   .ProseMirror .telepointer ${telepointerStyle}
+
+  .ProseMirror img {
+    max-width: 100%;
+  }
 `;
 
 export default ContentStyles;

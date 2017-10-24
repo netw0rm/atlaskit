@@ -1,3 +1,4 @@
+// @flow
 import styled from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 
@@ -10,6 +11,7 @@ const Separator = styled.div`
   padding-left: ${gridSize}px;
   text-align: center;
   width: ${gridSize}px;
+  flex-shrink: 0;
 `;
 
 Separator.displayName = 'Separator';

@@ -9,6 +9,9 @@ function ValidateChildren(props, propName) {
   let error = null;
 
   Children.forEach(prop, (child) => {
+    if (child != null || child === false) {
+      return;
+    }
     if (child.type !== Button) {
       error = new Error('Children should be of type `Button`.');
     }
@@ -39,11 +42,16 @@ export default class ButtonGroup extends PureComponent {
 
     return (
       <Group>
-        {Children.map(children, (child, idx) => (
-          <GroupItem key={idx}>
-            {appearance ? cloneElement(child, { appearance }) : child}
-          </GroupItem>
-        ))}
+        {Children.map(children, (child, idx) => {
+          if (child != null || child === false) {
+            return child;
+          }
+          return (
+            <GroupItem key={idx}>
+              {appearance ? cloneElement(child, { appearance }) : child}
+            </GroupItem>
+          );
+        })}
       </Group>
     );
   }

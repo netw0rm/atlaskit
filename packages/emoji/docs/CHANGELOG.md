@@ -1,5 +1,16 @@
 # @atlaskit/emoji
 
+## 30.1.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+## 30.1.2 (2017-10-20)
+
+
+* bug fix; simplify positioning of tooltip css. ([d1d2c2e](https://bitbucket.org/atlassian/atlaskit/commits/d1d2c2e))
+
+* bug fix; change animation to slide up (issues closed: fs-1413) ([0cf80c9](https://bitbucket.org/atlassian/atlaskit/commits/0cf80c9))
+* bug fix; adjusted positioning for tooltip on emojis of variable sizes ([cde6bf0](https://bitbucket.org/atlassian/atlaskit/commits/cde6bf0))
+* bug fix; updated placeholder to fit with square design ([c73c8f0](https://bitbucket.org/atlassian/atlaskit/commits/c73c8f0))
 ## 30.1.1 (2017-10-11)
 
 * bug fix; fS-1360 Loading emojis for the first time uses more than 1 network call even for the ([866a41f](https://bitbucket.org/atlassian/atlaskit/commits/866a41f))

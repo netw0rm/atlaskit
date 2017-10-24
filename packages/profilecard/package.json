@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "config": {
     "access": "public"
   },
@@ -34,12 +34,12 @@
     "es6-promise": "^4.0.5",
     "lru-fast": "^0.2.2",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.4",
+    "styled-components": "^1.4.6",
     "whatwg-fetch": "^1.0.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0",
+    "react-dom": "^15.3.2 || ^16.0.0"
   },
   "devDependencies": {
     "@atlaskit/profilecard": "*",

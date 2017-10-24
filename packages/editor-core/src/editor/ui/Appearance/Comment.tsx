@@ -113,24 +113,11 @@ const SecondaryToolbar = styled.div`
 `;
 SecondaryToolbar.displayName = 'SecondaryToolbar';
 
-export interface EditorAppearanceComponentState {
-  isExpanded: boolean;
-}
+export interface EditorAppearanceComponentState {}
 
 export default class Editor extends React.Component<EditorAppearanceComponentProps, EditorAppearanceComponentState> {
-  state: EditorAppearanceComponentState = {
-    isExpanded: false
-  };
 
   static displayName = 'CommentEditorAppearance';
-
-  componentDidUpdate () {
-    const { onExpand, editorView } = this.props;
-
-    if (onExpand && editorView && !this.state.isExpanded) {
-      this.setState({ isExpanded: true }, () => onExpand!(editorView));
-    }
-  }
 
   private flashToggle = false;
 
@@ -163,6 +150,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       customContentComponents,
       primaryToolbarComponents, customPrimaryToolbarComponents,
       secondaryToolbarComponents, customSecondaryToolbarComponents,
+      popupsMountPoint, popupsBoundariesElement,
       maxHeight,
       onSave, onCancel
     } = this.props;
@@ -182,6 +170,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={primaryToolbarComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}
@@ -195,6 +185,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
         </ContentArea>
         <SecondaryToolbar>
@@ -213,6 +205,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={secondaryToolbarComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
           {customSecondaryToolbarComponents}
         </SecondaryToolbar>

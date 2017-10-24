@@ -239,6 +239,9 @@ const editorNodes = {
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
+        if (lines[i] && lines[i].length && lines[i + 1] && lines[i + 1].length) {
+          state.out += '  ';
+        }
         state.out += '\n';
       }
     }

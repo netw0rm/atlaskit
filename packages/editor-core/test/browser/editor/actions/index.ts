@@ -4,10 +4,16 @@ import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
 import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { Transformer } from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
 import JSONSerializer from '../../../../src/renderer/json';
 
 const serializer = new JSONSerializer();
+
+const dummyTransformer: Transformer<string> = {
+  parse: content => doc(blockquote(content)),
+  encode: node => node.textContent
+};
 
 describe(name, () => {
   describe('EditorActions', () => {
@@ -90,6 +96,16 @@ describe(name, () => {
         const tr = editorView.state.tr;
         tr.insertText('some text', 1);
         editorView.dispatch(tr);
+      });
+
+      it('should update the document using the transformer when a transformer is set', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const wasSuccessful = editorActions.replaceDocument('Hello World!');
+        expect(wasSuccessful).to.equal(true);
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
       });
 
       it('should accept a prosemirror node', async () => {

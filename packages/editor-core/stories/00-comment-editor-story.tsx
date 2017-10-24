@@ -87,12 +87,14 @@ storiesOf(name, module)
                         appearance="comment"
                         analyticsHandler={analyticsHandler}
                         shouldFocus={true}
+                        defaultValue={{"version":1,"type":"doc","content":[{"type":"table","content":[{"type":"tableRow","content":[{"type":"tableHeader","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableHeader","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableHeader","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]}]},{"type":"tableRow","content":[{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]}]},{"type":"tableRow","content":[{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]},{"type":"tableCell","attrs":{"colspan":1,"rowspan":1,"background":null},"content":[{"type":"paragraph","content":[]}]}]}]}]}}
 
                         allowTextFormatting={true}
                         allowTasksAndDecisions={true}
                         allowHyperlinks={true}
                         allowCodeBlocks={true}
                         allowLists={true}
+                        allowTables={true}
 
                         mentionProvider={mentionProvider}
                         emojiProvider={emojiProvider}

@@ -206,9 +206,7 @@ const availableResultTypes = {
 };
 
 const mapResultsDataToComponents = resultData => {
-  console.log(resultData);
   if (!resultData || !resultData.length) {
-    // return <i>Nothin` to see here</i>;
     return 'Nothin` to see here';
   }
 

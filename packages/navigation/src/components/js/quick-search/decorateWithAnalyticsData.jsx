@@ -26,7 +26,7 @@ export default (WrappedQuickSearch) =>
       .reduce(
         (total, group) => (isReactElement(group)
           ? (total + React.Children.count(group.props.children))
-          : null
+          : total
         )
       , 0);
 

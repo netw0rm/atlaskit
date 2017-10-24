@@ -25,7 +25,8 @@ export const confluenceSchema: Schema = createSchema({
     'table',
     'tableCell',
     'tableHeader',
-    'tableRow'
+    'tableRow',
+    'emoji'
   ],
   marks: [
     'link',

@@ -1,5 +1,33 @@
 # @atlaskit/editor-core
 
+## 55.0.0 (2017-10-24)
+
+
+* feature; emoticons to emoji cxhtml transform ([3b72b96](https://bitbucket.org/atlassian/atlaskit/commits/3b72b96))
+
+* breaking; onExpand is no longer supported for the 'new-arch' editor. Consumers should use CollapsedEditor ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+* breaking; refactor CollapsedEditor to remove the need for onExpand prop in the new arch ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+## 54.0.1 (2017-10-23)
+
+* bug fix; pass popupsMountPoint and popupsBoundariesElement to all appearances (issues closed: ed-3060) ([0ab2923](https://bitbucket.org/atlassian/atlaskit/commits/0ab2923))
+* bug fix; update version of Button to omit empty ButtonGroup warning ([2836ca9](https://bitbucket.org/atlassian/atlaskit/commits/2836ca9))
+## 54.0.0 (2017-10-23)
+
+
+
+
+
+* bug fix; add imageUploadProvider to ToolDrawer, fix collapsededitor state ([1c232e0](https://bitbucket.org/atlassian/atlaskit/commits/1c232e0))
+* bug fix; absorb setValue into replaceDocument editor action ([85c79c8](https://bitbucket.org/atlassian/atlaskit/commits/85c79c8))
+* feature; port upload-image plugin to the new architecture ([af102fb](https://bitbucket.org/atlassian/atlaskit/commits/af102fb))
+* breaking; The imageUploadHandler prop has been removed in favor of imageUploadProvider. ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* breaking; set the imageUploadHandler using providers ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* bug fix; use library method to determine end of the document ([e2de547](https://bitbucket.org/atlassian/atlaskit/commits/e2de547))
+* bug fix; restrict image width in the editor, to the width of the editor ([6a21d5f](https://bitbucket.org/atlassian/atlaskit/commits/6a21d5f))
+* bug fix; fix use of upload-image plugin in story editor ([6aa9ae4](https://bitbucket.org/atlassian/atlaskit/commits/6aa9ae4))
+* feature; export CollapsedEditor from the editor-core repo ([a398ca3](https://bitbucket.org/atlassian/atlaskit/commits/a398ca3))
+* bug fix; allow consumers to fully control the collapsed state of CollapsedEditor ([b133030](https://bitbucket.org/atlassian/atlaskit/commits/b133030))
+* feature; add setValue action to the editor ([a08c28f](https://bitbucket.org/atlassian/atlaskit/commits/a08c28f))
 ## 53.1.4 (2017-10-22)
 
 * bug fix; work around cursor position issues in Chrome 58-62 (issues closed: ed-2960) ([3d86c08](https://bitbucket.org/atlassian/atlaskit/commits/3d86c08))

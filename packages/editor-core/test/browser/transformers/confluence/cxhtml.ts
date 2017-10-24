@@ -11,8 +11,10 @@ import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, confluenceInlineComment,
-  mediaGroup, media, table, tr, td, th,
-  inlineMacro
+  mediaGroup, media,
+  table, tr, td, th,
+  inlineMacro,
+  emoji,
 } from './_schema-builder';
 chai.use(chaiPlugin);
 import { confluenceSchema as schema } from '@atlaskit/editor-common';
@@ -854,6 +856,64 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           )
         )
       );
+    });
+  });
+
+  describe('ac:emoticon', () => {
+    check(
+      'old emoticons are mapped to new emojis',
+      '<p><ac:emoticon ac:name="smile" /></p>',
+      doc(
+        p(
+          emoji({ id: '1f642', shortName: ':slight_smile:', text: '\uD83D\uDE42' })
+        )
+      )
+    );
+
+    check(
+      'emoticons that will end up mapped to defaul fabric id emoji will preserve original ac:name',
+      '<p><ac:emoticon ac:name="red-star"/></p>',
+      doc(
+        p(
+          emoji({ id: '2b50', shortName: ':red-star:', text: '' })
+        )
+      )
+    );
+
+    check(
+      'old HipChat emoticons are mapped to new',
+      '<p><ac:hipchat-emoticon ac:shortcut="sadpanda" /></p>',
+      doc(
+        p(
+          emoji({ id: 'atlassian-sadpanda', shortName: ':sadpanda:', text: '' })
+        )
+      )
+    );
+
+    check(
+      'valid emoji with all fabric emoji attributes',
+      '<p><ac:emoticon ac:name="blue-star" ac:emoji-id="1f61c" ac:emoji-shortname=":stuck_out_tongue_winking_eye:" ac:emoji-fallback="😜"/></p>',
+      doc(
+        p(
+          emoji({ id: '1f61c', shortName: ':stuck_out_tongue_winking_eye:', text: '😜'})
+        )
+      )
+    );
+
+    it('valid emoji with all fabric emoji attributes encoded with ac:name="blue-star"', ()=>{
+      const emoticon = encode(doc(p(emoji({ id: '1f61c', shortName: ':stuck_out_tongue_winking_eye:', text: '😜'}))));
+      expect(emoticon).to.contain('ac:name="blue-star"');
+    });
+
+    it('hipchat-emoticons encoded with ac:name="blue-star" and preserve original ac:shortcut as ac:emoji-shortname', () => {
+      const notMappedEmoticon = '<ac:hipchat-emoticon ac:shortcut="anything-not-supported" />';
+      const encodedEmoticon = '<ac:emoticon ac:name="blue-star" ac:emoji-id="atlassian-anything-not-supported" ac:emoji-shortname=":anything-not-supported:"/>';
+      expect(parse(notMappedEmoticon)).to.deep.equal(parse(encodedEmoticon));
+
+      const notMappedEmoticonEncode = encode(parse(notMappedEmoticon));
+      expect(notMappedEmoticonEncode).to.contain('ac:name="blue-star"');
+      expect(notMappedEmoticonEncode).to.contain('ac:emoji-id="atlassian-anything-not-supported"');
+      expect(notMappedEmoticonEncode).to.contain('ac:emoji-shortname=":anything-not-supported:"');
     });
   });
 

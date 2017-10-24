@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.5 (2017-10-23)
+
+* bug fix; support false/null/undefined children in ButtonGroup ([4667228](https://bitbucket.org/atlassian/atlaskit/commits/4667228))
 ## 5.4.4 (2017-10-22)
 
 * bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))

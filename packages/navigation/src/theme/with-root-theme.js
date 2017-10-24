@@ -1,8 +1,9 @@
+// @flow
 import React, { PureComponent } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import createItemTheme from './map-navigation-theme-to-item-theme';
-import type { Provided, RootTheme } from '../theme/types';
+import type { Provided, RootTheme } from './types';
 import type { ReactElement } from '../../src/types';
 import { rootKey } from './util';
 

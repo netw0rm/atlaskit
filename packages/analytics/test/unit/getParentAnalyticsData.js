@@ -17,7 +17,9 @@ const Button = withAnalytics(
       this.props.testSpy(parentData);
     };
     render() {
-      const props = cleanProps(this.props);
+       /* eslint-disable no-unused-vars */
+      const { testSpy, ...props } = cleanProps(this.props);
+      /* eslint-enable no-unused-vars */
       return <button {...props} onClick={this.onClick} />;
     }
   }

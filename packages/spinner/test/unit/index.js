@@ -2,10 +2,24 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
+import sinon from 'sinon';
 import Spinner from '../../src';
 import SpinnerGlyph from '../../src/SpinnerGlyph';
 import Container, { getContainerAnimation } from '../../src/styled/Container';
 import Svg, { svgStyles, getStrokeColor } from '../../src/styled/Svg';
+
+function expectInvalidPropSupplied(prop, component) {
+  sinon.assert.calledWithMatch(console.error, // eslint-disable-line no-console
+    new RegExp(`Invalid prop \`${prop}\` supplied to \`${component}\``));
+}
+
+beforeEach(() => {
+  sinon.stub(console, 'error');
+});
+
+afterEach(() => {
+  console.error.restore(); // eslint-disable-line no-console
+});
 
 describe('Spinner', () => {
   it('should be possible to create a component', () => {
@@ -103,9 +117,10 @@ describe('Spinner', () => {
 
     it('should render the spinner with the default size if an unsupported value is provided', () => {
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
-
       expect(custom.find(Svg).prop('height')).toBe(20);
       expect(custom.find(Svg).prop('width')).toBe(20);
+      expectInvalidPropSupplied('size', 'Spinner');
+      expectInvalidPropSupplied('size', 'SpinnerGlyph');
     });
   });
 

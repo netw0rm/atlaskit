@@ -12,13 +12,13 @@ describe('Search', () => {
     wrapper.find('input').getDOMNode() === document.activeElement;
 
   it('should auto focus on mount', () => {
-    const wrapper = mountWithRootTheme(<Search />);
+    const wrapper = mountWithRootTheme(<Search onInput={() => {}} onKeyDown={() => {}} />);
 
     expect(isInputFocused(wrapper)).toBe(true);
   });
 
   it('should pass on its isLoading prop to the internal FieldBase for it to handle', () => {
-    expect(mountWithRootTheme(<Search isLoading />).find(FieldBase).at(0).prop('isLoading')).toBe(true);
-    expect(mountWithRootTheme(<Search isLoading={false} />).find(FieldBase).at(0).prop('isLoading')).toBe(false);
+    expect(mountWithRootTheme(<Search onInput={() => {}} onKeyDown={() => {}} isLoading />).find(FieldBase).at(0).prop('isLoading')).toBe(true);
+    expect(mountWithRootTheme(<Search onInput={() => {}} onKeyDown={() => {}} isLoading={false} />).find(FieldBase).at(0).prop('isLoading')).toBe(false);
   });
 });

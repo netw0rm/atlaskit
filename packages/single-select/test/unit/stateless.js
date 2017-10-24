@@ -22,7 +22,7 @@ describe(name, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessSelect />).isEmpty()).toBe(false);
+      expect(shallow(<StatelessSelect />).exists()).toBe(true);
     });
 
     it('should render Label when the prop is set', () => {

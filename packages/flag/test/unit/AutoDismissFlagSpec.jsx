@@ -11,12 +11,12 @@ describe(name, () => {
 
   describe('AutoDismissFlag', () => {
     it('should instantiate', () => {
-      const wrapper = mount(<GenerateAutoDismissFlag />);
+      const wrapper = mount(<GenerateAutoDismissFlag id="" />);
       expect(wrapper.exists()).toBe(true);
     });
 
     it('should render a <Flag />', () => {
-      const wrapper = mount(<GenerateAutoDismissFlag />);
+      const wrapper = mount(<GenerateAutoDismissFlag id="" />);
       expect(wrapper.find(Flag).exists()).toBe(true);
     });
 
@@ -34,21 +34,21 @@ describe(name, () => {
       });
 
       it('should auto dismiss after 15 seconds if isDismissAllowed and onDismissed are set on mount', () => {
-        mount(<GenerateAutoDismissFlag isDismissAllowed onDismissed={onDismissedSpy} />);
+        mount(<GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />);
         expect(onDismissedSpy).not.toBeCalled();
         runTimer();
         expect(onDismissedSpy).toBeCalled();
       });
 
       it('should not auto dismiss after 15 seconds if isDismissAllowed is not set on mount', () => {
-        mount(<GenerateAutoDismissFlag onDismissed={onDismissedSpy} />);
+        mount(<GenerateAutoDismissFlag id="" onDismissed={onDismissedSpy} />);
         expect(onDismissedSpy).not.toBeCalled();
         runTimer();
         expect(onDismissedSpy).not.toBeCalled();
       });
 
       it('should auto dismiss after 15 seconds if isDismissAllowed and onDismissed props are set after mount', () => {
-        const wrapper = mount(<GenerateAutoDismissFlag />);
+        const wrapper = mount(<GenerateAutoDismissFlag id="" />);
         runTimer();
         expect(onDismissedSpy).not.toBeCalled();
         wrapper.setProps({
@@ -61,7 +61,7 @@ describe(name, () => {
 
       it('should not auto dismiss after 15 seconds if isDismissAllowed prop is set on mount but then removed', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
         );
         wrapper.setProps({ isDismissAllowed: false });
         runTimer();
@@ -70,7 +70,7 @@ describe(name, () => {
 
       it('should pause the dismiss timer on Flag mouseover, and resume on mouseout', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
         );
         wrapper.find(Flag).simulate('mouseover');
         runTimer();
@@ -82,7 +82,7 @@ describe(name, () => {
 
       it('should pause the dismiss timer on Flag focus, and resume on blur', () => {
         const wrapper = mount(
-          <GenerateAutoDismissFlag isDismissAllowed onDismissed={onDismissedSpy} />
+          <GenerateAutoDismissFlag id="" isDismissAllowed onDismissed={onDismissedSpy} />
         );
         wrapper.find(Flag).simulate('focus');
         runTimer();

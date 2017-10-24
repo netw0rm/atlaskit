@@ -13,7 +13,8 @@
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
     "storybook": "../../build/bin/storybook/run.local.js",
     "eslint": "../../build/bin/lint.eslint.sh",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist"

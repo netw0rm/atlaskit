@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, NodeSelection, Selection, TextSelection, Transaction } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONSerializer, { JSONDocNode, JSONNode } from '../renderer/json';
+import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
 
 export {
   default as ErrorReporter,
@@ -374,7 +374,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
 }
 
 export function toJSON(node: Node): JSONDocNode {
-  return new JSONSerializer().serializeFragment(node.content);
+  const transformer = new JSONTransformer();
+  return transformer.encode(node);
 }
 
 /**

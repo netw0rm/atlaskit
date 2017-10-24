@@ -51,7 +51,7 @@ axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
-      .find(job => job.build_number === BITBUCKET_BUILD_NUMBER);
+      .find(job => String(job.build_number) === BITBUCKET_BUILD_NUMBER);
     const olderRunningPipelines = allRunningPipelines
       .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
       .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on))

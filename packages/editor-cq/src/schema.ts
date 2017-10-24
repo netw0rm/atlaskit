@@ -1,1 +1,1 @@
-export { confluenceSchema as default } from '@atlaskit/editor-core';
+export { confluenceSchema as default } from '@atlaskit/editor-common';

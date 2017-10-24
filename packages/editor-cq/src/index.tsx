@@ -2,11 +2,7 @@ import {
   AnalyticsHandler,
   AnalyticsProperties,
   analyticsService,
-  baseKeymap,
   Chrome,
-  EditorState,
-  EditorView,
-  history,
   blockTypePlugins,
   codeBlockPlugins,
   hyperlinkPlugins,
@@ -27,20 +23,15 @@ import {
   clearFormattingStateKey,
   panelStateKey,
   mentionsStateKey,
-  keymap,
-  Node as PMNode,
-  TextSelection,
   version as coreVersion,
   mediaPluginFactory,
   mediaStateKey,
   MediaProvider,
-  Plugin,
   ProviderFactory,
   MediaPluginState,
   MediaState,
   textColorStateKey,
   textColorPlugins,
-  Slice,
 
   // nodeviews
   nodeViewFactory,
@@ -58,6 +49,14 @@ import {
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
+
+import { baseKeymap } from 'prosemirror-commands';
+import { keymap } from 'prosemirror-keymap';
+import { Node as PMNode, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { history } from 'prosemirror-history';
+
 import { version, name } from './version';
 import { default as schema } from './schema';
 import ReactJIRAIssueNode from './nodeviews/ui/jiraIssue';
@@ -114,7 +113,7 @@ export default class Editor extends PureComponent<Props, State> {
     };
 
     this.providerFactory = new ProviderFactory();
-    analyticsService.handler = props.analyticsHandler || ((name) => {});
+    analyticsService.handler = props.analyticsHandler || ((name) => { });
 
     const { mentionProvider, mediaProvider, uploadErrorHandler } = props;
 
@@ -148,7 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (editorView && !editorView.hasFocus()) {
       try {
         editorView.focus();
-      } catch (ex) {}
+      } catch (ex) { }
     }
   }
 
@@ -192,8 +191,8 @@ export default class Editor extends PureComponent<Props, State> {
       this.setState({ showSpinner: false });
 
       return editorView && editorView.state.doc
-          ? this.transformer.encode(editorView.state.doc)
-          : this.props.defaultValue;
+        ? this.transformer.encode(editorView.state.doc)
+        : this.props.defaultValue;
     })();
   }
 
@@ -218,7 +217,7 @@ export default class Editor extends PureComponent<Props, State> {
       const { editorView } = this.state;
 
       if (editorView) {
-        editorView.dom.contentEditable = String(!nextProps.disabled);
+        editorView.dom['contentEditable'] = String(!nextProps.disabled);
 
         if (!nextProps.disabled) {
           editorView.focus();
@@ -353,7 +352,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
-        editable: (state: EditorState<any>) => !this.props.disabled,
+        editable: (state: EditorState) => !this.props.disabled,
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);

@@ -33,6 +33,7 @@
   ],
   "dependencies": {
     "@atlaskit/editor-core": "^53.1.4",
+    "@atlaskit/editor-common": "^2.0.0",
     "@atlaskit/logo": "^3.0.3",
     "@atlaskit/mention": "^7.3.0",
     "@atlaskit/util-shared-styles": "^1.2.1",

@@ -507,6 +507,10 @@
   version "0.17.31"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.17.31.tgz#bfeda3e3e8647a6e49b2998d137c81d5d8ab52d0"
 
+"@types/codemirror@^0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@types/codemirror/-/codemirror-0.0.40.tgz#0868ed9ba5bf3ef8072de80e245ecf4a8f0bbdfd"
+
 "@types/enzyme@^2.8.0":
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.8.0.tgz#84c6204cf89831223a89ab6dc3f490b1e0886352"
@@ -540,6 +544,10 @@
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-0.0.28.tgz#56f8dec67d275e83be1bd0359fa8de28a95dee29"
 
+"@types/markdown-it@*":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@types/markdown-it/-/markdown-it-0.0.4.tgz#c5f67365916044b342dae8d702724788ba0b5b74"
+
 "@types/mocha@^2.2.39":
   version "2.2.39"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.39.tgz#f68d63db8b69c38e9558b4073525cf96c4f7a829"
@@ -553,6 +561,94 @@
 "@types/node@*", "@types/node@6.0.*", "@types/node@^6.0.46":
   version "6.0.51"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.51.tgz#84cbf25111516ec9304d0b61469dc0fa9d12ba32"
+
+"@types/orderedmap@*", "@types/orderedmap@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/orderedmap/-/orderedmap-1.0.0.tgz#807455a192bba52cbbb4517044bc82bdbfa8c596"
+
+"@types/prosemirror-commands@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-commands/-/prosemirror-commands-0.24.0.tgz#802542f5df32578fe49e448b1f02231fbbbfb103"
+  dependencies:
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-state" "*"
+    "@types/prosemirror-view" "*"
+
+"@types/prosemirror-history@^0.21.2":
+  version "0.21.2"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-history/-/prosemirror-history-0.21.2.tgz#fd20251403e3c89011c202bd7f833f84112218a9"
+  dependencies:
+    "@types/prosemirror-state" "*"
+
+"@types/prosemirror-inputrules@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-inputrules/-/prosemirror-inputrules-0.21.0.tgz#3bb4fa36ab47868ec8b7775eff0373a5278b4a21"
+  dependencies:
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-state" "*"
+
+"@types/prosemirror-keymap@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-keymap/-/prosemirror-keymap-0.24.0.tgz#9e32626d9e2d2b4fa1e8b4ec841cd4fc81b020a1"
+  dependencies:
+    "@types/prosemirror-state" "*"
+    "@types/prosemirror-view" "*"
+
+"@types/prosemirror-markdown@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-markdown/-/prosemirror-markdown-0.21.0.tgz#41e7a4dfc88b0cecac3d1d36d4f13d5bd120f53b"
+  dependencies:
+    "@types/markdown-it" "*"
+    "@types/prosemirror-model" "*"
+
+"@types/prosemirror-model@*", "@types/prosemirror-model@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-model/-/prosemirror-model-0.24.0.tgz#25dc3bcf682d34ed4eec34a0237e8b456cdda754"
+  dependencies:
+    "@types/orderedmap" "*"
+
+"@types/prosemirror-schema-basic@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-schema-basic/-/prosemirror-schema-basic-0.21.0.tgz#c08934ecd1da6cbe0670493af773725fb7628817"
+  dependencies:
+    "@types/prosemirror-model" "*"
+
+"@types/prosemirror-schema-list@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-schema-list/-/prosemirror-schema-list-0.21.0.tgz#2bc11b2b6b37544995ca8063d036129c782a3c95"
+  dependencies:
+    "@types/orderedmap" "*"
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-state" "*"
+
+"@types/prosemirror-state@*", "@types/prosemirror-state@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-state/-/prosemirror-state-0.24.0.tgz#e360feaddf845fa94cc8ba226ff5a278d1e5085d"
+  dependencies:
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-transform" "*"
+    "@types/prosemirror-view" "*"
+
+"@types/prosemirror-tables@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-tables/-/prosemirror-tables-0.1.0.tgz#44ee6bf33ef76e37c10c2b345e71c8359f791f4d"
+  dependencies:
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-state" "*"
+
+"@types/prosemirror-transform@*", "@types/prosemirror-transform@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-transform/-/prosemirror-transform-0.24.0.tgz#b33505edb26254bc9acb32a7c96d1baab682c335"
+  dependencies:
+    "@types/prosemirror-model" "*"
+
+"@types/prosemirror-view@*", "@types/prosemirror-view@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@types/prosemirror-view/-/prosemirror-view-0.24.0.tgz#9526db43c0ec346018a30313f1e497bd8a41773d"
+  dependencies:
+    "@types/prosemirror-model" "*"
+    "@types/prosemirror-state" "*"
+    "@types/prosemirror-transform" "*"
 
 "@types/q@^0.0.32":
   version "0.0.32"

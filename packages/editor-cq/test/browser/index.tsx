@@ -12,7 +12,7 @@ import {
 import {
   confluenceUnsupportedBlock,
   confluenceUnsupportedInline
-} from '@atlaskit/editor-core';
+} from '@atlaskit/editor-common';
 import {
   blockquote,
   doc,

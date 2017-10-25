@@ -9,7 +9,7 @@ export default class ProfilecardResourced extends PureComponent {
     cloudId: PropTypes.string.isRequired,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
-      predicate: PropTypes.func,
+      shouldRender: PropTypes.func,
       id: PropTypes.string,
       label: PropTypes.string,
     })),
@@ -96,13 +96,13 @@ export default class ProfilecardResourced extends PureComponent {
 
   filterActions() {
     return this.props.actions.filter(action => {
-      if (!action.predicate) {
+      if (!action.shouldRender) {
         return true;
-      } else if (typeof action.predicate !== 'function') {
-        return Boolean(action.predicate);
+      } else if (typeof action.shouldRender !== 'function') {
+        return Boolean(action.shouldRender);
       }
 
-      return action.predicate(this.state.data);
+      return action.shouldRender(this.state.data);
     });
   }
 

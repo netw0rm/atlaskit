@@ -22,7 +22,7 @@ export default (
         label: 'Chat with',
         id: 'hidden-button',
         callback: () => {},
-        predicate: (profile) => profile.presence === 'available',
+        shouldRender: (profile) => profile.presence === 'available',
       },
     ]}
   />

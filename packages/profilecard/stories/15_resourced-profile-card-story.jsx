@@ -29,7 +29,7 @@ const actions = [
     label: 'Chat with',
     id: 'hidden-button',
     callback: handleActionClick('Chat with'),
-    predicate: (profile) => profile.presence === 'available',
+    shouldRender: (profile) => profile.presence === 'available',
   },
 ];
 

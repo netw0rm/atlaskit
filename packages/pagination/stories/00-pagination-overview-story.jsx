@@ -67,7 +67,7 @@ storiesOf(name, module)
   .add('Pagination (stateless): with lots of pages', () => (
     <Chrome title="Pagination: with lots of pages">
       <Description>
-        <p>Shows ellipsis at the end when the current page is close to the first page</p>
+        <p>Shows ellipsis at the end when the current page is close to the first page.</p>
       </Description>
       <PaginationStateless
         current={4}
@@ -75,7 +75,7 @@ storiesOf(name, module)
         onSetPage={page => console.log(page)}
       />
       <Description>
-        <p>Shows ellipsis on either side when the current page is in the middle</p>
+        <p>Shows ellipsis on either side when the current page is in the middle.</p>
       </Description>
       <PaginationStateless
         current={50}
@@ -83,7 +83,7 @@ storiesOf(name, module)
         onSetPage={page => console.log(page)}
       />
       <Description>
-        <p>Shows ellipsis at the start when the current page is close to the last page</p>
+        <p>Shows ellipsis at the start when the current page is close to the last page.</p>
       </Description>
       <PaginationStateless
         current={97}

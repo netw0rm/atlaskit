@@ -239,7 +239,7 @@ storiesOf(name, module)
       <Wrapper>
         <h2>Interactive Avatars <New /></h2>
         <Note size="large">
-          For most instances you will no-longer need to wrap <code>{'<Avatar/>'}</code>.
+          For most instances you will no-longer need to wrap.<code>{'<Avatar/>'}</code>.
         </Note>
         <AvatarShowcase title="Button" description={<span>Provide <code>onClick</code> to {'<Avatar/>'} or <code>onAvatarClick</code> to {'<AvatarGroup/>'}</span>}>
           <Avatar

@@ -32,7 +32,7 @@ storiesOf(name, module)
   .add('a dumb tooltip', () => (
     <Container>
       <TooltipStateless position="top" description='Tooltip with position "top"' isVisible>
-        <Target>Tooltips are great!</Target>
+        <Target>Tooltips are so great!</Target>
       </TooltipStateless>
     </Container>
   ))

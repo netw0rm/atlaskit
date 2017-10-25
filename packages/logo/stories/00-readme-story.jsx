@@ -11,7 +11,7 @@ import defaultOverview from './examples/basic-usage';
 import defaultOverviewSource from '!raw!./examples/basic-usage';
 /* eslint-enable import/no-duplicates, import/first */
 
-const description = 'The Logo package provides components for Atlassian brand and product logos of various sizes.';
+const description = 'The Atlaskit Logo package provides components for Atlassian brand and product logos of various sizes.';
 
 storiesOf(name, module)
   .add('📖 Logo Readme', () => (

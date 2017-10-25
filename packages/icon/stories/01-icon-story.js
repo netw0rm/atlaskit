@@ -27,7 +27,7 @@ const JiraServiceDeskIcon = components['jira-service-desk'].component;
 const StatuspageIcon = components.statuspage.component;
 
 if (!AtlassianIcon) {
-  throw new Error('Atlassian icon was removed, but is needed to display stories properly');
+  throw new Error('Atlassian icon was removed but is needed to display stories properly');
 }
 
 const toggleableIcons = Object

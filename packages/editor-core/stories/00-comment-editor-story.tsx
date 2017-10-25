@@ -93,6 +93,7 @@ storiesOf(name, module)
                         allowHyperlinks={true}
                         allowCodeBlocks={true}
                         allowLists={true}
+                        allowTables={true}
 
                         mentionProvider={mentionProvider}
                         emojiProvider={emojiProvider}

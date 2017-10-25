@@ -10,7 +10,7 @@ const Container = styled.div`
   width: 500px;
 `;
 
-// We can't use storybook "action" here since it doesn't transpile Symbol and fails on IE
+// Storybook "action" cannot be used since it doesn't transpile Symbol and fails on IE
 const onChange = (value) => {
   // eslint-disable-next-line no-console
   console.log('onChange', value);

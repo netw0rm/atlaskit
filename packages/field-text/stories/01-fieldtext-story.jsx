@@ -113,7 +113,7 @@ storiesOf(name, module)
     })
   ))
   .add('field-text with really long label', () => (
-    generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
+    generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
   ))
   .add('field-text with multiline label string', () => (
     generateFormWithInput({ label: 'Example\nlabel' })

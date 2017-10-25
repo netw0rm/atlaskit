@@ -1,6 +1,7 @@
 import {
   MediaAttributes,
   MediaType,
+  acNameToEmoji, acShortcutToEmoji
 } from '@atlaskit/editor-common';
 import {
   Fragment,
@@ -195,6 +196,27 @@ function converter(schema: Schema, content: Fragment, node: Node): Fragment | PM
         }
 
         return output;
+
+      case 'AC:HIPCHAT-EMOTICON':
+      case 'AC:EMOTICON':
+        let emoji = {
+          id: node.getAttribute('ac:emoji-id'),
+          shortName: node.getAttribute('ac:emoji-shortname'),
+          text: node.getAttribute('ac:emoji-fallback'),
+        };
+
+        if (!emoji.id) {
+          const acName = node.getAttribute('ac:name');
+          const acShortcut = node.getAttribute('ac:shortcut');
+          if (acName) {
+            emoji = acNameToEmoji(acName);
+          }
+          if (acShortcut) {
+            emoji = acShortcutToEmoji(acShortcut);
+          }
+        }
+
+        return schema.nodes.emoji.create( emoji );
 
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(schema, node) || unsupportedInline;

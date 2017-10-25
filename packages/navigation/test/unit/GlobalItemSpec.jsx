@@ -124,5 +124,12 @@ describe('<GlobalItem />', () => {
         expect(spy).toHaveBeenCalled();
       });
     });
+
+    describe('isSelected', () => {
+      it('is passed down to the styled component', () => {
+        const styledComponent = shallowWithTheme(<GlobalItem isSelected />).find(GlobalItemInner);
+        expect(styledComponent.props().isSelected).toBe(true);
+      });
+    });
   });
 });

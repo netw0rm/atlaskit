@@ -59,6 +59,7 @@ export default class GlobalNavigation extends PureComponent {
       secondaryActions,
       theme,
     } = this.props;
+
     return (
       <WithRootTheme provided={theme}>
         <GlobalNavigationInner>

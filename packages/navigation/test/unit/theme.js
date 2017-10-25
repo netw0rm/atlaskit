@@ -23,7 +23,6 @@ describe('theme', () => {
           <Item />
         </WithRootTheme>
       );
-
       expect(stub).toHaveBeenCalledWith({
         theme: getRootTheme(presets.container),
       });

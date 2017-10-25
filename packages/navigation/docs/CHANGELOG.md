@@ -1,5 +1,18 @@
 # @atlaskit/navigation
 
+## 26.4.0 (2017-10-25)
+
+* feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))
+## 26.3.0 (2017-10-24)
+
+* bug fix; countChildren returns total on non element groups ([06e226e](https://bitbucket.org/atlassian/atlaskit/commits/06e226e))
+
+
+
+
+* feature; quickSearch: passing children that do not conform to the "Group > Result" structure (issues closed: dir-428) ([bb94ae8](https://bitbucket.org/atlassian/atlaskit/commits/bb94ae8))
+
+
 ## 26.2.1 (2017-10-22)
 
 

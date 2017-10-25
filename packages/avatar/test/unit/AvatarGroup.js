@@ -13,6 +13,7 @@ const generateData = (avatarCount) => {
     data.push({
       name: `Name ${i}`,
       src: `#${i}`,
+      size: 'medium',
     });
   }
   return data;

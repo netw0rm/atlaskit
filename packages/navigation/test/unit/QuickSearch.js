@@ -28,11 +28,11 @@ describe('<QuickSearch />', () => {
   const onClickSpy = jest.fn();
 
   const exampleChildren = [
-    (<AkNavigationItemGroup title="test group 1">
-      <PersonResult resultId="1" name="one" onClick={onClickSpy} />
-      <PersonResult resultId="2" name="two" onClick={onClickSpy} />
+    (<AkNavigationItemGroup key={0} title="test group 1">
+      <PersonResult key={1} resultId="1" name="one" onClick={onClickSpy} />
+      <PersonResult key={2}resultId="2" name="two" onClick={onClickSpy} />
     </AkNavigationItemGroup>),
-    (<AkNavigationItemGroup title="test group 2">
+    (<AkNavigationItemGroup key={1} title="test group 2">
       <PersonResult resultId="3" name="three" onClick={onClickSpy} />
     </AkNavigationItemGroup>),
   ];
@@ -69,9 +69,19 @@ describe('<QuickSearch />', () => {
     expect(wrapper.find(AkSearch)).toHaveLength(1);
   });
 
-  it('should render its children', () => {
-    render({ children: <div id="child" /> });
-    expect(wrapper.find('div#child').exists()).toBe(true);
+  describe('(Prop) children', () => {
+    it('should render its children', () => {
+      render({ children: <div id="child" /> });
+      expect(wrapper.find('div#child').exists()).toBe(true);
+    });
+    it('should support non-component children', () => {
+      render({ children: 'child' });
+      /* Expect that no errors occur while parsing children */
+    });
+    it('should support non-component grandchildren', () => {
+      render({ children: <div>grandchild</div> });
+      /* Expect that no errors occur while parsing children */
+    });
   });
 
   describe('Analytics events', () => {
@@ -156,7 +166,8 @@ describe('<QuickSearch />', () => {
       });
       it('should not fire if previous search term was not empty', () => {
         // Set up non-empty-query state.
-        render({ value: 'hello' });
+        render();
+        wrapper.setProps({ value: 'hello' });
         // Clear events fired from mounting
         onAnalyticsEventSpy.mockReset();
 
@@ -236,8 +247,8 @@ describe('<QuickSearch />', () => {
     it('should select the first result when query changes', () => {
       const newChildren = (
         <AkNavigationItemGroup title="test group 2">
-          <PersonResult resultId="4" name="four" />
-          <PersonResult resultId="5" name="five" />
+          <PersonResult key={1} resultId="4" name="four" />
+          <PersonResult key={2} resultId="5" name="five" />
         </AkNavigationItemGroup>
       );
       wrapper.setProps({ children: newChildren });

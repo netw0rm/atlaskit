@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { AnalyticsDecorator } from '@atlaskit/analytics';
+import isReactElement from './isReactElement';
 import { QS_ANALYTICS_EV_SUBMIT } from './constants';
 
 const escapeRegexString = (regexString) => regexString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -20,8 +21,13 @@ export default (WrappedQuickSearch) =>
       value: '',
     }
 
-    countChildren = () => React.Children.toArray(this.props.children).reduce(
-      (total, group) => (total + React.Children.count(group.props.children))
+    countChildren = () => React.Children
+      .toArray(this.props.children)
+      .reduce(
+        (total, group) => (isReactElement(group)
+          ? (total + React.Children.count(group.props.children))
+          : total
+        )
       , 0);
 
     render() {

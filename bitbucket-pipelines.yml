@@ -37,7 +37,8 @@ pipelines:
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
-            - run-p -ln "release/registry" "release/storybooks"
+            - yarn run release/storybooks
+            - yarn run release/registry
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
           # caches:

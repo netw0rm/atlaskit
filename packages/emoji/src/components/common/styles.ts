@@ -358,6 +358,7 @@ export const uploadPreview = style({
 
   $nest: {
     'img': {
+      maxHeight: '20px',
       maxWidth: '100px',
     }
   }

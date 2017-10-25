@@ -31,7 +31,7 @@ Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-
 ### Information
 | Components  | Version | Did this work in previous versions of the AtlasKit component? | Browser and OS information  |
 |-------------|:--------|:--------------------------------------------------------------|:----------------------------|
-|   		  |         | (y) Yes/(x) No/(!) I don't know                               |                             | 
+|   		  |         | Yes/ No/ I don't know                                         |                             | 
 
 
 * To get the component version:

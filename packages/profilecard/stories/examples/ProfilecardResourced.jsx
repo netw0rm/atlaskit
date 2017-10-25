@@ -88,9 +88,13 @@ class AkProfilecardMultipleIds extends PureComponent {
           this.state.isVisible ? 'Unmount' : 'Mount'
         }</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData(this.getPreviousUserId())}>Previous profile</button>
+        <button
+          onClick={() => this.reloadCardData(this.getPreviousUserId())}
+        >Previous profile</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData(this.getNextUserId())}>Next profile</button>
+        <button
+          onClick={() => this.reloadCardData(this.getNextUserId())}
+        >Next profile</button>
         &nbsp;
         <button onClick={() => this.reloadCardData('error:default')}>Set card data to error</button>
         &nbsp;

@@ -9,6 +9,7 @@ export default class ProfilecardResourced extends PureComponent {
     cloudId: PropTypes.string.isRequired,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
+      predicate: PropTypes.func,
       id: PropTypes.string,
       label: PropTypes.string,
     })),
@@ -93,6 +94,18 @@ export default class ProfilecardResourced extends PureComponent {
     });
   }
 
+  filterActions() {
+    return this.props.actions.filter(action => {
+      if (!action.predicate) {
+        return true;
+      } else if (typeof action.predicate !== 'function') {
+        return Boolean(action.predicate);
+      }
+
+      return action.predicate(this.state.data);
+    });
+  }
+
   render() {
     const newProps = {
       isLoading: this.state.isLoading,
@@ -104,7 +117,7 @@ export default class ProfilecardResourced extends PureComponent {
     };
 
     return (
-      <AkProfilecardStatic {...newProps} actions={this.props.actions} />
+      <AkProfilecardStatic {...newProps} actions={this.filterActions()} />
     );
   }
 }

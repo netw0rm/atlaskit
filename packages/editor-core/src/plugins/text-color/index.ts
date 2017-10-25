@@ -1,16 +1,6 @@
-import {
-  Plugin,
-  PluginKey,
-  EditorState,
-  Schema,
-  TextSelection,
-  Mark,
-  MarkType,
-  Node,
-  SelectionRange,
-  Transaction
-} from '../../prosemirror';
-import { colorPalette } from '../../schema/marks/text-color';
+import { Schema, Mark, MarkType, Node } from 'prosemirror-model';
+import { Plugin, PluginKey, EditorState, SelectionRange, TextSelection, Transaction } from 'prosemirror-state';
+import { colorPalette } from '@atlaskit/editor-common';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
 
 export type StateChangeHandler = (state: TextColorState) => any;
@@ -30,9 +20,9 @@ export class TextColorState {
   // because this will be accessed every time we change selection in editor
   defaultColor: string;
   private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState<any>;
+  private state: EditorState;
 
-  constructor(state: EditorState<any>, palette: Map<string, string>) {
+  constructor(state: EditorState, palette: Map<string, string>) {
     this.state = state;
     this.palette = palette;
     this.defaultColor = palette.keys().next().value;
@@ -48,7 +38,7 @@ export class TextColorState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(newEditorState: EditorState<any>) {
+  update(newEditorState: EditorState) {
     this.state = newEditorState;
 
     const { state } = this;
@@ -75,7 +65,7 @@ export class TextColorState {
   }
 
   toggleTextColor(
-    state: EditorState<any>, dispatch?: (tr: Transaction) => void, color?: string
+    state: EditorState, dispatch?: (tr: Transaction) => void, color?: string
   ): boolean {
     const { textColor } = this.state.schema.marks;
     if (textColor) {
@@ -104,7 +94,7 @@ export class TextColorState {
   }
 
   removeTextColor(
-    state: EditorState<any>, dispatch: (tr: Transaction) => void, color?: string
+    state: EditorState, dispatch: (tr: Transaction) => void, color?: string
   ): boolean {
     const { textColor } = this.state.schema.marks;
     if (textColor) {
@@ -194,7 +184,7 @@ export class TextColorState {
     return false;
   }
 
-  private isExcluded (marks?: Array<Mark>): boolean {
+  private isExcluded (marks?: Array<Mark> | null): boolean {
     if (marks) {
       const { textColor } = this.state.schema.marks;
       return marks.some(
@@ -209,7 +199,7 @@ export const stateKey = new PluginKey('textColorPlugin');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       const palette = new Map<string, string>([
         [DEFAULT_COLOR.color.toLowerCase(), DEFAULT_COLOR.label]
       ]);
@@ -226,7 +216,7 @@ export const plugin = new Plugin({
   key: stateKey,
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin].filter((plugin) => !!plugin) as Plugin[];
 };
 

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { browser } from '../../../../src';
+import { browser } from '@atlaskit/editor-common';
 import listsPlugins, { ListsState } from '../../../../src/plugins/lists';
 import { chaiPlugin, makeEditor, sendKeyToPm, doc, h1, ol, ul, li, p, panel } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';

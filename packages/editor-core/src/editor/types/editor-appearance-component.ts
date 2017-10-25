@@ -1,4 +1,4 @@
-import { EditorView } from '../../prosemirror';
+import { EditorView } from 'prosemirror-view';
 import ProviderFactory from '../../providerFactory';
 import { EventDispatcher } from '../event-dispatcher';
 import { UIComponentFactory, ReactElement } from '../types';
@@ -7,7 +7,6 @@ export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-  onExpand?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
   editorView?: EditorView;
@@ -25,4 +24,7 @@ export interface EditorAppearanceComponentProps {
   customSecondaryToolbarComponents?: ReactElement;
 
   addonToolbarComponents?: ReactElement;
+
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
 }

@@ -15,12 +15,12 @@ const borderWidthFocused = 2;
 // subtle border needs to match the focused thickness to avoid jank when transitioning on focus
 const borderWidthSubtle = borderWidthFocused;
 const spacing = gridSize();
-const lineHeight = 20;
+const lineHeightBase = 20;
+const lineHeightCompact = 16;
 const heightBase = spacing * 5;
 const heightCompact = spacing * 4;
 const horizontalPadding = spacing;
 const innerHeight = spacing * 3;
-const calculatedLineHeight = lineHeight / fontSize();
 const transitionDuration = '0.2s';
 
 const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, subtle, none }) => {
@@ -41,9 +41,17 @@ const getBorderAndPadding = ({ paddingDisabled, invalid, isFocused, compact, sub
   `;
 };
 
+const getLineHeight = props => {
+  const currentLineHeight = props.compact
+    ? lineHeightCompact
+    : lineHeightBase;
+
+  return currentLineHeight / fontSize();
+};
+
 const getDisabledColor = themed({ light: colors.N60, dark: colors.DN90 });
 
-const getDisabledState = (props) => props.disabled && css`
+const getDisabledState = props => props.disabled && css`
   color: ${getDisabledColor(props)};
   pointer-events: none;
 `;
@@ -90,7 +98,7 @@ export const Content = styled.div`
   flex: 1 0 auto;
   font-size: ${fontSize}px;
   justify-content: space-between;
-  line-height: ${calculatedLineHeight};
+  line-height: ${getLineHeight};
   max-width: 100%;
   overflow: hidden;
   transition:

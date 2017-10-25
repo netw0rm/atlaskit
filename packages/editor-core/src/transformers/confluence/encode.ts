@@ -1,16 +1,12 @@
-import {
-  Fragment,
-  Node as PMNode,
-  MediaAttributes,
-  Schema
-} from '../../';
+import { MediaAttributes, getEmojiAcName } from '@atlaskit/editor-common';
+import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
 import { getNodeMarkOfType } from './utils';
 import { hexToRgb } from '../../utils/color';
 
-export default function encode(node: PMNode, schema: Schema<any, any>) {
+export default function encode(node: PMNode, schema: Schema) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
   const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
 
@@ -53,6 +49,8 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
       return encodeTable(node);
     } else if (node.type === schema.nodes.inlineMacro) {
       return encodeInlineMacro(node);
+    } else if (node.type === schema.nodes.emoji) {
+      return encodeEmoji(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -73,6 +71,18 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
       }
     });
     return documentFragment;
+  }
+
+  function encodeEmoji(node: PMNode) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:emoticon');
+    const { id, shortName, text } = node.attrs;
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', getEmojiAcName({id, shortName}));
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-id', id);
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-shortname', shortName);
+    if (text) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:emoji-fallback', text);
+    }
+    return elem;
   }
 
   function encodeHeading(node: PMNode) {
@@ -170,11 +180,11 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;
-          case schema.marks.inlineCommentMarker:
-            elem = elem.appendChild(encodeInlineCommentMarker(node, schema));
-            break;
           case schema.marks.textColor:
             elem = elem.appendChild(encodeTextColor(node, schema));
+            break;
+          case schema.marks.emojiQuery:
+            elem.textContent = node.text;
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
@@ -221,15 +231,7 @@ export default function encode(node: PMNode, schema: Schema<any, any>) {
     return link;
   }
 
-  function encodeInlineCommentMarker(node: PMNode, schema: Schema<any, any>) {
-    const marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
-    const mark = getNodeMarkOfType(node, schema.marks.inlineCommentMarker);
-    const reference = mark ? mark.attrs.reference : '';
-    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
-    return marker;
-  }
-
-  function encodeTextColor(node: PMNode, schema: Schema<any, any>) {
+  function encodeTextColor(node: PMNode, schema: Schema) {
     const elem: HTMLSpanElement = doc.createElement('span');
     const mark = getNodeMarkOfType(node, schema.marks.textColor);
     const hexColor = mark ? mark.attrs.color : '';

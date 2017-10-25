@@ -7,4 +7,4 @@ export { link } from './link';
 export { emojiQuery } from './emoji-query';
 export { mentionQuery } from './mention-query';
 export { subsup } from './subsup';
-export { textColor } from './text-color';
+export { textColor, colorPalette } from './text-color';

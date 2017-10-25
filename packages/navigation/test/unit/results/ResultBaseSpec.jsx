@@ -8,7 +8,7 @@ describe('Result Base', () => {
   let resultWrapper;
   beforeEach(() => {
     resultWrapper = mountWithRootTheme(
-      <ResultBase resultId="testResult" type="base" name="test" />
+      <ResultBase text="" resultId="testResult" type="base" name="test" />
     );
   });
 

@@ -12,10 +12,11 @@ export type ItemTheme = {|
     background: Background
   |},
   active: {|
-    background: Background
+    background: Background,
+    text?: Text,
   |},
   focus: {|
-    outline: Line,
+    outline?: Line,
   |},
   selected: {|
     background: Background,

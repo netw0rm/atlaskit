@@ -14,24 +14,18 @@ import {
   ContextFactory
 } from '@atlaskit/media-core';
 
-import { copyOptionalAttrs, MediaType } from './../../schema/nodes/media';
 import {
-  EditorState,
-  EditorView,
-  Plugin,
-  PluginKey,
-  Node as PMNode,
-  Schema,
-  Transaction,
-  NodeSelection,
-  Mark,
-  Decoration,
-  DecorationSet,
-  insertPoint,
-} from '../../prosemirror';
+  copyOptionalMediaAttributes, MediaType
+} from '@atlaskit/editor-common';
+
+import { Node as PMNode, Schema } from 'prosemirror-model';
+import { EditorState, NodeSelection, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { insertPoint } from 'prosemirror-transform';
+import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+
 import PickerFacadeType from './picker-facade';
 import { ErrorReporter } from '../../utils';
-
+import { Dispatch } from '../../editor/event-dispatcher';
 import { MediaPluginOptions } from './media-plugin-options';
 import { ProsemirrorGetPosHandler } from '../../nodeviews';
 import { nodeViewFactory } from '../../nodeviews';
@@ -76,7 +70,7 @@ export class MediaPluginState {
   private dropzonePicker?: PickerFacadeType;
   private linkRanges: Array<URLInfo>;
 
-  constructor(state: EditorState<any>, options: MediaPluginOptions) {
+  constructor(state: EditorState, options: MediaPluginOptions) {
     this.options = options;
     this.waitForMediaUpload = options.waitForMediaUpload === undefined ? true : options.waitForMediaUpload;
 
@@ -155,6 +149,13 @@ export class MediaPluginState {
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
+    const { view, allowsUploads } = this;
+
+    // make sure editable DOM node is mounted
+    if (view.dom.parentNode) {
+      // make PM plugin aware of the state change to update UI during 'apply' hook
+      view.dispatch(view.state.tr.setMeta(stateKey, { allowsUploads }));
+    }
 
     if (this.allowsUploads) {
       const uploadContext = await resolvedMediaProvider.uploadContext;
@@ -372,7 +373,7 @@ export class MediaPluginState {
     }, null);
   }
 
-  detectLinkRangesInSteps = (tr: Transaction, oldState: EditorState<any>) => {
+  detectLinkRangesInSteps = (tr: Transaction, oldState: EditorState) => {
     const { link } = this.view.state.schema.marks;
     this.linkRanges = [];
 
@@ -485,7 +486,7 @@ export class MediaPluginState {
     });
 
     // Copy all optional attributes from old node
-    copyOptionalAttrs(mediaNode.attrs, newNode.attrs);
+    copyOptionalMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -534,10 +535,9 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+export const createPlugin = (schema: Schema, options: MediaPluginOptions, dispatch?: Dispatch) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
-
   return new Plugin({
     state: {
       init(config, state) {
@@ -547,13 +547,20 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
         pluginState.detectLinkRangesInSteps(tr, oldState);
 
         // Ignore creating link cards during link editing
-        const { link } = oldState.schema.marks as { link: Mark };
+        const { link } = oldState.schema.marks;
         const { nodeAfter, nodeBefore } = newState.selection.$from;
 
         if ((nodeAfter && link.isInSet(nodeAfter.marks)) ||
           (nodeBefore && link.isInSet(nodeBefore.marks))
         ) {
           pluginState.ignoreLinks = true;
+        }
+
+        const meta = tr.getMeta(stateKey);
+        if (meta && dispatch) {
+          const { showMediaPicker } = pluginState;
+          const { allowsUploads } = meta;
+          dispatch(stateKey, { allowsUploads, showMediaPicker });
         }
 
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
@@ -568,13 +575,13 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
       pluginState.setView(view);
 
       return {
-        update: (view: EditorView, prevState: EditorState<any>) => {
+        update: (view: EditorView, prevState: EditorState) => {
           pluginState.insertLinks();
         }
       };
     },
     props: {
-      decorations: (state: EditorState<any>) => {
+      decorations: (state: EditorState) => {
         const pluginState = stateKey.getState(state);
         if (!pluginState.showDropzone) {
           return;
@@ -586,7 +593,7 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           return;
         }
 
-        let pos: number | null = $anchor.pos;
+        let pos: number | null | undefined = $anchor.pos;
         if (
           $anchor.parent.type !== schema.nodes.paragraph &&
           $anchor.parent.type !== schema.nodes.codeBlock
@@ -594,7 +601,7 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
           pos = insertPoint(state.doc, pos, schema.nodes.mediaGroup);
         }
 
-        if (pos === null) {
+        if (pos === null || pos === undefined) {
           return;
         }
 
@@ -622,8 +629,8 @@ export const createPlugin = (schema: Schema<any, any>, options: MediaPluginOptio
   });
 };
 
-const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
-  return [createPlugin(schema, options), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema, options: MediaPluginOptions, dispatch?: Dispatch) => {
+  return [createPlugin(schema, options, dispatch), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

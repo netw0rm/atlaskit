@@ -234,7 +234,7 @@ storiesOf(name, module)
   .add('inside modal dialog', () => (
     <div style={containerStyle}>
       <ModalDialog
-        width="200"
+        width="200px"
         isOpen
       >
         <div style={{ height: '200px' }}>

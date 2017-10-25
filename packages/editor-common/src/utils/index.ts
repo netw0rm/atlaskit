@@ -1,5 +1,6 @@
 export * from './url';
 export * from './uuid';
+export * from './confluence/emoji';
 export * from './languageList';
 export { default as browser } from './browser';
 

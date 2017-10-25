@@ -1,5 +1,6 @@
 import { NodeSpec } from 'prosemirror-model';
 import { InlineLinkText } from './doc';
+import { LINK } from '../groups';
 
 /**
  * @name heading_node
@@ -18,7 +19,7 @@ export interface Definition {
 
 export const heading: NodeSpec = {
   attrs: { level: { default: 1 } },
-  content: 'inline<_>*',
+  content: `inline<${LINK}>*`,
   group: 'block',
   defining: true,
   parseDOM: [

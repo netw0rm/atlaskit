@@ -44,6 +44,7 @@ class ToggleBannerPage extends React.PureComponent {
           <GridColumn>
             <p>Toggle banner</p>
             <AkToggle
+              label="toggle"
               size="large"
               onChange={() => {
                 this.setState({

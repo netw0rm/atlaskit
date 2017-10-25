@@ -1,7 +1,8 @@
-import { Transaction, EditorState, ReplaceStep, Step } from '../../prosemirror';
+import { Transaction, EditorState } from 'prosemirror-state';
+import { ReplaceStep, Step } from 'prosemirror-transform';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(state: EditorState<any>, from: number, to: number, transaction?: Transaction): Transaction {
+export function transformToCodeAction(state: EditorState, from: number, to: number, transaction?: Transaction): Transaction {
   const replaceSteps: Step[] = [];
   let tr = transaction || state.tr;
 

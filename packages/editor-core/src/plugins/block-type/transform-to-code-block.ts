@@ -1,7 +1,9 @@
-import { Transaction, EditorState, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { Slice } from 'prosemirror-model';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { RemoveMarkStep, ReplaceStep, Step } from 'prosemirror-transform';
 import { createSliceWithContent } from '../../utils';
 
-export default function transformToCodeBlock(state: EditorState<any>): void {
+export default function transformToCodeBlock(state: EditorState): void {
   if (!isConvertableToCodeBlock(state)) {
     return;
   }
@@ -9,7 +11,7 @@ export default function transformToCodeBlock(state: EditorState<any>): void {
   transformToCodeBlockAction(state).scrollIntoView();
 }
 
-export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any): Transaction {
+export function transformToCodeBlockAction(state: EditorState, attrs?: any): Transaction {
   const { $from } = state.selection;
   const codeBlock = state.schema.nodes.codeBlock;
 
@@ -19,7 +21,7 @@ export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any)
     .setNodeType(where, codeBlock, attrs);
 }
 
-export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
+export function isConvertableToCodeBlock(state: EditorState): boolean {
   // Before a document is loaded, there is no selection.
   if (!state.selection) {
     return false;
@@ -39,10 +41,10 @@ export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
   return parentNode.canReplaceWith(index, index + 1, state.schema.nodes.codeBlock);
 }
 
-function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
+function clearMarkupFor(state: EditorState, pos: number): Transaction {
   const tr = state.tr;
   const node = tr.doc.nodeAt(pos)!;
-  let match = state.schema.nodes.codeBlock.contentExpr.start();
+  let match = (state.schema.nodes.codeBlock as any).contentExpr.start();
   const delSteps: Step[] = [];
 
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
@@ -78,7 +80,7 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
   return tr;
 }
 
-function mergeContent(tr: Transaction, state: EditorState<any>) {
+function mergeContent(tr: Transaction, state: EditorState) {
   const { from, to, empty } = tr.selection;
   if (empty) {
     return tr;

@@ -1,13 +1,8 @@
-import {
-  Plugin,
-  PluginKey,
-  EditorView,
-  Slice,
-  MarkdownParser,
-  Schema,
-  EditorState,
-  keymap,
-} from '../../prosemirror';
+import { keymap } from 'prosemirror-keymap';
+import { MarkdownParser } from 'prosemirror-markdown';
+import { Schema, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
 import table from 'markdown-it-table';
 import { stateKey as tableStateKey } from '../table';
@@ -77,7 +72,7 @@ const mdToPmMapping = {
 
 export const stateKey = new PluginKey('pastePlugin');
 
-export function createPlugin(schema: Schema<any, any>) {
+export function createPlugin(schema: Schema) {
   let atlassianMarkDownParser: MarkdownParser;
 
   const md = MarkdownIt('zero', { html: false, linkify: true });
@@ -109,6 +104,11 @@ export function createPlugin(schema: Schema<any, any>) {
       handlePaste(view: EditorView, event: ClipboardEvent, slice: Slice) {
         if (!event.clipboardData) {
           return false;
+        }
+
+        // Bail if copied content has files
+        if (event.clipboardData.types.indexOf('Files') > -1) {
+          return true;
         }
 
         const { $from } = view.state.selection;
@@ -165,7 +165,7 @@ export function createPlugin(schema: Schema<any, any>) {
         // If the clipboard only contains plain text, attempt to parse it as Markdown
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
-          const doc = atlassianMarkDownParser.parse(text);
+          const doc = (atlassianMarkDownParser as any).parse(text);
           if (doc && doc.content) {
             const tr = view.state.tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd)
@@ -193,16 +193,16 @@ export function createPlugin(schema: Schema<any, any>) {
   });
 }
 
-export function createKeymapPlugin(schema: Schema<any, any>): Plugin {
+export function createKeymapPlugin(schema: Schema): Plugin {
   const list = {};
 
-  keymaps.bindKeymapWithCommand(keymaps.paste.common!, (state: EditorState<any>, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.paste.common!, (state: EditorState, dispatch) => {
     analyticsService.trackEvent('atlassian.editor.paste');
 
     return false;
   }, list);
 
-  keymaps.bindKeymapWithCommand(keymaps.altPaste.common!, (state: EditorState<any>, dispatch) => {
+  keymaps.bindKeymapWithCommand(keymaps.altPaste.common!, (state: EditorState, dispatch) => {
     analyticsService.trackEvent('atlassian.editor.paste');
 
     return false;
@@ -211,6 +211,6 @@ export function createKeymapPlugin(schema: Schema<any, any>): Plugin {
   return keymap(list);
 }
 
-export default (schema: Schema<any, any>) => [
+export default (schema: Schema) => [
   createPlugin(schema), createKeymapPlugin(schema)
 ];

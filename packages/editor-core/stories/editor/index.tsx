@@ -5,17 +5,12 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import applyDevTools from 'prosemirror-dev-tools';
 
-import {
-  baseKeymap,
-  EditorState,
-  EditorView,
-  history,
-  keymap,
-  Node,
-  TextSelection,
-  PluginKey,
-  Schema,
-} from '../../src/prosemirror';
+import { baseKeymap } from 'prosemirror-commands';
+import { history } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import { Node, Schema } from 'prosemirror-model';
+import { EditorState, TextSelection, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 import { default as schemaFull } from '../schema';
 import ProviderFactory from '../../src/providerFactory';
@@ -24,7 +19,6 @@ import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 import {
   MediaProvider,
   MediaState,
-  Plugin,
   ErrorReporter,
   ErrorReportingHandler,
 } from '../../src';
@@ -36,6 +30,7 @@ import codeBlockPlugins, { stateKey as codeBlockStateKey } from '../../src/plugi
 import panelPlugins, { stateKey as panelStateKey } from '../../src/plugins/panel';
 import textFormattingPlugins, { stateKey as textFormattingStateKey } from '../../src/plugins/text-formatting';
 import hyperlinkPlugins, { stateKey as hyperlinkStateKey } from '../../src/plugins/hyperlink';
+import imageUploadPlugins, { stateKey as imageUploadStateKey } from '../../src/plugins/image-upload';
 import rulePlugins from '../../src/plugins/rule';
 import listsPlugins, { stateKey as listsStateKey } from '../../src/plugins/lists';
 import mentionsPlugins, { stateKey as mentionsStateKey } from '../../src/plugins/mentions';
@@ -68,7 +63,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   height?: number;
-  schema?: Schema<any, any>;
+  schema?: Schema;
 }
 
 export interface State {
@@ -80,7 +75,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   private mediaPlugins: Plugin[];
-  private schema: Schema<any, any>;
+  private schema: Schema;
 
   state: State;
   providerFactory: ProviderFactory;
@@ -133,18 +128,20 @@ export default class Editor extends PureComponent<Props, State> {
       props.mentionProvider !== nextProps.mentionProvider ||
       props.mediaProvider !== nextProps.mediaProvider ||
       props.emojiProvider !== nextProps.emojiProvider ||
-      props.activityProvider !== nextProps.activityProvider
+      props.activityProvider !== nextProps.activityProvider ||
+      props.imageUploadHandler !== nextProps.imageUploadHandler
     ) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { emojiProvider, mediaProvider, mentionProvider, activityProvider } = props;
+    const { emojiProvider, mediaProvider, mentionProvider, activityProvider, imageUploadHandler } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
+    this.providerFactory.setProvider('imageUploadProvider', Promise.resolve(imageUploadHandler));
 
     this.setState({
       emojiProvider,
@@ -208,7 +205,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { mentionProvider, emojiProvider } = this.state;
     const { activityProvider } = this.props;
 
-    const getState = (editorState: EditorState<any> | undefined) => (stateKey: PluginKey) =>
+    const getState = (editorState: EditorState | undefined) => (stateKey: PluginKey) =>
       editorState && stateKey.getState(editorState);
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
@@ -226,6 +223,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = getStateFromKey(textFormattingStateKey);
     const hyperlinkState = getStateFromKey(hyperlinkStateKey);
     const mediaState = this.props.mediaProvider && getStateFromKey(mediaStateKey);
+    const imageUploadState = this.props.imageUploadHandler && getStateFromKey(imageUploadStateKey);
     const mentionsState = getStateFromKey(mentionsStateKey);
     const emojiState = getStateFromKey(emojiStateKey);
     const textColorState = getStateFromKey(textColorStateKey);
@@ -249,6 +247,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateMedia={mediaState}
+        pluginStateImageUpload={imageUploadState}
         pluginStateMentions={mentionsState}
         pluginStateEmojis={emojiState}
         pluginStateTextColor={textColorState}
@@ -312,6 +311,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...rulePlugins(schema),
           ...(schema.marks.textColor ? textColorPlugins(schema) : []),
           ...(schema.nodes.media ? mediaPlugins : []),
+          ...(schema.nodes.image ? imageUploadPlugins(schema, this.providerFactory) : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible.

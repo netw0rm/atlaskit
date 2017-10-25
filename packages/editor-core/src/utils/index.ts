@@ -1,23 +1,10 @@
-import {
-  liftTarget,
-  Mark,
-  MarkType,
-  Node,
-  NodeSelection,
-  NodeType,
-  ResolvedPos,
-  Selection,
-  TextSelection,
-  Transaction,
-  EditorView,
-  EditorState,
-  Slice,
-  Fragment,
-  findWrapping
-} from '../prosemirror';
-import * as commands from '../commands';
+import { toggleMark } from 'prosemirror-commands';
+import { Fragment, Mark, MarkType, Node, NodeType, ResolvedPos, Slice } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { EditorState, NodeSelection, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONSerializer, { JSONDocNode, JSONNode } from '../renderer/json';
+import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
 
 export {
   default as ErrorReporter,
@@ -37,11 +24,11 @@ function isMarkTypeCompatibleWithMark(markType: MarkType, mark: Mark): boolean {
   return !mark.type.excludes(markType) && !markType.excludes(mark.type);
 }
 
-function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState<any>): boolean {
-  return commands.toggleMark(markType)(state);
+function isMarkTypeAllowedInNode(markType: MarkType, state: EditorState): boolean {
+  return toggleMark(markType)(state);
 }
 
-export function canMoveUp(state: EditorState<any>): boolean {
+export function canMoveUp(state: EditorState): boolean {
   const { selection } = state;
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
@@ -52,7 +39,7 @@ export function canMoveUp(state: EditorState<any>): boolean {
   return !atTheBeginningOfDoc(state);
 }
 
-export function canMoveDown(state: EditorState<any>): boolean {
+export function canMoveDown(state: EditorState): boolean {
   const { selection } = state;
   if (selection instanceof TextSelection) {
     if (!selection.empty) {
@@ -63,17 +50,17 @@ export function canMoveDown(state: EditorState<any>): boolean {
   return !atTheEndOfDoc(state);
 }
 
-export function atTheEndOfDoc(state: EditorState<any>): boolean {
+export function atTheEndOfDoc(state: EditorState): boolean {
   const { selection, doc } = state;
   return doc.nodeSize - selection.$to.pos - 2 === selection.$to.depth;
 }
 
-export function atTheBeginningOfDoc(state: EditorState<any>): boolean {
+export function atTheBeginningOfDoc(state: EditorState): boolean {
   const { selection } = state;
   return selection.$from.pos === selection.$from.depth;
 }
 
-export function atTheEndOfBlock(state: EditorState<any>): boolean {
+export function atTheEndOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $to } = selection;
   if (selection instanceof NodeSelection && selection.node.isBlock) {
@@ -82,7 +69,7 @@ export function atTheEndOfBlock(state: EditorState<any>): boolean {
   return endPositionOfParent($to) === $to.pos + 1;
 }
 
-export function atTheBeginningOfBlock(state: EditorState<any>): boolean {
+export function atTheBeginningOfBlock(state: EditorState): boolean {
   const { selection } = state;
   const { $from } = selection;
   if (selection instanceof NodeSelection && selection.node.isBlock) {
@@ -105,7 +92,7 @@ export function endPositionOfParent(resolvedPos: ResolvedPos): number {
  * the node and marks at the current selection to determine if the given mark type is
  * allowed.
  */
-export function isMarkTypeAllowedInCurrentSelection(markType: MarkType, state: EditorState<any>) {
+export function isMarkTypeAllowedInCurrentSelection(markType: MarkType, state: EditorState) {
   if (!isMarkTypeAllowedInNode(markType, state)) { return false; }
 
   const { empty, $cursor, ranges } = state.selection as TextSelection;
@@ -138,7 +125,7 @@ export function isRangeOfType(doc, $from: ResolvedPos, $to: ResolvedPos, nodeTyp
   return getAncestorNodesBetween(doc, $from, $to).filter(node => node.type !== nodeType).length === 0;
 }
 
-export function createSliceWithContent(content: string, state: EditorState<any>) {
+export function createSliceWithContent(content: string, state: EditorState) {
   return new Slice(Fragment.from(state.schema.text(content)), 0, 0);
 }
 
@@ -165,8 +152,8 @@ export function setTextSelection(view: EditorView, anchor: number, head?: number
 
 export function moveCursorToTheEnd(view: EditorView) {
   const { state } = view;
-  const anchor = Math.max(state.doc.nodeSize - 2, 0);
-  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor)).scrollIntoView();
+  const anchor = Selection.atEnd(state.doc);
+  const tr = state.tr.setSelection(anchor).scrollIntoView();
   view.dispatch(tr);
 }
 
@@ -387,7 +374,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
 }
 
 export function toJSON(node: Node): JSONDocNode {
-  return new JSONSerializer().serializeFragment(node.content);
+  const transformer = new JSONTransformer();
+  return transformer.encode(node);
 }
 
 /**
@@ -421,7 +409,7 @@ export function moveLeft(view: EditorView) {
 /**
  * Function will create a list of wrapper blocks present in a selection.
  */
-function getSelectedWrapperNodes(state: EditorState<any>): NodeType[] {
+function getSelectedWrapperNodes(state: EditorState): NodeType[] {
   const nodes: any[] = [];
   if (state.selection) {
     const { $from, $to } = state.selection;
@@ -441,7 +429,7 @@ function getSelectedWrapperNodes(state: EditorState<any>): NodeType[] {
 /**
  * Function will check if changing block types: Paragraph, Heading is enabled.
  */
-export function areBlockTypesDisabled(state: EditorState<any>): boolean {
+export function areBlockTypesDisabled(state: EditorState): boolean {
   const nodesTypes: NodeType[] = getSelectedWrapperNodes(state);
   const { panel } = state.schema.nodes;
   return nodesTypes.filter(type => type !== panel).length > 0;
@@ -450,3 +438,6 @@ export function areBlockTypesDisabled(state: EditorState<any>): boolean {
 export const isTemporary = (id: string): boolean => {
   return id.indexOf('temporary:') === 0;
 };
+
+// See: https://github.com/ProseMirror/prosemirror/issues/710
+export const isChromeWithSelectionBug = !!navigator.userAgent.match(/Chrome\/(5[89]|6[012])/);

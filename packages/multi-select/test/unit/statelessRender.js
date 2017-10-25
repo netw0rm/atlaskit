@@ -6,7 +6,7 @@ import Droplist, { Group, Item } from '@atlaskit/droplist';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 
 import { MultiSelectStateless } from '../../src';
@@ -31,7 +31,7 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<MultiSelectStateless />).isEmpty()).toBe(false);
+      expect(shallow(<MultiSelectStateless />).exists()).toBe(true);
     });
 
     it('should render with correct CSS class name', () => {

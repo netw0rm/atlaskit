@@ -107,7 +107,7 @@ declare module '@atlaskit/util-shared-styles' {
   declare var akCodeFontFamily: string;
   declare var akGridSizeUnitless: number;
   declare var akGridSize: string;
-  
+
   // Z-INDEX
   declare var akZIndexNavigation: number;
   declare var akZIndexLayer: number;
@@ -116,4 +116,16 @@ declare module '@atlaskit/util-shared-styles' {
   declare var akZIndexCard: number;
   declare var akZIndexDialog: number;
   declare var akZIndexModal: number;
+
+  declare var akTypographyMixins: {
+    h100: string,
+    h200: string,
+    h300: string,
+    h400: string,
+    h500: string,
+    h600: string,
+    h700: string,
+    h800: string,
+    h900: string,
+  };
 }

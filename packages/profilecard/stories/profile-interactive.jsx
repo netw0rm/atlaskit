@@ -44,7 +44,7 @@ export default function interActiveCard(dependencies) {
   class ProfilecardInteractive extends React.PureComponent {
     state = {
       avatarUrl: avatarImage,
-      email: '',
+      email: 'nlindsey@example.com',
       presence: 'available',
       fullName: 'Natalie Lindsey',
       nickname: 'natalie',

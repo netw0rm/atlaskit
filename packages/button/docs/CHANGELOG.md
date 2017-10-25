@@ -1,5 +1,14 @@
 # @atlaskit/button
 
+## 5.4.5 (2017-10-23)
+
+* bug fix; support false/null/undefined children in ButtonGroup ([4667228](https://bitbucket.org/atlassian/atlaskit/commits/4667228))
+## 5.4.4 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+## 5.4.3 (2017-10-16)
+
+* bug fix; fix issue where invalid box-shadow style was applied (issues closed: ak-3704) ([a786038](https://bitbucket.org/atlassian/atlaskit/commits/a786038))
 ## 5.4.2 (2017-10-03)
 
 

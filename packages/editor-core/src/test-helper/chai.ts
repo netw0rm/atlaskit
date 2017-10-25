@@ -1,6 +1,5 @@
 /// <reference path="./types/chai.d.ts"/>
-import { Fragment, Mark, Node, NodeType, Slice } from '../';
-import { NodeSpec } from '../prosemirror';
+import { Fragment, Mark, Node, NodeSpec, NodeType, Slice } from 'prosemirror-model';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make

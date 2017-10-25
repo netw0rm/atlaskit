@@ -1,5 +1,13 @@
 # @atlaskit/input
 
+## 1.6.0 (2017-10-24)
+
+
+* feature; expose select method on Input class (issues closed: ak-3727) ([82aa750](https://bitbucket.org/atlassian/atlaskit/commits/82aa750))
+## 1.5.4 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
 ## 1.5.3 (2017-09-05)
 
 * bug fix; input component now also inherits the letter-spacing from the CSS reset. ([cf96c4c](https://bitbucket.org/atlassian/atlaskit/commits/cf96c4c))

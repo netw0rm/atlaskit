@@ -1,14 +1,9 @@
 import CodeMirror from '../../../codemirror';
-import {
-  browser,
-  Selection,
-  TextSelection,
-  undo,
-  redo,
-  Node,
-  EditorView,
-  Fragment,
-} from '../../../prosemirror';
+import { browser } from '@atlaskit/editor-common';
+import { redo, undo } from 'prosemirror-history';
+import { Node, Fragment } from 'prosemirror-model';
+import { Selection, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { CodeBlockState } from '../../../plugins';
 import { DEFAULT_LANGUAGES } from '../../../ui/LanguagePicker/languageList';
 import './styles';
@@ -18,7 +13,7 @@ interface CMSelection { head: number; anchor: number; }
 
 export default class CodeBlockPlugin  {
   private node: Node;
-  private view: EditorView;
+  private view: EditorView & { docView?: any };
   private getPos: Function;
   private value: string;
   private selection: CMSelection | undefined;
@@ -124,7 +119,7 @@ export default class CodeBlockPlugin  {
       if (node && node.type === nodes.codeBlock &&
         node.textContent.slice(node.textContent.length - 2) === '\n\n') {
         const pos = $head.after();
-        tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill());
+        tr.replaceWith(pos, pos, state.schema.nodes.paragraph.createAndFill()!);
         tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
         tr.delete(nodeEnd - 2, nodeEnd);
         dispatch(tr.scrollIntoView());

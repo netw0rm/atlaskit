@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 8.0.9 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
+## 8.0.8 (2017-10-15)
+
+* bug fix; fix borked styles caused by missing semicolons in CSS (issues closed: ak-3694) ([07e0c54](https://bitbucket.org/atlassian/atlaskit/commits/07e0c54))
 ## 8.0.7 (2017-10-13)
 
 * bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))

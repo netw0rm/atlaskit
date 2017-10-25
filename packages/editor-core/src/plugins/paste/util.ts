@@ -1,4 +1,4 @@
-import { Schema } from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
 
 export const isSingleLine = (text: string): boolean => {
   return !!text && text.trim().split('\n').length === 1;
@@ -28,7 +28,7 @@ export function isCode(str) {
   return 4 <= weight && weight >= 0.5 * lines.length;
 }
 
-export function filterMdToPmSchemaMapping(schema: Schema<any, any>, map) {
+export function filterMdToPmSchemaMapping(schema: Schema, map) {
   return Object.keys(map).reduce((newMap, key) => {
     const value = map[key];
     const block = value.block || value.node;

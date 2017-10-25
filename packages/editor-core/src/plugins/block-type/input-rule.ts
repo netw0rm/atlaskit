@@ -1,18 +1,18 @@
-import {
-  blockQuoteRule, headingRule, InputRule, inputRules, Plugin, Schema, Transaction
-} from '../../prosemirror';
+import { blockQuoteRule, headingRule, inputRules, InputRule } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import { Plugin, Transaction } from 'prosemirror-state';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { createInputRule, defaultInputRuleHandler } from '../utils';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
     const rule = defaultInputRuleHandler(headingRule(schema.nodes.heading, 5));
-    const currentHandler = rule.handler;
-    rule.handler = (state, match, start, end) => {
+    const currentHandler = (rule as any).handler; // TODO: Fix types (ED-2987)
+    (rule as any).handler = (state, match, start, end) => {
       analyticsService.trackEvent(`atlassian.editor.format.heading${match[1].length}.autoformatting`);
       return currentHandler(state, match, start, end);
     };
@@ -22,7 +22,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (schema.nodes.blockquote) {
     // '> ' for blockquote
     const rule = defaultInputRuleHandler(blockQuoteRule(schema.nodes.blockquote));
-    rule.handler = trackAndInvoke('atlassian.editor.format.blockquote.autoformatting', rule.handler);
+    (rule as any).handler = trackAndInvoke('atlassian.editor.format.blockquote.autoformatting', (rule as any).handler); // TODO: Fix types (ED-2987)
     rules.push(rule);
   }
 

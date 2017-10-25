@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as assert from 'assert';
-import { Node as PMNode } from '../../../../src/';
+import { Node as PMNode } from 'prosemirror-model';
 import { chaiPlugin } from '../../../../src/test-helper';
 import {
   ConfluenceTransformer,
@@ -12,11 +12,11 @@ import {
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link, textColor,
   confluenceUnsupportedInline, confluenceUnsupportedBlock, confluenceJiraIssue, mediaGroup, media,
   table, tr, td, th,
-  inlineCommentMarker,
-  inlineMacro
+  inlineMacro,
+  emoji
 } from './_schema-builder';
 chai.use(chaiPlugin);
-import { confluenceSchema as schema } from '../../../../src/schema';
+import { confluenceSchema as schema } from '@atlaskit/editor-common';
 
 const transformer = new ConfluenceTransformer(schema);
 const parse = (html: string) => transformer.parse(html);
@@ -314,16 +314,12 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         '<h6>Read all about it!</h6>',
         doc(h6('Read all about it!')));
 
-      check('<h1> with nested <b>',
-        '<h1>Read all <b>about</b> it!</h1>',
-        doc(
-          h1(
-            'Read all ',
-            strong('about'),
-            ' it!'
-          )
-        ));
-
+      it('should not parse any nested marks / <b>', () => {
+        const actual = parse('<h1>Read all <b>about</b> it!</h1>');
+        expect(actual).to.deep.equal(
+          doc(h1('Read all about it!'))
+        );
+      });
       check('heading with invalid block content',
         '<h1><p>heading</p></h1>',
         doc(
@@ -476,7 +472,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
       check('with title',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(h5(strong('Code')), codeblock({ language: 'js' })('some code')));
+        doc(h5('Code'), codeblock({ language: 'js' })('some code')));
 
       context('when language is not set', () => {
         check(`has language attribute as null`,
@@ -499,11 +495,11 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
         check('with title',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-parameters="title=hello" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(h5(strong('hello')), codeblock({ language: null })('const speed = 350;')));
+          doc(h5('hello'), codeblock({ language: null })('const speed = 350;')));
 
         check('with language and title',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-id="80adec37-7fd5-4533-88a6-5f958c9957ba" data-macro-parameters="language=js|title=hello" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-mce-style="background-image: url(\'https://pm-temp-201701.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2\'); background-repeat: no-repeat;" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
-          doc(h5(strong('hello')), codeblock({ language: 'js' })('const speed = 350;')));
+          doc(h5('hello'), codeblock({ language: 'js' })('const speed = 350;')));
 
         check('with no parameters',
           '<table class="wysiwyg-macro" data-macro-name="code" data-macro-id="80adec37-7fd5-4533-88a6-5f958c9957ba" data-macro-schema-version="1" data-macro-body-type="PLAIN_TEXT" data-mce-style="background-image: url(\'https://pm-temp-201701.jira-dev.com/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2\'); background-repeat: no-repeat;" style="background-color: rgb(240, 240, 240); background-position: 0px 0px; background-repeat: no-repeat; border: 1px solid rgb(221, 221, 221); margin-top: 10px; padding: 24px 2px 2px; width: 637px; border-collapse: separate; cursor: move; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial; background-image: url(&quot;/wiki/plugins/servlet/confluence/placeholder/macro-heading?definition=e2NvZGU6bGFuZ3VhZ2U9anN8dGl0bGU9aGVsbG99&amp;locale=en_GB&amp;version=2&quot;);"><tbody><tr><td class="wysiwyg-macro-body" style="white-space: pre-wrap; background-color: rgb(255, 255, 255); border: 1px solid rgb(221, 221, 221); margin: 0px; padding: 10px; cursor: text;"><pre style="margin: 0px; tab-size: 4; white-space: pre-wrap;">const speed = 350;</pre></td></tr></tbody></table>',
@@ -513,7 +509,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       context('when pasted from View', () => {
         check('with language and title',
           '<div class="codeHeader panelHeader pdl" style="margin: 0px; padding: 5px 15px; border-bottom: 1px solid rgb(204, 204, 204); background: rgb(245, 245, 245); text-align: left; overflow: hidden; position: relative; color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><b style="color: rgb(51, 51, 51);">hello</b></div><div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
-          doc(h5(strong('hello')), codeblock({ language: 'js' })('const speed = 350;')));
+          doc(h5('hello'), codeblock({ language: 'js' })('const speed = 350;')));
 
         check('with language',
           '<div class="codeContent panelContent pdl" style="margin: 0px; padding: 0px; background: rgb(255, 255, 255); color: rgb(51, 51, 51); text-align: left; font-size: 14px; line-height: 20px; overflow: hidden; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; width: 656.359px; font-family: Arial, sans-serif; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"><div style="margin: 0px; padding: 0px;"><div id="highlighter_427012" class="syntaxhighlighter sh-confluence nogutter  js" style="margin: 0px; padding: 0px; width: 656.359px; position: relative; overflow: auto; font-size: 1em; background-color: rgb(255, 255, 255) !important;"><table border="0" cellpadding="0" cellspacing="0" style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 656px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tbody style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><tr style="border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><td class="code" style="border: 0px; background: 0px center; overflow: visible; border-radius: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; padding: 0px 0px 0px 15px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: 641px; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit;"><div class="container" title="Hint: double-click to select code" style="margin: 15px 0px 0px; padding: 0px 0px 15px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: relative; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: pre-wrap;"><div class="line number1 index0 alt2" style="margin: 0px; padding: 0px 1em 0px 0px; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; outline: 0px; overflow: visible; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; white-space: nowrap;"><code class="js plain" style="font-family: Consolas, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, Courier, monospace; border-radius: 0px; background: 0px center; border: 0px; bottom: auto; float: none; height: auto; left: auto; line-height: 20px; margin: 0px; outline: 0px; overflow: visible; padding: 0px; position: static; right: auto; text-align: left; top: auto; vertical-align: baseline; width: auto; box-sizing: content-box; font-weight: normal; font-style: normal; font-size: 14px; min-height: inherit; color: rgb(0, 0, 0) !important;">const speed = 350;</code></div></div></td></tr></tbody></table></div></div></div>',
@@ -595,24 +591,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       );
     });
 
-    describe('inline comment marker', () => {
-      check(
-        'basic',
-        '<p><ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a">inline comment</ac:inline-comment-marker></p>',
-        doc(
-          p(
-            inlineCommentMarker({
-              reference: '2c469dac-f95f-4979-ba30-2a4cb705450a',
-            })('inline comment')
-          )
-        )
-      );
-
-      check(
-        'when inline comment text was removed',
-        '<p>test <ac:inline-comment-marker ac:ref="2c469dac-f95f-4979-ba30-2a4cb705450a"></ac:inline-comment-marker> text</p>',
-        doc(p('test text')));
-    });
   });
 
   describe('inline-macro', () => {
@@ -763,6 +741,64 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           )
         )
       );
+    });
+  });
+
+  describe('ac:emoticon', () => {
+    check(
+      'old emoticons are mapped to new emojis',
+      '<p><ac:emoticon ac:name="smile" /></p>',
+      doc(
+        p(
+          emoji({ id: '1f642', shortName: ':slight_smile:', text: '\uD83D\uDE42' })
+        )
+      )
+    );
+
+    check(
+      'emoticons that will end up mapped to defaul fabric id emoji will preserve original ac:name',
+      '<p><ac:emoticon ac:name="red-star"/></p>',
+      doc(
+        p(
+          emoji({ id: '2b50', shortName: ':red-star:', text: '' })
+        )
+      )
+    );
+
+    check(
+      'old HipChat emoticons are mapped to new',
+      '<p><ac:hipchat-emoticon ac:shortcut="sadpanda" /></p>',
+      doc(
+        p(
+          emoji({ id: 'atlassian-sadpanda', shortName: ':sadpanda:', text: '' })
+        )
+      )
+    );
+
+    check(
+      'valid emoji with all fabric emoji attributes',
+      '<p><ac:emoticon ac:name="blue-star" ac:emoji-id="1f61c" ac:emoji-shortname=":stuck_out_tongue_winking_eye:" ac:emoji-fallback="😜"/></p>',
+      doc(
+        p(
+          emoji({ id: '1f61c', shortName: ':stuck_out_tongue_winking_eye:', text: '😜'})
+        )
+      )
+    );
+
+    it('valid emoji with all fabric emoji attributes encoded with ac:name="blue-star"', ()=>{
+      const emoticon = encode(doc(p(emoji({ id: '1f61c', shortName: ':stuck_out_tongue_winking_eye:', text: '😜'}))));
+      expect(emoticon).to.contain('ac:name="blue-star"');
+    });
+
+    it('hipchat-emoticons encoded with ac:name="blue-star" and preserve original ac:shortcut as ac:emoji-shortname', () => {
+      const notMappedEmoticon = '<ac:hipchat-emoticon ac:shortcut="anything-not-supported" />';
+      const encodedEmoticon = '<ac:emoticon ac:name="blue-star" ac:emoji-id="atlassian-anything-not-supported" ac:emoji-shortname=":anything-not-supported:"/>';
+      expect(parse(notMappedEmoticon)).to.deep.equal(parse(encodedEmoticon));
+
+      const notMappedEmoticonEncode = encode(parse(notMappedEmoticon));
+      expect(notMappedEmoticonEncode).to.contain('ac:name="blue-star"');
+      expect(notMappedEmoticonEncode).to.contain('ac:emoji-id="atlassian-anything-not-supported"');
+      expect(notMappedEmoticonEncode).to.contain('ac:emoji-shortname=":anything-not-supported:"');
     });
   });
 

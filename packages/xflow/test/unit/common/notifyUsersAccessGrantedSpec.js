@@ -16,11 +16,6 @@ import jiraUsersResponse from './../jira-confluence/mock-data/jiraUsers.json';
 // import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
 // import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
 
-const NEVER_CALL = 'NEVER_CALL';
-const shouldNeverContactEndpoint = () => {
-  fetchMock.mock(NOTIFY_ENDPOINT_EAST, {}, { name: NEVER_CALL });
-};
-
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(
     NOTIFY_ENDPOINT_EAST,
@@ -37,11 +32,12 @@ describe('notifyUsersAccessGranted', () => {
     fetchMock.restore();
   });
 
-  it('should return a resolved promise with no value and it should never contact the endpoint', async () => {
-    shouldNeverContactEndpoint();
+  it('should return no users and it should never contact the endpoint', async () => {
+    const SHOULD_NEVER_CALL = 'SHOULD_NEVER_CALL';
+    fetchMock.mock(NOTIFY_ENDPOINT_EAST, {}, { name: SHOULD_NEVER_CALL });
     const result = await notifyUsersAccessGranted([], 'confluence');
     expect(result).toEqual(accessgrantedNoUsersResponse);
-    expect(fetchMock.done(NEVER_CALL)).toBe(false);
+    expect(fetchMock.called(SHOULD_NEVER_CALL)).toBe(false);
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {

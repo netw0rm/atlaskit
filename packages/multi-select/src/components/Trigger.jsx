@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { FieldBaseStateless } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 
 import { Content, Expand, Input, TriggerDiv } from '../styled/Trigger';

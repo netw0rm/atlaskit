@@ -1,9 +1,18 @@
+// @flow
 import Button from '@atlaskit/button';
-import styled from 'styled-components';
-import { itemTruncateWidth } from '../constants';
+import styled, { css } from 'styled-components';
 
 const ButtonElement = styled(Button)`
-  max-width: ${itemTruncateWidth}px;
+  ${({ truncationWidth }: { truncationWidth: number }) => (
+      truncationWidth
+      ? css`
+        max-width: ${truncationWidth}px !important;
+      `
+      : css`
+        flex-shrink: 1;
+        min-width: 0;
+      `
+    )}
 `;
 
 export default ButtonElement;

@@ -1,5 +1,16 @@
 # @atlaskit/editor-jira
 
+## 21.0.2 (2017-10-24)
+
+* bug fix; use latest editor-core ([d31dbca](https://bitbucket.org/atlassian/atlaskit/commits/d31dbca))
+## 21.0.1 (2017-10-24)
+
+* bug fix; bump editor-jira to use latest new editor-common (issues closed: ed-3053) ([17106d0](https://bitbucket.org/atlassian/atlaskit/commits/17106d0))
+## 21.0.0 (2017-10-16)
+
+* breaking; Upgraded mediaProvider API to use the new media picker authentication ([ed1e1a2](https://bitbucket.org/atlassian/atlaskit/commits/ed1e1a2))
+* breaking; fixed mentions and upgrade editor-core version. ([ed1e1a2](https://bitbucket.org/atlassian/atlaskit/commits/ed1e1a2))
+* bug fix; added missing method _notifyAllResultsListeners to mention mock service and fixed re ([f057300](https://bitbucket.org/atlassian/atlaskit/commits/f057300))
 ## 20.6.3 (2017-09-22)
 
 * bug fix; upgrading button and button group to fix issue around button spacing. ([7a1b29d](https://bitbucket.org/atlassian/atlaskit/commits/7a1b29d))

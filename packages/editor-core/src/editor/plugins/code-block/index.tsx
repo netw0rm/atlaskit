@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { plugin, stateKey } from '../../../plugins/code-block';
 import keymap from '../../../plugins/code-block/keymaps';
-import { codeBlock } from '../../../schema/nodes/code-block';
 import LanguagePicker from '../../../ui/LanguagePicker';
 
 const codeBlockPlugin: EditorPlugin = {
@@ -17,13 +17,13 @@ const codeBlockPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance) {
+  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     if (appearance === 'message') {
       return null;
     }
 
     const pluginState = stateKey.getState(editorView.state);
-    return <LanguagePicker editorView={editorView} pluginState={pluginState} />;
+    return <LanguagePicker editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
   }
 };
 

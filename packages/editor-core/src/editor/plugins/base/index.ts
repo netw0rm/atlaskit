@@ -1,8 +1,8 @@
+import { doc, paragraph, text } from '@atlaskit/editor-common';
+import { baseKeymap } from 'prosemirror-commands';
+import { history } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
 import { EditorPlugin } from '../../types';
-import { doc } from '../../../schema/nodes/doc';
-import { paragraph } from '../../../schema/nodes/paragraph';
-import { text } from '../../../schema/nodes/text';
-import { baseKeymap, keymap, history } from '../../../prosemirror';
 import { plugin as reactNodeView } from '../../../plugins/react-nodeview';
 
 const basePlugin: EditorPlugin = {

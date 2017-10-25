@@ -1,5 +1,107 @@
 # @atlaskit/editor-core
 
+## 56.0.0 (2017-10-24)
+
+* breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+* breaking; use base renderer files from renderer package ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+## 55.0.0 (2017-10-24)
+
+
+* feature; emoticons to emoji cxhtml transform ([3b72b96](https://bitbucket.org/atlassian/atlaskit/commits/3b72b96))
+
+* breaking; onExpand is no longer supported for the 'new-arch' editor. Consumers should use CollapsedEditor ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+* breaking; refactor CollapsedEditor to remove the need for onExpand prop in the new arch ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+## 54.0.1 (2017-10-23)
+
+* bug fix; pass popupsMountPoint and popupsBoundariesElement to all appearances (issues closed: ed-3060) ([0ab2923](https://bitbucket.org/atlassian/atlaskit/commits/0ab2923))
+* bug fix; update version of Button to omit empty ButtonGroup warning ([2836ca9](https://bitbucket.org/atlassian/atlaskit/commits/2836ca9))
+## 54.0.0 (2017-10-23)
+
+
+
+
+
+* bug fix; add imageUploadProvider to ToolDrawer, fix collapsededitor state ([1c232e0](https://bitbucket.org/atlassian/atlaskit/commits/1c232e0))
+* bug fix; absorb setValue into replaceDocument editor action ([85c79c8](https://bitbucket.org/atlassian/atlaskit/commits/85c79c8))
+* feature; port upload-image plugin to the new architecture ([af102fb](https://bitbucket.org/atlassian/atlaskit/commits/af102fb))
+* breaking; The imageUploadHandler prop has been removed in favor of imageUploadProvider. ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* breaking; set the imageUploadHandler using providers ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* bug fix; use library method to determine end of the document ([e2de547](https://bitbucket.org/atlassian/atlaskit/commits/e2de547))
+* bug fix; restrict image width in the editor, to the width of the editor ([6a21d5f](https://bitbucket.org/atlassian/atlaskit/commits/6a21d5f))
+* bug fix; fix use of upload-image plugin in story editor ([6aa9ae4](https://bitbucket.org/atlassian/atlaskit/commits/6aa9ae4))
+* feature; export CollapsedEditor from the editor-core repo ([a398ca3](https://bitbucket.org/atlassian/atlaskit/commits/a398ca3))
+* bug fix; allow consumers to fully control the collapsed state of CollapsedEditor ([b133030](https://bitbucket.org/atlassian/atlaskit/commits/b133030))
+* feature; add setValue action to the editor ([a08c28f](https://bitbucket.org/atlassian/atlaskit/commits/a08c28f))
+## 53.1.4 (2017-10-22)
+
+* bug fix; work around cursor position issues in Chrome 58-62 (issues closed: ed-2960) ([3d86c08](https://bitbucket.org/atlassian/atlaskit/commits/3d86c08))
+## 53.1.3 (2017-10-20)
+
+* bug fix; editor font style dropdown now shows label correctly (issues closed: ak-3651 ed-2952) ([4047555](https://bitbucket.org/atlassian/atlaskit/commits/4047555))
+## 53.1.2 (2017-10-20)
+
+* bug fix; newlines removed from pasted text (issues closed: ed-2888) ([792f451](https://bitbucket.org/atlassian/atlaskit/commits/792f451))
+## 53.1.1 (2017-10-20)
+
+* bug fix; makes editor placeholder non clickable (issues closed: ed-2939) ([b11a221](https://bitbucket.org/atlassian/atlaskit/commits/b11a221))
+* bug fix; preprocessDoc returns new document instead of updating existing one (issues closed: ed-3047) ([a539825](https://bitbucket.org/atlassian/atlaskit/commits/a539825))
+## 53.1.0 (2017-10-19)
+
+* feature; add support for popupsMountPoint to the new architecture ([700c36f](https://bitbucket.org/atlassian/atlaskit/commits/700c36f))
+## 53.0.1 (2017-10-19)
+
+* bug fix; cleanup ([497ca27](https://bitbucket.org/atlassian/atlaskit/commits/497ca27))
+* bug fix; call onChange only on document change (issues closed: ed-2421) ([fbadb9a](https://bitbucket.org/atlassian/atlaskit/commits/fbadb9a))
+## 53.0.0 (2017-10-19)
+
+* breaking; JSON renderer is now JSON transformer ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+* breaking; move JSON Renderer into editor-core transformers (issues closed: ed-3024) ([b30653c](https://bitbucket.org/atlassian/atlaskit/commits/b30653c))
+
+## 52.0.0 (2017-10-19)
+
+* bug fix; bump editor-common ([7640450](https://bitbucket.org/atlassian/atlaskit/commits/7640450))
+* bug fix; fix macro ([1e6fd61](https://bitbucket.org/atlassian/atlaskit/commits/1e6fd61))
+* breaking; Schema is now being published by editor-common ([9617437](https://bitbucket.org/atlassian/atlaskit/commits/9617437))
+* breaking; consume schema from editor-common and remove prosemirror-types ([9617437](https://bitbucket.org/atlassian/atlaskit/commits/9617437))
+## 51.1.1 (2017-10-18)
+
+* bug fix; "Insert link" scrolls to top of page (issues closed: ed-2992) ([eee5586](https://bitbucket.org/atlassian/atlaskit/commits/eee5586))
+## 51.1.0 (2017-10-18)
+
+
+* feature; added macro edit toolbar (issues closed: ed-1808) ([dc5d28b](https://bitbucket.org/atlassian/atlaskit/commits/dc5d28b))
+## 51.0.1 (2017-10-18)
+
+* bug fix; fix renderer dependency ([0b3d323](https://bitbucket.org/atlassian/atlaskit/commits/0b3d323))
+## 51.0.0 (2017-10-18)
+
+
+* bug fix; prevent text autoformatting within nodes that do not allow the given mark ([05f96d6](https://bitbucket.org/atlassian/atlaskit/commits/05f96d6))
+* breaking; Headings can no longer contain any marks other than link, bringing it to parity with the schema. ([5248d6f](https://bitbucket.org/atlassian/atlaskit/commits/5248d6f))
+* breaking; only allow inline nodes and link marks in headings (issues closed: ed-74) ([5248d6f](https://bitbucket.org/atlassian/atlaskit/commits/5248d6f))
+
+
+## 50.5.2 (2017-10-17)
+
+* bug fix; toolbarInsertBlockWrapper crashes without media provider (issues closed: ed-3010) ([87b1f88](https://bitbucket.org/atlassian/atlaskit/commits/87b1f88))
+## 50.5.1 (2017-10-16)
+
+* bug fix; editor's filmstrip shows vertical bars when it shouldn't (issues closed: ed-2921) ([bec07ee](https://bitbucket.org/atlassian/atlaskit/commits/bec07ee))
+## 50.5.0 (2017-10-16)
+
+* feature; expose MentionsResult interface from mention ([a817c63](https://bitbucket.org/atlassian/atlaskit/commits/a817c63))
+## 50.4.0 (2017-10-15)
+
+* bug fix; refactored ToolbarInsertBlock ([7629918](https://bitbucket.org/atlassian/atlaskit/commits/7629918))
+* bug fix; updated macro plugin to dispatch macroProvider = null if it failed to resolve the pr ([43bea30](https://bitbucket.org/atlassian/atlaskit/commits/43bea30))
+* bug fix; refactored macro plugin ([fa0ee6c](https://bitbucket.org/atlassian/atlaskit/commits/fa0ee6c))
+* bug fix; merged master ([78ae215](https://bitbucket.org/atlassian/atlaskit/commits/78ae215))
+
+* bug fix; fixed failing media test ([d37addd](https://bitbucket.org/atlassian/atlaskit/commits/d37addd))
+* feature; added Macro to insert menu (issues closed: ed-2827) ([f166000](https://bitbucket.org/atlassian/atlaskit/commits/f166000))
+## 50.3.1 (2017-10-13)
+
+* bug fix; pasting file in only pastes file name (issues closed: ed-2222) ([9dea044](https://bitbucket.org/atlassian/atlaskit/commits/9dea044))
 ## 50.3.0 (2017-10-12)
 
 

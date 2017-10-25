@@ -1,5 +1,11 @@
 # @atlaskit/util-readme
 
+## 3.6.5 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
+## 3.6.4 (2017-10-17)
+
+* bug fix; fix console errors ([aa2f97f](https://bitbucket.org/atlassian/atlaskit/commits/aa2f97f))
 ## 3.6.3 (2017-10-13)
 
 

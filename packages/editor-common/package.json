@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "1.0.0",
+  "version": "2.1.1",
   "config": {
     "access": "public"
   },
@@ -42,13 +42,16 @@
     "@types/prosemirror-schema-basic": "^0.21.0",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "linkify-it": "^2.0.3",
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
     "prosemirror-tables": "^0.1.0",
     "prosemirror-view": "^0.22.0"
   },
   "peerDependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "json-schema-diff-validator": "^0.0.4"
+  },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

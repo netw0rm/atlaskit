@@ -8,7 +8,6 @@ const contexts = {
   'editor-bitbucket': require.context('../../../packages/editor-bitbucket/test/browser/', true, /^[^_]*.(js|jsx|ts|tsx)$/),
   'editor-core': require.context('../../../packages/editor-core/test/browser/', true, /^[^_]*.(js|jsx|ts|tsx)$/),
   'editor-cq': require.context('../../../packages/editor-cq/test/browser/', true, /^[^_]*.(js|jsx|ts|tsx)$/),
-  'editor-hipchat': require.context('../../../packages/editor-hipchat/test/browser/', true, /^[^_]*.(js|jsx|ts|tsx)$/),
   'editor-jira': require.context('../../../packages/editor-jira/test/browser/', true, /^[^_]*.(js|jsx|ts|tsx)$/),
 };
 

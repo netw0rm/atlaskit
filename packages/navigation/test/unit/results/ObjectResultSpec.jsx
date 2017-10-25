@@ -9,7 +9,7 @@ describe('Atlassian Object Result', () => {
   let resultWrapper;
   beforeEach(() => {
     resultWrapper = mountWithRootTheme(
-      <ObjectResult resultId="testId" type="object" name="test" />
+      <ObjectResult containerName="" resultId="testId" type="object" name="test" />
     );
   });
 

@@ -3,12 +3,11 @@ import {
   endPositionOfParent, startPositionOfParent,
   setNodeSelection, setTextSelection,
 } from '../../utils';
-import {
-  EditorView,
-  EditorState,
-  Node as PMNode,
-  NodeType,
-} from '../../prosemirror';
+
+import {Node as PMNode, NodeType } from 'prosemirror-model';
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+
 import { MediaState } from '@atlaskit/media-core';
 import {
   posOfPreceedingMediaGroup,
@@ -17,7 +16,7 @@ import {
   isSelectionNonMediaBlockNode,
   isInsidePotentialEmptyParagraph,
 } from './utils';
-import { unsupportedNodeTypesForMediaCards } from '../../schema/unsupported';
+import { unsupportedNodeTypesForMediaCards } from '@atlaskit/editor-common';
 import analyticsService from '../../analytics/service';
 
 export interface Range {
@@ -86,7 +85,7 @@ const createMediaFileNode = (mediaState: MediaState, collection: string, media: 
   return node;
 };
 
-const findMediaInsertPos = (state: EditorState<any>): number => {
+const findMediaInsertPos = (state: EditorState): number => {
   const { $from, $to } = state.selection;
 
   const nearbyMediaGroupPos = posOfMediaGroupNearby(state);
@@ -110,7 +109,7 @@ const findMediaInsertPos = (state: EditorState<any>): number => {
   return $to.pos;
 };
 
-const findDeleteRange = (state: EditorState<any>): Range | undefined => {
+const findDeleteRange = (state: EditorState): Range | undefined => {
   const { $from, $to } = state.selection;
 
   if (posOfParentMediaGroup(state)) {

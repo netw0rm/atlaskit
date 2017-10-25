@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import Droplist from '@atlaskit/droplist';
 import { Label } from '@atlaskit/field-base';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import ItemShape from '../internal/ItemShape';
 import GroupShape from '../internal/GroupShape';

@@ -2,11 +2,20 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
-import { EditorView, Node } from '../../../../src/prosemirror';
+import { Node } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import {
+  JSONTransformer,
+  Transformer
+} from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
-import JSONSerializer from '../../../../src/renderer/json';
 
-const serializer = new JSONSerializer();
+const jsonTransformer = new JSONTransformer();
+
+const dummyTransformer: Transformer<string> = {
+  parse: content => doc(blockquote(content)),
+  encode: node => node.textContent
+};
 
 describe(name, () => {
   describe('EditorActions', () => {
@@ -91,6 +100,16 @@ describe(name, () => {
         editorView.dispatch(tr);
       });
 
+      it('should update the document using the transformer when a transformer is set', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const wasSuccessful = editorActions.replaceDocument('Hello World!');
+        expect(wasSuccessful).to.equal(true);
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
+      });
+
       it('should accept a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc);
         const val = await editorActions.getValue();
@@ -116,7 +135,7 @@ describe(name, () => {
       });
 
       it('should accept atlassian document format', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(atlassianDoc);
         const val = await editorActions.getValue();
         if (val instanceof Node) {
@@ -125,7 +144,7 @@ describe(name, () => {
       });
 
       it('should accept atlassian document format from a string', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(JSON.stringify(atlassianDoc));
         const val = await editorActions.getValue();
         if (val instanceof Node) {

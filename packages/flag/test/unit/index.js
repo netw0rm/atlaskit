@@ -16,7 +16,7 @@ describe(name, () => {
   // Helper function to generate <Flag /> with base props
   function generateFlag(extraProps) {
     return (
-      <Flag icon={<div />} title="Flag" {...extraProps} />
+      <Flag id="" icon={<div />} title="Flag" {...extraProps} />
     );
   }
 

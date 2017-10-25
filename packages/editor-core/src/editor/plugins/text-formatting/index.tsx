@@ -1,16 +1,11 @@
 import * as React from 'react';
+import { em, strong, strike, subsup, underline, code } from '@atlaskit/editor-common';
 import styled from 'styled-components';
 import { EditorPlugin } from '../../types';
 import { plugin as textFormattingPlugin, stateKey as textFormattingStateKey } from '../../../plugins/text-formatting';
 import { plugin as clearFormattingPlugin, stateKey as clearFormattingStateKey} from '../../../plugins/clear-formatting';
 import textFormattingInputRulePlugin from '../../../plugins/text-formatting/input-rule';
 import clearFormattingKeymapPlugin from '../../../plugins/clear-formatting/keymap';
-import { em } from '../../../schema/marks/em';
-import { strong } from '../../../schema/marks/strong';
-import { strike } from '../../../schema/marks/strike';
-import { subsup } from '../../../schema/marks/subsup';
-import { underline } from '../../../schema/marks/underline';
-import { code } from '../../../schema/marks/code';
 import ToolbarTextFormatting from '../../../ui/ToolbarTextFormatting';
 import ToolbarInlineCode from '../../../ui/ToolbarInlineCode';
 import ToolbarAdvancedTextFormatting from '../../../ui/ToolbarAdvancedTextFormatting';
@@ -49,7 +44,7 @@ const textFormatting: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint) {
     const textFormattingPluginState = textFormattingStateKey.getState(editorView.state);
     const clearFormattingPluginState = clearFormattingStateKey.getState(editorView.state);
 
@@ -61,6 +56,7 @@ const textFormatting: EditorPlugin = {
           editorView={editorView}
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
+          popupsMountPoint={popupsMountPoint}
         />
       </ButtonsGroup>
     );

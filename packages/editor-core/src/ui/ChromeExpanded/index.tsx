@@ -7,6 +7,8 @@ import { MentionProvider } from '@atlaskit/mention';
 import { MediaProvider } from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
+import { browser } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
 import { analyticsDecorator as analytics, analyticsService } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -50,7 +52,7 @@ import {
   SecondaryToolbar,
   ButtonGroup
 } from './styles';
-import { EditorView, browser } from '../../prosemirror';
+import ToolbarInsertBlockWrapper from '../ToolbarInsertBlock/ToolbarInsertBlockWrapper';
 
 export interface Props {
   editorView: EditorView;
@@ -131,7 +133,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
     const { editorView } = this.props;
 
     return editorView
-      ? editorView.dom.offsetHeight
+      ? (editorView.dom as HTMLElement).offsetHeight
       : 0;
   }
 
@@ -287,14 +289,27 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
             /> : null
           }
           {(pluginStateTable || pluginStateMedia || pluginStateBlockType) &&
-            <ToolbarInsertBlock
-              isDisabled={disabled}
+            <ToolbarInsertBlockWrapper
               pluginStateTable={pluginStateTable}
               pluginStateMedia={pluginStateMedia}
               pluginStateBlockType={pluginStateBlockType}
-              editorView={editorView}
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
+              // tslint:disable-next-line:jsx-no-lambda
+              render={state => (
+                <ToolbarInsertBlock
+                  isDisabled={disabled}
+                  editorView={editorView}
+                  tableActive={state.tableActive}
+                  tableHidden={state.tableHidden}
+
+                  mediaUploadsEnabled={state.mediaUploadsEnabled}
+                  onShowMediaPicker={state.showMediaPicker}
+
+                  availableWrapperBlockTypes={state.availableWrapperBlockTypes}
+                  onInsertBlockType={state.insertBlockType}
+                />
+              )}
             />
           }
           <span style={{ flexGrow: 1 }} />

@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { MacroProvider } from '../../editor/types';
+import { MacroProvider } from '../../editor/plugins/macro/types';
+import { EditorView } from 'prosemirror-view';
+import withOuterListeners from '../with-outer-listeners';
+import { Container, Overlay } from './styles';
+
+// tslint:disable-next-line:variable-name
+const ContainerWithOuterListeners = withOuterListeners(Container);
 
 export interface Props {
   macroProvider?: Promise<MacroProvider>;
   macroId: string;
   placeholderUrl: string;
+  view: EditorView;
+  setMacroElement: (view: EditorView, macroElement: HTMLElement | null) => void;
 }
 
 export interface State {
@@ -39,18 +47,31 @@ export default class MacroComponent extends Component<Props, State> {
     }
   }
 
+  handleClickOutside = () => {
+    this.props.setMacroElement(this.props.view, null);
+  }
+
   render() {
     const { macroProvider } = this.state;
     const { macroId, placeholderUrl } = this.props;
 
     return (
-      <span data-macro-id={macroId}>
+      <ContainerWithOuterListeners
+        data-macro-id={macroId}
+        onClick={this.handleClick}
+        handleClickOutside={this.handleClickOutside}
+      >
+        <Overlay />
         {macroProvider && <img src={`${macroProvider.config.placeholderBaseUrl}${placeholderUrl}`} />}
-      </span>
+      </ContainerWithOuterListeners>
     );
   }
 
   private handleMacroProvider = (macroProvider: MacroProvider) => {
     this.setState({ macroProvider });
+  }
+
+  private handleClick = (event: React.SyntheticEvent<any>) => {
+    this.props.setMacroElement(this.props.view, event.currentTarget);
   }
 }

@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { link } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { WithProviders } from '../../../providerFactory/withProviders';
 import { createPlugin } from '../../../plugins/hyperlink';
 import { createInputRulePlugin } from '../../../plugins/hyperlink/input-rule';
 import { createKeymapPlugin } from '../../../plugins/hyperlink/keymap';
-import { link } from '../../../schema/marks/link';
 import pluginKey from '../../../plugins/hyperlink/plugin-key';
 import HyperlinkEdit from '../../../ui/HyperlinkEdit';
 import ToolbarHyperlink from '../../../ui/ToolbarHyperlink';
@@ -27,14 +27,14 @@ const hyperlinkPlugin: EditorPlugin = {
     return <ToolbarHyperlink editorView={editorView} pluginState={pluginState} />;
   },
 
-  contentComponent(editorView, dispatch, providerFactory, appearance) {
+  contentComponent(editorView, dispatch, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     if (appearance === 'message') {
       return null;
     }
 
     const renderNode = (providers) => {
       const pluginState = pluginKey.getState(editorView.state);
-      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} />;
+      return <HyperlinkEdit editorView={editorView} pluginState={pluginState} activityProvider={providers.activityProvider} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
     };
 
     return (

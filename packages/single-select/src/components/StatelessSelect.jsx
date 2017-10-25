@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import FieldBase, { Label } from '@atlaskit/field-base';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import Spinner from '@atlaskit/spinner';
 import { mapAppearanceToFieldBase } from './appearances';
 import { AutocompleteWrapper, AutocompleteInput } from '../styled/Autocomplete';
@@ -545,6 +545,7 @@ export default class StatelessSelect extends PureComponent {
                     </Content> :
                     <AutocompleteWrapper>
                       <AutocompleteInput
+                        autoComplete="off"
                         onChange={this.handleInputOnChange}
                         placeholder={placeholder}
                         innerRef={ref => (this.inputNode = ref)}

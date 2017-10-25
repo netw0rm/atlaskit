@@ -1,16 +1,16 @@
 import {
   Node as PMNode,
   Schema
-} from '../../';
+} from 'prosemirror-model';
 import { Transformer } from '../transformer';
 import parse from './parse';
 import encode from './encode';
 export { LANGUAGE_MAP } from './languageMap';
 
 export default class ConfluenceTransformer implements Transformer<string> {
-  private schema: Schema<any, any>;
+  private schema: Schema;
 
-  constructor(schema: Schema<any, any>) {
+  constructor(schema: Schema) {
     this.schema = schema;
   }
 

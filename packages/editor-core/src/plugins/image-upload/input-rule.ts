@@ -1,8 +1,10 @@
-import { Schema, inputRules, Plugin } from '../../prosemirror';
+import { inputRules } from 'prosemirror-inputrules';
+import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   if (!schema.nodes.image) {
     return;
   }

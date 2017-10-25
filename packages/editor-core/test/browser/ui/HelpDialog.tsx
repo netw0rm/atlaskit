@@ -7,7 +7,7 @@ import ToolbarHelp from '../../../src/ui/ToolbarHelp';
 import { getComponentFromKeymap, formatting } from '../../../src/ui/HelpDialog';
 import AkButton from '@atlaskit/button';
 import { analyticsService } from '../../../src/analytics';
-import { browser } from '../../../src/prosemirror';
+import { browser } from '@atlaskit/editor-common';
 
 const noop = () => {};
 

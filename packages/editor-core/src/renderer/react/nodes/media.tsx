@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { MediaType } from '@atlaskit/editor-common';
+import { CardDimensions } from '@atlaskit/media-card';
+import { ImageResizeMode } from '@atlaskit/media-core';
 import { EventHandlers } from '../../../ui/Renderer';
 import ProviderFactory from '../../../providerFactory';
 import UIMedia from '../../../ui/Media';
 import { Appearance } from '../../../ui/Media/MediaComponent';
-import { MediaType } from '../../../schema';
-import { CardDimensions } from '@atlaskit/media-card';
-import { ImageResizeMode } from '@atlaskit/media-core';
 
 export interface MediaProps {
   id: string;

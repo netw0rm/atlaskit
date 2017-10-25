@@ -1,5 +1,7 @@
+import { Node, NodeSpec, Schema, MarkSpec } from 'prosemirror-model';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService, AnalyticsHandler } from '../../analytics';
-import { EditorState, EditorView, Node, Schema, MarkSpec, Plugin, Transaction } from '../../prosemirror';
 import { EditorInstance, EditorPlugin, EditorProps, EditorConfig } from '../types';
 import ProviderFactory from '../../providerFactory';
 import ErrorReporter from '../../utils/error-reporter';
@@ -23,6 +25,17 @@ export function fixExcludes(marks: { [key: string]: MarkSpec }): { [key: string]
     }
   });
   return marks;
+}
+
+
+export function fixNodeContentSchema(nodes: { [key: string]: NodeSpec }, supportedMarks: { [key: string]: MarkSpec }): { [key: string]: NodeSpec } {
+  Object.keys(nodes).forEach(nodeKey => {
+    const node = nodes[nodeKey];
+    if (node.content && !supportedMarks['link']) {
+      node.content = node.content.replace('<link>', '');
+    }
+  });
+  return nodes;
 }
 
 export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
@@ -66,11 +79,6 @@ export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
 }
 
 export function createSchema(editorConfig: EditorConfig) {
-  const nodes = editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
-    acc[node.name] = node.node;
-    return acc;
-  }, {});
-
   const marks = fixExcludes(
     editorConfig.marks.sort(sortByRank).reduce((acc, mark) => {
       acc[mark.name] = mark.mark;
@@ -78,12 +86,19 @@ export function createSchema(editorConfig: EditorConfig) {
     }, {})
   );
 
+  const nodes = fixNodeContentSchema(
+    editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
+      acc[node.name] = node.node;
+      return acc;
+    }, {})
+  , marks);
+
   return new Schema({ nodes, marks });
 }
 
 export function createPMPlugins(
   editorConfig: EditorConfig,
-  schema: Schema<any, any>,
+  schema: Schema,
   props: EditorProps,
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
@@ -108,7 +123,7 @@ export function initAnalytics(analyticsHandler?: AnalyticsHandler) {
   analyticsService.trackEvent('atlassian.editor.start');
 }
 
-export function processDefaultDocument(schema: Schema<any, any>, rawDoc?: Node | string | Object): Node | undefined {
+export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | Object): Node | undefined {
   if (!rawDoc) {
     return;
   }
@@ -153,7 +168,7 @@ export default function createEditor(
 ): EditorInstance {
   const editorConfig = processPluginsList(editorPlugins);
   const { contentComponents, primaryToolbarComponents, secondaryToolbarComponents } = editorConfig;
-  const { contentTransformerProvider, defaultValue } = props;
+  const { contentTransformerProvider, defaultValue, onChange } = props;
 
   initAnalytics(props.analyticsHandler);
 
@@ -168,12 +183,15 @@ export default function createEditor(
     : processDefaultDocument(schema, defaultValue);
 
   const state = EditorState.create({ doc, schema, plugins });
-  const editorView = new EditorView(place, {
+  const editorView = new EditorView(place!, {
     state,
     dispatchTransaction(tr: Transaction) {
       tr.setMeta('isLocal', true);
       const newState = editorView.state.apply(tr);
       editorView.updateState(newState);
+      if (onChange && tr.docChanged) {
+        onChange(editorView);
+      }
     }
   });
 

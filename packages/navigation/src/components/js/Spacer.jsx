@@ -4,23 +4,29 @@ import SpacerInner from '../styled/SpacerInner';
 
 export default class Spacer extends PureComponent {
   static propTypes = {
-    width: PropTypes.number,
-    shouldAnimate: PropTypes.bool,
     children: PropTypes.node,
+    innerRef: PropTypes.func,
+    onTransitionEnd: PropTypes.func,
+    shouldAnimate: PropTypes.bool,
+    width: PropTypes.number,
   }
   static defaultProps = {
     width: 0,
     shouldAnimate: false,
   }
   render() {
+    const {
+      children, innerRef, onTransitionEnd, shouldAnimate, width,
+    } = this.props;
+
     return (
       <SpacerInner
-        shouldAnimate={this.props.shouldAnimate}
-        style={{
-          width: this.props.width,
-        }}
+        innerRef={innerRef}
+        onTransitionEnd={onTransitionEnd}
+        shouldAnimate={shouldAnimate}
+        style={{ width }}
       >
-        {this.props.children}
+        {children}
       </SpacerInner>
     );
   }

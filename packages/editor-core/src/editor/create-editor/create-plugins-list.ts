@@ -8,8 +8,8 @@ import {
   emojiPlugin,
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
-  onChangePlugin,
   mediaPlugin,
+  imageUploadPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
   codeBlockPlugin,
@@ -22,9 +22,8 @@ import {
   helpDialogPlugin,
   jiraIssuePlugin,
   unsupportedContentPlugin,
-  inlineCommentMarkerPlugin,
   panelPlugin,
-  inlineMacroPlugin
+  macroPlugin
 } from '../plugins';
 
 /**
@@ -84,12 +83,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(saveOnEnterPlugin);
   }
 
-  if (props.onChange) {
-    plugins.push(onChangePlugin);
-  }
-
   if (props.mediaProvider) {
     plugins.push(mediaPlugin);
+  }
+
+  if (props.legacyImageUploadProvider) {
+    plugins.push(imageUploadPlugin);
   }
 
   if (props.collabEditProvider) {
@@ -108,16 +107,12 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(unsupportedContentPlugin);
   }
 
-  if(props.allowInlineCommentMarker) {
-    plugins.push(inlineCommentMarkerPlugin);
-  }
-
   if(props.allowPanel) {
     plugins.push(panelPlugin);
   }
 
   if(props.allowInlineMacro) {
-    plugins.push(inlineMacroPlugin);
+    plugins.push(macroPlugin);
   }
 
   // UI only plugins

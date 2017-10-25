@@ -12,8 +12,8 @@ import { PureComponent } from 'react';
 import { storyData as emojiStoryData } from '@atlaskit/emoji/dist/es5/support';
 
 import Editor from './editor';
-import { createSchema } from '../src/schema';
-import { JSONSerializer } from '../src/renderer';
+import { createSchema } from '@atlaskit/editor-common';
+import { JSONTransformer } from '../src/transformers';
 import ProviderFactory from '../src/providerFactory';
 import { name } from '../package.json';
 
@@ -49,14 +49,14 @@ const schema = createSchema({
 });
 
 class DACEditor extends PureComponent<{}, {}> {
-  private serializer = new JSONSerializer();
+  private transformer = new JSONTransformer();
 
   onChange = (editor: Editor) => {
     if (!editor.doc) {
       return;
     }
 
-    const json = this.serializer.serializeFragment(editor.doc.content);
+    const json = this.transformer.encode(editor.doc);
     window.parent.postMessage({ doc: json, editor: true }, '*');
   }
 

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ReactSerializer from '../../../../src/renderer/react';
 import schema from '../../../../stories/schema';
-import * as validator from '../../../../src/renderer/validator';
+import * as validator from '@atlaskit/renderer';
 
 const doc = {
   'type': 'doc',
@@ -79,7 +79,7 @@ describe('Renderer - ReactSerializer', () => {
 
       const textNodes = [
         schema.text('Hello '),
-        schema.text('World!', strong.create())
+        schema.text('World!', [strong.create()])
       ];
 
       const output = ReactSerializer.buildMarkStructure(textNodes);

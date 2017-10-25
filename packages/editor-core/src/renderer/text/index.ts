@@ -2,9 +2,9 @@ import {
   Fragment,
   Node as PMNode,
   Schema,
-} from '../../prosemirror';
+} from 'prosemirror-model';
 
-import { Serializer } from '../serializer';
+import { Serializer } from '@atlaskit/renderer';
 
 const HARDBREAK_NODE_TYPE = 'hardBreak';
 const IGNORE_NODE_TYPES = [
@@ -100,7 +100,7 @@ export default class TextSerializer implements Serializer<string> {
     return serializeFragment(fragment);
   }
 
-  static fromSchema(schema: Schema<any, any>): TextSerializer {
+  static fromSchema(schema: Schema): TextSerializer {
     return new TextSerializer();
   }
 }

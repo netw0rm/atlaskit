@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 6.1.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
+## 6.1.2 (2017-10-15)
+
+
+* bug fix; update dependencies for react 16 compatibility ([fc47c94](https://bitbucket.org/atlassian/atlaskit/commits/fc47c94))
 ## 6.1.1 (2017-10-12)
 
 * bug fix; bumps version of Page (issues closed: ak-3680) ([8713649](https://bitbucket.org/atlassian/atlaskit/commits/8713649))

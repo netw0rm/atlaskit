@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-import { Node, Schema } from '../../../../src/prosemirror';
+import { Node, Schema } from 'prosemirror-model';
 import { chaiPlugin } from '../../../../src/test-helper';
 
 import {
@@ -14,7 +14,7 @@ chai.use(chaiPlugin);
 
 export function parseWithSchema(
   html: string,
-  schema: Schema<any, any>
+  schema: Schema
 ) {
   const transformer = new JIRATransformer(schema);
   return transformer.parse(html);
@@ -22,7 +22,7 @@ export function parseWithSchema(
 
 export function encode(
   node: Node,
-  schema: Schema<any, any>,
+  schema: Schema,
   customEncoders: JIRACustomEncoders = {},
   mediaContextInfo?: MediaContextInfo
 ) {
@@ -32,7 +32,7 @@ export function encode(
 
 export function checkParse(
   description: string,
-  schema: Schema<any, any>,
+  schema: Schema,
   htmls: string[],
   node: Node
 ) {
@@ -46,7 +46,7 @@ export function checkParse(
 
 export function checkEncode(
   description: string,
-  schema: Schema<any, any>,
+  schema: Schema,
   node: Node,
   html: string,
   customEncoders: JIRACustomEncoders = {},
@@ -60,7 +60,7 @@ export function checkEncode(
 
 export function checkParseEncodeRoundTrips(
   description: string,
-  schema: Schema<any, any>,
+  schema: Schema,
   html: string,
   node: Node,
   customEncoders: JIRACustomEncoders = {},

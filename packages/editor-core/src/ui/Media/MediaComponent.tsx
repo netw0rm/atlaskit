@@ -21,18 +21,16 @@ import {
   ImageResizeMode
 } from '@atlaskit/media-core';
 
-import { MediaAttributes } from '../../schema';
-import { EditorView } from '../../prosemirror';
+import { MediaAttributes } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
 import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
-// Maybe it's better to ask media to export these as constant because
-// we do something similar in src/schema/nodes/media.tsx:82
+// This is being used by DropPlaceholder now
 export const MEDIA_HEIGHT = 125;
 export const FILE_WIDTH = 156;
-export const LINK_WIDTH = 400;
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
@@ -144,9 +142,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
     return (
       <CardView
-        metadata={{ type: mediaItemType, url, title: '' }}
         status="loading"
-        appearance="horizontal"
         mediaItemType={mediaItemType}
         dimensions={cardDimensions}
       />

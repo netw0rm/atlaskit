@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EditorView } from 'prosemirror-view';
 import { TableState } from '../../plugins/table';
-import { EditorView } from '../../prosemirror';
 import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';

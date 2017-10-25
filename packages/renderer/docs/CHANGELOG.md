@@ -1,5 +1,20 @@
 # @atlaskit/renderer
 
+## 7.0.2 (2017-10-19)
+
+* bug fix; export default TS file for local development, export couple of functions for React r ([af88191](https://bitbucket.org/atlassian/atlaskit/commits/af88191))
+## 7.0.1 (2017-10-19)
+
+* bug fix; copy all small files and validator from editor-core to renderer (issues closed: ed-3026) ([f86e146](https://bitbucket.org/atlassian/atlaskit/commits/f86e146))
+## 7.0.0 (2017-10-18)
+
+
+* breaking; Preparation work for splitting editor-core into editor and renderer. Renderer is now an empty ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
+* breaking; clean all renderer files ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
+## 6.0.0 (2017-10-18)
+
+* breaking; Preparation work for splitting editor-core into editor and renderer. Renderer is now an empty ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
+* breaking; clean all renderer files ([195d17f](https://bitbucket.org/atlassian/atlaskit/commits/195d17f))
 ## 5.6.1 (2017-10-12)
 
 * bug fix; update applicationCard action schema in atlaskit to support app and optional parameter ([58bb72f](https://bitbucket.org/atlassian/atlaskit/commits/58bb72f))

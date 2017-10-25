@@ -1,5 +1,45 @@
 # @atlaskit/navigation
 
+## 26.4.0 (2017-10-25)
+
+* feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))
+## 26.3.0 (2017-10-24)
+
+* bug fix; countChildren returns total on non element groups ([06e226e](https://bitbucket.org/atlassian/atlaskit/commits/06e226e))
+
+
+
+
+* feature; quickSearch: passing children that do not conform to the "Group > Result" structure (issues closed: dir-428) ([bb94ae8](https://bitbucket.org/atlassian/atlaskit/commits/bb94ae8))
+
+
+## 26.2.1 (2017-10-22)
+
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+## 26.2.0 (2017-10-19)
+
+* feature; quickSearch result components: allow React elements to be passed to the text prop (issues closed: dir-429) ([f9d495d](https://bitbucket.org/atlassian/atlaskit/commits/f9d495d))
+## 26.1.1 (2017-10-19)
+
+* bug fix; partially fix for console errors for navigation component ([b8a1568](https://bitbucket.org/atlassian/atlaskit/commits/b8a1568))
+
+## 26.1.0 (2017-10-18)
+
+* feature; add callbacks around nav's collapse/expand animation (issues closed: ak-3030) ([dbdf710](https://bitbucket.org/atlassian/atlaskit/commits/dbdf710))
+## 26.0.8 (2017-10-17)
+
+* bug fix; fixing selected item text colour for settings and siteSettings nav themes (issues closed: ak-3653) ([cd1daed](https://bitbucket.org/atlassian/atlaskit/commits/cd1daed))
+## 26.0.7 (2017-10-16)
+
+* bug fix; padding in nav items fixed (issues closed: #ak-3636) ([ceb43e8](https://bitbucket.org/atlassian/atlaskit/commits/ceb43e8))
+## 26.0.6 (2017-10-15)
+
+* bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))
+
+
+
+
 ## 26.0.5 (2017-10-13)
 
 * bug fix; add polyfill from AK polyfills package (issues closed: ak-3667) ([a841e6d](https://bitbucket.org/atlassian/atlaskit/commits/a841e6d))

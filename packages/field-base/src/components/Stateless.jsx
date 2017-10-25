@@ -118,7 +118,7 @@ export default class FieldBaseStateless extends PureComponent {
           position="right middle"
           shouldFlip={['top']}
         >
-          <ChildWrapper>
+          <ChildWrapper compact={isCompact}>
             <Content
               appearance={getAppearance(appearance)}
               compact={isCompact}

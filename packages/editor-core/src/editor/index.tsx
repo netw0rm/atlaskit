@@ -100,11 +100,13 @@ export default class Editor extends React.Component<EditorProps, State> {
       collabEditProvider,
       activityProvider,
       presenceProvider,
-      macroProvider
+      macroProvider,
+      legacyImageUploadProvider
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('imageUploadProvider', legacyImageUploadProvider);
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
@@ -139,7 +141,9 @@ export default class Editor extends React.Component<EditorProps, State> {
         maxHeight={this.props.maxHeight}
         onSave={this.props.onSave}
         onCancel={this.props.onCancel}
-        onExpand={this.props.onExpand}
+
+        popupsMountPoint={this.props.popupsMountPoint}
+        popupsBoundariesElement={this.props.popupsBoundariesElement}
 
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}

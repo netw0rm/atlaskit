@@ -68,6 +68,10 @@ const getInteractiveStyles = ({ theme, isDisabled, isDragging, isSelected }) => 
     return css`
       ${getItemState('selected')}
 
+      &:hover {
+        ${getItemState('hover')}
+      }
+
       &:active {
         ${getItemState('active')}
       }

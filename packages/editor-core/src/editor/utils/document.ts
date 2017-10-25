@@ -1,9 +1,9 @@
-import { Node, Fragment, Schema } from '../../prosemirror';
+import { Node, Fragment, Schema } from 'prosemirror-model';
 
 /**
  * Checks if node is an empty paragraph.
  */
-export function isEmptyParagraph(node?: Node): boolean {
+export function isEmptyParagraph(node?: Node | null): boolean {
   return !node || (node.type.name === 'paragraph' && !node.textContent && !node.childCount);
 }
 
@@ -35,18 +35,19 @@ export function isEmpty(node?: Node): boolean {
         !!childNode.childCount && !(childNode.childCount === 1 && isEmptyParagraph(childNode.firstChild))).length;
 }
 
-export const preprocessDoc = (schema: Schema<any, any>, doc: Node | undefined): Node | undefined => {
-  if (!doc) {
+export const preprocessDoc = (schema: Schema, origDoc: Node | undefined): Node | undefined => {
+  if (!origDoc) {
     return;
   }
+
   const content: Node[] = [];
-  doc.content.forEach(node => {
+  origDoc.content.forEach(node => {
     const { taskList, decisionList } = schema.nodes;
     if((node.type !== taskList && node.type !== decisionList) ||
       node.textContent) {
       content.push(node);
     }
   });
-  doc.content = Fragment.fromArray(content);
-  return doc;
+
+  return schema.nodes.doc.create({}, Fragment.fromArray(content));
 };

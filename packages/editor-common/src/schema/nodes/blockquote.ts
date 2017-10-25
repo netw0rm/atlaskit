@@ -1,12 +1,15 @@
 import { NodeSpec } from 'prosemirror-model';
-import { TopLevel } from './doc';
+import { Definition as Paragraph } from './paragraph';
 
 /**
  * @name blockquote_node
  */
 export interface Definition {
   type: 'blockquote';
-  content: TopLevel;
+  /**
+   * @minItems 1
+   */
+  content: Array<Paragraph>;
 }
 
 export const blockquote: NodeSpec = {

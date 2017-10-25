@@ -17,21 +17,19 @@ const iconSetupExample = `import icons from '!raw!${name}/dist/icons-sprite.svg'
   <svg focusable="false" class="ak-icon" aria-label="Activity"><use xlink:href="#ak-icon-activity" /></svg>
 </body>
 `;
-const iconsDesc = (<div>
-  <p>
-    The <code>icons-sprite.svg</code> file is an SVG sprite sheet, and can be included on your
-    page to allow SVG elements to reference it.
-  </p>
-  <p>Include the sprite sheet on your page and then use one of the SVG snippets below</p>
-  <p>
-    <strong>Note:</strong> if you use the icon without surrounding text, ensure you add an
-    aria-label attribute to it for accessibility.
-  </p>
-  <p>
-    <strong>Note:</strong> that the <code>focusable</code> attribute is required
-    for IE11 support.
-  </p>
-</div>);
+
+const iconsDesc =
+    `The icons-sprite.svg file is an SVG sprite sheet, and can be included on your
+    page to allow SVG elements to reference it.\r\n`
+    +
+    'Include the sprite sheet on your page and then use one of the SVG snippets below.\r\n'
+    +
+   `Note:if you use the icon without surrounding text, ensure you add an
+    aria-label attribute to it for accessibility.\n`
+    +
+    `Note: that the focusable attribute is required
+    for IE11 support.`
+;
 const iconSizeExample = `
 <p>
   <svg focusable="false" className="ak-icon ak-icon__size-small" aria-label="Add">
@@ -47,16 +45,11 @@ const iconSizeExample = `
     <use xlinkHref="#ak-icon-add" />
   </svg>
 </p>`;
-const iconsColorDesc = (
-  <p>
-    Icons colours can be configured using CSS, with the <code>color</code> prop controlling the
-    primary colour, and the <code>fill</code> prop controlling the secondary colour.
-  </p>);
-const iconsSizeDesc = (
-  <p>
-    Icons can be given different sizes: small, medium (default), large, and xlarge.
-  </p>);
-const iconsAllyDesc = (<p>Use this story to verify icons work with screen readers.</p>);
+const iconsColorDesc = `Icons colours can be configured using CSS, with the <code>color</code> prop controlling the
+    primary colour, and the <code>fill</code> prop controlling the secondary colour.`;
+const iconsSizeDesc = 'Icons can be given different sizes: small, medium (default), large, and xlarge.';
+
+const iconsAllyDesc = 'Use this story to verify icons work with screen readers.';
 
 storiesOf(name, module)
   .add('Icons', () => (

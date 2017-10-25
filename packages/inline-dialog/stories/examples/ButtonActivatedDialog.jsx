@@ -36,7 +36,7 @@ class ButtonActivatedDialog extends PureComponent {
       >
         <AKButton
           onClick={this.handleClick}
-          iconBefore={<SettingsIcon />}
+          iconBefore={<SettingsIcon label="settings" />}
           isSelected
         />
       </AKInlineDialog>

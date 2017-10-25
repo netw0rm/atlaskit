@@ -17,11 +17,12 @@ export default class PositionExample extends PureComponent {
 
   render() {
     const position = positions[this.state.position];
+    const { trigger } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div onClick={this.changeDirection}>
-        <Tooltip description={position} position={position}>
+        <Tooltip description={position} position={position} trigger={trigger}>
           <Target>Click Me!</Target>
         </Tooltip>
       </div>

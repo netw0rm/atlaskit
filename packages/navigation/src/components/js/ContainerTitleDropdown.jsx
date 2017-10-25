@@ -14,7 +14,7 @@ import overrideItemTheme from '../../theme/create-container-title-item-theme';
 type Props = {|
   /** Content that will be rendered inside the layer element. Should typically be
     * `DropdownItemGroup` or `DropdownItem`, or checkbox / radio variants of those. */
-  children: ReactElement,
+  children?: ReactElement,
   /** Image appear to the left of the text. */
   icon?: ReactElement,
   /** Text to appear below the title. */
@@ -71,7 +71,7 @@ class ContainerTitleDropdown extends PureComponent {
         trigger={(
           <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
             <AkNavigationItem
-              dropIcon={isNavCollapsed ? null : <ExpandIcon />}
+              dropIcon={isNavCollapsed ? null : <ExpandIcon label="chevron" />}
               isDropdownTrigger
               icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
               subText={isNavCollapsed ? null : subText}

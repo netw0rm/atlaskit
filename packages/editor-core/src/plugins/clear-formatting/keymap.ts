@@ -1,9 +1,11 @@
-import { Schema, keymap, Plugin } from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { keymap } from 'prosemirror-keymap';
+import { Plugin } from 'prosemirror-state';
 import * as keymaps from '../../keymaps';
 import { clearFormatting } from './commands';
 import { trackAndInvoke } from '../../analytics';
 
-export function keymapPlugin(schema: Schema<any, any>): Plugin {
+export function keymapPlugin(schema: Schema): Plugin {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.clearFormatting.common!,

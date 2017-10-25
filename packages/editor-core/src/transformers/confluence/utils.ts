@@ -3,16 +3,17 @@ import {
   Mark,
   Node as PMNode,
   Schema
-} from '../../';
+} from 'prosemirror-model';
 
 import { normalizeHexColor } from '../../utils/color';
 import { AC_XMLNS } from './encode-cxhtml';
-import { MacroType, Macro, DisplayType, BodyType } from './../../editor/types';
+import { Macro } from './types';
+import { getMacroType } from '../../editor/plugins/macro/utils';
 
 /**
  * Deduce a set of marks from a style declaration.
  */
-export function marksFromStyle(schema: Schema<any, any>, style: CSSStyleDeclaration): Mark[] {
+export function marksFromStyle(schema: Schema, style: CSSStyleDeclaration): Mark[] {
   let marks: Mark[] = [];
 
   styles: for (let i = 0; i < style.length; i++) {
@@ -227,12 +228,12 @@ export function getMacroParameters(node: Element): any {
   return params;
 }
 
-export function createCodeFragment(schema: Schema<any, any>, codeContent: string, language?: string | null, title?: string | null): Fragment {
+export function createCodeFragment(schema: Schema, codeContent: string, language?: string | null, title?: string | null): Fragment {
   const content: PMNode[] = [];
   let nodeSize = 0;
 
   if (!!title) {
-    const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title, [schema.marks.strong.create()]));
+    const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title));
     content.push(titleNode);
     nodeSize += titleNode.nodeSize;
   }
@@ -267,19 +268,6 @@ export function getContent(node: Node, convertedNodes: WeakMap<Node, Fragment | 
   return fragment;
 }
 
-export function getMacroType(params, properties): MacroType {
-  const displayType = properties['fab:display-type'] as DisplayType;
-  let bodyType = 'NONE' as BodyType;
-
-  if (params['rich-text-body']) {
-    bodyType = 'RICH-TEXT-BODY';
-  } else if (params['plain-text-body']) {
-    bodyType = 'PLAIN-TEXT-BODY';
-  }
-
-  return `${bodyType}-${displayType}` as MacroType;
-}
-
 export function parseMacro(node: Element): Macro {
   const macroName = getAcName(node) || 'Unnamed Macro';
   const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
@@ -304,7 +292,11 @@ export function parseMacro(node: Element): Macro {
     }
   }
 
-  const macroType = getMacroType(params, properties);
+  const macroType = getMacroType(
+    properties['fab:display-type'],
+    params['plain-text-body'],
+    params['rich-text-body']
+  );
 
   return { macroId, macroName, properties, params, macroType };
 }

@@ -4,7 +4,6 @@ import Avatar from '@atlaskit/avatar';
 import Editor from '@atlaskit/editor-bitbucket';
 
 const avatar = (<Avatar
-  src="https://design.atlassian.com/images/avatars/project-128.png"
   label="AtlasKit avatar"
   size="medium"
 />);

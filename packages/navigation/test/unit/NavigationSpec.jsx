@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
+import sinon from 'sinon';
 import Navigation from '../../src/components/js/Navigation';
 import ContainerNavigationChildren from '../../src/components/js/ContainerNavigationChildren';
 import Drawer from '../../src/components/js/Drawer';
@@ -8,6 +10,7 @@ import ContainerNavigation from '../../src/components/js/ContainerNavigation';
 import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
 import Resizer from '../../src/components/js/Resizer';
 import Spacer from '../../src/components/js/Spacer';
+import SpacerInner from '../../src/components/styled/SpacerInner';
 import WithElectronTheme from '../../src/theme/with-electron-theme';
 import * as presets from '../../src/theme/presets';
 import {
@@ -135,7 +138,7 @@ describe('<Navigation />', () => {
     });
 
     it('should allow the width to grow above the standard width if not collapsible', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       wrapper.find(Resizer).props().onResize(5);
 
@@ -143,7 +146,7 @@ describe('<Navigation />', () => {
     });
 
     it('should not allow the width to drop below the standard width if not collapsible', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       wrapper.find(Resizer).props().onResize(-5);
 
@@ -352,13 +355,21 @@ describe('<Navigation />', () => {
   describe('not collapsible and is open is set to false', () => {
     let wrapper;
     let warnStub;
-
+    function expectWarningCollapse() {
+      sinon.assert.calledWithMatch(console.warn,
+        new RegExp(
+        `Navigation is being told it cannot collapse and that it is not open.
+        When Navigation cannot collapse it must always be open.
+        Ignoring isOpen={true}`));
+    }
     beforeEach(() => {
       warnStub = jest.spyOn(console, 'warn');
+      sinon.stub(console, 'warn');
       wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
     });
 
     afterEach(() => {
+      console.warn.restore();
       warnStub.mockRestore();
       wrapper.unmount();
     });
@@ -382,7 +393,8 @@ describe('<Navigation />', () => {
     });
 
     it('should log a warning on mount', () => {
-      expect(warnStub).toHaveBeenCalled();
+      sinon.assert.callCount(console.warn, 1);
+      expectWarningCollapse();
     });
 
     it('should log a warning on update', () => {
@@ -396,22 +408,45 @@ describe('<Navigation />', () => {
         isCollapsible: false,
       });
 
-      expect(warnStub).toHaveBeenCalledTimes(1);
+      sinon.assert.callCount(console.warn, 2);
+      expectWarningCollapse();
     });
   });
 
   describe('collapsing', () => {
     it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
       wrapper.find(Resizer).props().onResize(1);
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(true);
     });
 
     it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(false);
+    });
+
+    it('should fire onToggleStart when the isOpen prop changes', () => {
+      const onToggleStart = jest.fn();
+      const wrapper = mount(<Navigation onToggleStart={onToggleStart} isOpen />);
+      wrapper.setProps({ isOpen: false });
+      wrapper.setProps({ isOpen: true });
+      expect(onToggleStart).toHaveBeenCalledTimes(2);
+    });
+
+    it('should fire onToggleEnd callback when a transition event on the Spacer completes', () => {
+      const onToggleEnd = jest.fn();
+      const wrapper = mount(<Navigation onToggleEnd={onToggleEnd} isOpen />);
+
+      // Enzyme doesn't support `.simulate('transitionend')`
+      // so we have to reach in and trigger it ourselves
+      // https://github.com/airbnb/enzyme/issues/1258
+      const spacer = wrapper.find(SpacerInner);
+      const e = { target: spacer.getDOMNode() };
+      spacer.props().onTransitionEnd(e);
+
+      expect(onToggleEnd).toBeCalled();
     });
   });
 

@@ -1,8 +1,10 @@
-import { Fragment, InputRule, inputRules, Plugin, Schema } from '../../prosemirror';
+import { InputRule, inputRules } from 'prosemirror-inputrules';
+import { Fragment, Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+export function inputRulePlugin(schema: Schema): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.rule) {

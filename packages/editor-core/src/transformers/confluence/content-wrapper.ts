@@ -1,13 +1,14 @@
 import {
   Fragment,
   Node as PMNode,
+  Mark,
   NodeSpec,
   Schema
-} from '../../';
+} from 'prosemirror-model';
 import { default as encodeCxhtml } from './encode-cxhtml';
 import { children } from './utils';
 
-export const docContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const docContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const validContent = (node: PMNode) => {
     if (node.type.spec.group === 'block') {
       return true;
@@ -34,7 +35,7 @@ export const docContentWrapper = (schema: Schema<any, any>, content: Fragment, c
  * @param convertedNodesReverted
  * Bullet List and Ordered List can only accept listItems
  */
-export const listContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const listContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const result: PMNode[] = [];
 
   content.forEach((node: PMNode) => {
@@ -56,7 +57,7 @@ export const listContentWrapper = (schema: Schema<any, any>, content: Fragment, 
  * A private method that used by listItemContentWrapper and blockquoteContentWrapper
  * to wrap invalid content in a paragraph
  */
-const convertInvalidToParagraph = (schema: Schema<any, any>, node: PMNode, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+const convertInvalidToParagraph = (schema: Schema, node: PMNode, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const paragraphContent = ensureInline(schema, Fragment.from(node), convertedNodesReverted);
   const paragraph = schema.nodes.paragraph.createChecked({}, paragraphContent);
   return paragraph;
@@ -67,7 +68,7 @@ const convertInvalidToParagraph = (schema: Schema<any, any>, node: PMNode, conve
  * @param convertedNodesReverted
  * ListItem content schema 'paragraph (paragraph | bulletList | orderedList)*'
  */
-export const listItemContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const listItemContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const validSpec: NodeSpec[] = [schema.nodes.paragraph, schema.nodes.bulletList, schema.nodes.orderedList];
   const validContent = (node: PMNode) => {
     if (validSpec.some((spec: NodeSpec) => {
@@ -88,7 +89,7 @@ export const listItemContentWrapper = (schema: Schema<any, any>, content: Fragme
  * @param convertedNodesReverted
  * blockquote schema supports one or more number of paragraph nodes
  */
-export const blockquoteContentWrapper = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const blockquoteContentWrapper = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
   const validSpec: NodeSpec[] = [schema.nodes.paragraph];
   const validContent = (node: PMNode) => {
     if (validSpec.some((spec: NodeSpec) => {
@@ -109,11 +110,12 @@ export const blockquoteContentWrapper = (schema: Schema<any, any>, content: Frag
  * @param convertedNodesReverted
  * This function will convert all content to inline nodes
  */
-export const ensureInline = (schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>) => {
+export const ensureInline = (schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, supportedMarks?: Mark[]) => {
   const result: PMNode[] = [];
   content.forEach((node: PMNode) => {
     if (node.isInline) {
-      result.push(node);
+      const filteredMarks = node.marks.filter(mark => !supportedMarks || mark.isInSet(supportedMarks));
+      result.push(node.mark(filteredMarks));
       return;
     }
     // We replace an non-inline node with UnsupportedInline node
@@ -132,7 +134,7 @@ export const ensureInline = (schema: Schema<any, any>, content: Fragment, conver
  * validContent to skip some of the content type
  * Optionaly, you can decide to how to convert invalid node
  */
-export function ensureBlock(schema: Schema<any, any>, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, validContent: (node: PMNode) => boolean, convertInvalid?: (node: PMNode) => PMNode): Fragment {
+export function ensureBlock(schema: Schema, content: Fragment, convertedNodesReverted: WeakMap<Fragment | PMNode, Node>, validContent: (node: PMNode) => boolean, convertInvalid?: (node: PMNode) => PMNode): Fragment {
   // This algorithm is fairly simple:
   //
   // 1. If validContent(node) => true, keep it as-is.

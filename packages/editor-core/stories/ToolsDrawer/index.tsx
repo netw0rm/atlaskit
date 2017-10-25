@@ -5,6 +5,7 @@ import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button from '@atlaskit/button';
 
 import { Content, ButtonGroup } from './../styles';
+import imageUploadHandler from '../imageUpload/handler';
 
 import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';
@@ -12,6 +13,7 @@ import { storyMediaProviderFactory } from '../../src/test-helper';
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => { });
+
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mentionStoryData.resourceProvider),
@@ -44,12 +46,19 @@ const providers = {
     pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined': undefined,
+  },
+  imageUploadProvider: {
+    resolved: Promise.resolve(imageUploadHandler),
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    'undefined': undefined,
   }
 };
 rejectedPromise.catch(() => { });
 
 interface State {
   editorEnabled: boolean;
+  imageUploadProvider: string;
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
@@ -63,6 +72,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
 
     this.state = {
       editorEnabled: true,
+      imageUploadProvider: 'undefined',
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
@@ -88,7 +98,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, activityProvider, jsonDocument, editorEnabled } = this.state;
+    const { mentionProvider, emojiProvider, mediaProvider, activityProvider, imageUploadProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0' }}>
@@ -97,6 +107,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
         {
           editorEnabled ?
             (this.props.renderEditor({
+              imageUploadProvider: providers.imageUploadProvider[imageUploadProvider],
               mediaProvider: providers.mediaProvider[mediaProvider],
               mentionProvider: providers.mentionProvider[mentionProvider],
               emojiProvider: providers.emojiProvider[emojiProvider],
@@ -106,70 +117,26 @@ export default class ToolsDrawer extends React.Component<any, State> {
             ''
         }
         <div className="toolsDrawer">
-          <div>
-            <ButtonGroup>
-              <label>Mention provider: </label>
-              {Object.keys(providers.mentionProvider).map((providerName) => (
-                <Button
-                  key={`mentionProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'mentionProvider', providerName)}
-                  appearance={providerName === mentionProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <ButtonGroup>
-              <label>Media provider: </label>
-              {Object.keys(providers.mediaProvider).map((providerName) => (
-                <Button
-                  key={`mediaProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'mediaProvider', providerName)}
-                  appearance={providerName === mediaProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <ButtonGroup>
-              <label>Emoji provider: </label>
-              {Object.keys(providers.emojiProvider).map((providerName) => (
-                <Button
-                  key={`emojiProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'emojiProvider', providerName)}
-                  appearance={providerName === emojiProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
-          <div>
-            <ButtonGroup>
-              <label>Activity provider: </label>
-              {Object.keys(providers.activityProvider).map((providerName) => (
-                <Button
-                  key={`activityProvider-${providerName}`}
-                  onClick={this.switchProvider.bind(this, 'activityProvider', providerName)}
-                  appearance={providerName === activityProvider ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {providerName}
-                </Button>
-              ))}
-            </ButtonGroup>
-          </div>
+          {
+            Object.keys(providers).map(providerKey => (
+              <div>
+                <ButtonGroup>
+                  <label>{providerKey}: </label>
+                  {Object.keys(providers[providerKey]).map((providerStateName) => (
+                    <Button
+                      key={`${providerKey}-${providerStateName}`}
+                      onClick={this.switchProvider.bind(this, providerKey, providerStateName)}
+                      appearance={providerStateName === this.state[providerKey] ? 'primary' : 'default'}
+                      theme="dark"
+                      spacing="compact"
+                    >
+                      {providerStateName}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              </div>
+            ))
+          }
           <div>
             <Button onClick={this.reloadEditor} theme="dark" spacing="compact">
               Reload Editor

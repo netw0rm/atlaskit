@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import { EditorView } from 'prosemirror-view';
 import WithPluginState from '../../../ui/WithPluginState';
-import { EditorView } from '../../../../prosemirror';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { pluginKey as collabEditPluginKey } from '../plugin';
 import { getAvatarColor } from '../utils';

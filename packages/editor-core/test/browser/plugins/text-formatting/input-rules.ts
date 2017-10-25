@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 
 import {
-  mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
+  mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block, plain
 } from '../../../../src/test-helper';
 
 import textFormattingPlugins from '../../../../src/plugins/text-formatting';
@@ -144,6 +144,15 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('^hello'))));
     });
+
+    it('should not convert "**text** to strong when node does not support text formatting', () => {
+      const { editorView, sel } = editor(doc(plain('{<>}')));
+
+      insertText(editorView, '**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(plain('**text**')));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+    });
   });
 
   describe('em rule', () => {
@@ -263,9 +272,18 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p(em('^hello'))));
     });
+
+    it('should not convert "_text_ to em when node does not support text formatting', () => {
+      const { editorView, sel } = editor(doc(plain('{<>}')));
+
+      insertText(editorView, '_text_', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(plain('_text_')));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
+    });
   });
 
-  describe('stike rule', () => {
+  describe('strike rule', () => {
     it('should convert "~~text~~" to strike', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
@@ -326,6 +344,15 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '~~^hello~~', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(strike('^hello'))));
+    });
+
+    it('should not convert "~~text~~ to strike when node does not support text formatting', () => {
+      const { editorView, sel } = editor(doc(plain('{<>}')));
+
+      insertText(editorView, '~~text~~', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(plain('~~text~~')));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
     });
   });
 
@@ -410,6 +437,15 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`^hello`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(code('^hello'))));
+    });
+
+    it('should not convert "`text`" to code when node does not support text formatting', () => {
+      const { editorView, sel } = editor(doc(plain('{<>}')));
+
+      insertText(editorView, '`text`', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(plain('`text`')));
+      expect(trackEvent.calledWith('atlassian.editor.format.strong.autoformatting')).to.equal(false);
     });
   });
 

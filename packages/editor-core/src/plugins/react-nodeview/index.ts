@@ -1,10 +1,6 @@
-import {
-  EditorState,
-  Schema,
-  Plugin,
-  PluginKey,
-  EditorView,
-} from '../../prosemirror';
+import { Schema } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 export type StateChangeHandler = (anchorPos: number, headPos: number) => any;
 
@@ -32,7 +28,7 @@ export const stateKey = new PluginKey('reactNodeView');
 
 export const plugin = new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
+    init(config, state: EditorState) {
       return new ReactNodeViewState();
     },
     apply(tr, pluginState: ReactNodeViewState, oldState, newState) {
@@ -44,7 +40,7 @@ export const plugin = new Plugin({
     const pluginState: ReactNodeViewState = stateKey.getState(view.state);
 
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
+      update: (view: EditorView, prevState: EditorState) => {
         const { $anchor, $head } = view.state.selection;
         pluginState.notifyNewSelection($anchor.pos, $head.pos);
       }
@@ -52,7 +48,7 @@ export const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
+const plugins = (schema: Schema) => {
   return [plugin];
 };
 

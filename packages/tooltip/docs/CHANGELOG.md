@@ -1,5 +1,21 @@
 # @atlaskit/tooltip
 
+## 6.2.1 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
+## 6.2.0 (2017-10-18)
+
+
+
+
+* feature; add trigger prop to tooltip ([7721243](https://bitbucket.org/atlassian/atlaskit/commits/7721243))
+* feature; use mouseEnter and mouseLeave instead of mouseOver and mouseOut ([55cf15e](https://bitbucket.org/atlassian/atlaskit/commits/55cf15e))
+## 6.1.0 (2017-10-18)
+
+
+
+* feature; add trigger prop to tooltip ([7721243](https://bitbucket.org/atlassian/atlaskit/commits/7721243))
+* feature; use mouseEnter and mouseLeave instead of mouseOver and mouseOut ([55cf15e](https://bitbucket.org/atlassian/atlaskit/commits/55cf15e))
 ## 6.0.0 (2017-08-30)
 
 * breaking; The tooltip trigger is now wrapped in a div with 'display: inline-block' applied. Previously it was ([de263e5](https://bitbucket.org/atlassian/atlaskit/commits/de263e5))

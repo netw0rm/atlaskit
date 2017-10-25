@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { mention as mentionNode } from '../../../../src';
+import { mention as mentionNode } from '@atlaskit/editor-common';
 import mentionsPlugins, { MentionsState } from '../../../../src/plugins/mentions';
 import ProviderFactory from '../../../../src/providerFactory';
 import {
@@ -20,7 +20,7 @@ import {
   insertText
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { storyData as mentionStoryData } from '@atlaskit/mention/src/support';
+import { storyData as mentionStoryData } from '@atlaskit/mention/dist/es5/support';
 import { analyticsService } from '../../../../src/analytics';
 
 const mentionProvider = new Promise<any>(resolve => {
@@ -218,7 +218,7 @@ describe('mentions', () => {
     describe('Space', () => {
       it('should be ignored if there is no mentionProvider', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@o{<>}'))));
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
         forceUpdate(pluginState, editorView); // Force update to ensure active query.
         sendKeyToPm(editorView, 'Space');
@@ -228,7 +228,7 @@ describe('mentions', () => {
 
       it('should be ignored if there is no active query', () => {
         const { editorView, pluginState } = editor(doc(p('Hello')));
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
 
         return pluginState
           .setMentionProvider(mentionProvider)
@@ -241,9 +241,9 @@ describe('mentions', () => {
           });
       });
 
-      it('should call "onSelectCurrent"', () => {
+      it('should call "trySelectCurrent"', () => {
         const { editorView, pluginState } = editor(doc(p(mentionQuery()('@kai{<>}'))));
-        const spy = sandbox.spy(pluginState, 'onSelectCurrent');
+        const spy = sandbox.spy(pluginState, 'trySelectCurrent');
         const trackEvent = sinon.spy();
         analyticsService.trackEvent = trackEvent;
 
@@ -254,6 +254,7 @@ describe('mentions', () => {
 
             sendKeyToPm(editorView, 'Space');
             expect(spy.called).to.equal(true);
+            expect(trackEvent.calledWith('atlassian.editor.mention.try.insert.previous')).to.equal(true);
             editorView.destroy();
           });
       });
@@ -783,14 +784,15 @@ describe('mentions', () => {
             }
           ], 'oscar');
 
-          pluginState.trySelectCurrent();
+          sendKeyToPm(editorView, 'Space');
           insertText(editorView, ' How', editorView.state.selection.from);
 
           pluginState.onMentionResult([], 'oscar How');
 
-          pluginState.trySelectCurrent();
+          sendKeyToPm(editorView, 'Space');
 
           expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
+          expect(trackEvent.calledWith('atlassian.editor.mention.insert.previous.match.success')).to.equal(true);
           editorView.destroy();
         });
     });

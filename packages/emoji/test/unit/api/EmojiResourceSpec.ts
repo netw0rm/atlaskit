@@ -741,6 +741,9 @@ describe('EmojiResource', () => {
         matcher: `begin:${siteUrl}`,
         response: siteServiceEmojis(),
         times: 1,
+      }).mock({
+        matcher: mediaEmojiImagePath,
+        response: blobResponse(new Blob()),
       });
 
       const config = {

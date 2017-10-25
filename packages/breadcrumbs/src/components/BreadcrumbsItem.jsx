@@ -1,28 +1,35 @@
-import PropTypes from 'prop-types';
+// @flow
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import AKTooltip from '@atlaskit/tooltip';
 import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
-import { itemTruncateWidth } from '../constants';
+import type { ElementType } from '../types';
+
+type Props = {|
+  /** Whether this item will be followed by a separator. */
+  hasSeparator?: boolean,
+  /** The url or path which the breadcrumb should act as a link to. */
+  href?: string,
+  /** An icon to display before the breadcrumb. */
+  iconBefore?: ElementType,
+  /** An icon to display after the breadcrumb. */
+  iconAfter?: ElementType,
+  /** Handler to be called on click. **/
+  onClick?: (Event) => mixed,
+  /** The text to appear within the breadcrumb as a link. */
+  text?: string,
+  /** The maximum width in pixels that an item can have before it is truncated.
+  If this is not set, truncation will only occur when it cannot fit alone on a
+  line. If there is no truncationWidth, tooltips are not provided on truncation. */
+  truncationWidth?: number,
+  target?: '_blank' | '_parent' | '_self' | '_top',
+|}
 
 export default class BreadcrumbsItem extends PureComponent {
-  static propTypes = {
-    /** Whether this item will be followed by a separator. */
-    hasSeparator: PropTypes.bool,
-    /** The url or path which the breadcrumb should act as a link to. */
-    href: PropTypes.string,
-    /** An icon to display before the breadcrumb. */
-    iconBefore: PropTypes.element,
-    /** An icon to display after the breadcrumb. */
-    iconAfter: PropTypes.element,
-    /** Handler to be called on click. **/
-    onClick: PropTypes.func,
-    /** The text to appear within the breadcrumb as a link. */
-    text: PropTypes.string,
-    target: PropTypes.oneOf(['_blank', '_parent', '_self', '_top']),
-  }
+  props: Props // eslint-disable-line react/sort-comp
+  button: ?ElementType
 
   static defaultProps = {
     hasSeparator: false,
@@ -45,30 +52,42 @@ export default class BreadcrumbsItem extends PureComponent {
   }
 
   updateOverflow() {
-    if (!this.button) return false;
-    // We need to find the DOM node for the button component in order to measure its size.
-    const el = ReactDOM.findDOMNode(this.button); // eslint-disable-line react/no-find-dom-node
-    const overflow = el.clientWidth >= itemTruncateWidth;
-    if (overflow !== this.state.hasOverflow) {
-      this.setState({ hasOverflow: overflow });
+    const { truncationWidth } = this.props;
+    const button = this.button;
+    if (truncationWidth && button) {
+      // We need to find the DOM node for the button component in order to measure its size.
+      const el = ReactDOM.findDOMNode(button); // eslint-disable-line react/no-find-dom-node
+      const overflow = el.clientWidth >= truncationWidth;
+      if (overflow !== this.state.hasOverflow) {
+        this.setState({ hasOverflow: overflow });
+      }
+      return overflow;
     }
-    return overflow;
+    return false;
   }
 
-  renderButton = () => (
-    <Button
-      appearance="subtle-link"
-      iconAfter={this.props.iconAfter}
-      iconBefore={this.props.iconBefore}
-      onClick={this.props.onClick}
-      spacing="none"
-      href={this.props.href}
-      target={this.props.target}
-      ref={el => (this.button = el)}
-    >
-      {this.props.text}
-    </Button>
-  );
+  renderButton = () => {
+    const {
+      href, iconAfter, iconBefore, onClick, target, text, truncationWidth,
+    } = this.props;
+    const { hasOverflow } = this.state;
+
+    return (
+      <Button
+        truncationWidth={truncationWidth}
+        appearance="subtle-link"
+        iconAfter={truncationWidth && hasOverflow ? null : iconAfter}
+        iconBefore={truncationWidth && hasOverflow ? null : iconBefore}
+        onClick={onClick}
+        spacing="none"
+        href={href}
+        target={target}
+        ref={(el: ElementType) => (this.button = el)}
+      >
+        {text}
+      </Button>
+    );
+  }
 
   renderButtonWithTooltip = () => (
     <AKTooltip
@@ -80,13 +99,16 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   render() {
+    const { hasSeparator, truncationWidth } = this.props;
+    const { hasOverflow } = this.state;
+
     return (
       <ItemWrapper>
-        {this.state.hasOverflow
+        {hasOverflow && truncationWidth
           ? this.renderButtonWithTooltip()
           : this.renderButton()
         }
-        {this.props.hasSeparator
+        {hasSeparator
           ? <Separator>/</Separator>
           : null
         }

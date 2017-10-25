@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.1.1 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
 ## 10.1.0 (2017-10-10)
 
 

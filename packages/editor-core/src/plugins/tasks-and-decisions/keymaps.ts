@@ -1,14 +1,8 @@
-import {
-  EditorState,
-  keymap,
-  Schema,
-  TextSelection,
-  Transaction,
-  Plugin,
-  ResolvedPos,
- } from '../../prosemirror';
-import uuid from './uuid';
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+import { uuid } from '@atlaskit/editor-common';
+import { keymap } from 'prosemirror-keymap';
+import { ResolvedPos, Schema } from 'prosemirror-model';
+import { EditorState, TextSelection, Transaction, Plugin } from 'prosemirror-state';
+export function keymapPlugin(schema: Schema): Plugin | undefined {
 
   const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction ) => {
     return tr.delete($from.before($from.depth) - 1, $from.end($from.depth) + 1);
@@ -23,7 +17,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
    * eg. behaviour for backspace and enter etc. So we need to implement it.
    */
   const keymaps = {
-    'Backspace': (state: EditorState<any>, dispatch) => {
+    'Backspace': (state: EditorState, dispatch) => {
       const { selection, schema: { nodes }, tr } = state;
       const { decisionList, decisionItem, taskList, taskItem } = nodes;
 
@@ -95,7 +89,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
         return true;
       }
     },
-    'Enter': (state: EditorState<any>, dispatch) => {
+    'Enter': (state: EditorState, dispatch) => {
       const { selection, tr, schema: { nodes } } = state;
       const { $from } = selection;
       const node = $from.node($from.depth);

@@ -1,20 +1,16 @@
+import { Schema  } from 'prosemirror-model';
+import { EditorState, NodeSelection, Plugin, PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../analytics';
-import {
-  EditorState,
-  EditorView,
-  Schema,
-  Plugin,
-  PluginKey,
-  NodeSelection,
-  NodeViewDesc,
-} from '../../prosemirror';
+import { default as ProviderFactory } from '../../providerFactory';
 import inputRulePlugin from './input-rule';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
   supportedImageTypes?: string[];
-  maxFileSizeInBytes: number;
+  maxFileSizeInBytes?: number;
+  providerFactory?: ProviderFactory;
 }
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -51,16 +47,31 @@ export class ImageUploadState {
   element?: HTMLElement = undefined;
   changeHandlers: StateChangeHandler[] = [];
 
-  private state: EditorState<any>;
+  private state: EditorState;
   private config: ImageUploadPluginOptions;
   private uploadHandler?: ImageUploadHandler;
 
-  constructor(state: EditorState<any>, options?: ImageUploadPluginOptions) {
+  constructor(state: EditorState, options?: ImageUploadPluginOptions) {
     this.changeHandlers = [];
     this.state = state;
     this.config = { ...DEFAULT_OPTIONS, ...options };
     this.hidden = !state.schema.nodes.image;
     this.enabled = this.canInsertImage();
+    if (options && options.providerFactory) {
+      options.providerFactory.subscribe('imageUploadProvider', this.handleProvider);
+    }
+  }
+
+  handleProvider = async (name: string, provider?: Promise<ImageUploadHandler>) => {
+    if (provider) {
+      try {
+        this.uploadHandler = await provider;
+      } catch (e) {
+        this.uploadHandler = undefined;
+      }
+    } else {
+      this.uploadHandler = undefined;
+    }
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -72,7 +83,8 @@ export class ImageUploadState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, dirty = false): void {
+  // TODO: Fix types (ED-2987)
+  update(state: EditorState, docView: any, dirty = false): void {
     this.state = state;
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
@@ -97,10 +109,6 @@ export class ImageUploadState {
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
-  }
-
-  setUploadHandler(uploadHandler: ImageUploadHandler) {
-    this.uploadHandler = uploadHandler;
   }
 
   handleImageUpload(view: EditorView, event?: Event): boolean {
@@ -143,7 +151,8 @@ export class ImageUploadState {
     }
   }
 
-  private getActiveImageElement(docView: NodeViewDesc): HTMLElement {
+  // TODO: Fix types (ED-2987)
+  private getActiveImageElement(docView: any): HTMLElement {
     const { $from } = this.state.selection;
     const { node, offset } = docView.domFromPos($from.pos);
 
@@ -172,22 +181,28 @@ export class ImageUploadState {
 
 export const stateKey = new PluginKey('imageUploadPlugin');
 
-const plugin = new Plugin({
+export const createPlugin = (schema: Schema, options: ImageUploadPluginOptions) => new Plugin({
   state: {
-    init(config, state: EditorState<any>) {
-      return new ImageUploadState(state);
+    init(config, state: EditorState) {
+      return new ImageUploadState(state, options);
     },
     apply(tr, pluginState: ImageUploadState, oldState, newState) {
       return pluginState;
     }
   },
   key: stateKey,
-  view: (view: EditorView) => {
-    stateKey.getState(view.state).update(view.state, view.docView, true);
+  view: (view: EditorView & { docView?: any }) => {
+    const pluginState: ImageUploadState = stateKey.getState(view.state);
+    pluginState.update(view.state, view.docView, true);
 
     return {
-      update: (view: EditorView, prevState: EditorState<any>) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
+      update: (view: EditorView & { docView?: any }, prevState: EditorState) => {
+        pluginState.update(view.state, view.docView);
+      },
+      destroy() {
+        if (options && options.providerFactory) {
+          options.providerFactory.unsubscribe('imageUploadProvider', pluginState.handleProvider);
+        }
       }
     };
   },
@@ -223,8 +238,8 @@ const plugin = new Plugin({
   }
 });
 
-const plugins = (schema: Schema<any, any>) => {
-  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+const plugins = (schema: Schema, providerFactory?: ProviderFactory) => {
+  return [createPlugin(schema, { providerFactory }), inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
 };
 
 export default plugins;

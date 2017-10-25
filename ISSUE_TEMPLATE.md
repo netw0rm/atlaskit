@@ -17,7 +17,7 @@ Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-
 
 *Or*
 
-[Create a gif using http://gifbrewery.com/]
+Create a gif using [this](http://gifbrewery.com/)
 
 ### Expected behavior
 [What do you expect to happen?]

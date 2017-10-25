@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MediaImage styled default props 1`] = `
+<div
+  className="gZLYJd"
+/>
+`;
+
+exports[`MediaImage styled fadeIn=true 1`] = `
+<div
+  className="gpcCVT"
+/>
+`;
+
+exports[`MediaImage styled isCropped=false 1`] = `
+<div
+  className="gZLYJd"
+/>
+`;
+
+exports[`MediaImage styled isCropped=true 1`] = `
+<div
+  className="oiOUU"
+/>
+`;

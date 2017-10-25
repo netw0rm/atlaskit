@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkCardGenericView styles Thumbnail should extend MediaImage and use default crop 1`] = `
+<MediaImage
+  appearance="auto"
+  className="fPHjld"
+  crop={true}
+  dataURI=""
+  fadeIn={true}
+  height="100%"
+  transparentFallback={false}
+  width="100%"
+/>
+`;

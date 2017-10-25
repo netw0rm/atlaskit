@@ -15,16 +15,12 @@ export interface Props extends MediaItemProps {
 }
 
 export default class Media extends PureComponent<Props, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         // Pass in the fallback state manager from the editor plugin
         const stateManagerFallback = this.getStateManagerFromEditorPlugin();
         const props = {
             stateManagerFallback,
-            ...this.props
+            ...this.props as MediaItemProps
         };
 
         return (

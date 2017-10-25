@@ -13,11 +13,9 @@ import {
   default as ProviderFactory,
   WithProviders
 } from '../../providerFactory';
-import { EditorView } from 'prosemirror-view';
 
 export interface Props {
   id: string;
-  editorView?: EditorView;
   providers?: ProviderFactory;
   type: MediaType;
   collection: string;
@@ -54,7 +52,6 @@ export default class MediaItem extends PureComponent<Props, {}> {
       onClick,
       onDelete,
       resizeMode,
-      editorView,
       appearance,
       stateManagerFallback
     } = this.props;
@@ -69,7 +66,6 @@ export default class MediaItem extends PureComponent<Props, {}> {
         resizeMode={resizeMode}
         onDelete={onDelete}
         onClick={onClick}
-        editorView={editorView}
         appearance={appearance}
         stateManagerFallback={stateManagerFallback}
       />

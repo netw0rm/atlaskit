@@ -22,7 +22,6 @@ import {
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '@atlaskit/editor-common';
-import { EditorView } from 'prosemirror-view';
 import { CardEventClickHandler } from '../Renderer';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
@@ -33,7 +32,6 @@ export const FILE_WIDTH = 156;
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
-  editorView?: EditorView;
   cardDimensions?: CardDimensions;
   onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;

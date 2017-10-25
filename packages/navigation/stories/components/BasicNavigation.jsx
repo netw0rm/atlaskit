@@ -16,6 +16,7 @@ import BasicSearch from './BasicSearch';
 import Navigation, { AkContainerTitle, AkNavigationItemGroup, AkNavigationItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
+import SelectableDropdownMenu from './SelectableDropdownMenu';
 
 export default class BasicNavigation extends PureComponent {
   static propTypes = {
@@ -81,18 +82,18 @@ export default class BasicNavigation extends PureComponent {
       </div>),
     globalSecondaryActions: [
       <Tooltip position="right" description="Back">
-        <AkDropdownMenu
+        <SelectableDropdownMenu
           appearance="tall"
           position="right bottom"
-          trigger={
-            <AkGlobalItem>
+          trigger={isOpen => (
+            <AkGlobalItem isSelected={isOpen}>
               <QuestionCircleIcon
                 label="Help icon"
                 secondaryColor="inherit"
                 size="medium"
               />
             </AkGlobalItem>
-          }
+          )}
         >
           <DropdownItemGroup title="Help">
             <DropdownItem>Documentation</DropdownItem>
@@ -113,7 +114,7 @@ export default class BasicNavigation extends PureComponent {
             <DropdownItem>Terms of service</DropdownItem>
             <DropdownItem>Privacy policy</DropdownItem>
           </DropdownItemGroup>
-        </AkDropdownMenu>
+        </SelectableDropdownMenu>
       </Tooltip>,
       <AkDropdownMenu
         appearance="tall"

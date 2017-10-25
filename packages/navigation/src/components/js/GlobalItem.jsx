@@ -6,28 +6,31 @@ import DefaultLinkComponent from './DefaultLinkComponent';
 import type { ReactElement, ReactClass } from '../../types';
 
 type Props = {|
+  /** Standard aria-haspopup prop */
+  'aria-haspopup'?: string, // eslint-disable-line react/no-unused-prop-types
   /** Element to be rendered inside the item. Should be an atlaskit icon. */
   children?: ReactElement,
   /** href to pass to linkComponent.  */
   href?: string,
-  /** Set the size of the item's content.  */
-  size?: 'small' | 'medium' | 'large',
+  /** Causes the item to appear with a persistent selected background state. */
+  isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
   component is used if none is provided. */
   linkComponent: ReactClass,
-  /** ARIA role to apply to the global item. */
-  role?: string,
-  /** Standard aria-haspopup prop */
-  'aria-haspopup'?: string, // eslint-disable-line react/no-unused-prop-types
   /** Standard onClick event */
   onClick?: (event: Event) => {},
-  onMouseDown?: (event: MouseEvent) => {},
+  onMouseDown: (event: MouseEvent) => {},
+  /** ARIA role to apply to the global item. */
+  role?: string,
+  /** Set the size of the item's content.  */
+  size?: 'small' | 'medium' | 'large',
 |}
 
 export default class GlobalItem extends PureComponent {
   static defaultProps = {
-    size: 'small',
     linkComponent: DefaultLinkComponent,
+    onMouseDown: () => {},
+    size: 'small',
   };
 
   props: Props
@@ -42,17 +45,17 @@ export default class GlobalItem extends PureComponent {
     const {
       href,
       linkComponent: Link,
+      isSelected,
       size,
       'aria-haspopup': ariaHasPopup, // eslint-disable-line react/prop-types
       onClick,
-      onMouseDown,
+      onMouseDown: providedMouseDown,
       role,
     } = this.props;
 
     const allyAndEventProps = {
       'aria-haspopup': ariaHasPopup,
       onClick,
-      onMouseDown,
       role,
       onKeyDown: this.handleKeyDown,
     };
@@ -62,16 +65,33 @@ export default class GlobalItem extends PureComponent {
         color: inherit;
       }
     `;
+
+    const onMouseDown = (e) => {
+      providedMouseDown(e);
+      e.preventDefault();
+    };
+
     if (href) {
       return (
-        <ActualLink href={href} size={size} {...allyAndEventProps}>
+        <ActualLink
+          href={href}
+          size={size}
+          onMouseDown={providedMouseDown}
+          {...allyAndEventProps}
+        >
           {this.props.children}
         </ActualLink>
       );
     }
 
     return (
-      <GlobalItemInner type="button" size={size} {...allyAndEventProps}>
+      <GlobalItemInner
+        type="button"
+        isSelected={isSelected}
+        onMouseDown={onMouseDown}
+        size={size}
+        {...allyAndEventProps}
+      >
         {this.props.children}
       </GlobalItemInner>
     );

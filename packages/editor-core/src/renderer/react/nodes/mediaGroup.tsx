@@ -49,9 +49,7 @@ export default class MediaGroup extends PureComponent<MediaGroupProps, MediaGrou
   }
 
   renderSingleLink(child: ReactElement<MediaProps>) {
-    return React.cloneElement(child, {
-      appearance: 'square'
-    } as MediaProps);
+    return React.cloneElement(child);
   }
 
   cloneFileCard(child: ReactElement<MediaProps>, listIds: Array<string>) {

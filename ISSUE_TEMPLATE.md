@@ -41,7 +41,7 @@ Create a gif using [this](http://gifbrewery.com/)
 * Any additional information, configuration or data that might be necessary to reproduce the issue.
 
 
-### Jira template
+### Jira markdown template
 
 ```
 h2.Description

@@ -25,6 +25,10 @@ import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
 import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
+import SelectWithJsxContent from './examples/SelectWithJsxContent';
+import SelectWithJsxContentRaw from '!raw!./examples/SelectWithJsxContent';
+import SelectAutocompleteWithJsxContent from './examples/SelectAutocompleteWithJsxContent';
+import SelectAutocompleteWithJsxContentRaw from '!raw!./examples/SelectAutocompleteWithJsxContent';
 import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 import SelectWithDescriptions from './examples/SelectWithDescriptions';
@@ -142,12 +146,17 @@ storiesOf(name, module)
   .add('📖 Single select Item - readme', () => (
     <Chrome title="Single select Item - overview">
       <Description>
-        <p>The <code>items</code> prop take an array of groups
-          of items. Groups are simply collections of Items with optional headings</p>
-        <p>The <code>selectedItem</code> prop takes just an reference to one of the items</p>
-        <p>It is recommended that every group should have a heading. However if headings are not
+        <p>
+          The <code>items</code> prop take an array of groups of items. Groups are simply
+          collections of Items.
+        </p>
+        <p>
+          The <code>selectedItem</code> prop takes just an reference to one of the items
+        </p>
+        <p>
+          It is recommended that every group should have a heading. However if headings are not
           required, the dialog will either have all headings or no headings at all for these groups.
-          But if there are no headings for the group, then the group should be combined instead.</p>
+        </p>
       </Description>
       <Props component={DummyGroup} descriptions={groupPropDescriptions} types={groupPropTypes} />
       <Description>
@@ -299,6 +308,28 @@ storiesOf(name, module)
       </div>
       <Code>
         {SelectWithFilterValuesRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with JSX content', () => (
+    <Chrome title="Select with JSX content">
+      <div style={{ width: '300px' }}>
+        {SelectWithJsxContent}
+      </div>
+      <Code>
+        {SelectWithJsxContentRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Autocomplete select with JSX content', () => (
+    <Chrome title="Select with JSX content">
+      <div style={{ width: '300px' }}>
+        {SelectAutocompleteWithJsxContent}
+      </div>
+      <Code>
+        {SelectAutocompleteWithJsxContentRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

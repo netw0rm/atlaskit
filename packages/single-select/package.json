@@ -40,9 +40,9 @@
     "react": "^15.3.2 || ^16.0.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^2.0.0",
+    "@atlaskit/avatar": "^8.0.9",
     "@atlaskit/single-select": "*",
-    "@atlaskit/tooltip": "^1.2.0",
+    "@atlaskit/tooltip": "^6.2.1",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

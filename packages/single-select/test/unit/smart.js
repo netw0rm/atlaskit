@@ -85,4 +85,20 @@ describe(`${name} - smart`, () => {
       expect(wrapper.state('selectedItem')).toBe(items[6]);
     });
   });
+
+  describe('with JSX item content', () => {
+    it('should set filterValue initially using item label instead of content', () => {
+      const item = { value: 1, content: <span>One</span>, label: 'One!' };
+      const wrapper = mount(
+        <SmartSelect
+          items={[{
+            items: [item],
+          }]}
+          defaultSelected={item}
+        />
+      );
+
+      expect(wrapper.find(StatelessSelect).props().filterValue).toBe('One!');
+    });
+  });
 });

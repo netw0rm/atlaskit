@@ -4,7 +4,7 @@ import {rgba, centerX, easeOutCubic, borderRadius, size, transition, ellipsis, a
 import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400, akColorB300 } from '@atlaskit/util-shared-styles';
 
 export interface OverlayProps {
-  isErrored: boolean;
+  hasError: boolean;
 }
 
 export const TickBox = styled.div`
@@ -43,8 +43,8 @@ export const Overlay = styled.div`
   transition: .3s background ${easeOutCubic}, .3s border-color;
   padding: 16px;
 
-  ${({isErrored}: OverlayProps) => {
-    if (isErrored) {
+  ${({hasError}: OverlayProps) => {
+    if (hasError) {
       return `
         cursor: default;
 

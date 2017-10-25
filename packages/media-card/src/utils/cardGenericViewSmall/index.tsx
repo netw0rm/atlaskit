@@ -137,7 +137,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     const cardClass = cx('media-card', {loading});
 
     return (
-      <SmallCard isErrored={!!error} className={cardClass} style={cardStyle}>
+      <SmallCard hasError={!!error} className={cardClass} style={cardStyle}>
         <ImgWrapper shadow={!loading && !error}>
           {left}
         </ImgWrapper>

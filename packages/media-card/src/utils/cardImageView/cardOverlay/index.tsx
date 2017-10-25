@@ -74,7 +74,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
-      <Overlay isErrored={!!error} className={this.wrapperClassNames}>
+      <Overlay hasError={!!error} className={this.wrapperClassNames}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>

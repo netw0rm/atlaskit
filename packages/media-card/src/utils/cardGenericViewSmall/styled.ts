@@ -10,7 +10,7 @@ import {
 const imgSize = 32;
 
 export interface SmallCardProps {
-  isErrored: boolean;
+  hasError: boolean;
 }
 
 export const SmallCard = styled(Root)`
@@ -22,8 +22,8 @@ export const SmallCard = styled(Root)`
   align-items: stretch;
   transition: .8s background-color ${easeOutExpo};
 
-  ${({isErrored}: SmallCardProps) => {
-    if (isErrored) {
+  ${({hasError}: SmallCardProps) => {
+    if (hasError) {
       return `
         cursor: default;
       `;

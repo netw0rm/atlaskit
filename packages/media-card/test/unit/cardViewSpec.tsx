@@ -4,6 +4,7 @@ import {shallow, mount} from 'enzyme';
 import {FileDetails, LinkDetails} from '@atlaskit/media-core';
 
 import {ErrorWrapper} from '../../src/links/cardGenericView/styled';
+import {Retry} from '../../src/utils/cardGenericViewSmall/styled';
 import {CardView} from '../../src/root/cardView';
 import {LinkCard} from '../../src/links';
 import {FileCard} from '../../src/files';
@@ -153,6 +154,15 @@ describe('CardView', () => {
 
     card.find(ErrorWrapper).find('button').simulate('click');
     expect(onRetryHandler).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render retry element for small cards when an error occurs', () => {
+    const onRetryHandler = jest.fn();
+    const linkCard = mount(<CardView status="error" appearance="small" metadata={link} onRetry={onRetryHandler} />);
+    const fileCard = mount(<CardView status="error" appearance="small" metadata={file} onRetry={onRetryHandler} />);
+
+    expect(linkCard.find(Retry)).toHaveLength(1);
+    expect(fileCard.find(Retry)).toHaveLength(1);
   });
 
   it('should NOT fire onSelectChange when card is NOT selectable', () => {

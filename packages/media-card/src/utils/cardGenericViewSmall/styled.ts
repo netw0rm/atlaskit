@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { Root, cardShadow, center, antialiased, ellipsis, borderRadius, easeOutExpo } from '../../styles';
 import {
   akColorN20,
-  akColorN70
+  akColorN70,
+  akColorB300
 } from '@atlaskit/util-shared-styles';
 
 const imgSize = 32;
+
+export interface SmallCardProps {
+  isErrored: boolean;
+}
 
 export const SmallCard = styled(Root)`
   ${borderRadius}
@@ -16,6 +21,16 @@ export const SmallCard = styled(Root)`
   display: flex;
   align-items: stretch;
   transition: .8s background-color ${easeOutExpo};
+
+  ${({isErrored}: SmallCardProps) => {
+    if (isErrored) {
+      return `
+        cursor: default;
+      `;
+    }
+
+    return '';
+  }}
 
   &:hover {
     background-color: ${akColorN20};
@@ -36,19 +51,23 @@ export const SmallCard = styled(Root)`
     .subtitle {
       width: 50%;
     }
-
   }
-
 `;
 
 export const Retry = styled.div`
   ${antialiased}
-  ${ellipsis()}
+  display: inline-block;
   font-weight: bold;
   color: #0065FF;
   font-size: 12px;
   line-height: 15px;
   margin-top: 2px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: ${akColorB300};
+  }
 `;
 
 export interface ImgWrapperProps {
@@ -77,7 +96,7 @@ export const ImgWrapper = styled.div`
 `;
 
 export const ErrorWrapper = styled.div`
-  ${center}
+
 `;
 
 export const Error = styled.div`

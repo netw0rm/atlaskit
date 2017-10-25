@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {MediaTypeIcon} from '../../../../src/utils/mediaTypeIcon';
 import {CardGenericViewSmall} from '../../../../src/utils/cardGenericViewSmall';
+import {Retry} from '../../../../src/utils/cardGenericViewSmall/styled';
 import {ThumbnailView} from '../../../../src/utils/cardGenericViewSmall/thumbnailView';
 import {InfoView} from '../../../../src/utils/cardGenericViewSmall/infoView';
 
@@ -65,4 +66,19 @@ describe('CardGenericViewSmall', () => {
     });
   });
 
+  it('should allow manual retry when an error occurs', () => {
+    const onRetry = jest.fn();
+    const element = mount(
+      <CardGenericViewSmall
+        type="file"
+        error="some-error"
+        onRetry={onRetry}
+      />
+    );
+    const retryElement = element.find(Retry);
+
+    expect(retryElement).toHaveLength(1);
+    retryElement.simulate('click');
+    expect(onRetry).toHaveBeenCalled();
+  });
 });

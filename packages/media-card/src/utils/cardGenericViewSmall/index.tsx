@@ -117,8 +117,8 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   renderError() {
     const {error, onRetry} = this.props;
     const retryComponent = onRetry ? (
-      <Retry className="retry">
-        <span onClick={onRetry}>Retry</span>
+      <Retry onClick={onRetry}>
+        Retry
       </Retry>
     ) : null;
 
@@ -137,7 +137,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     const cardClass = cx('media-card', {loading});
 
     return (
-      <SmallCard className={cardClass} style={cardStyle}>
+      <SmallCard isErrored={!!error} className={cardClass} style={cardStyle}>
         <ImgWrapper shadow={!loading && !error}>
           {left}
         </ImgWrapper>

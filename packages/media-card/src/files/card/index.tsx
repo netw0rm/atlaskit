@@ -29,7 +29,7 @@ export class FileCard extends Component<FileCardProps, {}> {
     const {status, dimensions, selectable, selected, details, dataURI, progress, resizeMode, onRetry} = this.props;
     const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
     const {name, mediaType, size} = details || defaultDetails;
-    const errorMessage = this.isError ? 'Failed to load file' : undefined;
+    const errorMessage = this.isError ? 'Failed to load' : undefined;
 
     if (this._isSmall()) {
       const subtitle = toHumanReadableMediaSize(size || 0);
@@ -43,6 +43,7 @@ export class FileCard extends Component<FileCardProps, {}> {
           thumbnailUrl={dataURI}
           dimensions={dimensions}
           loading={this.isLoading}
+          onRetry={onRetry}
           actions={this._getActions()}
         />
       );

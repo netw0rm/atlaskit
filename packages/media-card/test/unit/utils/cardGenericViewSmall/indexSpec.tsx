@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import {MediaTypeIcon} from '../../../../src/utils/mediaTypeIcon';
 import {CardGenericViewSmall} from '../../../../src/utils/cardGenericViewSmall';
 import {Retry} from '../../../../src/utils/cardGenericViewSmall/styled';
@@ -68,7 +68,7 @@ describe('CardGenericViewSmall', () => {
 
   it('should allow manual retry when an error occurs', () => {
     const onRetry = jest.fn();
-    const element = mount(
+    const element = shallow(
       <CardGenericViewSmall
         type="file"
         error="some-error"

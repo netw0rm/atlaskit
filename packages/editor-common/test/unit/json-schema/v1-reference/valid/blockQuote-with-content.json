@@ -4,11 +4,13 @@
   "content": [
     {
       "type": "blockquote",
-      "content": [
-        {
-          "type": "rule"
-        }
-      ]
+      "content": [{
+        "type": "paragraph",
+        "content": [{
+          "type": "text",
+          "text": "foo"
+        }]
+      }]
     }
   ]
 }

@@ -4,11 +4,13 @@ import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
 import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { Transformer } from '../../../../src/transformers';
+import {
+  JSONTransformer,
+  Transformer
+} from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
-import JSONSerializer from '../../../../src/renderer/json';
 
-const serializer = new JSONSerializer();
+const jsonTransformer = new JSONTransformer();
 
 const dummyTransformer: Transformer<string> = {
   parse: content => doc(blockquote(content)),
@@ -133,7 +135,7 @@ describe(name, () => {
       });
 
       it('should accept atlassian document format', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(atlassianDoc);
         const val = await editorActions.getValue();
         if (val instanceof Node) {
@@ -142,7 +144,7 @@ describe(name, () => {
       });
 
       it('should accept atlassian document format from a string', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(JSON.stringify(atlassianDoc));
         const val = await editorActions.getValue();
         if (val instanceof Node) {

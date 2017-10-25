@@ -2,7 +2,7 @@ import { action } from '@kadira/storybook';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import AddonIcon from '@atlaskit/icon/glyph/addon';
-import AkDropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
+import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
@@ -43,6 +43,7 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import Tooltip from '@atlaskit/tooltip';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import WorldIcon from '@atlaskit/icon/glyph/world';
+import SelectableDropdownMenu from '../components/SelectableDropdownMenu';
 
 const DropdownWrapper = styled.div`padding-bottom: ${akGridSizeUnitless / 2}px`;
 const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
@@ -260,11 +261,11 @@ export default class ConfluenceHome extends PureComponent {
         <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" onClick={() => this.openDrawer('search')} />
       </Tooltip>);
     const helpMenu = (
-      <AkDropdownMenu
+      <SelectableDropdownMenu
         appearance="tall"
         position="right bottom"
-        trigger={(
-          <AkGlobalItem href="">
+        trigger={isOpen => (
+          <AkGlobalItem href="" isSelected={isOpen}>
             <Tooltip position="right" description="Help">
               <QuestionCircleIcon
                 label="Help icon"
@@ -292,15 +293,15 @@ export default class ConfluenceHome extends PureComponent {
           <DropdownItem>Terms of service</DropdownItem>
           <DropdownItem>Privacy policy</DropdownItem>
         </DropdownItemGroup>
-      </AkDropdownMenu>
+      </SelectableDropdownMenu>
     );
 
     const userMenu = (
-      <AkDropdownMenu
+      <SelectableDropdownMenu
         appearance="tall"
         position="right bottom"
-        trigger={(
-          <AkGlobalItem href="">
+        trigger={isOpen => (
+          <AkGlobalItem href="" isSelected={isOpen}>
             <Tooltip position="right" description="Your profile and settings">
               <Avatar size="medium" src={emmaAvatar} />
             </Tooltip>
@@ -324,11 +325,11 @@ export default class ConfluenceHome extends PureComponent {
           <DropdownItem>Settings</DropdownItem>
           <DropdownItem>Log Out</DropdownItem>
         </DropdownItemGroup>
-      </AkDropdownMenu>
+      </SelectableDropdownMenu>
       );
 
     const notificationsMenu = (
-      <AkDropdownMenu
+      <SelectableDropdownMenu
         appearance="tall"
         onOpenChange={({ isOpen }) => {
           if (isOpen) {
@@ -337,8 +338,8 @@ export default class ConfluenceHome extends PureComponent {
         }}
         position="right bottom"
         isLoading={this.state.menuLoading}
-        trigger={(
-          <AkGlobalItem href="">
+        trigger={isOpen => (
+          <AkGlobalItem href="" isSelected={isOpen}>
             <Tooltip position="right" description="Notifications">
               <NotificationIcon
                 label="Notifications icon"
@@ -352,12 +353,12 @@ export default class ConfluenceHome extends PureComponent {
           <DropdownItem>Hi</DropdownItem>
           <DropdownItem>Nothing to be notified...</DropdownItem>
         </DropdownItemGroup>
-      </AkDropdownMenu>
+      </SelectableDropdownMenu>
       );
 
     const appSwitcherMenu = (
       <DropdownWrapper>
-        <AkDropdownMenu
+        <SelectableDropdownMenu
           appearance="tall"
           position="right bottom"
           onOpenChange={({ isOpen }) => {
@@ -366,8 +367,8 @@ export default class ConfluenceHome extends PureComponent {
             }
           }}
           isLoading={this.state.menuLoading}
-          trigger={(
-            <AkGlobalItem href="">
+          trigger={isOpen => (
+            <AkGlobalItem href="" isSelected={isOpen}>
               <Tooltip position="right" description="Applications Switcher">
                 <MenuIcon
                   label="Applications Switcher"
@@ -387,7 +388,7 @@ export default class ConfluenceHome extends PureComponent {
             text="Jira"
             href="https://ecosystem.atlassian.net/home"
           />
-        </AkDropdownMenu>
+        </SelectableDropdownMenu>
       </DropdownWrapper>
       );
     return (

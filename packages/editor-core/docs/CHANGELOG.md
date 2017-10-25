@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 56.0.1 (2017-10-25)
+
+* bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))
 ## 56.0.0 (2017-10-24)
 
 * breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))

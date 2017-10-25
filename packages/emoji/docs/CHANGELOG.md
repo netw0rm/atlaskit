@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.1.5 (2017-10-25)
+
+* bug fix; fixed sizing of emoji in upload preview (issues closed: fs-1441) ([d69a2b2](https://bitbucket.org/atlassian/atlaskit/commits/d69a2b2))
 ## 30.1.4 (2017-10-24)
 
 * bug fix; bumped mediapicker to v10 (issues closed: fs-1443) ([de8a306](https://bitbucket.org/atlassian/atlaskit/commits/de8a306))

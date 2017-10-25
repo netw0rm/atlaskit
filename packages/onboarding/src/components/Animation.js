@@ -28,7 +28,7 @@ type Props = {
     exited?: {},
   },
 };
-const DefaultProps = {
+const defaultProps = {
   component: 'div',
 };
 
@@ -89,7 +89,7 @@ function Animation({
     </Transition>
   );
 }
-Animation.defaultProps = DefaultProps;
+Animation.defaultProps = defaultProps;
 
 // FADE
 // ==============================

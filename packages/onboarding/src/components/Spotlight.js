@@ -119,7 +119,7 @@ class Spotlight extends Component {
     const { isExiting } = this.state;
 
     // warn consumers when they provide conflicting props
-    if (!!header && !!image) {
+    if (header && image) {
       console.warn('Please provide "header" OR "image", not both.'); // eslint-disable-line no-console
     }
     if (footer && actions) {

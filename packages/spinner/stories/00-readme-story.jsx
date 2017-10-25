@@ -14,7 +14,7 @@ const description = (<Description>
   <p>Spinners are used for showing a system process of unknown length going on
     that ends with the system displaying results to the user.
   </p>
-  <p>The spinner will display a loading in animation and then continue spinning until the
+  <p>The spinner will display a loading in animation and continue spinning until the
     <code>`isCompleting`</code> prop is set on it.
   </p>
   <p>If this prop is set to true the spinner will begin playing the outro animation (approximately

@@ -36,7 +36,7 @@ export default () => (
                 }}
               >
                 This paragraph is testing horizontal overflow to make sure that the
-                scroll container stays where it should.
+                scroll container stays where it should be.
               </p>
               <Lorem />
             </div>

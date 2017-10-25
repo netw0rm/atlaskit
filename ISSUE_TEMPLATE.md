@@ -30,7 +30,7 @@ Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-
 
 ### Information
 | Components  | Version | Did this work in previous versions of the AtlasKit component? | Browser and OS information  |
-|-------------|---------|---------------------------------------------------------------|-----------------------------|
+|-------------|:--------|:--------------------------------------------------------------|:----------------------------|
 |   		  |         | (y) Yes/(x) No/(!) I don't know                               |                             | 
 
 
@@ -40,9 +40,8 @@ Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-
 * To get the browser version, got to http://www.whatsmybrowser.org/ and copy the link
 * Any additional information, configuration or data that might be necessary to reproduce the issue.
 
-***
 
-### Copy and paste this template into the ticket
+### Jira template
 
 ```
 h2.Description

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { validateSchemaCompatibility } from 'json-schema-diff-validator';
 import * as newSchema from '../../../dist/json-schema/v1/full.json';
+import { version } from '../../../package.json';
 
 // TODO: remove this when jest unit tests are supported for TS files
 declare var expect: any;
@@ -12,11 +13,15 @@ const BOLD_END = '\u001b[22m';
 const IMPORTANT_MESSAGE_START = `${RED_START}${BOLD_START}`;
 const IMPORTANT_MESSAGE_END = `${BOLD_END}${RED_END}`;
 
-async function fetchExistingJSONSchema() {
-  const url = 'https://unpkg.com/@atlaskit/editor-common@latest/dist/json-schema/v1/full.json';
+async function fetchJSONSchema(version: string) {
+  const url = `https://unpkg.com/@atlaskit/editor-common@${version}/dist/json-schema/v1/full.json`;
   const res = await axios.get(url);
 
   return res.data;
+}
+
+function fetchLatestJSONSchema() {
+  return fetchJSONSchema('latest');
 }
 
 expect.extend({
@@ -38,7 +43,19 @@ expect.extend({
 
 describe('JSON schema', () => {
   it('should be backwards compatible', async () => {
-    const existingSchema = await fetchExistingJSONSchema();
+    let existingSchema: any;
+
+    try {
+      existingSchema = await fetchJSONSchema(version);
+    } catch (err) {
+      // if package with this version doesn't exist test against the latest version
+      // this can happen when you manually bump version in package.json
+      if (!err.response || err.response.status !== 404) {
+        throw new Error(`JSON schema fetch error (version ${version}): ${err.message}`);
+      }
+
+      existingSchema = await fetchLatestJSONSchema();
+    }
 
     try {
       expect(newSchema).toBeBackwardsCompatibleWith(existingSchema);

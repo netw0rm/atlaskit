@@ -55,8 +55,16 @@ export class DrawerImpl extends PureComponent {
     isOpen: false,
   }
 
+  state = { isAnimating: true }
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.isOpen !== this.props.isOpen) {
+      this.setState({ isAnimating: true });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -97,6 +105,8 @@ export class DrawerImpl extends PureComponent {
       this.onBackButtonByEscKey(event);
     }
   }
+
+  handleAnimationEnd = () => this.setState({ isAnimating: false });
 
   render() {
     const {
@@ -146,10 +156,18 @@ export class DrawerImpl extends PureComponent {
             canClickThrough={!isOpen}
             onBlanketClicked={this.onBackButtonByBlanket}
           />
-          <DrawerInner isOpen={isOpen} width={width}>
-            {sidebar}
-            {content}
-          </DrawerInner>
+          {
+            (this.state.isAnimating || isOpen) && (
+              <DrawerInner
+                isOpen={isOpen}
+                width={width}
+                onAnimationEnd={this.handleAnimationEnd}
+              >
+                {sidebar}
+                {content}
+              </DrawerInner>
+            )
+          }
         </div>
       </WithRootTheme>
     );

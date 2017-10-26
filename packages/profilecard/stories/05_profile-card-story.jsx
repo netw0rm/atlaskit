@@ -12,13 +12,13 @@ const InteractiveCard = interActiveCard({ React, AkProfilecard });
 const handleActionClick = title => action(`${title} button clicked`);
 
 const fakeProfileData = {
-  avatarUrl: profiles[6].User.avatarUrl,
-  fullName: profiles[6].User.fullName,
-  nickname: profiles[6].User.nickname,
-  email: profiles[6].User.email,
+  avatarUrl: profiles[4].User.avatarUrl,
+  fullName: profiles[4].User.fullName,
+  nickname: profiles[4].User.nickname,
+  email: profiles[4].User.email,
   location: 'Sydney, Australia',
   timestring: '9:00am',
-  meta: profiles[6].User.meta,
+  meta: profiles[4].User.meta,
   presence: 'available',
   actions: [
     {
@@ -106,19 +106,54 @@ storiesOf(`${name}`, module)
     const data = fakeData({
       avatarUrl: null,
       presence: null,
+      meta: null,
+      timestring: null,
+      location: null,
     });
 
     return (
       <div style={canvasStyle}>
-        <AkProfilecard
-          actions={data.actions}
-          fullName={data.fullName}
-        />
+        <AkProfilecard {...data} />
       </div>
     );
   })
   .add('best case card', () => {
     const data = fakeData({});
+
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('deactivated case card', () => {
+    const data = fakeData({
+      isActive: false,
+    });
+
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('censored case card', () => {
+    const data = fakeData({
+      isCensored: true,
+    });
+
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('is bot case card', () => {
+    const data = fakeData({
+      fullName: 'Awesome Thing Bot',
+      nickname: 'awesomebot',
+      isBot: true,
+    });
 
     return (
       <div style={canvasStyle}>

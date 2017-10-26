@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { CardOverlay } from '../../../src/utils/cardImageView/cardOverlay';
-import { TitleWrapper, Metadata, ErrorMessage } from '../../../src/utils/cardImageView/cardOverlay/styled';
+import { TitleWrapper, Metadata, ErrorMessage, Retry } from '../../../src/utils/cardImageView/cardOverlay/styled';
 import { Ellipsify, Menu } from '../../../src/utils/';
 
 describe('CardOverlay', () => {
-  it('should not render the title or subtitle when the card has errored', function() {
-    const errorMessage = 'Loading failed';
+  const errorMessage = 'Loading failed';
+
+  it('should not render the title or subtitle when the card has errored', () => {
     const title = 'card is lyfe';
     const subtitle = 'do you even card?';
     const card = shallow(<CardOverlay error={errorMessage} mediaName={title} subtitle={subtitle} persistent={true} />);
@@ -26,5 +27,14 @@ describe('CardOverlay', () => {
     const card = shallow(<CardOverlay persistent={true} />);
     expect(card.find(Menu).props().triggerColor).toEqual(undefined);
   });
-});
 
+  it('should allow manual retry when "onRetry" is passed', () => {
+    const onRetry = jest.fn();
+    const card = mount(<CardOverlay persistent={false} onRetry={onRetry} error={errorMessage} />);
+    const retryComponent = card.find(Retry);
+
+    expect(retryComponent).toHaveLength(1);
+    retryComponent.simulate('click');
+    expect(onRetry).toHaveBeenCalled();
+  });
+});

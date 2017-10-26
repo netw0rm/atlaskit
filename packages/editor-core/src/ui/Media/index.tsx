@@ -1,84 +1,49 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
-import MediaComponent, { Appearance } from './MediaComponent';
-import { CardEventClickHandler } from '../Renderer';
-import { MediaType } from '@atlaskit/editor-common';
-import { CardDimensions } from '@atlaskit/media-card';
+import {PureComponent} from 'react';
+
 import {
-  CardEventHandler,
-  ImageResizeMode,
-} from '@atlaskit/media-core';
-import {
-  default as ProviderFactory,
-  WithProviders
-} from '../../providerFactory';
+    default as MediaItem,
+    Props as MediaItemProps
+} from './MediaItem';
+import {MediaStateManager} from '@atlaskit/media-core';
+import {MediaPluginState, stateKey as mediaStateKey} from '../../plugins/media';
+
 import { EditorView } from 'prosemirror-view';
 
-export interface MediaProps {
-  id: string;
-  editorView?: EditorView;
-  providers?: ProviderFactory;
-  type: MediaType;
-  collection: string;
-  cardDimensions?: CardDimensions;
-  resizeMode?: ImageResizeMode;
-  onClick?: CardEventClickHandler;
-  onDelete?: CardEventHandler;
-  appearance?: Appearance;
+export interface Props extends MediaItemProps {
+    editorView?: EditorView;
 }
 
-export default class Media extends PureComponent<MediaProps, {}> {
-  private providerFactory: ProviderFactory;
+export default class Media extends PureComponent<Props, {}> {
+    render() {
+        // Pass in the fallback state manager from the editor plugin
+        const stateManagerFallback = this.getStateManagerFromEditorPlugin();
+        const props = {
+            stateManagerFallback,
+            ...this.props as MediaItemProps
+        };
 
-  constructor(props) {
-    super(props);
-    this.providerFactory = props.providers || new ProviderFactory();
-  }
-
-  componentWillUnmount() {
-    if (!this.props.providers) {
-      // new ProviderFactory is created if no `providers` has been set
-      // in this case when component is unmounted it's safe to destroy this providerFactory
-      this.providerFactory.destroy();
+        return (
+            <MediaItem {...props} />
+        );
     }
-  }
 
-  private renderWithProvider = (providers) => {
-    const {
-      id,
-      type,
-      collection,
-      cardDimensions,
-      onClick,
-      onDelete,
-      resizeMode,
-      editorView,
-      appearance,
-    } = this.props;
+    /**
+     * Get the state manager from the editor plugin to feed to MediaItem as a prop
+     * @returns {MediaStateManager|undefined}
+     */
+    getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
+        const {editorView} = this.props;
+        if (!editorView) {
+            return;
+        }
 
-    return (
-      <MediaComponent
-        id={id}
-        mediaProvider={providers.mediaProvider}
-        type={type}
-        collection={collection}
-        cardDimensions={cardDimensions}
-        resizeMode={resizeMode}
-        onDelete={onDelete}
-        onClick={onClick}
-        editorView={editorView}
-        appearance={appearance}
-      />
-    );
-  }
+        const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
 
-  render() {
-    return (
-      <WithProviders
-        providers={['mediaProvider']}
-        providerFactory={this.providerFactory}
-        renderNode={this.renderWithProvider}
-      />
-    );
-  }
+        if (!pluginState) {
+            return;
+        }
+
+        return pluginState.stateManager;
+    }
 }

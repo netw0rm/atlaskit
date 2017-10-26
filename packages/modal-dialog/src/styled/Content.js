@@ -64,8 +64,12 @@ export const TitleIconWrapper = styled.span`
 */
 export const Body = styled.div`
   flex: 1 1 auto;
-  overflow-y: auto;
-  padding: ${keylineHeight}px ${outerGutter}px;
+  ${p => (p.shouldScroll ? css`
+    overflow-y: auto;
+    padding: ${keylineHeight}px ${outerGutter}px;
+  ` : css`
+    padding: 0 ${outerGutter}px;
+  `)}
 `;
 
 // Footer

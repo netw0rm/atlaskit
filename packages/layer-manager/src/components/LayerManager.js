@@ -5,12 +5,13 @@ import { TransitionGroup } from 'react-transition-group';
 import { GatewayDest, GatewayProvider } from './gateway';
 import type { ChildrenType } from '../types';
 
-type Props = { children: ChildrenType};
+type Props = {| children: ChildrenType |};
+type State = {| ariaHiddenNode: HTMLElement |};
 
 /* eslint-disable react/sort-comp */
 export default class LayerManager extends PureComponent {
-  state = { ariaHiddenNode: null }
   props: Props;
+  state: State = { ariaHiddenNode: null }
   static childContextTypes : Object = { ariaHiddenNode: PropTypes.object }
 
   getChildContext() {
@@ -35,6 +36,7 @@ export default class LayerManager extends PureComponent {
             name="modal"
           />
           <GatewayDest
+            component={TransitionGroup}
             id="gateway-destination-spotlight"
             name="spotlight"
           />

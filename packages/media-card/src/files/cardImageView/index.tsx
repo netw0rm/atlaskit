@@ -24,7 +24,7 @@ export interface FileCardImageViewProps {
   error?: string;
 
   actions?: Array<CardAction>;
-  onRetry?: CardAction;
+  onRetry?: () => void;
 }
 
 export class FileCardImageView extends Component<FileCardImageViewProps, {}> {

@@ -135,6 +135,8 @@ export const generateStoriesForEditableCards = () => {
     mediaItemType: MediaItemType;
     isMouseEnterHandlerActive: boolean;
     isClickHandlerActive: boolean;
+    isParentInlineBlock: boolean;
+    doesParentHasWidth: boolean;
   }
 
   class EditableCard extends Component<EditableCardProps, EditableCardState> {
@@ -162,7 +164,9 @@ export const generateStoriesForEditableCards = () => {
         resizeMode: 'crop',
         mediaItemType: 'file',
         isMouseEnterHandlerActive: true,
-        isClickHandlerActive: true
+        isClickHandlerActive: true,
+        isParentInlineBlock: false,
+        doesParentHasWidth: true
       };
       const previousState = getStateFromLocalStorage();
 
@@ -174,12 +178,37 @@ export const generateStoriesForEditableCards = () => {
     }
 
     render() {
-      const {appearance, status, dataURI, dimensions, parentDimensions, metadata: metadataKey, menuActions, progress, selectable, selected, resizeMode, mediaItemType} = this.state;
+      const {
+        appearance,
+        status,
+        dataURI,
+        dimensions,
+        parentDimensions,
+        metadata: metadataKey,
+        menuActions,
+        progress,
+        selectable,
+        selected,
+        resizeMode,
+        mediaItemType,
+        isClickHandlerActive,
+        isMouseEnterHandlerActive,
+        isParentInlineBlock,
+        doesParentHasWidth
+      } = this.state;
       const width = parseInt(`${dimensions.width}`, 0);
       const height = parseInt(`${dimensions.height}`, 0);
       const metadata = metadataOptionsMap[metadataKey];
       const {width: parentWidth, height: parentHeight} = parentDimensions;
-      const parentStyle = {width: parentWidth, height: parentHeight};
+      const parentStyle = { height: parentHeight };
+
+      if (isParentInlineBlock) {
+        parentStyle['display'] = 'inline-block';
+      }
+
+      if (doesParentHasWidth) {
+        parentStyle['width'] = parentWidth;
+      }
 
       return (
         <div>
@@ -198,15 +227,30 @@ export const generateStoriesForEditableCards = () => {
                 </div>
               </div>
               <div>
-                Parent dimensions <hr />
+                Parent properties <hr />
                 <div>
+                  Has width
+                  <Toggle
+                    isDefaultChecked={doesParentHasWidth}
+                    onChange={this.onDoesParentHasWidthChange}
+                  />
+                </div>
+                {doesParentHasWidth ? <div>
                   Width ({parentWidth})
                   <Slider value={parentWidth} min={50} max={1000} onChange={this.onParentWidthChange} />
-                </div>
+                </div>: null}
                 <div>
                   Height ({parentHeight})
                   <Slider value={parentHeight} min={50} max={1000} onChange={this.onParentHeightChange} />
                 </div>
+                <div>
+                  Is inline-block
+                  <Toggle
+                    isDefaultChecked={isParentInlineBlock}
+                    onChange={this.onIsParentInlineBlockChange}
+                  />
+                </div>
+
               </div>
               <div>
                 Progress ({progress})
@@ -227,26 +271,26 @@ export const generateStoriesForEditableCards = () => {
               <div>
                 Selectable
                 <Toggle
-                  isDefaultChecked={false}
+                  isDefaultChecked={selectable}
                   onChange={this.onSelectableChange}
                 />
                 <hr />
                 Selected
                 <Toggle
-                  isDefaultChecked={false}
+                  isDefaultChecked={selected}
                   onChange={this.onSelectedChange}
                 />
               </div>
               <div>
                 On click
                 <Toggle
-                  isDefaultChecked={true}
+                  isDefaultChecked={isClickHandlerActive}
                   onChange={this.onClickChange}
                 />
                 <hr />
                 On mouse enter
                 <Toggle
-                  isDefaultChecked={true}
+                  isDefaultChecked={isMouseEnterHandlerActive}
                   onChange={this.onMouseEnterChange}
                 />
               </div>
@@ -417,6 +461,14 @@ export const generateStoriesForEditableCards = () => {
 
       parentDimensions.height = height;
       this.setState({parentDimensions});
+    }
+
+    onIsParentInlineBlockChange = () => {
+      this.setState({isParentInlineBlock: !this.state.isParentInlineBlock});
+    }
+
+    onDoesParentHasWidthChange = () => {
+      this.setState({doesParentHasWidth: !this.state.doesParentHasWidth});
     }
 
     onProgressChange = (progress) => {

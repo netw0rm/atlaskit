@@ -58,7 +58,7 @@ storiesOf(name, module)
         target="myFrame"
       >
         <h2>Submit test</h2>
-        <p>Note: Ensure that you are not using HTTPS for this story.</p>
+        <p>Note: Ensure that you are not using HTTPS for this story</p>
         <AkToggle name="test1" value="1" label="option 1" />
         <AkToggle name="test2" value="foo" label="option 2" />
         <AkToggle isDisabled name="test3" value="123" label="option 3" />

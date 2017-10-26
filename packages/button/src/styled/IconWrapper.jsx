@@ -18,6 +18,7 @@ const IconWrapper = (props) => {
     lineHeight: 0,
     fontSize: 0,
     margin: getMargin(props),
+    'user-select': 'none',
   };
   return <span style={style}>{props.children}</span>;
 };

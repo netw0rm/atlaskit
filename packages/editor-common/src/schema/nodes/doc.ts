@@ -21,6 +21,8 @@ import { Definition as HardBreak } from './hard-break';
 import { Definition as Mention } from './mention';
 import { Definition as Emoji } from './emoji';
 import { Definition as InlineMacro } from './inline-macro';
+import { Definition as Macro } from './macro';
+import { Definition as RawHtmlBlob } from './raw-html-blob';
 
 // Marks
 import { Definition as Link } from '../marks/link';
@@ -39,7 +41,7 @@ import { Definition as TextColor } from '../marks/text-color';
 export type TopLevel = Array<
   Panel | Paragraph | Blockquote | OrderedList | BulletList |
   Rule | Heading | CodeBlock | MediaGroup | ApplicationCard |
-  DecisionList | TaskList | Table
+  DecisionList | TaskList | Table | Macro
 >;
 
 /**
@@ -89,7 +91,7 @@ export type InlineCode = Text & MarksObject<Code | Link>;
 /**
  * @name atomic_inline_node
  */
-export type InlineAtomic = HardBreak | Mention | Emoji | InlineMacro;
+export type InlineAtomic = HardBreak | Mention | Emoji | InlineMacro | Macro | RawHtmlBlob;
 
 /**
  * @name inline_node

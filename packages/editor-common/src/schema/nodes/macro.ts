@@ -1,48 +1,53 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 
 /**
- * @name inlineMacro_node
+ * @name macro_node
  */
 export interface Definition {
-  type: 'inlineMacro';
+  type: 'macro';
   attrs: {
     macroId: string;
     name: string;
     placeholderUrl: string;
+    macroBodyHtml: string;
     params: object;
   };
 }
 
-export const inlineMacro: NodeSpec = {
-  inline: true,
-  group: 'inline',
+export const macro: NodeSpec = {
   selectable: true,
   attrs: {
     macroId: { default: null },
     name: { default: null },
     placeholderUrl: { default: null },
+    macroBodyHtml: { default: null },
     params: { default: null },
   },
   parseDOM: [{
-    tag: 'span[data-node-type="inlineMacro"]',
+    tag: 'span[data-node-type="macro"]',
     getAttrs: (dom: HTMLElement) => ({
       macroId: dom.getAttribute('data-macro-id'),
       name: dom.getAttribute('data-name'),
       placeholderUrl: dom.getAttribute('data-placeholder-url'),
+      macroBodyHtml: dom.getAttribute('data-macro-body-html'),
       params: JSON.parse(dom.getAttribute('data-params') || '{}'),
     })
   }],
   toDOM(node: PMNode) {
-    const { name, macroId, params, placeholderUrl } = node.attrs;
+    const { name, macroId, params, placeholderUrl, macroBodyHtml } = node.attrs;
     const attrs = {
-      'data-node-type': 'inlineMacro',
+      'data-node-type': 'macro',
       'data-macro-id': macroId,
       'data-name': name,
       'data-placeholder-url': placeholderUrl,
+      'data-macro-body-html': macroBodyHtml,
       'data-params': JSON.stringify(params),
       'contenteditable': 'false',
     };
 
+    if (macroBodyHtml) {
+      return ['span', attrs, macroBodyHtml];
+    }
 
     return ['span', attrs, ['img', {src: placeholderUrl}]];
   }

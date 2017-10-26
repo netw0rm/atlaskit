@@ -47,6 +47,8 @@ import {
   taskItem,
   inlineMacro,
   unknownBlock,
+  rawHtmlBlob,
+  macro
 } from './nodes';
 
 function addItems(builtInItems: SchemaBuiltInItem[], config: string[], customSpecs: SchemaCustomNodeSpecs | SchemaCustomMarkSpecs = {}) {
@@ -138,6 +140,8 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'taskItem', spec: taskItem },
   { name: 'inlineMacro', spec: inlineMacro },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'rawHtmlBlob', spec: rawHtmlBlob },
+  { name: 'macro', spec: macro },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

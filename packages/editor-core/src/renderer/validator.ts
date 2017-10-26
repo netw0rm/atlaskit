@@ -199,6 +199,24 @@ export const getValidNode = (originalNode: Node, schema: Schema = defaultSchema)
 
   if (type) {
     switch (type) {
+      case 'inlineMacro': {
+        return {
+          type,
+          attrs
+        };
+      }
+      case 'macro': {
+        return {
+          type,
+          attrs
+        };
+      }
+      case 'rawHtmlBlob': {
+        return {
+          type,
+          attrs
+        };
+      }
       case 'applicationCard': {
         if (!attrs) { break; }
         const { text, link, background, preview, title, description, details, actions, context } = attrs;

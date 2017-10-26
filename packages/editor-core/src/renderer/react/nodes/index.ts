@@ -26,6 +26,9 @@ import TableCell from './tableCell';
 import TableHeader from './tableHeader';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
+import InlineMacro from './inlineMacro';
+import Macro from './macro';
+import RawHtmlBlob from './rawHtmlBlob';
 
 export const nodeToReact = {
   'applicationCard': ApplicationCard,
@@ -53,6 +56,9 @@ export const nodeToReact = {
   'tableHeader': TableHeader,
   'tableRow': TableRow,
   'unknownBlock': UnknownBlock,
+  'inlineMacro': InlineMacro,
+  'rawHtmlBlob': RawHtmlBlob,
+  'macro': Macro
 };
 
 export const toReact = (node: Node): ComponentClass<any> => {
@@ -174,4 +180,7 @@ export {
   TableHeader,
   TableRow,
   UnknownBlock,
+  InlineMacro,
+  RawHtmlBlob,
+  Macro
 };

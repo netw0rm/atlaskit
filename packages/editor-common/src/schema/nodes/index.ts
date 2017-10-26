@@ -41,3 +41,5 @@ export { decisionItem } from './decision-item';
 export { taskList } from './task-list';
 export { taskItem } from './task-item';
 export { inlineMacro } from './inline-macro';
+export { macro } from './macro';
+export { rawHtmlBlob } from './raw-html-blob';

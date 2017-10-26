@@ -1,0 +1,4 @@
+.columnMacro {
+    display: table-cell;
+    vertical-align: top;
+}

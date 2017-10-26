@@ -34,6 +34,8 @@ export const defaultSchema: Schema = createSchema({
     'taskList',
     'taskItem',
     'unknownBlock',
+    'rawHtmlBlob',
+    'macro'
   ],
   marks: [
     'link',

@@ -1,0 +1,71 @@
+.aui-lozenge {
+  background: #cccccc;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  color: #333333;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 99%;
+  /* cross-browser compromise to make the line-height match the font-size */
+  margin: 0;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.aui-lozenge.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #cccccc;
+  color: #333333;
+}
+.aui-lozenge-success {
+  background-color: #14892c;
+  border-color: #14892c;
+  color: #ffffff;
+}
+.aui-lozenge-success.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #60b070;
+  color: #14892c;
+}
+.aui-lozenge-error {
+  background-color: #d04437;
+  border-color: #d04437;
+  color: #ffffff;
+}
+.aui-lozenge-error.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #e8a29b;
+  color: #d04437;
+}
+.aui-lozenge-current {
+  background-color: #f6c342;
+  border-color: #f6c342;
+  color: #594300;
+}
+.aui-lozenge-current.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #ffe9a8;
+  color: #594300;
+}
+.aui-lozenge-complete {
+  background-color: #4a6785;
+  border-color: #4a6785;
+  color: #ffffff;
+}
+.aui-lozenge-complete.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #a5b3c2;
+  color: #4a6785;
+}
+.aui-lozenge-moved {
+  background-color: #815b3a;
+  border-color: #815b3a;
+  color: #ffffff;
+}
+.aui-lozenge-moved.aui-lozenge-subtle {
+  background-color: #ffffff;
+  border-color: #c0ad9d;
+  color: #815b3a;
+}

@@ -55,7 +55,7 @@ export class DrawerImpl extends PureComponent {
     isOpen: false,
   }
 
-  state = { isAnimating: true }
+  state = { isAnimating: false }
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -161,6 +161,7 @@ export class DrawerImpl extends PureComponent {
               <DrawerInner
                 isOpen={isOpen}
                 width={width}
+                isAnimating={this.state.isAnimating}
                 onAnimationEnd={this.handleAnimationEnd}
               >
                 {sidebar}

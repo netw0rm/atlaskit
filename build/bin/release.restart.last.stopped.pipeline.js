@@ -23,10 +23,14 @@ const axiosRequestConfig = {
     username: BB_USERNAME,
     password: BB_PASSWORD,
   },
+  params: {
+    pagelen: BUILDS_TO_FETCH,
+    // get the most recent builds first
+    sort: '-created_on',
+    'target.ref_name': BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR,
+    'target.ref_type': 'BRANCH',
+  },
 };
-// unfortunately, because we need to do a complex query (the trigger.name != SCHEDULE, we cant use
-// axios' params object and have to hand craft the query string).q
-const queryStr = `?q=pagelen+%3D+${BUILDS_TO_FETCH}&sort+%3D+%22-created_on%22+target.ref_name+%3D++%22${BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR}+%22+target.ref_type+%3D+BRANCH+trigger.name+%21%3D+%22SCHEDULE+%22`;
 
 function pipelineFailedOrStopped(pipelineState) {
   // the state will have a name of 'PENDING', 'COMPLETED' or 'IN_PROGRESS'
@@ -39,9 +43,10 @@ function pipelineFailedOrStopped(pipelineState) {
   return false;
 }
 
-axios.get(PIPELINES_ENDPOINT + queryStr, axiosRequestConfig)
+axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
+    const nonScheduled = allRunningPipelines.filter(build => build.trigger.name !== 'SCHEDULE');
 
     // we have a list of pipelines sorted by creation date. At this point we just need to get the
     // latest one and:
@@ -51,7 +56,7 @@ axios.get(PIPELINES_ENDPOINT + queryStr, axiosRequestConfig)
     //   if it pipeline is running:
     //    - we are either looking at ourselves (we can safely exit)
     //    - or we are looking at a new build which is going to pick up the work (we can safely exit)
-    const mostRecentPipeline = allRunningPipelines[0];
+    const mostRecentPipeline = nonScheduled[0];
     const pipelineState = mostRecentPipeline.state;
 
     if (pipelineFailedOrStopped(pipelineState)) {

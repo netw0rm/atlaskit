@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-radio-group",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "config": {
     "access": "public"
   },

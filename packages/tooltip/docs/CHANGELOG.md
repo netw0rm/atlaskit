@@ -1,5 +1,8 @@
 # @atlaskit/tooltip
 
+## 6.2.2 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
 ## 6.2.1 (2017-10-22)
 
 * bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))

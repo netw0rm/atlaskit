@@ -11,7 +11,7 @@ const focusin = require('focusin');
 
 let polyfilled = false;
 
-function init(element, findTabbable) {
+function init(element, findTabbable, callImmediately = true) {
   // lazily polyfill focusin for firefox
   if (!polyfilled) {
     focusin.polyfill();
@@ -20,7 +20,7 @@ function init(element, findTabbable) {
 
   function focus() {
     const els = tabbable(element);
-    const focusTarget = findTabbable ? els[0] : element;
+    const focusTarget = findTabbable ? (els[0] || element) : element;
     focusTarget.focus();
   }
 
@@ -31,16 +31,18 @@ function init(element, findTabbable) {
   }
 
   function onKeyDown(event) {
+    if (event.key !== 'Tab') return;
+
     const els = tabbable(element);
     const last = els[els.length - 1];
 
-    if (element !== event.target && event.target === last && event.key === 'Tab') {
+    if (element !== event.target && event.target === last) {
       event.preventDefault();
       focus();
     }
   }
 
-  focus();
+  if (callImmediately) focus();
 
   document.addEventListener('focusin', onFocusIn);
   document.addEventListener('keydown', onKeyDown);

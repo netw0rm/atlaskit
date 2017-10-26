@@ -598,7 +598,6 @@ export const plugin = (pluginConfig?: PluginConfig) => new Plugin({
   view: (editorView: EditorView & { docView?: any }) => {
     const pluginState: TableState = stateKey.getState(editorView.state);
     pluginState.setView(editorView);
-    pluginState.update(editorView.docView);
     pluginState.keymapHandler = keymapHandler(pluginState);
 
     return {

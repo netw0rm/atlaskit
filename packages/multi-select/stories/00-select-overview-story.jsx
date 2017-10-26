@@ -169,7 +169,8 @@ storiesOf(name, module)
       <h2>Footer</h2>
       <p>
         Footer&#39;s allow you to place a &#34;sticky&#34; item at the bottom a mutliselect that a
-        user can click or select via keyboard. This could be used for something like opening a page
+        user can click or select via keyboard.
+        This could be used for something like opening a page
         in a new tab for example.
       </p>
       <p>

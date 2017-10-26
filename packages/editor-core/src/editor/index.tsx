@@ -56,6 +56,21 @@ export default class Editor extends React.Component<EditorProps, State> {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { editor } = this.state;
+    // Once the editor has been set for the first time
+    if (!prevState.editor && editor) {
+      // Focus editor first time we create it if shouldFocus prop is set to true.
+      if (this.props.shouldFocus) {
+        if (!editor.editorView.hasFocus()) {
+          editor.editorView.focus();
+        }
+
+        moveCursorToTheEnd(editor.editorView);
+      }
+    }
+  }
+
   private registerEditorForActions(editor: EditorInstance) {
     if (this.context && this.context.editorActions) {
       this.context.editorActions._privateRegisterEditor(editor.editorView, editor.contentTransformer);
@@ -81,15 +96,6 @@ export default class Editor extends React.Component<EditorProps, State> {
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
     this.registerEditorForActions(editor);
     this.setState({ editor });
-
-    // Focus editor first time we create it if shouldFocus prop is set to true.
-    if (this.props.shouldFocus) {
-      if (!editor.editorView.hasFocus()) {
-        editor.editorView.focus();
-      }
-
-      moveCursorToTheEnd(editor.editorView);
-    }
   }
 
   private handleProviders(props: EditorProps) {

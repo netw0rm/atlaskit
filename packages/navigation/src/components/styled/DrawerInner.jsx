@@ -24,13 +24,11 @@ const getAnimation = ({ isOpen, isAnimating, width }) => {
   if (isAnimating) {
     return `
       animation: ${animation} ${animationSpeed} ${animationTiming} forwards;
-      transform: translateX(${offscreenX});
     `;
   }
 
   return `
     animation: none;
-    transform: none;
     left: ${isOpen ? 0 : offscreenX};
   `;
 };

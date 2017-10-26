@@ -3,7 +3,7 @@ import * as sinon from 'sinon';
 import panelPlugins from '../../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, panel, code_block
+  insertText, doc, p, makeEditor, panel, code_block, a as link
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
 import { analyticsService } from '../../../../src/analytics';
@@ -34,6 +34,13 @@ describe('panel input rules', () => {
 
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
     expect(trackEvent.calledWith('atlassian.editor.format.panel.info.autoformatting')).to.equal(true);
+  });
+
+  it('should not replace {info} input inside link with panel node of type info', () => {
+    const { editorView } = editor(doc(p(link({ href: 'http://www.atlassian.com' })('{info'), '{<>}')));
+    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
+    inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
+    expect(editorView.state.doc).to.deep.equal(doc(p(link({ href: 'http://www.atlassian.com' })('{info'))));
   });
 
   it('should not convert {info} inside a code_block', () => {

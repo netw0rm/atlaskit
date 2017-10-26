@@ -1,0 +1,19 @@
+/* module-key = 'com.atlassian.confluence.plugins.expand-macro:expand-macro-css-only', location = 'com/atlassian/confluence/plugins/expand/css/expand-macro.css' */
+@media all {
+    .expand-content { margin: 0 0 10px 20px; opacity:1; transition: opacity 0.5s; }
+    .expand-control-icon { width: 20px; }
+    .expand-control-text { vertical-align: top; color: #3572b0; }
+    .expand-control-text:hover { text-decoration: underline; }
+    .expand-control-image { vertical-align: middle; text-decoration:none; }
+}
+
+@media screen {
+    /* This container preloads the opened expand icon, but we don't want it displayed to the user. */
+    .expand-hidden { height: 0; opacity: 0; overflow: hidden; }
+    .expand-control { cursor: pointer; text-decoration: none;  margin-bottom: 10px; }
+}
+
+@media print {
+    /* show expander text in print */
+    .expand-content { display: block !important; }
+}

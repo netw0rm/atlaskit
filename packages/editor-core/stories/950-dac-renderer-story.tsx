@@ -16,6 +16,7 @@ import * as v1schema from '../dist/json-schema/v1/full.json';
 import ProviderFactory from '../src/providerFactory';
 import Renderer from '../src/ui/Renderer';
 import { name } from '../package.json';
+import { bindExpanderHandler } from './confluence-macros/expand-macro';
 
 interface State {
   value: string;
@@ -83,6 +84,10 @@ class DACRenderer extends PureComponent<Props, State> {
     );
   }
 
+  componentDidMount() {
+    bindExpanderHandler();
+  }
+
   render() {
     const renderedContent = this.getRendererContent();
 
@@ -116,85 +121,18 @@ storiesOf(name, module)
     const columnMacroCss = require('css!./confluence-macros/column-macro.css');
     const infoMacroCss = require('css!./confluence-macros/info-macro.css');
     const statusMacroCss = require('css!./confluence-macros/status-macro.css');
+    const expandMacroCss = require('css!./confluence-macros/expand-macro.css');
 
-    const confluenceDocument = {
-      "type": "doc",
-      "version": 1,
-      "content": [
-        {
-          "type": "paragraph",
-          "content": [
-            {
-              "type": "rawHtmlBlob",
-              "attrs": {
-                "html": "<p>Confluence <strong>macros</strong> <i>examples</i></p>"
-              }
-            },
-            {
-              "type": "macro",
-              "attrs": {
-                "macroId": "1906f672-d997-40ff-9896-a10fac62575f",
-                "name": "status",
-                "placeholderUrl": "",
-                "params": {
-                    "colour": "Yellow",
-                    "title": "In Progress"
-                },
-                "macroBodyHtml": "<span class=\"status-macro aui-lozenge aui-lozenge-current conf-macro output-inline\" data-hasbody=\"false\" data-macro-name=\"status\">IN PROGRESS</span>"
-              }
-            },
-            {
-              "type": "macro",
-              "attrs": {
-                "macroId": "d0e309d2-a4bb-4a06-ad6b-584027779d29",
-                "name": "info",
-                "placeholderUrl": "",
-                "params": {},
-                "macroBodyHtml": "<div class=\"confluence-information-macro confluence-information-macro-information conf-macro output-block\" data-hasbody=\"true\" data-macro-name=\"info\"><span class=\"aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon\"> </span><div class=\"confluence-information-macro-body\"><p>Info macro</p></div></div>"
-              }
-            },
-            {
-              "type": "macro",
-              "attrs": {
-                "macroId": "d0e309d2-a4bb-4a06-ad6b-584027779d29",
-                "name": "warning",
-                "placeholderUrl": "",
-                "params": {},
-                "macroBodyHtml": "<div class=\"confluence-information-macro confluence-information-macro-warning conf-macro output-block\" data-hasbody=\"true\" data-macro-name=\"info\"><span class=\"aui-icon aui-icon-small aui-iconfont-info confluence-information-macro-icon\"> </span><div class=\"confluence-information-macro-body\"><p>Warning macro</p></div></div>"
-              }
-            },
-            {
-              "type": "macro",
-              "attrs": {
-                "macroId": "04147f42-a985-4873-8af5-67b74c5cc7bd",
-                "name": "column",
-                "placeholderUrl": "",
-                "params": {},
-                "macroBodyHtml": "<div class=\"columnMacro conf-macro output-block\" style=\"width:200px;min-width:200px;max-width:200px;\" data-hasbody=\"true\" data-macro-name=\"column\"><p>This is a column macro with 200px</p></div>"
-              }
-            },
-            {
-              "type": "macro",
-              "attrs": {
-                "macroId": "0280e6e4-46ef-49e9-b9f3-4286aa176eb0",
-                "name": "column",
-                "placeholderUrl": "",
-                "params": {},
-                "macroBodyHtml": "<div class=\"columnMacro conf-macro output-block\" style=\"width:200px;min-width:200px;max-width:200px;\" data-hasbody=\"true\" data-macro-name=\"column\"><p>This is another column macro with 200px</p></div>"
-              }
-            }
-          ]
-        }
-      ]
-    };
+    const confluenceDocument = require('./confluence-macros/document').document;
 
     return (
-      <div>
+      <div className="wiki-content">
         <DACRenderer document={confluenceDocument} />
         <style>
           {infoMacroCss.toString()}
           {columnMacroCss.toString()}
           {statusMacroCss.toString()}
+          {expandMacroCss.toString()}
         </style>
       </div>
       );

@@ -52,7 +52,7 @@
     "@atlaskit/dropdown-menu": "^1.7.0",
     "@atlaskit/droplist": "^3.8.1",
     "@atlaskit/editor-common": "^2.1.0",
-    "@atlaskit/emoji": "30.1.4",
+    "@atlaskit/emoji": "^30.1.4",
     "@atlaskit/icon": "^6.5.2",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/logo": "^3.5.3",

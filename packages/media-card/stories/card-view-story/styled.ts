@@ -20,7 +20,7 @@ export const EditableCardContent = styled.div`
   // Not making the wrapper fancier or center elements in order to have a more realistic scenario
   padding: 20px;
   border: 2px dashed;
-  margin: 10px 10px 50px 10px;
+  margin: 0 10px 50px 10px;
   overflow: hidden;
   background: antiquewhite;
 `;
@@ -35,7 +35,7 @@ export const OptionsWrapper = styled.div`
 `;
 
 export const CardDimensionsWrapper = styled.div`
-  margin: 10px;
+  margin: 10px 10px 20px 10px;
   display: flex;
 
   > div {

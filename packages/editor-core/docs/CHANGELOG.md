@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 56.1.0 (2017-10-26)
+
+* bug fix; fix tables decoration on load if doc contains a table (issues closed: ed-3080) ([1741e0d](https://bitbucket.org/atlassian/atlaskit/commits/1741e0d))
+
+* feature; rename MediaItem prop to stateManagerFallback ([042f83f](https://bitbucket.org/atlassian/atlaskit/commits/042f83f))
+
+
 ## 56.0.2 (2017-10-26)
 
 * bug fix; clear formatting should remove superscript/subscript marks (issues closed: ed-3082) ([347a096](https://bitbucket.org/atlassian/atlaskit/commits/347a096))

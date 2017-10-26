@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.4.1 (2017-10-26)
+
+* bug fix; drawers now close as expected on IE 11 (issues closed: ak-3718) ([069a82b](https://bitbucket.org/atlassian/atlaskit/commits/069a82b))
 ## 26.4.0 (2017-10-25)
 
 * feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))

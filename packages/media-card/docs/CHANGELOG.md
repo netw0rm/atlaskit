@@ -1,5 +1,15 @@
 # @atlaskit/media-card
 
+## 21.5.0 (2017-10-26)
+
+
+
+
+* bug fix; use crop background for LinkCards ([dc4a271](https://bitbucket.org/atlassian/atlaskit/commits/dc4a271))
+
+
+
+* feature; add manual retry to File Cards ([71b1a73](https://bitbucket.org/atlassian/atlaskit/commits/71b1a73))
 ## 21.4.3 (2017-10-26)
 
 

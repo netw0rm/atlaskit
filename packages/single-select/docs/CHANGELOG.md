@@ -1,5 +1,9 @@
 # @atlaskit/single-select
 
+## 3.0.0 (2017-10-26)
+
+* breaking; If your item.content is JSX (instead of a string) then you must also supply the new item.label ([9d61a1b](https://bitbucket.org/atlassian/atlaskit/commits/9d61a1b))
+* breaking; select items with JSX content now behave correctly (issues closed: ak-3505) ([9d61a1b](https://bitbucket.org/atlassian/atlaskit/commits/9d61a1b))
 ## 2.0.5 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

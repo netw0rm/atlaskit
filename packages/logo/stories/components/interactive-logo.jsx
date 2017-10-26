@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import * as logos from '../../src';
+import { akColorB200, akColorN300, akColorN700, akColorB400 } from '@atlaskit/util-shared-styles';
 
 const Centered = styled.div`
   display: flex;
@@ -28,9 +28,11 @@ const sizeRange = (Logo, collapseTo, colorPresetProps) => (
 );
 
 const LogoParent = styled.div`
-  border-left: 1px dotted ${akColorN300};
-  border-right: 1px dotted ${akColorN300};
+  border-left: 1px dotted black;
+  border-right: 1px dotted black;
 `;
+
+const collapseToValues = [null, 'icon', 'type'];
 
 const colorPresets = [
   {
@@ -51,8 +53,17 @@ const colorPresets = [
     iconGradientStart: akColorB400,
     iconGradientStop: akColorB200,
   },
+  {
+    textColor: 'orange',
+    iconColor: 'royalblue',
+  },
+  {
+    textColor: 'rgb(60, 160, 180)',
+    iconColor: 'rgb(100, 190, 60)',
+    iconGradientStart: 'rgb(50, 100, 50)',
+    iconGradientStop: 'rgb(100, 190, 60)',
+  },
 ];
-const collapseToValues = [null, 'icon', 'type'];
 
 export default class InteractiveLogo extends PureComponent {
   state = {
@@ -71,6 +82,7 @@ export default class InteractiveLogo extends PureComponent {
   render() {
     const collapseTo = collapseToValues[this.state.collapseToIndex];
     const colorPreset = colorPresets[this.state.colorIndex];
+
     return (
       <div style={{ color: akColorN300 }}>
         <ButtonGroup>

@@ -355,7 +355,7 @@ storiesOf(name, module)
           <strong>Note:</strong> loading options are
           <strong> only available on the stateless component </strong>
           as the stateful counterpart currently is not capable
-          of handling back-end requests to fetch new options/items.
+          of handling back-end requests to fetch new items/options.
         </p>
       </Description>
       {InitialLoading}

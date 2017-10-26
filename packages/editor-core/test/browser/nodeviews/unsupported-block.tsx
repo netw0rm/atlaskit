@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import ReactUnsupportedBlockNode from '../../../src/nodeviews/ui/unsupported-block';
+import { ReactUnsupportedBlockNode } from '../../../src/nodeviews';
 
 describe('unsupportedBlock - React component', () => {
   it('should return a node of type div', () => {

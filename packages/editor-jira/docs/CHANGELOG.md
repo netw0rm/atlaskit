@@ -1,5 +1,11 @@
 # @atlaskit/editor-jira
 
+## 21.0.3 (2017-10-25)
+
+* bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))
+## 21.0.2 (2017-10-24)
+
+* bug fix; use latest editor-core ([d31dbca](https://bitbucket.org/atlassian/atlaskit/commits/d31dbca))
 ## 21.0.1 (2017-10-24)
 
 * bug fix; bump editor-jira to use latest new editor-common (issues closed: ed-3053) ([17106d0](https://bitbucket.org/atlassian/atlaskit/commits/17106d0))

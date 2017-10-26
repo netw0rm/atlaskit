@@ -5,7 +5,7 @@ import { CardDimensions } from '@atlaskit/media-card';
 import { ImageResizeMode } from '@atlaskit/media-core';
 import { EventHandlers } from '../../../ui/Renderer';
 import ProviderFactory from '../../../providerFactory';
-import UIMedia from '../../../ui/Media';
+import MediaItem from '../../../ui/Media/MediaItem';
 import { Appearance } from '../../../ui/Media/MediaComponent';
 
 export interface MediaProps {
@@ -33,7 +33,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
     } = this.props;
 
     return (
-      <UIMedia
+      <MediaItem
         id={id}
         type={type}
         collection={collection}

@@ -94,6 +94,8 @@ export default class EditorActions {
       // If rawValue is instance of Node we convert it to JSON and re-create children,
       // so we get completely new document instead of changing the one that was passed to us
       jsonDocument = rawValue.toJSON();
+    } else if (typeof rawValue === 'object') {
+      jsonDocument = rawValue;
     }
 
     const content = (jsonDocument.content || []).map(child => schema.nodeFromJSON(child));

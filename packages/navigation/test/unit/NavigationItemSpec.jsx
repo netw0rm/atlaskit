@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdownItem as Item } from '@atlaskit/dropdown-menu';
+import Item from '@atlaskit/item';
 import { ThemeProvider } from 'styled-components';
 import Navigation from '../../src/components/js/Navigation';
 import NavigationItem from '../../src/components/js/NavigationItem';

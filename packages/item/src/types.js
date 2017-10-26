@@ -1,6 +1,7 @@
 // @flow
 
 type Color = string;
+export type ItemId = string;
 
 type ItemState = {|
   background: Color,

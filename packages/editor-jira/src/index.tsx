@@ -10,8 +10,6 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { createJIRASchema } from '@atlaskit/editor-common';
-
 import {
   AnalyticsHandler,
   analyticsService,
@@ -60,6 +58,8 @@ import {
   // transformers
   JIRATransformer,
   JSONTransformer,
+
+  createJIRASchema,
 } from '@atlaskit/editor-core';
 
 import { MentionProvider } from '@atlaskit/mention';

@@ -129,9 +129,8 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       );
     }
     const dataURI = thumbnailUrl || '';
-    const isCropped = !isHorizontal;
 
-    return <Thumbnail appearance={appearance} crop={isCropped} key="thumbnail" dataURI={dataURI} onError={this.thumbnailError} />;
+    return <Thumbnail appearance={appearance} key="thumbnail" dataURI={dataURI} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {

@@ -12,6 +12,7 @@ import { Title,
  DescriptionPlaceholder,
  Icon
 } from '../../../src/links/cardGenericView/styled';
+import {ImageViewWrapper} from '../../../src/utils/mediaImage/styled';
 
 describe('LinkCardGenericView', () => {
   const title = 'Hello world';
@@ -99,5 +100,11 @@ describe('LinkCardGenericView', () => {
     const card = mount(<LinkCardGenericView errorMessage={errorMessage} onRetry={onRetry} title={title} linkUrl={linkUrl} />);
 
     expect(card.find(Button).prop('onClick')).toEqual(onRetry);
+  });
+
+  it('should use "crop" sizing for link image', () => {
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
+
+    expect(card.find(ImageViewWrapper).prop('isCropped')).toBeTruthy();
   });
 });

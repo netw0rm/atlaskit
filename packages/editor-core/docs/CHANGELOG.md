@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 56.1.0 (2017-10-26)
+
+* bug fix; fix tables decoration on load if doc contains a table (issues closed: ed-3080) ([1741e0d](https://bitbucket.org/atlassian/atlaskit/commits/1741e0d))
+
+* feature; rename MediaItem prop to stateManagerFallback ([042f83f](https://bitbucket.org/atlassian/atlaskit/commits/042f83f))
+
+
+## 56.0.2 (2017-10-26)
+
+* bug fix; clear formatting should remove superscript/subscript marks (issues closed: ed-3082) ([347a096](https://bitbucket.org/atlassian/atlaskit/commits/347a096))
+* bug fix; bump editor-core to same version as editor-jira to fix tests ([6f023fa](https://bitbucket.org/atlassian/atlaskit/commits/6f023fa))
+* bug fix; bump @atlaskit/editor-core to use mediapicker v10 (issues closed: ed-3083) ([330935a](https://bitbucket.org/atlassian/atlaskit/commits/330935a))
+* bug fix; bump @atlaskit/emoji to the latest to get mediapicker dependency to v10 ([1d4a404](https://bitbucket.org/atlassian/atlaskit/commits/1d4a404))
+* bug fix; show UnsupportedBlock when renderDocument throws exception (issues closed: ed-3061) ([a3f6266](https://bitbucket.org/atlassian/atlaskit/commits/a3f6266))
+## 56.0.1 (2017-10-25)
+
+* bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))
 ## 56.0.0 (2017-10-24)
 
 * breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))

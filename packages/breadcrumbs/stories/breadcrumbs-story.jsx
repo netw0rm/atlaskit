@@ -183,7 +183,7 @@ storiesOf(name, module)
         <Breadcrumbs>
           <BreadcrumbsItem
             truncationWidth={200}
-            text="some very long text to be truncated"
+            text="some very very long text to be truncated"
             iconBefore={icon1}
           />
           <BreadcrumbsItem text="some other text" iconBefore={icon2} />

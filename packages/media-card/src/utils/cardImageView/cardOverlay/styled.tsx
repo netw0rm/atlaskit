@@ -1,7 +1,11 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import {rgba, centerX, easeOutCubic, borderRadius, size, transition, ellipsis, absolute, antialiased} from '../../../styles';
-import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
+import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400, akColorB300 } from '@atlaskit/util-shared-styles';
+
+export interface OverlayProps {
+  hasError: boolean;
+}
 
 export const TickBox = styled.div`
   ${size(14)}
@@ -39,6 +43,20 @@ export const Overlay = styled.div`
   transition: .3s background ${easeOutCubic}, .3s border-color;
   padding: 16px;
 
+  ${({hasError}: OverlayProps) => {
+    if (hasError) {
+      return `
+        cursor: default;
+
+        &:hover {
+          background: transparent;
+        }
+      `;
+    }
+
+    return '';
+  }}
+
   &:hover, &.active {
     .top-row {
       .title {
@@ -58,7 +76,7 @@ export const Overlay = styled.div`
   }
 
   &:not(.persistent) {
-    &:hover {
+    &:not(.error):hover {
       background-color: ${rgba(akColorN900, 0.06)};
     }
 
@@ -231,18 +249,21 @@ export const ErrorMessage = styled.div`
 
 export const Retry = styled.div`
   ${antialiased}
-  position: absolute;
   box-sizing: border-box;
-  padding: 0 7px 7px 0;
-  bottom: 0;
-  width: 100%;
+  margin-left: 5px;
   font-weight: bold;
   color: ${akColorB400};
   font-size: 12px;
-  line-height: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: ${akColorB300};
+  }
+`;
+
+export const ErrorWrapper = styled.div`
+  display: flex;
 `;
 
 export const TitleWrapper = styled.div`

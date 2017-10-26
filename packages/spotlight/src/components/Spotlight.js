@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/sort-comp, react/no-multi-comp */
 import React, { Component } from 'react';
-import { FocusScope, withRenderTarget } from '@atlaskit/layer-manager';
+import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
@@ -104,7 +104,7 @@ class Spotlight extends Component {
     const size = dialogWidth || (target ? 'small' : 'medium');
 
     const dialog = (
-      <FocusScope>
+      <FocusLock>
         <Dialog
           appearance={appearance}
           size={size}
@@ -116,7 +116,7 @@ class Spotlight extends Component {
           </DialogBody>
           {footer}
         </Dialog>
-      </FocusScope>
+      </FocusLock>
     );
 
     return (
@@ -145,7 +145,7 @@ export default withScrollMeasurements(
   withRenderTarget(
     {
       target: 'spotlight',
-      wrapWithTransitionGroup: false,
+      withTransitionGroup: false,
     },
     Spotlight
   )

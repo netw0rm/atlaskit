@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {shallow, ShallowWrapper} from 'enzyme';
+import {shallow, ShallowWrapper, mount} from 'enzyme';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
@@ -9,6 +9,7 @@ import {FileDetails, UrlPreview} from '@atlaskit/media-core';
 
 import {CardEvent} from '../../src';
 import {MediaCard, MediaCardProps, MediaCardState} from '../../src/root/mediaCard';
+import {CardOverlay} from '../../src/utils/cardImageView/cardOverlay';
 
 const createNoopProvider = () => ({
   observable: () => Observable.create(() => {/*do nothing*/})
@@ -304,6 +305,16 @@ describe('MediaCard', () => {
       expect(element.prop('metadata')).toEqual(successResponse);
     });
 
-  });
+    it('should pass down "onRetry" prop when an error occurs', () => {
+      const provider = {
+        observable: () => Observable.throw(new Error('some error'))
+      };
+      const element = mount(
+        <MediaCard provider={provider} />
+      );
+      const instance = element.instance() as MediaCard;
 
+      expect(element.find(CardOverlay).prop('onRetry')).toEqual(instance['onRetry']);
+    });
+  });
 });

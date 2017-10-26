@@ -1,23 +1,19 @@
 // @flow
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import tabbable from 'tabbable';
 import rafSchedule from 'raf-schd';
+import { ScrollLock } from '@atlaskit/layer-manager';
 
 import Footer from './Footer';
 import Header from './Header';
-import ScrollLock from './ScrollLock';
 
 import type {
   AppearanceType,
   ChildrenType,
   ComponentType,
-  ElementType,
   FunctionType,
   KeyboardOrMouseEvent,
 } from '../types';
-import * as focusScope from '../utils/focus-scope';
-import * as focusStore from '../utils/focus-store';
 import { Body, keylineHeight, Wrapper } from '../styled/Content';
 
 function getInitialState() {
@@ -41,19 +37,9 @@ type Props = {
   */
   appearance?: AppearanceType,
   /**
-    Boolean OR Function indicating which element to focus when the component mounts
-    TRUE will automatically find the first "tabbable" element within the modal
-    Providing a function should return the element you want to focus
-  */
-  autoFocus?: boolean | FunctionType,
-  /**
     Content of the modal
   */
   children?: ChildrenType,
-  /**
-    HTMLElement representing the dialog, used for focus scope bounds
-  */
-  dialogNode: ElementType,
   /**
     Component to render the header of the modal.
   */
@@ -70,6 +56,10 @@ type Props = {
     Function that will be called when the modal changes position in the stack.
   */
   onStackChange?: (number) => void,
+  /**
+    Whether or not the body content should scroll
+  */
+  shouldScroll?: boolean,
   /**
     Boolean indicating if pressing the `esc` key should close the modal
   */
@@ -109,7 +99,6 @@ export default class Content extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this._hideElement = document.getElementById(this.context.appId);
 
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('keyup', this.handleKeyUp, false);
@@ -119,11 +108,6 @@ export default class Content extends Component {
       this.scrollContainer.addEventListener('scroll', this.determineKeylines, false);
       this.determineKeylines();
     }
-
-    focusStore.storeFocus();
-    this.initialiseFocus();
-
-    if (this._hideElement) this._hideElement.setAttribute('aria-hidden', true);
   }
   componentWillReceiveProps(nextProps) {
     const { stackIndex } = this.props;
@@ -142,47 +126,6 @@ export default class Content extends Component {
     if (this.scrollContainer) {
       window.removeEventListener('resize', this.determineKeylines, false);
       this.scrollContainer.removeEventListener('scroll', this.determineKeylines, false);
-    }
-
-    if (this._hideElement) this._hideElement.removeAttribute('aria-hidden');
-
-    focusScope.unscopeFocus();
-
-    // wait one tick to restore focus; element may still be transitioning
-    setTimeout(() => focusStore.restoreFocus());
-  }
-
-  setTabbableElements = (dialogNode) => {
-    const tabbableElements = tabbable(dialogNode);
-
-    if (tabbableElements.length) {
-      this.setState({ tabbableElements });
-    }
-  }
-  initialiseFocus() {
-    const { autoFocus } = this.props;
-
-    if (!this._isMounted) return;
-
-    const { dialogNode } = this.props;
-    const hasFocusFunc = typeof autoFocus === 'function';
-    const focusFirstAvailable = autoFocus && !hasFocusFunc;
-
-    this.setTabbableElements(dialogNode);
-
-    focusScope.scopeFocus(dialogNode, focusFirstAvailable);
-
-    if (hasFocusFunc) {
-      const focusTarget = autoFocus();
-
-      // DOCS: we've been given a focusTarget so assume it should work, and
-      // if not we should warn the consumer
-      if (!focusTarget || typeof focusTarget.focus !== 'function') {
-        console.warn('Invalid `autoFocus` provided:', focusTarget); // eslint-disable-line no-console
-        return;
-      }
-
-      focusTarget.focus();
     }
   }
 
@@ -217,40 +160,19 @@ export default class Content extends Component {
       case 'Escape':
         if (shouldCloseOnEscapePress) onClose();
         break;
-      case 'Tab':
-        this.handleTabLoop(event);
-        break;
       default:
     }
   }
   handleStackChange = (stackIndex) => {
-    const { dialogNode, onStackChange } = this.props;
-    const node = stackIndex === 0 ? null : dialogNode;
-
-    focusScope.unscopeFocus(node);
+    const { onStackChange } = this.props;
 
     if (onStackChange) onStackChange(stackIndex);
-  }
-  handleTabLoop = (event) => {
-    const { tabbableElements: nodes } = this.state;
-    const { target, shiftKey } = event;
-
-    const first = nodes[0];
-    const last = nodes[nodes.length - 1];
-
-    if (target === last && !shiftKey) {
-      first.focus();
-      event.preventDefault();
-    } else if (target === first && shiftKey) {
-      last.focus();
-      event.preventDefault();
-    }
   }
 
   render() {
     const {
-      actions, appearance, children, footer,
-      header, heading, onClose, isChromeless,
+      actions, appearance, children, footer, header, heading, onClose,
+      isChromeless, shouldScroll,
     } = this.props;
     const { showFooterKeyline, showHeaderKeyline } = this.state;
 
@@ -262,6 +184,7 @@ export default class Content extends Component {
         </Wrapper>
       );
     }
+
     return (
       <Wrapper>
         <Header
@@ -271,7 +194,7 @@ export default class Content extends Component {
           onClose={onClose}
           showKeyline={showHeaderKeyline}
         />
-        <Body innerRef={this.getScrollContainer}>
+        <Body innerRef={this.getScrollContainer} shouldScroll={shouldScroll}>
           {children}
         </Body>
         <Footer

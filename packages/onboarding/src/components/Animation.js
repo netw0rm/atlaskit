@@ -28,7 +28,7 @@ type Props = {
     exited?: {},
   },
 };
-const DefaultProps = {
+const defaultProps = {
   component: 'div',
 };
 
@@ -89,7 +89,7 @@ function Animation({
     </Transition>
   );
 }
-Animation.defaultProps = DefaultProps;
+Animation.defaultProps = defaultProps;
 
 // FADE
 // ==============================
@@ -97,7 +97,7 @@ Animation.defaultProps = DefaultProps;
 export const Fade = props => (
   <Animation
     styleDefault={{
-      transition: `opacity ${duration / 2}ms`,
+      transition: 'opacity 200ms',
     }}
     transition={{
       entering: { opacity: 0 },

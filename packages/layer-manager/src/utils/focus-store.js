@@ -20,10 +20,11 @@ exports.restoreFocus = function restoreFocus() {
   if (!storedElements.length) return;
 
   try {
-    storedElements[storedElements.length - 1].focus();
+    const target = storedElements[storedElements.length - 1];
+    target.focus();
   } catch (err) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(err); // eslint-disable-line no-console
+      console.error(err); // eslint-disable-line no-console
     }
   }
 

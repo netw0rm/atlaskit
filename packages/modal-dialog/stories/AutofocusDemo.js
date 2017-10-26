@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Lorem from 'react-lorem-component';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import ModalDialog from '../src';
 
@@ -23,7 +22,6 @@ export default class ModalDemo extends PureComponent {
         onClose={this.close}
         {...props}
       >
-        <Lorem count="1" />
         {children}
       </ModalDialog>
     );
@@ -51,16 +49,23 @@ export default class ModalDemo extends PureComponent {
 
         {isOpen === 'root' && (
           <StubDialog autoFocus heading="Boolean on dialog">
+            <p>The first {'"tabbable"'} element will be focused.</p>
             <button>I am focused!</button>
+            <button>I am NOT focused</button>
           </StubDialog>
         )}
         {isOpen === 'node' && (
-          <StubDialog heading="Boolean on child">
-            <input autoFocus defaultValue="I am focused!" />
+          <StubDialog autoFocus={false} heading="Boolean on child">
+            <p>The second button has <code>autoFocus</code> attr, and will be focused.</p>
+            <button>I am NOT focused</button>
+            <button autoFocus>I am focused!</button>
           </StubDialog>
         )}
         {isOpen === 'ref' && (
           <StubDialog autoFocus={() => this.focusTarget} heading="Function returns a ref">
+            <p>The second button sets a reference to itself on the class and passes that node
+            to the modal, which calls the focus method on it once mounted.</p>
+            <button>I am NOT focused</button>
             <button ref={r => (this.focusTarget = r)}>I am focused!</button>
           </StubDialog>
         )}

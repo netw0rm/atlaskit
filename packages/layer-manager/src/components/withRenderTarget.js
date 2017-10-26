@@ -7,8 +7,8 @@ import Portal from './Portal';
 import type { ComponentType } from '../types';
 
 export default function withRenderTarget(
-  { target, wrapWithTransitionGroup }:
-  { target: string, wrapWithTransitionGroup: boolean },
+  { target, withTransitionGroup }:
+  { target: string, withTransitionGroup: boolean },
   WrappedComponent: ComponentType
 ) {
   return class extends Component {
@@ -21,7 +21,7 @@ export default function withRenderTarget(
       const GatewayOrPortal = gatewayRegistry ? Gateway : Portal;
 
       return (
-        <GatewayOrPortal into={target} wrapWithTransitionGroup={wrapWithTransitionGroup}>
+        <GatewayOrPortal into={target} withTransitionGroup={withTransitionGroup}>
           <WrappedComponent {...this.props} />
         </GatewayOrPortal>
       );

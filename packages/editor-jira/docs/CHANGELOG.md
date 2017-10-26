@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira
 
+## 21.0.5 (2017-10-26)
+
+* bug fix; remove redundant dependency ([08a529d](https://bitbucket.org/atlassian/atlaskit/commits/08a529d))
 ## 21.0.4 (2017-10-26)
 
 

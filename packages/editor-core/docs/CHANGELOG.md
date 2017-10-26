@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 56.2.0 (2017-10-26)
+
+* bug fix; replaceDocument should allow JSON object as an argument ([a60e106](https://bitbucket.org/atlassian/atlaskit/commits/a60e106))
+* bug fix; autoformatting should not work inside inline code marks. (issues closed: #ed-2815) ([2b5fe26](https://bitbucket.org/atlassian/atlaskit/commits/2b5fe26))
+
+
+* bug fix; reenabled ToolbarEmojiPicker tests (issues closed: fs-1449) ([7fae478](https://bitbucket.org/atlassian/atlaskit/commits/7fae478))
+* feature; fs-951 clicking escape when the picker is open closes it (issues closed: fs-951) ([2ed2d44](https://bitbucket.org/atlassian/atlaskit/commits/2ed2d44))
 ## 56.1.0 (2017-10-26)
 
 * bug fix; fix tables decoration on load if doc contains a table (issues closed: ed-3080) ([1741e0d](https://bitbucket.org/atlassian/atlaskit/commits/1741e0d))

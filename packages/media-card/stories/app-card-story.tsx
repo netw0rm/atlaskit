@@ -181,7 +181,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Open',
     target: {
-      app: 'some.app1',
+      receiver: 'some.receiver1',
       key: 'test.target.open'
     },
     parameters: {
@@ -191,7 +191,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Join',
     target: {
-      app: 'some.app2',
+      receiver: 'some.receiver2',
       key: 'test.target.join'
     },
     parameters: {
@@ -201,7 +201,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Reply',
     target: {
-      app: 'some.app3',
+      receiver: 'some.receiver3',
       key: 'test.target.reply'
     },
     parameters: {
@@ -261,7 +261,7 @@ const confluenceActivityModel: AppCardModel = {
     {
       title: 'Reply',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.reply'
       },
       parameters: {
@@ -271,7 +271,7 @@ const confluenceActivityModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -295,7 +295,7 @@ const jiraIssueModel: AppCardModel = {
     {
       title: 'View',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.view'
       },
       parameters: {
@@ -305,7 +305,7 @@ const jiraIssueModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -329,7 +329,7 @@ const dropboxFileModel: AppCardModel = {
     {
       title: 'Download',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.download'
       },
       parameters: {
@@ -339,7 +339,7 @@ const dropboxFileModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -366,7 +366,7 @@ const trelloBoardModel: AppCardModel = {
     {
       title: 'Join',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.join'
       },
       parameters: {
@@ -376,7 +376,7 @@ const trelloBoardModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -410,7 +410,7 @@ const trelloCardModel: AppCardModel = {
     {
       title: 'Open',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.open'
       },
       parameters: {
@@ -420,7 +420,7 @@ const trelloCardModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {

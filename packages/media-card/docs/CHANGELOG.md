@@ -1,5 +1,10 @@
 # @atlaskit/media-card
 
+## 21.4.3 (2017-10-26)
+
+
+* bug fix; remove inline-block from default wrapper to stop it shrink by default, but instead t ([a41ebc7](https://bitbucket.org/atlassian/atlaskit/commits/a41ebc7))
+
 ## 21.4.2 (2017-10-22)
 
 * bug fix; update media card styled-component dependency ([2e6ec2e](https://bitbucket.org/atlassian/atlaskit/commits/2e6ec2e))

@@ -12,7 +12,7 @@ export default class BlanketDemo extends PureComponent {
   render() {
     return (
       <div>
-        Click the button to open the blanket. Click the blanket to dismiss it.
+        Click the button to open the blanket - Click the blanket to dismiss it.
         <button onClick={() => this.setState({ isBlanketVisible: true })}>Show blanket</button>
         <Blanket
           onBlanketClicked={() => this.setState({ isBlanketVisible: false })}

@@ -29,7 +29,6 @@ export const Wrapper = styled.div`
     }
 
     return `
-      display: inline-block;
       ${getWrapperHeight}
       ${getWrapperWidth}
     `;

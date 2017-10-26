@@ -7,7 +7,7 @@ export default (
       <GridColumn medium={8}>
         <h1>Main heading</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis voluptatum
+          Lorem ipsum dolor sit amet and consectetur adipisicing elit. Blanditiis voluptatum
           perspiciatis doloribus dignissimos accusamus commodi, nobis ut, error iusto,
           quas vitae nesciunt consequatur possimus labore! Mollitia est quis minima asperiores.
         </p>

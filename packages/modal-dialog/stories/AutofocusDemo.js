@@ -46,7 +46,7 @@ export default class ModalDemo extends PureComponent {
         <p>When boolean applied to the dialog, we search inside for tabbable elements.</p>
         <p>
           The autoFocus property must be a function rather the node itself so its
-          evaluated at the right time, and ensures a node is returned.
+          evaluated at the right time and ensures a node is returned.
         </p>
 
         {isOpen === 'root' && (

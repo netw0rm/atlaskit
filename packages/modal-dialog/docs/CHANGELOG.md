@@ -1,5 +1,8 @@
 # @atlaskit/modal-dialog
 
+## 3.1.3 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
 ## 3.1.2 (2017-10-22)
 
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))

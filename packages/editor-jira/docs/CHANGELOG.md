@@ -1,5 +1,9 @@
 # @atlaskit/editor-jira
 
+## 21.0.4 (2017-10-26)
+
+
+* bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))
 ## 21.0.3 (2017-10-25)
 
 * bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))

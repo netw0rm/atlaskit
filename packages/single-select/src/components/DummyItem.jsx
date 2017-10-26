@@ -8,8 +8,12 @@ import { PureComponent } from 'react';
 
 export default class DummyItem extends PureComponent {
   static propTypes = {
+    /** Can be either a string or JSX. If using JSX, the label property must be supplied to
+      * allow the component to filter properly. */
     content: PropTypes.node,
     description: PropTypes.string,
+    /** Label is only needed if content is JSX. */
+    label: PropTypes.string,
     tooltipDescription: PropTypes.string,
     tooltipPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

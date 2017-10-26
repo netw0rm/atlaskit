@@ -34,13 +34,26 @@ const appearances = {
 const itemShape = DummyItem.propTypes;
 const groupShape = DummyGroup.propTypes;
 
+export const getTextContent = (item) => {
+  if (Object.keys(item).length === 0 || typeof item.content === 'string') {
+    return item.content || '';
+  }
+
+  if (!item.label && process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line no-console
+    console.warn('SingleSelect: item.label must be set when item.content is JSX');
+  }
+
+  return item.label || '';
+};
+
 const isMatched = (item, matchingValue) => {
   const filterValues = item.filterValues;
   if (filterValues && filterValues.length > 0) {
     return filterValues.some(value => value.toLowerCase().indexOf(matchingValue) > -1);
   }
 
-  return item.content.toLowerCase().indexOf(matchingValue) > -1;
+  return getTextContent(item).toLowerCase().indexOf(matchingValue) > -1;
 };
 
 export default class StatelessSelect extends PureComponent {
@@ -207,7 +220,7 @@ export default class StatelessSelect extends PureComponent {
 
   getNextNativeSearchItem = (items, key, currentIndex, isSecondStep) => {
     let res = items.find((item, index) => {
-      const content = item.content && item.content.toLowerCase();
+      const content = getTextContent(item).toLowerCase();
       if (index <= currentIndex) {
         return false;
       }
@@ -248,7 +261,7 @@ export default class StatelessSelect extends PureComponent {
     const trimmedValue = value && value.toLowerCase().trim();
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(item => selectedItem.value !== item.value);
-    const selectedItemContent = selectedItem.content && selectedItem.content.toLowerCase();
+    const selectedItemContent = getTextContent(selectedItem).toLowerCase();
 
     return trimmedValue && (trimmedValue !== selectedItemContent) ?
       unselectedItems.filter(item => isMatched(item, trimmedValue)) :
@@ -391,7 +404,7 @@ export default class StatelessSelect extends PureComponent {
     if (item && !item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
       this.props.onSelected(item);
-      this.props.onFilterChange(item.content);
+      this.props.onFilterChange(getTextContent(item));
       this.setState({ focusedItemIndex: undefined });
     }
   }
@@ -439,7 +452,7 @@ export default class StatelessSelect extends PureComponent {
     disabled={item.isDisabled}
     key={itemIndex}
     value={item.value}
-  >{item.content}</option>))
+  >{getTextContent(item)}</option>))
 
   renderOptGroups = groups => groups.map((group, groupIndex) =>
     <optgroup
@@ -528,21 +541,20 @@ export default class StatelessSelect extends PureComponent {
                 innerRef={ref => (this.triggerNode = ref)}
               >
                 {
-                  !hasAutocomplete || isDisabled ?
+                  !hasAutocomplete || isDisabled ? (
                     <Content>
                       {
-                        selectedItem.elemBefore ?
-                          <ElemBefore>
-                            {selectedItem.elemBefore}
-                          </ElemBefore> :
-                          null
+                        selectedItem.elemBefore
+                          ? <ElemBefore>{selectedItem.elemBefore}</ElemBefore>
+                          : null
                       }
                       {
-                        selectedItem.content ?
-                          <span>{selectedItem.content}</span> :
-                          <Placeholder>{placeholder}</Placeholder>
+                        selectedItem.content
+                          ? <span>{getTextContent(selectedItem)}</span>
+                          : <Placeholder>{placeholder}</Placeholder>
                       }
-                    </Content> :
+                    </Content>
+                  ) : (
                     <AutocompleteWrapper>
                       <AutocompleteInput
                         autoComplete="off"
@@ -554,11 +566,13 @@ export default class StatelessSelect extends PureComponent {
                         disabled={isDisabled}
                       />
                     </AutocompleteWrapper>
+                  )
                 }
                 <Expand>
-                  {isOpen && isLoading ?
-                    <Spinner /> :
-                    <ExpandIcon label="" />
+                  {
+                    isOpen && isLoading
+                      ? <Spinner />
+                      : <ExpandIcon label="" />
                   }
                 </Expand>
               </Trigger>

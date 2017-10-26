@@ -46,7 +46,7 @@ storiesOf(name, module)
   ))
   .add('with an empty trigger', () => (
     <StoryContainer>
-      <p>A dropdown with an empty button</p>
+      <p>A dropdown with an empty button.</p>
       <DropdownWrapper>
         <DropdownMenu triggerType="button">
           {simpleDropdownItems}

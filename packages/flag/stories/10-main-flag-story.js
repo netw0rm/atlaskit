@@ -29,7 +29,7 @@ storiesOf(name, module)
   .addCodeExampleStory('Flag dumb component without FlagGroup', () => (
     <StoryPadding>
       <p>
-        This is the Flag component. It is a dumb component as it does not maintain any state, and
+        This is the Flag component. It is a dumb component as it does not maintain any state and
         all animations are managed by the parent FlagGroup component.
       </p>
       <div>

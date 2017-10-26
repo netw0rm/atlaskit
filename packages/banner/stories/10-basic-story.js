@@ -23,7 +23,7 @@ storiesOf(name, module)
       icon={<WarningIcon label="Warning icon" />}
       isOpen
     >
-      Your JIRA OnDemand license is about to expire. There are two days left to renew your license
+      Your JIRA OnDemand license is about to expire. There are two days left to renew your license.
     </Banner>
   ))
   .addCodeExampleStory('with icon and text overflow', () => (

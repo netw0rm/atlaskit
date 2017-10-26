@@ -34,7 +34,7 @@ export interface CardImageViewProps {
   icon?: string;
 
   actions?: Array<CardAction>;
-  onRetry?: CardAction;
+  onRetry?: () => void;
   resizeMode?: ImageResizeMode;
 }
 

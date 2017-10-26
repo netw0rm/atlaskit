@@ -9,17 +9,26 @@ const sizes = {
 };
 
 const Wrapper = styled.span`
-  display: inline-block;
-  height: ${p => sizes[p.size]}px;
   color: ${p => p.iconColor};
+  display: inline-block;
   fill: ${p => p.textColor};
+  height: ${p => sizes[p.size]}px;
+  position: relative;
   stop-color: currentColor;
+  user-select: none;
 
   > svg {
-    display: inline-block;
-    height: inherit;
     fill: inherit;
-    vertical-align: top;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  > canvas {
+    display: block;
+    height: 100%;
+    visibility: hidden;
   }
   svg, defs, linearGradient { stop-color: inherit; }
 `;

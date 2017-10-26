@@ -9,7 +9,7 @@ const Centered = styled.div`
   align-items: center;
 `;
 
-const sizes = ['small', 'medium', 'large', 'xlarge'];
+const sizes = ['xsmall', 'small', 'medium', 'large', 'xlarge'];
 
 const sizeRange = (Logo, collapseTo, colorPresetProps) => (
   <Centered>

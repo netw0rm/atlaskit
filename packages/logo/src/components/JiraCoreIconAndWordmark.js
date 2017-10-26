@@ -6,7 +6,8 @@ import Wrapper from '../styled/Wrapper';
 
 const svg = ({ iconGradientStart, iconGradientStop }) => {
   const id = uid();
-  return `<svg viewBox="0 0 123 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  return `<canvas height="32" width="123"></canvas>
+  <svg viewBox="0 0 123 32" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient x1="17.1933086%" y1="20.0326493%" x2="88.2434944%" y2="53.9179104%" id="${id}">
         <stop stop-color="${iconGradientStart}" ${(iconGradientStart === 'inherit') ? 'stop-opacity="0.4"' : ''} offset="17%"></stop>

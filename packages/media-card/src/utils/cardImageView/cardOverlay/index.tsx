@@ -21,7 +21,8 @@ import {
   Retry,
   TitleWrapper,
   Subtitle,
-  Metadata
+  Metadata,
+  ErrorWrapper
 } from './styled';
 
 export interface CardOverlayProps {
@@ -34,7 +35,7 @@ export interface CardOverlayProps {
   persistent: boolean;
 
   error?: string;
-  onRetry?: CardAction;
+  onRetry?: () => void;
 
   actions?: Array<CardAction>;
   icon?: string;
@@ -73,7 +74,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     const menuTriggerColor = !persistent ? 'white' : undefined;
 
     return (
-      <Overlay className={this.wrapperClassNames}>
+      <Overlay hasError={!!error} className={this.wrapperClassNames}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
@@ -111,28 +112,20 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   bottomLeftColumn() {
-    if (this.props.error) {
-      const onRetry = this.props.onRetry;
+    const {error, onRetry} = this.props;
 
+    if (error) {
       if (!onRetry) {
         return <ErrorIcon />;
       }
 
-      const retryMessage = onRetry.label || 'Try again';
-      const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
-        // We need to prevent the card's onClick to be invoked
-        event.stopPropagation();
-        event.preventDefault();
-        onRetry.handler(undefined, event.nativeEvent);
-      };
-
       return (
-        <div>
+        <ErrorWrapper>
           <ErrorIcon />
-          <Retry className={'retry'}>
-            <span onClick={retryHandler}>{retryMessage}</span>
+          <Retry onClick={onRetry}>
+            Retry
           </Retry>
-        </div>
+        </ErrorWrapper>
       );
     } else {
       const {mediaType, subtitle, icon} = this.props;

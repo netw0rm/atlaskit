@@ -735,6 +735,7 @@ describe('Media plugin', () => {
       if (eventName === 'dragover') {
         event.dataTransfer = {
           types: [type || 'Files'],
+          files: [],
           effectAllowed: 'move'
         };
       }

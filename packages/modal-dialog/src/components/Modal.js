@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { withRenderTarget } from '@atlaskit/layer-manager';
+import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
 
 import type {
@@ -14,16 +14,24 @@ import type {
 import { WIDTH_ENUM } from '../shared-variables';
 
 import {
-  Positioner as StyledPositioner,
+  PositionerAbsolute,
+  PositionerRelative,
   Dialog,
   FillScreen as StyledFillScreen,
 } from '../styled/Modal';
 import { Fade, SlideUp } from './Animation';
 import Content from './Content';
 
-// Rename transition components for easier parsing of the render method
-const Positioner = props => <SlideUp component={StyledPositioner} {...props} />;
+// NOTE: Rename transition components so it's easier to read the render method
 const FillScreen = props => <Fade component={StyledFillScreen} {...props} />;
+// eslint-disable-next-line react/prop-types
+const Positioner = ({ scrollBehavior, ...props }) => {
+  const component = scrollBehavior === 'inside'
+    ? PositionerAbsolute
+    : PositionerRelative;
+
+  return <SlideUp component={component} {...props} />;
+};
 
 function getScrollDistance() {
   return window.pageYOffset
@@ -81,10 +89,6 @@ type Props = {
   */
   height?: number | string,
   /**
-    Internal property for animation, provided by react-transition-group
-  */
-  in?: boolean,
-  /**
     Function that will be called to initiate the exit transition.
   */
   onClose: (KeyboardOrMouseEvent) => void,
@@ -100,6 +104,11 @@ type Props = {
     Function that will be called when the modal changes position in the stack.
   */
   onStackChange?: (number) => void,
+  /**
+    Where scroll behaviour should originate. When `inside` scroll only occurs
+    on the modal body. When `outside` the entire modal will scroll within the viewport.
+  */
+  scrollBehavior?: 'inside' | 'outside',
   /**
     Boolean indicating if clicking the overlay should close the modal.
   */
@@ -129,6 +138,7 @@ class Modal extends Component {
   props: Props // eslint-disable-line react/sort-comp
   static defaultProps = {
     autoFocus: false,
+    scrollBehavior: 'inside',
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
     isChromeless: false,
@@ -150,19 +160,25 @@ class Modal extends Component {
   handleDialogClick = (event) => {
     event.stopPropagation();
   }
+  handleExit = () => {
+    // disable FocusLock *before* unmount. animation may end after a new modal
+    // has gained focus, breaking focus behaviour.
+    this.setState({ isExiting: true });
+  }
 
   render() {
+    // NOTE: `in` is NOT public API, thus not documented (provided by react-transition-group)
     const {
+      in: transitionIn, // eslint-disable-line react/prop-types
       actions, appearance, autoFocus, children, footer, header, height,
-      in: inProp, onClose, onCloseComplete, onOpenComplete, onStackChange,
-      shouldCloseOnEscapePress, isChromeless, stackIndex, heading, width,
+      isChromeless, onClose, onCloseComplete, onOpenComplete, onStackChange,
+      shouldCloseOnEscapePress, stackIndex, heading, width, scrollBehavior,
     } = this.props;
 
-    const { dialogNode, scrollDistance } = this.state;
+    const { isExiting, scrollDistance } = this.state;
 
     const isBackground = stackIndex > 0;
-    const dialogRefIsReady = Boolean(dialogNode);
-    const transitionProps = { in: inProp, stackIndex };
+    const transitionProps = { in: transitionIn, stackIndex };
 
     // If a custom width (number or percentage) is supplied, set inline style
     // otherwise allow styled component to consume as named prop
@@ -173,6 +189,7 @@ class Modal extends Component {
       <FillScreen
         {...transitionProps}
         aria-hidden={isBackground}
+        onExit={this.handleExit}
         scrollDistance={scrollDistance}
       >
         <Blanket
@@ -184,27 +201,25 @@ class Modal extends Component {
           onClick={this.handleOverlayClick}
           onEntered={onOpenComplete}
           onExited={onCloseComplete}
+          scrollBehavior={scrollBehavior}
           widthName={widthName}
           widthValue={widthValue}
         >
-          <Dialog
-            heightValue={height}
-            innerRef={this.getDialogNode}
-            onClick={this.handleDialogClick}
-            isChromeless={isChromeless}
-            role="dialog"
-            tabIndex="-1"
-          >
-            {dialogRefIsReady && (
+          <FocusLock enabled={stackIndex === 0 && !isExiting} autoFocus={autoFocus}>
+            <Dialog
+              heightValue={height}
+              onClick={this.handleDialogClick}
+              role="dialog"
+              tabIndex="-1"
+            >
               <Content
                 actions={actions}
                 appearance={appearance}
-                autoFocus={autoFocus}
-                dialogNode={dialogNode}
                 footer={footer}
                 heading={heading}
                 header={header}
                 onClose={onClose}
+                shouldScroll={scrollBehavior === 'inside'}
                 shouldCloseOnEscapePress={shouldCloseOnEscapePress}
                 onStackChange={onStackChange}
                 isChromeless={isChromeless}
@@ -212,8 +227,8 @@ class Modal extends Component {
               >
                 {children}
               </Content>
-            )}
-          </Dialog>
+            </Dialog>
+          </FocusLock>
         </Positioner>
       </FillScreen>
     );
@@ -222,5 +237,5 @@ class Modal extends Component {
 
 export default withRenderTarget({
   target: 'modal',
-  wrapWithTransitionGroup: true,
+  withTransitionGroup: true,
 }, Modal);

@@ -5,8 +5,9 @@ const narrowWidth = 45 * gridSize;
 const wideWidth = 75 * gridSize;
 
 export const boxShadowSpread = gridSize * 4;
-export const transformTransition = 'transform 220ms cubic-bezier(0.15, 1, 0.3, 1)';
-export const widthTransition = 'width 220ms cubic-bezier(0.15, 1, 0.3, 1)';
+export const animationSpeed = '220ms';
+export const animationTiming = 'cubic-bezier(0.15, 1, 0.3, 1)';
+export const widthTransition = `width ${animationSpeed} ${animationTiming}`;
 export const drawerBackIconSize = gridSize * 5;
 
 export const widths = {

@@ -8,7 +8,7 @@ import type { ChildrenType } from '../types';
 type Props = {
   children: ChildrenType,
   theme: Object,
-  wrapWithTransitionGroup: boolean,
+  withTransitionGroup: boolean,
 };
 
 const FirstChild = ({ children }) => Children.toArray(children)[0] || null;
@@ -56,11 +56,11 @@ class Portal extends Component {
     );
   }
   renderChildren = (children) => {
-    const { theme, wrapWithTransitionGroup } = this.props;
+    const { theme, withTransitionGroup } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
-        {wrapWithTransitionGroup ? (
+        {withTransitionGroup ? (
           <TransitionGroup component={FirstChild}>
             {children}
           </TransitionGroup>

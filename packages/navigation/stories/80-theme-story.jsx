@@ -17,6 +17,7 @@ import { containerOpenWidth, containerClosedWidth, gridSize } from '../src/share
 import PresetPicker from './components/PresetPicker';
 import ThemePreview from './components/ThemePreview';
 import nucleusLogo from './nucleus.png';
+import SelectableDropdownMenu from './components/SelectableDropdownMenu';
 
 // eslint-disable-next-line react/prop-types
 const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) => (
@@ -100,7 +101,7 @@ const ExampleGlobalNavigation = ({ theme }) => (
     createIcon={<AddIcon label="Create icon" secondaryColor="inherit" />}
     searchIcon={<SearchIcon label="Search icon" secondaryColor="inherit" />}
     secondaryActions={[
-      <AkDropdownMenu
+      <SelectableDropdownMenu
         appearance="tall"
         items={[
           {
@@ -133,12 +134,12 @@ const ExampleGlobalNavigation = ({ theme }) => (
           },
         ]}
         position="right bottom"
-      >
-        <AkGlobalItem>
+      >{isOpen => (
+        <AkGlobalItem isSelected={isOpen}>
           <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
         </AkGlobalItem>
-      </AkDropdownMenu>,
-      <AkDropdownMenu
+      )}</SelectableDropdownMenu>,
+      <SelectableDropdownMenu
         appearance="tall"
         items={[
           {
@@ -153,11 +154,11 @@ const ExampleGlobalNavigation = ({ theme }) => (
             ],
           },
         ]}
-      >
-        <AkGlobalItem>
+      >{isOpen => (
+        <AkGlobalItem isSelected={isOpen}>
           <AkAvatar size="small" />
         </AkGlobalItem>
-      </AkDropdownMenu>,
+      )}</SelectableDropdownMenu>,
     ]}
   />
 );

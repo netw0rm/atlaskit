@@ -19,7 +19,7 @@ export const link: MarkSpec = {
   excludes: COLOR,
   group: LINK,
   attrs: {
-    href: {}
+    href: { default: '' }
   },
   inclusive: false,
   parseDOM: [

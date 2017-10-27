@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.2.1 (2017-10-27)
+
+* bug fix; fix typing ([cbaa440](https://bitbucket.org/atlassian/atlaskit/commits/cbaa440))
 ## 4.2.0 (2017-10-23)
 
 

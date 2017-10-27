@@ -32,7 +32,7 @@ import { nodeViewFactory } from '../../nodeviews';
 import { ReactMediaGroupNode, ReactMediaNode, ReactSingleImageNode } from '../../nodeviews';
 import keymapPlugin from './keymap';
 import { insertLinks, URLInfo, detectLinkRangesInSteps } from './media-links';
-import { insertFile } from './media-files';
+import { insertFiles } from './media-files';
 import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
@@ -172,15 +172,17 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  insertFile = (mediaState: MediaState): void => {
+  insertFiles = (mediaStates: MediaState[]): void => {
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
     }
 
-    this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    mediaStates.forEach((mediaState) => {
+      this.stateManager.subscribe(mediaState.id, this.handleMediaState);
+    });
 
-    insertFile(this.view, mediaState, collection);
+    insertFiles(this.view, mediaStates, collection);
 
     const { view } = this;
     if (!view.hasFocus()) {
@@ -417,17 +419,21 @@ export class MediaPluginState {
       pickers.push(this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager, errorReporter));
       pickers.push(this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager, errorReporter));
 
-      pickers.forEach(picker => picker.onNewMedia(this.insertFile));
+      pickers.forEach(picker => picker.onNewMedia(this.insertFiles));
       this.dropzonePicker.onDrag(this.handleDrag);
 
-      this.binaryPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.binary', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.popupPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.popup', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.clipboardPicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.paste', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
-      this.dropzonePicker.onNewMedia(e => analyticsService.trackEvent('atlassian.editor.media.file.drop', e.fileMimeType ? { fileMimeType: e.fileMimeType } : {}));
+      this.binaryPicker.onNewMedia(states => this.trackMediaEvent('atlassian.editor.media.file.binary', states));
+      this.popupPicker.onNewMedia(states => this.trackMediaEvent('atlassian.editor.media.file.popup', states));
+      this.clipboardPicker.onNewMedia(states => this.trackMediaEvent('atlassian.editor.media.file.paste', states));
+      this.dropzonePicker.onNewMedia(states => this.trackMediaEvent('atlassian.editor.media.file.drop', states));
     }
 
     // set new upload params for the pickers
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
+  }
+
+  private trackMediaEvent(eventName: string, states: MediaState[]) {
+    states.forEach((state) => analyticsService.trackEvent(eventName, state.fileMimeType ? { fileMimeType: state.fileMimeType } : {}));
   }
 
   private collectionFromProvider(): string | undefined {

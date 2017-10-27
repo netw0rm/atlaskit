@@ -155,13 +155,13 @@ describe('Media PickerFacade', () => {
         mockPicker.__triggerEvent('uploads-start', {
           files: [testFileData]
         });
-        expect(cb.calledWithExactly({
+        expect(cb.calledWithExactly([{
           id: testTemporaryFileId,
           status: 'uploading',
           fileName: testFileData.name,
           fileSize: testFileData.size,
           fileMimeType: testFileData.type,
-        })).to.eq(true);
+        }])).to.eq(true);
       });
 
       it('for upload progress', () => {

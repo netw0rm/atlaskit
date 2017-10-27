@@ -32,7 +32,7 @@ export type PickerType = keyof MediaPickerComponents;
 
 export default class PickerFacade {
   private picker: MediaPickerComponent;
-  private onStartListeners: Array<(state: MediaState) => void> = [];
+  private onStartListeners: Array<(states: MediaState[]) => void> = [];
   private onDragListeners: Array<Function> = [];
   private errorReporter: ErrorReportingHandler;
   private uploadParams: UploadParams;
@@ -171,7 +171,7 @@ export default class PickerFacade {
     }
   }
 
-  onNewMedia(cb: (state: MediaState) => any) {
+  onNewMedia(cb: (states: MediaState[]) => any) {
     this.onStartListeners.push(cb);
   }
 
@@ -193,9 +193,9 @@ export default class PickerFacade {
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
 
-  private handleUploadStart = (file) => {
+  private newMediaState = (file): MediaState => {
     const tempId = `temporary:${file.id}`;
-    const state = {
+    const state: MediaState = {
       id: tempId,
       status: 'uploading',
       fileName: file.name as string,
@@ -203,12 +203,14 @@ export default class PickerFacade {
       fileMimeType: file.type as string,
     };
 
-    this.stateManager.updateState(tempId, state as MediaState);
-    this.onStartListeners.forEach(cb => cb.call(cb, state));
+    this.stateManager.updateState(tempId, state);
+    return state;
   }
 
   private handleUploadsStart = (payload: UploadsStartPayload) => {
-    payload.files.forEach(file => this.handleUploadStart(file));
+    const states = payload.files.map(file => this.newMediaState(file));
+
+    this.onStartListeners.forEach(cb => cb.call(cb, states));
   }
 
   private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {

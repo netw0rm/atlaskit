@@ -24,7 +24,7 @@ export interface Range {
   end: number;
 }
 
-export const insertFile = (view: EditorView, mediaState: MediaState, collection?: string): void => {
+export const insertFiles = (view: EditorView, mediaStates: MediaState[], collection?: string): void => {
   const { state, dispatch } = view;
   const { $to } = state.selection;
   const { tr, schema } = state;
@@ -40,7 +40,7 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
     return;
   }
 
-  const node = createMediaFileNode(mediaState, collection, media);
+  const nodes = mediaStates.map((mediaState) => createMediaFileNode(mediaState, collection, media));
 
   // insert a paragraph after if reach the end of doc
   // and there is no media group in the front or selection is a non media block node
@@ -55,11 +55,11 @@ export const insertFile = (view: EditorView, mediaState: MediaState, collection?
   const deleteRange = findDeleteRange(state);
 
   if (!deleteRange) {
-    tr.insert(mediaInsertPos, node);
+    tr.insert(mediaInsertPos, nodes);
   } else if (mediaInsertPos <= deleteRange.start) {
-    tr.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, node);
+    tr.deleteRange(deleteRange.start, deleteRange.end).insert(mediaInsertPos, nodes);
   } else {
-    tr.insert(mediaInsertPos, node).deleteRange(deleteRange.start, deleteRange.end);
+    tr.insert(mediaInsertPos, nodes).deleteRange(deleteRange.start, deleteRange.end);
   }
 
   dispatch(tr);

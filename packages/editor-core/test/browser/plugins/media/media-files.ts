@@ -21,7 +21,7 @@ import {
   taskList,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
-import { insertFile } from '../../../../src/plugins/media/media-files';
+import { insertFiles } from '../../../../src/plugins/media/media-files';
 import { setNodeSelection} from '../../../../src/utils';
 
 chai.use(chaiPlugin);
@@ -39,7 +39,7 @@ describe('media-links', () => {
     it('inserts media node into the document after current paragraph node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -54,7 +54,7 @@ describe('media-links', () => {
     it('puts cursor to the next paragraph after inserting media node', () => {
       const { editorView } = editor(doc(p('text{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       const paragraphNodeSize = p('text').nodeSize;
       const mediaGroupNodeSize = mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })).nodeSize;
@@ -68,7 +68,7 @@ describe('media-links', () => {
         mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
       ));
 
-      insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: 'mock2', status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -90,7 +90,7 @@ describe('media-links', () => {
         p('{<>}text'),
       ));
 
-      insertFile(editorView, { id: 'mock2', status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: 'mock2', status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -110,7 +110,7 @@ describe('media-links', () => {
       it('splits text', () => {
         const { editorView } = editor(doc(p('te{<>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -128,7 +128,7 @@ describe('media-links', () => {
         const paragraphNodeSize = p('te').nodeSize;
         const mediaGroupNodeSize = mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })).nodeSize;
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
         expect(editorView.state.selection.from).to.eq(paragraphNodeSize + mediaGroupNodeSize + 1);
         editorView.destroy();
@@ -139,7 +139,7 @@ describe('media-links', () => {
       it('preserves heading', () => {
         const { editorView } = editor(doc(h1('te{<>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -158,7 +158,7 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}x{>}t')));
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -177,7 +177,7 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(p('{<}text{>}')));
 
-              insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+              insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -193,7 +193,7 @@ describe('media-links', () => {
             it('replaces selection with a media node', () => {
               const { editorView } = editor(doc(h1('{<}text{>}')));
 
-              insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+              insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -215,7 +215,7 @@ describe('media-links', () => {
               mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
             ));
 
-            insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+            insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
@@ -236,7 +236,7 @@ describe('media-links', () => {
         it('replaces selection with a media node', () => {
           const { editorView } = editor(doc(p('te{<}xt{>}')));
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -254,7 +254,7 @@ describe('media-links', () => {
             mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })),
           ));
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -276,7 +276,7 @@ describe('media-links', () => {
           const { editorView, sel } = editor(doc(p('text{<>}', mention({ id: 'foo1', text: '@bar1' }))));
           setNodeSelection(editorView, sel);
 
-          insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -297,7 +297,7 @@ describe('media-links', () => {
           ));
           setNodeSelection(editorView, 1);
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
           expect(editorView.state.doc).to.deep.equal(
             doc(
@@ -318,7 +318,7 @@ describe('media-links', () => {
           ));
           setNodeSelection(editorView, 0);
 
-          insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+          insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
           const mediaGroupNodeSize = mediaGroup(
             media({ id: 'new one', type: 'file', collection: testCollectionName }),
             media({ id: temporaryFileId, type: 'file', collection: testCollectionName })
@@ -335,7 +335,7 @@ describe('media-links', () => {
             const { editorView } = editor(doc(hr));
             setNodeSelection(editorView, 0);
 
-            insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+            insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
             expect(editorView.state.doc).to.deep.equal(
               doc(
@@ -357,7 +357,7 @@ describe('media-links', () => {
               const mediaGroupNodeSize = mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -380,7 +380,7 @@ describe('media-links', () => {
               ));
               setNodeSelection(editorView, 0);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -404,7 +404,7 @@ describe('media-links', () => {
               const mediaGroupNodeSize = mediaGroup(media({ id: temporaryFileId, type: 'file', collection: testCollectionName })).nodeSize;
               setNodeSelection(editorView, mediaGroupNodeSize);
 
-              insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+              insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
               expect(editorView.state.doc).to.deep.equal(
                 doc(
@@ -426,7 +426,7 @@ describe('media-links', () => {
       it('replaces selection with a media node', () => {
         const { editorView } = editor(doc(p('{<}te{>}xt')));
 
-        insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+        insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -443,7 +443,7 @@ describe('media-links', () => {
           p('{<}te{>}xt'),
         ));
 
-        insertFile(editorView, { id: 'new one', status: 'uploading' }, testCollectionName);
+        insertFiles(editorView, [{ id: 'new one', status: 'uploading' }], testCollectionName);
 
         expect(editorView.state.doc).to.deep.equal(
           doc(
@@ -461,7 +461,7 @@ describe('media-links', () => {
   it(`should insert media node into the document after current heading node`, () => {
     const { editorView } = editor(doc(h1('text{<>}')));
 
-    insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+    insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -476,7 +476,7 @@ describe('media-links', () => {
   it(`should insert media node into the document after current codeblock node`, () => {
     const { editorView } = editor(doc(code_block()('text{<>}')));
 
-    insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+    insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
     expect(editorView.state.doc).to.deep.equal(
       doc(
@@ -493,7 +493,7 @@ describe('media-links', () => {
     it('replaces empty paragraph with the media grroup in an empty document', () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -507,7 +507,7 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty code block', () => {
       const { editorView } = editor(doc(code_block()('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -522,7 +522,7 @@ describe('media-links', () => {
     it('apends media group to empty paragraph in an empty heading', () => {
       const { editorView } = editor(doc(h1('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -540,7 +540,7 @@ describe('media-links', () => {
         p('{<>}'),
       ));
 
-      insertFile(editorView, { id: 'another one', status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: 'another one', status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -557,7 +557,7 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
       const { editorView } = editor(doc(p('{<>}'), p()));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -571,7 +571,7 @@ describe('media-links', () => {
     it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
       const { editorView } = editor(doc(p(), p('{<>}')));
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
@@ -586,13 +586,12 @@ describe('media-links', () => {
     it('should insert all media nodes on the same line', async () => {
       const { editorView } = editor(doc(p('{<>}')));
 
-      insertFile(editorView, { id: 'mock2' }, testCollectionName);
-      insertFile(editorView, { id: 'mock1' }, testCollectionName);
+      insertFiles(editorView, [{ id: 'mock2' }, { id: 'mock1' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(doc(
         mediaGroup(
-          media({ id: 'mock1', type: 'file', collection: testCollectionName }),
           media({ id: 'mock2', type: 'file', collection: testCollectionName }),
+          media({ id: 'mock1', type: 'file', collection: testCollectionName }),
         ),
         p(),
       ));
@@ -605,7 +604,7 @@ describe('media-links', () => {
       const itemDoc = doc(taskList(taskItem('{<>}')));
       const { editorView } = editor(itemDoc);
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(itemDoc);
       editorView.destroy();
@@ -615,7 +614,7 @@ describe('media-links', () => {
       const decisionDoc = doc(decisionList(decisionItem('{<>}')));
       const { editorView } = editor(decisionDoc);
 
-      insertFile(editorView, { id: temporaryFileId, status: 'uploading' }, testCollectionName);
+      insertFiles(editorView, [{ id: temporaryFileId, status: 'uploading' }], testCollectionName);
 
       expect(editorView.state.doc).to.deep.equal(decisionDoc);
       editorView.destroy();

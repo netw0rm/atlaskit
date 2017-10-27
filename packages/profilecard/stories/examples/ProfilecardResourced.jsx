@@ -1,25 +1,19 @@
-import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import AkProfilecardResourced from '@atlaskit/profilecard';
+import React, { PureComponent } from 'react';
+
+import AkProfilecardResourced from '../../src';
 import { getMockProfileClient } from '../util';
 
-const mockClient = getMockProfileClient(10, 5000);
-
-function randomNumber() {
-  return Math.floor(Math.random() * 10).toString();
-}
-
-const newRandomUser = (oldUserid) => {
-  const rnd = randomNumber();
-
-  if (rnd !== oldUserid) {
-    return rnd;
-  }
-
-  return newRandomUser(oldUserid);
-};
+const mockClient = getMockProfileClient(10, 10000);
 
 const handleActionClick = title => action(`${title} button clicked`);
+const analytics = (key, props) => {
+  const propsString = Object.keys(props).map(item =>
+    `${item}: ${props[item]}`
+  ).join('; ');
+
+  action(`analytics: ${key} { ${propsString} }`)();
+};
 
 const actions = [
   {
@@ -27,29 +21,41 @@ const actions = [
     id: 'view-profile',
     callback: handleActionClick('View profile'),
   },
+  {
+    label: 'Chat with',
+    id: 'hidden-button',
+    callback: handleActionClick('Chat with'),
+    shouldRender: (profile) => profile.presence === 'available',
+  },
 ];
 
-class AkProfilecardRandomById extends PureComponent {
+class AkProfilecardMultipleIds extends PureComponent {
   state = {
-    userId: randomNumber(),
+    userId: '1',
     isVisible: true,
   };
 
-  reloadRandomCardData = () => {
+  getNextUserId = () => {
+    const currentId = parseInt(this.state.userId, 10);
+    const nextId = currentId > 3 ? 1 : currentId + 1;
+    return String(nextId);
+  }
+
+  getPreviousUserId = () => {
+    const currentId = parseInt(this.state.userId, 10);
+    const nextId = currentId > 1 ? currentId - 1 : 4;
+    return String(nextId);
+  }
+
+  reloadCardData = (id) => {
     this.setState({
-      userId: newRandomUser(this.state.userId),
+      userId: id,
     });
   }
 
   toggleVisibility() {
     this.setState({
       isVisible: !this.state.isVisible,
-    });
-  }
-
-  reloadCardData = (id) => {
-    this.setState({
-      userId: id,
     });
   }
 
@@ -60,31 +66,44 @@ class AkProfilecardRandomById extends PureComponent {
   render() {
     return (
       <div>
-        <button onClick={() => this.toggleVisibility()}>{this.state.isVisible ? 'Unmount' : 'Mount'}</button>
+        {
+          this.state.isVisible ? <AkProfilecardResourced
+            actions={actions}
+            cloudId="DUMMY-CLOUDID"
+            resourceClient={mockClient}
+            userId={this.state.userId}
+            analytics={analytics}
+          /> : null
+        }
+        <br />
+        Card #{this.state.userId}
+        <br />
+        <p>
+          Second action is set to only appear when presence equals available.
+          <br />
+          See card number 3.
+        </p>
+        <br />
+        <button onClick={() => this.toggleVisibility()}>{
+          this.state.isVisible ? 'Unmount' : 'Mount'
+        }</button>
         &nbsp;
-        <button onClick={() => this.reloadRandomCardData()}>Set random user id</button>
+        <button
+          onClick={() => this.reloadCardData(this.getPreviousUserId())}
+        >Previous profile</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData('404')}>Set card data to error</button>
+        <button
+          onClick={() => this.reloadCardData(this.getNextUserId())}
+        >Next profile</button>
+        &nbsp;
+        <button onClick={() => this.reloadCardData('error:default')}>Set card data to error</button>
         &nbsp;
         <button onClick={this.flushStoryCache}>Delete cache</button>
-        <br /><br />
-        {
-          this.state.isVisible ?
-            <AkProfilecardResourced
-              actions={actions}
-              cloudId="DUMMY-CLOUDID"
-              resourceClient={mockClient}
-              userId={this.state.userId}
-              analytics={(eventname, attributes) => {
-                action(eventname)(JSON.stringify(attributes));
-              }}
-            /> : null
-        }
       </div>
     );
   }
 }
 
 export default (
-  <AkProfilecardRandomById />
+  <AkProfilecardMultipleIds />
 );

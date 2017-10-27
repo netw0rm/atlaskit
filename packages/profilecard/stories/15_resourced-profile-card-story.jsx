@@ -5,7 +5,7 @@ import { name } from '../package.json';
 import AkProfilecardResourced from '../src';
 import { getMockProfileClient } from './util';
 
-const mockClient = getMockProfileClient(10, 5000);
+const mockClient = getMockProfileClient(10, 10000);
 
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };
@@ -25,6 +25,12 @@ const actions = [
     id: 'view-profile',
     callback: handleActionClick('View profile'),
   },
+  {
+    label: 'Chat with',
+    id: 'hidden-button',
+    callback: handleActionClick('Chat with'),
+    shouldRender: (profile) => profile.presence === 'available',
+  },
 ];
 
 class AkProfilecardMultiProfiles extends PureComponent {
@@ -32,6 +38,18 @@ class AkProfilecardMultiProfiles extends PureComponent {
     userId: '1',
     isVisible: true,
   };
+
+  getNextUserId = () => {
+    const currentId = parseInt(this.state.userId, 10);
+    const nextId = currentId > 3 ? 1 : currentId + 1;
+    return String(nextId);
+  }
+
+  getPreviousUserId = () => {
+    const currentId = parseInt(this.state.userId, 10);
+    const nextId = currentId > 1 ? currentId - 1 : 4;
+    return String(nextId);
+  }
 
   reloadCardData = (id) => {
     this.setState({
@@ -61,12 +79,26 @@ class AkProfilecardMultiProfiles extends PureComponent {
             analytics={analytics}
           /> : null
         }
-        <br /><br />
+        <br />
+        Card #{this.state.userId}
+        <br />
+        <p>
+          Second action is set to only appear when presence equals available.
+          <br />
+          See card number 3.
+        </p>
+        <br />
         <button onClick={() => this.toggleVisibility()}>{
           this.state.isVisible ? 'Unmount' : 'Mount'
         }</button>
         &nbsp;
-        <button onClick={() => this.reloadCardData('1')}>Set card data to profile</button>
+        <button
+          onClick={() => this.reloadCardData(this.getPreviousUserId())}
+        >Previous profile</button>
+        &nbsp;
+        <button
+          onClick={() => this.reloadCardData(this.getNextUserId())}
+        >Next profile</button>
         &nbsp;
         <button onClick={() => this.reloadCardData('error:default')}>Set card data to error</button>
         &nbsp;

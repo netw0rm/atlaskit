@@ -46,6 +46,11 @@ const buildUserQuery = (cloudId, userId) => ({
   query: `query User($userId: String!, $cloudId: String!) {
     User: CloudUser(userId: $userId, cloudId: $cloudId) {
       id,
+      isCurrentUser,
+      censoredStatus: isCensored,
+      active: isActive,
+      isBot,
+      isNotMentionable,
       fullName,
       nickname,
       email,

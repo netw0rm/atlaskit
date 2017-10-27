@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import { colors } from '@atlaskit/theme';
-
 /* eslint-disable import/no-duplicates, import/first */
 import Example from './Example';
 import exampleSrc from '!raw-loader!./Example';

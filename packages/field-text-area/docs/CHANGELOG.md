@@ -1,5 +1,10 @@
 # @atlaskit/field-text-area
 
+## 1.0.2 (2017-10-27)
+
+* bug fix; rebuild stories ([7aa7337](https://bitbucket.org/atlassian/atlaskit/commits/7aa7337))
+
+
 ## 1.0.1 (2017-10-22)
 
 * bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))

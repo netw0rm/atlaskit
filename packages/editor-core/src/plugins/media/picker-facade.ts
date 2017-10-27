@@ -11,13 +11,13 @@ import {
   Clipboard,
   BinaryUploader,
 
-  UploadStartPayload,
   UploadPreviewUpdatePayload,
   UploadStatusUpdatePayload,
   UploadProcessingPayload,
   UploadFinalizeReadyPayload,
   UploadErrorPayload,
   UploadEndPayload,
+  UploadsStartPayload,
 } from 'mediapicker';
 import {
   ContextConfig,
@@ -73,7 +73,7 @@ export default class PickerFacade {
       componentConfig
     );
 
-    picker.on('upload-start', this.handleUploadStart);
+    picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-status-update', this.handleUploadStatusUpdate);
     picker.on('upload-processing', this.handleUploadProcessing);
@@ -98,7 +98,7 @@ export default class PickerFacade {
       return;
     }
 
-    picker.removeAllListeners('upload-start');
+    picker.removeAllListeners('uploads-start');
     picker.removeAllListeners('upload-preview-update');
     picker.removeAllListeners('upload-status-update');
     picker.removeAllListeners('upload-processing');
@@ -193,8 +193,7 @@ export default class PickerFacade {
     return dropzoneContainer ? dropzoneContainer : document.body;
   }
 
-  private handleUploadStart = (event: UploadStartPayload) => {
-    const { file } = event;
+  private handleUploadStart = (file) => {
     const tempId = `temporary:${file.id}`;
     const state = {
       id: tempId,
@@ -206,6 +205,10 @@ export default class PickerFacade {
 
     this.stateManager.updateState(tempId, state as MediaState);
     this.onStartListeners.forEach(cb => cb.call(cb, state));
+  }
+
+  private handleUploadsStart = (payload: UploadsStartPayload) => {
+    payload.files.forEach(file => this.handleUploadStart(file));
   }
 
   private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {

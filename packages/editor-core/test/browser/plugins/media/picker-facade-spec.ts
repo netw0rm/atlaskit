@@ -87,7 +87,7 @@ describe('Media PickerFacade', () => {
 
     it('listens to picker events', () => {
       expect(Object.keys(mockPicker.listeners).length).to.equal(7);
-      expect(mockPicker.listeners).to.have.property('upload-start');
+      expect(mockPicker.listeners).to.have.property('uploads-start');
       expect(mockPicker.listeners).to.have.property('upload-preview-update');
       expect(mockPicker.listeners).to.have.property('upload-status-update');
       expect(mockPicker.listeners).to.have.property('upload-processing');
@@ -136,8 +136,8 @@ describe('Media PickerFacade', () => {
       it('for upload starting', () => {
         const cb = sinon.spy();
         stateManager!.subscribe(testTemporaryFileId, cb);
-        mockPicker.__triggerEvent('upload-start', {
-          file: testFileData
+        mockPicker.__triggerEvent('uploads-start', {
+          files: [testFileData]
         });
         expect(cb.calledWithExactly({
           id: testTemporaryFileId,
@@ -152,8 +152,8 @@ describe('Media PickerFacade', () => {
         const cb = sinon.spy();
         facade!.onNewMedia(cb);
 
-        mockPicker.__triggerEvent('upload-start', {
-          file: testFileData
+        mockPicker.__triggerEvent('uploads-start', {
+          files: [testFileData]
         });
         expect(cb.calledWithExactly({
           id: testTemporaryFileId,

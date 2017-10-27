@@ -1,8 +1,10 @@
 import { EditorState, Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import { CellSelection, goToNextCell as baseGotoNextCell, TableMap } from 'prosemirror-tables';
 import { stateKey } from './';
 import { createTableNode, isIsolating } from './utils';
 import { analyticsService } from '../../analytics';
+import { resetHoverSelection } from '../../editor/plugins/tables/actions';
 
 export interface Command {
   (state: EditorState, dispatch?: (tr: Transaction) => void): boolean;
@@ -90,13 +92,13 @@ const paste = (): Command => {
   };
 };
 
-const emptyCells = (): Command => {
+const emptyCells = (view: EditorView): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const pluginState = stateKey.getState(state);
     if (!pluginState.cellSelection) {
       return false;
     }
-    pluginState.resetHoverSelection();
+    resetHoverSelection(view);
     pluginState.emptySelectedCells();
     const { $head: { pos, parentOffset } } = (state.selection as any) as CellSelection;
     const newPos = pos - parentOffset;

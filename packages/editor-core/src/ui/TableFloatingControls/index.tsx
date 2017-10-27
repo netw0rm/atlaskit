@@ -6,6 +6,12 @@ import CornerControls from './CornerControls';
 import ColumnControls from './ColumnControls';
 import RowControls from './RowControls';
 import { Container } from './styles';
+import {
+  hoverColumn,
+  hoverTable,
+  hoverRow,
+  resetHoverSelection
+} from '../../editor/plugins/tables/actions';
 
 export interface Props {
   pluginState: TableState;
@@ -38,16 +44,16 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
 
   handleCornerMouseOver = () => {
     this.setState({ tableHovered: true });
-    this.props.pluginState.hoverTable();
+    hoverTable(this.props.editorView);
   }
 
   handleCornerMouseOut = () => {
     this.setState({ tableHovered: false });
-    this.props.pluginState.resetHoverSelection();
+    resetHoverSelection(this.props.editorView);
   }
 
   render() {
-    const { pluginState } = this.props;
+    const { editorView, pluginState } = this.props;
     const { tableElement } = pluginState;
     if (!tableElement) {
       return null;
@@ -60,6 +66,7 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
         onKeyDown={this.handleKeyDown}
       >
         <CornerControls
+          editorView={editorView}
           tableElement={tableElement}
           isSelected={pluginState.isTableSelected}
           selectTable={pluginState.selectTable}
@@ -69,20 +76,22 @@ export default class TableFloatingControls extends PureComponent<Props, State> {
           onMouseOut={this.handleCornerMouseOut}
         />
         <ColumnControls
+          editorView={editorView}
           tableElement={tableElement}
           isSelected={pluginState.isColumnSelected}
           selectColumn={pluginState.selectColumn}
           insertColumn={pluginState.insertColumn}
-          hoverColumn={pluginState.hoverColumn}
-          resetHoverSelection={pluginState.resetHoverSelection}
+          hoverColumn={hoverColumn}
+          resetHoverSelection={resetHoverSelection}
         />
         <RowControls
+          editorView={editorView}
           tableElement={tableElement}
           isSelected={pluginState.isRowSelected}
           selectRow={pluginState.selectRow}
           insertRow={pluginState.insertRow}
-          hoverRow={pluginState.hoverRow}
-          resetHoverSelection={pluginState.resetHoverSelection}
+          hoverRow={hoverRow}
+          resetHoverSelection={resetHoverSelection}
         />
       </Container>
     );

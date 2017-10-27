@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { toolbarSize } from '../styles';
+import { EditorView } from 'prosemirror-view';
 import {
   CornerContainer,
   CornerButton,
@@ -9,6 +10,7 @@ import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
 
 export interface Props {
+  editorView: EditorView;
   tableElement: HTMLElement;
   isSelected: () => boolean;
   selectTable: () => void;

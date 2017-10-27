@@ -8,18 +8,21 @@ import {
   HeaderButton,
 } from './styles';
 import InsertRowButton from './InsertRowButton';
+import { EditorView } from 'prosemirror-view';
 
 export interface Props {
+  editorView: EditorView;
   tableElement: HTMLElement;
   isSelected: (row: number) => boolean;
   selectRow: (row: number) => void;
   insertRow: (row: number) => void;
-  hoverRow: (row: number) => void;
-  resetHoverSelection: () => void;
+  hoverRow: (row: number, view: EditorView) => void;
+  resetHoverSelection: (view: EditorView) => void;
 }
 
 export default class RowControls extends Component<Props, any> {
   render () {
+    const { editorView } = this.props;
     const tbody = this.props.tableElement.querySelector('tbody')!;
     const rows = tbody.getElementsByTagName('tr');
     const nodes: any = [];
@@ -35,8 +38,8 @@ export default class RowControls extends Component<Props, any> {
           {/* tslint:disable:jsx-no-lambda */}
           <HeaderButton
             onClick={() => this.props.selectRow(i)}
-            onMouseOver={() => this.props.hoverRow(i)}
-            onMouseOut={this.props.resetHoverSelection}
+            onMouseOver={() => this.props.hoverRow(i, editorView)}
+            onMouseOut={() => this.props.resetHoverSelection(editorView)}
           />
           {/* tslint:enable:jsx-no-lambda */}
           <InsertRowButton

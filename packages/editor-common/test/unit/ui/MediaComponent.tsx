@@ -148,7 +148,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     expect(mediaComponent.find(Card).length).to.equal(1);
   });
 
-  context('when appearence is set', () => {
+  describe('when appearence is set', () => {
     it('renders a Card component with the customized appearence', async () => {
       const mediaProvider = getFreshResolvedProvider();
       const mediaComponent = shallow(
@@ -170,7 +170,7 @@ describe('@atlaskit/editor-core/ui/MediaComponent', () => {
     });
   });
 
-  context('when appearence is not set', () => {
+  describe('when appearence is not set', () => {
     it('renders a link Card component with the default appearence', async () => {
       const mediaProvider = getFreshResolvedProvider();
       const mediaComponent = shallow(

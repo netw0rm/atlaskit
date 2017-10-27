@@ -17,6 +17,7 @@
     "build/json-schema": "mkdir -p dist/json-schema/v1 && ../../node_modules/.bin/tsc -p build/json-schema && node ./dist/json-schema-cli/index.js ./src/schema/nodes/doc.ts > ./dist/json-schema/v1/full.json",
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
+    "test:browser": "node --max-old-space-size=4096 ../../node_modules/.bin/karma start ../../build/config/karma/config.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
@@ -38,10 +39,18 @@
     }
   ],
   "dependencies": {
+    "@atlaskit/emoji": "^30.1.1",
+    "@atlaskit/icon": "^6.5.2",
+    "@atlaskit/media-card": "^21.5.0",
+    "@atlaskit/media-core": "^10.2.0",
+    "@atlaskit/mention": "^7.3.4",
+    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/util-shared-styles": "^2.1.0",
     "@types/prosemirror-model": "^0.21.0",
     "@types/prosemirror-schema-basic": "^0.21.0",
     "@types/prosemirror-view": "^0.21.1",
     "ajv": "^4.11.3",
+    "css-color-names": "0.0.4",
     "linkify-it": "^2.0.3",
     "prosemirror-model": "^0.22.0",
     "prosemirror-schema-basic": "^0.22.0",
@@ -50,7 +59,9 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "json-schema-diff-validator": "^0.0.4"
+    "@atlaskit/media-test-helpers": "^8.4.0",
+    "json-schema-diff-validator": "^0.0.4",
+    "sinon": "^2.2.0"
   },
   "repository": {
     "type": "git",

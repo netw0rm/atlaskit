@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import React from 'react';
 import { colors, themed } from '@atlaskit/theme';
 import { getBorderRadius } from './utils';
 
@@ -12,25 +12,37 @@ const getBackgroundColor = (
   : 'transparent'
 );
 
-export const Span = styled.span`
-  background-color: ${getBackgroundColor};
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: ${getBorderRadius};
-  display: flex;
-  flex: 1;
-  height: 100%;
-  width: 100%;
-`;
+// eslint-disable-next-line react/prop-types
+export const Span = ({ children, ...otherProps }) => (
+  <span
+    style={{
+      backgroundColor: getBackgroundColor(otherProps),
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      borderRadius: getBorderRadius(otherProps),
+      display: 'flex',
+      flex: 1,
+      height: '100%',
+      width: '100%',
+      ...otherProps.style,
+    }}
+  >
+    {children}
+  </span>
+);
 
-export const Svg = styled.svg`
-  background-color: ${getBackgroundColor};
-  border-radius: ${getBorderRadius};
-  height: 100%;
-  width: 100%;
-`;
-
-export const HiddenImage = styled.img`
-  visibility: hidden;
-`;
+// eslint-disable-next-line react/prop-types
+export const Svg = ({ children, ...otherProps }) => (
+  <svg
+    style={{
+      backgroundColor: getBackgroundColor(otherProps),
+      borderRadius: getBorderRadius(otherProps),
+      height: '100%',
+      width: '100%',
+    }}
+    {...otherProps}
+  >
+    {children}
+  </svg>
+);

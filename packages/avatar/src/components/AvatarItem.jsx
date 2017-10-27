@@ -5,19 +5,17 @@ import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
 import {
   getBackgroundColor,
-  getStyles,
   Content,
   PrimaryText,
   SecondaryText,
 } from '../styled/AvatarItem';
-import { getProps, getStyledComponent } from '../helpers';
+import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
 import type {
   AvatarClickType,
   ComponentType,
   ElementType,
   FunctionType,
-  StyledComponentType,
 } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -52,31 +50,8 @@ type Props = {
 class AvatarItem extends Component {
   props: Props; // eslint-disable-line react/sort-comp
   node: { blur?: FunctionType, focus?: FunctionType };
-  cache: {
-    button?: ElementType,
-    custom?: ComponentType,
-    link?: ElementType,
-    span?: ElementType,
-  } = {};
 
   static defaultProps = { enableTextTruncate: true }
-
-  getCachedComponent(type: StyledComponentType) {
-    if (!this.cache[type]) {
-      this.cache[type] = getStyledComponent[type](getStyles);
-    }
-    return this.cache[type];
-  }
-  getStyledComponent() {
-    const { component, href, onClick } = this.props;
-    let node = 'span';
-
-    if (component) node = 'custom';
-    else if (href) node = 'link';
-    else if (onClick) node = 'button';
-
-    return this.getCachedComponent(node);
-  }
 
   // expose blur/focus to consumers via ref
   blur = (e: FocusEvent) => {
@@ -107,19 +82,19 @@ class AvatarItem extends Component {
     const props = getProps(this);
 
     // provide element type based on props
-    const Item: any = this.getStyledComponent();
+    const StyledComponent: any = getStyledAvatarItem(this.props);
 
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;
 
     return (
-      <Item innerRef={r => (this.node = r)} {...props}>
+      <StyledComponent innerRef={r => (this.node = r)} {...props}>
         {cloneElement(avatar, { borderColor })}
         <Content truncate={enableTextTruncate}>
           <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
           <SecondaryText truncate={enableTextTruncate}>{secondaryText}</SecondaryText>
         </Content>
-      </Item>
+      </StyledComponent>
     );
   }
 }

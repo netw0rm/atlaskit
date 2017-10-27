@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
-import { HiddenImage, Span, Svg } from '../styled/AvatarImage';
+import { Span, Svg } from '../styled/AvatarImage';
 import type { AppearanceType, SizeType } from '../types';
 
 const ShapeGroup = styled.g`
@@ -11,7 +11,7 @@ const ShapeGroup = styled.g`
     fill: ${themed({ light: colors.N50, dark: colors.DN100 })};
   }
   & g {
-    fill: ${colors.background}
+    fill: ${colors.background};
   }
 `;
 
@@ -53,6 +53,8 @@ type Props = {
   size: SizeType,
 };
 
+let cache = {};
+
 export default class AvatarImage extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
   state = {
@@ -73,20 +75,27 @@ export default class AvatarImage extends PureComponent {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  clearCache = () => {
+    cache = {};
+  }
   handleLoad = (hasError: boolean) => {
     if (this._isMounted) {
       this.setState({ hasError, isLoading: false });
     }
   }
-  handleLoadSuccess = () => this.handleLoad(false)
+  handleLoadSuccess = () => {
+    if (typeof this.props.src === 'string') {
+      cache[this.props.src] = true;
+    }
+    this.handleLoad(false);
+  }
   handleLoadError = () => this.handleLoad(true)
 
   render() {
     const { alt, src, ...props } = this.props;
     const { hasError, isLoading } = this.state;
     const showDefault = !isLoading && (!src || hasError);
-    const spanStyle = src && !isLoading ? { backgroundImage: `url(${src})` } : null;
-
+    const spanStyle = src && (!isLoading || cache[src]) ? { backgroundImage: `url(${src})` } : null;
     return showDefault ? (
       <DefaultImage
         appearance={props.appearance}
@@ -102,12 +111,16 @@ export default class AvatarImage extends PureComponent {
         title={alt}
         {...props}
       >
-        <HiddenImage
-          aria-hidden="true"
-          onLoad={this.handleLoadSuccess}
-          onError={this.handleLoadError}
-          src={src}
-        />
+        {
+          (src && !cache[src]) &&
+            <img
+              aria-hidden="true"
+              onLoad={this.handleLoadSuccess}
+              onError={this.handleLoadError}
+              src={src}
+              style={{ visibility: 'hidden' }}
+            />
+        }
       </Span>
     );
   }

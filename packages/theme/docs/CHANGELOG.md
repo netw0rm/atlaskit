@@ -1,5 +1,10 @@
 # @atlaskit/tag-group
 
+## 2.2.3 (2017-10-27)
+
+
+* bug fix; triggering storybooks ([87e7247](https://bitbucket.org/atlassian/atlaskit/commits/87e7247))
+* bug fix; removed unused dependency on util-shared-styles from the Theme component ([253d8fc](https://bitbucket.org/atlassian/atlaskit/commits/253d8fc))
 ## 2.2.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 56.2.1 (2017-10-27)
+
+* bug fix; fix position of floating hyperlink toolbar. (issues closed: #ed-2427) ([b6f08a9](https://bitbucket.org/atlassian/atlaskit/commits/b6f08a9))
 ## 56.2.0 (2017-10-26)
 
 * bug fix; replaceDocument should allow JSON object as an argument ([a60e106](https://bitbucket.org/atlassian/atlaskit/commits/a60e106))

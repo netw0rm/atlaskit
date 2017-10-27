@@ -55,6 +55,10 @@ type Props = {
 
 let cache = {};
 
+export const clearCache = () => {
+  cache = {};
+};
+
 export default class AvatarImage extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
   state = {
@@ -65,6 +69,7 @@ export default class AvatarImage extends PureComponent {
 
   componentDidMount() {
     this._isMounted = true;
+    this.loadImage();
   }
   // handle case where `src` is modified after mount
   componentWillReceiveProps(nextProps: Props) {
@@ -72,11 +77,19 @@ export default class AvatarImage extends PureComponent {
       this.setState({ isLoading: true });
     }
   }
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.src && this.props.src !== prevProps.src) {
+      this.loadImage();
+    }
+  }
   componentWillUnmount() {
     this._isMounted = false;
   }
-  clearCache = () => {
-    cache = {};
+  loadImage = () => {
+    this._img = new Image();
+    this._img.onload = this.handleLoadSuccess;
+    this._img.onerror = this.handleLoadError;
+    this._img.src = this.props.src;
   }
   handleLoad = (hasError: boolean) => {
     if (this._isMounted) {
@@ -110,18 +123,7 @@ export default class AvatarImage extends PureComponent {
         style={spanStyle}
         title={alt}
         {...props}
-      >
-        {
-          (src && !cache[src]) &&
-            <img
-              aria-hidden="true"
-              onLoad={this.handleLoadSuccess}
-              onError={this.handleLoadError}
-              src={src}
-              style={{ visibility: 'hidden' }}
-            />
-        }
-      </Span>
+      />
     );
   }
 }

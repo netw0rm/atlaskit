@@ -12,8 +12,8 @@ const getBackgroundColor = (
   : 'transparent'
 );
 
-// eslint-disable-next-line react/prop-types
-export const Span = ({ children, ...otherProps }) => (
+// eslint-disable-next-line react/prop-types, no-unused-vars
+export const Span = ({ children, style, isLoading, appearance, ...otherProps }) => (
   <span
     style={{
       backgroundColor: getBackgroundColor(otherProps),
@@ -25,15 +25,16 @@ export const Span = ({ children, ...otherProps }) => (
       flex: 1,
       height: '100%',
       width: '100%',
-      ...otherProps.style,
+      ...style,
     }}
+    {...otherProps}
   >
     {children}
   </span>
 );
 
-// eslint-disable-next-line react/prop-types
-export const Svg = ({ children, ...otherProps }) => (
+// eslint-disable-next-line react/prop-types, no-unused-vars
+export const Svg = ({ children, appearance, ...otherProps }) => (
   <svg
     style={{
       backgroundColor: getBackgroundColor(otherProps),

@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.7 (2017-10-27)
+
+* bug fix; change icon to be unselectable so button content can be copied ([e8c876a](https://bitbucket.org/atlassian/atlaskit/commits/e8c876a))
 ## 5.4.6 (2017-10-27)
 
 * bug fix; updated button props typings ([c7a9c09](https://bitbucket.org/atlassian/atlaskit/commits/c7a9c09))

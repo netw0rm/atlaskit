@@ -1,5 +1,6 @@
 import React from 'react';
 // import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
 import ReactDOMServer from 'react-dom/server';
 
 import { name } from '../../package.json';
@@ -15,6 +16,10 @@ function assertEqual(actual, expected) {
 /* eslint-disable jest/no-disabled-tests */
 describe(name, () => {
   describe('manager', () => {
+    // Added it to avoid bleeding the warnings
+    beforeAll(() => {
+      sinon.stub(console, 'warn');
+    });
     it('should render as a div by default', () => {
       assertEqual(
         <SpotlightManager>

@@ -40,7 +40,9 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   const plugins = getDefaultPluginsList();
 
   if (props.allowTextFormatting) {
-    plugins.push(textFormattingPlugin);
+    const defaults = { subsupscript: true };
+    const options = props.allowTextFormatting === true ? defaults : { ...defaults, ...props.allowTextFormatting };
+    plugins.push(textFormattingPlugin(options));
   }
 
   if (props.allowTextColor) {

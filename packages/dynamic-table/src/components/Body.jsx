@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { ASC, DESC } from '../internal/constants';
+import { getPageRows } from '../internal/helpers';
 import TableRow from './TableRow';
 import props from '../internal/props';
 
@@ -9,8 +10,8 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
 
   const getSortingCellValue = cells =>
     cells.reduce((result, cell, index) => result || (
-        (head.cells[index].key === sortKey) &&
-        (cell.key !== undefined ? cell.key : cell.content)
+      (head.cells[index].key === sortKey) &&
+      (cell.key !== undefined ? cell.key : cell.content)
     ), null);
 
   return rows.sort((a, b) => {
@@ -25,14 +26,34 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
   });
 };
 
-const Body = ({ rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize }) => {
-  const sortedRows = getSortedRows(head, rows, sortKey, sortOrder) || [];
+export default class Body extends PureComponent {
+  static propTypes = {
+    head: props.head,
+    isFixedSize: PropTypes.bool,
+    page: props.isInteger,
+    rows: props.rows,
+    rowsPerPage: props.isInteger,
+    sortKey: props.sortKey,
+    sortOrder: PropTypes.oneOf([ASC, DESC]),
+  };
 
-  return (
-    <tbody>
-      {sortedRows
-        .slice((page - 1) * rowsPerPage, page * rowsPerPage)
-        .map((row, rowIndex) => (
+  render() {
+    const {
+      rows,
+      head,
+      sortKey,
+      sortOrder,
+      rowsPerPage,
+      page,
+      isFixedSize,
+    } = this.props;
+
+    const sortedRows = getSortedRows(head, rows, sortKey, sortOrder) || [];
+    const pageRows = getPageRows(page, sortedRows, rowsPerPage);
+
+    return (
+      <tbody>
+        {pageRows.map((row, rowIndex) => (
           <TableRow
             head={head}
             isFixedSize={isFixedSize}
@@ -40,18 +61,7 @@ const Body = ({ rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize }
             row={row}
           />
         ))}
-    </tbody>
-  );
-};
-
-Body.propTypes = {
-  head: props.head,
-  isFixedSize: PropTypes.bool,
-  page: props.isInteger,
-  rows: props.rows,
-  rowsPerPage: props.isInteger,
-  sortKey: props.sortKey,
-  sortOrder: PropTypes.oneOf([ASC, DESC]),
-};
-
-export default Body;
+      </tbody>
+    );
+  }
+}

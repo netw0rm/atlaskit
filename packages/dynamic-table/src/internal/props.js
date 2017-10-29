@@ -11,6 +11,16 @@ function isInteger(props, propName, componentName) {
 }
 isInteger.isRequired = false;
 
+function isIn01Range(props, propName, componentName) {
+  const propValue = props[propName];
+  if (propValue !== Number(propValue) || propValue < 0 || propValue > 1) {
+    const message = `'${propName}' should be a number in the range [0,1], got ${propValue} instead`;
+    return createError(propName, componentName, message);
+  }
+  return null;
+}
+isIn01Range.isRequired = false;
+
 const rowCellObject = {
   key: PropTypes.oneOfType([
     PropTypes.number,
@@ -84,6 +94,7 @@ sortKey.isRequired = false;
 export default {
   head,
   isInteger,
+  isIn01Range,
   row,
   rows,
   sortKey,

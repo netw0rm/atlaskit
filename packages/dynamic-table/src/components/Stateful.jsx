@@ -22,9 +22,11 @@ export default class DynamicTable extends PureComponent {
     defaultSortOrder: null,
     emptyView: null,
     head: null,
+    loadingSpinnerSize: null,
+    isLoading: false,
     isFixedSize: false,
-    onSetPage() {},
-    onSort() {},
+    onSetPage() { },
+    onSort() { },
     rows: null,
     rowsPerPage: Infinity,
   }
@@ -54,14 +56,25 @@ export default class DynamicTable extends PureComponent {
   }
 
   render() {
-    const { caption, emptyView, head, isFixedSize, rows, rowsPerPage } = this.props;
     const { page, sortKey, sortOrder } = this.state;
+    const {
+      caption,
+      emptyView,
+      head,
+      loadingSpinnerSize,
+      isLoading,
+      isFixedSize,
+      rows,
+      rowsPerPage,
+    } = this.props;
 
     return (
       <DynamicTableStateless
         caption={caption}
         emptyView={emptyView}
         head={head}
+        loadingSpinnerSize={loadingSpinnerSize}
+        isLoading={isLoading}
         isFixedSize={isFixedSize}
         onSetPage={this.onSetPage}
         onSort={this.onSort}

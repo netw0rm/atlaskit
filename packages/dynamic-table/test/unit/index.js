@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../../src/components/TableHead';
-import EmptyBody from '../../src/styled/EmptyBody';
+import { EmptyViewContainer } from '../../src/styled/EmptyBody';
 import Body from '../../src/components/Body';
 import { Caption } from '../../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../../src';
@@ -61,14 +61,14 @@ const rows = [
 
 describe(name, () => {
   describe('stateless', () => {
-    it('should render TableHead when items length is 0 and not render EmptyBody if emptyView prop is ommitted', () => {
+    it('should render TableHead when items length is 0 and not render EmptyViewContainer if emptyView prop is ommitted', () => {
       const wrapper = mount(
         <DynamicTableStateless
           head={head}
         />
       );
       const header = wrapper.find(TableHead);
-      const emptyView = wrapper.find(EmptyBody);
+      const emptyView = wrapper.find(EmptyViewContainer);
       const body = wrapper.find(Body);
       expect(header.length).toBe(1);
       expect(emptyView.length).toBe(0);
@@ -86,7 +86,7 @@ describe(name, () => {
       expect(table.nodes[0].childNodes.length).toBe(1);
       expect(header.length).toBe(1);
     });
-    it('should render TableHead when items length is 0 and render EmptyBody if emptyView prop is provided', () => {
+    it('should render TableHead when items length is 0 and render EmptyViewContainer if emptyView prop is provided', () => {
       const wrapper = mount(
         <DynamicTableStateless
           head={head}
@@ -94,20 +94,20 @@ describe(name, () => {
         />
       );
       const header = wrapper.find(TableHead);
-      const emptyView = wrapper.find(EmptyBody);
+      const emptyView = wrapper.find(EmptyViewContainer);
       const body = wrapper.find(Body);
       expect(header.length).toBe(1);
       expect(emptyView.length).toBe(1);
       expect(body.length).toBe(0);
     });
-    it('should not render TableHead if head prop is not provided and should render EmptyBody if emptyView prop is provided', () => {
+    it('should not render TableHead if head prop is not provided and should render EmptyViewContainer if emptyView prop is provided', () => {
       const wrapper = mount(
         <DynamicTableStateless
           emptyView={<h2>No items present in table</h2>}
         />
       );
       const header = wrapper.find(TableHead);
-      const emptyView = wrapper.find(EmptyBody);
+      const emptyView = wrapper.find(EmptyViewContainer);
       const body = wrapper.find(Body);
       expect(header.length).toBe(0);
       expect(body.length).toBe(0);
@@ -123,7 +123,7 @@ describe(name, () => {
         />
       );
       const header = wrapper.find(TableHead);
-      const emptyView = wrapper.find(EmptyBody);
+      const emptyView = wrapper.find(EmptyViewContainer);
       const caption = wrapper.find(Caption);
       const body = wrapper.find(Body);
       expect(header.length).toBe(1);
@@ -159,7 +159,7 @@ describe(name, () => {
           head={{ cells: headCells }}
           rows={rows}
         />
-        );
+      );
       const bodyRows = wrapper.find('tbody tr');
       expect(bodyRows.at(0).find('td').at(0).text()).toBe('Barak');
       expect(bodyRows.at(0).find('td').at(1).text()).toBe('Obama');
@@ -170,10 +170,10 @@ describe(name, () => {
     });
 
     it('should pass down extra props', () => {
-      const theadOnClick = () => {};
-      const thOnClick = () => {};
-      const trOnClick = () => {};
-      const tdOnClick = () => {};
+      const theadOnClick = () => { };
+      const thOnClick = () => { };
+      const trOnClick = () => { };
+      const tdOnClick = () => { };
 
       const newHead = {
         onClick: theadOnClick,
@@ -182,7 +182,7 @@ describe(name, () => {
             ...cell,
             onClick: thOnClick,
           }
-            )),
+        )),
       };
       const newRows = rows.map(row => ({
         ...row,
@@ -198,7 +198,7 @@ describe(name, () => {
           head={newHead}
           rows={newRows}
         />
-        );
+      );
       expect(wrapper.find('thead').prop('onClick')).toBe(theadOnClick);
       wrapper.find('th').forEach((headCell) => {
         expect(headCell.prop('onClick')).toBe(thOnClick);
@@ -286,7 +286,7 @@ describe(name, () => {
           head={head}
           rows={rows}
         />
-        );
+      );
       wrapper.find('th').at(0).simulate('click');
       wrapper.update();
       const bodyRows = wrapper.find('tbody tr');

@@ -18,6 +18,8 @@ export default class extends PureComponent {
           rows={rows}
           rowsPerPage={10}
           page={3}
+          loadingSpinnerSize="large"
+          isLoading={false}
           isFixedSize
           sortKey="term"
           sortOrder="DESC"

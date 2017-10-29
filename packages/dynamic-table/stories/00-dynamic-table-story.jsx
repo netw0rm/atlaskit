@@ -23,6 +23,12 @@ import EmptyViewWithoutBodyExample from './examples/empty-view-without-body';
 import EmptyViewWithoutBodyExampleRaw from '!raw!./examples/empty-view-without-body';
 import EmptyViewWithBodyNoHeaderExample from './examples/empty-view-with-body-and-no-header';
 import EmptyViewWithBodyNoHeaderExampleRaw from '!raw!./examples/empty-view-with-body-and-no-header';
+import LoadingStateWithFewRowsExample from './examples/loading-state-few-rows';
+import LoadingStateWithFewRowsExampleRaw from '!raw!./examples/loading-state-few-rows';
+import LoadingStateWithManyRowsExample from './examples/loading-state-many-rows';
+import LoadingStateWithManyRowsExampleRaw from '!raw!./examples/loading-state-many-rows';
+import LoadingStateWithNoRowsExample from './examples/loading-state-no-rows';
+import LoadingStateWithNoRowsExampleRaw from '!raw!./examples/loading-state-no-rows';
 /* eslint-enable import/no-duplicates, import/first */
 
 const propDescriptionsCommon = {
@@ -30,6 +36,8 @@ const propDescriptionsCommon = {
   head: 'Table\'s <thead> content',
   rows: 'Table\'s <tbody> content',
   emptyView: 'React node to be displayed when table contains no data',
+  loadingSpinnerSize: 'Spinner\'s size in the loading mode',
+  isLoading: 'Adds the spinner to the table indicating that something is in progress',
   isFixedSize: 'Adds `table-layout: fixed` css rule to the table. Affects whether the columns can be truncated',
   rowsPerPage: 'Max number of rows to be displayed per page',
   onSetPage: 'Callback invoked on pagination navigation',
@@ -40,6 +48,8 @@ const propTypesCommon = {
   head: 'shape',
   rows: 'array',
   emptyView: 'node',
+  loadingSpinnerSize: 'string ("small" or "medium" or large" or "xlarge")',
+  isLoading: 'bool',
   isFixedSize: 'bool',
   rowsPerPage: 'int',
   onSetPage: 'func',
@@ -126,7 +136,7 @@ storiesOf(name, module)
         {
           `Setting "isFixedSize={true}" will force all cells in the columns
            with "shouldTruncate={true}" to truncate and display ellipsis in overflowing text.`
-      }
+        }
       </Description>
       <FixedSizeExample />
       <Code>
@@ -175,6 +185,48 @@ storiesOf(name, module)
       <EmptyViewWithBodyNoHeaderExample />
       <Code>
         {EmptyViewWithBodyNoHeaderExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Loading state with few rows', () => (
+    <Chrome title="Loading state with few rows">
+      <Description>
+        <p>
+          Depending on the amount of entries on the page the spinner changes its size:
+          a small one if the current page has up to 2 rows, if it has more - a large one.
+          <br />
+          If the height of your rows is big enought to use a large spinner, even for a single row,
+          you may override {'spinner\'s'} size by providing a `loadingSpinnerSize` property.
+        </p>
+      </Description>
+      <LoadingStateWithFewRowsExample />
+      <Code>
+        {LoadingStateWithFewRowsExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Loading state with many rows', () => (
+    <Chrome title="Loading state with many rows">
+      <Description>
+        <p>
+          The spinner follows the viewport while you are scrolling the page
+          so you are always aware that something is happening with the table.
+        </p>
+      </Description>
+      <LoadingStateWithManyRowsExample />
+      <Code>
+        {LoadingStateWithManyRowsExampleRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Loading state with no rows', () => (
+    <Chrome title="Loading state with no rows">
+      <Description>
+        <p>When your table has no rows its loading state looks like below.</p>
+      </Description>
+      <LoadingStateWithNoRowsExample />
+      <Code>
+        {LoadingStateWithNoRowsExampleRaw}
       </Code>
     </Chrome>
   ));

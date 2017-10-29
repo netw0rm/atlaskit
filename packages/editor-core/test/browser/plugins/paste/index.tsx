@@ -58,6 +58,12 @@ if(!browser.ie && !isMobileBrowser()) {
         expect(editorView.state.doc).to.deep.equal(doc(p('Hello')));
       });
 
+      it('should create code mark for code block with just one word', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, { html: `<meta charset='utf-8'><pre class='' data-pm-context='[]'>Hello</pre>`, plain: 'Hello' });
+        expect(editorView.state.doc).to.deep.equal(doc(p(code('Hello'))));
+      });
+
       it('should not handle events with Files type', () => {
         const { editorView } = editor(doc(p('{<>}')));
         dispatchPasteEvent(editorView, { plain: 'my-awesome-mug.png', types: ['text/plain', 'Files'] });

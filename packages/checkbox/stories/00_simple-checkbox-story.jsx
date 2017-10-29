@@ -34,7 +34,6 @@ function checkboxGroupSubmitStory(content) {
 
 export default class StatelessExample extends PureComponent {
   state = { isChecked: false }
-
   onChange = () => {
     console.log('onchange called for', this.props.value);
     this.setState({ isChecked: !this.state.isChecked });

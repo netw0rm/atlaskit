@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 6.1.4 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+
+## 6.1.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
 ## 6.1.2 (2017-10-15)
 
 

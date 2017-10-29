@@ -1,5 +1,13 @@
 # @atlaskit/comment
 
+## 2.6.7 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+
+## 2.6.6 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
 ## 2.6.5 (2017-10-15)
 
 

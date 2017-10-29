@@ -1,5 +1,16 @@
 # @atlaskit/analytics
 
+## 2.3.2 (2017-10-24)
+
+
+* bug fix; update the cleanprops function ([e27ace3](https://bitbucket.org/atlassian/atlaskit/commits/e27ace3))
+## 2.3.1 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+## 2.3.0 (2017-10-20)
+
+* bug fix; lint fix. Remove bad comment. ([311ca12](https://bitbucket.org/atlassian/atlaskit/commits/311ca12))
+* feature; support bubble events between react trees via the AnalyticsDelegate (issues closed: fs-1424) ([f6af591](https://bitbucket.org/atlassian/atlaskit/commits/f6af591))
 ## 2.2.2 (2017-10-17)
 
 * bug fix; fix console errors ([aa2f97f](https://bitbucket.org/atlassian/atlaskit/commits/aa2f97f))

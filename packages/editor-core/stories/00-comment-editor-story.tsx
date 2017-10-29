@@ -41,16 +41,20 @@ const exampleDocument = {
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('Comment Editor', () => {
-
-    class EditorWithFeedback extends React.Component<{}, { hasJquery?: boolean }> {
+    type Props = {};
+    type State = { hasJquery?: boolean, isExpanded?: boolean };
+    class EditorWithFeedback extends React.Component<Props, State> {
       state = {
-        hasJquery: false
+        hasJquery: false,
+        isExpanded: false
       };
 
       componentDidMount() {
         delete window.jQuery;
         this.loadJquery();
       }
+
+      onFocus = () => this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
 
       render() {
         if (!this.state.hasJquery) {
@@ -71,10 +75,13 @@ storiesOf(name, module)
               />
               <ToolsDrawer
                 // tslint:disable-next-line:jsx-no-lambda
-                renderEditor={({ mentionProvider, emojiProvider, mediaProvider, onChange }) =>
+                renderEditor={({ mentionProvider, emojiProvider, mediaProvider, imageUploadProvider, onChange }) =>
                   <div style={{ padding: '20px' }}>
                     <CollapsedEditor
                       placeholder="What do you want to say?"
+                      isExpanded={this.state.isExpanded}
+                      onFocus={this.onFocus}
+                      onExpand={EXPAND_ACTION}
                     >
                       <Editor
                         appearance="comment"
@@ -86,15 +93,16 @@ storiesOf(name, module)
                         allowHyperlinks={true}
                         allowCodeBlocks={true}
                         allowLists={true}
+                        allowTables={true}
 
                         mentionProvider={mentionProvider}
                         emojiProvider={emojiProvider}
                         mediaProvider={mediaProvider}
+                        legacyImageUploadProvider={imageUploadProvider}
 
                         onChange={onChange}
                         onSave={SAVE_ACTION}
                         onCancel={CANCEL_ACTION}
-                        onExpand={EXPAND_ACTION}
 
                         primaryToolbarComponents={<ToolbarFeedback packageVersion={version} packageName={name} />}
                       />

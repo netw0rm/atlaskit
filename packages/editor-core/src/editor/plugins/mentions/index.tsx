@@ -26,13 +26,15 @@ const mentionsPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView, eventDispatcher, providerFactory) {
+  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const renderNode = (providers) => {
       return <MentionPicker
         editorView={editorView}
         pluginKey={pluginKey}
         mentionProvider={providers.mentionProvider}
         presenceProvider={providers.presenceProvider}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
       />;
     };
 

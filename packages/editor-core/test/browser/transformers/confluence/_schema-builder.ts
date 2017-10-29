@@ -78,3 +78,9 @@ export const inlineMacro = (attrs: {
   placeholderUrl?: string;
   params?: object;
 }) => schema.nodes.inlineMacro.create(attrs);
+
+export const emoji = (attrs: {
+  id?: string;
+  shortName: string;
+  text?: string;
+}) => schema.nodes.emoji.create(attrs);

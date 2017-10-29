@@ -56,6 +56,21 @@ export default class Editor extends React.Component<EditorProps, State> {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { editor } = this.state;
+    // Once the editor has been set for the first time
+    if (!prevState.editor && editor) {
+      // Focus editor first time we create it if shouldFocus prop is set to true.
+      if (this.props.shouldFocus) {
+        if (!editor.editorView.hasFocus()) {
+          editor.editorView.focus();
+        }
+
+        moveCursorToTheEnd(editor.editorView);
+      }
+    }
+  }
+
   private registerEditorForActions(editor: EditorInstance) {
     if (this.context && this.context.editorActions) {
       this.context.editorActions._privateRegisterEditor(editor.editorView, editor.contentTransformer);
@@ -81,15 +96,6 @@ export default class Editor extends React.Component<EditorProps, State> {
     const editor = createEditor(place, plugins, this.props, this.providerFactory);
     this.registerEditorForActions(editor);
     this.setState({ editor });
-
-    // Focus editor first time we create it if shouldFocus prop is set to true.
-    if (this.props.shouldFocus) {
-      if (!editor.editorView.hasFocus()) {
-        editor.editorView.focus();
-      }
-
-      moveCursorToTheEnd(editor.editorView);
-    }
   }
 
   private handleProviders(props: EditorProps) {
@@ -100,11 +106,13 @@ export default class Editor extends React.Component<EditorProps, State> {
       collabEditProvider,
       activityProvider,
       presenceProvider,
-      macroProvider
+      macroProvider,
+      legacyImageUploadProvider
     } = props;
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    this.providerFactory.setProvider('imageUploadProvider', legacyImageUploadProvider);
     this.providerFactory.setProvider('collabEditProvider', collabEditProvider);
     this.providerFactory.setProvider('activityProvider', activityProvider);
     this.providerFactory.setProvider('presenceProvider', presenceProvider);
@@ -139,7 +147,9 @@ export default class Editor extends React.Component<EditorProps, State> {
         maxHeight={this.props.maxHeight}
         onSave={this.props.onSave}
         onCancel={this.props.onCancel}
-        onExpand={this.props.onExpand}
+
+        popupsMountPoint={this.props.popupsMountPoint}
+        popupsBoundariesElement={this.props.popupsBoundariesElement}
 
         contentComponents={contentComponents}
         primaryToolbarComponents={primaryToolbarComponents}

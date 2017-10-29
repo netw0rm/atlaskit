@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
@@ -34,15 +34,15 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.3.0"
+    "styled-components": "^1.4.6"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^2.0.0",
+    "@atlaskit/avatar": "^8.0.9",
     "@atlaskit/single-select": "*",
-    "@atlaskit/tooltip": "^1.2.0",
+    "@atlaskit/tooltip": "^6.2.1",
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",

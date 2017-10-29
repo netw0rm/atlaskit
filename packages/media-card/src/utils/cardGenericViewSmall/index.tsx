@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import * as cx from 'classnames';
 import {CardAction, MediaType, MediaItemType} from '@atlaskit/media-core';
 import {getCSSUnitValue} from '../getCSSUnitValue';
@@ -21,7 +21,7 @@ export interface CardGenericViewSmallProps {
   loading?: boolean;
   actions?: Array<CardAction>;
   error?: string;
-  onRetry?: CardAction;
+  onRetry?: () => void;
 }
 
 export interface CardGenericViewSmallState {
@@ -116,20 +116,9 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
 
   renderError() {
     const {error, onRetry} = this.props;
-    const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
-    const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
-      // We need to prevent the card's onClick being called
-      event.stopPropagation();
-      event.preventDefault();
-
-      if (onRetry) {
-        onRetry.handler(undefined, event.nativeEvent);
-      }
-    };
-
-    const retryComponent = (onRetry) ? (
-      <Retry className="retry">
-        <span onClick={retryHandler}>{retryMessage}</span>
+    const retryComponent = onRetry ? (
+      <Retry onClick={onRetry}>
+        Retry
       </Retry>
     ) : null;
 
@@ -148,7 +137,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     const cardClass = cx('media-card', {loading});
 
     return (
-      <SmallCard className={cardClass} style={cardStyle}>
+      <SmallCard hasError={!!error} className={cardClass} style={cardStyle}>
         <ImgWrapper shadow={!loading && !error}>
           {left}
         </ImgWrapper>

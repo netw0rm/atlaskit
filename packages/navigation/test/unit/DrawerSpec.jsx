@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import React, { PropTypes } from 'react';
 import Blanket from '@atlaskit/blanket';
+import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Drawer, { analyticsNamespace } from '../../src/components/js/Drawer';
 import ContainerHeader from '../../src/components/js/ContainerHeader';
 import DrawerBackIcon from '../../src/components/js/DrawerBackIcon';
@@ -28,6 +29,7 @@ describe('<Drawer />', () => {
   beforeEach(() => {
     drawerWrapper = mount(
       <Drawer
+        backIcon={<ChevronRightIcon label="back" />}
         isOpen
         onBackButton={onBackButtonStub}
         onKeyDown={onKeyDownStub}
@@ -222,6 +224,7 @@ describe('<Drawer />', () => {
       const stub = jest.fn();
       const closedDrawerWrapper = mount(
         <Drawer
+          backIcon={<ChevronRightIcon label="back" />}
           isOpen={false}
         />,
         {

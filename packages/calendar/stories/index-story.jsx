@@ -9,7 +9,6 @@ const now = new Date();
 const today = now.getDate();
 const thisMonth = now.getMonth() + 1;
 const thisYear = now.getFullYear();
-
 const notToday = today === 10 ? 11 : 10;
 const notThisMonth = thisMonth === 10 ? 11 : 10;
 const notThisYear = thisYear + 1;

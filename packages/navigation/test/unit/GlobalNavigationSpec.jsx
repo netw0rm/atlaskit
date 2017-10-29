@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
 import GlobalNavigation from '../../src/components/js/GlobalNavigation';
@@ -18,6 +19,7 @@ describe('<GlobalNavigation />', () => {
       expect(mount(<GlobalNavigation />).find(GlobalPrimaryActions)).toHaveLength(1);
     });
   });
+
   describe('props', () => {
     it('should default theme to presets.global', () => {
       expect(mount(<GlobalNavigation />).props().theme).toBe(presets.global);

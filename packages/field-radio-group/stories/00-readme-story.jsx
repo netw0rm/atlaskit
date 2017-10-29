@@ -36,7 +36,7 @@ storiesOf(name, module)
           <p>
             The items property describes the radio items that should be rendered in the radio group.
           </p>
-          <p>Each item can contain the follow keys:</p>
+          <p>Each item contains the follow keys:</p>
           <ul>
             {itemsPropsSmart.map((item, index) =>
               (<li key={index}><b>{item.name}</b> <i>({item.type})</i>: {item.description}</li>)
@@ -61,7 +61,7 @@ storiesOf(name, module)
           <p>
             The items property describes the radio items that should be rendered in the radio group.
           </p>
-          <p>Each item can contain the follow keys:</p>
+          <p>Each item contains the follow keys:</p>
           <ul>
             {itemsProps.map((item, index) =>
               (<li key={index}><b>{item.name}</b> <i>({item.type})</i>: {item.description}</li>)

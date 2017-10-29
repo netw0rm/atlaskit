@@ -18,7 +18,7 @@ const { expect } = chai;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
-// Override "subscribe" so that it resovles instantly.
+// Override "subscribe" so that it resolves instantly.
 const subscribe = reactionsProvider.subscribe;
 sinon.stub(reactionsProvider, 'subscribe').callsFake((objectReactionKey: ObjectReactionKey, handler: Function) => {
   subscribe.call(reactionsProvider, objectReactionKey, handler);
@@ -42,7 +42,6 @@ describe('@atlaskit/reactions/reactions', () => {
 
     reactions.find(Reaction).first().simulate('mouseup', { button: 0 });
     expect(onReactionClick.called).to.equal(true);
-    reactions.unmount();
   });
 
   it('should render reactions based on response from reactions service', () => {
@@ -57,7 +56,6 @@ describe('@atlaskit/reactions/reactions', () => {
     (reactionElements as any).forEach((reaction, index) => {
       expect(reaction.props().reaction).to.deep.equal(sortedReactions[index]);
     });
-    reactions.unmount();
   });
 
   it('should update when reactions service emits notifyUpdated', () => {
@@ -71,7 +69,6 @@ describe('@atlaskit/reactions/reactions', () => {
       .then(state => {
         reactionsProvider.notifyUpdated(containerAri, demoAri, state);
         expect(reactions.find(Reaction).length).to.equal(sortedReactions.length + 1);
-        reactions.unmount();
       });
   });
 

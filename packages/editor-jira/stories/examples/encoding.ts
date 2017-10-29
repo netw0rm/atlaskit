@@ -1,9 +1,7 @@
+import { createJIRASchema } from '@atlaskit/editor-common';
+import { JIRATransformer } from '@atlaskit/editor-core';
 import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import {
-  createJIRASchema,
-  JIRATransformer,
-  Node,
-} from '@atlaskit/editor-core';
+import { Node } from 'prosemirror-model';
 
 const schema = createJIRASchema({
   allowLists: true,

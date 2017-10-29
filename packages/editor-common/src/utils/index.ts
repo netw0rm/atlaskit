@@ -1,7 +1,12 @@
 export * from './url';
 export * from './uuid';
+export * from './confluence/emoji';
 export * from './languageList';
 export { default as browser } from './browser';
+export {
+    default as ErrorReporter,
+    ErrorReportingHandler,
+} from './error-reporter';
 
 export const rgbToHex = (value: string): string | undefined => {
   const matches = value.match(/(0?\.?\d{1,3})%?\b/g);

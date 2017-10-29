@@ -1,5 +1,11 @@
 # @atlaskit/calendar
 
+## 3.0.2 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+## 3.0.1 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
 ## 3.0.0 (2017-09-05)
 
 * breaking; update calendar to 1.3 spec ([4cde720](https://bitbucket.org/atlassian/atlaskit/commits/4cde720))

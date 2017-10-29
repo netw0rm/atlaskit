@@ -62,7 +62,7 @@ const appswitcherProps = {
     'applinks.error': 'Unable to load linked applications.',
   },
   isDropdownOpenInitially: true,
-  trigger: () => <MenuIcon label="App Switcher" />,
+  trigger: (isOpen) => <AkGlobalItem isSelected={isOpen}><MenuIcon label="App Switcher" /></AkGlobalItem>,
   dropdownOptions: {
     position: 'right bottom',
   },
@@ -120,9 +120,7 @@ storiesOf(name, module)
           <AkGlobalItem>
             <SettingsIcon label="Settings" secondaryColor="inherit" />
           </AkGlobalItem>,
-          <AkGlobalItem>
-            <AkAppSwitcher {...appswitcherProps} />
-          </AkGlobalItem>,
+          <AkAppSwitcher {...appswitcherProps} />,
           <AkGlobalItem>
             <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,

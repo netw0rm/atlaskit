@@ -4,7 +4,6 @@ import Button from '@atlaskit/button';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 import Item from '../../src/components/BreadcrumbsItem';
-import { itemTruncateWidth } from '../../src/constants';
 import { setItemWidth } from './_helpers';
 
 describe('BreadcrumbsItem', () => {
@@ -80,12 +79,13 @@ describe('BreadcrumbsItem', () => {
   });
 
   describe('overflow calculation', () => {
+    const truncationWidth = 200;
     let item;
     const animStub = window.cancelAnimationFrame;
 
     beforeEach(() => {
       window.cancelAnimationFrame = () => {};
-      const wrapper = mount(<Item>content</Item>);
+      const wrapper = mount(<Item truncationWidth={truncationWidth}>content</Item>);
       item = wrapper.instance();
     });
 
@@ -94,12 +94,12 @@ describe('BreadcrumbsItem', () => {
     });
 
     it('for an item which is truncated', () => {
-      setItemWidth(item, itemTruncateWidth);
+      setItemWidth(item, truncationWidth);
       expect(item.updateOverflow()).toBe(true);
     });
 
     it('for an item which is not truncated', () => {
-      setItemWidth(item, itemTruncateWidth - 1);
+      setItemWidth(item, truncationWidth - 1);
       expect(item.updateOverflow()).toBe(false);
     });
   });

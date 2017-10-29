@@ -23,13 +23,13 @@ const tablesPlugin: EditorPlugin = {
     ];
   },
 
-  contentComponent(editorView) {
+  contentComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
     const pluginState = stateKey.getState(editorView.state);
 
     return (
       <div>
         <TableFloatingControls editorView={editorView} pluginState={pluginState} />
-        <TableFloatingToolbar editorView={editorView} pluginState={pluginState} />
+        <TableFloatingToolbar editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />
       </div>
     );
   }

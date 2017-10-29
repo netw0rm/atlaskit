@@ -7,6 +7,7 @@ import Spinner from '@atlaskit/spinner';
 
 import { StatelessSelect } from '../../src';
 import InitialLoadingElement from '../../src/styled/InitialLoading';
+import Content from '../../src/styled/Content';
 
 import { name } from '../../package.json';
 
@@ -22,7 +23,7 @@ describe(name, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessSelect />).isEmpty()).toBe(false);
+      expect(shallow(<StatelessSelect />).exists()).toBe(true);
     });
 
     it('should render Label when the prop is set', () => {
@@ -692,6 +693,66 @@ describe(name, () => {
       const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).toBe('standard');
       expect(subtleFieldBase.prop('appearance')).toBe('subtle');
+    });
+  });
+
+  describe('with JSX item content', () => {
+    it('should show a console warning if item.label is not supplied when item.content is JSX', () => {
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const badItem = { value: 1, content: <span>One</span> };
+      const goodItem = { value: 1, content: <span>One</span>, label: 'One' };
+      const keyEvent = { key: 'a' };
+
+      const wrapper = mount(
+        <StatelessSelect
+          isOpen
+          items={[{
+            heading: 'Group 1',
+            items: [goodItem],
+          }]}
+        />
+      );
+
+      wrapper.simulate('keydown', keyEvent);
+      expect(warnSpy).not.toHaveBeenCalled();
+
+      wrapper.setProps({
+        items: [{
+          heading: 'Group 1',
+          items: [badItem],
+        }],
+      });
+      wrapper.simulate('keydown', keyEvent);
+
+      expect(warnSpy).toHaveBeenCalledWith('SingleSelect: item.label must be set when item.content is JSX');
+    });
+
+    it('should render item label instead of content', () => {
+      const item = { value: 1, content: <span>One</span>, label: 'One!' };
+      const wrapper = mount(
+        <StatelessSelect
+          items={[{
+            items: [item],
+          }]}
+          selectedItem={item}
+        />
+      );
+      expect(wrapper.find(Content).find('span').text()).toBe('One!');
+    });
+
+    it('should render item label instead of content when hasAutocomplete', () => {
+      const item = { value: 1, content: <span>One</span>, label: 'One!' };
+      const wrapper = mount(
+        <StatelessSelect
+          hasAutocomplete
+          items={[{
+            items: [item],
+          }]}
+          selectedItem={item}
+        />
+      );
+
+      expect(wrapper.find('option[value=1]').text()).toBe('One!');
     });
   });
 

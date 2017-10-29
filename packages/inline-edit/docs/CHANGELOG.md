@@ -1,5 +1,12 @@
 # @atlaskit/inline-edit
 
+## 4.5.4 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+## 4.5.3 (2017-10-22)
+
+* bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))
+
 ## 4.5.2 (2017-10-15)
 
 * bug fix; update dependencies for react 16 compatibility ([fc47c94](https://bitbucket.org/atlassian/atlaskit/commits/fc47c94))

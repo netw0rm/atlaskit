@@ -2,12 +2,20 @@ import { name } from '../../../../package.json';
 import { expect } from 'chai';
 import createEditor from '../../../helpers/create-editor';
 import { doc, p, blockquote, decisionList, decisionItem } from '../../../../src/test-helper';
-import { Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import {
+  JSONTransformer,
+  Transformer
+} from '../../../../src/transformers';
 import EditorActions from '../../../../src/editor/actions';
-import JSONSerializer from '../../../../src/renderer/json';
+import { toJSON } from '../../../../src/utils';
 
-const serializer = new JSONSerializer();
+const jsonTransformer = new JSONTransformer();
+
+const dummyTransformer: Transformer<string> = {
+  parse: content => doc(blockquote(content)),
+  encode: node => node.textContent
+};
 
 describe(name, () => {
   describe('EditorActions', () => {
@@ -70,9 +78,7 @@ describe(name, () => {
 
         const val = await editorActions.getValue();
         expect(val).to.not.equal(undefined);
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(result.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(result));
       });
 
       it('should filter out task and decision items', async () => {
@@ -92,46 +98,46 @@ describe(name, () => {
         editorView.dispatch(tr);
       });
 
+      it('should update the document using the transformer when a transformer is set', async () => {
+        editorActions._privateRegisterEditor(editorView, dummyTransformer);
+
+        const wasSuccessful = editorActions.replaceDocument('Hello World!');
+        expect(wasSuccessful).to.equal(true);
+        const actual = editorView.state.doc;
+        const expected = doc(blockquote('Hello World!'));
+        expect(actual!.toJSON()).to.deep.equal(expected.toJSON());
+      });
+
       it('should accept a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc);
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(newDoc));
       });
 
       it('should accept JSON version of a prosemirror node', async () => {
         editorActions.replaceDocument(newDoc.toJSON());
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(newDoc));
       });
 
       it('should accept stringified JSON version of a prosemirror node', async () => {
         editorActions.replaceDocument(JSON.stringify(newDoc.toJSON()));
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(newDoc));
       });
 
       it('should accept atlassian document format', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(atlassianDoc);
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(newDoc));
       });
 
       it('should accept atlassian document format from a string', async () => {
-        const atlassianDoc = serializer.serializeFragment(newDoc.content);
+        const atlassianDoc = jsonTransformer.encode(newDoc);
         editorActions.replaceDocument(JSON.stringify(atlassianDoc));
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(newDoc.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(newDoc));
       });
     });
 
@@ -142,9 +148,7 @@ describe(name, () => {
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(expected.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(expected));
       });
 
       it('should append text to a complex document', async () => {
@@ -153,9 +157,7 @@ describe(name, () => {
         editorActions.replaceDocument(newDoc);
         editorActions.appendText(' appended');
         const val = await editorActions.getValue();
-        if (val instanceof Node) {
-          expect(val!.toJSON()).to.deep.equal(expected.toJSON());
-        }
+        expect(val).to.deep.equal(toJSON(expected));
       });
 
       it(`should return false if the last node of a document isn't a paragraph`, async () => {

@@ -45,7 +45,7 @@ describe('BitbucketTransformer: serializer', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c\n\nbar');
   });
 
-  it('should espace 4 spaces at the beginning of the line with zero-width-non-joiner', () => {
+  it('should escape 4 spaces at the beginning of the line with zero-width-non-joiner', () => {
     const fourSpaces = '    ';
 
     expect(markdownSerializer.serialize(doc(
@@ -57,7 +57,7 @@ describe('BitbucketTransformer: serializer', () => {
     )))).to.eq(`hello${fourSpaces}there`);
   });
 
-  it('should preserve leading and traling blank lines using zero-non-width', () => {
+  it('should preserve leading and trailing blank lines using zero-non-width', () => {
     expect(markdownSerializer.serialize(doc(
       p(),
       p('bar')
@@ -784,6 +784,22 @@ describe('BitbucketTransformer: serializer', () => {
           '~',
         )))).to.eq('~');
       });
+    });
+  });
+
+  describe('New lines', () => {
+    it('should serialize new line - 1', () => {
+      expect(markdownSerializer.serialize(doc(p('foo\nbar')))).to.eq('foo  \nbar');
+    });
+
+    it('should serialize new line - 2', () => {
+      expect(markdownSerializer.serialize(doc(p('foo\n\nbar')))).to.eq('foo\n\nbar');
+    });
+
+    it('should serialize new line - 3', () => {
+      expect(markdownSerializer.serialize(
+        doc(p('pagh\nwa’\ncha’\nwej\nloS\nvagh\njav\nSoch\nchorgh\nHut\n')))
+      ).to.eq('pagh  \nwa’  \ncha’  \nwej  \nloS  \nvagh  \njav  \nSoch  \nchorgh  \nHut\n');
     });
   });
 });

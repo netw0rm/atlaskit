@@ -7,11 +7,17 @@ const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
 const verticalOffset = 16;
 
+type EnterType = (node: Element, isAppearing: bool) => void;
+type ExitType = (node: Element) => void;
 type Props = {
   children: ChildrenType,
   component: ComponentType,
-  onEntered?: (node: Element, isAppearing: bool) => void,
-  onExited?: (node: Element) => void,
+  onEnter?: EnterType,
+  onEntering?: EnterType,
+  onEntered?: EnterType,
+  onExit?: ExitType,
+  onExiting?: ExitType,
+  onExited?: ExitType,
   in: boolean,
   style: {},
   styleDefault: {},
@@ -42,7 +48,11 @@ const DefaultProps = {
 function Animation({
   component: Tag,
   in: hasEntered,
+  onEnter,
+  onEntering,
   onEntered,
+  onExit,
+  onExiting,
   onExited,
   style,
   styleDefault,
@@ -53,19 +63,25 @@ function Animation({
     appear: true,
     in: hasEntered,
     mountOnEnter: true,
+    onEnter,
+    onEntering,
     onEntered,
+    onExit,
+    onExiting,
     onExited,
-    timeout: { enter: 0, exit: duration },
+    timeout: duration,
     unmountOnExit: true,
   };
 
   return (
     <Transition {...transitionProps}>
-      {(state) => {
+      {(status) => {
+        if (status === 'exited') return null;
+
         const styles = {
           ...style,
           ...styleDefault,
-          ...transition[state],
+          ...transition[status],
         };
 
         return <Tag style={styles} {...props} />;
@@ -81,7 +97,7 @@ Animation.defaultProps = DefaultProps;
 export const Fade = props => (
   <Animation
     styleDefault={{
-      transition: `opacity ${duration}ms`,
+      transition: `opacity ${duration / 2}ms`,
     }}
     transition={{
       entering: { opacity: 0 },
@@ -105,20 +121,17 @@ export const SlideUp = (
   return (
     <Animation
       styleDefault={{
-        transition: `transform ${duration}ms ${easing}, opacity ${duration}ms linear`,
+        transition: `transform ${duration}ms ${easing}`,
         transform: restingTransform,
       }}
       transition={{
         entering: {
-          opacity: 0.2,
           transform: `translate3d(0, ${verticalOffset * 2}px, 0)`,
         },
         entered: {
-          opacity: 1,
           transform: restingTransform,
         },
         exiting: {
-          opacity: 0,
           transform: `translate3d(0, -${verticalOffset * 2}px, 0)`,
         },
       }}

@@ -1,5 +1,11 @@
 # @atlaskit/toggle
 
+## 2.6.3 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+## 2.6.2 (2017-10-22)
+
+* bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))
 ## 2.6.1 (2017-09-28)
 
 * bug fix; active state is now properly applied ([c1ee840](https://bitbucket.org/atlassian/atlaskit/commits/c1ee840))

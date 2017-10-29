@@ -1,6 +1,15 @@
 # @atlaskit/code
 
-## Unreleased
+## 2.2.0 (2017-10-27)
+
+* feature; support language=text for atlaskit/code component (issues closed: ed-2861) ([6fe1ac3](https://bitbucket.org/atlassian/atlaskit/commits/6fe1ac3))
+## 2.1.4 (2017-10-22)
+
+* bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))
+
+
+
+
 
 ## 2.1.3 (2017-07-25)
 

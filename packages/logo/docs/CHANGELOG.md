@@ -1,5 +1,17 @@
 # @atlaskit/logo
 
+## 5.0.0 (2017-10-27)
+
+
+* bug fix; fixed logo width issue in IE11. ([0ce8ab7](https://bitbucket.org/atlassian/atlaskit/commits/0ce8ab7))
+* breaking; Logo sizes changed, children no longer accepted ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+* breaking; refactoring Logo component to fix numerous bugs ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+## 4.0.3 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+## 4.0.2 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
 ## 4.0.1 (2017-09-14)
 
 * bug fix; jSD and Statuspage logo icons have fixed gradients (issues closed: ak-3479) ([60d8aca](https://bitbucket.org/atlassian/atlaskit/commits/60d8aca))

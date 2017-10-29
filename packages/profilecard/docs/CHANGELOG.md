@@ -1,5 +1,14 @@
 # @atlaskit/profilecard
 
+## 3.9.0 (2017-10-27)
+
+
+* feature; add new profile data keys to graphql query ([44d81d4](https://bitbucket.org/atlassian/atlaskit/commits/44d81d4))
+
+* feature; add predicate method to profile card actions (issues closed: dir-423) ([2737016](https://bitbucket.org/atlassian/atlaskit/commits/2737016))
+## 3.8.1 (2017-10-22)
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
 ## 3.8.0 (2017-10-16)
 
 * feature; add new detail label for a users email to the profilecard (issues closed: dir-324) ([84f12aa](https://bitbucket.org/atlassian/atlaskit/commits/84f12aa))

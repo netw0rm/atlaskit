@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-component-template",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "config": {
     "access": "public"
   },
@@ -24,14 +24,14 @@
     "@atlaskit/util-shared-styles": "^2.1.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.3.0"
+    "styled-components": "^1.4.6"
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^3.0.0",
     "@atlaskit/util-component-template": "*"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2 || ^16.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [],

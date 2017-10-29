@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import StatelessSelect from './StatelessSelect';
+import StatelessSelect, { getTextContent } from './StatelessSelect';
 import DummyItem from './DummyItem';
 import DummyGroup from './DummyGroup';
 
@@ -99,7 +99,7 @@ export default class AkSingleSelect extends PureComponent {
   state = {
     isOpen: this.props.isDefaultOpen,
     selectedItem: this.props.defaultSelected,
-    filterValue: this.props.defaultSelected ? this.props.defaultSelected.content : '',
+    filterValue: this.props.defaultSelected ? getTextContent(this.props.defaultSelected) : '',
   }
 
   selectItem = (item) => {

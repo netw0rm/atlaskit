@@ -83,7 +83,9 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       providerFactory,
       contentComponents,
       customContentComponents,
-      maxHeight
+      maxHeight,
+      popupsMountPoint,
+      popupsBoundariesElement
     } = this.props;
     const maxContentSizeReached = maxContentSize && maxContentSize.maxContentSizeReached;
     this.flashToggle = maxContentSizeReached && !this.flashToggle;
@@ -102,6 +104,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             providerFactory={providerFactory}
             appearance={this.appearance}
             items={contentComponents}
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
           />
         </ContentArea>
       </ChromelessEditor>

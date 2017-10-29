@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
+import sinon from 'sinon';
 import Navigation from '../../src/components/js/Navigation';
 import ContainerNavigationChildren from '../../src/components/js/ContainerNavigationChildren';
 import Drawer from '../../src/components/js/Drawer';
@@ -136,7 +138,7 @@ describe('<Navigation />', () => {
     });
 
     it('should allow the width to grow above the standard width if not collapsible', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       wrapper.find(Resizer).props().onResize(5);
 
@@ -144,7 +146,7 @@ describe('<Navigation />', () => {
     });
 
     it('should not allow the width to drop below the standard width if not collapsible', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       wrapper.find(Resizer).props().onResize(-5);
 
@@ -353,13 +355,21 @@ describe('<Navigation />', () => {
   describe('not collapsible and is open is set to false', () => {
     let wrapper;
     let warnStub;
-
+    function expectWarningCollapse() {
+      sinon.assert.calledWithMatch(console.warn,
+        new RegExp(
+        `Navigation is being told it cannot collapse and that it is not open.
+        When Navigation cannot collapse it must always be open.
+        Ignoring isOpen={true}`));
+    }
     beforeEach(() => {
       warnStub = jest.spyOn(console, 'warn');
+      sinon.stub(console, 'warn');
       wrapper = shallow(<Navigation isCollapsible={false} isOpen={false} />);
     });
 
     afterEach(() => {
+      console.warn.restore();
       warnStub.mockRestore();
       wrapper.unmount();
     });
@@ -383,7 +393,8 @@ describe('<Navigation />', () => {
     });
 
     it('should log a warning on mount', () => {
-      expect(warnStub).toHaveBeenCalled();
+      sinon.assert.callCount(console.warn, 1);
+      expectWarningCollapse();
     });
 
     it('should log a warning on update', () => {
@@ -397,20 +408,21 @@ describe('<Navigation />', () => {
         isCollapsible: false,
       });
 
-      expect(warnStub).toHaveBeenCalledTimes(1);
+      sinon.assert.callCount(console.warn, 2);
+      expectWarningCollapse();
     });
   });
 
   describe('collapsing', () => {
     it('should allow collapsing if isCollapsible is set to false and navigation width is expanded', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
       wrapper.find(Resizer).props().onResize(1);
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(true);
     });
 
     it('should not allow collapsing if isCollapsible is set to false and navigation width is not expanded', () => {
-      const wrapper = mount(<Navigation isOpen isCollapsible={false} />);
+      const wrapper = mount(<Navigation isCollapsible={false} />);
 
       expect(wrapper.find(Resizer).props().showResizeButton).toBe(false);
     });

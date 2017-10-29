@@ -9,8 +9,10 @@ import {
 } from 'prosemirror-model';
 
 import {
+  getMarksByOrder,
+  isSameMark,
   Serializer,
-} from '../serializer';
+} from '@atlaskit/renderer';
 
 import {
   Doc,
@@ -23,11 +25,6 @@ import {
 import {
   toReact as markToReact
 } from './marks';
-
-import {
-  getMarksByOrder,
-  isSameMark,
-} from '../validator';
 
 import ProviderFactory from '../../providerFactory';
 import { EventHandlers } from '../../ui/Renderer';

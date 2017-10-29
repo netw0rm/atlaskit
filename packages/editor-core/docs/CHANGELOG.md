@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 56.2.2 (2017-10-29)
+
+* bug fix; added validation of the deserialized document on first load (issues closed: ed-3104) ([95e045a](https://bitbucket.org/atlassian/atlaskit/commits/95e045a))
 ## 56.2.1 (2017-10-27)
 
 * bug fix; fix position of floating hyperlink toolbar. (issues closed: #ed-2427) ([b6f08a9](https://bitbucket.org/atlassian/atlaskit/commits/b6f08a9))

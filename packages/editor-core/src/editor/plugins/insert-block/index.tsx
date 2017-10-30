@@ -9,7 +9,7 @@ import WithPluginState from '../../ui/WithPluginState';
 import ToolbarInsertBlock from '../../../ui/ToolbarInsertBlock';
 
 const insertBlockPlugin: EditorPlugin = {
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
     const isCommentAppearance = appearance === 'comment';
 
     return <WithPluginState
@@ -29,6 +29,7 @@ const insertBlockPlugin: EditorPlugin = {
         macroState = {} as MacroState
       }) => (
         <ToolbarInsertBlock
+          isDisabled={disabled}
           editorView={editorView}
           tableActive={tablesState.tableActive}
           tableHidden={tablesState.tableHidden}

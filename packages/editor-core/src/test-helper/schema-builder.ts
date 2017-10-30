@@ -197,13 +197,13 @@ export function nodeFactory(type: NodeType, attrs = {}) {
 /**
  * Create a factory for marks.
  */
-export function markFactory(type: MarkType, attrs = {}) {
+export function markFactory(type: MarkType, attrs = {}, allowDupes = false) {
   const mark = type.create(attrs);
   return (...content: BuilderContent[]): RefsNode[] => {
     const { nodes } = coerce(content, type.schema);
     return nodes
       .map(node => {
-        if (mark.type.isInSet(node.marks)) {
+        if (!allowDupes && mark.type.isInSet(node.marks)) {
           return node;
         } else {
           const refNode = node.mark(mark.addToSet(node.marks)) as RefsNode;
@@ -278,6 +278,7 @@ export const taskList = nodeFactory(sampleSchema.nodes.taskList, {});
 export const taskItem = nodeFactory(sampleSchema.nodes.taskItem, {});
 export const confluenceUnsupportedBlock = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedBlock, { cxhtml })();
 export const confluenceUnsupportedInline = (cxhtml: string) => nodeFactory(sampleSchema.nodes.confluenceUnsupportedInline, { cxhtml })();
+export const confluenceInlineComment = (attrs: { reference: string }) => markFactory(sampleSchema.marks.confluenceInlineComment, attrs ? attrs : {}, true);
 export const confluenceJiraIssue = (attrs: {
   issueKey?: string;
   macroId?: string;

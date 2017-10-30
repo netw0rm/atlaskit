@@ -24,7 +24,8 @@ import {
   unsupportedContentPlugin,
   panelPlugin,
   macroPlugin,
-  emojiSuggestionsPlugin,
+  confluenceInlineComment,
+  emojiSuggestionsPlugin
 } from '../plugins';
 
 /**
@@ -116,8 +117,13 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(macroPlugin);
   }
 
+<<<<<<< HEAD
   if(props.allowEmojiSuggestions) {
     plugins.push(emojiSuggestionsPlugin);
+=======
+  if(props.allowConfluenceInlineComment) {
+    plugins.push(confluenceInlineComment);
+>>>>>>> remotes/origin/master
   }
 
   // UI only plugins

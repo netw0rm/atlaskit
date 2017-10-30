@@ -36,10 +36,12 @@ export interface EditorProps {
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
   allowInlineMacro?: boolean;
+  allowConfluenceInlineComment?: boolean;
   allowEmojiSuggestions?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;
+  disabled?: boolean;
 
   errorReporterHandler?: ErrorReportingHandler;
   uploadErrorHandler?: (state: MediaState) => void;

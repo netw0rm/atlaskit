@@ -39,12 +39,16 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     console.log('onDragOver', dataTransfer)
   }
 
+  onDragEnd = (source, destination) => {
+    console.log(source, destination)
+  }
+
   render() {
     const {animate, offset} = this.state;
     const {children} = this.props;
     console.log('render offset', offset)
     return (
-      <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
+      <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}
       </FilmstripView>
     );

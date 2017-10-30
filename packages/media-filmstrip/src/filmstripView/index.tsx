@@ -45,6 +45,7 @@ export interface FilmstripViewProps {
   children?: ReactNode;
   onSize?: (event: SizeEvent) => void;
   onScroll?: (event: ScrollEvent) => void;
+  onDragEnd?: (source: any, destination: any) => void;
 }
 
 export interface FilmstripViewState {
@@ -384,7 +385,16 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   onDragEnd = (result) => {
-    console.log(result);
+    const {onDragEnd} = this.props;
+    if (!result.destination || !onDragEnd) return;
+     
+    
+    const {source, destination} = result;
+
+    onDragEnd(
+      source,
+      destination
+    );
   }
 
   renderItem = (child) => (provided, snapshot) => {
@@ -442,10 +452,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   render(): JSX.Element {
     const { offset } = this.props;
-    console.log('filmstripview render', offset)
+    // We need to pass "offset" into Droppable even if we don't needed to force a render
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
+        <Droppable droppableId="droppable" offset={offset} direction="horizontal">
           {this.renderList}
         </Droppable>
       </DragDropContext>

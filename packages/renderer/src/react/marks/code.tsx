@@ -11,7 +11,7 @@ export default class Code extends PureComponent<{}, {}> {
        * It could be used like
        * <Code>This is the text</Code>
        */
-      return <AkCode text={children as string} />;
+      return <AkCode language="text" text={children as string} />;
     }
 
     if (Array.isArray(children) && typeof children[0] === 'string') {
@@ -20,9 +20,9 @@ export default class Code extends PureComponent<{}, {}> {
        * so it would actually looks like
        * <Code>{['This is the text']}</Code>
        */
-      return <AkCode text={children[0] as string} />;
+      return <AkCode language="text" text={children[0] as string} />;
     }
 
-    return <AkCode text={''} />;
+    return <AkCode language="text" text={''} />;
   }
 }

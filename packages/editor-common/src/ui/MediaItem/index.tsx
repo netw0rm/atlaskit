@@ -14,6 +14,8 @@ import {
   WithProviders
 } from '../../providerFactory';
 
+export { Appearance };
+
 export interface Props {
   id: string;
   providers?: ProviderFactory;

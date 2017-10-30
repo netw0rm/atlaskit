@@ -3,14 +3,16 @@ import { defaultSchema } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
 import { PureComponent, SyntheticEvent } from 'react';
 import { Schema } from 'prosemirror-model';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import {
+  UnsupportedBlock,
+  AppCardAction,
+  ProviderFactory
+} from '@atlaskit/editor-common';
 import {
   ReactSerializer,
   renderDocument,
   RendererContext,
 } from '../../';
-// import { UnsupportedBlock } from '../../ui/'; // @TODO Migrate
-import { AppCardAction } from '@atlaskit/editor-common';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
 
@@ -92,8 +94,7 @@ export default class Renderer extends PureComponent<Props, {}> {
     } catch (ex) {
       return (
         <Wrapper>
-          {/*<UnsupportedBlock />*/}
-          <div/>
+          <UnsupportedBlock />
         </Wrapper>
       );
     }

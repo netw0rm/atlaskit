@@ -36,6 +36,7 @@ export interface EditorProps {
   allowUnsupportedContent?: boolean;
   allowPanel?: boolean;
   allowInlineMacro?: boolean;
+  allowEmojiSuggestions?: boolean;
 
   saveOnEnter?: boolean;
   shouldFocus?: boolean;

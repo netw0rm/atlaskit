@@ -28,6 +28,7 @@ storiesOf(name, module)
 
           analyticsHandler={analyticsHandler}
           maxHeight={305}
+          allowEmojiSuggestions={true}
 
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}

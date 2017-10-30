@@ -27,4 +27,6 @@ export interface EditorAppearanceComponentProps {
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+
+  disabled?: boolean;
 }

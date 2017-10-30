@@ -82,7 +82,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
 
           // Initialize provider
           collabEditProvider
-            .on('init', data => { isReady = true; handleInit(data, view); })
+            .on('init', data => { handleInit(data, view); isReady = true; })
             .on('connected', data => handleConnection(data, view))
             .on('data', data => applyRemoteData(data, view))
             .on('presence', data => handlePresence(data, view))

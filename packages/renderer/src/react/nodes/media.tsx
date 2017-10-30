@@ -3,10 +3,12 @@ import { PureComponent } from 'react';
 import { MediaType } from '@atlaskit/editor-common';
 import { CardDimensions } from '@atlaskit/media-card';
 import { ImageResizeMode } from '@atlaskit/media-core';
-import { EventHandlers } from '../../../../editor-core/src/ui/Renderer'; // @TODO
-import { ProviderFactory } from '@atlaskit/editor-core';
-import UIMedia from '../../../../editor-core/src/ui/Media'; // @TODO
-import { Appearance } from '../../../../editor-core/src/ui/Media/MediaComponent'; // @TODO
+import {
+  EventHandlers,
+  ProviderFactory,
+  MediaItem,
+  Appearance
+} from '@atlaskit/editor-common';
 
 export interface MediaProps {
   id: string;
@@ -33,7 +35,7 @@ export default class Media extends PureComponent<MediaProps, {}> {
     } = this.props;
 
     return (
-      <UIMedia
+      <MediaItem
         id={id}
         type={type}
         collection={collection}

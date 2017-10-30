@@ -5,7 +5,7 @@ import { RendererContext } from '../';
 import {
   ProviderFactory,
   WithProviders
-} from '@atlaskit/editor-core';
+} from '@atlaskit/editor-common';
 export interface Props {
   localId: string;
   state?: string;

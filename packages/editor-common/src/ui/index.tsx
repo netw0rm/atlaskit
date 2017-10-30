@@ -6,3 +6,4 @@ export { default as Portal } from './Portal';
 
 export { default as withOuterListeners } from './with-outer-listeners';
 export * from './EventHandlers';
+export { Appearance } from './MediaItem/MediaComponent';

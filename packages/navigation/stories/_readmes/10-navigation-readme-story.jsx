@@ -16,7 +16,7 @@ const navigationPropDescriptions = {
   globalPrimaryIcon: 'The topmost icon to be placed in the global navigation - usually the product logo, or the product home icon',
   globalPrimaryItemHref: 'A link to place around the primary icon. The rendering of this link is controlled by Navigation.linkComponent',
   globalSearchIcon: 'The icon to use in the global navigation for the global search button',
-  globalSecondaryActions: 'A list of nodes to be placed in the secondary actions slot in the global sidebar. This should not exceed four nodes.',
+  globalSecondaryActions: 'A list of nodes to be placed in the secondary actions slot in the global sidebar. This must not exceed five nodes.',
   isCollapsible: `Whether or not the node is able to be collapsed.
                  If set to false the navigation can never be collapsed down to just the global bar.
                  Resizing will only allow the navigation to be expanded beyond the standard width (global navigation + container navigation)

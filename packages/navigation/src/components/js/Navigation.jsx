@@ -66,7 +66,7 @@ type Props = {|
   is clicked. */
   globalSearchIcon?: ReactElement,
   /** An array of elements to be displayed at the bottom of the global component.
-  These should be icons or other small elements. There should be no more than four.
+  These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
   globalSecondaryActions?: ReactElement[],
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation

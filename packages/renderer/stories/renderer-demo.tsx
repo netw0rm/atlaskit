@@ -10,14 +10,13 @@ import {
   StoryBookAuthProvider
 } from '@atlaskit/media-test-helpers';
 
-import { ProviderFactory } from '@atlaskit/editor-core';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { document } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
   CardSurroundings
-} from '../../editor-core/src/ui/Renderer';
-// } from '@atlaskit/editor-core/ui/Renderer'; // @TODO editor-common migration
+} from '../src/ui/Renderer';
 
 import {
   AkProfileClient,

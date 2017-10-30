@@ -1,5 +1,17 @@
 # @atlaskit/renderer
 
+## 7.1.0 (2017-10-30)
+
+
+
+
+* feature; migrate renderer from editor core ([a3cfd36](https://bitbucket.org/atlassian/atlaskit/commits/a3cfd36))
+
+
+
+
+
+
 ## 7.0.2 (2017-10-19)
 
 * bug fix; export default TS file for local development, export couple of functions for React r ([af88191](https://bitbucket.org/atlassian/atlaskit/commits/af88191))

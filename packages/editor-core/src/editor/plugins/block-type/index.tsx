@@ -22,9 +22,17 @@ const blockType: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarBlockType editorView={editorView} pluginState={pluginState} popupsMountPoint={popupsMountPoint} popupsBoundariesElement={popupsBoundariesElement} />;
+    return (
+      <ToolbarBlockType
+        isDisabled={disabled}
+        editorView={editorView}
+        pluginState={pluginState}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+      />
+    );
   }
 };
 

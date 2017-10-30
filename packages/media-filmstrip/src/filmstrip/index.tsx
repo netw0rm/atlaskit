@@ -9,14 +9,25 @@ export interface FilmstripProps {
 export interface FilmstripState {
   animate: boolean;
   offset: number;
+  children: any;
 }
 
 export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripState> {
   eventsAdded: boolean;
   state: FilmstripState = {
     animate: false,
-    offset: 0
+    offset: 0,
+    children: null
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      animate: false,
+      offset: 0,
+      children: props.children
+    };
+  }
 
   handleSizeChange = ({offset}) => this.setState({offset});
   handleScrollChange = ({offset, animate}) => this.setState({offset, animate});
@@ -40,13 +51,17 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   }
 
   onDragEnd = (source, destination) => {
-    console.log(source, destination)
+    const {children} = this.state;
+    const result = [...children];
+    const [removed] = result.splice(source.index, 1);
+
+    result.splice(destination.index, 0, removed);
+    this.setState({children: result})
   }
 
   render() {
-    const {animate, offset} = this.state;
-    const {children} = this.props;
-    console.log('render offset', offset)
+    const {animate, offset, children} = this.state;
+    // console.log('render offset', offset)
     return (
       <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}

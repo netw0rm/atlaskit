@@ -79,7 +79,7 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 const getItemStyle = (draggableStyle, isDragging) => ({
-  display: 'inline-block',
+  // display: 'inline-block',
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   
@@ -113,7 +113,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (!offset) {
       return 0;
     }
-    console.log('get offset', this.maxOffset, Math.max(this.minOffset, offset))
+    // console.log('get offset', this.maxOffset, Math.max(this.minOffset, offset))
     return Math.min(this.maxOffset, Math.max(this.minOffset, offset));
   }
 
@@ -408,6 +408,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         {...provided.dragHandleProps}
       >
         {child}
+        {provided.placeholder}
       </FilmStripListItem>
     );
   }
@@ -429,7 +430,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const transform = `translateX(${-this.offset}px)`;
     const transitionProperty = animate ? 'transform' : 'none';
     const transitionDuration = `${this.transitionDuration}s`;
-    console.log('transform', transform)
 
     return (
       <FilmStripViewWrapper>
@@ -438,12 +438,13 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
           innerRef={this.handleWindowElementChange}
           onWheel={this.handleScroll}
         >
-      <FilmStripList
-              innerRef={this.handleBufferElementChange(provided.innerRef)}
-              style={{transform, transitionProperty, transitionDuration, ...getListStyle(snapshot.isDraggingOver)}}
-            >
-        {this.renderChildren(children)}
-      </FilmStripList>
+          <FilmStripList
+            innerRef={this.handleBufferElementChange(provided.innerRef)}
+            style={{transform, transitionProperty, transitionDuration, ...getListStyle(snapshot.isDraggingOver)}}
+          >
+            {this.renderChildren(children)}
+            {provided.placeholder}
+          </FilmStripList>
         </FilmStripListWrapper>
         {this.renderRightArrow()}
       </FilmStripViewWrapper>

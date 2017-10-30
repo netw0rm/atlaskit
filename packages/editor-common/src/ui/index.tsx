@@ -5,5 +5,5 @@ export { default as Popup } from './Popup';
 export { default as Portal } from './Portal';
 
 export { default as withOuterListeners } from './with-outer-listeners';
-import * as EventHandlers from './EventHandlers';
-export { EventHandlers };
+export * from './EventHandlers';
+export { Appearance } from './MediaItem/MediaComponent';

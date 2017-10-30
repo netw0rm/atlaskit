@@ -150,7 +150,10 @@ export function processDefaultDocument(schema: Schema, rawDoc?: Node | string | 
   }
 
   try {
-    return Node.fromJSON(schema, doc);
+    const parsedDoc = Node.fromJSON(schema, doc);
+    // throws an error if the document is invalid
+    parsedDoc.check();
+    return parsedDoc;
   } catch (e) {
     console.error(`Error processing default value: ${doc} – ${e.message}`);
     return;

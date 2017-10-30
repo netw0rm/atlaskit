@@ -44,16 +44,17 @@ const textFormatting: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
     const textFormattingPluginState = textFormattingStateKey.getState(editorView.state);
     const clearFormattingPluginState = clearFormattingStateKey.getState(editorView.state);
 
     return (
       <ButtonsGroup>
-        <ToolbarTextFormatting editorView={editorView} pluginState={textFormattingPluginState} />
-        <ToolbarInlineCode editorView={editorView} pluginState={textFormattingPluginState} />
+        <ToolbarTextFormatting disabled={disabled} editorView={editorView} pluginState={textFormattingPluginState} />
+        <ToolbarInlineCode disabled={disabled} editorView={editorView} pluginState={textFormattingPluginState} />
         <ToolbarAdvancedTextFormatting
           editorView={editorView}
+          isDisabled={disabled}
           pluginStateTextFormatting={textFormattingPluginState}
           pluginStateClearFormatting={clearFormattingPluginState}
           popupsMountPoint={popupsMountPoint}

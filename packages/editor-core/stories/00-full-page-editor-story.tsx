@@ -79,50 +79,75 @@ const SaveAndCancelButtons = props => (
 );
 
 storiesOf(name, module)
-  .add('Full Page Editor', () =>
-    <Content>
-      <EditorContext>
-        <Editor
-          appearance="full-page"
-          analyticsHandler={analyticsHandler}
+  .add('Full Page Editor', () => {
+    type Props = {};
+    type State = { disabled: boolean };
 
-          allowTextFormatting={true}
-          allowTasksAndDecisions={true}
-          allowHyperlinks={true}
-          allowCodeBlocks={true}
-          allowLists={true}
-          allowTextColor={true}
-          allowTables={true}
-          allowJiraIssue={true}
-          allowUnsupportedContent={true}
-          allowPanel={true}
-          allowInlineMacro={true}
+    class Demo extends React.Component<Props, State> {
+      state: State = { disabled: true };
 
-          mediaProvider={storyMediaProviderFactory()}
-          emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
-          mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
-          activityProvider={Promise.resolve(new MockActivityResource())}
-          macroProvider={macroProviderPromise}
-          // tslint:disable-next-line:jsx-no-lambda
-          contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
+      render() {
+        return (
+          <Content>
+            <EditorContext>
+              <Editor
+                appearance="full-page"
+                analyticsHandler={analyticsHandler}
 
-          placeholder="Write something..."
-          shouldFocus={false}
+                allowTextFormatting={true}
+                allowTasksAndDecisions={true}
+                allowHyperlinks={true}
+                allowCodeBlocks={true}
+                allowLists={true}
+                allowTextColor={true}
+                allowTables={true}
+                allowJiraIssue={true}
+                allowUnsupportedContent={true}
+                allowPanel={true}
+                allowInlineMacro={true}
 
-          contentComponents={
-            <TitleInput
-              placeholder="Give this page a title..."
-              // tslint:disable-next-line:jsx-no-lambda
-              innerRef={ref => ref && ref.focus()}
-            />
-          }
+                mediaProvider={storyMediaProviderFactory()}
+                emojiProvider={emojiStoryData.getEmojiResource({ uploadSupported: true })}
+                mentionProvider={Promise.resolve(mentionStoryData.resourceProvider)}
+                activityProvider={Promise.resolve(new MockActivityResource())}
+                macroProvider={macroProviderPromise}
+                // tslint:disable-next-line:jsx-no-lambda
+                contentTransformerProvider={(schema) => new ConfluenceTransformer(schema)}
 
-          primaryToolbarComponents={
-            <WithEditorActions
-              // tslint:disable-next-line:jsx-no-lambda
-              render={actions => <SaveAndCancelButtons editorActions={actions}/>}
-            />
-          }
-        />
-      </EditorContext>
-    </Content>);
+                placeholder="Write something..."
+                shouldFocus={false}
+                disabled={this.state.disabled}
+
+                contentComponents={
+                  <TitleInput
+                    placeholder="Give this page a title..."
+                    // tslint:disable-next-line:jsx-no-lambda
+                    innerRef={this.handleTitleRef}
+                    onFocus={this.handleTitleOnFocus}
+                    onBlur={this.handleTitleOnBlur}
+                  />
+                }
+
+                primaryToolbarComponents={
+                  <WithEditorActions
+                    // tslint:disable-next-line:jsx-no-lambda
+                    render={actions => <SaveAndCancelButtons editorActions={actions}/>}
+                  />
+                }
+              />
+            </EditorContext>
+          </Content>
+        );
+      }
+
+      private handleTitleOnFocus = () => this.setState({ disabled: true });
+      private handleTitleOnBlur = () => this.setState({ disabled: false });
+      private handleTitleRef = (ref?: HTMLElement) => {
+        if (ref) {
+          ref.focus();
+        }
+      }
+    }
+
+    return <Demo />;
+  });

@@ -12,29 +12,30 @@ const PluginsComponentsWrapper = styled.div`
 
 export interface Props {
   items?: any[];
-
   editorView?: EditorView;
   eventDispatcher?: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+  disabled?: boolean;
 }
 
 export default class PluginSlot extends React.Component<Props, any> {
   shouldComponentUpdate(nextProps: Props) {
-    const { editorView, items, providerFactory, eventDispatcher, popupsMountPoint, popupsBoundariesElement } = this.props;
+    const { editorView, items, providerFactory, eventDispatcher, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
     return !(nextProps.editorView === editorView
       && nextProps.items === items
       && nextProps.providerFactory === providerFactory
       && nextProps.eventDispatcher === eventDispatcher
       && nextProps.popupsMountPoint === popupsMountPoint
       && nextProps.popupsBoundariesElement === popupsBoundariesElement
+      && nextProps.disabled === disabled
     );
   }
 
   render() {
-    const { items, editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement } = this.props;
+    const { items, editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled } = this.props;
 
     if (!items) {
       return null;
@@ -43,7 +44,7 @@ export default class PluginSlot extends React.Component<Props, any> {
     return (
       <PluginsComponentsWrapper>
         {items.map((component, key) => {
-          const element = component(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement);
+          const element = component(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled);
           return element && React.cloneElement(element, { key });
         })}
       </PluginsComponentsWrapper>

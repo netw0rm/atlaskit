@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 56.3.0 (2017-10-30)
+
+* bug fix; prevent markdown syntax highlighting in inline code (issues closed: ed-2861) ([d2dece7](https://bitbucket.org/atlassian/atlaskit/commits/d2dece7))
+* feature; added disabled prop to new arch (issues closed: ed-3036) ([4407a2f](https://bitbucket.org/atlassian/atlaskit/commits/4407a2f))
+* feature; add confluence inline comment mark. (issues closed: ed-2974) ([246b433](https://bitbucket.org/atlassian/atlaskit/commits/246b433))
+## 56.2.2 (2017-10-29)
+
+* bug fix; added validation of the deserialized document on first load (issues closed: ed-3104) ([95e045a](https://bitbucket.org/atlassian/atlaskit/commits/95e045a))
+## 56.2.1 (2017-10-27)
+
+* bug fix; fix position of floating hyperlink toolbar. (issues closed: #ed-2427) ([b6f08a9](https://bitbucket.org/atlassian/atlaskit/commits/b6f08a9))
 ## 56.2.0 (2017-10-26)
 
 * bug fix; replaceDocument should allow JSON object as an argument ([a60e106](https://bitbucket.org/atlassian/atlaskit/commits/a60e106))

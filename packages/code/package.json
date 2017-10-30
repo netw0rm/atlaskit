@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "config": {
     "access": "public"
   },
@@ -16,7 +16,8 @@
     "lint": "../../node_modules/.bin/tslint --project . '*.{ts,tsx,d.ts}' '{src,test,stories}/**/*.{ts,tsx,d.ts}'",
     "validate/typescript": "../../build/bin/validate.typescript.sh",
     "storybook": "../../build/bin/storybook/run.local.js",
-    "storybook:static": "../../build/bin/storybook/build.static.js"
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
   "files": [
     "dist",

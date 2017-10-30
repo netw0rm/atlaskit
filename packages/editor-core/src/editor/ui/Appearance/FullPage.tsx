@@ -100,7 +100,8 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       providerFactory,
       contentComponents, primaryToolbarComponents,
       customPrimaryToolbarComponents, customContentComponents,
-      popupsMountPoint, popupsBoundariesElement
+      popupsMountPoint, popupsBoundariesElement,
+      disabled
     } = this.props;
 
     return (
@@ -114,6 +115,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
             items={primaryToolbarComponents}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
+            disabled={disabled}
           />
           <MainToolbarCustomComponentsSlot>
             {customPrimaryToolbarComponents}

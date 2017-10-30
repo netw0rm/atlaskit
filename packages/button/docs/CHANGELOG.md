@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.8 (2017-10-27)
+
+* bug fix; correct formatting for user-select style ([fe9419c](https://bitbucket.org/atlassian/atlaskit/commits/fe9419c))
 ## 5.4.7 (2017-10-27)
 
 * bug fix; change icon to be unselectable so button content can be copied ([e8c876a](https://bitbucket.org/atlassian/atlaskit/commits/e8c876a))

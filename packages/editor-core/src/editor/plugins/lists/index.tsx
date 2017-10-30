@@ -23,9 +23,9 @@ const listPlugin: EditorPlugin = {
     ];
   },
 
-  primaryToolbarComponent(editorView) {
+  primaryToolbarComponent(editorView, eventDispatcher, providerFactory, appearance, popupsMountPoint, popupsBoundariesElement, disabled) {
     const pluginState = stateKey.getState(editorView.state);
-    return <ToolbarLists editorView={editorView} pluginState={pluginState} />;
+    return <ToolbarLists disabled={disabled} editorView={editorView} pluginState={pluginState} />;
   }
 };
 

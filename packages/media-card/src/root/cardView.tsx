@@ -105,8 +105,10 @@ export class CardView extends React.Component<CardViewProps, {}> {  // tslint:di
   }
 
   private onClick = (event: MouseEvent<HTMLDivElement>) => {
-    const {onClick, metadata: mediaItemDetails} = this.props;
-    if (onClick) {
+    const {onClick, metadata: mediaItemDetails, status} = this.props;
+    const isClickableStatus = status !== 'loading' && status !== 'processing';
+
+    if (onClick && isClickableStatus) {
       onClick({event, mediaItemDetails});
     }
   }

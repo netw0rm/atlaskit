@@ -14,7 +14,12 @@ export interface StoryState {
 const Box = styled.div`
   width: 250px;
   height: 100px;
-  background-color: lightgreen;
+  margin: 0 5px;
+  ${({id}) => {
+    return `
+      background-color: ${id};
+    `;
+  }}
 `;
 
 const Dropzone = styled.div`
@@ -30,19 +35,21 @@ export class Story extends Component<StoryProps, StoryState> {
 
   render() {
     const {dropzoneElement} = this.state;
-
+    // <h1>Drag & Drop</h1>
+    //     <Dropzone innerRef={this.saveDropzone} />
     return (
       <div>
-        <h1>Drag & Drop</h1>
-        <Dropzone innerRef={this.saveDropzone} />
+        
         <Filmstrip dropzoneElement={dropzoneElement}>
-          <Box/>
-          <Box/>
-          <Box/>
-          <Box/>
-          <Box/>
-          <Box/>
-          <Box/>
+          <Box id="blue"/>
+          <Box id="green"/>
+          <Box id="black"/>
+          <Box id="purple"/>
+          <Box id="yellow"/>
+          <Box id="darkgray"/>
+          <Box id="darkgreen"/>
+          <Box id="darkblue"/>
+          <Box id="darkred"/>
         </Filmstrip>
       </div>
     );

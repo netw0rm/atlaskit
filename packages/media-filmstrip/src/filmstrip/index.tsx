@@ -1,6 +1,5 @@
 /* tslint:disable: variable-name */
 import * as React from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import {FilmstripView} from '../filmstripView';
 
 export interface FilmstripProps {
@@ -40,23 +39,14 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     console.log('onDragOver', dataTransfer)
   }
 
-  onDragEnd = (result) => {
-    console.log(result);
-  }
-
   render() {
     const {animate, offset} = this.state;
-    const {children, dropzoneElement} = this.props;
-    
+    const {children} = this.props;
+    console.log('render offset', offset)
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
-            {children}
-          </FilmstripView>
-        </Droppable>
-      </DragDropContext>
+      <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange}>
+        {children}
+      </FilmstripView>
     );
   }
-
 }

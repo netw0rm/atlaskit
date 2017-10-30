@@ -1,6 +1,7 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import {ReactNode, WheelEvent, MouseEvent} from 'react';
+import {ReactNode, WheelEvent, MouseEvent, ReactChild} from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 import {
@@ -71,6 +72,23 @@ export const RightArrow: React.SFC<ArrowProps> = ({onClick}: ArrowProps) => (
   </ShadowRight>
 );
 
+const getListStyle = (isDraggingOver) => ({
+  // background: isDraggingOver ? 'lightblue' : 'lightgrey',
+  // display: 'flex'
+});
+
+const getItemStyle = (draggableStyle, isDragging) => ({
+  display: 'inline-block',
+  // some basic styles to make the items look a bit nicer
+  userSelect: 'none',
+  
+  // change background colour if dragging
+  // background: isDragging ? 'lightgreen' : 'grey',
+  
+  // styles we need to apply on draggables
+  ...draggableStyle
+});
+
 export class FilmstripView extends React.Component<FilmstripViewProps, FilmstripViewState> {
 
   static defaultProps: Partial<FilmstripViewProps> = {
@@ -94,6 +112,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (!offset) {
       return 0;
     }
+    console.log('get offset', this.maxOffset, Math.max(this.minOffset, offset))
     return Math.min(this.maxOffset, Math.max(this.minOffset, offset));
   }
 
@@ -106,6 +125,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
    */
   get maxOffset() {
     const {bufferWidth, windowWidth} = this.state;
+    // console.log('maxOffset', this.minOffset, bufferWidth, windowWidth)
     return Math.max(this.minOffset, bufferWidth - windowWidth - 1);
   }
 
@@ -114,6 +134,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   get canGoRight() {
+    // console.log('canGoRight', this.offset, this.maxOffset);
     return this.offset < this.maxOffset;
   }
 
@@ -186,6 +207,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     let bufferWidth = 0;
     let windowWidth = 0;
     let childOffsets = [];
+    // console.log('handleSizeChange', windowElement, bufferElement)
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
@@ -204,6 +226,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         return offset;
       });
     }
+
+    // console.log('childOffsets', bufferWidth, windowWidth, childOffsets)
 
     // make sure the state has changed before we update state and notify the integrator
     // (otherwise, since this method() is called in componentDidUpdate() we'll recurse until the stack size is exceeded)
@@ -249,7 +273,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.handleSizeChange();
   }
 
-  handleBufferElementChange = bufferElement => {
+  handleBufferElementChange = provider => bufferElement => {
+    provider(bufferElement);
     this.bufferElement = bufferElement;
     this.handleSizeChange();
   }
@@ -282,6 +307,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (onScroll) {
       const {windowWidth} = this.state;
       const newOffset = this.getClosestForRight(this.offset + windowWidth);
+      console.log('onScroll', newOffset);
+
       onScroll({
         direction: 'right',
         offset: newOffset,
@@ -324,6 +351,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   renderRightArrow() {
     const {canGoRight} = this;
+    // console.log('canGoRight', canGoRight)
     if (!canGoRight) {
       return null;
     }
@@ -355,15 +383,43 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   }
 
-  render(): JSX.Element {
-    const {
-      animate,
-      children
-    } = this.props;
+  onDragEnd = (result) => {
+    console.log(result);
+  }
 
+  renderItem = (child) => (provided, snapshot) => {
+    return (
+      <FilmStripListItem
+        innerRef={provided.innerRef} 
+        style={getItemStyle(
+          provided.draggableStyle,
+          snapshot.isDragging
+        )}
+        {...provided.dragHandleProps}
+      >
+        {child}
+      </FilmStripListItem>
+    );
+  }
+
+  renderChildren = (children) => {
+    return React.Children.map(children, (child, index) => {
+      const id = child['props'] ? child['props'].id : index;
+
+      return (
+        <Draggable key={id} draggableId={id}>
+          {this.renderItem(child)}
+        </Draggable>
+      );
+    });
+  }
+
+  renderList = (provided, snapshot) => {
+    const { animate, children } = this.props;
     const transform = `translateX(${-this.offset}px)`;
     const transitionProperty = animate ? 'transform' : 'none';
     const transitionDuration = `${this.transitionDuration}s`;
+    console.log('transform', transform)
 
     return (
       <FilmStripViewWrapper>
@@ -372,20 +428,27 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
           innerRef={this.handleWindowElementChange}
           onWheel={this.handleScroll}
         >
-          <FilmStripList
-            innerRef={this.handleBufferElementChange}
-            style={{transform, transitionProperty, transitionDuration}}
-          >
-            {React.Children.map(children, (child, index) => (
-              
-              <FilmStripListItem key={index}>
-                {child}
-              </FilmStripListItem>
-            ))}
-          </FilmStripList>
+      <FilmStripList
+              innerRef={this.handleBufferElementChange(provided.innerRef)}
+              style={{transform, transitionProperty, transitionDuration, ...getListStyle(snapshot.isDraggingOver)}}
+            >
+        {this.renderChildren(children)}
+      </FilmStripList>
         </FilmStripListWrapper>
         {this.renderRightArrow()}
       </FilmStripViewWrapper>
+    );
+  }
+
+  render(): JSX.Element {
+    const { offset } = this.props;
+    console.log('filmstripview render', offset)
+    return (
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {this.renderList}
+        </Droppable>
+      </DragDropContext>
     );
   }
 

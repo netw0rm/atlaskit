@@ -23,7 +23,7 @@ type Props = {|
   /** A link to place around the primary icon. */
   primaryItemHref?: string,
   /**  list of nodes to be placed in the secondary actions slot at the bottom of
-  the global sidebar. This should not exceed four nodes. */
+  the global sidebar. This must not exceed five nodes. */
   secondaryActions: Array<ReactElement>,
   /** The icon to use in the global navigation for the global search button */
   searchIcon?: ReactElement,

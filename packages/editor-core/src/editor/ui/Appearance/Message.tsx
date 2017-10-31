@@ -9,7 +9,9 @@ import {
   EditorAppearance
 } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
+import { pluginKey as mediaPluginKey } from '../../plugins/media';
 import { AddonToolbar } from '../Addon';
+import MediaDrawer from '../../../ui/Media/MediaDrawer';
 
 const pulseBackground = keyframes`
   50% {
@@ -37,6 +39,7 @@ export interface MessageEditorProps {
 // tslint:disable-next-line:variable-name
 const MessageEditor: any = styled.div`
   display: flex;
+  flex-flow: row wrap;
   border: 1px solid ${(props: MessageEditorProps) => props.isMaxContentSizeReached ? '#FF8F73' : '#C1C7D0' };
   border-radius: 3px;
   height: auto;
@@ -91,7 +94,7 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
     }
   }
 
-  private renderChrome = ({ maxContentSize }) => {
+  private renderChrome = ({ maxContentSize, media }) => {
     const {
       editorView,
       eventDispatcher,
@@ -139,6 +142,9 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           {customSecondaryToolbarComponents}
           <AddonToolbar dropdownItems={addonToolbarComponents} />
         </SecondaryToolbarContainer>
+        { !media ? '' :
+          <MediaDrawer mediaPluginState={media} />
+        }
       </MessageEditor>
     );
   }
@@ -150,7 +156,10 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
       <WithPluginState
         editorView={editorView}
         eventDispatcher={eventDispatcher}
-        plugins={{ maxContentSize: maxContentSizePluginKey }}
+        plugins={{
+          maxContentSize: maxContentSizePluginKey,
+          media: mediaPluginKey
+         }}
         render={this.renderChrome}
       />
     );

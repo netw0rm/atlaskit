@@ -199,6 +199,7 @@ export default class PickerFacade {
     const state = {
       id: tempId,
       status: 'uploading',
+      publicId: file.publicId as string,
       fileName: file.name as string,
       fileSize: file.size as number,
       fileMimeType: file.type as string,

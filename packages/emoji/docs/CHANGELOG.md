@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.1.6 (2017-10-31)
+
+* bug fix; fixed mpConfig in SiteEmojiResource ([bd01a52](https://bitbucket.org/atlassian/atlaskit/commits/bd01a52))
 ## 30.1.5 (2017-10-25)
 
 * bug fix; fixed sizing of emoji in upload preview (issues closed: fs-1441) ([d69a2b2](https://bitbucket.org/atlassian/atlaskit/commits/d69a2b2))

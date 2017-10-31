@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.5.1 (2017-10-31)
+
+* bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))
 ## 26.5.0 (2017-10-27)
 
 

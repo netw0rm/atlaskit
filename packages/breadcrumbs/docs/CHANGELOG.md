@@ -1,5 +1,8 @@
 # @atlaskit/breadcrumbs
 
+## 3.0.3 (2017-10-31)
+
+* bug fix; update button dep ([069d0f4](https://bitbucket.org/atlassian/atlaskit/commits/069d0f4))
 ## 3.0.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

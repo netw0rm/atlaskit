@@ -77,10 +77,10 @@ export default class SiteEmojiResource {
         const { url, clientId, collectionName } = uploadToken;
         const mpConfig = {
           apiUrl: url,
-          apiClientId: clientId,
-          tokenSource:  {
+          authProvider: () => Promise.resolve({
+            clientId,
             token: uploadToken.jwt,
-          },
+          }),
           uploadParams: {
             collection: collectionName,
           },

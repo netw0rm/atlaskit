@@ -11,6 +11,8 @@ export interface CodeProps {
   theme?: Theme;
 }
 
+const allowedLanguagesList = languageList.concat('text');
+
 export default class Code extends PureComponent<CodeProps, {}> {
 
   static propTypes = {
@@ -19,26 +21,38 @@ export default class Code extends PureComponent<CodeProps, {}> {
     text: PropTypes.string.isRequired,
 
     /** The language in which the code is written */
-    language: PropTypes.oneOf(languageList),
+    language: PropTypes.oneOf(allowedLanguagesList),
 
     /** A custom theme to be applied, implements the Theme interface */
     theme: PropTypes.object
   };
 
   static defaultProps = {
-    language: 'md',
-    theme: {}
+    theme: {},
   };
 
   render() {
     const { language } = this.props;
     const { inlineCodeStyle } = applyTheme(this.props.theme);
+
+    // @see https://github.com/conorhastings/react-syntax-highlighter/issues/87
+    if (language === 'text') {
+      return (
+        <span style={inlineCodeStyle.hljs}>
+          <code>
+            {this.props.text}
+          </code>
+        </span>
+      );
+    }
+
     const props = {
       language: normalizeLanguage(language),
       PreTag: 'span',
       style: inlineCodeStyle,
       showLineNumbers: false
     };
+
     return (
       <SyntaxHighlighter {...props}>
         {this.props.text}

@@ -38,7 +38,6 @@ pipelines:
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
             - yarn run release/storybooks
-            - yarn run release/registry
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
           # caches:

@@ -15,11 +15,13 @@ import {
   code_block,
 } from '../../../../src/test-helper';
 import defaultSchema from '../../../../src/test-helper/schema';
+import { testData as emojiTestData } from '@atlaskit/emoji/dist/es5/support';
 
 chai.use(chaiPlugin);
 
 describe('emojis - input rules', () => {
   const providerFactory = new ProviderFactory();
+  providerFactory.setProvider('emojiProvider', emojiTestData.getEmojiResourcePromise());
   const editor = (doc: any) => makeEditor<EmojiState>({
     doc,
     plugins: emojiPlugins(defaultSchema, providerFactory),
@@ -34,6 +36,10 @@ describe('emojis - input rules', () => {
     expect(!!emojiQuery.isInSet(cursorFocus.marks)).to.equal(expected);
     editorView.destroy();
   };
+
+  after(() => {
+    providerFactory.destroy();
+  });
 
   it('should replace a standalone ":" with emoji-query-mark', () => {
     assert('foo :', true);
@@ -59,7 +65,7 @@ describe('emojis - input rules', () => {
     assert(':', true, p(hardBreak(), '{<>}'));
   });
 
-  it.skip('should replace ":" if there is another emoji node in front of it', () => {
+  it('should replace ":" if there is another emoji node in front of it', () => {
     assert(':', true, p(emoji({ shortName: ':smiley:'}), '{<>}'));
   });
 

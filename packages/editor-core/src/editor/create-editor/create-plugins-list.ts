@@ -23,7 +23,8 @@ import {
   jiraIssuePlugin,
   unsupportedContentPlugin,
   panelPlugin,
-  macroPlugin
+  macroPlugin,
+  confluenceInlineComment
 } from '../plugins';
 
 /**
@@ -113,6 +114,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.allowInlineMacro) {
     plugins.push(macroPlugin);
+  }
+
+  if(props.allowConfluenceInlineComment) {
+    plugins.push(confluenceInlineComment);
   }
 
   // UI only plugins

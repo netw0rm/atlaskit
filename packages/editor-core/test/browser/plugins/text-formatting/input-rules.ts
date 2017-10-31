@@ -465,7 +465,7 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
     });
 
-    it('should convert "*`text`*" to italic code text', () => {
+    it('should not convert "*`text`*" to italic code text', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '*`text`', sel);
@@ -473,7 +473,7 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('*', code('text'))));
 
       insertText(editorView, '*', editorView.state.selection.from);
-      expect(editorView.state.doc).to.deep.equal(doc(p(em(code('text')))));
+      expect(editorView.state.doc).to.deep.equal(doc(p('*', code('text'), '*')));
     });
 
     it('should convert "___text___" to italic strong', () => {

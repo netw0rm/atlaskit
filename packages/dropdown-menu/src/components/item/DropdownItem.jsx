@@ -1,7 +1,5 @@
 // @flow
 
-import Item from '@atlaskit/item';
-import withItemFocus from '../hoc/withItemFocus';
-import withItemClick from '../hoc/withItemClick';
+import Item, { withItemFocus, withItemClick } from '@atlaskit/item';
 
 export default withItemClick(withItemFocus(Item));

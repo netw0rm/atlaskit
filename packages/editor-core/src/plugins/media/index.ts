@@ -37,6 +37,7 @@ import { removeMediaNode, splitMediaGroup } from './media-common';
 import { Alignment, Display } from './single-image';
 import PickerFacade from './picker-facade';
 import DropPlaceholder from '../../ui/Media/DropPlaceholder';
+import { SlimMediaPluginState } from './slimMediaPluginState';
 
 const MEDIA_RESOLVE_STATES = ['ready', 'error', 'cancelled'];
 
@@ -57,18 +58,18 @@ export class MediaPluginState {
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
   public showDropzone: boolean = false;
-  private mediaNodes: MediaNodeWithPosHandler[] = [];
-  private options: MediaPluginOptions;
-  private view: EditorView;
-  private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
-  private useDefaultStateManager = true;
-  private destroyed = false;
-  private mediaProvider: MediaProvider;
-  private errorReporter: ErrorReporter;
-  private popupPicker?: PickerFacadeType;
-  private clipboardPicker?: PickerFacadeType;
-  private dropzonePicker?: PickerFacadeType;
-  private linkRanges: Array<URLInfo>;
+  protected mediaNodes: MediaNodeWithPosHandler[] = [];
+  protected options: MediaPluginOptions;
+  protected view: EditorView;
+  protected pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
+  protected useDefaultStateManager = true;
+  protected destroyed = false;
+  protected mediaProvider: MediaProvider;
+  protected errorReporter: ErrorReporter;
+  protected popupPicker?: PickerFacadeType;
+  protected clipboardPicker?: PickerFacadeType;
+  protected dropzonePicker?: PickerFacadeType;
+  protected linkRanges: Array<URLInfo>;
 
   constructor(state: EditorState, options: MediaPluginOptions) {
     this.options = options;
@@ -389,7 +390,7 @@ export class MediaPluginState {
     this.linkRanges = detectLinkRangesInSteps(tr, link, oldState.selection.$anchor.pos);
   }
 
-  private destroyPickers = () => {
+  protected destroyPickers = () => {
     const { pickers } = this;
 
     pickers.forEach(picker => picker.destroy());
@@ -399,7 +400,7 @@ export class MediaPluginState {
     this.binaryPicker = undefined;
   }
 
-  private initPickers(uploadParams: UploadParams, context: ContextConfig) {
+  protected initPickers(uploadParams: UploadParams, context: ContextConfig) {
     if (this.destroyed) {
       return;
     }
@@ -430,11 +431,11 @@ export class MediaPluginState {
     pickers.forEach(picker => picker.setUploadParams(uploadParams));
   }
 
-  private collectionFromProvider(): string | undefined {
+  protected collectionFromProvider(): string | undefined {
     return this.mediaProvider && this.mediaProvider.uploadParams && this.mediaProvider.uploadParams.collection;
   }
 
-  private handleMediaState = (state: MediaState) => {
+  protected handleMediaState = (state: MediaState) => {
     switch (state.status) {
       case 'error':
         this.removeNodeById(state.id);
@@ -452,11 +453,11 @@ export class MediaPluginState {
     }
   }
 
-  private notifyPluginStateSubscribers = () => {
+  protected notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   }
 
-  private removeNodeById = (id: string) => {
+  protected removeNodeById = (id: string) => {
     // TODO: we would like better error handling and retry support here.
     const mediaNodeWithPos = this.findMediaNode(id);
     if (mediaNodeWithPos) {
@@ -464,7 +465,7 @@ export class MediaPluginState {
     }
   }
 
-  private replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
+  protected replaceNodeWithPublicId = (temporaryId: string, publicId: string) => {
     const { view } = this;
     if (!view) {
       return;
@@ -504,7 +505,7 @@ export class MediaPluginState {
     return false;
   }
 
-  private isMediaNodeSelection() {
+  protected isMediaNodeSelection() {
     const { selection, schema } = this.view.state;
     return selection instanceof NodeSelection && selection.node.type === schema.nodes.media;
   }
@@ -513,14 +514,14 @@ export class MediaPluginState {
    * Since we replace nodes with public id when node is finalized
    * stateManager contains no information for public ids
    */
-  private getMediaNodeStateStatus = (id: string) => {
+  protected getMediaNodeStateStatus = (id: string) => {
     const { stateManager } = this;
     const state = stateManager.getState(id);
 
     return (state && state.status) || 'ready';
   }
 
-  private handleDrag = (dragState: 'enter' | 'leave') => {
+  protected handleDrag = (dragState: 'enter' | 'leave') => {
     const isActive = dragState === 'enter';
     if (this.showDropzone === isActive) {
       return;
@@ -538,10 +539,15 @@ export const stateKey = new PluginKey('mediaPlugin');
 export const createPlugin = (schema: Schema, options: MediaPluginOptions, dispatch?: Dispatch) => {
   const dropZone = document.createElement('div');
   ReactDOM.render(React.createElement(DropPlaceholder), dropZone);
+
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options);
+        if (options.slim) {
+          return new SlimMediaPluginState(state, options);
+        } else {
+          return new MediaPluginState(state, options);
+        }
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);

@@ -24,7 +24,8 @@ const mediaPlugin: EditorPlugin = {
               providerFactory,
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
-              waitForMediaUpload: props.waitForMediaUpload
+              waitForMediaUpload: props.waitForMediaUpload,
+              slim: (props.appearance === 'message')
             },
             dispatch
           )
@@ -38,4 +39,5 @@ const mediaPlugin: EditorPlugin = {
   }
 };
 
+export { pluginKey };
 export default mediaPlugin;

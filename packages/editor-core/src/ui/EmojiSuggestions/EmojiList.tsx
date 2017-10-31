@@ -3,7 +3,7 @@ import { Component } from 'react';
 import styled from 'styled-components';
 import { EmojiDescription } from '@atlaskit/emoji';
 import EmojiItem from './EmojiItem';
-import { akBorderRadius, akColorN30 } from '@atlaskit/util-shared-styles';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 function wrapIndex(emojis: EmojiDescription[], index: number): number {
   const len = emojis.length;
@@ -20,6 +20,8 @@ export const Container = styled.div`
   border-radius: ${akBorderRadius};
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   display: flex;
+  overflow: hidden;
+
   * span > span + span {
     padding: 4px 7px 0px 2px;
     line-height: normal;
@@ -28,33 +30,28 @@ export const Container = styled.div`
 
 export interface Props {
   emojis: EmojiDescription[];
-  onEmojiSelect: (emoji: EmojiDescription, event?) => void;
-}
-
-export interface State {
   selectedIndex: number;
+  onEmojiSelect: (emoji: EmojiDescription, event?) => void;
+  setIndex: (index: number) => void;
 }
 
-export default class EmojiList extends Component<Props, State> {
-  state: State = {
-    selectedIndex: 0
-  };
 
+export default class EmojiList extends Component<Props, any> {
   selectCurrent = () => {
-    const emoji = this.props.emojis[this.state.selectedIndex];
-    this.props.onEmojiSelect(emoji);
+    if (this.props.selectedIndex > -1) {
+      const emoji = this.props.emojis[this.props.selectedIndex];
+      this.props.onEmojiSelect(emoji);
+    }
   }
 
   selectNext = () => {
-    const { selectedIndex } = this.state;
-    const { emojis } = this.props;
-    this.selectIndex(wrapIndex(emojis, selectedIndex + 1));
+    const { emojis, selectedIndex } = this.props;
+    this.props.setIndex(wrapIndex(emojis, selectedIndex + 1));
   }
 
   selectPrevious = () => {
-    const { selectedIndex } = this.state;
-    const { emojis } = this.props;
-    this.selectIndex(wrapIndex(emojis, selectedIndex - 1));
+    const { emojis, selectedIndex } = this.props;
+    this.props.setIndex(wrapIndex(emojis, selectedIndex - 1));
   }
 
   render() {
@@ -67,14 +64,10 @@ export default class EmojiList extends Component<Props, State> {
             key={emoji.id}
             emoji={emoji}
             onSelected={onEmojiSelect}
-            selected={index === this.state.selectedIndex}
+            selected={index === this.props.selectedIndex}
           />
         ))}
       </Container>
     );
-  }
-
-  private selectIndex (index: number) {
-    this.setState({ selectedIndex: index });
   }
 }

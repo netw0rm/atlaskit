@@ -8,7 +8,12 @@ export const insertEmoji = (view: EditorView, emojiId: any) => {
   const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
   const textNode = schema.text(' ');
 
-  dispatch(tr.replaceWith($from.pos, $from.pos, [ node, textNode ]));
+  dispatch(
+    tr
+      .replaceWith($from.pos, $from.pos, [ node, textNode ])
+      .setMeta(pluginKey, { query: undefined, selectedIndex: -1 })
+  );
+
   if (!view.hasFocus()) {
     view.focus();
   }
@@ -25,4 +30,14 @@ export const setEmojiProvider = async (view: EditorView, provider: Promise<Emoji
   if (view.dom.parentNode) {
     view.dispatch(view.state.tr.setMeta(pluginKey, { emojiProvider: resolvedProvider }));
   }
+};
+
+export const dismiss = (view: EditorView) => {
+  const { state: { tr }, dispatch } = view;
+  dispatch(tr.setMeta(pluginKey, { query: undefined, selectedIndex: -1 }));
+};
+
+export const setIndex = (view: EditorView, selectedIndex: number) => {
+  const { state: { tr }, dispatch } = view;
+  dispatch(tr.setMeta(pluginKey, { selectedIndex }));
 };

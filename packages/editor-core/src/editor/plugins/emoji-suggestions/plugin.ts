@@ -11,8 +11,13 @@ export const pluginKey = new PluginKey('emojiSuggestionsPlugin');
 export class EmojiSuggestionsState {
   decorations: DecorationSet = DecorationSet.empty;
   query?: string;
+  selectedIndex: number = -1;
   anchorElement?: HTMLElement;
   emojiProvider: EmojiProvider;
+  onSelectPrevious = (): boolean => false;
+  onSelectNext = (): boolean => false;
+  onSelectCurrent = (): boolean => false;
+  dismiss = (): boolean => false;
 }
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({

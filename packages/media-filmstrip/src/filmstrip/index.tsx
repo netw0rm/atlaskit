@@ -47,8 +47,10 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const {dropzoneElement} = props;
     const {eventsAdded} = this;
 
-    if (eventsAdded || !dropzoneElement) {return}
-    
+    if (eventsAdded || !dropzoneElement) {
+      return;
+    }
+
     this.eventsAdded = true;
 
     dropzoneElement.addEventListener('dragover', this.onDragOver);
@@ -58,7 +60,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const {dataTransfer} = e;
 
     e.preventDefault();
-    console.log('onDragOver', dataTransfer)
+    console.log('onDragOver', dataTransfer);
   }
 
   onDragEnd = (source, destination) => {
@@ -75,8 +77,8 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     }
   }
 
-  renderChildren(items: FilmstripItem[]) {
-    const children = items.map((item, index) => {
+  renderChildren = (items: FilmstripItem[]) =>
+    items.map((item, index) => {
       const isCardItem = (item as FilmstripCardItem).identifier;
 
       if (isCardItem) {
@@ -100,10 +102,8 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
           {...item as CardViewProps}
         />
       );
-    });
+    })
 
-    return children;
-  }
 
   render() {
     const {animate, offset, items} = this.state;

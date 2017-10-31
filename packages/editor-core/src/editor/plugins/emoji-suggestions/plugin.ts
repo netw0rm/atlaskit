@@ -3,6 +3,8 @@ import { EditorView, DecorationSet } from 'prosemirror-view';
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
 import { getLastWord, createDecorationWidget } from './utils';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { setEmojiProvider } from './actions';
 
 export const pluginKey = new PluginKey('emojiSuggestionsPlugin');
 
@@ -10,6 +12,7 @@ export class EmojiSuggestionsState {
   decorations: DecorationSet = DecorationSet.empty;
   query?: string;
   anchorElement?: HTMLElement;
+  emojiProvider: EmojiProvider;
 }
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
@@ -42,6 +45,8 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
     decorations: (state: EditorState) => pluginKey.getState(state).decorations
   },
   view: (view: EditorView) => {
+    providerFactory.subscribe('emojiProvider', (name, provider: Promise<EmojiProvider>) => setEmojiProvider(view, provider));
+
     return {
       update(view) {
         const { dom, state: { tr }, dispatch } = view;

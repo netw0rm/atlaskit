@@ -4,7 +4,6 @@ import { createPlugin, pluginKey, EmojiSuggestionsState } from './plugin';
 import { insertEmoji } from './actions';
 import EmojiSuggestions from '../../../ui/EmojiSuggestions';
 import WithPluginState from '../../ui/WithPluginState';
-import { WithProviders } from '../../../providerFactory/withProviders';
 
 const emojiSuggestionsPlugin: EditorPlugin = {
   pmPlugins() {
@@ -14,35 +13,25 @@ const emojiSuggestionsPlugin: EditorPlugin = {
   },
 
   contentComponent(editorView, eventDispatcher, providerFactory, apperance, popupsMountPoint, popupsBoundariesElement) {
-    const renderNode = (providers) =>{
-      return (
-        <WithPluginState
-          editorView={editorView}
-          eventDispatcher={eventDispatcher}
-          plugins={{
-            emojiSuggestions: pluginKey
-          }}
-          // tslint:disable-next-line:jsx-no-lambda
-          render={({
-            emojiSuggestions = {} as EmojiSuggestionsState
-          }) => (
+    return (
+      <WithPluginState
+        editorView={editorView}
+        eventDispatcher={eventDispatcher}
+        plugins={{
+          emojiSuggestions: pluginKey
+        }}
+        // tslint:disable-next-line:jsx-no-lambda
+        render={({ emojiSuggestions = {} as EmojiSuggestionsState }) => (
+          <span>{emojiSuggestions.emojiProvider &&
             <EmojiSuggestions
               editorView={editorView}
-              emojiProvider={providers.emojiProvider}
+              emojiProvider={emojiSuggestions.emojiProvider}
               query={emojiSuggestions.query}
               anchorElement={emojiSuggestions.anchorElement}
               insertEmoji={insertEmoji}
             />
-          )}
-        />
-      );
-    };
-
-    return (
-      <WithProviders
-        providerFactory={providerFactory}
-        providers={['emojiProvider']}
-        renderNode={renderNode}
+          }</span>
+        )}
       />
     );
   },

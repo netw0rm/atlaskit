@@ -12,7 +12,8 @@ import {
   ArrowRightWrapper,
   ShadowLeft,
   ShadowRight,
-  FilmStripListItem
+  FilmStripListItem,
+  DropzoneOverlay
 } from './styled';
 
 const DURATION_MIN = 0.5;
@@ -51,6 +52,7 @@ export interface FilmstripViewProps {
 export interface FilmstripViewState {
   bufferWidth: number;
   windowWidth: number;
+  draggedOver: boolean;
 }
 
 export interface ArrowProps {
@@ -104,6 +106,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   previousOffset: number = 0;
 
   state = {
+    draggedOver: false,
     bufferWidth: 0,
     windowWidth: 0
   };
@@ -397,6 +400,18 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
+  onDragEnter = () => {
+    if (!this.state.draggedOver) {
+      this.setState({ draggedOver: true });
+      console.log('onDragEnter');
+    }
+  }
+
+  onDragLeave = () => {
+    this.setState({ draggedOver: false });
+    console.log('onDragLeave');
+  }
+
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
       const key = child['key'] ? child['key'] : index;
@@ -452,12 +467,16 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   render(): JSX.Element {
     const { offset } = this.props;
     // We need to pass "offset" into Droppable even if we don't needed to force a render
+    const color = this.state.draggedOver ? 'lightred' : 'darkred';
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="droppable" offset={offset} direction="horizontal">
-          {this.renderList}
-        </Droppable>
-      </DragDropContext>
+      <div style={{backgroundColor: color, position: 'relative'}} onDragEnter={this.onDragEnter}>
+        {this.state.draggedOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId="droppable" offset={offset} direction="horizontal">
+            {this.renderList}
+          </Droppable>
+        </DragDropContext>
+      </div>
     );
   }
 

@@ -110,6 +110,7 @@ export class Story extends Component<StoryProps, StoryState> {
         <div>
           <Filmstrip items={mixedCardItems} dropzoneElement={dropzoneElement} />
         </div>
+
       </div>
     );
   }

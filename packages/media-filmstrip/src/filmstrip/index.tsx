@@ -105,12 +105,31 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     })
 
 
+  onDragEnter = (length, index) => {
+    console.log('onDragEnter', length, index);
+    const {items} = this.state;
+    const itemsWithFakeContent = [...items];
+    const key = new Date().getTime();
+    const fakeCard = (
+      <CardView
+        key={key}
+        status="loading"
+        isFake={true}
+      />
+    );
+
+    itemsWithFakeContent.splice(index, 0, fakeCard);
+    this.setState({
+      items: itemsWithFakeContent
+    });
+  }
+
   render() {
     const {animate, offset, items} = this.state;
     const children = this.renderChildren(items);
-
+    console.log('render', children)
     return (
-      <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
+      <FilmstripView onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}
       </FilmstripView>
     );

@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import {ReactNode, WheelEvent, MouseEvent, ReactChild} from 'react';
+import {ReactNode, WheelEvent, MouseEvent, ReactChild, SyntheticEvent} from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
@@ -47,6 +47,7 @@ export interface FilmstripViewProps {
   onSize?: (event: SizeEvent) => void;
   onScroll?: (event: ScrollEvent) => void;
   onDragEnd?: (source: any, destination: any) => void;
+  onDragEnter?: (items: number, index: number) => void;
 }
 
 export interface FilmstripViewState {
@@ -116,7 +117,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (!offset) {
       return 0;
     }
-    // console.log('get offset', this.maxOffset, Math.max(this.minOffset, offset))
+
     return Math.min(this.maxOffset, Math.max(this.minOffset, offset));
   }
 
@@ -129,7 +130,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
    */
   get maxOffset() {
     const {bufferWidth, windowWidth} = this.state;
-    // console.log('maxOffset', this.minOffset, bufferWidth, windowWidth)
+
     return Math.max(this.minOffset, bufferWidth - windowWidth - 1);
   }
 
@@ -138,7 +139,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   get canGoRight() {
-    // console.log('canGoRight', this.offset, this.maxOffset);
+
     return this.offset < this.maxOffset;
   }
 
@@ -211,7 +212,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     let bufferWidth = 0;
     let windowWidth = 0;
     let childOffsets = [];
-    // console.log('handleSizeChange', windowElement, bufferElement)
+
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
@@ -231,7 +232,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       });
     }
 
-    // console.log('childOffsets', bufferWidth, windowWidth, childOffsets)
+
 
     // make sure the state has changed before we update state and notify the integrator
     // (otherwise, since this method() is called in componentDidUpdate() we'll recurse until the stack size is exceeded)
@@ -355,7 +356,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   renderRightArrow() {
     const {canGoRight} = this;
-    // console.log('canGoRight', canGoRight)
+
     if (!canGoRight) {
       return null;
     }
@@ -400,14 +401,23 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
-  onDragEnter = () => {
+  onDragEnter = (e: DragEvent) => {
+    const {dataTransfer} = e;
+
     if (!this.state.draggedOver) {
+      const {onDragEnter} = this.props;
+      const {length} = dataTransfer.items;
+      const index = 0; // TODO: get proper index
       this.setState({ draggedOver: true });
-      console.log('onDragEnter');
+
+      if (onDragEnter) {
+        onDragEnter(length, index);
+      }
     }
   }
 
-  onDragLeave = () => {
+  onDragLeave = (e: DragEvent) => {
+    e.preventDefault();
     this.setState({ draggedOver: false });
     console.log('onDragLeave');
   }
@@ -464,15 +474,27 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
+  onDragOver = (e: SyntheticEvent<Element>) => {
+    e.preventDefault();
+    const {nativeEvent} = e;
+    const {childOffsets} = this;
+    const x = nativeEvent.offsetX;
+  }
+
+  onDrop = (e: DragEvent) => {
+    e.preventDefault();
+    this.setState({ draggedOver: false });
+  }
+
   render(): JSX.Element {
-    const { offset } = this.props;
+    const { offset, children } = this.props;
     // We need to pass "offset" into Droppable even if we don't needed to force a render
     const color = this.state.draggedOver ? 'lightred' : 'darkred';
     return (
-      <div style={{backgroundColor: color, position: 'relative'}} onDragEnter={this.onDragEnter}>
+      <div style={{backgroundColor: color, position: 'relative'}} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
         {this.state.draggedOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable" offset={offset} direction="horizontal">
+          <Droppable droppableId="droppable" offset={offset} child={children} direction="horizontal">
             {this.renderList}
           </Droppable>
         </DragDropContext>

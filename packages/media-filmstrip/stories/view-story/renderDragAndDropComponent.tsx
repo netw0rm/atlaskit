@@ -43,7 +43,7 @@ const cardItems = [{
 }, {
   identifier: audioFileId,
   context
-}, {
+}, /*{
   identifier: videoFileId,
   context
 }, {
@@ -52,7 +52,7 @@ const cardItems = [{
 }, {
   identifier: docFileId,
   context
-}];
+}*/];
 const cardViewItems: CardViewProps[] = [{
   status: 'complete',
   metadata: imageFileDetails,
@@ -99,7 +99,7 @@ export class Story extends Component<StoryProps, StoryState> {
     return (
       <div>
         <h1>Cards</h1>
-        <div style={{width: 500}}>
+        <div style={{marginLeft: 100, width: 500}}>
           <Filmstrip items={cardItems} dropzoneElement={dropzoneElement} />
         </div>
         <h1>Card Views</h1>

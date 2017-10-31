@@ -1,5 +1,6 @@
 import { TextSelection, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
+import { EmojiDescription } from '@atlaskit/emoji';
 
 export const getLastWord = (selection: TextSelection) => {
   if (!selection.empty) {
@@ -26,4 +27,14 @@ export const createDecorationWidget = (tr: Transaction, query?: string) => {
   } else {
     return DecorationSet.empty;
   }
+};
+
+
+export const wrapIndex = (emojis: EmojiDescription[], index: number): number => {
+  const len = emojis.length;
+  let newIndex = index;
+  while (newIndex < 0 && len > 0) {
+    newIndex += len;
+  }
+  return newIndex % len;
 };

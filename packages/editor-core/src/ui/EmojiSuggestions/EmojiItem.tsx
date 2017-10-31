@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import styled from 'styled-components';
 import {
   Emoji,
@@ -12,9 +11,9 @@ export const Button = styled.div`
   padding: 5px;
   cursor: pointer;
 
-  & .emoji-sprite, & span img {
-    height: 24px;
-    width: 24px;
+  div & .emoji-sprite, & span img {
+    height: 32px;
+    width: 32px;
   }
 
   &:hover, &.selected {
@@ -25,20 +24,14 @@ export const Button = styled.div`
 export interface Props {
   emoji: EmojiDescription;
   selected?: boolean;
-  onSelected: (emoji: EmojiDescription, event?) => void;
+  onSelect: () => void;
 }
 
-export default class EmojiItem extends Component<Props, any> {
-  render() {
-    const { selected, emoji } = this.props;
-    return (
-      <Button onClick={this.onClick} className={selected ? 'selected' : ''}>
-        <Emoji emoji={emoji} />
-      </Button>
-    );
-  }
+// tslint:disable-next-line:variable-name
+ const EmojiItem = ({ onSelect, selected, emoji }: Props) => (
+  <Button onClick={onSelect} className={selected ? 'selected' : ''}>
+    <Emoji emoji={emoji} />
+  </Button>
+);
 
-  onClick = (event) => {
-    this.props.onSelected(this.props.emoji, event);
-  }
-}
+export default EmojiItem;

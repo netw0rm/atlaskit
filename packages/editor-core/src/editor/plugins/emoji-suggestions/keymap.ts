@@ -3,29 +3,36 @@ import { Schema } from 'prosemirror-model';
 import { Plugin, EditorState } from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
 import { EmojiSuggestionsState, pluginKey } from './plugin';
+import { selectCurrent, selectNext, selectPrevious, dismiss } from './actions';
 
 const onSelectNext = (state: EditorState, dispatch) => {
-  const pluginState = pluginKey.getState(state) as EmojiSuggestionsState;
-  if (!pluginState.query) {
+  const { query } = pluginKey.getState(state) as EmojiSuggestionsState;
+  if (!query) {
     return false;
   }
-  return pluginState.onSelectNext();
+  selectNext(state, dispatch);
+
+  return true;
 };
 
 const onSelectPrevious = (state: EditorState, dispatch) => {
-  const pluginState = pluginKey.getState(state) as EmojiSuggestionsState;
-  if (!pluginState.query || pluginState.selectedIndex < 0) {
+  const { query, selectedIndex } = pluginKey.getState(state) as EmojiSuggestionsState;
+  if (!query || selectedIndex < 0) {
     return false;
   }
-  return pluginState.onSelectPrevious();
+  selectPrevious(state, dispatch);
+
+  return true;
 };
 
 const onDismiss = (state: EditorState, dispatch) => {
-  const pluginState = pluginKey.getState(state) as EmojiSuggestionsState;
-  if (!pluginState.query) {
+  const { query } = pluginKey.getState(state) as EmojiSuggestionsState;
+  if (!query) {
     return false;
   }
-  return pluginState.dismiss();
+  dismiss(state, dispatch);
+
+  return true;
 };
 
 export function keymapPlugin(schema: Schema): Plugin {
@@ -37,19 +44,23 @@ export function keymapPlugin(schema: Schema): Plugin {
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, onSelectPrevious, list);
 
   keymaps.bindKeymapWithCommand(keymaps.moveRight.common!, (state: EditorState, dispatch) => {
-    const pluginState = pluginKey.getState(state) as EmojiSuggestionsState;
-    if (pluginState.selectedIndex < 0) {
+    const { selectedIndex } = pluginKey.getState(state) as EmojiSuggestionsState;
+    if (selectedIndex < 0) {
       return false;
     }
-    return onSelectNext(state, dispatch);
+    selectNext(state, dispatch);
+
+    return true;
   }, list);
 
   keymaps.bindKeymapWithCommand(keymaps.enter.common!, (state: EditorState, dispatch) => {
-    const pluginState = pluginKey.getState(state) as EmojiSuggestionsState;
-    if (!pluginState.query || pluginState.selectedIndex < 0) {
+    const { query, selectedIndex }  = pluginKey.getState(state) as EmojiSuggestionsState;
+    if (!query || selectedIndex < 0) {
       return false;
     }
-    return pluginState.onSelectCurrent();
+    selectCurrent(state, dispatch);
+
+    return true;
   }, list);
 
   return keymap(list);

@@ -1,23 +1,8 @@
 import { EditorView } from 'prosemirror-view';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { pluginKey } from './plugin';
-
-export const insertEmoji = (view: EditorView, emojiId: any) => {
-  const { state: { tr, schema, selection: { $from } }, dispatch } = view;
-  const { emoji } = schema.nodes;
-  const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
-  const textNode = schema.text(' ');
-
-  dispatch(
-    tr
-      .replaceWith($from.pos, $from.pos, [ node, textNode ])
-      .setMeta(pluginKey, { query: undefined, selectedIndex: -1 })
-  );
-
-  if (!view.hasFocus()) {
-    view.focus();
-  }
-};
+import { wrapIndex } from './utils';
 
 export const setEmojiProvider = async (view: EditorView, provider: Promise<EmojiProvider>) => {
   let resolvedProvider: EmojiProvider | null;
@@ -32,12 +17,39 @@ export const setEmojiProvider = async (view: EditorView, provider: Promise<Emoji
   }
 };
 
-export const dismiss = (view: EditorView) => {
-  const { state: { tr }, dispatch } = view;
-  dispatch(tr.setMeta(pluginKey, { query: undefined, selectedIndex: -1 }));
+export const dismiss = (state: EditorState, dispatch: (tr: Transaction) => void) => {
+  dispatch(state.tr.setMeta(pluginKey, { query: undefined, selectedIndex: -1 }));
 };
 
-export const setIndex = (view: EditorView, selectedIndex: number) => {
-  const { state: { tr }, dispatch } = view;
-  dispatch(tr.setMeta(pluginKey, { selectedIndex }));
+export const setEmojis = (state: EditorState, dispatch: (tr: Transaction) => void, emojis: EmojiDescription[]) => {
+  dispatch(state.tr.setMeta(pluginKey, { emojis }));
+};
+
+export const selectCurrent = (state: EditorState, dispatch: (tr: Transaction) => void) => {
+  const { emojis, selectedIndex } = pluginKey.getState(state);
+  if (selectedIndex > -1) {
+    const emojiId = emojis[selectedIndex];
+    const { selection: { $from }, schema, tr } = state;
+    const { emoji } = schema.nodes;
+    const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });
+    const textNode = schema.text(' ');
+
+    dispatch(
+      tr
+        .replaceWith($from.pos, $from.pos, [ node, textNode ])
+        .setMeta(pluginKey, { query: undefined, selectedIndex: -1 })
+    );
+  }
+};
+
+export const selectNext = (state: EditorState, dispatch: (tr: Transaction) => void) => {
+  const { emojis, selectedIndex } = pluginKey.getState(state);
+  const index = wrapIndex(emojis, selectedIndex + 1);
+  dispatch(state.tr.setMeta(pluginKey, { selectedIndex: index }));
+};
+
+export const selectPrevious = (state: EditorState, dispatch: (tr: Transaction) => void) => {
+  const { emojis, selectedIndex } = pluginKey.getState(state);
+  const index = wrapIndex(emojis, selectedIndex - 1);
+  dispatch(state.tr.setMeta(pluginKey, { selectedIndex: index }));
 };

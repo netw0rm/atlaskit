@@ -3,7 +3,7 @@ import { EditorView, DecorationSet } from 'prosemirror-view';
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
 import { getLastWord, createDecorationWidget } from './utils';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { setEmojiProvider } from './actions';
 
 export const pluginKey = new PluginKey('emojiSuggestionsPlugin');
@@ -11,13 +11,10 @@ export const pluginKey = new PluginKey('emojiSuggestionsPlugin');
 export class EmojiSuggestionsState {
   decorations: DecorationSet = DecorationSet.empty;
   query?: string;
+  emojis: EmojiDescription[] = [];
   selectedIndex: number = -1;
   anchorElement?: HTMLElement;
   emojiProvider: EmojiProvider;
-  onSelectPrevious = (): boolean => false;
-  onSelectNext = (): boolean => false;
-  onSelectCurrent = (): boolean => false;
-  dismiss = (): boolean => false;
 }
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({

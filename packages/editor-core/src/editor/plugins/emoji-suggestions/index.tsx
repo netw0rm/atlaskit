@@ -2,7 +2,7 @@ import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { createPlugin, pluginKey, EmojiSuggestionsState } from './plugin';
 import keymap from './keymap';
-import { insertEmoji, dismiss, setIndex } from './actions';
+import { setEmojis, selectCurrent } from './actions';
 import EmojiSuggestions from '../../../ui/EmojiSuggestions';
 import WithPluginState from '../../ui/WithPluginState';
 
@@ -30,10 +30,10 @@ const emojiSuggestionsPlugin: EditorPlugin = {
             selectedIndex={emojiSuggestions.selectedIndex}
             query={emojiSuggestions.query}
             anchorElement={emojiSuggestions.anchorElement}
-            insertEmoji={insertEmoji}
+            emojis={emojiSuggestions.emojis}
             pluginKey={pluginKey}
-            dismiss={dismiss}
-            setIndex={setIndex}
+            setEmojis={setEmojis}
+            onSelect={selectCurrent}
           />
         )}
       />

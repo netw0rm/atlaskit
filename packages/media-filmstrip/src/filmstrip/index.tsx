@@ -61,7 +61,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
 
   render() {
     const {animate, offset, children} = this.state;
-    // console.log('render offset', offset)
+
     return (
       <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}

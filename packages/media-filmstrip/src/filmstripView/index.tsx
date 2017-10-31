@@ -397,30 +397,32 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
-  renderItem = (child) => (provided, snapshot) => {
-    return (
-      <FilmStripListItem
-        innerRef={provided.innerRef} 
-        style={getItemStyle(
-          provided.draggableStyle,
-          snapshot.isDragging
-        )}
-        {...provided.dragHandleProps}
-      >
-        {child}
-        {provided.placeholder}
-      </FilmStripListItem>
-    );
-  }
-
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
       const id = child['props'] ? child['props'].id : index;
 
       return (
+        <FilmStripListItem
+          
+        >
         <Draggable key={id} draggableId={id}>
-          {this.renderItem(child)}
+          {(provided, snapshot) => (
+            <div>
+              <div
+                ref={provided.innerRef}
+                style={getItemStyle(
+                  provided.draggableStyle,
+                  snapshot.isDragging
+                )}
+                {...provided.dragHandleProps}
+              >
+                {child}
+              </div>
+              {provided.placeholder}
+            </div>
+          )}
         </Draggable>
+        </FilmStripListItem>
       );
     });
   }

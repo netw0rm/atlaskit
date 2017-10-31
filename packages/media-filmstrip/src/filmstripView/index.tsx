@@ -399,10 +399,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
-      const id = child['props'] ? child['props'].id : index;
+      const key = child['key'] ? child['key'] : index;
 
       return (
-        <Draggable key={id} draggableId={id}>
+        <Draggable key={key} draggableId={key}>
           {(provided, snapshot) => (
             <FilmStripListItem>
               <div

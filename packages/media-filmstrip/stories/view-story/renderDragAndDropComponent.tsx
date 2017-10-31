@@ -2,15 +2,15 @@
 import * as React from 'react';
 import {Component} from 'react';
 import styled from 'styled-components';
-import {CardView} from '@atlaskit/media-card';
-import {imageFileDetails, smallImage, audioFileDetails, docFileDetails, unknownFileDetails, videoFileDetails, wideImage, smallTransparentImage, tallImage} from '@atlaskit/media-test-helpers';
+import {CardViewProps} from '@atlaskit/media-card';
+import {imageFileDetails, smallImage, createStorybookContext, genericFileId, imageFileId, smallImageFileId, audioFileDetails, docFileDetails, unknownFileDetails, videoFileDetails, wideImage, smallTransparentImage, tallImage, audioFileId, videoFileId, wideImageFileId, docFileId} from '@atlaskit/media-test-helpers';
 import {Filmstrip} from '../../src/filmstrip';
 
 export interface StoryProps {
 }
 
 export interface StoryState {
-
+  dropzone?: Element;
 }
 
 const Box = styled.div`
@@ -30,14 +30,62 @@ const Dropzone = styled.div`
   border: 2px solid red;
 `;
 
-const tallCard = <CardView id="1" status="complete" metadata={imageFileDetails} dataURI={tallImage} />;
-const smallCard = <CardView id="2" status="complete" metadata={imageFileDetails} dataURI={smallImage} />;
-const audioCard = <CardView id="3" status="complete" metadata={audioFileDetails} />;
-const videoCard = <CardView id="4" status="complete" metadata={videoFileDetails} />;
-const docCard = <CardView id="5" status="complete" metadata={docFileDetails} />;
-const unknownCard = <CardView id="6" status="complete" metadata={unknownFileDetails} />;
-const wideCard = <CardView id="7" status="complete" metadata={imageFileDetails} dataURI={wideImage} />;
-const smallTransparentCard = <CardView id="8" status="complete" metadata={imageFileDetails} dataURI={smallTransparentImage} />;
+const context = createStorybookContext();
+const cardItems = [{
+  identifier: genericFileId,
+  context
+}, {
+  identifier: imageFileId,
+  context
+}, {
+  identifier: smallImageFileId,
+  context
+}, {
+  identifier: audioFileId,
+  context
+}, {
+  identifier: videoFileId,
+  context
+}, {
+  identifier: wideImageFileId,
+  context
+}, {
+  identifier: docFileId,
+  context
+}];
+const cardViewItems: CardViewProps[] = [{
+  status: 'complete',
+  metadata: imageFileDetails,
+  dataURI: tallImage
+}, {
+  status: 'complete',
+  metadata: imageFileDetails,
+  dataURI: smallImage
+}, {
+  status: 'complete',
+  metadata: audioFileDetails
+}, {
+  status: 'complete',
+  metadata: videoFileDetails
+}, {
+  status: 'complete',
+  metadata: docFileDetails
+}, {
+  status: 'complete',
+  metadata: unknownFileDetails
+}, {
+  status: 'complete',
+  metadata: imageFileDetails,
+  dataURI: tallImage
+}, {
+  status: 'loading',
+  metadata: imageFileDetails,
+  dataURI: smallTransparentImage
+}];
+const mixedCardItems = [
+  ...cardItems,
+  ...cardViewItems
+];
 
 export class Story extends Component<StoryProps, StoryState> {
   state = {
@@ -50,55 +98,17 @@ export class Story extends Component<StoryProps, StoryState> {
     //     <Dropzone innerRef={this.saveDropzone} />
     return (
       <div>
+        <h1>Cards</h1>
         <div style={{width: 500}}>
-          <Filmstrip dropzoneElement={dropzoneElement}>
-            {tallCard}
-            {audioCard}
-            {videoCard}
-            {smallCard}
-            {docCard}
-            {unknownCard}
-            {wideCard}
-            {smallTransparentCard}
-          </Filmstrip>
+          <Filmstrip items={cardItems} dropzoneElement={dropzoneElement} />
         </div>
+        <h1>Card Views</h1>
         <div>
-          <Filmstrip dropzoneElement={dropzoneElement}>
-            {tallCard}
-            {audioCard}
-            {videoCard}
-            {smallCard}
-            {docCard}
-            {unknownCard}
-            {wideCard}
-            {smallTransparentCard}
-          </Filmstrip>
+          <Filmstrip items={cardViewItems} dropzoneElement={dropzoneElement} />
         </div>
+        <h1>Card & Card Views</h1>
         <div>
-          <Filmstrip dropzoneElement={dropzoneElement}>
-            <Box id="blue"/>
-            <Box id="green"/>
-            <Box id="black"/>
-            <Box id="purple"/>
-            <Box id="yellow"/>
-            <Box id="darkgray"/>
-            <Box id="darkgreen"/>
-            <Box id="darkblue"/>
-            <Box id="darkred"/>
-          </Filmstrip>
-        </div>
-        <div style={{width: 700}}>
-          <Filmstrip dropzoneElement={dropzoneElement}>
-            <Box id="blue"/>
-            <Box id="green"/>
-            <Box id="black"/>
-            <Box id="purple"/>
-            <Box id="yellow"/>
-            <Box id="darkgray"/>
-            <Box id="darkgreen"/>
-            <Box id="darkblue"/>
-            <Box id="darkred"/>
-          </Filmstrip>
+          <Filmstrip items={mixedCardItems} dropzoneElement={dropzoneElement} />
         </div>
       </div>
     );

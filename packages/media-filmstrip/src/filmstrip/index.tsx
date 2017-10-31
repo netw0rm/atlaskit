@@ -1,15 +1,26 @@
 /* tslint:disable: variable-name */
 import * as React from 'react';
+import {Context} from '@atlaskit/media-core';
+import {Identifier, CardViewProps, Card, CardView} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
 
+export interface FilmstripCardItem {
+  identifier: Identifier;
+  context: Context;
+}
+
+export type FilmstripItem = FilmstripCardItem | CardViewProps;
+
 export interface FilmstripProps {
+  items: FilmstripItem[];
   dropzoneElement?: Element;
+  onSort?: (items) => void;
 }
 
 export interface FilmstripState {
   animate: boolean;
   offset: number;
-  children: any;
+  items: FilmstripItem[];
 }
 
 export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripState> {
@@ -17,15 +28,15 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   state: FilmstripState = {
     animate: false,
     offset: 0,
-    children: null
+    items: []
   };
 
-  constructor(props) {
+  constructor(props: FilmstripProps) {
     super(props);
     this.state = {
       animate: false,
       offset: 0,
-      children: props.children
+      items: props.items
     };
   }
 
@@ -51,16 +62,52 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   }
 
   onDragEnd = (source, destination) => {
-    const {children} = this.state;
-    const result = [...children];
-    const [removed] = result.splice(source.index, 1);
+    const {items} = this.state;
+    const {onSort} = this.props;
+    const sortedItems = [...items];
+    const [removed] = sortedItems.splice(source.index, 1);
 
-    result.splice(destination.index, 0, removed);
-    this.setState({children: result})
+    sortedItems.splice(destination.index, 0, removed);
+    this.setState({items: sortedItems});
+
+    if (onSort) {
+      onSort(sortedItems);
+    }
+  }
+
+  renderChildren(items: FilmstripItem[]) {
+    const children = items.map((item, index) => {
+      const isCardItem = (item as FilmstripCardItem).identifier;
+
+      if (isCardItem) {
+        const {identifier, context} = (item as FilmstripCardItem);
+        const key = identifier['id'] || index;
+
+        return (
+          <Card
+            key={key}
+            identifier={identifier}
+            context={context}
+          />
+        );
+      }
+
+      const key = item['key'] || index;
+
+      return (
+        <CardView
+          key={key}
+          {...item as CardViewProps}
+        />
+      );
+    });
+
+    return children;
   }
 
   render() {
-    const {animate, offset, children} = this.state;
+    const {animate, offset, items} = this.state;
+    const children = this.renderChildren(items);
 
     return (
       <FilmstripView animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>

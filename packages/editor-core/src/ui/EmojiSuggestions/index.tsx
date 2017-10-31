@@ -62,18 +62,6 @@ export default class EmojiSuggestions extends Component<Props, State> {
     }
   }
 
-  selectNext = () => {
-    if (this.ref) {
-      (this.ref as EmojiList).selectNext();
-    }
-  }
-
-  selectPrevious = () => {
-    if (this.ref) {
-      (this.ref as EmojiList).selectPrevious();
-    }
-  }
-
   render() {
     const { query, emojiProvider, anchorElement } = this.props;
     if (!query || !anchorElement || !emojiProvider) {
@@ -98,6 +86,24 @@ export default class EmojiSuggestions extends Component<Props, State> {
         />
       </Popup>
     );
+  }
+
+  selectCurrent = () => {
+    if (this.ref) {
+      (this.ref as EmojiList).selectCurrent();
+    }
+  }
+
+  selectNext = () => {
+    if (this.ref) {
+      (this.ref as EmojiList).selectNext();
+    }
+  }
+
+  selectPrevious = () => {
+    if (this.ref) {
+      (this.ref as EmojiList).selectPrevious();
+    }
   }
 
   private onSearch(query?: string) {

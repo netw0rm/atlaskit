@@ -9,7 +9,7 @@ export const getLastWord = (selection: TextSelection) => {
   const { nodeBefore, nodeAfter } = selection.$from;
   if (nodeBefore && !nodeAfter && nodeBefore.text) {
     const { text } = nodeBefore;
-    const lastWord = text.match(/(\w{3,})\s$/);
+    const lastWord = (text || '').match(/(\w{3,})\s$/);
     if (lastWord) {
       return lastWord[1];
     }

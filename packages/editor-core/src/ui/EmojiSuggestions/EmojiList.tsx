@@ -26,17 +26,9 @@ export const Container = styled.div`
   }
 `;
 
-
-// tslint:disable-next-line:variable-name
-export const Separator = styled.span`
-  background: ${akColorN30};
-  width: 1px;
-  display: inline-block;
-`;
-
 export interface Props {
   emojis: EmojiDescription[];
-  onEmojiSelect?: (emoji: EmojiDescription, event) => void;
+  onEmojiSelect: (emoji: EmojiDescription, event?) => void;
 }
 
 export interface State {
@@ -47,6 +39,11 @@ export default class EmojiList extends Component<Props, State> {
   state: State = {
     selectedIndex: 0
   };
+
+  selectCurrent = () => {
+    const emoji = this.props.emojis[this.state.selectedIndex];
+    this.props.onEmojiSelect(emoji);
+  }
 
   selectNext = () => {
     const { selectedIndex } = this.state;
@@ -66,14 +63,12 @@ export default class EmojiList extends Component<Props, State> {
     return (
       <Container>
         {emojis.map((emoji, index) => (
-          <span style={{display: 'flex'}} key={emoji.id}>
-            {index > 0 && <Separator />}
-            <EmojiItem
-              emoji={emoji}
-              onSelected={onEmojiSelect}
-              selected={index === this.state.selectedIndex}
-            />
-          </span>
+          <EmojiItem
+            key={emoji.id}
+            emoji={emoji}
+            onSelected={onEmojiSelect}
+            selected={index === this.state.selectedIndex}
+          />
         ))}
       </Container>
     );

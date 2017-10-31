@@ -25,7 +25,7 @@ export const Button = styled.div`
 export interface Props {
   emoji: EmojiDescription;
   selected?: boolean;
-  onSelected?: (emoji: EmojiDescription, event) => void;
+  onSelected: (emoji: EmojiDescription, event?) => void;
 }
 
 export default class EmojiItem extends Component<Props, any> {
@@ -38,10 +38,7 @@ export default class EmojiItem extends Component<Props, any> {
     );
   }
 
-  onClick = () => {
-    const { emoji, onSelected } = this.props;
-    if (onSelected) {
-      onSelected(emoji, event);
-    }
+  onClick = (event) => {
+    this.props.onSelected(this.props.emoji, event);
   }
 }

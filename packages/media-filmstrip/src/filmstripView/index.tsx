@@ -82,10 +82,10 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   // display: 'inline-block',
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  
+
   // change background colour if dragging
   // background: isDragging ? 'lightgreen' : 'grey',
-  
+  margin: '0 4px',
   // styles we need to apply on draggables
   ...draggableStyle
 });
@@ -387,8 +387,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   onDragEnd = (result) => {
     const {onDragEnd} = this.props;
     if (!result.destination || !onDragEnd) return;
-     
-    
+
+
     const {source, destination} = result;
 
     onDragEnd(
@@ -402,12 +402,9 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       const id = child['props'] ? child['props'].id : index;
 
       return (
-        <FilmStripListItem
-          
-        >
         <Draggable key={id} draggableId={id}>
           {(provided, snapshot) => (
-            <div>
+            <FilmStripListItem>
               <div
                 ref={provided.innerRef}
                 style={getItemStyle(
@@ -419,18 +416,17 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
                 {child}
               </div>
               {provided.placeholder}
-            </div>
+            </FilmStripListItem>
           )}
         </Draggable>
-        </FilmStripListItem>
       );
     });
   }
 
   renderList = (provided, snapshot) => {
     const { animate, children } = this.props;
-    const transform = `translateX(${-this.offset}px)`;
-    const transitionProperty = animate ? 'transform' : 'none';
+    const left = -this.offset;
+    const transitionProperty = animate ? 'left' : 'none';
     const transitionDuration = `${this.transitionDuration}s`;
 
     return (
@@ -442,7 +438,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         >
           <FilmStripList
             innerRef={this.handleBufferElementChange(provided.innerRef)}
-            style={{transform, transitionProperty, transitionDuration, ...getListStyle(snapshot.isDraggingOver)}}
+            style={{left, transitionProperty, transitionDuration, ...getListStyle(snapshot.isDraggingOver)}}
           >
             {this.renderChildren(children)}
             {provided.placeholder}

@@ -28,6 +28,8 @@ export const FilmStripListWrapper = styled.div`
 `;
 
 export const FilmStripList = styled.ul`
+  position: relative;
+  left: 0;
   margin: 0;
   padding: 0;
   transition-property: transform;
@@ -39,7 +41,6 @@ export const FilmStripList = styled.ul`
 export const FilmStripListItem = styled.li`
   list-style-type: none;
   margin: 0;
-  padding: 0 4px;
   display: inline-block;
   vertical-align: middle;
   // Fixes issue with child Cards using inline-block

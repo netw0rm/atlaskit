@@ -20,6 +20,8 @@ export const modifyResponse = (response) => {
     data.remoteTimeString = `${data.remoteWeekdayString} ${data.remoteTimeString}`;
   }
 
+  data.isCensored = data.isCensored !== 'visible';
+
   data.timestring = data.remoteTimeString;
 
   delete data.remoteWeekdayIndex;
@@ -47,8 +49,8 @@ const buildUserQuery = (cloudId, userId) => ({
     User: CloudUser(userId: $userId, cloudId: $cloudId) {
       id,
       isCurrentUser,
-      censoredStatus: isCensored,
-      active: isActive,
+      isCensored: censoredStatus,
+      isActive: active,
       isBot,
       isNotMentionable,
       fullName,

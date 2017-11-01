@@ -99,18 +99,9 @@ export class Story extends Component<StoryProps, StoryState> {
     return (
       <div>
         <h1>Cards</h1>
-        <div style={{marginLeft: 100, width: 500}}>
-          <Filmstrip items={cardItems} dropzoneElement={dropzoneElement} />
-        </div>
-        <h1>Card Views</h1>
-        <div>
+        <div style={{marginLeft: 100, width: 700}}>
           <Filmstrip items={cardViewItems} dropzoneElement={dropzoneElement} />
         </div>
-        <h1>Card & Card Views</h1>
-        <div>
-          <Filmstrip items={mixedCardItems} dropzoneElement={dropzoneElement} />
-        </div>
-
       </div>
     );
   }

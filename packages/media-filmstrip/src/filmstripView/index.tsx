@@ -213,8 +213,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const {windowElement, bufferElement} = this;
     let bufferWidth = 0;
     let windowWidth = 0;
-    let childOffsets = [];
-
+    let childOffsets = undefined;
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
@@ -233,8 +232,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         return offset;
       });
     }
-
-
 
     // make sure the state has changed before we update state and notify the integrator
     // (otherwise, since this method() is called in componentDidUpdate() we'll recurse until the stack size is exceeded)
@@ -256,7 +253,9 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       },
       () => {
 
-        this.childOffsets = childOffsets;
+        if(childOffsets) {
+          this.childOffsets = childOffsets;
+        }
 
         // notify the integrator
         const {onSize} = this.props;
@@ -411,17 +410,43 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.setState({isDragging: true});
   }
 
-  onDragEnter = (e: DragEvent) => {
+
+  onDragEnter = (e) => {
     const {dataTransfer} = e;
+    const x = e.nativeEvent.offsetX + this.props.offset;
+    const y = e.nativeEvent.offsetY;
+    let newIndex = 0;
+    let index = 0;
+    const len = this.childOffsets.length;
+    for (; index < len; index++) {
+      const { left, right } = this.childOffsets[index];
+      if (x <= left) { // We are to the left from left side of a cerd
+        if (index === 0) {
+          newIndex = index;
+        }else{
+          newIndex = index - 1;
+        }
+        break;
+      } else { // To the right from left side of a card
+        const isLastElement = index === len - 1;
+        if (isLastElement) {
+          if (x >= right) { // To the right from the right side of a last card
+            newIndex = index + 1;
+          }else{
+            newIndex = index;
+          }
+          break;
+        }
+      }
+    }
 
     if (!this.state.isNativeDragOver) {
       const {onDragEnter} = this.props;
       const {length} = dataTransfer.items;
-      const index = 0; // TODO: get proper index
       this.setState({ isNativeDragOver: true });
 
       if (onDragEnter) {
-        onDragEnter(length, index);
+        onDragEnter(length, newIndex);
       }
     }
   }
@@ -429,7 +454,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   onDragLeave = (e: DragEvent) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
-    console.log('onDragLeave');
+    // console.log('onDragLeave');
   }
 
   onNativeDragOver = (e: DragEvent) => {
@@ -452,11 +477,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
       const key = child['key'] ? child['key'] : index;
+      const isFake = child.props && child.props.props && child.props.props.isFake;
       this.firstMouseDownCb = null;
       return (
         <Draggable key={key} draggableId={key}>
           {(provided, snapshot) => {
-            if (index === 0 && this.state.isNativeDragOver) {
+            if (isFake && this.state.isNativeDragOver) {
               window.firstMouseDownCb = this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
               if (!this.fancyFlag) {
                 setTimeout(() => {

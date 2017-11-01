@@ -110,6 +110,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const fakeCard = (
       <CardView
         key={key}
+        fakeIndex={index}
         status="loading"
         isFake={true}
       />

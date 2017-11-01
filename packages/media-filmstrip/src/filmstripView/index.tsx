@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import {ReactNode, WheelEvent, MouseEvent, ReactChild, SyntheticEvent} from 'react';
+import { ReactNode, WheelEvent, MouseEvent as ReactMouseEvent, ReactChild, SyntheticEvent} from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
@@ -53,11 +53,12 @@ export interface FilmstripViewProps {
 export interface FilmstripViewState {
   bufferWidth: number;
   windowWidth: number;
-  draggedOver: boolean;
+  isNativeDragOver: boolean;
+  isDragging: boolean;
 }
 
 export interface ArrowProps {
-  onClick: (event: MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: ReactMouseEvent<HTMLDivElement>) => void;
 }
 
 export const LeftArrow: React.SFC<ArrowProps> = ({onClick}: ArrowProps) => (
@@ -107,7 +108,8 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   previousOffset: number = 0;
 
   state = {
-    draggedOver: false,
+    isNativeDragOver: false,
+    isDragging: false,
     bufferWidth: 0,
     windowWidth: 0
   };
@@ -367,6 +369,24 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   componentDidMount() {
     this.previousOffset = this.offset;
+    // setTimeout(() => {
+    //   this.firstMouseDownCb({
+    //     button: 0, // primary
+    //     clientX: 100,
+    //     clientY: 100,
+    //     preventDefault: () => {},
+    //     stopPropagation: () => {}
+    //   });
+    //
+    //   const mouseMove = new MouseEvent('mousemove', {
+    //     button: 0, // primary
+    //     clientX: 110,
+    //     clientY: 110,
+    //     relatedTarget: this.firstElement
+    //   });
+    //
+    //   window.dispatchEvent(mouseMove);
+    // }, 2000);
     window.addEventListener('resize', this.handleSizeChange);
   }
 
@@ -389,9 +409,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   onDragEnd = (result) => {
+    this.setState({isDragging: false});
+
     const {onDragEnd} = this.props;
     if (!result.destination || !onDragEnd) return;
-
 
     const {source, destination} = result;
 
@@ -401,14 +422,18 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
+  onDragStart = (result) => {
+    this.setState({isDragging: true});
+  }
+
   onDragEnter = (e: DragEvent) => {
     const {dataTransfer} = e;
 
-    if (!this.state.draggedOver) {
+    if (!this.state.isNativeDragOver) {
       const {onDragEnter} = this.props;
       const {length} = dataTransfer.items;
       const index = 0; // TODO: get proper index
-      this.setState({ draggedOver: true });
+      this.setState({ isNativeDragOver: true });
 
       if (onDragEnter) {
         onDragEnter(length, index);
@@ -418,9 +443,34 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   onDragLeave = (e: DragEvent) => {
     e.preventDefault();
-    this.setState({ draggedOver: false });
+    this.setState({ isNativeDragOver: false });
     console.log('onDragLeave');
   }
+
+  // firstElement: HTMLElement;
+  // firstMouseDownCb: any;
+
+  // {(provided, snapshot) => {
+  //   if (index === 0) {
+  //   window.firstMouseDownCb = this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
+  // }
+  // return (
+  //   <FilmStripListItem>
+  //     <div
+  //       className="draggable"
+  //       ref={this.onItemInnerRef(provided.innerRef, index)}
+  //       style={getItemStyle(
+  //         provided.draggableStyle,
+  //         snapshot.isDragging
+  //       )}
+  //       {...provided.dragHandleProps}
+  //     >
+  //       {child}
+  //     </div>
+  //     {provided.placeholder}
+  //   </FilmStripListItem>
+  // );
+  // }}
 
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
@@ -488,12 +538,14 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   render(): JSX.Element {
     const { offset, children } = this.props;
+    const { isNativeDragOver, isDragging } = this.state;
     // We need to pass "offset" into Droppable even if we don't needed to force a render
-    const color = this.state.draggedOver ? 'lightred' : 'darkred';
+    const color = isNativeDragOver ? 'lightred' : (isDragging ? 'lightgreen' : 'darkred');
+    const cursor = isDragging ? '-webkit-grab' : 'auto';
     return (
-      <div style={{backgroundColor: color, position: 'relative'}} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
-        {this.state.draggedOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
-        <DragDropContext onDragEnd={this.onDragEnd}>
+      <div style={{backgroundColor: color, position: 'relative', cursor}} onDragEnter={this.onDragEnter} onDragOver={this.onDragOver} onDrop={this.onDrop}>
+        {isNativeDragOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
+        <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
           <Droppable droppableId="droppable" offset={offset} child={children} direction="horizontal">
             {this.renderList}
           </Droppable>

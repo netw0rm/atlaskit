@@ -369,20 +369,12 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   componentDidMount() {
     this.previousOffset = this.offset;
-    // setTimeout(() => {
-    //   this.firstMouseDownCb({
-    //     button: 0, // primary
-    //     clientX: 100,
-    //     clientY: 100,
-    //     preventDefault: () => {},
-    //     stopPropagation: () => {}
-    //   });
-    //
-    // }, 2000);
+    window.addEventListener('dragover', this.onNativeDragOver);
     window.addEventListener('resize', this.handleSizeChange);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('dragover', this.onNativeDragOver);
     window.removeEventListener('resize', this.handleSizeChange);
   }
 
@@ -438,6 +430,19 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
     console.log('onDragLeave');
+  }
+
+  onNativeDragOver = (e: DragEvent) => {
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    const mouseMove = new MouseEvent('mousemove', {
+      button: 0, // primary
+      clientX: 20 + x,
+      clientY: 20 + y,
+    });
+
+    window.dispatchEvent(mouseMove);
   }
 
   // firstElement: HTMLElement;
@@ -523,24 +528,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     );
   }
 
-  onDragOver = (e: SyntheticEvent<Element>) => {
-    e.preventDefault();
-    const {nativeEvent} = e;
-    const {childOffsets} = this;
-    const x = nativeEvent.offsetX;
-    const y = nativeEvent.offsetY;
-
-    console.log('onDragOver', x)
-
-    const mouseMove = new MouseEvent('mousemove', {
-      button: 0, // primary
-      clientX: 20 + x,
-      clientY: 20 + y,
-    });
-
-    window.dispatchEvent(mouseMove);
-  }
-
   onDrop = (e: DragEvent) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
@@ -556,7 +543,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       <div
         style={{ backgroundColor: color, position: 'relative', cursor }}
         onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
         onDrop={this.onDrop}
       >
         {isNativeDragOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}

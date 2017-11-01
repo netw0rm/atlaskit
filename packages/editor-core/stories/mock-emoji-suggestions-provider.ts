@@ -1,7 +1,3 @@
-export interface EmojiFallback {
-  fallback: string;
-}
-
 export default class EmojiSuggestionsProviderMock {
   search(query: string): Promise<any> {
     return Promise.resolve({

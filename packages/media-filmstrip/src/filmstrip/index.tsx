@@ -1,17 +1,13 @@
 /* tslint:disable: variable-name */
 import * as React from 'react';
 import {Context} from '@atlaskit/media-core';
-import {Identifier, CardViewProps, Card, CardView} from '@atlaskit/media-card';
+import {CardViewProps, Card, CardView, CardProps} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
 
-export interface FilmstripCardItem {
-  identifier: Identifier;
-  context: Context;
-}
-
-export type FilmstripItem = FilmstripCardItem | CardViewProps;
+export type FilmstripItem = CardProps | CardViewProps;
 
 export interface FilmstripProps {
+  context?: Context;
   items: FilmstripItem[];
   dropzoneElement?: Element;
   onSort?: (items) => void;
@@ -77,19 +73,20 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     }
   }
 
-  renderChildren = (items: FilmstripItem[]) =>
-    items.map((item, index) => {
-      const isCardItem = (item as FilmstripCardItem).identifier;
+  renderChildren = (items: FilmstripItem[]) => {
+    const { context } = this.props;
+
+    return items.map((item, index) => {
+      const isCardItem = (item as CardProps).identifier;
 
       if (isCardItem) {
-        const {identifier, context} = (item as FilmstripCardItem);
-        const key = identifier['id'] || index;
+        const key = (item as CardProps).identifier['id'] || index;
 
         return (
           <Card
             key={key}
-            identifier={identifier}
             context={context}
+            {...item as CardProps}
           />
         );
       }
@@ -102,8 +99,8 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
           {...item as CardViewProps}
         />
       );
-    })
-
+    });
+  }
 
   onDragEnter = (length, index) => {
     console.log('onDragEnter', length, index);
@@ -127,7 +124,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   render() {
     const {animate, offset, items} = this.state;
     const children = this.renderChildren(items);
-    console.log('render', children)
+    console.log('render', children);
     return (
       <FilmstripView onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}

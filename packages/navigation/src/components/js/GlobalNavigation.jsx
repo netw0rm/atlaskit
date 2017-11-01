@@ -20,6 +20,8 @@ type Props = {|
   /** The topmost icon to be placed in the global navigation - usually the product
   logo, or the product home icon */
   primaryIcon?: ReactElement,
+  /** The appearance of the primary icon for custom styling purposes */
+  primaryIconAppearance?: string,
   /** A link to place around the primary icon. */
   primaryItemHref?: string,
   /**  list of nodes to be placed in the secondary actions slot at the bottom of
@@ -54,6 +56,7 @@ export default class GlobalNavigation extends PureComponent {
       onCreateActivate,
       onSearchActivate,
       primaryIcon,
+      primaryIconAppearance,
       primaryItemHref,
       searchIcon,
       secondaryActions,
@@ -70,6 +73,7 @@ export default class GlobalNavigation extends PureComponent {
               onCreateActivate={onCreateActivate}
               onSearchActivate={onSearchActivate}
               primaryIcon={primaryIcon}
+              primaryIconAppearance={primaryIconAppearance}
               primaryItemHref={primaryItemHref}
               searchIcon={searchIcon}
             />

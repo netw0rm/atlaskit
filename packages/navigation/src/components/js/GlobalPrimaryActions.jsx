@@ -14,6 +14,7 @@ export default class GlobalPrimaryActions extends PureComponent {
     onCreateActivate: PropTypes.func,
     onSearchActivate: PropTypes.func,
     primaryIcon: PropTypes.node,
+    primaryIconAppearance: PropTypes.string,
     primaryItemHref: PropTypes.string,
     searchIcon: PropTypes.node,
   };
@@ -29,6 +30,7 @@ export default class GlobalPrimaryActions extends PureComponent {
       onCreateActivate,
       onSearchActivate,
       primaryIcon,
+      primaryIconAppearance,
       primaryItemHref,
       searchIcon,
     } = this.props;
@@ -40,6 +42,7 @@ export default class GlobalPrimaryActions extends PureComponent {
               href={primaryItemHref}
               linkComponent={linkComponent}
               size="medium"
+              appearance={primaryIconAppearance}
             >
               {primaryIcon}
             </GlobalItem>

@@ -11,6 +11,7 @@ type Props = {|
   onMouseEnter?: () => mixed,
   onMouseLeave?: () => mixed,
   tabIndex?: number,
+  appearance?: string,
 |}
 
 export default class DefaultLinkComponent extends PureComponent {
@@ -26,6 +27,7 @@ export default class DefaultLinkComponent extends PureComponent {
       onMouseEnter,
       onMouseLeave,
       tabIndex,
+      appearance, // eslint-disable-line no-unused-vars
       ...otherProps
     } = this.props;
 

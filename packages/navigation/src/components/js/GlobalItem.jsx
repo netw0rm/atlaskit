@@ -24,6 +24,8 @@ type Props = {|
   role?: string,
   /** Set the size of the item's content.  */
   size?: 'small' | 'medium' | 'large',
+  /** Appearance of item for custom styling */
+  appearance?: string,
 |}
 
 export default class GlobalItem extends PureComponent {
@@ -51,6 +53,7 @@ export default class GlobalItem extends PureComponent {
       onClick,
       onMouseDown: providedMouseDown,
       role,
+      appearance,
     } = this.props;
 
     const allyAndEventProps = {
@@ -77,6 +80,7 @@ export default class GlobalItem extends PureComponent {
           href={href}
           size={size}
           onMouseDown={providedMouseDown}
+          appearance={appearance}
           {...allyAndEventProps}
         >
           {this.props.children}
@@ -90,6 +94,7 @@ export default class GlobalItem extends PureComponent {
         isSelected={isSelected}
         onMouseDown={onMouseDown}
         size={size}
+        appearance={appearance}
         {...allyAndEventProps}
       >
         {this.props.children}

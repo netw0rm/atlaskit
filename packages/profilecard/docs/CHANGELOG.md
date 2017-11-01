@@ -1,5 +1,9 @@
 # @atlaskit/profilecard
 
+## 3.10.0 (2017-11-01)
+
+* bug fix; fix profilecard graphql api client (issues closed: dir-444) ([8adce3a](https://bitbucket.org/atlassian/atlaskit/commits/8adce3a))
+* feature; add card states for deactivated and app users (issues closed: dir-436) ([0343cb6](https://bitbucket.org/atlassian/atlaskit/commits/0343cb6))
 ## 3.9.0 (2017-10-27)
 
 

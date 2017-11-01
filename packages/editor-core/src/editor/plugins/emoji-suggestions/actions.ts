@@ -25,10 +25,12 @@ export const setEmojis = (state: EditorState, dispatch: (tr: Transaction) => voi
   dispatch(state.tr.setMeta(pluginKey, { emojis }));
 };
 
-export const selectCurrent = (state: EditorState, dispatch: (tr: Transaction) => void) => {
-  const { emojis, selectedIndex } = pluginKey.getState(state);
-  if (selectedIndex > -1) {
-    const emojiId = emojis[selectedIndex];
+export const selectCurrent = (state: EditorState, dispatch: (tr: Transaction) => void, selectedIndex?: number) => {
+  const pluginState = pluginKey.getState(state);
+  const { emojis } = pluginState;
+  const index = (typeof selectedIndex === 'number') ? selectedIndex : pluginState.selectedIndex;
+  if (index > -1) {
+    const emojiId = emojis[index];
     const { selection: { $from }, schema, tr } = state;
     const { emoji } = schema.nodes;
     const node = emoji.create({ ...emojiId, text: emojiId.fallback || emojiId.shortName });

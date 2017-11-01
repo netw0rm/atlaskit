@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Component } from 'react';
 import styled from 'styled-components';
 import {
   Emoji,
@@ -24,14 +25,21 @@ export const Button = styled.div`
 export interface Props {
   emoji: EmojiDescription;
   selected?: boolean;
-  onSelect: () => void;
+  onSelect: (index: number) => void;
+  index: number;
 }
 
-// tslint:disable-next-line:variable-name
- const EmojiItem = ({ onSelect, selected, emoji }: Props) => (
-  <Button onClick={onSelect} className={selected ? 'selected' : ''}>
-    <Emoji emoji={emoji} />
-  </Button>
-);
+export default class EmojiItem extends Component<Props, any> {
+  render() {
+    const {selected, emoji} = this.props;
+    return (
+      <Button onClick={this.onSelect} className={selected ? 'selected' : ''}>
+        <Emoji emoji={emoji} />
+      </Button>
+    );
+  }
 
-export default EmojiItem;
+  private onSelect = () => {
+    this.props.onSelect(this.props.index);
+  }
+}

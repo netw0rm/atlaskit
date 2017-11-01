@@ -21,7 +21,7 @@ export interface Props {
   anchorElement?: HTMLElement;
   pluginKey: PluginKey;
   setEmojis: (state: EditorState, dispatch: (tr: Transaction) => void, emojis: EmojiDescription[]) => void;
-  onSelect: (state: EditorState, dispatch: (tr: Transaction) => void) => void;
+  onSelect: (state: EditorState, dispatch: (tr: Transaction) => void, selectedIndex?: number) => void;
 }
 
 const LIST_LIMIT: number = 5;
@@ -74,9 +74,9 @@ export default class EmojiSuggestions extends Component<Props, any> {
     );
   }
 
-  onSelect = () => {
+  onSelect = (selectedIndex: number) => {
     const { state, dispatch } = this.props.editorView;
-    this.props.onSelect(state, dispatch);
+    this.props.onSelect(state, dispatch, selectedIndex);
   }
 
   private onSearch(query?: string): void {

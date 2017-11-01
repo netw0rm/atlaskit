@@ -21,7 +21,7 @@ export const Container = styled.div`
 export interface Props {
   emojis: EmojiDescription[];
   selectedIndex: number;
-  onSelect: () => void;
+  onSelect: (index: number) => void;
 }
 
 // tslint:disable-next-line:variable-name
@@ -33,6 +33,7 @@ const EmojiList = ({ emojis, onSelect, selectedIndex }: Props) => (
         emoji={emoji}
         onSelect={onSelect}
         selected={index === selectedIndex}
+        index={index}
       />
     ))}
   </Container>

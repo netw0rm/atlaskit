@@ -452,30 +452,23 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         <Draggable key={key} draggableId={key}>
           {(provided, snapshot) => {
             if (index === 0 && this.state.isNativeDragOver) {
-              console.log("getting first cb", key);
-              this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
+              window.firstMouseDownCb = this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
               if (!this.fancyFlag) {
-                console.log("calling it with fake event");
-                this.firstMouseDownCb({
-                  button: 0, // primary
-                  clientX: 0,
-                  clientY: 0,
-                  preventDefault: () => {
-                  },
-                  stopPropagation: () => {
-                  }
-                });
-
                 setTimeout(() => {
-                  console.log("mouse move dispatch");
-                  const mouseMove = new MouseEvent('mousemove', {
+                  console.log("calling it with fake event");
+
+                  this.firstMouseDownCb({
                     button: 0, // primary
-                    clientX: 20,
-                    clientY: 20,
+                    clientX: 0,
+                    clientY: 0,
+                    preventDefault: () => {
+                    },
+                    stopPropagation: () => {
+                    }
                   });
 
-                  window.dispatchEvent(mouseMove);
-                }, 1000);
+                  console.log("mouse move dispatch");
+                }, 10);
 
 
                 this.fancyFlag = true;
@@ -535,6 +528,17 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const {nativeEvent} = e;
     const {childOffsets} = this;
     const x = nativeEvent.offsetX;
+    const y = nativeEvent.offsetY;
+
+    console.log('onDragOver', x)
+
+    const mouseMove = new MouseEvent('mousemove', {
+      button: 0, // primary
+      clientX: 20 + x,
+      clientY: 20 + y,
+    });
+
+    window.dispatchEvent(mouseMove);
   }
 
   onDrop = (e: DragEvent) => {

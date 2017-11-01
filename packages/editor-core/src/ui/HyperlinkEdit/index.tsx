@@ -73,10 +73,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private getOffsetParent() {
-    const popupTarget = this.getPopupTarget();
     return this.props.popupsMountPoint
       ? this.props.popupsMountPoint.offsetParent
-      : popupTarget && popupTarget.offsetParent;
+      : (this.props.editorView.dom as HTMLElement).offsetParent;
   }
 
   private getPopupTarget(): HTMLElement | undefined {
@@ -100,13 +99,13 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     const { pluginState } = this.props;
     if (!pluginState.active) {
 
-      const offsetParent = this.getOffsetParent();
+      const editorRoot = this.getOffsetParent();
 
-      if (!offsetParent) {
+      if (!editorRoot) {
         return position;
       }
 
-      const coordinates = pluginState.getCoordinates(this.props.editorView, offsetParent);
+      const coordinates = pluginState.getCoordinates(this.props.editorView, editorRoot);
 
       if (position.left) {
         position.left = coordinates.left;

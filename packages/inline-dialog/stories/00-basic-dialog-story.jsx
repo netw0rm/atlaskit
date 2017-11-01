@@ -104,7 +104,7 @@ storiesOf(name, module)
     const dialogContent = (
       <div style={scrollContainer}>
         <div style={oversizedStyles}>
-          The orange box, and the scrollable area should not break out of the inline-dialog area.
+          The orange box and the scrollable area should not break out of the inline-dialog area.
         </div>
       </div>
     );

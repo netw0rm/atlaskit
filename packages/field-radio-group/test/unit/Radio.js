@@ -16,21 +16,21 @@ describe(name, () => {
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Radio />);
+        const wrapper = shallow(<Radio onChange={() => {}} />);
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render an input and the content', () => {
         const content = 'content';
-        const wrapper = mount(<Radio>{content}</Radio>);
+        const wrapper = mount(<Radio onChange={() => {}}>{content}</Radio>);
         expect(wrapper.find('input').length).toBe(1);
         expect(wrapper.text()).toBe(`radioIcon${content}`);
       });
 
       it('should render content with markup correctly', () => {
         const content = (<div>content</div>);
-        const wrapper = mount(<Radio>{content}</Radio>);
+        const wrapper = mount(<Radio onChange={() => {}}>{content}</Radio>);
         expect(wrapper.find('input').length).toBe(1);
         expect(wrapper.contains(content)).toBe(true);
       });
@@ -40,7 +40,7 @@ describe(name, () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
-          const wrapper = mount(<AkRadio {...props} />);
+          const wrapper = mount(<AkRadio onChange={() => {}} {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }

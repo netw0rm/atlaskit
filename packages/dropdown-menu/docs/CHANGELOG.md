@@ -1,5 +1,11 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.0 (2017-10-27)
+
+* feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
+## 3.10.5 (2017-10-26)
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
 ## 3.10.4 (2017-10-22)
 
 * bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))

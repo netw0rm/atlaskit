@@ -22,8 +22,6 @@ import {
 } from '@atlaskit/media-core';
 
 import { MediaAttributes } from '@atlaskit/editor-common';
-import { EditorView } from 'prosemirror-view';
-import { MediaPluginState, stateKey as mediaStateKey } from '../../plugins/media';
 import { CardEventClickHandler } from '../Renderer';
 
 export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
@@ -34,12 +32,12 @@ export const FILE_WIDTH = 156;
 
 export interface Props extends MediaAttributes {
   mediaProvider?: Promise<MediaProvider>;
-  editorView?: EditorView;
   cardDimensions?: CardDimensions;
   onClick?: CardEventClickHandler;
   onDelete?: CardEventHandler;
   resizeMode?: ImageResizeMode;
   appearance?: Appearance;
+  stateManagerFallback?: MediaStateManager;
 }
 
 export interface State extends MediaState {
@@ -118,9 +116,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
     }
 
-    const stateManager = this.getStateManagerFromEditorPlugin();
-    if (stateManager) {
-      stateManager.unsubscribe(id, this.handleMediaStateChange);
+    const { stateManagerFallback } = this.props;
+    if (stateManagerFallback) {
+        stateManagerFallback.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -299,9 +297,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     /**
-     * Try to get stateManager from MediaProvider first, if not, try Editor Plugin
+     * Try to get stateManager from MediaProvider first, if not, get the fallback from props
      */
-    const stateManager = mediaProvider.stateManager || this.getStateManagerFromEditorPlugin();
+    const stateManager = mediaProvider.stateManager || this.props.stateManagerFallback;
 
     this.setState({ mediaProvider });
 
@@ -328,21 +326,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
 
     this.setState({ [contextName as any]: context as Context });
-  }
-
-  getStateManagerFromEditorPlugin(): MediaStateManager | undefined {
-    const { editorView } = this.props;
-    if (!editorView) {
-      return;
-    }
-
-    const pluginState = mediaStateKey.getState(editorView.state) as MediaPluginState;
-
-    if (!pluginState) {
-      return;
-    }
-
-    return pluginState.stateManager;
   }
 
   private get resizeMode(): ImageResizeMode {

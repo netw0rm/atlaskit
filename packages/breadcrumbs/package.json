@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "config": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/button": "^5.1.1",
+    "@atlaskit/button": "^5.4.8",
     "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/theme": "^2.0.0",
     "babel-runtime": "^6.11.6",

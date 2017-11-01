@@ -49,9 +49,10 @@ export const FillScreen = styled.div`
   top: ${p => p.scrollDistance}px;
   width: 100%;
   z-index: 300;
+  -webkit-overflow-scrolling: touch;
 `;
 
-export const Positioner = styled.div`
+export const PositionerAbsolute = styled.div`
   display: flex;
   flex-direction: column;
   height: ${maxDimensions};
@@ -63,6 +64,11 @@ export const Positioner = styled.div`
   position: absolute;
   right: 0;
   top: ${gutter}px;
+  width: ${dialogWidth};
+`;
+export const PositionerRelative = styled.div`
+  margin: ${gutter}px auto;
+  position: relative;
   width: ${dialogWidth};
 `;
 
@@ -78,6 +84,7 @@ export const Dialog = styled.div`
   outline: 0;
 `;
 
-FillScreen.displayName = 'FillScreen';
-Positioner.displayName = 'Positioner';
+PositionerAbsolute.displayName = 'PositionerAbsolute';
 Dialog.displayName = 'Dialog';
+FillScreen.displayName = 'FillScreen';
+PositionerRelative.displayName = 'PositionerRelative';

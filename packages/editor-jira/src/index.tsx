@@ -1,15 +1,23 @@
 import * as assert from 'assert';
+import { baseKeymap } from 'prosemirror-commands';
+import { history } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import { Schema } from 'prosemirror-model';
+import {
+  EditorState,
+  Plugin,
+  TextSelection,
+} from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 
 import {
   AnalyticsHandler,
   analyticsService,
   analyticsDecorator as analytics,
-  baseKeymap,
   Chrome,
   blockTypePlugins,
   clearFormattingPlugins,
   codeBlockPlugins,
-  createJIRASchema,
   hyperlinkPlugins,
   mentionsPlugins,
   rulePlugins,
@@ -27,13 +35,7 @@ import {
   tablePlugins,
   tableStateKey,
   pastePlugins,
-  EditorState,
-  EditorView,
-  Schema,
-  history,
-  keymap,
   ProviderFactory,
-  TextSelection,
   version as coreVersion,
 
   MediaProvider,
@@ -41,8 +43,6 @@ import {
   MediaPluginState,
   mediaPluginFactory,
   mediaStateKey,
-
-  Plugin,
 
   // nodeviews
   nodeViewFactory,
@@ -57,9 +57,11 @@ import {
 
   // transformers
   JIRATransformer,
+  JSONTransformer,
+
+  createJIRASchema,
 } from '@atlaskit/editor-core';
 
-import { JSONSerializer } from '@atlaskit/editor-core/dist/es5/renderer';
 import { MentionProvider } from '@atlaskit/mention';
 import { ActivityProvider } from '@atlaskit/activity';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -127,10 +129,10 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
+  editorState?: EditorState;
   isMediaReady: boolean;
   isExpanded?: boolean;
-  schema: Schema<any, any>;
+  schema: Schema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -211,7 +213,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (nextProps.isDisabled !== this.props.isDisabled) {
       const { editorView } = this.state;
       if (editorView) {
-        editorView.dom.contentEditable = String(!nextProps.isDisabled);
+        (editorView.dom as HTMLElement).contentEditable = String(!nextProps.isDisabled);
 
         if (!nextProps.isDisabled && !editorView.hasFocus()) {
           editorView.focus();
@@ -440,24 +442,24 @@ export default class Editor extends PureComponent<Props, State> {
         doc: this.transformer.parse(this.props.defaultValue || ''),
         plugins: [
           ...pastePlugins(schema),
-          ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema as Schema<any, any>) : []),
-          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema as Schema<any, any>, this.providerFactory) : []),
-          ...clearFormattingPlugins(schema as Schema<any, any>),
-          ...rulePlugins(schema as Schema<any, any>),
+          ...(isSchemaWithLinks(schema) ? hyperlinkPlugins(schema) : []),
+          ...(isSchemaWithMentions(schema) ? mentionsPlugins(schema, this.providerFactory) : []),
+          ...clearFormattingPlugins(schema),
+          ...rulePlugins(schema),
           ...(isSchemaWithMedia(schema) ? this.mediaPlugins : []),
-          ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema as Schema<any, any>) : []),
+          ...(isSchemaWithTextColor(schema) ? textColorPlugins(schema) : []),
           // block type plugin needs to be after hyperlink plugin until we implement keymap priority
           // because when we hit shift+enter, we would like to convert the hyperlink text before we insert a new line
           // if converting is possible
-          ...blockTypePlugins(schema as Schema<any, any>),
+          ...blockTypePlugins(schema),
           // The following order of plugins blockTypePlugins -> listBlock
           // this is needed to ensure that all block types are supported inside lists
           // this is needed until we implement keymap proirity :(
-          ...listsPlugins(schema as Schema<any, any>),
-          ...textFormattingPlugins(schema as Schema<any, any>),
-          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema as Schema<any, any>) : []),
-          ...reactNodeViewPlugins(schema as Schema<any, any>),
-          ...(isSchemaWithTables(schema as Schema<any, any>) ? tablePlugins() : []),
+          ...listsPlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...(isSchemaWithCodeBlock(schema) ? codeBlockPlugins(schema) : []),
+          ...reactNodeViewPlugins(schema),
+          ...(isSchemaWithTables(schema) ? tablePlugins() : []),
           history(),
           keymap(jiraKeymap),
           keymap(baseKeymap), // should be last :(
@@ -466,7 +468,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       const editorView = new EditorView(place, {
         state: editorState,
-        editable: (state: EditorState<any>) => !this.props.isDisabled,
+        editable: (state: EditorState) => !this.props.isDisabled,
         dispatchTransaction: (tr) => {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
@@ -496,12 +498,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 }
 
-export const parseIntoAtlassianDocument = (html: string, schema: Schema<any, any>) => {
+export const parseIntoAtlassianDocument = (html: string, schema: Schema) => {
   assert.strictEqual(typeof html, 'string', 'First parseIntoAtlassianDocument() argument is not a string');
 
-  const serializer = new JSONSerializer();
-  const transformer = new JIRATransformer(schema);
-  const doc = transformer.parse(html);
+  const jsonTransformer = new JSONTransformer();
+  const jiraTransformer = new JIRATransformer(schema);
 
-  return serializer.serializeFragment(doc.content) as any;
+  const doc = jiraTransformer.parse(html);
+  return jsonTransformer.encode(doc) as any;
 };

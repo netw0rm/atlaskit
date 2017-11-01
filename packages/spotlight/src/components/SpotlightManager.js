@@ -31,6 +31,9 @@ export default class SpotlightManager extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this.spotlightRegistry = new SpotlightRegistry();
+
+    // eslint-disable-next-line no-console
+    console.warn('@atlaskit/spotlight is deprecated and will be removed in the next release. Please use @atlaskit/onboarding instead.');
   }
 
   getChildContext() {

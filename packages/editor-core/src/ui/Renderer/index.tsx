@@ -8,9 +8,10 @@ import {
   ReactSerializer,
   renderDocument,
   RendererContext,
-  RenderOutputStat,
 } from '../../renderer';
+import { UnsupportedBlock } from '../../ui/';
 import { AppCardAction } from '@atlaskit/editor-common';
+import { RenderOutputStat } from '@atlaskit/renderer';
 import { Wrapper } from './style';
 
 export interface CardSurroundings {
@@ -79,13 +80,22 @@ export default class Renderer extends PureComponent<Props, {}> {
 
   render() {
     const { document, onComplete, schema } = this.props;
-    const { result, stat } = renderDocument(document, this.serializer, schema || defaultSchema);
 
-    if (onComplete) {
-      onComplete(stat);
+    try {
+      const { result, stat } = renderDocument(document, this.serializer, schema || defaultSchema);
+
+      if (onComplete) {
+        onComplete(stat);
+      }
+
+      return <Wrapper>{result}</Wrapper>;
+    } catch (ex) {
+      return (
+        <Wrapper>
+          <UnsupportedBlock />
+        </Wrapper>
+      );
     }
-
-    return <Wrapper>{result}</Wrapper>;
   }
 
   componentWillUnmount() {

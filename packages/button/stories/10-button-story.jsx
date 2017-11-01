@@ -52,7 +52,7 @@ const NarrowWrapper = styled.div`
 
 class CustomComponent extends React.PureComponent {
   render() {
-    const { children, ...props } = this.props;
+    const { children, innerRef, ...props } = this.props; // eslint-disable-line no-unused-vars
     return (
       <div {...props}>{children}</div>
     );

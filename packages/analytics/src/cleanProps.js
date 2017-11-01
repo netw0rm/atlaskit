@@ -9,6 +9,7 @@ function cleanProps(props: Object) {
     delegateAnalyticsEvent,
     fireAnalyticsEvent,
     firePrivateAnalyticsEvent,
+    getParentAnalyticsData,
     ...cleanedProps
   } = props;
   /* eslint-enable no-unused-vars */

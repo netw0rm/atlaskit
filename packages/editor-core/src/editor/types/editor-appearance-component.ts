@@ -7,7 +7,6 @@ export interface EditorAppearanceComponentProps {
   onUiReady?: (ref) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-  onExpand?: (editorView: EditorView) => void;
 
   providerFactory: ProviderFactory;
   editorView?: EditorView;
@@ -28,4 +27,6 @@ export interface EditorAppearanceComponentProps {
 
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
+
+  disabled?: boolean;
 }

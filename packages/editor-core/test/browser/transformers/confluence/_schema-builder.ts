@@ -69,12 +69,16 @@ export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
 export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);
-
 export const textColor = (attrs: { color?: string }) => markFactory(schema.marks.textColor, attrs);
-
 export const inlineMacro = (attrs: {
   macroId: string;
   name: string;
   placeholderUrl?: string;
   params?: object;
 }) => schema.nodes.inlineMacro.create(attrs);
+export const emoji = (attrs: {
+  id?: string;
+  shortName: string;
+  text?: string;
+}) => schema.nodes.emoji.create(attrs);
+export const confluenceInlineComment = (attrs: { reference: string }) => markFactory(schema.marks.confluenceInlineComment, attrs ? attrs : {}, true);

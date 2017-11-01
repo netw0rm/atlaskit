@@ -163,7 +163,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
   private renderSmallCard(): JSX.Element {
     const { url, title, site } = this.urlPreview;
-    const { dimensions, actions } = this.props;
+    const { dimensions, actions, onRetry } = this.props;
     const { iconUrl, thumbnailUrl, isLoading, errorMessage } = this;
     return this.renderInLink(
       url,
@@ -178,6 +178,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
         error={errorMessage}
         type="link"
         mediaType="image"
+        onRetry={onRetry}
       />
     );
   }

@@ -1,5 +1,5 @@
-import { MediaAttributes } from '@atlaskit/editor-common';
-import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
+import { MediaAttributes, getEmojiAcName } from '@atlaskit/editor-common';
+import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 import { mapCodeLanguage } from './languageMap';
@@ -49,6 +49,8 @@ export default function encode(node: PMNode, schema: Schema) {
       return encodeTable(node);
     } else if (node.type === schema.nodes.inlineMacro) {
       return encodeInlineMacro(node);
+    } else if (node.type === schema.nodes.emoji) {
+      return encodeEmoji(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -69,6 +71,18 @@ export default function encode(node: PMNode, schema: Schema) {
       }
     });
     return documentFragment;
+  }
+
+  function encodeEmoji(node: PMNode) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:emoticon');
+    const { id, shortName, text } = node.attrs;
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', getEmojiAcName({id, shortName}));
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-id', id);
+    elem.setAttributeNS(AC_XMLNS, 'ac:emoji-shortname', shortName);
+    if (text) {
+      elem.setAttributeNS(AC_XMLNS, 'ac:emoji-fallback', text);
+    }
+    return elem;
   }
 
   function encodeHeading(node: PMNode) {
@@ -141,36 +155,57 @@ export default function encode(node: PMNode, schema: Schema) {
       const root = doc.createDocumentFragment();
       let elem = root as Node;
 
-      for (const mark of node.marks) {
-        switch (mark.type) {
-          case schema.marks.strong:
+      // Group marks by type name so we can have better processing of duplicate types
+      const groupedMarks: { [type: string]: Mark[] } = {};
+      node.marks.forEach((mark: Mark) => {
+        if (!groupedMarks[mark.type.name]) {
+          groupedMarks[mark.type.name] = [];
+        }
+        groupedMarks[mark.type.name].push(mark);
+      }, {});
+
+      for (const type of Object.keys(groupedMarks)) {
+        let marks = groupedMarks[type];
+        switch (type) {
+          case 'strong':
             elem = elem.appendChild(doc.createElement('strong'));
             break;
-          case schema.marks.em:
+          case 'em':
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.strike:
+          case 'strike':
             elem = elem.appendChild(doc.createElement('s'));
             break;
-          case schema.marks.underline:
+          case 'underline':
             elem = elem.appendChild(doc.createElement('u'));
             break;
-          case schema.marks.subsup:
-            elem = elem.appendChild(doc.createElement(mark.attrs['type']));
+          case 'subsup':
+            elem = elem.appendChild(doc.createElement(marks[0].attrs['type']));
             break;
-          case schema.marks.code:
+          case 'code':
             elem = elem.appendChild(doc.createElement('code'));
             break;
-          case schema.marks.mentionQuery:
+          case 'mentionQuery':
             break;
-          case schema.marks.link:
+          case 'link':
             elem = elem.appendChild(encodeLink(node));
             break;
-          case schema.marks.textColor:
+          case 'confluenceInlineComment':
+            // Because this function encodes marks into dom nodes inwards, multiple inline comment
+            // marks on the same PM node will be applied in reverse order. The code below compensates
+            // for that while retaining current behaviour.
+            for (let mark of [...marks].reverse()) {
+              elem = elem.appendChild(encodeConfluenceInlineComment(node, mark, schema));
+            }
+            break;
+          case 'textColor':
             elem = elem.appendChild(encodeTextColor(node, schema));
             break;
+          case 'emojiQuery':
+            elem.textContent = node.text;
+            break;
           default:
-            throw new Error(`Unable to encode mark '${mark.type.name}'`);
+            throw new Error(`Unable to encode mark '${type}'`);
         }
       }
 
@@ -358,5 +393,13 @@ export default function encode(node: PMNode, schema: Schema) {
     elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
     elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
     return elem;
+  }
+
+  function encodeConfluenceInlineComment(node: PMNode, mark: Mark, schema: Schema) {
+    let marker = doc.createElementNS(AC_XMLNS, 'ac:inline-comment-marker');
+    const reference = mark ? mark.attrs.reference : '';
+    marker.setAttributeNS(AC_XMLNS, 'ac:ref', reference);
+
+    return marker;
   }
 }

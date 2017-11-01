@@ -67,7 +67,9 @@ describe(name, () => {
       });
 
       it('should render multiple adjacent siblings', () => {
-        const childComments = [<CommentLayout content="child1" />, <CommentLayout content="child2" />];
+        const childComments = [
+          <CommentLayout key="1" content="child1" />,
+          <CommentLayout key="2"content="child2" />];
         const wrapper = mount(<CommentLayout content="parent'">{childComments}</CommentLayout>);
 
         const commentsContainer = wrapper.find(NestedCommentsDiv);

@@ -23,6 +23,7 @@ const profilecardPropTypes = {
   cloudId: 'string',
   actions: `arrayOf(React.PropTypes.shape({
     callback: React.PropTypes.function,
+    shouldRender: React.PropTypes.function,
     id: React.PropTypes.string
     label: React.PropTypes.string
   }))`,

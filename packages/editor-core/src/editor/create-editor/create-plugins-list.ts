@@ -9,6 +9,7 @@ import {
   tasksAndDecisionsPlugin,
   saveOnEnterPlugin,
   mediaPlugin,
+  imageUploadPlugin,
   maxContentSizePlugin,
   hyperlinkPlugin,
   codeBlockPlugin,
@@ -22,7 +23,8 @@ import {
   jiraIssuePlugin,
   unsupportedContentPlugin,
   panelPlugin,
-  macroPlugin
+  macroPlugin,
+  confluenceInlineComment
 } from '../plugins';
 
 /**
@@ -86,6 +88,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(mediaPlugin);
   }
 
+  if (props.legacyImageUploadProvider) {
+    plugins.push(imageUploadPlugin);
+  }
+
   if (props.collabEditProvider) {
     plugins.push(collabEditPlugin);
   }
@@ -108,6 +114,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if(props.allowInlineMacro) {
     plugins.push(macroPlugin);
+  }
+
+  if(props.allowConfluenceInlineComment) {
+    plugins.push(confluenceInlineComment);
   }
 
   // UI only plugins

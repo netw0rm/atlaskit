@@ -14,7 +14,7 @@ const BUILDS_PER_PAGE = 30;
 const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;
+const BITBUCKET_BUILD_NUMBER = process.env.BITBUCKET_BUILD_NUMBER;
 const PIPELINES_ENDPOINT = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
@@ -51,10 +51,11 @@ axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
-      .find(job => job.target.commit.hash === CURRENT_BUILD_HASH);
+      .find(job => String(job.build_number) === BITBUCKET_BUILD_NUMBER);
     const olderRunningPipelines = allRunningPipelines
       .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
-      .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));
+      .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on))
+      .filter(job => job.trigger.name !== 'SCHEDULE');
 
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {

@@ -1,5 +1,30 @@
 # @atlaskit/navigation
 
+## 26.5.1 (2017-10-31)
+
+* bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))
+## 26.5.0 (2017-10-27)
+
+
+* bug fix; drawer no longer has translateX when not animating (issues closed: ak-3716) ([c65d2eb](https://bitbucket.org/atlassian/atlaskit/commits/c65d2eb))
+
+* feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
+## 26.4.1 (2017-10-26)
+
+* bug fix; drawers now close as expected on IE 11 (issues closed: ak-3718) ([069a82b](https://bitbucket.org/atlassian/atlaskit/commits/069a82b))
+## 26.4.0 (2017-10-25)
+
+* feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))
+## 26.3.0 (2017-10-24)
+
+* bug fix; countChildren returns total on non element groups ([06e226e](https://bitbucket.org/atlassian/atlaskit/commits/06e226e))
+
+
+
+
+* feature; quickSearch: passing children that do not conform to the "Group > Result" structure (issues closed: dir-428) ([bb94ae8](https://bitbucket.org/atlassian/atlaskit/commits/bb94ae8))
+
+
 ## 26.2.1 (2017-10-22)
 
 

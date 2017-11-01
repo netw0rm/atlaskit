@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { EditorState, NodeSelection, Selection, TextSelection, Transaction } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
-import JSONSerializer, { JSONDocNode, JSONNode } from '../renderer/json';
+import JSONTransformer, { JSONDocNode, JSONNode } from '../transformers/json';
 
 export {
   default as ErrorReporter,
@@ -152,8 +152,8 @@ export function setTextSelection(view: EditorView, anchor: number, head?: number
 
 export function moveCursorToTheEnd(view: EditorView) {
   const { state } = view;
-  const anchor = Math.max(state.doc.nodeSize - 2, 0);
-  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor)).scrollIntoView();
+  const anchor = Selection.atEnd(state.doc);
+  const tr = state.tr.setSelection(anchor).scrollIntoView();
   view.dispatch(tr);
 }
 
@@ -374,7 +374,8 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
 }
 
 export function toJSON(node: Node): JSONDocNode {
-  return new JSONSerializer().serializeFragment(node.content);
+  const transformer = new JSONTransformer();
+  return transformer.encode(node);
 }
 
 /**

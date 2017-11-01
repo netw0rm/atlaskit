@@ -1,8 +1,7 @@
 // @flow
 
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import Item from '@atlaskit/item';
-import withItemFocus from '../hoc/withItemFocus';
+import Item, { withItemFocus } from '@atlaskit/item';
 import withToggleInteraction from '../hoc/withToggleInteraction';
 import supportsVoiceover from '../../util/supportsVoiceover';
 

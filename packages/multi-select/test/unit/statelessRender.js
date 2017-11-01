@@ -31,7 +31,7 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<MultiSelectStateless />).isEmpty()).toBe(false);
+      expect(shallow(<MultiSelectStateless />).exists()).toBe(true);
     });
 
     it('should render with correct CSS class name', () => {

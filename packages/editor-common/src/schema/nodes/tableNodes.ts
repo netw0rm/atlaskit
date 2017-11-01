@@ -62,7 +62,7 @@ const nodes = tableNodes({
     background: {
       default: null,
       getFromDOM(dom) {
-        return dom.style.backgroundColor || null;
+        return (dom as HTMLElement).style.backgroundColor || null;
       },
       setDOMAttr(value, attrs) {
         if (value) {

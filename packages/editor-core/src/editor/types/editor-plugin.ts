@@ -23,7 +23,8 @@ export type UIComponentFactory = (
   providerFactory: ProviderFactory,
   appearance: EditorAppearance,
   popupsMountPoint?: HTMLElement,
-  popupsBoundariesElement?: HTMLElement
+  popupsBoundariesElement?: HTMLElement,
+  disabled?: boolean
 ) => React.ReactElement<any> | null;
 
 export interface EditorPlugin {

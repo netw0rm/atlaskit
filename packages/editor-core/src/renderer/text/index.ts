@@ -4,7 +4,7 @@ import {
   Schema,
 } from 'prosemirror-model';
 
-import { Serializer } from '../serializer';
+import { Serializer } from '@atlaskit/renderer';
 
 const HARDBREAK_NODE_TYPE = 'hardBreak';
 const IGNORE_NODE_TYPES = [

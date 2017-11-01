@@ -27,10 +27,14 @@ const profilecardPropDescriptions = {
 };
 
 const profilecardPropTypes = {
+  isCensored: 'bool',
+  isActive: 'bool',
+  isBot: 'bool',
   avatarUrl: 'string',
   fullName: 'string',
   meta: 'string',
   nickname: 'string',
+  email: 'string',
   location: 'string',
   timestring: 'string',
   presence: 'oneOf(["none", "available", "busy", "unavailable"]',

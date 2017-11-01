@@ -46,6 +46,7 @@ function pipelineFailedOrStopped(pipelineState) {
 axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
+    const nonScheduled = allRunningPipelines.filter(build => build.trigger.name !== 'SCHEDULE');
 
     // we have a list of pipelines sorted by creation date. At this point we just need to get the
     // latest one and:
@@ -55,7 +56,7 @@ axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
     //   if it pipeline is running:
     //    - we are either looking at ourselves (we can safely exit)
     //    - or we are looking at a new build which is going to pick up the work (we can safely exit)
-    const mostRecentPipeline = allRunningPipelines[0];
+    const mostRecentPipeline = nonScheduled[0];
     const pipelineState = mostRecentPipeline.state;
 
     if (pipelineFailedOrStopped(pipelineState)) {

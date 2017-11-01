@@ -1,5 +1,73 @@
 # @atlaskit/editor-core
 
+## 56.3.0 (2017-10-30)
+
+* bug fix; prevent markdown syntax highlighting in inline code (issues closed: ed-2861) ([d2dece7](https://bitbucket.org/atlassian/atlaskit/commits/d2dece7))
+* feature; added disabled prop to new arch (issues closed: ed-3036) ([4407a2f](https://bitbucket.org/atlassian/atlaskit/commits/4407a2f))
+* feature; add confluence inline comment mark. (issues closed: ed-2974) ([246b433](https://bitbucket.org/atlassian/atlaskit/commits/246b433))
+## 56.2.2 (2017-10-29)
+
+* bug fix; added validation of the deserialized document on first load (issues closed: ed-3104) ([95e045a](https://bitbucket.org/atlassian/atlaskit/commits/95e045a))
+## 56.2.1 (2017-10-27)
+
+* bug fix; fix position of floating hyperlink toolbar. (issues closed: #ed-2427) ([b6f08a9](https://bitbucket.org/atlassian/atlaskit/commits/b6f08a9))
+## 56.2.0 (2017-10-26)
+
+* bug fix; replaceDocument should allow JSON object as an argument ([a60e106](https://bitbucket.org/atlassian/atlaskit/commits/a60e106))
+* bug fix; autoformatting should not work inside inline code marks. (issues closed: #ed-2815) ([2b5fe26](https://bitbucket.org/atlassian/atlaskit/commits/2b5fe26))
+
+
+* bug fix; reenabled ToolbarEmojiPicker tests (issues closed: fs-1449) ([7fae478](https://bitbucket.org/atlassian/atlaskit/commits/7fae478))
+* feature; fs-951 clicking escape when the picker is open closes it (issues closed: fs-951) ([2ed2d44](https://bitbucket.org/atlassian/atlaskit/commits/2ed2d44))
+## 56.1.0 (2017-10-26)
+
+* bug fix; fix tables decoration on load if doc contains a table (issues closed: ed-3080) ([1741e0d](https://bitbucket.org/atlassian/atlaskit/commits/1741e0d))
+
+* feature; rename MediaItem prop to stateManagerFallback ([042f83f](https://bitbucket.org/atlassian/atlaskit/commits/042f83f))
+
+
+## 56.0.2 (2017-10-26)
+
+* bug fix; clear formatting should remove superscript/subscript marks (issues closed: ed-3082) ([347a096](https://bitbucket.org/atlassian/atlaskit/commits/347a096))
+* bug fix; bump editor-core to same version as editor-jira to fix tests ([6f023fa](https://bitbucket.org/atlassian/atlaskit/commits/6f023fa))
+* bug fix; bump @atlaskit/editor-core to use mediapicker v10 (issues closed: ed-3083) ([330935a](https://bitbucket.org/atlassian/atlaskit/commits/330935a))
+* bug fix; bump @atlaskit/emoji to the latest to get mediapicker dependency to v10 ([1d4a404](https://bitbucket.org/atlassian/atlaskit/commits/1d4a404))
+* bug fix; show UnsupportedBlock when renderDocument throws exception (issues closed: ed-3061) ([a3f6266](https://bitbucket.org/atlassian/atlaskit/commits/a3f6266))
+## 56.0.1 (2017-10-25)
+
+* bug fix; re-export createSchema from editor-core ([ec5f059](https://bitbucket.org/atlassian/atlaskit/commits/ec5f059))
+## 56.0.0 (2017-10-24)
+
+* breaking; JSONSerializer (renderer) is now JSON transformer ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+* breaking; use base renderer files from renderer package ([32f99e7](https://bitbucket.org/atlassian/atlaskit/commits/32f99e7))
+## 55.0.0 (2017-10-24)
+
+
+* feature; emoticons to emoji cxhtml transform ([3b72b96](https://bitbucket.org/atlassian/atlaskit/commits/3b72b96))
+
+* breaking; onExpand is no longer supported for the 'new-arch' editor. Consumers should use CollapsedEditor ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+* breaking; refactor CollapsedEditor to remove the need for onExpand prop in the new arch ([80c639c](https://bitbucket.org/atlassian/atlaskit/commits/80c639c))
+## 54.0.1 (2017-10-23)
+
+* bug fix; pass popupsMountPoint and popupsBoundariesElement to all appearances (issues closed: ed-3060) ([0ab2923](https://bitbucket.org/atlassian/atlaskit/commits/0ab2923))
+* bug fix; update version of Button to omit empty ButtonGroup warning ([2836ca9](https://bitbucket.org/atlassian/atlaskit/commits/2836ca9))
+## 54.0.0 (2017-10-23)
+
+
+
+
+
+* bug fix; add imageUploadProvider to ToolDrawer, fix collapsededitor state ([1c232e0](https://bitbucket.org/atlassian/atlaskit/commits/1c232e0))
+* bug fix; absorb setValue into replaceDocument editor action ([85c79c8](https://bitbucket.org/atlassian/atlaskit/commits/85c79c8))
+* feature; port upload-image plugin to the new architecture ([af102fb](https://bitbucket.org/atlassian/atlaskit/commits/af102fb))
+* breaking; The imageUploadHandler prop has been removed in favor of imageUploadProvider. ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* breaking; set the imageUploadHandler using providers ([ef73026](https://bitbucket.org/atlassian/atlaskit/commits/ef73026))
+* bug fix; use library method to determine end of the document ([e2de547](https://bitbucket.org/atlassian/atlaskit/commits/e2de547))
+* bug fix; restrict image width in the editor, to the width of the editor ([6a21d5f](https://bitbucket.org/atlassian/atlaskit/commits/6a21d5f))
+* bug fix; fix use of upload-image plugin in story editor ([6aa9ae4](https://bitbucket.org/atlassian/atlaskit/commits/6aa9ae4))
+* feature; export CollapsedEditor from the editor-core repo ([a398ca3](https://bitbucket.org/atlassian/atlaskit/commits/a398ca3))
+* bug fix; allow consumers to fully control the collapsed state of CollapsedEditor ([b133030](https://bitbucket.org/atlassian/atlaskit/commits/b133030))
+* feature; add setValue action to the editor ([a08c28f](https://bitbucket.org/atlassian/atlaskit/commits/a08c28f))
 ## 53.1.4 (2017-10-22)
 
 * bug fix; work around cursor position issues in Chrome 58-62 (issues closed: ed-2960) ([3d86c08](https://bitbucket.org/atlassian/atlaskit/commits/3d86c08))

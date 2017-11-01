@@ -18,7 +18,7 @@ export const description = (
   <div>
     <p>
       Theme is a combined component and utility set, exporting a main component
-      for use, as well as a number of helper methods to allow easy application of
+      for use and as well as a number of helper methods to allow easy application of
       atlaskit{"'"}s themes.
     </p>
     <Usage>{

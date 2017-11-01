@@ -22,13 +22,7 @@ export const getLastSentance = (selection: TextSelection) => {
     return;
   }
 
-  const { nodeBefore, nodeAfter } = selection.$from;
-  if (nodeBefore && !nodeAfter && nodeBefore.text) {
-    const { text } = nodeBefore;
-    if (text) {
-      return text;
-    }
-  }
+  return selection.$from.parent.textContent;
 };
 
 export const createDecorationWidget = (tr: Transaction, query?: string) => {

@@ -22,7 +22,7 @@ storiesOf(name, module)
   .add('Message Editor', () =>
     <ToolsDrawer
       // tslint:disable-next-line:jsx-no-lambda
-      renderEditor={({mentionProvider, emojiProvider, mediaProvider, onChange}) =>
+      renderEditor={({mentionProvider, emojiProvider, emojiSuggestionsProvider, mediaProvider, onChange}) =>
         <Editor
           {...getPropsPreset('message')}
 
@@ -33,6 +33,7 @@ storiesOf(name, module)
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           mediaProvider={mediaProvider}
+          emojiSuggestionsProvider={emojiSuggestionsProvider}
 
           onChange={onChange}
           onSave={SAVE_ACTION}

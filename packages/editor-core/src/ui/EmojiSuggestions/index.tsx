@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { EditorState, TextSelection, Transaction, PluginKey } from 'prosemirror-state';
 import Popup from '../Popup';
 import {
   EmojiProvider,
@@ -10,7 +11,6 @@ import {
   SearchOptions
 } from '@atlaskit/emoji';
 import EmojiList from './EmojiList';
-import { EditorState, Transaction, PluginKey } from 'prosemirror-state';
 
 export interface Props {
   editorView: EditorView;
@@ -20,8 +20,10 @@ export interface Props {
   emojis: EmojiDescription[];
   anchorElement?: HTMLElement;
   pluginKey: PluginKey;
+  getLastSentance: (selection: TextSelection) => string | undefined;
   setEmojis: (state: EditorState, dispatch: (tr: Transaction) => void, emojis: EmojiDescription[]) => void;
   onSelect: (state: EditorState, dispatch: (tr: Transaction) => void, selectedIndex?: number) => void;
+  getEmojiSuggestions: (state: EditorState, dispatch: (tr: Transaction) => void, query: string) => void;
 }
 
 const LIST_LIMIT: number = 5;
@@ -95,9 +97,25 @@ export default class EmojiSuggestions extends Component<Props, any> {
     emojiProvider.filter(query, options);
   }
 
-  private onSearchResult = (result: EmojiSearchResult): void => {
+  private onSearchResult = async (searchResult: EmojiSearchResult) => {
+    const { getLastSentance, getEmojiSuggestions } = this.props;
     const { state, dispatch } = this.props.editorView;
-    this.props.setEmojis(state, dispatch, result.emojis);
+    const { emojis } = searchResult;
+
+    // got response from emoji provider
+    if (emojis && emojis.length) {
+      this.props.setEmojis(state, dispatch, emojis);
+    }
+    // search for emojis in emoji suggestions service
+    else {
+      const query = getLastSentance(this.props.editorView.state.selection);
+      if (query) {
+        const emojisFallback = await getEmojiSuggestions(state, dispatch, query);
+        if (Array.isArray(emojisFallback) && emojisFallback.length) {
+          this.props.setEmojis(state, dispatch, emojisFallback);
+        }
+      }
+    }
   }
 
   private onProviderChange = { result: this.onSearchResult };

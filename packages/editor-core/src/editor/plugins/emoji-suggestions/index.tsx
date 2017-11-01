@@ -2,9 +2,10 @@ import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { createPlugin, pluginKey, EmojiSuggestionsState } from './plugin';
 import keymap from './keymap';
-import { setEmojis, selectCurrent } from './actions';
+import { setEmojis, selectCurrent, getEmojiSuggestions } from './actions';
 import EmojiSuggestions from '../../../ui/EmojiSuggestions';
 import WithPluginState from '../../ui/WithPluginState';
+import { getLastSentance } from './utils';
 
 const emojiSuggestionsPlugin: EditorPlugin = {
   pmPlugins() {
@@ -34,6 +35,8 @@ const emojiSuggestionsPlugin: EditorPlugin = {
             pluginKey={pluginKey}
             setEmojis={setEmojis}
             onSelect={selectCurrent}
+            getLastSentance={getLastSentance}
+            getEmojiSuggestions={getEmojiSuggestions}
           />
         )}
       />

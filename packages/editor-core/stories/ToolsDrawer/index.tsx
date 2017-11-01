@@ -10,6 +10,7 @@ import imageUploadHandler from '../imageUpload/handler';
 import { MentionResource } from '../../src';
 import { toJSON } from '../../src/utils';
 import { storyMediaProviderFactory } from '../../src/test-helper';
+import { emojiSuggestionsProvider } from '../mock-emoji-suggestions-provider';
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => { });
@@ -52,6 +53,12 @@ const providers = {
     pending: pendingPromise,
     rejected: rejectedPromise,
     'undefined': undefined,
+  },
+  emojiSuggestionsProvider: {
+    resolved: emojiSuggestionsProvider,
+    pending: pendingPromise,
+    rejected: rejectedPromise,
+    'undefined': undefined,
   }
 };
 rejectedPromise.catch(() => { });
@@ -62,6 +69,7 @@ interface State {
   mentionProvider: string;
   mediaProvider: string;
   emojiProvider: string;
+  emojiSuggestionsProvider: string;
   activityProvider: string;
   jsonDocument?: string;
 }
@@ -76,6 +84,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
+      emojiSuggestionsProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
     };
@@ -98,7 +107,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
   }
 
   render() {
-    const { mentionProvider, emojiProvider, mediaProvider, activityProvider, imageUploadProvider, jsonDocument, editorEnabled } = this.state;
+    const { mentionProvider, emojiProvider, emojiSuggestionsProvider, mediaProvider, activityProvider, imageUploadProvider, jsonDocument, editorEnabled } = this.state;
     return (
       <Content>
         <div style={{ padding: '5px 0' }}>
@@ -111,6 +120,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
               mediaProvider: providers.mediaProvider[mediaProvider],
               mentionProvider: providers.mentionProvider[mentionProvider],
               emojiProvider: providers.emojiProvider[emojiProvider],
+              emojiSuggestionsProvider: providers.emojiSuggestionsProvider[emojiSuggestionsProvider],
               activityProvider: providers.activityProvider[activityProvider],
               onChange: this.onChange
             })) :

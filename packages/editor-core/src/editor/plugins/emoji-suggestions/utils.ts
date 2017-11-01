@@ -10,9 +10,23 @@ export const getLastWord = (selection: TextSelection) => {
   const { nodeBefore, nodeAfter } = selection.$from;
   if (nodeBefore && !nodeAfter && nodeBefore.text) {
     const { text } = nodeBefore;
-    const lastWord = (text || '').match(/(\w{3,})\s$/);
-    if (lastWord) {
-      return lastWord[1];
+    const query = (text || '').match(/(\w{3,})\s$/);
+    if (query) {
+      return query[1];
+    }
+  }
+};
+
+export const getLastSentance = (selection: TextSelection) => {
+  if (!selection.empty) {
+    return;
+  }
+
+  const { nodeBefore, nodeAfter } = selection.$from;
+  if (nodeBefore && !nodeAfter && nodeBefore.text) {
+    const { text } = nodeBefore;
+    if (text) {
+      return text;
     }
   }
 };

@@ -4,7 +4,8 @@ import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
 import { getLastWord, createDecorationWidget } from './utils';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
-import { setEmojiProvider } from './actions';
+import { setEmojiProvider, setEmojiSuggestionsProvider } from './actions';
+import { EmojiSuggestionsProvider } from './provider';
 
 export const pluginKey = new PluginKey('emojiSuggestionsPlugin');
 
@@ -15,6 +16,7 @@ export class EmojiSuggestionsState {
   selectedIndex: number = -1;
   anchorElement?: HTMLElement;
   emojiProvider: EmojiProvider;
+  emojiSuggestionsProvider: EmojiSuggestionsProvider;
 }
 
 export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactory) => new Plugin({
@@ -48,6 +50,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
   },
   view: (view: EditorView) => {
     providerFactory.subscribe('emojiProvider', (name, provider: Promise<EmojiProvider>) => setEmojiProvider(view, provider));
+    providerFactory.subscribe('emojiSuggestionsProvider', (name, provider: Promise<EmojiSuggestionsProvider>) => setEmojiSuggestionsProvider(view, provider));
 
     return {
       update(view) {

@@ -2,7 +2,7 @@ import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
-import { getLastWord, createDecorationWidget } from './utils';
+import { getLastWord, getLastSentance, createDecorationWidget } from './utils';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { setEmojiProvider, setEmojiSuggestionsProvider } from './actions';
 import { EmojiSuggestionsProvider } from './provider';
@@ -31,15 +31,17 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
         return newState;
       }
 
-      const query = getLastWord(tr.selection);
-      if (query !== state.query) {
-        const newState = {
-          ...state,
-          query,
-          decorations: createDecorationWidget(tr, query)
-        };
-        dispatch(pluginKey, newState);
-        return newState;
+      if (tr.docChanged) {
+        const query = getLastSentance(tr.selection);
+        if (query !== state.query) {
+          const newState = {
+            ...state,
+            query,
+            decorations: createDecorationWidget(tr, query)
+          };
+          dispatch(pluginKey, newState);
+          return newState;
+        }
       }
 
       return state;

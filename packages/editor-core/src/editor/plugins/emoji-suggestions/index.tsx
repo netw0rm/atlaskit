@@ -5,7 +5,7 @@ import keymap from './keymap';
 import { setEmojis, selectCurrent, getEmojiSuggestions } from './actions';
 import EmojiSuggestions from '../../../ui/EmojiSuggestions';
 import WithPluginState from '../../ui/WithPluginState';
-import { getLastSentance } from './utils';
+import { getLastSentance, getLastWord } from './utils';
 
 const emojiSuggestionsPlugin: EditorPlugin = {
   pmPlugins() {
@@ -36,6 +36,7 @@ const emojiSuggestionsPlugin: EditorPlugin = {
             setEmojis={setEmojis}
             onSelect={selectCurrent}
             getLastSentance={getLastSentance}
+            getLastWord={getLastWord}
             getEmojiSuggestions={getEmojiSuggestions}
           />
         )}

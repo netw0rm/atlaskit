@@ -21,6 +21,7 @@ export interface Props {
   anchorElement?: HTMLElement;
   pluginKey: PluginKey;
   getLastSentance: (selection: TextSelection) => string | undefined;
+  getLastWord: (query?: string) => string | undefined;
   setEmojis: (state: EditorState, dispatch: (tr: Transaction) => void, emojis: EmojiDescription[]) => void;
   onSelect: (state: EditorState, dispatch: (tr: Transaction) => void, selectedIndex?: number) => void;
   getEmojiSuggestions: (state: EditorState, dispatch: (tr: Transaction) => void, query: string) => void;
@@ -43,7 +44,10 @@ export default class EmojiSuggestions extends Component<Props, any> {
       }
     }
     if (query !== nextProps.query) {
-      this.onSearch(nextProps.query);
+      const lastWord = this.props.getLastWord(nextProps.query);
+      if (lastWord) {
+        this.onSearch(lastWord);
+      }
     }
   }
 
@@ -97,8 +101,18 @@ export default class EmojiSuggestions extends Component<Props, any> {
     emojiProvider.filter(query, options);
   }
 
-  private onSearchResult = async (searchResult: EmojiSearchResult) => {
-    const { getLastSentance, getEmojiSuggestions } = this.props;
+  private onSuggestionsSearch = async (query?: string) => {
+    if (query) {
+      const { getEmojiSuggestions } = this.props;
+      const { state, dispatch } = this.props.editorView;
+      const emojisFallback = await getEmojiSuggestions(state, dispatch, query);
+      if (Array.isArray(emojisFallback) && emojisFallback.length) {
+        this.props.setEmojis(this.props.editorView.state, dispatch, emojisFallback);
+      }
+    }
+  }
+
+  private onSearchResult = (searchResult: EmojiSearchResult) => {
     const { state, dispatch } = this.props.editorView;
     const { emojis } = searchResult;
 
@@ -108,13 +122,9 @@ export default class EmojiSuggestions extends Component<Props, any> {
     }
     // search for emojis in emoji suggestions service
     else {
+      const { getLastSentance } = this.props;
       const query = getLastSentance(this.props.editorView.state.selection);
-      if (query) {
-        const emojisFallback = await getEmojiSuggestions(state, dispatch, query);
-        if (Array.isArray(emojisFallback) && emojisFallback.length) {
-          this.props.setEmojis(state, dispatch, emojisFallback);
-        }
-      }
+      this.onSuggestionsSearch(query);
     }
   }
 

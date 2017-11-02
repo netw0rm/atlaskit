@@ -2,17 +2,11 @@ import { TextSelection, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { EmojiDescription } from '@atlaskit/emoji';
 
-export const getLastWord = (selection: TextSelection) => {
-  if (!selection.empty) {
-    return;
-  }
-
-  const { nodeBefore, nodeAfter } = selection.$from;
-  if (nodeBefore && !nodeAfter && nodeBefore.text) {
-    const { text } = nodeBefore;
-    const query = (text || '').match(/(\w{3,})\s$/);
-    if (query) {
-      return query[1];
+export const getLastWord = (query?: string) => {
+  if (query) {
+    const lastWord = query.match(/(\w+)$/);
+    if (lastWord) {
+      return lastWord[1];
     }
   }
 };
@@ -22,7 +16,14 @@ export const getLastSentance = (selection: TextSelection) => {
     return;
   }
 
-  return selection.$from.parent.textContent;
+  const { parent: { textContent } } = selection.$from;
+  if (textContent) {
+    // const query = (textContent || '').match(/^(.*)\s$/);
+    const query = (textContent || '').match(/([^.!?]+[\s\w]+(.)?)\s$/);
+    if (query) {
+      return query[1];
+    }
+  }
 };
 
 export const createDecorationWidget = (tr: Transaction, query?: string) => {

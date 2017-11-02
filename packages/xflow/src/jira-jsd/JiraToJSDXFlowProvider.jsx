@@ -146,6 +146,10 @@ export const defaultProps = intl => ({
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
       notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
+    contextualStartTrial: {
+      contextualStartTrialHeader:
+        'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/gzztkbTAQf3dfk3_iD9r4hu-ke0srRD9B6qCE4yZbqA/creating-content.svg',
+    },
     startTrial: {
       confirmTrialHeading: intl.formatMessage(messages.confirmTrialHeading),
       confirmTrialMessage: (

@@ -6,12 +6,13 @@ import { Emoji } from '@atlaskit/editor-common';
 
 export interface EmojiProps extends EmojiAttributes {
   providers?: ProviderFactory;
+  fitToHeight?: number;
 }
 
 export default class EmojiItem extends PureComponent<EmojiProps, {}> {
-  render() {
-    const { id, providers, shortName, text } = this.props;
 
+  render() {
+    const { id, providers, shortName, text, fitToHeight } = this.props;
     return (
       <Emoji
         allowTextFallback={true}
@@ -19,6 +20,7 @@ export default class EmojiItem extends PureComponent<EmojiProps, {}> {
         shortName={shortName}
         fallback={text}
         providers={providers}
+        fitToHeight={fitToHeight}
       />
     );
   }

@@ -4,10 +4,13 @@ const semver = require('semver');
 function getNpmMetadata(name) {
   const url = `http://registry.npmjs.org/${name.replace('/', '%2F')}`;
   return axios.get(url)
-    .then(response => ({
+    .then(({ data }) => ({
+      currentVersion: semver.maxSatisfying(Object.keys(data.versions), '*'),
+      description: data.description,
       isPublished: true,
-      versions: Object.keys(response.data.versions),
-      publishedOn: response.data.time[semver.maxSatisfying(Object.keys(response.data.versions), '*')],
+      maintainers: data.maintainers,
+      publishedOn: data.time[semver.maxSatisfying(Object.keys(data.versions), '*')],
+      versions: Object.keys(data.versions),
     }))
     .catch((error) => {
       if (!error || !error.response || error.response.status !== 404) {
@@ -42,6 +45,9 @@ function getExternalMetadata(name) {
   const storybook = npm.then(({ versions }) => getStorybooksMetadata(name, versions));
   return Promise.all([npm, storybook])
     .then(([npmMetadata, storybookMetadata]) => ({
+      currentVersion: npmMetadata.currentVersion,
+      description: npmMetadata.description,
+      maintainers: npmMetadata.maintainers,
       versions: npmMetadata.versions,
       storybooks: storybookMetadata.validVersions,
       isPublished: npmMetadata.versions.length > 0,

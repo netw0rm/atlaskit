@@ -10,8 +10,9 @@ import MediaServicesZipIcon from '@atlaskit/icon/glyph/media-services/zip';
 import PackageIcon from '@atlaskit/icon/glyph/bitbucket/repos';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import { RouterNavigationItem } from '../linkComponents';
+import { RouterNavigationItem, ExternalNavigationItem } from '../linkComponents';
 import packages from '../../../data';
+import { NEW_WEBSITE_LOCATION } from '../../../../constants';
 
 const componentKeys = Object.keys(packages);
 
@@ -34,22 +35,30 @@ const BatmanIcon = () => (
 
 const ComponentNavItem = withRouter(
   ({ componentKey, location, destination }) => {
-    const component = packages[componentKey];
-    const url = `${destination}/${componentKey}`;
+    const {
+      packageHasBeenMoved,
+      name,
+      supportsDarkMode,
+    } = packages[componentKey];
+    const url = packageHasBeenMoved
+      ? `${NEW_WEBSITE_LOCATION}/packages/elements/${componentKey}`
+      : `${destination}/${componentKey}`;
     // We are matching against endswith so changelogs also show item as selected
     const isSelected = location.pathname.endsWith(`/${componentKey}`);
-
+    const LinkComponent = packageHasBeenMoved
+      ? ExternalNavigationItem
+      : RouterNavigationItem;
     return (
-      <RouterNavigationItem
+      <LinkComponent
         href={url}
         icon={
-          component.supportsDarkMode && process.env.ATLASKIT_SITE_ENV !== 'production'
+          supportsDarkMode && process.env.ATLASKIT_SITE_ENV !== 'production'
             ? <BatmanIcon />
-            : <PackageIcon size="small" label={`${component.name} icon`} />
+            : <PackageIcon size="small" label={`${name} icon`} />
         }
         isSelected={isSelected}
         key={componentKey}
-        text={component.name}
+        text={name}
       />
     );
   }

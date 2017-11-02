@@ -10,7 +10,6 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 import ContextualConfirmTrialContent from '../styled/ContextualConfirmTrialContent';
 import CloseModalDialogButton from '../styled/CloseModalDialogButton';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
-import StartTrialHeader from '../styled/StartTrialHeader';
 import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader';
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
 import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
@@ -42,8 +41,12 @@ class ContextualConfirmTrial extends Component {
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
     status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
-    trialHeading: PropTypes.string.isRequired,
-    reactivateHeading: PropTypes.string.isRequired,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualMessage: PropTypes.string.isRequired,
+      reactivateCTA: PropTypes.string.isRequired,
+      trialCTA: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -138,8 +141,7 @@ class ContextualConfirmTrial extends Component {
       intl,
       status,
       image,
-      trialHeading,
-      reactivateHeading,
+      contextInfo,
     } = this.props;
     return (
       <ModalDialog
@@ -156,39 +158,41 @@ class ContextualConfirmTrial extends Component {
               />
             </CloseModalDialogButton>
             <ContextualConfirmTrialHeader />
-            <ContextualConfirmTrialImage src={image} alt="files" />
+            <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
           </div>
         }
         footer={
-          <ContextualConfirmTrialFooter>
-            <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage imageType="card" />
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.card-info"
-                defaultMessage="Once your trial finishes, billing will start."
-              />
-            </ConfirmTrialAdminInfo>
-            <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage imageType="email" />
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.email-info"
-                defaultMessage="Your billing contact will be emailed three days before."
-              />
-            </ConfirmTrialAdminInfo>
-            <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage imageType="settings" />
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.settings-info"
-                defaultMessage="Cancel your trial at any time in Manage applications."
-              />
-            </ConfirmTrialAdminInfo>
-          </ContextualConfirmTrialFooter>
+          status === INACTIVE
+            ? (<ContextualConfirmTrialFooter>
+              <ConfirmTrialAdminInfo>
+                <ConfirmTrialAdminInfoImage imageType="card" />
+                <FormattedMessage
+                  id="xflow.generic.confirm-trial.card-info"
+                  defaultMessage="Once your trial finishes, billing will start."
+                />
+              </ConfirmTrialAdminInfo>
+              <ConfirmTrialAdminInfo>
+                <ConfirmTrialAdminInfoImage imageType="email" />
+                <FormattedMessage
+                  id="xflow.generic.confirm-trial.email-info"
+                  defaultMessage="Your billing contact will be emailed three days before."
+                />
+              </ConfirmTrialAdminInfo>
+              <ConfirmTrialAdminInfo>
+                <ConfirmTrialAdminInfoImage imageType="settings" />
+                <FormattedMessage
+                  id="xflow.generic.confirm-trial.settings-info"
+                  defaultMessage="Cancel your trial at any time in Manage applications."
+                />
+              </ConfirmTrialAdminInfo>
+            </ContextualConfirmTrialFooter>)
+            : ''
         }
       >
         <ContextualConfirmTrialContent id="xflow-confirm-trial">
-          <StartTrialHeader>
-            {status === INACTIVE ? trialHeading : reactivateHeading}
-          </StartTrialHeader>
+          <h2>
+            {contextInfo.contextualMessage}
+          </h2>
           <SpinnerDiv>
             <Spinner isCompleting={!this.state.spinnerActive} />
           </SpinnerDiv>
@@ -198,7 +202,7 @@ class ContextualConfirmTrial extends Component {
             appearance="primary"
             isDisabled={this.state.buttonsDisabled}
           >
-            {status === INACTIVE ? trialHeading : reactivateHeading}
+            {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
           </Button>
         </ContextualConfirmTrialContent>
         <ErrorFlag
@@ -225,10 +229,6 @@ export default withXFlowProvider(
          contextualStartTrial: {
            contextualStartTrialHeader,
          },
-         startTrial: {
-           confirmTrialHeading,
-           confirmReactivateHeading,
-         },
        },
        status,
        startProductTrial,
@@ -239,7 +239,5 @@ export default withXFlowProvider(
      cancelStartProductTrial,
      status,
      image: contextualStartTrialHeader,
-     trialHeading: confirmTrialHeading,
-     reactivateHeading: confirmReactivateHeading,
    })
 );

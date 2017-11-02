@@ -31,6 +31,11 @@ const defaultProps = {
   goToProduct: () => {
     console.log('Go to Confluence!');
   },
+  contextInfo: {
+    contextualMessage: 'Project pages are a feature powered by Confluence',
+    reactivateCTA: 'Reactivate Confluence',
+    trialCTA: 'Try Confluence free for 30 days',
+  },
 };
 
 storiesOf('ContextualConfirmTrial')
@@ -40,6 +45,21 @@ storiesOf('ContextualConfirmTrial')
         {...defaultProps}
         onComplete={() => Promise.resolve(true)}
         onCancel={() => Promise.resolve(true)}
+      />
+    )
+  )
+  .add('Confirm Trial dialog (INACTIVE) with custom contextual image', () =>
+    setupStorybookAnalytics(
+      <ConfirmTrialBase
+        {...defaultProps}
+        onComplete={() => Promise.resolve(true)}
+        onCancel={() => Promise.resolve(true)}
+        contextInfo={{
+          contextualImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
+          contextualMessage: 'Project pages are a feature powered by Confluence',
+          reactivateCTA: 'Reactivate Confluence',
+          trialCTA: 'Try Confluence free for 30 days',
+        }}
       />
     )
   )

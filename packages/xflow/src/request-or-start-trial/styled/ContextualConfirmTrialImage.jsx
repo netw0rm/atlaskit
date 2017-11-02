@@ -5,7 +5,7 @@ import { gridSize, math } from '@atlaskit/theme';
 const ContextualConfirmTrialImage = styled.img`
   display: block;
   margin: auto;
-  width: ${math.multiply(gridSize, 36)}px;
+  height: ${math.multiply(gridSize, 18)}px;
 `;
 
 ContextualConfirmTrialImage.displayName = 'ContextualConfirmTrialImage';

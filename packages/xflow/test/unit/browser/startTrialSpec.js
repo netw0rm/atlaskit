@@ -277,13 +277,11 @@ describe('@atlaskit/xflow', () => {
                 <RequestOrStartTrial
                   {...defaultRequestOrStartTrialProps}
                   onTrialActivating={() => true}
-                  contextInfo={
-                    {
-                      contextualMessage: 'Project pages are a feature powered by Confluence',
-                      reactivateCTA: 'Reactivate Confluence',
-                      trialCTA: 'Try Confluence free for 30 days',
-                    }
-                  }
+                  contextInfo={{
+                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    reactivateCTA: 'Reactivate Confluence',
+                    trialCTA: 'Try Confluence free for 30 days',
+                  }}
                 />
               </MockConfluenceXFlow>
             </XFlowAnalyticsListener>
@@ -296,13 +294,13 @@ describe('@atlaskit/xflow', () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Project pages are a feature powered by Confluence");
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
         // contextual cta
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Try Confluence free for 30 days");
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Try Confluence free for 30 days');
         // trial info footer
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Once your trial finishes, billing will start.");
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Your billing contact will be emailed three days before");
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Cancel your trial at any time in Manage applications.");
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your trial finishes, billing will start.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Your billing contact will be emailed three days before');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your trial at any time in Manage applications.');
       });
     });
 
@@ -318,13 +316,11 @@ describe('@atlaskit/xflow', () => {
               >
                 <RequestOrStartTrial
                   {...defaultRequestOrStartTrialProps}
-                  contextInfo={
-                    {
-                      contextualMessage: 'Project pages are a feature powered by Confluence',
-                      reactivateCTA: 'Reactivate Confluence',
-                      trialCTA: 'Try Confluence free for 30 days',
-                    }
-                  }
+                  contextInfo={{
+                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    reactivateCTA: 'Reactivate Confluence',
+                    trialCTA: 'Try Confluence free for 30 days',
+                  }}
                 />
               </MockConfluenceXFlow>
             </XFlowAnalyticsListener>
@@ -337,13 +333,13 @@ describe('@atlaskit/xflow', () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Project pages are a feature powered by Confluence");
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
         // contextual reactivate cta
-        expect(xflow.find(ContextualStartTrial).text()).toMatch("Reactivate Confluence");
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
         // trial info footer (should not be present on reactivation)
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch("Once your trial finishes, billing will start.");
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch("Your billing contact will be emailed three days before");
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch("Cancel your trial at any time in Manage applications.");
+        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Once your trial finishes, billing will start.');
+        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Your billing contact will be emailed three days before');
+        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Cancel your trial at any time in Manage applications.');
       });
     });
   });

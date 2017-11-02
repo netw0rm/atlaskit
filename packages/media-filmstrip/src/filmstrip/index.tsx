@@ -56,7 +56,6 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const {dataTransfer} = e;
 
     e.preventDefault();
-    console.log('onDragOver', dataTransfer);
   }
 
   onDragEnd = (source, destination) => {
@@ -103,7 +102,6 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   }
 
   onDragEnter = (length, index) => {
-    console.log('onDragEnter', length, index);
     const {items} = this.state;
     const itemsWithFakeContent = [...items];
     const key = new Date().getTime();
@@ -125,7 +123,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   render() {
     const {animate, offset, items} = this.state;
     const children = this.renderChildren(items);
-    console.log('render', children);
+
     return (
       <FilmstripView onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}

@@ -313,7 +313,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (onScroll) {
       const {windowWidth} = this.state;
       const newOffset = this.getClosestForRight(this.offset + windowWidth);
-      console.log('onScroll', newOffset);
 
       onScroll({
         direction: 'right',
@@ -454,7 +453,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   onDragLeave = (e: DragEvent) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
-    // console.log('onDragLeave');
   }
 
   onNativeDragOver = (e: DragEvent) => {
@@ -486,7 +484,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
               window.firstMouseDownCb = this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
               if (!this.fancyFlag) {
                 setTimeout(() => {
-                  console.log("calling it with fake event");
 
                   this.firstMouseDownCb({
                     button: 0, // primary
@@ -498,7 +495,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
                     }
                   });
 
-                  console.log("mouse move dispatch");
                 }, 10);
 
 

@@ -1,15 +1,14 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from 'axios';
 
 export default class EmojiSuggestionsProviderMock {
   search(query: string): Promise<AxiosRequestConfig> {
     const config = {
       headers: {},
-      baseURL: "https://pf-nlp-service.us-west-2.staging.atl-paas.net/deepmoji"
+      baseURL: 'https://pf-nlp-service.us-west-2.staging.atl-paas.net/deepmoji'
     };
 
-    const url = `/${query}`;
     return new Promise((resolve, reject) => {
-      axios.get(url, config)
+      axios.get(`/${query}`, config)
         .then(response => {
           resolve(response.data);
         })

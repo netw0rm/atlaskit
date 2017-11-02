@@ -18,7 +18,6 @@ export const getLastSentance = (selection: TextSelection) => {
 
   const { parent: { textContent } } = selection.$from;
   if (textContent) {
-    // const query = (textContent || '').match(/^(.*)\s$/);
     const query = (textContent || '').match(/([^.!?]+[\s\w]+(.)?)\s$/);
     if (query) {
       return query[1];

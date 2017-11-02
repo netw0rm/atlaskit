@@ -2,7 +2,7 @@ import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import ProviderFactory from '../../../providerFactory';
 import { Dispatch } from '../../event-dispatcher';
-import { getLastWord, getLastSentance, createDecorationWidget } from './utils';
+import { getLastSentance, createDecorationWidget } from './utils';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { setEmojiProvider, setEmojiSuggestionsProvider } from './actions';
 import { EmojiSuggestionsProvider } from './provider';

@@ -51,15 +51,23 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   // and if it does recalculate the image height and width
 
   componentWillMount() {
-    this.img = new Image();
+    const {dataURI} = this.props;
 
-    this.img.src = this.props.dataURI;
-    this.img.onload = this.onImageLoad(this);
-    if (this.props.onError) { this.img.onerror = this.props.onError; }
+    this.getImageDimensions(dataURI);
+  }
+
+  componentWillReceiveProps(nextProps: MediaImageProps) {
+    const {dataURI: newDataURI} = nextProps;
+    const {dataURI: currentDataURI} = this.props;
+
+    if (newDataURI !== currentDataURI) {
+      this.getImageDimensions(newDataURI);
+    }
   }
 
   componentDidMount() {
     const parent = ReactDOM.findDOMNode(this).parentElement;
+
     if (!parent) { return; }
     const {width, height} = parent.getBoundingClientRect();
 
@@ -71,6 +79,15 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
   componentWillUnmont() {
     this.img.onload = null;
+  }
+
+  getImageDimensions(dataURI: string) {
+    const {onError} = this.props;
+
+    this.img = new Image();
+    this.img.src = dataURI;
+    this.img.onload = this.onImageLoad(this);
+    this.img.onerror = onError;
   }
 
   onImageLoad(component) {

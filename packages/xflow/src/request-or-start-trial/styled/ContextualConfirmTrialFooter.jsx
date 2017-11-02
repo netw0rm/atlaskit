@@ -8,6 +8,7 @@ const ContextualConfirmTrialFooter = styled.div`
   border-top: 1px solid ${colors.N30};
   margin: -${math.multiply(gridSize, 2)}px;
   min-height: ${math.multiply(gridSize, 12)}px;
+  min-width: 600px;
 `;
 
 ContextualConfirmTrialFooter.displayName = 'ContextualConfirmTrialFooter';

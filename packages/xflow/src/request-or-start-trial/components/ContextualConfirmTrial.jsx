@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from '../../common/components/ErrorFlag';
-
+import ContextualConfirmTrialContent from '../styled/ContextualConfirmTrialContent';
+import CloseModalDialogButton from '../styled/CloseModalDialogButton';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
-import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader';
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
@@ -42,9 +43,7 @@ class ContextualConfirmTrial extends Component {
     cancelStartProductTrial: PropTypes.func,
     status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
     trialHeading: PropTypes.string.isRequired,
-    trialMessage: PropTypes.node.isRequired,
     reactivateHeading: PropTypes.string.isRequired,
-    reactivateMessage: PropTypes.node.isRequired,
   };
 
   static defaultProps = {
@@ -140,16 +139,22 @@ class ContextualConfirmTrial extends Component {
       status,
       image,
       trialHeading,
-      trialMessage,
       reactivateHeading,
-      reactivateMessage,
     } = this.props;
     return (
       <ModalDialog
         isOpen
         width="medium"
+        height={'510px'}
         header={
           <div id="xflow-contextual-confirm-header">
+            <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
+              <CrossIcon
+                label="Close Modal"
+                primaryColor="white"
+                size="medium"
+              />
+            </CloseModalDialogButton>
             <ContextualConfirmTrialHeader />
             <ContextualConfirmTrialImage src={image} alt="files" />
           </div>
@@ -157,55 +162,45 @@ class ContextualConfirmTrial extends Component {
         footer={
           <ContextualConfirmTrialFooter>
             <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage src={image} />
-              Once your trial finishes,
-Confluence billing will start.
+              <ConfirmTrialAdminInfoImage imageType="card" />
+              <FormattedMessage
+                id="xflow.generic.confirm-trial.card-info"
+                defaultMessage="Once your trial finishes, billing will start."
+              />
             </ConfirmTrialAdminInfo>
             <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage src={image} />
-              Your billing contact will be
-emailed three days before.
+              <ConfirmTrialAdminInfoImage imageType="email" />
+              <FormattedMessage
+                id="xflow.generic.confirm-trial.email-info"
+                defaultMessage="Your billing contact will be emailed three days before."
+              />
             </ConfirmTrialAdminInfo>
             <ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfoImage src={image} />
-              Cancel your trial at any time in <b>Manage applications</b>.
+              <ConfirmTrialAdminInfoImage imageType="settings" />
+              <FormattedMessage
+                id="xflow.generic.confirm-trial.settings-info"
+                defaultMessage="Cancel your trial at any time in Manage applications."
+              />
             </ConfirmTrialAdminInfo>
           </ContextualConfirmTrialFooter>
         }
       >
-        <div id="xflow-confirm-trial">
+        <ContextualConfirmTrialContent id="xflow-confirm-trial">
           <StartTrialHeader>
             {status === INACTIVE ? trialHeading : reactivateHeading}
           </StartTrialHeader>
-          {status === INACTIVE ? trialMessage : reactivateMessage}
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.spinnerActive} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-confirm-trial-confirm-button"
-              onClick={this.handleConfirmClick}
-              appearance="primary"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.confirm-button"
-                defaultMessage="Confirm Contextual Trial"
-              />
-            </Button>
-            <Button
-              id="xflow-confirm-trial-cancel-button"
-              onClick={this.handleCancelClick}
-              appearance="subtle-link"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.cancel-button"
-                defaultMessage="Cancel"
-              />
-            </Button>
-          </StartTrialFooter>
-        </div>
+          <SpinnerDiv>
+            <Spinner isCompleting={!this.state.spinnerActive} />
+          </SpinnerDiv>
+          <Button
+            id="xflow-confirm-trial-confirm-button"
+            onClick={this.handleConfirmClick}
+            appearance="primary"
+            isDisabled={this.state.buttonsDisabled}
+          >
+            {status === INACTIVE ? trialHeading : reactivateHeading}
+          </Button>
+        </ContextualConfirmTrialContent>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
@@ -232,9 +227,7 @@ export default withXFlowProvider(
          },
          startTrial: {
            confirmTrialHeading,
-           confirmTrialMessage,
            confirmReactivateHeading,
-           confirmReactivateMessage,
          },
        },
        status,
@@ -247,8 +240,6 @@ export default withXFlowProvider(
      status,
      image: contextualStartTrialHeader,
      trialHeading: confirmTrialHeading,
-     trialMessage: confirmTrialMessage,
      reactivateHeading: confirmReactivateHeading,
-     reactivateMessage: confirmReactivateMessage,
    })
 );

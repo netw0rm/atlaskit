@@ -119,6 +119,39 @@ storiesOf('RequestOrStartTrial (Confluence)')
       </MockConfluenceXFlowProvider>
     )
   )
+  .add('User can add a product (INACTIVE), Contextual Start Trial flow with Grant Access screen', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
+          contextInfo={{
+            contextualMessage: 'Project pages are a feature powered by Confluence',
+            reactivateCTA: 'Reactivate Confluence',
+            trialCTA: 'Try Confluence free for 30 days',
+          }}
+        />
+      </MockConfluenceXFlowProvider>
+    )
+  )
+  .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlowProvider
+        {...defaultProps}
+        canCurrentUserAddProduct={async () => true}
+        productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
+      >
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          contextInfo={{
+            contextualMessage: 'Project pages are a feature powered by Confluence',
+            reactivateCTA: 'Reactivate Confluence',
+            trialCTA: 'Try Confluence free for 30 days',
+          }}
+        />
+      </MockConfluenceXFlowProvider>
+    )
+  )
   .add('User can add a product (ACTIVATING), Already Started with progress bar', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider

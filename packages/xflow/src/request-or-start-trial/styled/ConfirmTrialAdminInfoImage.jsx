@@ -9,6 +9,11 @@ const images = {
 };
 
 const ConfirmTrialAdminInfoImage = styled.img`
+  @media all and (max-width: 800px) {
+      margin: ${gridSize}px 0px ${math.multiply(gridSize, -3)}px 0px;
+      padding-bottom: 0px;
+  }
+  
   display: block;
   margin: auto;
   width: ${math.multiply(gridSize, 3)}px;

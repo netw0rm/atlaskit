@@ -12,6 +12,17 @@ const columnWidth = columnSize => (columnSize === 'medium'
     : 21);
 
 const ConfirmTrialAdminInfo = styled.div`
+  @media all and (max-width: 800px) {
+    margin: ${math.multiply(gridSize, 2)}px auto;
+    width: ${math.multiply(gridSize, 33.5)}px;
+    float: none;
+    
+    span {
+      padding-left: 48px;
+      display: inline-block;
+    }
+  }
+  
   width: ${props => math.multiply(gridSize, columnWidth(props.columnSize))}px;
   text-align: center;
   line-height: 1.33;

@@ -139,16 +139,16 @@ export default class PickerFacade {
     }
   }
 
-  cancel(tempId: string): void {
+  cancel(id: string): void {
     if (this.picker instanceof Popup) {
-      const state = this.stateManager.getState(tempId);
+      const state = this.stateManager.getState(id);
 
       if (!state || (state.status === 'cancelled')) {
         return;
       }
 
       try {
-        this.picker.cancel(tempId);
+        this.picker.cancel(id);
       } catch (e) {
         // We're deliberately consuming a known Media Picker exception, as it seems that
         // the picker has problems cancelling uploads before the popup picker has been shown
@@ -158,8 +158,8 @@ export default class PickerFacade {
         }
       }
 
-      this.stateManager.updateState(tempId, {
-        id: tempId,
+      this.stateManager.updateState(id, {
+        id: id,
         status: 'cancelled',
       });
     }
@@ -195,28 +195,27 @@ export default class PickerFacade {
 
   private handleUploadStart = (event: UploadStartPayload) => {
     const { file } = event;
-    const tempId = `temporary:${file.id}`;
+    const { id } = file;
     const state = {
-      id: tempId,
+      id,
       status: 'uploading',
-      publicId: file.publicId as string,
       fileName: file.name as string,
       fileSize: file.size as number,
       fileMimeType: file.type as string,
     };
 
-    this.stateManager.updateState(tempId, state as MediaState);
+    this.stateManager.updateState(id, state as MediaState);
     this.onStartListeners.forEach(cb => cb.call(cb, state));
   }
 
   private handleUploadStatusUpdate = (event: UploadStatusUpdatePayload) => {
     const { file, progress } = event;
-    const tempId = `temporary:${file.id}`;
-    const currentState = this.stateManager.getState(tempId);
+    const { id } = file;
+    const currentState = this.stateManager.getState(id);
     const currentStatus = currentState && currentState.status ? currentState.status : 'unknown';
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
+    this.stateManager.updateState(id, {
+      id,
       status: currentStatus === 'unknown' ? 'uploading' : currentStatus,
       progress: progress ? progress.portion : undefined,
       fileName: file.name as string,
@@ -227,11 +226,10 @@ export default class PickerFacade {
 
   private handleUploadProcessing = (event: UploadProcessingPayload) => {
     const { file } = event;
-    const tempId = `temporary:${file.id}`;
+    const { id } = file;
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
+    this.stateManager.updateState(id, {
+      id,
       status: 'processing',
       fileName: file.name as string,
       fileSize: file.size as number,
@@ -242,15 +240,14 @@ export default class PickerFacade {
   private handleUploadFinalizeReady = (event: UploadFinalizeReadyPayload) => {
     const { file } = event;
     const { finalize } = event;
-    const tempId = `temporary:${file.id}`;
+    const { id } = file;
 
     if (!finalize) {
       throw new Error('Editor: Media: Picker emitted finalize-ready event but didn\'t provide finalize callback');
     }
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
+    this.stateManager.updateState(id, {
+      id,
       finalizeCb: finalize,
       status: 'unfinalized',
       fileName: file.name as string,
@@ -267,9 +264,9 @@ export default class PickerFacade {
       return;
     }
 
-    const tempId = `temporary:${error.fileId}`;
-    this.stateManager.updateState(tempId, {
-      id: tempId,
+    const id = error.fileId;
+    this.stateManager.updateState(id, {
+      id,
       status: 'error',
       error: error ? { description: error!.description, name: error!.name } : undefined,
     });
@@ -277,11 +274,10 @@ export default class PickerFacade {
 
   private handleUploadEnd = (event: UploadEndPayload) => {
     const { file } = event;
-    const tempId = `temporary:${file.id}`;
+    const { id } = file;
 
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      publicId: file.publicId as string,
+    this.stateManager.updateState(id, {
+      id,
       status: 'ready',
       fileName: file.name as string,
       fileSize: file.size as number,
@@ -290,11 +286,11 @@ export default class PickerFacade {
   }
 
   private handleUploadPreviewUpdate = (event: UploadPreviewUpdatePayload) => {
-    const tempId = `temporary:${event.file.id}`;
+    const { file: { id } } = event;
 
     if (event.preview !== undefined) {
-      this.stateManager.updateState(tempId, {
-        id: tempId,
+      this.stateManager.updateState(id, {
+        id,
         thumbnail: event.preview
       });
     }

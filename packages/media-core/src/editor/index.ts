@@ -3,15 +3,18 @@ import { ContextConfig, Context } from '../';
 export type MediaStateStatus = 'unknown' | 'uploading' | 'processing' | 'unfinalized' | 'ready' | 'error' | 'cancelled';
 
 export interface MediaState {
-  id: string;
+  id: string;   // this represents the public ID
   status?: MediaStateStatus;
-  publicId?: string;
   fileName?: string;
   fileSize?: number;
   fileType?: string;
   fileMimeType?: string;
   progress?: number;
-  thumbnail?: Blob;
+  thumbnail?: {
+    height?: number;
+    width?: number;
+    src: string;
+  };
   finalizeCb?: () => void;
   error?: {
     name: string,
@@ -20,10 +23,10 @@ export interface MediaState {
 }
 
 export interface MediaStateManager {
-  getState(tempId: string): MediaState | undefined;
-  updateState(tempId: string, newState: MediaState): void;
-  subscribe(tempId: string, cb: (state: MediaState) => void);
-  unsubscribe(tempId: string, cb: (state: MediaState) => void): void;
+  getState(id: string): MediaState | undefined;
+  updateState(id: string, newState: MediaState): void;
+  subscribe(id: string, cb: (state: MediaState) => void);
+  unsubscribe(id: string, cb: (state: MediaState) => void): void;
 }
 
 export interface UploadParams {

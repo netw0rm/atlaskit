@@ -1,8 +1,8 @@
 import { PluginKey } from 'prosemirror-state';
 
 export interface Listeners { [name: string]: Listener[]; }
-export type Listener = (data: any) => void;
-export type Dispatch = (eventName: PluginKey | string, data: any) => void;
+export type Listener = (data: any, forceUpdate?: boolean) => void;
+export type Dispatch = (eventName: PluginKey | string, data: any, forceUpdate?: boolean) => void;
 
 export class EventDispatcher {
   private listeners: Listeners = {};
@@ -23,12 +23,12 @@ export class EventDispatcher {
     this.listeners[event] = this.listeners[event].filter(callback => callback !== cb);
   }
 
-  emit(event: string, data: any): void {
+  emit(event: string, data: any, forceUpdate?: boolean): void {
     if (!this.listeners[event]) {
       return;
     }
 
-    this.listeners[event].forEach(cb => cb(data));
+    this.listeners[event].forEach(cb => cb(data, forceUpdate));
   }
 
   destroy(): void {
@@ -41,12 +41,12 @@ export class EventDispatcher {
  * to notify listeners about that plugin's state change.
  */
 export function createDispatch(eventDispatcher: EventDispatcher): Dispatch {
-  return (eventName: PluginKey | string, data: any) => {
+  return (eventName: PluginKey | string, data: any, forceUpdate = false) => {
     if (!eventName) {
       throw new Error('event name is required!');
     }
 
     const event = typeof eventName === 'string' ? eventName : (eventName as any).key;
-    eventDispatcher.emit(event, data);
+    eventDispatcher.emit(event, data, forceUpdate);
   };
 }

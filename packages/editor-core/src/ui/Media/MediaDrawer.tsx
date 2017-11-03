@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
-import { FilmstripView } from '@atlaskit/media-filmstrip';
-import { MediaPluginState } from '../../plugins/media';
+import { Filmstrip } from '@atlaskit/media-filmstrip';
+import { LinkIdentifier, FileIdentifier, CardStatus, CardProps, CardViewProps } from '@atlaskit/media-card';
+import { FileDetails, MediaStateStatus, MediaState, MediaProvider, ContextFactory, ContextConfig, Context, CardDelete, CardAction } from '@atlaskit/media-core';
+import { SlimMediaPluginState } from '../../plugins/media';
 
 export interface MediaDrawerProps {
-  mediaPluginState: MediaPluginState;
+  mediaPluginState: SlimMediaPluginState;
+  mediaProvider?: Promise<MediaProvider>;
 }
 
 export interface MediaDrawerState {
   animate: boolean;
   offset: number;
+  items: Identifier[];
+  viewContext?: Context;
 }
+
+export type Identifier = LinkIdentifier | FileIdentifier;
 
 // tslint:disable-next-line:variable-name
 const Wrapper = styled.div`
@@ -22,20 +29,105 @@ const Wrapper = styled.div`
   }
 `;
 
+/**
+ * Map media state status into CardView processing status
+ * Media state status is more broad than CardView API so we need to reduce it
+ */
+function mapMediaStatusIntoCardStatus(status: MediaStateStatus): CardStatus {
+  switch (status) {
+    case 'ready':
+    case 'unknown':
+    case 'unfinalized':
+      return 'complete';
+
+    case 'processing':
+      return 'processing';
+
+    case 'uploading':
+      return 'uploading';
+
+    // default case is to let TypeScript know that this function always returns a string
+    case 'error':
+    default:
+      return 'error';
+  }
+}
+
 export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawerState> {
-  // private mediaNodesIds: string[];
+  private thumbnailWm = new WeakMap();
 
   state: MediaDrawerState = {
     animate: false,
-    offset: 0
+    offset: 0,
+    items: []
   };
 
-  constructor(props) {
-    super(props);
+  public shouldComponentUpdate = (nextProps, nextState) => {
+    const { mediaPluginState } = nextProps;
+    const { stateManager } = mediaPluginState;
+    const { items: oldItems } = this.state;
+    const { items: newItems } = nextState;
+
+    // subscribe to new items
+    newItems
+      .filter(newItem => !oldItems.some(oldItem => oldItem.id === newItem.id))
+      .forEach(item => stateManager.subscribe(item.id, this.onItemChange))
+    ;
+
+    // unsubscribe from old items
+    oldItems
+      .filter(oldItem => !!newItems.some(newItem => newItem.id === oldItem.id))
+      .forEach(item => stateManager.unsubscribe(item.id, this.onItemChange))
+    ;
+
+    return true;
   }
 
-  private handleSize = ({offset}) => this.setState({offset});
-  private handleScroll = ({animate, offset}) => this.setState({animate, offset});
+  componentWillMount() {
+    const { mediaPluginState, mediaProvider } = this.props;
+
+    mediaPluginState.subscribe(() => {
+      this.setState({ items: [...mediaPluginState.media] });
+    });
+
+    if (mediaProvider) {
+      mediaProvider.then(this.handleMediaProvider);
+    }
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    const { mediaProvider } = nextProps;
+
+    if (this.props.mediaProvider !== mediaProvider) {
+      if (mediaProvider) {
+        mediaProvider.then(this.handleMediaProvider);
+      } else {
+        this.setState({ viewContext: undefined });
+      }
+    }
+  }
+
+  onItemChange = () => {
+    this.forceUpdate();
+  }
+
+  private handleMediaProvider = async (mediaProvider?: MediaProvider) => {
+    if (!mediaProvider) {
+      return this.setState({ viewContext: undefined });
+    }
+
+    let viewContext = await mediaProvider.viewContext;
+
+    if (!viewContext) {
+      return;
+    }
+
+    if ('serviceHost' in (viewContext as ContextConfig)) {
+      viewContext = ContextFactory.create(viewContext as ContextConfig);
+    }
+
+    this.setState({ viewContext: viewContext as Context });
+  }
 
   /**
    * Save all childNodes ids into "mediaNodesIds"
@@ -58,9 +150,90 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
   //   this.mediaNodesIds = newMediaNodesIds;
   // }
 
+  private handleClickDelete = (item?, event?: Event) => {
+    const { mediaPluginState } = this.props;
+
+    mediaPluginState.removeItemById(item.details.id);
+
+    if (event) {
+      event.stopPropagation();
+    }
+  }
+
+  private mapItems = () => {
+    const { mediaPluginState } = this.props;
+    const { items, viewContext } = this.state;
+    const { stateManager } = mediaPluginState;
+    const collectionName = mediaPluginState.collectionFromProvider();
+
+    const states = items.map(item => {
+      const state = stateManager.getState(item.id);
+      return state ? state : false;
+    }).filter( (state):state is MediaState => !!state);
+
+    return (states as MediaState[]).map(state => {
+      const actions: CardAction[] = [];
+      const { status } = state;
+
+      switch(status) {
+        case 'error':
+        case 'cancelled':
+        case 'unknown':
+        case 'uploading':
+        case 'processing':
+        case 'unfinalized':
+          // Cache the data url for thumbnail, so it's not regenerated on each re-render (prevents flicker)
+          const { thumbnail, fileName, fileSize, fileType } = state;
+          let dataURI: string | undefined;
+
+          if (thumbnail) {
+            dataURI = thumbnail.src;
+          }
+
+          // Make sure that we always display progress bar when the file is uploading (prevents flicker)
+          let progress = state.progress;
+          if (!progress && state.status === 'uploading') {
+            progress = .0;
+          }
+
+          // Construct file details object
+          const metadata = {
+            mediaItemType: 'file',
+            name: fileName,
+            size: fileSize,
+            mimeType: fileType,
+            mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
+          } as FileDetails;
+
+          actions.push(CardDelete(this.handleClickDelete));
+
+          return {
+            progress,
+            dataURI,
+            metadata,
+            actions,
+            status: mapMediaStatusIntoCardStatus(status),
+            mediaItemType: 'file'
+          } as CardViewProps;
+
+        default:
+          return {
+            context: viewContext,
+            actions,
+            identifier: {
+              mediaItemType: 'file',
+              id: state.id,
+              collectionName
+            }
+          } as CardProps;
+
+      }
+    });
+  }
+
   render() {
     const { mediaPluginState } = this.props;
-    const { animate, offset } = this.state;
+    const { viewContext } = this.state;
 
     if (!mediaPluginState) {
       return null;
@@ -68,14 +241,7 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
 
     return (
       <Wrapper>
-        <FilmstripView
-          animate={animate}
-          offset={offset}
-          onSize={this.handleSize}
-          onScroll={this.handleScroll}
-        >
-        {this.props.children}
-        </FilmstripView>
+        <Filmstrip items={this.mapItems()} context={viewContext}/>
       </Wrapper>
     );
   }
@@ -86,3 +252,4 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
   //   }) || [];
   // }
 }
+

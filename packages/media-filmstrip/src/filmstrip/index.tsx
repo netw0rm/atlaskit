@@ -43,8 +43,10 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   handleScrollChange = ({offset, animate}) => this.setState({offset, animate});
 
   componentWillReceiveProps(props: FilmstripProps) {
-    const {dropzoneElement} = props;
+    const {dropzoneElement, items} = props;
     const {eventsAdded} = this;
+
+    this.setState({ items });
 
     if (eventsAdded || !dropzoneElement) {
       return;

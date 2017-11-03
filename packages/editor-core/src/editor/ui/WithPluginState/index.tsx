@@ -34,8 +34,8 @@ export default class WithPluginState extends React.Component<State, any> {
   state = {};
   private listeners = {};
 
-  private handlePluginStateChange(propName: string, pluginState: any): void {
-    if (this.state[propName] !== pluginState) {
+  private handlePluginStateChange(propName: string, pluginState: any, forceUpdate = false): void {
+    if (forceUpdate || this.state[propName] !== pluginState) {
       this.setState({ [propName]: pluginState });
     }
   }

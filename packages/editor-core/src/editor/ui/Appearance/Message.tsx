@@ -12,6 +12,7 @@ import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-
 import { pluginKey as mediaPluginKey } from '../../plugins/media';
 import { AddonToolbar } from '../Addon';
 import MediaDrawer from '../../../ui/Media/MediaDrawer';
+import { WithProviders } from '../../../providerFactory';
 
 const pulseBackground = keyframes`
   50% {
@@ -143,7 +144,17 @@ export default class Editor extends React.Component<EditorAppearanceComponentPro
           <AddonToolbar dropdownItems={addonToolbarComponents} />
         </SecondaryToolbarContainer>
         { !media ? '' :
-          <MediaDrawer mediaPluginState={media} />
+          <WithProviders
+            providerFactory={providerFactory}
+            providers={['mediaProvider']}
+            // tslint:disable-next-line:jsx-no-lambda
+            renderNode={providers => (
+              <MediaDrawer
+                mediaPluginState={media}
+                mediaProvider={providers.mediaProvider}
+              />
+            )}
+          />
         }
       </MessageEditor>
     );

@@ -6,16 +6,16 @@ import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   editorView: EditorView;
+  disabled?: boolean;
   highlightDocument: (editorView: EditorView) => void;
 }
 
 export default class ToolbarHighlightEmoji extends Component<Props, any> {
   render() {
-    const { disabled }  = this.props;
     return (
       <ToolbarButton
-        disabled={disabled}
-        onClick={this.toggleOpen}
+        disabled={this.props.disabled}
+        onClick={this.handleClick}
         iconBefore={<BrushIcon label="Highlight emoji (:)" />}
         title="Highlight emoji (:)"
       />

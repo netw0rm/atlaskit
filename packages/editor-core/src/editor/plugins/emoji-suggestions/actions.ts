@@ -118,3 +118,9 @@ export const highlightDocument = async (view: EditorView) => {
   const decorations: DecorationSet = createHighlightDecoration(view, highlights);
   dispatch(view.state.tr.setMeta(highlightPluginKey, { decorations, emojis }));
 };
+
+export const replaceWithEmoji = (view: EditorView, startPos: number, endPos: number, emoji: any) => {
+  const { state: { schema, tr }, dispatch } = view;
+  const node = schema.nodes.emoji.create({ ...emoji, text: emoji.fallback || emoji.shortName });
+  dispatch(tr.replaceWith(startPos, endPos, [ node ]));
+};

@@ -1,6 +1,8 @@
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 import { DecorationSet, EditorView } from 'prosemirror-view';
 import { Dispatch } from '../../event-dispatcher';
+import { replaceWithEmoji, highlightDocument } from './actions';
+import { parseHighlightedEmojiNode } from './utils';
 
 export const pluginKey = new PluginKey('highlightEmojiPlugin');
 
@@ -29,16 +31,19 @@ export const createPlugin = (dispatch: Dispatch) => new Plugin({
   },
   props: {
     decorations: (state: EditorState) => pluginKey.getState(state).decorations,
+
     handleClick: (view: EditorView, pos: number, event: Event): boolean => {
-      const { target } = event;
+      const target = event.target as any;
       if (!target || !target.className || target.className.indexOf('emoji-highligh') === -1) {
         return false;
       }
-      const { className } = target;
-      const emojiId = (className.match(/emoji\-(\w+)/g)||[,''])[1];
-      const startPos = (className.match(/startPos\-(\w+)/g)||[,''])[1];
-      const endPos = (className.match(/endPos\-(\w+)/g)||[,''])[1];
-      // console.log(target, emojiId, startPos, endPos);
+      const { emojiId, startPos, endPos } = parseHighlightedEmojiNode(target);
+      const { emojis } = pluginKey.getState(view.state);
+
+      replaceWithEmoji(view, startPos, endPos, emojis[emojiId]);
+      highlightDocument(view);
+
+      return true;
     }
   },
   key: pluginKey

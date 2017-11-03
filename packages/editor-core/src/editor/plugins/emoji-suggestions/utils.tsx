@@ -65,16 +65,17 @@ export const getHighlights = (nouns, doc, emojiProvider) => {
 
         if (index > -1) {
           const result = emojiProvider.emojiRepository.search(noun, options);
-          const { emojis } = result;
+          if (result.emojis.length) {
+            const emoji = result.emojis[0];
 
-          if (emojis.length) {
             highlights.push({
-              emoji: emojis[0],
+              emoji,
               startPos: pos + index,
               endPos: pos + index + noun.length,
               word: noun
             });
-            emojis[emojis[0].id] = emojis[0];
+
+            emojis[emoji.id] = emoji;
           }
         }
       });
@@ -95,9 +96,17 @@ export const getNouns = (response: any): string[] => {
 export const createHighlightDecoration = (view: EditorView, highlights: any): DecorationSet => {
   const decorations: Decoration[] = highlights.map(data => {
     return Decoration.inline(data.startPos, data.endPos, {
-      class: `emoji-highligh emoji-${data.emoji.id} startPos-${data.startPos} endPos-${data.endPos}`
+      class: `emoji-highligh emojiId-${data.emoji.id} startPos-${data.startPos} endPos-${data.endPos}`
     });
   });
 
   return DecorationSet.create(view.state.tr.doc, decorations);
+};
+
+export const parseHighlightedEmojiNode = (target: any) => {
+  const { className } = target;
+  const emojiId = (className.match(/emojiId\-(\w+)/)||[,''])[1];
+  const startPos = (className.match(/startPos\-(\d+)/)||[,''])[1];
+  const endPos = (className.match(/endPos\-(\d+)/)||[,''])[1];
+  return { emojiId, startPos, endPos };
 };

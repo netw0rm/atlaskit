@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { EditorPlugin } from '../../types';
 import { createPlugin, pluginKey, EmojiSuggestionsState } from './plugin';
-import {
-  pluginKey as highlightPluginKey,
-  createPlugin as createHighlightEmojiPlugin,
-  HighlightEmojiState
-} from './highlight-plugin';
+import { createPlugin as createHighlightEmojiPlugin } from './highlight-plugin';
 import { getLastSentance, getLastWord } from './utils';
 import keymap from './keymap';
 
@@ -24,7 +20,7 @@ const emojiSuggestionsPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       { rank: 2410, plugin: (schema, props, dispatch, providerFactory) => createPlugin(dispatch, providerFactory) },
-      { rank: 2420, plugin: (schema, props, dispatch, providerFactory) => createHighlightEmojiPlugin(dispatch, providerFactory) },
+      { rank: 2420, plugin: (schema, props, dispatch, providerFactory) => createHighlightEmojiPlugin(dispatch) },
       { rank: 2430, plugin: schema => keymap(schema) }
     ];
   },
@@ -35,33 +31,26 @@ const emojiSuggestionsPlugin: EditorPlugin = {
         editorView={editorView}
         eventDispatcher={eventDispatcher}
         plugins={{
-          emojiSuggestions: pluginKey,
-          highlightEmoji: highlightPluginKey
+          emojiSuggestions: pluginKey
         }}
         // tslint:disable-next-line:jsx-no-lambda
         render={({
-          emojiSuggestions = {} as EmojiSuggestionsState,
-          highlightEmoji = {} as HighlightEmojiState
+          emojiSuggestions = {} as EmojiSuggestionsState
         }) => (
-          <span>
-            {
-              !highlightEmoji.highlighted &&
-                <EmojiSuggestions
-                  editorView={editorView}
-                  emojiProvider={emojiSuggestions.emojiProvider}
-                  selectedIndex={emojiSuggestions.selectedIndex}
-                  query={emojiSuggestions.query}
-                  anchorElement={emojiSuggestions.anchorElement}
-                  emojis={emojiSuggestions.emojis}
-                  pluginKey={pluginKey}
-                  setEmojis={setEmojis}
-                  onSelect={selectCurrent}
-                  getLastSentance={getLastSentance}
-                  getLastWord={getLastWord}
-                  getEmojiSuggestions={getEmojiSuggestions}
-                />
-            }
-          </span>
+          <EmojiSuggestions
+            editorView={editorView}
+            emojiProvider={emojiSuggestions.emojiProvider}
+            selectedIndex={emojiSuggestions.selectedIndex}
+            query={emojiSuggestions.query}
+            anchorElement={emojiSuggestions.anchorElement}
+            emojis={emojiSuggestions.emojis}
+            pluginKey={pluginKey}
+            setEmojis={setEmojis}
+            onSelect={selectCurrent}
+            getLastSentance={getLastSentance}
+            getLastWord={getLastWord}
+            getEmojiSuggestions={getEmojiSuggestions}
+          />
         )}
       />
     );

@@ -41,7 +41,6 @@ export const createPlugin = (dispatch: Dispatch) => new Plugin({
       const { emojis } = pluginKey.getState(view.state);
 
       replaceWithEmoji(view, startPos, endPos, emojis[emojiId]);
-      highlightDocument(view);
 
       return true;
     }

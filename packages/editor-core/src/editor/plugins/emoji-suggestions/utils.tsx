@@ -85,14 +85,6 @@ export const getHighlights = (nouns, doc, emojiProvider) => {
   return { highlights, emojis };
 };
 
-export const getNouns = (response: any): string[] => {
-  let nouns: string[] = [];
-  response.noun_phrases.forEach(phrase => {
-    nouns = nouns.concat(phrase.split(' '));
-  });
-  return nouns;
-};
-
 export const createHighlightDecoration = (view: EditorView, highlights: any): DecorationSet => {
   const decorations: Decoration[] = highlights.map(data => {
     return Decoration.inline(data.startPos, data.endPos, {
@@ -105,7 +97,7 @@ export const createHighlightDecoration = (view: EditorView, highlights: any): De
 
 export const parseHighlightedEmojiNode = (target: any) => {
   const { className } = target;
-  const emojiId = (className.match(/emojiId\-(\w+)/)||[,''])[1];
+  const emojiId = (className.match(/emojiId\-([\w\d\-]+)/)||[,''])[1];
   const startPos = (className.match(/startPos\-(\d+)/)||[,''])[1];
   const endPos = (className.match(/endPos\-(\d+)/)||[,''])[1];
   return { emojiId, startPos, endPos };

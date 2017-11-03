@@ -4,7 +4,7 @@ import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { EmojiSuggestionsProvider } from './provider';
 import { pluginKey } from './plugin';
 import { pluginKey as highlightPluginKey } from './highlight-plugin';
-import { wrapIndex, getNouns, getHighlights, createHighlightDecoration } from './utils';
+import { wrapIndex, getHighlights, createHighlightDecoration } from './utils';
 import { DecorationSet } from 'prosemirror-view';
 
 export const setEmojiProvider = async (view: EditorView, provider: Promise<EmojiProvider>) => {
@@ -113,8 +113,7 @@ export const highlightDocument = async (view: EditorView) => {
   if (!response) {
     return;
   }
-  const nouns = getNouns(response);
-  const { highlights, emojis } = getHighlights(nouns, doc, emojiProvider);
+  const { highlights, emojis } = getHighlights(response.nouns, doc, emojiProvider);
   const decorations: DecorationSet = createHighlightDecoration(view, highlights);
   dispatch(view.state.tr.setMeta(highlightPluginKey, { decorations, emojis }));
 };
@@ -122,5 +121,15 @@ export const highlightDocument = async (view: EditorView) => {
 export const replaceWithEmoji = (view: EditorView, startPos: number, endPos: number, emoji: any) => {
   const { state: { schema, tr }, dispatch } = view;
   const node = schema.nodes.emoji.create({ ...emoji, text: emoji.fallback || emoji.shortName });
-  dispatch(tr.replaceWith(startPos, endPos, [ node ]));
+  const { decorations } = highlightPluginKey.getState(view.state);
+
+  dispatch(
+    tr
+      .replaceWith(startPos, endPos, [ node ])
+      // remove replaced decoration from the set
+      .setMeta(highlightPluginKey, {
+        decorations: decorations.remove(decorations.find(startPos, endPos))
+      })
+      .setMeta(pluginKey, { query: undefined, selectedIndex: -1 })
+  );
 };

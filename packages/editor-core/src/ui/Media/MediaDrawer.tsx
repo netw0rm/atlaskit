@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
-import { Filmstrip } from '@atlaskit/media-filmstrip';
+import { Filmstrip, FilmstripItem, withKey } from '@atlaskit/media-filmstrip';
 import { LinkIdentifier, FileIdentifier, CardStatus, CardProps, CardViewProps } from '@atlaskit/media-card';
 import { FileDetails, MediaStateStatus, MediaState, MediaProvider, ContextFactory, ContextConfig, Context, CardDelete, CardAction } from '@atlaskit/media-core';
 import { SlimMediaPluginState } from '../../plugins/media';
@@ -54,8 +54,6 @@ function mapMediaStatusIntoCardStatus(status: MediaStateStatus): CardStatus {
 }
 
 export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawerState> {
-  private thumbnailWm = new WeakMap();
-
   state: MediaDrawerState = {
     animate: false,
     offset: 0,
@@ -208,13 +206,14 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
           actions.push(CardDelete(this.handleClickDelete));
 
           return {
+            key: state.id,
             progress,
             dataURI,
             metadata,
             actions,
             status: mapMediaStatusIntoCardStatus(status),
             mediaItemType: 'file'
-          } as CardViewProps;
+          } as FilmstripItem;
 
         default:
           return {
@@ -225,10 +224,31 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
               id: state.id,
               collectionName
             }
-          } as CardProps;
+          };
 
       }
+    }) as FilmstripItem[];
+  }
+
+  public onSort = (sortedProps: FilmstripItem[]) => {
+    // NOTE: This is not ideal, as the mapping between identifiers and Card(View)Props
+    //       is not bijective. In the future, we want the FilmStrip to only operate on
+    //       Identifiers which will remove the need for mapping.
+    const { items } = this.state;
+
+    const sortedItems: Identifier[] = [];
+    sortedProps.forEach((cardProps: any) => {
+      const identifier = cardProps.identifier
+        ? cardProps.identifier.id
+        : cardProps.key
+      ;
+      let item = items.filter(item => item.id === identifier).pop();
+      if (item) {
+        sortedItems.push(item);
+      }
     });
+
+    this.setState({ items: sortedItems });
   }
 
   render() {
@@ -241,7 +261,11 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
 
     return (
       <Wrapper>
-        <Filmstrip items={this.mapItems()} context={viewContext}/>
+        <Filmstrip
+          onSort={this.onSort}
+          items={this.mapItems()}
+          context={viewContext}
+        />
       </Wrapper>
     );
   }

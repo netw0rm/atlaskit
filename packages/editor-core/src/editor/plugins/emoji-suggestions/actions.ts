@@ -3,7 +3,9 @@ import { EditorState, Transaction } from 'prosemirror-state';
 import { EmojiProvider, EmojiDescription } from '@atlaskit/emoji';
 import { EmojiSuggestionsProvider } from './provider';
 import { pluginKey } from './plugin';
-import { wrapIndex } from './utils';
+import { pluginKey as highlightPluginKey } from './highlight-plugin';
+import { wrapIndex, getNouns, getHighlights, createHighlightDecoration } from './utils';
+import { DecorationSet } from 'prosemirror-view';
 
 export const setEmojiProvider = async (view: EditorView, provider: Promise<EmojiProvider>) => {
   let resolvedProvider: EmojiProvider | null;
@@ -97,4 +99,22 @@ export const getEmojiSuggestions = async (state: EditorState, dispatch: (tr: Tra
 
     return data;
   }
+};
+
+export const highlightDocument = async (view: EditorView) => {
+  const { state, dispatch } = view;
+  const { doc } = state;
+  const { emojiProvider, emojiSuggestionsProvider } = pluginKey.getState(state);
+  if (!emojiProvider || !emojiSuggestionsProvider || !doc.textContent) {
+    return;
+  }
+
+  const response = await emojiSuggestionsProvider.parseDocument(doc.textContent);
+  if (!response) {
+    return;
+  }
+  const nouns = getNouns(response);
+  const { highlights, emojis } = getHighlights(nouns, doc, emojiProvider);
+  const decorations: DecorationSet = createHighlightDecoration(view, highlights);
+  dispatch(view.state.tr.setMeta(highlightPluginKey, { decorations, emojis }));
 };

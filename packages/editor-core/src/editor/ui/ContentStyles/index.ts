@@ -10,6 +10,8 @@ import {
 import {
   akGridSizeUnitless,
   akColorN80,
+  akColorR75,
+  akColorR100,
 } from '@atlaskit/util-shared-styles';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 
@@ -217,6 +219,15 @@ const ContentStyles = styled.div`
 
   .ProseMirror img {
     max-width: 100%;
+  }
+
+  .ProseMirror .emoji-highligh {
+    background: ${akColorR75};
+    cursor: pointer;
+
+    &:hover {
+      background: ${akColorR100};
+    }
   }
 `;
 

@@ -31,7 +31,10 @@ const LIST_LIMIT: number = 5;
 
 export default class EmojiSuggestions extends Component<Props, any> {
   componentWillUnmount() {
-    this.props.emojiProvider!.unsubscribe(this.onProviderChange);
+    const { emojiProvider } = this.props;
+    if (emojiProvider) {
+      emojiProvider.unsubscribe(this.onProviderChange);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {

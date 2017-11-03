@@ -25,7 +25,7 @@ export default class TitledPage extends PureComponent {
         }
       >
         <Breadcrumbs>
-          <BreadcrumbsItem component={props => (<RoutedLink to={'/iframe.html'} {...props}>Home</RoutedLink>)} />
+          <BreadcrumbsItem component={props => (<RoutedLink to={'/'} {...props}>Home</RoutedLink>)} />
           <BreadcrumbsItem component={props => (<RoutedLink to={'/page1'} {...props}>Page 1</RoutedLink>)} />
           <BreadcrumbsItem component={props => (<RoutedLink to={'/page2'} {...props}>Page 2</RoutedLink>)} />
           <BreadcrumbsItem component={props => (<RoutedLink to={'/page3'} {...props}>Page 3</RoutedLink>)} />

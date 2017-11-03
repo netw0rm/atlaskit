@@ -336,10 +336,9 @@ describe('@atlaskit/xflow', () => {
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
         // contextual reactivate cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
-        // trial info footer (should not be present on reactivation)
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Once your trial finishes, billing will start.');
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Your billing contact will be emailed three days before');
-        expect(xflow.find(ContextualStartTrial).text()).not.toMatch('Cancel your trial at any time in Manage applications.');
+        // reactivation info footer
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once you reactivate a subscription, billing will start at the end of your chosen billing cycle');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your subscription at any time in Manage applications.');
       });
     });
   });

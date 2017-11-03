@@ -136,6 +136,84 @@ class ContextualConfirmTrial extends Component {
     });
   };
 
+  renderHeader = (image, contextInfo) => (<div id="xflow-contextual-confirm-header">
+    <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
+      <CrossIcon
+        label="Close Modal"
+        primaryColor="white"
+        size="medium"
+      />
+    </CloseModalDialogButton>
+    <ContextualConfirmTrialHeader />
+    <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
+  </div>);
+
+  renderInactiveFooter = () => (
+    <ContextualConfirmTrialFooter>
+      <ConfirmTrialAdminInfo>
+        <ConfirmTrialAdminInfoImage imageType="card" />
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.card-info"
+          defaultMessage="Once your trial finishes, billing will start."
+        />
+      </ConfirmTrialAdminInfo>
+      <ConfirmTrialAdminInfo>
+        <ConfirmTrialAdminInfoImage imageType="email" />
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.email-info"
+          defaultMessage="Your billing contact will be emailed three days before."
+        />
+      </ConfirmTrialAdminInfo>
+      <ConfirmTrialAdminInfo>
+        <ConfirmTrialAdminInfoImage imageType="settings" />
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.settings-info"
+          defaultMessage="Cancel your trial at any time in Manage applications."
+        />
+      </ConfirmTrialAdminInfo>
+    </ContextualConfirmTrialFooter>
+  );
+
+  renderReactivateFooter = () => (
+    <ContextualConfirmTrialFooter>
+      <ConfirmTrialAdminInfo columnSize="medium">
+        <ConfirmTrialAdminInfoImage imageType="card" />
+        <FormattedMessage
+          id="xflow.generic.confirm-reactivation.card-info"
+          defaultMessage="Once you reactivate a subscription, billing will start at the end of your chosen billing cycle."
+        />
+      </ConfirmTrialAdminInfo>
+      <ConfirmTrialAdminInfo columnSize="medium">
+        <ConfirmTrialAdminInfoImage imageType="settings" />
+        <FormattedMessage
+          id="xflow.generic.confirm-reactivation.settings-info"
+          defaultMessage="Cancel your subscription at any time in Manage applications."
+        />
+      </ConfirmTrialAdminInfo>
+    </ContextualConfirmTrialFooter>
+  );
+
+  renderFooter = (status) => (status === INACTIVE
+    ? this.renderInactiveFooter()
+    : this.renderReactivateFooter());
+
+  renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
+    <h2>
+      {contextInfo.contextualMessage}
+    </h2>
+    <SpinnerDiv topMultiplier={2}>
+      <Spinner isCompleting={!this.state.spinnerActive} />
+    </SpinnerDiv>
+    <Button
+      id="xflow-confirm-trial-confirm-button"
+      onClick={this.handleConfirmClick}
+      appearance="primary"
+      isDisabled={this.state.buttonsDisabled}
+    >
+      {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
+    </Button>
+  </ContextualConfirmTrialContent>);
+
   render() {
     const {
       intl,
@@ -149,62 +227,13 @@ class ContextualConfirmTrial extends Component {
         width="medium"
         height={'510px'}
         header={
-          <div id="xflow-contextual-confirm-header">
-            <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
-              <CrossIcon
-                label="Close Modal"
-                primaryColor="white"
-                size="medium"
-              />
-            </CloseModalDialogButton>
-            <ContextualConfirmTrialHeader />
-            <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
-          </div>
+          this.renderHeader(image, contextInfo)
         }
         footer={
-          status === INACTIVE
-            ? (<ContextualConfirmTrialFooter>
-              <ConfirmTrialAdminInfo>
-                <ConfirmTrialAdminInfoImage imageType="card" />
-                <FormattedMessage
-                  id="xflow.generic.confirm-trial.card-info"
-                  defaultMessage="Once your trial finishes, billing will start."
-                />
-              </ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfo>
-                <ConfirmTrialAdminInfoImage imageType="email" />
-                <FormattedMessage
-                  id="xflow.generic.confirm-trial.email-info"
-                  defaultMessage="Your billing contact will be emailed three days before."
-                />
-              </ConfirmTrialAdminInfo>
-              <ConfirmTrialAdminInfo>
-                <ConfirmTrialAdminInfoImage imageType="settings" />
-                <FormattedMessage
-                  id="xflow.generic.confirm-trial.settings-info"
-                  defaultMessage="Cancel your trial at any time in Manage applications."
-                />
-              </ConfirmTrialAdminInfo>
-            </ContextualConfirmTrialFooter>)
-            : ''
+          this.renderFooter(status)
         }
       >
-        <ContextualConfirmTrialContent id="xflow-confirm-trial">
-          <h2>
-            {contextInfo.contextualMessage}
-          </h2>
-          <SpinnerDiv>
-            <Spinner isCompleting={!this.state.spinnerActive} />
-          </SpinnerDiv>
-          <Button
-            id="xflow-confirm-trial-confirm-button"
-            onClick={this.handleConfirmClick}
-            appearance="primary"
-            isDisabled={this.state.buttonsDisabled}
-          >
-            {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
-          </Button>
-        </ContextualConfirmTrialContent>
+        {this.renderContextualContent(status, contextInfo)}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

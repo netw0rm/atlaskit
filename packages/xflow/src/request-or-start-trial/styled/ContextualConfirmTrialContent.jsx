@@ -10,10 +10,6 @@ const ContextualConfirmTrialContent = styled.div`
   button {
     margin-top: ${math.multiply(gridSize, 3)}px;
   }
-  
-  Spinner {
-    top: ${math.multiply(gridSize, 2)}px;
-  }
 `;
 
 ContextualConfirmTrialContent.displayName = 'ContextualConfirmTrialContent';

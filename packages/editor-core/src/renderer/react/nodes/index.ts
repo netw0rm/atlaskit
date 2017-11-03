@@ -147,16 +147,17 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
 };
 
-export const isEmojiBlock = (fragment: Fragment): boolean => {
+export const isEmojiBlock = (fragment: any): boolean => {
   const content = fragment['content'];
   if (!content || !content.length || content.length > 7) {
     return false;
   }
   let emojiCount = 0;
-  for (let node of content) {
+  for (let i = 0; i < content.length; ++i) {
+    const node = content[i];
     switch (node.type.name) {
       case 'text':
-        if (node.text && !node.text.match(/^ *$/)) {
+        if (node.text && !node.text.match(/^\s*$/)) {
           return false;
         }
         continue;

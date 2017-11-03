@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Context} from '@atlaskit/media-core';
 import {CardViewProps, Card, CardView, CardProps} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
+import FakeCard from './fakeCard';
 
 export type FilmstripItem = CardProps | CardViewProps;
 
@@ -18,6 +19,8 @@ export interface FilmstripState {
   offset: number;
   items: FilmstripItem[];
 }
+
+let lastKey = 10000000;
 
 export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripState> {
   eventsAdded: boolean;
@@ -78,6 +81,12 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     return items.map((item, index) => {
       const isCardItem = (item as CardProps).identifier;
 
+      if (item.isFake) {
+        return (
+          <FakeCard key={item.key} isFake={true} draggedFiles={item.draggedFiles} />
+        );
+      }
+
       if (isCardItem) {
         const key = (item as CardProps).identifier['id'] || index;
 
@@ -104,17 +113,13 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   onDragEnter = (length, index) => {
     const {items} = this.state;
     const itemsWithFakeContent = [...items];
-    const key = new Date().getTime();
-    const fakeCard = (
-      <CardView
-        key={key}
-        fakeIndex={index}
-        status="loading"
-        isFake={true}
-      />
-    );
+    const fakeCards = Array(1).fill(null).map(key => ({
+      key: lastKey++,
+      isFake: true,
+      draggedFiles: length
+    }));
 
-    itemsWithFakeContent.splice(index, 0, fakeCard);
+    itemsWithFakeContent.splice(index, 0, ...fakeCards);
     this.setState({
       items: itemsWithFakeContent
     });

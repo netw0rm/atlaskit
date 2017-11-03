@@ -94,6 +94,8 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   ...draggableStyle
 });
 
+const noop = () => {};
+
 export class FilmstripView extends React.Component<FilmstripViewProps, FilmstripViewState> {
 
   static defaultProps: Partial<FilmstripViewProps> = {
@@ -409,8 +411,9 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.setState({isDragging: true});
   }
 
-
   onDragEnter = (e) => {
+    e.preventDefault();
+
     const {dataTransfer} = e;
     const x = e.nativeEvent.offsetX + this.props.offset;
     const y = e.nativeEvent.offsetY;
@@ -442,6 +445,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     if (!this.state.isNativeDragOver) {
       const {onDragEnter} = this.props;
       const {length} = dataTransfer.items;
+      const dragImg = new Image();
+
+      dragImg.src = '';
+
+      dataTransfer.setDragImage(dragImg, 10, 10)
       this.setState({ isNativeDragOver: true });
 
       if (onDragEnter) {
@@ -456,6 +464,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   onNativeDragOver = (e: DragEvent) => {
+    e.preventDefault();
     const x = e.offsetX;
     const y = e.offsetY;
 
@@ -472,32 +481,32 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   firstMouseDownCb: any;
   fancyFlag: boolean;
 
+  triggerMouseDown() {
+    setTimeout(() => {
+      this.firstMouseDownCb({
+        button: 0, // primary
+        clientX: 0,
+        clientY: 0,
+        preventDefault: noop,
+        stopPropagation: noop
+      });
+    }, 10);
+  }
+
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
       const key = child['key'] ? child['key'] : index;
-      const isFake = child.props && child.props.props && child.props.props.isFake;
+      const isFake = child.props && child.props.isFake;
+
       this.firstMouseDownCb = null;
       return (
         <Draggable key={key} draggableId={key}>
           {(provided, snapshot) => {
             if (isFake && this.state.isNativeDragOver) {
-              window.firstMouseDownCb = this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
+              this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
+
               if (!this.fancyFlag) {
-                setTimeout(() => {
-
-                  this.firstMouseDownCb({
-                    button: 0, // primary
-                    clientX: 0,
-                    clientY: 0,
-                    preventDefault: () => {
-                    },
-                    stopPropagation: () => {
-                    }
-                  });
-
-                }, 10);
-
-
+                this.triggerMouseDown();
                 this.fancyFlag = true;
               }
             }
@@ -559,11 +568,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const { offset, children } = this.props;
     const { isNativeDragOver, isDragging } = this.state;
     // We need to pass "offset" into Droppable even if we don't needed to force a render
-    const color = isNativeDragOver ? 'lightred' : (isDragging ? 'lightgreen' : 'darkred');
     const cursor = isDragging ? '-webkit-grab' : 'auto';
     return (
       <div
-        style={{ backgroundColor: color, position: 'relative', cursor }}
+        style={{position: 'relative', cursor }}
         onDragEnter={this.onDragEnter}
         onDrop={this.onDrop}
       >

@@ -20,8 +20,8 @@ export const getLastSentance = (selection: TextSelection) => {
     return;
   }
 
-  const { parent: { textContent } } = selection.$from;
-  if (textContent) {
+  const { parent: { textContent }, nodeAfter } = selection.$from;
+  if (textContent && !nodeAfter) {
     const query = (textContent || '').match(/([^.!?]+[\s\w]+(.)?)\s$/);
     if (query) {
       return query[1];

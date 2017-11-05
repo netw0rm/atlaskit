@@ -7,6 +7,8 @@ import { pluginKey as highlightPluginKey } from './highlight-plugin';
 import { wrapIndex, getHighlights, createHighlightDecoration } from './utils';
 import { DecorationSet } from 'prosemirror-view';
 
+const SUGGESTIONS_LIMIT = 5;
+
 export const setEmojiProvider = async (view: EditorView, provider: Promise<EmojiProvider>) => {
   let resolvedProvider: EmojiProvider | null;
 
@@ -38,7 +40,9 @@ export const dismiss = (state: EditorState, dispatch: (tr: Transaction) => void)
 };
 
 export const setEmojis = (state: EditorState, dispatch: (tr: Transaction) => void, emojis: EmojiDescription[]) => {
-  dispatch(state.tr.setMeta(pluginKey, { emojis }));
+  dispatch(state.tr.setMeta(pluginKey, {
+    emojis: emojis.slice(0, SUGGESTIONS_LIMIT)
+  }));
 };
 
 export const selectCurrent = (state: EditorState, dispatch: (tr: Transaction) => void, selectedIndex?: number) => {

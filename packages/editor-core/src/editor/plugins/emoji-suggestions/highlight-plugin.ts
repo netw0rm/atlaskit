@@ -1,7 +1,7 @@
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 import { DecorationSet, EditorView } from 'prosemirror-view';
 import { Dispatch } from '../../event-dispatcher';
-import { replaceWithEmoji, highlightDocument } from './actions';
+import { replaceWithEmoji } from './actions';
 import { parseHighlightedEmojiNode } from './utils';
 
 export const pluginKey = new PluginKey('highlightEmojiPlugin');

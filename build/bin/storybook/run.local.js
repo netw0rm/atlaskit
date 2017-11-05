@@ -22,6 +22,6 @@ if (process.argv[2]) {
 
 childProcess.spawn('../../node_modules/.bin/start-storybook',
   ['-c', '../../build/storybook',
-    '-p', '9001'],
+    '-p', '9002'],
   { stdio: 'inherit' }
 ).on('error', process.exit);

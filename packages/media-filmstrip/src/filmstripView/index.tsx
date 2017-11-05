@@ -414,8 +414,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   onDragEnter = (e) => {
     e.preventDefault();
 
+    const {onDragEnter, offset} = this.props;
+    const {isNativeDragOver} = this.state;
     const {dataTransfer} = e;
-    const x = e.nativeEvent.offsetX + this.props.offset;
+    const x = e.nativeEvent.offsetX + offset;
     const y = e.nativeEvent.offsetY;
     let newIndex = 0;
     let index = 0;
@@ -442,8 +444,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       }
     }
 
-    if (!this.state.isNativeDragOver) {
-      const {onDragEnter} = this.props;
+    if (!isNativeDragOver) {
       const {length} = dataTransfer.items;
       const dragImg = new Image();
 
@@ -459,6 +460,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   onDragLeave = (e: DragEvent) => {
+    e.preventDefault();
+    this.setState({ isNativeDragOver: false });
+  }
+
+  onDrop = (e: DragEvent) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
   }
@@ -557,11 +563,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
         {this.renderRightArrow()}
       </FilmStripViewWrapper>
     );
-  }
-
-  onDrop = (e: DragEvent) => {
-    e.preventDefault();
-    this.setState({ isNativeDragOver: false });
   }
 
   render(): JSX.Element {

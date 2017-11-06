@@ -1,5 +1,6 @@
 import { KeyValues, RequestServiceOptions, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
 import {
+  AlternateRepresentations,
   EmojiDescription,
   EmojiDescriptionWithVariations,
   EmojiVariationDescription,
@@ -36,14 +37,18 @@ export const emojiRequest = (provider: EmojiLoaderConfig, options?: RequestServi
 const calculateScale = (getRatio: () => number): KeyValues => {
   // Retina display
   if (getRatio() > 1) {
-    return { scale: 'XHDPI' };
+    return { scale: 'XHDPI', altScale: 'XXXHDPI' };
   }
   // Default set used for desktop
-  return {};
+  return { altScale: 'XXHDPI' };
 };
 
 const getPixelRatio = (): number => {
   return window.devicePixelRatio;
+};
+
+export const getAltRepresentation = (reps: AlternateRepresentations): EmojiServiceRepresentation => {
+  return reps['XXXHDPI'] || reps['XXHDPI'];
 };
 
 export const isMediaApiUrl = (url: string, meta?: EmojiMeta): boolean =>
@@ -86,6 +91,10 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   return undefined;
 };
 
+export const denormaliseServiceAlternativeRepresentation = (altReps?: AlternateRepresentations, meta?: EmojiMeta): EmojiRepresentation => {
+  return altReps ? denormaliseServiceRepresentation(getAltRepresentation(altReps), meta) : undefined;
+};
+
 export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariations, meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
   if (!emoji.skinVariations) {
     return [];
@@ -95,10 +104,11 @@ export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariation
   const baseId = emoji.id;
 
   return skinEmoji.map((skin): EmojiVariationDescription => {
-    const { representation, ...other } = skin;
+    const { representation, altRepresentations, ...other } = skin;
     return {
       baseId: baseId,
       representation: denormaliseServiceRepresentation(representation, meta),
+      altRepresentation: denormaliseServiceAlternativeRepresentation(altRepresentations, meta),
       ...other
     };
   });
@@ -111,14 +121,16 @@ export const denormaliseSkinEmoji = (emoji: EmojiServiceDescriptionWithVariation
 export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
     const newRepresentation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
+    const newAlternateRepresentation = denormaliseServiceAlternativeRepresentation(emoji.altRepresentations, emojiData.meta);
     const newSkinVariations = denormaliseSkinEmoji(emoji, emojiData.meta);
 
     // create trimmedServiceDesc which is emoi with no representation or skinVariations
-    const { representation, skinVariations, ...trimmedServiceDesc } = emoji;
+    const { representation, skinVariations, altRepresentations, ...trimmedServiceDesc } = emoji;
 
     return {
       ...trimmedServiceDesc,
       representation: newRepresentation,
+      altRepresentation: newAlternateRepresentation,
       skinVariations: newSkinVariations
     };
   });

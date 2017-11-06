@@ -4,6 +4,7 @@ import { MouseEvent, SyntheticEvent } from 'react';
 
 import * as styles from './styles';
 import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
+import { defaultEmojiHeight } from '../../constants';
 import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
@@ -156,7 +157,13 @@ const renderAsImage = (props: Props) => {
   let width;
   let height;
   let src;
-  const representation = emoji.representation;
+
+  let representation = emoji.representation;
+
+  if (fitToHeight && emoji.altRepresentation && fitToHeight > defaultEmojiHeight) {
+    representation = emoji.altRepresentation;
+  }
+
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;
     width = representation.width;

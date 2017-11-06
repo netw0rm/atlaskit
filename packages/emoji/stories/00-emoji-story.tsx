@@ -24,13 +24,15 @@ const emoji = {
 };
 
 const renderEmoji = (fitToHeight: number = 24) => {
+  const zoidberg = emojiService.findByShortName(':zoidberg:');
+  const zoidbergEmoji = zoidberg ? <Emoji emoji={zoidberg} showTooltip={true} fitToHeight={fitToHeight} /> : <span>[zoidberg emoji not found]</span>;
   const awthanks = emojiService.findByShortName(':awthanks:');
   const awthanksEmoji = awthanks ? <Emoji emoji={awthanks} showTooltip={true} fitToHeight={fitToHeight} /> : <span>[awthanks emoji not found]</span>;
   const grimacing = emojiService.findByShortName(':grimacing:');
   const grimacingEmoji = grimacing ? <Emoji emoji={grimacing} showTooltip={true} fitToHeight={fitToHeight} /> : <span>[grimacing emoji not found]</span>;
   return (
     <div style={{ lineHeight: `${fitToHeight}px` }}>
-      <Emoji emoji={emoji} showTooltip={true} fitToHeight={fitToHeight} />
+      {zoidbergEmoji}
       {awthanksEmoji}
       {grimacingEmoji}
     </div>
@@ -43,5 +45,6 @@ storiesOf(`${name}/Emoji`, module)
       <p>{renderEmoji()}</p>
       <p>{renderEmoji(32)}</p>
       <p>{renderEmoji(48)}</p>
+      <p>{renderEmoji(128)}</p>
     </div>
   ).add('simple emoji selected', () => (<Emoji emoji={emoji} selected={true} showTooltip={true} />));

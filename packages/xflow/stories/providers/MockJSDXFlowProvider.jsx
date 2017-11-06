@@ -1,5 +1,5 @@
 import React from 'react';
-import JiraToJSDXFlowProvider from '../../src/jira-jsd/JiraToJSDXFlowProvider';
+import JiraToJSDXFlowProvider from '../../src/product-xflow-providers/JiraToJSDXFlowProvider';
 
 import mockJSDStatusChecker from './mockJSDStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';

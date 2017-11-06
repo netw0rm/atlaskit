@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.1.5 (2017-11-02)
+
+* bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))
 ## 6.1.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

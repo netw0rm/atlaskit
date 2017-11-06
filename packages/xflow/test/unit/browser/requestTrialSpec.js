@@ -9,7 +9,7 @@ import ConfirmRequest from '../../../src/request-or-start-trial/components/Confi
 import RequestTrialNote from '../../../src/request-or-start-trial/components/RequestTrialNote';
 import ErrorFlag from '../../../src/common/components/ErrorFlag';
 import SuccessFlag from '../../../src/common/components/SuccessFlag';
-import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
+import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 import { INACTIVE } from '../../../src/common/productProvisioningStates';

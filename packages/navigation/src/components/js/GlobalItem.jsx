@@ -24,8 +24,8 @@ type Props = {|
   role?: string,
   /** Set the size of the item's content.  */
   size?: 'small' | 'medium' | 'large',
-  /** Appearance of item for custom styling */
-  appearance?: string,
+  /** Appearance of item for custom styling (square or round) */
+  appearance: 'square' | 'round',
 |}
 
 export default class GlobalItem extends PureComponent {
@@ -33,6 +33,7 @@ export default class GlobalItem extends PureComponent {
     linkComponent: DefaultLinkComponent,
     onMouseDown: () => {},
     size: 'small',
+    appearance: 'round',
   };
 
   props: Props

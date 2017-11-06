@@ -3,6 +3,7 @@ import React from 'react';
 import JIRAExample from './examples/Jira';
 import ConfluenceSpacePage from './examples/ConfluenceSpacePage';
 import ConfluenceHome from './examples/ConfluenceHome';
+import StrideMultiSite from './examples/StrideMultiSite';
 import { name } from '../package.json';
 
 storiesOf(`${name}/Product patterns`, module)
@@ -14,4 +15,7 @@ storiesOf(`${name}/Product patterns`, module)
   ))
   .add('Confluence - Space / Page', () => (
     <ConfluenceSpacePage />
+  ))
+  .add('Stride - Multi-Site', () => (
+    <StrideMultiSite />
   ));

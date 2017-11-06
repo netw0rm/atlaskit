@@ -36,6 +36,7 @@ export const createPlugin = (dispatch: Dispatch, providerFactory: ProviderFactor
         if (query !== state.query) {
           const newState = {
             ...state,
+            emojis: [],
             query,
             decorations: createDecorationWidget(tr, query)
           };

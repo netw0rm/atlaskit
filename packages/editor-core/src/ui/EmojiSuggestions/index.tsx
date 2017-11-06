@@ -28,8 +28,11 @@ export interface Props {
 }
 
 const LIST_LIMIT: number = 5;
+const SUGGESTIONS_TIMEOUT: number = 1000;
 
 export default class EmojiSuggestions extends Component<Props, any> {
+  private debounced: number | null = null;
+
   componentWillUnmount() {
     const { emojiProvider } = this.props;
     if (emojiProvider) {
@@ -49,7 +52,7 @@ export default class EmojiSuggestions extends Component<Props, any> {
     if (query !== nextProps.query) {
       const lastWord = this.props.getLastWord(nextProps.query);
       if (lastWord) {
-        this.onSearch(lastWord);
+        this.debouncedSearch(lastWord);
       }
     }
   }
@@ -86,6 +89,19 @@ export default class EmojiSuggestions extends Component<Props, any> {
   onSelect = (selectedIndex: number) => {
     const { state, dispatch } = this.props.editorView;
     this.props.onSelect(state, dispatch, selectedIndex);
+  }
+
+  private debouncedSearch(query?: string): void {
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+      this.debounced = null;
+    }
+
+    this.debounced = setTimeout(() => {
+      this.debounced = null;
+
+      this.onSearch(query);
+    }, SUGGESTIONS_TIMEOUT);
   }
 
   private onSearch(query?: string): void {

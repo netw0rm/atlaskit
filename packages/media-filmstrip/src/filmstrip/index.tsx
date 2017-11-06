@@ -11,6 +11,7 @@ export type FilmstripItem = CardProps | (CardViewProps & withKey) ;
 export interface FilmstripProps {
   context?: Context;
   items: FilmstripItem[];
+  dropzoneElement?: Element;
   onSort?: (items) => void;
   onDrop?: (items) => void;
 }
@@ -53,7 +54,6 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
       const fakeItemIndex = currentItems.indexOf(fakeItem);
       const newItem = nextItemsCopy.pop();
       // console.log('fakeItemIndex', fakeItemIndex)
-      debugger
       console.log('newItem id', newItem.indentifier ? newItem.identifier.id : 'no--id');
       nextItemsCopy.splice(fakeItemIndex, 0, newItem);
       // console.log(nextItemsCopy.map(i => i.identifier ? i.identifier.id : 'no--id').join(' '))
@@ -64,15 +64,26 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     }
   }
 
-  onDragEnd = (source, destination) => {
+  onDragEnd = (source, destination, draggableId) => {
+    console.log('filmstrip onDragEnd', source, destination, draggableId);
     const {items} = this.state;
-    const {onSort} = this.props;
     const sortedItems = [...items];
-    const [removed] = sortedItems.splice(source.index, 1);
+    if(source.droppableId === 'fake-droppable'){
+      const fakeItem = {
+        key: lastKey++,
+        isFake: true,
+        draggedFiles: parseInt(draggableId.split('|')[1], 10)
+      };
+      //TODO give right number
+      sortedItems.splice(destination.index, 0,  fakeItem);
+    }else{
+      const [removed] = sortedItems.splice(source.index, 1);
+      sortedItems.splice(destination.index, 0, removed);
+    }
 
-    sortedItems.splice(destination.index, 0, removed);
     this.setState({items: sortedItems});
-    console.log('onDragEnd', sortedItems)
+
+    const {onSort} = this.props;
     if (onSort) {
       onSort(sortedItems);
     }
@@ -144,7 +155,16 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const children = this.renderChildren(items);
 
     return (
-      <FilmstripView onDrop={this.onDrop} onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
+      <FilmstripView
+        onDragEnter={this.onDragEnter}
+        animate={animate}
+        offset={offset}
+        onDrop={this.onDrop}
+        onSize={this.handleSizeChange}
+        onScroll={this.handleScrollChange}
+        onDragEnd={this.onDragEnd}
+        dropzoneElement={this.props.dropzoneElement}
+      >
         {children}
       </FilmstripView>
     );

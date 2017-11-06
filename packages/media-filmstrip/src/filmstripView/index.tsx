@@ -1,7 +1,7 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
 import { ReactNode, WheelEvent, MouseEvent as ReactMouseEvent, ReactChild, SyntheticEvent} from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 import {
@@ -15,6 +15,7 @@ import {
   FilmStripListItem,
   DropzoneOverlay
 } from './styled';
+import {FakeDroppable} from '../fake-droppable/index';
 
 const DURATION_MIN = 0.5;
 const DURATION_MAX = 1.0;
@@ -43,10 +44,11 @@ export interface ScrollEvent {
 export interface FilmstripViewProps {
   animate?: boolean;
   offset?: number;
+  dropzoneElement?: Element;
   children?: ReactNode;
   onSize?: (event: SizeEvent) => void;
   onScroll?: (event: ScrollEvent) => void;
-  onDragEnd?: (source: any, destination: any) => void;
+  onDragEnd?: (source: any, destination: any, draggableId: any) => void;
   onDragEnter?: (items: number, index: number) => void;
   onDrop?: () => void;
 }
@@ -54,8 +56,6 @@ export interface FilmstripViewProps {
 export interface FilmstripViewState {
   bufferWidth: number;
   windowWidth: number;
-  isNativeDragOver: boolean;
-  isDragging: boolean;
 }
 
 export interface ArrowProps {
@@ -111,7 +111,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   previousOffset: number = 0;
 
   state = {
-    isNativeDragOver: false,
     isDragging: false,
     bufferWidth: 0,
     windowWidth: 0
@@ -370,13 +369,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   componentDidMount() {
     this.previousOffset = this.offset;
-    window.addEventListener('dragover', this.onNativeDragOver);
     window.addEventListener('resize', this.handleSizeChange);
     window.addEventListener('drop', this.onDrop, true);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('dragover', this.onNativeDragOver);
     window.removeEventListener('resize', this.handleSizeChange);
     window.removeEventListener('drop', this.onDrop);
   }
@@ -395,139 +392,41 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
   }
 
-  onDragEnd = (result) => {
-    this.fancyFlag = false;
-    this.setState({isDragging: false});
-
+  onDragEnd = (result: DropResult) => {
     const {onDragEnd} = this.props;
     if (!result.destination || !onDragEnd) return;
+    console.log('dragEnd', result);
 
-    const {source, destination} = result;
+    const {source, destination, draggableId} = result;
 
     onDragEnd(
       source,
-      destination
+      destination,
+      draggableId
     );
   }
 
-  onDragStart = (result) => {
-    this.setState({isDragging: true});
-  }
-
-  onDragEnter = (e) => {
-    e.preventDefault();
-
-    const {onDragEnter, offset} = this.props;
-    const {isNativeDragOver} = this.state;
-    const {dataTransfer} = e;
-    const x = e.nativeEvent.offsetX + offset;
-    const y = e.nativeEvent.offsetY;
-    let newIndex = 0;
-    let index = 0;
-    const len = this.childOffsets.length;
-    for (; index < len; index++) {
-      const { left, right } = this.childOffsets[index];
-      if (x <= left) { // We are to the left from left side of a cerd
-        if (index === 0) {
-          newIndex = index;
-        }else{
-          newIndex = index - 1;
-        }
-        break;
-      } else { // To the right from left side of a card
-        const isLastElement = index === len - 1;
-        if (isLastElement) {
-          if (x >= right) { // To the right from the right side of a last card
-            newIndex = index + 1;
-          }else{
-            newIndex = index;
-          }
-          break;
-        }
-      }
-    }
-
-    if (!isNativeDragOver) {
-      const {length} = dataTransfer.items;
-      const dragImg = new Image();
-
-      dragImg.src = '';
-
-      dataTransfer.setDragImage(dragImg, 10, 10)
-      this.setState({ isNativeDragOver: true });
-
-      if (onDragEnter) {
-        onDragEnter(length, newIndex);
-      }
-    }
-  }
-
-  onDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    this.setState({ isNativeDragOver: false });
-  }
-
   onDrop = (e: DragEvent) => {
-    const {children, onDrop} = this.props;
+    const {onDrop} = this.props;
     e.preventDefault();
-    this.setState({ isNativeDragOver: false });
-    const mouseMove = new MouseEvent('mouseup', {
-      button: 0
-    });
+    // this.setState({ isNativeDragOver: false });
+    // const mouseMove = new MouseEvent('mouseup', {
+    //   button: 0
+    // });
     // console.log('view onDrop', children)
-    window.dispatchEvent(mouseMove);
+    // window.dispatchEvent(mouseMove);
     if (onDrop) {
       onDrop();
     }
   }
 
-  onNativeDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    const x = e.offsetX;
-    const y = e.offsetY;
-
-    const mouseMove = new MouseEvent('mousemove', {
-      button: 0, // primary
-      clientX: 20 + x,
-      clientY: 20 + y,
-    });
-
-    window.dispatchEvent(mouseMove);
-  }
-
-  // firstElement: HTMLElement;
-  firstMouseDownCb: any;
-  fancyFlag: boolean;
-
-  triggerMouseDown() {
-    setTimeout(() => {
-      this.firstMouseDownCb({
-        button: 0, // primary
-        clientX: 0,
-        clientY: 0,
-        preventDefault: noop,
-        stopPropagation: noop
-      });
-    }, 10);
-  }
-
   renderChildren = (children) => {
     return React.Children.map(children, (child, index) => {
       const key = child['key'] ? child['key'] : index;
-      const isFake = child.props && child.props.isFake;
 
-      this.firstMouseDownCb = null;
       return (
-        <Draggable key={key} draggableId={key}>
+        <Draggable key={key} draggableId={key} type="CARD">
           {(provided, snapshot) => {
-            if (isFake && this.state.isNativeDragOver) {
-              this.firstMouseDownCb = provided.dragHandleProps.onMouseDown;
-
-              if (!this.fancyFlag) {
-                this.triggerMouseDown();
-                this.fancyFlag = true;
-              }
-            }
 
             return (
               <FilmStripListItem>
@@ -578,20 +477,16 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   render(): JSX.Element {
-    const { offset, children } = this.props;
-    const { isNativeDragOver, isDragging } = this.state;
-    // We need to pass "offset" into Droppable even if we don't needed to force a render
-    const cursor = isDragging ? '-webkit-grab' : 'auto';
+    const { offset, children, dropzoneElement } = this.props;
     return (
-      <div
-        style={{position: 'relative', cursor }}
-        onDragEnter={this.onDragEnter}
-      >
-        {isNativeDragOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
-        <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
-          <Droppable droppableId="droppable" offset={offset} child={children} direction="horizontal">
-            {this.renderList}
-          </Droppable>
+      <div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <div>
+            {dropzoneElement ? <FakeDroppable dropzoneElement={dropzoneElement} /> : null}
+            <Droppable droppableId="droppable" offset={offset} child={children} direction="horizontal" type="CARD">
+              {this.renderList}
+            </Droppable>
+          </div>
         </DragDropContext>
       </div>
     );

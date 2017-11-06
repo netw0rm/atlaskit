@@ -18,7 +18,8 @@ export const Inner = styled.span`
   color: ${themed({ light: colors.N500, dark: colors.DN400 })};
   cursor: pointer;
   display: flex;
-  flex: 1;
+  flex-basis: 100%;
+  flex-grow: 1;
   font-size: ${props => EXCESS_INDICATOR_FONT_SIZE[props.size]}px;
   justify-content: center;
   transition: box-shadow 200ms;

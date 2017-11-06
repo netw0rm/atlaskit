@@ -11,8 +11,8 @@ export type FilmstripItem = CardProps | (CardViewProps & withKey) ;
 export interface FilmstripProps {
   context?: Context;
   items: FilmstripItem[];
-  dropzoneElement?: Element;
   onSort?: (items) => void;
+  onDrop?: (items) => void;
 }
 
 export interface FilmstripState {
@@ -24,7 +24,6 @@ export interface FilmstripState {
 let lastKey = 10000000;
 
 export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripState> {
-  eventsAdded: boolean;
   state: FilmstripState = {
     animate: false,
     offset: 0,
@@ -43,25 +42,26 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   handleSizeChange = ({offset}) => this.setState({offset});
   handleScrollChange = ({offset, animate}) => this.setState({offset, animate});
 
-  componentWillReceiveProps(props: FilmstripProps) {
-    const {dropzoneElement, items} = props;
-    const {eventsAdded} = this;
+  componentWillReceiveProps(nextProps: FilmstripProps) {
+    const {items: nextItems, onSort} = nextProps;
+    const {items: currentItems} = this.state;
+    const hasNewItems = nextItems !== currentItems;
+    const fakeItem = currentItems.find(i => i.isFake);
 
-    this.setState({ items });
-
-    if (eventsAdded || !dropzoneElement) {
-      return;
+    if (hasNewItems && fakeItem && onSort) {
+      const nextItemsCopy = [...nextItems];
+      const fakeItemIndex = currentItems.indexOf(fakeItem);
+      const newItem = nextItemsCopy.pop();
+      // console.log('fakeItemIndex', fakeItemIndex)
+      debugger
+      console.log('newItem id', newItem.indentifier ? newItem.identifier.id : 'no--id');
+      nextItemsCopy.splice(fakeItemIndex, 0, newItem);
+      // console.log(nextItemsCopy.map(i => i.identifier ? i.identifier.id : 'no--id').join(' '))
+      this.setState({ items: nextItemsCopy });
+      onSort(nextItemsCopy);
+    } else {
+      this.setState({ items: nextItems });
     }
-
-    this.eventsAdded = true;
-
-    dropzoneElement.addEventListener('dragover', this.onDragOver);
-  }
-
-  onDragOver = (e: DragEvent) => {
-    const {dataTransfer} = e;
-
-    e.preventDefault();
   }
 
   onDragEnd = (source, destination) => {
@@ -72,7 +72,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
 
     sortedItems.splice(destination.index, 0, removed);
     this.setState({items: sortedItems});
-
+    console.log('onDragEnd', sortedItems)
     if (onSort) {
       onSort(sortedItems);
     }
@@ -128,12 +128,23 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     });
   }
 
+  onDrop = () => {
+    const {items} = this.state;
+    const {onDrop} = this.props;
+
+    // console.log('filmstrip ondrop', items);
+
+    if (onDrop) {
+      onDrop(items);
+    }
+  }
+
   render() {
     const {animate, offset, items} = this.state;
     const children = this.renderChildren(items);
 
     return (
-      <FilmstripView onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
+      <FilmstripView onDrop={this.onDrop} onDragEnter={this.onDragEnter} animate={animate} offset={offset} onSize={this.handleSizeChange} onScroll={this.handleScrollChange} onDragEnd={this.onDragEnd}>
         {children}
       </FilmstripView>
     );

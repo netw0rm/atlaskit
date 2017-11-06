@@ -48,6 +48,7 @@ export interface FilmstripViewProps {
   onScroll?: (event: ScrollEvent) => void;
   onDragEnd?: (source: any, destination: any) => void;
   onDragEnter?: (items: number, index: number) => void;
+  onDrop?: () => void;
 }
 
 export interface FilmstripViewState {
@@ -467,13 +468,17 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   onDrop = (e: DragEvent) => {
+    const {children, onDrop} = this.props;
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
     const mouseMove = new MouseEvent('mouseup', {
       button: 0
     });
-
+    // console.log('view onDrop', children)
     window.dispatchEvent(mouseMove);
+    if (onDrop) {
+      onDrop();
+    }
   }
 
   onNativeDragOver = (e: DragEvent) => {

@@ -5,13 +5,15 @@ import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
 import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
+import { MediaViewerItem } from './media-viewer';
 import { Observable } from 'rxjs';
 
 export interface MediaFileListViewerProps {
   readonly context: Context;
 
-  readonly fileId: string;
-  readonly fileIds: Array<string>;
+  readonly selectedItem: MediaViewerItem;
+  readonly surroundingItems: Array<MediaViewerItem>;
+
   readonly collectionName: string;
 
   readonly MediaViewer: MediaViewerConstructor;
@@ -45,7 +47,7 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
   }
 
   componentDidMount(): void {
-    const { context, fileId, fileIds, collectionName, onClose } = this.props;
+    const { context, selectedItem, surroundingItems, collectionName, onClose } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
@@ -54,18 +56,21 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
       mediaViewer.on('fv.close', onClose);
     }
 
-    const observableFileItems = fileIds
-      .map(file => context.getMediaItemProvider(file, 'file', collectionName))
+    const filesToProcess = surroundingItems
+      .filter(item => item.type === 'file'); // for now we only support files
+
+    const observableFileItems = filesToProcess
+      .map(item => context.getMediaItemProvider(item.id, item.type, collectionName))
       .map(provider => provider.observable().map(item => item as FileItem));
 
     this.state = {
       subscription: Observable
         .zip(...observableFileItems)
         .subscribe({
-          next: items => {
-            const files = MediaFileAttributesFactory.fromFileItemList(items, serviceHost);
+          next: fileItems => {
+            const files = MediaFileAttributesFactory.fromFileItemList(fileItems, serviceHost);
             mediaViewer.setFiles(files);
-            mediaViewer.open({ id: fileId });
+            mediaViewer.open({ id: selectedItem.id });
           }
         }),
       mediaViewer

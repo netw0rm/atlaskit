@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import { MediaItemType } from '@atlaskit/media-core';
 import {
   MediaFileListViewer
 } from '../../../src/components/media-file-list-viewer';
@@ -16,14 +17,19 @@ describe('<MediaFileListViewer />', () => {
   };
   const collectionName = 'some-collection';
   const basePath = 'some-base-path';
+  const selectedItem = {
+    id: 'some-id',
+    occurrenceKey: 'some-occurrence-key',
+    type: 'file' as MediaItemType
+  };
 
   it('should construct a media viewer instance with default config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
 
     shallow(
       <MediaFileListViewer
-        fileId='xxx-xxx'
-        fileIds={['xxx-xxxx']}
+        selectedItem={selectedItem}
+        surroundingItems={[selectedItem]}
         context={Stubs.context(contextConfig) as any}
         collectionName={collectionName}
         MediaViewer={mediaViewerConstructor as any}
@@ -42,12 +48,12 @@ describe('<MediaFileListViewer />', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
     const additionalConfiguration = {
       enableMiniMode: true
-    }
+    };
 
     shallow(
       <MediaFileListViewer
-        fileId='xxx-xxx'
-        fileIds={['xxx-xxxx']}
+        selectedItem={selectedItem}
+        surroundingItems={[selectedItem]}
         context={Stubs.context(contextConfig) as any}
         collectionName={collectionName}
         mediaViewerConfiguration={additionalConfiguration}

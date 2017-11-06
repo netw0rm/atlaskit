@@ -107,7 +107,7 @@ export interface EmojiServiceDescription {
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;
-  altRepresentations?: AlternateRepresentations;
+  altRepresentations?: AltRepresentations;
   searchable: boolean;
 }
 
@@ -115,7 +115,7 @@ export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescr
   skinVariations?: EmojiServiceDescription[];
 }
 
-export interface AlternateRepresentations {
+export interface AltRepresentations {
   [key: string]: EmojiServiceRepresentation;
 }
 

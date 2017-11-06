@@ -7,9 +7,9 @@ import Button from '@atlaskit/button';
 import { Content, ButtonGroup } from './../styles';
 import imageUploadHandler from '../imageUpload/handler';
 
-import { MentionResource } from '../../src';
-import { toJSON } from '../../src/utils';
+import { MentionResource, EditorContext, WithEditorActions } from '../../src';
 import { storyMediaProviderFactory } from '../../src/test-helper';
+import EditorActions from '../../src/editor/actions';
 
 const rejectedPromise = Promise.reject(new Error('Simulated provider rejection'));
 const pendingPromise = new Promise<any>(() => { });
@@ -91,10 +91,10 @@ export default class ToolsDrawer extends React.Component<any, State> {
     });
   }
 
-  private onChange = editorView => {
-    this.setState({
-      jsonDocument: JSON.stringify(toJSON(editorView.state.doc), null, 2)
-    });
+  private onChange = (actions: EditorActions) => {
+    actions.getValue().then(value => this.setState({
+      jsonDocument: typeof value === 'object' ? JSON.stringify(value, null, 2) : value
+    }));
   }
 
   render() {
@@ -106,15 +106,20 @@ export default class ToolsDrawer extends React.Component<any, State> {
         </div>
         {
           editorEnabled ?
-            (this.props.renderEditor({
-              imageUploadProvider: providers.imageUploadProvider[imageUploadProvider],
-              mediaProvider: providers.mediaProvider[mediaProvider],
-              mentionProvider: providers.mentionProvider[mentionProvider],
-              emojiProvider: providers.emojiProvider[emojiProvider],
-              activityProvider: providers.activityProvider[activityProvider],
-              onChange: this.onChange
-            })) :
-            ''
+            <EditorContext>
+              <WithEditorActions
+                // tslint:disable-next-line:jsx-no-lambda
+                render={(actions) => this.props.renderEditor({
+                  imageUploadProvider: providers.imageUploadProvider[imageUploadProvider],
+                  mediaProvider: providers.mediaProvider[mediaProvider],
+                  mentionProvider: providers.mentionProvider[mentionProvider],
+                  emojiProvider: providers.emojiProvider[emojiProvider],
+                  activityProvider: providers.activityProvider[activityProvider],
+                  onChange: () => this.onChange(actions)
+                })}
+              />
+            </EditorContext>
+            : ''
         }
         <div className="toolsDrawer">
           {

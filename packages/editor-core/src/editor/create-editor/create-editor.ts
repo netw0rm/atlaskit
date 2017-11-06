@@ -192,7 +192,7 @@ export default function createEditor(
       tr.setMeta('isLocal', true);
       const newState = editorView.state.apply(tr);
       editorView.updateState(newState);
-      if (onChange && tr.docChanged) {
+      if (onChange && (tr.docChanged || tr.getMeta('forceUpdate'))) {
         onChange(editorView);
       }
     }

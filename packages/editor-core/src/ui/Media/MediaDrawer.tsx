@@ -74,7 +74,7 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
 
     // unsubscribe from old items
     oldItems
-      .filter(oldItem => !!newItems.some(newItem => newItem.id === oldItem.id))
+      .filter(oldItem => !newItems.some(newItem => newItem.id === oldItem.id))
       .forEach(item => stateManager.unsubscribe(item.id, this.onItemChange))
     ;
 
@@ -173,6 +173,8 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
       const actions: CardAction[] = [];
       const { status } = state;
 
+      actions.push(CardDelete(this.handleClickDelete));
+
       switch(status) {
         case 'error':
         case 'cancelled':
@@ -202,8 +204,6 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
             mimeType: fileType,
             mediaType: (thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')
           } as FileDetails;
-
-          actions.push(CardDelete(this.handleClickDelete));
 
           return {
             key: state.id,

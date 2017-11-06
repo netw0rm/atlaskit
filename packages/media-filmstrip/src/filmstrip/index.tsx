@@ -5,7 +5,8 @@ import {CardViewProps, Card, CardView, CardProps} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
 import FakeCard from './fakeCard';
 
-export type FilmstripItem = CardProps | CardViewProps;
+export type withKey = { key: string };
+export type FilmstripItem = CardProps | (CardViewProps & withKey) ;
 
 export interface FilmstripProps {
   context?: Context;

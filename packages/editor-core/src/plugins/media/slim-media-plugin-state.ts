@@ -24,6 +24,7 @@ export class SlimMediaPluginState extends MediaPluginState {
     });
 
     this.notifyPluginStateSubscribers();
+    this.notifyOnChange();
   }
 
   insertLinks = async () => {
@@ -50,7 +51,17 @@ export class SlimMediaPluginState extends MediaPluginState {
 
     this.media.splice(pos, 1);
     this.notifyPluginStateSubscribers();
+    this.notifyOnChange();
   }
 
+  /**
+   * Dispatch a non-updating transaction to trigger onChange()
+   */
+  notifyOnChange = () => {
+    const { view } = this;
+    view.dispatch(view.state.tr.setMeta('forceUpdate', true));
+  }
+
+  // Disable the default media d-n-d placeholder
   protected handleDrag = (dragState: 'enter' | 'leave') => {};
 }

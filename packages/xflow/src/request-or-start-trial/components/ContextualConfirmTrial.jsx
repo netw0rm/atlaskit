@@ -168,7 +168,16 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-trial.settings-info"
-          defaultMessage="Cancel your trial at any time in Manage applications."
+          defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: (
+              <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
+                <FormattedMessage
+                  id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+                  defaultMessage="Manage subscriptions"
+                />
+              </a>),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
@@ -187,7 +196,16 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.settings-info"
-          defaultMessage="Cancel your subscription at any time in Manage applications."
+          defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: (
+              <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
+                <FormattedMessage
+                  id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+                  defaultMessage="Manage subscriptions"
+                />
+              </a>),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>

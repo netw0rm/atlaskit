@@ -43,6 +43,21 @@ const ConfirmTrialAdminInfo = styled.div`
       width: ${props => math.multiply(gridSize, spanWidth(props.columnSize))}px;
       margin: auto;
   }
+  
+  a {
+    text-decoration: none;
+    
+    &:focus {
+      outline: 0;
+    }
+    
+    span {
+      display: inherit;
+      padding: 0px;
+      color: ${colors.N200};
+      font-weight: bold;
+    }
+  }
 `;
 
 ConfirmTrialAdminInfo.displayName = 'ConfirmTrialAdminInfo';

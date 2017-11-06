@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount} from 'enzyme';
+import { MediaItemType } from '@atlaskit/media-core';
 import {
   MediaFileListViewer
 } from '../../../src/components/media-file-list-viewer';
@@ -16,14 +17,36 @@ describe('<MediaFileListViewer />', () => {
   };
   const collectionName = 'some-collection';
   const basePath = 'some-base-path';
+  const selectedItem = {
+    id: 'some-id',
+    occurrenceKey: 'some-occurrence-key',
+    type: 'file' as MediaItemType
+  };
+  const list = [
+    {
+      id: 'some-id',
+      occurrenceKey: 'some-occurrence-key',
+      type: 'file' as MediaItemType
+    },
+    {
+      id: 'some-id-2',
+      occurrenceKey: 'some-occurrence-key-2',
+      type: 'file' as MediaItemType
+    },
+    {
+      id: 'some-id-3',
+      occurrenceKey: 'some-occurrence-key-3',
+      type: 'file' as MediaItemType
+    }
+  ];
 
   it('should construct a media viewer instance with default config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
 
     shallow(
       <MediaFileListViewer
-        fileId='xxx-xxx'
-        fileIds={['xxx-xxxx']}
+        selectedItem={selectedItem}
+        list={[selectedItem]}
         context={Stubs.context(contextConfig) as any}
         collectionName={collectionName}
         MediaViewer={mediaViewerConstructor as any}
@@ -40,14 +63,12 @@ describe('<MediaFileListViewer />', () => {
 
   it('should construct a media viewer instance with custom config', () => {
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
-    const additionalConfiguration = {
-      enableMiniMode: true
-    }
+    const additionalConfiguration = { enableMiniMode: true };
 
     shallow(
       <MediaFileListViewer
-        fileId='xxx-xxx'
-        fileIds={['xxx-xxxx']}
+        selectedItem={selectedItem}
+        list={[selectedItem]}
         context={Stubs.context(contextConfig) as any}
         collectionName={collectionName}
         mediaViewerConfiguration={additionalConfiguration}
@@ -61,5 +82,44 @@ describe('<MediaFileListViewer />', () => {
     expect(firstArg.assets).toEqual({ basePath });
     expect(firstArg.enableMiniMode).toBe(true);
     expect(typeof firstArg.fetchToken).toBe('function');
+  });
+
+  it('should construct a media viewer with no collectionName provided', () => {
+    const context = Stubs.context(contextConfig) as any;
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor();
+    const additionalConfiguration = { enableMiniMode: true };
+    mount(
+      <MediaFileListViewer
+        selectedItem={selectedItem}
+        list={list}
+        context={context}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', undefined);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', undefined);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', undefined);
+  });
+
+  it('should construct a media viewer with a collectionName', () => {
+    const context = Stubs.context(contextConfig) as any;
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor();
+    const additionalConfiguration = { enableMiniMode: true };
+    mount(
+      <MediaFileListViewer
+        selectedItem={selectedItem}
+        list={list}
+        context={context}
+        collectionName={collectionName}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />);
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', 'some-collection');
   });
 });

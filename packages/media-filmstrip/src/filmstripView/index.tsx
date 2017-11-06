@@ -371,11 +371,13 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.previousOffset = this.offset;
     window.addEventListener('dragover', this.onNativeDragOver);
     window.addEventListener('resize', this.handleSizeChange);
+    window.addEventListener('drop', this.onDrop, true);
   }
 
   componentWillUnmount() {
     window.removeEventListener('dragover', this.onNativeDragOver);
     window.removeEventListener('resize', this.handleSizeChange);
+    window.removeEventListener('drop', this.onDrop);
   }
 
   componentDidUpdate() {
@@ -467,6 +469,11 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   onDrop = (e: DragEvent) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
+    const mouseMove = new MouseEvent('mouseup', {
+      button: 0
+    });
+
+    window.dispatchEvent(mouseMove);
   }
 
   onNativeDragOver = (e: DragEvent) => {
@@ -574,7 +581,6 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
       <div
         style={{position: 'relative', cursor }}
         onDragEnter={this.onDragEnter}
-        onDrop={this.onDrop}
       >
         {isNativeDragOver ? <DropzoneOverlay onDragLeave={this.onDragLeave} /> : null}
         <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>

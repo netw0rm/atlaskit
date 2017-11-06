@@ -214,9 +214,9 @@ export const createPlugin = (schema: Schema, options: ImageUploadPluginOptions) 
           return false;
         }
         analyticsService.trackEvent('atlassian.editor.image.drop');
-
+        console.log('handleDOMEvents drop')
         event.preventDefault();
-        event.stopPropagation();
+        // event.stopPropagation();
 
         pluginState.handleImageUpload(view, event);
         return true;

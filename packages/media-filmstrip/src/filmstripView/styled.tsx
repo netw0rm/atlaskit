@@ -127,7 +127,5 @@ export const DropzoneOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  backgroundColor: rgba(150,0,0,0.05);
   z-index: 2;
-  // pointer-events: none;
 `;

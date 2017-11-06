@@ -61,27 +61,7 @@ const cardViewItems: CardViewProps[] = [{
   status: 'complete',
   metadata: imageFileDetails,
   dataURI: smallImage
-},/* {
-  status: 'complete',
-  metadata: audioFileDetails
-}, {
-  status: 'complete',
-  metadata: videoFileDetails
-}, {
-  status: 'complete',
-  metadata: docFileDetails
-}, {
-  status: 'complete',
-  metadata: unknownFileDetails
-}, {
-  status: 'complete',
-  metadata: imageFileDetails,
-  dataURI: tallImage
-}, {
-  status: 'loading',
-  metadata: imageFileDetails,
-  dataURI: smallTransparentImage
-}*/];
+}];
 const mixedCardItems = [
   ...cardItems,
   ...cardViewItems

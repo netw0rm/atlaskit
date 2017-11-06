@@ -83,7 +83,6 @@ export const insertLinks = async (
             .then(publicId =>
               stateManager.updateState(id, {
                 id,
-                publicId,
                 status: 'ready'
               }) || resolve(publicId)
             )

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
-import { Filmstrip, FilmstripItem, withKey } from '@atlaskit/media-filmstrip';
-import { LinkIdentifier, FileIdentifier, CardStatus, CardProps, CardViewProps } from '@atlaskit/media-card';
+import { Filmstrip, FilmstripItem } from '@atlaskit/media-filmstrip';
+import { LinkIdentifier, FileIdentifier, CardStatus } from '@atlaskit/media-card';
 import { FileDetails, MediaStateStatus, MediaState, MediaProvider, ContextFactory, ContextConfig, Context, CardDelete, CardAction } from '@atlaskit/media-core';
 import { SlimMediaPluginState } from '../../plugins/media';
 

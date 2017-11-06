@@ -6,12 +6,17 @@ import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
 import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
 
+export interface MediaCollectionSelectedItem {
+  readonly occurrenceKey?: string;
+  readonly id?: string;
+  readonly type: string;
+}
+
 export interface MediaCollectionViewerProps {
   readonly context: Context;
-  readonly occurrenceKey: string;
+  readonly selectedItem?: MediaCollectionSelectedItem;
   readonly collectionName: string;
   readonly pageSize?: number;
-
   readonly MediaViewer: MediaViewerConstructor;
   readonly mediaViewerConfiguration?: MediaViewerConfig;
   readonly basePath: string;
@@ -49,7 +54,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   }
 
   componentDidMount(): void {
-    const { context, occurrenceKey, onClose } = this.props;
+    const { context, selectedItem, onClose } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer, provider } = this.state;
@@ -65,11 +70,14 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
       .subscribe({
         next: collection => {
           const files = MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost);
-          if (mediaViewer.isOpen()) {
-            mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
-          } else {
-            mediaViewer.setFiles(files);
-            mediaViewer.open({ id: occurrenceKey });
+          if (files.length > 0) {
+            if (mediaViewer.isOpen()) {
+              mediaViewer.setFiles(files, { id: mediaViewer.getCurrent().id });
+            } else {
+              const id = selectedItem ? MediaFileAttributesFactory.getUniqueMediaViewerId(selectedItem) : files[0].id;
+              mediaViewer.setFiles(files);
+              mediaViewer.open({ id });
+            }
           }
         }
       });

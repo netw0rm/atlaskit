@@ -4,6 +4,7 @@ import {
 } from '@atlaskit/media-core';
 import { ArtifactFormat } from './artifact-format';
 import { MediaFileAttributes } from '../mediaviewer';
+import { MediaCollectionSelectedItem } from '../components/media-collection-viewer';
 
 export class MediaFileAttributesFactory {
   static create(id = '', details: FileDetails, serviceHost: string): MediaFileAttributes {
@@ -39,12 +40,21 @@ export class MediaFileAttributesFactory {
     };
   }
 
+  static getUniqueMediaViewerId(selectedItem: MediaCollectionSelectedItem) {
+    return `${selectedItem.id}-${selectedItem.occurrenceKey}`;
+  }
+
   static fromFileItem(item: FileItem, serviceHost: string): MediaFileAttributes {
     return MediaFileAttributesFactory.create(item.details.id, item.details, serviceHost);
   }
 
   static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
-    return MediaFileAttributesFactory.create(item.details.occurrenceKey, item.details, serviceHost);
+    const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
+      id: item.details.id,
+      occurrenceKey: item.details.occurrenceKey,
+      type: 'file'
+    });
+    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
   }
 
   static fromFileItemList(items: Array<FileItem>, serviceHost: string): Array<MediaFileAttributes> {

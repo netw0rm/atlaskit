@@ -337,7 +337,7 @@ describe('@atlaskit/xflow', () => {
         // contextual reactivate cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
         // reactivation info footer
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once you reactivate a subscription, billing will start at the end of your chosen billing cycle');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your subscription reactivates, billing will resume.');
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your subscription at any time in Manage applications.');
       });
     });

@@ -10,6 +10,7 @@ const ContextualConfirmTrialImage = styled.img`
   display: block;
   margin: auto;
   height: ${math.multiply(gridSize, 18)}px;
+  padding-bottom: ${math.multiply(gridSize, 2)}px;
 `;
 
 ContextualConfirmTrialImage.displayName = 'ContextualConfirmTrialImage';

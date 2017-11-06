@@ -180,7 +180,7 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="card" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.card-info"
-          defaultMessage="Once you reactivate a subscription, billing will start at the end of your chosen billing cycle."
+          defaultMessage="Once your subscription reactivates, billing will resume."
         />
       </ConfirmTrialAdminInfo>
       <ConfirmTrialAdminInfo columnSize="medium">

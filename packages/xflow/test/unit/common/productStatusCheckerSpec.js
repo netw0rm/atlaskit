@@ -12,9 +12,7 @@ import pricingActive from './mock-data/pricingActiveConfluence.json';
 import prospectivePricesInactive from './mock-data/prospectivePricesInactiveConfluence.json';
 import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivatedConfluence.json';
 
-import confluenceStatusChecker from '../../../src/jira-confluence/confluenceStatusChecker';
-
-import {
+import productStatusChecker, {
   PRODUCT_USAGE_URL,
   PRICING_URL,
   PROSPECTIVE_PRICES_URL,
@@ -70,10 +68,14 @@ const toBeOneOf = (...values) => ({
   asymmetricMatch: actual => values.includes(actual),
 });
 
-describe('confluenceStatusChecker', () => {
+describe('productStatusChecker', () => {
+  let confluenceStatusChecker;
+
   beforeEach(() => {
     jest.clearAllTimers();
     fetchMock.restore();
+
+    confluenceStatusChecker = productStatusChecker('confluence.ondemand');
   });
 
   afterEach(() => {

@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { JiraServiceDeskLogo } from '@atlaskit/logo';
-import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-intl';
-import { XFlowProvider } from '../common/components/XFlowProvider';
-import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
+import { defineMessages, FormattedMessage } from 'react-intl';
+import { isUserTrusted } from '../common/tenantContext';
+import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
+import grantAccessToUsers from '../common/grantAccessToUsers';
+import productStatusChecker from '../common/productStatusChecker';
+import startProductTrial from '../common/startProductTrial';
 
-import { isUserTrusted } from './../common/tenantContext';
-import requestTrialAccess from './requestTrialAccess';
-import requestTrialAccessWithNote from './requestTrialAccessWithNote';
-import requestTrialAccessWithoutNote from './requestTrialAccessWithoutNote';
-import cancelRequestTrialAccess from './cancelRequestTrialAccess';
-import startJSDTrial from './startJSDTrial';
-import cancelStartProductTrial from './cancelStartProductTrial';
-import grantAccessToUsers from './grantAccessToUsers';
-import retrieveJiraUsers from './retrieveJiraUsers';
-import goToProduct from './goToProduct';
-import closeLoadingDialog from './closeLoadingDialog';
-import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
-import jsdStatusChecker from './jsdStatusChecker';
+import retrieveUserManagementUsers, {
+    JIRA_SOFTWARE_GROUP,
+    SITE_ADMINS_GROUP,
+} from '../common/retrieveUserManagementUsers';
+
+const VALID_GROUPS = [
+  JIRA_SOFTWARE_GROUP,
+  SITE_ADMINS_GROUP,
+];
 
 const messages = defineMessages({
   // Start Trial
@@ -235,58 +233,23 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
 
-  requestTrialAccess,
-  requestTrialAccessWithNote,
-  requestTrialAccessWithoutNote,
-  cancelRequestTrialAccess,
+  requestTrialAccess: async () => {},
+  requestTrialAccessWithNote: async () => {},
+  requestTrialAccessWithoutNote: async () => {},
+  cancelRequestTrialAccess: async () => {},
 
-  startProductTrial: startJSDTrial,
-  cancelStartProductTrial,
-  productStatusChecker: jsdStatusChecker,
-  grantAccessToUsers,
-  retrieveUsers: retrieveJiraUsers,
-  goToProduct,
-  closeLoadingDialog,
-  closeAlreadyStartedDialog,
+  startProductTrial: startProductTrial('jira-servicedesk.ondemand'),
+  cancelStartProductTrial: async () => {},
+  productStatusChecker: productStatusChecker('jira-servicedesk.ondemand'),
+  grantAccessToUsers: grantAccessToUsers('jira-servicedesk-users', 'Jira Service Desk', 'Grants access to Jira Service Desk'),
+  retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
+  goToProduct: () => {
+    window.top.location.href = '/secure/LandingPage.jspa?product=jira-servicedesk';
+  },
+  closeLoadingDialog: async () => {},
+  closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => (false),
   setProductRequestFlag: () => { /* do nothing */ },
 });
 
-export class JiraToJSDXFlowProviderBase extends Component {
-  static propTypes = {
-    intl: intlShape,
-  };
-
-  render() {
-    const { intl } = this.props;
-    const props = {
-      ...defaultProps(intl),
-      ...this.props,
-    };
-
-    return <XFlowProvider {...props} />;
-  }
-}
-
-const JiraToJSDXFlowProviderWithIntl = injectIntl(JiraToJSDXFlowProviderBase);
-
-// eslint-disable-next-line react/no-multi-comp
-export default class JiraToJSDXFlowProvider extends Component {
-  static propTypes = {
-    locale: PropTypes.string,
-  };
-
-  static defaultProps = {
-    locale: 'en_US',
-  };
-
-  render() {
-    const { locale, ...otherProps } = this.props;
-
-    return (
-      <XFlowIntlProvider locale={locale}>
-        <JiraToJSDXFlowProviderWithIntl {...otherProps} />
-      </XFlowIntlProvider>
-    );
-  }
-}
+export default productXFlowProviderFactory(defaultProps);

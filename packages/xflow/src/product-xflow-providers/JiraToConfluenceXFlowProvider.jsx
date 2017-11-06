@@ -1,23 +1,27 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
-import { injectIntl, intlShape, defineMessages, FormattedMessage } from 'react-intl';
-import { XFlowProvider } from '../common/components/XFlowProvider';
-import XFlowIntlProvider from '../common/components/XFlowIntlProvider';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { isUserTrusted } from '../common/tenantContext';
-import requestTrialWithNote from './requestTrialWithNote';
-import cancelRequestTrial from './cancelRequestTrial';
-import startConfluenceTrial from './startConfluenceTrial';
-import cancelStartProductTrial from './cancelStartProductTrial';
-import grantAccessToUsers from './grantAccessToUsers';
-import retrieveJiraUsers from './retrieveJiraUsers';
-import goToProduct from './goToProduct';
-import closeLoadingDialog from './closeLoadingDialog';
-import closeAlreadyStartedDialog from './closeAlreadyStartedDialog';
-import confluenceStatusChecker from './confluenceStatusChecker';
-import checkConfluenceRequestFlag from './checkConfluenceRequestFlag';
-import setConfluenceRequestFlag from './setConfluenceRequestFlag';
+import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
+import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/alreadyRequestedFlag';
+import productRequest from '../common/productRequest';
+import startProductTrial from '../common/startProductTrial';
+import productStatusChecker from '../common/productStatusChecker';
+import grantAccessToUsers from '../common/grantAccessToUsers';
+import retrieveUserManagementUsers, {
+    JIRA_SOFTWARE_GROUP,
+    JIRA_CORE_GROUP,
+    JIRA_SERVICE_DESK_GROUP,
+    SITE_ADMINS_GROUP,
+} from '../common/retrieveUserManagementUsers';
+
+const VALID_GROUPS = [
+  JIRA_SOFTWARE_GROUP,
+  JIRA_CORE_GROUP,
+  JIRA_SERVICE_DESK_GROUP,
+  SITE_ADMINS_GROUP,
+];
 
 const messages = defineMessages({
   // Start Trial
@@ -215,56 +219,18 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isUserTrusted,
   canCurrentUserGrantAccessToProducts: isUserTrusted,
 
-  requestTrialWithNote,
-  cancelRequestTrial,
-
-  startProductTrial: startConfluenceTrial,
-  cancelStartProductTrial,
-  productStatusChecker: confluenceStatusChecker,
-  grantAccessToUsers,
-  retrieveUsers: retrieveJiraUsers,
-  goToProduct,
-  closeLoadingDialog,
-  closeAlreadyStartedDialog,
-  checkProductRequestFlag: checkConfluenceRequestFlag,
-  setProductRequestFlag: setConfluenceRequestFlag,
+  requestTrialWithNote: productRequest('confluence.ondemand'),
+  cancelRequestTrial: async () => {},
+  startProductTrial: startProductTrial('confluence.ondemand'),
+  cancelStartProductTrial: async () => {},
+  productStatusChecker: productStatusChecker('confluence.ondemand'),
+  grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
+  retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
+  goToProduct: () => { window.top.location.href = '/wiki/'; },
+  closeLoadingDialog: async () => {},
+  closeAlreadyStartedDialog: async () => {},
+  checkProductRequestFlag: () => getAlreadyRequestedFlag('confluence.ondemand'),
+  setProductRequestFlag: () => setAlreadyRequestedFlag('confluence.ondemand'),
 });
 
-export class JiraToConfluenceXFlowProviderBase extends Component {
-  static propTypes = {
-    intl: intlShape,
-  };
-
-  render() {
-    const { intl } = this.props;
-    const props = {
-      ...defaultProps(intl),
-      ...this.props,
-    };
-
-    return <XFlowProvider {...props} />;
-  }
-}
-
-const JiraToConfluenceXFlowProviderWithIntl = injectIntl(JiraToConfluenceXFlowProviderBase);
-
-// eslint-disable-next-line react/no-multi-comp
-export default class JiraToConfluenceXFlowProvider extends Component {
-  static propTypes = {
-    locale: PropTypes.string,
-  };
-
-  static defaultProps = {
-    locale: 'en_US',
-  };
-
-  render() {
-    const { locale, ...otherProps } = this.props;
-
-    return (
-      <XFlowIntlProvider locale={locale}>
-        <JiraToConfluenceXFlowProviderWithIntl {...otherProps} />
-      </XFlowIntlProvider>
-    );
-  }
-}
+export default productXFlowProviderFactory(defaultProps);

@@ -50,6 +50,21 @@ export const wrapIndex = (emojis: EmojiDescription[], index: number): number => 
   return newIndex % len;
 };
 
+export const findWordIndex = (text, noun) => {
+  let index = text.indexOf(noun);
+  while (index !== -1) {
+    if (
+      (index === 0 || text.substr(index - 1, 1) === ' ') &&
+      ((index + noun.length === text.length) || text.substr(index + noun.length, 1) === ' ')
+    ) {
+      break;
+    }
+    index = text.indexOf(noun, index + 1);
+  }
+
+  return index;
+};
+
 export const getHighlights = (nouns, doc, emojiProvider) => {
   const options: SearchOptions = {
     limit: 1,
@@ -59,11 +74,12 @@ export const getHighlights = (nouns, doc, emojiProvider) => {
   const emojis = {};
 
   doc.descendants((node, pos) => {
-    if (node.isText && node.text && node.text.length > 2) {
+    if (node.isText && node.text) {
       nouns.forEach(noun => {
-        const index = (node.text || '').indexOf(noun);
+        const text = node.text || '';
+        const index = findWordIndex(text, noun);
 
-        if (index > -1) {
+        if (index > -1 && noun.length > 2) {
           const result = emojiProvider.emojiRepository.search(noun, options);
           if (result.emojis.length) {
             const emoji = result.emojis[0];

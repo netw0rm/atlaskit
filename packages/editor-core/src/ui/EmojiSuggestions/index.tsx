@@ -28,7 +28,7 @@ export interface Props {
 }
 
 const LIST_LIMIT: number = 5;
-const SUGGESTIONS_TIMEOUT: number = 1000;
+const SUGGESTIONS_TIMEOUT: number = 500;
 
 export default class EmojiSuggestions extends Component<Props, any> {
   private debounced: number | null = null;

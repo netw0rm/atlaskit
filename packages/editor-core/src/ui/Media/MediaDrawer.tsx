@@ -235,6 +235,7 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
     //       is not bijective. In the future, we want the FilmStrip to only operate on
     //       Identifiers which will remove the need for mapping.
     const { items } = this.state;
+    const { mediaPluginState } = this.props;
 
     const sortedItems: Identifier[] = [];
     sortedProps.forEach((cardProps: any) => {
@@ -249,6 +250,12 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
     });
 
     this.setState({ items: sortedItems });
+
+    // Make sure the plugin state has the sorted array
+    // TODO: can this be handled in a more elegant manner?
+    if (mediaPluginState) {
+      mediaPluginState.media = sortedItems;
+    }
   }
 
   render() {

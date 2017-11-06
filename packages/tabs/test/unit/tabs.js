@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { TabsStateless } from '../../src/index';
 import TabsNav from '../../src/components/TabsNav';
@@ -26,13 +26,13 @@ describe(name, () => {
       });
 
       it('should render the TabsNav element', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
+        const wrapper = shallow(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const tabsNav = wrapper.find(TabsNav);
         expect(tabsNav).toHaveLength(1);
       });
 
       it('should render tabs inside the TabsNav element', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
+        const wrapper = shallow(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const tabsNav = wrapper.find(TabsNav);
         tabsNav.props().tabs.forEach((tab, i) => {
           const sampleTab = sampleTabs[i];
@@ -42,7 +42,7 @@ describe(name, () => {
       });
 
       it('should render the selected TabPane item', () => {
-        const wrapper = mount(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
+        const wrapper = shallow(<TabsStateless tabs={sampleTabs} onKeyboardNav={NOOP} />);
         const selectedTab = sampleTabs[1];
 
         const tab = wrapper.find(TabPane);

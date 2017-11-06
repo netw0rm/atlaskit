@@ -62,7 +62,7 @@ describe(name, () => {
       describe('onSelect prop', () => {
         it('is not fired for default selected tab', () => {
           const spy = jest.fn();
-          mount(
+          shallow(
             <Tabs
               onSelect={spy}
               tabs={sampleTabsDefaultSelected}

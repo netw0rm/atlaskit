@@ -13,7 +13,7 @@ AvatarImage.defaultProps = { appearance, size };
 describe('Avatar', () =>
   describe('Image', () => {
     it('should render an image span when the src is set"', () => {
-      const wrapper = mount(<AvatarImage src={src} />);
+      const wrapper = shallow(<AvatarImage src={src} />);
       expect(wrapper.find(imgSpan).exists()).toBe(true);
     });
     it('should not render an image span when the src is not set"', () =>
@@ -99,7 +99,7 @@ describe('Avatar', () =>
         });
 
         it('should NOT render an img tag when src is NOT set', () => {
-          wrapper = mount(<AvatarImage />);
+          wrapper = shallow(<AvatarImage />);
           expect(wrapper.find('img').exists()).toBe(false);
         });
       });

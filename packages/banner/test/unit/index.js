@@ -39,7 +39,7 @@ describe('banner', () => {
     });
     describe('isOpen prop', () => {
       it('should default to not being open', () =>
-        expect(mount(<Banner />).prop('isOpen')).toBe(false)
+        expect(shallow(<Banner />).prop('isOpen')).toBe(false)
       );
       it('should apply a max-height of 52px when isOpen', () => {
         const props = { isOpen: true };

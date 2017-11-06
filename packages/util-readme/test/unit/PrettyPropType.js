@@ -1,11 +1,11 @@
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import React from 'react';
 
 import PrettyPropType from '../../src/PrettyPropType';
 
 describe('PrettyPropType', () => {
   it('skips simple prop types', () => {
-    const el = mount(<PrettyPropType type={{ name: 'string' }} />);
+    const el = shallow(<PrettyPropType type={{ name: 'string' }} />);
     expect(el.children()).toHaveLength(0);
   });
 

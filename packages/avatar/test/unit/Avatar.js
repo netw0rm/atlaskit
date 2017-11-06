@@ -44,7 +44,7 @@ describe('Avatar', () => {
 
   describe('presence property', () => {
     it('should NOT be visible when omitted', () => {
-      const wrapper = mount(<Avatar />);
+      const wrapper = shallow(<Avatar />);
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 

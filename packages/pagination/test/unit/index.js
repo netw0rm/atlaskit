@@ -10,7 +10,7 @@ import { name } from '../../package.json';
 describe(name, () => {
   describe('stateless', () => {
     it('should not render when total is 0', () => {
-      const wrapper = mount(<PaginationStateless total={0} current={0} />);
+      const wrapper = shallow(<PaginationStateless total={0} current={0} />);
       expect(wrapper.find(Button).length).toBe(0);
     });
 
@@ -25,7 +25,7 @@ describe(name, () => {
     });
 
     it('should render Prev button disabled when current in 1', () => {
-      const wrapper = mount(<PaginationStateless total={3} />);
+      const wrapper = shallow(<PaginationStateless total={3} />);
       const prevButton = wrapper.find(Button).at(0);
       expect(prevButton.prop('isDisabled')).toBe(true);
     });
@@ -62,7 +62,7 @@ describe(name, () => {
 
     it('should invoke callback passed to onSetPage', () => {
       const onSetPage = jest.fn();
-      const wrapper = mount(<PaginationStateless total={3} current={2} onSetPage={onSetPage} />);
+      const wrapper = shallow(<PaginationStateless total={3} current={2} onSetPage={onSetPage} />);
       const buttons = wrapper.find(Button);
 
       buttons.at(1).simulate('click');
@@ -105,7 +105,7 @@ describe(name, () => {
 
       it('when clicked on Next and last page is active', () => {
         const onSetPage = jest.fn();
-        const wrapper = mount(
+        const wrapper = shallow(
           <PaginationStateless
             total={3}
             current={3}

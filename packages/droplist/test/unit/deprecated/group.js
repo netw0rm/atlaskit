@@ -26,7 +26,7 @@ describe(`${name} - deprecated API - group`, () => {
   });
 
   it('should generate corrent ariaLabel from heading and elemAfter', () => {
-    const wrapper = mount(<Group heading="test" elemAfter="elem" />);
+    const wrapper = shallow(<Group heading="test" elemAfter="elem" />);
     expect(wrapper.instance().getAriaLabel()).toBe('test elem');
   });
 });

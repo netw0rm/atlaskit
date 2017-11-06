@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import CommentField from '../../src/components/Field';
 import { name } from '../../package.json';
@@ -25,7 +25,7 @@ describe(name, () => {
         it('should render a link', () => {
           const children = <span>children</span>;
           const href = '/test-href';
-          const wrapper = mount(<CommentField href={href}>{children}</CommentField>);
+          const wrapper = shallow(<CommentField href={href}>{children}</CommentField>);
 
           expect(wrapper.find(Anchor).length).toBe(1);
           expect(wrapper.find(Anchor).contains(children)).toBe(true);
@@ -33,7 +33,7 @@ describe(name, () => {
         });
 
         it('should render link with extra styles', () => {
-          const wrapper = mount(<CommentField href="#" hasAuthor />);
+          const wrapper = shallow(<CommentField href="#" hasAuthor />);
           expect(wrapper.find(Anchor).prop('hasAuthor')).toBe(true);
         });
 
@@ -53,14 +53,14 @@ describe(name, () => {
       describe('if href not provided', () => {
         it('should render a span', () => {
           const children = <span>children</span>;
-          const wrapper = mount(<CommentField>{children}</CommentField>);
+          const wrapper = shallow(<CommentField>{children}</CommentField>);
 
           expect(wrapper.find(Span).length).toBe(1);
           expect(wrapper.find(Span).contains(children)).toBe(true);
         });
 
         it('should render span with author styles', () => {
-          const wrapper = mount(<CommentField hasAuthor />);
+          const wrapper = shallow(<CommentField hasAuthor />);
           expect((wrapper.find(Span)).prop('hasAuthor')).toBe(true);
         });
 

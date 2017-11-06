@@ -25,7 +25,7 @@ describe('FieldTextAreaStateless', () => {
   describe('properties', () => {
     describe('compact prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(
+        expect(mount(
           <FieldTextAreaStateless onChange={() => {}} compact label="" />
         ).find(Base).props().isCompact).toBe(true);
       });
@@ -34,7 +34,7 @@ describe('FieldTextAreaStateless', () => {
     describe('disabled prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextAreaStateless onChange={() => {}} disabled label="" />).find(Base).props().isDisabled
+          mount(<FieldTextAreaStateless onChange={() => {}} disabled label="" />).find(Base).props().isDisabled
         ).toBe(true);
       });
     });
@@ -70,7 +70,7 @@ describe('FieldTextAreaStateless', () => {
     describe('required prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(
+          mount(
             <FieldTextAreaStateless onChange={() => {}} required label="" />
         ).find(Base).props().isRequired
         ).toBe(true);
@@ -80,7 +80,7 @@ describe('FieldTextAreaStateless', () => {
     describe('isInvalid prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(
+          mount(
             <FieldTextAreaStateless onChange={() => {}} isInvalid label="" />
         ).find(Base).props().isInvalid
         ).toBe(true);
@@ -96,7 +96,7 @@ describe('FieldTextAreaStateless', () => {
 
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(
+        expect(mount(
           <FieldTextAreaStateless onChange={() => {}} invalidMessage="test" label="" />
       ).find(Base).props().invalidMessage).toBe('test');
       });
@@ -128,7 +128,7 @@ describe('FieldTextAreaStateless', () => {
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextAreaStateless onChange={spy} label="" />);
+      const wrapper = shallow(<FieldTextAreaStateless onChange={spy} label="" />);
       wrapper.find(TextArea).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

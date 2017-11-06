@@ -30,34 +30,34 @@ describe(`${name} - deprecated API - item`, () => {
 
     it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).toBe(true);
-      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>).contains(Icon)).toBe(true);
-      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemBefore={Icon} type="checkbox">sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemBefore={Icon} type="radio">sample</Item>).contains(Icon)).toBe(true);
     });
 
     it('should render elemAfter for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemAfter={Icon}>sample</Item>).contains(Icon)).toBe(true);
-      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>).contains(Icon)).toBe(true);
-      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemAfter={Icon}>sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemAfter={Icon} type="checkbox">sample</Item>).contains(Icon)).toBe(true);
+      expect(shallow(<Item elemAfter={Icon} type="radio">sample</Item>).contains(Icon)).toBe(true);
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />).find(Radio).length).toBeGreaterThan(0);
-      expect(mount(<Item type="checkbox" />).find(Checkbox).length).toBeGreaterThan(0);
+      expect(shallow(<Item type="radio" />).find(Radio).length).toBeGreaterThan(0);
+      expect(shallow(<Item type="checkbox" />).find(Checkbox).length).toBeGreaterThan(0);
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />).find(Radio).length).toBe(0);
+      expect(shallow(<Item type="link" />).find(Radio).length).toBe(0);
     });
 
     it('should render tooltip when tooltipDescription is not empty', () => {
-      expect(mount(<Item tooltipDescription="foo" />).find(Tooltip).length).toBe(1);
+      expect(shallow(<Item tooltipDescription="foo" />).find(Tooltip).length).toBe(1);
     });
 
     it('should NOT render tooltip when tooltipDescription is empty', () => {
-      expect(mount(<Item />).find(Tooltip).length).toBe(0);
-      expect(mount(<Item tooltipPosition="left" />).find(Tooltip).length).toBe(0);
+      expect(shallow(<Item />).find(Tooltip).length).toBe(0);
+      expect(shallow(<Item tooltipPosition="left" />).find(Tooltip).length).toBe(0);
     });
   });
 
@@ -83,8 +83,8 @@ describe(`${name} - deprecated API - item`, () => {
     });
 
     it('should NOT have "active" prop passed to Element for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(Element).prop('isActive')).toBe(false);
-      expect(mount(<Item type="checkbox" isActive />).find(Element).prop('isActive')).toBe(false);
+      expect(shallow(<Item type="radio" isActive />).find(Element).prop('isActive')).toBe(false);
+      expect(shallow(<Item type="checkbox" isActive />).find(Element).prop('isActive')).toBe(false);
     });
 
     it('should have "checked" data-attribute when checkbox or radio is checked', () => {
@@ -110,8 +110,8 @@ describe(`${name} - deprecated API - item`, () => {
 
     it('should correctly pass "isPrimary" to Element component', () => {
       // appearance="primary" will be passed as an isPrimary prop
-      expect(mount(<Item />).find(Element).prop('isPrimary')).toBe(false);
-      expect(mount(<Item appearance="primary" />).find(Element).prop('isPrimary')).toBe(true);
+      expect(shallow(<Item />).find(Element).prop('isPrimary')).toBe(false);
+      expect(shallow(<Item appearance="primary" />).find(Element).prop('isPrimary')).toBe(true);
     });
   });
 
@@ -160,7 +160,7 @@ describe(`${name} - deprecated API - item`, () => {
 
   describe('secondary text', () => {
     it('should render content inside', () => {
-      expect(mount(<SecondaryText>secondary text</SecondaryText>).text()).toBe('secondary text');
+      expect(shallow(<SecondaryText>secondary text</SecondaryText>).text()).toBe('secondary text');
     });
   });
 

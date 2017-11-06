@@ -25,14 +25,14 @@ describe('FieldTextStateless', () => {
   describe('properties', () => {
     describe('compact prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless label="" compact />).find(Base).props().isCompact).toBe(true);
+        expect(mount(<FieldTextStateless label="" compact />).find(Base).props().isCompact).toBe(true);
       });
     });
 
     describe('disabled prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" disabled />).find(Base).props().isDisabled
+          mount(<FieldTextStateless label="" disabled />).find(Base).props().isDisabled
         ).toBe(true);
       });
     });
@@ -62,7 +62,7 @@ describe('FieldTextStateless', () => {
     describe('required prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" required />).find(Base).props().isRequired
+          mount(<FieldTextStateless label="" required />).find(Base).props().isRequired
         ).toBe(true);
       });
     });
@@ -70,7 +70,7 @@ describe('FieldTextStateless', () => {
     describe('isInvalid prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(
-          shallow(<FieldTextStateless label="" isInvalid />).find(Base).props().isInvalid
+          mount(<FieldTextStateless label="" isInvalid />).find(Base).props().isInvalid
         ).toBe(true);
       });
     });
@@ -84,7 +84,7 @@ describe('FieldTextStateless', () => {
 
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
-        expect(shallow(<FieldTextStateless label="" invalidMessage="test" />).find(Base).props().invalidMessage).toBe('test');
+        expect(mount(<FieldTextStateless label="" invalidMessage="test" />).find(Base).props().invalidMessage).toBe('test');
       });
     });
 
@@ -142,7 +142,7 @@ describe('FieldTextStateless', () => {
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextStateless label="" onChange={spy} />);
+      const wrapper = shallow(<FieldTextStateless label="" onChange={spy} />);
       wrapper.find(Input).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

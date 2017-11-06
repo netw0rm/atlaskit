@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
 import ModalDialog from '../../src';
@@ -23,7 +23,7 @@ describe('modal-dialog', () => {
   describe('props', () => {
     describe('height', () => {
       it('should be passed to Dialog', () => {
-        const wrapper = mount(<StubDialog height="42%" />);
+        const wrapper = shallow(<StubDialog height="42%" />);
 
         wait(() => {
           const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
@@ -52,7 +52,7 @@ describe('modal-dialog', () => {
         .prop('dialogWidth') === expected;
 
       it('should be passed to Dialog', () => {
-        const wrapper = mount(<StubDialog width="42%" />);
+        const wrapper = shallow(<StubDialog width="42%" />);
 
         wait(() => {
           const dialogWidthProp = wrapper.find(Dialog).prop('widthValue');
@@ -87,7 +87,7 @@ describe('modal-dialog', () => {
     describe('header', () => {
       it('should render when set', () => {
         const node = <span>My header</span>;
-        const wrapper = mount(<StubDialog header={() => node} />);
+        const wrapper = shallow(<StubDialog header={() => node} />);
 
         wait(() => {
           expect(wrapper.contains(node)).toBe(true);
@@ -98,7 +98,7 @@ describe('modal-dialog', () => {
     describe('footer', () => {
       it('should render when set', () => {
         const node = <span>My footer</span>;
-        const wrapper = mount(<StubDialog footer={() => node} />);
+        const wrapper = shallow(<StubDialog footer={() => node} />);
 
         wait(() => {
           expect(wrapper.contains(node)).toBe(true);
@@ -120,7 +120,7 @@ describe('modal-dialog', () => {
     describe('onClose', () => {
       it('should trigger when blanket clicked', () => {
         const spy = jest.fn();
-        const wrapper = mount(<StubDialog onClose={spy} />);
+        const wrapper = shallow(<StubDialog onClose={spy} />);
 
         wait(() => {
           const blanket = wrapper.find(Blanket);
@@ -132,7 +132,7 @@ describe('modal-dialog', () => {
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = jest.fn();
-        const wrapper = mount(<StubDialog onClose={spy} />);
+        const wrapper = shallow(<StubDialog onClose={spy} />);
 
         wait(() => {
           wrapper.find(Positioner).simulate('click');
@@ -143,7 +143,7 @@ describe('modal-dialog', () => {
       it('should not trigger when blanket content clicked', () => {
         const spy = jest.fn();
         const node = <span>my content</span>;
-        const wrapper = mount(<StubDialog onClose={spy}>{node}</StubDialog>);
+        const wrapper = shallow(<StubDialog onClose={spy}>{node}</StubDialog>);
 
         wait(() => {
           wrapper.find(node).simulate('click');
@@ -159,7 +159,7 @@ describe('modal-dialog', () => {
   */
   describe('scrolling header/footer keylines', () => {
     it('should enable header keyline only when header provided', () => {
-      const wrapper = mount(<StubDialog />);
+      const wrapper = shallow(<StubDialog />);
 
       wait(() => {
         const content = wrapper.find(Content);
@@ -174,7 +174,7 @@ describe('modal-dialog', () => {
     });
 
     it('should enable footer keyline only when footer provided', () => {
-      const wrapper = mount(<StubDialog />);
+      const wrapper = shallow(<StubDialog />);
 
       wait(() => {
         const content = wrapper.find(Content);
@@ -192,7 +192,7 @@ describe('modal-dialog', () => {
   describe('chromeless', () => {
     it('header should not render if dialog is chromeless', () => {
       const node = <span>My header</span>;
-      const wrapper = mount(<StubDialog isChromeless header={() => node} />);
+      const wrapper = shallow(<StubDialog isChromeless header={() => node} />);
 
       wait(() => {
         expect(wrapper.contains(node)).toBe(false);
@@ -201,7 +201,7 @@ describe('modal-dialog', () => {
 
     it('footer should not render if dialog is chromeless', () => {
       const node = <span>My footer</span>;
-      const wrapper = mount(<StubDialog isChromeless footer={() => node} />);
+      const wrapper = shallow(<StubDialog isChromeless footer={() => node} />);
 
       wait(() => {
         expect(wrapper.contains(node)).toBe(false);

@@ -29,17 +29,17 @@ describe(`${name} - ItemGroup`, () => {
         expect(wrapper.find(GroupTitleText).text()).toBe('Hello');
       });
       it('should not render title if omitted', () => {
-        const wrapper = mount(<ItemGroup />);
+        const wrapper = shallow(<ItemGroup />);
         expect(wrapper.find(GroupTitle).length).toBe(0);
       });
     });
     describe('elemAfter', () => {
       it('should not be rendered if title is omitted', () => {
-        const wrapper = mount(<ItemGroup elemAfter="Hello" />);
+        const wrapper = shallow(<ItemGroup elemAfter="Hello" />);
         expect(wrapper.find(GroupTitleAfter).length).toBe(0);
       });
       it('should be rendered if title is provided', () => {
-        const wrapper = mount(<ItemGroup elemAfter="Hello" title="Hello" />);
+        const wrapper = shallow(<ItemGroup elemAfter="Hello" title="Hello" />);
         expect(wrapper.find(GroupTitleAfter).length).toBe(1);
       });
       it('should accept a string value', () => {
@@ -47,7 +47,7 @@ describe(`${name} - ItemGroup`, () => {
         expect(wrapper.find(GroupTitleAfter).text()).toBe('Hello there');
       });
       it('should accept a node value', () => {
-        const wrapper = mount(
+        const wrapper = shallow(
           <ItemGroup
             elemAfter={<span className="after-custom" />}
             title="Hi"

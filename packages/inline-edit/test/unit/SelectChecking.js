@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
 import InlineEditStateless from '../../src/components/InlineEditStateless';
 
@@ -28,7 +28,7 @@ describe('@atlaskit/inline-edit', () => {
   it('should call onEditRequested() when mouse does not move', () => {
     const spy = jest.fn();
 
-    const wrapper = mount(<InlineEditStateless {...props} onEditRequested={spy} />);
+    const wrapper = shallow(<InlineEditStateless {...props} onEditRequested={spy} />);
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 0, 0);
     expect(spy).toHaveBeenCalled();
@@ -36,7 +36,7 @@ describe('@atlaskit/inline-edit', () => {
   it('should call onEditRequested() when mouse moves slightly on the y axis', () => {
     const spy = jest.fn();
 
-    const wrapper = mount(<InlineEditStateless {...props} onEditRequested={spy} />);
+    const wrapper = shallow(<InlineEditStateless {...props} onEditRequested={spy} />);
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 0, 4);
     expect(spy).toHaveBeenCalled();
@@ -44,7 +44,7 @@ describe('@atlaskit/inline-edit', () => {
   it('should call onEditRequested() when mouse moves slightly on the x axis', () => {
     const spy = jest.fn();
 
-    const wrapper = mount(<InlineEditStateless {...props} onEditRequested={spy} />);
+    const wrapper = shallow(<InlineEditStateless {...props} onEditRequested={spy} />);
     mouseDown(wrapper.find(FieldBaseWrapper), 0, 0);
     mouseClick(wrapper.find(FieldBaseWrapper), 4, 0);
     expect(spy).toHaveBeenCalled();

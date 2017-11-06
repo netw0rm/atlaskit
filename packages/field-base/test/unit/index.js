@@ -84,7 +84,7 @@ describe('ak-field-base', () => {
 
     describe('isFocused prop = true AND isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
-        const wrapper = shallow(<FieldBaseStateless {...defaultProps} isFocused isInvalid />);
+        const wrapper = mount(<FieldBaseStateless {...defaultProps} isFocused isInvalid />);
         expect(wrapper.find(Content).prop('isFocused')).toBe(true);
         expect(wrapper.find(Content).prop('invalid')).toBe(false);
       });
@@ -136,7 +136,7 @@ describe('ak-field-base', () => {
 
       describe('and isInvalid', () =>
         it('should not render Spinner', () => {
-          const wrapper = mount(<FieldBaseStateless {...defaultProps} isLoading isInvalid />);
+          const wrapper = shallow(<FieldBaseStateless {...defaultProps} isLoading isInvalid />);
           expect(wrapper.find(Spinner).length).toBe(0);
         })
       );

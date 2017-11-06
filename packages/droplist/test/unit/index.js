@@ -97,7 +97,7 @@ describe(`${name} - core`, () => {
     });
 
     it('should not show a Spinner when it is loading but not open', () => {
-      const wrapper = mount(<Droplist isLoading>{itemsList}</Droplist>);
+      const wrapper = shallow(<Droplist isLoading>{itemsList}</Droplist>);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
   });

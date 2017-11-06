@@ -17,7 +17,7 @@ describe('inline-dialog', () => {
     });
 
     it('should pass the expected default props to Layer', () => {
-      const wrapper = mount(<InlineDialog />);
+      const wrapper = shallow(<InlineDialog />);
       const layer = wrapper.find(Layer);
       expect(layer.prop('autoFlip')).toBe(false);
       expect(layer.prop('content')).toBe(null);
@@ -38,7 +38,7 @@ describe('inline-dialog', () => {
     });
 
     it('should not render the content container if isOpen is not set', () => {
-      const wrapper = mount(<InlineDialog />);
+      const wrapper = shallow(<InlineDialog />);
       expect(wrapper.find(Container).exists()).toBe(false);
     });
   });
@@ -52,7 +52,7 @@ describe('inline-dialog', () => {
     });
 
     it('should not render content if isOpen is not set', () => {
-      const wrapper = mount(<InlineDialog content={content} />);
+      const wrapper = shallow(<InlineDialog content={content} />);
       expect(wrapper.find('#content').exists()).toBe(false);
     });
 
@@ -76,7 +76,7 @@ describe('inline-dialog', () => {
   describe('shouldFlip prop', () => {
     describe('should be reflected onto the Layer component', () => {
       it('for a boolean value', () => {
-        const wrapper = mount(<InlineDialog shouldFlip />);
+        const wrapper = shallow(<InlineDialog shouldFlip />);
         const layer = wrapper.find(Layer);
         expect(layer.length).toBeGreaterThan(0);
         expect(layer.prop('autoFlip')).toBe(true);
@@ -84,7 +84,7 @@ describe('inline-dialog', () => {
 
       it('for an array of strings', () => {
         const shouldFlipValue = ['top', 'bottom'];
-        const wrapper = mount(<InlineDialog shouldFlip={shouldFlipValue} />);
+        const wrapper = shallow(<InlineDialog shouldFlip={shouldFlipValue} />);
         const layer = wrapper.find(Layer);
         expect(layer.length).toBeGreaterThan(0);
         expect(layer.prop('autoFlip')).toBe(shouldFlipValue);
@@ -95,10 +95,10 @@ describe('inline-dialog', () => {
   describe('onContentClick', () => {
     it('should be triggered when the content is clicked', () => {
       const spy = jest.fn();
-      const wrapper = mount(
+      const wrapper = shallow(
         <InlineDialog onContentClick={spy} content={<div>content</div>} isOpen />
       );
-      const content = mount(wrapper.find(Layer).props().content);
+      const content = shallow(wrapper.find(Layer).props().content);
 
       content.simulate('click');
       expect(spy).toHaveBeenCalledTimes(1);
@@ -132,7 +132,7 @@ describe('inline-dialog', () => {
   describe('handleClickOutside', () => {
     it('should trigger the onClose prop', () => {
       const spy = jest.fn();
-      const wrapper = mount(<InlineDialog onClose={spy} isOpen />);
+      const wrapper = shallow(<InlineDialog onClose={spy} isOpen />);
       const event = {
         target: document.createElement('div'),
       };
@@ -145,7 +145,7 @@ describe('inline-dialog', () => {
 
     it('should NOT trigger the onClose prop when isOpen is false', () => {
       const spy = jest.fn();
-      const wrapper = mount(<InlineDialog onClose={spy} />);
+      const wrapper = shallow(<InlineDialog onClose={spy} />);
       const event = {
         target: document.createElement('div'),
       };

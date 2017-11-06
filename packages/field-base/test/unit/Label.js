@@ -23,7 +23,7 @@ describe('ak-field-base', () =>
     describe('label prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = mount(<Label label={label} />);
+        const wrapper = shallow(<Label label={label} />);
         expect(wrapper.find(LabelInner).childAt(0).text()).toBe(label);
       });
     });
@@ -31,7 +31,7 @@ describe('ak-field-base', () =>
     describe('hideLabel prop', () => {
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
-        const wrapper = mount(<Label label={label} isLabelHidden />);
+        const wrapper = shallow(<Label label={label} isLabelHidden />);
         expect(wrapper.find(LabelInner).prop('isHidden')).toBe(true);
       });
     });
@@ -54,15 +54,15 @@ describe('ak-field-base', () =>
       });
 
       it('should set prop for it', () => {
-        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).toBe(false);
-        expect(mount(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).toBe(true);
+        expect(shallow(<Label label="required prop label" />).find(LabelInner).prop('inlineEdit')).toBe(false);
+        expect(shallow(<Label label="required prop label" appearance="inline-edit" />).find(LabelInner).prop('inlineEdit')).toBe(true);
       });
     });
 
     describe('isFirstChild prop', () => {
       it('should set prop for it', () => {
-        expect(mount(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).toBe(undefined);
-        expect(mount(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).toBe(true);
+        expect(shallow(<Label label="required prop label" />).find(LabelInner).prop('firstChild')).toBe(undefined);
+        expect(shallow(<Label label="required prop label" isFirstChild />).find(LabelInner).prop('firstChild')).toBe(true);
       });
     });
 

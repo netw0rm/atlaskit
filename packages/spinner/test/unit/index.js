@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 
 import sinon from 'sinon';
@@ -23,7 +23,7 @@ afterEach(() => {
 
 describe('Spinner', () => {
   it('should be possible to create a component', () => {
-    const wrapper = mount(<Spinner />);
+    const wrapper = shallow(<Spinner />);
     expect(wrapper).not.toBe(undefined);
   });
 
@@ -61,12 +61,12 @@ describe('Spinner', () => {
 
   describe('isCompleting prop', () => {
     it('should add a spinner glyph when not set', () => {
-      const wrapper = mount(<Spinner />);
+      const wrapper = shallow(<Spinner />);
       expect(wrapper.find(SpinnerGlyph).length).toBe(1);
     });
 
     it('should remove the spinner glyph when set to true', () => {
-      const wrapper = mount(<Spinner isCompleting />);
+      const wrapper = shallow(<Spinner isCompleting />);
       expect(wrapper.find(SpinnerGlyph).length).toBe(0);
     });
   });

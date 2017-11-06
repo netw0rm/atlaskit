@@ -254,7 +254,7 @@ export default class MediaDrawer extends Component<MediaDrawerProps, MediaDrawer
     // Make sure the plugin state has the sorted array
     // TODO: can this be handled in a more elegant manner?
     if (mediaPluginState) {
-      mediaPluginState.media = sortedItems;
+      mediaPluginState.media = [...sortedItems];
     }
   }
 

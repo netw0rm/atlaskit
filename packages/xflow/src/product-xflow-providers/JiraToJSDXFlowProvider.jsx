@@ -1,7 +1,7 @@
 import React from 'react';
 import { JiraServiceDeskLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { isUserTrusted } from './../common/tenantContext';
+import { isUserTrusted } from '../common/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/grantAccessToUsers';
 import productStatusChecker from '../common/productStatusChecker';

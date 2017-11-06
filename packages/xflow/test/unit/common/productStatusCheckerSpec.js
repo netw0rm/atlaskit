@@ -15,7 +15,7 @@ import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivat
 import productStatusChecker, {
   PRODUCT_USAGE_URL,
   PRICING_URL,
-  PROSPECTIVE_PRICES_URL
+  PROSPECTIVE_PRICES_URL,
 } from '../../../src/common/productStatusChecker';
 
 import {

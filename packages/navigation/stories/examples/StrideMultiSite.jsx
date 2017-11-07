@@ -1,10 +1,9 @@
 import { action } from '@kadira/storybook';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import AkDropdown, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
+import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import Avatar from '@atlaskit/avatar';
 import Button from '@atlaskit/button';
 import AKInlineDialog from '@atlaskit/inline-dialog';
-import MoreIcon from '@atlaskit/icon/glyph/more';
 import Lorem from 'react-lorem-component';
 import ToolTip from '@atlaskit/tooltip';
 import LobbyIcon from '@atlaskit/icon/glyph/bullet-list';
@@ -20,6 +19,7 @@ import React, { PureComponent } from 'react';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import SelectableDropdownMenu from '../components/SelectableDropdownMenu';
+import SiteSelectorMenu from './SiteSelectorMenu';
 import {
   akColorN20 as defaultColor,
 } from '@atlaskit/util-shared-styles';
@@ -175,57 +175,6 @@ export default class StrideMultiSite extends PureComponent {
       </SelectableDropdownMenu>
     );
 
-    const siteSelectorMenu = (
-      <div
-        style={{
-          border: '1px solid #4A79BE',
-          borderRadius: 5,
-          width: 34,
-          height: 34,
-          display: 'inline-block',
-          position: 'relative',
-          backgroundColor: '#0747A6',
-          overflow: 'hidden',
-        }}
-      >
-        <AkDropdown
-          position="right bottom"
-          triggerType="button"
-          triggerButtonProps={{
-            className: 'site-selector-dropdown-trigger',
-            iconBefore: <MoreIcon label="" primaryColor="white" />,
-          }}
-        >
-          <DropdownItemGroup title="Teams">
-            <DropdownItem
-              key="1"
-              elemBefore={
-                <Avatar
-                  appearance="square"
-                  name="Site Four"
-                  enableTooltip={false}
-                />
-              }
-            >
-              Site Four
-            </DropdownItem>
-            <DropdownItem
-              key="2"
-              elemBefore={
-                <Avatar
-                  appearance="square"
-                  name="Site Five"
-                  enableTooltip={false}
-                />
-              }
-            >
-              Site Five
-            </DropdownItem>
-          </DropdownItemGroup>
-        </AkDropdown>
-      </div>
-    );
-
     const siteTwo = (
       <div style={{ marginBottom: 8 }}>
         <ToolTip
@@ -272,7 +221,13 @@ export default class StrideMultiSite extends PureComponent {
             globalPrimaryIconAppearance="square"
             globalPrimaryItemHref="//"
             globalSearchIcon={globalSearchIcon}
-            globalSecondaryActions={[siteTwo, siteThree, siteSelectorMenu, settingsMenu, helpMenu]}
+            globalSecondaryActions={[
+              siteTwo,
+              siteThree,
+              <SiteSelectorMenu />,
+              settingsMenu,
+              helpMenu,
+            ]}
             isOpen={this.state.isOpen}
             width={this.state.width}
             hasScrollHintTop

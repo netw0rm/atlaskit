@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import GlobalItemInner, { globalItemStyles } from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
-import type { ReactElement, ReactClass } from '../../types';
+import type { ReactElement, ReactClass, IconAppearance } from '../../types';
 
 type Props = {|
   /** Standard aria-haspopup prop */
@@ -25,7 +25,7 @@ type Props = {|
   /** Set the size of the item's content.  */
   size?: 'small' | 'medium' | 'large',
   /** Appearance of item for custom styling (square or round) */
-  appearance: 'square' | 'round',
+  appearance: IconAppearance,
 |}
 
 export default class GlobalItem extends PureComponent {

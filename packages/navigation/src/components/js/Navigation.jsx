@@ -9,7 +9,7 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, ReactClass } from '../../types';
+import type { ReactElement, ReactClass, IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
@@ -61,7 +61,7 @@ type Props = {|
   the linkComponent. */
   globalPrimaryIcon?: ReactElement,
   /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
-  globalPrimaryIconAppearance?: 'round' | 'square',
+  globalPrimaryIconAppearance?: IconAppearance,
   /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it

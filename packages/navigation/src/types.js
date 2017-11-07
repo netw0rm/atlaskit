@@ -27,3 +27,5 @@ export type DragProvided = {|
   placeholder?: ReactElement,
   draggableStyle: Object
 |}
+
+export type IconAppearance = 'square' | 'round';

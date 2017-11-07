@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import type { ReactElement } from '../../types';
+import type { ReactElement, IconAppearance } from '../../types';
 
 type Props = {|
   children?: ReactElement,
@@ -11,7 +11,7 @@ type Props = {|
   onMouseEnter?: () => mixed,
   onMouseLeave?: () => mixed,
   tabIndex?: number,
-  appearance?: string,
+  appearance?: IconAppearance,
 |}
 
 export default class DefaultLinkComponent extends PureComponent {

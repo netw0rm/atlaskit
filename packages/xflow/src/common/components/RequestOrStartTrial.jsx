@@ -41,14 +41,14 @@ class RequestOrStartTrial extends Component {
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
-    grantAccessDisabled: PropTypes.bool,
+    grantAccessEnabled: PropTypes.bool,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
-    grantAccessDisabled: false,
+    grantAccessEnabled: true,
   };
 
   state = {
@@ -152,7 +152,7 @@ class RequestOrStartTrial extends Component {
       sourceComponent,
       sourceContext,
       contextInfo,
-      grantAccessDisabled,
+      grantAccessEnabled,
     } = this.props;
     const {
       activationState,
@@ -199,7 +199,7 @@ class RequestOrStartTrial extends Component {
                       <ContextualStartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE && !grantAccessDisabled}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                         contextInfo={contextInfo}
                       />
                     )
@@ -207,7 +207,7 @@ class RequestOrStartTrial extends Component {
                       <StartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE && !grantAccessDisabled}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                       />
                     )
                 );
@@ -242,12 +242,12 @@ export default withXFlowProvider(
       checkProductRequestFlag,
       getProductActivationState,
       waitForActivation,
-      grantAccessDisabled,
+      grantAccessEnabled,
   } }) => ({
     canCurrentUserAddProduct,
     checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
-    grantAccessDisabled,
+    grantAccessEnabled,
   })
 );

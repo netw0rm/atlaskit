@@ -114,7 +114,7 @@ storiesOf('RequestOrStartTrial (Jira Service Desk)')
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
-          grantAccessDisabled
+          grantAccessEnabled={false}
         />
       </MockJSDXFlowProvider>
     )

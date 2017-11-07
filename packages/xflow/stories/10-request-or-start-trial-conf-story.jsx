@@ -114,7 +114,7 @@ storiesOf('RequestOrStartTrial (Confluence)')
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
-          grantAccessDisabled
+          grantAccessEnabled={false}
         />
       </MockConfluenceXFlowProvider>
     )

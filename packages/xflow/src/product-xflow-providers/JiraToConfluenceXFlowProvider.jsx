@@ -56,11 +56,11 @@ const messages = defineMessages({
   },
   grantAccessDefaultAccess: {
     id: 'xflow.j2c.start-trial.grant-access.default-access',
-    defaultMessage: 'Everyone in JIRA will have access to Confluence.',
+    defaultMessage: 'Everyone in Jira will have access to Confluence.',
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2c.start-trial.grant-access.option.everyone',
-    defaultMessage: 'Everyone in JIRA',
+    defaultMessage: 'Everyone in Jira',
   },
   grantAccessOptionItemsLabelSiteAdmins: {
     id: 'xflow.j2c.start-trial.grant-access.option.site-admins',
